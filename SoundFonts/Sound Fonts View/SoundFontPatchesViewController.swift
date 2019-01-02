@@ -58,26 +58,22 @@ final class SoundFontPatchesViewController: UIViewController {
     
     private func restoreActivePatch() {
         let lastSoundFontName = Settings[.activeSoundFont]
-        let lastSoundFontIndex = SoundFont.indexForName(lastSoundFontName)
-        if lastSoundFontIndex == -1 {
-            return
-        }
-
-        self.selectedIndex = lastSoundFontIndex
-
-        let lastPatchIndex = max(min(Settings[.activePatch], selectedSoundFont.patches.count - 1), 0)
-        changeActivePatchIndex(lastPatchIndex)
+        guard let soundFont = SoundFont.library[lastSoundFontName] else { return }
+        let patchIndex = max(min(Settings[.activePatch], soundFont.patches.count - 1), 0)
+        let patch = soundFont.patches[patchIndex]
+        changeActivePatch(patch)
     }
     
-    private func setActiveSoundFontIndex() {
+    private func setActiveSoundFontIndex(_ index: Int) {
         let prevIndex = activeSoundFontIndex
-        if prevIndex != selectedSoundFontIndex {
-            activeSoundFontIndex = selectedSoundFontIndex
+        if prevIndex != index {
+            activeSoundFontIndex = index
             soundFontsTableViewDataSource.refreshRow(at: prevIndex)
-            soundFontsTableViewDataSource.refreshRow(at: selectedSoundFontIndex)
+            soundFontsTableViewDataSource.refreshRow(at: index)
         }
+        selectedSoundFontIndex = index
     }
-    
+
     private func setActivePatchIndex(_ index: Int) -> Bool {
         let prevIndex = activePatchIndex
         if prevIndex != index {
@@ -89,14 +85,14 @@ final class SoundFontPatchesViewController: UIViewController {
         return false
     }
     
-    private func changeActivePatchIndex(_ index: Int) {
+    private func changeActivePatch(_ patch: Patch) {
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }
 
-        setActiveSoundFontIndex()
-        if setActivePatchIndex(index) {
-            notifiers.forEach { $0(activePatch) }
+        setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
+        if setActivePatchIndex(patch.index) {
+            notifiers.forEach { $0(patch) }
         }
     }
 }
@@ -128,8 +124,7 @@ extension SoundFontPatchesViewController : ActiveSoundFontManager {
             return self.activeSoundFontIndex
         }
         set {
-            self.selectedSoundFontIndex = newValue
-            setActiveSoundFontIndex()
+            setActiveSoundFontIndex(newValue)
         }
     }
     
@@ -159,7 +154,7 @@ extension SoundFontPatchesViewController: ActivePatchManager {
             return self.activeSoundFont.patches[activePatchIndex]
         }
         set {
-            changeActivePatchIndex(newValue.index)
+            changeActivePatch(newValue)
         }
     }
 
@@ -170,8 +165,8 @@ extension SoundFontPatchesViewController: ActivePatchManager {
 
 // MARK: - SoundFontPatchSearchManagerDelegate Protocol
 extension SoundFontPatchesViewController : SoundFontPatchSearchManagerDelegate {
-    func selected(patchIndex: Int) {
-        changeActivePatchIndex(patchIndex)
+    func selected(patch: Patch) {
+        changeActivePatch(patch)
     }
 
     func scrollToSearchField() {
