@@ -1,6 +1,6 @@
 # SoundFonts
 
-![](patches.png)
+![](Patches.png)
 
 This is a very simple iOS application that acts as an sound synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
@@ -45,7 +45,7 @@ Apologies in advance for the state of the UI. Here is what you can do with it:
 
 The favorites view shows all of the patches that have been "Faved".
 
-![](favorites.png)
+![](Favorites.png)
 
 Pressing on a favorite will make its associated patch active. You can also configure the starting key of the
 keyboard in the favorite as well as gain and stereo pan settings that will apply when the favorite is touched.
