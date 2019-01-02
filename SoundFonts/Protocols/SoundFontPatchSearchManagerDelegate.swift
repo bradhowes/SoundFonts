@@ -18,7 +18,7 @@ protocol SoundFontPatchSearchManagerDelegate: class {
     
      - parameter patchIndex: the Patch index that was selected
      */
-    func selected(patchIndex: Int)
+    func selected(patch: Patch)
     
     /**
      Ask the delegate to scroll the view to show the search field.

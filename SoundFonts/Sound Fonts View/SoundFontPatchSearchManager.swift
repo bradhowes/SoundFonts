@@ -94,8 +94,9 @@ extension SoundFontPatchSearchManager : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let prevIndex = activePatchIndex
+        let patch = searchResults[indexPath.row].patch
         activePatchIndex = searchResults[indexPath.row].index
-        delegate?.selected(patchIndex: activePatchIndex)
+        delegate?.selected(patch: patch)
         updateResultsCell(at: searchIndexOfPatch(patchIndex: prevIndex))
         updateResultsCell(at: searchIndexOfPatch(patchIndex: activePatchIndex))
     }
