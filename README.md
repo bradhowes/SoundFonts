@@ -1,5 +1,3 @@
-# SoundFonts
-
 ![](Patches.png)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
