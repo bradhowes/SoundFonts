@@ -2,7 +2,7 @@
 
 ![](Patches.png)
 
-This is a very simple iOS application that acts as an sound synthesizer. It uses an `AVAudioUnitSampler`
+This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
 as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free (and of variable
 quaility). This app only supports sound font files that are bundled with the application, though it would be
