@@ -20,7 +20,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
     private let favoriteCollection = FavoriteCollection()
-    private var notifiers = [(FavoriteChangeKind, Favorite)->Void]()
+    private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
 
     override func viewDidLoad() {
         favoritesView.dataSource = self
@@ -33,7 +33,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         activePatchManager = context.activePatchManager
         keyboardManager = context.keyboardManager
-        activePatchManager.addPatchChangeNotifier { patch in self.patchChanged(patch) }
+        activePatchManager.addPatchChangeNotifier(self) { observer, patch in self.patchChanged(patch) }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,7 +100,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     }
     
     private func notify(_ kind: FavoriteChangeKind, _ favorite: Favorite) {
-        notifiers.forEach { $0(kind, favorite) }
+        notifiers.values.forEach { $0(kind, favorite) }
     }
 }
 
@@ -176,7 +176,28 @@ extension FavoritesViewController: FavoritesManager {
         favoritesView.reloadData()
     }
 
-    func addFavoriteChangeNotifier(_ notifier: @escaping (FavoriteChangeKind, Favorite) -> Void) {
-        notifiers.append(notifier)
+    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, FavoriteChangeKind, Favorite) -> Void) -> NotifierToken {
+        let uuid = UUID()
+
+        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
+        let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
+
+        // For this closure, we don't need a weak self since we are holding the collection and they cannot run outside
+        // of the main thread. However, we don't want to keep the observer from going away, so hold a weak reference
+        // and remove the closure if it is nil.
+        notifiers[uuid] = { [weak observer] kind, favorite in
+            if let strongObserver = observer {
+                closure(strongObserver, kind, favorite)
+            }
+            else {
+                token.cancel()
+            }
+        }
+
+        return token
+    }
+    
+    func removeNotifier(forKey key: UUID) {
+        notifiers.removeValue(forKey: key)
     }
 }

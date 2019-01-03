@@ -48,7 +48,7 @@ final class SoundFontPatchesViewController: UIViewController {
     private var activePatchIndex = 0
     
     private var searchManager: SoundFontPatchSearchManager!
-    private var notifiers = [(Patch)->Void]()
+    private var notifiers = [UUID: (Patch) -> Void]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +109,7 @@ final class SoundFontPatchesViewController: UIViewController {
 
         setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
         if setActivePatchIndex(patch.index) {
-            notifiers.forEach { $0(patch) }
+            notifiers.values.forEach { $0(patch) }
         }
     }
 }
@@ -167,8 +167,31 @@ extension SoundFontPatchesViewController: ActivePatchManager {
         }
     }
 
-    func addPatchChangeNotifier(_ notifier: @escaping (Patch) -> Void) {
-        notifiers.append(notifier)
+    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, Patch) -> Void) -> NotifierToken {
+        let uuid = UUID()
+        
+        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
+        let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
+        
+        // For this closure, we don't need a weak self since we are holding the collection and they cannot run outside
+        // of the main thread. However, we don't want to keep the observer from going away, so treat that as weak and
+        // protect against it being nil.
+        notifiers[uuid] = { [weak observer] patch in
+            if let strongObserver = observer {
+                closure(strongObserver, patch)
+            }
+            else {
+                token.cancel()
+            }
+        }
+
+        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self and protect
+        // against it being nil.
+        return NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
+    }
+
+    func removeNotifier(forKey key: UUID) {
+        notifiers.removeValue(forKey: key)
     }
 }
 

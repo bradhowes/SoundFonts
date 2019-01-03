@@ -18,9 +18,19 @@ protocol ActivePatchManager: class {
     var activePatch: Patch { get set }
 
     /**
-     Install a closure to be called when the active patch changes value.
-    
-     - parameter notifier: the closure to install
+     Install a closure to be called when a Patch change happens. The closure takes one argument, the Patch instance
+     that is now active.
+     
+     - parameter closure: the closure to install
+     - returns: unique identifier that can be used to remove the notifier via `removeNotifier`
      */
-    func addPatchChangeNotifier(_ notifier: @escaping (Patch)->Void)
+    @discardableResult
+    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, Patch) -> Void) -> NotifierToken
+    
+    /**
+     Remove an existing notifier.
+     
+     - parameter key: the key associated with the notifier and returned by `addPatchChangeNotifier`
+     */
+    func removeNotifier(forKey key: UUID)
 }
