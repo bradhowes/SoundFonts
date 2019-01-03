@@ -45,7 +45,7 @@ extension MainViewController: ControllerConfiguration {
 
         keyboardManager.delegate = self
 
-        activePatchManager.addPatchChangeNotifier { patch in
+        activePatchManager.addPatchChangeNotifier(self) { observer, patch in
             keyboardManager.releaseAllKeys()
             self.infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
             self.sampler.load(patch: patch)
@@ -53,7 +53,7 @@ extension MainViewController: ControllerConfiguration {
             Settings[.activePatch] = patch.index
         }
 
-        favoritesManager.addFavoriteChangeNotifier { _, favorite in
+        favoritesManager.addFavoriteChangeNotifier(self) { observer, kind, favorite in
             if favorite.patch == activePatchManager.activePatch {
                 self.sampler.setGain(favorite.gain)
                 self.sampler.setPan(favorite.pan)

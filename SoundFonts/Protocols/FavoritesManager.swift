@@ -44,9 +44,19 @@ protocol FavoritesManager: class {
     func remove(patch: Patch)
 
     /**
-     Install a closure to be called when the active favorite changes value.
+     Install a closure to be called when a Favorite change happens. The closure takes two arguments: a enum indicating
+     the kind of change that took place, and the Favorite instance the change affected.
      
-     - parameter notifier: the closure to install
+     - parameter closure: the closure to install
+     - returns: unique identifier that can be used to remove the notifier via `removeNotifier`
      */
-    func addFavoriteChangeNotifier(_ notifier: @escaping (FavoriteChangeKind, Favorite)->Void)
+    @discardableResult
+    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, FavoriteChangeKind, Favorite) -> Void) -> NotifierToken
+
+    /**
+     Remove an existing notifier.
+     
+     - parameter key: the key associated with the notifier and returned by `addFavoriteChangeNotifier`
+     */
+    func removeNotifier(forKey key: UUID)
 }
