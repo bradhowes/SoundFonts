@@ -16,7 +16,7 @@ def run(filePaths):
     for filePath in filePaths:
         print "...processing", filePath
 
-        # Load the SF2 file and get the patches / presets in it
+        # Load the SF2 file and get the patches / presets in it
         with open(filePath, 'rb') as sf2File:
 
             sf2 = Sf2File(sf2File)
