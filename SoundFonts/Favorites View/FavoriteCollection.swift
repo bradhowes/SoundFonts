@@ -93,19 +93,21 @@ final class FavoriteCollection: NSObject {
     
      - parameter patch: the Patch instance to search for
      */
-    func remove(patch: Patch) {
+    func remove(patch: Patch) -> Favorite {
         precondition(isFavored(patch: patch) == true, "Patch is not associated with a Favorite")
         let fave = favoriteMap.removeValue(forKey: patch)!
-        favorites.removeAll { $0 === fave }
+        let index = favorites.firstIndex(of: fave)!
+        favorites.remove(at: index)
         save()
+        return fave
     }
-    
+
     /**
      Remove an existing Favorite from the collection
     
      - parameter index: the index of the Favorite to remove
      */
-    func remove(at index: Int) -> Void {
+    func remove(at index: Int) {
         let fave = favorites.remove(at: index)
         favoriteMap.removeValue(forKey: fave.patch)
         save()

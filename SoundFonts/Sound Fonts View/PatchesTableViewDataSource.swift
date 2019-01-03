@@ -66,7 +66,8 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter animated: if true animate the scrolling
      */
     func scrollToRow(at index: Int, at position: UITableView.ScrollPosition, animated: Bool) {
-        view.scrollToRow(at: indexPathForPatchIndex(index), at: position, animated: animated)
+        let indexPath = indexPathForPatchIndex(index)
+        view.scrollToRow(at: indexPath, at: position, animated: animated)
     }
 
     /**
@@ -75,8 +76,9 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter index: Patch index to select
      - parameter animated: if true animate the selection
      */
-    func selectRow(at index: Int, animated: Bool) {
-        view.selectRow(at: indexPathForPatchIndex(index), animated: animated, scrollPosition: .top)
+    func selectRow(at index: Int, animated: Bool, scrollPosition: UITableView.ScrollPosition) {
+        let indexPath = indexPathForPatchIndex(index)
+        view.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
     }
 
     /**
