@@ -52,7 +52,7 @@ To edit a favorite, long-press on the it and you should see an edit view:
 ![](FavoriteDetail.png)
 
 Nothing fancy. Note that the _gain_ is not exactly like a volume. By default, it will be at 0.0 which means that
-there is no gain applied to the syntesizer output. Positive values (max +12) will boost the signal, while
+there is no gain applied to the synthesizer output. Positive values (max +12) will boost the signal, while
 negative values (min -90) will reduce it. Note that these are the min/max values supported by the
 `AVAudioUnitSampler`.
 
