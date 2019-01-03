@@ -24,8 +24,6 @@ final class MainViewController: UIViewController {
 
     private var upperViewManager = UpperViewManager()
     private weak var infoBarManager: InfoBarManager!
-    private weak var favoritesManager: FavoritesManager!
-    private weak var keyboardManager: KeyboardManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,33 +38,36 @@ final class MainViewController: UIViewController {
 extension MainViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         infoBarManager = context.infoBarManager
-        favoritesManager = context.favoritesManager
-        keyboardManager = context.keyboardManager
+
+        let activePatchManager = context.activePatchManager
+        let favoritesManager = context.favoritesManager
+        let keyboardManager = context.keyboardManager
+
         keyboardManager.delegate = self
 
-        context.activePatchManager.addPatchChangeNotifier { patch in self.selected(patch: patch) }
-        context.favoritesManager.addFavoriteChangeNotifier { favorite in self.selected(favorite: favorite) }
+        activePatchManager.addPatchChangeNotifier { patch in
+            keyboardManager.releaseAllKeys()
+            self.infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
+            self.sampler.load(patch: patch)
+            Settings[.activeSoundFont] = patch.soundFont.name
+            Settings[.activePatch] = patch.index
+        }
 
+        favoritesManager.addFavoriteChangeNotifier { _, favorite in
+            if favorite.patch == activePatchManager.activePatch {
+                self.sampler.setGain(favorite.gain)
+                self.sampler.setPan(favorite.pan)
+                let patch = favorite.patch
+                self.infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
+            }
+        }
+        
         infoBarManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         infoBarManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         let showingFavorites = Settings[.showingFavorites]
         self.patches.isHidden = showingFavorites
         self.favorites.isHidden = !showingFavorites
-    }
-
-    private func selected(patch: Patch) {
-        keyboardManager.releaseAllKeys()
-        infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
-        sampler.load(patch: patch)
-        Settings[.activeSoundFont] = patch.soundFont.name
-        Settings[.activePatch] = patch.index
-    }
-    
-    private func selected(favorite: Favorite) {
-        // The patch will be applied above -- just do favorite-specific settings here
-        sampler.setGain(favorite.gain)
-        sampler.setPan(favorite.pan)
     }
 
     @IBAction private func showNextConfigurationView() {

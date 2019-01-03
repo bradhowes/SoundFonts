@@ -8,6 +8,13 @@
 
 import Foundation
 
+enum FavoriteChangeKind {
+    case added
+    case selected
+    case changed
+    case removed
+}
+
 /**
  Manages the collection of Favorite patch settings
  */
@@ -28,7 +35,7 @@ protocol FavoritesManager: class {
      - parameter keyboardLowestNote: the lowest note of the keyboard
      */
     func add(patch: Patch, keyboardLowestNote: Note)
-    
+
     /**
      Remove a previous patch associaed with the given Patch
 
@@ -41,5 +48,5 @@ protocol FavoritesManager: class {
      
      - parameter notifier: the closure to install
      */
-    func addFavoriteChangeNotifier(_ notifier: @escaping (Favorite)->Void)
+    func addFavoriteChangeNotifier(_ notifier: @escaping (FavoriteChangeKind, Favorite)->Void)
 }

@@ -16,12 +16,11 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
-    
-    private var activeIndex: Int = -1
+
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
     private let favoriteCollection = FavoriteCollection()
-    private var notifiers = [(Favorite)->Void]()
+    private var notifiers = [(FavoriteChangeKind, Favorite)->Void]()
 
     override func viewDidLoad() {
         favoritesView.dataSource = self
@@ -82,23 +81,26 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private func updateFavoriteCell(at indexPath: IndexPath, cell: FavoriteCell? = nil) {
         guard let cell = cell ?? favoritesView.cellForItem(at: indexPath) as? FavoriteCell else { return }
         let favorite = favoriteCollection[indexPath.row]
-        cell.update(name: favorite.name, isActive: indexPath.row == activeIndex)
+        cell.update(name: favorite.name, isActive: favorite.patch == activePatchManager.activePatch)
     }
 
     private func patchChanged(_ patch: Patch) {
-        let newFave = favoriteCollection[patch]
-        let newFaveIndex = newFave != nil ? favoriteCollection.getIndex(of: newFave!) : -1
-        if newFaveIndex != activeIndex {
-            let indices = [activeIndex, newFaveIndex].filter { $0 != -1 }.map { IndexPath(row: $0, section: 0) }
-            activeIndex = newFaveIndex
-            favoritesView.reloadItems(at: indices)
-        }
+        favoritesView.reloadData()
     }
     
-    private func favoriteChanged(_ favorite: Favorite) {
+    private func selected(_ favorite: Favorite) {
+        let prevFave = favoriteCollection[activePatchManager.activePatch]
         activePatchManager.activePatch = favorite.patch
         keyboardManager.lowestNote = favorite.keyboardLowestNote
-        notifiers.forEach { $0(favorite) }
+        if prevFave != nil {
+            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: prevFave!), section: 0))
+        }
+        updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: favorite), section: 0))
+        notify(.selected, favorite)
+    }
+    
+    private func notify(_ kind: FavoriteChangeKind, _ favorite: Favorite) {
+        notifiers.forEach { $0(kind, favorite) }
     }
 }
 
@@ -124,7 +126,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let favorite = favoriteCollection[indexPath.row]
-        favoriteChanged(favorite)
+        selected(favorite)
     }
 }
 
@@ -148,7 +150,7 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
             let favorite = favoriteCollection[indexPath.row]
             favoritesView.collectionViewLayout.invalidateLayout()
             updateFavoriteCell(at: indexPath)
-            favoriteChanged(favorite)
+            notify(.changed, favorite)
             favoriteCollection.save()
         }
 
@@ -158,19 +160,23 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
 
 // MARK: - FavoritesManager
 extension FavoritesViewController: FavoritesManager {
+
     func isFavored(patch: Patch) -> Bool { return favoriteCollection.isFavored(patch: patch) }
     
     func add(patch: Patch, keyboardLowestNote: Note) {
-        favoriteCollection.add(Favorite(patch: patch, keyboardLowestNote: keyboardLowestNote))
+        let favorite = Favorite(patch: patch, keyboardLowestNote: keyboardLowestNote)
+        favoriteCollection.add(favorite)
+        notify(.added, favorite)
         favoritesView.reloadData()
     }
     
     func remove(patch: Patch) {
-        favoriteCollection.remove(patch: patch)
+        let favorite = favoriteCollection.remove(patch: patch)
+        notify(.removed, favorite)
         favoritesView.reloadData()
     }
-    
-    func addFavoriteChangeNotifier(_ notifier: @escaping (Favorite) -> Void) {
+
+    func addFavoriteChangeNotifier(_ notifier: @escaping (FavoriteChangeKind, Favorite) -> Void) {
         notifiers.append(notifier)
     }
 }

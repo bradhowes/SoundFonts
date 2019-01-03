@@ -24,6 +24,17 @@ final class SoundFontsTableViewDataSource: NSObject {
     }
 
     /**
+     Update the view so that the entry at the given index is visible.
+     
+     - parameter index: Patch index to make visible
+     - parameter position: where in the view to place the row
+     - parameter animated: if true animate the scrolling
+     */
+    func scrollToRow(at index: Int, at position: UITableView.ScrollPosition, animated: Bool) {
+        view.scrollToRow(at: IndexPath(row: index, section: 0), at: position, animated: animated)
+    }
+
+    /**
      Select a row in the table view.
     
      - parameter index: the row to select

@@ -28,7 +28,19 @@ final class SoundFontPatchesViewController: UIViewController {
     private var soundFontsTableViewDataSource: SoundFontsTableViewDataSource!
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
     
-    private var selectedSoundFontIndex: Int = 0
+    private var selectedSoundFontIndex: Int = 0 {
+        didSet {
+            let selectedSoundFont = SoundFont.getByIndex(selectedSoundFontIndex)
+            if let searchTerm = searchBar.searchTerm {
+                let activePatchIndex = activeSoundFontIndex == selectedSoundFontIndex ? self.activePatchIndex : -1
+                searchManager.search(soundFont: selectedSoundFont, activePatchIndex: activePatchIndex, term: searchTerm)
+            }
+            else {
+                patchesView.reloadData()
+            }
+        }
+    }
+
     private var selectedSoundFont: SoundFont { return SoundFont.getByIndex(selectedSoundFontIndex) }
     
     private var activeSoundFontIndex = 0
@@ -45,25 +57,17 @@ final class SoundFontPatchesViewController: UIViewController {
         searchManager = SoundFontPatchSearchManager(resultsView: patchesView)
         searchManager.delegate = self
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
-        restoreActivePatch()
-
-        soundFontsTableViewDataSource.selectRow(at: activeSoundFontIndex, animated: false)
-        patchesTableViewDataSource.scrollToRow(at: 0, at: .top, animated: false)
-        patchesTableViewDataSource.selectRow(at: activePatchIndex, animated: false)
-    }
-    
-    private func restoreActivePatch() {
+    func restoreLastActivePatch() {
         let lastSoundFontName = Settings[.activeSoundFont]
         guard let soundFont = SoundFont.library[lastSoundFontName] else { return }
         let patchIndex = max(min(Settings[.activePatch], soundFont.patches.count - 1), 0)
         let patch = soundFont.patches[patchIndex]
+        activeSoundFontIndex = -1
+        activePatchIndex = -1
         changeActivePatch(patch)
     }
-    
+
     private func setActiveSoundFontIndex(_ index: Int) {
         let prevIndex = activeSoundFontIndex
         if prevIndex != index {
@@ -71,7 +75,9 @@ final class SoundFontPatchesViewController: UIViewController {
             soundFontsTableViewDataSource.refreshRow(at: prevIndex)
             soundFontsTableViewDataSource.refreshRow(at: index)
         }
+
         selectedSoundFontIndex = index
+        soundFontsTableViewDataSource.selectRow(at: activeSoundFontIndex, animated: false)
     }
 
     private func setActivePatchIndex(_ index: Int) -> Bool {
@@ -80,6 +86,17 @@ final class SoundFontPatchesViewController: UIViewController {
             activePatchIndex = index
             patchesTableViewDataSource.refreshRow(at: prevIndex)
             patchesTableViewDataSource.refreshRow(at: activePatchIndex)
+
+            // If we are not searching, scroll to the current row. However, we need to do this in the future because
+            // right now we could be awaiting a reload due to a SoundFont change.
+            if searchBar.searchTerm == nil {
+                DispatchQueue.main.async {
+                    self.patchesTableViewDataSource.scrollToRow(at: self.activePatchIndex, at: .none, animated: false)
+                    self.patchesTableViewDataSource.selectRow(at: self.activePatchIndex, animated: false,
+                                                              scrollPosition: .none)
+                }
+            }
+
             return true
         }
         return false
@@ -134,14 +151,6 @@ extension SoundFontPatchesViewController : ActiveSoundFontManager {
         }
         set {
             self.selectedSoundFontIndex = newValue
-            let selectedSoundFont = SoundFont.getByIndex(newValue)
-            if let searchTerm = searchBar.searchTerm {
-                let activePatchIndex = activeSoundFontIndex == selectedSoundFontIndex ? self.activePatchIndex : -1
-                searchManager.search(soundFont: selectedSoundFont, activePatchIndex: activePatchIndex, term: searchTerm)
-            }
-            else {
-                patchesView.reloadData()
-            }
         }
     }
 }

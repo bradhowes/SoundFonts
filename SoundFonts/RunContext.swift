@@ -70,11 +70,13 @@ final class RunContext {
      Invoke `establishConnections` on each tracked view controller.
      */
     func establishConnections() {
-        mainViewController.establishConnections(self)
         soundFontPatchesController.establishConnections(self)
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
         keyboardController.establishConnections(self)
+        mainViewController.establishConnections(self)
+
+        soundFontPatchesController.restoreLastActivePatch()
     }
     
     private func validate() {
