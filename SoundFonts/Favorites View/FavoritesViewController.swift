@@ -21,13 +21,24 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private var keyboardManager: KeyboardManager!
     private let favoriteCollection = FavoriteCollection()
     private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
-
+    private var favoriteCell: FavoriteCell!
+    
     override func viewDidLoad() {
+        favoritesView.register(FavoriteCell.self)
         favoritesView.dataSource = self
         favoritesView.delegate = self
 
+        favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as? FavoriteCell
+        precondition(favoriteCell != nil, "failed to instantiate a FavoriteCell instance from nil")
+
+        favoriteCell.translatesAutoresizingMaskIntoConstraints = false
+
         longPressGestureRecognizer.minimumPressDuration = 0.5
         longPressGestureRecognizer.addTarget(self, action: #selector(handleLongPress))
+        
+        if let layout = favoritesView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.estimatedItemSize = CGSize(width: 1, height: 1)
+        }
     }
 
     func establishConnections(_ context: RunContext) {
@@ -87,7 +98,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private func patchChanged(_ patch: Patch) {
         favoritesView.reloadData()
     }
-    
+
     private func selected(_ favorite: Favorite) {
         let prevFave = favoriteCollection[activePatchManager.activePatch]
         activePatchManager.activePatch = favorite.patch
@@ -116,7 +127,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favorite", for: indexPath) as! FavoriteCell
+        let cell: FavoriteCell = collectionView.dequeueReusableCell(for: indexPath)
         updateFavoriteCell(at: indexPath, cell: cell)
         return cell
     }
@@ -135,11 +146,12 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let favorite = favoriteCollection[indexPath.row]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "favorite", for: indexPath) as! FavoriteCell
-        cell.name.text = favorite.name
-        let textSize = cell.name.sizeThatFits(CGSize(width: 1000.0, height: 1000.0))
-        return CGSize(width: textSize.width + 48, height: textSize.height + 48)
+        updateFavoriteCell(at: indexPath, cell: favoriteCell)
+        let size = favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        return size
+
+        // let size = favoriteCell.name.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        // return CGSize(width: size.width + 48, height: size.height + 48)
     }
 }
 
@@ -176,7 +188,7 @@ extension FavoritesViewController: FavoritesManager {
         favoritesView.reloadData()
     }
 
-    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, FavoriteChangeKind, Favorite) -> Void) -> NotifierToken {
+    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
 
         // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
