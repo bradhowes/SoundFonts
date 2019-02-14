@@ -56,7 +56,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         vc.delegate = self
 
         let favorite = favoriteCollection[indexPath.row]
-        vc.editFavorite(favorite, position: indexPath)
+        vc.editFavorite(favorite, position: indexPath, lowestNote: keyboardManager.lowestNote)
         
         // Now if showing a popover, position it in the right spot
         //

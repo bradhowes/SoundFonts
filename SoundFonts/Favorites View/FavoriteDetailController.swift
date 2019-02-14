@@ -15,12 +15,13 @@ final class FavoriteDetailController : UIViewController {
 
     var favorite: Favorite? = nil
     var position: IndexPath = IndexPath(row: -1, section: -1)
+    var currentLowestNote: Note = Note(midiNoteValue: 0)
     var delegate: FavoriteDetailControllerDelegate? = nil
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var lowestNote: UILabel!
+    @IBOutlet weak var lowestNote: UIButton!
     @IBOutlet weak var lowestNoteStepper: UIStepper!
     @IBOutlet weak var soundFontName: UILabel!
     @IBOutlet weak var patchName: UILabel!
@@ -49,9 +50,10 @@ final class FavoriteDetailController : UIViewController {
      - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
        conveyed to the delegate in the `dismissed` delegate call.
      */
-    func editFavorite(_ favorite: Favorite, position: IndexPath) {
+    func editFavorite(_ favorite: Favorite, position: IndexPath, lowestNote: Note) {
         self.favorite = favorite
         self.position = position
+        self.currentLowestNote = lowestNote
     }
 
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -64,7 +66,7 @@ final class FavoriteDetailController : UIViewController {
         let patch = favorite.patch
 
         name.text = favorite.name
-        lowestNote.text = favorite.keyboardLowestNote.label
+        lowestNote.titleLabel?.text = favorite.keyboardLowestNote.label
         lowestNoteStepper.value = Double(favorite.keyboardLowestNote.midiNoteValue)
         title = favorite.name
         soundFontName.text = patch.soundFont.name
@@ -116,7 +118,10 @@ final class FavoriteDetailController : UIViewController {
      - parameter sender: UIStepper control
      */
     @IBAction private func changeLowestKey(_ sender: UIStepper) {
-        lowestNote.text = Note(midiNoteValue: Int(sender.value)).label
+        let newValue = Int(sender.value)
+        let newNote = Note(midiNoteValue: newValue)
+        print("newValue: \(newValue) newNote: \(newNote.label)")
+        lowestNote.setTitle(newNote.label, for: .normal)
     }
     
     /**
@@ -155,5 +160,10 @@ final class FavoriteDetailController : UIViewController {
      */
     private func roundFloat(_ value: Float) -> Float {
         return (value * 100.0).rounded() / 100.0
+    }
+    
+    @IBAction func useCurrentLowestNote(_ sender: Any) {
+        lowestNote.setTitle(currentLowestNote.label, for: .normal)
+        lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
     }
 }
