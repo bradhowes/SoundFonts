@@ -36,6 +36,20 @@
                 <constraint firstAttribute="bottom" secondItem="xQg-Jw-Co5" secondAttribute="bottom" constant="8" id="yFK-wz-43d"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="lfP-ES-Jh5"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
+                    <color key="value" red="0.4557498693" green="0.97613078360000005" blue="0.99216145280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="normalForegroundColor">
+                    <color key="value" red="0.85105484720000002" green="0.2004701495" blue="0.95691233870000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="activeBackgroundColor">
+                    <color key="value" red="0.85105484720000002" green="0.2004701495" blue="0.95691233870000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="activeForegroundColor">
+                    <color key="value" red="0.4557498693" green="0.97613078360000005" blue="0.99216145280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="name" destination="xQg-Jw-Co5" id="HB1-qq-ykN"/>
             </connections>
