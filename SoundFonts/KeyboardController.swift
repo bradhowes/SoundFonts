@@ -41,7 +41,7 @@ final class KeyboardController: UIViewController {
     
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
-        firstMidiNoteValue = lowestNote
+        firstMidiNoteValue = max(lowestNote, 0)
     }
     
     override func viewDidLayoutSubviews() {
@@ -60,11 +60,20 @@ extension KeyboardController: ControllerConfiguration {
 
 // MARK: - Keyboard Shifting
 extension KeyboardController {
+
     @IBAction private func shiftKeyboardUp(_ sender: UIButton) {
         assert(!keys.isEmpty)
         if lastMidiNoteValue < maxMidiValue {
-            let shift = min(min(keys.count, 12), maxMidiValue - lastMidiNoteValue)
-            shiftKeys(by: shift)
+            let shift: Int = {
+                if firstMidiNoteValue % 12 == 0 {
+                    return min(keys.count, 12)
+                }
+                else {
+                    return 12 - firstMidiNoteValue % 12
+                }
+            }()
+            
+            shiftKeys(by: min(shift, maxMidiValue - lastMidiNoteValue))
         }
     }
     
@@ -72,19 +81,17 @@ extension KeyboardController {
         assert(!keys.isEmpty)
         if firstMidiNoteValue > 0 {
             let shift: Int = {
-                // If we are showing the right-end of the keyboard and the left key is NOT a 'C' shift left to the
-                // first 'C'
-                if lastMidiNoteValue == maxMidiValue && (firstMidiNoteValue % 12) != 0 {
+                if firstMidiNoteValue % 12 == 0 {
+                    return min(firstMidiNoteValue, min(keys.count, 12))
+                }
+                else {
                     return firstMidiNoteValue % 12
                 }
-                // If we cannot show a full octave, just show the next keys to the left
-                if keys.count < 12 {
-                    return keys.count
-                }
-                // Move down by octaves
-                return 12
             }()
-            shiftKeys(by: -shift)
+
+            if shift > 0 {
+                shiftKeys(by: -shift)
+            }
         }
     }
     
