@@ -246,11 +246,11 @@
 				BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */,
 				BD36FF6E21DBC393002305CB /* FavoriteDetailControllerDelegate.swift */,
 				BD85F8D821D91AA90028E440 /* FavoritesManager.swift */,
-				BD9434A721DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift */,
 				BD36FF6C21DBABD2002305CB /* InfoBarManager.swift */,
 				BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */,
-				BDD3860422147D0C0063040C /* ReusableView.swift */,
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
+				BDD3860422147D0C0063040C /* ReusableView.swift */,
+				BD9434A721DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";

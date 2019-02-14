@@ -12,6 +12,9 @@ import Foundation
  Maintains the active SoundFont patch being used for sound generation.
  */
 protocol ActivePatchManager: class {
+
+    typealias Notifier<O: AnyObject> = (O, Patch) -> Void
+
     /// The collection of patches currently available for the active SoundFont
     var patches: [Patch] { get }
     /// The currently active patch
@@ -25,7 +28,7 @@ protocol ActivePatchManager: class {
      - returns: unique identifier that can be used to remove the notifier via `removeNotifier`
      */
     @discardableResult
-    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, Patch) -> Void) -> NotifierToken
+    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken
     
     /**
      Remove an existing notifier.
