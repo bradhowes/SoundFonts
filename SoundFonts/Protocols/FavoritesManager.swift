@@ -19,7 +19,9 @@ enum FavoriteChangeKind {
  Manages the collection of Favorite patch settings
  */
 protocol FavoritesManager: class {
-    
+
+    typealias Notifier<O: AnyObject> = (O, FavoriteChangeKind, Favorite) -> Void
+
     /**
      Determine if the given Patch instance is associated with a Favorite instance
     
@@ -51,7 +53,7 @@ protocol FavoritesManager: class {
      - returns: unique identifier that can be used to remove the notifier via `removeNotifier`
      */
     @discardableResult
-    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, FavoriteChangeKind, Favorite) -> Void) -> NotifierToken
+    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken
 
     /**
      Remove an existing notifier.
