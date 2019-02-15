@@ -10,7 +10,7 @@ import Foundation
 
 /**
  Maintains the indices of the selected and active SoundFont. Here `index` refers to the in the range
- `[0..SoundFont.keys.count)`. Presentation views must translate into valid IndexPath values.
+ `[0..SoundFont.keys.count)`. Presentation views must translate these into valid IndexPath values.
  */
 protocol ActiveSoundFontManager: class {
     /// The index of the currently selected SoundFont

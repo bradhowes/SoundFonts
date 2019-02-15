@@ -12,7 +12,7 @@ import UIKit
  A manager of search results. The searching takes place when the user enters a search term in the UISearchBar; this
  class simply displays the results and routes certain user events to its delegate.
  */
-final class SoundFontPatchSearchManager: NSObject {
+final class PatchSearchManager: NSObject {
 
     var delegate: SoundFontPatchSearchManagerDelegate? = nil
 
@@ -59,8 +59,8 @@ final class SoundFontPatchSearchManager: NSObject {
         return searchResults.firstIndex { $0.index == patchIndex } ?? -1
     }
 
-    private func updateResultsCell(at index: Int, cell: SoundFontPatchCell? = nil) {
-        guard let cell = cell ?? resultsView.cellForRow(at: IndexPath(row: index, section: 0)) as? SoundFontPatchCell
+    private func updateResultsCell(at index: Int, cell: PatchCell? = nil) {
+        guard let cell = cell ?? resultsView.cellForRow(at: IndexPath(row: index, section: 0)) as? PatchCell
             else { return }
         let found = searchResults[index]
         let patch = found.patch
@@ -69,7 +69,7 @@ final class SoundFontPatchSearchManager: NSObject {
 }
 
 // MARK: - UITableViewDataSource Protocol
-extension SoundFontPatchSearchManager : UITableViewDataSource {
+extension PatchSearchManager : UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -80,7 +80,7 @@ extension SoundFontPatchSearchManager : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "search") as? SoundFontPatchCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "patch") as? PatchCell else {
             preconditionFailure("expected to get a UITableViewCell")
         }
 
@@ -90,7 +90,7 @@ extension SoundFontPatchSearchManager : UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate Protocol
-extension SoundFontPatchSearchManager : UITableViewDelegate {
+extension PatchSearchManager : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let prevIndex = activePatchIndex
@@ -104,7 +104,7 @@ extension SoundFontPatchSearchManager : UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // Allow user to add/remove Favorite instance for a Patch from the search results
-        guard let cell = tableView.cellForRow(at: indexPath) as? SoundFontPatchCell else { return nil }
+        guard let cell = tableView.cellForRow(at: indexPath) as? PatchCell else { return nil }
         let patch = searchResults[indexPath.row].patch
         guard let action = delegate?.createSwipeAction(at: cell, with: patch) else { return nil }
         return UISwipeActionsConfiguration(actions: [action])

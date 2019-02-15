@@ -70,7 +70,7 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
      - parameter isFavored: true if the Patch is a Favorite
      */
     func setPatchInfo(name: String, isFavored: Bool) {
-        let name = SoundFontPatchCell.favoriteTag(isFavored) + name
+        let name = PatchCell.favoriteTag(isFavored) + name
         patchInfo.text = name
         cancelStatusAnimation()
     }

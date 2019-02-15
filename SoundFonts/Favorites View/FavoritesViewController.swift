@@ -36,9 +36,10 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         longPressGestureRecognizer.minimumPressDuration = 0.5
         longPressGestureRecognizer.addTarget(self, action: #selector(handleLongPress))
         
-        if let layout = favoritesView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.estimatedItemSize = CGSize(width: 1, height: 1)
-        }
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 8
+        favoritesView!.setCollectionViewLayout(layout, animated: false)
     }
 
     func establishConnections(_ context: RunContext) {

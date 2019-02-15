@@ -11,11 +11,16 @@ import UIKit
 /**
  Specialization of `UICollectionViewCell` that knows how to render Favoite attributes.
  */
+@IBDesignable
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     @IBOutlet weak var name: UILabel!
 
-    @IBInspectable var normalBackgroundColor: UIColor!
+    @IBInspectable var normalBackgroundColor: UIColor! {
+        didSet {
+            self.backgroundColor = normalBackgroundColor
+        }
+    }
     @IBInspectable var normalForegroundColor: UIColor!
     @IBInspectable var activeBackgroundColor: UIColor!
     @IBInspectable var activeForegroundColor: UIColor!

@@ -20,12 +20,12 @@ final class RunContext {
         didSet { oneTimeSet(oldValue) }
     }
 
-    private var soundFontPatchesController: SoundFontPatchesViewController! {
+    private var soundFontsController: SoundFontsViewController! {
         didSet { oneTimeSet(oldValue) }
     }
 
-    var activeSoundFontManager: ActiveSoundFontManager { return soundFontPatchesController }
-    var activePatchManager: ActivePatchManager { return soundFontPatchesController }
+    var activeSoundFontManager: ActiveSoundFontManager { return soundFontsController }
+    var activePatchManager: ActivePatchManager { return soundFontsController }
 
     private var favoritesController: FavoritesViewController! {
         didSet { oneTimeSet(oldValue) }
@@ -55,7 +55,7 @@ final class RunContext {
         mainViewController = mvc
         for obj in vcs {
             switch obj {
-            case let vc as SoundFontPatchesViewController: soundFontPatchesController = vc
+            case let vc as SoundFontsViewController: soundFontsController = vc
             case let vc as FavoritesViewController: favoritesController = vc
             case let vc as InfoBarController: infoBarController = vc
             case let vc as KeyboardController: keyboardController = vc
@@ -70,18 +70,18 @@ final class RunContext {
      Invoke `establishConnections` on each tracked view controller.
      */
     func establishConnections() {
-        soundFontPatchesController.establishConnections(self)
+        soundFontsController.establishConnections(self)
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
         keyboardController.establishConnections(self)
         mainViewController.establishConnections(self)
 
-        soundFontPatchesController.restoreLastActivePatch()
+        soundFontsController.restoreLastActivePatch()
     }
     
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")
-        precondition(soundFontPatchesController != nil, "nil SoundFontPatchesViewController")
+        precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
         precondition(keyboardController != nil, "nil KeyboardController")

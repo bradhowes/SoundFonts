@@ -9,9 +9,10 @@
 import UIKit
 
 /**
- Data source for the SoundFont UITableView.
+ Data source for the SoundFont UITableView. This view shows all of the names of the SoundFont files that are available
+ in the app.
  */
-final class SoundFontsTableViewDataSource: NSObject {
+final class FontsTableViewDataSource: NSObject {
 
     let view: UITableView
     let searchBar: UISearchBar
@@ -21,6 +22,7 @@ final class SoundFontsTableViewDataSource: NSObject {
         self.view = view
         self.searchBar = searchBar
         self.activeSoundFontManager = activeSoundFontManager
+        view.register(FontCell.self)
     }
 
     /**
@@ -45,49 +47,88 @@ final class SoundFontsTableViewDataSource: NSObject {
     }
 
     /**
-     Update a row in the table view.
+     Update a row in the table view. Note that actual updating only takes place if row is visible.
     
      - parameter index: the index to update
      */
     func refreshRow(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
-        guard let cell = view.cellForRow(at: indexPath) as? SoundFontPatchCell else { return }
-        updateCell(at: indexPath, cell: cell)
+        if let cell: FontCell = view.cellForRow(at: indexPath) {
+            updateCell(at: indexPath, cell: cell)
+        }
     }
 
-    private func updateCell(at indexPath: IndexPath, cell: SoundFontPatchCell) {
+    /**
+     Update a cell at a given row, and with the given FontCell instance.
+    
+     - parameter indexPath: location of row to update
+     - parameter cell: FontCell to use for the update
+     */
+    private func updateCell(at indexPath: IndexPath, cell: FontCell) {
         cell.update(name: SoundFont.keys[indexPath.row],
+                    isSelected: view.indexPathForSelectedRow == indexPath,
                     isActive: indexPath.row == activeSoundFontManager.activeIndex)
     }
 }
 
 // MARK: - UITableViewDataSource Protocol
-extension SoundFontsTableViewDataSource: UITableViewDataSource {
+extension FontsTableViewDataSource: UITableViewDataSource {
     
+    /**
+     Provide the number of sections in the table view
+    
+     - parameter tableView: the view to operate on
+     - returns: always 1
+     */
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
+    /**
+     Provide the number of rows in the table view
+    
+     - parameter tableView: the view to operate on
+     - parameter section: the section to operate on
+     - returns: number of available SoundFont files
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return SoundFont.keys.count
     }
 
+    /**
+     Provide a formatted FontCell for the table view
+    
+     - parameter tableView: the view to operate on
+     - parameter indexPath: the position (row) of the cell to return
+     - returns: FontCell instance to display
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "soundFont") as? SoundFontPatchCell else {
-            preconditionFailure("expected to get a UITableViewCell")
-        }
+        let cell: FontCell = tableView.dequeueReusableCell(for: indexPath)
         updateCell(at: indexPath, cell: cell)
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate Protocol
-extension SoundFontsTableViewDataSource: UITableViewDelegate {
+extension FontsTableViewDataSource: UITableViewDelegate {
 
+    /**
+     Provide the editing mode for a given row. We don't provide for editing of these rows.
+    
+     - parameter tableView: the view to operate on
+     - parameter indexPath: the position of the cell to operate on
+     - returns: EditingStyle.none
+     */
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle  {
         return UITableViewCell.EditingStyle.none
     }
     
+    /**
+     Notification that the user selected a sound font.
+    
+     - parameter tableView: the view to operate on
+     - parameter indexPath: the location that was selected
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         activeSoundFontManager.selectedIndex = indexPath.row
     }
