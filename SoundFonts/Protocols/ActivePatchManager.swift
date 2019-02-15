@@ -13,6 +13,7 @@ import Foundation
  */
 protocol ActivePatchManager: class {
 
+    /// Prototype for the notifying function
     typealias Notifier<O: AnyObject> = (O, Patch) -> Void
 
     /// The collection of patches currently available for the active SoundFont

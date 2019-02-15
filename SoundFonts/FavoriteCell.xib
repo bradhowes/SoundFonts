@@ -23,12 +23,12 @@
                         <rect key="frame" x="8" y="8" width="64" height="34"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" red="0.92941176469999998" green="0.062745098040000002" blue="0.98823529409999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="xQg-Jw-Co5" secondAttribute="trailing" constant="8" id="2Nt-zL-bd5"/>
                 <constraint firstItem="xQg-Jw-Co5" firstAttribute="top" secondItem="meI-pE-flX" secondAttribute="top" constant="8" id="Fl2-5w-oK2"/>
@@ -38,16 +38,25 @@
             <viewLayoutGuide key="safeArea" id="lfP-ES-Jh5"/>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="color" keyPath="normalBackgroundColor">
-                    <color key="value" red="0.4557498693" green="0.97613078360000005" blue="0.99216145280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="normalForegroundColor">
-                    <color key="value" red="0.85105484720000002" green="0.2004701495" blue="0.95691233870000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="activeBackgroundColor">
-                    <color key="value" red="0.85105484720000002" green="0.2004701495" blue="0.95691233870000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </userDefinedRuntimeAttribute>
                 <userDefinedRuntimeAttribute type="color" keyPath="activeForegroundColor">
-                    <color key="value" red="0.4557498693" green="0.97613078360000005" blue="0.99216145280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="value" red="0.40758775684931509" green="1" blue="0.28933005136986301" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="10"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                    <real key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                    <color key="value" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>

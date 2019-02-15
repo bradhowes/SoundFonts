@@ -56,6 +56,8 @@ final class PatchesTableViewDataSource: NSObject {
         self.activePatchManager = activePatchManager
         self.favoritesManager = favoritesManager
         self.keyboardManager = keyboardManager
+
+        view.register(PatchCell.self)
     }
 
     /**
@@ -88,8 +90,9 @@ final class PatchesTableViewDataSource: NSObject {
      */
     func refreshRow(at index: Int) {
         let indexPath = indexPathForPatchIndex(index)
-        guard let cell = view.cellForRow(at: indexPath) as? SoundFontPatchCell else { return }
-        updateCell(at: indexPath, cell: cell)
+        if let cell: PatchCell = view.cellForRow(at: indexPath) {
+            updateCell(at: indexPath, cell: cell)
+        }
     }
 
     /**
@@ -98,7 +101,7 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter cell: the cell to update
      - parameter patch: the Patch to use for the updating
      */
-    func updateCell(_ cell: SoundFontPatchCell, with patch: Patch) {
+    func updateCell(_ cell: PatchCell, with patch: Patch) {
         cell.update(name: patch.name,
                     index: patch.index,
                     isActive: activePatchManager.activePatch == patch,
@@ -112,7 +115,7 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter patch: the Patch to use when creating a new / removing an existing Favorite
      - returns: swipe action
      */
-    func createSwipeAction(at cell: SoundFontPatchCell, with patch: Patch) -> UIContextualAction {
+    func createSwipeAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
         let isFave = favoritesManager.isFavored(patch: patch)
         let lowestNote = keyboardManager.lowestNote
         let action = UIContextualAction(style: .normal, title: isFave ? "Unfave" : "Fave") {
@@ -127,10 +130,13 @@ final class PatchesTableViewDataSource: NSObject {
             }
             completionHandler(true)
         }
+        
+        action.image = UIImage(named: isFave ? "Unfave" : "Fave")
+        action.backgroundColor = isFave ? UIColor.gray : UIColor.orange
         return action
     }
 
-    private func updateCell(at indexPath: IndexPath, cell: SoundFontPatchCell) {
+    private func updateCell(at indexPath: IndexPath, cell: PatchCell) {
         let patchIndex = patchIndexForIndexPath(indexPath)
         let patch = patches[patchIndex]
         updateCell(cell, with: patch)
@@ -150,10 +156,7 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "patch") as? SoundFontPatchCell else {
-            preconditionFailure("expected to get a UITableViewCell")
-        }
-
+        let cell: PatchCell = tableView.dequeueReusableCell(for: indexPath)
         updateCell(at: indexPath, cell: cell)
         return cell
     }
@@ -188,7 +191,7 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
         -> UISwipeActionsConfiguration? {
-        guard let cell = tableView.cellForRow(at: indexPath) as? SoundFontPatchCell else { return nil }
+        guard let cell = tableView.cellForRow(at: indexPath) as? PatchCell else { return nil }
         let action = createSwipeAction(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
         return UISwipeActionsConfiguration(actions: [action])
     }

@@ -19,13 +19,13 @@ extension SettingKeys {
  between normal Pathc table view display and Patch search results display. Apart from the adopted protocols, there is no
  public API for this class.
  */
-final class SoundFontPatchesViewController: UIViewController {
+final class SoundFontsViewController: UIViewController {
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
     
-    private var soundFontsTableViewDataSource: SoundFontsTableViewDataSource!
+    private var soundFontsTableViewDataSource: FontsTableViewDataSource!
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
     
     private var selectedSoundFontIndex: Int = 0 {
@@ -42,19 +42,20 @@ final class SoundFontPatchesViewController: UIViewController {
     }
 
     private var selectedSoundFont: SoundFont { return SoundFont.getByIndex(selectedSoundFontIndex) }
-    
-    private var activeSoundFontIndex = 0
+
+    private var activeSoundFontIndex = -1
     private var activeSoundFont: SoundFont { return SoundFont.getByIndex(activeSoundFontIndex) }
-    private var activePatchIndex = 0
-    
-    private var searchManager: SoundFontPatchSearchManager!
+
+    private var activePatchIndex = -1
+
+    private var searchManager: PatchSearchManager!
     private var notifiers = [UUID: (Patch) -> Void]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
         
-        searchManager = SoundFontPatchSearchManager(resultsView: patchesView)
+        searchManager = PatchSearchManager(resultsView: patchesView)
         searchManager.delegate = self
     }
 
@@ -115,9 +116,9 @@ final class SoundFontPatchesViewController: UIViewController {
 }
 
 // MARK: - ControllerConfiguration
-extension SoundFontPatchesViewController: ControllerConfiguration {
+extension SoundFontsViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
-        soundFontsTableViewDataSource = SoundFontsTableViewDataSource(view: soundFontsView,
+        soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                       searchBar: searchBar,
                                                                       activeSoundFontManager: self)
         soundFontsView.dataSource = soundFontsTableViewDataSource
@@ -135,15 +136,7 @@ extension SoundFontPatchesViewController: ControllerConfiguration {
 }
 
 // MARK: - ActiveSoundFontManager Protocol
-extension SoundFontPatchesViewController : ActiveSoundFontManager {
-    var activeIndex: Int {
-        get {
-            return self.activeSoundFontIndex
-        }
-        set {
-            setActiveSoundFontIndex(newValue)
-        }
-    }
+extension SoundFontsViewController : ActiveSoundFontManager {
     
     var selectedIndex: Int {
         get {
@@ -153,11 +146,22 @@ extension SoundFontPatchesViewController : ActiveSoundFontManager {
             self.selectedSoundFontIndex = newValue
         }
     }
+
+    var activeIndex: Int {
+        get {
+            return self.activeSoundFontIndex
+        }
+        set {
+            setActiveSoundFontIndex(newValue)
+        }
+    }
 }
 
 // MARK: - ActivePatchManager Protocol
-extension SoundFontPatchesViewController: ActivePatchManager {
+extension SoundFontsViewController: ActivePatchManager {
+
     var patches: [Patch] { return self.selectedSoundFont.patches }
+
     var activePatch: Patch {
         get {
             return self.activeSoundFont.patches[activePatchIndex]
@@ -196,7 +200,7 @@ extension SoundFontPatchesViewController: ActivePatchManager {
 }
 
 // MARK: - SoundFontPatchSearchManagerDelegate Protocol
-extension SoundFontPatchesViewController : SoundFontPatchSearchManagerDelegate {
+extension SoundFontsViewController : SoundFontPatchSearchManagerDelegate {
     func selected(patch: Patch) {
         changeActivePatch(patch)
     }
@@ -205,17 +209,17 @@ extension SoundFontPatchesViewController : SoundFontPatchSearchManagerDelegate {
         patchesView.scrollRectToVisible(searchBar.frame, animated: true)
     }
     
-    func updateCell(_ cell: SoundFontPatchCell, with patch: Patch) {
+    func updateCell(_ cell: PatchCell, with patch: Patch) {
         patchesTableViewDataSource.updateCell(cell, with: patch)
     }
 
-    func createSwipeAction(at cell: SoundFontPatchCell, with patch: Patch) -> UIContextualAction {
+    func createSwipeAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
         return patchesTableViewDataSource.createSwipeAction(at: cell, with: patch)
     }
 }
 
 // MARK: - UISearchBarDelegate Protocol
-extension SoundFontPatchesViewController : UISearchBarDelegate {
+extension SoundFontsViewController : UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let searchTerm = searchBar.searchTerm {

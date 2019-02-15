@@ -31,7 +31,7 @@ protocol SoundFontPatchSearchManagerDelegate: class {
      - parameter cell: the cell to update
      - parameter with: the Patch to update with
      */
-    func updateCell(_ cell: SoundFontPatchCell, with: Patch)
+    func updateCell(_ cell: PatchCell, with: Patch)
     
     /**
      Ask the delegate to create a Favorite swipe action for the given cell and Patch.
@@ -40,5 +40,5 @@ protocol SoundFontPatchSearchManagerDelegate: class {
      - parameter with: the Patch to use in a Favorite
      - returns: new swipe action
      */
-    func createSwipeAction(at: SoundFontPatchCell, with: Patch) -> UIContextualAction
+    func createSwipeAction(at: PatchCell, with: Patch) -> UIContextualAction
 }
