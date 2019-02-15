@@ -245,6 +245,9 @@
                                 <state key="normal" title="Delete">
                                     <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="deleteFavorite:" destination="zYi-ne-58d" eventType="touchUpInside" id="xLv-Qn-sRy"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
@@ -345,7 +348,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="568" height="36"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3g-aD-uMb">
-                                        <rect key="frame" x="38" y="7.5" width="492" height="21"/>
+                                        <rect key="frame" x="262" y="7.5" width="44" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -358,26 +361,21 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUz-hq-Gsv" userLabel="LowestKey">
                                         <rect key="frame" x="0.0" y="3" width="30" height="30"/>
-                                        <state key="normal" title="C2">
-                                            <color key="titleColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
+                                        <state key="normal" title="C2"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB1-GV-K7N" userLabel="HighestKey">
                                         <rect key="frame" x="538" y="3" width="30" height="30"/>
-                                        <state key="normal" title="C3">
-                                            <color key="titleColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
+                                        <state key="normal" title="C3"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstItem="j3g-aD-uMb" firstAttribute="leading" secondItem="RUz-hq-Gsv" secondAttribute="trailing" constant="8" id="BaC-O1-zZH"/>
                                     <constraint firstAttribute="trailing" secondItem="iB1-GV-K7N" secondAttribute="trailing" id="HDw-wX-QrN"/>
                                     <constraint firstItem="kn8-FE-tzz" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="KXe-Tk-6wi"/>
-                                    <constraint firstItem="iB1-GV-K7N" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="trailing" constant="8" id="Pxx-gs-fK7"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="VLO-MC-wPY"/>
                                     <constraint firstAttribute="height" constant="36" id="XoC-9L-kjV"/>
+                                    <constraint firstItem="j3g-aD-uMb" firstAttribute="centerX" secondItem="pqV-eT-fTY" secondAttribute="centerX" id="bzF-6N-VNf"/>
                                     <constraint firstItem="iB1-GV-K7N" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="dUQ-JH-Swz"/>
                                     <constraint firstItem="j3g-aD-uMb" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="eiZ-FU-LLx"/>
                                     <constraint firstItem="RUz-hq-Gsv" firstAttribute="leading" secondItem="pqV-eT-fTY" secondAttribute="leading" id="gsq-eZ-0w0"/>

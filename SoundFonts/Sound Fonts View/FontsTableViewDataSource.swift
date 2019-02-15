@@ -30,39 +30,6 @@ final class FontsTableViewDataSource: NSObject {
     }
 
     /**
-     Update the view so that the entry at the given index is visible.
-     
-     - parameter index: Patch index to make visible
-     - parameter position: where in the view to place the row
-     - parameter animated: if true animate the scrolling
-     */
-    func scrollToRow(at index: Int, at position: UITableView.ScrollPosition, animated: Bool) {
-        view.scrollToRow(at: IndexPath(row: index, section: 0), at: position, animated: animated)
-    }
-
-    /**
-     Select a row in the table view.
-    
-     - parameter index: the row to select
-     - parameter animated: true if selection should be animated
-     */
-    func selectRow(at index: Int, animated: Bool) {
-        view.selectRow(at: IndexPath(row: index, section: 0), animated: animated, scrollPosition: .none)
-    }
-
-    /**
-     Update a row in the table view. Note that actual updating only takes place if row is visible.
-    
-     - parameter index: the index to update
-     */
-    func refreshRow(at index: Int) {
-        let indexPath = IndexPath(row: index, section: 0)
-        if let cell: FontCell = view.cellForRow(at: indexPath) {
-            updateCell(at: indexPath, cell: cell)
-        }
-    }
-
-    /**
      Update a cell at a given row, and with the given FontCell instance.
     
      - parameter indexPath: location of row to update
@@ -124,5 +91,9 @@ extension FontsTableViewDataSource: UITableViewDelegate {
      */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         activeSoundFontManager.selectedIndex = indexPath.row
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
     }
 }
