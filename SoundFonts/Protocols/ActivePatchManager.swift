@@ -19,7 +19,7 @@ protocol ActivePatchManager: class {
     /// The collection of patches currently available for the active SoundFont
     var patches: [Patch] { get }
     /// The currently active patch
-    var activePatch: Patch { get set }
+    var activePatch: Patch? { get set }
 
     /**
      Install a closure to be called when a Patch change happens. The closure takes one argument, the Patch instance

@@ -80,10 +80,7 @@ extension PatchSearchManager : UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "patch") as? PatchCell else {
-            preconditionFailure("expected to get a UITableViewCell")
-        }
-
+        let cell: PatchCell = tableView.dequeueReusableCell(for: indexPath)
         updateResultsCell(at: indexPath.row, cell: cell)
         return cell
     }
@@ -104,17 +101,13 @@ extension PatchSearchManager : UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         // Allow user to add/remove Favorite instance for a Patch from the search results
-        guard let cell = tableView.cellForRow(at: indexPath) as? PatchCell else { return nil }
-        let patch = searchResults[indexPath.row].patch
-        guard let action = delegate?.createSwipeAction(at: cell, with: patch) else { return nil }
-        return UISwipeActionsConfiguration(actions: [action])
-    }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
+            let patch = searchResults[indexPath.row].patch
+            if let action = delegate?.createSwipeAction(at: cell, with: patch) {
+                return UISwipeActionsConfiguration(actions: [action])
+            }
+        }
+
         return nil
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle  {
-        return UITableViewCell.EditingStyle.none
     }
 }

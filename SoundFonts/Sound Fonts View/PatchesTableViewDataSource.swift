@@ -56,8 +56,11 @@ final class PatchesTableViewDataSource: NSObject {
         self.activePatchManager = activePatchManager
         self.favoritesManager = favoritesManager
         self.keyboardManager = keyboardManager
+        super.init()
 
         view.register(PatchCell.self)
+        view.dataSource = self
+        view.delegate = self
     }
 
     /**
@@ -189,21 +192,12 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
 // MARK: - UITableViewDataSource Protocol
 extension PatchesTableViewDataSource: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
-        -> UISwipeActionsConfiguration? {
-        guard let cell = tableView.cellForRow(at: indexPath) as? PatchCell else { return nil }
-        let action = createSwipeAction(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
-        return UISwipeActionsConfiguration(actions: [action])
-    }
-
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
-        -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
+            let action = createSwipeAction(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
+            return UISwipeActionsConfiguration(actions: [action])
+        }
         return nil
-    }
-
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath)
-        -> UITableViewCell.EditingStyle  {
-        return UITableViewCell.EditingStyle.none
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
