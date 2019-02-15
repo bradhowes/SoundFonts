@@ -78,40 +78,40 @@ final class SoundFontsViewController: UIViewController {
         }
 
         selectedSoundFontIndex = index
-        soundFontsTableViewDataSource.selectRow(at: activeSoundFontIndex, animated: false)
+        soundFontsTableViewDataSource.selectRow(at: index, animated: false)
     }
 
-    private func setActivePatchIndex(_ index: Int) -> Bool {
+    private func setActivePatchIndex(_ index: Int) {
         let prevIndex = activePatchIndex
-        if prevIndex != index {
-            activePatchIndex = index
+        activePatchIndex = index
+        if prevIndex != -1 && prevIndex != activePatchIndex {
             patchesTableViewDataSource.refreshRow(at: prevIndex)
-            patchesTableViewDataSource.refreshRow(at: activePatchIndex)
-
-            // If we are not searching, scroll to the current row. However, we need to do this in the future because
-            // right now we could be awaiting a reload due to a SoundFont change.
-            if searchBar.searchTerm == nil {
-                DispatchQueue.main.async {
-                    self.patchesTableViewDataSource.scrollToRow(at: self.activePatchIndex, at: .none, animated: false)
-                    self.patchesTableViewDataSource.selectRow(at: self.activePatchIndex, animated: false,
-                                                              scrollPosition: .none)
-                }
-            }
-
-            return true
         }
-        return false
+
+        patchesTableViewDataSource.refreshRow(at: index)
+        
+        // If we are not searching, scroll to the current row. However, we need to do this in the future because
+        // right now we could be awaiting a reload due to a SoundFont change.
+        if searchBar.searchTerm == nil {
+            DispatchQueue.main.async {
+                self.patchesTableViewDataSource.scrollToRow(at: self.activePatchIndex, at: .none, animated: false)
+                self.patchesTableViewDataSource.selectRow(at: self.activePatchIndex, animated: false,
+                                                          scrollPosition: .none)
+            }
+        }
     }
     
-    private func changeActivePatch(_ patch: Patch) {
+    private func changeActivePatch(_ patch: Patch?) {
+        guard let patch = patch else { return }
+        guard patch != activePatch else { return }
+
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }
 
         setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
-        if setActivePatchIndex(patch.index) {
-            notifiers.values.forEach { $0(patch) }
-        }
+        setActivePatchIndex(patch.index)
+        notifiers.values.forEach { $0(patch) }
     }
 }
 
@@ -121,8 +121,6 @@ extension SoundFontsViewController: ControllerConfiguration {
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                       searchBar: searchBar,
                                                                       activeSoundFontManager: self)
-        soundFontsView.dataSource = soundFontsTableViewDataSource
-        soundFontsView.delegate = soundFontsTableViewDataSource
         
         patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
                                                                 searchBar: searchBar,
@@ -130,8 +128,6 @@ extension SoundFontsViewController: ControllerConfiguration {
                                                                 activePatchManager: self,
                                                                 favoritesManager: context.favoritesManager,
                                                                 keyboardManager: context.keyboardManager)
-        patchesView.dataSource = patchesTableViewDataSource
-        patchesView.delegate = patchesTableViewDataSource
     }
 }
 
@@ -162,18 +158,18 @@ extension SoundFontsViewController: ActivePatchManager {
 
     var patches: [Patch] { return self.selectedSoundFont.patches }
 
-    var activePatch: Patch {
+    var activePatch: Patch? {
         get {
-            return self.activeSoundFont.patches[activePatchIndex]
+            return activePatchIndex == -1 ? nil : self.activeSoundFont.patches[activePatchIndex]
         }
         set {
             changeActivePatch(newValue)
         }
     }
 
-    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping (O, Patch) -> Void) -> NotifierToken {
+    func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
-        
+
         // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
         

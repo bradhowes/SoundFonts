@@ -68,6 +68,7 @@
 		BDDD1F572216CF26003BDD6F /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */; };
 		BDDD1F592216D39A003BDD6F /* FontCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F582216D39A003BDD6F /* FontCell.xib */; };
 		BDDD1F5B2216D3D3003BDD6F /* PatchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */; };
+		BDDD1F5D2216E36D003BDD6F /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -155,6 +156,7 @@
 		BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extensions.swift"; sourceTree = "<group>"; };
 		BDDD1F582216D39A003BDD6F /* FontCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FontCell.xib; sourceTree = "<group>"; };
 		BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PatchCell.xib; sourceTree = "<group>"; };
+		BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +333,7 @@
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */,
 				BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */,
+				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */,
 				BD85F8D521D91A460028E440 /* ActiveSoundFontManager.swift in Sources */,
 				BD01BC0321C922CE00F56F5A /* Note.swift in Sources */,
+				BDDD1F5D2216E36D003BDD6F /* UIAlertController+Extensions.swift in Sources */,
 				BD85F8CA21D41CFB0028E440 /* RunContext.swift in Sources */,
 				BDDD1F532216BA0F003BDD6F /* FontCell.swift in Sources */,
 				BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */,

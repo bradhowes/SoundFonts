@@ -22,7 +22,11 @@ final class FontsTableViewDataSource: NSObject {
         self.view = view
         self.searchBar = searchBar
         self.activeSoundFontManager = activeSoundFontManager
+        super.init()
+        
         view.register(FontCell.self)
+        view.dataSource = self
+        view.delegate = self
     }
 
     /**
@@ -112,17 +116,6 @@ extension FontsTableViewDataSource: UITableViewDataSource {
 // MARK: - UITableViewDelegate Protocol
 extension FontsTableViewDataSource: UITableViewDelegate {
 
-    /**
-     Provide the editing mode for a given row. We don't provide for editing of these rows.
-    
-     - parameter tableView: the view to operate on
-     - parameter indexPath: the position of the cell to operate on
-     - returns: EditingStyle.none
-     */
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle  {
-        return UITableViewCell.EditingStyle.none
-    }
-    
     /**
      Notification that the user selected a sound font.
     

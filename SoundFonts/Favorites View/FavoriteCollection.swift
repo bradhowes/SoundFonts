@@ -66,7 +66,7 @@ final class FavoriteCollection: NSObject {
      - parameter patch: the Patch to look for
      - returns: the Favorite found or nil no match
      */
-    subscript(patch: Patch) -> Favorite? { return favoriteMap[patch] }
+    subscript(patch: Patch?) -> Favorite? { return patch != nil ? favoriteMap[patch!] : nil }
 
     /**
      Obtain the index of the given Favorite instance.
