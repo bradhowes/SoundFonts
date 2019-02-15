@@ -26,6 +26,7 @@ class FontPatchCellBase: UITableViewCell {
     }
 
     private var normalFontColor: UIColor?
+
     @IBInspectable var selectedFontColor: UIColor = .white
     @IBInspectable var activedFontColor: UIColor = .green
 
@@ -38,6 +39,10 @@ class FontPatchCellBase: UITableViewCell {
         let view = UIView()
         view.backgroundColor = selectedBackgroundColor
         selectedBackgroundView = view
+    }
+
+    func setActive(_ state: Bool) {
+        self.name?.textColor = fontColorWhen(isSelected: self.isSelected, isActive: state)
     }
 
     internal func fontColorWhen(isSelected: Bool, isActive: Bool) -> UIColor? {

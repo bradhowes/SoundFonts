@@ -82,8 +82,12 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
      - parameter to: the last key label
      */
     func setVisibleKeyLabels(from: String, to: String) {
-        lowestKey.setTitle("⋘ " + from, for: .normal)
-        highestKey.setTitle(to + " ⋙", for: .normal)
+        UIView.performWithoutAnimation {
+            lowestKey.setTitle("⋘ " + from, for: .normal)
+            lowestKey.layoutIfNeeded()
+            highestKey.setTitle(to + " ⋙", for: .normal)
+            highestKey.layoutIfNeeded()
+        }
     }
 
     private var fader: UIViewPropertyAnimator? = nil

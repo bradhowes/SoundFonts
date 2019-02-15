@@ -14,7 +14,7 @@ import UIKit
  */
 final class PatchSearchManager: NSObject {
 
-    var delegate: SoundFontPatchSearchManagerDelegate? = nil
+    var delegate: PatchSearchManagerDelegate? = nil
 
     private let resultsView: UITableView
     private var searchResults = [(index: Int, patch: Patch)]()
@@ -55,7 +55,7 @@ final class PatchSearchManager: NSObject {
         }
     }
 
-    private func searchIndexOfPatch(patchIndex: Int) -> Int {
+    func searchIndexOfPatch(patchIndex: Int) -> Int {
         return searchResults.firstIndex { $0.index == patchIndex } ?? -1
     }
 
@@ -90,12 +90,8 @@ extension PatchSearchManager : UITableViewDataSource {
 extension PatchSearchManager : UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let prevIndex = activePatchIndex
         let patch = searchResults[indexPath.row].patch
-        activePatchIndex = searchResults[indexPath.row].index
         delegate?.selected(patch: patch)
-        updateResultsCell(at: searchIndexOfPatch(patchIndex: prevIndex))
-        updateResultsCell(at: searchIndexOfPatch(patchIndex: activePatchIndex))
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -109,5 +105,9 @@ extension PatchSearchManager : UITableViewDelegate {
         }
 
         return nil
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
     }
 }

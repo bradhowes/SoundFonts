@@ -61,40 +61,14 @@ final class PatchesTableViewDataSource: NSObject {
         view.register(PatchCell.self)
         view.dataSource = self
         view.delegate = self
-    }
 
-    /**
-     Update the view so that the entry at the given index is visible.
-    
-     - parameter index: Patch index to make visible
-     - parameter position: where in the view to place the row
-     - parameter animated: if true animate the scrolling
-     */
-    func scrollToRow(at index: Int, at position: UITableView.ScrollPosition, animated: Bool) {
-        let indexPath = indexPathForPatchIndex(index)
-        view.scrollToRow(at: indexPath, at: position, animated: animated)
-    }
-
-    /**
-     Select a row in the view.
-    
-     - parameter index: Patch index to select
-     - parameter animated: if true animate the selection
-     */
-    func selectRow(at index: Int, animated: Bool, scrollPosition: UITableView.ScrollPosition) {
-        let indexPath = indexPathForPatchIndex(index)
-        view.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
-    }
-
-    /**
-     Update the given Patch index so that it shows any updated state.
-    
-     - parameter index: the Patch index to update
-     */
-    func refreshRow(at index: Int) {
-        let indexPath = indexPathForPatchIndex(index)
-        if let cell: PatchCell = view.cellForRow(at: indexPath) {
-            updateCell(at: indexPath, cell: cell)
+        // Receive notifications when a favorite is destroyed from within the favorite editor pane.
+        favoritesManager.addFavoriteChangeNotifier(self) { obs, kind, favorite in
+            if kind == .removed {
+                let patch = favorite.patch
+                guard let index = obs.patches.firstIndex(of: patch) else { return }
+                obs.view.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+            }
         }
     }
 
@@ -198,6 +172,10 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
             return UISwipeActionsConfiguration(actions: [action])
         }
         return nil
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

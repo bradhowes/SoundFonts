@@ -159,12 +159,20 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - FavoriteDetailControllerDelegate
 extension FavoritesViewController: FavoriteDetailControllerDelegate {
     func dismissed(_ indexPath: IndexPath, reason: FavoriteDetailControllerDismissedReason) {
-        if reason == .done {
+        switch reason {
+        case .done:
             let favorite = favoriteCollection[indexPath.row]
             favoritesView.collectionViewLayout.invalidateLayout()
             updateFavoriteCell(at: indexPath)
             notify(.changed, favorite)
             favoriteCollection.save()
+        case .cancel:
+            break
+            
+        case .delete:
+            let favorite = self.favoriteCollection[indexPath.row]
+            remove(patch: favorite.patch)
+            break
         }
 
         self.dismiss(animated: true, completion: nil)

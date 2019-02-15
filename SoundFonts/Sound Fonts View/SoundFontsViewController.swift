@@ -28,21 +28,8 @@ final class SoundFontsViewController: UIViewController {
     private var soundFontsTableViewDataSource: FontsTableViewDataSource!
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
     
-    private var selectedSoundFontIndex: Int = 0 {
-        didSet {
-            let selectedSoundFont = SoundFont.getByIndex(selectedSoundFontIndex)
-            if let searchTerm = searchBar.searchTerm {
-                let activePatchIndex = activeSoundFontIndex == selectedSoundFontIndex ? self.activePatchIndex : -1
-                searchManager.search(soundFont: selectedSoundFont, activePatchIndex: activePatchIndex, term: searchTerm)
-            }
-            else {
-                patchesView.reloadData()
-            }
-        }
-    }
-
+    private var selectedSoundFontIndex: Int = -1
     private var selectedSoundFont: SoundFont { return SoundFont.getByIndex(selectedSoundFontIndex) }
-
     private var activeSoundFontIndex = -1
     private var activeSoundFont: SoundFont { return SoundFont.getByIndex(activeSoundFontIndex) }
 
@@ -54,53 +41,69 @@ final class SoundFontsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
-        
         searchManager = PatchSearchManager(resultsView: patchesView)
         searchManager.delegate = self
     }
 
     func restoreLastActivePatch() {
         let lastSoundFontName = Settings[.activeSoundFont]
-        guard let soundFont = SoundFont.library[lastSoundFontName] else { return }
+        guard let soundFont = SoundFont.library[lastSoundFontName] else {
+            selectedIndex = 0
+            activeIndex = 0
+            setActivePatchIndex(0, previousExists: false)
+            return
+        }
+
         let patchIndex = max(min(Settings[.activePatch], soundFont.patches.count - 1), 0)
         let patch = soundFont.patches[patchIndex]
-        activeSoundFontIndex = -1
-        activePatchIndex = -1
         changeActivePatch(patch)
     }
 
-    private func setActiveSoundFontIndex(_ index: Int) {
+    private func setActiveSoundFontIndex(_ index: Int) -> Bool {
         let prevIndex = activeSoundFontIndex
         if prevIndex != index {
             activeSoundFontIndex = index
-            soundFontsTableViewDataSource.refreshRow(at: prevIndex)
-            soundFontsTableViewDataSource.refreshRow(at: index)
+            if let cell: FontCell = soundFontsView.cellForRow(at: IndexPath(row: prevIndex, section: 0)) {
+                cell.setActive(false)
+            }
+
+            if let cell: FontCell = soundFontsView.cellForRow(at: IndexPath(row: index, section: 0)) {
+                cell.setActive(true)
+            }
         }
 
-        selectedSoundFontIndex = index
-        soundFontsTableViewDataSource.selectRow(at: index, animated: false)
+        selectedIndex = index
+        return prevIndex != index
     }
 
-    private func setActivePatchIndex(_ index: Int) {
+    private func setActivePatchIndex(_ index: Int, previousExists: Bool) {
         let prevIndex = activePatchIndex
         activePatchIndex = index
-        if prevIndex != -1 && prevIndex != activePatchIndex {
-            patchesTableViewDataSource.refreshRow(at: prevIndex)
+
+        if previousExists && prevIndex != -1 && prevIndex != index {
+            if let cell: PatchCell = patchesView.cellForRow(at: cellRow(at: prevIndex)) {
+                cell.setActive(false)
+            }
         }
 
-        patchesTableViewDataSource.refreshRow(at: index)
+        let pos = cellRow(at: index)
+        if let cell: PatchCell = patchesView.cellForRow(at: pos) {
+            cell.setActive(true)
+        }
         
-        // If we are not searching, scroll to the current row. However, we need to do this in the future because
-        // right now we could be awaiting a reload due to a SoundFont change.
-        if searchBar.searchTerm == nil {
-            DispatchQueue.main.async {
-                self.patchesTableViewDataSource.scrollToRow(at: self.activePatchIndex, at: .none, animated: false)
-                self.patchesTableViewDataSource.selectRow(at: self.activePatchIndex, animated: false,
-                                                          scrollPosition: .none)
-            }
+        if patchesView.indexPathForSelectedRow != pos {
+            print("patch scrolling to row \(pos.row)")
+            self.patchesView.scrollToRow(at: pos, at: pos.row < 2 ? .top : .none, animated: false)
+            print("patch selecting row \(pos.row)")
+            self.patchesView.selectRow(at: pos, animated: false, scrollPosition: pos.row < 2 ? .top : .none)
         }
     }
     
+    private func cellRow(at: Int) -> IndexPath {
+        return IndexPath(row: searchBar.searchTerm != nil ? searchManager.searchIndexOfPatch(patchIndex: at) : at,
+                         section: 0)
+    }
+
     private func changeActivePatch(_ patch: Patch?) {
         guard let patch = patch else { return }
         guard patch != activePatch else { return }
@@ -109,8 +112,9 @@ final class SoundFontsViewController: UIViewController {
             searchBar.resignFirstResponder()
         }
 
-        setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
-        setActivePatchIndex(patch.index)
+        let fontChanged = setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
+        setActivePatchIndex(patch.index, previousExists: !fontChanged)
+        
         notifiers.values.forEach { $0(patch) }
     }
 }
@@ -138,8 +142,27 @@ extension SoundFontsViewController : ActiveSoundFontManager {
         get {
             return self.selectedSoundFontIndex
         }
+
         set {
-            self.selectedSoundFontIndex = newValue
+            guard newValue != selectedSoundFontIndex else { return }
+            selectedSoundFontIndex = newValue
+            
+            let pos = IndexPath(row: newValue, section: 0)
+            if soundFontsView.indexPathForSelectedRow != pos {
+                print("soundfont scrolling to row \(pos.row)")
+                soundFontsView.scrollToRow(at: pos, at: .none, animated: false)
+                print("soundfont selecting row \(pos.row)")
+                soundFontsView.selectRow(at: pos, animated: false, scrollPosition: .none)
+            }
+
+            if let searchTerm = searchBar.searchTerm {
+                let api = activeSoundFontIndex == selectedSoundFontIndex ? activePatchIndex : -1
+                let selectedSoundFont = SoundFont.getByIndex(selectedSoundFontIndex)
+                searchManager.search(soundFont: selectedSoundFont, activePatchIndex: api, term: searchTerm)
+            }
+            else {
+                patchesView.reloadData()
+            }
         }
     }
 
@@ -148,7 +171,9 @@ extension SoundFontsViewController : ActiveSoundFontManager {
             return self.activeSoundFontIndex
         }
         set {
-            setActiveSoundFontIndex(newValue)
+            guard newValue != activeSoundFontIndex else { return }
+            selectedIndex = newValue
+            _ = setActiveSoundFontIndex(newValue)
         }
     }
 }
@@ -195,8 +220,8 @@ extension SoundFontsViewController: ActivePatchManager {
     }
 }
 
-// MARK: - SoundFontPatchSearchManagerDelegate Protocol
-extension SoundFontsViewController : SoundFontPatchSearchManagerDelegate {
+// MARK: - PatchSearchManagerDelegate Protocol
+extension SoundFontsViewController : PatchSearchManagerDelegate {
     func selected(patch: Patch) {
         changeActivePatch(patch)
     }

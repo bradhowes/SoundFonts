@@ -167,4 +167,21 @@ final class FavoriteDetailController : UIViewController {
         lowestNote.setTitle(currentLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
     }
+    
+    @IBAction func deleteFavorite(_ sender: Any) {
+        let alertController = UIAlertController(title: "", message: "Deleting the favorite cannot be undone.",
+                                   preferredStyle: .actionSheet)
+        let destroy = UIAlertAction(title: "Destroy", style:.destructive) { action in
+            self.favorite = nil
+            self.delegate?.dismissed(self.position, reason: .delete)
+        }
+
+        let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
+        }
+        
+        alertController.addAction(destroy)
+        alertController.addAction(cancel)
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
 }

@@ -38,7 +38,7 @@
 		BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
 		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
 		BD90646921DE1C92009B474A /* NotifierToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* NotifierToken.swift */; };
-		BD9434A821DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9434A721DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift */; };
+		BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */; };
 		BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
 		BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
@@ -126,7 +126,7 @@
 		BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Additions.swift"; sourceTree = "<group>"; };
 		BD85F8E421D98F820028E440 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BD90646821DE1C92009B474A /* NotifierToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifierToken.swift; sourceTree = "<group>"; };
-		BD9434A721DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontPatchSearchManagerDelegate.swift; sourceTree = "<group>"; };
+		BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManagerDelegate.swift; sourceTree = "<group>"; };
 		BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontPatchCellBase.swift; sourceTree = "<group>"; };
@@ -229,7 +229,6 @@
 				BD85F8C921D41CFB0028E440 /* RunContext.swift */,
 				BD85F8E421D98F820028E440 /* Settings.swift */,
 				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
-				BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */,
 				BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */,
 				BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */,
 			);
@@ -266,7 +265,7 @@
 				BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */,
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
 				BDD3860422147D0C0063040C /* ReusableView.swift */,
-				BD9434A721DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift */,
+				BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -330,10 +329,11 @@
 		BDD3860C221486240063040C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
+				BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */,
 				BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */,
 				BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */,
-				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -510,7 +510,7 @@
 				BD85F8CA21D41CFB0028E440 /* RunContext.swift in Sources */,
 				BDDD1F532216BA0F003BDD6F /* FontCell.swift in Sources */,
 				BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */,
-				BD9434A821DD25A200798432 /* SoundFontPatchSearchManagerDelegate.swift in Sources */,
+				BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */,
 				BDCE3C69219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift in Sources */,
 				BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,

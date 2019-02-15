@@ -11,7 +11,7 @@ import UIKit
 /**
  Delegate protocol for the Patches view search maanger.
  */
-protocol SoundFontPatchSearchManagerDelegate: class {
+protocol PatchSearchManagerDelegate: class {
 
     /**
      Notify delegate that the user selected the given Patch index (*not* an IndexPath)
