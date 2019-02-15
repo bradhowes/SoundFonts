@@ -66,7 +66,7 @@ final class FavoriteDetailController : UIViewController {
         let patch = favorite.patch
 
         name.text = favorite.name
-        lowestNote.titleLabel?.text = favorite.keyboardLowestNote.label
+        lowestNote.setTitle(favorite.keyboardLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(favorite.keyboardLowestNote.midiNoteValue)
         title = favorite.name
         soundFontName.text = patch.soundFont.name
@@ -95,7 +95,9 @@ final class FavoriteDetailController : UIViewController {
             favorite.name = newName
         }
         
-        favorite.keyboardLowestNote = Note(midiNoteValue: Int(lowestNoteStepper.value))
+        let lowestNoteValue = Int(lowestNoteStepper.value)
+        let lowestNote = Note(midiNoteValue: lowestNoteValue)
+        favorite.keyboardLowestNote = lowestNote
         favorite.gain = roundFloat(gainSlider.value)
         favorite.pan = roundFloat(panSlider.value)
         
@@ -120,7 +122,6 @@ final class FavoriteDetailController : UIViewController {
     @IBAction private func changeLowestKey(_ sender: UIStepper) {
         let newValue = Int(sender.value)
         let newNote = Note(midiNoteValue: newValue)
-        print("newValue: \(newValue) newNote: \(newNote.label)")
         lowestNote.setTitle(newNote.label, for: .normal)
     }
     
