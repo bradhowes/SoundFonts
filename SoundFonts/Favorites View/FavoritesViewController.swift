@@ -16,12 +16,14 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
-
+    @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
+    
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
     private let favoriteCollection = FavoriteCollection()
     private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
     private var favoriteCell: FavoriteCell!
+    private var favoriteMover: FavoriteMover!
     
     override func viewDidLoad() {
         favoritesView.register(FavoriteCell.self)
@@ -33,9 +35,13 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
         favoriteCell.translatesAutoresizingMaskIntoConstraints = false
 
-        longPressGestureRecognizer.minimumPressDuration = 0.5
-        longPressGestureRecognizer.addTarget(self, action: #selector(handleLongPress))
-        
+        tapGestureRecognizer.numberOfTapsRequired = 2
+        tapGestureRecognizer.numberOfTouchesRequired = 1
+        tapGestureRecognizer.addTarget(self, action: #selector(handleTap))
+        tapGestureRecognizer.delaysTouchesBegan = true
+
+        favoriteMover = FavoriteMover(view: favoritesView, gr: longPressGestureRecognizer)
+
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
@@ -74,20 +80,15 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     }
 
     /**
-     Event handler for the long-press gesture recognizer.
-    
-     - parameter lpgr: the gesture recognizer that fired the event
+     Event handler for the double-tap esture recognizer. We use this to begin editing a favorite.
+     
+     - parameter gr: the gesture recognizer that fired the event
      */
-    @objc func handleLongPress(_ lpgr: UILongPressGestureRecognizer) {
-        if lpgr.state != .began {
-            return
-        }
-
-        let p = lpgr.location(in: view)
-        if let indexPath = favoritesView.indexPathForItem(at: p) {
-            let cell = favoritesView.cellForItem(at: indexPath)!
-            performSegue(withIdentifier: "favoriteDetail", sender: cell)
-        }
+    @objc func handleTap(_ gr: UITapGestureRecognizer) {
+        let pos = gr.location(in: view)
+        guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
+        let cell = favoritesView.cellForItem(at: indexPath)!
+        performSegue(withIdentifier: "favoriteDetail", sender: cell)
     }
     
     private func updateFavoriteCell(at indexPath: IndexPath, cell: FavoriteCell? = nil) {
@@ -139,6 +140,18 @@ extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let favorite = favoriteCollection[indexPath.row]
         selected(favorite)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
+                        to destinationIndexPath: IndexPath) {
+        print("Starting Index: \(sourceIndexPath.item)")
+        print("Ending Index: \(destinationIndexPath.item)")
+        favoriteCollection.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
+        collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
     }
 }
 

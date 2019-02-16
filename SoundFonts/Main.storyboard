@@ -96,6 +96,8 @@
                             </mask>
                         </variation>
                     </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="favorites" destination="efO-vf-51K" id="1NG-ew-PAr"/>
                         <outlet property="patches" destination="eeU-Zp-LO7" id="JNn-jp-Ekq"/>
@@ -489,6 +491,7 @@
                                 <cells/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="Yb7-t8-5Oz" appends="YES" id="ffO-VO-Xo2"/>
+                                    <outletCollection property="gestureRecognizers" destination="0DJ-wu-xH2" appends="YES" id="Hih-Pj-gAv"/>
                                 </connections>
                             </collectionView>
                         </subviews>
@@ -504,11 +507,13 @@
                     <connections>
                         <outlet property="favoritesView" destination="IR7-rn-XMj" id="g9T-UH-W6C"/>
                         <outlet property="longPressGestureRecognizer" destination="Yb7-t8-5Oz" id="B2S-FU-S4i"/>
+                        <outlet property="tapGestureRecognizer" destination="0DJ-wu-xH2" id="0xj-OV-gNK"/>
                         <segue destination="jqK-wd-FUD" kind="presentation" identifier="favoriteDetail" id="LDc-y4-eYM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UlM-mq-v04" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
+                <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
             <point key="canvasLocation" x="184" y="-1055"/>
         </scene>

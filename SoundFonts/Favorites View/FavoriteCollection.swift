@@ -88,6 +88,12 @@ final class FavoriteCollection: NSObject {
         save()
     }
     
+    func move(from: Int, to: Int) {
+        let favorite = favorites.remove(at: from)
+        favorites.insert(favorite, at: to)
+        save()
+    }
+
     /**
      Remove an existing Favorite from the collection
     
