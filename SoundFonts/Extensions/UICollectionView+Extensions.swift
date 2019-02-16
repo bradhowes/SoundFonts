@@ -43,4 +43,8 @@ extension UICollectionView {
         }
         return cell
     }
+
+    func cellForItem<T: UICollectionViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
+        return cellForItem(at: indexPath) as? T
+    }
 }

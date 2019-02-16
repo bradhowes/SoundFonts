@@ -21,13 +21,27 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
             self.backgroundColor = normalBackgroundColor
         }
     }
+
     @IBInspectable var normalForegroundColor: UIColor!
     @IBInspectable var activeBackgroundColor: UIColor!
     @IBInspectable var activeForegroundColor: UIColor!
-    
+
+    private var normalBorderColor: UIColor?
+
     public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+    }
+
+    public var moving: Bool = false {
+        didSet {
+            if moving {
+                self.borderColor = UIColor.magenta
+            }
+            else {
+                self.borderColor = normalBorderColor
+            }
+        }
     }
 
     /**
@@ -60,7 +74,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     private func setupView() {
         name.text = "Hello!"
-
+        normalBorderColor = borderColor
         contentView.translatesAutoresizingMaskIntoConstraints = false
         invalidateIntrinsicContentSize()
     }
