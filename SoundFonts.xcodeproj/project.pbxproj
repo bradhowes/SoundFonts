@@ -39,6 +39,7 @@
 		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
 		BD90646921DE1C92009B474A /* NotifierToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* NotifierToken.swift */; };
 		BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */; };
+		BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
 		BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
 		BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
@@ -127,6 +128,7 @@
 		BD85F8E421D98F820028E440 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BD90646821DE1C92009B474A /* NotifierToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifierToken.swift; sourceTree = "<group>"; };
 		BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManagerDelegate.swift; sourceTree = "<group>"; };
+		BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontPatchCellBase.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 			children = (
 				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
+				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
 				BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */,
 				BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */,
 				BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */,
@@ -502,6 +505,7 @@
 				BD36FF6F21DBC393002305CB /* FavoriteDetailControllerDelegate.swift in Sources */,
 				BDCE3C60219184A80008ACF9 /* RolandNicePiano.swift in Sources */,
 				BD7A2E5821D25320001CB271 /* FavoriteDetailController.swift in Sources */,
+				BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */,
 				BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */,
 				BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */,
 				BD85F8D521D91A460028E440 /* ActiveSoundFontManager.swift in Sources */,
