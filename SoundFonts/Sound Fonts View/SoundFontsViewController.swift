@@ -92,16 +92,15 @@ final class SoundFontsViewController: UIViewController {
         }
         
         if patchesView.indexPathForSelectedRow != pos {
-            print("patch scrolling to row \(pos.row)")
-            self.patchesView.scrollToRow(at: pos, at: pos.row < 2 ? .top : .none, animated: false)
-            print("patch selecting row \(pos.row)")
-            self.patchesView.selectRow(at: pos, animated: false, scrollPosition: pos.row < 2 ? .top : .none)
+            let scrollPosition: UITableView.ScrollPosition = pos.section == 0 && pos.row < 2 ? .top : .none
+            self.patchesView.scrollToRow(at: pos, at: scrollPosition, animated: false)
+            self.patchesView.selectRow(at: pos, animated: false, scrollPosition: scrollPosition)
         }
     }
     
     private func cellRow(at: Int) -> IndexPath {
-        return IndexPath(row: searchBar.searchTerm != nil ? searchManager.searchIndexOfPatch(patchIndex: at) : at,
-                         section: 0)
+        let row = searchBar.searchTerm != nil ? searchManager.searchIndexOfPatch(patchIndex: at) : at
+        return patchesTableViewDataSource.indexPathForPatchIndex(row)
     }
 
     private func changeActivePatch(_ patch: Patch?) {

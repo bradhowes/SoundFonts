@@ -8,29 +8,6 @@
 
 import UIKit
 
-fileprivate let sectionSize = 20
-
-/**
- Obtain an IndexPath for the given Patch index
-
- - parameter index: the Patch index
- - returns: view IndexPath
- */
-fileprivate func indexPathForPatchIndex(_ index: Int) -> IndexPath {
-    let section = index / sectionSize
-    return IndexPath(row: index - sectionSize * section, section: section)
-}
-
-/**
- Obtain a Patch index for the given view IndexPath
-
- - parameter indexPath: the IndexPath to convert
- - returns: Patch index
- */
-fileprivate func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
-    return indexPath.section * sectionSize + indexPath.row
-}
-
 /**
  Data source for the Patches UITableView.
  */
@@ -72,6 +49,29 @@ final class PatchesTableViewDataSource: NSObject {
         }
     }
 
+    static private let sectionSize = 20
+    
+    /**
+     Obtain an IndexPath for the given Patch index
+     
+     - parameter index: the Patch index
+     - returns: view IndexPath
+     */
+    func indexPathForPatchIndex(_ index: Int) -> IndexPath {
+        let section = index / PatchesTableViewDataSource.sectionSize
+        return IndexPath(row: index - PatchesTableViewDataSource.sectionSize * section, section: section)
+    }
+    
+    /**
+     Obtain a Patch index for the given view IndexPath
+     
+     - parameter indexPath: the IndexPath to convert
+     - returns: Patch index
+     */
+    func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
+        return indexPath.section * PatchesTableViewDataSource.sectionSize + indexPath.row
+    }
+    
     /**
      Update the given table cell with Patch state
     
@@ -129,7 +129,8 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(patches.count - section * sectionSize, sectionSize)
+        return min(patches.count - section * PatchesTableViewDataSource.sectionSize,
+                   PatchesTableViewDataSource.sectionSize)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -140,7 +141,8 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return [UITableView.indexSearch, "•"] +
-            stride(from: sectionSize, to: patches.count - 1, by: sectionSize).map { "\($0)" }
+            stride(from: PatchesTableViewDataSource.sectionSize, to: patches.count - 1,
+                   by: PatchesTableViewDataSource.sectionSize).map { "\($0)" }
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -155,11 +157,11 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0.0 : 24.0
+        return section == 0 ? 0.0 : 18.0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(section * sectionSize)"
+        return "\(section * PatchesTableViewDataSource.sectionSize)"
     }
 }
 
@@ -180,5 +182,14 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         activePatchManager.activePatch = patches[patchIndexForIndexPath(indexPath)]
+    }
+
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        
+        header.textLabel?.textColor = UIColor.lightGray
+        header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        header.backgroundView = UIView()
+        header.backgroundView?.backgroundColor = UIColor(hex: "303030")
     }
 }
