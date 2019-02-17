@@ -41,6 +41,8 @@
 		BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */; };
 		BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
 		BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C942218539B0003A353 /* FavoriteMover.swift */; };
+		BDAE7C9A221955920003A353 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C99221955920003A353 /* SnapshotHelper.swift */; };
+		BDAE7C9C221955E90003A353 /* FastlaneSnapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */; };
 		BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
 		BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
@@ -131,6 +133,8 @@
 		BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManagerDelegate.swift; sourceTree = "<group>"; };
 		BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		BDAE7C942218539B0003A353 /* FavoriteMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMover.swift; sourceTree = "<group>"; };
+		BDAE7C99221955920003A353 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
+		BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
 		BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontPatchCellBase.swift; sourceTree = "<group>"; };
@@ -212,17 +216,13 @@
 			isa = PBXGroup;
 			children = (
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
-				BD75B26C218B8CFE00C7EBD7 /* LaunchScreen.storyboard */,
-				BD75B291218B8D9400C7EBD7 /* Main.storyboard */,
-				BDD386022212F2380063040C /* FavoriteCell.xib */,
-				BDDD1F582216D39A003BDD6F /* FontCell.xib */,
-				BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */,
-				BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */,
+				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
+				BDAE7C982219540A0003A353 /* UI */,
 				BDD3860C221486240063040C /* Extensions */,
 				BD85F8D321D916BA0028E440 /* Protocols */,
 				BDCE3C39219184A80008ACF9 /* SwiftMIDI */,
-				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BD85F8E721DA57640028E440 /* Favorites View */,
+				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
 				BD7A2E7721D29066001CB271 /* InfoBarController.swift */,
 				BD75B293218B930B00C7EBD7 /* Key.swift */,
 				BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */,
@@ -232,7 +232,6 @@
 				BD90646821DE1C92009B474A /* NotifierToken.swift */,
 				BD85F8C921D41CFB0028E440 /* RunContext.swift */,
 				BD85F8E421D98F820028E440 /* Settings.swift */,
-				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
 				BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */,
 				BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */,
 			);
@@ -251,8 +250,10 @@
 		BD75B282218B8CFE00C7EBD7 /* SoundFontsUITests */ = {
 			isa = PBXGroup;
 			children = (
+				BDAE7C99221955920003A353 /* SnapshotHelper.swift */,
 				BD75B283218B8CFE00C7EBD7 /* SoundFontsUITests.swift */,
 				BD75B285218B8CFE00C7EBD7 /* Info.plist */,
+				BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */,
 			);
 			path = SoundFontsUITests;
 			sourceTree = "<group>";
@@ -299,6 +300,19 @@
 				BDAE7C942218539B0003A353 /* FavoriteMover.swift */,
 			);
 			path = "Favorites View";
+			sourceTree = "<group>";
+		};
+		BDAE7C982219540A0003A353 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */,
+				BD75B26C218B8CFE00C7EBD7 /* LaunchScreen.storyboard */,
+				BD75B291218B8D9400C7EBD7 /* Main.storyboard */,
+				BDD386022212F2380063040C /* FavoriteCell.xib */,
+				BDDD1F582216D39A003BDD6F /* FontCell.xib */,
+				BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		BDCE3C39219184A80008ACF9 /* SwiftMIDI */ = {
@@ -550,6 +564,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD75B284218B8CFE00C7EBD7 /* SoundFontsUITests.swift in Sources */,
+				BDAE7C9A221955920003A353 /* SnapshotHelper.swift in Sources */,
+				BDAE7C9C221955E90003A353 /* FastlaneSnapshots.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,6 +630,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -638,6 +655,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -675,6 +693,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1.0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -693,6 +712,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};
@@ -738,7 +758,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z7R62JH5A8;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -759,7 +779,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z7R62JH5A8;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -779,7 +799,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z7R62JH5A8;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -799,7 +819,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = Z7R62JH5A8;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
