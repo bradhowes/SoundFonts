@@ -1,0 +1,1328 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 13,
+      "symbol": "AppDelegate",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 15,
+      "symbol": "AppDelegate.window",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 17,
+      "symbol": "AppDelegate.application(_:didFinishLaunchingWithOptions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 35,
+      "symbol": "AppDelegate.applicationWillResignActive(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 39,
+      "symbol": "AppDelegate.applicationDidEnterBackground(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 43,
+      "symbol": "AppDelegate.applicationWillEnterForeground(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 47,
+      "symbol": "AppDelegate.applicationDidBecomeActive(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/AppDelegate.swift",
+      "line": 51,
+      "symbol": "AppDelegate.applicationWillTerminate(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIAlertController+Extensions.swift",
+      "line": 4,
+      "symbol": "UIAlertController.show(animated:completion:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIAlertController+Extensions.swift",
+      "line": 13,
+      "symbol": "UIWindow.visibleViewController",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UICollectionView+Extensions.swift",
+      "line": 47,
+      "symbol": "UICollectionView.cellForItem(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIColor+Extensions.swift",
+      "line": 13,
+      "symbol": "UIColor.init(rgb:alpha:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIColor+Extensions.swift",
+      "line": 20,
+      "symbol": "UIColor.init(hex:alpha:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UITableView+Extensions.swift",
+      "line": 47,
+      "symbol": "UITableView.cellForRow(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIView+Extensions.swift",
+      "line": 12,
+      "symbol": "UIView.cornerRadius",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIView+Extensions.swift",
+      "line": 22,
+      "symbol": "UIView.borderWidth",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Extensions/UIView+Extensions.swift",
+      "line": 31,
+      "symbol": "UIView.borderColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 17,
+      "symbol": "FavoriteCell.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 19,
+      "symbol": "FavoriteCell.normalBackgroundColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 25,
+      "symbol": "FavoriteCell.normalForegroundColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 26,
+      "symbol": "FavoriteCell.activeBackgroundColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 27,
+      "symbol": "FavoriteCell.activeForegroundColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 31,
+      "symbol": "FavoriteCell.awakeFromNib()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 36,
+      "symbol": "FavoriteCell.moving",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 67,
+      "symbol": "FavoriteCell.intrinsicContentSize",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCell.swift",
+      "line": 71,
+      "symbol": "FavoriteCell.systemLayoutSizeFitting(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCollection.swift",
+      "line": 12,
+      "symbol": "SettingKeys.favorites",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteCollection.swift",
+      "line": 118,
+      "symbol": "FavoriteCollection.move(from:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 16,
+      "symbol": "FavoriteDetailController.favorite",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 17,
+      "symbol": "FavoriteDetailController.position",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 18,
+      "symbol": "FavoriteDetailController.currentLowestNote",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 19,
+      "symbol": "FavoriteDetailController.delegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 21,
+      "symbol": "FavoriteDetailController.cancelButton",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 22,
+      "symbol": "FavoriteDetailController.doneButton",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 23,
+      "symbol": "FavoriteDetailController.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 24,
+      "symbol": "FavoriteDetailController.lowestNote",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 25,
+      "symbol": "FavoriteDetailController.lowestNoteStepper",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 26,
+      "symbol": "FavoriteDetailController.soundFontName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 27,
+      "symbol": "FavoriteDetailController.patchName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 28,
+      "symbol": "FavoriteDetailController.bank",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 29,
+      "symbol": "FavoriteDetailController.index",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 30,
+      "symbol": "FavoriteDetailController.gainValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 31,
+      "symbol": "FavoriteDetailController.gainSlider",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 32,
+      "symbol": "FavoriteDetailController.panValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 33,
+      "symbol": "FavoriteDetailController.panSlider",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 35,
+      "symbol": "FavoriteDetailController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 59,
+      "symbol": "FavoriteDetailController.preferredStatusBarStyle",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 63,
+      "symbol": "FavoriteDetailController.viewWillAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 166,
+      "symbol": "FavoriteDetailController.useCurrentLowestNote(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteDetailController.swift",
+      "line": 171,
+      "symbol": "FavoriteDetailController.deleteFavorite(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteMover.swift",
+      "line": 11,
+      "symbol": "FavoriteMover",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteMover.swift",
+      "line": 13,
+      "symbol": "FavoriteMover.view",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteMover.swift",
+      "line": 14,
+      "symbol": "FavoriteMover.cell",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteMover.swift",
+      "line": 16,
+      "symbol": "FavoriteMover.init(view:gr:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoriteMover.swift",
+      "line": 23,
+      "symbol": "FavoriteMover.handleLongPress(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 19,
+      "symbol": "FavoritesViewController.tapGestureRecognizer",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 28,
+      "symbol": "FavoritesViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 57,
+      "symbol": "FavoritesViewController.prepare(for:sender:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 123,
+      "symbol": "FavoritesViewController.numberOfSections(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 127,
+      "symbol": "FavoritesViewController.collectionView(_:numberOfItemsInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 131,
+      "symbol": "FavoritesViewController.collectionView(_:cellForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 140,
+      "symbol": "FavoritesViewController.collectionView(_:didSelectItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 145,
+      "symbol": "FavoritesViewController.collectionView(_:canMoveItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 149,
+      "symbol": "FavoritesViewController.collectionView(_:moveItemAt:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Favorites View/FavoritesViewController.swift",
+      "line": 159,
+      "symbol": "FavoritesViewController.collectionView(_:layout:sizeForItemAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/InfoBarController.swift",
+      "line": 24,
+      "symbol": "InfoBarController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/Key.swift",
+      "line": 28,
+      "symbol": "Key.init(frame:note:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/Key.swift",
+      "line": 34,
+      "symbol": "Key.init(coder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/Key.swift",
+      "line": 40,
+      "symbol": "Key.draw(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/Key.swift",
+      "line": 51,
+      "symbol": "Key.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 12,
+      "symbol": "SettingKeys.lowestKeyNote",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 42,
+      "symbol": "KeyboardController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 47,
+      "symbol": "KeyboardController.viewDidLayoutSubviews()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 110,
+      "symbol": "KeyboardController.touchesBegan(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 115,
+      "symbol": "KeyboardController.touchesMoved(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 120,
+      "symbol": "KeyboardController.touchesEnded(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardController.swift",
+      "line": 125,
+      "symbol": "KeyboardController.touchesCancelled(_:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardRender.swift",
+      "line": 16,
+      "symbol": "KeyboardRender",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Keyboard View/KeyboardRender.swift",
+      "line": 73,
+      "symbol": "KeyboardRender.drawBlackKey(keySize:roundedCorner:pressed:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/Note.swift",
+      "line": 16,
+      "symbol": "Note.sharpTag",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/Note.swift",
+      "line": 17,
+      "symbol": "Note.noteLabels",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/Note.swift",
+      "line": 18,
+      "symbol": "Note.solfegeLabels",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 48,
+      "symbol": "SoundFont.patchCount",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 198,
+      "symbol": "Patch.MidiBankType.kBankSize",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 200,
+      "symbol": "Patch.MidiBankType.percussion",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 201,
+      "symbol": "Patch.MidiBankType.melody",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 202,
+      "symbol": "Patch.MidiBankType.custom(bank:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 225,
+      "symbol": "Patch.bankMSB",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFont.swift",
+      "line": 226,
+      "symbol": "Patch.bankLSB",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/FluidR3_GM.swift",
+      "line": 9,
+      "symbol": "FluidR3GMSoundFont",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/FreeFont.swift",
+      "line": 9,
+      "symbol": "FreeFontGMVer32SoundFont",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/GeneralUser GS MuseScore v1.442.swift",
+      "line": 9,
+      "symbol": "GeneralUserGSMuseScoreversion1442SoundFont",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/RolandNicePiano.swift",
+      "line": 9,
+      "symbol": "UserBankSoundFont",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MainViewController.swift",
+      "line": 12,
+      "symbol": "SettingKeys.showingFavorites",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MainViewController.swift",
+      "line": 28,
+      "symbol": "MainViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MainViewController.swift",
+      "line": 73,
+      "symbol": "MainViewController.showNextConfigurationView()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/MainViewController.swift",
+      "line": 79,
+      "symbol": "MainViewController.showPreviousConfigurationView()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/NotifierToken.swift",
+      "line": 11,
+      "symbol": "NotifierToken",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/NotifierToken.swift",
+      "line": 14,
+      "symbol": "NotifierToken.init(cancellationClosure:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/NotifierToken.swift",
+      "line": 18,
+      "symbol": "NotifierToken.cancel()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoriteDetailControllerDelegate.swift",
+      "line": 15,
+      "symbol": "FavoriteDetailControllerDismissedReason.cancel",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoriteDetailControllerDelegate.swift",
+      "line": 15,
+      "symbol": "FavoriteDetailControllerDismissedReason.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoriteDetailControllerDelegate.swift",
+      "line": 15,
+      "symbol": "FavoriteDetailControllerDismissedReason.done",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 11,
+      "symbol": "FavoriteChangeKind",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 12,
+      "symbol": "FavoriteChangeKind.added",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 13,
+      "symbol": "FavoriteChangeKind.selected",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 14,
+      "symbol": "FavoriteChangeKind.changed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 15,
+      "symbol": "FavoriteChangeKind.removed",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/FavoritesManager.swift",
+      "line": 23,
+      "symbol": "FavoritesManager.Notifier",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/InfoBarManager.swift",
+      "line": 15,
+      "symbol": "InfoBarEvent.shiftKeyboardUp",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/InfoBarManager.swift",
+      "line": 16,
+      "symbol": "InfoBarEvent.shiftKeyboardDown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/InfoBarManager.swift",
+      "line": 17,
+      "symbol": "InfoBarEvent.swipeLeft",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Protocols/InfoBarManager.swift",
+      "line": 18,
+      "symbol": "InfoBarEvent.swipeRight",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 19,
+      "symbol": "RunContext.mainViewController",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 27,
+      "symbol": "RunContext.activeSoundFontManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 28,
+      "symbol": "RunContext.activePatchManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 34,
+      "symbol": "RunContext.favoritesManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 40,
+      "symbol": "RunContext.infoBarManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 46,
+      "symbol": "RunContext.keyboardManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/RunContext.swift",
+      "line": 97,
+      "symbol": "runContext",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": null,
+      "symbol": "SettingKeys",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": null,
+      "symbol": "SettingKeys",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": null,
+      "symbol": "SettingKeys",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": null,
+      "symbol": "SettingKeys",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 45,
+      "symbol": "SettingSettable.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 52,
+      "symbol": "SettingGettable.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 55,
+      "symbol": "SettingSerializable",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 59,
+      "symbol": "String.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 63,
+      "symbol": "String.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 70,
+      "symbol": "Int.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 74,
+      "symbol": "Int.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 81,
+      "symbol": "Double.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 85,
+      "symbol": "Double.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 92,
+      "symbol": "Bool.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 96,
+      "symbol": "Bool.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 103,
+      "symbol": "Data.get(key:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 107,
+      "symbol": "Data.set(key:value:userDefaults:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 112,
+      "symbol": "SettingKeys",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 121,
+      "symbol": "SettingKey.userDefaultsKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 122,
+      "symbol": "SettingKey.defaultValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 124,
+      "symbol": "SettingKey.init(_:defaultValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 132,
+      "symbol": "UserDefaults.number(forKey:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 136,
+      "symbol": "UserDefaults.hasKey(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Settings.swift",
+      "line": 140,
+      "symbol": "UserDefaults.remove(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 18,
+      "symbol": "FontPatchCellBase.favoriteTag(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 20,
+      "symbol": "FontPatchCellBase.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 22,
+      "symbol": "FontPatchCellBase.selectedBackgroundColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 30,
+      "symbol": "FontPatchCellBase.selectedFontColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 31,
+      "symbol": "FontPatchCellBase.activedFontColor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 33,
+      "symbol": "FontPatchCellBase.awakeFromNib()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 38,
+      "symbol": "FontPatchCellBase.configureSelectedBackgroundViewColor()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 44,
+      "symbol": "FontPatchCellBase.setActive(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontPatchCellBase.swift",
+      "line": 48,
+      "symbol": "FontPatchCellBase.fontColorWhen(isSelected:isActive:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontsTableViewDataSource.swift",
+      "line": 17,
+      "symbol": "FontsTableViewDataSource.view",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontsTableViewDataSource.swift",
+      "line": 18,
+      "symbol": "FontsTableViewDataSource.searchBar",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontsTableViewDataSource.swift",
+      "line": 19,
+      "symbol": "FontsTableViewDataSource.activeSoundFontManager",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontsTableViewDataSource.swift",
+      "line": 21,
+      "symbol": "FontsTableViewDataSource.init(view:searchBar:activeSoundFontManager:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/FontsTableViewDataSource.swift",
+      "line": 96,
+      "symbol": "FontsTableViewDataSource.tableView(_:editingStyleForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 17,
+      "symbol": "PatchSearchManager.delegate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 23,
+      "symbol": "PatchSearchManager.init(resultsView:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 58,
+      "symbol": "PatchSearchManager.searchIndexOfPatch(patchIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 74,
+      "symbol": "PatchSearchManager.numberOfSections(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 78,
+      "symbol": "PatchSearchManager.tableView(_:numberOfRowsInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 82,
+      "symbol": "PatchSearchManager.tableView(_:cellForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 92,
+      "symbol": "PatchSearchManager.tableView(_:didSelectRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 97,
+      "symbol": "PatchSearchManager.tableView(_:leadingSwipeActionsConfigurationForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchSearchManager.swift",
+      "line": 110,
+      "symbol": "PatchSearchManager.tableView(_:editingStyleForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 25,
+      "symbol": "PatchesTableViewDataSource.init(view:searchBar:activeSoundFontManager:activePatchManager:favoritesManager:keyboardManager:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 126,
+      "symbol": "PatchesTableViewDataSource.numberOfSections(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 131,
+      "symbol": "PatchesTableViewDataSource.tableView(_:numberOfRowsInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 136,
+      "symbol": "PatchesTableViewDataSource.tableView(_:cellForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 142,
+      "symbol": "PatchesTableViewDataSource.sectionIndexTitles(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 148,
+      "symbol": "PatchesTableViewDataSource.tableView(_:sectionForSectionIndexTitle:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 159,
+      "symbol": "PatchesTableViewDataSource.tableView(_:heightForHeaderInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 163,
+      "symbol": "PatchesTableViewDataSource.tableView(_:titleForHeaderInSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 171,
+      "symbol": "PatchesTableViewDataSource.tableView(_:leadingSwipeActionsConfigurationForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 179,
+      "symbol": "PatchesTableViewDataSource.tableView(_:editingStyleForRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 183,
+      "symbol": "PatchesTableViewDataSource.tableView(_:didSelectRowAt:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/PatchesTableViewDataSource.swift",
+      "line": 187,
+      "symbol": "PatchesTableViewDataSource.tableView(_:willDisplayHeaderView:forSection:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/SoundFontsViewController.swift",
+      "line": 12,
+      "symbol": "SettingKeys.activeSoundFont",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/SoundFontsViewController.swift",
+      "line": 13,
+      "symbol": "SettingKeys.activePatch",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/SoundFontsViewController.swift",
+      "line": 41,
+      "symbol": "SoundFontsViewController.viewDidLoad()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/SoundFontsViewController.swift",
+      "line": 48,
+      "symbol": "SoundFontsViewController.restoreLastActivePatch()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/Sound Fonts View/SoundFontsViewController.swift",
+      "line": 242,
+      "symbol": "SoundFontsViewController.searchBar(_:textDidChange:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/UpperViewManager.swift",
+      "line": 19,
+      "symbol": "UpperViewManager.add(view:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/UpperViewSlider.swift",
+      "line": 16,
+      "symbol": "UpperViewSlider.view",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/UpperViewSlider.swift",
+      "line": 17,
+      "symbol": "UpperViewSlider.leading",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/UpperViewSlider.swift",
+      "line": 18,
+      "symbol": "UpperViewSlider.trailing",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/howes/src/SoundFonts/SoundFonts/UpperViewSlider.swift",
+      "line": 24,
+      "symbol": "UpperViewSlider.init(view:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/howes/src/SoundFonts"
+}

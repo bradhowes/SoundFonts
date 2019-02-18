@@ -21,12 +21,9 @@ final class Key : UIView {
         didSet {
             if oldValue != pressed {
                 self.setNeedsDisplay()
-                print("\(note) - \(pressed)")
             }
         }
     }
-
-    let roundedCorner: CGFloat = 12.0
 
     init(frame: CGRect, note: Note) {
         self.note = note
@@ -41,6 +38,8 @@ final class Key : UIView {
     }
 
     override func draw(_ rect: CGRect) {
+        let roundedCorner: CGFloat = 12.0
+      
         if note.accented {
             KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed)
         }

@@ -148,9 +148,7 @@ extension SoundFontsViewController : ActiveSoundFontManager {
             
             let pos = IndexPath(row: newValue, section: 0)
             if soundFontsView.indexPathForSelectedRow != pos {
-                print("soundfont scrolling to row \(pos.row)")
                 soundFontsView.scrollToRow(at: pos, at: .none, animated: false)
-                print("soundfont selecting row \(pos.row)")
                 soundFontsView.selectRow(at: pos, animated: false, scrollPosition: .none)
             }
 

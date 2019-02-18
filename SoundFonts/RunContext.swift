@@ -16,7 +16,7 @@ import UIKit
  */
 final class RunContext {
 
-    private var mainViewController: MainViewController! {
+    public private(set) var mainViewController: MainViewController! {
         didSet { oneTimeSet(oldValue) }
     }
 

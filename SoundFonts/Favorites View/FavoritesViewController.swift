@@ -148,8 +148,6 @@ extension FavoritesViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
                         to destinationIndexPath: IndexPath) {
-        print("Starting Index: \(sourceIndexPath.item)")
-        print("Ending Index: \(destinationIndexPath.item)")
         favoriteCollection.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
         collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
     }

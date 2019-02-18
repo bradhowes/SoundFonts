@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>PatchesTableViewDataSource Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/PatchesTableViewDataSource" class="dashAnchor"></a>
+    <a title="PatchesTableViewDataSource Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (55% documented)</p>
+        <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        PatchesTableViewDataSource Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AppDelegate.html">AppDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Favorite.html">Favorite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteCell.html">FavoriteCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteCollection.html">FavoriteCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteDetailController.html">FavoriteDetailController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteMover.html">FavoriteMover</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesViewController.html">FavoritesViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontCell.html">FontCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontPatchCellBase.html">FontPatchCellBase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontsTableViewDataSource.html">FontsTableViewDataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InfoBarController.html">InfoBarController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Key.html">Key</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardController.html">KeyboardController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardRender.html">KeyboardRender</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MainViewController.html">MainViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NotifierToken.html">NotifierToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Patch.html">Patch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Patch/MidiBankType.html">– MidiBankType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchCell.html">PatchCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchSearchManager.html">PatchSearchManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchesTableViewDataSource.html">PatchesTableViewDataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/RunContext.html">RunContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler.html">Sampler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKey.html">SettingKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKeys.html">SettingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFont.html">SoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsViewController.html">SoundFontsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UpperViewSlider.html">UpperViewSlider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts18FluidR3GMSoundFontAA0aF0Cvp">FluidR3GMSoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts015FreeFontGMVer32aD0AA0aD0Cvp">FreeFontGMVer32SoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts033GeneralUserGSMuseScoreversion1442A4FontAA0aG0Cvp">GeneralUserGSMuseScoreversion1442SoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts8SettingsSo14NSUserDefaultsCvp">Settings</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts08UserBankA4FontAA0aE0Cvp">UserBankSoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global Variables.html#/s:10SoundFonts10runContextAA03RunD0Cvp">runContext</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/FavoriteChangeKind.html">FavoriteChangeKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoriteDetailControllerDismissedReason.html">FavoriteDetailControllerDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIAlertController.html">UIAlertController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UICollectionView.html">UICollectionView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UISearchBar.html">UISearchBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UITableView.html">UITableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIView.html">UIView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIWindow.html">UIWindow</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UserDefaults.html">UserDefaults</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ActivePatchManager.html">ActivePatchManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ActiveSoundFontManager.html">ActiveSoundFontManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ControllerConfiguration.html">ControllerConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FavoriteDetailControllerDelegate.html">FavoriteDetailControllerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FavoritesManager.html">FavoritesManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/InfoBarManager.html">InfoBarManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/KeyboardManager.html">KeyboardManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/KeyboardManagerDelegate.html">KeyboardManagerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/NibLoadableView.html">NibLoadableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PatchSearchManagerDelegate.html">PatchSearchManagerDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ReusableView.html">ReusableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingGettable.html">SettingGettable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingSettable.html">SettingSettable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Note.html">Note</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UpperViewManager.html">UpperViewManager</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SoundFonts19SettingSerializablea">SettingSerializable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>PatchesTableViewDataSource</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">PatchesTableViewDataSource</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Data source for the Patches UITableView.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts26PatchesTableViewDataSourceC4view9searchBar06activeA11FontManager0k5PatchM009favoritesM008keyboardM0ACSo07UITableE0C_So08UISearchJ0CAA06ActivealM0_pAA0snM0_pAA09FavoritesM0_pAA08KeyboardM0_ptcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(view:searchBar:activeSoundFontManager:activePatchManager:favoritesManager:keyboardManager:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts26PatchesTableViewDataSourceC4view9searchBar06activeA11FontManager0k5PatchM009favoritesM008keyboardM0ACSo07UITableE0C_So08UISearchJ0CAA06ActivealM0_pAA0snM0_pAA09FavoritesM0_pAA08KeyboardM0_ptcfc">init(view:searchBar:activeSoundFontManager:activePatchManager:favoritesManager:keyboardManager:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">view</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="nv">searchBar</span><span class="p">:</span> <span class="kt">UISearchBar</span><span class="p">,</span>
+     <span class="nv">activeSoundFontManager</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ActiveSoundFontManager.html">ActiveSoundFontManager</a></span><span class="p">,</span>
+     <span class="nv">activePatchManager</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ActivePatchManager.html">ActivePatchManager</a></span><span class="p">,</span>
+     <span class="nv">favoritesManager</span><span class="p">:</span> <span class="kt"><a href="../Protocols/FavoritesManager.html">FavoritesManager</a></span><span class="p">,</span>
+     <span class="nv">keyboardManager</span><span class="p">:</span> <span class="kt"><a href="../Protocols/KeyboardManager.html">KeyboardManager</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts26PatchesTableViewDataSourceC22indexPathForPatchIndexy10Foundation0lI0VSiF"></a>
+                    <a name="//apple_ref/swift/Method/indexPathForPatchIndex(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts26PatchesTableViewDataSourceC22indexPathForPatchIndexy10Foundation0lI0VSiF">indexPathForPatchIndex(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain an IndexPath for the given Patch index</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">indexPathForPatchIndex</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">IndexPath</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the Patch index</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>view IndexPath</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts26PatchesTableViewDataSourceC013patchIndexForI4PathySi10Foundation0iK0VF"></a>
+                    <a name="//apple_ref/swift/Method/patchIndexForIndexPath(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts26PatchesTableViewDataSourceC013patchIndexForI4PathySi10Foundation0iK0VF">patchIndexForIndexPath(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a Patch index for the given view IndexPath</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">patchIndexForIndexPath</span><span class="p">(</span><span class="n">_</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the IndexPath to convert</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Patch index</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts26PatchesTableViewDataSourceC10updateCell_4withyAA05PatchI0C_AA0K0CtF"></a>
+                    <a name="//apple_ref/swift/Method/updateCell(_:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts26PatchesTableViewDataSourceC10updateCell_4withyAA05PatchI0C_AA0K0CtF">updateCell(_:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Update the given table cell with Patch state</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">updateCell</span><span class="p">(</span><span class="n">_</span> <span class="nv">cell</span><span class="p">:</span> <span class="kt"><a href="../Classes/PatchCell.html">PatchCell</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">patch</span><span class="p">:</span> <span class="kt"><a href="../Classes/Patch.html">Patch</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cell</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the cell to update</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>patch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the Patch to use for the updating</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts26PatchesTableViewDataSourceC17createSwipeAction2at4withSo012UIContextualJ0CAA9PatchCellC_AA0N0CtF"></a>
+                    <a name="//apple_ref/swift/Method/createSwipeAction(at:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts26PatchesTableViewDataSourceC17createSwipeAction2at4withSo012UIContextualJ0CAA9PatchCellC_AA0N0CtF">createSwipeAction(at:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a swipe action for a cell / Patch which will add or remove a Favorite association with the Patch.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">createSwipeAction</span><span class="p">(</span><span class="n">at</span> <span class="nv">cell</span><span class="p">:</span> <span class="kt"><a href="../Classes/PatchCell.html">PatchCell</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">patch</span><span class="p">:</span> <span class="kt"><a href="../Classes/Patch.html">Patch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIContextualAction</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cell</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the cell that will show the action</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>patch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the Patch to use when creating a new / removing an existing Favorite</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>swipe action</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UITableViewDataSource%20Protocol"></a>
+                <a name="//apple_ref/swift/Section/UITableViewDataSource Protocol" class="dashAnchor"></a>
+                <a href="#/UITableViewDataSource%20Protocol">
+                  <h3 class="section-name">UITableViewDataSource Protocol</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)numberOfSectionsInTableView:"></a>
+                    <a name="//apple_ref/swift/Method/numberOfSections(in:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)numberOfSectionsInTableView:">numberOfSections(in:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">numberOfSections</span><span class="p">(</span><span class="k">in</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:numberOfRowsInSection:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:numberOfRowsInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:numberOfRowsInSection:">tableView(_:numberOfRowsInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:cellForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:cellForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:cellForRowAtIndexPath:">tableView(_:cellForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UITableViewCell</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)sectionIndexTitlesForTableView:"></a>
+                    <a name="//apple_ref/swift/Method/sectionIndexTitles(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)sectionIndexTitlesForTableView:">sectionIndexTitles(for:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sectionIndexTitles</span><span class="p">(</span><span class="k">for</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:sectionForSectionIndexTitle:atIndex:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:sectionForSectionIndexTitle:at:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:sectionForSectionIndexTitle:atIndex:">tableView(_:sectionForSectionIndexTitle:at:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">sectionForSectionIndexTitle</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">at</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:heightForHeaderInSection:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:heightForHeaderInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:heightForHeaderInSection:">tableView(_:heightForHeaderInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">heightForHeaderInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">CGFloat</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:titleForHeaderInSection:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:titleForHeaderInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:titleForHeaderInSection:">tableView(_:titleForHeaderInSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">titleForHeaderInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UITableViewDataSource%20Protocol2"></a>
+                <a name="//apple_ref/swift/Section/UITableViewDataSource Protocol" class="dashAnchor"></a>
+                <a href="#/UITableViewDataSource%20Protocol2">
+                  <h3 class="section-name">UITableViewDataSource Protocol</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:leadingSwipeActionsConfigurationForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:leadingSwipeActionsConfigurationForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:leadingSwipeActionsConfigurationForRowAtIndexPath:">tableView(_:leadingSwipeActionsConfigurationForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">leadingSwipeActionsConfigurationForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UISwipeActionsConfiguration</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:editingStyleForRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:editingStyleForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:editingStyleForRowAtIndexPath:">tableView(_:editingStyleForRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">editingStyleForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UITableViewCell</span><span class="o">.</span><span class="kt">EditingStyle</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:didSelectRowAtIndexPath:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:didSelectRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:didSelectRowAtIndexPath:">tableView(_:didSelectRowAt:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">didSelectRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:willDisplayHeaderView:forSection:"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:willDisplayHeaderView:forSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@CM@SoundFonts@objc(cs)PatchesTableViewDataSource(im)tableView:willDisplayHeaderView:forSection:">tableView(_:willDisplayHeaderView:forSection:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">willDisplayHeaderView</span> <span class="nv">view</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">,</span> <span class="n">forSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2019-02-18)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
