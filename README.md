@@ -57,7 +57,7 @@ natively on Github so it has been broken into three files: `FluidR3_GM.sf2.1`, `
 
 There is also a simple Python script called `catalog.py` which will generate a SoundFont catalog in Swift. Each
 `*.sf2` that is in the
-[./SoundFonts](https://github.com/bradhowes/SoundFonts/tree/master/SoundFonts/SwiftMIDI/SoundFonts) directory
+[./SoundFonts](https://github.com/bradhowes/SoundFonts/tree/master/SoundFonts/MIDI/SoundFonts) directory
 will get its own `*.swift` file with its own `SoundFont` instance that describes all of the patches or presets
 that were found in the `*.sf2` file. If you add a new SoundFont file to this directory, you will also need to
 add it to the Xcode project so that it gets installed in the iOS application bundle. You will also need to add
