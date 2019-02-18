@@ -3,7 +3,7 @@
 set -x
 rm -rf ./docs
 mkdir ./docs
-cp image.gif docs/
+cp *.gif *.png docs/
 
 JAZZY=$(type -p jazzy)
 [[ -n "${JAZZY}" ]] && ${JAZZY} --min-acl internal \
