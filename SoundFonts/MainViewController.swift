@@ -70,13 +70,13 @@ extension MainViewController: ControllerConfiguration {
         self.favorites.isHidden = !showingFavorites
     }
 
-    @IBAction private func showNextConfigurationView() {
+    @IBAction func showNextConfigurationView() {
         let showingFavorites = favorites.isHidden
         Settings[.showingFavorites] = showingFavorites
         self.upperViewManager.slideNextHorizontally()
     }
     
-    @IBAction private func showPreviousConfigurationView() {
+    @IBAction func showPreviousConfigurationView() {
         let showingFavorites = favorites.isHidden
         Settings[.showingFavorites] = showingFavorites
         self.upperViewManager.slidePrevHorizontally()

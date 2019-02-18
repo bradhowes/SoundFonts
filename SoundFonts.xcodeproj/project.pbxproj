@@ -37,6 +37,7 @@
 		BD85F8DF21D91EA20028E440 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */; };
 		BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
 		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
+		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
 		BD90646921DE1C92009B474A /* NotifierToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* NotifierToken.swift */; };
 		BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */; };
 		BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
@@ -129,6 +130,8 @@
 		BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
 		BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Additions.swift"; sourceTree = "<group>"; };
 		BD85F8E421D98F820028E440 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
 		BD90646821DE1C92009B474A /* NotifierToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotifierToken.swift; sourceTree = "<group>"; };
 		BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManagerDelegate.swift; sourceTree = "<group>"; };
 		BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -172,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +203,7 @@
 				BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */,
 				BD75B282218B8CFE00C7EBD7 /* SoundFontsUITests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
+				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,6 +220,7 @@
 		BD75B262218B8CFD00C7EBD7 /* SoundFonts */ = {
 			isa = PBXGroup;
 			children = (
+				BD874C95221A228E00BBD00B /* SoundFonts.entitlements */,
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BDD3860C221486240063040C /* Extensions */,
@@ -307,6 +313,14 @@
 				BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */,
 			);
 			path = "Keyboard View";
+			sourceTree = "<group>";
+		};
+		BD874C92221A228E00BBD00B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BD874C93221A228E00BBD00B /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		BDAE7C982219540A0003A353 /* UI */ = {
@@ -434,6 +448,11 @@
 				TargetAttributes = {
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.InterAppAudio = {
+								enabled = 1;
+							};
+						};
 					};
 					BD75B273218B8CFE00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
@@ -656,7 +675,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -713,7 +732,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -728,14 +747,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SoundFonts/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFonts/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFonts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -746,14 +767,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SoundFonts/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFonts/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFonts;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

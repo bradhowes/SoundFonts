@@ -150,9 +150,6 @@ extension KeyboardController {
             }
         }
         
-        print("released: \(changes.released)")
-        print(" pressed: \(changes.pressed)")
-        
         // For released keys, update their status based on their presence in the pressed set
         changes.released.forEach { setKeyPressed($0, pressed: changes.pressed.contains($0)) }
         

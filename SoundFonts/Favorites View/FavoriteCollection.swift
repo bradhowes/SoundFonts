@@ -42,6 +42,33 @@ final class FavoriteCollection: NSObject {
         } catch {
             print(error)
         }
+        
+        if favorites.isEmpty || favorites.count < 20 {
+            favoriteMap.removeAll()
+            favorites.removeAll()
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[0],
+                         keyboardLowestNote: Note(midiNoteValue: 48)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[14],
+                         keyboardLowestNote: Note(midiNoteValue: 72)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[22],
+                         keyboardLowestNote: Note(midiNoteValue: 72)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[29],
+                         keyboardLowestNote: Note(midiNoteValue: 36)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[37],
+                         keyboardLowestNote: Note(midiNoteValue: 24)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[46],
+                         keyboardLowestNote: Note(midiNoteValue: 72)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[49],
+                         keyboardLowestNote: Note(midiNoteValue: 84)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[52],
+                         keyboardLowestNote: Note(midiNoteValue: 48)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[60],
+                         keyboardLowestNote: Note(midiNoteValue: 60)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[70],
+                         keyboardLowestNote: Note(midiNoteValue: 36)))
+            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[73],
+                         keyboardLowestNote: Note(midiNoteValue: 72)))
+        }
     }
 
     /**
