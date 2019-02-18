@@ -1,4 +1,4 @@
-![](image.gif)
+![](https://github.com/bradhowes/SoundFonts/blob/master/image.gif?raw=true)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
@@ -26,7 +26,7 @@ make its associated patch active. You can also configure the starting key of the
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
 long-press on the it and you should see an edit view:
 
-![](FavoriteDetail.png)
+![](https://github.com/bradhowes/SoundFonts/blob/master/FavoriteDetail.png?raw=true)
 
 Nothing fancy. Note that the _gain_ is not exactly like a volume. By default, it will be at 0.0 which means that
 there is no gain applied to the synthesizer output. Positive values (max +12) will boost the signal, while
