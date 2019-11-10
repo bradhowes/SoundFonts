@@ -448,6 +448,7 @@
 				TargetAttributes = {
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1120;
 						SystemCapabilities = {
 							com.apple.InterAppAudio = {
 								enabled = 1;
@@ -456,10 +457,12 @@
 					};
 					BD75B273218B8CFE00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1120;
 						TestTargetID = BD75B25F218B8CFD00C7EBD7;
 					};
 					BD75B27E218B8CFE00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1120;
 						TestTargetID = BD75B25F218B8CFD00C7EBD7;
 					};
 				};
@@ -758,7 +761,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -778,7 +781,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -798,7 +801,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoundFonts.app/SoundFonts";
 			};
@@ -819,7 +822,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoundFonts.app/SoundFonts";
 			};
@@ -839,7 +842,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = SoundFonts;
 			};
@@ -859,7 +862,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = SoundFonts;
 			};
