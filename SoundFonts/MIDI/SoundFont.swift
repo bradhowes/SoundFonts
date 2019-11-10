@@ -75,9 +75,7 @@ UserBankSoundFont.name: UserBankSoundFont,
      - parameter name: the name to look for
      - returns: found index or zero
      */
-    public static func indexForName(_ name: String) -> Int {
-        return keys.index(of: name) ?? 0
-    }
+    public static func indexForName(_ name: String) -> Int { keys.firstIndex(of: name) ?? 0 }
 
     /// Extension for all SoundFont files in the application bundle
     public let soundFontExtension = "sf2"
@@ -169,7 +167,7 @@ UserBankSoundFont.name: UserBankSoundFont,
      - returns: index of found object or nil if not found
      */
     public func findPatchIndex(_ name: String) -> Int? {
-        return patches.index(where: { return $0.name == name })
+        return patches.firstIndex(where: { return $0.name == name })
     }
 }
 
