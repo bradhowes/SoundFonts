@@ -31,8 +31,8 @@ public final class SoundFont: NSObject, NSCoding {
 // -BEGIN-
 FreeFontGMVer32SoundFont.name: FreeFontGMVer32SoundFont,
 GeneralUserGSMuseScoreversion1442SoundFont.name: GeneralUserGSMuseScoreversion1442SoundFont,
+RolandNicePiano.name: RolandNicePiano,
 FluidR3GMSoundFont.name: FluidR3GMSoundFont,
-UserBankSoundFont.name: UserBankSoundFont,
 // -END-
     ]
 
