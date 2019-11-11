@@ -31,6 +31,12 @@ final class MainViewController: UIViewController {
         upperViewManager.add(view: favorites)
         runContext.addViewControllers(self, children)
         runContext.establishConnections()
+        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+    }
+
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge
+    {
+        return [.left, .right, .bottom];
     }
 }
 
