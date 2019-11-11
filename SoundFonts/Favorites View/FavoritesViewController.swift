@@ -191,6 +191,7 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
 }
 
 // MARK: - FavoritesManager
+
 extension FavoritesViewController: FavoritesManager {
 
     func isFavored(patch: Patch) -> Bool { return favoriteCollection.isFavored(patch: patch) }

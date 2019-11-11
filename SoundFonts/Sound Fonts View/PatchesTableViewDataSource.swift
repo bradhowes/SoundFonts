@@ -44,7 +44,7 @@ final class PatchesTableViewDataSource: NSObject {
             if kind == .removed {
                 let patch = favorite.patch
                 guard let index = obs.patches.firstIndex(of: patch) else { return }
-                obs.view.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+                obs.view.reloadRows(at: [self.indexPathForPatchIndex(index)], with: .none)
             }
         }
     }
