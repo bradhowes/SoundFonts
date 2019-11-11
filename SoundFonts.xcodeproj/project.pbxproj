@@ -50,16 +50,11 @@
 		BDBF088621CD1D6300C4EA27 /* PatchSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088521CD1D6300C4EA27 /* PatchSearchManager.swift */; };
 		BDCE3C302190F7C00008ACF9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C2B2190F7C00008ACF9 /* Sampler.swift */; };
 		BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C41219184A80008ACF9 /* SoundFont.swift */; };
-		BDCE3C5F219184A80008ACF9 /* catalog.py in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C46219184A80008ACF9 /* catalog.py */; };
 		BDCE3C60219184A80008ACF9 /* RolandNicePiano.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */; };
 		BDCE3C61219184A80008ACF9 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */; };
-		BDCE3C62219184A80008ACF9 /* FluidR3_GM.sf2.1 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C49219184A80008ACF9 /* FluidR3_GM.sf2.1 */; };
 		BDCE3C63219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
-		BDCE3C64219184A80008ACF9 /* FluidR3_GM.sf2.2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4B219184A80008ACF9 /* FluidR3_GM.sf2.2 */; };
-		BDCE3C65219184A80008ACF9 /* FluidR3_GM.sf2.3 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4C219184A80008ACF9 /* FluidR3_GM.sf2.3 */; };
 		BDCE3C66219184A80008ACF9 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */; };
 		BDCE3C67219184A80008ACF9 /* FluidR3_GM.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */; };
-		BDCE3C68219184A80008ACF9 /* FluidR3_GM.sh in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4F219184A80008ACF9 /* FluidR3_GM.sh */; };
 		BDCE3C69219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */; };
 		BDCE3C6A219184A80008ACF9 /* FreeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C51219184A80008ACF9 /* FreeFont.swift */; };
 		BDCE3C6B219184A80008ACF9 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */; };
@@ -144,16 +139,11 @@
 		BDBF088521CD1D6300C4EA27 /* PatchSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManager.swift; sourceTree = "<group>"; };
 		BDCE3C2B2190F7C00008ACF9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
 		BDCE3C41219184A80008ACF9 /* SoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFont.swift; sourceTree = "<group>"; };
-		BDCE3C46219184A80008ACF9 /* catalog.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = catalog.py; sourceTree = "<group>"; };
 		BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolandNicePiano.swift; sourceTree = "<group>"; };
 		BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreeFont.sf2; sourceTree = "<group>"; };
-		BDCE3C49219184A80008ACF9 /* FluidR3_GM.sf2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = FluidR3_GM.sf2.1; sourceTree = "<group>"; };
 		BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeneralUser GS MuseScore v1.442.sf2"; sourceTree = "<group>"; };
-		BDCE3C4B219184A80008ACF9 /* FluidR3_GM.sf2.2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.2; sourceTree = "<group>"; };
-		BDCE3C4C219184A80008ACF9 /* FluidR3_GM.sf2.3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.3; sourceTree = "<group>"; };
 		BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2; sourceTree = "<group>"; };
 		BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FluidR3_GM.swift; sourceTree = "<group>"; };
-		BDCE3C4F219184A80008ACF9 /* FluidR3_GM.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = FluidR3_GM.sh; sourceTree = "<group>"; };
 		BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeneralUser GS MuseScore v1.442.swift"; sourceTree = "<group>"; };
 		BDCE3C51219184A80008ACF9 /* FreeFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeFont.swift; sourceTree = "<group>"; };
 		BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = RolandNicePiano.sf2; sourceTree = "<group>"; };
@@ -350,19 +340,14 @@
 		BDCE3C45219184A80008ACF9 /* SoundFonts */ = {
 			isa = PBXGroup;
 			children = (
-				BDCE3C46219184A80008ACF9 /* catalog.py */,
-				BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */,
-				BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */,
-				BDCE3C49219184A80008ACF9 /* FluidR3_GM.sf2.1 */,
-				BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */,
-				BDCE3C4B219184A80008ACF9 /* FluidR3_GM.sf2.2 */,
-				BDCE3C4C219184A80008ACF9 /* FluidR3_GM.sf2.3 */,
 				BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */,
 				BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */,
-				BDCE3C4F219184A80008ACF9 /* FluidR3_GM.sh */,
-				BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */,
+				BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */,
 				BDCE3C51219184A80008ACF9 /* FreeFont.swift */,
+				BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */,
+				BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */,
 				BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */,
+				BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */,
 			);
 			path = SoundFonts;
 			sourceTree = "<group>";
@@ -493,19 +478,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDDD1F592216D39A003BDD6F /* FontCell.xib in Resources */,
-				BDCE3C5F219184A80008ACF9 /* catalog.py in Resources */,
 				BD75B26E218B8CFE00C7EBD7 /* LaunchScreen.storyboard in Resources */,
 				BDCE3C6B219184A80008ACF9 /* RolandNicePiano.sf2 in Resources */,
-				BDCE3C62219184A80008ACF9 /* FluidR3_GM.sf2.1 in Resources */,
-				BDCE3C65219184A80008ACF9 /* FluidR3_GM.sf2.3 in Resources */,
 				BD75B26B218B8CFE00C7EBD7 /* Assets.xcassets in Resources */,
 				BDD386032212F2380063040C /* FavoriteCell.xib in Resources */,
 				BDCE3C66219184A80008ACF9 /* FluidR3_GM.sf2 in Resources */,
 				BDCE3C61219184A80008ACF9 /* FreeFont.sf2 in Resources */,
 				BDDD1F5B2216D3D3003BDD6F /* PatchCell.xib in Resources */,
-				BDCE3C64219184A80008ACF9 /* FluidR3_GM.sf2.2 in Resources */,
 				BDCE3C63219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
-				BDCE3C68219184A80008ACF9 /* FluidR3_GM.sh in Resources */,
 				BD75B292218B8D9500C7EBD7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,7 +658,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -735,7 +715,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -754,7 +734,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFonts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -774,7 +754,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFonts/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

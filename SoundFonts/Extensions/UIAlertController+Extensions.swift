@@ -2,9 +2,8 @@ import UIKit
 
 extension UIAlertController {
     func show(animated: Bool = true, completion: (() -> Void)? = nil) {
-        if let visibleViewController = UIApplication.shared.keyWindow?.visibleViewController {
-            visibleViewController.present(self, animated: animated, completion: completion)
-        }
+        let window = UIApplication.shared.windows.first { $0.isKeyWindow }
+        window?.visibleViewController?.present(self, animated: animated, completion: completion)
     }
 }
 
