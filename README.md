@@ -22,9 +22,10 @@ Apologies in advance for the state of the UI. Here is what you can do with it:
 ## Favorites
 
 The favorites view shows all of the patches that have been "faved" or "starred". Pressing on a favorite will
-make its associated patch active. You can also configure the starting key of the keyboard in the favorite as
+make its associated patch active. You can also reorder them by long-touching one and moving it to a new location among the 
+others. You can also change the starting key of the keyboard in the favorite as
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
-long-press on the it and you should see an edit view:
+double-tap on the it and you should see an edit view:
 
 ![](https://github.com/bradhowes/SoundFonts/blob/master/FavoriteDetail.png?raw=true)
 
