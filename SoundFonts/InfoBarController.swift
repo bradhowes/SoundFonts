@@ -131,13 +131,13 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
             let change = Int((point.x - panOrigin.x) / 40.0)
             if change < 0 {
                 for _ in change..<0 {
-                    lowestKey.sendActions(for: .touchUpInside)
+                    highestKey.sendActions(for: .touchUpInside)
                 }
                 panOrigin = point
             }
             else if change > 0 {
                 for _ in 0..<change {
-                    highestKey.sendActions(for: .touchUpInside)
+                    lowestKey.sendActions(for: .touchUpInside)
                 }
                 panOrigin = point
             }
