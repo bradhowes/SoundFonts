@@ -8,14 +8,13 @@ nice to remotely fetch one to try it out.
 
 ## User Interface
 
-Apologies in advance for the state of the UI. Here is what you can do with it:
+Here is what you can do with it:
 
-* Switch between the patches view (image above) and a _favorites_ view (see below) by swiping left/right on the
-  black bar above the keyboard
+* Switch between the patches view (image above) and a _favorites_ view (see below) by swiping left/right on the upper view with two touches.
+* Double-tapping the patch name in the info bar above the keyboard will also switch the upper view
 * You can touch the labels at either end of the black bar to change the range of the keyboard. In the image
   above, the first key is at "C4" and the last key shown is "G5". You can go as low as "C0" and as high as "C9".
-  (You can also perform a two-finger pan gesture on the left or right on the black bar to adjust the keyboard
-  range.)
+* You can also swipe with a finger on back bar to change the keyboard range
 * Swipe right on a patch name to make it a favorite (same to unfavorite). Favorited patches have a star next to
   their name.
 
