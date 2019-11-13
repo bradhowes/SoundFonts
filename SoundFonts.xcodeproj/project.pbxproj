@@ -112,6 +112,7 @@
 		BD75B293218B930B00C7EBD7 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		BD781B47237BF53900A71031 /* PatchesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchesManager.swift; sourceTree = "<group>"; };
 		BD781B49237BFC5700A71031 /* SwipingActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingActivity.swift; sourceTree = "<group>"; };
+		BD781B4B237BFDBD00A71031 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = UpperViewSlider.swift; sourceTree = "<group>"; };
 		BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpperViewManager.swift; sourceTree = "<group>"; };
 		BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
+				BD781B4B237BFDBD00A71031 /* README.md */,
 				BD75B262218B8CFD00C7EBD7 /* SoundFonts */,
 				BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */,
 				BD75B282218B8CFE00C7EBD7 /* SoundFontsUITests */,
