@@ -38,8 +38,19 @@ final class SoundFontsViewController: UIViewController {
     private var searchManager: PatchSearchManager!
     private var notifiers = [UUID: (Patch) -> Void]()
 
+    private var swipeLeft = UISwipeGestureRecognizer()
+    private var swipeRight = UISwipeGestureRecognizer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        swipeLeft.direction = .left
+        swipeLeft.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(swipeLeft)
+        swipeRight.direction = .right
+        swipeRight.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(swipeRight)
+
         searchBar.delegate = self
         searchManager = PatchSearchManager(resultsView: patchesView)
         searchManager.delegate = self
@@ -217,8 +228,17 @@ extension SoundFontsViewController: ActivePatchManager {
     }
 }
 
+extension SoundFontsViewController: PatchesManager {
+    func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
+        switch event {
+        case .swipeLeft: swipeLeft.addTarget(target, action: action)
+        case .swipeRight: swipeRight.addTarget(target, action: action)
+        }
+    }
+}
+
 // MARK: - PatchSearchManagerDelegate Protocol
-extension SoundFontsViewController : PatchSearchManagerDelegate {
+extension SoundFontsViewController: PatchSearchManagerDelegate {
     func selected(patch: Patch) {
         changeActivePatch(patch)
     }

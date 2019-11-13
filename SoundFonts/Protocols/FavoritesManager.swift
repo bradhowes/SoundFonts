@@ -18,7 +18,7 @@ enum FavoriteChangeKind {
 /**
  Manages the collection of Favorite patch settings
  */
-protocol FavoritesManager: class {
+protocol FavoritesManager: class, SwipingActivity {
 
     typealias Notifier<O: AnyObject> = (O, FavoriteChangeKind, Favorite) -> Void
 

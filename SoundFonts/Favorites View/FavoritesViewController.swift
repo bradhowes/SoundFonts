@@ -24,7 +24,10 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
     private var favoriteCell: FavoriteCell!
     private var favoriteMover: FavoriteMover!
-    
+
+    private var swipeLeft = UISwipeGestureRecognizer()
+    private var swipeRight = UISwipeGestureRecognizer()
+
     override func viewDidLoad() {
         favoritesView.register(FavoriteCell.self)
         favoritesView.dataSource = self
@@ -41,6 +44,13 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         tapGestureRecognizer.delaysTouchesBegan = true
 
         favoriteMover = FavoriteMover(view: favoritesView, gr: longPressGestureRecognizer)
+
+        swipeLeft.direction = .left
+        swipeLeft.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(swipeLeft)
+        swipeRight.direction = .right
+        swipeRight.numberOfTouchesRequired = 2
+        view.addGestureRecognizer(swipeRight)
 
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
@@ -193,6 +203,13 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
 // MARK: - FavoritesManager
 
 extension FavoritesViewController: FavoritesManager {
+
+    func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
+        switch event {
+        case .swipeLeft: swipeLeft.addTarget(target, action: action)
+        case .swipeRight: swipeRight.addTarget(target, action: action)
+        }
+    }
 
     func isFavored(patch: Patch) -> Bool { return favoriteCollection.isFavored(patch: patch) }
     

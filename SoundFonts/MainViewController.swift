@@ -31,22 +31,19 @@ final class MainViewController: UIViewController {
         upperViewManager.add(view: favorites)
         runContext.addViewControllers(self, children)
         runContext.establishConnections()
-        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-    }
-
-    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge
-    {
-        return [.left, .right, .bottom];
     }
 }
 
 // MARK: - Controller Configuration
+
 extension MainViewController: ControllerConfiguration {
+
     func establishConnections(_ context: RunContext) {
         infoBarManager = context.infoBarManager
 
         let activePatchManager = context.activePatchManager
         let favoritesManager = context.favoritesManager
+        let patchesManager = context.patchesManager
         let keyboardManager = context.keyboardManager
 
         keyboardManager.delegate = self
@@ -68,12 +65,17 @@ extension MainViewController: ControllerConfiguration {
             }
         }
         
-        infoBarManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        infoBarManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
         let showingFavorites = Settings[.showingFavorites]
         self.patches.isHidden = showingFavorites
         self.favorites.isHidden = !showingFavorites
+
+        patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+
+        favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
     }
 
     @IBAction func showNextConfigurationView() {
