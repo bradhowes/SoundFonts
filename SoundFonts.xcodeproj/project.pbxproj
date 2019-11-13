@@ -20,6 +20,8 @@
 		BD75B284218B8CFE00C7EBD7 /* SoundFontsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B283218B8CFE00C7EBD7 /* SoundFontsUITests.swift */; };
 		BD75B292218B8D9500C7EBD7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD75B291218B8D9400C7EBD7 /* Main.storyboard */; };
 		BD75B294218B930B00C7EBD7 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B293218B930B00C7EBD7 /* Key.swift */; };
+		BD781B48237BF53900A71031 /* PatchesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B47237BF53900A71031 /* PatchesManager.swift */; };
+		BD781B4A237BFC5700A71031 /* SwipingActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B49237BFC5700A71031 /* SwipingActivity.swift */; };
 		BD7A2E4E21CEB452001CB271 /* UpperViewSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */; };
 		BD7A2E5021CEBD74001CB271 /* UpperViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */; };
 		BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */; };
@@ -108,6 +110,8 @@
 		BD75B285218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD75B291218B8D9400C7EBD7 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BD75B293218B930B00C7EBD7 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		BD781B47237BF53900A71031 /* PatchesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchesManager.swift; sourceTree = "<group>"; };
+		BD781B49237BFC5700A71031 /* SwipingActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipingActivity.swift; sourceTree = "<group>"; };
 		BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = UpperViewSlider.swift; sourceTree = "<group>"; };
 		BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpperViewManager.swift; sourceTree = "<group>"; };
 		BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 				BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */,
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
 				BDD3860422147D0C0063040C /* ReusableView.swift */,
+				BD781B47237BF53900A71031 /* PatchesManager.swift */,
+				BD781B49237BFC5700A71031 /* SwipingActivity.swift */,
 				BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */,
 			);
 			path = Protocols;
@@ -511,6 +517,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD781B4A237BFC5700A71031 /* SwipingActivity.swift in Sources */,
 				BD85F8D721D91A740028E440 /* ActivePatchManager.swift in Sources */,
 				BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */,
 				BDCE3C67219184A80008ACF9 /* FluidR3_GM.swift in Sources */,
@@ -545,6 +552,7 @@
 				BD9434A821DD25A200798432 /* PatchSearchManagerDelegate.swift in Sources */,
 				BDCE3C69219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift in Sources */,
 				BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */,
+				BD781B48237BF53900A71031 /* PatchesManager.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */,
 				BD85F8DF21D91EA20028E440 /* KeyboardManager.swift in Sources */,

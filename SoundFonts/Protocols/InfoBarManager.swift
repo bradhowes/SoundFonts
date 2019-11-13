@@ -14,8 +14,7 @@ import Foundation
 enum InfoBarEvent {
     case shiftKeyboardUp
     case shiftKeyboardDown
-    case swipeLeft
-    case swipeRight
+    case doubleTap
 }
 
 /**

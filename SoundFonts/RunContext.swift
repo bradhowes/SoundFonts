@@ -16,34 +16,18 @@ import UIKit
  */
 final class RunContext {
 
-    public private(set) var mainViewController: MainViewController! {
-        didSet { oneTimeSet(oldValue) }
-    }
+    public private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
+    private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
+    private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+    private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
+    private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
 
-    private var soundFontsController: SoundFontsViewController! {
-        didSet { oneTimeSet(oldValue) }
-    }
-
-    var activeSoundFontManager: ActiveSoundFontManager { return soundFontsController }
-    var activePatchManager: ActivePatchManager { return soundFontsController }
-
-    private var favoritesController: FavoritesViewController! {
-        didSet { oneTimeSet(oldValue) }
-    }
-
-    var favoritesManager: FavoritesManager { return favoritesController }
-
-    private var infoBarController: InfoBarController! {
-        didSet { oneTimeSet(oldValue) }
-    }
-
-    var infoBarManager: InfoBarManager { return infoBarController }
-
-    private var keyboardController: KeyboardController! {
-        didSet { oneTimeSet(oldValue) }
-    }
-
-    var keyboardManager: KeyboardManager { return keyboardController }
+    var activeSoundFontManager: ActiveSoundFontManager { soundFontsController }
+    var activePatchManager: ActivePatchManager { soundFontsController }
+    var favoritesManager: FavoritesManager { favoritesController }
+    var infoBarManager: InfoBarManager { infoBarController }
+    var keyboardManager: KeyboardManager { keyboardController }
+    var patchesManager: PatchesManager { soundFontsController }
 
     /**
      Collect the known view controllers and track what we have.
@@ -78,7 +62,10 @@ final class RunContext {
 
         soundFontsController.restoreLastActivePatch()
     }
-    
+}
+
+extension RunContext {
+
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")
         precondition(soundFontsController != nil, "nil SoundFontsViewController")

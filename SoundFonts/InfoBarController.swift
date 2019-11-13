@@ -18,20 +18,22 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
     @IBOutlet private weak var lowestKey: UIButton!
     @IBOutlet private weak var highestKey: UIButton!
 
-    private let swipeLeft = UISwipeGestureRecognizer()
-    private let swipeRight = UISwipeGestureRecognizer()
+    private let doubleTap1 = UITapGestureRecognizer()
+    private let doubleTap2 = UITapGestureRecognizer()
 
     override func viewDidLoad() {
+        doubleTap1.numberOfTouchesRequired = 1
+        doubleTap1.numberOfTapsRequired = 2
+        patchInfo.addGestureRecognizer(doubleTap1)
+
+        doubleTap2.numberOfTouchesRequired = 1
+        doubleTap2.numberOfTapsRequired = 2
+        status.addGestureRecognizer(doubleTap2)
+
         let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
-        panner.minimumNumberOfTouches = 2
-        panner.maximumNumberOfTouches = 2
+        panner.minimumNumberOfTouches = 1
+        panner.maximumNumberOfTouches = 1
         view.addGestureRecognizer(panner)
-
-        swipeLeft.direction = .left
-        view.addGestureRecognizer(swipeLeft)
-
-        swipeRight.direction = .right
-        view.addGestureRecognizer(swipeRight)
     }
 
     func establishConnections(_ context: RunContext) {
@@ -48,8 +50,9 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         switch event {
         case .shiftKeyboardUp: highestKey.addTarget(target, action: action, for: .touchUpInside)
         case .shiftKeyboardDown: lowestKey.addTarget(target, action: action, for: .touchUpInside)
-        case .swipeLeft: swipeLeft.addTarget(target, action: action)
-        case .swipeRight: swipeRight.addTarget(target, action: action)
+        case .doubleTap:
+            doubleTap1.addTarget(target, action: action)
+            doubleTap2.addTarget(target, action: action)
         }
     }
 

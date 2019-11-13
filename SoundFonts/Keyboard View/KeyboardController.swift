@@ -42,10 +42,16 @@ final class KeyboardController: UIViewController {
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
         firstMidiNoteValue = max(lowestNote, 0)
+        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
     
     override func viewDidLayoutSubviews() {
         createKeys()
+    }
+
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge
+    {
+        return [.left, .right];
     }
 }
 
