@@ -63,24 +63,24 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="zOV-fi-x0G" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="623-4B-Tz0"/>
-                            <constraint firstItem="SxE-vE-5J3" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="9jE-1w-VCZ"/>
-                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="AId-ff-hPN"/>
-                            <constraint firstItem="efO-vf-51K" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="Fhe-uY-CY3"/>
+                            <constraint firstItem="SxE-vE-5J3" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="9jE-1w-VCZ"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="trailing" secondItem="9hh-ZJ-oqw" secondAttribute="trailing" id="AId-ff-hPN"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="Fhe-uY-CY3"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="Fnr-o4-GdT"/>
-                            <constraint firstItem="SxE-vE-5J3" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="Iih-6t-CGJ"/>
-                            <constraint firstItem="6sg-ac-0XL" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="Kin-On-Uce"/>
+                            <constraint firstItem="SxE-vE-5J3" firstAttribute="trailing" secondItem="9hh-ZJ-oqw" secondAttribute="trailing" id="Iih-6t-CGJ"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="trailing" secondItem="9hh-ZJ-oqw" secondAttribute="trailing" id="Kin-On-Uce"/>
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="height" secondItem="SxE-vE-5J3" secondAttribute="height" multiplier="1.2" id="Tw8-2s-xc6"/>
                             <constraint firstItem="zOV-fi-x0G" firstAttribute="top" secondItem="eeU-Zp-LO7" secondAttribute="bottom" id="YbQ-GX-ih7"/>
                             <constraint firstItem="zOV-fi-x0G" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="eJW-c2-Nao"/>
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="top" secondItem="zOV-fi-x0G" secondAttribute="bottom" id="g4x-Fk-dEy"/>
                             <constraint firstItem="zOV-fi-x0G" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="h2u-CQ-SdR"/>
-                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="iss-EW-C2d"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="iss-EW-C2d"/>
                             <constraint firstItem="zOV-fi-x0G" firstAttribute="top" secondItem="efO-vf-51K" secondAttribute="bottom" id="iz6-Iy-liM"/>
-                            <constraint firstItem="6sg-ac-0XL" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="qO6-mg-CnC"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="qO6-mg-CnC"/>
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="qUz-7s-KTj"/>
                             <constraint firstItem="SxE-vE-5J3" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="thj-i2-ulz"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="vYF-Go-O7B"/>
-                            <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="zgg-8c-EbS"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="9hh-ZJ-oqw" secondAttribute="trailing" id="zgg-8c-EbS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3Ns-BN-Xtc"/>
                         <variation key="default">
@@ -335,7 +335,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="708" y="-956"/>
+            <point key="canvasLocation" x="862" y="-720"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="GeL-bI-CiM">
@@ -401,7 +401,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vr-Xq-yUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-745" y="-718"/>
+            <point key="canvasLocation" x="-1085" y="-776"/>
         </scene>
         <!--Sound Fonts View Controller-->
         <scene sceneID="3Rz-C9-6PO">
@@ -465,7 +465,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-16" y="-1719"/>
+            <point key="canvasLocation" x="77" y="-1881"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -512,7 +512,7 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="-17" y="-1352"/>
+            <point key="canvasLocation" x="77" y="-1507"/>
         </scene>
         <!--Keyboard Controller-->
         <scene sceneID="DdP-fR-Jpy">
@@ -527,7 +527,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dc4-bz-8nP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-746" y="-282"/>
+            <point key="canvasLocation" x="-428" y="-682"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="If2-3j-gaj">
@@ -545,7 +545,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="708" y="-1719"/>
+            <point key="canvasLocation" x="863" y="-1507"/>
         </scene>
     </scenes>
     <resources>
