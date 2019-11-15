@@ -34,6 +34,7 @@ final class KeyboardController: UIViewController {
     
     /// Largest MIDI value available for the last key
     private let maxMidiValue = 12 * 9 // C9
+
     /// How wide each key will be
     private let keyWidth: CGFloat = 64.0
     
@@ -42,16 +43,10 @@ final class KeyboardController: UIViewController {
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
         firstMidiNoteValue = max(lowestNote, 0)
-        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
     
     override func viewDidLayoutSubviews() {
         createKeys()
-    }
-
-    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge
-    {
-        return [.left, .right];
     }
 }
 

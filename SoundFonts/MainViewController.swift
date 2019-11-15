@@ -25,12 +25,16 @@ final class MainViewController: UIViewController {
     private var upperViewManager = UpperViewManager()
     private weak var infoBarManager: InfoBarManager!
 
+    override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         upperViewManager.add(view: patches)
         upperViewManager.add(view: favorites)
         runContext.addViewControllers(self, children)
         runContext.establishConnections()
+
+        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
 }
 
