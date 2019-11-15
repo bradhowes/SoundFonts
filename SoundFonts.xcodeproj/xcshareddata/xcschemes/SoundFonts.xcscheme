@@ -5,12 +5,12 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <PostActions>
+      <PreActions>
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "echo &quot;*** Build Post-actions -- bumpBuildNumber&quot; 1&gt;&amp;2   &#10;$HOME/bin/bumpBuildNumber.sh&#10;">
+               scriptText = "xcrun agvtool new-version -all $(date &apos;+%Y%m%d%H%M%S&apos;)&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
@@ -22,7 +22,7 @@
                </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
-      </PostActions>
+      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -126,7 +126,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "echo &quot;*** Build Pre-actions -- Archive&quot; 1&gt;&amp;2&#10;$HOME/bin/bumpMinorVersion.sh&#10;">
+               scriptText = "echo &quot;*** Build Pre-actions -- Archive&quot; 1&gt;&amp;2&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
