@@ -121,7 +121,7 @@ extension MainViewController: ControllerConfiguration {
         patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
     }
 
     @IBAction func showNextConfigurationView() {
@@ -142,7 +142,7 @@ extension MainViewController : KeyboardManagerDelegate {
 
     func noteOn(_ note: Note) {
         if isMuted {
-            infoBarManager.setStatus("*** MUTED ***")
+            infoBarManager.setStatus("🔇")
         }
         else {
             infoBarManager.setStatus(note.label + " - " + note.solfege)
