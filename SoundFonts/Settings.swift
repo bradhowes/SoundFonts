@@ -1,8 +1,3 @@
-//
-//  Settings.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 12/31/18.
 //  Copyright © 2018 Brad Howes. All rights reserved.
 //
 // NOTE: this uses some concepts found in the nice [SwiftyUserDefaults](https://github.com/radex/SwiftyUserDefaults)
@@ -57,7 +52,7 @@ public typealias SettingSerializable = SettingSettable & SettingGettable
 extension String: SettingSerializable {
     
     public static func get(key: String, userDefaults: UserDefaults) -> String? {
-        return userDefaults.string(forKey: key)
+        userDefaults.string(forKey: key)
     }
     
     public static func set(key: String, value: String, userDefaults: UserDefaults) {
@@ -68,7 +63,7 @@ extension String: SettingSerializable {
 extension Int: SettingSerializable {
     
     public static func get(key: String, userDefaults: UserDefaults) -> Int? {
-        return userDefaults.number(forKey: key)?.intValue
+        userDefaults.number(forKey: key)?.intValue
     }
 
     public static func set(key: String, value: Int, userDefaults: UserDefaults) {
@@ -79,7 +74,7 @@ extension Int: SettingSerializable {
 extension Double: SettingSerializable {
     
     public static func get(key: String, userDefaults: UserDefaults) -> Double? {
-        return userDefaults.number(forKey: key)?.doubleValue
+        userDefaults.number(forKey: key)?.doubleValue
     }
     
     public static func set(key: String, value: Double, userDefaults: UserDefaults) {
@@ -90,7 +85,7 @@ extension Double: SettingSerializable {
 extension Bool: SettingSerializable {
     
     public static func get(key: String, userDefaults: UserDefaults) -> Bool? {
-        return userDefaults.number(forKey: key)?.boolValue
+        userDefaults.number(forKey: key)?.boolValue
     }
 
     public static func set(key: String, value: Bool, userDefaults: UserDefaults) {
@@ -101,7 +96,7 @@ extension Bool: SettingSerializable {
 extension Data: SettingSerializable {
     
     public static func get(key: String, userDefaults: UserDefaults) -> Data? {
-        return userDefaults.data(forKey: key)
+        userDefaults.data(forKey: key)
     }
     
     public static func set(key: String, value: Data, userDefaults: UserDefaults) {
@@ -129,17 +124,11 @@ open class SettingKey<ValueType: SettingSerializable>: SettingKeys {
 
 extension UserDefaults {
 
-    func number(forKey key: String) -> NSNumber? {
-        return object(forKey: key) as? NSNumber
-    }
+    func number(forKey key: String) -> NSNumber? { object(forKey: key) as? NSNumber }
 
-    func hasKey<T>(_ key: SettingKey<T>) -> Bool {
-        return object(forKey: key.userDefaultsKey) != nil
-    }
+    func hasKey<T>(_ key: SettingKey<T>) -> Bool { object(forKey: key.userDefaultsKey) != nil }
 
-    func remove<T>(_ key: SettingKey<T>) {
-        removeObject(forKey: key.userDefaultsKey)
-    }
+    func remove<T>(_ key: SettingKey<T>) { removeObject(forKey: key.userDefaultsKey) }
 
     /**
      Enable subscripting by SettingKey instances.
@@ -148,11 +137,7 @@ extension UserDefaults {
      - returns: instance of the tempalte type from UserDefaults or the configured default value if it did not exist.
      */
     subscript<T: SettingSerializable>(key: SettingKey<T>) -> T {
-        get {
-            return T.get(key: key.userDefaultsKey, userDefaults: self) ?? key.defaultValue
-        }
-        set {
-            T.set(key: key.userDefaultsKey, value: newValue, userDefaults: self)
-        }
+        get { T.get(key: key.userDefaultsKey, userDefaults: self) ?? key.defaultValue }
+        set { T.set(key: key.userDefaultsKey, value: newValue, userDefaults: self) }
     }
 }
