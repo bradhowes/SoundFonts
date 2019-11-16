@@ -14,20 +14,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("application didFinishLaunchingWithOptions")
 
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playback, mode: .default, options: [])
         } catch let error as NSError {
-            print("Failed to set the audio session category and mode: \(error.localizedDescription)")
+            fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
         
         do {
             try audioSession.setActive(true)
         } catch let error as NSError {
-            print("Failed setActive(true): \(error.localizedDescription)")
+            fatalError("Failed setActive(true): \(error.localizedDescription)")
         }
         return true
     }

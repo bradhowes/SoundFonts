@@ -15,6 +15,10 @@ import UIKit
 
 final public class KeyboardRender : NSObject {
 
+    static var isMuted = false
+
+    static let mutedColor = UIColor(red: 1.000, green: 0.000, blue: 0.0, alpha: 1.000)
+
     //// Drawing Methods
 
     @objc dynamic public class func drawWhiteKey(keySize: CGSize = CGSize(width: 64, height: 240), roundedCorner: CGFloat = 12, pressed: Bool = false) {
@@ -29,6 +33,7 @@ final public class KeyboardRender : NSObject {
 
         //// Gradient Declarations
         let pressedWhiteGradient = CGGradient(colorsSpace: nil, colors: [pressedColor.cgColor, pressedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor, UIColor.white.cgColor] as CFArray, locations: [0, 0.65, 1])!
+        let pressedMutedGradient = CGGradient(colorsSpace: nil, colors: [mutedColor.cgColor, mutedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor, UIColor.white.cgColor] as CFArray, locations: [0, 0.65, 1])!
 
         //// Shadow Declarations
         let whiteKeyShadow = NSShadow()
@@ -53,8 +58,6 @@ final public class KeyboardRender : NSObject {
         keyPath.fill()
         context.restoreGState()
 
-
-
         if (pressed) {
             //// PressedKey Drawing
             let pressedKeyRect = CGRect(x: group.minX + fastFloor(group.width * 0.00000 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5), height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5))
@@ -62,7 +65,7 @@ final public class KeyboardRender : NSObject {
             pressedKeyPath.close()
             context.saveGState()
             pressedKeyPath.addClip()
-            context.drawLinearGradient(pressedWhiteGradient,
+            context.drawLinearGradient(isMuted ? pressedMutedGradient : pressedWhiteGradient,
                 start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
                 end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
                 options: [])
@@ -83,6 +86,7 @@ final public class KeyboardRender : NSObject {
 
         //// Gradient Declarations
         let pressedBlackGradient = CGGradient(colorsSpace: nil, colors: [pressedColor.cgColor, pressedColor.blended(withFraction: 0.5, of: pressedBlackGradientColor).cgColor, pressedBlackGradientColor.cgColor] as CFArray, locations: [0, 0.75, 1])!
+        let pressedMutedGradient = CGGradient(colorsSpace: nil, colors: [mutedColor.cgColor, mutedColor.blended(withFraction: 0.5, of: UIColor.black).cgColor, UIColor.black.cgColor] as CFArray, locations: [0, 0.65, 1])!
 
         //// Shadow Declarations
         let blackKeyShadow = NSShadow()
@@ -125,7 +129,7 @@ final public class KeyboardRender : NSObject {
             context.setShadow(offset: blackKeyShadow.shadowOffset, blur: blackKeyShadow.shadowBlurRadius, color: (blackKeyShadow.shadowColor as! UIColor).cgColor)
             context.beginTransparencyLayer(auxiliaryInfo: nil)
             pressedKeyPath.addClip()
-            context.drawLinearGradient(pressedBlackGradient,
+            context.drawLinearGradient(isMuted ? pressedMutedGradient : pressedBlackGradient,
                 start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
                 end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
                 options: [])
@@ -134,7 +138,6 @@ final public class KeyboardRender : NSObject {
 
         }
     }
-
 }
 
 

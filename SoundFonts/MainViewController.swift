@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 extension SettingKeys {
     static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
@@ -27,6 +28,24 @@ final class MainViewController: UIViewController {
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
+    private var volume: Float = 0.0 {
+        didSet {
+            KeyboardRender.isMuted = isMuted
+        }
+    }
+    private var muted = false {
+        didSet {
+            KeyboardRender.isMuted = isMuted
+        }
+    }
+
+    private var isMuted: Bool { volume < 0.01 || muted }
+
+    private struct Observation {
+        static let VolumeKey = "outputVolume"
+        static var Context = 0
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         upperViewManager.add(view: patches)
@@ -35,6 +54,29 @@ final class MainViewController: UIViewController {
         runContext.establishConnections()
 
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        Mute.shared.notify = {muted in self.muted = muted }
+
+        let session = AVAudioSession.sharedInstance()
+        session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
+                            context: &Observation.Context)
+    }
+
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if context == &Observation.Context {
+            if keyPath == Observation.VolumeKey, let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
+                self.volume = volume
+            }
+        } else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        AVAudioSession.sharedInstance().removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
     }
 }
 
@@ -97,9 +139,15 @@ favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPrev
 
 // MARK: - KeyboardManagerDelegate protocol
 extension MainViewController : KeyboardManagerDelegate {
+
     func noteOn(_ note: Note) {
-        infoBarManager.setStatus(note.label + " - " + note.solfege)
-        sampler.noteOn(note.midiNoteValue)
+        if isMuted {
+            infoBarManager.setStatus("*** MUTED ***")
+        }
+        else {
+            infoBarManager.setStatus(note.label + " - " + note.solfege)
+            sampler.noteOn(note.midiNoteValue)
+        }
     }
     
     func noteOff(_ note: Note) {
