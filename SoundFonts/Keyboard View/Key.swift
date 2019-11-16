@@ -16,6 +16,7 @@ final class Key : UIView {
 
     /// The note to play when touched
     let note: Note
+
     /// State of the key -- true when touched/pressed
     var pressed: Bool = false {
         didSet {
