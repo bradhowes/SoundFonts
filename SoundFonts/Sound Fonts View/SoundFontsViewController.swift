@@ -1,16 +1,10 @@
-//
-//  SoundFontPicker.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 12/20/18.
 //  Copyright © 2018 Brad Howes. All rights reserved.
-//
 
 import UIKit
 
 extension SettingKeys {
-    static let activeSoundFont = SettingKey<String>("activeSoundFont", defaultValue: "Fluid R3 GM")
-    static let activePatch = SettingKey<Int>("activePatch", defaultValue: 13)
+    static let activeSoundFont = SettingKey<String>("activeSoundFont", defaultValue: SoundFont.keys[0])
+    static let activePatch = SettingKey<Int>("activePatch", defaultValue: 0)
 }
 
 /**
@@ -65,7 +59,11 @@ final class SoundFontsViewController: UIViewController {
             return
         }
 
-        let patchIndex = max(min(Settings[.activePatch], soundFont.patches.count - 1), 0)
+        let patchIndex: Int = {
+            let patchIndex = Settings[.activePatch]
+            return patchIndex >= 0 && patchIndex < soundFont.patches.count ? patchIndex : 0
+        }()
+
         let patch = soundFont.patches[patchIndex]
         changeActivePatch(patch)
     }
