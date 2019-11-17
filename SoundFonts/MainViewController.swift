@@ -14,17 +14,17 @@ extension SettingKeys {
 }
 
 /**
- Top-level view controller for the application.
+ Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
+ touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
+ to the background or stops being active.
  */
 final class MainViewController: UIViewController {
     
     @IBOutlet private weak var patches: UIView!
     @IBOutlet private weak var favorites: UIView!
 
-    private lazy var sampler = Sampler(patch: SoundFont.library[SoundFont.keys.first!]!.patches.first!)
-
+    private lazy var sampler = Sampler()
     private var upperViewManager = UpperViewManager()
-    private weak var infoBarManager: InfoBarManager!
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -33,6 +33,7 @@ final class MainViewController: UIViewController {
             KeyboardRender.isMuted = isMuted
         }
     }
+
     private var muted = false {
         didSet {
             KeyboardRender.isMuted = isMuted
@@ -52,17 +53,20 @@ final class MainViewController: UIViewController {
         upperViewManager.add(view: favorites)
         runContext.addViewControllers(self, children)
         runContext.establishConnections()
-
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+        print("MainViewController - viewDidLoad")
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        Mute.shared.notify = {muted in self.muted = muted }
-
-        let session = AVAudioSession.sharedInstance()
-        session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
-                            context: &Observation.Context)
+        print("MainViewController - viewDidAppear")
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        print("MainViewController - viewWillDisappear")
+    }
+}
+
+extension MainViewController {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
@@ -75,81 +79,140 @@ final class MainViewController: UIViewController {
         }
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        AVAudioSession.sharedInstance().removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
+    /**
+     Start audio processing. This is done as the app is brought into the foreground.
+     */
+    func startAudio() {
+        let session = AVAudioSession.sharedInstance()
+        session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
+                            context: &Observation.Context)
+
+        do {
+            try session.setActive(true, options: [])
+            print("MainViewController - set active audio session")
+        } catch let error as NSError {
+            fatalError("Failed setActive(true): \(error.localizedDescription)")
+        }
+
+        Mute.shared.notify = {muted in self.muted = muted }
+        Mute.shared.isPaused = false
+
+        sampler.start()
+
+        setPatch(runContext.activePatchManager.activePatch ?? SoundFont.library[SoundFont.keys.first!]!.patches.first!)
     }
+
+    /**
+     Stop audio processing. This is done prior to the app moving into the background.
+     */
+    func stopAudio() {
+        sampler.stop()
+
+        Mute.shared.notify = nil
+        Mute.shared.isPaused = true
+
+        let session = AVAudioSession.sharedInstance()
+        session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
+
+        do {
+            try session.setActive(false, options: [])
+            print("MainViewController - set inactive audio session")
+        } catch let error as NSError {
+            print("Failed setActive(false): \(error.localizedDescription)")
+        }
+    }
+
 }
 
 // MARK: - Controller Configuration
 
 extension MainViewController: ControllerConfiguration {
 
+    /**
+     Establish connections with other managers / controllers.
+
+     - parameter context: the RunContext that holds all of the registered managers / controllers
+     */
     func establishConnections(_ context: RunContext) {
-        infoBarManager = context.infoBarManager
-
-        let activePatchManager = context.activePatchManager
-        let favoritesManager = context.favoritesManager
-        let patchesManager = context.patchesManager
-        let keyboardManager = context.keyboardManager
-
-        keyboardManager.delegate = self
-
-        activePatchManager.addPatchChangeNotifier(self) { observer, patch in
-            keyboardManager.releaseAllKeys()
-            self.infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
-            self.sampler.load(patch: patch)
-            Settings[.activeSoundFont] = patch.soundFont.name
-            Settings[.activePatch] = patch.index
-        }
-
-        favoritesManager.addFavoriteChangeNotifier(self) { observer, kind, favorite in
-            if favorite.patch == activePatchManager.activePatch {
-                self.sampler.setGain(favorite.gain)
-                self.sampler.setPan(favorite.pan)
-                let patch = favorite.patch
-                self.infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
-            }
-        }
-        
-        infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
+        (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
+        context.keyboardManager.delegate = self
+        context.activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
+        context.favoritesManager.addFavoriteChangeNotifier(self) { _, _, favorite in self.useFavorte(favorite) }
+        context.infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
         let showingFavorites = Settings[.showingFavorites]
         self.patches.isHidden = showingFavorites
         self.favorites.isHidden = !showingFavorites
 
-        patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        context.patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        context.patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
-        favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        context.favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        context.favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
     }
 
-    @IBAction func showNextConfigurationView() {
+    /**
+     Show the next (right) view in the space above the info bar.
+     */
+    @IBAction private func showNextConfigurationView() {
         let showingFavorites = favorites.isHidden
         Settings[.showingFavorites] = showingFavorites
         self.upperViewManager.slideNextHorizontally()
     }
-    
-    @IBAction func showPreviousConfigurationView() {
+
+    /**
+     Show the previous (left) view in the space above the info bar.
+     */
+    @IBAction private func showPreviousConfigurationView() {
         let showingFavorites = favorites.isHidden
         Settings[.showingFavorites] = showingFavorites
         self.upperViewManager.slidePrevHorizontally()
     }
+
+    private func setPatch(_ patch: Patch) {
+        runContext.keyboardManager.releaseAllKeys()
+        runContext.infoBarManager.setPatchInfo(name: patch.name,
+                                               isFavored: runContext.favoritesManager.isFavored(patch: patch))
+        sampler.load(patch: patch)
+        Settings[.activeSoundFont] = patch.soundFont.name
+        Settings[.activePatch] = patch.index
+    }
+
+    private func useFavorte(_ favorite: Favorite) {
+        if favorite.patch == runContext.activePatchManager.activePatch {
+            self.sampler.setGain(favorite.gain)
+            self.sampler.setPan(favorite.pan)
+            let patch = favorite.patch
+            runContext.infoBarManager.setPatchInfo(name: patch.name,
+                                                   isFavored: runContext.favoritesManager.isFavored(patch: patch))
+        }
+    }
 }
 
 // MARK: - KeyboardManagerDelegate protocol
+
 extension MainViewController : KeyboardManagerDelegate {
 
+    /**
+     Play a note with the sampler. Show note info in the info bar.
+
+     - parameter note: the note to play
+     */
     func noteOn(_ note: Note) {
         if isMuted {
-            infoBarManager.setStatus("🔇")
+            runContext.infoBarManager.setStatus("🔇")
         }
         else {
-            infoBarManager.setStatus(note.label + " - " + note.solfege)
+            runContext.infoBarManager.setStatus(note.label + " - " + note.solfege)
             sampler.noteOn(note.midiNoteValue)
         }
     }
-    
+
+    /**
+     Stop playing a note with the sampler.
+
+     - parameter note: the note to stop.
+     */
     func noteOff(_ note: Note) {
         sampler.noteOff(note.midiNoteValue)
     }
