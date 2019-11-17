@@ -59,7 +59,6 @@ final class RunContext {
         infoBarController.establishConnections(self)
         keyboardController.establishConnections(self)
         mainViewController.establishConnections(self)
-
         soundFontsController.restoreLastActivePatch()
     }
 }
