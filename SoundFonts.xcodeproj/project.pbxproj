@@ -9,11 +9,15 @@
 /* Begin PBXBuildFile section */
 		BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */; };
 		BD01BC0321C922CE00F56F5A /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0221C922CE00F56F5A /* Note.swift */; };
+		BD24EAA723867F0E00F52424 /* SoundFontListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD24EAA623867F0E00F52424 /* SoundFontListTests.swift */; };
 		BD36FF6D21DBABD2002305CB /* InfoBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6C21DBABD2002305CB /* InfoBarManager.swift */; };
 		BD36FF6F21DBC393002305CB /* FavoriteDetailControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6E21DBC393002305CB /* FavoriteDetailControllerDelegate.swift */; };
 		BD36FF7121DBC3DB002305CB /* ControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
+		BD75433623828711004C6A4C /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD75433423828711004C6A4C /* iffdigest.cc */; };
+		BD75433923828760004C6A4C /* SoundFontList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD75433723828760004C6A4C /* SoundFontList.cpp */; };
+		BD75433B2382945D004C6A4C /* SoundFontPatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75433A2382945D004C6A4C /* SoundFontPatchList.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD75B26B218B8CFE00C7EBD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */; };
@@ -95,11 +99,17 @@
 /* Begin PBXFileReference section */
 		BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardRender.swift; sourceTree = "<group>"; };
 		BD01BC0221C922CE00F56F5A /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		BD24EAA623867F0E00F52424 /* SoundFontListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontListTests.swift; sourceTree = "<group>"; };
 		BD36FF6C21DBABD2002305CB /* InfoBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBarManager.swift; sourceTree = "<group>"; };
 		BD36FF6E21DBC393002305CB /* FavoriteDetailControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteDetailControllerDelegate.swift; sourceTree = "<group>"; };
 		BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControllerConfiguration.swift; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
+		BD75433423828711004C6A4C /* iffdigest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iffdigest.cc; sourceTree = "<group>"; };
+		BD75433523828711004C6A4C /* iffdigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iffdigest.h; sourceTree = "<group>"; };
+		BD75433723828760004C6A4C /* SoundFontList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SoundFontList.cpp; sourceTree = "<group>"; };
+		BD75433823828760004C6A4C /* SoundFontList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SoundFontList.hpp; sourceTree = "<group>"; };
+		BD75433A2382945D004C6A4C /* SoundFontPatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontPatchList.swift; sourceTree = "<group>"; };
 		BD75B260218B8CFD00C7EBD7 /* SoundFonts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundFonts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -204,6 +214,18 @@
 			path = "Mute Detection";
 			sourceTree = "<group>";
 		};
+		BD754333238286D9004C6A4C /* iffdigest */ = {
+			isa = PBXGroup;
+			children = (
+				BD75433423828711004C6A4C /* iffdigest.cc */,
+				BD75433523828711004C6A4C /* iffdigest.h */,
+				BD75433723828760004C6A4C /* SoundFontList.cpp */,
+				BD75433823828760004C6A4C /* SoundFontList.hpp */,
+				BD75433A2382945D004C6A4C /* SoundFontPatchList.swift */,
+			);
+			path = iffdigest;
+			sourceTree = "<group>";
+		};
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
@@ -254,8 +276,9 @@
 		BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */ = {
 			isa = PBXGroup;
 			children = (
-				BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */,
 				BD75B27A218B8CFE00C7EBD7 /* Info.plist */,
+				BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */,
+				BD24EAA623867F0E00F52424 /* SoundFontListTests.swift */,
 			);
 			path = SoundFontsTests;
 			sourceTree = "<group>";
@@ -362,6 +385,7 @@
 		BDCE3C45219184A80008ACF9 /* SoundFonts */ = {
 			isa = PBXGroup;
 			children = (
+				BD754333238286D9004C6A4C /* iffdigest */,
 				BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */,
 				BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */,
 				BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */,
@@ -555,11 +579,14 @@
 				BD7A2E4E21CEB452001CB271 /* UpperViewSlider.swift in Sources */,
 				BD85F8D021D556DF0028E440 /* PatchesTableViewDataSource.swift in Sources */,
 				BD36FF6F21DBC393002305CB /* FavoriteDetailControllerDelegate.swift in Sources */,
+				BD75433B2382945D004C6A4C /* SoundFontPatchList.swift in Sources */,
 				BDCE3C60219184A80008ACF9 /* RolandNicePiano.swift in Sources */,
 				BD75433023803994004C6A4C /* Mute.swift in Sources */,
 				BD7A2E5821D25320001CB271 /* FavoriteDetailController.swift in Sources */,
 				BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */,
 				BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */,
+				BD75433923828760004C6A4C /* SoundFontList.cpp in Sources */,
+				BD75433623828711004C6A4C /* iffdigest.cc in Sources */,
 				BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */,
 				BD85F8D521D91A460028E440 /* ActiveSoundFontManager.swift in Sources */,
 				BD01BC0321C922CE00F56F5A /* Note.swift in Sources */,
@@ -591,6 +618,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD24EAA723867F0E00F52424 /* SoundFontListTests.swift in Sources */,
 				BD75B279218B8CFE00C7EBD7 /* SoundFontsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -690,6 +718,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/iffdigest/SoundFontList.hpp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -746,6 +775,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = /Users/howes/src/SoundFonts/SoundFonts/MIDI/SoundFonts/iffdigest/SoundFontList.hpp;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -756,6 +786,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFonts/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -767,6 +798,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -776,6 +808,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFonts/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
