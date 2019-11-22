@@ -1,7 +1,3 @@
-// SoundFonts.swift
-// SynthInC
-//
-// Created by Brad Howes
 // Copyright (c) 2016 Brad Howes. All rights reserved.
 
 import UIKit

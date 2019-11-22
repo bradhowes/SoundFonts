@@ -1,4 +1,8 @@
-//  iffdigest.h  C++ classes for a simple (in-memory) RIFF file parser.
+// Copyright (c) 2019 Brad Howes. All rights reserved.
+//
+// Loosely based on iffdigest v0.3 by Andrew C. Bulhak. This code has been modified to *only* work on IFF_FMT_RIFF, and
+// it safely parses bogus files by throwing an IFF_FMT_ERROR exception anytime there is an access outside of valid
+// memory. Additional cleanup and rework for modern C++ compilers.
 
 #ifndef __IFFPARSER_H
 #define __IFFPARSER_H
