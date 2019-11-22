@@ -1,3 +1,5 @@
+🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
+
 ![](https://github.com/bradhowes/SoundFonts/blob/master/image.gif?raw=true)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
