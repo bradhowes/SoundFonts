@@ -1,3 +1,5 @@
+// Copyright (c) 2019 Brad Howes. All rights reserved.
+
 #include "iffdigest.h"
 #include <algorithm>
 #include <iostream>
