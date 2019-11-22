@@ -1,14 +1,8 @@
-//
-//  UIColor+Extensions.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 2/16/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import UIKit
 
-extension UIColor{
+extension UIColor {
 
     convenience init(hex: String, alpha: CGFloat = 1.0) {
         var hexFormatted = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()

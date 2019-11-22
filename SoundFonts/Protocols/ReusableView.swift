@@ -1,10 +1,4 @@
-//
-//  ReusableView.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 2/13/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import UIKit
 

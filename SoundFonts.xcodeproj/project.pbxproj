@@ -17,7 +17,7 @@
 		BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */; };
 		BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
 		BD42F355238868F700E6D576 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
-		BD42F35A23886B7000E6D576 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BD42F35923886B7000E6D576 /* Default-568h@2x.png */; };
+		BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
 		BD75433623828711004C6A4C /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD75433423828711004C6A4C /* iffdigest.cc */; };
@@ -112,7 +112,7 @@
 		BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
-		BD42F35923886B7000E6D576 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
 		BD75433423828711004C6A4C /* iffdigest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iffdigest.cc; sourceTree = "<group>"; };
@@ -277,7 +277,6 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
-				BD42F35923886B7000E6D576 /* Default-568h@2x.png */,
 				BD781B4B237BFDBD00A71031 /* README.md */,
 				BD75B262218B8CFD00C7EBD7 /* SoundFonts */,
 				BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */,
@@ -353,13 +352,13 @@
 		BD85F8E621DA573D0028E440 /* Sound Fonts View */ = {
 			isa = PBXGroup;
 			children = (
-				BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */,
-				BD85F8CF21D556DF0028E440 /* PatchesTableViewDataSource.swift */,
-				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
 				BDDD1F522216BA0F003BDD6F /* FontCell.swift */,
 				BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */,
-				BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */,
+				BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */,
+				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
 				BDBF088521CD1D6300C4EA27 /* PatchSearchManager.swift */,
+				BD85F8CF21D556DF0028E440 /* PatchesTableViewDataSource.swift */,
+				BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */,
 			);
 			path = "Sound Fonts View";
 			sourceTree = "<group>";
@@ -439,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */,
+				BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */,
 				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
@@ -567,7 +567,6 @@
 				BD75B26E218B8CFE00C7EBD7 /* LaunchScreen.storyboard in Resources */,
 				BDCE3C6B219184A80008ACF9 /* RolandNicePiano.sf2 in Resources */,
 				BD75B26B218B8CFE00C7EBD7 /* Assets.xcassets in Resources */,
-				BD42F35A23886B7000E6D576 /* Default-568h@2x.png in Resources */,
 				BDD386032212F2380063040C /* FavoriteCell.xib in Resources */,
 				BDCE3C66219184A80008ACF9 /* FluidR3_GM.sf2 in Resources */,
 				BDCE3C61219184A80008ACF9 /* FreeFont.sf2 in Resources */,
@@ -630,6 +629,7 @@
 				BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */,
 				BD75433923828760004C6A4C /* SoundFontList.cpp in Sources */,
 				BD75433623828711004C6A4C /* iffdigest.cc in Sources */,
+				BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */,
 				BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */,
 				BD85F8D521D91A460028E440 /* ActiveSoundFontManager.swift in Sources */,
 				BD01BC0321C922CE00F56F5A /* Note.swift in Sources */,
