@@ -1,10 +1,4 @@
-//
-//  FastlaneSnapshots.swift
-//  SoundFontsUITests
-//
-//  Created by Brad Howes on 2/17/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import XCTest
 

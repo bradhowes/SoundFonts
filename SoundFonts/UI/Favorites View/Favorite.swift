@@ -1,13 +1,8 @@
-//
-//  Favorite.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 12/23/18.
-//  Copyright © 2018 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import Foundation
 
+/// NSCoder setting keys
 fileprivate extension String {
     static let name = "name"
     static let patch = "patch"

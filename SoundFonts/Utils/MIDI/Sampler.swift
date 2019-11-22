@@ -1,10 +1,4 @@
-//
-//  Sampler.swift
-//  Miles
-//
-//  Created by Brad Howes on 11/03/2018.
-//  Copyright © 2018 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import Foundation
 import AVFoundation

@@ -1,10 +1,4 @@
-//
-//  SoundFontPatchesSearchManagerDelegate.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 1/2/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import UIKit
 

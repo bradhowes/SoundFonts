@@ -1,10 +1,4 @@
-//
-//  Key.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 11/1/18.
-//  Copyright © 2018 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
 

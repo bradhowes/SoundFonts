@@ -1,10 +1,4 @@
-//
-//  SoundFontListTests.swift
-//  SoundFontsTests
-//
-//  Created by Brad Howes on 11/21/19.
-//  Copyright © 2019 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import XCTest
 import SoundFonts

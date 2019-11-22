@@ -1,4 +1,4 @@
-//  Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 #ifndef SoundFontList_hpp
 #define SoundFontList_hpp

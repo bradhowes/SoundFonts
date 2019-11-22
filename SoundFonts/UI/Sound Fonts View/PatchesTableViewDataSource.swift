@@ -1,10 +1,4 @@
-//
-//  SoundFontsPatchesTableDataSource.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 12/27/18.
-//  Copyright © 2018 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
 

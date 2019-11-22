@@ -1,4 +1,4 @@
-//  Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
 
