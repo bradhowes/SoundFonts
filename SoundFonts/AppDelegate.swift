@@ -15,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     weak var mainViewController: MainViewController?
 
+    var containerUrl: URL? {
+        return FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents")
+    }
+
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print("application didFinishLaunchingWithOptions")
@@ -24,6 +28,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers])
         } catch let error as NSError {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
+        }
+
+        DispatchQueue.global(qos: .background).async {
+            guard let url = self.containerUrl else { return }
+            print("-- containerUrl: \(url)")
+            if !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) {
+                do {
+                    print("-- creating \(url)")
+                    try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+                    print("-- created \(url)")
+                }
+                catch {
+                    print("** failed to create \(url)")
+                    print(error.localizedDescription)
+                }
+            }
+
+            let bundle = Bundle(for: SoundFont.self)
+            let sft = bundle.url(forResource: "FluidR3_GM", withExtension: "sf2")!
+            let data = try! Data.init(contentsOf: sft)
+            let dst = url.appendingPathComponent(sft.lastPathComponent, isDirectory: false)
+            if FileManager.default.createFile(atPath: dst.path, contents: data, attributes: nil) {
+                print("-- created file \(dst)")
+            }
         }
 
         return true
