@@ -3,21 +3,28 @@
 import UIKit
 
 /**
- Specialization of `UICollectionViewCell` that knows how to render Favoite attributes.
+ Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
  */
 @IBDesignable
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
+    /// The name of the favorite
     @IBOutlet weak var name: UILabel!
 
+    /// The background color of an inactive favorite cell
     @IBInspectable var normalBackgroundColor: UIColor! {
         didSet {
             self.backgroundColor = normalBackgroundColor
         }
     }
 
+    /// Foreground color of an inactive favorite cell
     @IBInspectable var normalForegroundColor: UIColor!
+
+    /// Background color of the active favorite cell
     @IBInspectable var activeBackgroundColor: UIColor!
+
+    /// Foreground color of the active favorite cell
     @IBInspectable var activeForegroundColor: UIColor!
 
     private var normalBorderColor: UIColor?
@@ -27,6 +34,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         setupView()
     }
 
+    /// Indicates if the cell is currently moving around. Update the border color when it is.
     public var moving: Bool = false {
         didSet {
             if moving {
@@ -58,10 +66,12 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         invalidateIntrinsicContentSize()
     }
 
+    /// The intrinsic size of the cell is that of its content view with the current label text.
     override var intrinsicContentSize: CGSize {
         return contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     
+    /// Report the layout size for a given target size. Foward request to the content view.
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         return contentView.systemLayoutSizeFitting(targetSize)
     }
