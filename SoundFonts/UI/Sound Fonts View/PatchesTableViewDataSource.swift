@@ -7,6 +7,9 @@ import UIKit
  */
 final class PatchesTableViewDataSource: NSObject {
 
+    /// Number of sections we partition patches into
+    static private let sectionSize = 20
+
     private let view: UITableView
     private let searchBar: UISearchBar
     private let activeSoundFontManager: ActiveSoundFontManager
@@ -43,10 +46,8 @@ final class PatchesTableViewDataSource: NSObject {
         }
     }
 
-    static private let sectionSize = 20
-    
     /**
-     Obtain an IndexPath for the given Patch index
+     Obtain an IndexPath for the given Patch index. A patch belongs in a section and a row within the section.
      
      - parameter index: the Patch index
      - returns: view IndexPath
@@ -57,7 +58,7 @@ final class PatchesTableViewDataSource: NSObject {
     }
     
     /**
-     Obtain a Patch index for the given view IndexPath
+     Obtain a Patch index for the given view IndexPath. This is the inverse of `indexPathForPatchIndex`.
      
      - parameter indexPath: the IndexPath to convert
      - returns: Patch index
@@ -159,7 +160,7 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDataSource Protocol
+// MARK: - UITableViewDelegate Protocol
 extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

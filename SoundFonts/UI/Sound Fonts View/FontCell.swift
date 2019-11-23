@@ -19,8 +19,8 @@ final class FontCell: FontPatchCellBase, ReusableView, NibLoadableView {
      - parameter name: the name to show
      - parameter isActive: true if the SoundFont has the patch that is currently active
      */
-    func update(name: String, isSelected: Bool, isActive: Bool) {
+    func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool) {
         self.name.text = name
-        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive)
+        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
     }
 }
