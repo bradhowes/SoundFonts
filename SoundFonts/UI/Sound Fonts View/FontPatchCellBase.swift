@@ -23,6 +23,7 @@ class FontPatchCellBase: UITableViewCell {
 
     @IBInspectable var selectedFontColor: UIColor = .white
     @IBInspectable var activedFontColor: UIColor = .green
+    @IBInspectable var favoriteFontColor: UIColor = .yellow
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -35,13 +36,14 @@ class FontPatchCellBase: UITableViewCell {
         selectedBackgroundView = view
     }
 
-    func setActive(_ state: Bool) {
-        self.name?.textColor = fontColorWhen(isSelected: self.isSelected, isActive: state)
+    func setActive(_ state: Bool, isFavorite: Bool) {
+        self.name?.textColor = fontColorWhen(isSelected: self.isSelected, isActive: state, isFavorite: isFavorite)
     }
 
-    internal func fontColorWhen(isSelected: Bool, isActive: Bool) -> UIColor? {
+    internal func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {
         if isActive { return activedFontColor }
         if isSelected { return selectedFontColor }
+        if isFavorite { return favoriteFontColor }
         return normalFontColor
     }
 }

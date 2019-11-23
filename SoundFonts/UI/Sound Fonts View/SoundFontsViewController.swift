@@ -8,10 +8,12 @@ extension SettingKeys {
 }
 
 /**
- View controller for the SoundFont / Patches UITableView combination. Much of the UITableView managemnet is handled
+ View controller for the SoundFont / Patches UITableView combination. Much of the UITableView management is handled
  by specific *DataSource classes. This controller mainly serves to manage the active Patch state, plus the switching
- between normal Pathc table view display and Patch search results display. Apart from the adopted protocols, there is no
+ between normal Patch table view display and Patch search results display. Apart from the adopted protocols, there is no
  public API for this class.
+
+ Perhaps this should be split into two, one for a soundfont view, and one for the patches view.
  */
 final class SoundFontsViewController: UIViewController {
 
@@ -29,6 +31,7 @@ final class SoundFontsViewController: UIViewController {
 
     private var activePatchIndex = -1
 
+    private var favoritesManager: FavoritesManager!
     private var searchManager: PatchSearchManager!
     private var notifiers = [UUID: (Patch) -> Void]()
 
@@ -73,11 +76,11 @@ final class SoundFontsViewController: UIViewController {
         if prevIndex != index {
             activeSoundFontIndex = index
             if let cell: FontCell = soundFontsView.cellForRow(at: IndexPath(row: prevIndex, section: 0)) {
-                cell.setActive(false)
+                cell.setActive(false, isFavorite: false)
             }
 
             if let cell: FontCell = soundFontsView.cellForRow(at: IndexPath(row: index, section: 0)) {
-                cell.setActive(true)
+                cell.setActive(true, isFavorite: false)
             }
         }
 
@@ -91,13 +94,15 @@ final class SoundFontsViewController: UIViewController {
 
         if previousExists && prevIndex != -1 && prevIndex != index {
             if let cell: PatchCell = patchesView.cellForRow(at: cellRow(at: prevIndex)) {
-                cell.setActive(false)
+                let patch = activeSoundFont.patches[prevIndex]
+                cell.setActive(false, isFavorite: favoritesManager.isFavored(patch: patch))
             }
         }
 
         let pos = cellRow(at: index)
         if let cell: PatchCell = patchesView.cellForRow(at: pos) {
-            cell.setActive(true)
+            let patch = activeSoundFont.patches[index]
+            cell.setActive(true, isFavorite: favoritesManager.isFavored(patch: patch))
         }
         
         if patchesView.indexPathForSelectedRow != pos {
@@ -130,6 +135,7 @@ final class SoundFontsViewController: UIViewController {
 // MARK: - ControllerConfiguration
 extension SoundFontsViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
+
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                       searchBar: searchBar,
                                                                       activeSoundFontManager: self)
@@ -140,6 +146,8 @@ extension SoundFontsViewController: ControllerConfiguration {
                                                                 activePatchManager: self,
                                                                 favoritesManager: context.favoritesManager,
                                                                 keyboardManager: context.keyboardManager)
+
+        favoritesManager = context.favoritesManager
     }
 }
 

@@ -32,7 +32,7 @@ final class FontsTableViewDataSource: NSObject {
     private func updateCell(at indexPath: IndexPath, cell: FontCell) {
         cell.update(name: SoundFont.keys[indexPath.row],
                     isSelected: view.indexPathForSelectedRow == indexPath,
-                    isActive: indexPath.row == activeSoundFontManager.activeIndex)
+                    isActive: indexPath.row == activeSoundFontManager.activeIndex, isFavorite: false)
     }
 }
 

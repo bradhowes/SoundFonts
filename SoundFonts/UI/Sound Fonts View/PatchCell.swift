@@ -20,7 +20,7 @@ final class PatchCell: FontPatchCellBase, ReusableView, NibLoadableView {
     func update(name: String, index: Int, isActive: Bool, isFavorite: Bool) {
         self.name.text = PatchCell.favoriteTag(isFavorite) + name
         self.detail.text = "\(index)"
-        self.name.textColor = fontColorWhen(isSelected: false, isActive: isActive)
-        self.detail.textColor = fontColorWhen(isSelected: false, isActive: isActive)
+        self.name.textColor = fontColorWhen(isSelected: false, isActive: isActive, isFavorite: isFavorite)
+        self.detail.textColor = fontColorWhen(isSelected: false, isActive: isActive, isFavorite: isFavorite)
     }
 }
