@@ -1,20 +1,22 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 /**
  Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
  settings. The user may long-touch on a Favorite to bring up an editing panel.
  */
 final class FavoritesViewController: UIViewController, ControllerConfiguration {
+    private lazy var logger = Logging.logger("FavVC")
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
-    @IBOutlet var tapGestureRecognizer: UITapGestureRecognizer!
+    @IBOutlet var doubleTapGestureRecognizer: UITapGestureRecognizer!
     
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
-    private let favoriteCollection = FavoriteCollection()
+    private let favoriteCollection = FavoriteCollection.build()
     private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
     private var favoriteCell: FavoriteCell!
     private var favoriteMover: FavoriteMover!
@@ -32,10 +34,10 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
         favoriteCell.translatesAutoresizingMaskIntoConstraints = false
 
-        tapGestureRecognizer.numberOfTapsRequired = 2
-        tapGestureRecognizer.numberOfTouchesRequired = 1
-        tapGestureRecognizer.addTarget(self, action: #selector(handleTap))
-        tapGestureRecognizer.delaysTouchesBegan = true
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        doubleTapGestureRecognizer.numberOfTouchesRequired = 1
+        doubleTapGestureRecognizer.addTarget(self, action: #selector(handleTap))
+        doubleTapGestureRecognizer.delaysTouchesBegan = true
 
         favoriteMover = FavoriteMover(view: favoritesView, gr: longPressGestureRecognizer)
 
@@ -55,7 +57,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         activePatchManager = context.activePatchManager
         keyboardManager = context.keyboardManager
-        activePatchManager.addPatchChangeNotifier(self) { observer, patch in self.patchChanged(patch) }
+        activePatchManager.addPatchChangeNotifier(self) { _, old, new in self.patchChanged(old, new) }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -96,23 +98,36 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     }
     
     private func updateFavoriteCell(at indexPath: IndexPath, cell: FavoriteCell? = nil) {
-        guard let cell = cell ?? favoritesView.cellForItem(at: indexPath) as? FavoriteCell else { return }
+        os_log(.info, log: logger, "updateFavoriteCell: %d.%d %s", indexPath.section, indexPath.row,
+               cell?.description ?? "N/A")
+        guard let aCell = (cell ?? (favoritesView.cellForItem(at: indexPath) as? FavoriteCell)) else {
+            os_log(.info, log: logger, "updateFavoriteCell: no cell")
+            return
+        }
+
         let favorite = favoriteCollection[indexPath.row]
-        cell.update(name: favorite.name, isActive: favorite.patch == activePatchManager.activePatch)
+        aCell.update(name: favorite.name, isActive: favorite.patch == activePatchManager.activePatch)
     }
 
-    private func patchChanged(_ patch: Patch) {
-        favoritesView.reloadData()
+    private func patchChanged(_ old: Patch, _ new: Patch) {
+        os_log(.info, log: logger, "patchChanged: %s, %s", old.description, new.description)
+        if let fave = favoriteCollection.getFavorite(patch: old) {
+            os_log(.info, log: logger, "updating prev cell - %s", fave.description)
+            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
+        }
+
+        if let fave = favoriteCollection.getFavorite(patch: new) {
+            os_log(.info, log: logger, "updating new cell - %s", fave.description)
+            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
+        }
     }
 
     private func selected(_ favorite: Favorite) {
-        let prevFave = favoriteCollection[activePatchManager.activePatch]
+        os_log(.info, log: logger, "setting active patch")
         activePatchManager.activePatch = favorite.patch
+
+        os_log(.info, log: logger, "setting lowest note")
         keyboardManager.lowestNote = favorite.keyboardLowestNote
-        if prevFave != nil {
-            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: prevFave!), section: 0))
-        }
-        updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: favorite), section: 0))
         notify(.selected, favorite)
     }
     
@@ -141,11 +156,13 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
 // MARK: - UICollectionViewDelegate
 extension FavoritesViewController: UICollectionViewDelegate {
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let favorite = favoriteCollection[indexPath.row]
+        os_log(.info, log: logger, "selecting %d %s", indexPath.row, favorite.name)
         selected(favorite)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         return favoriteCollection.count > 1
     }
@@ -163,11 +180,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         updateFavoriteCell(at: indexPath, cell: favoriteCell)
-        let size = favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        return size
-
-        // let size = favoriteCell.name.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        // return CGSize(width: size.width + 48, height: size.height + 48)
+        return favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }
 

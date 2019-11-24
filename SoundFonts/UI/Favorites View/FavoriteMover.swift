@@ -2,19 +2,33 @@
 
 import UIKit
 
-class FavoriteMover: NSObject {
+/**
+ Manages the movement of a Favorite instance.
+ */
+final class FavoriteMover: NSObject {
 
-    let view: UICollectionView
-    var cell: FavoriteCell?
+    private let view: UICollectionView
+    private var cell: FavoriteCell?
 
+    /**
+     Create a new mover for the given view and long-press gesture recognizer.
+
+     - parameter view: the view to manage
+     - parameter gr: the long-press gesture recognizer that triggers a move.
+     */
     init(view: UICollectionView, gr: UILongPressGestureRecognizer) {
         self.view = view
         super.init()
         gr.minimumPressDuration = 0.25
         gr.addTarget(self, action: #selector(handleLongPress))
     }
-    
-    @objc func handleLongPress(_ gr: UILongPressGestureRecognizer) {
+
+    /**
+     Handle a long-press gesture.
+
+     - parameter gr: the gesture recognizer being used
+     */
+    @objc private func handleLongPress(_ gr: UILongPressGestureRecognizer) {
         switch(gr.state) {
         case .began:
             let pos = gr.location(in: view)

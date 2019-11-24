@@ -8,12 +8,13 @@ import Foundation
 protocol ActivePatchManager: class {
 
     /// Prototype for the notifying function
-    typealias Notifier<O: AnyObject> = (O, Patch) -> Void
+    typealias Notifier<O: AnyObject> = (_ observer: O, _ old: Patch, _ new: Patch) -> Void
 
     /// The collection of patches currently available for the active SoundFont
     var patches: [Patch] { get }
+
     /// The currently active patch
-    var activePatch: Patch? { get set }
+    var activePatch: Patch { get set }
 
     /**
      Install a closure to be called when a Patch change happens. The closure takes one argument, the Patch instance

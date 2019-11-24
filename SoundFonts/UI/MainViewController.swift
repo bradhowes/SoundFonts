@@ -2,6 +2,7 @@
 
 import UIKit
 import AVKit
+import os
 
 extension SettingKeys {
     static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
@@ -13,7 +14,8 @@ extension SettingKeys {
  to the background or stops being active.
  */
 final class MainViewController: UIViewController {
-    
+    private lazy var logger = Logging.logger("MainVC")
+
     @IBOutlet private weak var patches: UIView!
     @IBOutlet private weak var favorites: UIView!
 
@@ -65,8 +67,10 @@ extension MainViewController {
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?,
                                context: UnsafeMutableRawPointer?) {
         if context == &Observation.Context {
-            if keyPath == Observation.VolumeKey, let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
-                self.volume = volume
+            if keyPath == Observation.VolumeKey {
+                if let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
+                    self.volume = volume
+                }
             }
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
@@ -93,7 +97,7 @@ extension MainViewController {
 
         sampler.start()
 
-        setPatch(runContext.activePatchManager.activePatch ?? SoundFont.library[SoundFont.keys.first!]!.patches.first!)
+        setPatch(runContext.activePatchManager.activePatch)
     }
 
     /**
@@ -130,8 +134,8 @@ extension MainViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
         context.keyboardManager.delegate = self
-        context.activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
-        context.favoritesManager.addFavoriteChangeNotifier(self) { _, _, favorite in self.useFavorte(favorite) }
+        context.activePatchManager.addPatchChangeNotifier(self) { _, _, patch in self.setPatch(patch) }
+        context.favoritesManager.addFavoriteChangeNotifier(self) { _, _, favorite in self.useFavorite(favorite) }
         context.infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
         let showingFavorites = Settings[.showingFavorites]
@@ -167,18 +171,22 @@ extension MainViewController: ControllerConfiguration {
         runContext.keyboardManager.releaseAllKeys()
         runContext.infoBarManager.setPatchInfo(name: patch.name,
                                                isFavored: runContext.favoritesManager.isFavored(patch: patch))
-        sampler.load(patch: patch)
-        Settings[.activeSoundFont] = patch.soundFont.name
-        Settings[.activePatch] = patch.index
+        DispatchQueue.global(qos: .background).async {
+            self.sampler.load(patch: patch)
+            Settings[.activeSoundFont] = patch.soundFont!.displayName
+            Settings[.activePatch] = patch.index
+        }
     }
 
-    private func useFavorte(_ favorite: Favorite) {
+    private func useFavorite(_ favorite: Favorite) {
         if favorite.patch == runContext.activePatchManager.activePatch {
-            self.sampler.setGain(favorite.gain)
-            self.sampler.setPan(favorite.pan)
             let patch = favorite.patch
             runContext.infoBarManager.setPatchInfo(name: patch.name,
                                                    isFavored: runContext.favoritesManager.isFavored(patch: patch))
+            DispatchQueue.global(qos: .background).async {
+                self.sampler.setGain(favorite.gain)
+                self.sampler.setPan(favorite.pan)
+            }
         }
     }
 }

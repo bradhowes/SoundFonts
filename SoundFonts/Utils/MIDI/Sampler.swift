@@ -13,12 +13,6 @@ public class Sampler {
     private var patch: Patch?
 
     /**
-     Creates a new Sampler instance for the specified instrument voice.
-    */
-    public init() {
-    }
-
-    /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
      */
     public func start() {
@@ -54,8 +48,9 @@ public class Sampler {
     public func load(patch: Patch) {
         self.patch = patch
         guard let sampler = self.ausampler else { return }
+        guard let soundFont = patch.soundFont else { return }
         do {
-            try sampler.loadSoundBankInstrument(at: patch.soundFont.fileURL, program: UInt8(patch.patch),
+            try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.patch),
                                                 bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
         } catch let error as NSError {
             print("\(error.localizedDescription)")

@@ -23,24 +23,34 @@ struct sfPresetHeader {
 };
 
 struct PatchInfo {
-    std::string name_;
-    int bank_;
-    int patch_;
+    std::string name;
+    int bank;
+    int patch;
 
-    PatchInfo(const sfPresetHeader* preset)
-    : name_(preset->achPresetName), bank_(preset->wBank), patch_(preset->wPreset) {}
+    PatchInfo(const sfPresetHeader* preset) : name(preset->achPresetName), bank(preset->wBank), patch(preset->wPreset) {}
 };
 
-typedef std::vector<PatchInfo> PatchInfoList;
+struct InternalSoundFontInfo {
+    std::string name;
+    std::vector<PatchInfo> patches;
+};
 
-const PatchInfoList*
+const InternalSoundFontInfo*
 InternalSoundFontParse(const void* data, size_t size)
 {
-    PatchInfoList* patchInfoList = new PatchInfoList();
+    InternalSoundFontInfo* soundFontInfo = new InternalSoundFontInfo();
+    soundFontInfo->name = "";
 
     try {
         // We only have a `parser` if there the given resource parses correctly.
         auto parser = IFFParser::parse(data, size);
+        auto info = parser.find("INFO");
+        if (info != parser.end()) {
+            auto name = info->find("INAM");
+            if (name != info->end()) {
+                soundFontInfo->name = std::string(name->dataPtr(), name->size());
+            }
+        }
 
         // Locate the chunk holding the "patch data"
         auto patchData = parser.find("pdta");
@@ -55,14 +65,14 @@ InternalSoundFontParse(const void* data, size_t size)
                 auto end = (*patchHeader).dataPtr() + (*patchHeader).size();
                 while (pos < end) {
                     const sfPresetHeader* preset = reinterpret_cast<const sfPresetHeader*>(pos);
-                    patchInfoList->push_back(preset);
+                    soundFontInfo->patches.push_back(preset);
                     pos += 38; // NOTE: this is *not* the same as sizeof(sfPresetHeader)
                 }
 
                 // Sort patches in increasing order by bank, patch
-                std::sort(patchInfoList->begin(), patchInfoList->end(),
+                std::sort(soundFontInfo->patches.begin(), soundFontInfo->patches.end(),
                           [](const PatchInfo& a, const PatchInfo& b) {
-                    return a.bank_ < b.bank_ || (a.bank_ == b.bank_ && a.patch_ < b.patch_); });
+                    return a.bank < b.bank || (a.bank == b.bank && a.patch < b.patch); });
 
                 break;
             }
@@ -71,25 +81,29 @@ InternalSoundFontParse(const void* data, size_t size)
     catch (enum IFFFormat value) {
         ;
     }
-    return patchInfoList;
+    return soundFontInfo;
 }
 
-PatchInfoListWrapper SoundFontParse(const void* data, size_t size) {
-    return static_cast<PatchInfoListWrapper>(InternalSoundFontParse(data, size));
+SoundFontInfo SoundFontParse(const void* data, size_t size) {
+    return static_cast<SoundFontInfo>(InternalSoundFontParse(data, size));
 }
 
-size_t PatchInfoListSize(PatchInfoListWrapper object) {
-    return static_cast<const PatchInfoList*>(object)->size();
+const char* SoundFontName(SoundFontInfo object) {
+    return static_cast<const InternalSoundFontInfo*>(object)->name.c_str();
 }
 
-const char* PatchInfoName(PatchInfoListWrapper object, size_t index) {
-    return (*static_cast<const PatchInfoList*>(object))[index].name_.c_str();
+size_t SoundFontPatchCount(SoundFontInfo object) {
+    return static_cast<const InternalSoundFontInfo*>(object)->patches.size();
 }
 
-int PatchInfoBank(PatchInfoListWrapper object, size_t index) {
-    return (*static_cast<const PatchInfoList*>(object))[index].bank_;
+const char* SoundFontPatchName(SoundFontInfo object, size_t index) {
+    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].name.c_str();
 }
 
-int PatchInfoPatch(PatchInfoListWrapper object, size_t index) {
-    return (*static_cast<const PatchInfoList*>(object))[index].patch_;
+int SoundFontPatchBank(SoundFontInfo object, size_t index) {
+    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].bank;
+}
+
+int SoundFontPatchPatch(SoundFontInfo object, size_t index) {
+    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].patch;
 }

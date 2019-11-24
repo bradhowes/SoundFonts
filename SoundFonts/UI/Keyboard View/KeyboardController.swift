@@ -22,6 +22,7 @@ final class KeyboardController: UIViewController {
 
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
+
     /// Collection of Key instances for the keyboard. Note that in here the 'black' keys appear before the 'white' keys
     /// so that touch processing happens correctly.
     private var keys = [Key]()
