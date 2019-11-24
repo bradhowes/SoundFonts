@@ -63,7 +63,7 @@ final class FavoriteDetailController : UIViewController {
         lowestNote.setTitle(favorite.keyboardLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(favorite.keyboardLowestNote.midiNoteValue)
         title = favorite.name
-        soundFontName.text = patch.soundFont.name
+        soundFontName.text = patch.soundFont?.displayName ?? "???"
         patchName.text = patch.name
         bank.text = "\(patch.bank)/\(patch.patch)"
         index.text = "\(patch.index)"

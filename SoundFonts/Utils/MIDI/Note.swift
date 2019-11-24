@@ -5,7 +5,7 @@ import Foundation
 /**
  Definition of a MIDI note.
  */
-struct Note : CustomStringConvertible, Decodable, Encodable {
+struct Note : CustomStringConvertible, Codable {
 
     static public let sharpTag = "♯"
     static public let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]
@@ -13,14 +13,17 @@ struct Note : CustomStringConvertible, Decodable, Encodable {
 
     /// The MIDI value to emit to generate this note
     let midiNoteValue: Int
+
     /// True if this note is accented (sharp or flat)
     let accented: Bool
+
     /// Obtain a textual representation of the note
     var label: String {
         let noteIndex = midiNoteValue % 12
         let accent = accented ? Note.sharpTag : ""
         return "\(Note.noteLabels[noteIndex])\(accent)\(octave)"
     }
+
     /// Obtain the solfege representation for this note
     var solfege: String {
         let noteIndex = midiNoteValue % 12

@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import Foundation
+import os
 
 extension SettingKeys {
     static let favorites = SettingKey<Data>("favorites", defaultValue: Data())
@@ -10,37 +11,53 @@ extension SettingKeys {
  Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
  restored when the app relaunches.
  */
-final class FavoriteCollection: NSObject {
+final class FavoriteCollection: Codable {
+
+    private static let logger = Logging.logger("FavCo")
+
+    private static let archivePath: URL = FileManager.default.localDocumentsDirectory
+        .appendingPathComponent("favorites.plist")
 
     /// Reverse lookup of a Patch instance to a Favorite.
     ///
     /// - NOTE: For now this mapping means that there is only 1-1 relationship when there is a valid use-case for
     ///   1-many.
-    private var favoriteMap = [Patch: Favorite]()
+    private var favoriteMap = [Patch:Favorite]()
+
     /// Array of Favorite instances.
     private var favorites = [Favorite]()
+
     /// Number of Favorite instances.
     var count: Int { return favorites.count }
+
+    enum FakeError: Error {
+        case bad
+    }
+
+    static func build() -> FavoriteCollection {
+
+        // Attempt to restore from the `favorites.plist` file. If that fails, try the old way by taking from the
+        // UserDefaults. If *that* fails, assume first-time user and add a favorite so the view does not look so
+        // empty.
+        do {
+            os_log(.info, log: logger, "attempting to restore collection")
+            let data = try Data(contentsOf: archivePath, options: .dataReadingMapped)
+            os_log(.info, log: logger, "loaded data")
+            return try PropertyListDecoder().decode(FavoriteCollection.self, from: data)
+        } catch {
+            os_log(.info, log: logger, "failed to restore collection")
+        }
+
+        os_log(.info, log: logger, "creating initial collection")
+        return FavoriteCollection()
+    }
 
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
-    override init() {
-        super.init()
-        do {
-            let prev = Settings[.favorites]
-            if let favorites = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(prev) as? [Favorite] {
-                self.favorites = favorites
-                self.favorites.forEach { favoriteMap[$0.patch] = $0 }
-            }
-        } catch {
-            print(error)
-        }
-
-        if favorites.isEmpty {
-            add(Favorite(patch: SoundFont.library[SoundFont.keys[0]]!.patches[0],
-                         keyboardLowestNote: Note(midiNoteValue: 48)))
-        }
+    private init() {
+        add(Favorite(patch: SoundFontLibrary.shared.getByIndex(0).patches[0],
+                     keyboardLowestNote: Note(midiNoteValue: 48)))
     }
 
     /**
@@ -49,7 +66,15 @@ final class FavoriteCollection: NSObject {
      - parameter patch: Patch to check
      - returns: true if so
      */
-    func isFavored(patch: Patch) -> Bool { return favoriteMap[patch] != nil }
+    func isFavored(patch: Patch) -> Bool { return getFavorite(patch: patch) != nil }
+
+    /**
+     Obtain the Favorite that is associated with the given Patch.
+
+     - parameter patch: the Patch to look for
+     - returns the Favorite found or nil if none
+     */
+    func getFavorite(patch: Patch) -> Favorite? { return favoriteMap[patch] }
 
     /**
      Obtain the Favorite instance at the given index
@@ -73,7 +98,17 @@ final class FavoriteCollection: NSObject {
      - parameter favorite: the Favorite to look for
      - returns: the index of the Favorite or -1 if not found
      */
-    func getIndex(of favorite: Favorite) -> Int { return favorites.firstIndex(of: favorite) ?? -1 }
+    func getIndex(of favorite: Favorite) -> Int {
+        os_log(.info, log: Self.logger, "getIndex: %s", favorite.description)
+        for fav in favorites.enumerated() {
+            os_log(.info, log: Self.logger, "-- %d %s", fav.0, fav.1.description)
+            if (fav.1.name == favorite.name) {
+                return fav.0
+            }
+        }
+
+        fatalError("favorite is *not* found")
+    }
     
     /**
      Add a new favorite to the collection.
@@ -82,11 +117,18 @@ final class FavoriteCollection: NSObject {
      */
     func add(_ favorite: Favorite) {
         precondition(isFavored(patch: favorite.patch) == false, "Patch is already associated with a Favorite")
+        os_log(.info, log: Self.logger, "adding '%s'", favorite.name)
         favoriteMap[favorite.patch] = favorite
         favorites.append(favorite)
         save()
     }
-    
+
+    /**
+     Update the collection by moving an entry from one slot to another.
+
+     - parameter from: the source slot
+     - parameter to: the destination slot
+     */
     func move(from: Int, to: Int) {
         let favorite = favorites.remove(at: from)
         favorites.insert(favorite, at: to)
@@ -115,7 +157,6 @@ final class FavoriteCollection: NSObject {
     func remove(at index: Int) {
         let fave = favorites.remove(at: index)
         favoriteMap.removeValue(forKey: fave.patch)
-        save()
     }
 
     /**
@@ -123,10 +164,23 @@ final class FavoriteCollection: NSObject {
      */
     func save() {
         do {
-            let data = try NSKeyedArchiver.archivedData(withRootObject: favorites, requiringSecureCoding: false)
-            Settings[.favorites] = data
+            os_log(.info, log: Self.logger, "archiving")
+
+            // NOTE: acquire the encoding in the main thread to guarantee thread-safe access. Do the rest in the
+            // background.
+            let data = try PropertyListEncoder().encode(self)
+            DispatchQueue.global(qos: .background).async {
+                os_log(.info, log: Self.logger, "obtained archive")
+                do {
+                    os_log(.info, log: Self.logger, "trying to save to disk")
+                    try data.write(to: Self.archivePath, options: [.atomicWrite, .completeFileProtection])
+                    os_log(.info, log: Self.logger, "saving OK")
+                } catch {
+                    os_log(.error, log: Self.logger, "saving FAILED")
+                }
+            }
         } catch {
-            print(error)
+            os_log(.error, log: Self.logger, "archiving FAILED")
         }
     }
 }

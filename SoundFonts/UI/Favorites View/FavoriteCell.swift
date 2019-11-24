@@ -1,12 +1,14 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 /**
  Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
  */
 @IBDesignable
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
+    private lazy var logger = Logging.logger("FavC")
 
     /// The name of the favorite
     @IBOutlet weak var name: UILabel!
@@ -53,6 +55,8 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
      - parameter isActive: true if the Favorite's patch is currently active.
      */
     func update(name: String, isActive: Bool) {
+        os_log(.info, log: logger, "update: %s %d", name, isActive)
+
         self.name.text = name
         if isActive {
             self.backgroundColor = activeBackgroundColor

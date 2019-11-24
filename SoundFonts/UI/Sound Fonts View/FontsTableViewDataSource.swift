@@ -30,7 +30,7 @@ final class FontsTableViewDataSource: NSObject {
      - parameter cell: FontCell to use for the update
      */
     private func updateCell(at indexPath: IndexPath, cell: FontCell) {
-        cell.update(name: SoundFont.keys[indexPath.row],
+        cell.update(name: SoundFontLibrary.shared.keys[indexPath.row],
                     isSelected: view.indexPathForSelectedRow == indexPath,
                     isActive: indexPath.row == activeSoundFontManager.activeIndex, isFavorite: false)
     }
@@ -57,7 +57,7 @@ extension FontsTableViewDataSource: UITableViewDataSource {
      - returns: number of available SoundFont files
      */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SoundFont.keys.count
+        return SoundFontLibrary.shared.keys.count
     }
 
     /**

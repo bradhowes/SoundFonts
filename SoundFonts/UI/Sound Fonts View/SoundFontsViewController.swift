@@ -1,9 +1,10 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 extension SettingKeys {
-    static let activeSoundFont = SettingKey<String>("activeSoundFont", defaultValue: SoundFont.keys[0])
+    static let activeSoundFont = SettingKey<String>("activeSoundFont", defaultValue: "")
     static let activePatch = SettingKey<Int>("activePatch", defaultValue: 0)
 }
 
@@ -16,6 +17,7 @@ extension SettingKeys {
  Perhaps this should be split into two, one for a soundfont view, and one for the patches view.
  */
 final class SoundFontsViewController: UIViewController {
+    private lazy var logger = Logging.logger("SFVC")
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
@@ -25,15 +27,15 @@ final class SoundFontsViewController: UIViewController {
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
     
     private var selectedSoundFontIndex: Int = -1
-    private var selectedSoundFont: SoundFont { return SoundFont.getByIndex(selectedSoundFontIndex) }
-    private var activeSoundFontIndex = -1
-    private var activeSoundFont: SoundFont { return SoundFont.getByIndex(activeSoundFontIndex) }
+    private var selectedSoundFont: SoundFont { return SoundFontLibrary.shared.getByIndex(selectedSoundFontIndex) }
+    private var activeSoundFontIndex = 0
+    private var activeSoundFont: SoundFont { return SoundFontLibrary.shared.getByIndex(activeSoundFontIndex) }
 
-    private var activePatchIndex = -1
+    private var activePatchIndex = 0
 
     private var favoritesManager: FavoritesManager!
     private var searchManager: PatchSearchManager!
-    private var notifiers = [UUID: (Patch) -> Void]()
+    private var notifiers = [UUID: (Patch, Patch) -> Void]()
 
     private var swipeLeft = UISwipeGestureRecognizer()
     private var swipeRight = UISwipeGestureRecognizer()
@@ -55,7 +57,7 @@ final class SoundFontsViewController: UIViewController {
 
     func restoreLastActivePatch() {
         let lastSoundFontName = Settings[.activeSoundFont]
-        guard let soundFont = SoundFont.library[lastSoundFontName] else {
+        guard let soundFont = SoundFontLibrary.shared.getByName(lastSoundFontName) else {
             selectedIndex = 0
             activeIndex = 0
             setActivePatchIndex(0, previousExists: false)
@@ -117,18 +119,23 @@ final class SoundFontsViewController: UIViewController {
         return patchesTableViewDataSource.indexPathForPatchIndex(row)
     }
 
-    private func changeActivePatch(_ patch: Patch?) {
-        guard let patch = patch else { return }
+    private func changeActivePatch(_ patch: Patch) {
+        os_log(.info, log: logger, "changeActivePatch")
         guard patch != activePatch else { return }
+        let old = activePatch
+        guard let soundFont = patch.soundFont else { return }
 
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }
 
-        let fontChanged = setActiveSoundFontIndex(SoundFont.indexForName(patch.soundFont.name))
+        os_log(.info, log: logger, "1")
+        let fontChanged = setActiveSoundFontIndex(SoundFontLibrary.shared.indexForName(soundFont.displayName))
         setActivePatchIndex(patch.index, previousExists: !fontChanged)
-        
-        notifiers.values.forEach { $0(patch) }
+        os_log(.info, log: logger, "2")
+
+        notifiers.values.forEach { $0(old, patch) }
+        os_log(.info, log: logger, "3")
     }
 }
 
@@ -171,7 +178,7 @@ extension SoundFontsViewController : ActiveSoundFontManager {
 
             if let searchTerm = searchBar.searchTerm {
                 let api = activeSoundFontIndex == selectedSoundFontIndex ? activePatchIndex : -1
-                let selectedSoundFont = SoundFont.getByIndex(selectedSoundFontIndex)
+                let selectedSoundFont = SoundFontLibrary.shared.getByIndex(selectedSoundFontIndex)
                 searchManager.search(soundFont: selectedSoundFont, activePatchIndex: api, term: searchTerm)
             }
             else {
@@ -197,15 +204,21 @@ extension SoundFontsViewController: ActivePatchManager {
 
     var patches: [Patch] { return self.selectedSoundFont.patches }
 
-    var activePatch: Patch? {
+    var activePatch: Patch {
         get {
-            return activePatchIndex == -1 ? nil : self.activeSoundFont.patches[activePatchIndex]
+            self.activeSoundFont.patches[activePatchIndex]
         }
         set {
             changeActivePatch(newValue)
         }
     }
 
+    /**
+     Add an observer for patch changes.
+
+     - parameter observer: the object that is interested in the patch change notifications.
+     - parameter closure: the closure to invoke when the patch changes.
+     */
     func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
 
@@ -215,13 +228,15 @@ extension SoundFontsViewController: ActivePatchManager {
         // For this closure, we don't need a weak self since we are holding the collection and they cannot run outside
         // of the main thread. However, we don't want to keep the observer from going away, so treat that as weak and
         // protect against it being nil.
-        notifiers[uuid] = { [weak observer] patch in
+        notifiers[uuid] = { [weak observer] old, new in
+            os_log(.info, log: self.logger, "patch changed notification")
             if let strongObserver = observer {
-                closure(strongObserver, patch)
+                closure(strongObserver, old, new)
             }
             else {
                 token.cancel()
             }
+            os_log(.info, log: self.logger, "done")
         }
 
         // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self and protect
@@ -229,12 +244,25 @@ extension SoundFontsViewController: ActivePatchManager {
         return NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
     }
 
+    /**
+     Remove a registered observer.
+
+     - parameter forKey: the unique identifier for the observer to remove.
+     */
     func removeNotifier(forKey key: UUID) {
         notifiers.removeValue(forKey: key)
     }
 }
 
 extension SoundFontsViewController: PatchesManager {
+
+    /**
+     Attach an event notification to the given object/selector pair so that future events will invoke the selector.
+
+     - parameter event: the event to attach to
+     - parameter target: the object to notify
+     - parameter action: the selector to invoke
+     */
     func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
         switch event {
         case .swipeLeft: swipeLeft.addTarget(target, action: action)
@@ -245,18 +273,40 @@ extension SoundFontsViewController: PatchesManager {
 
 // MARK: - PatchSearchManagerDelegate Protocol
 extension SoundFontsViewController: PatchSearchManagerDelegate {
+
+    /**
+     Notification that a patch in the search result was selected.
+
+     - parameter patch: the patch to make active
+     */
     func selected(patch: Patch) {
         changeActivePatch(patch)
     }
 
+    /**
+     Show the patch search field.
+     */
     func scrollToSearchField() {
         patchesView.scrollRectToVisible(searchBar.frame, animated: true)
     }
-    
+
+    /**
+     Update the tableview cell with the search information.
+
+     - parameter cell: the cell to update
+     - parameter with: the patch to represent in the cell
+     */
     func updateCell(_ cell: PatchCell, with patch: Patch) {
         patchesTableViewDataSource.updateCell(cell, with: patch)
     }
 
+    /**
+     Attach swipe actions to a cell
+
+     - parameter at: the cell to attach to
+     - parameter with: the patch represented in the cell
+     - returns swipe action for the cell
+     */
     func createSwipeAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
         return patchesTableViewDataSource.createSwipeAction(at: cell, with: patch)
     }
@@ -264,7 +314,14 @@ extension SoundFontsViewController: PatchSearchManagerDelegate {
 
 // MARK: - UISearchBarDelegate Protocol
 extension SoundFontsViewController : UISearchBarDelegate {
-    
+
+    /**
+     Notification that the content of the search field changed. Update the search results based on the new contents. If
+     the search field is empty, replace the search results with the patch listing.
+
+     - parameter searchBar: the UISearchBar where the event took place
+     - parameter textDidChange: the current contents of the text field
+     */
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let searchTerm = searchBar.searchTerm {
             patchesView.dataSource = searchManager
