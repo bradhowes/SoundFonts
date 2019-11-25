@@ -22,6 +22,7 @@ final class RunContext {
     var infoBarManager: InfoBarManager { infoBarController }
     var keyboardManager: KeyboardManager { keyboardController }
     var patchesManager: PatchesManager { soundFontsController }
+    var soundFontLibraryManager: SoundFontLibraryManager { SoundFontLibrary.shared }
 
     /**
      Collect the known view controllers and track what we have.

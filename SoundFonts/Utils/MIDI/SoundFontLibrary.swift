@@ -4,7 +4,9 @@
 import Foundation
 import os
 
-public final class SoundFontLibrary: Codable {
+public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
+    
+    private var notifiers = [UUID: (SoundFontLibraryChangeKind, SoundFont) -> Void]()
 
     private static let logger = Logging.logger("SFLib")
 
@@ -28,6 +30,11 @@ public final class SoundFontLibrary: Codable {
             library.save()
             return library
         }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case map
+        case keys
     }
 
     private init() {
@@ -65,31 +72,87 @@ public final class SoundFontLibrary: Codable {
      */
     public func indexForName(_ name: String) -> Int { keys.firstIndex(of: name) ?? 0 }
 
+    /**
+     Add a SoundFont resource to the library.
+
+     - parameter soundFont: the URL of the resource to add
+     */
     public func add(soundFont: URL) {
         os_log(.info, log: Self.logger, "adding '%s' to library", soundFont.path)
-        guard let data = try? Data(contentsOf: soundFont, options: .dataReadingMapped) else {
-            os_log(.error, log: Self.logger, "failed to get SF2 data")
+
+        do {
+
+            // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
+            // not in a security scope.
+            let secured = soundFont.startAccessingSecurityScopedResource()
+
+            // Get the contents of the resource.
+            let data = try Data(contentsOf: soundFont, options: .dataReadingMapped)
+
+            if secured { soundFont.stopAccessingSecurityScopedResource() }
+
+            // Try and parse the resource to get the name of the SoundFont and a list of all of the patches.
+            let info = GetSoundFontInfo(data: data)
+            if info.name.isEmpty || info.patches.isEmpty {
+                os_log(.error, log: Self.logger, "failed to parse SF2 data")
+                return
+            }
+
+            let soundFont = SoundFont(info)
+            map[info.name] = soundFont
+            keys = map.keys.sorted()
+            notify(.added, soundFont)
+
+            DispatchQueue.global(qos: .background).async {
+                os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.path)
+                let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
+                if result {
+                    os_log(.info, log: Self.logger, "created OK")
+                }
+                else {
+                    os_log(.error, log: Self.logger, "created FAILED")
+                }
+            }
+
+        } catch {
+            os_log(.error, log: Self.logger, "failed to get SF2 data - %s", error.localizedDescription)
             return
         }
 
-        let info = GetSoundFontInfo(data: data)
-        if info.name.isEmpty || info.patches.isEmpty {
-            os_log(.error, log: Self.logger, "failed to parse SF2 data")
-            return
-        }
+    }
 
-        let soundFont = SoundFont(info)
-        map[info.name] = soundFont
-        DispatchQueue.global(qos: .background).async {
-            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.path)
-            let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
-            if result {
-                os_log(.info, log: Self.logger, "created OK")
+    func remove(soundFont: SoundFont) {
+
+    }
+
+    func edit(soundFont: SoundFont) {
+
+    }
+}
+
+extension SoundFontLibrary {
+
+    func addSoundFontLibraryChangeNotifier<O>(_ observer: O, closure: @escaping (SoundFontLibraryChangeKind, SoundFont) -> Void) -> NotifierToken where O : AnyObject {
+        let uuid = UUID()
+        let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
+        notifiers[uuid] = { [weak observer] kind, soundFont in
+            if observer != nil {
+                closure(kind, soundFont)
             }
             else {
-                os_log(.error, log: Self.logger, "created FAILED")
+                token.cancel()
             }
         }
+
+        return token
+    }
+
+    func removeNotifier(forKey key: UUID) {
+        notifiers.removeValue(forKey: key)
+    }
+
+    private func notify(_ kind: SoundFontLibraryChangeKind, _ soundFont: SoundFont) {
+        notifiers.values.forEach { $0(kind, soundFont) }
     }
 }
 

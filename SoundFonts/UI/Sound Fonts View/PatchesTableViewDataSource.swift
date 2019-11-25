@@ -17,7 +17,11 @@ final class PatchesTableViewDataSource: NSObject {
     private let favoritesManager: FavoritesManager
     private let keyboardManager: KeyboardManager
 
-    private var patches: [Patch] { return activePatchManager.patches }
+    private var patches: [Patch] {
+        let selectedIndex = activeSoundFontManager.selectedIndex
+        let activeIndex = activeSoundFontManager.activeIndex
+        return SoundFontLibrary.shared.getByIndex(selectedIndex != -1 ? selectedIndex : activeIndex).patches
+    }
 
     init(view: UITableView, searchBar: UISearchBar,
          activeSoundFontManager: ActiveSoundFontManager,
@@ -37,11 +41,11 @@ final class PatchesTableViewDataSource: NSObject {
         view.delegate = self
 
         // Receive notifications when a favorite is destroyed from within the favorite editor pane.
-        favoritesManager.addFavoriteChangeNotifier(self) { obs, kind, favorite in
+        favoritesManager.addFavoriteChangeNotifier(self) { kind, favorite in
             if kind == .removed {
                 let patch = favorite.patch
-                guard let index = obs.patches.firstIndex(of: patch) else { return }
-                obs.view.reloadRows(at: [self.indexPathForPatchIndex(index)], with: .none)
+                guard let index = self.patches.firstIndex(of: patch) else { return }
+                self.view.reloadRows(at: [self.indexPathForPatchIndex(index)], with: .none)
             }
         }
     }

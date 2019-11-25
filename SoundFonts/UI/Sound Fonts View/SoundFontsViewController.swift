@@ -144,8 +144,8 @@ extension SoundFontsViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
 
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
-                                                                      searchBar: searchBar,
-                                                                      activeSoundFontManager: self)
+                                                                 searchBar: searchBar,
+                                                                 activeSoundFontManager: self)
         
         patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
                                                                 searchBar: searchBar,
@@ -155,12 +155,14 @@ extension SoundFontsViewController: ControllerConfiguration {
                                                                 keyboardManager: context.keyboardManager)
 
         favoritesManager = context.favoritesManager
+
+        context.soundFontLibraryManager.addSoundFontLibraryChangeNotifier(self) { _, _ in self.soundFontsView.reloadData() }
     }
 }
 
 // MARK: - ActiveSoundFontManager Protocol
 extension SoundFontsViewController : ActiveSoundFontManager {
-    
+
     var selectedIndex: Int {
         get {
             return self.selectedSoundFontIndex
@@ -221,17 +223,11 @@ extension SoundFontsViewController: ActivePatchManager {
      */
     func addPatchChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
-
-        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
-        
-        // For this closure, we don't need a weak self since we are holding the collection and they cannot run outside
-        // of the main thread. However, we don't want to keep the observer from going away, so treat that as weak and
-        // protect against it being nil.
         notifiers[uuid] = { [weak observer] old, new in
             os_log(.info, log: self.logger, "patch changed notification")
-            if let strongObserver = observer {
-                closure(strongObserver, old, new)
+            if observer != nil {
+                closure(old, new)
             }
             else {
                 token.cancel()
@@ -239,9 +235,7 @@ extension SoundFontsViewController: ActivePatchManager {
             os_log(.info, log: self.logger, "done")
         }
 
-        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self and protect
-        // against it being nil.
-        return NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
+        return token
     }
 
     /**

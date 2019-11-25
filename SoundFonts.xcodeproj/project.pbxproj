@@ -16,6 +16,7 @@
 		BD425FFF2389F03400A2AE01 /* Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD425FFE2389F03400A2AE01 /* Patch.swift */; };
 		BD4260012389F1D700A2AE01 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260002389F1D700A2AE01 /* String+Extensions.swift */; };
 		BD4260032389F7C100A2AE01 /* SoundFontLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260022389F7C100A2AE01 /* SoundFontLibrary.swift */; };
+		BD426005238BBE9600A2AE01 /* SoundFontLibraryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD426004238BBE9600A2AE01 /* SoundFontLibraryManager.swift */; };
 		BD42F34F238862DB00E6D576 /* SoundFontFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F34E238862DB00E6D576 /* SoundFontFile.swift */; };
 		BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */; };
 		BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
@@ -110,6 +111,7 @@
 		BD425FFE2389F03400A2AE01 /* Patch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patch.swift; sourceTree = "<group>"; };
 		BD4260002389F1D700A2AE01 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		BD4260022389F7C100A2AE01 /* SoundFontLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontLibrary.swift; sourceTree = "<group>"; };
+		BD426004238BBE9600A2AE01 /* SoundFontLibraryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontLibraryManager.swift; sourceTree = "<group>"; };
 		BD42F34E238862DB00E6D576 /* SoundFontFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontFile.swift; sourceTree = "<group>"; };
 		BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extensions.swift"; sourceTree = "<group>"; };
 		BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
@@ -170,13 +172,9 @@
 		BDBF088521CD1D6300C4EA27 /* PatchSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchSearchManager.swift; sourceTree = "<group>"; };
 		BDCE3C2B2190F7C00008ACF9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
 		BDCE3C41219184A80008ACF9 /* SoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFont.swift; sourceTree = "<group>"; };
-		BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RolandNicePiano.swift; sourceTree = "<group>"; };
 		BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreeFont.sf2; sourceTree = "<group>"; };
 		BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeneralUser GS MuseScore v1.442.sf2"; sourceTree = "<group>"; };
 		BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2; sourceTree = "<group>"; };
-		BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FluidR3_GM.swift; sourceTree = "<group>"; };
-		BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GeneralUser GS MuseScore v1.442.swift"; sourceTree = "<group>"; };
-		BDCE3C51219184A80008ACF9 /* FreeFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FreeFont.swift; sourceTree = "<group>"; };
 		BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = RolandNicePiano.sf2; sourceTree = "<group>"; };
 		BDD386022212F2380063040C /* FavoriteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoriteCell.xib; sourceTree = "<group>"; };
 		BDD3860422147D0C0063040C /* ReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
@@ -343,10 +341,11 @@
 				BD36FF6C21DBABD2002305CB /* InfoBarManager.swift */,
 				BD85F8DE21D91EA20028E440 /* KeyboardManager.swift */,
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
-				BDD3860422147D0C0063040C /* ReusableView.swift */,
 				BD781B47237BF53900A71031 /* PatchesManager.swift */,
-				BD781B49237BFC5700A71031 /* SwipingActivity.swift */,
 				BD9434A721DD25A200798432 /* PatchSearchManagerDelegate.swift */,
+				BDD3860422147D0C0063040C /* ReusableView.swift */,
+				BD426004238BBE9600A2AE01 /* SoundFontLibraryManager.swift */,
+				BD781B49237BFC5700A71031 /* SwipingActivity.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -427,13 +426,9 @@
 			children = (
 				BD754333238286D9004C6A4C /* iffdigest */,
 				BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */,
-				BDCE3C4E219184A80008ACF9 /* FluidR3_GM.swift */,
 				BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */,
-				BDCE3C51219184A80008ACF9 /* FreeFont.swift */,
 				BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */,
-				BDCE3C50219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.swift */,
 				BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */,
-				BDCE3C47219184A80008ACF9 /* RolandNicePiano.swift */,
 			);
 			path = SoundFonts;
 			sourceTree = "<group>";
@@ -610,6 +605,7 @@
 				BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */,
 				BD4260032389F7C100A2AE01 /* SoundFontLibrary.swift in Sources */,
 				BD85F8D921D91AA90028E440 /* FavoritesManager.swift in Sources */,
+				BD426005238BBE9600A2AE01 /* SoundFontLibraryManager.swift in Sources */,
 				BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */,
 				BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */,
 				BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */,
