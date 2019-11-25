@@ -17,15 +17,16 @@ public func GetSoundFontInfo(data: Data) -> SoundFontInfo {
     var patches = [PatchInfo]()
     return data.withUnsafeBytes { (body) -> SoundFontInfo in
         let wrapper = SoundFontParse(body.baseAddress, data.count)
-        let name = String(cString: SoundFontName(wrapper));
+        let soundFontName = String(cString: SoundFontName(wrapper)).replacingOccurrences(of: "_", with: " ")
         for index in 0..<SoundFontPatchCount(wrapper) {
+            let name = String(cString: SoundFontPatchName(wrapper, index))
             let bank = Int(SoundFontPatchBank(wrapper, index))
             let patch = Int(SoundFontPatchPatch(wrapper, index))
-            if bank < 255 && patch < 255 {
-                patches.append(PatchInfo(name: String(cString: SoundFontPatchName(wrapper, index)),
-                                         bank: bank, patch: patch))
+            print("-- \(name) \(bank):\(patch)")
+            if bank < 255 && patch < 255 && name != "EOP" {
+                patches.append(PatchInfo(name: name, bank: bank, patch: patch))
             }
         }
-        return SoundFontInfo(name: name, patches: patches)
+        return SoundFontInfo(name: soundFontName, patches: patches)
     }
 }

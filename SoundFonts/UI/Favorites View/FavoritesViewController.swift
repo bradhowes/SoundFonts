@@ -57,7 +57,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         activePatchManager = context.activePatchManager
         keyboardManager = context.keyboardManager
-        activePatchManager.addPatchChangeNotifier(self) { _, old, new in self.patchChanged(old, new) }
+        activePatchManager.addPatchChangeNotifier(self) { old, new in self.patchChanged(old, new) }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -235,16 +235,10 @@ extension FavoritesViewController: FavoritesManager {
 
     func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
-
-        // For the cancellation closure, we do not want to create a hold cycle, so capture a weak self
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
-
-        // For this closure, we don't need a weak self since we are holding the collection and they cannot run outside
-        // of the main thread. However, we don't want to keep the observer from going away, so hold a weak reference
-        // and remove the closure if it is nil.
         notifiers[uuid] = { [weak observer] kind, favorite in
-            if let strongObserver = observer {
-                closure(strongObserver, kind, favorite)
+            if observer != nil {
+                closure(kind, favorite)
             }
             else {
                 token.cancel()

@@ -8,10 +8,7 @@ import Foundation
 protocol ActivePatchManager: class {
 
     /// Prototype for the notifying function
-    typealias Notifier<O: AnyObject> = (_ observer: O, _ old: Patch, _ new: Patch) -> Void
-
-    /// The collection of patches currently available for the active SoundFont
-    var patches: [Patch] { get }
+    typealias Notifier<O: AnyObject> = (_ old: Patch, _ new: Patch) -> Void
 
     /// The currently active patch
     var activePatch: Patch { get set }

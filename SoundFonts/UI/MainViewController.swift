@@ -134,8 +134,8 @@ extension MainViewController: ControllerConfiguration {
     func establishConnections(_ context: RunContext) {
         (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
         context.keyboardManager.delegate = self
-        context.activePatchManager.addPatchChangeNotifier(self) { _, _, patch in self.setPatch(patch) }
-        context.favoritesManager.addFavoriteChangeNotifier(self) { _, _, favorite in self.useFavorite(favorite) }
+        context.activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
+        context.favoritesManager.addFavoriteChangeNotifier(self) { _, favorite in self.useFavorite(favorite) }
         context.infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
         let showingFavorites = Settings[.showingFavorites]

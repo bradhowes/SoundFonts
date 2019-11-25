@@ -14,7 +14,7 @@ enum FavoriteChangeKind {
  */
 protocol FavoritesManager: class, SwipingActivity {
 
-    typealias Notifier<O: AnyObject> = (O, FavoriteChangeKind, Favorite) -> Void
+    typealias Notifier<O: AnyObject> = (FavoriteChangeKind, Favorite) -> Void
 
     /**
      Determine if the given Patch instance is associated with a Favorite instance
@@ -40,8 +40,9 @@ protocol FavoritesManager: class, SwipingActivity {
     func remove(patch: Patch)
 
     /**
-     Install a closure to be called when a Favorite change happens. The closure takes two arguments: a enum indicating
-     the kind of change that took place, and the Favorite instance the change affected.
+     Install a closure to be called when a Favorite change happens. The closure takes three arguments: the observer
+     object that was registered to receive notifications, an enum indicating the kind of change that took place, and
+     the Favorite instance the change affected.
      
      - parameter closure: the closure to install
      - returns: unique identifier that can be used to remove the notifier via `removeNotifier`
