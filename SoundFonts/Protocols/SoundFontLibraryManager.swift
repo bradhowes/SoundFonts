@@ -4,15 +4,16 @@
 import UIKit
 
 enum SoundFontLibraryChangeKind {
-    case added
-    case changed
-    case removed
+    case added(soundFont: SoundFont)
+    case changed(soundFont: SoundFont)
+    case removed(soundFont: SoundFont)
+    case restored
 }
 
 protocol SoundFontLibraryManager {
 
     /// Prototype for the notifying function
-    typealias Notifier<O: AnyObject> = (_ kind: SoundFontLibraryChangeKind, _ soundFont: SoundFont) -> Void
+    typealias Notifier<O: AnyObject> = (_ kind: SoundFontLibraryChangeKind) -> Void
 
     /**
      Install a closure to be called when a SoundFont change happens. The closure takes two arguments: an enum
@@ -40,11 +41,11 @@ protocol SoundFontLibraryManager {
     func getByIndex(_ index: Int) -> SoundFont
 
     /**
-     Obtain a SoundFont by name.
+     Obtain a SoundFont by name. If not found, then return the very first one (alphabetically)
      - parameter key: the key to use
-     - returns: found SoundFont object or nil if none found
+     - returns: found SoundFont object
      */
-    func getByName(_ name: String) -> SoundFont?
+    func getByName(_ name: String) -> SoundFont
 
     /**
      Obtain the index in `keys` for the given sound font name. If not found, return 0
@@ -53,7 +54,7 @@ protocol SoundFontLibraryManager {
      */
     func indexForName(_ name: String) -> Int
 
-    func add(soundFont: URL)
+    func add(soundFont: URL, completionHandler: ((Bool) -> Void)?)
 
     func remove(soundFont: SoundFont)
 

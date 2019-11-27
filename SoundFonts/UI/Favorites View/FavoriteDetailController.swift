@@ -28,8 +28,8 @@ final class FavoriteDetailController : UIViewController {
     
     override func viewDidLoad() {
         lowestNoteStepper.minimumValue = 0
-        lowestNoteStepper.maximumValue = 9 * 12 // C9
-        
+        lowestNoteStepper.maximumValue = Double(KeyboardController.maxMidiValue)
+
         gainSlider.minimumValue = -90.0
         gainSlider.maximumValue = 12.0
         
@@ -65,8 +65,8 @@ final class FavoriteDetailController : UIViewController {
         title = favorite.name
         soundFontName.text = patch.soundFont?.displayName ?? "???"
         patchName.text = patch.name
-        bank.text = "\(patch.bank)/\(patch.patch)"
-        index.text = "\(patch.index)"
+        bank.text = "Bank: \(patch.bank)"
+        index.text = "Index: \(patch.index)"
         gainValue.text = formatFloat(favorite.gain)
         gainSlider.value = favorite.gain
         panValue.text = formatFloat(favorite.pan)
@@ -163,9 +163,9 @@ final class FavoriteDetailController : UIViewController {
     }
     
     @IBAction func deleteFavorite(_ sender: Any) {
-        let alertController = UIAlertController(title: "", message: "Deleting the favorite cannot be undone.",
+        let alertController = UIAlertController(title: "Confirm Delete", message: "Deleting the favorite cannot be undone.",
                                    preferredStyle: .actionSheet)
-        let destroy = UIAlertAction(title: "Destroy", style:.destructive) { action in
+        let delete = UIAlertAction(title: "Delete", style:.destructive) { action in
             self.favorite = nil
             self.delegate?.dismissed(self.position, reason: .delete)
         }
@@ -173,9 +173,15 @@ final class FavoriteDetailController : UIViewController {
         let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
         }
         
-        alertController.addAction(destroy)
+        alertController.addAction(delete)
         alertController.addAction(cancel)
         
+        if let popoverController = alertController.popoverPresentationController {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+          popoverController.permittedArrowDirections = []
+        }
+
         self.present(alertController, animated: true, completion: nil)
     }
 }

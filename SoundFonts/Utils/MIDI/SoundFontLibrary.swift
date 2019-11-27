@@ -1,12 +1,11 @@
-// SoundFontLibrary.swift
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
 import os
 
 public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
-    
-    private var notifiers = [UUID: (SoundFontLibraryChangeKind, SoundFont) -> Void]()
+
+    private var notifiers = [UUID: (SoundFontLibraryChangeKind) -> Void]()
 
     private static let logger = Logging.logger("SFLib")
 
@@ -26,9 +25,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
             return try PropertyListDecoder().decode(SoundFontLibrary.self, from: data)
         } catch {
             os_log(.info, log: logger, "creating initial library")
-            let library = SoundFontLibrary()
-            library.save()
-            return library
+            return SoundFontLibrary()
         }
     }
 
@@ -39,9 +36,31 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
 
     private init() {
         let bundle = Bundle(for: SoundFontLibrary.self)
-        let paths = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil)
-        paths.forEach { add(soundFont: URL(fileURLWithPath: $0)) }
-        keys = map.keys.sorted()
+        let paths = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+
+        let dg = DispatchGroup()
+        dg.notify(queue: .main) {
+            self.keys = self.map.keys.sorted()
+            self.save()
+            self.notify(.restored)
+        }
+
+        paths.forEach { path in
+            if path.path.contains("RolandNicePiano") {
+                guard let data = try? Data(contentsOf: path, options: .dataReadingMapped) else { fatalError() }
+                let info = GetSoundFontInfo(data: data)
+                if info.name.isEmpty || info.patches.isEmpty { fatalError() }
+                let soundFont = SoundFont("Roland Nice Piano", resource: path, info: info)
+                self.map[soundFont.displayName] = soundFont
+                self.keys = self.map.keys.sorted()
+            }
+            else {
+                dg.enter()
+                add(soundFont: path) { _ in
+                    dg.leave()
+                }
+            }
+        }
     }
 
     /**
@@ -51,18 +70,16 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
      - returns: found SoundFont object
      */
     public func getByIndex(_ index: Int) -> SoundFont {
-        guard index >= 0 && index < keys.count else { return map[keys[0]]! }
-        let key = keys[index]
-        return map[key]!
+        return map[keys[index >= 0 && index < keys.count ? index : 0]]!
     }
 
     /**
-     Obtain a SoundFont by name.
+     Obtain a SoundFont by name. If none exists, return the first one (alphabetically)
      - parameter key: the key to use
      - returns: found SoundFont object
      */
-    public func getByName(_ name: String) -> SoundFont? {
-        return map[name]
+    public func getByName(_ name: String) -> SoundFont {
+        return map[name] ?? getByIndex(0)
     }
 
     /**
@@ -77,48 +94,46 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
 
      - parameter soundFont: the URL of the resource to add
      */
-    public func add(soundFont: URL) {
+    public func add(soundFont: URL, completionHandler: ((Bool) -> Void)? = nil) {
         os_log(.info, log: Self.logger, "adding '%s' to library", soundFont.path)
 
-        do {
+        // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
+        // not in a security scope.
+        let secured = soundFont.startAccessingSecurityScopedResource()
+        let data = try? Data(contentsOf: soundFont, options: .dataReadingMapped)
+        if secured { soundFont.stopAccessingSecurityScopedResource() }
 
-            // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
-            // not in a security scope.
-            let secured = soundFont.startAccessingSecurityScopedResource()
-
-            // Get the contents of the resource.
-            let data = try Data(contentsOf: soundFont, options: .dataReadingMapped)
-
-            if secured { soundFont.stopAccessingSecurityScopedResource() }
-
-            // Try and parse the resource to get the name of the SoundFont and a list of all of the patches.
-            let info = GetSoundFontInfo(data: data)
-            if info.name.isEmpty || info.patches.isEmpty {
-                os_log(.error, log: Self.logger, "failed to parse SF2 data")
-                return
-            }
-
-            let soundFont = SoundFont(info)
-            map[info.name] = soundFont
-            keys = map.keys.sorted()
-            notify(.added, soundFont)
-
-            DispatchQueue.global(qos: .background).async {
-                os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.path)
-                let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
-                if result {
-                    os_log(.info, log: Self.logger, "created OK")
-                }
-                else {
-                    os_log(.error, log: Self.logger, "created FAILED")
-                }
-            }
-
-        } catch {
-            os_log(.error, log: Self.logger, "failed to get SF2 data - %s", error.localizedDescription)
+        guard let content = data else {
+            os_log(.error, log: Self.logger, "failed to fetch content")
+            completionHandler?(false)
             return
         }
 
+        let info = GetSoundFontInfo(data: content)
+        if info.name.isEmpty || info.patches.isEmpty {
+            os_log(.error, log: Self.logger, "failed to parse content")
+            completionHandler?(false)
+            return
+        }
+
+        let soundFont = SoundFont(info)
+        let wrappedCompletonHandler: (Bool) -> Void = { result in
+            if result {
+                self.map[info.name] = soundFont
+                self.keys = self.map.keys.sorted()
+                self.notify(.added(soundFont: soundFont))
+                self.save()
+            }
+            completionHandler?(result)
+        }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.path)
+            let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
+            os_log(.info, log: Self.logger, "created %d", result)
+
+            DispatchQueue.main.async { wrappedCompletonHandler(result) }
+        }
     }
 
     func remove(soundFont: SoundFont) {
@@ -132,12 +147,12 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
 
 extension SoundFontLibrary {
 
-    func addSoundFontLibraryChangeNotifier<O>(_ observer: O, closure: @escaping (SoundFontLibraryChangeKind, SoundFont) -> Void) -> NotifierToken where O : AnyObject {
+    func addSoundFontLibraryChangeNotifier<O>(_ observer: O, closure: @escaping (SoundFontLibraryChangeKind) -> Void) -> NotifierToken where O : AnyObject {
         let uuid = UUID()
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
-        notifiers[uuid] = { [weak observer] kind, soundFont in
+        notifiers[uuid] = { [weak observer] kind in
             if observer != nil {
-                closure(kind, soundFont)
+                closure(kind)
             }
             else {
                 token.cancel()
@@ -151,8 +166,8 @@ extension SoundFontLibrary {
         notifiers.removeValue(forKey: key)
     }
 
-    private func notify(_ kind: SoundFontLibraryChangeKind, _ soundFont: SoundFont) {
-        notifiers.values.forEach { $0(kind, soundFont) }
+    private func notify(_ kind: SoundFontLibraryChangeKind) {
+        notifiers.values.forEach { $0(kind) }
     }
 }
 

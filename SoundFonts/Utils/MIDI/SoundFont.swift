@@ -11,33 +11,95 @@ public class SoundFont: Codable {
     /// Extension for all SoundFont files in the application bundle
     public static let soundFontExtension = "sf2"
 
+    enum Kind: Codable, Hashable {
+
+        case builtin(resource: URL)
+        case installed(fileName: String)
+
+        init(from decoder: Decoder) throws {
+            var container = try! decoder.unkeyedContainer()
+            let kind = try! container.decode(Int.self)
+            let value = try! container.decode(String.self)
+            switch kind {
+            case 0:
+                let url = URL(fileURLWithPath: value)
+                let name = url.lastPathComponent.split(separator: ".")[0]
+                guard let path = Bundle(for: SoundFont.self)
+                    .path(forResource: String(name), ofType: SoundFont.soundFontExtension) else {
+                        fatalError()
+                }
+                self = .builtin(resource: URL(fileURLWithPath: path))
+            case 1:
+                self = .installed(fileName: value)
+            default:
+                fatalError()
+            }
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.unkeyedContainer()
+            switch self {
+            case .builtin(let resource):
+                try! container.encode(0)
+                try! container.encode(resource.lastPathComponent)
+            case .installed(let fileName):
+                try! container.encode(1)
+                try! container.encode(fileName)
+            }
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            switch self {
+            case .builtin(let resource): hasher.combine(resource.path)
+            case .installed(let fileName): hasher.combine(fileName)
+            }
+        }
+
+        public static func == (lhs: Kind, rhs: Kind) -> Bool { lhs.hashValue == rhs.hashValue }
+
+        var fileURL: URL {
+            switch self {
+            case .builtin(let resource):
+                return resource
+            case .installed(let fileName):
+                return FileManager.default.localDocumentsDirectory.appendingPathComponent(fileName)
+            }
+        }
+    }
+
     /// Presentation name of the sound font
     public let displayName: String
 
-    /// The file name of the sound font (sans extension)
-    public let fileName: String
+    private let kind: Kind
 
     /// Width of the sound font name
     public lazy var nameWidth = displayName.systemFontWidth
 
     ///  The resolved URL for the sound font
-    public lazy var fileURL: URL = FileManager.default.localDocumentsDirectory
-        .appendingPathComponent(fileName, isDirectory: false)
+    public var fileURL: URL { kind.fileURL }
 
     /// The collection of Patches found in the sound font
     public let patches: [Patch]
 
     enum CodingKeys: String, CodingKey {
         case displayName
-        case fileName
+        case kind
         case patches
     }
 
     public init(_ soundFontInfo: SoundFontInfo) {
         let name = soundFontInfo.name
+        let uuid = UUID()
         self.displayName = name
-        self.fileName = name + "." + Self.soundFontExtension
+        self.kind = .installed(fileName:name + "_" + uuid.uuidString + "." + Self.soundFontExtension)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
+    }
+
+    public init(_ name: String, resource: URL, info: SoundFontInfo) {
+        let name = name
+        self.displayName = name
+        self.kind = .builtin(resource: resource)
+        self.patches = info.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
     }
 }
 
@@ -69,9 +131,9 @@ extension SoundFont {
 
 extension SoundFont: Hashable {
 
-    public func hash(into hasher: inout Hasher) { hasher.combine(fileName) }
+    public func hash(into hasher: inout Hasher) { hasher.combine(kind) }
 
-    public static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.fileName == rhs.fileName }
+    public static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.kind == rhs.kind }
 }
 
 extension SoundFont: CustomStringConvertible {

@@ -10,7 +10,10 @@ extension SettingKeys {
  Controller for the keyboard view. Creates the individual key views and handles touch event detection within them.
  */
 final class KeyboardController: UIViewController {
-    
+
+    /// Largest MIDI value available for the last key
+    public static let maxMidiValue = 12 * 9 // C9
+
     public var delegate: KeyboardManagerDelegate? = nil
     
     /// MIDI value of the first note in the keyboard
@@ -27,9 +30,6 @@ final class KeyboardController: UIViewController {
     /// so that touch processing happens correctly.
     private var keys = [Key]()
     
-    /// Largest MIDI value available for the last key
-    private let maxMidiValue = 12 * 9 // C9
-
     /// How wide each key will be
     private let keyWidth: CGFloat = 64.0
     
@@ -59,7 +59,7 @@ extension KeyboardController {
 
     @IBAction private func shiftKeyboardUp(_ sender: UIButton) {
         assert(!keys.isEmpty)
-        if lastMidiNoteValue < maxMidiValue {
+        if lastMidiNoteValue < Self.maxMidiValue {
             let shift: Int = {
                 if firstMidiNoteValue % 12 == 0 {
                     return min(keys.count, 12)
@@ -69,10 +69,10 @@ extension KeyboardController {
                 }
             }()
             
-            shiftKeys(by: min(shift, maxMidiValue - lastMidiNoteValue))
+            shiftKeys(by: min(shift, Self.maxMidiValue - lastMidiNoteValue))
         }
     }
-    
+
     @IBAction private func shiftKeyboardDown(_ sender: UIButton) {
         assert(!keys.isEmpty)
         if firstMidiNoteValue > 0 {
@@ -214,8 +214,8 @@ extension KeyboardController {
         // Handle edge-case where we generated a key with a MIDI value that is too big. This *could* be detected and
         // dealt with in KeyParamSequence, but this is a bit cleaner, and rarely executed.
         lastMidiNoteValue = firstMidiNoteValue + newKeyDefs.count - 1
-        if lastMidiNoteValue > maxMidiValue {
-            firstMidiNoteValue -= lastMidiNoteValue - maxMidiValue
+        if lastMidiNoteValue > Self.maxMidiValue {
+            firstMidiNoteValue -= lastMidiNoteValue - Self.maxMidiValue
             createKeys()
             return
         }

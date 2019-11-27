@@ -1,10 +1,4 @@
-//
-//  AppDelegate.swift
-//  SoundFonts
-//
-//  Created by Brad Howes on 11/1/18.
-//  Copyright © 2018 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
 import AVKit
@@ -15,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     weak var mainViewController: MainViewController?
     let soundFontLibrary = SoundFontLibrary.shared
+    let favoriteCollection = FavoriteCollection.shared
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -32,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         print("-- given: \(url)")
-        soundFontLibrary.add(soundFont: url)
+        soundFontLibrary.add(soundFont: url) { result in }
         return true
     }
 
