@@ -55,15 +55,13 @@ final class SoundFontsViewController: UIViewController {
         searchManager.delegate = self
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        restoreLastActivePatch()
+    }
+
     func restoreLastActivePatch() {
         let lastSoundFontName = Settings[.activeSoundFont]
-        guard let soundFont = SoundFontLibrary.shared.getByName(lastSoundFontName) else {
-            selectedIndex = 0
-            activeIndex = 0
-            setActivePatchIndex(0, previousExists: false)
-            return
-        }
-
+        let soundFont = SoundFontLibrary.shared.getByName(lastSoundFontName)
         let patchIndex: Int = {
             let patchIndex = Settings[.activePatch]
             return patchIndex >= 0 && patchIndex < soundFont.patches.count ? patchIndex : 0
@@ -156,7 +154,14 @@ extension SoundFontsViewController: ControllerConfiguration {
 
         favoritesManager = context.favoritesManager
 
-        context.soundFontLibraryManager.addSoundFontLibraryChangeNotifier(self) { _, _ in self.soundFontsView.reloadData() }
+        context.soundFontLibraryManager.addSoundFontLibraryChangeNotifier(self) { kind in
+            switch kind {
+            case .restored:
+                self.restoreLastActivePatch()
+            default:
+                self.soundFontsView.reloadData()
+            }
+        }
     }
 }
 

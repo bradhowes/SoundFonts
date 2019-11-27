@@ -16,7 +16,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
-    private let favoriteCollection = FavoriteCollection.build()
+    private let favoriteCollection = FavoriteCollection.shared
     private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
     private var favoriteCell: FavoriteCell!
     private var favoriteMover: FavoriteMover!
@@ -74,6 +74,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         // Now if showing a popover, position it in the right spot
         //
         if let ppc = nc.popoverPresentationController {
+
             ppc.barButtonItem = nil // !!! Muy importante !!!
             ppc.sourceView = cell
             

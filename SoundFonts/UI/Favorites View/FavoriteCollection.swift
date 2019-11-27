@@ -34,11 +34,9 @@ final class FavoriteCollection: Codable {
         case bad
     }
 
-    static func build() -> FavoriteCollection {
+    static var shared: FavoriteCollection = build()
 
-        // Attempt to restore from the `favorites.plist` file. If that fails, try the old way by taking from the
-        // UserDefaults. If *that* fails, assume first-time user and add a favorite so the view does not look so
-        // empty.
+    private static func build() -> FavoriteCollection {
         do {
             os_log(.info, log: logger, "attempting to restore collection")
             let data = try Data(contentsOf: archivePath, options: .dataReadingMapped)
@@ -56,8 +54,7 @@ final class FavoriteCollection: Codable {
      Initialize new collection. Attempts to restore a previously-saved collection
      */
     private init() {
-        add(Favorite(patch: SoundFontLibrary.shared.getByIndex(0).patches[0],
-                     keyboardLowestNote: Note(midiNoteValue: 48)))
+        save()
     }
 
     /**
