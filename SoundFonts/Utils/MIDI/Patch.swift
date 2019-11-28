@@ -64,10 +64,12 @@ public struct Patch: Codable {
         }
     }
 
-    /// Obtain the MIDI bank type for this InstrumentVoice
     private var midiBankType: MidiBankType { MidiBankType.basedOn(bank: bank) }
 
+    /// Obtain the most-significant byte for the bank
     public var bankMSB: Int { midiBankType.bankMSB }
+
+    /// Obtain the least-significant byte for the bank
     public var bankLSB: Int { midiBankType.bankLSB }
 
     /**

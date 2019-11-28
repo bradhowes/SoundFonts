@@ -36,23 +36,10 @@ final class Favorite: Codable {
         self.gain = 0.0
         self.pan = 0.0
     }
-
-    /**
-     Encode the Favorite instance.
-
-     - parameter aCoder: the encoder to hold the encoding
-     */
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(name, forKey: .name)
-        aCoder.encode(patch, forKey: .patch)
-        aCoder.encode(keyboardLowestNote.midiNoteValue, forKey: .lowestNote)
-        aCoder.encode(gain, forKey: .gain)
-        aCoder.encode(pan, forKey: .pan)
-    }
 }
 
 extension Favorite: Equatable {
-    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.name == rhs.name }
+    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.name == rhs.name && lhs.patch == rhs.patch }
 }
 
 extension Favorite: CustomStringConvertible {
