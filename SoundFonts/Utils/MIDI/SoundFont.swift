@@ -6,71 +6,13 @@ import GameKit
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
-public class SoundFont: Codable {
+public final class SoundFont: Codable {
 
     /// Extension for all SoundFont files in the application bundle
     public static let soundFontExtension = "sf2"
 
-    enum Kind: Codable, Hashable {
-
-        case builtin(resource: URL)
-        case installed(fileName: String)
-
-        init(from decoder: Decoder) throws {
-            var container = try! decoder.unkeyedContainer()
-            let kind = try! container.decode(Int.self)
-            let value = try! container.decode(String.self)
-            switch kind {
-            case 0:
-                let url = URL(fileURLWithPath: value)
-                let name = url.lastPathComponent.split(separator: ".")[0]
-                guard let path = Bundle(for: SoundFont.self)
-                    .path(forResource: String(name), ofType: SoundFont.soundFontExtension) else {
-                        fatalError()
-                }
-                self = .builtin(resource: URL(fileURLWithPath: path))
-            case 1:
-                self = .installed(fileName: value)
-            default:
-                fatalError()
-            }
-        }
-
-        func encode(to encoder: Encoder) throws {
-            var container = encoder.unkeyedContainer()
-            switch self {
-            case .builtin(let resource):
-                try! container.encode(0)
-                try! container.encode(resource.lastPathComponent)
-            case .installed(let fileName):
-                try! container.encode(1)
-                try! container.encode(fileName)
-            }
-        }
-
-        public func hash(into hasher: inout Hasher) {
-            switch self {
-            case .builtin(let resource): hasher.combine(resource.path)
-            case .installed(let fileName): hasher.combine(fileName)
-            }
-        }
-
-        public static func == (lhs: Kind, rhs: Kind) -> Bool { lhs.hashValue == rhs.hashValue }
-
-        var fileURL: URL {
-            switch self {
-            case .builtin(let resource):
-                return resource
-            case .installed(let fileName):
-                return FileManager.default.localDocumentsDirectory.appendingPathComponent(fileName)
-            }
-        }
-    }
-
     /// Presentation name of the sound font
     public let displayName: String
-
-    private let kind: Kind
 
     /// Width of the sound font name
     public lazy var nameWidth = displayName.systemFontWidth
@@ -79,14 +21,15 @@ public class SoundFont: Codable {
     public var fileURL: URL { kind.fileURL }
 
     /// The collection of Patches found in the sound font
-    public let patches: [Patch]
+    public private(set) var patches: [Patch]
 
-    enum CodingKeys: String, CodingKey {
-        case displayName
-        case kind
-        case patches
-    }
+    private let kind: SoundFontKind
 
+    /**
+     Constructor for installed sound font files -- those added fia File app.
+
+     - parameter info: patch info from the sound font and its display name.
+     */
     public init(_ soundFontInfo: SoundFontInfo) {
         let name = soundFontInfo.name
         let uuid = UUID()
@@ -95,15 +38,25 @@ public class SoundFont: Codable {
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
     }
 
-    public init(_ name: String, resource: URL, info: SoundFontInfo) {
+    /**
+     Constructor for built-in sound font files -- those in the Bundle.
+
+     - parameter name: the display name of the resource
+     - parameter resource: the name of the resource in the bundle
+     - parameter info: patch info from the sound font
+     */
+    public init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
         let name = name
         self.displayName = name
         self.kind = .builtin(resource: resource)
-        self.patches = info.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
+        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
     }
 }
 
 extension SoundFont {
+
+    /// Determines if the sound font file exists on the device
+    var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
     /**
      Locate a patch in the SoundFont using a display name.

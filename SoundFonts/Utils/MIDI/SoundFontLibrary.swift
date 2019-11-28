@@ -50,7 +50,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
                 guard let data = try? Data(contentsOf: path, options: .dataReadingMapped) else { fatalError() }
                 let info = GetSoundFontInfo(data: data)
                 if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-                let soundFont = SoundFont("Roland Nice Piano", resource: path, info: info)
+                let soundFont = SoundFont("Roland Nice Piano", resource: path, soundFontInfo: info)
                 self.map[soundFont.displayName] = soundFont
                 self.keys = self.map.keys.sorted()
             }
@@ -115,7 +115,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
             completionHandler?(false)
             return
         }
-
+        
         let soundFont = SoundFont(info)
         let wrappedCompletonHandler: (Bool) -> Void = { result in
             if result {
@@ -131,7 +131,6 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.path)
             let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
             os_log(.info, log: Self.logger, "created %d", result)
-
             DispatchQueue.main.async { wrappedCompletonHandler(result) }
         }
     }
