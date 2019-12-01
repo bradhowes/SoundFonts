@@ -21,6 +21,9 @@ final class PatchesTableViewDataSource: NSObject {
     private let keyboardManager: KeyboardManager
     private var patches: [Patch] { activeSoundFontManager.selectedSoundFont.patches }
 
+    // Hack to keep from redrawing a row when in a swipe action
+    private var ignoreFavoriteRemove: Bool = false
+
     init(view: UITableView, searchBar: UISearchBar,
          activeSoundFontManager: ActiveSoundFontManager,
          activePatchManager: ActivePatchManager,
@@ -40,7 +43,7 @@ final class PatchesTableViewDataSource: NSObject {
 
         // Receive notifications when a favorite is destroyed from within the favorite editor pane.
         favoritesManager.addFavoriteChangeNotifier(self) { kind, favorite in
-            if kind == .removed {
+            if kind == .removed && self.ignoreFavoriteRemove == false {
                 let patch = favorite.patch
                 if activeSoundFontManager.selectedSoundFont == patch.soundFont {
                     self.view.reloadRows(at: [self.indexPathForPatchIndex(patch.index)], with: .none)
@@ -96,13 +99,14 @@ final class PatchesTableViewDataSource: NSObject {
         let action = UIContextualAction(style: .normal, title: isFave ? "Unfave" : "Fave") {
             (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
             if isFave {
+                self.ignoreFavoriteRemove = true
                 self.favoritesManager.remove(patch: patch)
-                self.updateCell(cell, with: patch)
+                self.ignoreFavoriteRemove = false
             }
             else {
                 self.favoritesManager.add(patch: patch, keyboardLowestNote: lowestNote)
-                self.updateCell(cell, with: patch)
             }
+            self.updateCell(cell, with: patch)
             completionHandler(true)
         }
         
