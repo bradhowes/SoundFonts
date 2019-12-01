@@ -22,7 +22,7 @@ public func GetSoundFontInfo(data: Data) -> SoundFontInfo {
             let name = String(cString: SoundFontPatchName(wrapper, index))
             let bank = Int(SoundFontPatchBank(wrapper, index))
             let patch = Int(SoundFontPatchPatch(wrapper, index))
-            print("-- \(name) \(bank):\(patch)")
+            // print("-- \(name) \(bank):\(patch)")
             if bank < 255 && patch < 255 && name != "EOP" {
                 patches.append(PatchInfo(name: name, bank: bank, patch: patch))
             }

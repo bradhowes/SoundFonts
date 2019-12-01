@@ -4,8 +4,8 @@ import UIKit
 import os
 
 extension SettingKeys {
-    static let activeSoundFont = SettingKey<String>("activeSoundFont", defaultValue: "")
-    static let activePatch = SettingKey<Int>("activePatch", defaultValue: 0)
+    static let lastActiveSoundFont = SettingKey<String>("activeSoundFont", defaultValue: "")
+    static let lastActivePatch = SettingKey<Int>("activePatch", defaultValue: 0)
 }
 
 /**
@@ -26,12 +26,9 @@ final class SoundFontsViewController: UIViewController {
     private var soundFontsTableViewDataSource: FontsTableViewDataSource!
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
     
-    private var selectedSoundFontIndex: Int = -1
-    private var selectedSoundFont: SoundFont { return SoundFontLibrary.shared.getByIndex(selectedSoundFontIndex) }
-    private var activeSoundFontIndex = 0
-    private var activeSoundFont: SoundFont { return SoundFontLibrary.shared.getByIndex(activeSoundFontIndex) }
-
-    private var activePatchIndex = 0
+    private var selectedSoundFontIndex: Int = 0
+    private var activeSoundFontIndex: Int = 0
+    private var activePatchIndex: Int = 0
 
     private var favoritesManager: FavoritesManager!
     private var searchManager: PatchSearchManager!
@@ -46,6 +43,7 @@ final class SoundFontsViewController: UIViewController {
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeLeft)
+
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeRight)
@@ -56,14 +54,15 @@ final class SoundFontsViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        patchesView.contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
         restoreLastActivePatch()
     }
 
-    func restoreLastActivePatch() {
-        let lastSoundFontName = Settings[.activeSoundFont]
-        let soundFont = SoundFontLibrary.shared.getByName(lastSoundFontName)
+    private func restoreLastActivePatch() {
+        let lastSoundFontUUID = UUID(uuidString: Settings[.lastActiveSoundFont]) ?? soundFontsTableViewDataSource.getBy(index: 0).uuid
+        let soundFont = SoundFontLibrary.shared.getBy(uuid: lastSoundFontUUID)
         let patchIndex: Int = {
-            let patchIndex = Settings[.activePatch]
+            let patchIndex = Settings[.lastActivePatch]
             return patchIndex >= 0 && patchIndex < soundFont.patches.count ? patchIndex : 0
         }()
 
@@ -88,11 +87,11 @@ final class SoundFontsViewController: UIViewController {
         return prevIndex != index
     }
 
-    private func setActivePatchIndex(_ index: Int, previousExists: Bool) {
+    private func setActivePatchIndex(_ index: Int, updatePreviousCell: Bool) {
         let prevIndex = activePatchIndex
         activePatchIndex = index
 
-        if previousExists && prevIndex != -1 && prevIndex != index {
+        if updatePreviousCell && prevIndex != -1 && prevIndex != index {
             if let cell: PatchCell = patchesView.cellForRow(at: cellRow(at: prevIndex)) {
                 let patch = activeSoundFont.patches[prevIndex]
                 cell.setActive(false, isFavorite: favoritesManager.isFavored(patch: patch))
@@ -117,23 +116,20 @@ final class SoundFontsViewController: UIViewController {
         return patchesTableViewDataSource.indexPathForPatchIndex(row)
     }
 
-    private func changeActivePatch(_ patch: Patch) {
+    private func changeActivePatch(_ newPatch: Patch) {
         os_log(.info, log: logger, "changeActivePatch")
-        guard patch != activePatch else { return }
-        let old = activePatch
-        guard let soundFont = patch.soundFont else { return }
+        guard newPatch != activePatch else { return }
 
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }
 
-        os_log(.info, log: logger, "1")
-        let fontChanged = setActiveSoundFontIndex(SoundFontLibrary.shared.indexForName(soundFont.displayName))
-        setActivePatchIndex(patch.index, previousExists: !fontChanged)
-        os_log(.info, log: logger, "2")
+        let oldPatch = activePatch
+        let newSoundFont = newPatch.soundFont
 
-        notifiers.values.forEach { $0(old, patch) }
-        os_log(.info, log: logger, "3")
+        let fontChanged = setActiveSoundFontIndex(soundFontsTableViewDataSource.index(of: newSoundFont.uuid))
+        setActivePatchIndex(newPatch.index, updatePreviousCell: !fontChanged)
+        notifiers.values.forEach { $0(oldPatch, newPatch) }
     }
 }
 
@@ -143,8 +139,9 @@ extension SoundFontsViewController: ControllerConfiguration {
 
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                  searchBar: searchBar,
-                                                                 activeSoundFontManager: self)
-        
+                                                                 activeSoundFontManager: self,
+                                                                 collection: SoundFontLibrary.shared)
+
         patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
                                                                 searchBar: searchBar,
                                                                 activeSoundFontManager: self,
@@ -157,6 +154,8 @@ extension SoundFontsViewController: ControllerConfiguration {
         context.soundFontLibraryManager.addSoundFontLibraryChangeNotifier(self) { kind in
             switch kind {
             case .restored:
+                self.soundFontsView.reloadData()
+                // self.patchesView.reloadData()
                 self.restoreLastActivePatch()
             default:
                 self.soundFontsView.reloadData()
@@ -185,7 +184,7 @@ extension SoundFontsViewController : ActiveSoundFontManager {
 
             if let searchTerm = searchBar.searchTerm {
                 let api = activeSoundFontIndex == selectedSoundFontIndex ? activePatchIndex : -1
-                let selectedSoundFont = SoundFontLibrary.shared.getByIndex(selectedSoundFontIndex)
+                let selectedSoundFont = soundFontsTableViewDataSource.getBy(index: selectedSoundFontIndex)
                 searchManager.search(soundFont: selectedSoundFont, activePatchIndex: api, term: searchTerm)
             }
             else {
@@ -204,12 +203,14 @@ extension SoundFontsViewController : ActiveSoundFontManager {
             _ = setActiveSoundFontIndex(newValue)
         }
     }
+
+    var selectedSoundFont: SoundFont { soundFontsTableViewDataSource.getBy(index: selectedIndex) }
+
+    var activeSoundFont: SoundFont { soundFontsTableViewDataSource.getBy(index: activeIndex) }
 }
 
 // MARK: - ActivePatchManager Protocol
 extension SoundFontsViewController: ActivePatchManager {
-
-    var patches: [Patch] { return self.selectedSoundFont.patches }
 
     var activePatch: Patch {
         get {
@@ -266,6 +267,12 @@ extension SoundFontsViewController: PatchesManager {
         switch event {
         case .swipeLeft: swipeLeft.addTarget(target, action: action)
         case .swipeRight: swipeRight.addTarget(target, action: action)
+        }
+    }
+
+    func dismissSearchKeyboard() {
+        if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
+            searchBar.resignFirstResponder()
         }
     }
 }

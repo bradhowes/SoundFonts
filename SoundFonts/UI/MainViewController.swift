@@ -5,7 +5,7 @@ import AVKit
 import os
 
 extension SettingKeys {
-    static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
+    static let wasShowingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
 }
 
 /**
@@ -21,6 +21,7 @@ final class MainViewController: UIViewController {
 
     private lazy var sampler = Sampler()
     private var upperViewManager = UpperViewManager()
+    private var patchesManager: PatchesManager!
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -95,9 +96,27 @@ extension MainViewController {
         Mute.shared.notify = {muted in self.muted = muted }
         Mute.shared.isPaused = false
 
-        sampler.start()
+        if case let .failure(what) = sampler.start() {
+            postAlert(for: what)
+        }
 
         setPatch(runContext.activePatchManager.activePatch)
+    }
+
+    private func postAlert(for what: Sampler.Failure) {
+        let alertController = UIAlertController(title: "Sampler Issue",
+                                                message: "Unexpected problem with the audio sampler.",
+                                                preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "OK", style:.cancel) { _ in }
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+          popoverController.sourceView = self.view
+          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+          popoverController.permittedArrowDirections = []
+        }
+
+        self.present(alertController, animated: true, completion: nil)
     }
 
     /**
@@ -138,12 +157,13 @@ extension MainViewController: ControllerConfiguration {
         context.favoritesManager.addFavoriteChangeNotifier(self) { _, favorite in self.useFavorite(favorite) }
         context.infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
-        let showingFavorites = Settings[.showingFavorites]
+        let showingFavorites = Settings[.wasShowingFavorites]
         self.patches.isHidden = showingFavorites
         self.favorites.isHidden = !showingFavorites
 
-        context.patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        context.patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        self.patchesManager = context.patchesManager
+        patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         context.favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         context.favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
@@ -153,28 +173,37 @@ extension MainViewController: ControllerConfiguration {
      Show the next (right) view in the space above the info bar.
      */
     @IBAction private func showNextConfigurationView() {
-        let showingFavorites = favorites.isHidden
-        Settings[.showingFavorites] = showingFavorites
-        self.upperViewManager.slideNextHorizontally()
+        patchesManager.dismissSearchKeyboard()
+        Settings[.wasShowingFavorites] = favorites.isHidden
+        upperViewManager.slideNextHorizontally()
     }
 
     /**
      Show the previous (left) view in the space above the info bar.
      */
     @IBAction private func showPreviousConfigurationView() {
-        let showingFavorites = favorites.isHidden
-        Settings[.showingFavorites] = showingFavorites
-        self.upperViewManager.slidePrevHorizontally()
+        patchesManager.dismissSearchKeyboard()
+        Settings[.wasShowingFavorites] = favorites.isHidden
+        upperViewManager.slidePrevHorizontally()
     }
 
     private func setPatch(_ patch: Patch) {
         runContext.keyboardManager.releaseAllKeys()
         runContext.infoBarManager.setPatchInfo(name: patch.name,
                                                isFavored: runContext.favoritesManager.isFavored(patch: patch))
-        DispatchQueue.global(qos: .background).async {
-            self.sampler.load(patch: patch)
-            Settings[.activeSoundFont] = patch.soundFont!.displayName
-            Settings[.activePatch] = patch.index
+
+        // The loading of the patch tasks some time, so do it on a background thread. Not sure if this is really
+        // desirable since there is no sound until the sampler is finished loading.
+        DispatchQueue.global(qos: .userInitiated).async {
+            if case let .failure(what) = self.sampler.load(patch: patch) {
+                DispatchQueue.main.async {
+                    self.postAlert(for: what)
+                }
+            }
+            else {
+                Settings[.lastActiveSoundFont] = patch.soundFont.uuid.uuidString
+                Settings[.lastActivePatch] = patch.index
+            }
         }
     }
 

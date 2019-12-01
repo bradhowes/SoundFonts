@@ -6,4 +6,5 @@ import Foundation
  Manages the collection of Patches
  */
 protocol PatchesManager: SwipingActivity {
+    func dismissSearchKeyboard()
 }
