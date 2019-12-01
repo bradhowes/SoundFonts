@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 /**
  Data source for the Patches UITableView.
@@ -10,18 +11,15 @@ final class PatchesTableViewDataSource: NSObject {
     /// Number of sections we partition patches into
     static private let sectionSize = 20
 
+    private lazy var logger = Logging.logger("PTVDS")
+
     private let view: UITableView
     private let searchBar: UISearchBar
     private let activeSoundFontManager: ActiveSoundFontManager
     private let activePatchManager: ActivePatchManager
     private let favoritesManager: FavoritesManager
     private let keyboardManager: KeyboardManager
-
-    private var patches: [Patch] {
-        let selectedIndex = activeSoundFontManager.selectedIndex
-        let activeIndex = activeSoundFontManager.activeIndex
-        return SoundFontLibrary.shared.getByIndex(selectedIndex != -1 ? selectedIndex : activeIndex).patches
-    }
+    private var patches: [Patch] { activeSoundFontManager.selectedSoundFont.patches }
 
     init(view: UITableView, searchBar: UISearchBar,
          activeSoundFontManager: ActiveSoundFontManager,
@@ -44,8 +42,9 @@ final class PatchesTableViewDataSource: NSObject {
         favoritesManager.addFavoriteChangeNotifier(self) { kind, favorite in
             if kind == .removed {
                 let patch = favorite.patch
-                guard let index = self.patches.firstIndex(of: patch) else { return }
-                self.view.reloadRows(at: [self.indexPathForPatchIndex(index)], with: .none)
+                if activeSoundFontManager.selectedSoundFont == patch.soundFont {
+                    self.view.reloadRows(at: [self.indexPathForPatchIndex(patch.index)], with: .none)
+                }
             }
         }
     }

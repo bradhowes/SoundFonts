@@ -32,31 +32,21 @@ protocol SoundFontLibraryManager {
      */
     func removeNotifier(forKey key: UUID)
 
+    var orderedSoundFonts: [SoundFont] { get }
+    var isRestored: Bool { get }
+
     /**
      Obtain a SoundFont using an index into the `keys` name array. If the index is out-of-bounds this will return the
      first sound font in alphabetical order.
      - parameter index: the key to use
      - returns: found SoundFont object
      */
-    func getByIndex(_ index: Int) -> SoundFont
+    func getBy(uuid: UUID) -> SoundFont
 
-    /**
-     Obtain a SoundFont by name. If not found, then return the very first one (alphabetically)
-     - parameter key: the key to use
-     - returns: found SoundFont object
-     */
-    func getByName(_ name: String) -> SoundFont
-
-    /**
-     Obtain the index in `keys` for the given sound font name. If not found, return 0
-     - parameter name: the name to look for
-     - returns: found index or zero
-     */
-    func indexForName(_ name: String) -> Int
-
-    func add(soundFont: URL, completionHandler: ((Bool) -> Void)?)
+    func add(url: URL) -> SoundFont?
 
     func remove(soundFont: SoundFont)
 
     func edit(soundFont: SoundFont)
+
 }

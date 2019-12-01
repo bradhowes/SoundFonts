@@ -8,6 +8,14 @@ import AudioToolbox
  */
 public struct Patch: Codable {
 
+    struct Key: Codable, Hashable {
+        let uuid: UUID
+        let index: Int
+    }
+
+    /// The key to the SoundFont and the index into its array of patches
+    private let key: Key
+
     /// Display name for the patch
     public let name: String
     /// Width of the name in the system font
@@ -16,12 +24,10 @@ public struct Patch: Codable {
     public let bank: Int
     /// Program patch number where the patch resides in the sound font
     public let patch: Int
-    /// The index of the Patch in the SoundFont array of patches
-    public let index: Int
 
-    private let soundFontName: String
+    public var index: Int { key.index }
 
-    public var soundFont: SoundFont? { SoundFontLibrary.shared.getByName(soundFontName) }
+    public var soundFont: SoundFont { SoundFontLibrary.shared.getBy(uuid: key.uuid) }
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion
@@ -79,28 +85,25 @@ public struct Patch: Codable {
      - parameter bank: the bank where the patch resides
      - parameter patch: the program ID of the patch in the sound font
      */
-    init(_ name: String, _ bank: Int, _ patch: Int, _ index: Int, _ soundFontName: String) {
+    init(_ name: String, _ bank: Int, _ patch: Int, _ index: Int, _ uuid: UUID) {
         self.name = name
         self.bank = bank
         self.patch = patch
-        self.index = index
-        self.soundFontName = soundFontName
+        self.key = Key(uuid: uuid, index: index)
     }
 }
 
 extension Patch: Hashable {
 
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(bank)
-        hasher.combine(patch)
-        hasher.combine(soundFont)
+        hasher.combine(key)
     }
 
     public static func == (lhs: Patch, rhs: Patch) -> Bool {
-        lhs.bank == rhs.bank && lhs.patch == rhs.patch && lhs.soundFontName == rhs.soundFontName
+        lhs.key == rhs.key
     }
 }
 
 extension Patch: CustomStringConvertible {
-    public var description: String { "[Patch '\(name)' \(bank):\(patch) (\(soundFontName))]" }
+    public var description: String { "[Patch '\(name)' \(bank):\(patch) \(soundFont.displayName)]" }
 }

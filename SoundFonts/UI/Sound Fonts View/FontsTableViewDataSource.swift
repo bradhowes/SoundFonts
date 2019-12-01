@@ -8,30 +8,54 @@ import UIKit
  */
 final class FontsTableViewDataSource: NSObject {
 
-    let view: UITableView
-    let searchBar: UISearchBar
-    let activeSoundFontManager: ActiveSoundFontManager
+    private let view: UITableView
+    private let searchBar: UISearchBar
+    private let activeSoundFontManager: ActiveSoundFontManager
+    private let collection: SoundFontLibraryManager
 
-    init(view: UITableView, searchBar: UISearchBar, activeSoundFontManager: ActiveSoundFontManager) {
+    private var data = [SoundFont]()
+    private var indices = [UUID:Int]() {
+        didSet {
+            view.reloadData()
+        }
+    }
+
+    init(view: UITableView, searchBar: UISearchBar, activeSoundFontManager: ActiveSoundFontManager,
+         collection: SoundFontLibraryManager) {
+
         self.view = view
         self.searchBar = searchBar
         self.activeSoundFontManager = activeSoundFontManager
+        self.collection = collection
+
         super.init()
         
         view.register(FontCell.self)
         view.dataSource = self
         view.delegate = self
+
+        collection.addSoundFontLibraryChangeNotifier(self, closure: collectionChanged)
+    }
+}
+
+extension FontsTableViewDataSource {
+
+    func getBy(index: Int) -> SoundFont { data[index] }
+    func index(of uuid: UUID) -> Int { indices[uuid]! }
+
+    private func collectionChanged(_ change: SoundFontLibraryChangeKind) {
+        data = collection.orderedSoundFonts
+        indices = Dictionary(uniqueKeysWithValues: data.enumerated().map { ($0.1.uuid, $0.0) })
     }
 
     /**
      Update a cell at a given row, and with the given FontCell instance.
-    
+
      - parameter indexPath: location of row to update
      - parameter cell: FontCell to use for the update
      */
     private func updateCell(at indexPath: IndexPath, cell: FontCell) {
-        cell.update(name: SoundFontLibrary.shared.keys[indexPath.row],
-                    isSelected: view.indexPathForSelectedRow == indexPath,
+        cell.update(name: data[indexPath.row].displayName, isSelected: view.indexPathForSelectedRow == indexPath,
                     isActive: indexPath.row == activeSoundFontManager.activeIndex, isFavorite: false)
     }
 }
@@ -45,9 +69,7 @@ extension FontsTableViewDataSource: UITableViewDataSource {
      - parameter tableView: the view to operate on
      - returns: always 1
      */
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
     /**
      Provide the number of rows in the table view
@@ -56,9 +78,7 @@ extension FontsTableViewDataSource: UITableViewDataSource {
      - parameter section: the section to operate on
      - returns: number of available SoundFont files
      */
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SoundFontLibrary.shared.keys.count
-    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { data.count }
 
     /**
      Provide a formatted FontCell for the table view

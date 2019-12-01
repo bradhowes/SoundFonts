@@ -3,41 +3,61 @@
 import Foundation
 import AVFoundation
 import AudioToolbox
+import os
 
 /**
  This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
  */
 public class Sampler {
+    private lazy var logger = Logging.logger("Samp")
+
     private var engine: AVAudioEngine?
     private var ausampler: AVAudioUnitSampler?
     private var patch: Patch?
 
+    public enum Failure: Error {
+        case engineStarting(error: NSError)
+        case patchLoading(error: NSError)
+    }
+
     /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
      */
-    public func start() {
+    public func start() -> Result<Void, Failure> {
+        os_log(.info, log: logger, "start")
+
         let engine = AVAudioEngine()
         self.engine = engine
         let sampler = AVAudioUnitSampler()
         self.ausampler = sampler
 
+        os_log(.debug, log: logger, "attaching sampler")
         engine.attach(sampler)
+        os_log(.debug, log: logger, "connecting sampler")
         engine.connect(sampler, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
                        format: sampler.outputFormat(forBus: 0))
-        if let patch = self.patch {
-            load(patch: patch)
+
+        do {
+            os_log(.debug, log: logger, "starting engine")
+            try engine.start()
+        } catch let error as NSError {
+            return .failure(.engineStarting(error: error))
         }
 
-        try? engine.start()
+        if let patch = self.patch {
+            return load(patch: patch)
+        }
+
+        os_log(.info, log: logger, "done")
+        return .success(())
     }
 
     /**
      Stop the existing audio engine. Releases the sampler and engine.
      */
     public func stop() {
+        os_log(.info, log: logger, "stop")
         engine?.stop()
-        ausampler = nil
-        engine = nil
     }
 
     /**
@@ -45,16 +65,21 @@ public class Sampler {
     
      - parameter patch: the sound font and patch to use
      */
-    public func load(patch: Patch) {
+    public func load(patch: Patch) -> Result<Void, Failure> {
+        os_log(.info, log: logger, "load - %s", patch.description)
         self.patch = patch
-        guard let sampler = self.ausampler else { return }
-        guard let soundFont = patch.soundFont else { return }
+
+        // Ok if the sampler is not yet available. We will apply the patch when it is
+        guard let sampler = self.ausampler else { return .success(()) }
         do {
-            try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.patch),
+            os_log(.info, log: logger, "begin loading")
+            try sampler.loadSoundBankInstrument(at: patch.soundFont.fileURL, program: UInt8(patch.patch),
                                                 bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+            os_log(.info, log: logger, "end loading")
+            return .success(())
         } catch let error as NSError {
-            print("\(error.localizedDescription)")
-            fatalError("Could not load file")
+            os_log(.error, log: logger, "failed loading - %s", error.localizedDescription)
+            return .failure(.patchLoading(error: error))
         }
     }
 

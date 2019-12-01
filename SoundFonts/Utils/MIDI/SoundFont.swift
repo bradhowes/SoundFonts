@@ -12,13 +12,15 @@ public final class SoundFont: Codable {
     public static let soundFontExtension = "sf2"
 
     /// Presentation name of the sound font
-    public let displayName: String
+    public var displayName: String
 
     /// Width of the sound font name
-    public lazy var nameWidth = displayName.systemFontWidth
+    public var nameWidth: CGFloat { displayName.systemFontWidth }
 
     ///  The resolved URL for the sound font
     public var fileURL: URL { kind.fileURL }
+
+    public let uuid: UUID
 
     /// The collection of Patches found in the sound font
     public private(set) var patches: [Patch]
@@ -33,9 +35,10 @@ public final class SoundFont: Codable {
     public init(_ soundFontInfo: SoundFontInfo) {
         let name = soundFontInfo.name
         let uuid = UUID()
+        self.uuid = uuid
         self.displayName = name
         self.kind = .installed(fileName:name + "_" + uuid.uuidString + "." + Self.soundFontExtension)
-        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
+        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
     }
 
     /**
@@ -47,9 +50,11 @@ public final class SoundFont: Codable {
      */
     public init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
         let name = name
+        let uuid = UUID()
+        self.uuid = uuid
         self.displayName = name
         self.kind = .builtin(resource: resource)
-        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, name) }
+        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
     }
 }
 
