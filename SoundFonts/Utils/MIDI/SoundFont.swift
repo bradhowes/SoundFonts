@@ -2,11 +2,13 @@
 
 import UIKit
 import GameKit
+import os
 
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
 public final class SoundFont: Codable {
+    private static let logger = Logging.logger("SFont")
 
     /// Extension for all SoundFont files in the application bundle
     public static let soundFontExtension = "sf2"
@@ -22,10 +24,40 @@ public final class SoundFont: Codable {
 
     public let uuid: UUID
 
+    public let originalDisplayName: String
+
     /// The collection of Patches found in the sound font
     public private(set) var patches: [Patch]
 
     private let kind: SoundFontKind
+
+    public static func generateSoundFont(from url: URL) -> SoundFont? {
+        os_log(.info, log: Self.logger, "generateSoundFont - '%s'", url.lastPathComponent)
+
+        // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
+        // not in a security scope.
+        let secured = url.startAccessingSecurityScopedResource()
+        let data = try? Data(contentsOf: url, options: .dataReadingMapped)
+        if secured { url.stopAccessingSecurityScopedResource() }
+
+        guard let content = data else {
+            os_log(.error, log: Self.logger, "failed to fetch content")
+            return nil
+        }
+
+        let info = GetSoundFontInfo(data: content)
+        if info.name.isEmpty || info.patches.isEmpty {
+            os_log(.error, log: Self.logger, "failed to parse content")
+            return nil
+        }
+
+        let soundFont = SoundFont(info)
+        os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
+        let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
+        os_log(.info, log: Self.logger, "created - %s", result ? "true" : "false")
+
+        return result ? soundFont : nil
+    }
 
     /**
      Constructor for installed sound font files -- those added fia File app.
@@ -37,6 +69,7 @@ public final class SoundFont: Codable {
         let uuid = UUID()
         self.uuid = uuid
         self.displayName = name
+        self.originalDisplayName = name
         self.kind = .installed(fileName:name + "_" + uuid.uuidString + "." + Self.soundFontExtension)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
     }
@@ -53,6 +86,7 @@ public final class SoundFont: Codable {
         let uuid = UUID()
         self.uuid = uuid
         self.displayName = name
+        self.originalDisplayName = name
         self.kind = .builtin(resource: resource)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
     }

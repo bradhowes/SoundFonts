@@ -27,7 +27,10 @@ public struct Patch: Codable {
 
     public var index: Int { key.index }
 
-    public var soundFont: SoundFont { SoundFontLibrary.shared.getBy(uuid: key.uuid) }
+    public var soundFont: SoundFont {
+        guard let soundFont = SoundFontLibrary.shared.getBy(uuid: key.uuid) else { fatalError() }
+        return soundFont
+    }
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion

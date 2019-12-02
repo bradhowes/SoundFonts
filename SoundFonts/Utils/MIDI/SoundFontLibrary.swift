@@ -19,11 +19,11 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
 
         private var catalog = [UUID:SoundFont]()
         private var _sortedKeys = [UUID]()
-        private var sortedKeysDirty = false
+        private var _sortedKeysDirty = false
         private var sortedKeys: [UUID] {
-            if sortedKeysDirty {
+            if _sortedKeysDirty {
                 _sortedKeys = catalog.values.sorted { $0.displayName < $1.displayName } .map { $0.uuid }
-                sortedKeysDirty = false
+                _sortedKeysDirty = false
             }
             return _sortedKeys
         }
@@ -33,7 +33,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
         private enum CodingKeys: String, CodingKey {
             case catalog
             case _sortedKeys
-            case sortedKeysDirty
+            case _sortedKeysDirty
         }
 
         /**
@@ -44,12 +44,13 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
         func add(_ soundFont: SoundFont) {
             updatingQueue.async {
                 self.catalog[soundFont.uuid] = soundFont
-                self.sortedKeysDirty = true
+                self._sortedKeysDirty = true
             }
         }
 
         var orderedSoundFonts: [SoundFont] { updatingQueue.sync { sortedKeys.map { catalog[$0]! } } }
-        func getBy(uuid: UUID) -> SoundFont { updatingQueue.sync { catalog[uuid]! } }
+        func getBy(uuid: UUID) -> SoundFont? { updatingQueue.sync { catalog[uuid] } }
+        func makeDirty() { updatingQueue.sync { _sortedKeysDirty = true } }
     }
 
     private var collection = Collection()
@@ -66,7 +67,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
      - parameter uuid: the key to look for
      - returns the SoundFont
      */
-    public func getBy(uuid: UUID) -> SoundFont { collection.getBy(uuid: uuid) }
+    public func getBy(uuid: UUID) -> SoundFont? { collection.getBy(uuid: uuid) }
 
     public static let shared = builder()
 
@@ -106,7 +107,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
             }
             else {
                 DispatchQueue.global(qos: .userInitiated).async {
-                    self.add(url: url)
+                    self.addNoNotify(url: url)
                     os_log(.info, log: Self.logger, "0 added '%s'", url.lastPathComponent)
                     dg.leave()
                 }
@@ -120,6 +121,13 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
         save()
         isRestored = true
     }
+    /// 
+    @discardableResult
+    private func addNoNotify(url: URL) -> SoundFont? {
+        guard let soundFont = SoundFont.generateSoundFont(from: url) else { return nil }
+        collection.add(soundFont)
+        return soundFont
+    }
 
     /**
      Add a SoundFont resource to the library.
@@ -127,33 +135,9 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
      - parameter soundFont: the URL of the resource to add
      */
     @discardableResult
-    public func add(url: URL) -> SoundFont? {
-        os_log(.info, log: Self.logger, "1 adding '%s'", url.lastPathComponent)
-
-        // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
-        // not in a security scope.
-        let secured = url.startAccessingSecurityScopedResource()
-        let data = try? Data(contentsOf: url, options: .dataReadingMapped)
-        if secured { url.stopAccessingSecurityScopedResource() }
-
-        guard let content = data else {
-            os_log(.error, log: Self.logger, "failed to fetch content")
-            return nil
-        }
-
-        let info = GetSoundFontInfo(data: content)
-        if info.name.isEmpty || info.patches.isEmpty {
-            os_log(.error, log: Self.logger, "failed to parse content")
-            return nil
-        }
-        
-        let soundFont = SoundFont(info)
-        os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
-        let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
-        os_log(.info, log: Self.logger, "created - %s", result ? "true" : "false")
-        self.collection.add(soundFont)
-        os_log(.info, log: Self.logger, "1 added '%s'", url.lastPathComponent)
-
+    func add(url: URL) -> SoundFont? {
+        guard let soundFont = addNoNotify(url: url) else { return nil }
+        notify(.added(soundFont: soundFont))
         return soundFont
     }
 
@@ -161,8 +145,10 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
 
     }
 
-    func edit(soundFont: SoundFont) {
-
+    func renamed(soundFont: SoundFont) {
+        collection.makeDirty()
+        save()
+        notify(.changed(soundFont: soundFont))
     }
 }
 

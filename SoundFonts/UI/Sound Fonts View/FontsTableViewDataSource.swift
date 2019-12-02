@@ -11,6 +11,7 @@ final class FontsTableViewDataSource: NSObject {
     private let view: UITableView
     private let searchBar: UISearchBar
     private let activeSoundFontManager: ActiveSoundFontManager
+    private let soundFontEditor: SoundFontEditor
     private let collection: SoundFontLibraryManager
 
     private var data = [SoundFont]()
@@ -21,11 +22,12 @@ final class FontsTableViewDataSource: NSObject {
     }
 
     init(view: UITableView, searchBar: UISearchBar, activeSoundFontManager: ActiveSoundFontManager,
-         collection: SoundFontLibraryManager) {
+         soundFontEditor: SoundFontEditor, collection: SoundFontLibraryManager) {
 
         self.view = view
         self.searchBar = searchBar
         self.activeSoundFontManager = activeSoundFontManager
+        self.soundFontEditor = soundFontEditor
         self.collection = collection
 
         super.init()
@@ -42,6 +44,25 @@ extension FontsTableViewDataSource {
 
     func getBy(index: Int) -> SoundFont { data[index] }
     func index(of uuid: UUID) -> Int { indices[uuid]! }
+
+    /**
+     Create a swipe action for a cell / Patch which will add or remove a Favorite association with the Patch.
+
+     - parameter cell: the cell that will show the action
+     - parameter patch: the Patch to use when creating a new / removing an existing Favorite
+     - returns: swipe action
+     */
+    private func createSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "Edit") {
+            (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            self.soundFontEditor.show(for: soundFont, cell: cell)
+            completionHandler(true)
+        }
+
+        action.image = UIImage(named: "Edit")
+        action.backgroundColor = UIColor.orange
+        return action
+    }
 
     private func collectionChanged(_ change: SoundFontLibraryChangeKind) {
         data = collection.orderedSoundFonts
@@ -110,4 +131,14 @@ extension FontsTableViewDataSource: UITableViewDelegate {
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell: FontCell = tableView.cellForRow(at: indexPath) {
+            let soundFont = getBy(index: indexPath.row)
+            let action = createSwipeAction(at: cell, with: soundFont)
+            return UISwipeActionsConfiguration(actions: [action])
+        }
+        return nil
+    }
+
 }

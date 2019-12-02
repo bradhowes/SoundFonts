@@ -41,12 +41,12 @@ protocol SoundFontLibraryManager {
      - parameter index: the key to use
      - returns: found SoundFont object
      */
-    func getBy(uuid: UUID) -> SoundFont
+    func getBy(uuid: UUID) -> SoundFont?
 
     func add(url: URL) -> SoundFont?
 
     func remove(soundFont: SoundFont)
 
-    func edit(soundFont: SoundFont)
+    func renamed(soundFont: SoundFont)
 
 }
