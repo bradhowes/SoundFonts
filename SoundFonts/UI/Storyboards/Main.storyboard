@@ -103,66 +103,66 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-745" y="-1534"/>
+            <point key="canvasLocation" x="163.768115942029" y="-1534.1517857142856"/>
         </scene>
-        <!--Favorite-->
+        <!--Favorite Editor-->
         <scene sceneID="FbP-kw-aL9">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="zYi-ne-58d" customClass="FavoriteDetailController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="zYi-ne-58d" userLabel="Favorite Editor" customClass="FavoriteDetailController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c1U-jY-Jwr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="546"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="380"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOB-fj-QF1">
-                                <rect key="frame" x="20" y="83.5" width="48" height="20.5"/>
+                                <rect key="frame" x="20" y="115.5" width="48" height="20.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Lowest Key" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FXi-cj-cc9">
-                                <rect key="frame" x="20" y="124" width="93" height="21"/>
+                                <rect key="frame" x="20" y="156" width="93" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="my favorite" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ICN-zq-xNm">
-                                <rect key="frame" x="76" y="76" width="224" height="32"/>
+                                <rect key="frame" x="76" y="108" width="224" height="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="soundFontName" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hkt-KD-9lr">
-                                <rect key="frame" x="20" y="252" width="100" height="16"/>
+                                <rect key="frame" x="20" y="284" width="100" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="patchName" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zkz-IZ-GZF">
-                                <rect key="frame" x="20" y="276" width="70" height="16"/>
+                                <rect key="frame" x="20" y="308" width="70" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3H6-6k-aQ4" userLabel="Key Stepper">
-                                <rect key="frame" x="195" y="118.5" width="94" height="32"/>
+                                <rect key="frame" x="195" y="150.5" width="94" height="32"/>
                                 <connections>
                                     <action selector="changeLowestKey:" destination="zYi-ne-58d" eventType="valueChanged" id="a45-cP-GCB"/>
                                 </connections>
                             </stepper>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/23" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spc-mS-Xzz" userLabel="bank">
-                                <rect key="frame" x="20" y="300" width="26.5" height="16"/>
+                                <rect key="frame" x="20" y="332" width="26.5" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Gain" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOf-pz-UBS">
-                                <rect key="frame" x="20" y="170" width="37" height="21"/>
+                                <rect key="frame" x="20" y="202" width="37" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-80.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odd-hy-oDM" userLabel="gain">
-                                <rect key="frame" x="65" y="170" width="60" height="21"/>
+                                <rect key="frame" x="65" y="202" width="60" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="HbT-Ua-XSJ"/>
                                 </constraints>
@@ -171,19 +171,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dNr-nw-vcg">
-                                <rect key="frame" x="131" y="165.5" width="171" height="31"/>
+                                <rect key="frame" x="131" y="197.5" width="171" height="31"/>
                                 <connections>
                                     <action selector="volumeChanged:" destination="zYi-ne-58d" eventType="valueChanged" id="XSr-bE-6CR"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Pan" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uML-Lh-MgB">
-                                <rect key="frame" x="20" y="211" width="37" height="21"/>
+                                <rect key="frame" x="20" y="243" width="37" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-0.99" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I18-Bg-VKV" userLabel="pain">
-                                <rect key="frame" x="65" y="211" width="60" height="21"/>
+                                <rect key="frame" x="65" y="243" width="60" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="iOZ-G8-lOc"/>
                                 </constraints>
@@ -192,19 +192,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rar-Kq-tLp">
-                                <rect key="frame" x="131" y="206.5" width="171" height="31"/>
+                                <rect key="frame" x="131" y="238.5" width="171" height="31"/>
                                 <connections>
                                     <action selector="panChanged:" destination="zYi-ne-58d" eventType="valueChanged" id="PXg-YJ-k50"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GR7-wi-7E0" userLabel="index">
-                                <rect key="frame" x="66.5" y="300" width="16" height="16"/>
+                                <rect key="frame" x="66.5" y="332" width="16" height="16"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vvf-8D-awX" userLabel="Lowest Key">
-                                <rect key="frame" x="129" y="118" width="50" height="33"/>
+                                <rect key="frame" x="129" y="150" width="50" height="33"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="Ahj-js-oGb"/>
                                 </constraints>
@@ -215,7 +215,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A2Y-ik-BLm">
-                                <rect key="frame" x="222" y="496" width="78" height="30"/>
+                                <rect key="frame" x="222" y="330" width="78" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="zfs-1X-lRI"/>
                                 </constraints>
@@ -275,13 +275,13 @@
                                 <action selector="cancelPressed:" destination="zYi-ne-58d" id="SZd-zR-3eZ"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="2MJ-Ub-ws5">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="2MJ-Ub-ws5">
                             <connections>
                                 <action selector="donePressed:" destination="zYi-ne-58d" id="ESZ-2e-qsA"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="320" height="600"/>
+                    <size key="freeformSize" width="320" height="380"/>
                     <connections>
                         <outlet property="bank" destination="Spc-mS-Xzz" id="VAa-ZB-75y"/>
                         <outlet property="cancelButton" destination="Qr0-64-mpH" id="Kkf-Vi-M9T"/>
@@ -295,12 +295,12 @@
                         <outlet property="panSlider" destination="rar-Kq-tLp" id="a1b-L6-tIg"/>
                         <outlet property="panValue" destination="I18-Bg-VKV" id="Fm5-Xr-UOo"/>
                         <outlet property="patchName" destination="Zkz-IZ-GZF" id="ul6-98-Nn4"/>
-                        <outlet property="soundFontName" destination="Hkt-KD-9lr" id="SHj-gm-cx5"/>
+                        <outlet property="soundFontName" destination="Hkt-KD-9lr" id="TVg-6C-fez"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="862" y="-720"/>
+            <point key="canvasLocation" x="2503" y="-1568"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="GeL-bI-CiM">
@@ -426,11 +426,12 @@
                         <outlet property="patchesView" destination="il0-aC-ept" id="1ff-gv-FFp"/>
                         <outlet property="searchBar" destination="Fl2-Sg-7ea" id="LaW-BL-rxP"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
+                        <segue destination="BLq-66-4BL" kind="presentation" identifier="soundFontDetail" modalPresentationStyle="formSheet" id="BKe-Sq-hkX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="-2081"/>
+            <point key="canvasLocation" x="964" y="-1151"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -477,7 +478,97 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="75" y="-1356"/>
+            <point key="canvasLocation" x="965" y="-1568"/>
+        </scene>
+        <!--SoundFont Editor-->
+        <scene sceneID="Nc1-o8-v27">
+            <objects>
+                <viewController id="J1E-VV-vXb" userLabel="SoundFont Editor" customClass="FontDetailController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PVH-2e-a8c">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="380"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMC-LO-nex">
+                                <rect key="frame" x="20" y="115.5" width="48" height="20.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="my soundfont" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s2C-3z-yXQ">
+                                <rect key="frame" x="76" y="108" width="224" height="32"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFU-l2-rTt">
+                                <rect key="frame" x="222" y="330" width="78" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="LgM-W0-9b7"/>
+                                    <constraint firstAttribute="height" constant="30" id="q6w-td-sWB"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Delete" image="Trash">
+                                    <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteFavorite:" destination="zYi-ne-58d" eventType="touchUpInside" id="rIl-eK-a2Z"/>
+                                    <action selector="deleteSoundFont:" destination="J1E-VV-vXb" eventType="touchUpInside" id="qor-zY-Ia0"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="soundFontName" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zbT-I1-Hu4" userLabel="originalName">
+                                <rect key="frame" x="20" y="160" width="100" height="16"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/23" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Py-Ud-xmF" userLabel="patchCount">
+                                <rect key="frame" x="20" y="196" width="26.5" height="16"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="s2C-3z-yXQ" firstAttribute="firstBaseline" secondItem="eMC-LO-nex" secondAttribute="firstBaseline" id="0Ox-NN-hdt"/>
+                            <constraint firstItem="7Py-Ud-xmF" firstAttribute="top" secondItem="zbT-I1-Hu4" secondAttribute="bottom" constant="20" id="GFI-FB-525"/>
+                            <constraint firstItem="zbT-I1-Hu4" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="Hf6-ym-ezx"/>
+                            <constraint firstItem="eMC-LO-nex" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="J3l-bA-zai"/>
+                            <constraint firstAttribute="trailing" secondItem="YFU-l2-rTt" secondAttribute="trailing" constant="20" id="NlD-ss-2o6"/>
+                            <constraint firstItem="s2C-3z-yXQ" firstAttribute="top" secondItem="gLC-lN-Cot" secondAttribute="top" constant="20" id="Tfw-rQ-wHP"/>
+                            <constraint firstItem="s2C-3z-yXQ" firstAttribute="leading" secondItem="eMC-LO-nex" secondAttribute="trailing" constant="8" id="adD-8t-Ut6"/>
+                            <constraint firstItem="7Py-Ud-xmF" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="chB-dW-DsL"/>
+                            <constraint firstAttribute="bottom" secondItem="YFU-l2-rTt" secondAttribute="bottom" constant="20" id="flV-gK-bMc"/>
+                            <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" secondItem="s2C-3z-yXQ" secondAttribute="trailing" constant="20" id="fsx-W5-khb"/>
+                            <constraint firstItem="zbT-I1-Hu4" firstAttribute="top" secondItem="s2C-3z-yXQ" secondAttribute="bottom" constant="20" id="sEn-8i-KpD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="gLC-lN-Cot"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="SoundFont" id="57Y-uy-VVx">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="jZb-mq-MmC" userLabel="Cancel Button">
+                            <connections>
+                                <action selector="cancelPressed:" destination="J1E-VV-vXb" id="G3w-Ea-zhy"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="PMy-9w-Kgw" userLabel="Done Button">
+                            <connections>
+                                <action selector="donePressed:" destination="J1E-VV-vXb" id="nrG-Tv-Nk7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <size key="freeformSize" width="320" height="380"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="jZb-mq-MmC" id="n0o-4s-phH"/>
+                        <outlet property="doneButton" destination="PMy-9w-Kgw" id="IFj-1K-Ctn"/>
+                        <outlet property="name" destination="s2C-3z-yXQ" id="WMy-3k-lgn"/>
+                        <outlet property="originalName" destination="zbT-I1-Hu4" id="D9X-50-zno"/>
+                        <outlet property="patchCount" destination="7Py-Ud-xmF" id="TIB-yG-9l0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gMp-bJ-Ndt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2503" y="-1151"/>
         </scene>
         <!--Keyboard Controller-->
         <scene sceneID="DdP-fR-Jpy">
@@ -494,10 +585,10 @@
             </objects>
             <point key="canvasLocation" x="-428" y="-682"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Favorite Editor Navigation Controller-->
         <scene sceneID="If2-3j-gaj">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jqK-wd-FUD" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jqK-wd-FUD" userLabel="Favorite Editor Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="AF6-HY-pGy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
@@ -510,7 +601,25 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="863" y="-1507"/>
+            <point key="canvasLocation" x="1751" y="-1568"/>
+        </scene>
+        <!--SoundFont Editor Navigation Controller-->
+        <scene sceneID="zXe-TQ-fWZ">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="BLq-66-4BL" userLabel="SoundFont Editor Navigation Controller" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="ZzE-t1-DfS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="J1E-VV-vXb" kind="relationship" relationship="rootViewController" id="7d4-yM-r3D"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VKP-1l-z5S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1752" y="-1151"/>
         </scene>
     </scenes>
     <resources>

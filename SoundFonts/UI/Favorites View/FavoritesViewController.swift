@@ -125,7 +125,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
     private func selected(_ favorite: Favorite) {
         os_log(.info, log: logger, "setting active patch")
-        activePatchManager.activePatch = favorite.patch
+        activePatchManager.changePatch(kind: .favorite(favorite: favorite))
 
         os_log(.info, log: logger, "setting lowest note")
         keyboardManager.lowestNote = favorite.keyboardLowestNote
