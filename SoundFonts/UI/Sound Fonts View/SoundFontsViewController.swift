@@ -133,33 +133,46 @@ final class SoundFontsViewController: UIViewController {
     }
 
     private func setActivePatchIndex(_ index: Int, updatePreviousCell: Bool) {
+        os_log(.info, log: logger, "setActivePatchIndex - index: %d updatePreviousCell: %d", index, updatePreviousCell)
+
         let prevIndex = activePatchIndex
         activePatchIndex = index
 
-        if updatePreviousCell && prevIndex != -1 && prevIndex != index {
+        if updatePreviousCell && prevIndex != -1 && prevIndex != index && prevIndex < activeSoundFont.patches.count {
             if let cell: PatchCell = patchesView.cellForRow(at: cellRow(at: prevIndex)) {
+                os_log(.info, log: logger, "updating old cell")
                 let patch = activeSoundFont.patches[prevIndex]
                 cell.setActive(false, isFavorite: favoritesManager.isFavored(patch: patch))
             }
         }
 
         let pos = cellRow(at: index)
+        os_log(.info, log: logger, "pos: (%d, %d)", pos.section, pos.row)
+
         if let cell: PatchCell = patchesView.cellForRow(at: pos) {
+            os_log(.info, log: logger, "updating new cell")
             let patch = activeSoundFont.patches[index]
             cell.setActive(true, isFavorite: favoritesManager.isFavored(patch: patch))
         }
         
         if patchesView.indexPathForSelectedRow != pos {
-            let scrollPosition: UITableView.ScrollPosition = pos.section == 0 && pos.row < 2 ? .top : .none
-            patchesView.scrollToRow(at: pos, at: scrollPosition, animated: false)
-            patchesView.selectRow(at: pos, animated: false, scrollPosition: scrollPosition)
+            os_log(.info, log: logger, "selecting new cell")
+            patchesView.selectRow(at: pos, animated: false, scrollPosition: .none)
         }
 
+        os_log(.info, log: logger, "scrolling to new cell")
+        patchesView.scrollToRow(at: pos, at: .none, animated: false)
+
+        hideSearchBar()
+    }
+
+    private func hideSearchBar() {
         if !showingSearchResults && patchesView.contentOffset.y < searchBar.frame.size.height {
+            os_log(.info, log: logger, "hiding search bar")
             patchesView.contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
         }
     }
-    
+
     private func cellRow(at: Int) -> IndexPath {
         let row = showingSearchResults ? searchManager.searchIndexOfPatch(patchIndex: at) : at
         return patchesTableViewDataSource.indexPathForPatchIndex(row)
@@ -220,14 +233,15 @@ extension SoundFontsViewController : ActiveSoundFontManager {
         }
 
         set {
-            guard newValue != selectedSoundFontIndex else { return }
+            os_log(.info, log: logger, "set selectedIndex - current: %d new: %d", selectedSoundFontIndex, newValue)
+            // guard newValue != selectedSoundFontIndex else { return }
             selectedSoundFontIndex = newValue
             
             let pos = IndexPath(row: newValue, section: 0)
             if soundFontsView.indexPathForSelectedRow != pos {
-                soundFontsView.scrollToRow(at: pos, at: .none, animated: false)
                 soundFontsView.selectRow(at: pos, animated: false, scrollPosition: .none)
             }
+            soundFontsView.scrollToRow(at: pos, at: .none, animated: false)
 
             if let searchTerm = searchBar.searchTerm {
                 let api = activeSoundFontIndex == selectedSoundFontIndex ? activePatchIndex : -1
@@ -236,6 +250,7 @@ extension SoundFontsViewController : ActiveSoundFontManager {
             }
             else {
                 patchesView.reloadData()
+                hideSearchBar()
             }
         }
     }
@@ -334,8 +349,47 @@ extension SoundFontsViewController: PatchesManager {
 }
 
 extension SoundFontsViewController: SoundFontEditor {
-    func show(for soundFont: SoundFont, cell: FontCell) {
-        performSegue(withIdentifier: "soundFontDetail", sender: cell)
+
+    func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: nil) {
+            (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+            self.performSegue(withIdentifier: "soundFontDetail", sender: cell)
+            completionHandler(true)
+        }
+
+        action.image = UIImage(named: "Edit")
+        action.backgroundColor = UIColor.orange
+        return action
+    }
+
+    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: nil) { (_, _, completionHandler) in
+            let alertController = UIAlertController(title: "Confirm", message: "Deleting the SoundFont cannot be undone.",
+                                                    preferredStyle: .actionSheet)
+            let delete = UIAlertAction(title: "Delete", style:.destructive) { action in
+                SoundFontLibrary.shared.remove(soundFont: soundFont)
+                completionHandler(true)
+            }
+
+            let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
+                completionHandler(false)
+            }
+
+            alertController.addAction(delete)
+            alertController.addAction(cancel)
+
+            if let popoverController = alertController.popoverPresentationController {
+              popoverController.sourceView = self.view
+              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+              popoverController.permittedArrowDirections = []
+            }
+
+            self.present(alertController, animated: true, completion: nil)
+        }
+
+        action.image = UIImage(named: "Trash")
+        action.backgroundColor = UIColor.red
+        return action
     }
 }
 

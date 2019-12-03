@@ -26,9 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        print("-- given: \(url)")
-        let soundFont = soundFontLibrary.add(url: url)
-        return true
+        return soundFontLibrary.add(url: url) != nil
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

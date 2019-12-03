@@ -59,10 +59,12 @@ final class PatchesTableViewDataSource: NSObject {
      - returns: view IndexPath
      */
     func indexPathForPatchIndex(_ index: Int) -> IndexPath {
-        let section = index / PatchesTableViewDataSource.sectionSize
-        return IndexPath(row: index - PatchesTableViewDataSource.sectionSize * section, section: section)
+        let safeIndex = min(index, patches.count - 1)
+        let section = safeIndex / Self.sectionSize
+        let row = safeIndex - Self.sectionSize * section
+        return IndexPath(row: row, section: section)
     }
-    
+
     /**
      Obtain a Patch index for the given view IndexPath. This is the inverse of `indexPathForPatchIndex`.
      
@@ -183,7 +185,9 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
+        if indexPath.row != activePatchManager.activePatch.index {
+            activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
