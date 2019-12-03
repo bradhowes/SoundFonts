@@ -300,7 +300,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2503" y="-1568"/>
+            <point key="canvasLocation" x="2503" y="-1233"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="GeL-bI-CiM">
@@ -382,14 +382,14 @@
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmV-bj-iZB" userLabel="SoundFonts">
                                         <rect key="frame" x="0.0" y="0.0" width="176.5" height="530"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
-                                        <color key="sectionIndexColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="il0-aC-ept" userLabel="Patches">
                                         <rect key="frame" x="184.5" y="0.0" width="229.5" height="530"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                         <color key="sectionIndexColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Name" translucent="NO" id="Fl2-Sg-7ea">
-                                            <rect key="frame" x="0.0" y="0.0" width="229.5" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="229" height="56"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                             <scopeButtonTitles>
@@ -431,7 +431,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="964" y="-1151"/>
+            <point key="canvasLocation" x="964" y="-1657"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -478,7 +478,7 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="965" y="-1568"/>
+            <point key="canvasLocation" x="964" y="-1233"/>
         </scene>
         <!--SoundFont Editor-->
         <scene sceneID="Nc1-o8-v27">
@@ -568,7 +568,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMp-bJ-Ndt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2503" y="-1151"/>
+            <point key="canvasLocation" x="2503" y="-1657"/>
         </scene>
         <!--Keyboard Controller-->
         <scene sceneID="DdP-fR-Jpy">
@@ -601,7 +601,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1751" y="-1568"/>
+            <point key="canvasLocation" x="1751" y="-1233"/>
         </scene>
         <!--SoundFont Editor Navigation Controller-->
         <scene sceneID="zXe-TQ-fWZ">
@@ -619,7 +619,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKP-1l-z5S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1752" y="-1151"/>
+            <point key="canvasLocation" x="1751" y="-1657"/>
         </scene>
     </scenes>
     <resources>
