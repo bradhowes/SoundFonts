@@ -56,5 +56,12 @@ enum SoundFontKind: Codable, Hashable {
     }
 
     var path: String { return fileURL.path }
+
+    var removable: Bool {
+        switch self {
+        case .builtin(resource: _): return false
+        case .installed(fileName: _): return true
+        }
+    }
 }
 

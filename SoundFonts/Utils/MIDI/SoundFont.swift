@@ -22,6 +22,8 @@ public final class SoundFont: Codable {
     ///  The resolved URL for the sound font
     public var fileURL: URL { kind.fileURL }
 
+    public var removable: Bool { kind.removable }
+
     public let uuid: UUID
 
     public let originalDisplayName: String

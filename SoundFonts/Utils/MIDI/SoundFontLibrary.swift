@@ -42,8 +42,15 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
          - parameter soundFont: the instance to add
          */
         func add(_ soundFont: SoundFont) {
-            updatingQueue.async {
+            updatingQueue.sync {
                 self.catalog[soundFont.uuid] = soundFont
+                self._sortedKeysDirty = true
+            }
+        }
+
+        func remove(_ soundFont: SoundFont) {
+            updatingQueue.sync {
+                self.catalog.removeValue(forKey: soundFont.uuid)
                 self._sortedKeysDirty = true
             }
         }
@@ -137,12 +144,15 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
     @discardableResult
     func add(url: URL) -> SoundFont? {
         guard let soundFont = addNoNotify(url: url) else { return nil }
+        save()
         notify(.added(soundFont: soundFont))
         return soundFont
     }
 
     func remove(soundFont: SoundFont) {
-
+        collection.remove(soundFont)
+        save()
+        notify(.removed(soundFont: soundFont))
     }
 
     func renamed(soundFont: SoundFont) {

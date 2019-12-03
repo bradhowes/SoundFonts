@@ -4,5 +4,6 @@ import UIKit
 
 protocol SoundFontEditor {
 
-    func show(for soundFont: SoundFont, cell: FontCell)
+    func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction
+    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction
 }

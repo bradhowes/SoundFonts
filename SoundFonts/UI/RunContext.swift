@@ -23,6 +23,7 @@ final class RunContext {
     var keyboardManager: KeyboardManager { keyboardController }
     var patchesManager: PatchesManager { soundFontsController }
     var soundFontLibraryManager: SoundFontLibraryManager { SoundFontLibrary.shared }
+    var soundFontEditor: SoundFontEditor { soundFontsController }
 
     /**
      Collect the known view controllers and track what we have.
