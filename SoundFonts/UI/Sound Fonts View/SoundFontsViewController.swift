@@ -101,7 +101,6 @@ final class SoundFontsViewController: UIViewController {
             return soundFont
         }() ?? soundFontsTableViewDataSource.getBy(index: 0)
 
-
         let patchIndex: Int = {
             let patchIndex = Settings[.lastActivePatch]
             guard patchIndex >= 0 && patchIndex < lastSoundFont.patches.count else {
@@ -112,7 +111,16 @@ final class SoundFontsViewController: UIViewController {
         }()
 
         let patch = lastSoundFont.patches[patchIndex]
+
         changeActivePatch(patch)
+
+        let soundFontPos = IndexPath(row: activeSoundFontIndex, section: 0)
+        let patchPos = cellRow(at: activePatchIndex)
+
+        DispatchQueue.main.async {
+            self.soundFontsView.selectRow(at: soundFontPos, animated: false, scrollPosition: .none)
+            self.patchesView.selectRow(at: patchPos, animated: false, scrollPosition: .none)
+        }
     }
 
     private func setActiveSoundFontIndex(_ index: Int) -> Bool {
@@ -418,8 +426,8 @@ extension SoundFontsViewController: PatchSearchManagerDelegate {
      - parameter cell: the cell to update
      - parameter with: the patch to represent in the cell
      */
-    func updateCell(_ cell: PatchCell, with patch: Patch) {
-        patchesTableViewDataSource.updateCell(cell, with: patch)
+    func update(cell: PatchCell, with patch: Patch) {
+        patchesTableViewDataSource.update(cell: cell, with: patch)
     }
 
     /**
