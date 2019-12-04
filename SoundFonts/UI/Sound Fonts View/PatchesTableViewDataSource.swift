@@ -184,7 +184,7 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
-        }
+    }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }

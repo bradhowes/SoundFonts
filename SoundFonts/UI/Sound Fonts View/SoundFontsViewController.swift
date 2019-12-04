@@ -177,7 +177,10 @@ final class SoundFontsViewController: UIViewController {
     private func hideSearchBar() {
         if !showingSearchResults && patchesView.contentOffset.y < searchBar.frame.size.height {
             os_log(.info, log: logger, "hiding search bar")
-            patchesView.contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
+            let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
+            UIView.animate(withDuration: 0.4) {
+                self.patchesView.contentOffset = offset
+            }
         }
     }
 
@@ -242,7 +245,6 @@ extension SoundFontsViewController : ActiveSoundFontManager {
 
         set {
             os_log(.info, log: logger, "set selectedIndex - current: %d new: %d", selectedSoundFontIndex, newValue)
-            // guard newValue != selectedSoundFontIndex else { return }
             selectedSoundFontIndex = newValue
             
             let pos = IndexPath(row: newValue, section: 0)
@@ -258,7 +260,6 @@ extension SoundFontsViewController : ActiveSoundFontManager {
             }
             else {
                 patchesView.reloadData()
-                hideSearchBar()
             }
         }
     }
@@ -287,16 +288,20 @@ extension SoundFontsViewController: ActivePatchManager {
     func changePatch(kind: PatchKind) {
         os_log(.info, log: logger, "changePatch - kind: '%s'", kind.description)
         switch kind {
-        case let .normal(patch: patch): changeActivePatch(patch)
+        case let .normal(patch: patch):
+
+            // User picked a patch from the patch view.
+            changeActivePatch(patch)
+
         case let .favorite(favorite: favorite):
+
+            // User picked a favorite.
             if showingSearchResults {
                 os_log(.info, log: logger, "showing search results")
                 dismissSearchResults()
-                changeActivePatch(favorite.patch)
             }
-            else {
-                changeActivePatch(favorite.patch)
-            }
+            changeActivePatch(favorite.patch)
+            hideSearchBar()
         }
     }
 
