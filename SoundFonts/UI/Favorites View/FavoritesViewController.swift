@@ -17,7 +17,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     private var activePatchManager: ActivePatchManager!
     private var keyboardManager: KeyboardManager!
     private let favoriteCollection = FavoriteCollection.shared
-    private var notifiers = [UUID: (FavoriteChangeKind, Favorite) -> Void]()
+    private var notifiers = [UUID: (FavoriteChangeKind) -> Void]()
     private var favoriteCell: FavoriteCell!
     private var favoriteMover: FavoriteMover!
 
@@ -129,11 +129,11 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
         os_log(.info, log: logger, "setting lowest note")
         keyboardManager.lowestNote = favorite.keyboardLowestNote
-        notify(.selected, favorite)
+        notify(.selected(favorite))
     }
     
-    private func notify(_ kind: FavoriteChangeKind, _ favorite: Favorite) {
-        notifiers.values.forEach { $0(kind, favorite) }
+    private func notify(_ kind: FavoriteChangeKind) {
+        notifiers.values.forEach { $0(kind) }
     }
 }
 
@@ -193,14 +193,14 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
             let favorite = favoriteCollection[indexPath.row]
             favoritesView.collectionViewLayout.invalidateLayout()
             updateFavoriteCell(at: indexPath)
-            notify(.changed, favorite)
+            notify(.changed(favorite))
             favoriteCollection.save()
         case .cancel:
             break
             
         case .delete:
             let favorite = self.favoriteCollection[indexPath.row]
-            remove(patch: favorite.patch)
+            remove(patch: favorite.patch, bySwiping: false)
             break
         }
 
@@ -224,22 +224,28 @@ extension FavoritesViewController: FavoritesManager {
     func add(patch: Patch, keyboardLowestNote: Note) {
         let favorite = Favorite(patch: patch, keyboardLowestNote: keyboardLowestNote)
         favoriteCollection.add(favorite)
-        notify(.added, favorite)
+        notify(.added(favorite))
         favoritesView.reloadData()
     }
     
-    func remove(patch: Patch) {
+    func remove(patch: Patch, bySwiping: Bool) {
         let favorite = favoriteCollection.remove(patch: patch)
-        notify(.removed, favorite)
+        self.notify(.removed(favorite, bySwiping: bySwiping))
         favoritesView.reloadData()
     }
 
+    func removeAll(associatedWith soundFont: SoundFont) {
+        let favorites = favoriteCollection.removeAll(associatedWith: soundFont)
+        favorites.forEach { self.notify(.removed($0, bySwiping: false)) }
+        favoritesView.reloadData()
+    }
+    
     func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
-        notifiers[uuid] = { [weak observer] kind, favorite in
+        notifiers[uuid] = { [weak observer] kind in
             if observer != nil {
-                closure(kind, favorite)
+                closure(kind)
             }
             else {
                 token.cancel()

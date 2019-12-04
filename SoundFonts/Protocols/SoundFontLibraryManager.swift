@@ -4,9 +4,9 @@
 import UIKit
 
 enum SoundFontLibraryChangeKind {
-    case added(soundFont: SoundFont)
-    case changed(soundFont: SoundFont)
-    case removed(soundFont: SoundFont)
+    case added(SoundFont)
+    case changed(SoundFont)
+    case removed(SoundFont)
     case restored
 }
 

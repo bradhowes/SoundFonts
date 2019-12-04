@@ -3,10 +3,10 @@
 import Foundation
 
 enum FavoriteChangeKind {
-    case added
-    case selected
-    case changed
-    case removed
+    case added(Favorite)
+    case selected(Favorite)
+    case changed(Favorite)
+    case removed(Favorite, bySwiping: Bool)
 }
 
 /**
@@ -14,7 +14,7 @@ enum FavoriteChangeKind {
  */
 protocol FavoritesManager: class, SwipingActivity {
 
-    typealias Notifier<O: AnyObject> = (FavoriteChangeKind, Favorite) -> Void
+    typealias Notifier<O: AnyObject> = (FavoriteChangeKind) -> Void
 
     /**
      Determine if the given Patch instance is associated with a Favorite instance
@@ -23,7 +23,7 @@ protocol FavoritesManager: class, SwipingActivity {
      - returns: true if it is associated with a Favorite instance
      */
     func isFavored(patch: Patch) -> Bool
-    
+
     /**
      Create a new Favorite instance with the given parameters
     
@@ -37,7 +37,7 @@ protocol FavoritesManager: class, SwipingActivity {
 
      - parameter patch: the Patch to remove
      */
-    func remove(patch: Patch)
+    func remove(patch: Patch, bySwiping: Bool)
 
     /**
      Install a closure to be called when a Favorite change happens. The closure takes three arguments: the observer

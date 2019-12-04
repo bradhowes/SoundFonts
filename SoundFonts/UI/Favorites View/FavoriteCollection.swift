@@ -151,9 +151,9 @@ final class FavoriteCollection: Codable {
     
      - parameter index: the index of the Favorite to remove
      */
-    func remove(at index: Int) {
-        let fave = favorites.remove(at: index)
-        favoriteMap.removeValue(forKey: fave.patch)
+    func removeAll(associatedWith soundFont: SoundFont) -> [Favorite] {
+        let matching = favorites.filter { $0.patch.soundFont == soundFont }
+        return matching.map { self.remove(patch: $0.patch) }
     }
 
     /**

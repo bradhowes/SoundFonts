@@ -7,9 +7,11 @@ import AVKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    weak var mainViewController: MainViewController?
+    var runContext = RunContext()
     let soundFontLibrary = SoundFontLibrary.shared
     let favoriteCollection = FavoriteCollection.shared
+
+    weak var mainViewController: MainViewController?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -31,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         print("applicationWillResignActive")
-        mainViewController?.stopAudio()
+        runContext.mainViewController.stopAudio()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -44,12 +46,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("applicationDidBecomeActive")
-        mainViewController?.startAudio()
+        runContext.mainViewController.startAudio()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         print("applicationWillTerminate")
-        mainViewController?.stopAudio()
+        runContext.mainViewController.stopAudio()
     }
 }
 

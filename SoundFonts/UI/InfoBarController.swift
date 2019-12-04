@@ -30,8 +30,7 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         view.addGestureRecognizer(panner)
     }
 
-    func establishConnections(_ context: RunContext) {
-    }
+    func establishConnections(_ context: RunContext) {}
 
     /**
      Add an event target to one of the internal UIControl entities.

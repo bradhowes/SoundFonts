@@ -22,6 +22,10 @@ final class MainViewController: UIViewController {
     private lazy var sampler = Sampler()
     private var upperViewManager = UpperViewManager()
     private var patchesManager: PatchesManager!
+    private var activePatchManager: ActivePatchManager!
+    private var keyboardManager: KeyboardManager!
+    private var infoBarManager: InfoBarManager!
+    private var favoritesManager: FavoritesManager!
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -48,18 +52,9 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         upperViewManager.add(view: patches)
         upperViewManager.add(view: favorites)
-        runContext.addViewControllers(self, children)
-        runContext.establishConnections()
+        UIApplication.shared.appDelegate.runContext.addViewControllers(self, children)
+        UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-        print("MainViewController - viewDidLoad")
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        print("MainViewController - viewDidAppear")
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        print("MainViewController - viewWillDisappear")
     }
 }
 
@@ -100,7 +95,7 @@ extension MainViewController {
             postAlert(for: what)
         }
 
-        setPatch(runContext.activePatchManager.activePatch)
+        setPatch(activePatchManager.activePatch)
     }
 
     private func postAlert(for what: Sampler.Failure) {
@@ -151,22 +146,35 @@ extension MainViewController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     func establishConnections(_ context: RunContext) {
-        (UIApplication.shared.delegate as? AppDelegate)?.mainViewController = self
-        context.keyboardManager.delegate = self
-        context.activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
-        context.favoritesManager.addFavoriteChangeNotifier(self) { _, favorite in self.useFavorite(favorite) }
-        context.infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
+
+        patchesManager = context.patchesManager
+        activePatchManager = context.activePatchManager
+        keyboardManager = context.keyboardManager
+        infoBarManager = context.infoBarManager
+        favoritesManager = context.favoritesManager
+
+        keyboardManager.delegate = self
+        activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
+        favoritesManager.addFavoriteChangeNotifier(self) { kind in
+            switch kind {
+            case let .added(favorite): self.useFavorite(favorite)
+            case let .changed(favorite): self.useFavorite(favorite)
+            case let .removed(favorite, _): self.useFavorite(favorite)
+            default: break
+            }
+        }
+
+        infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
 
         let showingFavorites = Settings[.wasShowingFavorites]
         self.patches.isHidden = showingFavorites
         self.favorites.isHidden = !showingFavorites
 
-        self.patchesManager = context.patchesManager
         patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
-        context.favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        context.favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
     }
 
     /**
@@ -188,9 +196,8 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func setPatch(_ patch: Patch) {
-        runContext.keyboardManager.releaseAllKeys()
-        runContext.infoBarManager.setPatchInfo(name: patch.name,
-                                               isFavored: runContext.favoritesManager.isFavored(patch: patch))
+        keyboardManager.releaseAllKeys()
+        infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
 
         // The loading of the patch tasks some time, so do it on a background thread. Not sure if this is really
         // desirable since there is no sound until the sampler is finished loading.
@@ -208,10 +215,9 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func useFavorite(_ favorite: Favorite) {
-        if favorite.patch == runContext.activePatchManager.activePatch {
+        if favorite.patch == activePatchManager.activePatch {
             let patch = favorite.patch
-            runContext.infoBarManager.setPatchInfo(name: patch.name,
-                                                   isFavored: runContext.favoritesManager.isFavored(patch: patch))
+            infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
             DispatchQueue.global(qos: .background).async {
                 self.sampler.setGain(favorite.gain)
                 self.sampler.setPan(favorite.pan)
@@ -231,10 +237,10 @@ extension MainViewController : KeyboardManagerDelegate {
      */
     func noteOn(_ note: Note) {
         if isMuted {
-            runContext.infoBarManager.setStatus("🔇")
+            infoBarManager.setStatus("🔇")
         }
         else {
-            runContext.infoBarManager.setStatus(note.label + " - " + note.solfege)
+            infoBarManager.setStatus(note.label + " - " + note.solfege)
             sampler.noteOn(note.midiNoteValue)
         }
     }
