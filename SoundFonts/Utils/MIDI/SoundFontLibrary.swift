@@ -15,7 +15,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
     // Internal collection of SoundFont instances managed in a thread-safe manner. All access is through a
     // serialized queue.
     private class Collection: Codable {
-        let logger = Logging.logger("SFCol")
+        private let logger = Logging.logger("SFCol")
 
         private var catalog = [UUID:SoundFont]()
         private var _sortedKeys = [UUID]()
@@ -76,6 +76,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
      */
     public func getBy(uuid: UUID) -> SoundFont? { collection.getBy(uuid: uuid) }
 
+    /// Build the library at start. There is only one instance.
     public static let shared = builder()
 
     private static func builder() -> SoundFontLibrary {
@@ -145,20 +146,20 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
     func add(url: URL) -> SoundFont? {
         guard let soundFont = addNoNotify(url: url) else { return nil }
         save()
-        notify(.added(soundFont: soundFont))
+        notify(.added(soundFont))
         return soundFont
     }
 
     func remove(soundFont: SoundFont) {
         collection.remove(soundFont)
         save()
-        notify(.removed(soundFont: soundFont))
+        notify(.removed(soundFont))
     }
 
     func renamed(soundFont: SoundFont) {
         collection.makeDirty()
         save()
-        notify(.changed(soundFont: soundFont))
+        notify(.changed(soundFont))
     }
 }
 

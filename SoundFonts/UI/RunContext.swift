@@ -8,7 +8,7 @@ import UIKit
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-final class RunContext {
+struct RunContext {
 
     public private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
@@ -31,7 +31,7 @@ final class RunContext {
      - parameter mvc: the sole MainViewController instances
      - parameter vcs: collection of other instances
      */
-    func addViewControllers(_ mvc: MainViewController, _ vcs: [UIViewController]) {
+    mutating func addViewControllers(_ mvc: MainViewController, _ vcs: [UIViewController]) {
         mainViewController = mvc
         for obj in vcs {
             switch obj {
@@ -44,6 +44,7 @@ final class RunContext {
         }
 
         validate()
+        establishConnections()
     }
 
     /**
@@ -74,5 +75,3 @@ extension RunContext {
         }
     }
 }
-
-let runContext = RunContext()

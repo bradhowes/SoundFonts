@@ -209,23 +209,20 @@ final class SoundFontsViewController: UIViewController {
 
 // MARK: - ControllerConfiguration
 extension SoundFontsViewController: ControllerConfiguration {
-    func establishConnections(_ context: RunContext) {
 
+    func establishConnections(_ context: RunContext) {
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                  searchBar: searchBar,
                                                                  activeSoundFontManager: self,
                                                                  soundFontEditor: self,
                                                                  collection: SoundFontLibrary.shared)
-
         patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
                                                                 searchBar: searchBar,
                                                                 activeSoundFontManager: self,
                                                                 activePatchManager: self,
                                                                 favoritesManager: context.favoritesManager,
                                                                 keyboardManager: context.keyboardManager)
-
         favoritesManager = context.favoritesManager
-
         context.soundFontLibraryManager.addSoundFontLibraryChangeNotifier(self) { kind in
             self.soundFontsView.reloadData()
             if case .restored = kind {
@@ -236,7 +233,7 @@ extension SoundFontsViewController: ControllerConfiguration {
 }
 
 // MARK: - ActiveSoundFontManager Protocol
-extension SoundFontsViewController : ActiveSoundFontManager {
+extension SoundFontsViewController: ActiveSoundFontManager {
 
     var selectedIndex: Int {
         get {

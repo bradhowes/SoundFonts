@@ -23,6 +23,7 @@
 		BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
 		BD42F355238868F700E6D576 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
 		BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
+		BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
 		BD75433623828711004C6A4C /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD75433423828711004C6A4C /* iffdigest.cc */; };
@@ -120,6 +121,7 @@
 		BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
+		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
 		BD75433423828711004C6A4C /* iffdigest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iffdigest.cc; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 				BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */,
 				BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */,
 				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
+				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
 				BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */,
@@ -656,6 +659,7 @@
 				BD781B48237BF53900A71031 /* PatchesManager.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */,
+				BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */,
 				BD85F8DF21D91EA20028E440 /* KeyboardManager.swift in Sources */,
 				BDAB399523950F1C00C26C57 /* SoundFontManager.swift in Sources */,
 				BD7A2E5621CF0215001CB271 /* Favorite.swift in Sources */,
