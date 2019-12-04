@@ -58,7 +58,7 @@ final class PatchSearchManager: NSObject {
             else { return }
         let found = searchResults[index]
         let patch = found.patch
-        delegate?.updateCell(cell, with: patch)
+        delegate?.update(cell: cell, with: patch)
     }
 }
 

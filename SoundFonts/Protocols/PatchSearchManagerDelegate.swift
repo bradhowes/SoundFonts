@@ -25,7 +25,7 @@ protocol PatchSearchManagerDelegate: class {
      - parameter cell: the cell to update
      - parameter with: the Patch to update with
      */
-    func updateCell(_ cell: PatchCell, with: Patch)
+    func update(cell: PatchCell, with: Patch)
     
     /**
      Ask the delegate to create a Favorite swipe action for the given cell and Patch.

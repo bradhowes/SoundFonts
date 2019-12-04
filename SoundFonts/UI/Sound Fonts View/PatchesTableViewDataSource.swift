@@ -72,7 +72,7 @@ final class PatchesTableViewDataSource: NSObject {
      - returns: Patch index
      */
     func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
-        return indexPath.section * PatchesTableViewDataSource.sectionSize + indexPath.row
+        indexPath.section * PatchesTableViewDataSource.sectionSize + indexPath.row
     }
     
     /**
@@ -81,7 +81,7 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter cell: the cell to update
      - parameter patch: the Patch to use for the updating
      */
-    func updateCell(_ cell: PatchCell, with patch: Patch) {
+    func update(cell: PatchCell, with patch: Patch) {
         cell.update(name: patch.name,
                     index: patch.index,
                     isActive: activePatchManager.activePatch == patch,
@@ -108,7 +108,7 @@ final class PatchesTableViewDataSource: NSObject {
             else {
                 self.favoritesManager.add(patch: patch, keyboardLowestNote: lowestNote)
             }
-            self.updateCell(cell, with: patch)
+            self.update(cell: cell, with: patch)
             completionHandler(true)
         }
         
@@ -117,10 +117,10 @@ final class PatchesTableViewDataSource: NSObject {
         return action
     }
 
-    private func updateCell(at indexPath: IndexPath, cell: PatchCell) {
+    private func update(cell: PatchCell, at indexPath: IndexPath) {
         let patchIndex = patchIndexForIndexPath(indexPath)
         let patch = patches[patchIndex]
-        updateCell(cell, with: patch)
+        update(cell: cell, with: patch)
     }
 }
 
@@ -128,23 +128,21 @@ final class PatchesTableViewDataSource: NSObject {
 extension PatchesTableViewDataSource: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // + 1 for the search bar
-        return indexPathForPatchIndex(patches.count - 1).section + 1
+        indexPathForPatchIndex(patches.count - 1).section + 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(patches.count - section * PatchesTableViewDataSource.sectionSize,
-                   PatchesTableViewDataSource.sectionSize)
+        min(patches.count - section * PatchesTableViewDataSource.sectionSize, PatchesTableViewDataSource.sectionSize)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: PatchCell = tableView.dequeueReusableCell(for: indexPath)
-        updateCell(at: indexPath, cell: cell)
+        update(cell: cell, at: indexPath)
         return cell
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return [UITableView.indexSearch, "•"] +
+        [UITableView.indexSearch, "•"] +
             stride(from: PatchesTableViewDataSource.sectionSize, to: patches.count - 1,
                    by: PatchesTableViewDataSource.sectionSize).map { "\($0)" }
     }
@@ -161,11 +159,11 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 0.0 : 18.0
+        section == 0 ? 0.0 : 18.0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(section * PatchesTableViewDataSource.sectionSize)"
+        "\(section * PatchesTableViewDataSource.sectionSize)"
     }
 }
 
@@ -181,14 +179,12 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
+        .none
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row != activePatchManager.activePatch.index {
-            activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
+        activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
         }
-    }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
