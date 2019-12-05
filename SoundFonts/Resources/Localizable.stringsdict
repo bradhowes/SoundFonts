@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>patches count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@patches_count@</string>
+		<key>patches_count</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>no patches</string>
+			<key>one</key>
+			<string>1 patch</string>
+			<key>other</key>
+			<string>%u patches</string>
+		</dict>
+	</dict>
+	<key>favorites count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@favorites_count@</string>
+		<key>favorites_count</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>zero</key>
+			<string>no favorites</string>
+			<key>one</key>
+			<string>1 favorite</string>
+			<key>other</key>
+			<string>%u favorites</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

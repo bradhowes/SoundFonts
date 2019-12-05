@@ -1,0 +1,17 @@
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"favorite" = "favorite";
+"patch" = "patch";
+"font" = "font";
+
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Delete" = "Delete";
+
+"Name" = "Name";
+"Lowest Key" = "Lowest Key";
+"Gain" = "Gain";
+"Pan" = "Pan";
+
+"Bank" = "Bank";
+"Index" = "Index";

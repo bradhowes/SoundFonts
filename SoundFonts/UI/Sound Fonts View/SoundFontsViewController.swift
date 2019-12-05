@@ -68,7 +68,8 @@ final class SoundFontsViewController: UIViewController {
         vc.delegate = self
 
         let soundFont = soundFontsTableViewDataSource.getBy(index: indexPath.row)
-        vc.editSoundFont(soundFont, position: indexPath)
+        vc.edit(soundFont: soundFont, favoriteCount: favoritesManager.count(associatedWith: soundFont),
+                position: indexPath)
 
         // Now if showing a popover, position it in the right spot
         //

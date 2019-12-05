@@ -139,14 +139,17 @@ final class FavoriteCollection: Codable {
         return fave
     }
 
+    func findAll(associatedWith soundFont: SoundFont) -> [Favorite] {
+        favorites.filter { $0.patch.soundFont == soundFont }
+    }
+
     /**
      Remove an existing Favorite from the collection
     
      - parameter index: the index of the Favorite to remove
      */
     func removeAll(associatedWith soundFont: SoundFont) -> [Favorite] {
-        let matching = favorites.filter { $0.patch.soundFont == soundFont }
-        return matching.map { self.remove(patch: $0.patch) }
+        findAll(associatedWith: soundFont).map { self.remove(patch: $0.patch) }
     }
 
     /**

@@ -239,7 +239,11 @@ extension FavoritesViewController: FavoritesManager {
         favorites.forEach { self.notify(.removed($0, bySwiping: false)) }
         favoritesView.reloadData()
     }
-    
+
+    func count(associatedWith soundFont: SoundFont) -> Int {
+        favoriteCollection.findAll(associatedWith: soundFont).count
+    }
+
     func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
         let uuid = UUID()
         let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }

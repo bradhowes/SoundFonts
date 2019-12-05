@@ -39,6 +39,10 @@ protocol FavoritesManager: class, SwipingActivity {
      */
     func remove(patch: Patch, bySwiping: Bool)
 
+    func removeAll(associatedWith: SoundFont)
+
+    func count(associatedWith: SoundFont) -> Int
+
     /**
      Install a closure to be called when a Favorite change happens. The closure takes three arguments: the observer
      object that was registered to receive notifications, an enum indicating the kind of change that took place, and
