@@ -97,14 +97,7 @@ final class FavoriteCollection: Codable {
      */
     func getIndex(of favorite: Favorite) -> Int {
         os_log(.info, log: Self.logger, "getIndex: %s", favorite.description)
-        for fav in favorites.enumerated() {
-            os_log(.info, log: Self.logger, "-- %d %s", fav.0, fav.1.description)
-            if (fav.1.name == favorite.name) {
-                return fav.0
-            }
-        }
-
-        fatalError("favorite is *not* found")
+        return favorites.enumerated().first { $0.1 == favorite }!.0
     }
     
     /**

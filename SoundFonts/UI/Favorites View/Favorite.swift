@@ -39,7 +39,7 @@ final class Favorite: Codable {
 }
 
 extension Favorite: Equatable {
-    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.name == rhs.name && lhs.patch == rhs.patch }
+    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.patch == rhs.patch }
 }
 
 extension Favorite: CustomStringConvertible {
