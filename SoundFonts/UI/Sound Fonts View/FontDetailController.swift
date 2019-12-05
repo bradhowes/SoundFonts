@@ -8,14 +8,16 @@ import UIKit
 final class FontDetailController : UIViewController {
 
     var soundFont: SoundFont!
+    var favoriteCount: Int = 0
     var position: IndexPath = IndexPath()
     var delegate: SoundFontDetailControllerDelegate? = nil
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var originalName: UILabel!
-    @IBOutlet weak var patchCount: UILabel!
+    @IBOutlet weak var originalNameLabel: UILabel!
+    @IBOutlet weak var patchCountLabel: UILabel!
+    @IBOutlet weak var favoriteCountLabel: UILabel!
 
     /**
      Set the SoundFont and its index in preparation for editing in the view.
@@ -24,8 +26,9 @@ final class FontDetailController : UIViewController {
      - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
        conveyed to the delegate in the `dismissed` delegate call.
      */
-    func editSoundFont(_ soundFont: SoundFont, position: IndexPath) {
+    func edit(soundFont: SoundFont, favoriteCount: Int, position: IndexPath) {
         self.soundFont = soundFont
+        self.favoriteCount = favoriteCount
         self.position = position
     }
 
@@ -37,8 +40,9 @@ final class FontDetailController : UIViewController {
         guard let soundFont = self.soundFont else { fatalError() }
         name.text = soundFont.displayName
         title = soundFont.displayName
-        originalName.text = soundFont.originalDisplayName
-        patchCount.text = "\(soundFont.patches.count) patches"
+        originalNameLabel.text = soundFont.originalDisplayName
+        patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
+        favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
         super.viewWillAppear(animated)
     }
     
