@@ -191,7 +191,7 @@ final class SoundFontsViewController: UIViewController {
 
     private func changeActivePatch(_ newPatch: Patch) {
         os_log(.info, log: logger, "changeActivePatch - patch: '%s'", newPatch.description)
-        guard newPatch != activePatch else { return }
+        // guard newPatch != activePatch else { return }
 
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             os_log(.info, log: logger, "resigning first responder (keyboard)")
