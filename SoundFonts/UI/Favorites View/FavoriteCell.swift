@@ -31,6 +31,22 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     private var normalBorderColor: UIColor?
 
+    @IBOutlet private var maxWidthConstraint: NSLayoutConstraint! {
+        didSet {
+            maxWidthConstraint.isActive = false
+        }
+    }
+
+    var maxWidth: CGFloat? = nil {
+        didSet {
+            guard let maxWidth = maxWidth else {
+                return
+            }
+            maxWidthConstraint.isActive = true
+            maxWidthConstraint.constant = maxWidth
+        }
+    }
+
     public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()

@@ -39,7 +39,8 @@ final class FontDetailController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         guard let soundFont = self.soundFont else { fatalError() }
         name.text = soundFont.displayName
-        title = soundFont.displayName
+        name.delegate = self
+        // title = soundFont.displayName
         originalNameLabel.text = soundFont.originalDisplayName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
@@ -68,26 +69,12 @@ final class FontDetailController : UIViewController {
     @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
         delegate?.dismissed(reason: .cancel)
     }
-    
-    @IBAction func deleteSoundFont(_ sender: Any) {
-        let alertController = UIAlertController(title: "Confirm Delete", message: "Deleting the SoundFont cannot be undone.",
-                                   preferredStyle: .actionSheet)
-        let delete = UIAlertAction(title: "Delete", style:.destructive) { action in
-            self.delegate?.dismissed(reason: .delete(indexPath: self.position, soundFont: self.soundFont))
-        }
+}
 
-        let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
-        }
-        
-        alertController.addAction(delete)
-        alertController.addAction(cancel)
-        
-        if let popoverController = alertController.popoverPresentationController {
-          popoverController.sourceView = self.view
-          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-          popoverController.permittedArrowDirections = []
-        }
-
-        self.present(alertController, animated: true, completion: nil)
+extension FontDetailController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        donePressed(doneButton)
+        return false
     }
 }

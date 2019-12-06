@@ -1,0 +1,19 @@
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"favorite" = "favorite";
+"patch" = "patch";
+"font" = "font";
+
+"Cancel" = "Annuler";
+"Delete" = "Supprimer";
+
+"Name" = "Name";
+"Lowest-Key" = "Lowest Key";
+"Gain" = "Gain";
+"Pan" = "Pan";
+
+"Bank" = "Bank";
+"Index" = "Index";
+
+"DeleteFontTitle" = "Supprimer le fichier soundfont?";
+"DeleteFontMessage" = "La suppression supprimera le fichier et tous les favoris qui y sont associés.";

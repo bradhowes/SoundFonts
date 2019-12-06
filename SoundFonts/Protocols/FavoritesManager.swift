@@ -1,6 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
-import Foundation
+import UIKit
 
 enum FavoriteChangeKind {
     case added(Favorite)
@@ -31,6 +31,8 @@ protocol FavoritesManager: class, SwipingActivity {
      - parameter keyboardLowestNote: the lowest note of the keyboard
      */
     func add(patch: Patch, keyboardLowestNote: Note)
+
+    func edit(favorite: Favorite, sender: UIView)
 
     /**
      Remove a previous patch associaed with the given Patch
