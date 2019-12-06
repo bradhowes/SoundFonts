@@ -31,8 +31,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
 
         favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as? FavoriteCell
         precondition(favoriteCell != nil, "failed to instantiate a FavoriteCell instance from nil")
-
-        favoriteCell.translatesAutoresizingMaskIntoConstraints = false
+        favoriteCell.translatesAutoresizingMaskIntoConstraints = true
 
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         doubleTapGestureRecognizer.numberOfTouchesRequired = 1
@@ -63,23 +62,22 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             let vc = nc.topViewController as? FavoriteDetailController,
-            let cell = sender as? FavoriteCell,
-            let indexPath = favoritesView.indexPath(for: cell) else { return }
+            let (favorite, view) = sender as? (Favorite, UIView) else { return }
 
         vc.delegate = self
 
-        let favorite = favoriteCollection[indexPath.row]
-        vc.editFavorite(favorite, position: indexPath, lowestNote: keyboardManager.lowestNote)
-        
+        let indexPath = IndexPath(item: favoriteCollection.getIndex(of: favorite), section: 0)
+        vc.editFavorite(favorite, position: indexPath, currentLowestNote: keyboardManager.lowestNote)
+
         // Now if showing a popover, position it in the right spot
         //
         if let ppc = nc.popoverPresentationController {
 
             ppc.barButtonItem = nil // !!! Muy importante !!!
-            ppc.sourceView = cell
+            ppc.sourceView = view
             
             // Focus on the indicator -- this may not be correct for all locales.
-            let rect = cell.bounds
+            let rect = view.bounds
             ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
                                                  size: CGSize(width: 32.0, height: rect.height)), to: nil)
             // vc.preferredContentSize.width = self.preferredContentSize.width
@@ -94,10 +92,15 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     @objc func handleTap(_ gr: UITapGestureRecognizer) {
         let pos = gr.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
+        let favorite = favoriteCollection[indexPath.row]
         let cell = favoritesView.cellForItem(at: indexPath)!
-        performSegue(withIdentifier: "favoriteDetail", sender: cell)
+        edit(favorite: favorite, sender: cell)
     }
-    
+
+    func edit(favorite: Favorite, sender: UIView) {
+        performSegue(withIdentifier: "favoriteDetail", sender: (favorite, sender))
+    }
+
     private func updateFavoriteCell(at indexPath: IndexPath, cell: FavoriteCell? = nil) {
         os_log(.info, log: logger, "updateFavoriteCell: %d.%d %s", indexPath.section, indexPath.row,
                cell?.description ?? "N/A")
@@ -149,8 +152,10 @@ extension FavoritesViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: FavoriteCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoriteCell
         updateFavoriteCell(at: indexPath, cell: cell)
+        // Make sure that the label in the cell is constrained to the be within the cell bounds minus margin.
+        cell.maxWidth = cell.bounds.width - 16
         return cell
     }
 }
@@ -181,7 +186,11 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         updateFavoriteCell(at: indexPath, cell: favoriteCell)
-        return favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        // Make sure that the width of the cell is no bigger than the collectionView.
+        let size = favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
+        return constrainedSize
     }
 }
 
@@ -227,7 +236,7 @@ extension FavoritesViewController: FavoritesManager {
         notify(.added(favorite))
         favoritesView.reloadData()
     }
-    
+
     func remove(patch: Patch, bySwiping: Bool) {
         let favorite = favoriteCollection.remove(patch: patch)
         self.notify(.removed(favorite, bySwiping: bySwiping))

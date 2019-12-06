@@ -159,8 +159,8 @@ extension MainViewController: ControllerConfiguration {
             switch kind {
             case let .added(favorite): self.useFavorite(favorite)
             case let .changed(favorite): self.useFavorite(favorite)
+            case let .selected(favorite): self.useFavorite(favorite)
             case let .removed(favorite, _): self.useFavorite(favorite)
-            default: break
             }
         }
 
@@ -216,8 +216,7 @@ extension MainViewController: ControllerConfiguration {
 
     private func useFavorite(_ favorite: Favorite) {
         if favorite.patch == activePatchManager.activePatch {
-            let patch = favorite.patch
-            infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
+            infoBarManager.setPatchInfo(name: favorite.name, isFavored: true)
             DispatchQueue.global(qos: .background).async {
                 self.sampler.setGain(favorite.gain)
                 self.sampler.setPan(favorite.pan)

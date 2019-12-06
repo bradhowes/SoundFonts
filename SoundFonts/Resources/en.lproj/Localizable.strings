@@ -9,9 +9,12 @@
 "Delete" = "Delete";
 
 "Name" = "Name";
-"Lowest Key" = "Lowest Key";
+"Lowest-Key" = "Lowest Key";
 "Gain" = "Gain";
 "Pan" = "Pan";
 
 "Bank" = "Bank";
 "Index" = "Index";
+
+"DeleteFontTitle" = "Delete the soundfont file?";
+"DeleteFontMessage" = "Deleting will remove the file and also any favorites linked to it.";

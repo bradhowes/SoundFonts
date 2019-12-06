@@ -121,7 +121,9 @@ extension FontsTableViewDataSource: UITableViewDelegate {
         if let cell: FontCell = tableView.cellForRow(at: indexPath) {
             let soundFont = getBy(index: indexPath.row)
             let action = self.soundFontEditor.createEditSwipeAction(at: cell, with: soundFont)
-            return UISwipeActionsConfiguration(actions: [action])
+            let actions = UISwipeActionsConfiguration(actions: [action])
+            actions.performsFirstActionWithFullSwipe = true
+            return actions
         }
         return nil
     }
@@ -131,7 +133,9 @@ extension FontsTableViewDataSource: UITableViewDelegate {
             let soundFont = getBy(index: indexPath.row)
             if soundFont.removable  {
                 let action = self.soundFontEditor.createDeleteSwipeAction(at: cell, with: soundFont)
-                return UISwipeActionsConfiguration(actions: [action])
+                let actions = UISwipeActionsConfiguration(actions: [action])
+                actions.performsFirstActionWithFullSwipe = false
+                return actions
             }
         }
         return nil

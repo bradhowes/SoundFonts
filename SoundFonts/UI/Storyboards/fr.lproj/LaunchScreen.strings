@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "Loading…"; ObjectID = "g1N-wS-9SO"; */
+"g1N-wS-9SO.text" = "Initialisation…";
+
+/* Class = "UILabel"; text = "A Polyphonic\nSynthesizer"; ObjectID = "rZj-m5-DCU"; */
+"rZj-m5-DCU.text" = "Un Synthétiseur\nPolyphonique";
+
+/* Class = "UILabel"; text = "SoundFonts"; ObjectID = "rs3-wg-48r"; */
+"rs3-wg-48r.text" = "SoundFonts";

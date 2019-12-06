@@ -374,15 +374,18 @@ extension SoundFontsViewController: SoundFontEditor {
     }
 
     func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: nil) { (_, _, completionHandler) in
-            let alertController = UIAlertController(title: "Confirm", message: "Deleting the SoundFont cannot be undone.",
-                                                    preferredStyle: .actionSheet)
-            let delete = UIAlertAction(title: "Delete", style:.destructive) { action in
+        let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
+        let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
+        let action = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
+            let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+            let delete = UIAlertAction(title: NSLocalizedString("Delete", comment: "The delete action"),
+                                       style:.destructive) { action in
                 SoundFontLibrary.shared.remove(soundFont: soundFont)
                 completionHandler(true)
             }
 
-            let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
+            let cancel = UIAlertAction(title: NSLocalizedString("Cancel", comment: "The cancel action"),
+                                       style:.cancel) { action in
                 completionHandler(false)
             }
 
@@ -391,14 +394,15 @@ extension SoundFontsViewController: SoundFontEditor {
 
             if let popoverController = alertController.popoverPresentationController {
               popoverController.sourceView = self.view
-              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                    width: 0, height: 0)
               popoverController.permittedArrowDirections = []
             }
 
             self.present(alertController, animated: true, completion: nil)
         }
 
-        action.image = UIImage(named: "Trash")
+//        action.image = UIImage(named: "Trash")
         action.backgroundColor = UIColor.red
         return action
     }
@@ -440,8 +444,12 @@ extension SoundFontsViewController: PatchSearchManagerDelegate {
      - parameter with: the patch represented in the cell
      - returns swipe action for the cell
      */
-    func createSwipeAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
-        return patchesTableViewDataSource.createSwipeAction(at: cell, with: patch)
+    func createLeadingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        patchesTableViewDataSource.createLeadingSwipeActions(at: cell, with: patch)
+    }
+
+    func createTrailingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        patchesTableViewDataSource.createTrailingSwipeActions(at: cell, with: patch)
     }
 }
 

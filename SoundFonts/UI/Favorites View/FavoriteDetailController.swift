@@ -44,10 +44,10 @@ final class FavoriteDetailController : UIViewController {
      - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
        conveyed to the delegate in the `dismissed` delegate call.
      */
-    func editFavorite(_ favorite: Favorite, position: IndexPath, lowestNote: Note) {
+    func editFavorite(_ favorite: Favorite, position: IndexPath, currentLowestNote: Note) {
         self.favorite = favorite
         self.position = position
-        self.currentLowestNote = lowestNote
+        self.currentLowestNote = currentLowestNote
     }
 
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -60,9 +60,11 @@ final class FavoriteDetailController : UIViewController {
         let patch = favorite.patch
 
         name.text = favorite.name
+        name.delegate = self
+        
         lowestNote.setTitle(favorite.keyboardLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(favorite.keyboardLowestNote.midiNoteValue)
-        title = favorite.name
+        // title = favorite.name
         soundFontName.text = patch.soundFont.displayName
         patchName.text = patch.name
         bank.text = "Bank: \(patch.bank)"
@@ -161,27 +163,13 @@ final class FavoriteDetailController : UIViewController {
         lowestNote.setTitle(currentLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
     }
-    
-    @IBAction func deleteFavorite(_ sender: Any) {
-        let alertController = UIAlertController(title: "Confirm Delete", message: "Deleting the favorite cannot be undone.",
-                                   preferredStyle: .actionSheet)
-        let delete = UIAlertAction(title: "Delete", style:.destructive) { action in
-            self.favorite = nil
-            self.delegate?.dismissed(self.position, reason: .delete)
-        }
+}
 
-        let cancel = UIAlertAction(title: "Cancel", style:.cancel) { action in
-        }
-        
-        alertController.addAction(delete)
-        alertController.addAction(cancel)
-        
-        if let popoverController = alertController.popoverPresentationController {
-          popoverController.sourceView = self.view
-          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-          popoverController.permittedArrowDirections = []
-        }
-
-        self.present(alertController, animated: true, completion: nil)
+extension FavoriteDetailController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        donePressed(doneButton)
+        return false
     }
 }
+

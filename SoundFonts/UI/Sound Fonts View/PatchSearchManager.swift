@@ -93,9 +93,7 @@ extension PatchSearchManager : UITableViewDelegate {
         // Allow user to add/remove Favorite instance for a Patch from the search results
         if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
             let patch = searchResults[indexPath.row].patch
-            if let action = delegate?.createSwipeAction(at: cell, with: patch) {
-                return UISwipeActionsConfiguration(actions: [action])
-            }
+            return delegate?.createLeadingSwipeActions(at: cell, with: patch)
         }
 
         return nil

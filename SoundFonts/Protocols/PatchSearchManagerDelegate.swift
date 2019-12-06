@@ -34,5 +34,7 @@ protocol PatchSearchManagerDelegate: class {
      - parameter with: the Patch to use in a Favorite
      - returns: new swipe action
      */
-    func createSwipeAction(at: PatchCell, with: Patch) -> UIContextualAction
+    func createLeadingSwipeActions(at: PatchCell, with: Patch) -> UISwipeActionsConfiguration?
+
+    func createTrailingSwipeActions(at: PatchCell, with: Patch) -> UISwipeActionsConfiguration?
 }

@@ -87,31 +87,60 @@ final class PatchesTableViewDataSource: NSObject {
                     isFavorite: favoritesManager.isFavored(patch: patch))
     }
 
-    /**
-     Create a swipe action for a cell / Patch which will add or remove a Favorite association with the Patch.
-    
-     - parameter cell: the cell that will show the action
-     - parameter patch: the Patch to use when creating a new / removing an existing Favorite
-     - returns: swipe action
-     */
-    func createSwipeAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
-        let isFave = favoritesManager.isFavored(patch: patch)
+    private func createFaveAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
         let lowestNote = keyboardManager.lowestNote
-        let action = UIContextualAction(style: .normal, title: isFave ? "Unfave" : "Fave") {
-            (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
-            if isFave {
-                self.favoritesManager.remove(patch: patch, bySwiping: true)
-            }
-            else {
-                self.favoritesManager.add(patch: patch, keyboardLowestNote: lowestNote)
-            }
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            self.favoritesManager.add(patch: patch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, with: patch)
             completionHandler(true)
         }
-        
-        action.image = UIImage(named: isFave ? "Unfave" : "Fave")
-        action.backgroundColor = isFave ? UIColor.gray : UIColor.orange
+
+        action.image = UIImage(named: "Fave")
+        action.backgroundColor = UIColor.orange
+
         return action
+    }
+
+    private func createUnfaveAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            self.favoritesManager.remove(patch: patch, bySwiping: true)
+            self.update(cell: cell, with: patch)
+            completionHandler(true)
+        }
+
+        action.image = UIImage(named: "Unfave")
+        action.backgroundColor = UIColor.red
+
+        return action
+    }
+
+    private func createEditAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
+        guard let favorite = FavoriteCollection.shared.getFavorite(patch: patch) else { fatalError() }
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            self.favoritesManager.edit(favorite: favorite, sender: cell)
+            completionHandler(true)
+        }
+
+        action.image = UIImage(named: "Edit")
+        action.backgroundColor = UIColor.orange
+
+        return action
+    }
+
+    func createLeadingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        let isFave = favoritesManager.isFavored(patch: patch)
+        let action = isFave ? createEditAction(at: cell, with: patch) : createFaveAction(at: cell, with: patch)
+
+        let actions = UISwipeActionsConfiguration(actions: [action])
+        actions.performsFirstActionWithFullSwipe = true
+        return actions
+    }
+
+    func createTrailingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        let isFave = favoritesManager.isFavored(patch: patch)
+        let actions = UISwipeActionsConfiguration(actions: isFave ? [createUnfaveAction(at: cell, with: patch)] : [])
+        actions.performsFirstActionWithFullSwipe = false
+        return actions
     }
 
     private func update(cell: PatchCell, at indexPath: IndexPath) {
@@ -169,8 +198,14 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
-            let action = createSwipeAction(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
-            return UISwipeActionsConfiguration(actions: [action])
+            return createLeadingSwipeActions(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
+        }
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
+            return createTrailingSwipeActions(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
         }
         return nil
     }

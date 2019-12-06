@@ -108,7 +108,7 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
                     guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
                     let info = GetSoundFontInfo(data: data)
                     if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-                    let soundFont = SoundFont("Roland Nice Piano", resource: url, soundFontInfo: info)
+                    let soundFont = SoundFont("Roland", resource: url, soundFontInfo: info)
                     self.collection.add(soundFont)
                     dg.leave()
                 }

@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="57w-MN-scF">
-                                <rect key="frame" x="83.666666666666686" y="281" width="247" height="254"/>
+                                <rect key="frame" x="83.666666666666686" y="307.66666666666669" width="247" height="201"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SoundFonts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rs3-wg-48r">
                                         <rect key="frame" x="0.0" y="8" width="247" height="57"/>
@@ -33,21 +33,13 @@ Synthesizer</string>
                                         <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading…" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1N-wS-9SO" userLabel="Loading">
-                                        <rect key="frame" x="53.999999999999986" y="211" width="138.66666666666663" height="35"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
-                                        <color key="textColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="rZj-m5-DCU" secondAttribute="bottom" constant="20" id="3ck-yH-0GP"/>
                                     <constraint firstItem="rs3-wg-48r" firstAttribute="leading" secondItem="57w-MN-scF" secondAttribute="leading" id="Gik-gk-bQs"/>
-                                    <constraint firstAttribute="bottom" secondItem="g1N-wS-9SO" secondAttribute="bottom" constant="8" id="PNF-1I-WIF"/>
                                     <constraint firstItem="rZj-m5-DCU" firstAttribute="centerX" secondItem="57w-MN-scF" secondAttribute="centerX" id="aWQ-Uf-WOx"/>
                                     <constraint firstAttribute="trailing" secondItem="rs3-wg-48r" secondAttribute="trailing" id="c0T-oL-enb"/>
-                                    <constraint firstItem="g1N-wS-9SO" firstAttribute="top" secondItem="rZj-m5-DCU" secondAttribute="bottom" constant="30" id="hFW-th-RnO"/>
-                                    <constraint firstItem="g1N-wS-9SO" firstAttribute="centerX" secondItem="57w-MN-scF" secondAttribute="centerX" id="lNM-5n-sYG"/>
                                     <constraint firstItem="rs3-wg-48r" firstAttribute="top" secondItem="57w-MN-scF" secondAttribute="top" constant="8" id="lrI-Y6-yoe"/>
                                     <constraint firstItem="rZj-m5-DCU" firstAttribute="top" secondItem="rs3-wg-48r" secondAttribute="bottom" constant="30" id="yBG-3A-Xfi"/>
                                 </constraints>
