@@ -7,12 +7,8 @@ import Foundation
  `[0..SoundFont.keys.count)`. Presentation views must translate these into valid IndexPath values.
  */
 protocol ActiveSoundFontManager: class {
-    /// The index of the currently selected SoundFont
-    var selectedIndex: Int { get set }
-    /// The index of the currently active SoundFont.
-    var activeIndex: Int { get set }
 
-    var selectedSoundFont: SoundFont { get }
+    var selectedSoundFont: SoundFont? { get set }
 
-    var activeSoundFont: SoundFont { get }
+    var activeSoundFont: SoundFont? { get }
 }

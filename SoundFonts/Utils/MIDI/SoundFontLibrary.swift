@@ -105,18 +105,15 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
             dg.enter()
             if url.path.contains("RolandNicePiano") {
                 DispatchQueue.global(qos: .userInitiated).async {
-                    guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
-                    let info = GetSoundFontInfo(data: data)
-                    if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-                    let soundFont = SoundFont("Roland", resource: url, soundFontInfo: info)
-                    self.collection.add(soundFont)
+                    self.addFromBundle(url: url, name: "Roland")
+                    os_log(.info, log: Self.logger, "added '%s'", url.lastPathComponent)
                     dg.leave()
                 }
             }
             else {
                 DispatchQueue.global(qos: .userInitiated).async {
                     self.addNoNotify(url: url)
-                    os_log(.info, log: Self.logger, "0 added '%s'", url.lastPathComponent)
+                    os_log(.info, log: Self.logger, "added '%s'", url.lastPathComponent)
                     dg.leave()
                 }
             }
@@ -129,10 +126,19 @@ public final class SoundFontLibrary: Codable, SoundFontLibraryManager {
         save()
         isRestored = true
     }
-    /// 
+
+    private func addFromBundle(url: URL, name: String) {
+        guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
+        let info = GetSoundFontInfo(data: data)
+        if info.name.isEmpty || info.patches.isEmpty { fatalError() }
+        let soundFont = SoundFont(name, resource: url, soundFontInfo: info)
+        collection.add(soundFont)
+    }
+
+    ///
     @discardableResult
     private func addNoNotify(url: URL) -> SoundFont? {
-        guard let soundFont = SoundFont.generateSoundFont(from: url) else { return nil }
+        guard let soundFont = SoundFont.generateSoundFont(from: url, saveToDisk: true) else { return nil }
         collection.add(soundFont)
         return soundFont
     }

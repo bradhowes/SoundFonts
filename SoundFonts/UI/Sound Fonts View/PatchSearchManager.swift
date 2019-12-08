@@ -12,7 +12,7 @@ final class PatchSearchManager: NSObject {
 
     private let resultsView: UITableView
     private var searchResults = [(index: Int, patch: Patch)]()
-    private var activePatchIndex: Int = -1
+    private var activePatch: Patch?
 
     init(resultsView: UITableView) {
         self.resultsView = resultsView
@@ -26,8 +26,8 @@ final class PatchSearchManager: NSObject {
        SoundFont
      - parameter term: the text to search for
      */
-    func search(soundFont: SoundFont, activePatchIndex: Int, term: String) {
-        self.activePatchIndex = activePatchIndex
+    func search(soundFont: SoundFont, activePatch: Patch?, term: String) {
+        self.activePatch = activePatch
         searchResults = zip(soundFont.patches.indices, soundFont.patches)
             .filter { $0.1.name.localizedCaseInsensitiveContains(term) }
         resultsView.reloadData()
@@ -40,17 +40,17 @@ final class PatchSearchManager: NSObject {
      Scroll the search results so that the active Patch is visible.
      */
     func scrollToActivePatch() {
-        let row = searchIndexOfPatch(patchIndex: activePatchIndex)
-        if row != -1 {
-            resultsView.scrollToRow(at: IndexPath(row: row, section: 0), at: .none, animated: true)
+        let index = indexPath(of: activePatch)
+        if index.row != -1 {
+            resultsView.scrollToRow(at: index, at: .none, animated: true)
         }
         else {
             delegate?.scrollToSearchField()
         }
     }
 
-    func searchIndexOfPatch(patchIndex: Int) -> Int {
-        return searchResults.firstIndex { $0.index == patchIndex } ?? -1
+    func indexPath(of patch: Patch?) -> IndexPath {
+        return IndexPath(row: searchResults.firstIndex { $0.patch == patch } ?? -1, section: 0)
     }
 
     private func updateResultsCell(at index: Int, cell: PatchCell? = nil) {
