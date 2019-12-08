@@ -75,6 +75,6 @@ extension FontDetailController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         donePressed(doneButton)
-        return false
+        return true
     }
 }

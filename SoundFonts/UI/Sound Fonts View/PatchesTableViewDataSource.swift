@@ -19,7 +19,7 @@ final class PatchesTableViewDataSource: NSObject {
     private let activePatchManager: ActivePatchManager
     private let favoritesManager: FavoritesManager
     private let keyboardManager: KeyboardManager
-    private var patches: [Patch] { activeSoundFontManager.selectedSoundFont.patches }
+    private var patches: [Patch] { activeSoundFontManager.selectedSoundFont?.patches ?? [] }
 
     init(view: UITableView, searchBar: UISearchBar,
          activeSoundFontManager: ActiveSoundFontManager,
@@ -51,13 +51,18 @@ final class PatchesTableViewDataSource: NSObject {
         }
     }
 
+    func indexPath(of patch: Patch) -> IndexPath? {
+        guard let row = patches.firstIndex(of: patch) else { return nil }
+        return indexPathForPatchIndex(row)
+    }
+
     /**
      Obtain an IndexPath for the given Patch index. A patch belongs in a section and a row within the section.
      
      - parameter index: the Patch index
      - returns: view IndexPath
      */
-    func indexPathForPatchIndex(_ index: Int) -> IndexPath {
+    private func indexPathForPatchIndex(_ index: Int) -> IndexPath {
         let safeIndex = min(index, patches.count - 1)
         let section = safeIndex / Self.sectionSize
         let row = safeIndex - Self.sectionSize * section
@@ -70,7 +75,7 @@ final class PatchesTableViewDataSource: NSObject {
      - parameter indexPath: the IndexPath to convert
      - returns: Patch index
      */
-    func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
+    private func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
         indexPath.section * PatchesTableViewDataSource.sectionSize + indexPath.row
     }
     

@@ -355,7 +355,6 @@
 			isa = PBXGroup;
 			children = (
 				BD85F8D421D91A460028E440 /* ActiveSoundFontManager.swift */,
-				BDAB399423950F1C00C26C57 /* SoundFontManager.swift */,
 				BD85F8D621D91A740028E440 /* ActivePatchManager.swift */,
 				BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */,
 				BD36FF6E21DBC393002305CB /* FavoriteDetailControllerDelegate.swift */,
@@ -368,6 +367,7 @@
 				BDD3860422147D0C0063040C /* ReusableView.swift */,
 				BDAB39922395013D00C26C57 /* SoundFontDetailControllerDelegate.swift */,
 				BD426004238BBE9600A2AE01 /* SoundFontLibraryManager.swift */,
+				BDAB399423950F1C00C26C57 /* SoundFontManager.swift */,
 				BD781B49237BFC5700A71031 /* SwipingActivity.swift */,
 			);
 			path = Protocols;

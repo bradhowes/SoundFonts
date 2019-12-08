@@ -20,10 +20,9 @@ enum PatchKind: CustomStringConvertible {
 protocol ActivePatchManager: class {
 
     /// Prototype for the notifying function
-    typealias Notifier<O: AnyObject> = (_ old: Patch, _ new: Patch) -> Void
+    typealias Notifier<O: AnyObject> = (_ old: Patch?, _ new: Patch) -> Void
 
-    /// The currently active patch
-    var activePatch: Patch { get }
+    var activePatch: Patch? { get set }
 
     func changePatch(kind: PatchKind)
 

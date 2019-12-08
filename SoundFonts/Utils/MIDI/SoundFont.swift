@@ -33,7 +33,7 @@ public final class SoundFont: Codable {
 
     private let kind: SoundFontKind
 
-    public static func generateSoundFont(from url: URL) -> SoundFont? {
+    public static func generateSoundFont(from url: URL, saveToDisk: Bool) -> SoundFont? {
         os_log(.info, log: Self.logger, "generateSoundFont - '%s'", url.lastPathComponent)
 
         // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
@@ -54,11 +54,15 @@ public final class SoundFont: Codable {
         }
 
         let soundFont = SoundFont(info)
-        os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
-        let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
-        os_log(.info, log: Self.logger, "created - %s", result ? "true" : "false")
 
-        return result ? soundFont : nil
+        if saveToDisk {
+            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
+            let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
+            os_log(.info, log: Self.logger, "created - %s", result ? "true" : "false")
+            return result ? soundFont : nil
+        }
+
+        return soundFont
     }
 
     /**

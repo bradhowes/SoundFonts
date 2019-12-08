@@ -9,7 +9,6 @@ import UIKit
 final class FontsTableViewDataSource: NSObject {
 
     private let view: UITableView
-    private let searchBar: UISearchBar
     private let activeSoundFontManager: ActiveSoundFontManager
     private let soundFontEditor: SoundFontEditor
     private let collection: SoundFontLibraryManager
@@ -21,11 +20,10 @@ final class FontsTableViewDataSource: NSObject {
         }
     }
 
-    init(view: UITableView, searchBar: UISearchBar, activeSoundFontManager: ActiveSoundFontManager,
-         soundFontEditor: SoundFontEditor, collection: SoundFontLibraryManager) {
+    init(view: UITableView, activeSoundFontManager: ActiveSoundFontManager, soundFontEditor: SoundFontEditor,
+         collection: SoundFontLibraryManager) {
 
         self.view = view
-        self.searchBar = searchBar
         self.activeSoundFontManager = activeSoundFontManager
         self.soundFontEditor = soundFontEditor
         self.collection = collection
@@ -42,27 +40,33 @@ final class FontsTableViewDataSource: NSObject {
 
 extension FontsTableViewDataSource {
 
+    func index(of uuid: UUID) -> Int? { indices[uuid] }
+
     func getBy(index: Int) -> SoundFont { data[index] }
 
-    func index(of uuid: UUID) -> Int { indices[uuid]! }
+    func select(soundFont: SoundFont) {
+        let pos = IndexPath(row: index(of: soundFont.uuid)!, section: 0)
+        if view.indexPathForSelectedRow != pos {
+            view.selectRow(at: pos, animated: true, scrollPosition: .none)
+        }
+        view.scrollToRow(at: pos, at: .none, animated: true)
+    }
 
     private func collectionChanged(_ change: SoundFontLibraryChangeKind) {
+
         data = collection.orderedSoundFonts
         indices = Dictionary(uniqueKeysWithValues: data.enumerated().map { ($0.1.uuid, $0.0) })
 
         // TODO: fix this so that the selected index makes sense.
-        activeSoundFontManager.selectedIndex = 0
+        // activeSoundFontManager.selectedIndex = 0
     }
 
-    /**
-     Update a cell at a given row, and with the given FontCell instance.
-
-     - parameter indexPath: location of row to update
-     - parameter cell: FontCell to use for the update
-     */
     private func updateCell(at indexPath: IndexPath, cell: FontCell) {
-        cell.update(name: data[indexPath.row].displayName, isSelected: view.indexPathForSelectedRow == indexPath,
-                    isActive: indexPath.row == activeSoundFontManager.activeIndex, isFavorite: false)
+        let index = indexPath.row
+        let soundFont = data[index]
+        cell.update(name: soundFont.displayName,
+                    isSelected: activeSoundFontManager.selectedSoundFont == soundFont,
+                    isActive: activeSoundFontManager.activeSoundFont == soundFont)
     }
 }
 
@@ -110,7 +114,7 @@ extension FontsTableViewDataSource: UITableViewDelegate {
      - parameter indexPath: the location that was selected
      */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        activeSoundFontManager.selectedIndex = indexPath.row
+        activeSoundFontManager.selectedSoundFont = data[indexPath.row]
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -119,7 +123,7 @@ extension FontsTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell: FontCell = tableView.cellForRow(at: indexPath) {
-            let soundFont = getBy(index: indexPath.row)
+            let soundFont = data[indexPath.row]
             let action = self.soundFontEditor.createEditSwipeAction(at: cell, with: soundFont)
             let actions = UISwipeActionsConfiguration(actions: [action])
             actions.performsFirstActionWithFullSwipe = true
@@ -130,7 +134,7 @@ extension FontsTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if let cell: FontCell = tableView.cellForRow(at: indexPath) {
-            let soundFont = getBy(index: indexPath.row)
+            let soundFont = data[indexPath.row]
             if soundFont.removable  {
                 let action = self.soundFontEditor.createDeleteSwipeAction(at: cell, with: soundFont)
                 let actions = UISwipeActionsConfiguration(actions: [action])

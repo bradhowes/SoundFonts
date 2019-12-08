@@ -113,11 +113,13 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         aCell.update(name: favorite.name, isActive: favorite.patch == activePatchManager.activePatch)
     }
 
-    private func patchChanged(_ old: Patch, _ new: Patch) {
-        os_log(.info, log: logger, "patchChanged: %s, %s", old.description, new.description)
-        if let fave = favoriteCollection.getFavorite(patch: old) {
-            os_log(.info, log: logger, "updating prev cell - %s", fave.description)
-            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
+    private func patchChanged(_ old: Patch?, _ new: Patch) {
+        os_log(.info, log: logger, "patchChanged: %s, %s", old?.description ?? "nil", new.description)
+        if let old = old {
+            if let fave = favoriteCollection.getFavorite(patch: old) {
+                os_log(.info, log: logger, "updating prev cell - %s", fave.description)
+                updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
+            }
         }
 
         if let fave = favoriteCollection.getFavorite(patch: new) {
@@ -154,6 +156,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoriteCell
         updateFavoriteCell(at: indexPath, cell: cell)
+
         // Make sure that the label in the cell is constrained to the be within the cell bounds minus margin.
         cell.maxWidth = cell.bounds.width - 16
         return cell

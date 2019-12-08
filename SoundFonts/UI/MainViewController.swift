@@ -77,6 +77,7 @@ extension MainViewController {
      Start audio processing. This is done as the app is brought into the foreground.
      */
     func startAudio() {
+
         let session = AVAudioSession.sharedInstance()
         session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
                             context: &Observation.Context)
@@ -95,7 +96,9 @@ extension MainViewController {
             postAlert(for: what)
         }
 
-        setPatch(activePatchManager.activePatch)
+        if let patch = activePatchManager.activePatch {
+            setPatch(patch)
+        }
     }
 
     private func postAlert(for what: Sampler.Failure) {

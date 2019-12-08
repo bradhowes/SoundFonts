@@ -39,9 +39,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     var maxWidth: CGFloat? = nil {
         didSet {
-            guard let maxWidth = maxWidth else {
-                return
-            }
+            guard let maxWidth = maxWidth else { return }
             maxWidthConstraint.isActive = true
             maxWidthConstraint.constant = maxWidth
         }
@@ -82,7 +80,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
             self.backgroundColor = normalBackgroundColor
             self.name.textColor = normalForegroundColor
         }
-        
+
         invalidateIntrinsicContentSize()
     }
 
