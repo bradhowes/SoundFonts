@@ -24,11 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
+        if let url = launchOptions?[.url] as? URL {
+            soundFontLibrary.add(url: url)
+            return true
+        }
+
         return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return soundFontLibrary.add(url: url) != nil
+        soundFontLibrary.add(url: url)
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
