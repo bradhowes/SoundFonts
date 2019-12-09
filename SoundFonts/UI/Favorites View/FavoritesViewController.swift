@@ -53,6 +53,11 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         favoritesView!.setCollectionViewLayout(layout, animated: false)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        favoritesView.reloadData()
+    }
+
     func establishConnections(_ context: RunContext) {
         activePatchManager = context.activePatchManager
         keyboardManager = context.keyboardManager
@@ -203,8 +208,8 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
         switch reason {
         case .done:
             let favorite = favoriteCollection[indexPath.row]
+            favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
-            updateFavoriteCell(at: indexPath)
             notify(.changed(favorite))
             favoriteCollection.save()
         case .cancel:
