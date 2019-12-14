@@ -14,30 +14,32 @@ extension SettingKeys {
  to the background or stops being active.
  */
 final class MainViewController: UIViewController {
+
     private lazy var logger = Logging.logger("MainVC")
 
-    @IBOutlet private weak var patches: UIView!
-    @IBOutlet private weak var favorites: UIView!
+    @IBOutlet private weak var favoritesView: UIView!
+    @IBOutlet private weak var patchesView: UIView!
 
     private lazy var sampler = Sampler()
     private var upperViewManager = UpperViewManager()
-    private var patchesManager: PatchesManager!
+
+    private var patchesViewManager: PatchesViewManager!
     private var activePatchManager: ActivePatchManager!
-    private var keyboardManager: KeyboardManager!
-    private var infoBarManager: InfoBarManager!
-    private var favoritesManager: FavoritesManager!
+    private var keyboard: Keyboard!
+    private var infoBar: InfoBar!
+    private var registeredObserver = false
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
     private var volume: Float = 0.0 {
         didSet {
-            KeyboardRender.isMuted = isMuted
+            keyboard.isMuted = isMuted
         }
     }
 
     private var muted = false {
         didSet {
-            KeyboardRender.isMuted = isMuted
+            keyboard.isMuted = isMuted
         }
     }
 
@@ -50,9 +52,9 @@ final class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        upperViewManager.add(view: patches)
-        upperViewManager.add(view: favorites)
-        UIApplication.shared.appDelegate.runContext.addViewControllers(self, children)
+        upperViewManager.add(view: patchesView)
+        upperViewManager.add(view: favoritesView)
+        UIApplication.shared.appDelegate.router.addViewControllers(self, children)
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
@@ -61,7 +63,7 @@ final class MainViewController: UIViewController {
 extension MainViewController {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?,
-                               context: UnsafeMutableRawPointer?) {
+                                      context: UnsafeMutableRawPointer?) {
         if context == &Observation.Context {
             if keyPath == Observation.VolumeKey {
                 if let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
@@ -81,6 +83,7 @@ extension MainViewController {
         let session = AVAudioSession.sharedInstance()
         session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
                             context: &Observation.Context)
+        registeredObserver = true
 
         do {
             try session.setActive(true, options: [])
@@ -96,9 +99,7 @@ extension MainViewController {
             postAlert(for: what)
         }
 
-        if let patch = activePatchManager.activePatch {
-            setPatch(patch)
-        }
+        useSoundFontPatch(activePatchManager.active.soundFontPatch)
     }
 
     private func postAlert(for what: Sampler.Failure) {
@@ -127,7 +128,11 @@ extension MainViewController {
         Mute.shared.isPaused = true
 
         let session = AVAudioSession.sharedInstance()
-        session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
+
+        if registeredObserver {
+            session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
+            registeredObserver = false
+        }
 
         do {
             try session.setActive(false, options: [])
@@ -148,44 +153,60 @@ extension MainViewController: ControllerConfiguration {
 
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
-    func establishConnections(_ context: RunContext) {
+    func establishConnections(_ router: Router) {
 
-        patchesManager = context.patchesManager
-        activePatchManager = context.activePatchManager
-        keyboardManager = context.keyboardManager
-        infoBarManager = context.infoBarManager
-        favoritesManager = context.favoritesManager
+        patchesViewManager = router.patchesViewManager
+        activePatchManager = router.activePatchManager
+        keyboard = router.keyboard
+        infoBar = router.infoBar
 
-        keyboardManager.delegate = self
-        activePatchManager.addPatchChangeNotifier(self) { _, patch in self.setPatch(patch) }
-        favoritesManager.addFavoriteChangeNotifier(self) { kind in
-            switch kind {
-            case let .added(favorite): self.useFavorite(favorite)
-            case let .changed(favorite): self.useFavorite(favorite)
-            case let .selected(favorite): self.useFavorite(favorite)
-            case let .removed(favorite, _): self.useFavorite(favorite)
-            }
-        }
+        keyboard.delegate = self
 
-        infoBarManager.addTarget(.doubleTap, target: self, action: #selector(showNextConfigurationView))
+        activePatchManager.subscribe(self) { self.activePatchChange($0) }
+
+        infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
 
         let showingFavorites = Settings[.wasShowingFavorites]
-        self.patches.isHidden = showingFavorites
-        self.favorites.isHidden = !showingFavorites
+        patchesView.isHidden = showingFavorites
+        favoritesView.isHidden = !showingFavorites
 
-        patchesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        patchesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
-        favoritesManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        favoritesManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        let favoritesViewManager = router.favoritesViewManager
+        favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+    }
+
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        switch event {
+        case let .active(old: _, new: new):
+            if let favorite = new.favorite {
+                infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+                useFavorite(favorite)
+            }
+            else {
+                infoBar.setPatchInfo(name: new.soundFontPatch.patch.name, isFavored: false)
+            }
+            useSoundFontPatch(new.soundFontPatch)
+        }
+    }
+
+    @IBAction private func toggleConfigurationViews() {
+        if favoritesView.isHidden {
+            showNextConfigurationView()
+        }
+        else {
+            showPreviousConfigurationView()
+        }
     }
 
     /**
      Show the next (right) view in the space above the info bar.
      */
     @IBAction private func showNextConfigurationView() {
-        patchesManager.dismissSearchKeyboard()
-        Settings[.wasShowingFavorites] = favorites.isHidden
+        patchesViewManager.dismissSearchKeyboard()
+        Settings[.wasShowingFavorites] = favoritesView.isHidden
         upperViewManager.slideNextHorizontally()
     }
 
@@ -193,44 +214,31 @@ extension MainViewController: ControllerConfiguration {
      Show the previous (left) view in the space above the info bar.
      */
     @IBAction private func showPreviousConfigurationView() {
-        patchesManager.dismissSearchKeyboard()
-        Settings[.wasShowingFavorites] = favorites.isHidden
+        patchesViewManager.dismissSearchKeyboard()
+        Settings[.wasShowingFavorites] = favoritesView.isHidden
         upperViewManager.slidePrevHorizontally()
     }
 
-    private func setPatch(_ patch: Patch) {
-        keyboardManager.releaseAllKeys()
-        infoBarManager.setPatchInfo(name: patch.name, isFavored: favoritesManager.isFavored(patch: patch))
-
-        // The loading of the patch tasks some time, so do it on a background thread. Not sure if this is really
-        // desirable since there is no sound until the sampler is finished loading.
+    private func useSoundFontPatch(_ soundFontPatch: SoundFontPatch) {
+        keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            if case let .failure(what) = self.sampler.load(patch: patch) {
-                DispatchQueue.main.async {
-                    self.postAlert(for: what)
-                }
-            }
-            else {
-                Settings[.lastActiveSoundFont] = patch.soundFont.uuid.uuidString
-                Settings[.lastActivePatch] = patch.index
+            if case let .failure(what) = self.sampler.load(soundFontPatch: soundFontPatch) {
+                DispatchQueue.main.async { self.postAlert(for: what) }
             }
         }
     }
 
     private func useFavorite(_ favorite: Favorite) {
-        if favorite.patch == activePatchManager.activePatch {
-            infoBarManager.setPatchInfo(name: favorite.name, isFavored: true)
-            DispatchQueue.global(qos: .background).async {
-                self.sampler.setGain(favorite.gain)
-                self.sampler.setPan(favorite.pan)
-            }
+        DispatchQueue.global(qos: .background).async {
+            self.sampler.setGain(favorite.gain)
+            self.sampler.setPan(favorite.pan)
         }
     }
 }
 
 // MARK: - KeyboardManagerDelegate protocol
 
-extension MainViewController : KeyboardManagerDelegate {
+extension MainViewController : KeyboardDelegate {
 
     /**
      Play a note with the sampler. Show note info in the info bar.
@@ -239,10 +247,10 @@ extension MainViewController : KeyboardManagerDelegate {
      */
     func noteOn(_ note: Note) {
         if isMuted {
-            infoBarManager.setStatus("🔇")
+            infoBar.setStatus("🔇")
         }
         else {
-            infoBarManager.setStatus(note.label + " - " + note.solfege)
+            infoBar.setStatus(note.label + " - " + note.solfege)
             sampler.noteOn(note.midiNoteValue)
         }
     }

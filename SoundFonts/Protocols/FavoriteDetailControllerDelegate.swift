@@ -6,7 +6,9 @@ import UIKit
  Reason why the FavoriteDetailController view was dismissed by the user.
  */
 enum FavoriteDetailControllerDismissedReason {
-    case cancel, done, delete
+    case cancel
+    case done(update: Favorite)
+    case delete
 }
 
 /**

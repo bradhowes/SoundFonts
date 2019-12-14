@@ -5,7 +5,7 @@ import Foundation
 
 private let log = Logging.logger("filem")
 
-public extension FileManager {
+extension FileManager {
 
     /**
      Obtain the URL for a new, temporary file. The file will exist on the system but will be empty.

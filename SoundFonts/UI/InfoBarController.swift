@@ -6,23 +6,21 @@ import UIKit
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
  left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
  */
-final class InfoBarController : UIViewController, ControllerConfiguration, InfoBarManager {
+final class InfoBarController : UIViewController, ControllerConfiguration, InfoBar {
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
     @IBOutlet private weak var highestKey: UIButton!
+    @IBOutlet private weak var touchView: UIView!
 
-    private let doubleTap1 = UITapGestureRecognizer()
-    private let doubleTap2 = UITapGestureRecognizer()
+    private let doubleTap = UITapGestureRecognizer()
+    private var panOrigin: CGPoint = CGPoint.zero
+    private var fader: UIViewPropertyAnimator? = nil
 
     override func viewDidLoad() {
-        doubleTap1.numberOfTouchesRequired = 1
-        doubleTap1.numberOfTapsRequired = 2
-        patchInfo.addGestureRecognizer(doubleTap1)
-
-        doubleTap2.numberOfTouchesRequired = 1
-        doubleTap2.numberOfTapsRequired = 2
-        status.addGestureRecognizer(doubleTap2)
+        doubleTap.numberOfTouchesRequired = 1
+        doubleTap.numberOfTapsRequired = 2
+        touchView.addGestureRecognizer(doubleTap)
 
         let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
         panner.minimumNumberOfTouches = 1
@@ -30,7 +28,7 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         view.addGestureRecognizer(panner)
     }
 
-    func establishConnections(_ context: RunContext) {}
+    func establishConnections(_ router: Router) {}
 
     /**
      Add an event target to one of the internal UIControl entities.
@@ -43,9 +41,7 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         switch event {
         case .shiftKeyboardUp: highestKey.addTarget(target, action: action, for: .touchUpInside)
         case .shiftKeyboardDown: lowestKey.addTarget(target, action: action, for: .touchUpInside)
-        case .doubleTap:
-            doubleTap1.addTarget(target, action: action)
-            doubleTap2.addTarget(target, action: action)
+        case .doubleTap: doubleTap.addTarget(target, action: action)
         }
     }
 
@@ -86,7 +82,11 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         }
     }
 
-    private var fader: UIViewPropertyAnimator? = nil
+}
+
+// MARK: - Private
+
+extension InfoBarController {
 
     private func startStatusAnimation() {
 
@@ -116,8 +116,6 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
         }
     }
 
-    private var panOrigin: CGPoint = CGPoint.zero
-    
     @IBAction private func panKeyboard(_ panner: UIPanGestureRecognizer) {
         if panner.state == .began {
             panOrigin = panner.translation(in: view)

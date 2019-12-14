@@ -8,21 +8,24 @@ import UIKit
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-struct RunContext {
+final class Router {
 
-    public private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
+    let soundFonts: SoundFonts = SoundFontsManager()
+    let favorites: Favorites = FavoritesManager()
+
+    lazy var activePatchManager = ActivePatchManager(soundFonts: soundFonts)
+    lazy var selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+
+    private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
     private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
 
-    var activeSoundFontManager: ActiveSoundFontManager { soundFontsController }
-    var activePatchManager: ActivePatchManager { soundFontsController }
-    var favoritesManager: FavoritesManager { favoritesController }
-    var infoBarManager: InfoBarManager { infoBarController }
-    var keyboardManager: KeyboardManager { keyboardController }
-    var patchesManager: PatchesManager { soundFontsController }
-    var soundFontLibraryManager: SoundFontLibraryManager { SoundFontLibrary.shared }
+    var infoBar: InfoBar { infoBarController }
+    var keyboard: Keyboard { keyboardController }
+    var patchesViewManager: PatchesViewManager { soundFontsController }
+    var favoritesViewManager: FavoritesViewManager { favoritesController }
     var soundFontEditor: SoundFontEditor { soundFontsController }
 
     /**
@@ -31,7 +34,7 @@ struct RunContext {
      - parameter mvc: the sole MainViewController instances
      - parameter vcs: collection of other instances
      */
-    mutating func addViewControllers(_ mvc: MainViewController, _ vcs: [UIViewController]) {
+    func addViewControllers(_ mvc: MainViewController, _ vcs: [UIViewController]) {
         mainViewController = mvc
         for obj in vcs {
             switch obj {
@@ -59,7 +62,7 @@ struct RunContext {
     }
 }
 
-extension RunContext {
+extension Router {
 
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")

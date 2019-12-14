@@ -5,16 +5,18 @@ import Foundation
 /**
  A custom setting with a SoundFont patch and a keyboard configuration.
  */
-final class Favorite: Codable {
+struct Favorite: Codable {
+
+    let key: UUID
+
+    /// The patch to load
+    let soundFontPatch: SoundFontPatch
 
     /// The name of the favorite configuration
     var name: String
 
     /// The starting note of the keyboard
     var keyboardLowestNote: Note
-
-    /// The patch to load
-    let patch: Patch
 
     /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
     var gain: Float
@@ -29,19 +31,20 @@ final class Favorite: Codable {
      - parameter patch: the Patch to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-    init(patch: Patch, keyboardLowestNote: Note) {
-        self.name = patch.name
+    init(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note) {
+        self.key = UUID()
+        self.name = soundFontPatch.patch.name
         self.keyboardLowestNote = keyboardLowestNote
-        self.patch = patch
+        self.soundFontPatch = soundFontPatch
         self.gain = 0.0
         self.pan = 0.0
     }
 }
 
 extension Favorite: Equatable {
-    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.patch == rhs.patch }
+    static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.key == rhs.key }
 }
 
 extension Favorite: CustomStringConvertible {
-    var description: String { "[Favorite '\(name)' \(patch)]" }
+    var description: String { "[Favorite '\(name)' \(soundFontPatch)]" }
 }

@@ -12,9 +12,9 @@ extension SettingKeys {
 final class KeyboardController: UIViewController {
 
     /// Largest MIDI value available for the last key
-    public static let maxMidiValue = 12 * 9 // C9
+    static let maxMidiValue = 12 * 9 // C9
 
-    public var delegate: KeyboardManagerDelegate? = nil
+    var delegate: KeyboardDelegate? = nil
     
     /// MIDI value of the first note in the keyboard
     private var firstMidiNoteValue = 48 {
@@ -33,28 +33,50 @@ final class KeyboardController: UIViewController {
     /// How wide each key will be
     private let keyWidth: CGFloat = 64.0
     
-    private var infoBarManager: InfoBarManager!
-    
+    private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
+    private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
+
+    /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
+    var isMuted: Bool = false {
+        didSet {
+            Key.isMuted = self.isMuted
+            keys.forEach { $0.setNeedsDisplay() }
+        }
+    }
+
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
         firstMidiNoteValue = max(lowestNote, 0)
     }
-    
+
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         createKeys()
     }
 }
 
 // MARK: - Configuration
 extension KeyboardController: ControllerConfiguration {
-    func establishConnections(_ context: RunContext) {
-        infoBarManager = context.infoBarManager
-        infoBarManager.addTarget(.shiftKeyboardUp, target: self, action: #selector(shiftKeyboardUp))
-        infoBarManager.addTarget(.shiftKeyboardDown, target: self, action: #selector(shiftKeyboardDown))
+
+    func establishConnections(_ router: Router) {
+        router.infoBar.addTarget(.shiftKeyboardUp, target: self, action: #selector(shiftKeyboardUp))
+        router.infoBar.addTarget(.shiftKeyboardDown, target: self, action: #selector(shiftKeyboardDown))
+        setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
+        router.favorites.subscribe(self, closure: favoritesChange)
+    }
+
+    private func favoritesChange(_ event: FavoritesEvent) {
+        switch event {
+        case let .selected(index: _, favorite: favorite):
+            lowestNote = favorite.keyboardLowestNote
+        default:
+            break
+        }
     }
 }
 
 // MARK: - Keyboard Shifting
+
 extension KeyboardController {
 
     @IBAction private func shiftKeyboardUp(_ sender: UIButton) {
@@ -102,7 +124,9 @@ extension KeyboardController {
 }
 
 // MARK: - Touch Processing
+
 extension KeyboardController {
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // New touches will always cause pressed keys
         updateTouchedKeys(touches, with: event, pressed: true)
@@ -117,7 +141,7 @@ extension KeyboardController {
         // Touches no longer in view
         updateTouchedKeys(touches, with: event, pressed: false)
     }
-    
+
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Stop everything -- system has interrupted us.
         updateTouchedKeys(touches, with: event, pressed: false)
@@ -188,14 +212,16 @@ extension KeyboardController {
     }
 }
 
-// MARK: - KeyboardManager Protocol
-extension KeyboardController: KeyboardManager {
+// MARK: - Keyboard Protocol
+
+extension KeyboardController: Keyboard {
+
     var lowestNote: Note {
-        get { return Note(midiNoteValue: firstMidiNoteValue) }
+        get { Note(midiNoteValue: firstMidiNoteValue) }
         set { shiftKeys(by: newValue.midiNoteValue - firstMidiNoteValue) }
     }
     
-    var highestNote: Note { return Note(midiNoteValue: lastMidiNoteValue) }
+    var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
     
     func releaseAllKeys() {
         keys.forEach { setKeyPressed($0, pressed: false) }
@@ -203,6 +229,7 @@ extension KeyboardController: KeyboardManager {
 }
 
 // MARK: - Key Generation
+
 extension KeyboardController {
 
     private func createKeys() {
@@ -237,8 +264,8 @@ extension KeyboardController {
         partitionedKeys.white.forEach { view.addSubview($0) }
         partitionedKeys.black.forEach { view.addSubview($0) }
         keys = partitionedKeys.black + partitionedKeys.white
-        
-        infoBarManager.setVisibleKeyLabels(from: lowestNote.label, to: highestNote.label)
+
+        setVisibleKeyLabels?(lowestNote.label, highestNote.label)
     }
     
     // Custom sequence / iterator that will spit out 2-tuples of CGRect and Note values for the next key

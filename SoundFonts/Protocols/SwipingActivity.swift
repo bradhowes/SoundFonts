@@ -24,4 +24,3 @@ protocol SwipingActivity {
      */
     func addTarget(_ event: SwipingEvent, target: Any, action: Selector)
 }
-

@@ -97,8 +97,8 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="favorites" destination="efO-vf-51K" id="1NG-ew-PAr"/>
-                        <outlet property="patches" destination="eeU-Zp-LO7" id="JNn-jp-Ekq"/>
+                        <outlet property="favoritesView" destination="efO-vf-51K" id="NCL-uM-skU"/>
+                        <outlet property="patchesView" destination="eeU-Zp-LO7" id="twN-eG-SPo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -108,7 +108,7 @@
         <!--Favorite Editor-->
         <scene sceneID="FbP-kw-aL9">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="zYi-ne-58d" userLabel="Favorite Editor" customClass="FavoriteDetailController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="zYi-ne-58d" userLabel="Favorite Editor" customClass="FavoriteEditor" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c1U-jY-Jwr">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="380"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -340,14 +340,21 @@
                                         <rect key="frame" x="290" y="9" width="30" height="30"/>
                                         <state key="normal" title="C3"/>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKb-vm-RkX" userLabel="TouchView">
+                                        <rect key="frame" x="46" y="0.0" width="228" height="48"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="kn8-FE-tzz" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="leading" id="5Jv-d9-ygQ"/>
+                                    <constraint firstItem="iKb-vm-RkX" firstAttribute="leading" secondItem="RUz-hq-Gsv" secondAttribute="trailing" constant="16" id="9z7-7w-r8o"/>
+                                    <constraint firstItem="iB1-GV-K7N" firstAttribute="leading" secondItem="iKb-vm-RkX" secondAttribute="trailing" constant="16" id="Atj-7w-ICe"/>
                                     <constraint firstAttribute="trailing" secondItem="iB1-GV-K7N" secondAttribute="trailing" id="HDw-wX-QrN"/>
                                     <constraint firstItem="iB1-GV-K7N" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="trailing" constant="8" id="J38-Bb-riK"/>
                                     <constraint firstItem="kn8-FE-tzz" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="KXe-Tk-6wi"/>
+                                    <constraint firstAttribute="bottom" secondItem="iKb-vm-RkX" secondAttribute="bottom" id="T04-9q-rPG"/>
+                                    <constraint firstItem="iKb-vm-RkX" firstAttribute="top" secondItem="pqV-eT-fTY" secondAttribute="top" id="Ucl-D0-fmf"/>
                                     <constraint firstItem="iB1-GV-K7N" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="dUQ-JH-Swz"/>
                                     <constraint firstItem="j3g-aD-uMb" firstAttribute="centerY" secondItem="pqV-eT-fTY" secondAttribute="centerY" id="eiZ-FU-LLx"/>
                                     <constraint firstItem="RUz-hq-Gsv" firstAttribute="leading" secondItem="pqV-eT-fTY" secondAttribute="leading" id="gsq-eZ-0w0"/>
@@ -371,6 +378,7 @@
                         <outlet property="lowestKey" destination="RUz-hq-Gsv" id="0Nm-Ew-ZOy"/>
                         <outlet property="patchInfo" destination="j3g-aD-uMb" id="6J8-FV-1kb"/>
                         <outlet property="status" destination="kn8-FE-tzz" id="EkU-II-drG"/>
+                        <outlet property="touchView" destination="iKb-vm-RkX" id="6ag-yl-JfY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vr-Xq-yUG" userLabel="First Responder" sceneMemberID="firstResponder"/>

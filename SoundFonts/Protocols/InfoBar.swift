@@ -14,7 +14,7 @@ enum InfoBarEvent {
 /**
  Manaages the actions and display of items in the info bar above the keyboard
  */
-protocol InfoBarManager: class {
+protocol InfoBar: class {
 
     /**
      Link a button / gesture event to a target/selector combination
@@ -24,7 +24,7 @@ protocol InfoBarManager: class {
      - parameter action: the function to call when the event takes place
      */
     func addTarget(_ event: InfoBarEvent, target: Any, action: Selector)
-    
+
     /**
      Show status information on the bar. This will appear temporarily and then fade back to the patch name.
      

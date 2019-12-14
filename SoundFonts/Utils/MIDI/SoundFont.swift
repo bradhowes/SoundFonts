@@ -1,40 +1,39 @@
 // Copyright (c) 2016 Brad Howes. All rights reserved.
 
-import UIKit
-import GameKit
+import Foundation
 import os
 
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
-public final class SoundFont: Codable {
+struct SoundFont: Codable {
     private static let logger = Logging.logger("SFont")
 
     /// Extension for all SoundFont files in the application bundle
-    public static let soundFontExtension = "sf2"
+    static let soundFontExtension = "sf2"
 
     /// Presentation name of the sound font
-    public var displayName: String
+    var displayName: String
 
     /// Width of the sound font name
-    public var nameWidth: CGFloat { displayName.systemFontWidth }
+    // var nameWidth: CGFloat { displayName.systemFontWidth }
 
     ///  The resolved URL for the sound font
-    public var fileURL: URL { kind.fileURL }
+    var fileURL: URL { kind.fileURL }
 
-    public var removable: Bool { kind.removable }
+    var removable: Bool { kind.removable }
 
-    public let uuid: UUID
+    let uuid: UUID
 
-    public let originalDisplayName: String
+    let originalDisplayName: String
+
+    let kind: SoundFontKind
 
     /// The collection of Patches found in the sound font
-    public private(set) var patches: [Patch]
+    let patches: [Patch]
 
-    private let kind: SoundFontKind
-
-    public static func generateSoundFont(from url: URL, saveToDisk: Bool) -> SoundFont? {
-        os_log(.info, log: Self.logger, "generateSoundFont - '%s'", url.lastPathComponent)
+    static func makeSoundFont(from url: URL, saveToDisk: Bool) -> SoundFont? {
+        os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
         // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
         // not in a security scope.
@@ -70,14 +69,14 @@ public final class SoundFont: Codable {
 
      - parameter info: patch info from the sound font and its display name.
      */
-    public init(_ soundFontInfo: SoundFontInfo) {
+    init(_ soundFontInfo: SoundFontInfo) {
         let name = soundFontInfo.name
         let uuid = UUID()
         self.uuid = uuid
         self.displayName = name
         self.originalDisplayName = name
         self.kind = .installed(fileName:name + "_" + uuid.uuidString + "." + Self.soundFontExtension)
-        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
+        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }
 
     /**
@@ -87,14 +86,14 @@ public final class SoundFont: Codable {
      - parameter resource: the name of the resource in the bundle
      - parameter info: patch info from the sound font
      */
-    public init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
+    init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
         let name = name
         let uuid = UUID()
         self.uuid = uuid
         self.displayName = name
         self.originalDisplayName = name
         self.kind = .builtin(resource: resource)
-        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0, uuid) }
+        self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }
 }
 
@@ -103,38 +102,19 @@ extension SoundFont {
     /// Determines if the sound font file exists on the device
     var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
-    /**
-     Locate a patch in the SoundFont using a display name.
-
-     - parameter name: the display name to search for
-
-     - returns: found Patch or nil
-     */
-    public func findPatch(_ name: String) -> Patch? {
-        guard let found = findPatchIndex(name) else { return nil }
-        return patches[found]
-    }
-
-    /**
-     Obtain the index to a Patch with a given name.
-     
-     - parameter name: the display name to search for
-     
-     - returns: index of found object or nil if not found
-     */
-    public func findPatchIndex(_ name: String) -> Int? {
-        return patches.firstIndex(where: { return $0.name == name })
+    func makeSoundFontPatch(for patchIndex: Int) -> SoundFontPatch {
+        SoundFontPatch(soundFont: self, patchIndex: patchIndex)
     }
 }
 
 extension SoundFont: Hashable {
 
-    public func hash(into hasher: inout Hasher) { hasher.combine(kind) }
+    func hash(into hasher: inout Hasher) { hasher.combine(uuid) }
 
-    public static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.kind == rhs.kind }
+    static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.uuid == rhs.uuid }
 }
 
 extension SoundFont: CustomStringConvertible {
 
-    public var description: String { "[SoundFont '\(displayName)']" }
+    var description: String { "[SoundFont '\(displayName)']" }
 }

@@ -8,6 +8,8 @@ import UIKit
  */
 final class Key : UIView {
 
+    static var isMuted: Bool = false
+
     /// The note to play when touched
     let note: Note
 
@@ -34,18 +36,17 @@ final class Key : UIView {
 
     override func draw(_ rect: CGRect) {
         let roundedCorner: CGFloat = 12.0
-      
         if note.accented {
-            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed)
+            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
+                                        isMuted: Self.isMuted)
         }
         else {
-            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed)
+            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
+                                        isMuted: Self.isMuted)
         }
     }
 
-    override var description: String {
-        return "Key(\(note),\(pressed))"
-    }
+    override var description: String { "Key(\(note),\(pressed))" }
 
     private func configure() {
         self.backgroundColor = .clear

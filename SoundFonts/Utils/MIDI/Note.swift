@@ -7,9 +7,10 @@ import Foundation
  */
 struct Note : CustomStringConvertible, Codable {
 
-    static public let sharpTag = "♯"
-    static public let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]
-    static public let solfegeLabels: [String] = ["Do", "Do", "Re", "Re", "Mi", "Fa", "Fa", "Sol", "Sol", "La", "La", "Ti"]
+    static let sharpTag = "♯"
+    static let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]
+    static let solfegeLabels: [String] = ["Do", "Do", "Re", "Re", "Mi", "Fa", "Fa", "Sol", "Sol", "La", "La",
+                                                 "Ti"]
 
     /// The MIDI value to emit to generate this note
     let midiNoteValue: Int
@@ -25,15 +26,12 @@ struct Note : CustomStringConvertible, Codable {
     }
 
     /// Obtain the solfege representation for this note
-    var solfege: String {
-        let noteIndex = midiNoteValue % 12
-        return Note.solfegeLabels[noteIndex]
-    }
-    
-    /// Obtain the octave this note is a part of
-    var octave: Int { return midiNoteValue / 12 }
+    var solfege: String { Note.solfegeLabels[midiNoteValue % 12] }
 
-    var description: String { return label }
+    /// Obtain the octave this note is a part of
+    var octave: Int { midiNoteValue / 12 }
+
+    var description: String { label }
 
     /**
      Create new Note instance.
