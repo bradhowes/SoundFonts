@@ -5,33 +5,32 @@ import os
 
 /**
  Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
- settings. The user may long-touch on a Favorite to bring up an editing panel.
+ settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
  */
-final class FavoritesViewController: UIViewController, ControllerConfiguration {
-    private lazy var logger = Logging.logger("FavVC")
+final class FavoritesViewController: UIViewController {
+    private lazy var log = Logging.logger("FavsVC")
+
+    private let favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as! FavoriteCell
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     @IBOutlet var doubleTapGestureRecognizer: UITapGestureRecognizer!
     
     private var activePatchManager: ActivePatchManager!
-    private var keyboardManager: KeyboardManager!
-    private let favoriteCollection = FavoriteCollection.shared
-    private var notifiers = [UUID: (FavoriteChangeKind) -> Void]()
-    private var favoriteCell: FavoriteCell!
+    private var keyboard: Keyboard!
+    private var favorites: Favorites!
+
     private var favoriteMover: FavoriteMover!
 
     private var swipeLeft = UISwipeGestureRecognizer()
     private var swipeRight = UISwipeGestureRecognizer()
 
     override func viewDidLoad() {
+        favoriteCell.translatesAutoresizingMaskIntoConstraints = false
+
         favoritesView.register(FavoriteCell.self)
         favoritesView.dataSource = self
         favoritesView.delegate = self
-
-        favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as? FavoriteCell
-        precondition(favoriteCell != nil, "failed to instantiate a FavoriteCell instance from nil")
-        favoriteCell.translatesAutoresizingMaskIntoConstraints = true
 
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         doubleTapGestureRecognizer.numberOfTouchesRequired = 1
@@ -43,6 +42,7 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeLeft)
+
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeRight)
@@ -50,42 +50,83 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
-        favoritesView!.setCollectionViewLayout(layout, animated: false)
+
+        favoritesView.setCollectionViewLayout(layout, animated: false)
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         favoritesView.reloadData()
     }
+}
 
-    func establishConnections(_ context: RunContext) {
-        activePatchManager = context.activePatchManager
-        keyboardManager = context.keyboardManager
-        activePatchManager.addPatchChangeNotifier(self) { old, new in self.patchChanged(old, new) }
+extension FavoritesViewController: ControllerConfiguration {
+
+    func establishConnections(_ router: Router) {
+        activePatchManager = router.activePatchManager
+        favorites = router.favorites
+        keyboard = router.keyboard
+
+        activePatchManager.subscribe(self, closure: activePatchChange)
+        favorites.subscribe(self, closure: favoritesChange)
     }
+
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        os_log(.info, log: log, "activePatchChange")
+        switch event {
+        case let .active(old: old, new: new):
+            if let favorite = old.favorite, favorite != new.favorite {
+                os_log(.info, log: log, "updating previous favorite cell")
+                updateCell(with: favorite)
+            }
+            if let favorite = new.favorite {
+                os_log(.info, log: log, "updating new favorite cell")
+                updateCell(with: favorite)
+            }
+        }
+    }
+
+    private func favoritesChange(_ event: FavoritesEvent) {
+        os_log(.info, log: log, "favoritesChange")
+        switch event {
+        case let .added(index: index, favorite: _):
+            os_log(.info, log: log, "added item %d", index)
+            favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
+            break
+        case let .selected(index: index, favorite: favorite):
+            os_log(.info, log: log, "selected %d", index)
+            activePatchManager.setActive(.favorite(favorite: favorite))
+        case let .beginEdit(index: index, favorite: favorite, view: view):
+            os_log(.info, log: log, "begin editing %d", index)
+            edit(favorite: favorite, sender: view)
+        case let .changed(index: index, favorite: favorite):
+            os_log(.info, log: log, "changed %d", index)
+            update(cell: favoritesView.dequeueReusableCell(for: IndexPath(item: index, section: 0)), with: favorite)
+        case let .removed(index: index, favorite: _, bySwiping: _):
+            os_log(.info, log: log, "removed %d", index)
+            favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
+        }
+    }
+}
+
+// MARK: - Editing
+
+extension FavoritesViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FavoriteDetailController,
+            let vc = nc.topViewController as? FavoriteEditor,
             let (favorite, view) = sender as? (Favorite, UIView) else { return }
 
         vc.delegate = self
+        vc.editFavorite(favorite, position: indexPath(of: favorite), currentLowestNote: keyboard.lowestNote)
 
-        let indexPath = IndexPath(item: favoriteCollection.getIndex(of: favorite), section: 0)
-        vc.editFavorite(favorite, position: indexPath, currentLowestNote: keyboardManager.lowestNote)
-
-        // Now if showing a popover, position it in the right spot
-        //
         if let ppc = nc.popoverPresentationController {
-
-            ppc.barButtonItem = nil // !!! Muy importante !!!
+            ppc.barButtonItem = nil
             ppc.sourceView = view
-            
-            // Focus on the indicator -- this may not be correct for all locales.
             let rect = view.bounds
             ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
                                                  size: CGSize(width: 32.0, height: rect.height)), to: nil)
-            // vc.preferredContentSize.width = self.preferredContentSize.width
         }
     }
 
@@ -94,10 +135,10 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
      
      - parameter gr: the gesture recognizer that fired the event
      */
-    @objc func handleTap(_ gr: UITapGestureRecognizer) {
+    @objc private func handleTap(_ gr: UITapGestureRecognizer) {
         let pos = gr.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
-        let favorite = favoriteCollection[indexPath.row]
+        let favorite = favorites.getBy(index: indexPath.item)
         let cell = favoritesView.cellForItem(at: indexPath)!
         edit(favorite: favorite, sender: cell)
     }
@@ -105,119 +146,24 @@ final class FavoritesViewController: UIViewController, ControllerConfiguration {
     func edit(favorite: Favorite, sender: UIView) {
         performSegue(withIdentifier: "favoriteDetail", sender: (favorite, sender))
     }
-
-    private func updateFavoriteCell(at indexPath: IndexPath, cell: FavoriteCell? = nil) {
-        os_log(.info, log: logger, "updateFavoriteCell: %d.%d %s", indexPath.section, indexPath.row,
-               cell?.description ?? "N/A")
-        guard let aCell = (cell ?? (favoritesView.cellForItem(at: indexPath) as? FavoriteCell)) else {
-            os_log(.info, log: logger, "updateFavoriteCell: no cell")
-            return
-        }
-
-        let favorite = favoriteCollection[indexPath.row]
-        aCell.update(name: favorite.name, isActive: favorite.patch == activePatchManager.activePatch)
-    }
-
-    private func patchChanged(_ old: Patch?, _ new: Patch) {
-        os_log(.info, log: logger, "patchChanged: %s, %s", old?.description ?? "nil", new.description)
-        if let old = old {
-            if let fave = favoriteCollection.getFavorite(patch: old) {
-                os_log(.info, log: logger, "updating prev cell - %s", fave.description)
-                updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
-            }
-        }
-
-        if let fave = favoriteCollection.getFavorite(patch: new) {
-            os_log(.info, log: logger, "updating new cell - %s", fave.description)
-            updateFavoriteCell(at: IndexPath(row: favoriteCollection.getIndex(of: fave), section: 0))
-        }
-    }
-
-    private func selected(_ favorite: Favorite) {
-        os_log(.info, log: logger, "setting active patch")
-        activePatchManager.changePatch(kind: .favorite(favorite: favorite))
-
-        os_log(.info, log: logger, "setting lowest note")
-        keyboardManager.lowestNote = favorite.keyboardLowestNote
-        notify(.selected(favorite))
-    }
-    
-    private func notify(_ kind: FavoriteChangeKind) {
-        notifiers.values.forEach { $0(kind) }
-    }
-}
-
-// MARK: - UICollectionViewDataSource
-extension FavoritesViewController: UICollectionViewDataSource {
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return favoriteCollection.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoriteCell
-        updateFavoriteCell(at: indexPath, cell: cell)
-
-        // Make sure that the label in the cell is constrained to the be within the cell bounds minus margin.
-        cell.maxWidth = cell.bounds.width - 16
-        return cell
-    }
-}
-
-// MARK: - UICollectionViewDelegate
-extension FavoritesViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let favorite = favoriteCollection[indexPath.row]
-        os_log(.info, log: logger, "selecting %d %s", indexPath.row, favorite.name)
-        selected(favorite)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
-        return favoriteCollection.count > 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
-                        to destinationIndexPath: IndexPath) {
-        favoriteCollection.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
-        collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
-    }
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        updateFavoriteCell(at: indexPath, cell: favoriteCell)
-
-        // Make sure that the width of the cell is no bigger than the collectionView.
-        let size = favoriteCell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
-        return constrainedSize
-    }
 }
 
 // MARK: - FavoriteDetailControllerDelegate
+
 extension FavoritesViewController: FavoriteDetailControllerDelegate {
+
     func dismissed(_ indexPath: IndexPath, reason: FavoriteDetailControllerDismissedReason) {
         switch reason {
-        case .done:
-            let favorite = favoriteCollection[indexPath.row]
+        case .done(let favorite):
+            favorites.update(index: indexPath.item, with: favorite)
             favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
-            notify(.changed(favorite))
-            favoriteCollection.save()
+
         case .cancel:
             break
-            
+
         case .delete:
-            let favorite = self.favoriteCollection[indexPath.row]
-            remove(patch: favorite.patch, bySwiping: false)
+            favorites.remove(index: indexPath.item, bySwiping: false)
             break
         }
 
@@ -225,9 +171,58 @@ extension FavoritesViewController: FavoriteDetailControllerDelegate {
     }
 }
 
+// MARK: - UICollectionViewDataSource
+
+extension FavoritesViewController: UICollectionViewDataSource {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        favorites.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath),
+                                with: favorites.getBy(index: indexPath.row)))
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension FavoritesViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        favorites.selected(index: indexPath.row)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        favorites.count > 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
+                        to destinationIndexPath: IndexPath) {
+        favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
+        collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let favorite = favorites.getBy(index: indexPath.item)
+        let cell = update(cell: favoriteCell, with: favorite)
+        let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
+        return constrainedSize
+    }
+}
+
 // MARK: - FavoritesManager
 
-extension FavoritesViewController: FavoritesManager {
+extension FavoritesViewController: FavoritesViewManager {
 
     func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
         switch event {
@@ -235,48 +230,30 @@ extension FavoritesViewController: FavoritesManager {
         case .swipeRight: swipeRight.addTarget(target, action: action)
         }
     }
+}
 
-    func isFavored(patch: Patch) -> Bool { return favoriteCollection.isFavored(patch: patch) }
-    
-    func add(patch: Patch, keyboardLowestNote: Note) {
-        let favorite = Favorite(patch: patch, keyboardLowestNote: keyboardLowestNote)
-        favoriteCollection.add(favorite)
-        notify(.added(favorite))
-        favoritesView.reloadData()
+// MARK: - Private
+
+extension FavoritesViewController {
+
+    private func indexPath(of favorite: Favorite) -> IndexPath {
+        IndexPath(row: favorites.index(of: favorite), section: 0)
     }
 
-    func remove(patch: Patch, bySwiping: Bool) {
-        let favorite = favoriteCollection.remove(patch: patch)
-        self.notify(.removed(favorite, bySwiping: bySwiping))
-        favoritesView.reloadData()
-    }
-
-    func removeAll(associatedWith soundFont: SoundFont) {
-        let favorites = favoriteCollection.removeAll(associatedWith: soundFont)
-        favorites.forEach { self.notify(.removed($0, bySwiping: false)) }
-        favoritesView.reloadData()
-    }
-
-    func count(associatedWith soundFont: SoundFont) -> Int {
-        favoriteCollection.findAll(associatedWith: soundFont).count
-    }
-
-    func addFavoriteChangeNotifier<O: AnyObject>(_ observer: O, closure: @escaping Notifier<O>) -> NotifierToken {
-        let uuid = UUID()
-        let token = NotifierToken { [weak self] in self?.notifiers.removeValue(forKey: uuid) }
-        notifiers[uuid] = { [weak observer] kind in
-            if observer != nil {
-                closure(kind)
-            }
-            else {
-                token.cancel()
-            }
+    private func updateCell(with favorite: Favorite) {
+        if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath(of: favorite)) {
+            update(cell: cell, with: favorite)
         }
-
-        return token
     }
-    
-    func removeNotifier(forKey key: UUID) {
-        notifiers.removeValue(forKey: key)
+
+    @discardableResult
+    private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
+        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontPatch == activePatchManager.soundFontPatch)
+        return cell
+    }
+
+    private func limitWidth(cell: FavoriteCell) -> FavoriteCell {
+        cell.maxWidth = cell.bounds.width - 15
+        return cell
     }
 }

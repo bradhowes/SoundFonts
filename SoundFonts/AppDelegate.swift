@@ -6,10 +6,8 @@ import AVKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    let router = Router()
     var window: UIWindow?
-    var runContext = RunContext()
-    let soundFontLibrary = SoundFontLibrary.shared
-    let favoriteCollection = FavoriteCollection.shared
 
     weak var mainViewController: MainViewController?
 
@@ -25,21 +23,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         if let url = launchOptions?[.url] as? URL {
-            soundFontLibrary.add(url: url)
-            return true
+            addSoundFont(url: url)
         }
 
         return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        soundFontLibrary.add(url: url)
+        addSoundFont(url: url)
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
         print("applicationWillResignActive")
-        runContext.mainViewController.stopAudio()
+        router.mainViewController.stopAudio()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -52,12 +49,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("applicationDidBecomeActive")
-        runContext.mainViewController.startAudio()
+        router.mainViewController.startAudio()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         print("applicationWillTerminate")
-        runContext.mainViewController.stopAudio()
+        router.mainViewController.stopAudio()
     }
 }
 
+extension AppDelegate {
+
+    private func addSoundFont(url: URL) {
+        let alert: UIAlertController = {
+            if let (_, soundFont) = router.soundFonts.add(url: url) {
+                let alert = UIAlertController(
+                    title: "SoundFont Added",
+                    message: "New SoundFont added under the name '\(soundFont.displayName)'",
+                    preferredStyle: .alert)
+                return alert
+            }
+            else {
+                let alert = UIAlertController(
+                    title: "SoundFont Failure",
+                    message: "Failed to add new SoundFont.",
+                    preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                return alert
+            }
+        }()
+
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+}

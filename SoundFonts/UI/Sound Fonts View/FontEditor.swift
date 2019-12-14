@@ -5,7 +5,7 @@ import UIKit
 /**
  Provides an editing facility for SoundFont names.
  */
-final class FontDetailController : UIViewController {
+final class FontEditor : UIViewController {
 
     var soundFont: SoundFont!
     var favoriteCount: Int = 0
@@ -40,7 +40,6 @@ final class FontDetailController : UIViewController {
         guard let soundFont = self.soundFont else { fatalError() }
         name.text = soundFont.displayName
         name.delegate = self
-        // title = soundFont.displayName
         originalNameLabel.text = soundFont.originalDisplayName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
@@ -53,14 +52,10 @@ final class FontDetailController : UIViewController {
      - parameter sender: the `Done` button
      */
     @IBAction private func donePressed(_ sender: UIBarButtonItem) {
-        guard let soundFont = soundFont else { fatalError() }
         let newName = self.name.text ?? ""
-        if !newName.isEmpty {
-            soundFont.displayName = newName
-        }
-        delegate?.dismissed(reason: .done(indexPath: position, soundFont: soundFont))
+        delegate?.dismissed(reason: .done(index: position.row, name: newName))
     }
-    
+
     /**
      Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
      
@@ -71,7 +66,7 @@ final class FontDetailController : UIViewController {
     }
 }
 
-extension FontDetailController: UITextFieldDelegate {
+extension FontEditor: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         donePressed(doneButton)

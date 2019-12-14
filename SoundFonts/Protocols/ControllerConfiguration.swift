@@ -6,10 +6,11 @@ import Foundation
  Protocol for UIViewControllers that require connections to other UIViewControllers at startup time.
  */
 protocol ControllerConfiguration {
+
     /**
      Establish connections with other entities in the application.
     
      - parameter context: collection of known UIViewControllers and their protocol facades.
      */
-    func establishConnections(_ context: RunContext)
+    func establishConnections(_ router: Router)
 }

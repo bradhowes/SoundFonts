@@ -8,14 +8,14 @@ import os
 /**
  This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
  */
-public class Sampler {
+final class Sampler {
     private lazy var logger = Logging.logger("Samp")
 
     private var engine: AVAudioEngine?
     private var ausampler: AVAudioUnitSampler?
-    private var patch: Patch?
+    private var soundFontPatch: SoundFontPatch?
 
-    public enum Failure: Error {
+    enum Failure: Error {
         case engineStarting(error: NSError)
         case patchLoading(error: NSError)
     }
@@ -23,7 +23,7 @@ public class Sampler {
     /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
      */
-    public func start() -> Result<Void, Failure> {
+    func start() -> Result<Void, Failure> {
         os_log(.info, log: logger, "start")
 
         let engine = AVAudioEngine()
@@ -44,8 +44,8 @@ public class Sampler {
             return .failure(.engineStarting(error: error))
         }
 
-        if let patch = self.patch {
-            return load(patch: patch)
+        if let soundFontPatch = self.soundFontPatch {
+            return load(soundFontPatch: soundFontPatch)
         }
 
         os_log(.info, log: logger, "done")
@@ -55,7 +55,7 @@ public class Sampler {
     /**
      Stop the existing audio engine. Releases the sampler and engine.
      */
-    public func stop() {
+    func stop() {
         os_log(.info, log: logger, "stop")
         engine?.stop()
     }
@@ -65,16 +65,18 @@ public class Sampler {
     
      - parameter patch: the sound font and patch to use
      */
-    public func load(patch: Patch) -> Result<Void, Failure> {
-        os_log(.info, log: logger, "load - %s", patch.description)
-        self.patch = patch
+    func load(soundFontPatch: SoundFontPatch) -> Result<Void, Failure> {
+        os_log(.info, log: logger, "load - %s", soundFontPatch.description)
+        self.soundFontPatch = soundFontPatch
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
         guard let sampler = self.ausampler else { return .success(()) }
         do {
             os_log(.info, log: logger, "begin loading")
-            try sampler.loadSoundBankInstrument(at: patch.soundFont.fileURL, program: UInt8(patch.patch),
-                                                bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+            try sampler.loadSoundBankInstrument(at: soundFontPatch.soundFont.fileURL,
+                                                program: UInt8(soundFontPatch.patch.patch),
+                                                bankMSB: UInt8(soundFontPatch.patch.bankMSB),
+                                                bankLSB: UInt8(soundFontPatch.patch.bankLSB))
             os_log(.info, log: logger, "end loading")
             return .success(())
         } catch let error as NSError {
@@ -83,12 +85,18 @@ public class Sampler {
         }
     }
 
+    func load(soundFontPatch: SoundFontPatch, gain: Float, pan: Float) -> Result<Void, Failure> {
+        setGain(gain)
+        setPan(pan)
+        return load(soundFontPatch: soundFontPatch)
+    }
+
     /**
      Set the AVAudioUnitSampler masterGain value
 
      - parameter value: the value to set
      */
-    public func setGain(_ value: Float) {
+    func setGain(_ value: Float) {
         guard let sampler = self.ausampler else { fatalError("unexpected nil ausampler") }
         sampler.masterGain = value
     }
@@ -98,7 +106,7 @@ public class Sampler {
 
      - parameter value: the value to set
      */
-    public func setPan(_ value: Float) {
+    func setPan(_ value: Float) {
         guard let sampler = self.ausampler else { fatalError("unexpected nil ausampler") }
         sampler.stereoPan = value
     }
@@ -108,7 +116,7 @@ public class Sampler {
     
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
-    public func noteOn(_ midiValue: Int) {
+    func noteOn(_ midiValue: Int) {
         guard let sampler = self.ausampler else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(64), onChannel: UInt8(0))
     }
@@ -118,7 +126,7 @@ public class Sampler {
     
      - parameter midiValue: MIDI value that indicates the pitch to stop
      */
-    public func noteOff(_ midiValue: Int) {
+    func noteOff(_ midiValue: Int) {
         guard let sampler = self.ausampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }

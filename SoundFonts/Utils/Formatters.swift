@@ -2,13 +2,13 @@
 
 import UIKit
 
-public enum Formatters {
+enum Formatters {
 
-    public static func formatted(patchCount: Int) -> String {
+    static func formatted(patchCount: Int) -> String {
         String.localizedStringWithFormat(Self.patchesFormatString, patchCount)
     }
 
-    public static func formatted(favoriteCount: Int) -> String {
+    static func formatted(favoriteCount: Int) -> String {
         String.localizedStringWithFormat(Self.favoritesFormatString, favoriteCount)
     }
 }

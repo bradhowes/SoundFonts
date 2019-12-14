@@ -11,32 +11,32 @@ let Settings = UserDefaults.standard
 /**
  Protocol for entities that can set a representation in UserDefaults
  */
-public protocol SettingSettable {
+protocol SettingSettable {
     static func set(key: String, value: Self, userDefaults: UserDefaults)
 }
 
 /**
  Protocol for entities that can get a representation of from UserDefaults
  */
-public protocol SettingGettable {
+protocol SettingGettable {
     static func get(key: String, userDefaults: UserDefaults) -> Self?
 }
 
-public typealias SettingSerializable = SettingSettable & SettingGettable
+typealias SettingSerializable = SettingSettable & SettingGettable
 
-open class SettingKeys {
+class SettingKeys {
     fileprivate init() {}
 }
 
 /**
  Template class that supports get/set operations for the template type.
  */
-open class SettingKey<ValueType: SettingSerializable>: SettingKeys {
+class SettingKey<ValueType: SettingSerializable>: SettingKeys {
 
-    public let userDefaultsKey: String
+    let userDefaultsKey: String
     internal let defaultValue: ValueType
 
-    public init(_ key: String, defaultValue: ValueType) {
+    init(_ key: String, defaultValue: ValueType) {
         self.userDefaultsKey = key
         self.defaultValue = defaultValue
     }

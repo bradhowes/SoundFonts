@@ -3,7 +3,7 @@
 import UIKit
 
 /**
- Manages the movement of a Favorite instance.
+ Manages the movement of a Favorite cells in a UICollectionView
  */
 final class FavoriteMover: NSObject {
 

@@ -7,8 +7,8 @@ import UIKit
  */
 enum SoundFontDetailControllerDismissedReason {
     case cancel
-    case done(indexPath: IndexPath, soundFont: SoundFont)
-    case delete(indexPath: IndexPath, soundFont: SoundFont)
+    case done(index: Int, name: String)
+    case delete(index: Int, soundFont: SoundFont)
 }
 
 /**

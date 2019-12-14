@@ -2,7 +2,7 @@
 
 import os
 
-public struct Logging {
+struct Logging {
 
     /// The top-level identifier for this app
     static let subsystem = "com.braysoftware.SoundFonts"
@@ -13,5 +13,5 @@ public struct Logging {
      - parameter category: the subsystem to log under
      - returns: OSLog instance to use for subsystem logging
      */
-    public static func logger(_ category: String) -> OSLog { OSLog(subsystem: subsystem, category: category) }
+    static func logger(_ category: String) -> OSLog { OSLog(subsystem: subsystem, category: category) }
 }

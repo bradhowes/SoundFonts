@@ -5,7 +5,7 @@ import Foundation
 /**
  Delegate for keyboard note events.
  */
-protocol KeyboardManagerDelegate: class {
+protocol KeyboardDelegate: class {
     
     /**
      Notification of a note "ON" event
@@ -25,16 +25,19 @@ protocol KeyboardManagerDelegate: class {
 /**
  Manages the state of the keyboard
  */
-protocol KeyboardManager: class {
-    
+protocol Keyboard: class {
+
     /// Delegate to receive notifications of note ON/OFF events
-    var delegate: KeyboardManagerDelegate? { get set }
+    var delegate: KeyboardDelegate? { get set }
 
     /// The value of the first note shown on the keyboard
     var lowestNote: Note { get set }
     
-    /// THe value of the last note shown on the keyboard
+    /// The value of the last note shown on the keyboard
     var highestNote: Note { get }
+
+    /// Set to true if audio is currently muted on the device. Affects how the keys are rendered.
+    var isMuted: Bool { get set}
 
     /**
      Command the keyboard to release any pressed keys

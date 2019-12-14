@@ -8,17 +8,13 @@ import os
  */
 @IBDesignable
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
-    private lazy var logger = Logging.logger("FavC")
+    private lazy var log = Logging.logger("FavCell")
 
     /// The name of the favorite
     @IBOutlet weak var name: UILabel!
 
     /// The background color of an inactive favorite cell
-    @IBInspectable var normalBackgroundColor: UIColor! {
-        didSet {
-            self.backgroundColor = normalBackgroundColor
-        }
-    }
+    @IBInspectable var normalBackgroundColor: UIColor! { didSet { self.backgroundColor = normalBackgroundColor } }
 
     /// Foreground color of an inactive favorite cell
     @IBInspectable var normalForegroundColor: UIColor!
@@ -31,11 +27,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     private var normalBorderColor: UIColor?
 
-    @IBOutlet private var maxWidthConstraint: NSLayoutConstraint! {
-        didSet {
-            maxWidthConstraint.isActive = false
-        }
-    }
+    @IBOutlet private var maxWidthConstraint: NSLayoutConstraint! { didSet { maxWidthConstraint.isActive = false } }
 
     var maxWidth: CGFloat? = nil {
         didSet {
@@ -45,40 +37,31 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         }
     }
 
-    public override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
 
     /// Indicates if the cell is currently moving around. Update the border color when it is.
-    public var moving: Bool = false {
-        didSet {
-            if moving {
-                self.borderColor = UIColor.magenta
-            }
-            else {
-                self.borderColor = normalBorderColor
-            }
-        }
-    }
+    var moving: Bool = false { didSet { self.borderColor = moving ? UIColor.magenta : normalBorderColor } }
 
     /**
      Show the Favorite name and `active` indicator.
     
-     - parameter name: the name to show
+     - parameter favoriteName: the name to show
      - parameter isActive: true if the Favorite's patch is currently active.
      */
-    func update(name: String, isActive: Bool) {
-        os_log(.info, log: logger, "update: %s %d", name, isActive)
+    func update(favoriteName: String, isActive: Bool) {
+        os_log(.info, log: log, "update: %s %d", favoriteName, isActive)
 
-        self.name.text = name
+        name.text = favoriteName
         if isActive {
-            self.backgroundColor = activeBackgroundColor
-            self.name.textColor = activeForegroundColor
+            backgroundColor = activeBackgroundColor
+            name.textColor = activeForegroundColor
         }
         else {
-            self.backgroundColor = normalBackgroundColor
-            self.name.textColor = normalForegroundColor
+            backgroundColor = normalBackgroundColor
+            name.textColor = normalForegroundColor
         }
 
         invalidateIntrinsicContentSize()
@@ -86,16 +69,15 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     /// The intrinsic size of the cell is that of its content view with the current label text.
     override var intrinsicContentSize: CGSize {
-        return contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
     
     /// Report the layout size for a given target size. Foward request to the content view.
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
-        return contentView.systemLayoutSizeFitting(targetSize)
+        contentView.systemLayoutSizeFitting(targetSize)
     }
 
     private func setupView() {
-        name.text = "Hello!"
         normalBorderColor = borderColor
         contentView.translatesAutoresizingMaskIntoConstraints = false
         invalidateIntrinsicContentSize()

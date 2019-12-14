@@ -15,87 +15,141 @@ final class PatchesTableViewDataSource: NSObject {
 
     private let view: UITableView
     private let searchBar: UISearchBar
-    private let activeSoundFontManager: ActiveSoundFontManager
+    private let selectedSoundFontManager: SelectedSoundFontManager
     private let activePatchManager: ActivePatchManager
-    private let favoritesManager: FavoritesManager
-    private let keyboardManager: KeyboardManager
-    private var patches: [Patch] { activeSoundFontManager.selectedSoundFont?.patches ?? [] }
+    private let favorites: Favorites
+    private let keyboard: Keyboard
 
-    init(view: UITableView, searchBar: UISearchBar,
-         activeSoundFontManager: ActiveSoundFontManager,
-         activePatchManager: ActivePatchManager,
-         favoritesManager: FavoritesManager,
-         keyboardManager: KeyboardManager) {
+    private var patches: [Patch] { selectedSoundFontManager.selected.patches }
+    private var filtered = [Patch]()
+
+    init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
+         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard) {
         self.view = view
         self.searchBar = searchBar
-        self.activeSoundFontManager = activeSoundFontManager
+        self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
-        self.favoritesManager = favoritesManager
-        self.keyboardManager = keyboardManager
+        self.favorites = favorites
+        self.keyboard = keyboard
         super.init()
 
         view.register(PatchCell.self)
         view.dataSource = self
         view.delegate = self
+        searchBar.delegate = self
 
-        // Receive notifications when a favorite is destroyed from within the favorite editor pane.
-        favoritesManager.addFavoriteChangeNotifier(self) { kind in
-            if case let .removed(favorite, bySwiping) = kind {
-                if !bySwiping {
-                    let patch = favorite.patch
-                    if activeSoundFontManager.selectedSoundFont == patch.soundFont {
-                        self.view.reloadRows(at: [self.indexPathForPatchIndex(patch.index)], with: .none)
+        selectedSoundFontManager.subscribe(self, closure: selectedSoundFontChange)
+        activePatchManager.subscribe(self, closure: activePatchChange)
+    }
+
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        switch event {
+        case let .active(old: old, new: new):
+            if old.soundFontPatch.soundFont == selectedSoundFontManager.selected {
+                if let indexPath = indexPath(of: old.soundFontPatch.patch) {
+                    if let cell: PatchCell = view.cellForRow(at: indexPath) {
+                        update(cell: cell, with: old.soundFontPatch.patch)
                     }
                 }
+            }
+
+            if let indexPath = indexPath(of: new.soundFontPatch.patch) {
+                if let cell: PatchCell = view.cellForRow(at: indexPath) {
+                    update(cell: cell, with: new.soundFontPatch.patch)
+                }
+            }
+
+            hideSearchBar()
+        }
+    }
+
+    private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
+        switch event {
+        case .changed:
+            if let searchTerm = searchBar.searchTerm {
+                search(for: searchTerm)
+            }
+            else {
+                view.reloadData()
             }
         }
     }
 
-    func indexPath(of patch: Patch) -> IndexPath? {
-        guard let row = patches.firstIndex(of: patch) else { return nil }
-        return indexPathForPatchIndex(row)
-    }
+    private func indexPath(of patch: Patch) -> IndexPath? {
+        if showingSearchResults {
+            guard let row: Int = filtered.firstIndex(where: { $0.soundFontIndex == patch.soundFontIndex }) else {
+                return nil
+            }
+            return IndexPath(row: row, section: 0)
+        }
 
-    /**
-     Obtain an IndexPath for the given Patch index. A patch belongs in a section and a row within the section.
-     
-     - parameter index: the Patch index
-     - returns: view IndexPath
-     */
-    private func indexPathForPatchIndex(_ index: Int) -> IndexPath {
-        let safeIndex = min(index, patches.count - 1)
-        let section = safeIndex / Self.sectionSize
-        let row = safeIndex - Self.sectionSize * section
+        let section = patch.soundFontIndex / Self.sectionSize
+        let row = patch.soundFontIndex - Self.sectionSize * section
         return IndexPath(row: row, section: section)
     }
 
     /**
-     Obtain a Patch index for the given view IndexPath. This is the inverse of `indexPathForPatchIndex`.
+     Obtain a Patch index for the given view IndexPath. This is the inverse of `indexPath(of:)`.
      
      - parameter indexPath: the IndexPath to convert
      - returns: Patch index
      */
-    private func patchIndexForIndexPath(_ indexPath: IndexPath) -> Int {
-        indexPath.section * PatchesTableViewDataSource.sectionSize + indexPath.row
+    private func patchIndex(of indexPath: IndexPath) -> Int {
+        indexPath.section * Self.sectionSize + indexPath.row
     }
     
+    private func makeSoundFontPatch(for patch: Patch) -> SoundFontPatch {
+        SoundFontPatch(soundFont: selectedSoundFontManager.selected, patchIndex: patch.soundFontIndex)
+    }
+
     /**
      Update the given table cell with Patch state
     
      - parameter cell: the cell to update
      - parameter patch: the Patch to use for the updating
      */
-    func update(cell: PatchCell, with patch: Patch) {
-        cell.update(name: patch.name,
-                    index: patch.index,
-                    isActive: activePatchManager.activePatch == patch,
-                    isFavorite: favoritesManager.isFavored(patch: patch))
+    @discardableResult
+    private func update(cell: PatchCell, with patch: Patch) -> PatchCell {
+        cell.update(name: patch.name, isActive: isActive(patch: patch), isFavorite: isFavored(patch: patch))
+        return cell
+    }
+
+    private func isActive(patch: Patch) -> Bool {
+        selectedSoundFontManager.selected == activePatchManager.active.soundFontPatch.soundFont &&
+            patch.soundFontIndex == activePatchManager.soundFontPatch.patchIndex
+    }
+
+    private func isFavored(patch: Patch) -> Bool {
+        return favorites.isFavored(soundFontPatch: makeSoundFontPatch(for: patch))
+    }
+
+    private var showingSearchResults: Bool { searchBar.searchTerm != nil }
+
+    private func dismissSearchResults() {
+        os_log(.info, log: logger, "dismissSearchResults")
+        searchBar.text = nil
+        filtered.removeAll()
+        view.reloadData()
+    }
+
+    private func search(for searchTerm: String) {
+        filtered = patches.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+        view.reloadData()
+    }
+
+    private func hideSearchBar() {
+        if !showingSearchResults && view.contentOffset.y < searchBar.frame.size.height {
+            os_log(.info, log: logger, "hiding search bar")
+            let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
+            UIView.animate(withDuration: 0.4) { self.view.contentOffset = offset }
+        }
     }
 
     private func createFaveAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
-        let lowestNote = keyboardManager.lowestNote
+        let soundFontPatch = makeSoundFontPatch(for: patch)
+        let lowestNote = keyboard.lowestNote
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.favoritesManager.add(patch: patch, keyboardLowestNote: lowestNote)
+            self.favorites.add(soundFontPatch: soundFontPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, with: patch)
             completionHandler(true)
         }
@@ -107,8 +161,11 @@ final class PatchesTableViewDataSource: NSObject {
     }
 
     private func createUnfaveAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
+        let soundFontPatch = makeSoundFontPatch(for: patch)
+        guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
+        let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.favoritesManager.remove(patch: patch, bySwiping: true)
+            self.favorites.remove(index: index, bySwiping: true)
             self.update(cell: cell, with: patch)
             completionHandler(true)
         }
@@ -120,9 +177,10 @@ final class PatchesTableViewDataSource: NSObject {
     }
 
     private func createEditAction(at cell: PatchCell, with patch: Patch) -> UIContextualAction {
-        guard let favorite = FavoriteCollection.shared.getFavorite(patch: patch) else { fatalError() }
+        let soundFontPatch = makeSoundFontPatch(for: patch)
+        guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.favoritesManager.edit(favorite: favorite, sender: cell)
+            self.favorites.beginEdit(favorite: favorite, view: cell)
             completionHandler(true)
         }
 
@@ -132,48 +190,52 @@ final class PatchesTableViewDataSource: NSObject {
         return action
     }
 
-    func createLeadingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
-        let isFave = favoritesManager.isFavored(patch: patch)
-        let action = isFave ? createEditAction(at: cell, with: patch) : createFaveAction(at: cell, with: patch)
-
+    private func createLeadingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        let action = isFavored(patch: patch) ? createEditAction(at: cell, with: patch) :
+            createFaveAction(at: cell, with: patch)
         let actions = UISwipeActionsConfiguration(actions: [action])
         actions.performsFirstActionWithFullSwipe = true
         return actions
     }
 
-    func createTrailingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
-        let isFave = favoritesManager.isFavored(patch: patch)
-        let actions = UISwipeActionsConfiguration(actions: isFave ? [createUnfaveAction(at: cell, with: patch)] : [])
+    private func createTrailingSwipeActions(at cell: PatchCell, with patch: Patch) -> UISwipeActionsConfiguration? {
+        let actions = UISwipeActionsConfiguration(actions: isFavored(patch: patch) ?
+            [createUnfaveAction(at: cell, with: patch)] :
+            [])
         actions.performsFirstActionWithFullSwipe = false
         return actions
     }
 
-    private func update(cell: PatchCell, at indexPath: IndexPath) {
-        let patchIndex = patchIndexForIndexPath(indexPath)
-        let patch = patches[patchIndex]
-        update(cell: cell, with: patch)
+    private func getBy(indexPath: IndexPath) -> Patch {
+        showingSearchResults ? filtered[indexPath.row] : patches[patchIndex(of: indexPath)]
+    }
+
+    private func update(cell: PatchCell, at indexPath: IndexPath) -> PatchCell {
+        update(cell: cell, with: getBy(indexPath: indexPath))
     }
 }
 
 // MARK: - UITableViewDataSource Protocol
+
 extension PatchesTableViewDataSource: UITableViewDataSource {
-    
+
+    private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        indexPathForPatchIndex(patches.count - 1).section + 1
+        showingSearchResults ? 1 : sectionCount
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        min(patches.count - section * PatchesTableViewDataSource.sectionSize, PatchesTableViewDataSource.sectionSize)
+        showingSearchResults ? filtered.count : min(patches.count - section * Self.sectionSize, Self.sectionSize)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: PatchCell = tableView.dequeueReusableCell(for: indexPath)
-        update(cell: cell, at: indexPath)
-        return cell
+        update(cell: tableView.dequeueReusableCell(for: indexPath), at: indexPath)
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        [UITableView.indexSearch, "•"] +
+        showingSearchResults ? nil :
+            [UITableView.indexSearch, "•"] +
             stride(from: PatchesTableViewDataSource.sectionSize, to: patches.count - 1,
                    by: PatchesTableViewDataSource.sectionSize).map { "\($0)" }
     }
@@ -192,27 +254,24 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         section == 0 ? 0.0 : 18.0
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         "\(section * PatchesTableViewDataSource.sectionSize)"
     }
 }
 
 // MARK: - UITableViewDelegate Protocol
+
 extension PatchesTableViewDataSource: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
-            return createLeadingSwipeActions(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
-        }
-        return nil
+        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
+        return createLeadingSwipeActions(at: cell, with: getBy(indexPath: indexPath))
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell: PatchCell = tableView.cellForRow(at: indexPath) {
-            return createTrailingSwipeActions(at: cell, with: patches[patchIndexForIndexPath(indexPath)])
-        }
-        return nil
+        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
+        return createTrailingSwipeActions(at: cell, with: getBy(indexPath: indexPath))
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -220,15 +279,35 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        activePatchManager.changePatch(kind: .normal(patch: patches[patchIndexForIndexPath(indexPath)]))
+        activePatchManager.setActive(.normal(soundFontPatch: makeSoundFontPatch(for: getBy(indexPath: indexPath))))
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        
         header.textLabel?.textColor = UIColor.lightGray
         header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         header.backgroundView = UIView()
         header.backgroundView?.backgroundColor = UIColor(hex: "303030")
+    }
+}
+
+// MARK: - UISearchBarDelegate Protocol
+
+extension PatchesTableViewDataSource : UISearchBarDelegate {
+
+    /**
+     Notification that the content of the search field changed. Update the search results based on the new contents. If
+     the search field is empty, replace the search results with the patch listing.
+
+     - parameter searchBar: the UISearchBar where the event took place
+     - parameter textDidChange: the current contents of the text field
+     */
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if let searchTerm = searchBar.searchTerm {
+            search(for: searchTerm)
+        }
+        else {
+            dismissSearchResults()
+        }
     }
 }
