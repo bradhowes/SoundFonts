@@ -44,9 +44,11 @@ final class PatchesTableViewDataSource: NSObject {
 
     private func reloadView() {
         if let searchTerm = searchBar.searchTerm {
+            os_log(.info, log: log, "reloadView - searching for '%s'", searchTerm)
             search(for: searchTerm)
         }
         else {
+            os_log(.info, log: log, "reloadView - reloadData")
             view.reloadData()
         }
     }
@@ -159,11 +161,13 @@ final class PatchesTableViewDataSource: NSObject {
     }
 
     private func search(for searchTerm: String) {
+        os_log(.info, log: log, "search - '%s'", searchTerm)
         filtered = patches.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
+        os_log(.info, log: log, "found %d matches", filtered.count)
         view.reloadData()
     }
 
-    private func hideSearchBar() {
+    func hideSearchBar() {
         if !showingSearchResults && view.contentOffset.y < searchBar.frame.size.height {
             os_log(.info, log: log, "hiding search bar")
             let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
@@ -268,13 +272,19 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if index == 0 {
-            tableView.scrollRectToVisible(searchBar.frame, animated: true)
-            searchBar.becomeFirstResponder()
+
+            // Going to show the search bar. We first tell UITableView to show the 0 section which shows the first
+            // patch. We then have the UITableView reveal the search bar by updating the contentOffset in an animation.
+            // This is done in an async block on the main thread so that it happens *after* the movement to the 0
+            // section.
+            //
+            DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
+            self.searchBar.becomeFirstResponder()
         }
         else if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }
-        return index - 1
+        return max(0, index - 1)
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
