@@ -58,6 +58,10 @@ final class MainViewController: UIViewController {
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        activePatchManager.setActive(activePatchManager.active)
+    }
 }
 
 extension MainViewController {
@@ -99,7 +103,7 @@ extension MainViewController {
             postAlert(for: what)
         }
 
-        useSoundFontPatch(activePatchManager.active.soundFontPatch)
+        useActivePatchKind(activePatchManager.active)
     }
 
     private func postAlert(for what: Sampler.Failure) {
@@ -183,12 +187,12 @@ extension MainViewController: ControllerConfiguration {
         case let .active(old: _, new: new):
             if let favorite = new.favorite {
                 infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-                useFavorite(favorite)
             }
             else {
                 infoBar.setPatchInfo(name: new.soundFontPatch.patch.name, isFavored: false)
             }
-            useSoundFontPatch(new.soundFontPatch)
+
+            useActivePatchKind(new)
         }
     }
 
@@ -219,19 +223,12 @@ extension MainViewController: ControllerConfiguration {
         upperViewManager.slidePrevHorizontally()
     }
 
-    private func useSoundFontPatch(_ soundFontPatch: SoundFontPatch) {
+    private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            if case let .failure(what) = self.sampler.load(soundFontPatch: soundFontPatch) {
+            if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind) {
                 DispatchQueue.main.async { self.postAlert(for: what) }
             }
-        }
-    }
-
-    private func useFavorite(_ favorite: Favorite) {
-        DispatchQueue.global(qos: .background).async {
-            self.sampler.setGain(favorite.gain)
-            self.sampler.setPan(favorite.pan)
         }
     }
 }

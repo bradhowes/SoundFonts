@@ -36,10 +36,6 @@ class FontPatchCellBase: UITableViewCell {
         selectedBackgroundView = view
     }
 
-    func setActive(_ state: Bool, isFavorite: Bool) {
-        self.name?.textColor = fontColorWhen(isSelected: self.isSelected, isActive: state, isFavorite: isFavorite)
-    }
-
     internal func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {
         if isActive { return activedFontColor }
         if isSelected { return selectedFontColor }

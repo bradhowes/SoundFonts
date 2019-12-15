@@ -26,7 +26,7 @@ final class Router {
     var keyboard: Keyboard { keyboardController }
     var patchesViewManager: PatchesViewManager { soundFontsController }
     var favoritesViewManager: FavoritesViewManager { favoritesController }
-    var soundFontEditor: SoundFontEditor { soundFontsController }
+    var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
 
     /**
      Collect the known view controllers and track what we have.

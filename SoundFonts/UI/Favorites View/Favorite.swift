@@ -46,5 +46,5 @@ extension Favorite: Equatable {
 }
 
 extension Favorite: CustomStringConvertible {
-    var description: String { "[Favorite '\(name)' \(soundFontPatch)]" }
+    var description: String { "['\(name)' - \(soundFontPatch)]" }
 }

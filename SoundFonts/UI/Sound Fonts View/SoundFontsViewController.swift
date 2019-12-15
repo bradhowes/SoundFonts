@@ -21,7 +21,6 @@ final class SoundFontsViewController: UIViewController {
     private var soundFonts: SoundFonts!
     private var soundFontsTableViewDataSource: FontsTableViewDataSource!
     private var patchesTableViewDataSource: PatchesTableViewDataSource!
-    private var activePatchManager: ActivePatchManager!
     private var favorites: Favorites!
 
     private var swipeLeft = UISwipeGestureRecognizer()
@@ -61,19 +60,18 @@ final class SoundFontsViewController: UIViewController {
     }
 }
 
-// MARK: - ControllerConfiguration
+// MARK: - ControllerConfiguration Protocol
 
 extension SoundFontsViewController: ControllerConfiguration {
 
     func establishConnections(_ router: Router) {
         soundFonts = router.soundFonts
-        activePatchManager = router.activePatchManager
         favorites = router.favorites
 
         soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
                                                                  selectedSoundFontManager: router.selectedSoundFontManager,
                                                                  activePatchManager: router.activePatchManager,
-                                                                 soundFontEditor: self,
+                                                                 fontEditorActionGenerator: self,
                                                                  soundFonts: router.soundFonts)
         patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
                                                                 searchBar: searchBar,
@@ -83,6 +81,8 @@ extension SoundFontsViewController: ControllerConfiguration {
                                                                 keyboard: router.keyboard)
     }
 }
+
+// MARK: - PatchesViewManager Protocol
 
 extension SoundFontsViewController: PatchesViewManager {
 
@@ -107,11 +107,12 @@ extension SoundFontsViewController: PatchesViewManager {
     }
 }
 
-extension SoundFontsViewController: SoundFontEditor {
+// MARK: - FontEditorActionGenerator Protocol
+
+extension SoundFontsViewController: FontEditorActionGenerator {
 
     func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: nil) {
-            (contextAction: UIContextualAction, sourceView: UIView, completionHandler: (Bool) -> Void) in
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.performSegue(withIdentifier: "soundFontDetail", sender: cell)
             completionHandler(true)
         }
@@ -124,7 +125,7 @@ extension SoundFontsViewController: SoundFontEditor {
     func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath) -> UIContextualAction {
         let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
         let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
-        let action = UIContextualAction(style: .destructive, title: nil) { (_, _, completionHandler) in
+        let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
             let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
             let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
@@ -158,10 +159,10 @@ extension SoundFontsViewController: SoundFontEditor {
     }
 }
 
-// MARK: - SoundFontDetailControllerDelegate
+// MARK: - FontEditorDelegate Protocol
 
-extension SoundFontsViewController: SoundFontDetailControllerDelegate {
-    func dismissed(reason: SoundFontDetailControllerDismissedReason) {
+extension SoundFontsViewController: FontEditorDelegate {
+    func dismissed(reason: FontEditorDismissedReason) {
         switch reason {
         case let .done(index, newName):
             soundFonts.rename(index: index, name: newName)

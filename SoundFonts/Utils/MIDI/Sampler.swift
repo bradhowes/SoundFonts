@@ -9,11 +9,11 @@ import os
  This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
  */
 final class Sampler {
-    private lazy var logger = Logging.logger("Samp")
+    private lazy var log = Logging.logger("Samp")
 
     private var engine: AVAudioEngine?
     private var ausampler: AVAudioUnitSampler?
-    private var soundFontPatch: SoundFontPatch?
+    private var activePatchKind: ActivePatchKind?
 
     enum Failure: Error {
         case engineStarting(error: NSError)
@@ -24,31 +24,34 @@ final class Sampler {
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
      */
     func start() -> Result<Void, Failure> {
-        os_log(.info, log: logger, "start")
+        os_log(.info, log: log, "start")
 
         let engine = AVAudioEngine()
         self.engine = engine
         let sampler = AVAudioUnitSampler()
         self.ausampler = sampler
 
-        os_log(.debug, log: logger, "attaching sampler")
+        os_log(.debug, log: log, "attaching sampler")
         engine.attach(sampler)
-        os_log(.debug, log: logger, "connecting sampler")
+        os_log(.debug, log: log, "connecting sampler")
         engine.connect(sampler, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
                        format: sampler.outputFormat(forBus: 0))
 
         do {
-            os_log(.debug, log: logger, "starting engine")
+            os_log(.debug, log: log, "starting engine")
             try engine.start()
         } catch let error as NSError {
             return .failure(.engineStarting(error: error))
         }
 
-        if let soundFontPatch = self.soundFontPatch {
-            return load(soundFontPatch: soundFontPatch)
+        if let activePatchKind = self.activePatchKind {
+            self.activePatchKind = nil
+
+            os_log(.info, log: log, "done")
+            return load(activePatchKind: activePatchKind)
         }
 
-        os_log(.info, log: logger, "done")
+        os_log(.info, log: log, "done")
         return .success(())
     }
 
@@ -56,7 +59,7 @@ final class Sampler {
      Stop the existing audio engine. Releases the sampler and engine.
      */
     func stop() {
-        os_log(.info, log: logger, "stop")
+        os_log(.info, log: log, "stop")
         engine?.stop()
     }
 
@@ -65,30 +68,37 @@ final class Sampler {
     
      - parameter patch: the sound font and patch to use
      */
-    func load(soundFontPatch: SoundFontPatch) -> Result<Void, Failure> {
-        os_log(.info, log: logger, "load - %s", soundFontPatch.description)
-        self.soundFontPatch = soundFontPatch
+    func load(activePatchKind: ActivePatchKind) -> Result<Void, Failure> {
+        os_log(.info, log: log, "load - %s", activePatchKind.description)
+
+        guard self.activePatchKind?.soundFontPatch != activePatchKind.soundFontPatch else {
+            os_log(.info, log: log, "already loaded")
+            return .success(())
+        }
+
+        self.activePatchKind = activePatchKind
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
         guard let sampler = self.ausampler else { return .success(()) }
+
+        if let favorite = activePatchKind.favorite {
+            setGain(favorite.gain)
+            setPan(favorite.pan)
+        }
+
+        let soundFontPatch = activePatchKind.soundFontPatch
         do {
-            os_log(.info, log: logger, "begin loading")
+            os_log(.info, log: log, "begin loading")
             try sampler.loadSoundBankInstrument(at: soundFontPatch.soundFont.fileURL,
                                                 program: UInt8(soundFontPatch.patch.patch),
                                                 bankMSB: UInt8(soundFontPatch.patch.bankMSB),
                                                 bankLSB: UInt8(soundFontPatch.patch.bankLSB))
-            os_log(.info, log: logger, "end loading")
+            os_log(.info, log: log, "end loading")
             return .success(())
         } catch let error as NSError {
-            os_log(.error, log: logger, "failed loading - %s", error.localizedDescription)
+            os_log(.error, log: log, "failed loading - %s", error.localizedDescription)
             return .failure(.patchLoading(error: error))
         }
-    }
-
-    func load(soundFontPatch: SoundFontPatch, gain: Float, pan: Float) -> Result<Void, Failure> {
-        setGain(gain)
-        setPan(pan)
-        return load(soundFontPatch: soundFontPatch)
     }
 
     /**

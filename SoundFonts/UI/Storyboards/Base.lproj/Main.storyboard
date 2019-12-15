@@ -500,7 +500,7 @@
         <!--SoundFont Editor-->
         <scene sceneID="Nc1-o8-v27">
             <objects>
-                <viewController id="J1E-VV-vXb" userLabel="SoundFont Editor" customClass="FontDetailController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="J1E-VV-vXb" userLabel="SoundFont Editor" customClass="FontEditor" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVH-2e-a8c">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="380"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
