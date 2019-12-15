@@ -9,7 +9,7 @@ import os
 struct FavoriteCollection: Codable {
 
     private var favorites: [Favorite]
-    private var reverseLookup: [SoundFontPatch:Favorite]
+    private var reverseLookup: [SoundFontPatch:Int]
 
     /// Number of favorites defined
     var count: Int { favorites.count }
@@ -49,7 +49,7 @@ struct FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns the favorite found or nil if no match
      */
-    func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { reverseLookup[soundFontPatch] }
+    func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { reverseLookup[soundFontPatch].map { favorites[$0] } }
 
     /**
      Add a favorite to the end of the collection.
@@ -57,7 +57,7 @@ struct FavoriteCollection: Codable {
      - parameter favorite: the new favorite to add
      */
     mutating func add(favorite: Favorite) {
-        reverseLookup[favorite.soundFontPatch] = favorite
+        reverseLookup[favorite.soundFontPatch] = favorites.count
         favorites.append(favorite)
     }
 
@@ -73,7 +73,9 @@ struct FavoriteCollection: Codable {
 
     mutating func move(from: Int, to: Int) {
         let favorite = favorites.remove(at: from)
-        favorites.insert(favorite, at: to)
+        guard let pos = reverseLookup.first(where: { (key, value) in value == from }) else { fatalError() }
+        reverseLookup.updateValue(to, forKey: pos.key)
+        favorites[to] = favorite
     }
 
     mutating func remove(index: Int) -> Favorite {

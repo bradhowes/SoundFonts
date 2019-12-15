@@ -38,6 +38,10 @@ final class SoundFontsViewController: UIViewController {
         view.addGestureRecognizer(swipeRight)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        patchesTableViewDataSource.hideSearchBar()
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             let vc = nc.topViewController as? FontEditor,

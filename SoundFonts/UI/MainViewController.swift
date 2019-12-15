@@ -60,7 +60,6 @@ final class MainViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        activePatchManager.setActive(activePatchManager.active)
     }
 }
 
@@ -166,7 +165,8 @@ extension MainViewController: ControllerConfiguration {
 
         keyboard.delegate = self
 
-        activePatchManager.subscribe(self) { self.activePatchChange($0) }
+        activePatchManager.subscribe(self, closure: activePatchChange)
+        router.favorites.subscribe(self, closure: favoritesChange)
 
         infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
 
@@ -183,16 +183,14 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        switch event {
-        case let .active(old: _, new: new):
-            if let favorite = new.favorite {
-                infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-            }
-            else {
-                infoBar.setPatchInfo(name: new.soundFontPatch.patch.name, isFavored: false)
-            }
-
+        if case let .active(old: _, new: new) = event {
             useActivePatchKind(new)
+        }
+    }
+
+    private func favoritesChange(_ event: FavoritesEvent) {
+        if case let .changed(index: _, favorite: favorite) = event, favorite == activePatchManager.favorite {
+            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
         }
     }
 
@@ -224,6 +222,14 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
+
+        if let favorite = activePatchKind.favorite {
+            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+        }
+        else {
+            infoBar.setPatchInfo(name: activePatchKind.soundFontPatch.patch.name, isFavored: false)
+        }
+
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
             if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind) {

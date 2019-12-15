@@ -77,7 +77,7 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .active(old: old, new: new):
             if let favorite = old.favorite, favorite != new.favorite {
                 os_log(.info, log: log, "updating previous favorite cell")
-                updateCell(with: favorite)
+                updateCell(with: favorites.getBy(soundFontPatch: favorite.soundFontPatch)!)
             }
             if let favorite = new.favorite {
                 os_log(.info, log: log, "updating new favorite cell")
