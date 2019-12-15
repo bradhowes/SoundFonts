@@ -8,21 +8,21 @@ import os
  in the app.
  */
 final class FontsTableViewDataSource: NSObject {
-    private lazy var logger = Logging.logger("FTVDS")
+    private lazy var log = Logging.logger("FontDS")
 
     private let view: UITableView
     private let selectedSoundFontManager: SelectedSoundFontManager
     private let activePatchManager: ActivePatchManager
-    private let soundFontEditor: SoundFontEditor
+    private let fontEditorActionGenerator: FontEditorActionGenerator
     private let soundFonts: SoundFonts
 
     init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePatchManager: ActivePatchManager,
-         soundFontEditor: SoundFontEditor, soundFonts: SoundFonts) {
+         fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts) {
 
         self.view = view
         self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
-        self.soundFontEditor = soundFontEditor
+        self.fontEditorActionGenerator = fontEditorActionGenerator
         self.soundFonts = soundFonts
 
         super.init()
@@ -31,7 +31,7 @@ final class FontsTableViewDataSource: NSObject {
         view.dataSource = self
         view.delegate = self
 
-        soundFonts.subscribe(self, closure: soundFontsChanged)
+        soundFonts.subscribe(self, closure: soundFontsChange)
         selectedSoundFontManager.subscribe(self, closure: selectedSoundFontChange)
         activePatchManager.subscribe(self, closure: activePatchChange)
     }
@@ -39,41 +39,57 @@ final class FontsTableViewDataSource: NSObject {
 
 extension FontsTableViewDataSource {
 
-    func activePatchChange(_ event: ActivePatchEvent) {
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new):
-            if let row = soundFonts.index(of: old.soundFontPatch.soundFont.uuid) {
+            view.selectRow(at: nil, animated: false, scrollPosition: .none)
+            let oldRow = soundFonts.index(of: old.soundFontPatch.soundFont.uuid)
+            let newRow = soundFonts.index(of: new.soundFontPatch.soundFont.uuid)
+            if let row = oldRow, oldRow != newRow {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
+                    os_log(.info, log: log, "updating old row %d", row)
                     update(cell: cell, with: old.soundFontPatch.soundFont)
                 }
             }
 
-            if let row = soundFonts.index(of: new.soundFontPatch.soundFont.uuid) {
-                if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
+            if let row = newRow {
+                let indexPath = IndexPath(row: row, section: 0)
+                if let cell: FontCell = view.cellForRow(at: indexPath) {
+                    os_log(.info, log: log, "updating new row %d", row)
                     update(cell: cell, with: new.soundFontPatch.soundFont)
+
+                    os_log(.info, log: log, "selecting row %d", row)
+                    view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                    os_log(.info, log: log, "showing row %d", row)
+                    view.scrollToRow(at: indexPath, at: .none, animated: false)
                 }
             }
         }
     }
 
-    func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
+    private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
+        os_log(.info, log: log, "selectedSoundFontChange")
         switch event {
         case let .changed(old: old, new: new):
             if let row = soundFonts.index(of: old.uuid) {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
+                    os_log(.info, log: log, "updating old row %d", row)
                     update(cell: cell, with: old)
                 }
             }
 
             if let row = soundFonts.index(of: new.uuid) {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
+                    os_log(.info, log: log, "updating new row %d", row)
                     update(cell: cell, with: new)
                 }
             }
         }
     }
 
-    private func soundFontsChanged(_ event: SoundFontsEvent) {
+    private func soundFontsChange(_ event: SoundFontsEvent) {
+        os_log(.info, log: log, "soundFontsChange")
         switch event {
         case let .added(index, _):
             view.beginUpdates()
@@ -106,6 +122,7 @@ extension FontsTableViewDataSource {
 }
 
 // MARK: - UITableViewDataSource Protocol
+
 extension FontsTableViewDataSource: UITableViewDataSource {
     
     /**
@@ -133,11 +150,12 @@ extension FontsTableViewDataSource: UITableViewDataSource {
      - returns: FontCell instance to display
      */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return update(cell: tableView.dequeueReusableCell(for: indexPath), with: soundFonts.getBy(index: indexPath.row))
+        update(cell: tableView.dequeueReusableCell(for: indexPath), with: soundFonts.getBy(index: indexPath.row))
     }
 }
 
 // MARK: - UITableViewDelegate Protocol
+
 extension FontsTableViewDataSource: UITableViewDelegate {
 
     /**
@@ -151,30 +169,25 @@ extension FontsTableViewDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
+        .none
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell: FontCell = tableView.cellForRow(at: indexPath) {
-            let soundFont = soundFonts.getBy(index: indexPath.row)
-            let action = soundFontEditor.createEditSwipeAction(at: cell, with: soundFont)
-            let actions = UISwipeActionsConfiguration(actions: [action])
-            actions.performsFirstActionWithFullSwipe = true
-            return actions
-        }
-        return nil
+        guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
+        let soundFont = soundFonts.getBy(index: indexPath.row)
+        let action = fontEditorActionGenerator.createEditSwipeAction(at: cell, with: soundFont)
+        let actions = UISwipeActionsConfiguration(actions: [action])
+        actions.performsFirstActionWithFullSwipe = true
+        return actions
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let cell: FontCell = tableView.cellForRow(at: indexPath) {
-            let soundFont = soundFonts.getBy(index: indexPath.row)
-            if soundFont.removable  {
-                let action = soundFontEditor.createDeleteSwipeAction(at: cell, with: soundFont, indexPath: indexPath)
-                let actions = UISwipeActionsConfiguration(actions: [action])
-                actions.performsFirstActionWithFullSwipe = false
-                return actions
-            }
-        }
-        return nil
+        guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
+        let soundFont = soundFonts.getBy(index: indexPath.row)
+        guard soundFont.removable else { return nil }
+        let action = fontEditorActionGenerator.createDeleteSwipeAction(at: cell, with: soundFont, indexPath: indexPath)
+        let actions = UISwipeActionsConfiguration(actions: [action])
+        actions.performsFirstActionWithFullSwipe = false
+        return actions
     }
 }

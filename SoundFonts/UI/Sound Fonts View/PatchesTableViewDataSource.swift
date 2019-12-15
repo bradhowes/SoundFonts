@@ -11,24 +11,24 @@ final class PatchesTableViewDataSource: NSObject {
     /// Number of sections we partition patches into
     static private let sectionSize = 20
 
-    private lazy var logger = Logging.logger("PTVDS")
+    private lazy var log = Logging.logger("PatDS")
 
     private let view: UITableView
     private let searchBar: UISearchBar
-    private let selectedSoundFontManager: SelectedSoundFontManager
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
     private let keyboard: Keyboard
 
-    private var patches: [Patch] { selectedSoundFontManager.selected.patches }
+    private var showingSoundFont: SoundFont
+    private var patches: [Patch] { showingSoundFont.patches }
     private var filtered = [Patch]()
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard) {
         self.view = view
         self.searchBar = searchBar
-        self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
+        self.showingSoundFont = activePatchManager.soundFont
         self.favorites = favorites
         self.keyboard = keyboard
         super.init()
@@ -42,35 +42,61 @@ final class PatchesTableViewDataSource: NSObject {
         activePatchManager.subscribe(self, closure: activePatchChange)
     }
 
+    private func reloadView() {
+        if let searchTerm = searchBar.searchTerm {
+            search(for: searchTerm)
+        }
+        else {
+            view.reloadData()
+        }
+    }
+
     private func activePatchChange(_ event: ActivePatchEvent) {
+        os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new):
-            if old.soundFontPatch.soundFont == selectedSoundFontManager.selected {
-                if let indexPath = indexPath(of: old.soundFontPatch.patch) {
-                    if let cell: PatchCell = view.cellForRow(at: indexPath) {
-                        update(cell: cell, with: old.soundFontPatch.patch)
+
+            if showingSoundFont != new.soundFontPatch.soundFont {
+                os_log(.info, log: log, "new soundFont '%s'", new.soundFontPatch.soundFont.description)
+                showingSoundFont = new.soundFontPatch.soundFont
+                reloadView()
+            }
+            else {
+                os_log(.info, log: log, "same font")
+                if old.soundFontPatch.soundFont == showingSoundFont {
+                    if let indexPath = indexPath(of: old.soundFontPatch.patch) {
+                        if let cell: PatchCell = view.cellForRow(at: indexPath) {
+                            os_log(.info, log: log, "updating old row %d", indexPath.row)
+                            update(cell: cell, with: old.soundFontPatch.patch)
+                        }
                     }
                 }
             }
 
+            hideSearchBar()
+
             if let indexPath = indexPath(of: new.soundFontPatch.patch) {
                 if let cell: PatchCell = view.cellForRow(at: indexPath) {
+                    os_log(.info, log: log, "updating new row %d", indexPath.row)
                     update(cell: cell, with: new.soundFontPatch.patch)
                 }
-            }
 
-            hideSearchBar()
+                os_log(.info, log: log, "selecting row '%s'", new.soundFontPatch.description)
+                view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                os_log(.info, log: log, "scrolling to row")
+                view.scrollToRow(at: indexPath, at: .none, animated: false)
+            }
         }
     }
 
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
+        os_log(.info, log: log, "selectedSoundFontChange")
         switch event {
-        case .changed:
-            if let searchTerm = searchBar.searchTerm {
-                search(for: searchTerm)
-            }
-            else {
-                view.reloadData()
+        case let .changed(old: _, new: new):
+            if showingSoundFont != new {
+                os_log(.info, log: log, "new soundFont '%s'", new.description)
+                showingSoundFont = new
+                reloadView()
             }
         }
     }
@@ -99,7 +125,7 @@ final class PatchesTableViewDataSource: NSObject {
     }
     
     private func makeSoundFontPatch(for patch: Patch) -> SoundFontPatch {
-        SoundFontPatch(soundFont: selectedSoundFontManager.selected, patchIndex: patch.soundFontIndex)
+        SoundFontPatch(soundFont: showingSoundFont, patchIndex: patch.soundFontIndex)
     }
 
     /**
@@ -115,7 +141,7 @@ final class PatchesTableViewDataSource: NSObject {
     }
 
     private func isActive(patch: Patch) -> Bool {
-        selectedSoundFontManager.selected == activePatchManager.active.soundFontPatch.soundFont &&
+        showingSoundFont == activePatchManager.active.soundFontPatch.soundFont &&
             patch.soundFontIndex == activePatchManager.soundFontPatch.patchIndex
     }
 
@@ -126,7 +152,7 @@ final class PatchesTableViewDataSource: NSObject {
     private var showingSearchResults: Bool { searchBar.searchTerm != nil }
 
     private func dismissSearchResults() {
-        os_log(.info, log: logger, "dismissSearchResults")
+        os_log(.info, log: log, "dismissSearchResults")
         searchBar.text = nil
         filtered.removeAll()
         view.reloadData()
@@ -139,7 +165,7 @@ final class PatchesTableViewDataSource: NSObject {
 
     private func hideSearchBar() {
         if !showingSearchResults && view.contentOffset.y < searchBar.frame.size.height {
-            os_log(.info, log: logger, "hiding search bar")
+            os_log(.info, log: log, "hiding search bar")
             let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
             UIView.animate(withDuration: 0.4) { self.view.contentOffset = offset }
         }
@@ -279,7 +305,14 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        activePatchManager.setActive(.normal(soundFontPatch: makeSoundFontPatch(for: getBy(indexPath: indexPath))))
+        let patch = getBy(indexPath: indexPath)
+        let soundFontPatch = makeSoundFontPatch(for: patch)
+        if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
+            activePatchManager.setActive(.favorite(favorite: favorite))
+        }
+        else {
+            activePatchManager.setActive(.normal(soundFontPatch: soundFontPatch))
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {

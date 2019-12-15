@@ -10,7 +10,9 @@ final class FontEditor : UIViewController {
     var soundFont: SoundFont!
     var favoriteCount: Int = 0
     var position: IndexPath = IndexPath()
-    var delegate: SoundFontDetailControllerDelegate? = nil
+    var delegate: FontEditorDelegate? = nil
+
+    override var preferredStatusBarStyle : UIStatusBarStyle { .lightContent }
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -22,7 +24,8 @@ final class FontEditor : UIViewController {
     /**
      Set the SoundFont and its index in preparation for editing in the view.
     
-     - parameter favorite: the Favorite instance to edit
+     - parameter soundFont: the SoundFont instance to edit
+     - parameter favoriteCount: number of favorites associated with this soundFont
      - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
        conveyed to the delegate in the `dismissed` delegate call.
      */
@@ -30,10 +33,6 @@ final class FontEditor : UIViewController {
         self.soundFont = soundFont
         self.favoriteCount = favoriteCount
         self.position = position
-    }
-
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
     }
 
     override func viewWillAppear(_ animated: Bool) {

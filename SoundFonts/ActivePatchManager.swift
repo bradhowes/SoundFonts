@@ -7,7 +7,7 @@ extension SettingKeys {
     static let lastActivePatch = SettingKey<Data>("lastActivePatch", defaultValue: Data())
 }
 
-enum ActivePatchKind: CustomStringConvertible, Codable {
+enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
     case normal(soundFontPatch: SoundFontPatch)
 
@@ -30,7 +30,7 @@ enum ActivePatchKind: CustomStringConvertible, Codable {
     var description: String {
         switch self {
         case let .normal(soundFontPatch: soundFontPatch): return ".normal(\(soundFontPatch)"
-        case let .favorite(favorite: favorite): return ".favorite(\(favorite.soundFontPatch))"
+        case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
         }
     }
 
@@ -73,7 +73,7 @@ enum ActivePatchEvent {
  Maintains the active SoundFont patch being used for sound generation.
  */
 final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
-    private let log = Logging.logger("ActPa")
+    private let log = Logging.logger("ActPatMan")
 
     private(set) var active: ActivePatchKind
 
@@ -90,6 +90,11 @@ final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     func setActive(_ patch: ActivePatchKind) {
         os_log(.info, log: log, "setActive: %s", patch.description)
+        guard active != patch else {
+            os_log(.info, log: log, "already active")
+            return
+        }
+
         let prev = active
         active = patch
         DispatchQueue.global(qos: .background).async { self.save() }

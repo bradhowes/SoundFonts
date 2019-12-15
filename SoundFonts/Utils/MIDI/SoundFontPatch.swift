@@ -2,10 +2,12 @@
 
 import Foundation
 
-struct SoundFontPatch: CustomStringConvertible, Codable, Hashable {
+struct SoundFontPatch: Codable, Hashable {
     let soundFont: SoundFont
     let patchIndex: Int
-
-    var description: String { "[SoundFontPatch '\(soundFont.displayName)' - '\(patchIndex)'" }
     var patch: Patch { soundFont.patches[patchIndex] }
+}
+
+extension SoundFontPatch: CustomStringConvertible {
+    var description: String { "['\(soundFont.displayName)' - '\(patch.name)']" }
 }

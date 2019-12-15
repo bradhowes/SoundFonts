@@ -5,7 +5,7 @@ import UIKit
 /**
  Reason why the SoundFontDetailController view was dismissed by the user.
  */
-enum SoundFontDetailControllerDismissedReason {
+enum FontEditorDismissedReason {
     case cancel
     case done(index: Int, name: String)
     case delete(index: Int, soundFont: SoundFont)
@@ -14,12 +14,12 @@ enum SoundFontDetailControllerDismissedReason {
 /**
  Protocol for the `SoundFontDetailController` delegate instance.
  */
-protocol SoundFontDetailControllerDelegate : NSObjectProtocol {
+protocol FontEditorDelegate : NSObjectProtocol {
     /**
-     Notification when the SoundFontDetailController is dismissed and editing of a particular SoundFont instance
+     Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
      is over.
     
      - parameter reason: the reason for the dismisal
      */
-    func dismissed(reason: SoundFontDetailControllerDismissedReason)
+    func dismissed(reason: FontEditorDismissedReason)
 }
