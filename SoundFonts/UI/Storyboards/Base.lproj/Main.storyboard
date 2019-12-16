@@ -542,6 +542,12 @@
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="location" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNp-fu-g5X" userLabel="location">
+                                <rect key="frame" x="20" y="217.5" width="48" height="16"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -553,12 +559,15 @@
                             <constraint firstItem="eMC-LO-nex" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="J3l-bA-zai"/>
                             <constraint firstItem="tsT-zj-S9L" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="LaA-Br-5c2"/>
                             <constraint firstItem="s2C-3z-yXQ" firstAttribute="top" secondItem="gLC-lN-Cot" secondAttribute="top" constant="20" id="Tfw-rQ-wHP"/>
+                            <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="vNp-fu-g5X" secondAttribute="trailing" constant="20" id="Xax-s8-ocI"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zbT-I1-Hu4" secondAttribute="trailing" constant="20" id="YsI-lH-1ND"/>
                             <constraint firstItem="s2C-3z-yXQ" firstAttribute="leading" secondItem="eMC-LO-nex" secondAttribute="trailing" constant="8" id="adD-8t-Ut6"/>
                             <constraint firstItem="7Py-Ud-xmF" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="chB-dW-DsL"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" secondItem="s2C-3z-yXQ" secondAttribute="trailing" constant="20" id="fsx-W5-khb"/>
+                            <constraint firstItem="vNp-fu-g5X" firstAttribute="top" secondItem="tsT-zj-S9L" secondAttribute="bottom" constant="16" id="imf-Df-NDo"/>
                             <constraint firstItem="zbT-I1-Hu4" firstAttribute="top" secondItem="s2C-3z-yXQ" secondAttribute="bottom" constant="20" id="sEn-8i-KpD"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7Py-Ud-xmF" secondAttribute="trailing" constant="20" id="viA-kL-04U"/>
+                            <constraint firstItem="vNp-fu-g5X" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="zSB-cz-vmM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gLC-lN-Cot"/>
                     </view>
@@ -586,6 +595,7 @@
                         <outlet property="cancelButton" destination="jZb-mq-MmC" id="n0o-4s-phH"/>
                         <outlet property="doneButton" destination="PMy-9w-Kgw" id="IFj-1K-Ctn"/>
                         <outlet property="favoriteCountLabel" destination="tsT-zj-S9L" id="Qjb-GB-BYK"/>
+                        <outlet property="location" destination="vNp-fu-g5X" id="CdZ-vl-z98"/>
                         <outlet property="name" destination="s2C-3z-yXQ" id="WMy-3k-lgn"/>
                         <outlet property="originalNameLabel" destination="zbT-I1-Hu4" id="BRb-CC-d8K"/>
                         <outlet property="patchCountLabel" destination="7Py-Ud-xmF" id="flQ-S7-B9z"/>

@@ -2,6 +2,10 @@
 
 import Foundation
 
+enum SoundFontKindError: Error {
+    case invalidKind
+}
+
 enum SoundFontKind: Codable, Hashable {
 
     case builtin(resource: URL)
@@ -13,9 +17,9 @@ enum SoundFontKind: Codable, Hashable {
     }
 
     init(from decoder: Decoder) throws {
-        var container = try! decoder.unkeyedContainer()
-        let kind = InternalKey(rawValue: try! container.decode(Int.self))!
-        let value = try! container.decode(String.self)
+        var container = try decoder.unkeyedContainer()
+        let kind = InternalKey(rawValue: try container.decode(Int.self))
+        let value = try container.decode(String.self)
         switch kind {
         case .builtin:
             let url = URL(fileURLWithPath: value)
@@ -26,6 +30,8 @@ enum SoundFontKind: Codable, Hashable {
             self = .builtin(resource: URL(fileURLWithPath: path))
         case .installed:
             self = .installed(fileName: value)
+        default:
+            throw SoundFontKindError.invalidKind
         }
     }
 
@@ -33,11 +39,11 @@ enum SoundFontKind: Codable, Hashable {
         var container = encoder.unkeyedContainer()
         switch self {
         case .builtin(let resource):
-            try! container.encode(InternalKey.builtin.rawValue)
-            try! container.encode(resource.lastPathComponent)
+            try container.encode(InternalKey.builtin.rawValue)
+            try container.encode(resource.lastPathComponent)
         case .installed(let fileName):
-            try! container.encode(InternalKey.installed.rawValue)
-            try! container.encode(fileName)
+            try container.encode(InternalKey.installed.rawValue)
+            try container.encode(fileName)
         }
     }
 

@@ -6,10 +6,10 @@ import os
 /**
  Collection of Favorite instances created by the user.
  */
-struct FavoriteCollection: Codable {
+final class FavoriteCollection: Codable {
 
     private var favorites: [Favorite]
-    private var reverseLookup: [SoundFontPatch:Int]
+    private var reverseLookup: [SoundFontPatch:Favorite]
 
     /// Number of favorites defined
     var count: Int { favorites.count }
@@ -49,15 +49,15 @@ struct FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns the favorite found or nil if no match
      */
-    func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { reverseLookup[soundFontPatch].map { favorites[$0] } }
+    func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { reverseLookup[soundFontPatch] }
 
     /**
      Add a favorite to the end of the collection.
 
      - parameter favorite: the new favorite to add
      */
-    mutating func add(favorite: Favorite) {
-        reverseLookup[favorite.soundFontPatch] = favorites.count
+    func add(favorite: Favorite) {
+        reverseLookup[favorite.soundFontPatch] = favorite
         favorites.append(favorite)
     }
 
@@ -67,24 +67,23 @@ struct FavoriteCollection: Codable {
      - parameter index: the location to replace
      - parameter favorite: the new value to store
      */
-    mutating func replace(index: Int, with favorite: Favorite) {
+    func replace(index: Int, with favorite: Favorite) {
+        reverseLookup.removeValue(forKey: favorites[index].soundFontPatch)
         favorites[index] = favorite
+        reverseLookup[favorite.soundFontPatch] = favorite
     }
 
-    mutating func move(from: Int, to: Int) {
-        let favorite = favorites.remove(at: from)
-        guard let pos = reverseLookup.first(where: { (key, value) in value == from }) else { fatalError() }
-        reverseLookup.updateValue(to, forKey: pos.key)
-        favorites[to] = favorite
+    func move(from: Int, to: Int) {
+        favorites.insert(favorites.remove(at: from), at: to)
     }
 
-    mutating func remove(index: Int) -> Favorite {
+    func remove(index: Int) -> Favorite {
         let favorite = favorites.remove(at: index)
         reverseLookup.removeValue(forKey: favorite.soundFontPatch)
         return favorite
     }
 
-    mutating func removeAll(associatedWith soundFont: SoundFont) {
+    func removeAll(associatedWith soundFont: SoundFont) {
         findAll(associatedWith: soundFont).forEach { self.remove(favorite: $0) }
     }
 
@@ -95,13 +94,13 @@ struct FavoriteCollection: Codable {
 
 extension FavoriteCollection {
 
-    mutating private func remove(favorite: Favorite) {
+    private func remove(favorite: Favorite) {
         guard let index = favorites.firstIndex(of: favorite) else { return }
         favorites.remove(at: index)
         reverseLookup.removeValue(forKey: favorite.soundFontPatch)
     }
 
     private func findAll(associatedWith soundFont: SoundFont) -> [Favorite] {
-        favorites.filter { $0.soundFontPatch.soundFont.uuid == soundFont.uuid }
+        favorites.filter { $0.soundFontPatch.soundFont.key == soundFont.key }
     }
 }

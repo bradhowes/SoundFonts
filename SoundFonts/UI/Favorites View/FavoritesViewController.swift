@@ -75,10 +75,11 @@ extension FavoritesViewController: ControllerConfiguration {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new):
-            if let favorite = old.favorite, favorite != new.favorite {
+            if let favorite = favorites.getBy(soundFontPatch: old.soundFontPatch), favorite != new.favorite {
                 os_log(.info, log: log, "updating previous favorite cell")
-                updateCell(with: favorites.getBy(soundFontPatch: favorite.soundFontPatch)!)
+                updateCell(with: favorite)
             }
+
             if let favorite = new.favorite {
                 os_log(.info, log: log, "updating new favorite cell")
                 updateCell(with: favorite)
@@ -93,15 +94,21 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
             break
+
         case let .selected(index: index, favorite: favorite):
             os_log(.info, log: log, "selected %d", index)
             activePatchManager.setActive(.favorite(favorite: favorite))
+
         case let .beginEdit(index: index, favorite: favorite, view: view):
             os_log(.info, log: log, "begin editing %d", index)
             edit(favorite: favorite, sender: view)
+
         case let .changed(index: index, favorite: favorite):
             os_log(.info, log: log, "changed %d", index)
-            update(cell: favoritesView.dequeueReusableCell(for: IndexPath(item: index, section: 0)), with: favorite)
+            if let favorite = favorites.getBy(soundFontPatch: favorite.soundFontPatch) {
+                updateCell(with: favorite)
+            }
+
         case let .removed(index: index, favorite: _, bySwiping: _):
             os_log(.info, log: log, "removed %d", index)
             favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
@@ -139,7 +146,7 @@ extension FavoritesViewController {
         let pos = gr.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
-        let cell = favoritesView.cellForItem(at: indexPath)!
+        guard let cell = favoritesView.cellForItem(at: indexPath) else { fatalError() }
         edit(favorite: favorite, sender: cell)
     }
 
@@ -248,7 +255,7 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontPatch == activePatchManager.soundFontPatch)
+        cell.update(favoriteName: favorite.name, isActive: favorite == activePatchManager.favorite)
         return cell
     }
 

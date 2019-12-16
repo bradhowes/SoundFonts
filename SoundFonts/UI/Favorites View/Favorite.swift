@@ -7,7 +7,9 @@ import Foundation
  */
 struct Favorite: Codable {
 
-    let key: UUID
+    typealias Key = UUID
+
+    let key: Key
 
     /// The patch to load
     let soundFontPatch: SoundFontPatch
@@ -32,10 +34,11 @@ struct Favorite: Codable {
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
     init(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note) {
-        self.key = UUID()
+        self.key = Key()
         self.name = soundFontPatch.patch.name
         self.keyboardLowestNote = keyboardLowestNote
         self.soundFontPatch = soundFontPatch
+        self.keyboardLowestNote = keyboardLowestNote
         self.gain = 0.0
         self.pan = 0.0
     }

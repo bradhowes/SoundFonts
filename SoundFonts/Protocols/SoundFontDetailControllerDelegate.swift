@@ -7,7 +7,7 @@ import UIKit
  */
 enum FontEditorDismissedReason {
     case cancel
-    case done(index: Int, name: String)
+    case done(index: Int, soundFont: SoundFont)
     case delete(index: Int, soundFont: SoundFont)
 }
 

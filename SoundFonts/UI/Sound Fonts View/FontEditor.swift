@@ -20,6 +20,7 @@ final class FontEditor : UIViewController {
     @IBOutlet weak var originalNameLabel: UILabel!
     @IBOutlet weak var patchCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
+    @IBOutlet weak var location: UILabel!
 
     /**
      Set the SoundFont and its index in preparation for editing in the view.
@@ -42,6 +43,7 @@ final class FontEditor : UIViewController {
         originalNameLabel.text = soundFont.originalDisplayName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
+        location.text = soundFont.fileURL.path
         super.viewWillAppear(animated)
     }
     
@@ -52,7 +54,11 @@ final class FontEditor : UIViewController {
      */
     @IBAction private func donePressed(_ sender: UIBarButtonItem) {
         let newName = self.name.text ?? ""
-        delegate?.dismissed(reason: .done(index: position.row, name: newName))
+        if !newName.isEmpty {
+            soundFont.displayName = newName
+        }
+
+        delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
     }
 
     /**

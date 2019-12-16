@@ -103,7 +103,6 @@ extension FavoritesManager {
      */
     private func save() {
         do {
-
             let data = try PropertyListEncoder().encode(collection)
             let log = self.log
 

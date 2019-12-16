@@ -17,8 +17,10 @@ protocol SoundFonts {
     func getBy(index: Int) -> SoundFont
 
     func add(url: URL) -> (Int, SoundFont)?
-    func remove(index: Int) -> (Int, SoundFont)
-    func rename(index: Int, name: String) -> (Int, Int, SoundFont)
+
+    func remove(index: Int)
+
+    func rename(index: Int, name: String)
 
     @discardableResult
     func subscribe<O:AnyObject>(_ subscriber: O, closure: @escaping (SoundFontsEvent)->Void) -> SubscriberToken

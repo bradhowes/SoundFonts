@@ -195,6 +195,9 @@ final class PatchesTableViewDataSource: NSObject {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            if favorite == self.activePatchManager.favorite {
+                self.activePatchManager.setActive(.normal(soundFontPatch: favorite.soundFontPatch))
+            }
             self.favorites.remove(index: index, bySwiping: true)
             self.update(cell: cell, with: patch)
             completionHandler(true)

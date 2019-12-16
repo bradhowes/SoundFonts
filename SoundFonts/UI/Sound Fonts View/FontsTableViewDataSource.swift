@@ -44,8 +44,8 @@ extension FontsTableViewDataSource {
         switch event {
         case let .active(old: old, new: new):
             view.selectRow(at: nil, animated: false, scrollPosition: .none)
-            let oldRow = soundFonts.index(of: old.soundFontPatch.soundFont.uuid)
-            let newRow = soundFonts.index(of: new.soundFontPatch.soundFont.uuid)
+            let oldRow = soundFonts.index(of: old.soundFontPatch.soundFont.key)
+            let newRow = soundFonts.index(of: new.soundFontPatch.soundFont.key)
             if let row = oldRow, oldRow != newRow {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
                     os_log(.info, log: log, "updating old row %d", row)
@@ -72,14 +72,14 @@ extension FontsTableViewDataSource {
         os_log(.info, log: log, "selectedSoundFontChange")
         switch event {
         case let .changed(old: old, new: new):
-            if let row = soundFonts.index(of: old.uuid) {
+            if let row = soundFonts.index(of: old.key) {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
                     os_log(.info, log: log, "updating old row %d", row)
                     update(cell: cell, with: old)
                 }
             }
 
-            if let row = soundFonts.index(of: new.uuid) {
+            if let row = soundFonts.index(of: new.key) {
                 if let cell: FontCell = view.cellForRow(at: IndexPath(row: row, section: 0)) {
                     os_log(.info, log: log, "updating new row %d", row)
                     update(cell: cell, with: new)
@@ -98,10 +98,12 @@ extension FontsTableViewDataSource {
             break
 
         case let .moved(old, new, _):
+            let oldPath = IndexPath(row: old, section: 0)
+            let newPath = IndexPath(row: new, section: 0)
             view.beginUpdates()
-            view.moveRow(at: IndexPath(row: old, section: 0), to: IndexPath(row: new, section: 0))
+            view.moveRow(at: oldPath, to: newPath)
             view.endUpdates()
-            view.reloadRows(at: [IndexPath(row: old, section: 0), IndexPath(row: new, section: 0)], with: .automatic)
+            view.reloadRows(at: [oldPath, newPath], with: .automatic)
             break
 
         case let .removed(old, _):
