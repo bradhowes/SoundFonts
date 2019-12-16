@@ -34,13 +34,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.13</string>
+	<string>1.14</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict/>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>20191216010905</string>
+	<string>20191216233652</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
