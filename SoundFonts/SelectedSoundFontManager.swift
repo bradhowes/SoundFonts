@@ -23,6 +23,11 @@ final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent
 
     func setSelected(_ soundFont: SoundFont) {
         os_log(.info, log: log, "setSelected: %s", soundFont.description)
+        guard selected != soundFont else {
+            os_log(.info, log: log, "already active")
+            return
+        }
+
         let old = selected
         selected = soundFont
         self.save()

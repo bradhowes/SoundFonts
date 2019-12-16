@@ -40,6 +40,8 @@ final class SoundFontsViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         patchesTableViewDataSource.hideSearchBar()
+        patchesTableViewDataSource.selectActive()
+        soundFontsTableViewDataSource.selectActive()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -134,6 +136,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
             let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
             let delete = UIAlertAction(title: deleteTitle, style:.destructive) { action in
+                self.favorites.removeAll(associatedWith: soundFont)
                 self.soundFonts.remove(index: indexPath.row)
                 completionHandler(true)
             }

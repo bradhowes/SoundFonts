@@ -78,6 +78,7 @@ extension FavoritesManager: Favorites {
     func removeAll(associatedWith soundFont: SoundFont) {
         collection.removeAll(associatedWith: soundFont)
         save()
+        notify(.removedAll(associatedWith: soundFont))
     }
 
     func count(associatedWith soundFont: SoundFont) -> Int {
