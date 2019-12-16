@@ -380,9 +380,7 @@ extension PatchesTableViewDataSource {
     @discardableResult
     private func update(with favorite: Favorite) -> IndexPath? {
         guard let indexPath = getIndexPath(for: favorite.soundFontPatch) else { return nil }
-        view.beginUpdates()
         update(at: indexPath, with: favorite)
-        view.endUpdates()
         return indexPath
     }
 
