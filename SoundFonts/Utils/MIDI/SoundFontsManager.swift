@@ -54,29 +54,32 @@ extension SoundFontsManager: SoundFonts {
         return (index, soundFont)
     }
 
-    func remove(index: Int) -> (Int, SoundFont) {
-        let soundFont = collection.remove(index)
+    func remove(index: Int) {
+        guard let soundFont = collection.remove(index) else { return }
         save()
         notify(.removed(old: index, font: soundFont))
-        return (index, soundFont)
     }
 
-    func rename(index: Int, name: String) -> (Int, Int, SoundFont) {
+    func rename(index: Int, name: String) {
         let (newIndex, soundFont) = collection.rename(index, name: name)
         save()
         notify(.moved(old: index, new: newIndex, font: soundFont))
-        return (index, newIndex, soundFont)
     }
 }
 
 extension SoundFontsManager {
+
+    private static let niceNames = [
+        "Fluid":"Fluid R3", "Free Font":"FreeFont", "GeneralUser":"MuseScore", "User":"Roland"
+    ]
 
     @discardableResult
     private static func addFromBundle(url: URL) -> SoundFont {
         guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
         let info = GetSoundFontInfo(data: data)
         if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-        return SoundFont(info.name, resource: url, soundFontInfo: info)
+        let displayName = niceNames.first { (key, value) in info.name.contains(key) }?.value ?? info.name
+        return SoundFont(displayName, resource: url, soundFontInfo: info)
     }
 
     @discardableResult

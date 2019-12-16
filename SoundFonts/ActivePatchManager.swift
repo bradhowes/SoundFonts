@@ -48,7 +48,7 @@ enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
     init(from decoder: Decoder) throws {
         var container = try! decoder.unkeyedContainer()
-        let kind = InternalKey(rawValue: try! container.decode(Int.self))!
+        guard let kind = InternalKey(rawValue: try! container.decode(Int.self)) else { fatalError() }
         switch kind {
         case .normal: self = .normal(soundFontPatch: try! container.decode(SoundFontPatch.self))
         case .favorite: self = .favorite(favorite: try! container.decode(Favorite.self))
@@ -97,7 +97,7 @@ final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
         let prev = active
         active = patch
-        DispatchQueue.global(qos: .background).async { self.save() }
+        save()
         notify(.active(old: prev, new: patch))
     }
 
@@ -109,7 +109,11 @@ final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     func save() {
         os_log(.info, log: log, "save")
-        let encoder = JSONEncoder()
-        Settings[.lastActivePatch] = try! encoder.encode(active)
+        DispatchQueue.global(qos: .background).async {
+            let encoder = JSONEncoder()
+            if let data = try? encoder.encode(self.active) {
+                Settings[.lastActivePatch] = data
+            }
+        }
     }
 }

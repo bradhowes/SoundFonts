@@ -6,11 +6,13 @@ import os
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
-struct SoundFont: Codable {
+final class SoundFont: Codable {
     private static let logger = Logging.logger("SFont")
 
     /// Extension for all SoundFont files in the application bundle
     static let soundFontExtension = "sf2"
+
+    typealias Key = UUID
 
     /// Presentation name of the sound font
     var displayName: String
@@ -23,7 +25,7 @@ struct SoundFont: Codable {
 
     var removable: Bool { kind.removable }
 
-    let uuid: UUID
+    let key: Key
 
     let originalDisplayName: String
 
@@ -71,11 +73,11 @@ struct SoundFont: Codable {
      */
     init(_ soundFontInfo: SoundFontInfo) {
         let name = soundFontInfo.name
-        let uuid = UUID()
-        self.uuid = uuid
+        let key = Key()
+        self.key = key
         self.displayName = name
         self.originalDisplayName = name
-        self.kind = .installed(fileName:name + "_" + uuid.uuidString + "." + Self.soundFontExtension)
+        self.kind = .installed(fileName:name + "_" + key.uuidString + "." + Self.soundFontExtension)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }
 
@@ -87,11 +89,9 @@ struct SoundFont: Codable {
      - parameter info: patch info from the sound font
      */
     init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
-        let name = name
-        let uuid = UUID()
-        self.uuid = uuid
+        self.key = Key()
         self.displayName = name
-        self.originalDisplayName = name
+        self.originalDisplayName = soundFontInfo.name
         self.kind = .builtin(resource: resource)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }
@@ -109,9 +109,9 @@ extension SoundFont {
 
 extension SoundFont: Hashable {
 
-    func hash(into hasher: inout Hasher) { hasher.combine(uuid) }
+    func hash(into hasher: inout Hasher) { hasher.combine(key) }
 
-    static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.uuid == rhs.uuid }
+    static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.key == rhs.key }
 }
 
 extension SoundFont: CustomStringConvertible {

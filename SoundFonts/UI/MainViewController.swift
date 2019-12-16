@@ -189,8 +189,17 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func favoritesChange(_ event: FavoritesEvent) {
-        if case let .changed(index: _, favorite: favorite) = event, favorite == activePatchManager.favorite {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+        switch event {
+        case let .changed(index: _, favorite: favorite):
+            if favorite == activePatchManager.favorite {
+                infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+            }
+        case let .removed(index: _, favorite: favorite, bySwiping: _):
+            if favorite == activePatchManager.favorite {
+                activePatchManager.setActive(.normal(soundFontPatch: favorite.soundFontPatch))
+            }
+        default:
+            break
         }
     }
 

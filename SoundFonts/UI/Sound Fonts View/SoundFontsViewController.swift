@@ -168,8 +168,8 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 extension SoundFontsViewController: FontEditorDelegate {
     func dismissed(reason: FontEditorDismissedReason) {
         switch reason {
-        case let .done(index, newName):
-            soundFonts.rename(index: index, name: newName)
+        case let .done(index, soundFont):
+            soundFonts.rename(index: index, name: soundFont.displayName)
 
         case let .delete(_, soundFont):
             print("delete \(soundFont.displayName)")

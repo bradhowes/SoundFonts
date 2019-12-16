@@ -25,7 +25,7 @@ final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent
         os_log(.info, log: log, "setSelected: %s", soundFont.description)
         let old = selected
         selected = soundFont
-        DispatchQueue.global(qos: .background).async { self.save() }
+        self.save()
         notify(.changed(old: old, new: soundFont))
     }
 
@@ -36,7 +36,11 @@ final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent
     }
 
     func save() {
-        let encoder = JSONEncoder()
-        Settings[.lastSelectedSoundFont] = try! encoder.encode(selected)
+        DispatchQueue.global(qos: .background).async {
+            let encoder = JSONEncoder()
+            if let data = try? encoder.encode(self.selected) {
+                Settings[.lastSelectedSoundFont] = data
+            }
+        }
     }
 }
