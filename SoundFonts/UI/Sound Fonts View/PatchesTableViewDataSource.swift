@@ -191,8 +191,6 @@ extension PatchesTableViewDataSource {
                 }
             }
 
-            hideSearchBar()
-
             if let indexPath = update(with: new.soundFontPatch) {
 
                 os_log(.info, log: log, "selecting row '%s'", new.soundFontPatch.description)
@@ -201,6 +199,8 @@ extension PatchesTableViewDataSource {
                 os_log(.info, log: log, "scrolling to row")
                 view.scrollToRow(at: indexPath, at: .none, animated: false)
             }
+
+            hideSearchBar()
         }
     }
 
@@ -216,18 +216,29 @@ extension PatchesTableViewDataSource {
         }
     }
 
+    private func getFavorite(from event: FavoritesEvent) -> Favorite? {
+        switch event {
+        case let .added(index: _, favorite: favorite): return favorite
+        case let .changed(index: _, favorite: favorite): return favorite
+        case let .removed(index: _, favorite: favorite, bySwiping: _): return favorite
+        default: return nil
+        }
+    }
+
     private func favoritesChange(_ event: FavoritesEvent) {
         os_log(.info, log: log, "favoritesChange")
-        switch event {
-        case let .added(index: _, favorite: favorite): update(with: favorite)
-        case let .changed(index: _, favorite: favorite): update(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): update(with: favorite)
-        default: break
+        if let favorite = getFavorite(from: event) {
+            os_log(.info, log: log, "updating due to favorite")
+            view.beginUpdates()
+            update(with: favorite)
+            view.endUpdates()
         }
 
         if let indexPath = getIndexPath(for: activePatchManager.soundFontPatch) {
-            view.scrollToRow(at: indexPath, at: .none, animated: true)
+            view.scrollToRow(at: indexPath, at: .none, animated: false)
         }
+
+        hideSearchBar()
     }
 
     private func getIndexPath(for soundFontPatch: SoundFontPatch) -> IndexPath? {
@@ -244,13 +255,13 @@ extension PatchesTableViewDataSource {
                 os_log(.info, "not found in search results")
                 return nil
             }
-            os_log(.info, "row: %d  section: %d", row, 0)
+            os_log(.info, "IndexPath(row: %d  section: %d)", row, 0)
             return IndexPath(row: row, section: 0)
         }
 
         let section = patch.soundFontIndex / Self.sectionSize
         let row = patch.soundFontIndex - Self.sectionSize * section
-        os_log(.info, "row: %d  section: %d", row, section)
+        os_log(.info, "IndexPath(row: %d  section: %d)", row, section)
         return IndexPath(row: row, section: section)
     }
 
@@ -413,18 +424,14 @@ extension PatchesTableViewDataSource {
             return update(cell: cell, at: indexPath, with: favorite)
         }
 
-        view.beginUpdates()
         cell.update(name: soundFontPatch.patch.name, isActive: isActive(soundFontPatch: soundFontPatch),
                     isFavorite: false)
-        view.endUpdates()
         return cell
     }
 
     @discardableResult
     private func update(cell: PatchCell, at indexPath: IndexPath, with favorite: Favorite) -> PatchCell {
-        view.beginUpdates()
         cell.update(name: favorite.name, isActive: isActive(soundFontPatch: favorite.soundFontPatch), isFavorite: true)
-        view.endUpdates()
         return cell
     }
 
