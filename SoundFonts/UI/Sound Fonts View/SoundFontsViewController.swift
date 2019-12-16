@@ -99,7 +99,7 @@ extension SoundFontsViewController: PatchesViewManager {
      - parameter target: the object to notify
      - parameter action: the selector to invoke
      */
-    func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
+    func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector) {
         switch event {
         case .swipeLeft: swipeLeft.addTarget(target, action: action)
         case .swipeRight: swipeRight.addTarget(target, action: action)
@@ -117,6 +117,13 @@ extension SoundFontsViewController: PatchesViewManager {
 
 extension SoundFontsViewController: FontEditorActionGenerator {
 
+    /**
+     Create right-swipe action to edit a SoundFont.
+
+     - parameter at: the FontCell that will hold the swipe action
+     - parameter with: the SoundFont that will be edited by the swipe action
+     - returns new UIContextualAction that will perform the edit
+     */
     func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.performSegue(withIdentifier: "soundFontDetail", sender: cell)
@@ -128,7 +135,17 @@ extension SoundFontsViewController: FontEditorActionGenerator {
         return action
     }
 
-    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath) -> UIContextualAction {
+    /**
+     Create left-swipe action to *delete* a SoundFont. When activated, the action will display a prompt to the user
+     asking for confirmation about the SoundFont deletion.
+
+     - parameter at: the FontCell that will hold the swipe action
+     - parameter with: the SoundFont that will be edited by the swipe action
+     - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
+     - returns new UIContextualAction that will perform the edit
+     */
+    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath) ->
+        UIContextualAction {
         let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
         let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
         let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
@@ -170,17 +187,9 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
 extension SoundFontsViewController: FontEditorDelegate {
     func dismissed(reason: FontEditorDismissedReason) {
-        switch reason {
-        case let .done(index, soundFont):
+        if case let .done(index, soundFont) = reason {
             soundFonts.rename(index: index, name: soundFont.displayName)
-
-        case let .delete(_, soundFont):
-            print("delete \(soundFont.displayName)")
-
-        default:
-            break
         }
-
         self.dismiss(animated: true, completion: nil)
     }
 }

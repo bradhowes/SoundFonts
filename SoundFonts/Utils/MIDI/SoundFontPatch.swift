@@ -2,6 +2,10 @@
 
 import Foundation
 
+/**
+ A unique combination of a SoundFont and one if its patches. This is the normal way to communicate what patch is active
+ and what a `favorite` item points to.
+ */
 struct SoundFontPatch: Codable, Hashable {
     let soundFont: SoundFont
     let patchIndex: Int

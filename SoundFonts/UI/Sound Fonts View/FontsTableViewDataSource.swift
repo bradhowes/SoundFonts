@@ -65,11 +65,13 @@ extension FontsTableViewDataSource: UITableViewDelegate {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->
+        UITableViewCell.EditingStyle {
         .none
     }
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
+        UISwipeActionsConfiguration? {
         guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createEditSwipeAction(at: cell, with: soundFont)
@@ -78,7 +80,8 @@ extension FontsTableViewDataSource: UITableViewDelegate {
         return actions
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
+        UISwipeActionsConfiguration? {
         guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         guard soundFont.removable else { return nil }
@@ -162,7 +165,9 @@ extension FontsTableViewDataSource {
             view.deleteRows(at: [IndexPath(row: old, section: 0)], with: .automatic)
             view.endUpdates()
             let newRow = min(old, soundFonts.count - 1)
-            selectedSoundFontManager.setSelected(soundFonts.getBy(index: newRow))
+            let soundFont = soundFonts.getBy(index: newRow)
+            selectedSoundFontManager.setSelected(soundFont)
+            activePatchManager.setActive(.normal(soundFontPatch: SoundFontPatch(soundFont: soundFont, patchIndex: 0)))
             break
         }
     }

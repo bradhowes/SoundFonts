@@ -160,23 +160,14 @@ extension FavoritesViewController {
 
 // MARK: - FavoriteDetailControllerDelegate
 
-extension FavoritesViewController: FavoriteDetailControllerDelegate {
+extension FavoritesViewController: FavoriteEditorDelegate {
 
-    func dismissed(_ indexPath: IndexPath, reason: FavoriteDetailControllerDismissedReason) {
-        switch reason {
-        case .done(let favorite):
+    func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
+        if case let .done(favorite) =  reason {
             favorites.update(index: indexPath.item, with: favorite)
             favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
-
-        case .cancel:
-            break
-
-        case .delete:
-            favorites.remove(index: indexPath.item, bySwiping: false)
-            break
         }
-
         self.dismiss(animated: true, completion: nil)
     }
 }
@@ -232,9 +223,9 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - FavoritesManager
 
-extension FavoritesViewController: FavoritesViewManager {
+extension FavoritesViewController: UpperViewSwipingActivity {
 
-    func addTarget(_ event: SwipingEvent, target: Any, action: Selector) {
+    func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector) {
         switch event {
         case .swipeLeft: swipeLeft.addTarget(target, action: action)
         case .swipeRight: swipeRight.addTarget(target, action: action)

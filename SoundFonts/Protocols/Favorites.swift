@@ -2,23 +2,30 @@
 
 import UIKit
 
+/**
+ The different events which are emitted by a Favorites collection when the collection changes.
+*/
 enum FavoritesEvent {
+
+    /// New Favorite added to the collection
     case added(index: Int, favorite: Favorite)
+    /// Favorite selected
     case selected(index: Int, favorite: Favorite)
+    /// Favorite being edited
     case beginEdit(index: Int, favorite: Favorite, view: UIView)
+    /// Favorite changed
     case changed(index: Int, favorite: Favorite)
+    /// Favorite removed
     case removed(index: Int, favorite: Favorite, bySwiping: Bool)
+    /// Side-effect of a SoundFont being removed -- removal of all associaed Favorites
     case removedAll(associatedWith: SoundFont)
 }
 
+/**
+ Actions available on a collection of Favorite instances. Supports subscribing to changes.
+ */
 protocol Favorites {
 
-    /**
-     Determine if the given Patch instance is associated with a Favorite instance
-    
-     - parameter patch: the Patch to look for
-     - returns: true if it is associated with a Favorite instance
-     */
     var count: Int {get}
 
     func isFavored(soundFontPatch: SoundFontPatch) -> Bool

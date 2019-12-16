@@ -3,9 +3,9 @@
 import Foundation
 
 /**
- The collection of event types that can be targeted in the `SwipingActivity.addTarget` method
+ The collection of event types that can be targeted in the `UpperViewSwipingActivity.addTarget` method
  */
-enum SwipingEvent {
+enum UpperViewSwipingEvent {
     case swipeLeft
     case swipeRight
 }
@@ -13,7 +13,7 @@ enum SwipingEvent {
 /**
  Manages what swiping activity does.
  */
-protocol SwipingActivity {
+protocol UpperViewSwipingActivity {
 
     /**
      Link a button / gesture event to a target/selector combination
@@ -22,5 +22,6 @@ protocol SwipingActivity {
      - parameter target: the object to call when the event takes place
      - parameter action: the function to call when the event takes place
      */
-    func addTarget(_ event: SwipingEvent, target: Any, action: Selector)
+    func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector)
 }
+

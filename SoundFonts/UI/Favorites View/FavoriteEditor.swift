@@ -10,7 +10,7 @@ final class FavoriteEditor : UIViewController {
     var favorite: Favorite! = nil
     var position: IndexPath = IndexPath(row: -1, section: -1)
     var currentLowestNote: Note = Note(midiNoteValue: 0)
-    var delegate: FavoriteDetailControllerDelegate? = nil
+    weak var delegate: FavoriteEditorDelegate? = nil
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
