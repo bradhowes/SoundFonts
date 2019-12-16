@@ -224,6 +224,10 @@ extension PatchesTableViewDataSource {
         case let .removed(index: _, favorite: favorite, bySwiping: _): update(with: favorite)
         default: break
         }
+
+        if let indexPath = getIndexPath(for: activePatchManager.soundFontPatch) {
+            view.scrollToRow(at: indexPath, at: .none, animated: true)
+        }
     }
 
     private func getIndexPath(for soundFontPatch: SoundFontPatch) -> IndexPath? {

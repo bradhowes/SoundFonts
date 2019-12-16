@@ -5,16 +5,15 @@ import UIKit
 /**
  Reason why the FavoriteDetailController view was dismissed by the user.
  */
-enum FavoriteDetailControllerDismissedReason {
-    case cancel
+enum FavoriteEditorDismissedReason {
     case done(update: Favorite)
-    case delete
+    case cancel
 }
 
 /**
  Protocol for the `FavoriteDetailController` delegate instance.
  */
-protocol FavoriteDetailControllerDelegate : NSObjectProtocol {
+protocol FavoriteEditorDelegate : NSObjectProtocol {
     /**
      Notification when the FavoriteDetailController is dismissed and editing of a particular Favorite instance
      is over.
@@ -22,5 +21,5 @@ protocol FavoriteDetailControllerDelegate : NSObjectProtocol {
      - parameter index: the index of the Favorite that was being edited
      - parameter reason: the reason for the dismisal
      */
-    func dismissed(_ index: IndexPath, reason: FavoriteDetailControllerDismissedReason)
+    func dismissed(_ index: IndexPath, reason: FavoriteEditorDismissedReason)
 }

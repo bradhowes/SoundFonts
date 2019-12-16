@@ -3,12 +3,11 @@
 import UIKit
 
 /**
- Reason why the SoundFontDetailController view was dismissed by the user.
+ Reason why the FontEditor view was dismissed by the user.
  */
 enum FontEditorDismissedReason {
     case cancel
     case done(index: Int, soundFont: SoundFont)
-    case delete(index: Int, soundFont: SoundFont)
 }
 
 /**

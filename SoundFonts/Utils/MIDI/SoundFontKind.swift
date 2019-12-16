@@ -6,15 +6,44 @@ enum SoundFontKindError: Error {
     case invalidKind
 }
 
-enum SoundFontKind: Codable, Hashable {
+/**
+ There are two types of SoundFont instances in the application: a built-in kind that resides in the app's bundle, and
+ a file kind which comes from an external source.
+ */
+enum SoundFontKind {
 
     case builtin(resource: URL)
     case installed(fileName: String)
 
+    /// The URL that points to the data file that defnes the SoundFont.
+    var fileURL: URL {
+        switch self {
+        case .builtin(let resource): return resource
+        case .installed(let name): return FileManager.default.localDocumentsDirectory.appendingPathComponent(name)
+        }
+    }
+
+    /// The String representation of the fileURL
+    var path: String { return fileURL.path }
+
+    /// True if the resoure can be deleted by the user
+    var removable: Bool {
+        switch self {
+        case .builtin(resource: _): return false
+        case .installed(fileName: _): return true
+        }
+    }
+
+    /// Key used to encode/decode the above case types.
     private enum InternalKey: Int {
         case builtin = 0
         case installed = 1
     }
+}
+
+// MARK: - Codable Protocol
+
+extension SoundFontKind: Codable {
 
     init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
@@ -46,7 +75,11 @@ enum SoundFontKind: Codable, Hashable {
             try container.encode(fileName)
         }
     }
+}
 
+// MARK: - Hashable Protocol
+
+extension SoundFontKind: Hashable {
     func hash(into hasher: inout Hasher) {
         switch self {
         case .builtin(let resource):
@@ -57,23 +90,4 @@ enum SoundFontKind: Codable, Hashable {
             hasher.combine(fileName)
         }
     }
-
-    var fileURL: URL {
-        switch self {
-        case .builtin(let resource):
-            return resource
-        case .installed(let fileName):
-            return FileManager.default.localDocumentsDirectory.appendingPathComponent(fileName)
-        }
-    }
-
-    var path: String { return fileURL.path }
-
-    var removable: Bool {
-        switch self {
-        case .builtin(resource: _): return false
-        case .installed(fileName: _): return true
-        }
-    }
 }
-

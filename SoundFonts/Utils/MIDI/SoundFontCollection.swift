@@ -2,6 +2,10 @@
 
 import Foundation
 
+/**
+ Collection of SoundFont entities. The collection maintains a mapping between a SoundFont.Key (UUID) and a SoundFont
+ instance. It also maintains an array of SoundFont.Key values that are ordered by SoundFont.name values.
+ */
 final class SoundFontCollection: Codable {
 
     private var catalog: [SoundFont.Key:SoundFont]
@@ -14,12 +18,36 @@ final class SoundFontCollection: Codable {
         self.sortedKeys = soundFonts.sorted { $0.displayName < $1.displayName }.map { $0.key }
     }
 
+    /**
+     Obtain the index of the given SoundFont.Key value.
+
+     - parameter key: the key to look for
+     - returns index value if found, else nil
+     */
     func index(of key: SoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
 
+    /**
+     Obtain a SoundFont by its (sorted) index value
+
+     - parameter index: the SoundFont.Key to look for
+     - returns the SoundFont value found
+     */
     func getBy(index: Int) -> SoundFont { catalog[sortedKeys[index]]! }
 
-    func getBy(uuid: UUID) -> SoundFont? { catalog[uuid] }
+    /**
+     Obtain a SoundFont by its UUID value
 
+     - parameter key: the UUID to look for
+     - returns the SoundFont instance found, else nil
+     */
+    func getBy(key: SoundFont.Key) -> SoundFont? { catalog[key] }
+
+    /**
+     Add a new SoundFont definition to the collection.
+
+     - parameter soundFont: the SoundFont to add
+     - returns index of the SoundFont in the collection
+     */
     func add(_ soundFont: SoundFont) -> Int {
         catalog[soundFont.key] = soundFont
         let index = insertionIndex(of: soundFont.key)
@@ -27,11 +55,24 @@ final class SoundFontCollection: Codable {
         return index
     }
 
+    /**
+     Remove a SoundFont from the collection.
+
+     - parameter index: the index of the SoundFont to remove.
+     - returns the removed SoundFont instance, nil if not found.
+     */
     func remove(_ index: Int) -> SoundFont? {
-        let uuid = sortedKeys.remove(at: index)
-        return catalog.removeValue(forKey: uuid)
+        let key = sortedKeys.remove(at: index)
+        return catalog.removeValue(forKey: key)
     }
 
+    /**
+     Rename an existing SoundFont.
+
+     - parameter index: the index of the SoundFont to change
+     - parameter name: the new name for the SoundFont
+     - returns 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
+     */
     func rename(_ index: Int, name: String) -> (Int, SoundFont) {
         let key = sortedKeys.remove(at: index)
 

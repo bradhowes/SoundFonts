@@ -25,7 +25,7 @@ final class Router {
     var infoBar: InfoBar { infoBarController }
     var keyboard: Keyboard { keyboardController }
     var patchesViewManager: PatchesViewManager { soundFontsController }
-    var favoritesViewManager: FavoritesViewManager { favoritesController }
+    var favoritesViewManager: UpperViewSwipingActivity { favoritesController }
     var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
 
     /**

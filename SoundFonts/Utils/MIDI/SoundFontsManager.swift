@@ -44,7 +44,7 @@ extension SoundFontsManager: SoundFonts {
 
     func getBy(index: Int) -> SoundFont { collection.getBy(index: index) }
 
-    func getBy(uuid: UUID) -> SoundFont? { collection.getBy(uuid: uuid) }
+    func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
 
     @discardableResult
     func add(url: URL) -> (Int, SoundFont)? {

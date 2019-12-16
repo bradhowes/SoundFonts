@@ -2,6 +2,7 @@
 
 import Foundation
 
-protocol PatchesViewManager: SwipingActivity {
+protocol PatchesViewManager: UpperViewSwipingActivity {
+
     func dismissSearchKeyboard()
 }
