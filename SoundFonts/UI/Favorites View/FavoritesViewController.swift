@@ -112,6 +112,9 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .removed(index: index, favorite: _, bySwiping: _):
             os_log(.info, log: log, "removed %d", index)
             favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
+
+        case .removedAll:
+            favoritesView.reloadData()
         }
     }
 }

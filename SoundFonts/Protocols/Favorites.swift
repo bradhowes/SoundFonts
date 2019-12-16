@@ -8,6 +8,7 @@ enum FavoritesEvent {
     case beginEdit(index: Int, favorite: Favorite, view: UIView)
     case changed(index: Int, favorite: Favorite)
     case removed(index: Int, favorite: Favorite, bySwiping: Bool)
+    case removedAll(associatedWith: SoundFont)
 }
 
 protocol Favorites {
