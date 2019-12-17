@@ -31,7 +31,7 @@ protocol InfoBar: class {
      - parameter value: the value to show
      */
     func setStatus(_ value: String)
-    
+
     /**
      Show the patch name on the bar.
     

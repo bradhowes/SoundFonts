@@ -5,12 +5,12 @@ import UIKit
 /**
  Provides an editing facility for Favorite instances.
  */
-final class FavoriteEditor : UIViewController {
+final class FavoriteEditor: UIViewController {
 
     var favorite: Favorite! = nil
     var position: IndexPath = IndexPath(row: -1, section: -1)
     var currentLowestNote: Note = Note(midiNoteValue: 0)
-    weak var delegate: FavoriteEditorDelegate? = nil
+    weak var delegate: FavoriteEditorDelegate?
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -25,8 +25,8 @@ final class FavoriteEditor : UIViewController {
     @IBOutlet weak var gainSlider: UISlider!
     @IBOutlet weak var panValue: UILabel!
     @IBOutlet weak var panSlider: UISlider!
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle { .lightContent }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     override func viewDidLoad() {
         lowestNoteStepper.minimumValue = 0
@@ -34,7 +34,7 @@ final class FavoriteEditor : UIViewController {
 
         gainSlider.minimumValue = -90.0
         gainSlider.maximumValue = 12.0
-        
+
         panSlider.minimumValue = -1.0
         panSlider.maximumValue = 1.0
     }
@@ -62,7 +62,7 @@ final class FavoriteEditor : UIViewController {
 
         super.viewWillAppear(animated)
     }
-    
+
     /**
      Set the Favorite and its index in preparation for editing in the view.
 
@@ -108,17 +108,17 @@ extension FavoriteEditor {
         if !newName.isEmpty {
             favorite.name = newName
         }
-        
+
         let lowestNoteValue = Int(lowestNoteStepper.value)
         let lowestNote = Note(midiNoteValue: lowestNoteValue)
 
         favorite.keyboardLowestNote = lowestNote
         favorite.gain = roundFloat(gainSlider.value)
         favorite.pan = roundFloat(panSlider.value)
-        
+
         delegate?.dismissed(position, reason: .done(update: favorite))
     }
-    
+
     /**
      Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
      
@@ -128,16 +128,16 @@ extension FavoriteEditor {
         favorite = nil
         delegate?.dismissed(position, reason: .cancel)
     }
-    
+
     /**
      Event handler for the lowest key stepper.
      
      - parameter sender: UIStepper control
      */
     @IBAction private func changeLowestKey(_ sender: UIStepper) {
-        lowestNote.setTitle(Note(midiNoteValue:  Int(sender.value)).label, for: .normal)
+        lowestNote.setTitle(Note(midiNoteValue: Int(sender.value)).label, for: .normal)
     }
-    
+
     /**
      Event handler for the volume slider
     
@@ -146,7 +146,7 @@ extension FavoriteEditor {
     @IBAction private func volumeChanged(_ sender: UISlider) {
         gainValue.text = formatFloat(sender.value)
     }
-    
+
     /**
      Event handler for the pan slider
      
@@ -155,7 +155,7 @@ extension FavoriteEditor {
     @IBAction private func panChanged(_ sender: UISlider) {
         panValue.text = formatFloat(sender.value)
     }
-    
+
     @IBAction private func useCurrentLowestNote(_ sender: Any) {
         lowestNote.setTitle(currentLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
@@ -179,4 +179,3 @@ extension FavoriteEditor {
      */
     private func roundFloat(_ value: Float) -> Float { (value * 100.0).rounded() / 100.0 }
 }
-

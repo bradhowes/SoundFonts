@@ -46,6 +46,7 @@
 		BD7A2E5621CF0215001CB271 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5521CF0215001CB271 /* Favorite.swift */; };
 		BD7A2E5821D25320001CB271 /* FavoriteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5721D25320001CB271 /* FavoriteEditor.swift */; };
 		BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E7721D29066001CB271 /* InfoBarController.swift */; };
+		BD7B44B523A8C6E20051A26A /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = BD7B44B423A8C6E20051A26A /* .swiftlint.yml */; };
 		BD85F8CA21D41CFB0028E440 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8C921D41CFB0028E440 /* Router.swift */; };
 		BD85F8CC21D549ED0028E440 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */; };
 		BD85F8CE21D554F50028E440 /* FontsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */; };
@@ -161,6 +162,7 @@
 		BD7A2E5521CF0215001CB271 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		BD7A2E5721D25320001CB271 /* FavoriteEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteEditor.swift; sourceTree = "<group>"; };
 		BD7A2E7721D29066001CB271 /* InfoBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBarController.swift; sourceTree = "<group>"; };
+		BD7B44B423A8C6E20051A26A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		BD85F8C921D41CFB0028E440 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
 		BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsTableViewDataSource.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
+				BD7B44B423A8C6E20051A26A /* .swiftlint.yml */,
 				BD781B4B237BFDBD00A71031 /* README.md */,
 				BD75B262218B8CFD00C7EBD7 /* SoundFonts */,
 				BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */,
@@ -508,6 +511,7 @@
 				BD75B25C218B8CFD00C7EBD7 /* Sources */,
 				BD75B25D218B8CFD00C7EBD7 /* Frameworks */,
 				BD75B25E218B8CFD00C7EBD7 /* Resources */,
+				BD7B44B323A8C5E90051A26A /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -610,6 +614,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD7B44B523A8C6E20051A26A /* .swiftlint.yml in Resources */,
 				BDDD1F592216D39A003BDD6F /* FontCell.xib in Resources */,
 				BD9BCF7C239A358B002FBC16 /* Localizable.strings in Resources */,
 				BD75432F23803994004C6A4C /* mute.aiff in Resources */,
@@ -642,6 +647,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BD7B44B323A8C5E90051A26A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BD75B25C218B8CFD00C7EBD7 /* Sources */ = {

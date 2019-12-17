@@ -47,7 +47,7 @@ final class FontsTableViewDataSource: NSObject {
 // MARK: - UITableViewDataSource Protocol
 
 extension FontsTableViewDataSource: UITableViewDataSource {
-    
+
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { soundFonts.count }
@@ -149,7 +149,6 @@ extension FontsTableViewDataSource {
             view.beginUpdates()
             view.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
             view.endUpdates()
-            break
 
         case let .moved(old, new, _):
             let oldPath = IndexPath(row: old, section: 0)
@@ -158,7 +157,6 @@ extension FontsTableViewDataSource {
             view.moveRow(at: oldPath, to: newPath)
             view.endUpdates()
             view.reloadRows(at: [oldPath, newPath], with: .automatic)
-            break
 
         case let .removed(old, _):
             view.beginUpdates()
@@ -168,7 +166,6 @@ extension FontsTableViewDataSource {
             let soundFont = soundFonts.getBy(index: newRow)
             selectedSoundFontManager.setSelected(soundFont)
             activePatchManager.setActive(.normal(soundFontPatch: SoundFontPatch(soundFont: soundFont, patchIndex: 0)))
-            break
         }
     }
 

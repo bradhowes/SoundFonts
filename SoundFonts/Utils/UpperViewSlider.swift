@@ -6,7 +6,7 @@ import UIKit
  Instances know how to slide themselves around horizontally.
  */
 final class UpperViewSlider: CustomStringConvertible {
-    
+
     let view: UIView
     let leading: NSLayoutConstraint
     let trailing: NSLayoutConstraint
@@ -14,12 +14,14 @@ final class UpperViewSlider: CustomStringConvertible {
     var description: String {
         return "UpperViewSlider(\(view.restorationIdentifier ?? "NA")"
     }
-    
+
     init(view: UIView) {
-        guard let constraints = view.superview?.constraints else { preconditionFailure("missing constraints in superview") }
+        guard let constraints = view.superview?.constraints else {
+            preconditionFailure("missing constraints in superview")
+        }
         self.view = view
 
-        var found = Array<(NSLayoutConstraint)?>(repeating: nil, count: 2)
+        var found = [NSLayoutConstraint?](repeating: nil, count: 2)
         constraints.forEach {
             if $0.firstItem === view {
                 switch $0.firstAttribute {
@@ -71,14 +73,14 @@ final class UpperViewSlider: CustomStringConvertible {
                         self.view.isHidden = !slidingIn
         })
     }
-    
+
     /**
      Slide the view to the left.
      */
     func slideLeft() {
         slide(from: trailing, to: leading, offset: view.frame.size.width)
     }
-    
+
     /**
      Slide the view to the right.
      */

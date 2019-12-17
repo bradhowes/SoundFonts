@@ -17,9 +17,14 @@ struct sfPresetHeader {
     uint16_t wPreset;
     uint16_t wBank;
     uint16_t wPresetBagNdx;
-    uint32_t dwLibrary;
-    uint32_t dwGenre;
-    uint32_t dwMorphology;
+
+    // Due to alignment padding, the following cannot be represented as 32-bit values. Must combine parts instead.
+    uint16_t dwLibrary_1;
+    uint16_t dwLibrary_2;
+    uint16_t dwGenre_1;
+    uint16_t dwGenre_2;
+    uint16_t dwMorphology_1;
+    uint16_t dwMorphology_2;
 };
 
 struct PatchInfo {
@@ -38,6 +43,8 @@ struct InternalSoundFontInfo {
 const InternalSoundFontInfo*
 InternalSoundFontParse(const void* data, size_t size)
 {
+    static_assert(sizeof(sfPresetHeader) == 38, "sfPresetHeader size is not 38");
+
     InternalSoundFontInfo* soundFontInfo = new InternalSoundFontInfo();
     soundFontInfo->name = "";
 
@@ -66,7 +73,7 @@ InternalSoundFontParse(const void* data, size_t size)
                 while (pos < end) {
                     const sfPresetHeader* preset = reinterpret_cast<const sfPresetHeader*>(pos);
                     soundFontInfo->patches.push_back(preset);
-                    pos += 38; // NOTE: this is *not* the same as sizeof(sfPresetHeader)
+                    pos += sizeof(sfPresetHeader);
                 }
 
                 // Sort patches in increasing order by bank, patch

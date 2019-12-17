@@ -5,14 +5,14 @@ import UIKit
 /**
  Provides an editing facility for SoundFont names.
  */
-final class FontEditor : UIViewController {
+final class FontEditor: UIViewController {
 
     var soundFont: SoundFont!
     var favoriteCount: Int = 0
     var position: IndexPath = IndexPath()
-    var delegate: FontEditorDelegate? = nil
+    weak var delegate: FontEditorDelegate?
 
-    override var preferredStatusBarStyle : UIStatusBarStyle { .lightContent }
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -46,7 +46,7 @@ final class FontEditor : UIViewController {
         location.text = soundFont.fileURL.path
         super.viewWillAppear(animated)
     }
-    
+
     /**
      Event handler for the `Done` button. Updates the SoundFont instance with new title from the editing view.
      

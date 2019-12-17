@@ -10,12 +10,14 @@ import os
 final class FavoritesViewController: UIViewController {
     private lazy var log = Logging.logger("FavsVC")
 
+    //swiftlint:disable force_cast
     private let favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as! FavoriteCell
+    //swiftlint:enable force_cast
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     @IBOutlet var doubleTapGestureRecognizer: UITapGestureRecognizer!
-    
+
     private var activePatchManager: ActivePatchManager!
     private var keyboard: Keyboard!
     private var favorites: Favorites!
@@ -37,7 +39,7 @@ final class FavoritesViewController: UIViewController {
         doubleTapGestureRecognizer.addTarget(self, action: #selector(handleTap))
         doubleTapGestureRecognizer.delaysTouchesBegan = true
 
-        favoriteMover = FavoriteMover(view: favoritesView, gr: longPressGestureRecognizer)
+        favoriteMover = FavoriteMover(view: favoritesView, lpgr: longPressGestureRecognizer)
 
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
@@ -93,7 +95,6 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .added(index: index, favorite: _):
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-            break
 
         case let .selected(index: index, favorite: favorite):
             os_log(.info, log: log, "selected %d", index)
@@ -181,8 +182,9 @@ extension FavoritesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         favorites.count
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
+        UICollectionViewCell {
         limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath),
                                 with: favorites.getBy(index: indexPath.row)))
     }
@@ -199,7 +201,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
         favorites.count > 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
                         to destinationIndexPath: IndexPath) {
         favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)

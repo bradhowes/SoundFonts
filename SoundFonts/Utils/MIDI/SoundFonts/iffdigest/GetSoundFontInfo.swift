@@ -13,7 +13,10 @@ public struct SoundFontInfo {
     public let patches: [PatchInfo]
 }
 
+//swiftlint:disable identifier_name
 public func GetSoundFontInfo(data: Data) -> SoundFontInfo {
+//swiftlint:enable identifier_name
+
     var patches = [PatchInfo]()
     return data.withUnsafeBytes { (body) -> SoundFontInfo in
         let wrapper = SoundFontParse(body.baseAddress, data.count)

@@ -65,8 +65,9 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
 
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?,
-                                      context: UnsafeMutableRawPointer?) {
+    //swiftlint:disable block_based_kvo
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
+                               context: UnsafeMutableRawPointer?) {
         if context == &Observation.Context {
             if keyPath == Observation.VolumeKey {
                 if let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
@@ -77,6 +78,7 @@ extension MainViewController {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
+    //swiftlint:enable block_based_kvo
 
     /**
      Start audio processing. This is done as the app is brought into the foreground.
@@ -109,7 +111,7 @@ extension MainViewController {
         let alertController = UIAlertController(title: "Sampler Issue",
                                                 message: "Unexpected problem with the audio sampler.",
                                                 preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "OK", style:.cancel) { _ in }
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
         alertController.addAction(cancel)
 
         if let popoverController = alertController.popoverPresentationController {
@@ -250,7 +252,7 @@ extension MainViewController: ControllerConfiguration {
 
 // MARK: - KeyboardManagerDelegate protocol
 
-extension MainViewController : KeyboardDelegate {
+extension MainViewController: KeyboardDelegate {
 
     /**
      Play a note with the sampler. Show note info in the info bar.

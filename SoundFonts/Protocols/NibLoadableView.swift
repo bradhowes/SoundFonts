@@ -6,10 +6,10 @@ import UIKit
  Protocol for UIView classes that can load from a NIB file
  */
 protocol NibLoadableView: class {
-    
+
     /// Obtain the name of the NIB to load
     static var nibName: String { get }
-    
+
     /// Obtain the NIB that holds the view definition
     static var nib: UINib { get }
 }

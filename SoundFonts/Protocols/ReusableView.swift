@@ -7,13 +7,13 @@ import UIKit
  container such as UICollectionView.
  */
 protocol ReusableView: class {
-    
+
     /// Obtain the name of the identifier for this class
     static var reuseIdentifier: String { get }
 }
 
 extension ReusableView where Self: UIView {
-    
+
     /// Default implementation of the reuseIdentifier that uses the name of the class
     static var reuseIdentifier: String { return NSStringFromClass(self).components(separatedBy: ".").last! }
 }

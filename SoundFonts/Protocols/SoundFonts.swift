@@ -40,7 +40,7 @@ protocol SoundFonts {
      - returns the index of the matching entry or nil if not found
      */
     func getBy(key: SoundFont.Key) -> SoundFont?
-    
+
     func getBy(index: Int) -> SoundFont
 
     func add(url: URL) -> (Int, SoundFont)?
@@ -50,5 +50,5 @@ protocol SoundFonts {
     func rename(index: Int, name: String)
 
     @discardableResult
-    func subscribe<O:AnyObject>(_ subscriber: O, closure: @escaping (SoundFontsEvent)->Void) -> SubscriberToken
+    func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (SoundFontsEvent) -> Void) -> SubscriberToken
 }

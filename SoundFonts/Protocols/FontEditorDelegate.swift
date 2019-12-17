@@ -13,7 +13,7 @@ enum FontEditorDismissedReason {
 /**
  Protocol for the `SoundFontDetailController` delegate instance.
  */
-protocol FontEditorDelegate : NSObjectProtocol {
+protocol FontEditorDelegate: NSObjectProtocol {
     /**
      Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
      is over.

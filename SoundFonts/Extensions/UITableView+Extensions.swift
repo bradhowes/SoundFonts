@@ -3,7 +3,7 @@
 import UIKit
 
 extension UITableView {
-    
+
     /**
      Register a cell view type that implements ReusableView protocol.
     

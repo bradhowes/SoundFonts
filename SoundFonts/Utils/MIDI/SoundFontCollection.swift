@@ -8,13 +8,13 @@ import Foundation
  */
 final class SoundFontCollection: Codable {
 
-    private var catalog: [SoundFont.Key:SoundFont]
+    private var catalog: [SoundFont.Key: SoundFont]
     private var sortedKeys: [SoundFont.Key]
 
     var count: Int { sortedKeys.count }
 
     init(soundFonts: [SoundFont]) {
-        self.catalog = Dictionary<SoundFont.Key, SoundFont>.init(uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
+        self.catalog = [SoundFont.Key: SoundFont](uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
         self.sortedKeys = soundFonts.sorted { $0.displayName < $1.displayName }.map { $0.key }
     }
 
@@ -78,7 +78,7 @@ final class SoundFontCollection: Codable {
 
         let soundFont = catalog[key]!
         soundFont.displayName = name
-        
+
         let newIndex = insertionIndex(of: soundFont.key)
         sortedKeys.insert(soundFont.key, at: newIndex)
         return (newIndex, soundFont)

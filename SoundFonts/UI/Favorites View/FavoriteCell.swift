@@ -71,7 +71,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     override var intrinsicContentSize: CGSize {
         contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
-    
+
     /// Report the layout size for a given target size. Foward request to the content view.
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         contentView.systemLayoutSizeFitting(targetSize)

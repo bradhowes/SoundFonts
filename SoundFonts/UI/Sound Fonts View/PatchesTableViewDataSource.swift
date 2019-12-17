@@ -140,7 +140,7 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate Protocol
 
-extension PatchesTableViewDataSource : UISearchBarDelegate {
+extension PatchesTableViewDataSource: UISearchBarDelegate {
 
     /**
      Notification that the content of the search field changed. Update the search results based on the new contents. If
@@ -434,6 +434,4 @@ extension PatchesTableViewDataSource {
         cell.update(name: favorite.name, isActive: isActive(soundFontPatch: favorite.soundFontPatch), isFavorite: true)
         return cell
     }
-
 }
-

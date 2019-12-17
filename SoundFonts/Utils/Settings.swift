@@ -5,8 +5,10 @@
 
 import Foundation
 
+//swiftlint:disable identifier_name
 /// Global variable to keep things concise.
 let Settings = UserDefaults.standard
+//swiftlint:enable identifier_name
 
 /**
  Protocol for entities that can set a representation in UserDefaults
