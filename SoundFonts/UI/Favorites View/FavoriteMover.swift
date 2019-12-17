@@ -16,11 +16,11 @@ final class FavoriteMover: NSObject {
      - parameter view: the view to manage
      - parameter gr: the long-press gesture recognizer that triggers a move.
      */
-    init(view: UICollectionView, gr: UILongPressGestureRecognizer) {
+    init(view: UICollectionView, lpgr: UILongPressGestureRecognizer) {
         self.view = view
         super.init()
-        gr.minimumPressDuration = 0.25
-        gr.addTarget(self, action: #selector(handleLongPress))
+        lpgr.minimumPressDuration = 0.25
+        lpgr.addTarget(self, action: #selector(handleLongPress))
     }
 
     /**
@@ -28,20 +28,20 @@ final class FavoriteMover: NSObject {
 
      - parameter gr: the gesture recognizer being used
      */
-    @objc private func handleLongPress(_ gr: UILongPressGestureRecognizer) {
-        switch(gr.state) {
+    @objc private func handleLongPress(_ lpgr: UILongPressGestureRecognizer) {
+        switch lpgr.state {
         case .began:
-            let pos = gr.location(in: view)
+            let pos = lpgr.location(in: view)
             guard let indexPath = view.indexPathForItem(at: pos) else { return }
             guard let cell: FavoriteCell = view.cellForItem(at: indexPath) else { return }
             self.cell = cell
             view.beginInteractiveMovementForItem(at: indexPath)
             cell.moving = true
-            
+
         case .changed:
-            let pos = gr.location(in: gr.view!)
+            let pos = lpgr.location(in: lpgr.view!)
             view.updateInteractiveMovementTargetPosition(pos)
-            
+
         case .ended:
             view.endInteractiveMovement()
             cell?.moving = false

@@ -9,7 +9,7 @@ import os
 final class FavoriteCollection: Codable {
 
     private var favorites: [Favorite]
-    private var reverseLookup: [SoundFontPatch:Favorite]
+    private var reverseLookup: [SoundFontPatch: Favorite]
 
     /// Number of favorites defined
     var count: Int { favorites.count }

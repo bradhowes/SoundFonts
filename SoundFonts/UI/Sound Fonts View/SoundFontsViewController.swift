@@ -74,17 +74,14 @@ extension SoundFontsViewController: ControllerConfiguration {
         soundFonts = router.soundFonts
         favorites = router.favorites
 
-        soundFontsTableViewDataSource = FontsTableViewDataSource(view: soundFontsView,
-                                                                 selectedSoundFontManager: router.selectedSoundFontManager,
-                                                                 activePatchManager: router.activePatchManager,
-                                                                 fontEditorActionGenerator: self,
-                                                                 soundFonts: router.soundFonts)
-        patchesTableViewDataSource = PatchesTableViewDataSource(view: patchesView,
-                                                                searchBar: searchBar,
-                                                                activePatchManager: router.activePatchManager,
-                                                                selectedSoundFontManager: router.selectedSoundFontManager,
-                                                                favorites: favorites,
-                                                                keyboard: router.keyboard)
+        soundFontsTableViewDataSource = FontsTableViewDataSource(
+            view: soundFontsView, selectedSoundFontManager: router.selectedSoundFontManager,
+            activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
+            soundFonts: router.soundFonts)
+        patchesTableViewDataSource = PatchesTableViewDataSource(
+            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
+            selectedSoundFontManager: router.selectedSoundFontManager, favorites: favorites,
+            keyboard: router.keyboard)
     }
 }
 
@@ -152,14 +149,14 @@ extension SoundFontsViewController: FontEditorActionGenerator {
             let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
             let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
-            let delete = UIAlertAction(title: deleteTitle, style:.destructive) { action in
+            let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
                 self.favorites.removeAll(associatedWith: soundFont)
                 self.soundFonts.remove(index: indexPath.row)
                 completionHandler(true)
             }
 
             let cancelTitle = NSLocalizedString("Cancel", comment: "The cancel action")
-            let cancel = UIAlertAction(title: cancelTitle, style:.cancel) { action in
+            let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
                 completionHandler(false)
             }
 
@@ -193,5 +190,3 @@ extension SoundFontsViewController: FontEditorDelegate {
         self.dismiss(animated: true, completion: nil)
     }
 }
-
-

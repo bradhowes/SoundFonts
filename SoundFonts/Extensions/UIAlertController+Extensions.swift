@@ -10,7 +10,7 @@ extension UIAlertController {
 }
 
 extension UIWindow {
-    
+
     var visibleViewController: UIViewController? {
         guard let rootViewController = rootViewController else {
             return nil
@@ -19,7 +19,7 @@ extension UIWindow {
     }
 
     private func visibleViewController(for controller: UIViewController) -> UIViewController {
-        var nextOnStackViewController: UIViewController? = nil
+        var nextOnStackViewController: UIViewController?
         if let presented = controller.presentedViewController {
             nextOnStackViewController = presented
         } else if let navigationController = controller as? UINavigationController,
@@ -30,7 +30,7 @@ extension UIWindow {
                 tabBarController.presentedViewController) {
             nextOnStackViewController = visible
         }
-        
+
         if let nextOnStackViewController = nextOnStackViewController {
             return visibleViewController(for: nextOnStackViewController)
         } else {

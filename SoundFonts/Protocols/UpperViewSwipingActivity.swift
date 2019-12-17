@@ -24,4 +24,3 @@ protocol UpperViewSwipingActivity {
      */
     func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector)
 }
-

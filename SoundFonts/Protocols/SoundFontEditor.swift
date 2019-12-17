@@ -5,5 +5,6 @@ import UIKit
 protocol FontEditorActionGenerator {
 
     func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction
-    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath) -> UIContextualAction
+    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath)
+        -> UIContextualAction
 }

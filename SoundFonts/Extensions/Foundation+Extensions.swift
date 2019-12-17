@@ -56,4 +56,3 @@ extension Data: SettingSerializable {
         userDefaults.set(value, forKey: key)
     }
 }
-

@@ -5,7 +5,7 @@ import Foundation
 /**
  Definition of a MIDI note.
  */
-struct Note : CustomStringConvertible, Codable {
+struct Note: CustomStringConvertible, Codable {
 
     static let sharpTag = "♯"
     static let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]

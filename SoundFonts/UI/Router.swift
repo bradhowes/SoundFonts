@@ -71,9 +71,9 @@ extension Router {
         precondition(infoBarController != nil, "nil InfoBarController")
         precondition(keyboardController != nil, "nil KeyboardController")
     }
-    
+
     private func oneTimeSet(_ oldValue: UIViewController?) {
-        if let _ = oldValue {
+        if oldValue != nil {
             preconditionFailure("expected nil value")
         }
     }

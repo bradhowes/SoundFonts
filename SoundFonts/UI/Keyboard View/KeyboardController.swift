@@ -14,8 +14,8 @@ final class KeyboardController: UIViewController {
     /// Largest MIDI value available for the last key
     static let maxMidiValue = 12 * 9 // C9
 
-    var delegate: KeyboardDelegate? = nil
-    
+    weak var delegate: KeyboardDelegate?
+
     /// MIDI value of the first note in the keyboard
     private var firstMidiNoteValue = 48 {
         didSet {
@@ -29,10 +29,10 @@ final class KeyboardController: UIViewController {
     /// Collection of Key instances for the keyboard. Note that in here the 'black' keys appear before the 'white' keys
     /// so that touch processing happens correctly.
     private var keys = [Key]()
-    
+
     /// How wide each key will be
     private let keyWidth: CGFloat = 64.0
-    
+
     private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
     private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
 
@@ -90,7 +90,7 @@ extension KeyboardController {
                     return 12 - firstMidiNoteValue % 12
                 }
             }()
-            
+
             shiftKeys(by: min(shift, Self.maxMidiValue - lastMidiNoteValue))
         }
     }
@@ -112,9 +112,9 @@ extension KeyboardController {
             }
         }
     }
-    
+
     private func shiftKeys(by: Int) {
-        assert(keys.count > 0)
+        assert(!keys.isEmpty)
         if by != 0 {
             releaseAllKeys() // Cancel any touched keys before remaking the keyboard
             firstMidiNoteValue += by
@@ -131,12 +131,12 @@ extension KeyboardController {
         // New touches will always cause pressed keys
         updateTouchedKeys(touches, with: event, pressed: true)
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Moved touches may become associated with a new key (releasing the old one)
         reviseTouchedKeys(touches, with: event)
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Touches no longer in view
         updateTouchedKeys(touches, with: event, pressed: false)
@@ -146,15 +146,15 @@ extension KeyboardController {
         // Stop everything -- system has interrupted us.
         updateTouchedKeys(touches, with: event, pressed: false)
     }
-    
+
     private func reviseTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+
         // Look for keys that *did* belong to a touch that moved
         let previous = touches.map { findTouchedKey(touch: $0, with: event, previous: true) }
-        
+
         // Look for keys that *now* belong to a touch that moved
         let found = touches.map { findTouchedKey(touch: $0, with: event, previous: false) }
-        
+
         // Evaluate the old/new pairs and record which key should no longer be pressed and which
         // ones should now be pressed
         let changes = zip(previous, found).reduce(into: (released: Set<Key>(), pressed: Set<Key>())) { acc, pair in
@@ -169,15 +169,15 @@ extension KeyboardController {
             case (.none, .none): break
             }
         }
-        
+
         // For released keys, update their status based on their presence in the pressed set
         changes.released.forEach { setKeyPressed($0, pressed: changes.pressed.contains($0)) }
-        
+
         // For the pressed keys, do the usual. There can be some overlap with above, but there are only so many
         // touches...
         changes.pressed.forEach { setKeyPressed($0, pressed: true) }
     }
-    
+
     private func updateTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?, pressed: Bool) {
         touches.compactMap { findTouchedKey(touch: $0, with: event) }
             .forEach { setKeyPressed($0, pressed: pressed) }
@@ -186,13 +186,13 @@ extension KeyboardController {
                 .forEach { setKeyPressed($0, pressed: pressed) }
         }
     }
-    
+
     private func findTouchedKey(touch: UITouch, with event: UIEvent?, previous: Bool = false) -> Key? {
         let point = previous ? touch.previousLocation(in: view) : touch.location(in: view)
         let found = keys.first { $0.point(inside: view.convert(point, to: $0), with: event) }
         return found
     }
-    
+
     /**
      Handle the pressed state change for a Key instance. Commuunicates the change to the delegate.
      
@@ -220,9 +220,9 @@ extension KeyboardController: Keyboard {
         get { Note(midiNoteValue: firstMidiNoteValue) }
         set { shiftKeys(by: newValue.midiNoteValue - firstMidiNoteValue) }
     }
-    
+
     var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
-    
+
     func releaseAllKeys() {
         keys.forEach { setKeyPressed($0, pressed: false) }
     }
@@ -234,10 +234,10 @@ extension KeyboardController {
 
     private func createKeys() {
         keys.forEach { $0.removeFromSuperview() }
-        
+
         let newKeyDefs = Array(KeyParamsSequence(midiNoteStart: firstMidiNoteValue, limit: view.bounds.size.width,
                                                  stride: keyWidth, height: view.bounds.size.height))
-        
+
         // Handle edge-case where we generated a key with a MIDI value that is too big. This *could* be detected and
         // dealt with in KeyParamSequence, but this is a bit cleaner, and rarely executed.
         lastMidiNoteValue = firstMidiNoteValue + newKeyDefs.count - 1
@@ -246,7 +246,7 @@ extension KeyboardController {
             createKeys()
             return
         }
-        
+
         // Transform the key definitions into Key instances and partition into two groups, one for the black keys and
         // another for the white keys.
         let partitionedKeys = newKeyDefs.reduce(into: (black: [Key](), white: [Key]())) { acc, def in
@@ -258,7 +258,7 @@ extension KeyboardController {
                 acc.white.append(key)
             }
         }
-        
+
         // Create the white keys first so that they will appear below the black keys, but store the 'black' keys
         // first so that they will receive a touch before a 'white' key if there is an overlap.
         partitionedKeys.white.forEach { view.addSubview($0) }
@@ -267,7 +267,7 @@ extension KeyboardController {
 
         setVisibleKeyLabels?(lowestNote.label, highestNote.label)
     }
-    
+
     // Custom sequence / iterator that will spit out 2-tuples of CGRect and Note values for the next key
     // in a keyboard view.
     private struct KeyParamsSequence: Sequence, IteratorProtocol {
@@ -276,9 +276,9 @@ extension KeyboardController {
         private let xLimit: CGFloat
         private let xStride: CGFloat
         private let height: CGFloat
-        
+
         private let blackKeyHeightScale: CGFloat = 0.6
-        
+
         init(midiNoteStart: Int, limit: CGFloat, stride: CGFloat, height: CGFloat) {
             self.nextMidiNote = midiNoteStart
             self.nextX = 0
@@ -286,31 +286,30 @@ extension KeyboardController {
             self.xStride = stride
             self.height = height
         }
-        
+
         func makeIterator() -> KeyParamsSequence {
             return self
         }
-        
+
         mutating func next() -> (CGRect, Note)? {
             guard nextX < xLimit else { return nil }
-            
+
             // Obtain the next note. If it is a sharp, then make sure we replay the `x` value for the next 'white' key
             let note = Note(midiNoteValue: nextMidiNote)
             let advance = note.accented ? 0 : xStride
-            
+
             // Update sequence values upon exit
             defer {
                 nextMidiNote += 1
                 nextX += advance
             }
-            
+
             // The 'black' keys are positioned between the last key and the next 'white' one, and it is
             // not as high
-            let x = note.accented ? nextX - xStride / 2 : nextX
+            let xPos = note.accented ? nextX - xStride / 2 : nextX
             let height = note.accented ? self.height * blackKeyHeightScale : self.height
-            
-            return (CGRect(x: x, y: 0, width: xStride, height: height), note)
+
+            return (CGRect(x: xPos, y: 0, width: xStride, height: height), note)
         }
     }
 }
-

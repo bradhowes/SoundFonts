@@ -6,7 +6,7 @@ import UIKit
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
  left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
  */
-final class InfoBarController : UIViewController, ControllerConfiguration, InfoBar {
+final class InfoBarController: UIViewController, ControllerConfiguration, InfoBar {
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
@@ -15,7 +15,7 @@ final class InfoBarController : UIViewController, ControllerConfiguration, InfoB
 
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
-    private var fader: UIViewPropertyAnimator? = nil
+    private var fader: UIViewPropertyAnimator?
 
     override func viewDidLoad() {
         doubleTap.numberOfTouchesRequired = 1

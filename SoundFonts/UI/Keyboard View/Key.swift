@@ -6,7 +6,7 @@ import UIKit
  Visual representation of a piano key. Each key has an associated Note value which determines what MIDI note the key
  will emit when touched.
  */
-final class Key : UIView {
+final class Key: UIView {
 
     static var isMuted: Bool = false
 
@@ -27,7 +27,7 @@ final class Key : UIView {
         super.init(frame: frame)
         configure()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         self.note = Note(midiNoteValue: aDecoder.decodeInteger(forKey: "note"))
         super.init(coder: aDecoder)

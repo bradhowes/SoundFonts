@@ -3,7 +3,7 @@
 import UIKit
 
 extension UICollectionView {
-    
+
     /**
      Register a cell view type that implements ReusableView protocol.
     

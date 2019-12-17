@@ -2,14 +2,13 @@
 
 import Foundation
 
-public class SubscriptionManager<Event>
-{
-    typealias Subscription = (Event)->Void
+public class SubscriptionManager<Event> {
+    typealias Subscription = (Event) -> Void
 
     private var subscriptions = [UUID: Subscription]()
 
     @discardableResult
-    func subscribe<O:AnyObject>(_ subscriber: O, closure: @escaping (Event)->Void) -> SubscriberToken {
+    func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (Event) -> Void) -> SubscriberToken {
         let uuid = UUID()
         let token = SubscriberToken { [weak self] in self?.subscriptions.removeValue(forKey: uuid) }
         subscriptions[uuid] = { [weak subscriber] kind in

@@ -49,7 +49,7 @@ protocol Favorites {
     func move(from: Int, to: Int)
 
     func selected(index: Int)
-    
+
     func remove(index: Int, bySwiping: Bool)
 
     func removeAll(associatedWith: SoundFont)
@@ -57,5 +57,5 @@ protocol Favorites {
     func count(associatedWith: SoundFont) -> Int
 
     @discardableResult
-    func subscribe<O:AnyObject>(_ subscriber: O, closure: @escaping (FavoritesEvent)->Void) -> SubscriberToken
+    func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
 }

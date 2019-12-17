@@ -47,20 +47,20 @@ enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
     }
 
     init(from decoder: Decoder) throws {
-        var container = try! decoder.unkeyedContainer()
-        guard let kind = InternalKey(rawValue: try! container.decode(Int.self)) else { fatalError() }
+        var container = try decoder.unkeyedContainer()
+        guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
         switch kind {
-        case .normal: self = .normal(soundFontPatch: try! container.decode(SoundFontPatch.self))
-        case .favorite: self = .favorite(favorite: try! container.decode(Favorite.self))
+        case .normal: self = .normal(soundFontPatch: try container.decode(SoundFontPatch.self))
+        case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
         }
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
-        try! container.encode(InternalKey.key(for: self).rawValue)
+        try container.encode(InternalKey.key(for: self).rawValue)
         switch self {
-        case .normal(let soundFontPatch): try! container.encode(soundFontPatch)
-        case .favorite(let favorite): try! container.encode(favorite)
+        case .normal(let soundFontPatch): try container.encode(soundFontPatch)
+        case .favorite(let favorite): try container.encode(favorite)
         }
     }
 }

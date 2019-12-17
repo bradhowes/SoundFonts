@@ -13,7 +13,7 @@ enum FavoriteEditorDismissedReason {
 /**
  Protocol for the `FavoriteDetailController` delegate instance.
  */
-protocol FavoriteEditorDelegate : NSObjectProtocol {
+protocol FavoriteEditorDelegate: NSObjectProtocol {
     /**
      Notification when the FavoriteDetailController is dismissed and editing of a particular Favorite instance
      is over.

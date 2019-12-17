@@ -70,7 +70,7 @@ extension SoundFontsManager: SoundFonts {
 extension SoundFontsManager {
 
     private static let niceNames = [
-        "Fluid":"Fluid R3", "Free Font":"FreeFont", "GeneralUser":"MuseScore", "User":"Roland"
+        "Fluid": "Fluid R3", "Free Font": "FreeFont", "GeneralUser": "MuseScore", "User": "Roland"
     ]
 
     @discardableResult
@@ -78,7 +78,7 @@ extension SoundFontsManager {
         guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
         let info = GetSoundFontInfo(data: data)
         if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-        let displayName = niceNames.first { (key, value) in info.name.contains(key) }?.value ?? info.name
+        let displayName = niceNames.first { (key, _) in info.name.contains(key) }?.value ?? info.name
         return SoundFont(displayName, resource: url, soundFontInfo: info)
     }
 

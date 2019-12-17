@@ -3,7 +3,7 @@
 import UIKit
 
 extension UISearchBar {
-    
+
     /// Obtain a filtered version of the search bar contents
     var searchTerm: String? {
         let text = (self.text ?? "").trimmingCharacters(in: .whitespaces)
