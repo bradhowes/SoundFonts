@@ -7,7 +7,7 @@ import os
  Data source for the SoundFont UITableView. This view shows all of the names of the SoundFont files that are available
  in the app.
  */
-final class FontsTableViewDataSource: NSObject {
+final class FontsTableViewManager: NSObject {
     private lazy var log = Logging.logger("FontDS")
 
     private let view: UITableView
@@ -46,7 +46,7 @@ final class FontsTableViewDataSource: NSObject {
 
 // MARK: - UITableViewDataSource Protocol
 
-extension FontsTableViewDataSource: UITableViewDataSource {
+extension FontsTableViewManager: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
@@ -59,7 +59,7 @@ extension FontsTableViewDataSource: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate Protocol
 
-extension FontsTableViewDataSource: UITableViewDelegate {
+extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
@@ -94,7 +94,7 @@ extension FontsTableViewDataSource: UITableViewDelegate {
 
 // MARK: - Private
 
-extension FontsTableViewDataSource {
+extension FontsTableViewManager {
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         os_log(.info, log: log, "activePatchChange")

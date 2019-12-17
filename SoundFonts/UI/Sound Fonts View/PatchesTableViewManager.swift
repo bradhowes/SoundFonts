@@ -6,7 +6,7 @@ import os
 /**
  Data source for the Patches UITableView.
  */
-final class PatchesTableViewDataSource: NSObject {
+final class PatchesTableViewManager: NSObject {
 
     /// Number of sections we partition patches into
     static private let sectionSize = 20
@@ -46,9 +46,7 @@ final class PatchesTableViewDataSource: NSObject {
     }
 }
 
-// MARK: - UITableViewDataSource Protocol
-
-extension PatchesTableViewDataSource: UITableViewDataSource {
+extension PatchesTableViewManager: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
         showingSearchResults ? 1 : sectionCount
@@ -66,8 +64,8 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         showingSearchResults ? nil :
             [UITableView.indexSearch, "•"] +
-            stride(from: PatchesTableViewDataSource.sectionSize, to: patches.count - 1,
-                   by: PatchesTableViewDataSource.sectionSize).map { "\($0)" }
+            stride(from: PatchesTableViewManager.sectionSize, to: patches.count - 1,
+                   by: PatchesTableViewManager.sectionSize).map { "\($0)" }
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -92,13 +90,13 @@ extension PatchesTableViewDataSource: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "\(section * PatchesTableViewDataSource.sectionSize)"
+        "\(section * PatchesTableViewManager.sectionSize)"
     }
 }
 
 // MARK: - UITableViewDelegate Protocol
 
-extension PatchesTableViewDataSource: UITableViewDelegate {
+extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
         UISwipeActionsConfiguration? {
@@ -140,7 +138,7 @@ extension PatchesTableViewDataSource: UITableViewDelegate {
 
 // MARK: - UISearchBarDelegate Protocol
 
-extension PatchesTableViewDataSource: UISearchBarDelegate {
+extension PatchesTableViewManager: UISearchBarDelegate {
 
     /**
      Notification that the content of the search field changed. Update the search results based on the new contents. If
@@ -161,7 +159,7 @@ extension PatchesTableViewDataSource: UISearchBarDelegate {
 
 // MARK: - Private
 
-extension PatchesTableViewDataSource {
+extension PatchesTableViewManager {
 
     private func reloadView() {
         if let searchTerm = searchBar.searchTerm {

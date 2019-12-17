@@ -19,8 +19,8 @@ final class SoundFontsViewController: UIViewController {
     @IBOutlet private weak var searchBar: UISearchBar!
 
     private var soundFonts: SoundFonts!
-    private var soundFontsTableViewDataSource: FontsTableViewDataSource!
-    private var patchesTableViewDataSource: PatchesTableViewDataSource!
+    private var soundFontsTableViewDataSource: FontsTableViewManager!
+    private var patchesTableViewDataSource: PatchesTableViewManager!
     private var favorites: Favorites!
 
     private var swipeLeft = UISwipeGestureRecognizer()
@@ -74,11 +74,11 @@ extension SoundFontsViewController: ControllerConfiguration {
         soundFonts = router.soundFonts
         favorites = router.favorites
 
-        soundFontsTableViewDataSource = FontsTableViewDataSource(
+        soundFontsTableViewDataSource = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: router.selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
             soundFonts: router.soundFonts)
-        patchesTableViewDataSource = PatchesTableViewDataSource(
+        patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: router.selectedSoundFontManager, favorites: favorites,
             keyboard: router.keyboard)
@@ -150,8 +150,12 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
             let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
             let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
-                self.favorites.removeAll(associatedWith: soundFont)
                 self.soundFonts.remove(index: indexPath.row)
+                self.favorites.removeAll(associatedWith: soundFont)
+                let url = soundFont.fileURL
+                DispatchQueue.global(qos: .userInitiated).async {
+                    try? FileManager.default.removeItem(at: url)
+                }
                 completionHandler(true)
             }
 

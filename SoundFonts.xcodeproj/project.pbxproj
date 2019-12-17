@@ -49,8 +49,8 @@
 		BD7B44B523A8C6E20051A26A /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = BD7B44B423A8C6E20051A26A /* .swiftlint.yml */; };
 		BD85F8CA21D41CFB0028E440 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8C921D41CFB0028E440 /* Router.swift */; };
 		BD85F8CC21D549ED0028E440 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */; };
-		BD85F8CE21D554F50028E440 /* FontsTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */; };
-		BD85F8D021D556DF0028E440 /* PatchesTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CF21D556DF0028E440 /* PatchesTableViewDataSource.swift */; };
+		BD85F8CE21D554F50028E440 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */; };
+		BD85F8D021D556DF0028E440 /* PatchesTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */; };
 		BD85F8D521D91A460028E440 /* SelectedSoundFontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */; };
 		BD85F8D921D91AA90028E440 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D821D91AA90028E440 /* Favorites.swift */; };
 		BD85F8DF21D91EA20028E440 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8DE21D91EA20028E440 /* Keyboard.swift */; };
@@ -165,8 +165,8 @@
 		BD7B44B423A8C6E20051A26A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		BD85F8C921D41CFB0028E440 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
-		BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsTableViewDataSource.swift; sourceTree = "<group>"; };
-		BD85F8CF21D556DF0028E440 /* PatchesTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesTableViewDataSource.swift; sourceTree = "<group>"; };
+		BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontsTableViewManager.swift; sourceTree = "<group>"; };
+		BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesTableViewManager.swift; sourceTree = "<group>"; };
 		BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSoundFontManager.swift; sourceTree = "<group>"; };
 		BD85F8D821D91AA90028E440 /* Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorites.swift; sourceTree = "<group>"; };
 		BD85F8DE21D91EA20028E440 /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
@@ -252,8 +252,9 @@
 				BD754331238039FD004C6A4C /* Mute Detection */,
 				BD03F4042399B88B001CEEF7 /* Formatters.swift */,
 				BD42F354238868F700E6D576 /* Logging.swift */,
-				BD90646821DE1C92009B474A /* SubscriberToken.swift */,
 				BD85F8E421D98F820028E440 /* Settings.swift */,
+				BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */,
+				BD90646821DE1C92009B474A /* SubscriberToken.swift */,
 				BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */,
 				BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */,
 			);
@@ -374,13 +375,12 @@
 				BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */,
 				BD36FF6E21DBC393002305CB /* FavoriteEditorDelegate.swift */,
 				BD85F8D821D91AA90028E440 /* Favorites.swift */,
+				BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */,
 				BD36FF6C21DBABD2002305CB /* InfoBar.swift */,
 				BD85F8DE21D91EA20028E440 /* Keyboard.swift */,
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
 				BD781B47237BF53900A71031 /* PatchesViewManager.swift */,
-				BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */,
 				BDD3860422147D0C0063040C /* ReusableView.swift */,
-				BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */,
 				BD426004238BBE9600A2AE01 /* SoundFonts.swift */,
 				BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */,
 				BD781B49237BFC5700A71031 /* UpperViewSwipingActivity.swift */,
@@ -394,9 +394,9 @@
 				BDDD1F522216BA0F003BDD6F /* FontCell.swift */,
 				BDAB3990239500CA00C26C57 /* FontEditor.swift */,
 				BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */,
-				BD85F8CD21D554F50028E440 /* FontsTableViewDataSource.swift */,
+				BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */,
 				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
-				BD85F8CF21D556DF0028E440 /* PatchesTableViewDataSource.swift */,
+				BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */,
 				BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */,
 			);
 			path = "Sound Fonts View";
@@ -688,7 +688,7 @@
 				BDDD1F572216CF26003BDD6F /* UITableView+Extensions.swift in Sources */,
 				BD85F8E521D98F820028E440 /* Settings.swift in Sources */,
 				BD7A2E5021CEBD74001CB271 /* UpperViewManager.swift in Sources */,
-				BD85F8CE21D554F50028E440 /* FontsTableViewDataSource.swift in Sources */,
+				BD85F8CE21D554F50028E440 /* FontsTableViewManager.swift in Sources */,
 				BDD3860722147D920063040C /* NibLoadableView.swift in Sources */,
 				BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */,
 				BDDCD83F23A0DD1200B3AABA /* SubscriptionManager.swift in Sources */,
@@ -697,7 +697,7 @@
 				BDD3860922147E380063040C /* UICollectionView+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
 				BD7A2E4E21CEB452001CB271 /* UpperViewSlider.swift in Sources */,
-				BD85F8D021D556DF0028E440 /* PatchesTableViewDataSource.swift in Sources */,
+				BD85F8D021D556DF0028E440 /* PatchesTableViewManager.swift in Sources */,
 				BD36FF6F21DBC393002305CB /* FavoriteEditorDelegate.swift in Sources */,
 				BD75433B2382945D004C6A4C /* GetSoundFontInfo.swift in Sources */,
 				BD75433023803994004C6A4C /* Mute.swift in Sources */,

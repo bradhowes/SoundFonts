@@ -25,7 +25,7 @@ force_try:
 # or they can set both explicitly
 file_length:
   warning: 500
-  error: 1200
+  error: 600
 
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names
