@@ -22,10 +22,13 @@ extension FileManager {
         return temporaryFileURL
     }
 
+    /// Location of app documents that we want to keep private but backed-up
+    var privateDocumentsDirectory: URL { urls(for: .applicationSupportDirectory, in: .userDomainMask).first! }
+
     /// True if the user has an iCloud container available to use
     var hasCloudDirectory: Bool { return self.ubiquityIdentityToken != nil }
 
-    /// Location of app documents on device (and from in iTunes)
+    /// Location of documents on device that can be backed-up to iCloud if enabled.
     var localDocumentsDirectory: URL {
         let path = self.urls(for: .documentDirectory, in: .userDomainMask).last!
         os_log(.info, log: log, "localDocumentsDirectory - %@", path.path)
