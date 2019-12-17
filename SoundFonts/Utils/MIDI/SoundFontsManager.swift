@@ -7,7 +7,7 @@ final class SoundFontsManager: SubscriptionManager<SoundFontsEvent>, Codable {
 
     private static let log = Logging.logger("SFLib")
 
-    private static let archivePath = FileManager.default.localDocumentsDirectory
+    private static let archivePath = FileManager.default.privateDocumentsDirectory
         .appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }

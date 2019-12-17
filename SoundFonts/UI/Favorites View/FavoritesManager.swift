@@ -11,7 +11,7 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent>, Codable {
 
     private static let log = Logging.logger("FavMgr")
 
-    private static let archivePath: URL = FileManager.default.localDocumentsDirectory
+    private static let archivePath: URL = FileManager.default.privateDocumentsDirectory
         .appendingPathComponent("Favorites.plist")
 
     private var log: OSLog { Self.log }
