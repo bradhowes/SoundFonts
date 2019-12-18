@@ -19,5 +19,6 @@ final class FontCell: FontPatchCellBase, ReusableView, NibLoadableView {
         os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
+        self.accessibilityLabel = "Font " + name
     }
 }
