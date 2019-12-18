@@ -20,5 +20,6 @@ final class PatchCell: FontPatchCellBase, ReusableView, NibLoadableView {
         os_log(.debug, log: log, "update '%s' isActive: %d isFavorite: %d", name, isActive, isFavorite)
         self.name.text = PatchCell.favoriteTag(isFavorite) + name
         self.name.textColor = fontColorWhen(isSelected: false, isActive: isActive, isFavorite: isFavorite)
+        self.accessibilityLabel = "Patch " + name
     }
 }

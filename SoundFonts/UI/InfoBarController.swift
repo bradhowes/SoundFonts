@@ -76,8 +76,10 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
     func setVisibleKeyLabels(from: String, to: String) {
         UIView.performWithoutAnimation {
             lowestKey.setTitle("⋘ " + from, for: .normal)
+            lowestKey.accessibilityLabel = "Keyboard down before " + from
             lowestKey.layoutIfNeeded()
             highestKey.setTitle(to + " ⋙", for: .normal)
+            highestKey.accessibilityLabel = "Keyboard up after " + to
             highestKey.layoutIfNeeded()
         }
     }
