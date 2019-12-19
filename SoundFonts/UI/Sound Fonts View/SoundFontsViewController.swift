@@ -100,8 +100,8 @@ final class SoundFontsViewController: UIViewController, SegueHandler {
     }
 
     @IBAction func addSoundFont(_ sender: UIButton) {
-        let documentPicker = UIDocumentPickerViewController(documentTypes: ["com.braysoftware.sf2", "public.data"],
-                                                            in: .import)
+        let documentPicker = UIDocumentPickerViewController(
+            documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
         documentPicker.modalPresentationStyle = .fullScreen
         documentPicker.allowsMultipleSelection = true

@@ -324,7 +324,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2604" y="-1257"/>
+            <point key="canvasLocation" x="2603" y="-1306"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="GeL-bI-CiM">
@@ -539,7 +539,7 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="984" y="-1256"/>
+            <point key="canvasLocation" x="983" y="-1306"/>
         </scene>
         <!--SoundFont Editor-->
         <scene sceneID="Nc1-o8-v27">
@@ -706,7 +706,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1766" y="-1257"/>
+            <point key="canvasLocation" x="1764" y="-1306"/>
         </scene>
         <!--SoundFont Editor Navigation Controller-->
         <scene sceneID="zXe-TQ-fWZ">
