@@ -24,6 +24,8 @@
 		BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
 		BD42F355238868F700E6D576 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
 		BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
+		BD5A2A4223AB671900CDA8B4 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */; };
+		BD5A2A4423AB6C0200CDA8B4 /* FontBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */; };
 		BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
 		BD6F2FC323A28E5800E4091E /* SoundFontPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691423A238550016AB1D /* SoundFontPatch.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
@@ -131,6 +133,8 @@
 		BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
+		BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
+		BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontBrowser.swift; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
@@ -381,6 +385,7 @@
 				BDD3860622147D920063040C /* NibLoadableView.swift */,
 				BD781B47237BF53900A71031 /* PatchesViewManager.swift */,
 				BDD3860422147D0C0063040C /* ReusableView.swift */,
+				BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */,
 				BD426004238BBE9600A2AE01 /* SoundFonts.swift */,
 				BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */,
 				BD781B49237BFC5700A71031 /* UpperViewSwipingActivity.swift */,
@@ -398,6 +403,7 @@
 				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
 				BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */,
 				BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */,
+				BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */,
 			);
 			path = "Sound Fonts View";
 			sourceTree = "<group>";
@@ -709,6 +715,7 @@
 				BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */,
 				BDDA223323A3CA13000D953D /* FavoriteCollection.swift in Sources */,
 				BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */,
+				BD5A2A4423AB6C0200CDA8B4 /* FontBrowser.swift in Sources */,
 				BD75433623828711004C6A4C /* iffdigest.cc in Sources */,
 				BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */,
 				BDAB3991239500CA00C26C57 /* FontEditor.swift in Sources */,
@@ -737,6 +744,7 @@
 				BDCE3C302190F7C00008ACF9 /* Sampler.swift in Sources */,
 				BDD3860522147D0C0063040C /* ReusableView.swift in Sources */,
 				BD75B294218B930B00C7EBD7 /* Key.swift in Sources */,
+				BD5A2A4223AB671900CDA8B4 /* SegueHandler.swift in Sources */,
 				BD36FF7121DBC3DB002305CB /* ControllerConfiguration.swift in Sources */,
 				BD36FF6D21DBABD2002305CB /* InfoBar.swift in Sources */,
 				BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */,

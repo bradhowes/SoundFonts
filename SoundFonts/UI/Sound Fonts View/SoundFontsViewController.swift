@@ -11,17 +11,20 @@ import os
 
  Perhaps this should be split into two, one for a soundfont view, and one for the patches view.
  */
-final class SoundFontsViewController: UIViewController {
-    private lazy var logger = Logging.logger("SFVC")
+final class SoundFontsViewController: UIViewController, SegueHandler {
+    private lazy var log = Logging.logger("SFVC")
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
+    @IBOutlet private weak var addSoundFontButton: UIButton!
+    @IBOutlet private weak var removeSoundFontButton: UIButton!
 
     private var soundFonts: SoundFonts!
     private var soundFontsTableViewDataSource: FontsTableViewManager!
     private var patchesTableViewDataSource: PatchesTableViewManager!
     private var favorites: Favorites!
+    private var selectedSoundFontManager: SelectedSoundFontManager!
 
     private var swipeLeft = UISwipeGestureRecognizer()
     private var swipeRight = UISwipeGestureRecognizer()
@@ -36,6 +39,9 @@ final class SoundFontsViewController: UIViewController {
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeRight)
+
+        addSoundFontButton.addTarget(self, action: #selector(addSoundFont), for: .touchUpInside)
+        removeSoundFontButton.addTarget(self, action: #selector(removeSoundFont), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +50,19 @@ final class SoundFontsViewController: UIViewController {
         soundFontsTableViewDataSource.selectActive()
     }
 
+    enum SegueIdentifier: String {
+        case fontEditor
+        case fontBrowser
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .fontEditor: beginEditFont(segue, sender: sender)
+        case .fontBrowser: beginBrowseFont(segue, sender: sender)
+        }
+    }
+
+    private func beginEditFont(_ segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             let vc = nc.topViewController as? FontEditor,
             let cell = sender as? FontCell,
@@ -64,6 +82,86 @@ final class SoundFontsViewController: UIViewController {
                                                  size: CGSize(width: 32.0, height: rect.height)), to: nil)
         }
     }
+
+    private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {
+        guard let nc = segue.destination as? UINavigationController,
+            (nc.topViewController as? UIDocumentPickerViewController) != nil,
+            let button = sender as? UIButton else { return }
+
+        // vc.delegate = self
+
+        if let ppc = nc.popoverPresentationController {
+            ppc.barButtonItem = nil
+            ppc.sourceView = button
+            let rect = button.bounds
+            ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
+                                                 size: CGSize(width: 32.0, height: rect.height)), to: nil)
+        }
+    }
+
+    @IBAction func addSoundFont(_ sender: UIButton) {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: ["com.braysoftware.sf2", "public.data"],
+                                                            in: .import)
+        documentPicker.delegate = self
+        documentPicker.modalPresentationStyle = .fullScreen
+        documentPicker.allowsMultipleSelection = true
+
+        present(documentPicker, animated: true, completion: nil)
+    }
+
+    @IBAction func removeSoundFont(_ sender: UIButton) {
+        let soundFont = selectedSoundFontManager.selected
+        guard soundFont.removable else { return }
+        remove(soundFont: soundFont, completionHandler: nil)
+    }
+
+    private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+        guard let index = soundFonts.index(of: soundFont.key), soundFont.removable else {
+            completionHandler?(false)
+            return
+        }
+
+        let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
+        let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
+        let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+        let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
+
+        let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
+            self.soundFonts.remove(index: index)
+            self.favorites.removeAll(associatedWith: soundFont)
+            let url = soundFont.fileURL
+            DispatchQueue.global(qos: .userInitiated).async { try? FileManager.default.removeItem(at: url) }
+            completionHandler?(true)
+        }
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "The cancel action")
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in completionHandler?(false) }
+
+        alertController.addAction(delete)
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension SoundFontsViewController: UIDocumentPickerDelegate {
+
+    func documentPicker(_ dpvc: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        os_log(.info, log: log, "documentPicker didPickDocumentAt")
+        for each in urls {
+            os_log(.info, log: log, "processing %s", each.path)
+            if let result = soundFonts.add(url: each) {
+                os_log(.info, log: log, "soundFonts.add - %d %s", result.0, result.1.description)
+            }
+        }
+    }
 }
 
 // MARK: - ControllerConfiguration Protocol
@@ -73,14 +171,15 @@ extension SoundFontsViewController: ControllerConfiguration {
     func establishConnections(_ router: Router) {
         soundFonts = router.soundFonts
         favorites = router.favorites
+        selectedSoundFontManager = router.selectedSoundFontManager
 
         soundFontsTableViewDataSource = FontsTableViewManager(
-            view: soundFontsView, selectedSoundFontManager: router.selectedSoundFontManager,
+            view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
-            soundFonts: router.soundFonts)
+            soundFonts: router.soundFonts, deleteButton: removeSoundFontButton)
         patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
-            selectedSoundFontManager: router.selectedSoundFontManager, favorites: favorites,
+            selectedSoundFontManager: selectedSoundFontManager, favorites: favorites,
             keyboard: router.keyboard)
     }
 }
@@ -123,7 +222,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
     func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.performSegue(withIdentifier: "soundFontDetail", sender: cell)
+            self.performSegue(withIdentifier: .fontEditor, sender: cell)
             completionHandler(true)
         }
 
@@ -141,45 +240,14 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns new UIContextualAction that will perform the edit
      */
-    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont, indexPath: IndexPath) ->
-        UIContextualAction {
-        let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
-        let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
+    func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont,
+                                 indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
-            let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-
-            let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
-            let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
-                self.soundFonts.remove(index: indexPath.row)
-                self.favorites.removeAll(associatedWith: soundFont)
-                let url = soundFont.fileURL
-                DispatchQueue.global(qos: .userInitiated).async {
-                    try? FileManager.default.removeItem(at: url)
-                }
-                completionHandler(true)
-            }
-
-            let cancelTitle = NSLocalizedString("Cancel", comment: "The cancel action")
-            let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
-                completionHandler(false)
-            }
-
-            alertController.addAction(delete)
-            alertController.addAction(cancel)
-
-            if let popoverController = alertController.popoverPresentationController {
-              popoverController.sourceView = self.view
-              popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
-                                                    width: 0, height: 0)
-              popoverController.permittedArrowDirections = []
-            }
-
-            self.present(alertController, animated: true, completion: nil)
+            self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
 
         action.image = UIImage(named: "Trash")
         action.backgroundColor = UIColor.red
-
         return action
     }
 }

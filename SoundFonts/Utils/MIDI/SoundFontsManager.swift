@@ -48,7 +48,8 @@ extension SoundFontsManager: SoundFonts {
 
     @discardableResult
     func add(url: URL) -> (Int, SoundFont)? {
-        guard let (index, soundFont) = addNoNotify(url: url) else { return nil }
+        guard let soundFont = SoundFont.makeSoundFont(from: url, saveToDisk: true) else { return nil }
+        let index = collection.add(soundFont)
         save()
         notify(.added(new: index, font: soundFont))
         return (index, soundFont)
@@ -79,13 +80,7 @@ extension SoundFontsManager {
         let info = GetSoundFontInfo(data: data)
         if info.name.isEmpty || info.patches.isEmpty { fatalError() }
         let displayName = niceNames.first { (key, _) in info.name.hasPrefix(key) }?.value ?? info.name
-        return SoundFont(displayName, resource: url, soundFontInfo: info)
-    }
-
-    @discardableResult
-    private func addNoNotify(url: URL) -> (Int, SoundFont)? {
-        guard let soundFont = SoundFont.makeSoundFont(from: url, saveToDisk: true) else { return nil }
-        return (collection.add(soundFont), soundFont)
+        return SoundFont(displayName, soundFontInfo: info, resource: url)
     }
 
     /**
