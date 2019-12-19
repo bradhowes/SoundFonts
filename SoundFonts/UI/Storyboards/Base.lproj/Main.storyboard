@@ -324,7 +324,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2499" y="-1158"/>
+            <point key="canvasLocation" x="2604" y="-1257"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="GeL-bI-CiM">
@@ -400,7 +400,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8vr-Xq-yUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1085" y="-776"/>
+            <point key="canvasLocation" x="-174" y="-1008"/>
         </scene>
         <!--Sound Fonts View Controller-->
         <scene sceneID="3Rz-C9-6PO">
@@ -488,12 +488,11 @@
                         <outlet property="searchBar" destination="Fl2-Sg-7ea" id="LaW-BL-rxP"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
                         <segue destination="BLq-66-4BL" kind="presentation" identifier="fontEditor" modalPresentationStyle="formSheet" id="BKe-Sq-hkX"/>
-                        <segue destination="mtA-75-6HR" kind="presentation" identifier="fontBrowser" id="Bod-Ni-9jF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="963.75" y="-1657.3943661971832"/>
+            <point key="canvasLocation" x="984" y="-1789"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -540,25 +539,7 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="964" y="-1233"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="znO-OG-JbB">
-            <objects>
-                <viewController id="ijw-07-2Ze" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="b7q-GM-Me2" customClass="UIDocumentPickerViewController">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="377"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <viewLayoutGuide key="safeArea" id="4f0-DL-i6e"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="dhy-bY-nNS"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="377"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="j6c-kD-Lk7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2488" y="-2206"/>
+            <point key="canvasLocation" x="984" y="-1256"/>
         </scene>
         <!--SoundFont Editor-->
         <scene sceneID="Nc1-o8-v27">
@@ -692,7 +673,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMp-bJ-Ndt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2501" y="-1657"/>
+            <point key="canvasLocation" x="2604" y="-1789"/>
         </scene>
         <!--Keyboard Controller-->
         <scene sceneID="DdP-fR-Jpy">
@@ -707,7 +688,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dc4-bz-8nP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-428" y="-682"/>
+            <point key="canvasLocation" x="503" y="-907"/>
         </scene>
         <!--Favorite Editor Navigation Controller-->
         <scene sceneID="If2-3j-gaj">
@@ -725,7 +706,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1748" y="-1158"/>
+            <point key="canvasLocation" x="1766" y="-1257"/>
         </scene>
         <!--SoundFont Editor Navigation Controller-->
         <scene sceneID="zXe-TQ-fWZ">
@@ -743,25 +724,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKP-1l-z5S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1749" y="-1657"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="6aY-ba-Sd6">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mtA-75-6HR" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Ggk-oL-ma2">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ijw-07-2Ze" kind="relationship" relationship="rootViewController" id="jun-Fr-1Ge"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NLU-Np-AdZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1749" y="-2207"/>
+            <point key="canvasLocation" x="1768" y="-1789"/>
         </scene>
     </scenes>
     <resources>
