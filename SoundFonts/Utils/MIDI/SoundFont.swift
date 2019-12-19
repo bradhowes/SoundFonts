@@ -29,6 +29,8 @@ final class SoundFont: Codable {
 
     let originalDisplayName: String
 
+    let embeddedName: String
+
     let kind: SoundFontKind
 
     /// The collection of Patches found in the sound font
@@ -54,7 +56,8 @@ final class SoundFont: Codable {
             return nil
         }
 
-        let soundFont = SoundFont(info)
+        let displayName = url.deletingPathExtension().lastPathComponent
+        let soundFont = SoundFont(displayName, soundFontInfo: info)
 
         if saveToDisk {
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
@@ -69,29 +72,31 @@ final class SoundFont: Codable {
     /**
      Constructor for installed sound font files -- those added fia File app.
 
-     - parameter info: patch info from the sound font and its display name.
+     - parameter displayName: the display name of the resource
+     - parameter soundFontInfo: patch info from the sound font
      */
-    init(_ soundFontInfo: SoundFontInfo) {
-        let name = soundFontInfo.name
+    init(_ displayName: String, soundFontInfo: SoundFontInfo) {
         let key = Key()
         self.key = key
-        self.displayName = name
-        self.originalDisplayName = name
-        self.kind = .installed(fileName:name + "_" + key.uuidString + "." + Self.soundFontExtension)
+        self.displayName = displayName
+        self.originalDisplayName = displayName
+        self.embeddedName = soundFontInfo.name
+        self.kind = .installed(fileName:displayName + "_" + key.uuidString + "." + Self.soundFontExtension)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }
 
     /**
      Constructor for built-in sound font files -- those in the Bundle.
 
-     - parameter name: the display name of the resource
+     - parameter displayName: the display name of the resource
+     - parameter soundFontInfo: patch info from the sound font
      - parameter resource: the name of the resource in the bundle
-     - parameter info: patch info from the sound font
      */
-    init(_ name: String, resource: URL, soundFontInfo: SoundFontInfo) {
+    init(_ displayName: String, soundFontInfo: SoundFontInfo, resource: URL) {
         self.key = Key()
-        self.displayName = name
-        self.originalDisplayName = soundFontInfo.name
+        self.displayName = displayName
+        self.originalDisplayName = displayName
+        self.embeddedName = soundFontInfo.name
         self.kind = .builtin(resource: resource)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }
     }

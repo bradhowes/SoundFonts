@@ -18,6 +18,7 @@ final class FontEditor: UIViewController {
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var originalNameLabel: UILabel!
+    @IBOutlet weak var embeddedNameLabel: UILabel!
     @IBOutlet weak var patchCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
     @IBOutlet weak var location: UILabel!
@@ -41,6 +42,7 @@ final class FontEditor: UIViewController {
         name.text = soundFont.displayName
         name.delegate = self
         originalNameLabel.text = soundFont.originalDisplayName
+        embeddedNameLabel.text = soundFont.embeddedName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
         location.text = soundFont.fileURL.path

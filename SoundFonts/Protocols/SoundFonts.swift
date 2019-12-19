@@ -41,10 +41,29 @@ protocol SoundFonts {
      */
     func getBy(key: SoundFont.Key) -> SoundFont?
 
+    /**
+     Obtain the SoundFont in the collection by its orderering index.
+
+     - parameter index: the index to fetch
+     - returns the SoundFont found at the index
+     */
     func getBy(index: Int) -> SoundFont
 
+    /**
+     Add a new SoundFont.
+
+     - parameter url: the URL of the file containing SoundFont (SF2) data
+
+     - returns 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
+     instance created from the raw data
+     */
     func add(url: URL) -> (Int, SoundFont)?
 
+    /**
+     Remove the SoundFont at the given index
+
+     - parameter index: <#Describe index#>
+     */
     func remove(index: Int)
 
     func rename(index: Int, name: String)

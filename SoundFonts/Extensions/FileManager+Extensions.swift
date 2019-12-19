@@ -22,8 +22,17 @@ extension FileManager {
         return temporaryFileURL
     }
 
-    /// Location of app documents that we want to keep private but backed-up
-    var privateDocumentsDirectory: URL { urls(for: .applicationSupportDirectory, in: .userDomainMask).first! }
+    /// Location of app documents that we want to keep private but backed-up. We do need to create it if it does not
+    /// exist, so this could be a high latency call.
+    var privateDocumentsDirectory: URL {
+        let url = urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        if !self.fileExists(atPath: url.path) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+        }
+        return url
+    }
 
     /// True if the user has an iCloud container available to use
     var hasCloudDirectory: Bool { return self.ubiquityIdentityToken != nil }
