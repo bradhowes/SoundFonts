@@ -7,7 +7,7 @@ import os
  Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
  settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
  */
-final class FavoritesViewController: UIViewController {
+final class FavoritesViewController: UIViewController, SegueHandler {
     private lazy var log = Logging.logger("FavsVC")
 
     //swiftlint:disable force_cast
@@ -124,21 +124,23 @@ extension FavoritesViewController: ControllerConfiguration {
 
 extension FavoritesViewController {
 
+    enum SegueIdentifier: String {
+        case favoriteEditor
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .favoriteEditor: beginEditFavorite(segue, sender: sender)
+        }
+    }
+
+    private func beginEditFavorite(_ segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             let vc = nc.topViewController as? FavoriteEditor,
             let (favorite, view) = sender as? (Favorite, UIView) else { return }
-
         vc.delegate = self
         vc.editFavorite(favorite, position: indexPath(of: favorite), currentLowestNote: keyboard.lowestNote)
-
-        if let ppc = nc.popoverPresentationController {
-            ppc.barButtonItem = nil
-            ppc.sourceView = view
-            let rect = view.bounds
-            ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
-                                                 size: CGSize(width: 32.0, height: rect.height)), to: nil)
-        }
+        nc.popoverPresentationController?.setSourceView(view)
     }
 
     /**
