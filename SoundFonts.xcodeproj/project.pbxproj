@@ -58,7 +58,6 @@
 		BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
 		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
-		BD984C5B23ACBC01005FD6A4 /* FontHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */; };
 		BD9BCF7C239A358B002FBC16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF7E239A358B002FBC16 /* Localizable.strings */; };
 		BD9BCF7F239A3590002FBC16 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF81239A3590002FBC16 /* Localizable.stringsdict */; };
 		BD9BCF82239A35D9002FBC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF84239A35D9002FBC16 /* Main.storyboard */; };
@@ -179,7 +178,6 @@
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
 		BD90646821DE1C92009B474A /* SubscriberToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberToken.swift; sourceTree = "<group>"; };
-		BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHeader.swift; sourceTree = "<group>"; };
 		BD9BCF7D239A358B002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD9BCF80239A3590002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BD9BCF83239A35D9002FBC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -400,7 +398,6 @@
 			children = (
 				BDDD1F522216BA0F003BDD6F /* FontCell.swift */,
 				BDAB3990239500CA00C26C57 /* FontEditor.swift */,
-				BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */,
 				BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */,
 				BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */,
 				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
@@ -733,7 +730,6 @@
 				BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */,
 				BDAB39932395013D00C26C57 /* FontEditorDelegate.swift in Sources */,
 				BD3AC7412390399B009956E3 /* SoundFontKind.swift in Sources */,
-				BD984C5B23ACBC01005FD6A4 /* FontHeader.swift in Sources */,
 				BD42F355238868F700E6D576 /* Logging.swift in Sources */,
 				BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */,
 				BD781B48237BF53900A71031 /* PatchesViewManager.swift in Sources */,
