@@ -67,36 +67,17 @@ final class SoundFontsViewController: UIViewController, SegueHandler {
             let vc = nc.topViewController as? FontEditor,
             let cell = sender as? FontCell,
             let indexPath = soundFontsView.indexPath(for: cell) else { return }
-
         vc.delegate = self
-
         let soundFont = soundFonts.getBy(index: indexPath.row)
-        vc.edit(soundFont: soundFont, favoriteCount: favorites.count(associatedWith: soundFont),
-                position: indexPath)
-
-        if let ppc = nc.popoverPresentationController {
-            ppc.barButtonItem = nil
-            ppc.sourceView = cell
-            let rect = cell.bounds
-            ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
-                                                 size: CGSize(width: 32.0, height: rect.height)), to: nil)
-        }
+        vc.edit(soundFont: soundFont, favoriteCount: favorites.count(associatedWith: soundFont), position: indexPath)
+        nc.popoverPresentationController?.setSourceView(cell)
     }
 
     private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             (nc.topViewController as? UIDocumentPickerViewController) != nil,
             let button = sender as? UIButton else { return }
-
-        // vc.delegate = self
-
-        if let ppc = nc.popoverPresentationController {
-            ppc.barButtonItem = nil
-            ppc.sourceView = button
-            let rect = button.bounds
-            ppc.sourceRect = view.convert(CGRect(origin: rect.offsetBy(dx: rect.width - 32, dy: 0).origin,
-                                                 size: CGSize(width: 32.0, height: rect.height)), to: nil)
-        }
+        nc.popoverPresentationController?.setSourceView(button)
     }
 
     @IBAction func addSoundFont(_ sender: UIButton) {

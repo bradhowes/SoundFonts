@@ -25,7 +25,6 @@
 		BD42F355238868F700E6D576 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
 		BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
 		BD5A2A4223AB671900CDA8B4 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */; };
-		BD5A2A4423AB6C0200CDA8B4 /* FontBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */; };
 		BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
 		BD6F2FC323A28E5800E4091E /* SoundFontPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691423A238550016AB1D /* SoundFontPatch.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
@@ -59,6 +58,7 @@
 		BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
 		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
+		BD984C5B23ACBC01005FD6A4 /* FontHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */; };
 		BD9BCF7C239A358B002FBC16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF7E239A358B002FBC16 /* Localizable.strings */; };
 		BD9BCF7F239A3590002FBC16 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF81239A3590002FBC16 /* Localizable.stringsdict */; };
 		BD9BCF82239A35D9002FBC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF84239A35D9002FBC16 /* Main.storyboard */; };
@@ -86,6 +86,7 @@
 		BDD5691123A232C30016AB1D /* Keyboard.pcvd in Resources */ = {isa = PBXBuildFile; fileRef = BDD5691023A232C30016AB1D /* Keyboard.pcvd */; };
 		BDD5691323A2361A0016AB1D /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691223A2361A0016AB1D /* State.swift */; };
 		BDDA223323A3CA13000D953D /* FavoriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA223223A3CA13000D953D /* FavoriteCollection.swift */; };
+		BDDA26B623ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */; };
 		BDDC648A23A37F6F00459C57 /* ActivePatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */; };
 		BDDCD83D23A0DCD100B3AABA /* SubscriberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* SubscriberToken.swift */; };
 		BDDCD83F23A0DD1200B3AABA /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */; };
@@ -134,7 +135,6 @@
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
 		BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
-		BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontBrowser.swift; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
@@ -179,6 +179,7 @@
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
 		BD90646821DE1C92009B474A /* SubscriberToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberToken.swift; sourceTree = "<group>"; };
+		BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontHeader.swift; sourceTree = "<group>"; };
 		BD9BCF7D239A358B002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD9BCF80239A3590002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BD9BCF83239A35D9002FBC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -211,6 +212,7 @@
 		BDD5691223A2361A0016AB1D /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		BDD5691423A238550016AB1D /* SoundFontPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontPatch.swift; sourceTree = "<group>"; };
 		BDDA223223A3CA13000D953D /* FavoriteCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollection.swift; sourceTree = "<group>"; };
+		BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+Extensions.swift"; sourceTree = "<group>"; };
 		BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		BDDCD84023A0EC8300B3AABA /* SoundFontCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontCollection.swift; sourceTree = "<group>"; };
 		BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchManager.swift; sourceTree = "<group>"; };
@@ -398,12 +400,12 @@
 			children = (
 				BDDD1F522216BA0F003BDD6F /* FontCell.swift */,
 				BDAB3990239500CA00C26C57 /* FontEditor.swift */,
+				BD984C5A23ACBC01005FD6A4 /* FontHeader.swift */,
 				BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */,
 				BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */,
 				BDDD1F542216BA52003BDD6F /* PatchCell.swift */,
 				BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */,
 				BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */,
-				BD5A2A4323AB6C0200CDA8B4 /* FontBrowser.swift */,
 			);
 			path = "Sound Fonts View";
 			sourceTree = "<group>";
@@ -414,10 +416,10 @@
 				BD7A2E5521CF0215001CB271 /* Favorite.swift */,
 				BD7A2E5321CEF645001CB271 /* FavoriteCell.swift */,
 				BDDA223223A3CA13000D953D /* FavoriteCollection.swift */,
-				BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */,
 				BD7A2E5721D25320001CB271 /* FavoriteEditor.swift */,
-				BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */,
 				BDAE7C942218539B0003A353 /* FavoriteMover.swift */,
+				BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */,
+				BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */,
 			);
 			path = "Favorites View";
 			sourceTree = "<group>";
@@ -492,6 +494,7 @@
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
+				BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */,
 				BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */,
 				BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */,
 				BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */,
@@ -688,6 +691,7 @@
 				BD85F8D921D91AA90028E440 /* Favorites.swift in Sources */,
 				BD426005238BBE9600A2AE01 /* SoundFonts.swift in Sources */,
 				BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */,
+				BDDA26B623ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift in Sources */,
 				BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */,
 				BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */,
 				BDDD1F512216A71A003BDD6F /* UIView+Extensions.swift in Sources */,
@@ -715,7 +719,6 @@
 				BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */,
 				BDDA223323A3CA13000D953D /* FavoriteCollection.swift in Sources */,
 				BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */,
-				BD5A2A4423AB6C0200CDA8B4 /* FontBrowser.swift in Sources */,
 				BD75433623828711004C6A4C /* iffdigest.cc in Sources */,
 				BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */,
 				BDAB3991239500CA00C26C57 /* FontEditor.swift in Sources */,
@@ -730,6 +733,7 @@
 				BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */,
 				BDAB39932395013D00C26C57 /* FontEditorDelegate.swift in Sources */,
 				BD3AC7412390399B009956E3 /* SoundFontKind.swift in Sources */,
+				BD984C5B23ACBC01005FD6A4 /* FontHeader.swift in Sources */,
 				BD42F355238868F700E6D576 /* Logging.swift in Sources */,
 				BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */,
 				BD781B48237BF53900A71031 /* PatchesViewManager.swift in Sources */,
@@ -860,7 +864,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20191220022320;
+				CURRENT_PROJECT_VERSION = 20191220090257;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -925,7 +929,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20191220022320;
+				CURRENT_PROJECT_VERSION = 20191220090257;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
