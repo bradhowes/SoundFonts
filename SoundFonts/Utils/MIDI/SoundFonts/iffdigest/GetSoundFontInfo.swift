@@ -9,7 +9,7 @@ public struct PatchInfo {
 }
 
 public struct SoundFontInfo {
-    public let name: String
+    public var name: String
     public let patches: [PatchInfo]
 }
 
