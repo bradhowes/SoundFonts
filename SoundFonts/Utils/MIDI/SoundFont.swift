@@ -39,6 +39,8 @@ final class SoundFont: Codable {
     static func makeSoundFont(from url: URL, saveToDisk: Bool) -> SoundFont? {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
+        let displayName = url.deletingPathExtension().lastPathComponent
+
         // If this is a resource from iCloud we need to enable access to it. This will return `false` if the URL is
         // not in a security scope.
         let secured = url.startAccessingSecurityScopedResource()
@@ -50,15 +52,17 @@ final class SoundFont: Codable {
             return nil
         }
 
-        let info = GetSoundFontInfo(data: content)
-        if info.name.isEmpty || info.patches.isEmpty {
+        var info = GetSoundFontInfo(data: content)
+        if info.name.isEmpty {
+            info.name = displayName
+        }
+
+        if info.patches.isEmpty {
             os_log(.error, log: Self.logger, "failed to parse content")
             return nil
         }
 
-        let displayName = url.deletingPathExtension().lastPathComponent
         let soundFont = SoundFont(displayName, soundFontInfo: info)
-
         if saveToDisk {
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
             let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
