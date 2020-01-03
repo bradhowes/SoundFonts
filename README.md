@@ -19,6 +19,9 @@ Here is what you can do with it:
 * You can also swipe with a finger on back bar to change the keyboard range
 * Swipe right on a patch name to make it a favorite (same to unfavorite). Favorited patches have a star next to
   their name.
+* Add/Remove sound font files. In the "patches view" press the "+" button to bring up a file picker. Locate a sound font file
+  to add from a location on your device or from your iCloud drive. Added files can be removed via the "-" button or a 
+  left-swipe on the sound font name.
 
 ## Favorites
 
@@ -46,7 +49,7 @@ The keys of the keyboard are painted by the code found in `KeyboardRender.swift`
 [PaintCode](https://www.paintcodeapp.com) application. The PaintCode file is `Keyboard.pcvd`, but it is not part
 of the build process and PaintCode is not necessary to build.
 
-## Sound Fonts
+## Embedded Sound Fonts
 
 The repository comes with four SoundFont files, though the largest one -- `FluidR3_GM` -- is too large to store
 natively on Github so it has been broken into three files: `FluidR3_GM.sf2.1`, `FluidR3_GM.sf2.2`, and
@@ -68,3 +71,5 @@ file.
 
 The `catalog.py` script uses the [sf2utils](https://pypi.org/project/sf2utils/) package to perform the Soundfont
 parsing.
+
+As mentioned above, additional sound fonts can be added to the running application when installed on a device.
