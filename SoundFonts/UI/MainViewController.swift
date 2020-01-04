@@ -218,18 +218,22 @@ extension MainViewController: ControllerConfiguration {
      Show the next (right) view in the space above the info bar.
      */
     @IBAction private func showNextConfigurationView() {
-        patchesViewManager.dismissSearchKeyboard()
-        Settings[.wasShowingFavorites] = favoritesView.isHidden
-        upperViewManager.slideNextHorizontally()
+        if favoritesView.isHidden {
+            patchesViewManager.dismissSearchKeyboard()
+            Settings[.wasShowingFavorites] = favoritesView.isHidden
+            upperViewManager.slideNextHorizontally()
+        }
     }
 
     /**
      Show the previous (left) view in the space above the info bar.
      */
     @IBAction private func showPreviousConfigurationView() {
-        patchesViewManager.dismissSearchKeyboard()
-        Settings[.wasShowingFavorites] = favoritesView.isHidden
-        upperViewManager.slidePrevHorizontally()
+        if patchesView.isHidden {
+            patchesViewManager.dismissSearchKeyboard()
+            Settings[.wasShowingFavorites] = favoritesView.isHidden
+            upperViewManager.slidePrevHorizontally()
+        }
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
