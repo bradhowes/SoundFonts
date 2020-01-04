@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -330,38 +330,46 @@
         <scene sceneID="GeL-bI-CiM">
             <objects>
                 <viewController storyboardIdentifier="InfoBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sBP-s0-sIg" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="TUY-w9-WPV">
+                    <view key="view" contentMode="scaleToFill" id="TUY-w9-WPV" userLabel="InfoBar">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pqV-eT-fTY" userLabel="KeyboardHeader">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pqV-eT-fTY" userLabel="Header">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
                                 <subviews>
                                     <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3g-aD-uMb">
                                         <rect key="frame" x="38" y="13.5" width="244" height="21"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kn8-FE-tzz" userLabel="Status">
                                         <rect key="frame" x="38" y="14" width="244" height="20"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUz-hq-Gsv" userLabel="LowestKey">
                                         <rect key="frame" x="0.0" y="9" width="30" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="LowestKey" label="LowestKey"/>
                                         <state key="normal" title="C2"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB1-GV-K7N" userLabel="HighestKey">
                                         <rect key="frame" x="290" y="9" width="30" height="30"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
                                         <state key="normal" title="C3"/>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKb-vm-RkX" userLabel="TouchView">
                                         <rect key="frame" x="46" y="0.0" width="228" height="48"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="TouchView" label="TouchView">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Header" label="Header"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="kn8-FE-tzz" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="leading" id="5Jv-d9-ygQ"/>
@@ -382,6 +390,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
                         <constraints>
                             <constraint firstItem="pqV-eT-fTY" firstAttribute="top" secondItem="TUY-w9-WPV" secondAttribute="top" id="PJZ-zP-5cs"/>
                             <constraint firstAttribute="trailing" secondItem="pqV-eT-fTY" secondAttribute="trailing" id="uuo-g0-gA2"/>
@@ -402,11 +411,11 @@
             </objects>
             <point key="canvasLocation" x="-174" y="-1008"/>
         </scene>
-        <!--Sound Fonts View Controller-->
+        <!--SoundFontsController-->
         <scene sceneID="3Rz-C9-6PO">
             <objects>
-                <viewController storyboardIdentifier="SoundFontPatchesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hF8-Yx-irV" customClass="SoundFontsViewController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Jon-CW-SMD">
+                <viewController storyboardIdentifier="SoundFontPatchesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hF8-Yx-irV" userLabel="SoundFontsController" customClass="SoundFontsViewController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jon-CW-SMD" userLabel="SoundFontsView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="280"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -422,7 +431,7 @@
                                         <rect key="frame" x="128" y="0.0" width="192" height="280"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Name" translucent="NO" id="Fl2-Sg-7ea">
+                                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Name" translucent="NO" id="Fl2-Sg-7ea" userLabel="Search">
                                             <rect key="frame" x="0.0" y="0.0" width="192" height="56"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -430,16 +439,20 @@
                                                 <string>Title</string>
                                                 <string>Title</string>
                                             </scopeButtonTitles>
+                                            <attributedString key="userComments">
+                                                <fragment content="Search"/>
+                                            </attributedString>
                                         </searchBar>
                                     </tableView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uH5-Qd-iXc">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uH5-Qd-iXc" userLabel="Footer">
                                         <rect key="frame" x="0.0" y="239" width="120" height="41"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="yGs-be-oyG" userLabel="Buttons">
                                                 <rect key="frame" x="20" y="8" width="80" height="25"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAv-LE-5VK">
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAv-LE-5VK" userLabel="Add">
                                                         <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Add" label="Add"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="25" id="XZj-ob-VUB"/>
                                                             <constraint firstAttribute="height" constant="25" id="uxc-ie-aw6"/>
@@ -447,8 +460,9 @@
                                                         <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" image="Add"/>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olS-hA-PVg" userLabel="Remove Sound Font Button">
+                                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olS-hA-PVg" userLabel="Remove">
                                                         <rect key="frame" x="55" y="0.0" width="25" height="25"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Remove" label="Remove"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="rZl-Ji-ek3"/>
                                                             <constraint firstAttribute="width" constant="25" id="ycS-Xy-mzk"/>
@@ -468,6 +482,7 @@
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="Footer" label="Footer"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="aIt-J6-OZ8"/>
                                             <constraint firstItem="yGs-be-oyG" firstAttribute="centerX" secondItem="uH5-Qd-iXc" secondAttribute="centerX" id="g2Q-ud-hka"/>
@@ -498,6 +513,7 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="SoundFontsView" label="SoundFontsView"/>
                         <constraints>
                             <constraint firstItem="V3j-Cj-T3A" firstAttribute="leading" secondItem="Jon-CW-SMD" secondAttribute="leading" id="8I0-zB-O1k"/>
                             <constraint firstItem="V3j-Cj-T3A" firstAttribute="top" secondItem="Jon-CW-SMD" secondAttribute="top" id="9Kx-kL-zBb"/>
@@ -557,7 +573,7 @@
                         <outlet property="doubleTapGestureRecognizer" destination="0DJ-wu-xH2" id="0xj-OV-gNK"/>
                         <outlet property="favoritesView" destination="IR7-rn-XMj" id="g9T-UH-W6C"/>
                         <outlet property="longPressGestureRecognizer" destination="Yb7-t8-5Oz" id="B2S-FU-S4i"/>
-                        <segue destination="jqK-wd-FUD" kind="presentation" identifier="favoriteDetail" modalPresentationStyle="formSheet" id="LDc-y4-eYM"/>
+                        <segue destination="jqK-wd-FUD" kind="presentation" identifier="favoriteEditor" modalPresentationStyle="formSheet" id="LDc-y4-eYM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UlM-mq-v04" userLabel="First Responder" sceneMemberID="firstResponder"/>
