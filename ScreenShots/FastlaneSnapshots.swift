@@ -4,21 +4,9 @@ import XCTest
 
 class FastlaneSnapshots: XCTestCase {
 
-    var switcher: XCUIElement!
-
     override func setUp() {
         continueAfterFailure = false
         let app = XCUIApplication()
-        switcher = app.children(matching: .window)
-            .element(boundBy: 0)
-            .children(matching: .other)
-            .element.children(matching: .other)
-            .element(boundBy: 2)
-            .children(matching: .other)
-            .element.children(matching: .other)
-            .element.children(matching: .other)
-            .element
-
         setupSnapshot(app)
         app.launch()
     }
@@ -42,6 +30,16 @@ class FastlaneSnapshots: XCTestCase {
     }
 
     func switchViews() {
+        let app = XCUIApplication()
+        let switcher = app.children(matching: .window)
+            .element(boundBy: 0)
+            .children(matching: .other)
+            .element.children(matching: .other)
+            .element(boundBy: 2)
+            .children(matching: .other)
+            .element.children(matching: .other)
+            .element.children(matching: .other)
+            .element
         switcher.doubleTap()
     }
 
@@ -55,9 +53,9 @@ class FastlaneSnapshots: XCTestCase {
 
     func testLandscape() {
         XCUIDevice.shared.orientation = .landscapeLeft
+        showSoundFontView()
         snapshot("0FontsLandscape")
         switchViews()
         snapshot("0FavesLandscape")
-        switchViews()
     }
 }

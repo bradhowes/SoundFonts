@@ -70,8 +70,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD75B27E218B8CFE00C7EBD7"
-               BuildableName = "SoundFontsUITests.xctest"
-               BlueprintName = "SoundFontsUITests"
+               BuildableName = "ScreenShots.xctest"
+               BlueprintName = "ScreenShots"
                ReferencedContainer = "container:SoundFonts.xcodeproj">
             </BuildableReference>
          </TestableReference>
