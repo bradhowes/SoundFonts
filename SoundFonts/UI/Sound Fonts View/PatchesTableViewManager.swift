@@ -117,6 +117,15 @@ extension PatchesTableViewManager: UITableViewDelegate {
         .none
     }
 
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if !showingSearchResults {
+            dismissSearchKeyboard()
+            hideSearchBar()
+        }
+
+        return indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
