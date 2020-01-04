@@ -157,7 +157,7 @@ extension FavoritesViewController {
     }
 
     func edit(favorite: Favorite, sender: UIView) {
-        performSegue(withIdentifier: "favoriteDetail", sender: (favorite, sender))
+        performSegue(withIdentifier: "favoriteEditor", sender: (favorite, sender))
     }
 }
 
