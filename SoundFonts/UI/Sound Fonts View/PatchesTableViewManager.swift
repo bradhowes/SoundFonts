@@ -238,10 +238,6 @@ extension PatchesTableViewManager {
             view.endUpdates()
         }
 
-        if let indexPath = getIndexPath(for: activePatchManager.soundFontPatch) {
-            view.scrollToRow(at: indexPath, at: .none, animated: false)
-        }
-
         hideSearchBar()
     }
 

@@ -200,11 +200,15 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func updateInfoBar(with favorite: Favorite) {
-        infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+        }
     }
 
     private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
-        infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+        if soundFontPatch == activePatchManager.soundFontPatch {
+            infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+        }
     }
 
     @IBAction private func toggleConfigurationViews() {
