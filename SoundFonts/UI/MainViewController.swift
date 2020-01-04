@@ -194,15 +194,17 @@ extension MainViewController: ControllerConfiguration {
         switch event {
         case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
         case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite)
+        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontPatch)
         default: break
         }
     }
 
     private func updateInfoBar(with favorite: Favorite) {
-        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-        }
+        infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+    }
+
+    private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
+        infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
     }
 
     @IBAction private func toggleConfigurationViews() {
