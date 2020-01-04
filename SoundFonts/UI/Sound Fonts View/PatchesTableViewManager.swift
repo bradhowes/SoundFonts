@@ -140,6 +140,12 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
 extension PatchesTableViewManager: UISearchBarDelegate {
 
+    func dismissSearchKeyboard() {
+        if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
+            searchBar.resignFirstResponder()
+        }
+    }
+
     /**
      Notification that the content of the search field changed. Update the search results based on the new contents. If
      the search field is empty, replace the search results with the patch listing.
@@ -286,6 +292,7 @@ extension PatchesTableViewManager {
         searchBar.text = nil
         filtered.removeAll()
         view.reloadData()
+        dismissSearchKeyboard()
     }
 
     private func search(for searchTerm: String) {
@@ -296,6 +303,8 @@ extension PatchesTableViewManager {
     }
 
     func hideSearchBar() {
+        dismissSearchKeyboard()
+
         if !showingSearchResults && view.contentOffset.y < searchBar.frame.size.height {
             os_log(.info, log: log, "hiding search bar")
             let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
