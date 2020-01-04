@@ -92,9 +92,14 @@ extension FavoritesViewController: ControllerConfiguration {
     private func favoritesChange(_ event: FavoritesEvent) {
         os_log(.info, log: log, "favoritesChange")
         switch event {
-        case let .added(index: index, favorite: _):
+        case let .added(index: index, favorite: favorite):
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
+            if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+                favoritesView.selectItem(at: indexPath(of: favorite), animated: false,
+                                         scrollPosition: .centeredVertically)
+                updateCell(with: favorite)
+            }
 
         case let .selected(index: index, favorite: favorite):
             os_log(.info, log: log, "selected %d", index)
@@ -144,7 +149,7 @@ extension FavoritesViewController {
     }
 
     /**
-     Event handler for the double-tap esture recognizer. We use this to begin editing a favorite.
+     Event handler for the double-tap gesture recognizer. We use this to begin editing a favorite.
      
      - parameter gr: the gesture recognizer that fired the event
      */
@@ -253,7 +258,7 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.name, isActive: favorite == activePatchManager.favorite)
+        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontPatch == activePatchManager.soundFontPatch)
         return cell
     }
 
