@@ -66,7 +66,7 @@
 		BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
 		BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C942218539B0003A353 /* FavoriteMover.swift */; };
 		BDAE7C9A221955920003A353 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C99221955920003A353 /* SnapshotHelper.swift */; };
-		BDAE7C9C221955E90003A353 /* FastlaneSnapshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */; };
+		BDAE7C9C221955E90003A353 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C9B221955E90003A353 /* ScreenShots.swift */; };
 		BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
 		BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
@@ -189,7 +189,7 @@
 		BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		BDAE7C942218539B0003A353 /* FavoriteMover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMover.swift; sourceTree = "<group>"; };
 		BDAE7C99221955920003A353 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
-		BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastlaneSnapshots.swift; sourceTree = "<group>"; };
+		BDAE7C9B221955E90003A353 /* ScreenShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontPatchCellBase.swift; sourceTree = "<group>"; };
@@ -365,7 +365,7 @@
 			children = (
 				BDAE7C99221955920003A353 /* SnapshotHelper.swift */,
 				BD75B285218B8CFE00C7EBD7 /* Info.plist */,
-				BDAE7C9B221955E90003A353 /* FastlaneSnapshots.swift */,
+				BDAE7C9B221955E90003A353 /* ScreenShots.swift */,
 			);
 			path = ScreenShots;
 			sourceTree = "<group>";
@@ -762,7 +762,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDAE7C9A221955920003A353 /* SnapshotHelper.swift in Sources */,
-				BDAE7C9C221955E90003A353 /* FastlaneSnapshots.swift in Sources */,
+				BDAE7C9C221955E90003A353 /* ScreenShots.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,7 +856,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200104220759;
+				CURRENT_PROJECT_VERSION = 20200105183651;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -921,7 +921,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200104220759;
+				CURRENT_PROJECT_VERSION = 20200105183651;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

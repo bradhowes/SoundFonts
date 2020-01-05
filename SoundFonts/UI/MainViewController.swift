@@ -172,7 +172,11 @@ extension MainViewController: ControllerConfiguration {
 
         infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
 
-        let showingFavorites = Settings[.wasShowingFavorites]
+        let showingFavorites: Bool = {
+            if CommandLine.arguments.contains("--screenshots") { return false }
+            return Settings[.wasShowingFavorites]
+        }()
+
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
 
