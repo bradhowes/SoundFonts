@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>zero</key>
-			<string>pas de réglages</string>
+			<string>no patches</string>
 			<key>one</key>
-			<string>1 réglage</string>
+			<string>1 patch</string>
 			<key>other</key>
-			<string>%u réglages</string>
+			<string>%u patches</string>
 		</dict>
 	</dict>
 	<key>favorites count</key>
@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>zero</key>
-			<string>pas de signets</string>
+			<string>no favorites</string>
 			<key>one</key>
-			<string>1 signet</string>
+			<string>1 favorite</string>
 			<key>other</key>
-			<string>%u signets</string>
+			<string>%u favorites</string>
 		</dict>
 	</dict>
 </dict>

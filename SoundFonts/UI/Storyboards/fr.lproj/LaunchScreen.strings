@@ -1,3 +1,4 @@
+// !!! NOTE: this is not used. There is no support for localized LaunchScreen on iOS yet
 
 /* Class = "UILabel"; text = "Loading…"; ObjectID = "g1N-wS-9SO"; */
 "g1N-wS-9SO.text" = "Initialisation…";
