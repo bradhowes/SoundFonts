@@ -1,0 +1,20 @@
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"favorite" = "favorite";
+"patch" = "patch";
+"font" = "font";
+
+"Cancel" = "Abbrechen";
+"Save" = "Sichern";
+"Delete" = "Delete";
+
+"Name" = "Name";
+"Lowest-Key" = "Erste Klaviertaste";
+"Gain" = "Gain";
+"Pan" = "Pan";
+
+"Bank" = "Bank";
+"Index" = "Index";
+
+"DeleteFontTitle" = "Soundfont-Datei löschen?";
+"DeleteFontMessage" = "Die Soundfont-Datei und alle zugehörigen Favoriten werden von diesem Gerät entfernt.";
