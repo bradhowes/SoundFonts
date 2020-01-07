@@ -33,7 +33,7 @@
 "I18-Bg-VKV.text" = "-0.99";
 
 /* Class = "UITextField"; text = "my favorite"; ObjectID = "ICN-zq-xNm"; */
-"ICN-zq-xNm.text" = "my favorite";
+"ICN-zq-xNm.text" = "mon signet";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "NOB-fj-QF1"; */
 "NOB-fj-QF1.text" = "Titre";
@@ -60,7 +60,7 @@
 "Vvf-8D-awX.normalTitle" = "C4";
 
 /* Class = "UINavigationItem"; title = "Favorite"; ObjectID = "XlQ-af-Avv"; */
-"XlQ-af-Avv.title" = "Favori";
+"XlQ-af-Avv.title" = "Signet";
 
 /* Class = "UIButton"; normalTitle = "Delete"; ObjectID = "YFU-l2-rTt"; Note = "Button that will delete the item"; */
 "YFU-l2-rTt.normalTitle" = "Supprimer";

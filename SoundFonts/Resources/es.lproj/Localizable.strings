@@ -1,0 +1,20 @@
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"favorite" = "marcador";
+"patch" = "patch";
+"font" = "font";
+
+"Cancel" = "Cancelar";
+"Save" = "Guardar";
+"Delete" = "Eliminar";
+
+"Name" = "Título";
+"Lowest-Key" = "Primera clave";
+"Gain" = "Gain";
+"Pan" = "Pan";
+
+"Bank" = "Bank";
+"Index" = "Index";
+
+"DeleteFontTitle" = "¿Eliminar el archivo soundfont?";
+"DeleteFontMessage" = "La eliminación eliminará el archivo y también cualquier marcador vinculado a él.";

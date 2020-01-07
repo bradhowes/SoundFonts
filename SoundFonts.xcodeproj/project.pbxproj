@@ -133,6 +133,9 @@
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
 		BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
+		BD5C2CF123C47C0500E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		BD5C2CF223C47C0600E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BD5C2CF323C47C0600E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
@@ -599,6 +602,7 @@
 				en,
 				Base,
 				fr,
+				es,
 			);
 			mainGroup = BD75B257218B8CFD00C7EBD7;
 			productRefGroup = BD75B261218B8CFD00C7EBD7 /* Products */;
@@ -796,6 +800,7 @@
 			children = (
 				BD9BCF7D239A358B002FBC16 /* en */,
 				BD9BCF87239A3791002FBC16 /* fr */,
+				BD5C2CF223C47C0600E184A2 /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -805,6 +810,7 @@
 			children = (
 				BD9BCF80239A3590002FBC16 /* en */,
 				BD9BCF88239A3791002FBC16 /* fr */,
+				BD5C2CF323C47C0600E184A2 /* es */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -814,6 +820,7 @@
 			children = (
 				BD9BCF83239A35D9002FBC16 /* Base */,
 				BD9BCF86239A3791002FBC16 /* fr */,
+				BD5C2CF123C47C0500E184A2 /* es */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
