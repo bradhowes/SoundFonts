@@ -76,8 +76,15 @@ extension PatchesTableViewManager: UITableViewDataSource {
             // This is done in an async block on the main thread so that it happens *after* the movement to the 0
             // section.
             //
-            DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
-            self.searchBar.becomeFirstResponder()
+            if !self.searchBar.isFirstResponder {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero }
+                }
+                self.searchBar.becomeFirstResponder()
+            }
+            else {
+                hideSearchBar()
+            }
         }
         else if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
@@ -122,12 +129,12 @@ extension PatchesTableViewManager: UITableViewDelegate {
             dismissSearchKeyboard()
             hideSearchBar()
         }
-
         return indexPath
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let soundFontPatch = getSoundFontPatch(for: indexPath)
+        dismissSearchResults()
         if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
             activePatchManager.setActive(.favorite(favorite: favorite))
         }
