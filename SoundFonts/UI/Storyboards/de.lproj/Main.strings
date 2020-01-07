@@ -15,16 +15,16 @@
 "FCh-Nr-9cp.title" = "Piano";
 
 /* Class = "UILabel"; text = "Lowest Key"; ObjectID = "FXi-cj-cc9"; Note = "The lowest visible key"; */
-"FXi-cj-cc9.text" = "Primera tecla";
+"FXi-cj-cc9.text" = "Erste Klaviertaste";
 
 /* Class = "UISearchBar"; placeholder = "Name"; ObjectID = "Fl2-Sg-7ea"; Note = "Search"; */
-"Fl2-Sg-7ea.placeholder" = "Título";
+"Fl2-Sg-7ea.placeholder" = "Name";
 
 /* Class = "UISearchBar"; Fl2-Sg-7ea.scopeButtonTitles[0] = "Title"; ObjectID = "Fl2-Sg-7ea"; Note = "Search"; */
-"Fl2-Sg-7ea.scopeButtonTitles[0]" = "Título";
+"Fl2-Sg-7ea.scopeButtonTitles[0]" = "Title";
 
 /* Class = "UISearchBar"; Fl2-Sg-7ea.scopeButtonTitles[1] = "Title"; ObjectID = "Fl2-Sg-7ea"; Note = "Search"; */
-"Fl2-Sg-7ea.scopeButtonTitles[1]" = "Título";
+"Fl2-Sg-7ea.scopeButtonTitles[1]" = "Title";
 
 /* Class = "UILabel"; text = "23"; ObjectID = "GR7-wi-7E0"; */
 "GR7-wi-7E0.text" = "23";
@@ -36,7 +36,7 @@
 "I18-Bg-VKV.text" = "-0.99";
 
 /* Class = "UITextField"; text = "my favorite"; ObjectID = "ICN-zq-xNm"; */
-"ICN-zq-xNm.text" = "mi marcador";
+"ICN-zq-xNm.text" = "my favorite";
 
 /* Class = "UIView"; accessibilityLabel = "SoundFontsView"; ObjectID = "Jon-CW-SMD"; */
 "Jon-CW-SMD.accessibilityLabel" = "SoundFontsView";
@@ -45,13 +45,13 @@
 "MGs-TX-lDb.text" = "soundFontName";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "NOB-fj-QF1"; Note = "The visible name of the Favorite to show"; */
-"NOB-fj-QF1.text" = "Título";
+"NOB-fj-QF1.text" = "Name";
 
 /* Class = "UILabel"; text = "-80.0"; ObjectID = "Odd-hy-oDM"; */
 "Odd-hy-oDM.text" = "-80.0";
 
 /* Class = "UIButton"; accessibilityLabel = "LowestKey"; ObjectID = "RUz-hq-Gsv"; */
-"RUz-hq-Gsv.accessibilityLabel" = "LowestKey";
+"RUz-hq-Gsv.accessibilityLabel" = "Erste Klaviertaste";
 
 /* Class = "UIButton"; normalTitle = "C2"; ObjectID = "RUz-hq-Gsv"; */
 "RUz-hq-Gsv.normalTitle" = "C2";
@@ -60,7 +60,7 @@
 "Spc-mS-Xzz.text" = "1/23";
 
 /* Class = "UIView"; accessibilityLabel = "FavoritesView"; ObjectID = "Ss4-ST-6cC"; */
-"Ss4-ST-6cC.accessibilityLabel" = "Marcados";
+"Ss4-ST-6cC.accessibilityLabel" = "FavoritesView";
 
 /* Class = "UIView"; accessibilityLabel = "Blank"; ObjectID = "SxE-vE-5J3"; */
 "SxE-vE-5J3.accessibilityLabel" = "Blank";
@@ -78,7 +78,7 @@
 "Vvf-8D-awX.normalTitle" = "C4";
 
 /* Class = "UINavigationItem"; title = "Favorite"; ObjectID = "XlQ-af-Avv"; */
-"XlQ-af-Avv.title" = "Marcador";
+"XlQ-af-Avv.title" = "Favorite";
 
 /* Class = "UILabel"; text = "patchName"; ObjectID = "Zkz-IZ-GZF"; */
 "Zkz-IZ-GZF.text" = "patchName";
@@ -87,7 +87,7 @@
 "eMC-LO-nex.text" = "Name";
 
 /* Class = "UIButton"; accessibilityLabel = "HighestKey"; ObjectID = "iB1-GV-K7N"; */
-"iB1-GV-K7N.accessibilityLabel" = "HighestKey";
+"iB1-GV-K7N.accessibilityLabel" = "Letzte Klaviertaste";
 
 /* Class = "UIButton"; normalTitle = "C3"; ObjectID = "iB1-GV-K7N"; */
 "iB1-GV-K7N.normalTitle" = "C3";

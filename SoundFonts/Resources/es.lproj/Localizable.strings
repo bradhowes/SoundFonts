@@ -9,7 +9,7 @@
 "Delete" = "Eliminar";
 
 "Name" = "Título";
-"Lowest-Key" = "Primera clave";
+"Lowest-Key" = "Primera tecla";
 "Gain" = "Gain";
 "Pan" = "Pan";
 
@@ -17,4 +17,4 @@
 "Index" = "Index";
 
 "DeleteFontTitle" = "¿Eliminar el archivo soundfont?";
-"DeleteFontMessage" = "La eliminación eliminará el archivo y también cualquier marcador vinculado a él.";
+"DeleteFontMessage" = "El archivo soundfont y todos los marcadores asociados se eliminarán de este dispositivo.";
