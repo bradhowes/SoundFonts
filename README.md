@@ -8,6 +8,10 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quaility). This app only supports sound font files that are bundled with the application, though it would be
 nice to remotely fetch one to try it out.
 
+I have also curated a small collection of SoundFont files that I found useful and/or interesting: 
+[Sample SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS device and touch
+one of the links, you can add the fire directly to the SoundFonts application.
+
 ## User Interface
 
 Here is what you can do with it:
@@ -73,3 +77,4 @@ The `catalog.py` script uses the [sf2utils](https://pypi.org/project/sf2utils/) 
 parsing.
 
 As mentioned above, additional sound fonts can be added to the running application when installed on a device.
+
