@@ -50,6 +50,11 @@ final class SoundFontsViewController: UIViewController, SegueHandler {
         soundFontsTableViewDataSource.selectActive()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        patchesTableViewDataSource.hideSearchBar()
+    }
+
     enum SegueIdentifier: String {
         case fontEditor
         case fontBrowser
