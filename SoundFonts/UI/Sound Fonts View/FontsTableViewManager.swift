@@ -15,17 +15,15 @@ final class FontsTableViewManager: NSObject {
     private let activePatchManager: ActivePatchManager
     private let fontEditorActionGenerator: FontEditorActionGenerator
     private let soundFonts: SoundFonts
-    private let deleteButton: UIButton
 
     init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePatchManager: ActivePatchManager,
-         fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, deleteButton: UIButton) {
+         fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts) {
 
         self.view = view
         self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
         self.fontEditorActionGenerator = fontEditorActionGenerator
         self.soundFonts = soundFonts
-        self.deleteButton = deleteButton
 
         super.init()
 
@@ -40,11 +38,7 @@ final class FontsTableViewManager: NSObject {
 
     func selectActive() {
         if let row = soundFonts.index(of: activePatchManager.soundFont.key) {
-            deleteButton.isEnabled = activePatchManager.soundFont.removable
             selectAndShow(row: row)
-        }
-        else {
-            deleteButton.isEnabled = false
         }
     }
 }
@@ -68,11 +62,6 @@ extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
-        deleteButton.isEnabled = selectedSoundFontManager.selected.removable
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        deleteButton.isEnabled = false
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->
@@ -125,7 +114,6 @@ extension FontsTableViewManager {
                 update(row: new)
                 self.selectAndShow(row: new)
             }
-            deleteButton.isEnabled = new.removable
         }
     }
 

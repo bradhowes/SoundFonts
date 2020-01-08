@@ -8,6 +8,7 @@ import Foundation
 enum InfoBarEvent {
     case shiftKeyboardUp
     case shiftKeyboardDown
+    case addSoundFont
     case doubleTap
 }
 

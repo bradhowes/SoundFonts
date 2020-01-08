@@ -17,8 +17,6 @@ final class SoundFontsViewController: UIViewController, SegueHandler {
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
-    @IBOutlet private weak var addSoundFontButton: UIButton!
-    @IBOutlet private weak var removeSoundFontButton: UIButton!
 
     private var soundFonts: SoundFonts!
     private var soundFontsTableViewDataSource: FontsTableViewManager!
@@ -39,9 +37,6 @@ final class SoundFontsViewController: UIViewController, SegueHandler {
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeRight)
-
-        addSoundFontButton.addTarget(self, action: #selector(addSoundFont), for: .touchUpInside)
-        removeSoundFontButton.addTarget(self, action: #selector(removeSoundFont), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -162,11 +157,13 @@ extension SoundFontsViewController: ControllerConfiguration {
         soundFontsTableViewDataSource = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
-            soundFonts: router.soundFonts, deleteButton: removeSoundFontButton)
+            soundFonts: router.soundFonts)
         patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, favorites: favorites,
             keyboard: router.keyboard)
+
+        router.infoBar.addTarget(.addSoundFont, target: self, action: #selector(addSoundFont(_:)))
     }
 }
 

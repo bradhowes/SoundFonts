@@ -10,6 +10,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
+    @IBOutlet private weak var addSoundFont: UIButton!
     @IBOutlet private weak var highestKey: UIButton!
     @IBOutlet private weak var touchView: UIView!
 
@@ -42,6 +43,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
         case .shiftKeyboardUp: highestKey.addTarget(target, action: action, for: .touchUpInside)
         case .shiftKeyboardDown: lowestKey.addTarget(target, action: action, for: .touchUpInside)
         case .doubleTap: doubleTap.addTarget(target, action: action)
+        case .addSoundFont: addSoundFont.addTarget(target, action: action, for: .touchUpInside)
         }
     }
 
@@ -75,10 +77,10 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
      */
     func setVisibleKeyLabels(from: String, to: String) {
         UIView.performWithoutAnimation {
-            lowestKey.setTitle("⋘ " + from, for: .normal)
+            lowestKey.setTitle("< " + from, for: .normal)
             lowestKey.accessibilityLabel = "Keyboard down before " + from
             lowestKey.layoutIfNeeded()
-            highestKey.setTitle(to + " ⋙", for: .normal)
+            highestKey.setTitle(to + " >", for: .normal)
             highestKey.accessibilityLabel = "Keyboard up after " + to
             highestKey.layoutIfNeeded()
         }
