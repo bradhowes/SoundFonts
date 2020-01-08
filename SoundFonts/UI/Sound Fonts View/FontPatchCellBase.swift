@@ -9,6 +9,7 @@ class FontPatchCellBase: UITableViewCell {
 
     /// Unicode character to show when a cell refers to a Patch that is in a Favorite
     private static let goldStarPrefix = "✮"
+
     static func favoriteTag(_ isFavorite: Bool) -> String { return isFavorite ? goldStarPrefix + " " : "" }
 
     @IBOutlet internal weak var name: UILabel!
