@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import SoundFontsFramework
 
 /**
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
@@ -29,7 +30,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
         view.addGestureRecognizer(panner)
     }
 
-    func establishConnections(_ router: Router) {}
+    func establishConnections(_ router: ComponentContainer) {}
 
     /**
      Add an event target to one of the internal UIControl entities.

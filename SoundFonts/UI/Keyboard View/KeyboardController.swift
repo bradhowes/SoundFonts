@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import SoundFontsFramework
 
 extension SettingKeys {
     static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
@@ -10,9 +11,6 @@ extension SettingKeys {
  Controller for the keyboard view. Creates the individual key views and handles touch event detection within them.
  */
 final class KeyboardController: UIViewController {
-
-    /// Largest MIDI value available for the last key
-    static let maxMidiValue = 12 * 9 // C9
 
     weak var delegate: KeyboardDelegate?
 
@@ -58,7 +56,7 @@ final class KeyboardController: UIViewController {
 // MARK: - Configuration
 extension KeyboardController: ControllerConfiguration {
 
-    func establishConnections(_ router: Router) {
+    func establishConnections(_ router: ComponentContainer) {
         router.infoBar.addTarget(.shiftKeyboardUp, target: self, action: #selector(shiftKeyboardUp))
         router.infoBar.addTarget(.shiftKeyboardDown, target: self, action: #selector(shiftKeyboardDown))
         setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
@@ -81,7 +79,7 @@ extension KeyboardController {
 
     @IBAction private func shiftKeyboardUp(_ sender: UIButton) {
         assert(!keys.isEmpty)
-        if lastMidiNoteValue < Self.maxMidiValue {
+        if lastMidiNoteValue < Sampler.maxMidiValue {
             let shift: Int = {
                 if firstMidiNoteValue % 12 == 0 {
                     return min(keys.count, 12)
@@ -91,7 +89,7 @@ extension KeyboardController {
                 }
             }()
 
-            shiftKeys(by: min(shift, Self.maxMidiValue - lastMidiNoteValue))
+            shiftKeys(by: min(shift, Sampler.maxMidiValue - lastMidiNoteValue))
         }
     }
 
@@ -241,8 +239,8 @@ extension KeyboardController {
         // Handle edge-case where we generated a key with a MIDI value that is too big. This *could* be detected and
         // dealt with in KeyParamSequence, but this is a bit cleaner, and rarely executed.
         lastMidiNoteValue = firstMidiNoteValue + newKeyDefs.count - 1
-        if lastMidiNoteValue > Self.maxMidiValue {
-            firstMidiNoteValue -= lastMidiNoteValue - Self.maxMidiValue
+        if lastMidiNoteValue > Sampler.maxMidiValue {
+            firstMidiNoteValue -= lastMidiNoteValue - Sampler.maxMidiValue
             createKeys()
             return
         }

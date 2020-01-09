@@ -6,7 +6,7 @@ import AVKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let router = Router()
+    let router = Router<MainViewController>()
     var window: UIWindow?
 
     weak var mainViewController: MainViewController?
