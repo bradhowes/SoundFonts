@@ -330,23 +330,25 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func createFaveAction(cell: PatchCell, at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) ->
-        UIContextualAction {
+    private func getActionImage(_ name: String) -> UIImage? {
+        return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
+    }
+
+    private func createFaveAction(cell: PatchCell, at indexPath: IndexPath,
+                                  with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         let lowestNote = keyboard.lowestNote
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.favorites.add(soundFontPatch: soundFontPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, at: indexPath, with: soundFontPatch)
             completionHandler(true)
         }
-
-        action.image = UIImage(named: "Fave")
+        action.image = getActionImage("Fave")
         action.backgroundColor = UIColor.orange
-
         return action
     }
 
-    private func createUnfaveAction(cell: PatchCell, at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) ->
-        UIContextualAction {
+    private func createUnfaveAction(cell: PatchCell, at indexPath: IndexPath,
+                                    with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -359,24 +361,20 @@ extension PatchesTableViewManager {
             self.view.endUpdates()
             completionHandler(true)
         }
-
-        action.image = UIImage(named: "Unfave")
+        action.image = getActionImage("Unfave")
         action.backgroundColor = UIColor.red
-
         return action
     }
 
-    private func createEditAction(cell: PatchCell, at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) ->
-        UIContextualAction {
+    private func createEditAction(cell: PatchCell, at indexPath: IndexPath,
+                                  with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.favorites.beginEdit(favorite: favorite, view: cell)
             completionHandler(true)
         }
-
-        action.image = UIImage(named: "Edit")
+        action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
-
         return action
     }
 

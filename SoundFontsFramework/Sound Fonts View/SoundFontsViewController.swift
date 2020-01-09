@@ -96,16 +96,20 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         remove(soundFont: soundFont, completionHandler: nil)
     }
 
+    private func localizedString(_ title: String, comment: String) -> String {
+        return NSLocalizedString(title, bundle: Bundle(for: Self.self), comment: comment)
+    }
+
     private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
         guard let index = soundFonts.index(of: soundFont.key), soundFont.removable else {
             completionHandler?(false)
             return
         }
 
-        let promptTitle = NSLocalizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
-        let promptMessage = NSLocalizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
+        let promptTitle = localizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
+        let promptMessage = localizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
         let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-        let deleteTitle = NSLocalizedString("Delete", comment: "The delete action")
+        let deleteTitle = localizedString("Delete", comment: "The delete action")
 
         let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
             self.soundFonts.remove(index: index)
@@ -115,7 +119,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
             completionHandler?(true)
         }
 
-        let cancelTitle = NSLocalizedString("Cancel", comment: "The cancel action")
+        let cancelTitle = localizedString       ("Cancel", comment: "The cancel action")
         let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in completionHandler?(false) }
 
         alertController.addAction(delete)
@@ -209,7 +213,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
             completionHandler(true)
         }
 
-        action.image = UIImage(named: "Edit")
+        action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
         return action
     }
@@ -229,9 +233,13 @@ extension SoundFontsViewController: FontEditorActionGenerator {
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
 
-        action.image = UIImage(named: "Trash")
+        action.image = getActionImage("Trash")
         action.backgroundColor = UIColor.red
         return action
+    }
+
+    private func getActionImage(_ name: String) -> UIImage? {
+        return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
     }
 }
 

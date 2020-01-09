@@ -53,7 +53,8 @@ extension SoundFontKind: Codable {
         case .builtin:
             let url = URL(fileURLWithPath: value)
             let name = url.deletingPathExtension().lastPathComponent
-            guard let path = Bundle.main.path(forResource: name, ofType: SoundFont.soundFontExtension) else {
+            let bundle = Bundle(for: Sampler.self)
+            guard let path = bundle.path(forResource: name, ofType: SoundFont.soundFontExtension) else {
                 fatalError()
             }
             self = .builtin(resource: URL(fileURLWithPath: path))

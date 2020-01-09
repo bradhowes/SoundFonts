@@ -52,7 +52,7 @@
         <!--SoundFontsControls-->
         <scene sceneID="5xf-sB-Hhx">
             <objects>
-                <viewControllerPlaceholder storyboardName="SoundFontsControls" id="QM8-vv-7Rt" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="SoundFontsControls" bundleIdentifier="com.braysoftware.SoundFontsFramework" id="QM8-vv-7Rt" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OH8-Wf-2Zj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="728" y="-50"/>
