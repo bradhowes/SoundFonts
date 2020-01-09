@@ -20,13 +20,13 @@
 		BD477CF623C7B14E00A0DDB8 /* SoundFontInfo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD477CF923C7B15D00A0DDB8 /* SoundFontInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; };
 		BD477CFA23C7B15D00A0DDB8 /* SoundFontInfo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BD477CFE23C7CB6300A0DDB8 /* InfoBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E7721D29066001CB271 /* InfoBarController.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD75B279218B8CFE00C7EBD7 /* SoundFontsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */; };
 		BD75B294218B930B00C7EBD7 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B293218B930B00C7EBD7 /* Key.swift */; };
-		BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E7721D29066001CB271 /* InfoBarController.swift */; };
 		BD85F8CA21D41CFB0028E440 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8C921D41CFB0028E440 /* Router.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
 		BDA0FBC823C68CB2005BEFD5 /* DSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FBC723C68CB2005BEFD5 /* DSPKernel.hpp */; };
@@ -488,7 +488,6 @@
 			isa = PBXGroup;
 			children = (
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
-				BD7A2E7721D29066001CB271 /* InfoBarController.swift */,
 				BD85F8C921D41CFB0028E440 /* Router.swift */,
 				BD874C9122195A2F00BBD00B /* Keyboard View */,
 				BDAE7C982219540A0003A353 /* Storyboards */,
@@ -695,8 +694,9 @@
 				BD85F8E721DA57640028E440 /* Favorites View */,
 				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
 				BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */,
-				BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */,
 				BDD386022212F2380063040C /* FavoriteCell.xib */,
+				BD7A2E7721D29066001CB271 /* InfoBarController.swift */,
+				BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */,
 				BDDD1F582216D39A003BDD6F /* FontCell.xib */,
 				BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */,
 				BDA0FBFB23C73220005BEFD5 /* SoundFontsFramework.h */,
@@ -1170,7 +1170,6 @@
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */,
 				BD75B294218B930B00C7EBD7 /* Key.swift in Sources */,
-				BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1219,6 +1218,7 @@
 				BDA0FC2823C73471005BEFD5 /* FavoritesViewController.swift in Sources */,
 				BDA0FC4123C73625005BEFD5 /* FavoriteEditorDelegate.swift in Sources */,
 				BDA0FC5123C74D1C005BEFD5 /* SoundFontCollection.swift in Sources */,
+				BD477CFE23C7CB6300A0DDB8 /* InfoBarController.swift in Sources */,
 				BDA0FC3723C7360E005BEFD5 /* UIAlertController+Extensions.swift in Sources */,
 				BDA0FC8323C7546B005BEFD5 /* Settings.swift in Sources */,
 				BDA0FC2623C73471005BEFD5 /* FavoriteMover.swift in Sources */,

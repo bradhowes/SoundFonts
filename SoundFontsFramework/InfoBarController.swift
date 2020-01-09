@@ -1,13 +1,12 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import SoundFontsFramework
 
 /**
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
  left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
  */
-final class InfoBarController: UIViewController, ControllerConfiguration, InfoBar {
+public final class InfoBarController: UIViewController, ControllerConfiguration, InfoBar {
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
@@ -19,7 +18,11 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
     private var panOrigin: CGPoint = CGPoint.zero
     private var fader: UIViewPropertyAnimator?
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
+
+        highestKey.isHidden = true
+        lowestKey.isHidden = true
+
         doubleTap.numberOfTouchesRequired = 1
         doubleTap.numberOfTapsRequired = 2
         touchView.addGestureRecognizer(doubleTap)
@@ -30,7 +33,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
         view.addGestureRecognizer(panner)
     }
 
-    func establishConnections(_ router: ComponentContainer) {}
+    public func establishConnections(_ router: ComponentContainer) {}
 
     /**
      Add an event target to one of the internal UIControl entities.
@@ -39,10 +42,16 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
      - parameter target: the instance to notify when the event fires
      - parameter action: the method to call when the event fires
      */
-    func addTarget(_ event: InfoBarEvent, target: Any, action: Selector) {
+    public func addTarget(_ event: InfoBarEvent, target: Any, action: Selector) {
         switch event {
-        case .shiftKeyboardUp: highestKey.addTarget(target, action: action, for: .touchUpInside)
-        case .shiftKeyboardDown: lowestKey.addTarget(target, action: action, for: .touchUpInside)
+        case .shiftKeyboardUp:
+            highestKey.addTarget(target, action: action, for: .touchUpInside)
+            highestKey.isHidden = false
+
+        case .shiftKeyboardDown:
+            lowestKey.addTarget(target, action: action, for: .touchUpInside)
+            lowestKey.isHidden = false
+
         case .doubleTap: doubleTap.addTarget(target, action: action)
         case .addSoundFont: addSoundFont.addTarget(target, action: action, for: .touchUpInside)
         }
@@ -53,7 +62,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
 
      - parameter value: the text to display
      */
-    func setStatus(_ value: String) {
+    public func setStatus(_ value: String) {
         status.text = value
         startStatusAnimation()
     }
@@ -64,7 +73,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
      - parameter name: the name of the Patch to show
      - parameter isFavored: true if the Patch is a Favorite
      */
-    func setPatchInfo(name: String, isFavored: Bool) {
+    public func setPatchInfo(name: String, isFavored: Bool) {
         let name = PatchCell.favoriteTag(isFavored) + name
         patchInfo.text = name
         cancelStatusAnimation()
@@ -76,7 +85,7 @@ final class InfoBarController: UIViewController, ControllerConfiguration, InfoBa
      - parameter from: the first key label
      - parameter to: the last key label
      */
-    func setVisibleKeyLabels(from: String, to: String) {
+    public func setVisibleKeyLabels(from: String, to: String) {
         UIView.performWithoutAnimation {
             lowestKey.setTitle("< " + from, for: .normal)
             lowestKey.accessibilityLabel = "Keyboard down before " + from
