@@ -86,11 +86,11 @@
             <objects>
                 <viewController storyboardIdentifier="InfoBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sBP-s0-sIg" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="TUY-w9-WPV" userLabel="InfoBar">
-                        <rect key="frame" x="0.0" y="0.0" width="808" height="40"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3g-aD-uMb">
-                                <rect key="frame" x="87" y="9.6666666666666643" width="675" height="21"/>
+                                <rect key="frame" x="87" y="9.6666666666666643" width="281" height="21"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -98,7 +98,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kn8-FE-tzz" userLabel="Status">
-                                <rect key="frame" x="87" y="10" width="675" height="20"/>
+                                <rect key="frame" x="87" y="10" width="281" height="20"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -121,12 +121,12 @@
                                 <state key="normal" image="Add"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB1-GV-K7N" userLabel="HighestKey">
-                                <rect key="frame" x="770" y="5" width="30" height="30"/>
+                                <rect key="frame" x="376" y="5" width="30" height="30"/>
                                 <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
                                 <state key="normal" title="C3"/>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKb-vm-RkX" userLabel="TouchView">
-                                <rect key="frame" x="87" y="0.0" width="675" height="40"/>
+                                <rect key="frame" x="87" y="0.0" width="281" height="40"/>
                                 <accessibility key="accessibilityConfiguration" identifier="TouchView" label="TouchView">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
@@ -180,7 +180,7 @@
             <objects>
                 <viewController storyboardIdentifier="KeyboardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iPa-Gs-fEb" customClass="KeyboardController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="omh-8Z-dts">
-                        <rect key="frame" x="0.0" y="0.0" width="896" height="135.66666666666666"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="240"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="aD3-XW-FcA"/>
