@@ -1,27 +1,59 @@
-//
-//  SoundFontInfoTests.swift
-//  SoundFontInfoTests
-//
-//  Created by Brad Howes on 1/9/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2019 Brad Howes. All rights reserved.
 
 import XCTest
-@testable import SoundFontInfo
+import SoundFontsFramework
 
 class SoundFontInfoTests: XCTestCase {
 
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var soundFont: URL? {
+        let bundle = Bundle(identifier: "com.braysoftware.SoundFontsFramework")
+        return bundle?.urls(forResourcesWithExtension: "sf2", subdirectory: nil)?.first { $0.path.contains("FreeFont") }
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testParsing() {
+        let data = try! Data.init(contentsOf: soundFont!)
+        let contents = GetSoundFontInfo(data: data)
+        XCTAssertFalse(contents.patches.isEmpty)
+        XCTAssertEqual(contents.patches.count, 235)
+
+        let firstPatch = contents.patches[0]
+        XCTAssertEqual(firstPatch.name, "Piano 1")
+        XCTAssertEqual(firstPatch.bank, 0)
+        XCTAssertEqual(firstPatch.patch, 0)
+
+        let lastPatch = contents.patches[contents.patches.count - 1]
+        XCTAssertEqual(lastPatch.name, "SFX")
+        XCTAssertEqual(lastPatch.bank, 128)
+        XCTAssertEqual(lastPatch.patch, 56)
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    /**
+     Generate file with random contents and try to process them to make sure that there are no BAD_ACCESS
+     exceptions.
+     */
+
+    func testRobustnessWithRandomPayload() {
+        let size = 2048
+        var data = Data(count: size)
+        _ = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, size, $0.baseAddress!) }
+        let contents = GetSoundFontInfo(data: data)
+        XCTAssertTrue(contents.name.isEmpty)
+        XCTAssertTrue(contents.patches.isEmpty)
+    }
+
+    /**
+     Generate partial soundfont file contents and try to process them to make sure that there are no BAD_ACCESS
+     exceptions.
+     */
+    func testRobustnessWIthPartialPayload() {
+        let original = try! Data(contentsOf: soundFont!)
+        for _ in 0..<500 {
+            let truncatedCount = Int.random(in: 1 ... original.count);
+            let data = original.subdata(in: 0..<truncatedCount)
+            let contents = GetSoundFontInfo(data: data)
+            XCTAssertTrue(contents.name.isEmpty)
+            XCTAssertTrue(contents.patches.isEmpty)
+        }
     }
 
     func testPerformanceExample() {

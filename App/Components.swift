@@ -9,7 +9,7 @@ import SoundFontsFramework
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-final class Router<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
+final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
     let soundFonts: SoundFonts = SoundFontsManager()
     let favorites: Favorites = FavoritesManager()
@@ -68,7 +68,7 @@ final class Router<T: UIViewController>: ComponentContainer where T: ControllerC
     }
 }
 
-extension Router {
+extension Components {
 
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")

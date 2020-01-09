@@ -28,6 +28,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BDA0FC0023C73220005BEFD5"
+               BuildableName = "SoundFontsFrameworkTests.xctest"
+               BlueprintName = "SoundFontsFrameworkTests"
+               ReferencedContainer = "container:SoundFonts.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BDA0FC6523C74DE7005BEFD5"
+               BuildableName = "SoundFontInfoTests.xctest"
+               BlueprintName = "SoundFontInfoTests"
+               ReferencedContainer = "container:SoundFonts.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

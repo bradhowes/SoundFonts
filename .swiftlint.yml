@@ -5,12 +5,12 @@ opt_in_rules: # some rules are only opt-in
   - empty_count
 
 included: # paths to include during linting. `--path` is ignored if present.
-  - SoundFonts
+  - App
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
-  - SoundFonts/UI/Keyboard View/KeyboardRender.swift
+  - App/Keyboard/KeyboardRender.swift
 
 # binary rules can set their severity level
 force_cast: warning # implicitly

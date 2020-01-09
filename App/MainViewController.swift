@@ -44,7 +44,7 @@ final class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.appDelegate.router.addMainController(self)
+        UIApplication.shared.appDelegate.components.addMainController(self)
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
