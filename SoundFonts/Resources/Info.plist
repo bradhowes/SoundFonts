@@ -14,14 +14,15 @@
 			<key>CFBundleTypeName</key>
 			<string>com.braysoftware.sf2</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>LSHandlerRank</key>
-			<string>Owner</string>
+			<string>Alternate</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.braysoftware.sf2</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -77,14 +78,10 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>SoundFont file</string>
-			<key>UTTypeIconFiles</key>
-			<array/>
 			<key>UTTypeIdentifier</key>
 			<string>com.braysoftware.sf2</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
-				<key>com.apple.ostype</key>
-				<string>SFT</string>
 				<key>public.filename-extension</key>
 				<array>
 					<string>sf2</string>
