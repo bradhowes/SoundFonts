@@ -27,6 +27,7 @@
 		BD477D0723C7DB9F00A0DDB8 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */; };
 		BD477D0823C7DCD900A0DDB8 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */; };
 		BD477D0A23C7DD6300A0DDB8 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */; };
+		BD477D0B23C7E43800A0DDB8 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
@@ -75,7 +76,6 @@
 		BDA0FC3423C7360E005BEFD5 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
 		BDA0FC3523C7360E005BEFD5 /* RandomAccessCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC18EF7239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift */; };
 		BDA0FC3623C7360E005BEFD5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260002389F1D700A2AE01 /* String+Extensions.swift */; };
-		BDA0FC3723C7360E005BEFD5 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 		BDA0FC3923C7360E005BEFD5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860822147E380063040C /* UICollectionView+Extensions.swift */; };
 		BDA0FC3A23C7360E005BEFD5 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
 		BDA0FC3B23C7360E005BEFD5 /* UIPopoverPresentationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */; };
@@ -527,6 +527,7 @@
 				BD85F8C921D41CFB0028E440 /* Components.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BD75432E23803994004C6A4C /* Mute.swift */,
+				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD874C9122195A2F00BBD00B /* Keyboard */,
 				BD42F3572388697200E6D576 /* Resources */,
@@ -789,7 +790,6 @@
 				BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */,
 				BDC18EF7239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift */,
 				BD4260002389F1D700A2AE01 /* String+Extensions.swift */,
-				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
 				BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */,
@@ -1164,6 +1164,7 @@
 				BD85F8CA21D41CFB0028E440 /* Components.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */,
+				BD477D0B23C7E43800A0DDB8 /* UIAlertController+Extensions.swift in Sources */,
 				BD75B294218B930B00C7EBD7 /* Key.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1213,7 +1214,6 @@
 				BDA0FC4123C73625005BEFD5 /* FavoriteEditorDelegate.swift in Sources */,
 				BDA0FC5123C74D1C005BEFD5 /* SoundFontCollection.swift in Sources */,
 				BD477CFE23C7CB6300A0DDB8 /* InfoBarController.swift in Sources */,
-				BDA0FC3723C7360E005BEFD5 /* UIAlertController+Extensions.swift in Sources */,
 				BDA0FC8323C7546B005BEFD5 /* Settings.swift in Sources */,
 				BDA0FC2623C73471005BEFD5 /* FavoriteMover.swift in Sources */,
 				BDA0FC3C23C7360E005BEFD5 /* UISearchBar+Additions.swift in Sources */,
@@ -1682,6 +1682,7 @@
 		BDA0FC1123C73220005BEFD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1711,6 +1712,7 @@
 		BDA0FC1223C73220005BEFD5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1780,6 +1782,7 @@
 		BDA0FC7023C74DE7005BEFD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1808,6 +1811,7 @@
 		BDA0FC7123C74DE7005BEFD5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
