@@ -3,6 +3,7 @@
 import UIKit
 import AVKit
 import os
+import SoundFontsFramework
 
 /**
  Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
@@ -43,7 +44,7 @@ final class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.appDelegate.router.addViewControllers(self, children)
+        UIApplication.shared.appDelegate.router.addMainController(self)
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
@@ -147,7 +148,7 @@ extension MainViewController: ControllerConfiguration {
 
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
-    func establishConnections(_ router: Router) {
+    func establishConnections(_ router: ComponentContainer) {
 
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard

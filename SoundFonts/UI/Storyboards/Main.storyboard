@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Main-->
+        <scene sceneID="d3O-ys-p1M">
+            <objects>
+                <viewController storyboardIdentifier="Main" title="Piano" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FCh-Nr-9cp" userLabel="Main" customClass="MainViewController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9hh-ZJ-oqw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh4-QX-qOz">
+                                <rect key="frame" x="0.0" y="44" width="414" height="538"/>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="InfoBar" translatesAutoresizingMaskIntoConstraints="NO" id="zOV-fi-x0G" userLabel="Info Bar">
+                                <rect key="frame" x="0.0" y="582" width="414" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="MsO-Ms-fQN"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="sBP-s0-sIg" kind="embed" identifier="infoBar" id="Zj7-DW-5SK"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Keyboard" translatesAutoresizingMaskIntoConstraints="NO" id="6sg-ac-0XL" userLabel="Keyboard">
+                                <rect key="frame" x="0.0" y="622" width="414" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="240" id="aqN-cf-K1s"/>
+                                </constraints>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <exclude reference="aqN-cf-K1s"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <segue destination="iPa-Gs-fEb" kind="embed" identifier="keyboard" id="jlC-Oo-xTY"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MainView" label="MainView"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="zOV-fi-x0G" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="623-4B-Tz0"/>
+                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="64S-6p-jSZ"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="trailing" secondItem="9hh-ZJ-oqw" secondAttribute="trailing" id="Kin-On-Uce"/>
+                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="WUo-Np-iPE"/>
+                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="evo-cJ-6b8"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="top" secondItem="zOV-fi-x0G" secondAttribute="bottom" id="g4x-Fk-dEy"/>
+                            <constraint firstItem="zOV-fi-x0G" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="h2u-CQ-SdR"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="qO6-mg-CnC"/>
+                            <constraint firstItem="6sg-ac-0XL" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="qUz-7s-KTj"/>
+                            <constraint firstItem="zOV-fi-x0G" firstAttribute="top" secondItem="Zh4-QX-qOz" secondAttribute="bottom" id="rFC-I3-CYa"/>
+                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="height" secondItem="6sg-ac-0XL" secondAttribute="height" multiplier="1.5" id="yrG-D2-ncF"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3Ns-BN-Xtc"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="yrG-D2-ncF"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="yrG-D2-ncF"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="164" y="-1534"/>
+        </scene>
+        <!--Info Bar-->
+        <scene sceneID="GeL-bI-CiM">
+            <objects>
+                <viewController storyboardIdentifier="InfoBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="sBP-s0-sIg" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TUY-w9-WPV" userLabel="InfoBar">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j3g-aD-uMb">
+                                <rect key="frame" x="87" y="9.6666666666666643" width="281" height="21"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kn8-FE-tzz" userLabel="Status">
+                                <rect key="frame" x="87" y="10" width="281" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUz-hq-Gsv" userLabel="LowestKey">
+                                <rect key="frame" x="8" y="5" width="30" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="LowestKey" label="LowestKey"/>
+                                <state key="normal" title="C2"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AB5-V9-h1N" userLabel="Add">
+                                <rect key="frame" x="54" y="7.6666666666666679" width="25" height="25.000000000000004"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Add" label="Add"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Ks4-1j-K07"/>
+                                    <constraint firstAttribute="width" constant="25" id="TDh-Ld-ceA"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" image="Add"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iB1-GV-K7N" userLabel="HighestKey">
+                                <rect key="frame" x="376" y="5" width="30" height="30"/>
+                                <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
+                                <state key="normal" title="C3"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iKb-vm-RkX" userLabel="TouchView">
+                                <rect key="frame" x="87" y="0.0" width="281" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="TouchView" label="TouchView">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="iB1-GV-K7N" secondAttribute="trailing" constant="8" id="1MN-Vn-ojL"/>
+                            <constraint firstItem="iKb-vm-RkX" firstAttribute="trailing" secondItem="j3g-aD-uMb" secondAttribute="trailing" id="6Xk-Av-Tgm"/>
+                            <constraint firstItem="j3g-aD-uMb" firstAttribute="trailing" secondItem="kn8-FE-tzz" secondAttribute="trailing" id="8h1-2O-aXm"/>
+                            <constraint firstItem="j3g-aD-uMb" firstAttribute="centerY" secondItem="TUY-w9-WPV" secondAttribute="centerY" id="DnV-LT-gch"/>
+                            <constraint firstItem="AB5-V9-h1N" firstAttribute="centerY" secondItem="TUY-w9-WPV" secondAttribute="centerY" id="Kxo-jI-Txg"/>
+                            <constraint firstItem="iB1-GV-K7N" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="trailing" constant="8" id="WHT-6y-qFs"/>
+                            <constraint firstItem="AB5-V9-h1N" firstAttribute="leading" secondItem="RUz-hq-Gsv" secondAttribute="trailing" constant="16" id="ZLw-Cc-8iT"/>
+                            <constraint firstItem="iKb-vm-RkX" firstAttribute="leading" secondItem="j3g-aD-uMb" secondAttribute="leading" id="crr-OP-9G3"/>
+                            <constraint firstAttribute="bottom" secondItem="iKb-vm-RkX" secondAttribute="bottom" id="dA9-Pe-fvc"/>
+                            <constraint firstItem="j3g-aD-uMb" firstAttribute="leading" secondItem="AB5-V9-h1N" secondAttribute="trailing" constant="8" id="eaK-pS-3aU"/>
+                            <constraint firstItem="RUz-hq-Gsv" firstAttribute="leading" secondItem="TUY-w9-WPV" secondAttribute="leading" constant="8" id="gMu-9s-BpL"/>
+                            <constraint firstItem="iKb-vm-RkX" firstAttribute="top" secondItem="TUY-w9-WPV" secondAttribute="top" id="gbH-Po-p2S"/>
+                            <constraint firstItem="j3g-aD-uMb" firstAttribute="leading" secondItem="kn8-FE-tzz" secondAttribute="leading" id="j0F-BK-Yby"/>
+                            <constraint firstItem="RUz-hq-Gsv" firstAttribute="centerY" secondItem="TUY-w9-WPV" secondAttribute="centerY" id="kix-40-eU8"/>
+                            <constraint firstItem="kn8-FE-tzz" firstAttribute="centerY" secondItem="TUY-w9-WPV" secondAttribute="centerY" id="oT2-gn-YU4"/>
+                            <constraint firstItem="iB1-GV-K7N" firstAttribute="centerY" secondItem="TUY-w9-WPV" secondAttribute="centerY" id="tWR-XA-199"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="yEd-GO-Viv"/>
+                    </view>
+                    <connections>
+                        <outlet property="addSoundFont" destination="AB5-V9-h1N" id="JPb-l7-JqI"/>
+                        <outlet property="highestKey" destination="iB1-GV-K7N" id="BP1-J0-J6r"/>
+                        <outlet property="lowestKey" destination="RUz-hq-Gsv" id="0Nm-Ew-ZOy"/>
+                        <outlet property="patchInfo" destination="j3g-aD-uMb" id="6J8-FV-1kb"/>
+                        <outlet property="status" destination="kn8-FE-tzz" id="EkU-II-drG"/>
+                        <outlet property="touchView" destination="iKb-vm-RkX" id="6ag-yl-JfY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8vr-Xq-yUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="933" y="-1534"/>
+        </scene>
+        <!--Keyboard Controller-->
+        <scene sceneID="DdP-fR-Jpy">
+            <objects>
+                <viewController storyboardIdentifier="KeyboardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iPa-Gs-fEb" customClass="KeyboardController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="omh-8Z-dts">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="240"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="aD3-XW-FcA"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dc4-bz-8nP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="933" y="-1373"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Add" width="25" height="25"/>
+    </resources>
+</document>

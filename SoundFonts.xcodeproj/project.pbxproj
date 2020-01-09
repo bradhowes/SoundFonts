@@ -3,63 +3,21 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */; };
-		BD01BC0321C922CE00F56F5A /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0221C922CE00F56F5A /* Note.swift */; };
-		BD03F4052399B88B001CEEF7 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD03F4042399B88B001CEEF7 /* Formatters.swift */; };
 		BD24EAA723867F0E00F52424 /* SoundFontListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD24EAA623867F0E00F52424 /* SoundFontListTests.swift */; };
-		BD36FF6D21DBABD2002305CB /* InfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6C21DBABD2002305CB /* InfoBar.swift */; };
-		BD36FF6F21DBC393002305CB /* FavoriteEditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6E21DBC393002305CB /* FavoriteEditorDelegate.swift */; };
-		BD36FF7121DBC3DB002305CB /* ControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */; };
-		BD3AC7412390399B009956E3 /* SoundFontKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3AC7402390399B009956E3 /* SoundFontKind.swift */; };
-		BD3AC74423910BE9009956E3 /* SoundFontList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD75433723828760004C6A4C /* SoundFontList.cpp */; };
-		BD425FFF2389F03400A2AE01 /* Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD425FFE2389F03400A2AE01 /* Patch.swift */; };
-		BD4260012389F1D700A2AE01 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260002389F1D700A2AE01 /* String+Extensions.swift */; };
-		BD4260032389F7C100A2AE01 /* SoundFontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260022389F7C100A2AE01 /* SoundFontsManager.swift */; };
-		BD426005238BBE9600A2AE01 /* SoundFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD426004238BBE9600A2AE01 /* SoundFonts.swift */; };
-		BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */; };
-		BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
-		BD42F355238868F700E6D576 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
-		BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
-		BD5A2A4223AB671900CDA8B4 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */; };
-		BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
-		BD6F2FC323A28E5800E4091E /* SoundFontPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691423A238550016AB1D /* SoundFontPatch.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
-		BD75433623828711004C6A4C /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD75433423828711004C6A4C /* iffdigest.cc */; };
-		BD75433B2382945D004C6A4C /* GetSoundFontInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75433A2382945D004C6A4C /* GetSoundFontInfo.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
-		BD75B26B218B8CFE00C7EBD7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */; };
-		BD75B26E218B8CFE00C7EBD7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD75B26C218B8CFE00C7EBD7 /* LaunchScreen.storyboard */; };
 		BD75B279218B8CFE00C7EBD7 /* SoundFontsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */; };
 		BD75B294218B930B00C7EBD7 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B293218B930B00C7EBD7 /* Key.swift */; };
-		BD781B48237BF53900A71031 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B47237BF53900A71031 /* PatchesViewManager.swift */; };
-		BD781B4A237BFC5700A71031 /* UpperViewSwipingActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B49237BFC5700A71031 /* UpperViewSwipingActivity.swift */; };
-		BD7A2E4E21CEB452001CB271 /* UpperViewSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */; };
-		BD7A2E5021CEBD74001CB271 /* UpperViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */; };
-		BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */; };
-		BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5321CEF645001CB271 /* FavoriteCell.swift */; };
-		BD7A2E5621CF0215001CB271 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5521CF0215001CB271 /* Favorite.swift */; };
-		BD7A2E5821D25320001CB271 /* FavoriteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5721D25320001CB271 /* FavoriteEditor.swift */; };
 		BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E7721D29066001CB271 /* InfoBarController.swift */; };
-		BD7B44B523A8C6E20051A26A /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = BD7B44B423A8C6E20051A26A /* .swiftlint.yml */; };
 		BD85F8CA21D41CFB0028E440 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8C921D41CFB0028E440 /* Router.swift */; };
-		BD85F8CC21D549ED0028E440 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */; };
-		BD85F8CE21D554F50028E440 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */; };
-		BD85F8D021D556DF0028E440 /* PatchesTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */; };
-		BD85F8D521D91A460028E440 /* SelectedSoundFontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */; };
-		BD85F8D921D91AA90028E440 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D821D91AA90028E440 /* Favorites.swift */; };
-		BD85F8DF21D91EA20028E440 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8DE21D91EA20028E440 /* Keyboard.swift */; };
-		BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
-		BD85F8E521D98F820028E440 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
-		BD9BCF7C239A358B002FBC16 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF7E239A358B002FBC16 /* Localizable.strings */; };
-		BD9BCF7F239A3590002FBC16 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF81239A3590002FBC16 /* Localizable.stringsdict */; };
-		BD9BCF82239A35D9002FBC16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD9BCF84239A35D9002FBC16 /* Main.storyboard */; };
 		BDA0FBC823C68CB2005BEFD5 /* DSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FBC723C68CB2005BEFD5 /* DSPKernel.hpp */; };
 		BDA0FBCA23C68CB2005BEFD5 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FBC923C68CB2005BEFD5 /* DSPKernel.mm */; };
 		BDA0FBCC23C68CB2005BEFD5 /* BufferedAudioBus.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FBCB23C68CB2005BEFD5 /* BufferedAudioBus.hpp */; };
@@ -70,44 +28,96 @@
 		BDA0FBD923C68CB2005BEFD5 /* SoundFontsAUParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FBD823C68CB2005BEFD5 /* SoundFontsAUParameters.swift */; };
 		BDA0FBDD23C68CB2005BEFD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FBDB23C68CB2005BEFD5 /* Main.storyboard */; };
 		BDA0FBE123C68CB2005BEFD5 /* SoundFontsAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BDA0FBC323C68CB2005BEFD5 /* SoundFontsAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BDA0FBE923C70BC6005BEFD5 /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FBE723C70BC6005BEFD5 /* SoundFontsControls.storyboard */; };
-		BDA0FBEB23C70F46005BEFD5 /* SoundFontsControlsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */; };
-		BDAB3991239500CA00C26C57 /* FontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB3990239500CA00C26C57 /* FontEditor.swift */; };
-		BDAB39932395013D00C26C57 /* FontEditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */; };
-		BDAB399523950F1C00C26C57 /* SoundFontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */; };
-		BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
-		BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C942218539B0003A353 /* FavoriteMover.swift */; };
+		BDA0FC0223C73220005BEFD5 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */; };
+		BDA0FC0923C73220005BEFD5 /* SoundFontsControlsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FC0823C73220005BEFD5 /* SoundFontsControlsTests.swift */; };
+		BDA0FC0B23C73220005BEFD5 /* SoundFontsFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = BDA0FBFB23C73220005BEFD5 /* SoundFontsFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDA0FC0E23C73220005BEFD5 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */; };
+		BDA0FC0F23C73220005BEFD5 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BDA0FC1723C7332C005BEFD5 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */; };
+		BDA0FC1823C7332C005BEFD5 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BDA0FC1C23C733F3005BEFD5 /* FavoriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDD386022212F2380063040C /* FavoriteCell.xib */; };
+		BDA0FC1D23C733FA005BEFD5 /* FontCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F582216D39A003BDD6F /* FontCell.xib */; };
+		BDA0FC1E23C73400005BEFD5 /* PatchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */; };
+		BDA0FC2023C73430005BEFD5 /* ActivePatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */; };
+		BDA0FC2123C73444005BEFD5 /* SoundFontsControlsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */; };
+		BDA0FC2223C73471005BEFD5 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5521CF0215001CB271 /* Favorite.swift */; };
+		BDA0FC2323C73471005BEFD5 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5321CEF645001CB271 /* FavoriteCell.swift */; };
+		BDA0FC2423C73471005BEFD5 /* FavoriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA223223A3CA13000D953D /* FavoriteCollection.swift */; };
+		BDA0FC2523C73471005BEFD5 /* FavoriteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5721D25320001CB271 /* FavoriteEditor.swift */; };
+		BDA0FC2623C73471005BEFD5 /* FavoriteMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C942218539B0003A353 /* FavoriteMover.swift */; };
+		BDA0FC2723C73471005BEFD5 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CB21D549ED0028E440 /* FavoritesManager.swift */; };
+		BDA0FC2823C73471005BEFD5 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E5121CEF4BC001CB271 /* FavoritesViewController.swift */; };
+		BDA0FC2923C7347A005BEFD5 /* FontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F522216BA0F003BDD6F /* FontCell.swift */; };
+		BDA0FC2A23C7347A005BEFD5 /* FontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB3990239500CA00C26C57 /* FontEditor.swift */; };
+		BDA0FC2B23C7347A005BEFD5 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
+		BDA0FC2C23C7347A005BEFD5 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CD21D554F50028E440 /* FontsTableViewManager.swift */; };
+		BDA0FC2D23C7347A005BEFD5 /* PatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F542216BA52003BDD6F /* PatchCell.swift */; };
+		BDA0FC2E23C7347A005BEFD5 /* PatchesTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8CF21D556DF0028E440 /* PatchesTableViewManager.swift */; };
+		BDA0FC2F23C7347A005BEFD5 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
+		BDA0FC3023C734E4005BEFD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */; };
+		BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC3123C73578005BEFD5 /* Assets.xcassets */; };
+		BDA0FC3323C7360E005BEFD5 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F352238868DD00E6D576 /* FileManager+Extensions.swift */; };
+		BDA0FC3423C7360E005BEFD5 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */; };
+		BDA0FC3523C7360E005BEFD5 /* RandomAccessCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC18EF7239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift */; };
+		BDA0FC3623C7360E005BEFD5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260002389F1D700A2AE01 /* String+Extensions.swift */; };
+		BDA0FC3723C7360E005BEFD5 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
+		BDA0FC3923C7360E005BEFD5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860822147E380063040C /* UICollectionView+Extensions.swift */; };
+		BDA0FC3A23C7360E005BEFD5 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */; };
+		BDA0FC3B23C7360E005BEFD5 /* UIPopoverPresentationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */; };
+		BDA0FC3C23C7360E005BEFD5 /* UISearchBar+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E021D96CE70028E440 /* UISearchBar+Additions.swift */; };
+		BDA0FC3D23C7360E005BEFD5 /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */; };
+		BDA0FC3E23C7360E005BEFD5 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */; };
+		BDA0FC3F23C7360E005BEFD5 /* UserDefaults+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F3502388688F00E6D576 /* UserDefaults+Extensions.swift */; };
+		BDA0FC4023C73625005BEFD5 /* ControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */; };
+		BDA0FC4123C73625005BEFD5 /* FavoriteEditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6E21DBC393002305CB /* FavoriteEditorDelegate.swift */; };
+		BDA0FC4223C73625005BEFD5 /* Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D821D91AA90028E440 /* Favorites.swift */; };
+		BDA0FC4323C73625005BEFD5 /* FontEditorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */; };
+		BDA0FC4423C73625005BEFD5 /* InfoBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD36FF6C21DBABD2002305CB /* InfoBar.swift */; };
+		BDA0FC4523C73625005BEFD5 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8DE21D91EA20028E440 /* Keyboard.swift */; };
+		BDA0FC4623C73625005BEFD5 /* NibLoadableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860622147D920063040C /* NibLoadableView.swift */; };
+		BDA0FC4723C73625005BEFD5 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B47237BF53900A71031 /* PatchesViewManager.swift */; };
+		BDA0FC4823C73625005BEFD5 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860422147D0C0063040C /* ReusableView.swift */; };
+		BDA0FC4923C73625005BEFD5 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */; };
+		BDA0FC4A23C73625005BEFD5 /* SoundFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD426004238BBE9600A2AE01 /* SoundFonts.swift */; };
+		BDA0FC4B23C73625005BEFD5 /* SoundFontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */; };
+		BDA0FC4C23C73625005BEFD5 /* UpperViewSwipingActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD781B49237BFC5700A71031 /* UpperViewSwipingActivity.swift */; };
+		BDA0FC4D23C74D1C005BEFD5 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0221C922CE00F56F5A /* Note.swift */; };
+		BDA0FC4E23C74D1C005BEFD5 /* Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD425FFE2389F03400A2AE01 /* Patch.swift */; };
+		BDA0FC4F23C74D1C005BEFD5 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C2B2190F7C00008ACF9 /* Sampler.swift */; };
+		BDA0FC5023C74D1C005BEFD5 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C41219184A80008ACF9 /* SoundFont.swift */; };
+		BDA0FC5123C74D1C005BEFD5 /* SoundFontCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD84023A0EC8300B3AABA /* SoundFontCollection.swift */; };
+		BDA0FC5223C74D1C005BEFD5 /* SoundFontKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3AC7402390399B009956E3 /* SoundFontKind.swift */; };
+		BDA0FC5323C74D1C005BEFD5 /* SoundFontPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691423A238550016AB1D /* SoundFontPatch.swift */; };
+		BDA0FC5423C74D1C005BEFD5 /* SoundFontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4260022389F7C100A2AE01 /* SoundFontsManager.swift */; };
+		BDA0FC5523C74D37005BEFD5 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */; };
+		BDA0FC5623C74D37005BEFD5 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */; };
+		BDA0FC5723C74D37005BEFD5 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
+		BDA0FC5823C74D37005BEFD5 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */; };
+		BDA0FC6723C74DE7005BEFD5 /* SoundFontInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; };
+		BDA0FC6C23C74DE7005BEFD5 /* SoundFontInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FC6B23C74DE7005BEFD5 /* SoundFontInfoTests.swift */; };
+		BDA0FC7623C74E33005BEFD5 /* SoundFontList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD75433723828760004C6A4C /* SoundFontList.cpp */; };
+		BDA0FC7823C74E33005BEFD5 /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD75433423828711004C6A4C /* iffdigest.cc */; };
+		BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
+		BDA0FC7B23C75420005BEFD5 /* GetSoundFontInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75433A2382945D004C6A4C /* GetSoundFontInfo.swift */; };
+		BDA0FC7C23C75445005BEFD5 /* SoundFontInfo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; platformFilter = ios; };
+		BDA0FC7D23C75445005BEFD5 /* SoundFontInfo.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BDA0FC8123C7546B005BEFD5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD03F4042399B88B001CEEF7 /* Formatters.swift */; };
+		BDA0FC8223C7546B005BEFD5 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42F354238868F700E6D576 /* Logging.swift */; };
+		BDA0FC8323C7546B005BEFD5 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8E421D98F820028E440 /* Settings.swift */; };
+		BDA0FC8423C7546B005BEFD5 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */; };
+		BDA0FC8523C7546B005BEFD5 /* SubscriberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* SubscriberToken.swift */; };
+		BDA0FC8623C7546B005BEFD5 /* UpperViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4F21CEBD74001CB271 /* UpperViewManager.swift */; };
+		BDA0FC8723C7546B005BEFD5 /* UpperViewSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7A2E4D21CEB452001CB271 /* UpperViewSlider.swift */; };
+		BDA0FC8823C754E1005BEFD5 /* SelectedSoundFontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */; };
+		BDA0FC8A23C75643005BEFD5 /* ComponentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA0FC8923C75643005BEFD5 /* ComponentContainer.swift */; };
+		BDA0FC8C23C75FC3005BEFD5 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDA0FC6023C74DE7005BEFD5 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDA0FC8D23C76073005BEFD5 /* SoundFontList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD75433823828760004C6A4C /* SoundFontList.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
+		BDA0FC9A23C78A48005BEFD5 /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9923C78A48005BEFD5 /* SoundFontsControls.storyboard */; };
+		BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */; };
+		BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */; };
 		BDAE7C9A221955920003A353 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C99221955920003A353 /* SnapshotHelper.swift */; };
 		BDAE7C9C221955E90003A353 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAE7C9B221955E90003A353 /* ScreenShots.swift */; };
-		BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF087F21CBF58800C4EA27 /* SoundFontsViewController.swift */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
-		BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088321CCFA6C00C4EA27 /* FontPatchCellBase.swift */; };
-		BDC18EF8239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC18EF7239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift */; };
-		BDCE3C302190F7C00008ACF9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C2B2190F7C00008ACF9 /* Sampler.swift */; };
-		BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCE3C41219184A80008ACF9 /* SoundFont.swift */; };
-		BDCE3C61219184A80008ACF9 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */; };
-		BDCE3C63219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
-		BDCE3C66219184A80008ACF9 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */; };
-		BDCE3C6B219184A80008ACF9 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDCE3C52219184A80008ACF9 /* RolandNicePiano.sf2 */; };
-		BDD386032212F2380063040C /* FavoriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDD386022212F2380063040C /* FavoriteCell.xib */; };
-		BDD3860522147D0C0063040C /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860422147D0C0063040C /* ReusableView.swift */; };
-		BDD3860722147D920063040C /* NibLoadableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860622147D920063040C /* NibLoadableView.swift */; };
-		BDD3860922147E380063040C /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3860822147E380063040C /* UICollectionView+Extensions.swift */; };
-		BDD5691123A232C30016AB1D /* Keyboard.pcvd in Resources */ = {isa = PBXBuildFile; fileRef = BDD5691023A232C30016AB1D /* Keyboard.pcvd */; };
-		BDD5691323A2361A0016AB1D /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5691223A2361A0016AB1D /* State.swift */; };
-		BDDA223323A3CA13000D953D /* FavoriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA223223A3CA13000D953D /* FavoriteCollection.swift */; };
-		BDDA26B623ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */; };
-		BDDC648A23A37F6F00459C57 /* ActivePatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */; };
-		BDDCD83D23A0DCD100B3AABA /* SubscriberToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD90646821DE1C92009B474A /* SubscriberToken.swift */; };
-		BDDCD83F23A0DD1200B3AABA /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD83E23A0DD1200B3AABA /* SubscriptionManager.swift */; };
-		BDDCD84123A0EC8300B3AABA /* SoundFontCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDCD84023A0EC8300B3AABA /* SoundFontCollection.swift */; };
-		BDDD1F512216A71A003BDD6F /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F502216A71A003BDD6F /* UIView+Extensions.swift */; };
-		BDDD1F532216BA0F003BDD6F /* FontCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F522216BA0F003BDD6F /* FontCell.swift */; };
-		BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F542216BA52003BDD6F /* PatchCell.swift */; };
-		BDDD1F572216CF26003BDD6F /* UITableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F562216CF26003BDD6F /* UITableView+Extensions.swift */; };
-		BDDD1F592216D39A003BDD6F /* FontCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F582216D39A003BDD6F /* FontCell.xib */; };
-		BDDD1F5B2216D3D3003BDD6F /* PatchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */; };
-		BDDD1F5D2216E36D003BDD6F /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +142,48 @@
 			remoteGlobalIDString = BDA0FBC223C68CB2005BEFD5;
 			remoteInfo = SoundFontsAU;
 		};
+		BDA0FC0323C73220005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA0FBF823C73220005BEFD5;
+			remoteInfo = SoundFontsControls;
+		};
+		BDA0FC0523C73220005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD75B25F218B8CFD00C7EBD7;
+			remoteInfo = SoundFonts;
+		};
+		BDA0FC0C23C73220005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA0FBF823C73220005BEFD5;
+			remoteInfo = SoundFontsControls;
+		};
+		BDA0FC1923C7332C005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA0FBF823C73220005BEFD5;
+			remoteInfo = SoundFontsFramework;
+		};
+		BDA0FC6823C74DE7005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA0FC5D23C74DE7005BEFD5;
+			remoteInfo = SoundFontInfo;
+		};
+		BDA0FC7E23C75445005BEFD5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA0FC5D23C74DE7005BEFD5;
+			remoteInfo = SoundFontInfo;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -144,6 +196,39 @@
 				BDA0FBE123C68CB2005BEFD5 /* SoundFontsAU.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC1323C73220005BEFD5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BDA0FC0F23C73220005BEFD5 /* SoundFontsFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC1B23C7332C005BEFD5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BDA0FC1823C7332C005BEFD5 /* SoundFontsFramework.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC8023C75445005BEFD5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BDA0FC7D23C75445005BEFD5 /* SoundFontInfo.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -166,10 +251,8 @@
 		BD42F354238868F700E6D576 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD42F35B2388828000E6D576 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
 		BD5A2A4123AB671900CDA8B4 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
-		BD5C2CF123C47C0500E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
 		BD5C2CF223C47C0600E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD5C2CF323C47C0600E184A2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		BD5D1B5D23C4E9CD006AEC46 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		BD5D1B5E23C4E9CD006AEC46 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD5D1B5F23C4E9CD006AEC46 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -184,7 +267,6 @@
 		BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BD75B26D218B8CFE00C7EBD7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BD75B26F218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD75B274218B8CFE00C7EBD7 /* SoundFontsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsTests.swift; sourceTree = "<group>"; };
@@ -217,9 +299,6 @@
 		BD90646821DE1C92009B474A /* SubscriberToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriberToken.swift; sourceTree = "<group>"; };
 		BD9BCF7D239A358B002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD9BCF80239A3590002FBC16 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		BD9BCF83239A35D9002FBC16 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		BD9BCF85239A3791002FBC16 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		BD9BCF86239A3791002FBC16 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		BD9BCF87239A3791002FBC16 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BD9BCF88239A3791002FBC16 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BDA0FBC323C68CB2005BEFD5 /* SoundFontsAU.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFontsAU.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,6 +319,23 @@
 		BDA0FBEF23C72569005BEFD5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = SoundFonts/UI/Storyboards/fr.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
 		BDA0FBF123C7256A005BEFD5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = SoundFonts/UI/Storyboards/de.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
 		BDA0FBF323C72570005BEFD5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = SoundFonts/UI/Storyboards/es.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
+		BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDA0FBFB23C73220005BEFD5 /* SoundFontsFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontsFramework.h; sourceTree = "<group>"; };
+		BDA0FBFC23C73220005BEFD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDA0FC0123C73220005BEFD5 /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDA0FC0823C73220005BEFD5 /* SoundFontsControlsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsControlsTests.swift; sourceTree = "<group>"; };
+		BDA0FC0A23C73220005BEFD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDA0FC6023C74DE7005BEFD5 /* SoundFontInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontInfo.h; sourceTree = "<group>"; };
+		BDA0FC6123C74DE7005BEFD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDA0FC6623C74DE7005BEFD5 /* SoundFontInfoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDA0FC6B23C74DE7005BEFD5 /* SoundFontInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontInfoTests.swift; sourceTree = "<group>"; };
+		BDA0FC6D23C74DE7005BEFD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDA0FC8923C75643005BEFD5 /* ComponentContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainer.swift; sourceTree = "<group>"; };
+		BDA0FC9923C78A48005BEFD5 /* SoundFontsControls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontsControls.storyboard; sourceTree = "<group>"; };
+		BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BDAB3990239500CA00C26C57 /* FontEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditor.swift; sourceTree = "<group>"; };
 		BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditorDelegate.swift; sourceTree = "<group>"; };
 		BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontEditor.swift; sourceTree = "<group>"; };
@@ -262,7 +358,6 @@
 		BDD3860622147D920063040C /* NibLoadableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadableView.swift; sourceTree = "<group>"; };
 		BDD3860822147E380063040C /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		BDD5691023A232C30016AB1D /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
-		BDD5691223A2361A0016AB1D /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		BDD5691423A238550016AB1D /* SoundFontPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontPatch.swift; sourceTree = "<group>"; };
 		BDDA223223A3CA13000D953D /* FavoriteCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCollection.swift; sourceTree = "<group>"; };
 		BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+Extensions.swift"; sourceTree = "<group>"; };
@@ -284,6 +379,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */,
+				BDA0FC0E23C73220005BEFD5 /* SoundFontsFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +401,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDA0FC1723C7332C005BEFD5 /* SoundFontsFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FBF623C73220005BEFD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC7C23C75445005BEFD5 /* SoundFontInfo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FBFE23C73220005BEFD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC0223C73220005BEFD5 /* SoundFontsFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC5B23C74DE7005BEFD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC6323C74DE7005BEFD5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC6723C74DE7005BEFD5 /* SoundFontInfo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,8 +442,6 @@
 		BD42F3562388691200E6D576 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				BDCE3C39219184A80008ACF9 /* MIDI */,
-				BD754331238039FD004C6A4C /* Mute Detection */,
 				BD03F4042399B88B001CEEF7 /* Formatters.swift */,
 				BD42F354238868F700E6D576 /* Logging.swift */,
 				BD85F8E421D98F820028E440 /* Settings.swift */,
@@ -330,11 +456,10 @@
 		BD42F3572388697200E6D576 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */,
+				BD75432D23803994004C6A4C /* mute.aiff */,
+				BDA0FC3123C73578005BEFD5 /* Assets.xcassets */,
 				BD874C95221A228E00BBD00B /* SoundFonts.entitlements */,
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
-				BD9BCF7E239A358B002FBC16 /* Localizable.strings */,
-				BD9BCF81239A3590002FBC16 /* Localizable.stringsdict */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -343,36 +468,12 @@
 			isa = PBXGroup;
 			children = (
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
-				BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */,
 				BD7A2E7721D29066001CB271 /* InfoBarController.swift */,
 				BD85F8C921D41CFB0028E440 /* Router.swift */,
 				BD874C9122195A2F00BBD00B /* Keyboard View */,
-				BD85F8E721DA57640028E440 /* Favorites View */,
-				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
 				BDAE7C982219540A0003A353 /* Storyboards */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		BD754331238039FD004C6A4C /* Mute Detection */ = {
-			isa = PBXGroup;
-			children = (
-				BD75432D23803994004C6A4C /* mute.aiff */,
-				BD75432E23803994004C6A4C /* Mute.swift */,
-			);
-			path = "Mute Detection";
-			sourceTree = "<group>";
-		};
-		BD754333238286D9004C6A4C /* iffdigest */ = {
-			isa = PBXGroup;
-			children = (
-				BD75433423828711004C6A4C /* iffdigest.cc */,
-				BD75433523828711004C6A4C /* iffdigest.h */,
-				BD75433723828760004C6A4C /* SoundFontList.cpp */,
-				BD75433823828760004C6A4C /* SoundFontList.hpp */,
-				BD75433A2382945D004C6A4C /* GetSoundFontInfo.swift */,
-			);
-			path = iffdigest;
 			sourceTree = "<group>";
 		};
 		BD75B257218B8CFD00C7EBD7 = {
@@ -384,6 +485,10 @@
 				BD75B277218B8CFE00C7EBD7 /* SoundFontsTests */,
 				BD75B282218B8CFE00C7EBD7 /* ScreenShots */,
 				BDA0FBC423C68CB2005BEFD5 /* SoundFontsAU */,
+				BDA0FBFA23C73220005BEFD5 /* SoundFontsFramework */,
+				BDA0FC0723C73220005BEFD5 /* SoundFontsControlsTests */,
+				BDA0FC5F23C74DE7005BEFD5 /* SoundFontInfo */,
+				BDA0FC6A23C74DE7005BEFD5 /* SoundFontInfoTests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -396,6 +501,10 @@
 				BD75B274218B8CFE00C7EBD7 /* SoundFontsTests.xctest */,
 				BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */,
 				BDA0FBC323C68CB2005BEFD5 /* SoundFontsAU.appex */,
+				BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */,
+				BDA0FC0123C73220005BEFD5 /* SoundFontsFrameworkTests.xctest */,
+				BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */,
+				BDA0FC6623C74DE7005BEFD5 /* SoundFontInfoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -403,15 +512,11 @@
 		BD75B262218B8CFD00C7EBD7 /* SoundFonts */ = {
 			isa = PBXGroup;
 			children = (
-				BDD5691223A2361A0016AB1D /* State.swift */,
+				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
-				BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */,
-				BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */,
+				BD75432E23803994004C6A4C /* Mute.swift */,
 				BD42F35823886A5E00E6D576 /* UI */,
-				BDD3860C221486240063040C /* Extensions */,
-				BD85F8D321D916BA0028E440 /* Protocols */,
 				BD42F3572388697200E6D576 /* Resources */,
-				BD42F3562388691200E6D576 /* Utils */,
 			);
 			path = SoundFonts;
 			sourceTree = "<group>";
@@ -439,6 +544,7 @@
 		BD85F8D321D916BA0028E440 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				BDA0FC8923C75643005BEFD5 /* ComponentContainer.swift */,
 				BD36FF7021DBC3DB002305CB /* ControllerConfiguration.swift */,
 				BD36FF6E21DBC393002305CB /* FavoriteEditorDelegate.swift */,
 				BD85F8D821D91AA90028E440 /* Favorites.swift */,
@@ -554,15 +660,85 @@
 			path = "Audio Unit";
 			sourceTree = "<group>";
 		};
-		BDAE7C982219540A0003A353 /* Storyboards */ = {
+		BDA0FBFA23C73220005BEFD5 /* SoundFontsFramework */ = {
 			isa = PBXGroup;
 			children = (
-				BD75B26C218B8CFE00C7EBD7 /* LaunchScreen.storyboard */,
-				BD9BCF84239A35D9002FBC16 /* Main.storyboard */,
+				BDA0FC9823C789C0005BEFD5 /* Storyboards */,
+				BDA0FC8E23C78507005BEFD5 /* Resources */,
+				BDA0FBFC23C73220005BEFD5 /* Info.plist */,
+				BD75433A2382945D004C6A4C /* GetSoundFontInfo.swift */,
+				BD85F8D421D91A460028E440 /* SelectedSoundFontManager.swift */,
+				BDCE3C39219184A80008ACF9 /* MIDI */,
+				BD42F3562388691200E6D576 /* Utils */,
+				BD85F8D321D916BA0028E440 /* Protocols */,
+				BDD3860C221486240063040C /* Extensions */,
+				BD85F8E721DA57640028E440 /* Favorites View */,
+				BD85F8E621DA573D0028E440 /* Sound Fonts View */,
+				BDDCD84223A0F59200B3AABA /* ActivePatchManager.swift */,
+				BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */,
+				BDA0FBE723C70BC6005BEFD5 /* SoundFontsControls.storyboard */,
 				BDD386022212F2380063040C /* FavoriteCell.xib */,
 				BDDD1F582216D39A003BDD6F /* FontCell.xib */,
 				BDDD1F5A2216D3D3003BDD6F /* PatchCell.xib */,
-				BDA0FBE723C70BC6005BEFD5 /* SoundFontsControls.storyboard */,
+				BDA0FBFB23C73220005BEFD5 /* SoundFontsFramework.h */,
+			);
+			path = SoundFontsFramework;
+			sourceTree = "<group>";
+		};
+		BDA0FC0723C73220005BEFD5 /* SoundFontsControlsTests */ = {
+			isa = PBXGroup;
+			children = (
+				BDA0FC0823C73220005BEFD5 /* SoundFontsControlsTests.swift */,
+				BDA0FC0A23C73220005BEFD5 /* Info.plist */,
+			);
+			path = SoundFontsControlsTests;
+			sourceTree = "<group>";
+		};
+		BDA0FC5F23C74DE7005BEFD5 /* SoundFontInfo */ = {
+			isa = PBXGroup;
+			children = (
+				BDA0FC6123C74DE7005BEFD5 /* Info.plist */,
+				BDA0FC6023C74DE7005BEFD5 /* SoundFontInfo.h */,
+				BD75433423828711004C6A4C /* iffdigest.cc */,
+				BD75433523828711004C6A4C /* iffdigest.h */,
+				BD75433723828760004C6A4C /* SoundFontList.cpp */,
+				BD75433823828760004C6A4C /* SoundFontList.hpp */,
+			);
+			path = SoundFontInfo;
+			sourceTree = "<group>";
+		};
+		BDA0FC6A23C74DE7005BEFD5 /* SoundFontInfoTests */ = {
+			isa = PBXGroup;
+			children = (
+				BDA0FC6B23C74DE7005BEFD5 /* SoundFontInfoTests.swift */,
+				BDA0FC6D23C74DE7005BEFD5 /* Info.plist */,
+			);
+			path = SoundFontInfoTests;
+			sourceTree = "<group>";
+		};
+		BDA0FC8E23C78507005BEFD5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BD75B26A218B8CFE00C7EBD7 /* Assets.xcassets */,
+				BD9BCF7E239A358B002FBC16 /* Localizable.strings */,
+				BD9BCF81239A3590002FBC16 /* Localizable.stringsdict */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BDA0FC9823C789C0005BEFD5 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				BDA0FC9923C78A48005BEFD5 /* SoundFontsControls.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		BDAE7C982219540A0003A353 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */,
+				BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -586,7 +762,6 @@
 		BDCE3C45219184A80008ACF9 /* SoundFonts */ = {
 			isa = PBXGroup;
 			children = (
-				BD754333238286D9004C6A4C /* iffdigest */,
 				BDCE3C4D219184A80008ACF9 /* FluidR3_GM.sf2 */,
 				BDCE3C48219184A80008ACF9 /* FreeFont.sf2 */,
 				BDCE3C4A219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 */,
@@ -603,7 +778,6 @@
 				BDC18EF7239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift */,
 				BD4260002389F1D700A2AE01 /* String+Extensions.swift */,
 				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
-				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BDD3860822147E380063040C /* UICollectionView+Extensions.swift */,
 				BDAE7C922217A0EA0003A353 /* UIColor+Extensions.swift */,
 				BDDA26B523ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift */,
@@ -617,6 +791,26 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		BDA0FBF423C73220005BEFD5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC0B23C73220005BEFD5 /* SoundFontsFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC5923C74DE7005BEFD5 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC8C23C75FC3005BEFD5 /* SoundFontInfo.h in Headers */,
+				BDA0FC8D23C76073005BEFD5 /* SoundFontList.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		BD75B25F218B8CFD00C7EBD7 /* SoundFonts */ = {
 			isa = PBXNativeTarget;
@@ -627,11 +821,13 @@
 				BD75B25E218B8CFD00C7EBD7 /* Resources */,
 				BD7B44B323A8C5E90051A26A /* ShellScript */,
 				BDA0FBBE23C61D30005BEFD5 /* Embed App Extensions */,
+				BDA0FC1323C73220005BEFD5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				BDA0FBE023C68CB2005BEFD5 /* PBXTargetDependency */,
+				BDA0FC0D23C73220005BEFD5 /* PBXTargetDependency */,
 			);
 			name = SoundFonts;
 			productName = SoundFonts;
@@ -681,15 +877,92 @@
 				BDA0FBBF23C68CB2005BEFD5 /* Sources */,
 				BDA0FBC023C68CB2005BEFD5 /* Frameworks */,
 				BDA0FBC123C68CB2005BEFD5 /* Resources */,
+				BDA0FC1B23C7332C005BEFD5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BDA0FC1A23C7332C005BEFD5 /* PBXTargetDependency */,
 			);
 			name = SoundFontsAU;
 			productName = SoundFontsAU;
 			productReference = BDA0FBC323C68CB2005BEFD5 /* SoundFontsAU.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		BDA0FBF823C73220005BEFD5 /* SoundFontsFramework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDA0FC1023C73220005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontsFramework" */;
+			buildPhases = (
+				BDA0FBF423C73220005BEFD5 /* Headers */,
+				BDA0FBF523C73220005BEFD5 /* Sources */,
+				BDA0FBF623C73220005BEFD5 /* Frameworks */,
+				BDA0FBF723C73220005BEFD5 /* Resources */,
+				BDA0FC8023C75445005BEFD5 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BDA0FC7F23C75445005BEFD5 /* PBXTargetDependency */,
+			);
+			name = SoundFontsFramework;
+			productName = SoundFontsControls;
+			productReference = BDA0FBF923C73220005BEFD5 /* SoundFontsFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BDA0FC0023C73220005BEFD5 /* SoundFontsFrameworkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDA0FC1423C73220005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontsFrameworkTests" */;
+			buildPhases = (
+				BDA0FBFD23C73220005BEFD5 /* Sources */,
+				BDA0FBFE23C73220005BEFD5 /* Frameworks */,
+				BDA0FBFF23C73220005BEFD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BDA0FC0423C73220005BEFD5 /* PBXTargetDependency */,
+				BDA0FC0623C73220005BEFD5 /* PBXTargetDependency */,
+			);
+			name = SoundFontsFrameworkTests;
+			productName = SoundFontsControlsTests;
+			productReference = BDA0FC0123C73220005BEFD5 /* SoundFontsFrameworkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		BDA0FC5D23C74DE7005BEFD5 /* SoundFontInfo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDA0FC6F23C74DE7005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontInfo" */;
+			buildPhases = (
+				BDA0FC5923C74DE7005BEFD5 /* Headers */,
+				BDA0FC5A23C74DE7005BEFD5 /* Sources */,
+				BDA0FC5B23C74DE7005BEFD5 /* Frameworks */,
+				BDA0FC5C23C74DE7005BEFD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SoundFontInfo;
+			productName = SoundFontInfo;
+			productReference = BDA0FC5E23C74DE7005BEFD5 /* SoundFontInfo.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BDA0FC6523C74DE7005BEFD5 /* SoundFontInfoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDA0FC7223C74DE7005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontInfoTests" */;
+			buildPhases = (
+				BDA0FC6223C74DE7005BEFD5 /* Sources */,
+				BDA0FC6323C74DE7005BEFD5 /* Frameworks */,
+				BDA0FC6423C74DE7005BEFD5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BDA0FC6923C74DE7005BEFD5 /* PBXTargetDependency */,
+			);
+			name = SoundFontInfoTests;
+			productName = SoundFontInfoTests;
+			productReference = BDA0FC6623C74DE7005BEFD5 /* SoundFontInfoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -722,6 +995,19 @@
 					BDA0FBC223C68CB2005BEFD5 = {
 						CreatedOnToolsVersion = 11.3;
 					};
+					BDA0FBF823C73220005BEFD5 = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					BDA0FC0023C73220005BEFD5 = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = BD75B25F218B8CFD00C7EBD7;
+					};
+					BDA0FC5D23C74DE7005BEFD5 = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					BDA0FC6523C74DE7005BEFD5 = {
+						CreatedOnToolsVersion = 11.3;
+					};
 				};
 			};
 			buildConfigurationList = BD75B25B218B8CFD00C7EBD7 /* Build configuration list for PBXProject "SoundFonts" */;
@@ -741,9 +1027,13 @@
 			projectRoot = "";
 			targets = (
 				BD75B25F218B8CFD00C7EBD7 /* SoundFonts */,
+				BDA0FC0023C73220005BEFD5 /* SoundFontsFrameworkTests */,
 				BD75B273218B8CFE00C7EBD7 /* SoundFontsTests */,
 				BD75B27E218B8CFE00C7EBD7 /* ScreenShots */,
 				BDA0FBC223C68CB2005BEFD5 /* SoundFontsAU */,
+				BDA0FBF823C73220005BEFD5 /* SoundFontsFramework */,
+				BDA0FC5D23C74DE7005BEFD5 /* SoundFontInfo */,
+				BDA0FC6523C74DE7005BEFD5 /* SoundFontInfoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -753,22 +1043,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD7B44B523A8C6E20051A26A /* .swiftlint.yml in Resources */,
-				BDDD1F592216D39A003BDD6F /* FontCell.xib in Resources */,
-				BD9BCF7C239A358B002FBC16 /* Localizable.strings in Resources */,
+				BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */,
+				BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */,
 				BD75432F23803994004C6A4C /* mute.aiff in Resources */,
-				BDD5691123A232C30016AB1D /* Keyboard.pcvd in Resources */,
-				BD75B26E218B8CFE00C7EBD7 /* LaunchScreen.storyboard in Resources */,
-				BDCE3C6B219184A80008ACF9 /* RolandNicePiano.sf2 in Resources */,
-				BD75B26B218B8CFE00C7EBD7 /* Assets.xcassets in Resources */,
-				BDD386032212F2380063040C /* FavoriteCell.xib in Resources */,
-				BDCE3C66219184A80008ACF9 /* FluidR3_GM.sf2 in Resources */,
-				BD9BCF7F239A3590002FBC16 /* Localizable.stringsdict in Resources */,
-				BDA0FBE923C70BC6005BEFD5 /* SoundFontsControls.storyboard in Resources */,
-				BDCE3C61219184A80008ACF9 /* FreeFont.sf2 in Resources */,
-				BDDD1F5B2216D3D3003BDD6F /* PatchCell.xib in Resources */,
-				BDCE3C63219184A80008ACF9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
-				BD9BCF82239A35D9002FBC16 /* Main.storyboard in Resources */,
+				BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -794,6 +1072,43 @@
 				BDA0FBDD23C68CB2005BEFD5 /* Main.storyboard in Resources */,
 				BDA0FBC823C68CB2005BEFD5 /* DSPKernel.hpp in Resources */,
 				BDA0FBCC23C68CB2005BEFD5 /* BufferedAudioBus.hpp in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FBF723C73220005BEFD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC5723C74D37005BEFD5 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
+				BDA0FC1D23C733FA005BEFD5 /* FontCell.xib in Resources */,
+				BDA0FC1E23C73400005BEFD5 /* PatchCell.xib in Resources */,
+				BDA0FC1C23C733F3005BEFD5 /* FavoriteCell.xib in Resources */,
+				BDA0FC9A23C78A48005BEFD5 /* SoundFontsControls.storyboard in Resources */,
+				BDA0FC5823C74D37005BEFD5 /* RolandNicePiano.sf2 in Resources */,
+				BDA0FC5623C74D37005BEFD5 /* FreeFont.sf2 in Resources */,
+				BDA0FC3023C734E4005BEFD5 /* Assets.xcassets in Resources */,
+				BDA0FC5523C74D37005BEFD5 /* FluidR3_GM.sf2 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FBFF23C73220005BEFD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC5C23C74DE7005BEFD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC6423C74DE7005BEFD5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -824,75 +1139,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD781B4A237BFC5700A71031 /* UpperViewSwipingActivity.swift in Sources */,
-				BDBF088021CBF58800C4EA27 /* SoundFontsViewController.swift in Sources */,
-				BD425FFF2389F03400A2AE01 /* Patch.swift in Sources */,
 				BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */,
-				BDDCD83D23A0DCD100B3AABA /* SubscriberToken.swift in Sources */,
-				BD4260032389F7C100A2AE01 /* SoundFontsManager.swift in Sources */,
-				BD85F8D921D91AA90028E440 /* Favorites.swift in Sources */,
-				BD426005238BBE9600A2AE01 /* SoundFonts.swift in Sources */,
-				BD85F8E121D96CE70028E440 /* UISearchBar+Additions.swift in Sources */,
-				BDDA26B623ACB64500D7C197 /* UIPopoverPresentationController+Extensions.swift in Sources */,
-				BD42F3512388688F00E6D576 /* UserDefaults+Extensions.swift in Sources */,
-				BDAE7C952218539C0003A353 /* FavoriteMover.swift in Sources */,
-				BDDD1F512216A71A003BDD6F /* UIView+Extensions.swift in Sources */,
-				BDDD1F572216CF26003BDD6F /* UITableView+Extensions.swift in Sources */,
-				BD85F8E521D98F820028E440 /* Settings.swift in Sources */,
-				BD7A2E5021CEBD74001CB271 /* UpperViewManager.swift in Sources */,
-				BD85F8CE21D554F50028E440 /* FontsTableViewManager.swift in Sources */,
-				BDD3860722147D920063040C /* NibLoadableView.swift in Sources */,
-				BDBF088421CCFA6C00C4EA27 /* FontPatchCellBase.swift in Sources */,
-				BDDCD83F23A0DD1200B3AABA /* SubscriptionManager.swift in Sources */,
-				BD6F2FC323A28E5800E4091E /* SoundFontPatch.swift in Sources */,
-				BD85F8CC21D549ED0028E440 /* FavoritesManager.swift in Sources */,
-				BDD3860922147E380063040C /* UICollectionView+Extensions.swift in Sources */,
+				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
-				BD7A2E4E21CEB452001CB271 /* UpperViewSlider.swift in Sources */,
-				BD85F8D021D556DF0028E440 /* PatchesTableViewManager.swift in Sources */,
-				BD36FF6F21DBC393002305CB /* FavoriteEditorDelegate.swift in Sources */,
-				BD75433B2382945D004C6A4C /* GetSoundFontInfo.swift in Sources */,
 				BD75433023803994004C6A4C /* Mute.swift in Sources */,
-				BD7A2E5821D25320001CB271 /* FavoriteEditor.swift in Sources */,
-				BDDC648A23A37F6F00459C57 /* ActivePatchManager.swift in Sources */,
-				BDAE7C932217A0EA0003A353 /* UIColor+Extensions.swift in Sources */,
-				BDC18EF8239EE76F0011DC90 /* RandomAccessCollection+Extensions.swift in Sources */,
-				BDD5691323A2361A0016AB1D /* State.swift in Sources */,
-				BD7A2E5421CEF645001CB271 /* FavoriteCell.swift in Sources */,
-				BDDA223323A3CA13000D953D /* FavoriteCollection.swift in Sources */,
-				BDA0FBEB23C70F46005BEFD5 /* SoundFontsControlsController.swift in Sources */,
-				BD42F353238868DD00E6D576 /* FileManager+Extensions.swift in Sources */,
-				BD75433623828711004C6A4C /* iffdigest.cc in Sources */,
-				BD42F35C2388828000E6D576 /* Foundation+Extensions.swift in Sources */,
-				BDAB3991239500CA00C26C57 /* FontEditor.swift in Sources */,
-				BDDD1F552216BA52003BDD6F /* PatchCell.swift in Sources */,
-				BD85F8D521D91A460028E440 /* SelectedSoundFontManager.swift in Sources */,
-				BD01BC0321C922CE00F56F5A /* Note.swift in Sources */,
-				BDDD1F5D2216E36D003BDD6F /* UIAlertController+Extensions.swift in Sources */,
-				BD3AC74423910BE9009956E3 /* SoundFontList.cpp in Sources */,
 				BD85F8CA21D41CFB0028E440 /* Router.swift in Sources */,
-				BDDD1F532216BA0F003BDD6F /* FontCell.swift in Sources */,
-				BD4260012389F1D700A2AE01 /* String+Extensions.swift in Sources */,
-				BD7A2E5221CEF4BC001CB271 /* FavoritesViewController.swift in Sources */,
-				BDAB39932395013D00C26C57 /* FontEditorDelegate.swift in Sources */,
-				BD3AC7412390399B009956E3 /* SoundFontKind.swift in Sources */,
-				BD42F355238868F700E6D576 /* Logging.swift in Sources */,
-				BDCE3C5B219184A80008ACF9 /* SoundFont.swift in Sources */,
-				BD781B48237BF53900A71031 /* PatchesViewManager.swift in Sources */,
-				BD03F4052399B88B001CEEF7 /* Formatters.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */,
-				BDDCD84123A0EC8300B3AABA /* SoundFontCollection.swift in Sources */,
-				BD6CEAF923986DFB00C204F0 /* UIApplication+Extensions.swift in Sources */,
-				BD85F8DF21D91EA20028E440 /* Keyboard.swift in Sources */,
-				BDAB399523950F1C00C26C57 /* SoundFontEditor.swift in Sources */,
-				BD7A2E5621CF0215001CB271 /* Favorite.swift in Sources */,
-				BDCE3C302190F7C00008ACF9 /* Sampler.swift in Sources */,
-				BDD3860522147D0C0063040C /* ReusableView.swift in Sources */,
 				BD75B294218B930B00C7EBD7 /* Key.swift in Sources */,
-				BD5A2A4223AB671900CDA8B4 /* SegueHandler.swift in Sources */,
-				BD36FF7121DBC3DB002305CB /* ControllerConfiguration.swift in Sources */,
-				BD36FF6D21DBABD2002305CB /* InfoBar.swift in Sources */,
 				BD7A2E7821D29066001CB271 /* InfoBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -927,6 +1181,97 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BDA0FBF523C73220005BEFD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC4423C73625005BEFD5 /* InfoBar.swift in Sources */,
+				BDA0FC8A23C75643005BEFD5 /* ComponentContainer.swift in Sources */,
+				BDA0FC4523C73625005BEFD5 /* Keyboard.swift in Sources */,
+				BDA0FC5323C74D1C005BEFD5 /* SoundFontPatch.swift in Sources */,
+				BDA0FC3623C7360E005BEFD5 /* String+Extensions.swift in Sources */,
+				BDA0FC2923C7347A005BEFD5 /* FontCell.swift in Sources */,
+				BDA0FC2423C73471005BEFD5 /* FavoriteCollection.swift in Sources */,
+				BDA0FC4A23C73625005BEFD5 /* SoundFonts.swift in Sources */,
+				BDA0FC2823C73471005BEFD5 /* FavoritesViewController.swift in Sources */,
+				BDA0FC4123C73625005BEFD5 /* FavoriteEditorDelegate.swift in Sources */,
+				BDA0FC5123C74D1C005BEFD5 /* SoundFontCollection.swift in Sources */,
+				BDA0FC3723C7360E005BEFD5 /* UIAlertController+Extensions.swift in Sources */,
+				BDA0FC8323C7546B005BEFD5 /* Settings.swift in Sources */,
+				BDA0FC2623C73471005BEFD5 /* FavoriteMover.swift in Sources */,
+				BDA0FC3C23C7360E005BEFD5 /* UISearchBar+Additions.swift in Sources */,
+				BDA0FC8423C7546B005BEFD5 /* SubscriptionManager.swift in Sources */,
+				BDA0FC3B23C7360E005BEFD5 /* UIPopoverPresentationController+Extensions.swift in Sources */,
+				BDA0FC4623C73625005BEFD5 /* NibLoadableView.swift in Sources */,
+				BDA0FC3D23C7360E005BEFD5 /* UITableView+Extensions.swift in Sources */,
+				BDA0FC2D23C7347A005BEFD5 /* PatchCell.swift in Sources */,
+				BDA0FC4C23C73625005BEFD5 /* UpperViewSwipingActivity.swift in Sources */,
+				BDA0FC2B23C7347A005BEFD5 /* FontPatchCellBase.swift in Sources */,
+				BDA0FC2223C73471005BEFD5 /* Favorite.swift in Sources */,
+				BDA0FC2323C73471005BEFD5 /* FavoriteCell.swift in Sources */,
+				BDA0FC3E23C7360E005BEFD5 /* UIView+Extensions.swift in Sources */,
+				BDA0FC3923C7360E005BEFD5 /* UICollectionView+Extensions.swift in Sources */,
+				BDA0FC3F23C7360E005BEFD5 /* UserDefaults+Extensions.swift in Sources */,
+				BDA0FC4923C73625005BEFD5 /* SegueHandler.swift in Sources */,
+				BDA0FC3423C7360E005BEFD5 /* Foundation+Extensions.swift in Sources */,
+				BDA0FC2123C73444005BEFD5 /* SoundFontsControlsController.swift in Sources */,
+				BDA0FC8223C7546B005BEFD5 /* Logging.swift in Sources */,
+				BDA0FC5023C74D1C005BEFD5 /* SoundFont.swift in Sources */,
+				BDA0FC2E23C7347A005BEFD5 /* PatchesTableViewManager.swift in Sources */,
+				BDA0FC2523C73471005BEFD5 /* FavoriteEditor.swift in Sources */,
+				BDA0FC4723C73625005BEFD5 /* PatchesViewManager.swift in Sources */,
+				BDA0FC7B23C75420005BEFD5 /* GetSoundFontInfo.swift in Sources */,
+				BDA0FC2F23C7347A005BEFD5 /* SoundFontsViewController.swift in Sources */,
+				BDA0FC8123C7546B005BEFD5 /* Formatters.swift in Sources */,
+				BDA0FC4023C73625005BEFD5 /* ControllerConfiguration.swift in Sources */,
+				BDA0FC2023C73430005BEFD5 /* ActivePatchManager.swift in Sources */,
+				BDA0FC4D23C74D1C005BEFD5 /* Note.swift in Sources */,
+				BDA0FC8723C7546B005BEFD5 /* UpperViewSlider.swift in Sources */,
+				BDA0FC2C23C7347A005BEFD5 /* FontsTableViewManager.swift in Sources */,
+				BDA0FC5223C74D1C005BEFD5 /* SoundFontKind.swift in Sources */,
+				BDA0FC4E23C74D1C005BEFD5 /* Patch.swift in Sources */,
+				BDA0FC3A23C7360E005BEFD5 /* UIColor+Extensions.swift in Sources */,
+				BDA0FC3323C7360E005BEFD5 /* FileManager+Extensions.swift in Sources */,
+				BDA0FC3523C7360E005BEFD5 /* RandomAccessCollection+Extensions.swift in Sources */,
+				BDA0FC8823C754E1005BEFD5 /* SelectedSoundFontManager.swift in Sources */,
+				BDA0FC4F23C74D1C005BEFD5 /* Sampler.swift in Sources */,
+				BDA0FC4823C73625005BEFD5 /* ReusableView.swift in Sources */,
+				BDA0FC4223C73625005BEFD5 /* Favorites.swift in Sources */,
+				BDA0FC8523C7546B005BEFD5 /* SubscriberToken.swift in Sources */,
+				BDA0FC4323C73625005BEFD5 /* FontEditorDelegate.swift in Sources */,
+				BDA0FC8623C7546B005BEFD5 /* UpperViewManager.swift in Sources */,
+				BDA0FC5423C74D1C005BEFD5 /* SoundFontsManager.swift in Sources */,
+				BDA0FC4B23C73625005BEFD5 /* SoundFontEditor.swift in Sources */,
+				BDA0FC2A23C7347A005BEFD5 /* FontEditor.swift in Sources */,
+				BDA0FC2723C73471005BEFD5 /* FavoritesManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FBFD23C73220005BEFD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC0923C73220005BEFD5 /* SoundFontsControlsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC5A23C74DE7005BEFD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC7623C74E33005BEFD5 /* SoundFontList.cpp in Sources */,
+				BDA0FC7823C74E33005BEFD5 /* iffdigest.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDA0FC6223C74DE7005BEFD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDA0FC6C23C74DE7005BEFD5 /* SoundFontInfoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -945,18 +1290,40 @@
 			target = BDA0FBC223C68CB2005BEFD5 /* SoundFontsAU */;
 			targetProxy = BDA0FBDF23C68CB2005BEFD5 /* PBXContainerItemProxy */;
 		};
+		BDA0FC0423C73220005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDA0FBF823C73220005BEFD5 /* SoundFontsFramework */;
+			targetProxy = BDA0FC0323C73220005BEFD5 /* PBXContainerItemProxy */;
+		};
+		BDA0FC0623C73220005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD75B25F218B8CFD00C7EBD7 /* SoundFonts */;
+			targetProxy = BDA0FC0523C73220005BEFD5 /* PBXContainerItemProxy */;
+		};
+		BDA0FC0D23C73220005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDA0FBF823C73220005BEFD5 /* SoundFontsFramework */;
+			targetProxy = BDA0FC0C23C73220005BEFD5 /* PBXContainerItemProxy */;
+		};
+		BDA0FC1A23C7332C005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDA0FBF823C73220005BEFD5 /* SoundFontsFramework */;
+			targetProxy = BDA0FC1923C7332C005BEFD5 /* PBXContainerItemProxy */;
+		};
+		BDA0FC6923C74DE7005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDA0FC5D23C74DE7005BEFD5 /* SoundFontInfo */;
+			targetProxy = BDA0FC6823C74DE7005BEFD5 /* PBXContainerItemProxy */;
+		};
+		BDA0FC7F23C75445005BEFD5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = BDA0FC5D23C74DE7005BEFD5 /* SoundFontInfo */;
+			targetProxy = BDA0FC7E23C75445005BEFD5 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		BD75B26C218B8CFE00C7EBD7 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BD75B26D218B8CFE00C7EBD7 /* Base */,
-				BD9BCF85239A3791002FBC16 /* fr */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		BD9BCF7E239A358B002FBC16 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -979,17 +1346,6 @@
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
-		BD9BCF84239A35D9002FBC16 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BD9BCF83239A35D9002FBC16 /* Base */,
-				BD9BCF86239A3791002FBC16 /* fr */,
-				BD5C2CF123C47C0500E184A2 /* es */,
-				BD5D1B5D23C4E9CD006AEC46 /* de */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		BDA0FBDB23C68CB2005BEFD5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1007,6 +1363,7 @@
 				BDA0FBF323C72570005BEFD5 /* es */,
 			);
 			name = SoundFontsControls.storyboard;
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1071,7 +1428,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/howes/src/SoundFonts/SoundFonts/Utils/MIDI/SoundFonts/iffdigest/SoundFontList.hpp;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1129,7 +1485,6 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OBJC_BRIDGING_HEADER = /Users/howes/src/SoundFonts/SoundFonts/Utils/MIDI/SoundFonts/iffdigest/SoundFontList.hpp;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1305,6 +1660,200 @@
 			};
 			name = Release;
 		};
+		BDA0FC1123C73220005BEFD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SoundFontsFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
+				PRODUCT_NAME = SoundFontsFramework;
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BDA0FC1223C73220005BEFD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SoundFontsFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
+				PRODUCT_NAME = SoundFontsFramework;
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BDA0FC1523C73220005BEFD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontsControlsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsControlsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoundFonts.app/SoundFonts";
+			};
+			name = Debug;
+		};
+		BDA0FC1623C73220005BEFD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontsControlsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsControlsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SoundFonts.app/SoundFonts";
+			};
+			name = Release;
+		};
+		BDA0FC7023C74DE7005BEFD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SoundFontInfo/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfo;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		BDA0FC7123C74DE7005BEFD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = SoundFontInfo/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfo;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BDA0FC7323C74DE7005BEFD5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontInfoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BDA0FC7423C74DE7005BEFD5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontInfoTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1349,6 +1898,42 @@
 			buildConfigurations = (
 				BDA0FBE323C68CB2005BEFD5 /* Debug */,
 				BDA0FBE423C68CB2005BEFD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDA0FC1023C73220005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontsFramework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDA0FC1123C73220005BEFD5 /* Debug */,
+				BDA0FC1223C73220005BEFD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDA0FC1423C73220005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontsFrameworkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDA0FC1523C73220005BEFD5 /* Debug */,
+				BDA0FC1623C73220005BEFD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDA0FC6F23C74DE7005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontInfo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDA0FC7023C74DE7005BEFD5 /* Debug */,
+				BDA0FC7123C74DE7005BEFD5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDA0FC7223C74DE7005BEFD5 /* Build configuration list for PBXNativeTarget "SoundFontInfoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDA0FC7323C74DE7005BEFD5 /* Debug */,
+				BDA0FC7423C74DE7005BEFD5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

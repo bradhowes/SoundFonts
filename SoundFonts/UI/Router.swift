@@ -1,6 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import SoundFontsFramework
 
 /**
  Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
@@ -8,7 +9,7 @@ import UIKit
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-final class Router {
+final class Router<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
     let soundFonts: SoundFonts = SoundFontsManager()
     let favorites: Favorites = FavoritesManager()
@@ -16,7 +17,8 @@ final class Router {
     lazy var activePatchManager = ActivePatchManager(soundFonts: soundFonts)
     lazy var selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
 
-    private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
+    private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
+
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
     private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
@@ -30,15 +32,9 @@ final class Router {
     var favoritesViewManager: UpperViewSwipingActivity { favoritesController }
     var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
 
-    /**
-     Collect the known view controllers and track what we have.
-    
-     - parameter mvc: the sole MainViewController instances
-     - parameter vcs: collection of other instances
-     */
-    func addViewControllers(_ mvc: MainViewController, _ vcs: [UIViewController]) {
-        mainViewController = mvc
-        for obj in vcs {
+    func addMainController(_ mc: T) {
+        mainViewController = mc
+        for obj in mc.children {
             switch obj {
             case let vc as SoundFontsControlsController:
                 soundFontsControlsController = vc
@@ -83,7 +79,7 @@ extension Router {
         precondition(keyboardController != nil, "nil KeyboardController")
     }
 
-    private func oneTimeSet(_ oldValue: UIViewController?) {
+    private func oneTimeSet<T>(_ oldValue: T?) {
         if oldValue != nil {
             preconditionFailure("expected nil value")
         }
