@@ -6,7 +6,7 @@ import AVKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let router = Router<MainViewController>()
+    let components = Components<MainViewController>()
     var window: UIWindow?
 
     weak var mainViewController: MainViewController?
@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         print("applicationWillResignActive")
-        router.mainViewController.stopAudio()
+        components.mainViewController.stopAudio()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -48,12 +48,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         print("applicationDidBecomeActive")
-        router.mainViewController.startAudio()
+        components.mainViewController.startAudio()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         print("applicationWillTerminate")
-        router.mainViewController.stopAudio()
+        components.mainViewController.stopAudio()
     }
 }
 
@@ -61,7 +61,7 @@ extension AppDelegate {
 
     private func addSoundFont(url: URL) {
         let alert: UIAlertController = {
-            if let (_, soundFont) = router.soundFonts.add(url: url) {
+            if let (_, soundFont) = components.soundFonts.add(url: url) {
                 let alert = UIAlertController(
                     title: "SoundFont Added",
                     message: "New SoundFont added under the name '\(soundFont.displayName)'",

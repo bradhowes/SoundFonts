@@ -1,15 +1,9 @@
-//
-//  SoundFontsControlsTests.swift
-//  SoundFontsControlsTests
-//
-//  Created by Brad Howes on 1/9/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2018 Brad Howes. All rights reserved.
 
 import XCTest
-@testable import SoundFontsControls
+// @testable import SoundFonts
 
-class SoundFontsControlsTests: XCTestCase {
+class SoundFontsTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

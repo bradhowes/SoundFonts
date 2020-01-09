@@ -1,10 +1,4 @@
-//
-//  SoundFontsAUDSPKernel.hpp
-//  SoundFontsAU
-//
-//  Created by Brad Howes on 1/8/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #ifndef SoundFontsAUDSPKernel_hpp
 #define SoundFontsAUDSPKernel_hpp
