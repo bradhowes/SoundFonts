@@ -237,6 +237,9 @@
 		BDA0FBDE23C68CB2005BEFD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BDA0FBE823C70BC6005BEFD5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SoundFonts/UI/Storyboards/Base.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDA0FBEA23C70F46005BEFD5 /* SoundFontsControlsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsControlsController.swift; sourceTree = "<group>"; };
+		BDA0FBEF23C72569005BEFD5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = SoundFonts/UI/Storyboards/fr.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
+		BDA0FBF123C7256A005BEFD5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = SoundFonts/UI/Storyboards/de.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
+		BDA0FBF323C72570005BEFD5 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = SoundFonts/UI/Storyboards/es.lproj/SoundFontsControls.strings; sourceTree = "<group>"; };
 		BDAB3990239500CA00C26C57 /* FontEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditor.swift; sourceTree = "<group>"; };
 		BDAB39922395013D00C26C57 /* FontEditorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditorDelegate.swift; sourceTree = "<group>"; };
 		BDAB399423950F1C00C26C57 /* SoundFontEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontEditor.swift; sourceTree = "<group>"; };
@@ -999,6 +1002,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				BDA0FBE823C70BC6005BEFD5 /* Base */,
+				BDA0FBEF23C72569005BEFD5 /* fr */,
+				BDA0FBF123C7256A005BEFD5 /* de */,
+				BDA0FBF323C72570005BEFD5 /* es */,
 			);
 			name = SoundFontsControls.storyboard;
 			sourceTree = "<group>";
