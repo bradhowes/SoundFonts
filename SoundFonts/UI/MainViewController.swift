@@ -4,10 +4,6 @@ import UIKit
 import AVKit
 import os
 
-extension SettingKeys {
-    static let wasShowingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
-}
-
 /**
  Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
  touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
@@ -17,17 +13,12 @@ final class MainViewController: UIViewController {
 
     private lazy var logger = Logging.logger("MainVC")
 
-    @IBOutlet private weak var favoritesView: UIView!
-    @IBOutlet private weak var patchesView: UIView!
-
     private lazy var sampler = Sampler()
-    private var upperViewManager = UpperViewManager()
 
-    private var patchesViewManager: PatchesViewManager!
-    private var activePatchManager: ActivePatchManager!
     private var keyboard: Keyboard!
     private var infoBar: InfoBar!
-    private var registeredObserver = false
+    private var activePatchManager: ActivePatchManager!
+    private var audioSessionRegisteredObserver = false
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -52,8 +43,6 @@ final class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        upperViewManager.add(view: patchesView)
-        upperViewManager.add(view: favoritesView)
         UIApplication.shared.appDelegate.router.addViewControllers(self, children)
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
@@ -88,7 +77,7 @@ extension MainViewController {
         let session = AVAudioSession.sharedInstance()
         session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
                             context: &Observation.Context)
-        registeredObserver = true
+        audioSessionRegisteredObserver = true
 
         do {
             try session.setActive(true, options: [])
@@ -134,9 +123,9 @@ extension MainViewController {
 
         let session = AVAudioSession.sharedInstance()
 
-        if registeredObserver {
+        if audioSessionRegisteredObserver {
             session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
-            registeredObserver = false
+            audioSessionRegisteredObserver = false
         }
 
         do {
@@ -160,7 +149,6 @@ extension MainViewController: ControllerConfiguration {
      */
     func establishConnections(_ router: Router) {
 
-        patchesViewManager = router.patchesViewManager
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
         infoBar = router.infoBar
@@ -169,23 +157,6 @@ extension MainViewController: ControllerConfiguration {
 
         activePatchManager.subscribe(self, closure: activePatchChange)
         router.favorites.subscribe(self, closure: favoritesChange)
-
-        infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
-
-        let showingFavorites: Bool = {
-            if CommandLine.arguments.contains("--screenshots") { return false }
-            return Settings[.wasShowingFavorites]
-        }()
-
-        patchesView.isHidden = showingFavorites
-        favoritesView.isHidden = !showingFavorites
-
-        patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
-
-        let favoritesViewManager = router.favoritesViewManager
-        favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
@@ -212,37 +183,6 @@ extension MainViewController: ControllerConfiguration {
     private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
         if soundFontPatch == activePatchManager.soundFontPatch {
             infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
-        }
-    }
-
-    @IBAction private func toggleConfigurationViews() {
-        if favoritesView.isHidden {
-            showNextConfigurationView()
-        }
-        else {
-            showPreviousConfigurationView()
-        }
-    }
-
-    /**
-     Show the next (right) view in the space above the info bar.
-     */
-    @IBAction private func showNextConfigurationView() {
-        if favoritesView.isHidden {
-            patchesViewManager.dismissSearchKeyboard()
-            Settings[.wasShowingFavorites] = favoritesView.isHidden
-            upperViewManager.slideNextHorizontally()
-        }
-    }
-
-    /**
-     Show the previous (left) view in the space above the info bar.
-     */
-    @IBAction private func showPreviousConfigurationView() {
-        if patchesView.isHidden {
-            patchesViewManager.dismissSearchKeyboard()
-            Settings[.wasShowingFavorites] = favoritesView.isHidden
-            upperViewManager.slidePrevHorizontally()
         }
     }
 

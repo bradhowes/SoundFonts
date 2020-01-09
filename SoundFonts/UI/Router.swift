@@ -17,10 +17,12 @@ final class Router {
     lazy var selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
 
     private(set) var mainViewController: MainViewController! { didSet { oneTimeSet(oldValue) } }
-    private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
-    private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+    private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
     private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
+
+    private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
+    private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
 
     var infoBar: InfoBar { infoBarController }
     var keyboard: Keyboard { keyboardController }
@@ -38,8 +40,15 @@ final class Router {
         mainViewController = mvc
         for obj in vcs {
             switch obj {
-            case let vc as SoundFontsViewController: soundFontsController = vc
-            case let vc as FavoritesViewController: favoritesController = vc
+            case let vc as SoundFontsControlsController:
+                soundFontsControlsController = vc
+                for inner in vc.children {
+                    switch inner {
+                    case let vc as SoundFontsViewController: soundFontsController = vc
+                    case let vc as FavoritesViewController: favoritesController = vc
+                    default: assertionFailure("unknown child UIViewController")
+                    }
+                }
             case let vc as InfoBarController: infoBarController = vc
             case let vc as KeyboardController: keyboardController = vc
             default: assertionFailure("unknown child UIViewController")
@@ -58,6 +67,7 @@ final class Router {
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
         keyboardController.establishConnections(self)
+        soundFontsControlsController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }
@@ -66,6 +76,7 @@ extension Router {
 
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")
+        precondition(soundFontsControlsController != nil, "nil SoundFontsControlsController")
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
