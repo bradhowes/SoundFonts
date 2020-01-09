@@ -40,12 +40,12 @@ final class Router<T: UIViewController>: ComponentContainer where T: ControllerC
                 soundFontsControlsController = vc
                 for inner in vc.children {
                     switch inner {
+                    case let vc as InfoBarController: infoBarController = vc
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
-            case let vc as InfoBarController: infoBarController = vc
             case let vc as KeyboardController: keyboardController = vc
             default: assertionFailure("unknown child UIViewController")
             }
