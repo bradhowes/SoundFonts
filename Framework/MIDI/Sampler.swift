@@ -14,39 +14,52 @@ public final class Sampler {
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C9
 
-    private var engine: AVAudioEngine?
-    private var ausampler: AVAudioUnitSampler?
-    private var activePatchKind: ActivePatchKind?
-
     public enum Failure: Error {
         case engineStarting(error: NSError)
         case patchLoading(error: NSError)
     }
 
-    public init() {}
-    
+    public enum Mode {
+        case standalone
+        case audiounit
+    }
+
+    private let mode: Mode
+    private var engine: AVAudioEngine?
+    private var ausampler: AVAudioUnitSampler?
+    private var activePatchKind: ActivePatchKind?
+
+    public init(mode: Mode) {
+        self.mode = mode
+    }
+
     /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
      */
     public func start() -> Result<Void, Failure> {
         os_log(.info, log: log, "start")
 
-        let engine = AVAudioEngine()
-        self.engine = engine
         let sampler = AVAudioUnitSampler()
         self.ausampler = sampler
 
-        os_log(.debug, log: log, "attaching sampler")
-        engine.attach(sampler)
-        os_log(.debug, log: log, "connecting sampler")
-        engine.connect(sampler, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
-                       format: sampler.outputFormat(forBus: 0))
+        if case .standalone = mode {
+            let engine = AVAudioEngine()
+            self.engine = engine
 
-        do {
-            os_log(.debug, log: log, "starting engine")
-            try engine.start()
-        } catch let error as NSError {
-            return .failure(.engineStarting(error: error))
+            os_log(.debug, log: log, "attaching sampler")
+            engine.attach(sampler)
+
+            os_log(.debug, log: log, "connecting sampler")
+            engine.connect(sampler, to: engine.mainMixerNode,
+                           fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
+                           format: sampler.outputFormat(forBus: 0))
+
+            do {
+                os_log(.debug, log: log, "starting engine")
+                try engine.start()
+            } catch let error as NSError {
+                return .failure(.engineStarting(error: error))
+            }
         }
 
         if let activePatchKind = self.activePatchKind {

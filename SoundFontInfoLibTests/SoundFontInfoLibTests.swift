@@ -3,7 +3,7 @@
 import XCTest
 import SoundFontsFramework
 
-class SoundFontInfoTests: XCTestCase {
+class SoundFontInfoLibTests: XCTestCase {
 
     private var soundFont: URL? {
         let bundle = Bundle(identifier: "com.braysoftware.SoundFontsFramework")

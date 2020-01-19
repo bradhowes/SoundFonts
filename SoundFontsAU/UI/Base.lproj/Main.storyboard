@@ -15,31 +15,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="djl-S8-dTF" userLabel="SoundFontsControls">
-                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
-                                <connections>
-                                    <segue destination="QM8-vv-7Rt" kind="embed" id="VHS-94-kl5"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g7j-Pc-OBF" userLabel="InfoBar">
-                                <rect key="frame" x="0.0" y="822" width="414" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="5C2-c8-fpe"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="8YV-Pd-UBS" kind="embed" id="Xuy-5X-GQT"/>
-                                </connections>
-                            </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi Mom!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6BC-gF-hRL">
+                                <rect key="frame" x="163.5" y="433.5" width="87.5" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="g7j-Pc-OBF" firstAttribute="leading" secondItem="u2v-qu-mbu" secondAttribute="leading" id="5Ai-F8-IWv"/>
-                            <constraint firstItem="djl-S8-dTF" firstAttribute="leading" secondItem="u2v-qu-mbu" secondAttribute="leading" id="80K-Nf-lS9"/>
-                            <constraint firstItem="djl-S8-dTF" firstAttribute="top" secondItem="u2v-qu-mbu" secondAttribute="top" id="XVg-Bs-P20"/>
-                            <constraint firstItem="g7j-Pc-OBF" firstAttribute="bottom" secondItem="u2v-qu-mbu" secondAttribute="bottom" id="eCN-5U-rCb"/>
-                            <constraint firstItem="djl-S8-dTF" firstAttribute="trailing" secondItem="u2v-qu-mbu" secondAttribute="trailing" id="iE8-82-YT9"/>
-                            <constraint firstItem="g7j-Pc-OBF" firstAttribute="top" secondItem="djl-S8-dTF" secondAttribute="bottom" id="jfd-GX-HDy"/>
-                            <constraint firstItem="g7j-Pc-OBF" firstAttribute="trailing" secondItem="u2v-qu-mbu" secondAttribute="trailing" id="quu-jV-DmF"/>
+                            <constraint firstItem="6BC-gF-hRL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7s0-hj-7cA"/>
+                            <constraint firstItem="6BC-gF-hRL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Yx2-Pz-pV3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="u2v-qu-mbu"/>
                     </view>
@@ -49,86 +35,5 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
         </scene>
-        <!--SoundFontsControls-->
-        <scene sceneID="5xf-sB-Hhx">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SoundFontsControls" bundleIdentifier="com.braysoftware.SoundFontsFramework" id="QM8-vv-7Rt" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OH8-Wf-2Zj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="728" y="-50"/>
-        </scene>
-        <!--Info Bar-->
-        <scene sceneID="gMa-8E-dSo">
-            <objects>
-                <viewController storyboardIdentifier="InfoBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8YV-Pd-UBS" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsAU" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hLm-zI-Ffd" userLabel="InfoBar">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVg-pP-06a">
-                                <rect key="frame" x="41" y="9.5" width="365" height="21"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1J2-MR-ELo" userLabel="Status">
-                                <rect key="frame" x="41" y="10" width="365" height="20"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <color key="textColor" red="0.40758775679999998" green="1" blue="0.28933005140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XGs-wC-QyR" userLabel="Add">
-                                <rect key="frame" x="8" y="7.5" width="25" height="25"/>
-                                <accessibility key="accessibilityConfiguration" identifier="Add" label="Add"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="hIQ-0i-oFw"/>
-                                    <constraint firstAttribute="height" constant="25" id="tVk-Mu-dyI"/>
-                                </constraints>
-                                <color key="tintColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" image="Add"/>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xfj-ZG-sKB" userLabel="TouchView">
-                                <rect key="frame" x="41" y="0.0" width="365" height="40"/>
-                                <accessibility key="accessibilityConfiguration" identifier="TouchView" label="TouchView">
-                                    <bool key="isElement" value="YES"/>
-                                </accessibility>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
-                        <constraints>
-                            <constraint firstItem="dVg-pP-06a" firstAttribute="leading" secondItem="1J2-MR-ELo" secondAttribute="leading" id="0C4-6E-2vX"/>
-                            <constraint firstItem="dVg-pP-06a" firstAttribute="trailing" secondItem="1J2-MR-ELo" secondAttribute="trailing" id="BLF-dL-NVY"/>
-                            <constraint firstItem="xfj-ZG-sKB" firstAttribute="top" secondItem="hLm-zI-Ffd" secondAttribute="top" id="Bdm-RA-d7v"/>
-                            <constraint firstItem="dVg-pP-06a" firstAttribute="centerY" secondItem="hLm-zI-Ffd" secondAttribute="centerY" id="GPt-rD-ohz"/>
-                            <constraint firstAttribute="trailing" secondItem="dVg-pP-06a" secondAttribute="trailing" constant="8" id="NgR-9G-Ctq"/>
-                            <constraint firstItem="1J2-MR-ELo" firstAttribute="centerY" secondItem="hLm-zI-Ffd" secondAttribute="centerY" id="RXT-OH-tbk"/>
-                            <constraint firstItem="xfj-ZG-sKB" firstAttribute="trailing" secondItem="dVg-pP-06a" secondAttribute="trailing" id="fg3-5E-zTI"/>
-                            <constraint firstItem="dVg-pP-06a" firstAttribute="leading" secondItem="XGs-wC-QyR" secondAttribute="trailing" constant="8" id="gjn-e8-Ynl"/>
-                            <constraint firstItem="XGs-wC-QyR" firstAttribute="leading" secondItem="hLm-zI-Ffd" secondAttribute="leading" constant="8" id="gxn-zA-vnE"/>
-                            <constraint firstItem="XGs-wC-QyR" firstAttribute="centerY" secondItem="hLm-zI-Ffd" secondAttribute="centerY" id="jhA-t7-G8b"/>
-                            <constraint firstAttribute="bottom" secondItem="xfj-ZG-sKB" secondAttribute="bottom" id="otL-I2-Bun"/>
-                            <constraint firstItem="xfj-ZG-sKB" firstAttribute="leading" secondItem="dVg-pP-06a" secondAttribute="leading" id="rKN-Al-zbl"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="8Fn-4d-gxP"/>
-                    </view>
-                    <connections>
-                        <outlet property="addSoundFont" destination="XGs-wC-QyR" id="oJR-48-UfZ"/>
-                        <outlet property="patchInfo" destination="dVg-pP-06a" id="Sxf-HN-Wme"/>
-                        <outlet property="status" destination="1J2-MR-ELo" id="rKv-tP-jog"/>
-                        <outlet property="touchView" destination="xfj-ZG-sKB" id="wJ3-Xy-Snb"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bqk-14-0en" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="909" y="249"/>
-        </scene>
     </scenes>
-    <resources>
-        <image name="Add" width="25" height="25"/>
-    </resources>
 </document>

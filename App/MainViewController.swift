@@ -13,8 +13,7 @@ import SoundFontsFramework
 final class MainViewController: UIViewController {
 
     private lazy var logger = Logging.logger("MainVC")
-
-    private lazy var sampler = Sampler()
+    private lazy var sampler = Sampler(mode: .standalone)
 
     private var keyboard: Keyboard!
     private var infoBar: InfoBar!
