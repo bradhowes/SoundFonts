@@ -1,7 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
-import SoundFontInfo
+import SoundFontInfoLib
 
 public struct PatchInfo {
     public let name: String

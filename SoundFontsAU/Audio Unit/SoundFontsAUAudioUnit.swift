@@ -4,60 +4,40 @@ import Foundation
 import AudioToolbox
 import AVFoundation
 import CoreAudioKit
+import SoundFontsFramework
 
 public class SoundFontsAUAudioUnit: AUAudioUnit {
 
-    private let parameters: SoundFontsAUParameters
-    private let kernelAdapter: SoundFontsAUDSPKernelAdapter
+    public override var inputBusses: AUAudioUnitBusArray { auSampler.inputBusses }
+    public override var outputBusses: AUAudioUnitBusArray { auSampler.outputBusses }
+    public override var parameterTree: AUParameterTree? { get { nil } set {} }
+    public override var renderResourcesAllocated: Bool { auSampler.renderResourcesAllocated }
+    public override var isMusicDeviceOrEffect: Bool { auSampler.isMusicDeviceOrEffect }
+    public override var virtualMIDICableCount: Int { auSampler.virtualMIDICableCount }
 
-    lazy private var inputBusArray: AUAudioUnitBusArray = {
-        AUAudioUnitBusArray(audioUnit: self,
-                            busType: .input,
-                            busses: [kernelAdapter.inputBus])
-    }()
-
-    lazy private var outputBusArray: AUAudioUnitBusArray = {
-        AUAudioUnitBusArray(audioUnit: self,
-                            busType: .output,
-                            busses: [kernelAdapter.outputBus])
-    }()
-    
-    /// The units input busses
-    public override var inputBusses: AUAudioUnitBusArray {
-        return inputBusArray
+    public override var latency: TimeInterval { auSampler.latency }
+    public override var tailTime: TimeInterval { auSampler.tailTime }
+    public override var renderQuality: Int {
+        get { auSampler.renderQuality }
+        set { auSampler.renderQuality = newValue }
+    }
+    public override var internalRenderBlock: AUInternalRenderBlock { auSampler.internalRenderBlock }
+    public override var canProcessInPlace: Bool { auSampler.canProcessInPlace }
+    public override var isRenderingOffline: Bool {
+        get { auSampler.isRenderingOffline }
+        set { auSampler.isRenderingOffline = newValue }
     }
 
-    /// The units output busses
-    public override var outputBusses: AUAudioUnitBusArray {
-        return outputBusArray
-    }
-
-    /// The tree of parameters provided by this AU.
-    public override var parameterTree: AUParameterTree? {
-        get {
-            return parameters.parameterTree
-        }
-        set { }
-    }
+    public override var channelCapabilities: [NSNumber]? { auSampler.channelCapabilities }
 
     public override init(componentDescription: AudioComponentDescription,
                          options: AudioComponentInstantiationOptions = []) throws {
-
-        // Create adapter to communicate to underlying C++ DSP code
-        kernelAdapter = SoundFontsAUDSPKernelAdapter()
-
-        // Create parameters object to control paramOne
-        parameters = SoundFontsAUParameters(kernelAdapter: kernelAdapter)
-        
-        // Init super class
         try super.init(componentDescription: componentDescription, options: options)
 
-        // Log component description values
         log(componentDescription)
     }
 
     private func log(_ acd: AudioComponentDescription) {
-
         let info = ProcessInfo.processInfo
         print("\nProcess Name: \(info.processName) PID: \(info.processIdentifier)\n")
 
@@ -73,41 +53,26 @@ public class SoundFontsAUAudioUnit: AUAudioUnit {
     }
 
     public override var maximumFramesToRender: AUAudioFrameCount {
-        get {
-            return kernelAdapter.maximumFramesToRender
-        }
+        get { auSampler.maximumFramesToRender }
         set {
             if !renderResourcesAllocated {
-                kernelAdapter.maximumFramesToRender = newValue
+                auSampler.maximumFramesToRender = newValue
             }
         }
     }
 
     public override func allocateRenderResources() throws {
-
-        if kernelAdapter.outputBus.format.channelCount == kernelAdapter.inputBus.format.channelCount {
-        	try super.allocateRenderResources()
-
-	        kernelAdapter.allocateRenderResources()
-            return
-        }
-
-    	throw NSError(domain: NSOSStatusErrorDomain, code: Int(kAudioUnitErr_FormatNotSupported), userInfo: nil)
+        try auSampler.allocateRenderResources()
     }
 
     public override func deallocateRenderResources() {
         super.deallocateRenderResources()
-        kernelAdapter.deallocateRenderResources()
+        auSampler.deallocateRenderResources()
     }
 
-    public override var internalRenderBlock: AUInternalRenderBlock {
-        return kernelAdapter.internalRenderBlock()
-    }
-
-    // Boolean indicating that this AU can process the input audio in-place
-    // in the input buffer, without requiring a separate output buffer.
-    public override var canProcessInPlace: Bool {
-        return true
+    public override func reset() {
+        auSampler.reset()
+        super.reset()
     }
 }
 
