@@ -217,19 +217,19 @@
 		BD074BD023CDAF51001987E9 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				BD074C2A23CDAF51001987E9 /* ActivePatchManager.swift */,
+				BD074BDF23CDAF51001987E9 /* GetSoundFontInfo.swift */,
+				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
+				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
+				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
+				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BD074BD123CDAF51001987E9 /* Favorites View */,
 				BD074BD923CDAF51001987E9 /* UI */,
-				BD074BDF23CDAF51001987E9 /* GetSoundFontInfo.swift */,
-				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BD074BE823CDAF51001987E9 /* MIDI */,
 				BD074BF123CDAF51001987E9 /* Sound Fonts View */,
 				BD074BF923CDAF51001987E9 /* Resources */,
 				BD074C1323CDAF51001987E9 /* Utils */,
-				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
 				BD074C1C23CDAF51001987E9 /* Extensions */,
-				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
-				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
-				BD074C2A23CDAF51001987E9 /* ActivePatchManager.swift */,
 				BD074C2D23CDAF51001987E9 /* Protocols */,
 				BD074C3C23CDAF51001987E9 /* Info.plist */,
 			);
@@ -253,9 +253,9 @@
 		BD074BD923CDAF51001987E9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				BD074BDC23CDAF51001987E9 /* SoundFontsControls.storyboard */,
 				BD074BDA23CDAF51001987E9 /* PatchCell.xib */,
 				BD074BDB23CDAF51001987E9 /* FontCell.xib */,
-				BD074BDC23CDAF51001987E9 /* SoundFontsControls.storyboard */,
 				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 			);
 			path = UI;

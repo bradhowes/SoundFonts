@@ -8,12 +8,12 @@
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
-      location = "group:SoundFontInfoLib.xcodeproj">
+      location = "group:/Users/howes/src/SoundFonts/App.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Framework.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/howes/src/SoundFonts/App.xcodeproj">
+      location = "group:SoundFontInfoLib.xcodeproj">
    </FileRef>
 </Workspace>
