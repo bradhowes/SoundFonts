@@ -29,6 +29,14 @@ public final class Sampler {
     private var ausampler: AVAudioUnitSampler?
     private var activePatchKind: ActivePatchKind?
 
+    /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
+    public var auAudioUnit: AUAudioUnit { return ausampler!.auAudioUnit }
+
+    /**
+     Create a new instance of a Sampler.
+
+     - parameter mode: <#Describe mode#>
+     */
     public init(mode: Mode) {
         self.mode = mode
     }

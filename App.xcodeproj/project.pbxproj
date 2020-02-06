@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		BD01BC0121C7D54E00F56F5A /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */; };
+		BD05836723E4C52800E094E0 /* DSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BD05836623E4C52800E094E0 /* DSPKernel.hpp */; };
+		BD05836923E4C52800E094E0 /* DSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05836823E4C52800E094E0 /* DSPKernel.mm */; };
+		BD05836B23E4C52800E094E0 /* BufferedAudioBus.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BD05836A23E4C52800E094E0 /* BufferedAudioBus.hpp */; };
+		BD05836E23E4C52800E094E0 /* SoundFontAUDSPKernel.hpp in Resources */ = {isa = PBXBuildFile; fileRef = BD05836D23E4C52800E094E0 /* SoundFontAUDSPKernel.hpp */; };
+		BD05837023E4C52800E094E0 /* SoundFontAUDSPKernel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD05836F23E4C52800E094E0 /* SoundFontAUDSPKernel.mm */; };
+		BD05837323E4C52800E094E0 /* AudioUnitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05837223E4C52800E094E0 /* AudioUnitViewController.swift */; };
+		BD05837623E4C52800E094E0 /* SoundFontAUAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05837523E4C52800E094E0 /* SoundFontAUAudioUnit.swift */; };
+		BD05837823E4C52800E094E0 /* SoundFontAUParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD05837723E4C52800E094E0 /* SoundFontAUParameters.swift */; };
+		BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD05837A23E4C52800E094E0 /* MainInterface.storyboard */; };
+		BD05838023E4C52800E094E0 /* SoundFontAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFontAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD477D0B23C7E43800A0DDB8 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 		BD50C7B023D479390019EF15 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -29,6 +39,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		BD05837E23E4C52800E094E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD05836123E4C52800E094E0;
+			remoteInfo = SoundFontAU;
+		};
 		BD75B275218B8CFE00C7EBD7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
@@ -64,6 +81,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				BD05838023E4C52800E094E0 /* SoundFontAU.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,6 +90,19 @@
 
 /* Begin PBXFileReference section */
 		BD01BC0021C7D54E00F56F5A /* KeyboardRender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardRender.swift; sourceTree = "<group>"; };
+		BD05836223E4C52800E094E0 /* SoundFontAU.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFontAU.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD05836623E4C52800E094E0 /* DSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DSPKernel.hpp; sourceTree = "<group>"; };
+		BD05836823E4C52800E094E0 /* DSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DSPKernel.mm; sourceTree = "<group>"; };
+		BD05836A23E4C52800E094E0 /* BufferedAudioBus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BufferedAudioBus.hpp; sourceTree = "<group>"; };
+		BD05836C23E4C52800E094E0 /* SoundFontAUDSPKernelAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontAUDSPKernelAdapter.h; sourceTree = "<group>"; };
+		BD05836D23E4C52800E094E0 /* SoundFontAUDSPKernel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SoundFontAUDSPKernel.hpp; sourceTree = "<group>"; };
+		BD05836F23E4C52800E094E0 /* SoundFontAUDSPKernel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundFontAUDSPKernel.mm; sourceTree = "<group>"; };
+		BD05837223E4C52800E094E0 /* AudioUnitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitViewController.swift; sourceTree = "<group>"; };
+		BD05837523E4C52800E094E0 /* SoundFontAUAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontAUAudioUnit.swift; sourceTree = "<group>"; };
+		BD05837723E4C52800E094E0 /* SoundFontAUParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontAUParameters.swift; sourceTree = "<group>"; };
+		BD05837923E4C52800E094E0 /* SoundFontAU-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SoundFontAU-Bridging-Header.h"; sourceTree = "<group>"; };
+		BD05837B23E4C52800E094E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
@@ -98,6 +129,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BD05835F23E4C52800E094E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BD75B25D218B8CFD00C7EBD7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -125,6 +163,57 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD05836323E4C52800E094E0 /* SoundFontAU */ = {
+			isa = PBXGroup;
+			children = (
+				BD05837923E4C52800E094E0 /* SoundFontAU-Bridging-Header.h */,
+				BD05837A23E4C52800E094E0 /* MainInterface.storyboard */,
+				BD05837D23E4C52800E094E0 /* Info.plist */,
+				BD05836423E4C52800E094E0 /* DSP */,
+				BD05837123E4C52800E094E0 /* UI */,
+				BD05837423E4C52800E094E0 /* Audio Unit */,
+			);
+			path = SoundFontAU;
+			sourceTree = "<group>";
+		};
+		BD05836423E4C52800E094E0 /* DSP */ = {
+			isa = PBXGroup;
+			children = (
+				BD05836D23E4C52800E094E0 /* SoundFontAUDSPKernel.hpp */,
+				BD05836F23E4C52800E094E0 /* SoundFontAUDSPKernel.mm */,
+				BD05836523E4C52800E094E0 /* Helpers */,
+			);
+			path = DSP;
+			sourceTree = "<group>";
+		};
+		BD05836523E4C52800E094E0 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BD05836623E4C52800E094E0 /* DSPKernel.hpp */,
+				BD05836823E4C52800E094E0 /* DSPKernel.mm */,
+				BD05836A23E4C52800E094E0 /* BufferedAudioBus.hpp */,
+				BD05836C23E4C52800E094E0 /* SoundFontAUDSPKernelAdapter.h */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		BD05837123E4C52800E094E0 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BD05837223E4C52800E094E0 /* AudioUnitViewController.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		BD05837423E4C52800E094E0 /* Audio Unit */ = {
+			isa = PBXGroup;
+			children = (
+				BD05837523E4C52800E094E0 /* SoundFontAUAudioUnit.swift */,
+				BD05837723E4C52800E094E0 /* SoundFontAUParameters.swift */,
+			);
+			path = "Audio Unit";
+			sourceTree = "<group>";
+		};
 		BD42F3572388697200E6D576 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +229,7 @@
 			children = (
 				BD75B262218B8CFD00C7EBD7 /* App */,
 				BD75B277218B8CFE00C7EBD7 /* AppTests */,
+				BD05836323E4C52800E094E0 /* SoundFontAU */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -151,6 +241,7 @@
 				BD75B260218B8CFD00C7EBD7 /* SoundFonts.app */,
 				BD75B274218B8CFE00C7EBD7 /* AppTests.xctest */,
 				BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */,
+				BD05836223E4C52800E094E0 /* SoundFontAU.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,15 +249,15 @@
 		BD75B262218B8CFD00C7EBD7 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				BDAE7C982219540A0003A353 /* UI */,
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
+				BDAE7C982219540A0003A353 /* UI */,
+				BD874C9122195A2F00BBD00B /* Keyboard */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BD85F8C921D41CFB0028E440 /* Components.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BD75432E23803994004C6A4C /* Mute.swift */,
 				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
-				BD874C9122195A2F00BBD00B /* Keyboard */,
 				BD42F3572388697200E6D576 /* Resources */,
 			);
 			path = App;
@@ -214,6 +305,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BD05836123E4C52800E094E0 /* SoundFontAU */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD05838323E4C52800E094E0 /* Build configuration list for PBXNativeTarget "SoundFontAU" */;
+			buildPhases = (
+				BD05835E23E4C52800E094E0 /* Sources */,
+				BD05835F23E4C52800E094E0 /* Frameworks */,
+				BD05836023E4C52800E094E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SoundFontAU;
+			productName = SoundFontAU;
+			productReference = BD05836223E4C52800E094E0 /* SoundFontAU.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		BD75B25F218B8CFD00C7EBD7 /* SoundFonts */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD75B288218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "SoundFonts" */;
@@ -228,6 +336,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BD05837F23E4C52800E094E0 /* PBXTargetDependency */,
 			);
 			name = SoundFonts;
 			productName = SoundFonts;
@@ -280,6 +389,9 @@
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
+					BD05836123E4C52800E094E0 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1120;
@@ -319,11 +431,23 @@
 				BD75B25F218B8CFD00C7EBD7 /* SoundFonts */,
 				BD75B273218B8CFE00C7EBD7 /* AppTests */,
 				BD75B27E218B8CFE00C7EBD7 /* ScreenShots */,
+				BD05836123E4C52800E094E0 /* SoundFontAU */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		BD05836023E4C52800E094E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD05836723E4C52800E094E0 /* DSPKernel.hpp in Resources */,
+				BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */,
+				BD05836E23E4C52800E094E0 /* SoundFontAUDSPKernel.hpp in Resources */,
+				BD05836B23E4C52800E094E0 /* BufferedAudioBus.hpp in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BD75B25E218B8CFD00C7EBD7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -372,6 +496,18 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BD05835E23E4C52800E094E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD05836923E4C52800E094E0 /* DSPKernel.mm in Sources */,
+				BD05837823E4C52800E094E0 /* SoundFontAUParameters.swift in Sources */,
+				BD05837623E4C52800E094E0 /* SoundFontAUAudioUnit.swift in Sources */,
+				BD05837023E4C52800E094E0 /* SoundFontAUDSPKernel.mm in Sources */,
+				BD05837323E4C52800E094E0 /* AudioUnitViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BD75B25C218B8CFD00C7EBD7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -406,6 +542,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		BD05837F23E4C52800E094E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD05836123E4C52800E094E0 /* SoundFontAU */;
+			targetProxy = BD05837E23E4C52800E094E0 /* PBXContainerItemProxy */;
+		};
 		BD75B276218B8CFE00C7EBD7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BD75B25F218B8CFD00C7EBD7 /* SoundFonts */;
@@ -418,7 +559,62 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		BD05837A23E4C52800E094E0 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BD05837B23E4C52800E094E0 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		BD05838123E4C52800E094E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontAU;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontAU/SoundFontAU-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD05838223E4C52800E094E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = SoundFontAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontAU;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontAU/SoundFontAU-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		BD75B286218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -544,6 +740,7 @@
 		BD75B289218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
@@ -567,6 +764,7 @@
 		BD75B28A218B8CFE00C7EBD7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
@@ -667,6 +865,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		BD05838323E4C52800E094E0 /* Build configuration list for PBXNativeTarget "SoundFontAU" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD05838123E4C52800E094E0 /* Debug */,
+				BD05838223E4C52800E094E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BD75B25B218B8CFD00C7EBD7 /* Build configuration list for PBXProject "App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
