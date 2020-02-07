@@ -9,12 +9,14 @@ final class FavoriteEditor: UIViewController {
 
     var favorite: Favorite! = nil
     var position: IndexPath = IndexPath(row: -1, section: -1)
-    var currentLowestNote: Note = Note(midiNoteValue: 0)
+    var currentLowestNote: Note?
+
     weak var delegate: FavoriteEditorDelegate?
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var lowestNoteLabel: UILabel!
     @IBOutlet weak var lowestNote: UIButton!
     @IBOutlet weak var lowestNoteStepper: UIStepper!
     @IBOutlet weak var soundFontName: UILabel!
@@ -46,15 +48,16 @@ final class FavoriteEditor: UIViewController {
         name.text = favorite.name
         name.delegate = self
 
-        if let lowest = favorite.keyboardLowestNote {
-            lowestNote.setTitle(lowest.label, for: .normal)
-            lowestNoteStepper.value = Double(lowest.midiNoteValue)
+        if let currentLowestNote = self.currentLowestNote {
+            lowestNote.setTitle(currentLowestNote.label, for: .normal)
+            lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
         }
         else {
-            lowestNote.isHidden = true
-            lowestNoteStepper.isHidden = true
+            lowestNoteLabel.isEnabled = false
+            lowestNote.isEnabled = false
+            lowestNoteStepper.isEnabled = false
         }
-
+        
         soundFontName.text = soundFontPatch.soundFont.displayName
         patchName.text = soundFontPatch.patch.name
         bank.text = "Bank: \(soundFontPatch.patch.bank)"
@@ -79,9 +82,7 @@ final class FavoriteEditor: UIViewController {
     func editFavorite(_ favorite: Favorite, position: IndexPath, currentLowestNote: Note?) {
         self.favorite = favorite
         self.position = position
-        if let note = currentLowestNote {
-            self.currentLowestNote = note
-        }
+        self.currentLowestNote = currentLowestNote
     }
 }
 
@@ -165,6 +166,7 @@ extension FavoriteEditor {
     }
 
     @IBAction private func useCurrentLowestNote(_ sender: Any) {
+        guard let currentLowestNote = self.currentLowestNote else { return }
         lowestNote.setTitle(currentLowestNote.label, for: .normal)
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
     }

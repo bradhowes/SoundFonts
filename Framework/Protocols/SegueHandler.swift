@@ -30,7 +30,7 @@ public extension SegueHandler where Self: UIViewController, SegueIdentifier.RawV
 
      - parameter segueIdentifier: the identifier of the segue to perform
      */
-    func performSegue(withIdentifier segueIdentifier: SegueIdentifier, sender: UIView? = nil) {
+func performSegue(withIdentifier segueIdentifier: SegueIdentifier, sender: Any? = nil) {
         performSegue(withIdentifier: segueIdentifier.rawValue, sender: sender)
     }
 }

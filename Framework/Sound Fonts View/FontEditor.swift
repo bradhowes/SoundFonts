@@ -21,7 +21,6 @@ final class FontEditor: UIViewController {
     @IBOutlet weak var embeddedNameLabel: UILabel!
     @IBOutlet weak var patchCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
-    @IBOutlet weak var location: UILabel!
 
     /**
      Set the SoundFont and its index in preparation for editing in the view.
@@ -45,7 +44,6 @@ final class FontEditor: UIViewController {
         embeddedNameLabel.text = soundFont.embeddedName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
-        location.text = soundFont.fileURL.path
         super.viewWillAppear(animated)
     }
 
