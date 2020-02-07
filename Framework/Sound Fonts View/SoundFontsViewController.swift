@@ -23,6 +23,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
     private var patchesTableViewDataSource: PatchesTableViewManager!
     private var favorites: Favorites!
     private var selectedSoundFontManager: SelectedSoundFontManager!
+    private var keyboard: Keyboard?
 
     private var swipeLeft = UISwipeGestureRecognizer()
     private var swipeRight = UISwipeGestureRecognizer()
@@ -70,6 +71,10 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         vc.delegate = self
         let soundFont = soundFonts.getBy(index: indexPath.row)
         vc.edit(soundFont: soundFont, favoriteCount: favorites.count(associatedWith: soundFont), position: indexPath)
+        if keyboard == nil {
+            vc.modalPresentationStyle = .fullScreen
+            nc.modalPresentationStyle = .fullScreen
+        }
         nc.popoverPresentationController?.setSourceView(cell)
     }
 
@@ -156,6 +161,7 @@ extension SoundFontsViewController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
         soundFonts = router.soundFonts
         favorites = router.favorites
+        keyboard = router.keyboard
         selectedSoundFontManager = router.selectedSoundFontManager
 
         soundFontsTableViewDataSource = FontsTableViewManager(

@@ -39,6 +39,7 @@ extension AudioUnitViewController: ControllerConfiguration {
         infoBar = router.infoBar
         activePatchManager.subscribe(self, closure: activePatchChange)
         router.favorites.subscribe(self, closure: favoritesChange)
+        useActivePatchKind(activePatchManager.active)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {

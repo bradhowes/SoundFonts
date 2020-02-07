@@ -9,7 +9,6 @@ import UIKit
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
 public protocol ComponentContainer {
-
     var soundFonts: SoundFonts { get }
     var favorites: Favorites { get }
 
@@ -23,4 +22,8 @@ public protocol ComponentContainer {
     var patchesViewManager: PatchesViewManager { get }
     var favoritesViewManager: UpperViewSwipingActivity { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
+}
+
+public extension ComponentContainer {
+    var isMainApp: Bool { return keyboard != nil }
 }
