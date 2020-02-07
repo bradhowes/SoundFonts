@@ -18,7 +18,7 @@ public struct Favorite: Codable {
     public var name: String
 
     /// The starting note of the keyboard
-    public var keyboardLowestNote: Note
+    public var keyboardLowestNote: Note?
 
     /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
     public var gain: Float
@@ -33,7 +33,7 @@ public struct Favorite: Codable {
      - parameter patch: the Patch to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-    public init(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note) {
+    public init(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note?) {
         self.key = Key()
         self.name = soundFontPatch.patch.name
         self.keyboardLowestNote = keyboardLowestNote

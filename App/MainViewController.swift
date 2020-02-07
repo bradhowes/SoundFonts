@@ -47,9 +47,6 @@ final class MainViewController: UIViewController {
         UIApplication.shared.appDelegate.mainViewController = self
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-    }
 }
 
 extension MainViewController {

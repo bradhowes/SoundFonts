@@ -17,7 +17,9 @@ public protocol ComponentContainer {
     var selectedSoundFontManager: SelectedSoundFontManager { get }
 
     var infoBar: InfoBar { get }
-    var keyboard: Keyboard { get }
+
+    var keyboard: Keyboard? { get }
+
     var patchesViewManager: PatchesViewManager { get }
     var favoritesViewManager: UpperViewSwipingActivity { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }

@@ -35,7 +35,11 @@ public final class Sampler {
     /**
      Create a new instance of a Sampler.
 
-     - parameter mode: <#Describe mode#>
+     In `standalone` mode, the sampler will create a `AVAudioEngine` to use to host the sampler and to generate sound.
+     In `audiounit` mode, the sampler will exist on its own and will expect an AUv3 host to provide the appropriate
+     context to generate sound from its output.
+
+     - parameter mode: determines how the sampler is hosted.
      */
     public init(mode: Mode) {
         self.mode = mode
@@ -43,6 +47,8 @@ public final class Sampler {
 
     /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
+
+     - returns Result value indicating success or failure
      */
     public func start() -> Result<Void, Failure> {
         os_log(.info, log: log, "start")
@@ -92,7 +98,9 @@ public final class Sampler {
     /**
      Set the sound font and patch to use in the AVAudioUnitSampler to generate audio output.
     
-     - parameter patch: the sound font and patch to use
+     - parameter activePatchKind: the sound font and patch to use
+
+     - returns Result instance indicating success or failure
      */
     public func load(activePatchKind: ActivePatchKind) -> Result<Void, Failure> {
         os_log(.info, log: log, "load - %s", activePatchKind.description)

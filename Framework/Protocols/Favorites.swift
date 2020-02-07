@@ -40,7 +40,7 @@ public protocol Favorites {
      - parameter patch: the Patch to associate with
      - parameter keyboardLowestNote: the lowest note of the keyboard
      */
-    func add(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note)
+    func add(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note?)
 
     func beginEdit(favorite: Favorite, view: UIView)
 
