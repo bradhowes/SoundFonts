@@ -46,8 +46,14 @@ final class FavoriteEditor: UIViewController {
         name.text = favorite.name
         name.delegate = self
 
-        lowestNote.setTitle(favorite.keyboardLowestNote.label, for: .normal)
-        lowestNoteStepper.value = Double(favorite.keyboardLowestNote.midiNoteValue)
+        if let lowest = favorite.keyboardLowestNote {
+            lowestNote.setTitle(lowest.label, for: .normal)
+            lowestNoteStepper.value = Double(lowest.midiNoteValue)
+        }
+        else {
+            lowestNote.isHidden = true
+            lowestNoteStepper.isHidden = true
+        }
 
         soundFontName.text = soundFontPatch.soundFont.displayName
         patchName.text = soundFontPatch.patch.name

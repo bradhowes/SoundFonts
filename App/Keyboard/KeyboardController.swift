@@ -66,7 +66,9 @@ extension KeyboardController: ControllerConfiguration {
     private func favoritesChange(_ event: FavoritesEvent) {
         switch event {
         case let .selected(index: _, favorite: favorite):
-            lowestNote = favorite.keyboardLowestNote
+            if let lowest = favorite.keyboardLowestNote {
+                lowestNote = lowest
+            }
         default:
             break
         }

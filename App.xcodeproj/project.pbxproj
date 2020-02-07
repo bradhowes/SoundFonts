@@ -29,6 +29,7 @@
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD75B279218B8CFE00C7EBD7 /* SoundFontsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */; };
 		BD75B294218B930B00C7EBD7 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B293218B930B00C7EBD7 /* Key.swift */; };
+		BD763DA123EC3F7700ED24EC /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD763DA023EC3F6B00ED24EC /* Components.swift */; };
 		BD85F8CA21D41CFB0028E440 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD85F8C921D41CFB0028E440 /* Components.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
 		BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC3123C73578005BEFD5 /* Assets.xcassets */; };
@@ -117,6 +118,7 @@
 		BD75B27A218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenShots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B293218B930B00C7EBD7 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		BD763DA023EC3F6B00ED24EC /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		BD85F8C921D41CFB0028E440 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		BD05836323E4C52800E094E0 /* SoundFontAU */ = {
 			isa = PBXGroup;
 			children = (
+				BD763DA023EC3F6B00ED24EC /* Components.swift */,
 				BD05837923E4C52800E094E0 /* SoundFontAU-Bridging-Header.h */,
 				BD05837A23E4C52800E094E0 /* MainInterface.storyboard */,
 				BD05837D23E4C52800E094E0 /* Info.plist */,
@@ -501,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD05836923E4C52800E094E0 /* DSPKernel.mm in Sources */,
+				BD763DA123EC3F7700ED24EC /* Components.swift in Sources */,
 				BD05837823E4C52800E094E0 /* SoundFontAUParameters.swift in Sources */,
 				BD05837623E4C52800E094E0 /* SoundFontAUAudioUnit.swift in Sources */,
 				BD05837023E4C52800E094E0 /* SoundFontAUDSPKernel.mm in Sources */,
@@ -576,6 +580,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -651,7 +656,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 20200108103537;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

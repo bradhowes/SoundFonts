@@ -43,7 +43,7 @@ extension FavoritesManager: Favorites {
 
     public func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { collection.getBy(soundFontPatch: soundFontPatch) }
 
-    public func add(soundFontPatch: SoundFontPatch, keyboardLowestNote note: Note) {
+    public func add(soundFontPatch: SoundFontPatch, keyboardLowestNote note: Note?) {
         let favorite = Favorite(soundFontPatch: soundFontPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
         save()

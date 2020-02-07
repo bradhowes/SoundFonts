@@ -16,6 +16,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3SM-8U-9Rx">
+                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                                <connections>
+                                    <segue destination="qKl-DY-GQH" kind="embed" id="6ko-Bc-grg"/>
+                                </connections>
+                            </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sampler" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j5c-MY-xUb">
                                 <rect key="frame" x="146.5" y="427.5" width="121" height="41"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
@@ -25,15 +31,27 @@
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="3SM-8U-9Rx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="LCp-QL-A5a"/>
+                            <constraint firstItem="3SM-8U-9Rx" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Nel-9Y-7Ez"/>
                             <constraint firstItem="j5c-MY-xUb" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Nq2-MN-B4k"/>
                             <constraint firstItem="j5c-MY-xUb" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eM1-lN-c7d"/>
+                            <constraint firstItem="3SM-8U-9Rx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="ghY-Yz-fO5"/>
+                            <constraint firstItem="3SM-8U-9Rx" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottomMargin" id="wXE-Bn-LS2"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="u2v-qu-mbu"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="138"/>
+            <point key="canvasLocation" x="137.68115942028987" y="137.94642857142856"/>
+        </scene>
+        <!--SoundFontsControls-->
+        <scene sceneID="IoX-st-QQT">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SoundFontsControls" bundleIdentifier="com.braysoftware.SoundFontsFramework" id="qKl-DY-GQH" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cPg-4V-1af" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="736" y="138"/>
         </scene>
     </scenes>
 </document>

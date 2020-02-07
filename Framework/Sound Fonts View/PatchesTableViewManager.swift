@@ -17,7 +17,7 @@ final class PatchesTableViewManager: NSObject {
     private let searchBar: UISearchBar
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
-    private let keyboard: Keyboard
+    private let keyboard: Keyboard?
 
     private var showingSoundFont: SoundFont
     private var patches: [Patch] { showingSoundFont.patches }
@@ -26,7 +26,7 @@ final class PatchesTableViewManager: NSObject {
     private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
-         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard) {
+         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?) {
         self.view = view
         self.searchBar = searchBar
         self.activePatchManager = activePatchManager
@@ -336,7 +336,7 @@ extension PatchesTableViewManager {
 
     private func createFaveAction(cell: PatchCell, at indexPath: IndexPath,
                                   with soundFontPatch: SoundFontPatch) -> UIContextualAction {
-        let lowestNote = keyboard.lowestNote
+        let lowestNote = keyboard?.lowestNote
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.favorites.add(soundFontPatch: soundFontPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, at: indexPath, with: soundFontPatch)

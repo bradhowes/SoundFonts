@@ -23,8 +23,9 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent>, Coda
 
     public static func create() -> SoundFontCollection {
         os_log(.info, log: log, "creating new collection")
-        let bundle = Bundle.main
+        let bundle = Bundle(for: SoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+        if urls.count == 0 { fatalError("no SF2 files in bundle") }
         return SoundFontCollection(soundFonts: urls.map { addFromBundle(url: $0) })
     }
 

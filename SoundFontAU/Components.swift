@@ -21,16 +21,16 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
 
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
-    private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
 
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
 
     var infoBar: InfoBar { infoBarController }
-    var keyboard: Keyboard? { keyboardController }
     var patchesViewManager: PatchesViewManager { soundFontsController }
     var favoritesViewManager: UpperViewSwipingActivity { favoritesController }
     var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+
+    var keyboard: Keyboard? { return nil }
 
     func addMainController(_ mc: T) {
         mainViewController = mc
@@ -46,7 +46,6 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
-            case let vc as KeyboardController: keyboardController = vc
             default: assertionFailure("unknown child UIViewController")
             }
         }
@@ -62,7 +61,6 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         soundFontsController.establishConnections(self)
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
-        keyboardController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
@@ -76,7 +74,6 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
-        precondition(keyboardController != nil, "nil KeyboardController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {
