@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD05836123E4C52800E094E0"
-               BuildableName = "SoundFontAU.appex"
-               BlueprintName = "SoundFontAU"
+               BuildableName = "SoundFontsAU.appex"
+               BlueprintName = "SoundFontsAU"
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -60,8 +60,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD05836123E4C52800E094E0"
-            BuildableName = "SoundFontAU.appex"
-            BlueprintName = "SoundFontAU"
+            BuildableName = "SoundFontsAU.appex"
+            BlueprintName = "SoundFontsAU"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
