@@ -17,7 +17,7 @@
                BlueprintIdentifier = "BD58250023CDABCD0034A31B"
                BuildableName = "SoundFontsFramework.framework"
                BlueprintName = "SoundFontsFramework"
-               ReferencedContainer = "container:Framework.xcodeproj">
+               ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "BD58250923CDABCD0034A31B"
                BuildableName = "SoundFontsFrameworkTests.xctest"
                BlueprintName = "SoundFontsFrameworkTests"
-               ReferencedContainer = "container:Framework.xcodeproj">
+               ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -63,7 +63,7 @@
             BlueprintIdentifier = "BD58250023CDABCD0034A31B"
             BuildableName = "SoundFontsFramework.framework"
             BlueprintName = "SoundFontsFramework"
-            ReferencedContainer = "container:Framework.xcodeproj">
+            ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
