@@ -16,7 +16,7 @@ final class FavoriteEditor: UIViewController {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var lowestNoteLabel: UILabel!
+    @IBOutlet weak var lowestNoteCollection: UIStackView!
     @IBOutlet weak var lowestNote: UIButton!
     @IBOutlet weak var lowestNoteStepper: UIStepper!
     @IBOutlet weak var soundFontName: UILabel!
@@ -27,6 +27,7 @@ final class FavoriteEditor: UIViewController {
     @IBOutlet weak var gainSlider: UISlider!
     @IBOutlet weak var panValue: UILabel!
     @IBOutlet weak var panSlider: UISlider!
+
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
@@ -49,13 +50,12 @@ final class FavoriteEditor: UIViewController {
         name.delegate = self
 
         if let currentLowestNote = self.currentLowestNote {
+            lowestNoteCollection.isHidden = false
             lowestNote.setTitle(currentLowestNote.label, for: .normal)
             lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
         }
         else {
-            lowestNoteLabel.isEnabled = false
-            lowestNote.isEnabled = false
-            lowestNoteStepper.isEnabled = false
+            lowestNoteCollection.isHidden = true
         }
         
         soundFontName.text = soundFontPatch.soundFont.displayName
