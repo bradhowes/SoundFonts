@@ -19,31 +19,11 @@ final class MainViewController: UIViewController {
     private var infoBar: InfoBar!
     private var activePatchManager: ActivePatchManager!
     private var notePlayer: NotePlayer!
+    private var volumeMonitor: VolumeMonitor!
 
     private var audioSessionRegisteredObserver = false
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
-
-    private var volume: Float = 0.0 {
-        didSet {
-            keyboard.isMuted = isMuted
-            notePlayer.isMuted = isMuted
-        }
-    }
-
-    private var muted = false {
-        didSet {
-            keyboard.isMuted = isMuted
-            notePlayer.isMuted = isMuted
-        }
-    }
-
-    private var isMuted: Bool { volume < 0.01 || muted }
-
-    private struct Observation {
-        static let VolumeKey = "outputVolume"
-        static var Context = 0
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,31 +35,12 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
 
-    //swiftlint:disable block_based_kvo
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        if context == &Observation.Context {
-            if keyPath == Observation.VolumeKey {
-                if let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
-                    self.volume = volume
-                }
-            }
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-    //swiftlint:enable block_based_kvo
-
     /**
      Start audio processing. This is done as the app is brought into the foreground.
      */
     func startAudio() {
 
         let session = AVAudioSession.sharedInstance()
-        session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
-                            context: &Observation.Context)
-        audioSessionRegisteredObserver = true
-
         do {
             try session.setActive(true, options: [])
             print("MainViewController - set active audio session")
@@ -87,8 +48,7 @@ extension MainViewController {
             fatalError("Failed setActive(true): \(error.localizedDescription)")
         }
 
-        Mute.shared.notify = {muted in self.muted = muted }
-        Mute.shared.isPaused = false
+        volumeMonitor.start(session: session)
 
         if case let .failure(what) = sampler.start() {
             postAlert(for: what)
@@ -97,37 +57,14 @@ extension MainViewController {
         useActivePatchKind(activePatchManager.active)
     }
 
-    private func postAlert(for what: Sampler.Failure) {
-        let alertController = UIAlertController(title: "Sampler Issue",
-                                                message: "Unexpected problem with the audio sampler.",
-                                                preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
-        alertController.addAction(cancel)
-
-        if let popoverController = alertController.popoverPresentationController {
-          popoverController.sourceView = self.view
-          popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
-          popoverController.permittedArrowDirections = []
-        }
-
-        self.present(alertController, animated: true, completion: nil)
-    }
-
     /**
      Stop audio processing. This is done prior to the app moving into the background.
      */
     func stopAudio() {
         sampler.stop()
 
-        Mute.shared.notify = nil
-        Mute.shared.isPaused = true
-
         let session = AVAudioSession.sharedInstance()
-
-        if audioSessionRegisteredObserver {
-            session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
-            audioSessionRegisteredObserver = false
-        }
+        volumeMonitor.stop(session: session)
 
         do {
             try session.setActive(false, options: [])
@@ -156,6 +93,7 @@ extension MainViewController: ControllerConfiguration {
 
         notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
         keyboard.delegate = notePlayer!
+        volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer)
 
         activePatchManager.subscribe(self, closure: activePatchChange)
         router.favorites.subscribe(self, closure: favoritesChange)
@@ -204,4 +142,22 @@ extension MainViewController: ControllerConfiguration {
             }
         }
     }
+
+    private func postAlert(for what: Sampler.Failure) {
+        let alertController = UIAlertController(title: "Sampler Issue",
+                                                message: "Unexpected problem with the audio sampler.",
+                                                preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
 }
