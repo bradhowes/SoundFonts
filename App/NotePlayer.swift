@@ -3,6 +3,9 @@
 import UIKit
 import SoundFontsFramework
 
+/**
+ Plays notes from keyboard using Sampler and shows the note values being played on InfoBar.
+ */
 final class NotePlayer: KeyboardDelegate {
 
     private let infoBar: InfoBar
