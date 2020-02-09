@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Components Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Components" class="dashAnchor"></a>
+    <a title="Components Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (40% documented)</p>
+        <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Components Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AppDelegate.html">AppDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Components.html">Components</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Key.html">Key</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardController.html">KeyboardController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardRender.html">KeyboardRender</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/MainViewController.html">MainViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Mute.html">Mute</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/SettingKeys.html">SettingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIAlertController.html">UIAlertController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIApplication.html">UIApplication</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIWindow.html">UIWindow</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Components</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">Components</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ComponentContainer</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">ControllerConfiguration</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Components</span><span class="p">:</span> <span class="kt">SharedStateMonitorDelegate</span></code></pre>
+
+                </div>
+              </div>
+            <p>Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
+application launch. Each view controller is responsible for establishing the connections in their
+<code>establishConnections</code> method. The goal should be to have relations between a controller and protocols / facades, and
+not between controllers themselves. This is enforced here through access restrictions to known controllers.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC18sharedStateMonitor0aB9Framework06SharedeF0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/sharedStateMonitor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC18sharedStateMonitor0aB9Framework06SharedeF0Cvp">sharedStateMonitor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">sharedStateMonitor</span><span class="p">:</span> <span class="kt">SharedStateMonitor</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC05soundB00aB9FrameworkAA_pvp"></a>
+                    <a name="//apple_ref/swift/Property/soundFonts" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC05soundB00aB9FrameworkAA_pvp">soundFonts</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">soundFonts</span><span class="p">:</span> <span class="kt">SoundFonts</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC9favorites0aB9Framework9Favorites_pvp"></a>
+                    <a name="//apple_ref/swift/Property/favorites" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC9favorites0aB9Framework9Favorites_pvp">favorites</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">favorites</span><span class="p">:</span> <span class="kt">Favorites</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC18activePatchManager0aB9Framework06ActiveeF0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/activePatchManager" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC18activePatchManager0aB9Framework06ActiveeF0Cvp">activePatchManager</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">activePatchManager</span><span class="p">:</span> <span class="kt">ActivePatchManager</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC08selectedA11FontManager0aB9Framework08SelectedaeF0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/selectedSoundFontManager" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC08selectedA11FontManager0aB9Framework08SelectedaeF0Cvp">selectedSoundFontManager</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">selectedSoundFontManager</span><span class="p">:</span> <span class="kt">SelectedSoundFontManager</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC18mainViewControllerxSgvp"></a>
+                    <a name="//apple_ref/swift/Property/mainViewController" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC18mainViewControllerxSgvp">mainViewController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">mainViewController</span><span class="p">:</span> <span class="kt">T</span><span class="o">!</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC7infoBar0aB9Framework04InfoE0_pvp"></a>
+                    <a name="//apple_ref/swift/Property/infoBar" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC7infoBar0aB9Framework04InfoE0_pvp">infoBar</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">infoBar</span><span class="p">:</span> <span class="kt">InfoBar</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC8keyboard0aB9Framework8Keyboard_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/keyboard" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC8keyboard0aB9Framework8Keyboard_pSgvp">keyboard</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">keyboard</span><span class="p">:</span> <span class="kt">Keyboard</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC18patchesViewManager0aB9Framework07PatcheseF0_pvp"></a>
+                    <a name="//apple_ref/swift/Property/patchesViewManager" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC18patchesViewManager0aB9Framework07PatcheseF0_pvp">patchesViewManager</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">patchesViewManager</span><span class="p">:</span> <span class="kt">PatchesViewManager</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC20favoritesViewManager0aB9Framework09FavoriteseF0_pvp"></a>
+                    <a name="//apple_ref/swift/Property/favoritesViewManager" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC20favoritesViewManager0aB9Framework09FavoriteseF0_pvp">favoritesViewManager</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">favoritesViewManager</span><span class="p">:</span> <span class="kt">FavoritesViewManager</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC25fontEditorActionGenerator0aB9Framework04FontefG0_pvp"></a>
+                    <a name="//apple_ref/swift/Property/fontEditorActionGenerator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC25fontEditorActionGenerator0aB9Framework04FontefG0_pvp">fontEditorActionGenerator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">fontEditorActionGenerator</span><span class="p">:</span> <span class="kt">FontEditorActionGenerator</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC18sharedStateMonitorACyxG0aB9Framework06SharedeF0C_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(sharedStateMonitor:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC18sharedStateMonitorACyxG0aB9Framework06SharedeF0C_tcfc">init(sharedStateMonitor:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">sharedStateMonitor</span><span class="p">:</span> <span class="kt">SharedStateMonitor</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC17addMainControlleryyxF"></a>
+                    <a name="//apple_ref/swift/Method/addMainController(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC17addMainControlleryyxF">addMainController(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">addMainController</span><span class="p">(</span><span class="n">_</span> <span class="nv">mc</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC20establishConnectionsyyF"></a>
+                    <a name="//apple_ref/swift/Method/establishConnections()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC20establishConnectionsyyF">establishConnections()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Invoke <code>establishConnections</code> on each tracked view controller.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">establishConnections</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC28favoritesChangedNotificationyyF"></a>
+                    <a name="//apple_ref/swift/Method/favoritesChangedNotification()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC28favoritesChangedNotificationyyF">favoritesChangedNotification()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">favoritesChangedNotification</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SoundFonts10ComponentsC05soundB19ChangedNotificationyyF"></a>
+                    <a name="//apple_ref/swift/Method/soundFontsChangedNotification()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SoundFonts10ComponentsC05soundB19ChangedNotificationyyF">soundFontsChangedNotification()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">soundFontsChangedNotification</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2020-02-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
