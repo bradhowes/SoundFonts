@@ -1,6 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
+import os
 
 public enum SoundFontKindError: Error {
     case invalidKind
@@ -11,6 +12,7 @@ public enum SoundFontKindError: Error {
  a file kind which comes from an external source.
  */
 public enum SoundFontKind {
+    static let log = Logging.logger("SFKind")
 
     case builtin(resource: URL)
     case installed(fileName: String)
@@ -18,8 +20,34 @@ public enum SoundFontKind {
     /// The URL that points to the data file that defnes the SoundFont.
     public var fileURL: URL {
         switch self {
-        case .builtin(let resource): return resource
-        case .installed(let name): return FileManager.default.localDocumentsDirectory.appendingPathComponent(name)
+
+        case .builtin(let resource):
+            return resource
+
+        case .installed(let name):
+            os_log(.info, log: Self.log, "checking shared - %s", name)
+            let shared = FileManager.default.sharedDocumentsDirectory.appendingPathComponent(name)
+            if FileManager.default.fileExists(atPath: shared.path) {
+                os_log(.info, log: Self.log, "found in shared")
+                return shared
+            }
+
+            let local = FileManager.default.localDocumentsDirectory.appendingPathComponent(name)
+            os_log(.info, log: Self.log, "using local")
+
+            // Copy local file to the shared container so that it can be seen/used by both app and extension
+            DispatchQueue.global(qos: .background).async {
+                do {
+                    os_log(.info, log: Self.log, "copying to shared")
+                    try FileManager.default.copyItem(at: local, to: shared)
+                    os_log(.info, log: Self.log, "removing local file")
+                    try FileManager.default.removeItem(at: local)
+                } catch let error as NSError {
+                    os_log(.error, log: Self.log, "%s", error.localizedDescription)
+                }
+            }
+
+            return local
         }
     }
 

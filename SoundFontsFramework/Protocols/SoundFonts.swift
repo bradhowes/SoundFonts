@@ -68,6 +68,8 @@ public protocol SoundFonts {
 
     func rename(index: Int, name: String)
 
+    func reload()
+
     @discardableResult
     func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (SoundFontsEvent) -> Void) -> SubscriberToken
 }

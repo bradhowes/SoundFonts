@@ -7,21 +7,24 @@ import os
  Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
  restored when the app relaunches.
  */
-public final class FavoritesManager: SubscriptionManager<FavoritesEvent>, Codable {
+public final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private static let log = Logging.logger("FavMgr")
 
-    private static let archivePath: URL = FileManager.default.privateDocumentsDirectory
+    private static let appArchivePath = FileManager.default.privateDocumentsDirectory
+        .appendingPathComponent("Favorites.plist")
+    private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("Favorites.plist")
 
     private var log: OSLog { Self.log }
-
+    private let sharedStateMonitor: SharedStateMonitor
     private var collection: FavoriteCollection
 
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
-    public override init() {
+    public init(sharedStateMonitor: SharedStateMonitor) {
+        self.sharedStateMonitor = sharedStateMonitor
         self.collection = Self.restore() ?? Self.build()
         super.init()
         save()
@@ -88,11 +91,28 @@ extension FavoritesManager: Favorites {
 
 extension FavoritesManager {
 
+    public func reload() {
+        os_log(.info, log: log, "reload")
+        if let collection = Self.restore() {
+            os_log(.info, log: log, "updating collection")
+            self.collection = collection
+        }
+    }
+
     static func restore() -> FavoriteCollection? {
         os_log(.info, log: log, "attempting to restore collection")
-        guard let data = try? Data(contentsOf: archivePath, options: .dataReadingMapped) else { return nil }
-        os_log(.info, log: log, "loaded data")
-        return try? PropertyListDecoder().decode(FavoriteCollection.self, from: data)
+        for url in [Self.sharedArchivePath, Self.appArchivePath] {
+            os_log(.info, log: log, "trying to read from '%s'", url.path)
+            if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
+                os_log(.info, log: log, "restoring from '%s'", url.path)
+                if let collection = try? PropertyListDecoder().decode(FavoriteCollection.self, from: data) {
+                    os_log(.info, log: log, "restored")
+                    return collection
+                }
+            }
+        }
+
+        return nil
     }
 
     static func build() -> FavoriteCollection {
@@ -111,8 +131,9 @@ extension FavoritesManager {
             DispatchQueue.global(qos: .background).async {
                 os_log(.info, log: log, "obtained archive")
                 do {
-                    os_log(.info, log: log, "trying to save to disk")
-                    try data.write(to: Self.archivePath, options: [.atomicWrite, .completeFileProtection])
+                    os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
+                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite, .completeFileProtection])
+                    self.sharedStateMonitor.notifyFavoritesChanged()
                     os_log(.info, log: log, "saving OK")
                 } catch {
                     os_log(.error, log: log, "saving FAILED")

@@ -236,13 +236,17 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - FavoritesManager
 
-extension FavoritesViewController: UpperViewSwipingActivity {
+extension FavoritesViewController: FavoritesViewManager {
 
     public func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector) {
         switch event {
         case .swipeLeft: swipeLeft.addTarget(target, action: action)
         case .swipeRight: swipeRight.addTarget(target, action: action)
         }
+    }
+
+    public func reload() {
+        favoritesView.reloadData()
     }
 }
 

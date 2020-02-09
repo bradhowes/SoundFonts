@@ -139,6 +139,11 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
 
         self.present(alertController, animated: true, completion: nil)
     }
+
+    public func reload() {
+        soundFontsView.reloadData()
+        patchesView.reloadData()
+    }
 }
 
 extension SoundFontsViewController: UIDocumentPickerDelegate {

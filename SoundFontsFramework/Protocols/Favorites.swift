@@ -56,6 +56,8 @@ public protocol Favorites {
 
     func count(associatedWith: SoundFont) -> Int
 
+    func reload()
+
     @discardableResult
     func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
 }
