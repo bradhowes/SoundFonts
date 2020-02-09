@@ -1,5 +1,8 @@
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
+**New! Version 2.0 now includes AUv3 app extension that allows SoundFonts to run inside of GarageBand and other
+AudioUnit hosts.**
+
 ![](https://github.com/bradhowes/SoundFonts/blob/master/image.gif?raw=true)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
@@ -8,7 +11,7 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quaility). This app only supports sound font files that are bundled with the application, though it would be
 nice to remotely fetch one to try it out.
 
-I have also curated a small collection of SoundFont files that I found useful and/or interesting: 
+I have also curated a small collection of SoundFont files that I found useful and/or interesting:
 [Sample SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS device and touch
 one of the links, you can add the fire directly to the SoundFonts application.
 
@@ -24,13 +27,13 @@ Here is what you can do with it:
 * Swipe right on a patch name to make it a favorite (same to unfavorite). Favorited patches have a star next to
   their name.
 * Add/Remove sound font files. In the "patches view" press the "+" button to bring up a file picker. Locate a sound font file
-  to add from a location on your device or from your iCloud drive. Added files can be removed via the "-" button or a 
+  to add from a location on your device or from your iCloud drive. Added files can be removed via the "-" button or a
   left-swipe on the sound font name.
 
 ## Favorites
 
 The favorites view shows all of the patches that have been "faved" or "starred". Pressing on a favorite will
-make its associated patch active. You can also reorder them by long-touching one and moving it to a new location among the 
+make its associated patch active. You can also reorder them by long-touching one and moving it to a new location among the
 others. You can also change the starting key of the keyboard in the favorite as
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
 double-tap on the it and you should see an edit view:
@@ -77,4 +80,3 @@ The `catalog.py` script uses the [sf2utils](https://pypi.org/project/sf2utils/) 
 parsing.
 
 As mentioned above, additional sound fonts can be added to the running application when installed on a device.
-
