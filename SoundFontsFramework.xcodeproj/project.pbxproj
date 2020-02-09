@@ -78,6 +78,9 @@
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
 		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
+		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
+		BD498F9823EF7F7400755AB9 /* SharedStateMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9723EF7F7400755AB9 /* SharedStateMonitor.swift */; };
+		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
 		BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */; };
 		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
@@ -187,6 +190,9 @@
 		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD498F9523EF1EB500755AB9 /* FileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitor.swift; sourceTree = "<group>"; };
+		BD498F9723EF7F7400755AB9 /* SharedStateMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStateMonitor.swift; sourceTree = "<group>"; };
+		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsFrameworkTests.swift; sourceTree = "<group>"; };
@@ -315,13 +321,15 @@
 		BD074C1323CDAF51001987E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
-				BD074C1523CDAF51001987E9 /* Logging.swift */,
-				BD074C1623CDAF51001987E9 /* UpperViewSlider.swift */,
-				BD074C1723CDAF51001987E9 /* Settings.swift */,
-				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
+				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
+				BD074C1523CDAF51001987E9 /* Logging.swift */,
+				BD074C1723CDAF51001987E9 /* Settings.swift */,
+				BD498F9723EF7F7400755AB9 /* SharedStateMonitor.swift */,
+				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
+				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
 				BD074C1A23CDAF51001987E9 /* UpperViewManager.swift */,
+				BD074C1623CDAF51001987E9 /* UpperViewSlider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -329,14 +337,14 @@
 		BD074C1C23CDAF51001987E9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */,
-				BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */,
-				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
-				BD074C2023CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift */,
-				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
 				BD074C2223CDAF51001987E9 /* FileManager+Extensions.swift */,
 				BD074C2323CDAF51001987E9 /* Foundation+Extensions.swift */,
+				BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */,
+				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
+				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
+				BD074C2023CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift */,
 				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
+				BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */,
 				BD074C2523CDAF51001987E9 /* UserDefaults+Extensions.swift */,
 				BD074C2623CDAF51001987E9 /* UISearchBar+Additions.swift */,
 				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
@@ -347,20 +355,21 @@
 		BD074C2D23CDAF51001987E9 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				BD074C2E23CDAF51001987E9 /* Favorites.swift */,
 				BD074C2F23CDAF51001987E9 /* ComponentContainer.swift */,
-				BD074C3023CDAF51001987E9 /* FontEditorDelegate.swift */,
-				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
-				BD074C3223CDAF51001987E9 /* SoundFontEditor.swift */,
-				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
-				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
-				BD074C3523CDAF51001987E9 /* FavoriteEditorDelegate.swift */,
-				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
 				BD074C3723CDAF51001987E9 /* ControllerConfiguration.swift */,
+				BD074C2E23CDAF51001987E9 /* Favorites.swift */,
+				BD074C3523CDAF51001987E9 /* FavoriteEditorDelegate.swift */,
+				BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */,
+				BD074C3023CDAF51001987E9 /* FontEditorDelegate.swift */,
+				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
 				BD074C3823CDAF51001987E9 /* Keyboard.swift */,
-				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
+				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
 				BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */,
+				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
+				BD074C3223CDAF51001987E9 /* SoundFontEditor.swift */,
+				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
+				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -557,14 +566,17 @@
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
+				BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
 				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
+				BD498F9823EF7F7400755AB9 /* SharedStateMonitor.swift in Sources */,
 				BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */,
 				BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */,
 				BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */,
 				BD074C3F23CDAF51001987E9 /* FavoriteMover.swift in Sources */,
 				BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */,
 				BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */,
+				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* Favorite.swift in Sources */,
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,

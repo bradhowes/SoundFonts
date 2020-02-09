@@ -3,22 +3,33 @@
 import Foundation
 import os
 
-public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent>, Codable {
+public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
     private static let log = Logging.logger("SFLib")
 
-    private static let archivePath = FileManager.default.privateDocumentsDirectory
+    private static let appArchivePath = FileManager.default.privateDocumentsDirectory
+        .appendingPathComponent("SoundFontLibrary.plist")
+    private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }
-
+    private let sharedStateMonitor: SharedStateMonitor
     private var collection: SoundFontCollection
 
     public static func restore() -> SoundFontCollection? {
         os_log(.info, log: log, "attempting to restore collection")
-        guard let data = try? Data(contentsOf: Self.archivePath, options: .dataReadingMapped) else { return nil }
-        os_log(.info, log: log, "loaded data")
-        return try? PropertyListDecoder().decode(SoundFontCollection.self, from: data)
+        for url in [Self.sharedArchivePath, Self.appArchivePath] {
+            os_log(.info, log: log, "trying to read from '%s'", url.path)
+            if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
+                os_log(.info, log: log, "restoring from '%s'", url.path)
+                if let collection = try? PropertyListDecoder().decode(SoundFontCollection.self, from: data) {
+                    os_log(.info, log: log, "restored")
+                    return collection
+                }
+            }
+        }
+
+        return nil
     }
 
     public static func create() -> SoundFontCollection {
@@ -29,11 +40,20 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent>, Coda
         return SoundFontCollection(soundFonts: urls.map { addFromBundle(url: $0) })
     }
 
-    public override init() {
+    public init(sharedStateMonitor: SharedStateMonitor) {
+        self.sharedStateMonitor = sharedStateMonitor
         self.collection = Self.restore() ?? Self.create()
         super.init()
         save()
         os_log(.info, log: log, "collection size: %d", collection.count)
+    }
+
+    public func reload() {
+        os_log(.info, log: log, "reload")
+        if let collection = Self.restore() {
+            os_log(.info, log: log, "updating collection")
+            self.collection = collection
+        }
     }
 }
 
@@ -95,8 +115,9 @@ extension SoundFontsManager {
             DispatchQueue.global(qos: .userInitiated).async {
                 os_log(.info, log: log, "obtained archive")
                 do {
-                    os_log(.info, log: log, "trying to save to disk")
-                    try data.write(to: Self.archivePath, options: [.atomicWrite, .completeFileProtection])
+                    os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
+                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite, .completeFileProtection])
+                    self.sharedStateMonitor.notifySoundFontsChanged()
                     os_log(.info, log: log, "saving OK")
                 } catch {
                     os_log(.error, log: log, "saving FAILED")

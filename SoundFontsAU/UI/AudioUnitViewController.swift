@@ -6,7 +6,7 @@ import SoundFontsFramework
 public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
     let sampler = Sampler(mode: .audiounit)
     var audioUnit: AUAudioUnit { return sampler.auAudioUnit }
-    let components = Components<AudioUnitViewController>()
+    let components = Components<AudioUnitViewController>(sharedStateMonitor: SharedStateMonitor(changer: .audioUnit))
 
     var activePatchManager: ActivePatchManager!
     var infoBar: InfoBar!

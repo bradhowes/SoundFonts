@@ -22,10 +22,21 @@ extension FileManager {
         return temporaryFileURL
     }
 
-    /// Location of app documents that we want to keep private but backed-up. We do need to create it if it does not
+    /// Location of app documents that we want to keep private but backed-up. We need to create it if it does not
     /// exist, so this could be a high latency call.
     public var privateDocumentsDirectory: URL {
         let url = urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        if !self.fileExists(atPath: url.path) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+            }
+        }
+        return url
+    }
+
+    /// Location of shared documents between app and extension
+    public var sharedDocumentsDirectory: URL {
+        let url = self.containerURL(forSecurityApplicationGroupIdentifier: "group.com.braysoftware.SoundFontsShare")!
         if !self.fileExists(atPath: url.path) {
             DispatchQueue.global(qos: .userInitiated).async {
                 try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)

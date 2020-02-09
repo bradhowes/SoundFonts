@@ -11,11 +11,11 @@ import SoundFontsFramework
  */
 final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
-    let soundFonts: SoundFonts = SoundFontsManager()
-    let favorites: Favorites = FavoritesManager()
-
-    lazy var activePatchManager = ActivePatchManager(soundFonts: soundFonts)
-    lazy var selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+    let sharedStateMonitor: SharedStateMonitor
+    let soundFonts: SoundFonts
+    let favorites: Favorites
+    let activePatchManager: ActivePatchManager
+    let selectedSoundFontManager: SelectedSoundFontManager
 
     private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
 
@@ -29,8 +29,16 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
     var infoBar: InfoBar { infoBarController }
     var keyboard: Keyboard? { keyboardController }
     var patchesViewManager: PatchesViewManager { soundFontsController }
-    var favoritesViewManager: UpperViewSwipingActivity { favoritesController }
+    var favoritesViewManager: FavoritesViewManager { favoritesController }
     var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+
+    init(sharedStateMonitor: SharedStateMonitor) {
+        self.sharedStateMonitor = sharedStateMonitor
+        self.soundFonts = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
+        self.favorites = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
+        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
+        self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+    }
 
     func addMainController(_ mc: T) {
         mainViewController = mc
@@ -53,6 +61,7 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
 
         validate()
         establishConnections()
+        sharedStateMonitor.delegate = self
     }
 
     /**
@@ -65,6 +74,19 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         keyboardController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
         mainViewController.establishConnections(self)
+    }
+}
+
+extension Components: SharedStateMonitorDelegate {
+
+    func favoritesChangedNotification() {
+        favorites.reload()
+        favoritesController.reload()
+    }
+
+    func soundFontsChangedNotification() {
+        soundFonts.reload()
+        soundFontsController.reload()
     }
 }
 

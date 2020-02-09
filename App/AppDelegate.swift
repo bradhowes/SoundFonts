@@ -2,11 +2,12 @@
 
 import UIKit
 import AVKit
+import SoundFontsFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let components = Components<MainViewController>()
+    let components = Components<MainViewController>(sharedStateMonitor: SharedStateMonitor(changer: .application))
     var window: UIWindow?
 
     weak var mainViewController: MainViewController?

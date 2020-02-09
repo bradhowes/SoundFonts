@@ -41,6 +41,10 @@ final class FontsTableViewManager: NSObject {
             selectAndShow(row: row)
         }
     }
+
+    public func reload() {
+        view.reloadData()
+    }
 }
 
 // MARK: - UITableViewDataSource Protocol

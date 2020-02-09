@@ -11,16 +11,12 @@ import UIKit
 public protocol ComponentContainer {
     var soundFonts: SoundFonts { get }
     var favorites: Favorites { get }
-
     var activePatchManager: ActivePatchManager { get }
     var selectedSoundFontManager: SelectedSoundFontManager { get }
-
     var infoBar: InfoBar { get }
-
     var keyboard: Keyboard? { get }
-
     var patchesViewManager: PatchesViewManager { get }
-    var favoritesViewManager: UpperViewSwipingActivity { get }
+    var favoritesViewManager: FavoritesViewManager { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
 }
 
