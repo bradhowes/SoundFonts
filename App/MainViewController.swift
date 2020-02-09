@@ -11,8 +11,7 @@ import SoundFontsFramework
  to the background or stops being active.
  */
 final class MainViewController: UIViewController {
-
-    private lazy var logger = Logging.logger("MainVC")
+    private lazy var log = Logging.logger("MainVC")
     private lazy var sampler = Sampler(mode: .standalone)
 
     private var keyboard: Keyboard!
@@ -20,8 +19,6 @@ final class MainViewController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var notePlayer: NotePlayer!
     private var volumeMonitor: VolumeMonitor!
-
-    private var audioSessionRegisteredObserver = false
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -43,9 +40,9 @@ extension MainViewController {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setActive(true, options: [])
-            print("MainViewController - set active audio session")
+            os_log(.info, log: log, "set active audio session")
         } catch let error as NSError {
-            fatalError("Failed setActive(true): \(error.localizedDescription)")
+            os_log(.error, log: log, "Failed setActive(true): %s", error.localizedDescription)
         }
 
         volumeMonitor.start(session: session)
@@ -68,12 +65,11 @@ extension MainViewController {
 
         do {
             try session.setActive(false, options: [])
-            print("MainViewController - set inactive audio session")
+            os_log(.info, log: log, "set audio session inactive")
         } catch let error as NSError {
-            print("Failed setActive(false): \(error.localizedDescription)")
+            os_log(.error, log: log, "Failed setActive(false): %s", error.localizedDescription)
         }
     }
-
 }
 
 // MARK: - Controller Configuration
@@ -86,7 +82,6 @@ extension MainViewController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     func establishConnections(_ router: ComponentContainer) {
-
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
         infoBar = router.infoBar
@@ -115,24 +110,23 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func updateInfoBar(with favorite: Favorite) {
-        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+        if activePatchManager.soundFontPatch == favorite.soundFontPatch {
             infoBar.setPatchInfo(name: favorite.name, isFavored: true)
         }
     }
 
     private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
-        if soundFontPatch == activePatchManager.soundFontPatch {
+        if activePatchManager.soundFontPatch == soundFontPatch {
             infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
         }
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-
         if let favorite = activePatchKind.favorite {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
+            updateInfoBar(with: favorite)
         }
         else {
-            infoBar.setPatchInfo(name: activePatchKind.soundFontPatch.patch.name, isFavored: false)
+            updateInfoBar(with: activePatchKind.soundFontPatch)
         }
 
         keyboard.releaseAllKeys()
