@@ -18,6 +18,8 @@ final class MainViewController: UIViewController {
     private var keyboard: Keyboard!
     private var infoBar: InfoBar!
     private var activePatchManager: ActivePatchManager!
+    private var notePlayer: NotePlayer!
+
     private var audioSessionRegisteredObserver = false
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
@@ -25,12 +27,14 @@ final class MainViewController: UIViewController {
     private var volume: Float = 0.0 {
         didSet {
             keyboard.isMuted = isMuted
+            notePlayer.isMuted = isMuted
         }
     }
 
     private var muted = false {
         didSet {
             keyboard.isMuted = isMuted
+            notePlayer.isMuted = isMuted
         }
     }
 
@@ -150,7 +154,8 @@ extension MainViewController: ControllerConfiguration {
         keyboard = router.keyboard
         infoBar = router.infoBar
 
-        keyboard.delegate = self
+        notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
+        keyboard.delegate = notePlayer!
 
         activePatchManager.subscribe(self, closure: activePatchChange)
         router.favorites.subscribe(self, closure: favoritesChange)
@@ -198,34 +203,5 @@ extension MainViewController: ControllerConfiguration {
                 DispatchQueue.main.async { self.postAlert(for: what) }
             }
         }
-    }
-}
-
-// MARK: - KeyboardManagerDelegate protocol
-
-extension MainViewController: KeyboardDelegate {
-
-    /**
-     Play a note with the sampler. Show note info in the info bar.
-
-     - parameter note: the note to play
-     */
-    func noteOn(_ note: Note) {
-        if isMuted {
-            infoBar.setStatus("🔇")
-        }
-        else {
-            infoBar.setStatus(note.label + " - " + note.solfege)
-            sampler.noteOn(note.midiNoteValue)
-        }
-    }
-
-    /**
-     Stop playing a note with the sampler.
-
-     - parameter note: the note to stop.
-     */
-    func noteOff(_ note: Note) {
-        sampler.noteOff(note.midiNoteValue)
     }
 }

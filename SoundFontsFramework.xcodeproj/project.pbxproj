@@ -230,13 +230,13 @@
 		BD074BD123CDAF51001987E9 /* Favorites View */ = {
 			isa = PBXGroup;
 			children = (
+				BD074BD723CDAF51001987E9 /* Favorite.swift */,
 				BD074BD223CDAF51001987E9 /* FavoriteCell.swift */,
-				BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */,
+				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
+				BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */,
 				BD074BD423CDAF51001987E9 /* FavoriteMover.swift */,
 				BD074BD523CDAF51001987E9 /* FavoritesManager.swift */,
-				BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */,
-				BD074BD723CDAF51001987E9 /* Favorite.swift */,
-				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
+				BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */,
 			);
 			path = "Favorites View";
 			sourceTree = "<group>";
@@ -270,13 +270,13 @@
 		BD074BF123CDAF51001987E9 /* Sound Fonts View */ = {
 			isa = PBXGroup;
 			children = (
-				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
-				BD074BF323CDAF51001987E9 /* FontPatchCellBase.swift */,
 				BD074BF423CDAF51001987E9 /* FontCell.swift */,
-				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
-				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
+				BD074BF323CDAF51001987E9 /* FontPatchCellBase.swift */,
+				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
 				BD074BF823CDAF51001987E9 /* PatchCell.swift */,
+				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
+				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 			);
 			path = "Sound Fonts View";
 			sourceTree = "<group>";

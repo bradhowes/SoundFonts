@@ -4,6 +4,9 @@ import UIKit
 import AVKit
 import SoundFontsFramework
 
+/**
+ Delegate for the SoundFonts app.
+ */
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
