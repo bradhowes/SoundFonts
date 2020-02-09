@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Favorites Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/Favorites" class="dashAnchor"></a>
+    <a title="Favorites Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (46% documented)</p>
+        <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Favorites Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteCell.html">FavoriteCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteCollection.html">FavoriteCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteEditor.html">FavoriteEditor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteMover.html">FavoriteMover</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesManager.html">FavoritesManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesViewController.html">FavoritesViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FileMonitor.html">FileMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontCell.html">FontCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontEditor.html">FontEditor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontPatchCellBase.html">FontPatchCellBase</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontsTableViewManager.html">FontsTableViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InfoBarController.html">InfoBarController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchCell.html">PatchCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchesTableViewManager.html">PatchesTableViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler.html">Sampler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler/Failure.html">– Failure</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler/Mode.html">– Mode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SelectedSoundFontManager.html">SelectedSoundFontManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKey.html">SettingKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKeys.html">SettingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingsManager.html">SettingsManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SharedStateMonitor.html">SharedStateMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFont.html">SoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontCollection.html">SoundFontCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsControlsController.html">SoundFontsControlsController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsManager.html">SoundFontsManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsViewController.html">SoundFontsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsViewController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SubscriptionManager.html">SubscriptionManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/UpperViewSlider.html">UpperViewSlider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:19SoundFontsFramework8SettingsAA0D7ManagerCvp">Settings</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ActivePatchEvent.html">ActivePatchEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoriteEditorDismissedReason.html">FavoriteEditorDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoritesEvent.html">FavoritesEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Formatters.html">Formatters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SelectedSoundFontEvent.html">SelectedSoundFontEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SharedStateChanger.html">SharedStateChanger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontKind.html">SoundFontKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontKindError.html">SoundFontKindError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontsEvent.html">SoundFontsEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UpperViewSwipingEvent.html">UpperViewSwipingEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/FileManager.html">FileManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/RandomAccessCollection.html">RandomAccessCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UICollectionView.html">UICollectionView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIPopoverPresentationController.html">UIPopoverPresentationController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UISearchBar.html">UISearchBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UITableView.html">UITableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIView.html">UIView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UserDefaults.html">UserDefaults</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Functions.html">Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Functions.html#/s:19SoundFontsFramework03GetA8FontInfo4dataAA0aeF0V10Foundation4DataV_tF">GetSoundFontInfo(data:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ComponentContainer.html">ComponentContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ControllerConfiguration.html">ControllerConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Favorites.html">Favorites</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FavoritesViewManager.html">FavoritesViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FontEditorActionGenerator.html">FontEditorActionGenerator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FontEditorDelegate.html">FontEditorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/InfoBar.html">InfoBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Keyboard.html">Keyboard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/KeyboardDelegate.html">KeyboardDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/NibLoadableView.html">NibLoadableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PatchesViewManager.html">PatchesViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ReusableView.html">ReusableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SegueHandler.html">SegueHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingGettable.html">SettingGettable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingSettable.html">SettingSettable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SharedStateMonitorDelegate.html">SharedStateMonitorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SoundFonts.html">SoundFonts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/UpperViewSwipingActivity.html">UpperViewSwipingActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Favorite.html">Favorite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Logging.html">Logging</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Note.html">Note</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Patch.html">Patch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PatchInfo.html">PatchInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SoundFontInfo.html">SoundFontInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SoundFontPatch.html">SoundFontPatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SubscriberToken.html">SubscriberToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/UpperViewManager.html">UpperViewManager</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:19SoundFontsFramework19SettingSerializablea">SettingSerializable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Favorites</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Favorites</span></code></pre>
+
+                </div>
+              </div>
+            <p>Actions available on a collection of Favorite instances. Supports subscribing to changes.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP5countSivp"></a>
+                    <a name="//apple_ref/swift/Property/count" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP5countSivp">count</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP9isFavored14soundFontPatchSbAA0ahI0V_tF"></a>
+                    <a name="//apple_ref/swift/Method/isFavored(soundFontPatch:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP9isFavored14soundFontPatchSbAA0ahI0V_tF">isFavored(soundFontPatch:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">isFavored</span><span class="p">(</span><span class="nv">soundFontPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontPatch.html">SoundFontPatch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP5index2ofSiAA8FavoriteV_tF"></a>
+                    <a name="//apple_ref/swift/Method/index(of:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP5index2ofSiAA8FavoriteV_tF">index(of:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">index</span><span class="p">(</span><span class="n">of</span> <span class="nv">favorite</span><span class="p">:</span> <span class="kt"><a href="../Structs/Favorite.html">Favorite</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP5getBy5indexAA8FavoriteVSi_tF"></a>
+                    <a name="//apple_ref/swift/Method/getBy(index:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP5getBy5indexAA8FavoriteVSi_tF">getBy(index:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getBy</span><span class="p">(</span><span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Favorite.html">Favorite</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP5getBy14soundFontPatchAA8FavoriteVSgAA0ahI0V_tF"></a>
+                    <a name="//apple_ref/swift/Method/getBy(soundFontPatch:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP5getBy14soundFontPatchAA8FavoriteVSgAA0ahI0V_tF">getBy(soundFontPatch:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getBy</span><span class="p">(</span><span class="nv">soundFontPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontPatch.html">SoundFontPatch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Favorite.html">Favorite</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP3add14soundFontPatch18keyboardLowestNoteyAA0agH0V_AA0K0VSgtF"></a>
+                    <a name="//apple_ref/swift/Method/add(soundFontPatch:keyboardLowestNote:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP3add14soundFontPatch18keyboardLowestNoteyAA0agH0V_AA0K0VSgtF">add(soundFontPatch:keyboardLowestNote:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new Favorite instance with the given parameters</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">add</span><span class="p">(</span><span class="nv">soundFontPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontPatch.html">SoundFontPatch</a></span><span class="p">,</span> <span class="nv">keyboardLowestNote</span><span class="p">:</span> <span class="kt"><a href="../Structs/Note.html">Note</a></span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>patch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the Patch to associate with</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keyboardLowestNote</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the lowest note of the keyboard</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP9beginEdit8favorite4viewyAA8FavoriteV_So6UIViewCtF"></a>
+                    <a name="//apple_ref/swift/Method/beginEdit(favorite:view:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP9beginEdit8favorite4viewyAA8FavoriteV_So6UIViewCtF">beginEdit(favorite:view:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">beginEdit</span><span class="p">(</span><span class="nv">favorite</span><span class="p">:</span> <span class="kt"><a href="../Structs/Favorite.html">Favorite</a></span><span class="p">,</span> <span class="nv">view</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP6update5index4withySi_AA8FavoriteVtF"></a>
+                    <a name="//apple_ref/swift/Method/update(index:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP6update5index4withySi_AA8FavoriteVtF">update(index:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">update</span><span class="p">(</span><span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">with</span><span class="p">:</span> <span class="kt"><a href="../Structs/Favorite.html">Favorite</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP4move4from2toySi_SitF"></a>
+                    <a name="//apple_ref/swift/Method/move(from:to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP4move4from2toySi_SitF">move(from:to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">move</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP8selected5indexySi_tF"></a>
+                    <a name="//apple_ref/swift/Method/selected(index:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP8selected5indexySi_tF">selected(index:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">selected</span><span class="p">(</span><span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP6remove5index9bySwipingySi_SbtF"></a>
+                    <a name="//apple_ref/swift/Method/remove(index:bySwiping:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP6remove5index9bySwipingySi_SbtF">remove(index:bySwiping:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">bySwiping</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP9removeAll14associatedWithyAA0A4FontC_tF"></a>
+                    <a name="//apple_ref/swift/Method/removeAll(associatedWith:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP9removeAll14associatedWithyAA0A4FontC_tF">removeAll(associatedWith:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeAll</span><span class="p">(</span><span class="nv">associatedWith</span><span class="p">:</span> <span class="kt"><a href="../Classes/SoundFont.html">SoundFont</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP5count14associatedWithSiAA0A4FontC_tF"></a>
+                    <a name="//apple_ref/swift/Method/count(associatedWith:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP5count14associatedWithSiAA0A4FontC_tF">count(associatedWith:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">count</span><span class="p">(</span><span class="nv">associatedWith</span><span class="p">:</span> <span class="kt"><a href="../Classes/SoundFont.html">SoundFont</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP6reloadyyF"></a>
+                    <a name="//apple_ref/swift/Method/reload()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP6reloadyyF">reload()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">reload</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework9FavoritesP9subscribe_7closureAA15SubscriberTokenVqd___yAA0D5EventOctRld__ClF"></a>
+                    <a name="//apple_ref/swift/Method/subscribe(_:closure:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework9FavoritesP9subscribe_7closureAA15SubscriberTokenVqd___yAA0D5EventOctRld__ClF">subscribe(_:closure:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
+<span class="kd">func</span> <span class="n">subscribe</span><span class="o">&lt;</span><span class="kt">O</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">subscriber</span><span class="p">:</span> <span class="kt">O</span><span class="p">,</span> <span class="nv">closure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/FavoritesEvent.html">FavoritesEvent</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/SubscriberToken.html">SubscriberToken</a></span> <span class="k">where</span> <span class="kt">O</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2020-02-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
