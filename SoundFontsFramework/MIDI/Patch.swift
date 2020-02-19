@@ -80,23 +80,12 @@ public struct Patch: Codable {
      - parameter patch: the program ID of the patch in the sound font
      */
     public init(_ name: String, _ bank: Int, _ patch: Int, _ index: Int) {
-        self.name = name
+        self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         self.bank = bank
         self.patch = patch
         self.soundFontIndex = index
     }
 }
-
-//extension Patch: Hashable {
-//
-//    func hash(into hasher: inout Hasher) {
-//        hasher.combine(key)
-//    }
-//
-//    static func == (lhs: Patch, rhs: Patch) -> Bool {
-//        lhs.index == rhs.index
-//    }
-//}
 
 extension Patch: CustomStringConvertible {
     public var description: String { "[Patch '\(name)' \(bank):\(patch)]" }

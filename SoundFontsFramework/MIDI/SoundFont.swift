@@ -82,8 +82,8 @@ public final class SoundFont: Codable {
     public init(_ displayName: String, soundFontInfo: SoundFontInfo) {
         let key = Key()
         self.key = key
-        self.displayName = displayName
-        self.originalDisplayName = displayName
+        self.displayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.originalDisplayName = self.displayName
         self.embeddedName = soundFontInfo.name
         self.kind = .installed(fileName:displayName + "_" + key.uuidString + "." + Self.soundFontExtension)
         self.patches = soundFontInfo.patches.enumerated().map { Patch($0.1.name, $0.1.bank, $0.1.patch, $0.0) }

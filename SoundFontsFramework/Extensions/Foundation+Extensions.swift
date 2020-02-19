@@ -56,3 +56,32 @@ extension Data: SettingSerializable {
         userDefaults.set(value, forKey: key)
     }
 }
+
+extension Date: SettingSerializable {
+
+    public static func get(key: String, userDefaults: UserDefaults) -> Date? {
+        userDefaults.object(forKey: key) as? Date
+    }
+
+    public static func set(key: String, value: Date, userDefaults: UserDefaults) {
+        userDefaults.set(value, forKey: key)
+    }
+}
+
+extension Double {
+    public var milliseconds: TimeInterval { self / 1000 }
+    public var millisecond: TimeInterval { milliseconds }
+    public var ms: TimeInterval { milliseconds }
+
+    public var seconds: TimeInterval { self }
+    public var second: TimeInterval { seconds }
+
+    public var minutes: TimeInterval { seconds * 60 }
+    public var minute: TimeInterval { minutes }
+
+    public var hours: TimeInterval { minutes * 60 }
+    public var hour: TimeInterval { hours }
+
+    public var days: TimeInterval { hours * 24 }
+    public var day: TimeInterval { days }
+}

@@ -22,11 +22,12 @@ public func GetSoundFontInfo(data: Data) -> SoundFontInfo {
     return data.withUnsafeBytes { (body) -> SoundFontInfo in
         let wrapper = SoundFontParse(body.baseAddress, data.count)
         let soundFontName = String(cString: SoundFontName(wrapper)).replacingOccurrences(of: "_", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         for index in 0..<SoundFontPatchCount(wrapper) {
             let name = String(cString: SoundFontPatchName(wrapper, index))
+                .trimmingCharacters(in: .whitespacesAndNewlines)
             let bank = Int(SoundFontPatchBank(wrapper, index))
             let patch = Int(SoundFontPatchPatch(wrapper, index))
-            // print("-- \(name) \(bank):\(patch)")
             if bank < 255 && patch < 255 && name != "EOP" {
                 patches.append(PatchInfo(name: name, bank: bank, patch: patch))
             }

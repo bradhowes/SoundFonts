@@ -34,6 +34,7 @@
 		BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */; };
 		BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
+		BDCCFCB823F5A0FE00DD518D /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB723F5A0FE00DD518D /* AskForReview.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +118,7 @@
 		BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
+		BDCCFCB723F5A0FE00DD518D /* AskForReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskForReview.swift; sourceTree = "<group>"; };
 		BDD5691023A232C30016AB1D /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
 		BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -217,6 +219,7 @@
 				BDAE7C982219540A0003A353 /* UI */,
 				BD874C9122195A2F00BBD00B /* Keyboard */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
+				BDCCFCB723F5A0FE00DD518D /* AskForReview.swift */,
 				BD85F8C921D41CFB0028E440 /* Components.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BD75432E23803994004C6A4C /* Mute.swift */,
@@ -473,6 +476,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */,
+				BDCCFCB823F5A0FE00DD518D /* AskForReview.swift in Sources */,
 				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
 				BD75433023803994004C6A4C /* Mute.swift in Sources */,

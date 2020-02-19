@@ -34,39 +34,41 @@ final class VolumeMonitor: NSObject {
         static var Context = 0
     }
 
+    private var observer: NSKeyValueObservation?
+
+    /**
+     Construct new monitor.
+
+     - parameter keyboard: Keyboard instance that handle key renderings
+     - parameter notePlayer: NotePlayer instance that handles note playing
+     */
     init(keyboard: Keyboard, notePlayer: NotePlayer) {
         self.keyboard = keyboard
         self.notePlayer = notePlayer
         super.init()
     }
 
+    /**
+     Begin monitoring volume of the given AVAudioSession
+
+     - parameter session: the AVAudioSession to monitor
+     */
     func start(session: AVAudioSession) {
         Mute.shared.notify = {muted in self.muted = muted }
         Mute.shared.isPaused = false
-        session.addObserver(self, forKeyPath: Observation.VolumeKey, options: [.initial, .new],
-                            context: &Observation.Context)
+        observer = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
+            self.volume = session.outputVolume
+        }
     }
 
-    func stop(session: AVAudioSession) {
+    /**
+     Stop monitoring the output volume of an AVAudioSession
+     */
+    func stop() {
         guard Mute.shared.isPaused == false else { return }
         Mute.shared.notify = nil
         Mute.shared.isPaused = true
-        session.removeObserver(self, forKeyPath: Observation.VolumeKey, context: &Observation.Context)
+        observer?.invalidate()
+        observer = nil
     }
-
-    //swiftlint:disable block_based_kvo
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
-                               context: UnsafeMutableRawPointer?) {
-        guard context == &Observation.Context else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-
-        if keyPath == Observation.VolumeKey {
-            if let volume = (change?[NSKeyValueChangeKey.newKey] as? NSNumber)?.floatValue {
-                self.volume = volume
-            }
-        }
-    }
-    //swiftlint:enable block_based_kvo
 }

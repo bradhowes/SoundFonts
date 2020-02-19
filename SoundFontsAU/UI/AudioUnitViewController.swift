@@ -13,7 +13,7 @@ public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        components.addMainController(self)
+        components.setMainViewController(self)
     }
     
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {

@@ -40,9 +40,9 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
     }
 
-    func addMainController(_ mc: T) {
-        mainViewController = mc
-        for obj in mc.children {
+    func setMainViewController(_ mvc: T) {
+        mainViewController = mvc
+        for obj in mvc.children {
             switch obj {
             case let vc as SoundFontsControlsController:
                 soundFontsControlsController = vc

@@ -1,8 +1,8 @@
 //
-//  Mute.swift
-//  Mute
+// Mute.swift
+// Mute
 //
-//  Created by Akram Hussein on 08/09/2017.
+// Created by Akram Hussein on 08/09/2017.
 //
 
 import UIKit

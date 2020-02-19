@@ -4,6 +4,16 @@
    <FileRef
       location = "group:README.md">
    </FileRef>
+   <Group
+      location = "container:Playgrounds"
+      name = "Playgrounds">
+      <FileRef
+         location = "group:/Users/howes/src/SoundFonts/Playgrounds/Mac MIDI.playground">
+      </FileRef>
+      <FileRef
+         location = "group:/Users/howes/src/SoundFonts/Playgrounds/iOS MIDI.playground">
+      </FileRef>
+   </Group>
    <FileRef
       location = "group:.swiftlint.yml">
    </FileRef>

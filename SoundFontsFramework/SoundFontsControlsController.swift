@@ -28,9 +28,6 @@ public final class SoundFontsControlsController: UIViewController {
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
     }
-
-    public override func viewWillAppear(_ animated: Bool) {
-    }
 }
 
 // MARK: - Controller Configuration

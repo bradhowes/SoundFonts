@@ -15,7 +15,8 @@ public final class SoundFontCollection: Codable {
 
     public init(soundFonts: [SoundFont]) {
         self.catalog = [SoundFont.Key: SoundFont](uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
-        self.sortedKeys = soundFonts.sorted { $0.displayName < $1.displayName }.map { $0.key }
+        self.sortedKeys = soundFonts.sorted {
+            $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }.map { $0.key }
     }
 
     /**
