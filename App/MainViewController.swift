@@ -24,9 +24,12 @@ final class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.appDelegate.components.addMainController(self)
-        UIApplication.shared.appDelegate.mainViewController = self
+        UIApplication.shared.appDelegate.setMainViewController(self)
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+
+        let midiCons = MIDIConnectivity.shared
+        midiCons.getSourceNames().forEach { name in print("MIDI source '\(name)'")}
+        midiCons.getDestinationNames().forEach { name in print("MIDI destination '\(name)'")}
     }
 }
 
@@ -52,6 +55,8 @@ extension MainViewController {
         }
 
         useActivePatchKind(activePatchManager.active)
+
+        AskForReview.shared.enable = true
     }
 
     /**
@@ -59,10 +64,9 @@ extension MainViewController {
      */
     func stopAudio() {
         sampler.stop()
+        volumeMonitor.stop()
 
         let session = AVAudioSession.sharedInstance()
-        volumeMonitor.stop(session: session)
-
         do {
             try session.setActive(false, options: [])
             os_log(.info, log: log, "set audio session inactive")
@@ -113,12 +117,14 @@ extension MainViewController: ControllerConfiguration {
         if activePatchManager.soundFontPatch == favorite.soundFontPatch {
             infoBar.setPatchInfo(name: favorite.name, isFavored: true)
         }
+        AskForReview.shared.ask()
     }
 
     private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
         if activePatchManager.soundFontPatch == soundFontPatch {
             infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
         }
+        AskForReview.shared.ask()
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
@@ -153,5 +159,4 @@ extension MainViewController: ControllerConfiguration {
 
         self.present(alertController, animated: true, completion: nil)
     }
-
 }

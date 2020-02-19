@@ -3,17 +3,22 @@
 import UIKit
 import AVKit
 import SoundFontsFramework
+import os
 
 /**
  Delegate for the SoundFonts app.
  */
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    private let log = Logging.logger("AppDel")
+    private let components =
+        Components<MainViewController>(sharedStateMonitor: SharedStateMonitor(changer: .application))
 
-    let components = Components<MainViewController>(sharedStateMonitor: SharedStateMonitor(changer: .application))
     var window: UIWindow?
 
-    weak var mainViewController: MainViewController?
+    func setMainViewController(_ mainViewController: MainViewController) {
+        components.setMainViewController(mainViewController)
+    }
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {

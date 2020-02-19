@@ -4,6 +4,8 @@ import UIKit
 import SoundFontsFramework
 
 extension SettingKeys {
+
+    /// Lowest note of the app keyboard
     static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
 }
 
@@ -15,11 +17,7 @@ final class KeyboardController: UIViewController {
     weak var delegate: KeyboardDelegate?
 
     /// MIDI value of the first note in the keyboard
-    private var firstMidiNoteValue = 48 {
-        didSet {
-            Settings[.lowestKeyNote] = firstMidiNoteValue
-        }
-    }
+    private var firstMidiNoteValue = 48 { didSet { Settings[.lowestKeyNote] = firstMidiNoteValue } }
 
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
@@ -93,6 +91,7 @@ extension KeyboardController {
 
             shiftKeys(by: min(shift, Sampler.maxMidiValue - lastMidiNoteValue))
         }
+        AskForReview.shared.ask()
     }
 
     @IBAction private func shiftKeyboardDown(_ sender: UIButton) {
@@ -111,6 +110,7 @@ extension KeyboardController {
                 shiftKeys(by: -shift)
             }
         }
+        AskForReview.shared.ask()
     }
 
     private func shiftKeys(by: Int) {
@@ -193,12 +193,6 @@ extension KeyboardController {
         return found
     }
 
-    /**
-     Handle the pressed state change for a Key instance. Commuunicates the change to the delegate.
-     
-     - parameter key: the Key that changed
-     - parameter pressed: the new state of the key
-     */
     private func setKeyPressed(_ key: Key, pressed: Bool) {
         if pressed != key.pressed {
             key.pressed = pressed
@@ -276,7 +270,6 @@ extension KeyboardController {
         private let xLimit: CGFloat
         private let xStride: CGFloat
         private let height: CGFloat
-
         private let blackKeyHeightScale: CGFloat = 0.6
 
         init(midiNoteStart: Int, limit: CGFloat, stride: CGFloat, height: CGFloat) {
@@ -287,9 +280,7 @@ extension KeyboardController {
             self.height = height
         }
 
-        func makeIterator() -> KeyParamsSequence {
-            return self
-        }
+        func makeIterator() -> KeyParamsSequence { self }
 
         mutating func next() -> (CGRect, Note)? {
             guard nextX < xLimit else { return nil }

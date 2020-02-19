@@ -13,6 +13,12 @@ final class NotePlayer: KeyboardDelegate {
 
     var isMuted: Bool = false
 
+    /**
+     Initialize new instance.
+
+     - parameter infoBar: InfoBar instance to use to display note values
+     - parameter sampler: the Sampler instance to use to play notes
+     */
     init(infoBar: InfoBar, sampler: Sampler) {
         self.infoBar = infoBar
         self.sampler = sampler

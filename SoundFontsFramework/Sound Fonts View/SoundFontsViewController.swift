@@ -97,7 +97,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         documentPicker.modalPresentationStyle = .fullScreen
         documentPicker.allowsMultipleSelection = true
 
-        present(documentPicker, animated: true, completion: nil)
+        present(documentPicker, animated: true)
     }
 
     @IBAction public func removeSoundFont(_ sender: UIButton) {
