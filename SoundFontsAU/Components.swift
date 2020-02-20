@@ -23,12 +23,14 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+    private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
 
     var infoBar: InfoBar { infoBarController }
     var keyboard: Keyboard? { return nil }
     var patchesViewManager: PatchesViewManager { soundFontsController }
     var favoritesViewManager: FavoritesViewManager { favoritesController }
     var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+    var guideManager: GuideManager { guideController }
 
     init(sharedStateMonitor: SharedStateMonitor) {
         self.sharedStateMonitor = SharedStateMonitor(changer: .audioUnit)
@@ -49,6 +51,7 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
                     case let vc as InfoBarController: infoBarController = vc
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
+                    case let vc as GuideViewController: guideController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
@@ -69,6 +72,7 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
+        guideController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }

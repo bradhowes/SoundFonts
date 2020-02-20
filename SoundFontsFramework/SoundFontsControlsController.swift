@@ -20,6 +20,7 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
 
+    private var guideManager: GuideManager?
     private var upperViewManager = UpperViewManager()
     private var patchesViewManager: PatchesViewManager!
 
@@ -50,6 +51,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
+        guideManager = router.guideManager
 
         patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
@@ -78,6 +80,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
             patchesViewManager.dismissSearchKeyboard()
             Settings[.wasShowingFavorites] = favoritesView.isHidden
             upperViewManager.slideNextHorizontally()
+            guideManager?.favoritesGuide()
         }
     }
 
@@ -89,6 +92,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
             patchesViewManager.dismissSearchKeyboard()
             Settings[.wasShowingFavorites] = favoritesView.isHidden
             upperViewManager.slidePrevHorizontally()
+            guideManager?.soundFontsGuide()
         }
     }
 }
