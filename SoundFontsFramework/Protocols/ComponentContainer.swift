@@ -18,6 +18,7 @@ public protocol ComponentContainer {
     var patchesViewManager: PatchesViewManager { get }
     var favoritesViewManager: FavoritesViewManager { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
+    var guideManager: GuideManager { get }
 }
 
 public extension ComponentContainer {

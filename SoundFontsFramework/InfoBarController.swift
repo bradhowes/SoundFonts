@@ -13,6 +13,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     @IBOutlet private weak var addSoundFont: UIButton!
     @IBOutlet private weak var highestKey: UIButton!
     @IBOutlet private weak var touchView: UIView!
+    @IBOutlet private weak var showGuide: UIButton!
 
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
@@ -54,6 +55,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
 
         case .doubleTap: doubleTap.addTarget(target, action: action)
         case .addSoundFont: addSoundFont.addTarget(target, action: action, for: .touchUpInside)
+        case .showGuide: showGuide.addTarget(target, action: action, for: .touchUpInside)
         }
     }
 
@@ -87,10 +89,10 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
      */
     public func setVisibleKeyLabels(from: String, to: String) {
         UIView.performWithoutAnimation {
-            lowestKey.setTitle("< " + from, for: .normal)
+            lowestKey.setTitle("❰" + from, for: .normal)
             lowestKey.accessibilityLabel = "Keyboard down before " + from
             lowestKey.layoutIfNeeded()
-            highestKey.setTitle(to + " >", for: .normal)
+            highestKey.setTitle(to + "❱", for: .normal)
             highestKey.accessibilityLabel = "Keyboard up after " + to
             highestKey.layoutIfNeeded()
         }
