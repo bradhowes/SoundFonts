@@ -29,39 +29,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        if let url = launchOptions?[.url] as? URL {
-            addSoundFont(url: url)
-        }
-
         return true
     }
 
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        addSoundFont(url: url)
+        DispatchQueue.main.async {
+            self.addSoundFont(url: url)
+        }
         return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        print("applicationWillResignActive")
+        os_log(.info, log: log, "applicationWillResignActive")
         components.mainViewController.stopAudio()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        print("applicationDidEnterBackground")
+        os_log(.info, log: log, "applicationDidEnterBackground")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        print("applicationWillEnterForeground")
+        os_log(.info, log: log, "applicationWillEnterForeground")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        print("applicationDidBecomeActive")
+        os_log(.info, log: log, "applicationDidBecomeActive")
         components.mainViewController.startAudio()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        print("applicationWillTerminate")
+        os_log(.info, log: log, "applicationWillTerminate")
         components.mainViewController.stopAudio()
     }
 }
