@@ -21,7 +21,7 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var patchesView: UIView!
 
     private var guideManager: GuideManager?
-    private var upperViewManager = UpperViewManager()
+    private var upperViewManager = SlidingViewManager()
     private var patchesViewManager: PatchesViewManager!
 
     public override func viewDidLoad() {

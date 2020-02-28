@@ -2,7 +2,13 @@
 
 import Foundation
 
+/**
+ Defines the available actions that can be asked of a PatchesViewManager.
+ */
 public protocol PatchesViewManager: UpperViewSwipingActivity {
 
+    /**
+     Dismiss the search keyboard.
+     */
     func dismissSearchKeyboard()
 }

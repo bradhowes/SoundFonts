@@ -18,5 +18,7 @@ class MyViewController : UIViewController {
         self.view = view
     }
 }
+
+Int("123 456".split(separator: " ")[0])
 // Present the view controller in the Live View window
 PlaygroundPage.current.liveView = MyViewController()

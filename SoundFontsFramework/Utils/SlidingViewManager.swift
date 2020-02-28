@@ -5,13 +5,13 @@ import UIKit
 /**
  Simple UIView collection manager that can cycle through cells, showing them one at a time.
  */
-public struct UpperViewManager {
+public struct SlidingViewManager {
 
-    private var views = [UpperViewSlider]()
+    private var views = [ViewSlider]()
     private var active: Int = 0
 
     public mutating func add(view: UIView) {
-        views.append(UpperViewSlider(view: view))
+        views.append(ViewSlider(view: view))
     }
 
     /**
@@ -20,7 +20,7 @@ public struct UpperViewManager {
      - parameter activate: the index for the view to slide in and make current
      - parameter method: the sliding method to invoke to do the sliding
      */
-    private mutating func transition(activate: Int, method: (_ : UpperViewSlider) -> () -> Void ) {
+    private mutating func transition(activate: Int, method: (_ : ViewSlider) -> () -> Void ) {
         let index: Int = {
             if activate < 0 { return activate + views.count }
             else if activate >= views.count { return activate - views.count }
@@ -37,13 +37,13 @@ public struct UpperViewManager {
      Show the next view by sliding the existing / next views to the left.
      */
     public mutating func slideNextHorizontally() {
-        transition(activate: active + 1, method: UpperViewSlider.slideLeft)
+        transition(activate: active + 1, method: ViewSlider.slideLeft)
     }
 
     /**
      Show the previous view by sliding the existing / previous views to the right.
      */
     public mutating func slidePrevHorizontally() {
-        transition(activate: active - 1, method: UpperViewSlider.slideRight)
+        transition(activate: active - 1, method: ViewSlider.slideRight)
     }
 }

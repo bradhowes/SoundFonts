@@ -15,9 +15,14 @@ import os
 public class SettingsManager: NSObject {
 
     private let log = Logging.logger("SetMgr")
-    private let appSettings = UserDefaults.standard
 
-    public let sharedSettings = UserDefaults(suiteName: "group.com.braysoftware.SoundFontsShare")!
+    private let appSettings: UserDefaults
+    public let sharedSettings: UserDefaults!
+
+    public init(shared: UserDefaults, app: UserDefaults) {
+        self.sharedSettings = shared
+        self.appSettings = app
+    }
 
     public subscript<T: SettingSerializable>(key: SettingKey<T>) -> T {
         get {
@@ -44,11 +49,18 @@ public class SettingsManager: NSObject {
             T.set(key: key.userDefaultsKey, value: newValue, userDefaults: appSettings)
         }
     }
+
+    public func remove<T>(key: SettingKey<T>) {
+        appSettings.remove(key)
+        sharedSettings.remove(key)
+    }
 }
 
 //swiftlint:disable identifier_name
 /// Global variable to keep things concise.
-public let Settings = SettingsManager()
+public let Settings = SettingsManager(shared: UserDefaults(suiteName: "group.com.braysoftware.SoundFontsShare")!,
+                                      app: UserDefaults.standard)
+
 //swiftlint:enable identifier_name
 
 /**
@@ -76,7 +88,7 @@ public protocol SettingGettable {
 
      - parameter key: the setting name
      - parameter userDefaults: the container to fetch from
-     - returns optional value
+     - returns: optional value
      */
     static func get(key: String, userDefaults: UserDefaults) -> Self?
 }
@@ -118,7 +130,8 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
     /// The unique identifier for this setting key
     public let userDefaultsKey: String
 
-    /// The default value to use when the setting has not yet been set
+    /// The default value to use when the setting has not yet been set. We defer the setting of in case it is from a
+    /// generator and the initial value must come from runtime code.
     public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
 
     fileprivate var observers = [UUID : (ValueType)->Void]()

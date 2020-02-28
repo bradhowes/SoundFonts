@@ -5,16 +5,19 @@ import UIKit
 /**
  Instances know how to slide themselves around horizontally.
  */
-public final class UpperViewSlider: CustomStringConvertible {
+public final class ViewSlider: CustomStringConvertible {
 
     public let view: UIView
     public let leading: NSLayoutConstraint
     public let trailing: NSLayoutConstraint
 
-    public var description: String {
-        return "UpperViewSlider(\(view.restorationIdentifier ?? "NA")"
-    }
+    public var description: String { "UpperViewSlider(\(view.restorationIdentifier ?? "NA")" }
 
+    /**
+     Create a new slider for the given view.
+
+     - parameter view: the view to slide
+     */
     public init(view: UIView) {
         guard let constraints = view.superview?.constraints else {
             preconditionFailure("missing constraints in superview")
