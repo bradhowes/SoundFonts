@@ -21,6 +21,8 @@ public class SubscriptionManager<Event> {
         public func unsubscribe() { unsubscribeProc() }
     }
 
+    public init() {}
+
     /**
      Establish a connection between the SubscriptionManager and the notifier such that any future Events will be sent
      to the notifier.

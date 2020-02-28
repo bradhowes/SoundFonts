@@ -78,6 +78,7 @@
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
 		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
+		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B923FE625500AE9F3D /* GuideManager.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */; };
@@ -94,6 +95,7 @@
 		BDCCFCB623F59F3800DD518D /* SoundFontBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB523F59F3800DD518D /* SoundFontBrowser.swift */; };
 		BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
+		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +188,7 @@
 		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11B923FE625500AE9F3D /* GuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManager.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
@@ -205,6 +208,7 @@
 		BDCCFCB523F59F3800DD518D /* SoundFontBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontBrowser.swift; sourceTree = "<group>"; };
 		BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
+		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,6 +420,8 @@
 				BDC347E72403B93F00A848BA /* FileMonitorTests.swift */,
 				BD58251123CDABCE0034A31B /* Info.plist */,
 				BD6E8ABA2405C7E000067AE2 /* SharedStateMonitorTests.swift */,
+				BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */,
+				BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */,
 			);
 			path = SoundFontsFrameworkTests;
 			sourceTree = "<group>";
@@ -630,6 +636,8 @@
 				BD6E8ABB2405C7E000067AE2 /* SharedStateMonitorTests.swift in Sources */,
 				BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
+				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
+				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
 				BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */,
 			);
@@ -714,7 +722,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200228134703;
+				CURRENT_PROJECT_VERSION = 20200228165825;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -779,7 +787,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200228134703;
+				CURRENT_PROJECT_VERSION = 20200228165825;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -807,7 +815,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200228134703;
+				CURRENT_PROJECT_VERSION = 20200228165825;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -821,7 +829,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -835,7 +843,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200228134703;
+				CURRENT_PROJECT_VERSION = 20200228165825;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -849,7 +857,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.0;
+				MARKETING_VERSION = 2.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

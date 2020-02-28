@@ -38,6 +38,12 @@ extension UITableView {
         return cell
     }
 
+    /**
+     Obtain a cell view for the given index.
+
+     - parameter indexPath: the location of the cell to return
+     - returns: optional cell instance (nil if index path is out of bounds)
+     */
     public func cellForRow<T: UITableViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
         return cellForRow(at: indexPath) as? T
     }
