@@ -11,6 +11,9 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quaility). This app only supports sound font files that are bundled with the application, though it would be
 nice to remotely fetch one to try it out.
 
+> NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform to spec. Unfortunately, 
+> there is no way to insulate the app from this so it too will crash along with AVAudioUnitSampler.
+
 I have also curated a small collection of SoundFont files that I found useful and/or interesting:
 [Sample SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS device and touch
 one of the links, you can add the fire directly to the SoundFonts application.
