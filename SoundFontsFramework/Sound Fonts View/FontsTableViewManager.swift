@@ -31,9 +31,9 @@ final class FontsTableViewManager: NSObject {
         view.dataSource = self
         view.delegate = self
 
-        soundFonts.subscribe(self, closure: soundFontsChange)
-        selectedSoundFontManager.subscribe(self, closure: selectedSoundFontChange)
-        activePatchManager.subscribe(self, closure: activePatchChange)
+        soundFonts.subscribe(self, notifier: soundFontsChange)
+        selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
+        activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 
     func selectActive() {

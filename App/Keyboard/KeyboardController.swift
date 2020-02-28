@@ -58,7 +58,7 @@ extension KeyboardController: ControllerConfiguration {
         router.infoBar.addTarget(.shiftKeyboardUp, target: self, action: #selector(shiftKeyboardUp))
         router.infoBar.addTarget(.shiftKeyboardDown, target: self, action: #selector(shiftKeyboardDown))
         setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
-        router.favorites.subscribe(self, closure: favoritesChange)
+        router.favorites.subscribe(self, notifier: favoritesChange)
     }
 
     private func favoritesChange(_ event: FavoritesEvent) {

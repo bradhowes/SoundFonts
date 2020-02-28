@@ -6,16 +6,18 @@ import SoundFontsFramework
 public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
     let sampler = Sampler(mode: .audiounit)
     var audioUnit: AUAudioUnit { return sampler.auAudioUnit }
-    let components = Components<AudioUnitViewController>(sharedStateMonitor: SharedStateMonitor(changer: .audioUnit))
-
+    var components: Components<AudioUnitViewController>!
     var activePatchManager: ActivePatchManager!
     var infoBar: InfoBar!
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
+        let sharedStateMonitor = SharedStateMonitor(changer: .audioUnit)
+        components = Components<AudioUnitViewController>(sharedStateMonitor: sharedStateMonitor)
         components.setMainViewController(self)
     }
-    
+
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
 
         // audioUnit = try SoundFontAUAudioUnit(componentDescription: componentDescription, options: [])
@@ -37,8 +39,8 @@ extension AudioUnitViewController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
         infoBar = router.infoBar
-        activePatchManager.subscribe(self, closure: activePatchChange)
-        router.favorites.subscribe(self, closure: favoritesChange)
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        router.favorites.subscribe(self, notifier: favoritesChange)
         useActivePatchKind(activePatchManager.active)
     }
 

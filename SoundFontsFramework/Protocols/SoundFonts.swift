@@ -62,14 +62,30 @@ public protocol SoundFonts {
     /**
      Remove the SoundFont at the given index
 
-     - parameter index: <#Describe index#>
+     - parameter index: the location to remove
      */
     func remove(index: Int)
 
+    /**
+     Change the name of a SoundFont
+
+     - parameter index: location of the SoundFont to edit
+     - parameter name: new name to use
+     */
     func rename(index: Int, name: String)
 
+    /**
+     Force a reload of the SoundFont collection.
+     */
     func reload()
 
+    /**
+     Subscribe to notifications when the collection changes. The types of changes are defined in SoundFontsEvent enum.
+
+     - parameter subscriber: the object doing the monitoring
+     - parameter notifier: the closure to invoke when a change takes place
+     - returns: token that can be used to unsubscribe
+     */
     @discardableResult
-    func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (SoundFontsEvent) -> Void) -> SubscriberToken
+    func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (SoundFontsEvent) -> Void) -> SubscriberToken
 }

@@ -39,6 +39,17 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         self.favorites = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+
+        sharedStateMonitor.block = { stateChange in
+            switch stateChange {
+            case .favorites:
+                self.favorites.reload()
+                self.favoritesController.reload()
+            case .soundFonts:
+                self.soundFonts.reload()
+                self.soundFontsController.reload()
+            }
+        }
     }
 
     func setMainViewController(_ mvc: T) {
@@ -63,7 +74,6 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
 
         validate()
         establishConnections()
-        sharedStateMonitor.delegate = self
     }
 
     /**
@@ -77,19 +87,6 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         soundFontsControlsController.establishConnections(self)
         guideController.establishConnections(self)
         mainViewController.establishConnections(self)
-    }
-}
-
-extension Components: SharedStateMonitorDelegate {
-
-    func favoritesChangedNotification() {
-        favorites.reload()
-        favoritesController.reload()
-    }
-
-    func soundFontsChangedNotification() {
-        soundFonts.reload()
-        soundFontsController.reload()
     }
 }
 

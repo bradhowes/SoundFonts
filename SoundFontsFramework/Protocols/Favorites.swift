@@ -7,17 +7,11 @@ import UIKit
 */
 public enum FavoritesEvent {
 
-    /// New Favorite added to the collection
     case added(index: Int, favorite: Favorite)
-    /// Favorite selected
     case selected(index: Int, favorite: Favorite)
-    /// Favorite being edited
     case beginEdit(index: Int, favorite: Favorite, view: UIView)
-    /// Favorite changed
     case changed(index: Int, favorite: Favorite)
-    /// Favorite removed
     case removed(index: Int, favorite: Favorite, bySwiping: Bool)
-    /// Side-effect of a SoundFont being removed -- removal of all associaed Favorites
     case removedAll(associatedWith: SoundFont)
 }
 
@@ -26,12 +20,39 @@ public enum FavoritesEvent {
  */
 public protocol Favorites {
 
+    /// Get number of favorites
     var count: Int {get}
 
+    /**
+     Determine if the given SoundFontPatch is associated with a Favorite
+
+     - parameter soundFontPatch: what to look for
+     - returns: true if so
+     */
     func isFavored(soundFontPatch: SoundFontPatch) -> Bool
 
+    /**
+     Obtain the index of the given Favorite in the collection.
+
+     - parameter favorite: what to look for
+     - returns: the position of the Favorite
+     */
     func index(of favorite: Favorite) -> Int
+
+    /**
+     Obtain the Favorite at the given index
+
+     - parameter index: the location to get
+     - returns: Favorite at the index
+     */
     func getBy(index: Int) -> Favorite
+
+    /**
+     Get the Favorite associated with the given SoundFontPatch
+
+     - parameter soundFontPatch: what to look for
+     - returns: optional Favorite instance
+     */
     func getBy(soundFontPatch: SoundFontPatch) -> Favorite?
 
     /**
@@ -42,22 +63,72 @@ public protocol Favorites {
      */
     func add(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note?)
 
+    /**
+     Begin editing a Favorite
+
+     - parameter favorite: the instance to edit
+     - parameter view: the UIView which started the editing
+     */
     func beginEdit(favorite: Favorite, view: UIView)
 
+    /**
+     Update the collection due to a change in the given Favorite
+
+     - parameter index: the location where the Favorite should be
+     - parameter with: the Favorite instance to use
+     */
     func update(index: Int, with: Favorite)
 
+    /**
+     Move a Favorite from one place in the collection to another.
+
+     - parameter from: where the Favorite is coming from
+     - parameter to: where the Favorite is moving to
+     */
     func move(from: Int, to: Int)
 
+    /**
+     The Favorite at the given index is selected by the user.
+
+     - parameter index: the index that is selected
+     */
     func selected(index: Int)
 
+    /**
+     Remove the Favorite at the given index.
+
+     - parameter index: the index to remove
+     - parameter bySwiping: true if the removing was done via the user
+     */
     func remove(index: Int, bySwiping: Bool)
 
+    /**
+     Remove all Favorite instances associated with the given SoundFont.
+
+     - parameter associatedWith: the SoundFont to look for
+     */
     func removeAll(associatedWith: SoundFont)
 
+    /**
+     Obtain a count of the number of Favorite instances associated with the given SoundFont.
+
+     - parameter associatedWith: what to look for
+     - returns: count
+     */
     func count(associatedWith: SoundFont) -> Int
 
+    /**
+     Force a reload of the Favorite collection from storage.
+     */
     func reload()
 
+    /**
+     Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.
+
+     - parameter subscriber: the object doing the monitoring
+     - parameter notifier: the closure to invoke when a change takes place
+     - returns: token that can be used to unsubscribe
+     */
     @discardableResult
-    func subscribe<O: AnyObject>(_ subscriber: O, closure: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
+    func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
 }

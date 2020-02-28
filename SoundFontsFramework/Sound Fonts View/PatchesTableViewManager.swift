@@ -40,9 +40,9 @@ final class PatchesTableViewManager: NSObject {
         view.delegate = self
         searchBar.delegate = self
 
-        selectedSoundFontManager.subscribe(self, closure: selectedSoundFontChange)
-        activePatchManager.subscribe(self, closure: activePatchChange)
-        favorites.subscribe(self, closure: favoritesChange)
+        selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        favorites.subscribe(self, notifier: favoritesChange)
     }
 }
 

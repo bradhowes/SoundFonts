@@ -69,8 +69,8 @@ extension FavoritesViewController: ControllerConfiguration {
         favorites = router.favorites
         keyboard = router.keyboard
 
-        activePatchManager.subscribe(self, closure: activePatchChange)
-        favorites.subscribe(self, closure: favoritesChange)
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        favorites.subscribe(self, notifier: favoritesChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {

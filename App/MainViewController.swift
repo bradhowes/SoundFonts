@@ -94,8 +94,8 @@ extension MainViewController: ControllerConfiguration {
         keyboard.delegate = notePlayer!
         volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer)
 
-        activePatchManager.subscribe(self, closure: activePatchChange)
-        router.favorites.subscribe(self, closure: favoritesChange)
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        router.favorites.subscribe(self, notifier: favoritesChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
