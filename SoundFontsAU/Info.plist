@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SoundFontAU</string>
+	<string>SoundFontsAU</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -28,13 +28,13 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SoundFontAU</string>
+					<string>SoundFontsAU</string>
 					<key>factoryFunction</key>
-					<string>$(PRODUCT_MODULE_NAME).AudioUnitViewController</string>
+					<string>$(PRODUCT_MODULE_NAME).SoundFontsAUViewController</string>
 					<key>manufacturer</key>
 					<string>bray</string>
 					<key>name</key>
-					<string>bray: SoundFontAU</string>
+					<string>bray: SoundFontsAU</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>

@@ -3,10 +3,9 @@
 import CoreAudioKit
 import SoundFontsFramework
 
-public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
+public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
     let sampler = Sampler(mode: .audiounit)
-    var audioUnit: AUAudioUnit { return sampler.auAudioUnit }
-    var components: Components<AudioUnitViewController>!
+    var components: Components<SoundFontsAUViewController>!
     var activePatchManager: ActivePatchManager!
     var infoBar: InfoBar!
 
@@ -14,22 +13,19 @@ public class AudioUnitViewController: AUViewController, AUAudioUnitFactory {
         super.viewDidLoad()
 
         let sharedStateMonitor = SharedStateMonitor(changer: .audioUnit)
-        components = Components<AudioUnitViewController>(sharedStateMonitor: sharedStateMonitor)
+        components = Components<SoundFontsAUViewController>(sharedStateMonitor: sharedStateMonitor)
         components.setMainViewController(self)
     }
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-
-        // audioUnit = try SoundFontAUAudioUnit(componentDescription: componentDescription, options: [])
-
         _ = sampler.start()
-        return audioUnit
+        return sampler.auAudioUnit
     }
 }
 
 // MARK: - Controller Configuration
 
-extension AudioUnitViewController: ControllerConfiguration {
+extension SoundFontsAUViewController: ControllerConfiguration {
 
     /**
      Establish connections with other managers / controllers.
