@@ -11,8 +11,14 @@ public final class SoundFontCollection: Codable {
     private var catalog: [SoundFont.Key: SoundFont]
     private var sortedKeys: [SoundFont.Key]
 
+    /// Obtain the number of SoundFont instances in the collection
     public var count: Int { sortedKeys.count }
 
+    /**
+     Create a new collection.
+
+     - parameter soundFonts: array of SoundFont instances
+     */
     public init(soundFonts: [SoundFont]) {
         self.catalog = [SoundFont.Key: SoundFont](uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
         self.sortedKeys = soundFonts.sorted {
@@ -85,6 +91,13 @@ public final class SoundFontCollection: Codable {
         return (newIndex, soundFont)
     }
 
+    /**
+     Obtain the index in the collection to insert a SoundFont key so that the alphabetical ordering of the collection
+     is maintained
+
+     - parameter key: the name of the SoundFont to insert
+     - returns: the index in the collection to insert
+     */
     private func insertionIndex(of key: SoundFont.Key) -> Int {
         sortedKeys.insertionIndex(of: key) { catalog[$0]!.displayName < catalog[$1]!.displayName }
     }

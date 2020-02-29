@@ -3,6 +3,9 @@
 import Foundation
 import os
 
+/**
+ Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
+ */
 public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
     private static let log = Logging.logger("SFLib")
@@ -16,7 +19,12 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
     private let sharedStateMonitor: SharedStateMonitor
     private var collection: SoundFontCollection
 
-    public static func restore() -> SoundFontCollection? {
+    /**
+     Attempt to restore the last saved collection.
+
+     - returns: restored SoundFont collection or nil if unable to do so
+     */
+    private static func restore() -> SoundFontCollection? {
         os_log(.info, log: log, "attempting to restore collection")
         for url in [Self.sharedArchivePath, Self.appArchivePath] {
             os_log(.info, log: log, "trying to read from '%s'", url.path)
@@ -32,7 +40,12 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         return nil
     }
 
-    public static func create() -> SoundFontCollection {
+    /**
+     Create a new collection using the embedded SoundFont files.
+
+     - returns: new SoundFontCollection
+     */
+    private static func create() -> SoundFontCollection {
         os_log(.info, log: log, "creating new collection")
         let bundle = Bundle(for: SoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
@@ -40,6 +53,12 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         return SoundFontCollection(soundFonts: urls.map { addFromBundle(url: $0) })
     }
 
+    /**
+     Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
+     fails then creates a new one containing SoundFont instances embedded in the app.
+
+     - parameter sharedStateMonitor: monitor to use to signal when the collection has changed
+     */
     public init(sharedStateMonitor: SharedStateMonitor) {
         self.sharedStateMonitor = sharedStateMonitor
         self.collection = Self.restore() ?? Self.create()
@@ -48,6 +67,9 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         os_log(.info, log: log, "collection size: %d", collection.count)
     }
 
+    /**
+     Reload from disk the managed collection of SoundFonts due to a change made by another process.
+     */
     public func reload() {
         os_log(.info, log: log, "reload")
         if let collection = Self.restore() {
@@ -56,6 +78,8 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         }
     }
 }
+
+// MARK: - SoundFonts Protocol
 
 extension SoundFontsManager: SoundFonts {
 
