@@ -35,6 +35,7 @@
 		BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */; };
 		BDBF088221CBFBFF00C4EA27 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF088121CBFBFF00C4EA27 /* KeyboardController.swift */; };
 		BDCCFCB823F5A0FE00DD518D /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB723F5A0FE00DD518D /* AskForReview.swift */; };
+		BDFE1A37240DCADA000DEAC8 /* AUAudioUnit+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFE1A36240DCADA000DEAC8 /* AUAudioUnit+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		BDCCFCB723F5A0FE00DD518D /* AskForReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskForReview.swift; sourceTree = "<group>"; };
 		BDD5691023A232C30016AB1D /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
 		BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
+		BDFE1A36240DCADA000DEAC8 /* AUAudioUnit+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AUAudioUnit+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */,
+				BDFE1A36240DCADA000DEAC8 /* AUAudioUnit+Extension.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				TargetAttributes = {
 					BD05836123E4C52800E094E0 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
@@ -466,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFE1A37240DCADA000DEAC8 /* AUAudioUnit+Extension.m in Sources */,
 				BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */,
 				BD763DA123EC3F7700ED24EC /* Components.swift in Sources */,
 			);
@@ -541,9 +546,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsAU/Info.plist;
@@ -557,6 +563,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFontsAU;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -566,9 +573,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -621,7 +629,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -685,7 +693,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -716,7 +724,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -741,7 +749,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200229140754;
+				CURRENT_PROJECT_VERSION = 20200302232638;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = App/Info.plist;

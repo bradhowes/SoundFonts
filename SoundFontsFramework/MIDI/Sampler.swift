@@ -15,6 +15,7 @@ public final class Sampler {
     public static let maxMidiValue = 12 * 9 // C9
 
     public enum Failure: Error {
+        case noSampler
         case engineStarting(error: NSError)
         case patchLoading(error: NSError)
     }
@@ -30,7 +31,7 @@ public final class Sampler {
     private var activePatchKind: ActivePatchKind?
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-    public var auAudioUnit: AUAudioUnit { return ausampler!.auAudioUnit }
+    public var auAudioUnit: AUAudioUnit? { return ausampler?.auAudioUnit }
 
     /**
      Create a new instance of a Sampler.
@@ -52,33 +53,13 @@ public final class Sampler {
      */
     public func start() -> Result<Void, Failure> {
         os_log(.info, log: log, "start")
+        ausampler = AVAudioUnitSampler()
+        return startEngine()
+    }
 
-        let sampler = AVAudioUnitSampler()
-        self.ausampler = sampler
-
-        if case .standalone = mode {
-            let engine = AVAudioEngine()
-            self.engine = engine
-
-            os_log(.debug, log: log, "attaching sampler")
-            engine.attach(sampler)
-
-            os_log(.debug, log: log, "connecting sampler")
-            engine.connect(sampler, to: engine.mainMixerNode,
-                           fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
-                           format: sampler.outputFormat(forBus: 0))
-
-            do {
-                os_log(.debug, log: log, "starting engine")
-                try engine.start()
-            } catch let error as NSError {
-                return .failure(.engineStarting(error: error))
-            }
-        }
-
+    private func loadActivePatch() -> Result<Void, Failure> {
         if let activePatchKind = self.activePatchKind {
             self.activePatchKind = nil
-
             os_log(.info, log: log, "done")
             return load(activePatchKind: activePatchKind)
         }
@@ -93,6 +74,79 @@ public final class Sampler {
     public func stop() {
         os_log(.info, log: log, "stop")
         engine?.stop()
+    }
+
+    private func startEngine() -> Result<Void, Failure> {
+        guard let sampler = ausampler else { return .failure(.noSampler) }
+        let engine = AVAudioEngine()
+        self.engine = engine
+
+        os_log(.debug, log: log, "attaching sampler")
+        engine.attach(sampler)
+
+        if mode == .standalone {
+            os_log(.debug, log: log, "connecting sampler")
+            engine.connect(sampler, to: engine.mainMixerNode,
+                           fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
+                           format: sampler.outputFormat(forBus: 0))
+
+            do {
+                os_log(.debug, log: log, "starting engine")
+                try engine.start()
+            } catch let error as NSError {
+                return .failure(.engineStarting(error: error))
+            }
+        }
+             
+        return loadActivePatch()
+    }
+
+//    private func startMIDI() -> Result<Void, Failure> {
+//        os_log(.info, log: log, "startMIDI")
+//
+//        MIDINetworkSession.default().isEnabled = true
+//        MIDINetworkSession.default().connectionPolicy =
+//            MIDINetworkConnectionPolicy.anyone
+//
+//        let err = MIDIDestinationCreateWithBlock(midiClient, midiInputName as CFString, &midiInput) { packetList, _ in
+//            let packets = packetList.pointee
+//            let packet: MIDIPacket = packets.packet
+//            var ap = UnsafeMutablePointer<MIDIPacket>.allocate(capacity: 1)
+//            ap.initialize(to: packet)
+//
+//            for _ in 0 ..< packets.numPackets {
+//                let p = ap.pointee
+//                os_log(.error, log: self.log, "%d 0x%X 0x%X 0x%X", p.timeStamp, p.data.0, p.data.1, p.data.2)
+//                self.processMIDIPacket(p)
+//                ap = MIDIPacketNext(ap)
+//            }
+//        }
+//
+//        if err != 0 {
+//            os_log(.error, log: log, "startMIDI failed: %d", err)
+//        }
+//
+//        return loadActivePatch()
+//    }
+
+    private func processMIDIPacket(_ packet:MIDIPacket) {
+        let status = packet.data.0
+        let d1 = packet.data.1
+        let d2 = packet.data.2
+        let rawStatus = status & 0xF0 // without channel
+        let channel = status & 0x0F
+
+        switch rawStatus {
+
+        case 0x80:
+            os_log(.error, log: log, "Note OFF: %d %d %d", channel, d1, d2)
+            noteOff(Int(d1))
+        case 0x90:
+            os_log(.error, log: log, "Note ON: %d %d %d", channel, d1, d2)
+            noteOn(Int(d1))
+        default:
+            os_log(.error, log: log, "Unhandled message - %d", rawStatus)
+        }
     }
 
     /**
@@ -161,6 +215,7 @@ public final class Sampler {
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
     public func noteOn(_ midiValue: Int) {
+        os_log(.error, log: log, "noteOn - %d", midiValue)
         guard let sampler = self.ausampler else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(64), onChannel: UInt8(0))
     }
@@ -171,6 +226,7 @@ public final class Sampler {
      - parameter midiValue: MIDI value that indicates the pitch to stop
      */
     public func noteOff(_ midiValue: Int) {
+        os_log(.error, log: log, "noteOff - %d", midiValue)
         guard let sampler = self.ausampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }

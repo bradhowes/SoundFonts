@@ -2,12 +2,16 @@
 
 import CoreAudioKit
 import SoundFontsFramework
+import os
 
 public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
+    private let log = Logging.logger("SFAU")
+
     let sampler = Sampler(mode: .audiounit)
     var components: Components<SoundFontsAUViewController>!
     var activePatchManager: ActivePatchManager!
     var infoBar: InfoBar!
+
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +22,11 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
     }
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        _ = sampler.start()
-        return sampler.auAudioUnit
+        if case let .failure(failure) = sampler.start() {
+            os_log(.error, log: log, "failed to start sampler - %s", failure.localizedDescription)
+        }
+
+        return sampler.auAudioUnit!
     }
 }
 
