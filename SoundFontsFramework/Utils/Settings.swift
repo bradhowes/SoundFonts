@@ -28,14 +28,18 @@ public class SettingsManager: NSObject {
         get {
             os_log(.info, log: log, "get '%s'", key.userDefaultsKey)
 
-            if let value = T.get(key: key.userDefaultsKey, userDefaults: sharedSettings) {
-                os_log(.info, log: log, "found in sharedSettings")
-                return value
+            if key.shared {
+                if let value = T.get(key: key.userDefaultsKey, userDefaults: sharedSettings) {
+                    os_log(.info, log: log, "found in sharedSettings")
+                    return value
+                }
             }
 
             if let value = T.get(key: key.userDefaultsKey, userDefaults: appSettings) {
                 os_log(.info, log: log, "found in appSettings -- copying to sharedSettings")
-                sharedSettings[key] = value
+                if key.shared {
+                    sharedSettings[key] = value
+                }
                 return value
             }
 
@@ -45,7 +49,9 @@ public class SettingsManager: NSObject {
 
         set {
             os_log(.info, log: log, "setting '%s'", key.userDefaultsKey)
-            T.set(key: key.userDefaultsKey, value: newValue, userDefaults: sharedSettings)
+            if key.shared {
+                T.set(key: key.userDefaultsKey, value: newValue, userDefaults: sharedSettings)
+            }
             T.set(key: key.userDefaultsKey, value: newValue, userDefaults: appSettings)
         }
     }
@@ -130,6 +136,9 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
     /// The unique identifier for this setting key
     public let userDefaultsKey: String
 
+    /// If true, the setting is shared with others on the same devices
+    public let shared: Bool
+
     /// The default value to use when the setting has not yet been set. We defer the setting of in case it is from a
     /// generator and the initial value must come from runtime code.
     public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
@@ -142,8 +151,9 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
      - parameter key: the unique identifier to use for this setting
      - parameter defaultValue: the constant default value to use
      */
-    public init(_ key: String, defaultValue: ValueType) {
+    public init(_ key: String, defaultValue: ValueType, shared: Bool = false) {
         self.userDefaultsKey = key
+        self.shared = shared
         self._defaultValue = .constant(defaultValue)
     }
 
@@ -154,8 +164,9 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
      - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
      only be called at most one time.
      */
-    public init(_ key: String, defaultValueGenerator: @escaping ()->ValueType) {
+    public init(_ key: String, shared: Bool = false, defaultValueGenerator: @escaping ()->ValueType) {
         self.userDefaultsKey = key
+        self.shared = shared
         self._defaultValue = .generator(defaultValueGenerator)
     }
 }

@@ -4,8 +4,8 @@ import Foundation
 import os
 
 extension SettingKeys {
-    static let favoritesChanged = SettingKey<String>("favoritesChanged", defaultValue: "")
-    static let soundFontsChanged = SettingKey<String>("soundFontsChanged", defaultValue: "")
+    static let favoritesChanged = SettingKey<String>("favoritesChanged", defaultValue: "", shared: true)
+    static let soundFontsChanged = SettingKey<String>("soundFontsChanged", defaultValue: "", shared: true)
 }
 
 /**
