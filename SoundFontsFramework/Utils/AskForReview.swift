@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import StoreKit
-import SoundFontsFramework
 import os
 
 extension SettingKeys {
@@ -15,10 +14,13 @@ extension SettingKeys {
     static let lastReviewRequestVersion = SettingKey<String>("lastReviewRequestVersion", defaultValue: "")
 }
 
-final class AskForReview: NSObject {
-    public static var shared = AskForReview()
+public final class AskForReview: NSObject {
 
     private let log = Logging.logger("AskR")
+
+    static public let notificationToAsk = Notification(name: Notification.Name(rawValue: "notificationToAsk"))
+
+    static public func maybe() { NotificationCenter.default.post(notificationToAsk) }
 
     /// Obtain the version found in the main bundle.
     let currentVersion: String = {
@@ -59,13 +61,22 @@ final class AskForReview: NSObject {
         value: Settings[.monthsAfterLastReviewBeforeRequest],
         to: lastReviewRequestDate)!
 
-    private override init() {
+    var countDown = 3
+
+    public init(isMain: Bool) {
         super.init()
         os_log(.info, log: log, "init: dateSinceFirstLaunch - %s  dateSinceLastReviewRequest - %s",
                dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
+        if isMain {
+            NotificationCenter.default.addObserver(forName: Self.notificationToAsk.name, object: nil, queue: nil) { _ in
+                self.ask()
+            }
+        }
     }
 
-    public var enable: Bool = false
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     /**
      Ask user for a review. Whether the ask actually happens depends on *when* this method is called:
@@ -76,11 +87,6 @@ final class AskForReview: NSObject {
      */
     public func ask() {
         os_log(.info, log: log, "ask")
-
-        guard enable == true else {
-            os_log(.info, log: log, "not enabled")
-            return
-        }
 
         let now = Date()
         let currentVersion = self.currentVersion
@@ -96,6 +102,12 @@ final class AskForReview: NSObject {
 
         guard now >= dateSinceLastReviewRequest else {
             os_log(.info, log: log, "too soon after last review request")
+            return
+        }
+
+        guard countDown < 1 else {
+            countDown -= 1
+            os_log(.info, log: log, "too soon after launching")
             return
         }
 

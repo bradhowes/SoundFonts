@@ -36,6 +36,7 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
     @objc public func hideGuide() {
         removeFromParent()
         view.isHidden = true
+        AskForReview.maybe()
     }
 
     public func soundFontsGuide() {

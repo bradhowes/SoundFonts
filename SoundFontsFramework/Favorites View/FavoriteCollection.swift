@@ -58,6 +58,7 @@ final class FavoriteCollection: Codable {
      */
     func add(favorite: Favorite) {
         reverseLookup[favorite.soundFontPatch] = favorite
+        AskForReview.maybe()
         favorites.append(favorite)
     }
 
@@ -75,11 +76,13 @@ final class FavoriteCollection: Codable {
 
     func move(from: Int, to: Int) {
         favorites.insert(favorites.remove(at: from), at: to)
+        AskForReview.maybe()
     }
 
     func remove(index: Int) -> Favorite {
         let favorite = favorites.remove(at: index)
         reverseLookup.removeValue(forKey: favorite.soundFontPatch)
+        AskForReview.maybe()
         return favorite
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,13 +17,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh4-QX-qOz">
-                                <rect key="frame" x="0.0" y="44" width="414" height="578"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="360"/>
                                 <connections>
                                     <segue destination="Uyd-5y-IUm" kind="embed" id="sTT-HI-eUZ"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Keyboard" translatesAutoresizingMaskIntoConstraints="NO" id="6sg-ac-0XL" userLabel="Keyboard">
-                                <rect key="frame" x="0.0" y="622" width="414" height="240"/>
+                                <rect key="frame" x="0.0" y="360" width="600" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="240" id="aqN-cf-K1s"/>
                                 </constraints>
@@ -80,9 +80,9 @@
         <!--Keyboard Controller-->
         <scene sceneID="DdP-fR-Jpy">
             <objects>
-                <viewController storyboardIdentifier="KeyboardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iPa-Gs-fEb" customClass="KeyboardController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="KeyboardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iPa-Gs-fEb" customClass="KeyboardController" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="omh-8Z-dts">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="240"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="240"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="aD3-XW-FcA"/>

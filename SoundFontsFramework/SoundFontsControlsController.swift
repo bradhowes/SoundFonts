@@ -70,6 +70,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
         else {
             showPreviousConfigurationView()
         }
+        AskForReview.maybe()
     }
 
     /**
