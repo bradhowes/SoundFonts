@@ -18,6 +18,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
     private var fader: UIViewPropertyAnimator?
+    private var activePatchManager: ActivePatchManager!
 
     public override func viewDidLoad() {
 
@@ -34,7 +35,12 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         view.addGestureRecognizer(panner)
     }
 
-    public func establishConnections(_ router: ComponentContainer) {}
+    public func establishConnections(_ router: ComponentContainer) {
+        activePatchManager = router.activePatchManager
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        router.favorites.subscribe(self, notifier: favoritesChange)
+        useActivePatchKind(activePatchManager.active)
+    }
 
     /**
      Add an event target to one of the internal UIControl entities.
@@ -97,12 +103,48 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
             highestKey.layoutIfNeeded()
         }
     }
-
 }
 
 // MARK: - Private
 
 extension InfoBarController {
+
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        if case let .active(old: _, new: new) = event {
+            useActivePatchKind(new)
+        }
+    }
+
+    private func favoritesChange(_ event: FavoritesEvent) {
+        switch event {
+        case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
+        case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
+        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontPatch)
+        default: break
+        }
+    }
+
+    private func updateInfoBar(with favorite: Favorite) {
+        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+            setPatchInfo(name: favorite.name, isFavored: true)
+        }
+    }
+
+    private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
+        if soundFontPatch == activePatchManager.soundFontPatch {
+            setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+        }
+    }
+
+    private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
+
+        if let favorite = activePatchKind.favorite {
+            setPatchInfo(name: favorite.name, isFavored: true)
+        }
+        else {
+            setPatchInfo(name: activePatchKind.soundFontPatch.patch.name, isFavored: false)
+        }
+    }
 
     private func startStatusAnimation() {
 
