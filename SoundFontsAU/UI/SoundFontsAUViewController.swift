@@ -7,11 +7,10 @@ import os
 public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
     private let log = Logging.logger("SFAU")
 
-    let sampler = Sampler(mode: .audiounit)
-    var components: Components<SoundFontsAUViewController>!
-    var activePatchManager: ActivePatchManager!
-    var infoBar: InfoBar!
-
+    private let sampler = Sampler(mode: .audiounit)
+    private var components: Components<SoundFontsAUViewController>!
+    private var myKVOContext = 0
+    private var auAudioUnit: AUAudioUnit { sampler.auAudioUnit! }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,10 +22,26 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         if case let .failure(failure) = sampler.start() {
-            os_log(.error, log: log, "failed to start sampler - %s", failure.localizedDescription)
+            os_log(.error, log: log, "failed to start sampler - %{public}s", failure.localizedDescription)
         }
 
+        sampler.auAudioUnit!.addObserver(self, forKeyPath: "allParameterValues", options: [.new, .old],
+                                         context: &myKVOContext)
+
         return sampler.auAudioUnit!
+    }
+
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
+                                      context: UnsafeMutableRawPointer?) {
+        guard context == &myKVOContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+
+        guard let params = sampler.auAudioUnit?.parameterTree else { return }
+        for each in params.allParameters {
+            os_log(.error, log: log, "%{public}s/%{public}s", each.identifier, each.displayName)
+        }
     }
 }
 
@@ -40,11 +55,8 @@ extension SoundFontsAUViewController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     public func establishConnections(_ router: ComponentContainer) {
-        activePatchManager = router.activePatchManager
-        infoBar = router.infoBar
-        activePatchManager.subscribe(self, notifier: activePatchChange)
-        router.favorites.subscribe(self, notifier: favoritesChange)
-        useActivePatchKind(activePatchManager.active)
+        router.activePatchManager.subscribe(self, notifier: activePatchChange)
+        useActivePatchKind(router.activePatchManager.active)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
@@ -53,36 +65,7 @@ extension SoundFontsAUViewController: ControllerConfiguration {
         }
     }
 
-    private func favoritesChange(_ event: FavoritesEvent) {
-        switch event {
-        case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontPatch)
-        default: break
-        }
-    }
-
-    private func updateInfoBar(with favorite: Favorite) {
-        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-        }
-    }
-
-    private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
-        if soundFontPatch == activePatchManager.soundFontPatch {
-            infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
-        }
-    }
-
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-
-        if let favorite = activePatchKind.favorite {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-        }
-        else {
-            infoBar.setPatchInfo(name: activePatchKind.soundFontPatch.patch.name, isFavored: false)
-        }
-
         _ = self.sampler.load(activePatchKind: activePatchKind)
     }
 }

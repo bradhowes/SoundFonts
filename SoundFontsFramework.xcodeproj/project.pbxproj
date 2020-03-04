@@ -38,9 +38,6 @@
 		BD074C5D23CDAF51001987E9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BD074BFA23CDAF51001987E9 /* Localizable.strings */; };
 		BD074C5E23CDAF51001987E9 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BD074BFC23CDAF51001987E9 /* Localizable.stringsdict */; };
 		BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0223CDAF51001987E9 /* Assets.xcassets */; };
-		BD074C6123CDAF51001987E9 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0723CDAF51001987E9 /* FreeFont.sf2 */; };
-		BD074C6523CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0B23CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
-		BD074C6823CDAF51001987E9 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0E23CDAF51001987E9 /* FluidR3_GM.sf2 */; };
 		BD074C6B23CDAF51001987E9 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C1123CDAF51001987E9 /* RolandNicePiano.sf2 */; };
 		BD074C6D23CDAF51001987E9 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */; };
 		BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1523CDAF51001987E9 /* Logging.swift */; };
@@ -531,12 +528,9 @@
 			files = (
 				BD074C4523CDAF51001987E9 /* FontCell.xib in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
-				BD074C6523CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
-				BD074C6123CDAF51001987E9 /* FreeFont.sf2 in Resources */,
 				BD074C5D23CDAF51001987E9 /* Localizable.strings in Resources */,
 				BD074C4423CDAF51001987E9 /* PatchCell.xib in Resources */,
 				BD074C5E23CDAF51001987E9 /* Localizable.stringsdict in Resources */,
-				BD074C6823CDAF51001987E9 /* FluidR3_GM.sf2 in Resources */,
 				BD074C6B23CDAF51001987E9 /* RolandNicePiano.sf2 in Resources */,
 				BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */,
 				BD074C4623CDAF51001987E9 /* SoundFontsControls.storyboard in Resources */,
@@ -722,7 +716,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200303021350;
+				CURRENT_PROJECT_VERSION = 20200303215443;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -787,7 +781,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20200303021350;
+				CURRENT_PROJECT_VERSION = 20200303215443;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -815,7 +809,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200303021350;
+				CURRENT_PROJECT_VERSION = 20200303215443;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -829,7 +823,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.3;
+				MARKETING_VERSION = 2.2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -843,7 +837,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20200303021350;
+				CURRENT_PROJECT_VERSION = 20200303215443;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -857,7 +851,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.2.3;
+				MARKETING_VERSION = 2.2.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
