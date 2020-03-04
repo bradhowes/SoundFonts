@@ -59,6 +59,7 @@ public final class SoundFontCollection: Codable {
         catalog[soundFont.key] = soundFont
         let index = insertionIndex(of: soundFont.key)
         sortedKeys.insert(soundFont.key, at: index)
+        AskForReview.maybe()
         return index
     }
 
@@ -70,6 +71,7 @@ public final class SoundFontCollection: Codable {
      */
     public func remove(_ index: Int) -> SoundFont? {
         let key = sortedKeys.remove(at: index)
+        AskForReview.maybe()
         return catalog.removeValue(forKey: key)
     }
 
@@ -88,6 +90,8 @@ public final class SoundFontCollection: Codable {
 
         let newIndex = insertionIndex(of: soundFont.key)
         sortedKeys.insert(soundFont.key, at: newIndex)
+
+        AskForReview.maybe()
         return (newIndex, soundFont)
     }
 

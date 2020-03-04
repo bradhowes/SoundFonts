@@ -1,7 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import SoundFontsFramework
 
 /**
  Visual representation of a piano key. Each key has an associated Note value which determines what MIDI note the key

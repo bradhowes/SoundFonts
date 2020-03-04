@@ -39,6 +39,8 @@ final public class SharedStateMonitor: NSObject {
     /// Delegate that receives notifications when the shared state changes.
     public var block: ((StateChange)->Void)?
 
+    public var isMain: Bool { changer == .application }
+
     /**
      Construct a new monitor for the given changer. Monitors the UserDefaults values for the favoritesChanged and
      soundFontsChanged keys.

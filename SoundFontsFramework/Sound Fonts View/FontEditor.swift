@@ -58,6 +58,7 @@ final class FontEditor: UIViewController {
             soundFont.displayName = newName
         }
 
+        AskForReview.maybe()
         delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
     }
 
@@ -67,6 +68,7 @@ final class FontEditor: UIViewController {
      - parameter sender: the `Cancel` button.
      */
     @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
+        AskForReview.maybe()
         delegate?.dismissed(reason: .cancel)
     }
 }

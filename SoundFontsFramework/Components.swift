@@ -1,7 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import SoundFontsFramework
 
 /**
  Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
@@ -9,31 +8,32 @@ import SoundFontsFramework
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
+public final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
-    let sharedStateMonitor: SharedStateMonitor
-    let soundFonts: SoundFonts
-    let favorites: Favorites
-    let activePatchManager: ActivePatchManager
-    let selectedSoundFontManager: SelectedSoundFontManager
+    public let askForReview: AskForReview
+    public let sharedStateMonitor: SharedStateMonitor
+    public let soundFonts: SoundFonts
+    public let favorites: Favorites
+    public let activePatchManager: ActivePatchManager
+    public let selectedSoundFontManager: SelectedSoundFontManager
 
-    private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
-
+    public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
-    private var keyboardController: KeyboardController! { didSet { oneTimeSet(oldValue) } }
+    private var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
 
-    var infoBar: InfoBar { infoBarController }
-    var keyboard: Keyboard? { keyboardController }
-    var patchesViewManager: PatchesViewManager { soundFontsController }
-    var favoritesViewManager: FavoritesViewManager { favoritesController }
-    var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
-    var guideManager: GuideManager { guideController }
+    public var infoBar: InfoBar { infoBarController }
+    public var keyboard: Keyboard? { keyboardController }
+    public var patchesViewManager: PatchesViewManager { soundFontsController }
+    public var favoritesViewManager: FavoritesViewManager { favoritesController }
+    public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+    public var guideManager: GuideManager { guideController }
 
-    init(sharedStateMonitor: SharedStateMonitor) {
+    public init(sharedStateMonitor: SharedStateMonitor) {
+        self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
         self.sharedStateMonitor = sharedStateMonitor
         self.soundFonts = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
         self.favorites = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
@@ -52,7 +52,7 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
         }
     }
 
-    func setMainViewController(_ mvc: T) {
+    public func setMainViewController(_ mvc: T) {
         mainViewController = mvc
         for obj in mvc.children {
             switch obj {
@@ -79,11 +79,11 @@ final class Components<T: UIViewController>: ComponentContainer where T: Control
     /**
      Invoke `establishConnections` on each tracked view controller.
      */
-    func establishConnections() {
+    public func establishConnections() {
         soundFontsController.establishConnections(self)
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
-        keyboardController.establishConnections(self)
+        keyboardController?.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
         guideController.establishConnections(self)
         mainViewController.establishConnections(self)
@@ -98,7 +98,6 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
-        precondition(keyboardController != nil, "nil KeyboardController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {

@@ -125,6 +125,7 @@ extension FavoriteEditor {
         favorite.gain = roundFloat(gainSlider.value)
         favorite.pan = roundFloat(panSlider.value)
 
+        AskForReview.maybe()
         delegate?.dismissed(position, reason: .done(update: favorite))
     }
 
@@ -135,6 +136,7 @@ extension FavoriteEditor {
      */
     @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
         favorite = nil
+        AskForReview.maybe()
         delegate?.dismissed(position, reason: .cancel)
     }
 

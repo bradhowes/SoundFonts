@@ -1,7 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import SoundFontsFramework
 
 extension SettingKeys {
 
@@ -91,7 +90,8 @@ extension KeyboardController {
 
             shiftKeys(by: min(shift, Sampler.maxMidiValue - lastMidiNoteValue))
         }
-        AskForReview.shared.ask()
+
+        AskForReview.maybe()
     }
 
     @IBAction private func shiftKeyboardDown(_ sender: UIButton) {
@@ -110,7 +110,8 @@ extension KeyboardController {
                 shiftKeys(by: -shift)
             }
         }
-        AskForReview.shared.ask()
+
+        AskForReview.maybe()
     }
 
     private func shiftKeys(by: Int) {

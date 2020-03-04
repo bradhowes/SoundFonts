@@ -75,6 +75,11 @@
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
 		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
+		BD125B38241006200003DE99 /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B37241006200003DE99 /* AskForReview.swift */; };
+		BD125B3F241010430003DE99 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3E241010430003DE99 /* Components.swift */; };
+		BD125B40241010810003DE99 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3A24100C940003DE99 /* Key.swift */; };
+		BD125B41241010840003DE99 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3B24100C940003DE99 /* KeyboardController.swift */; };
+		BD125B42241010880003DE99 /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3C24100C940003DE99 /* KeyboardRender.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B923FE625500AE9F3D /* GuideManager.swift */; };
@@ -185,6 +190,12 @@
 		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD125B37241006200003DE99 /* AskForReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskForReview.swift; sourceTree = "<group>"; };
+		BD125B3924100C940003DE99 /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
+		BD125B3A24100C940003DE99 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
+		BD125B3B24100C940003DE99 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
+		BD125B3C24100C940003DE99 /* KeyboardRender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardRender.swift; sourceTree = "<group>"; };
+		BD125B3E241010430003DE99 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11B923FE625500AE9F3D /* GuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManager.swift; sourceTree = "<group>"; };
@@ -234,8 +245,10 @@
 				BD074C3C23CDAF51001987E9 /* Info.plist */,
 				BD074BD923CDAF51001987E9 /* UI */,
 				BD074BD123CDAF51001987E9 /* Favorites View */,
+				BD125B3D24100C940003DE99 /* Keyboard View */,
 				BD074BF123CDAF51001987E9 /* Sound Fonts View */,
 				BD074C2A23CDAF51001987E9 /* ActivePatchManager.swift */,
+				BD125B3E241010430003DE99 /* Components.swift */,
 				BD074BDF23CDAF51001987E9 /* GetSoundFontInfo.swift */,
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
@@ -332,6 +345,7 @@
 		BD074C1323CDAF51001987E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				BD125B37241006200003DE99 /* AskForReview.swift */,
 				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
@@ -386,6 +400,17 @@
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		BD125B3D24100C940003DE99 /* Keyboard View */ = {
+			isa = PBXGroup;
+			children = (
+				BD125B3924100C940003DE99 /* Keyboard.pcvd */,
+				BD125B3A24100C940003DE99 /* Key.swift */,
+				BD125B3B24100C940003DE99 /* KeyboardController.swift */,
+				BD125B3C24100C940003DE99 /* KeyboardRender.swift */,
+			);
+			path = "Keyboard View";
 			sourceTree = "<group>";
 		};
 		BD5824F723CDABCD0034A31B = {
@@ -565,9 +590,12 @@
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* Patch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,
+				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD074C7823CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
+				BD125B3F241010430003DE99 /* Components.swift in Sources */,
+				BD125B42241010880003DE99 /* KeyboardRender.swift in Sources */,
 				BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */,
 				BD074C7B23CDAF51001987E9 /* Foundation+Extensions.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
@@ -579,6 +607,7 @@
 				BD074C7423CDAF51001987E9 /* InfoBarController.swift in Sources */,
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
 				BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */,
+				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
 				BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
 				BD3FDBCE23F2BAA100C73E88 /* MIDIConnectivity.swift in Sources */,
@@ -588,6 +617,7 @@
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
 				BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
+				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,
 				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
 				BD498F9823EF7F7400755AB9 /* SharedStateMonitor.swift in Sources */,
 				BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */,

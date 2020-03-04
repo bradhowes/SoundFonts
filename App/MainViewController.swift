@@ -55,8 +55,6 @@ extension MainViewController {
         }
 
         useActivePatchKind(activePatchManager.active)
-
-        AskForReview.shared.enable = true
     }
 
     /**
@@ -104,9 +102,6 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-
-        // TODO: move this to other places where it will be less annoying if it pops up.
-        AskForReview.shared.ask()
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
             if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind) {

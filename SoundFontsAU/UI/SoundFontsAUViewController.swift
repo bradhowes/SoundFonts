@@ -10,7 +10,7 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
     private let sampler = Sampler(mode: .audiounit)
     private var components: Components<SoundFontsAUViewController>!
     private var myKVOContext = 0
-    private var auAudioUnit: AUAudioUnit { sampler.auAudioUnit! }
+    private var auAudioUnit: AUAudioUnit? { sampler.auAudioUnit }
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +25,8 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
             os_log(.error, log: log, "failed to start sampler - %{public}s", failure.localizedDescription)
         }
 
-        sampler.auAudioUnit!.addObserver(self, forKeyPath: "allParameterValues", options: [.new, .old],
-                                         context: &myKVOContext)
-
-        return sampler.auAudioUnit!
+        auAudioUnit?.addObserver(self, forKeyPath: "fullState", options: [.new, .old], context: &myKVOContext)
+        return auAudioUnit!
     }
 
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
@@ -38,9 +36,9 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
             return
         }
 
-        guard let params = sampler.auAudioUnit?.parameterTree else { return }
-        for each in params.allParameters {
-            os_log(.error, log: log, "%{public}s/%{public}s", each.identifier, each.displayName)
+        guard let fullState = auAudioUnit?.fullState else { return }
+        for each in fullState {
+            os_log(.error, log: log, "%{public}s", each.key)
         }
     }
 }
@@ -67,5 +65,14 @@ extension SoundFontsAUViewController: ControllerConfiguration {
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
         _ = self.sampler.load(activePatchKind: activePatchKind)
+        updateFullState(activePatchKind: activePatchKind)
+    }
+
+    private func updateFullState(activePatchKind: ActivePatchKind) {
+        if let auAudioUnit = self.auAudioUnit {
+            var fullState = auAudioUnit.fullState ?? [:]
+            fullState["activePatch"] = activePatchKind.soundFontPatch
+            auAudioUnit.fullState = fullState
+        }
     }
 }
