@@ -95,7 +95,6 @@ extension MainViewController: ControllerConfiguration {
         volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer)
 
         activePatchManager.subscribe(self, notifier: activePatchChange)
-        router.favorites.subscribe(self, notifier: favoritesChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
@@ -104,37 +103,10 @@ extension MainViewController: ControllerConfiguration {
         }
     }
 
-    private func favoritesChange(_ event: FavoritesEvent) {
-        switch event {
-        case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontPatch)
-        default: break
-        }
-    }
-
-    private func updateInfoBar(with favorite: Favorite) {
-        if activePatchManager.soundFontPatch == favorite.soundFontPatch {
-            infoBar.setPatchInfo(name: favorite.name, isFavored: true)
-        }
-        AskForReview.shared.ask()
-    }
-
-    private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
-        if activePatchManager.soundFontPatch == soundFontPatch {
-            infoBar.setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
-        }
-        AskForReview.shared.ask()
-    }
-
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-        if let favorite = activePatchKind.favorite {
-            updateInfoBar(with: favorite)
-        }
-        else {
-            updateInfoBar(with: activePatchKind.soundFontPatch)
-        }
 
+        // TODO: move this to other places where it will be less annoying if it pops up.
+        AskForReview.shared.ask()
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
             if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind) {
