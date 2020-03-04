@@ -10,24 +10,39 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        Class class = [self class];
-
-        SEL originalSelector = @selector(allocateRenderResourcesAndReturnError:);
-        SEL swizzledSelector = @selector(swizzled_allocateRenderResourcesAndReturnError:);
-
-        Method originalMethod = class_getInstanceMethod(class, originalSelector);
-        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-
-        BOOL didAddMethod = class_addMethod(class, originalSelector, method_getImplementation(swizzledMethod),
-                                            method_getTypeEncoding(swizzledMethod));
-        if (didAddMethod) {
-            class_replaceMethod(class, swizzledSelector, method_getImplementation(originalMethod),
-                                method_getTypeEncoding(originalMethod));
-        }
-        else {
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-        }
+        [self swizzleFrom: @selector(allocateRenderResourcesAndReturnError:)
+                       to: @selector(swizzled_allocateRenderResourcesAndReturnError:)];
     });
+}
+
++ (void)swizzleFrom:(SEL)original to:(SEL)swizzled {
+    Class class = [self class];
+
+    Method originalMethod = class_getInstanceMethod(class, original);
+    Method swizzledMethod = class_getInstanceMethod(class, swizzled);
+
+    BOOL didAddMethod = class_addMethod(class, original, method_getImplementation(swizzledMethod),
+                                        method_getTypeEncoding(swizzledMethod));
+    if (didAddMethod) {
+        class_replaceMethod(class, swizzled, method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    }
+    else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
++ (SEL)getterForPropertyWithName:(NSString*)name {
+    const char* propertyName = [name cStringUsingEncoding: NSASCIIStringEncoding];
+    objc_property_t prop = class_getProperty(self, propertyName);
+
+    const char* selectorName = property_copyAttributeValue(prop, "G");
+    if (selectorName == NULL) {
+        selectorName = [name cStringUsingEncoding: NSASCIIStringEncoding];
+    }
+
+    NSString* selectorString = [NSString stringWithCString:selectorName encoding: NSASCIIStringEncoding];
+    return NSSelectorFromString(selectorString);
 }
 
 /**
