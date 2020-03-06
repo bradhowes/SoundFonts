@@ -1,7 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import XCTest
-// @testable import SoundFonts
+import SoundFontsFramework
 
 class SoundFontsTests: XCTestCase {
 
@@ -14,8 +14,6 @@ class SoundFontsTests: XCTestCase {
     }
 
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
     func testPerformanceExample() {
