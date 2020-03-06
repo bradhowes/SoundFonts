@@ -74,6 +74,7 @@ public enum ActivePatchEvent {
  */
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
+
     public private(set) var active: ActivePatchKind
 
     public var favorite: Favorite? { active.favorite }
@@ -89,15 +90,12 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public func setActive(_ patch: ActivePatchKind) {
         os_log(.info, log: log, "setActive: %s", patch.description)
-        guard active != patch else {
-            os_log(.info, log: log, "already active")
-            return
-        }
-
         let prev = active
         active = patch
+        DispatchQueue.main.async {
+            self.notify(.active(old: prev, new: patch))
+        }
         save()
-        notify(.active(old: prev, new: patch))
     }
 
     public static func restore() -> ActivePatchKind? {

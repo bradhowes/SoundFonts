@@ -13,10 +13,10 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
-	<string>BNDL</string>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.29</string>
+	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>20200108103537</string>
+	<string>1</string>
 </dict>
 </plist>

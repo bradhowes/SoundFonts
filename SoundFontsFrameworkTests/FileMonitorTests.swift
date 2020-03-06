@@ -9,7 +9,11 @@ class FileMonitorTests: XCTestCase {
         let url = try! FileManager.default.newTemporaryFile()
         let outputStream = try! FileHandle(forWritingTo: url)
         outputStream.write("testing".data(using: .ascii)!)
-        try! outputStream.close()
+        if #available(iOSApplicationExtension 13.0, *) {
+            try! outputStream.close()
+        } else {
+            outputStream.closeFile()
+        }
         return url
     }
 
@@ -27,8 +31,14 @@ class FileMonitorTests: XCTestCase {
 
         let outputStream = try! FileHandle(forWritingTo: url)
         outputStream.write("blah".data(using: .ascii)!)
-        try! outputStream.truncate(atOffset: outputStream.offsetInFile)
-        try! outputStream.close()
+
+        if #available(iOSApplicationExtension 13.0, *) {
+            try! outputStream.truncate(atOffset: outputStream.offsetInFile)
+            try! outputStream.close()
+        } else {
+            outputStream.truncateFile(atOffset: outputStream.offsetInFile)
+            outputStream.closeFile()
+        }
 
         wait(for: [expectation], timeout: 1.0)
 
@@ -48,8 +58,15 @@ class FileMonitorTests: XCTestCase {
 
         let outputStream = try! FileHandle(forWritingTo: url)
         outputStream.write("blah".data(using: .ascii)!)
-        try! outputStream.truncate(atOffset: outputStream.offsetInFile)
-        try! outputStream.close()
+
+        if #available(iOSApplicationExtension 13.0, *) {
+            try! outputStream.truncate(atOffset: outputStream.offsetInFile)
+            try! outputStream.close()
+        } else {
+            outputStream.truncateFile(atOffset: outputStream.offsetInFile)
+            outputStream.closeFile()
+        }
+
 
         wait(for: [expectation], timeout: 1.0)
     }

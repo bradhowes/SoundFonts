@@ -55,6 +55,36 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD430FB12410E657009DB9B3"
+               BuildableName = "AppTests.xctest"
+               BlueprintName = "AppTests"
+               ReferencedContainer = "container:App.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
+               BuildableName = "SoundFontInfoLibTests.xctest"
+               BlueprintName = "SoundFontInfoLibTests"
+               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD58250923CDABCD0034A31B"
+               BuildableName = "SoundFontsFrameworkTests.xctest"
+               BlueprintName = "SoundFontsFrameworkTests"
+               ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
