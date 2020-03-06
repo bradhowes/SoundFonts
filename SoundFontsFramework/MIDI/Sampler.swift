@@ -28,7 +28,7 @@ public final class Sampler {
     private let mode: Mode
     private var engine: AVAudioEngine?
     private var ausampler: AVAudioUnitSampler?
-    private var activePatchKind: ActivePatchKind?
+    public private(set) var activePatchKind: ActivePatchKind?
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     public var auAudioUnit: AUAudioUnit? { return ausampler?.auAudioUnit }
@@ -101,54 +101,6 @@ public final class Sampler {
         return loadActivePatch()
     }
 
-//    private func startMIDI() -> Result<Void, Failure> {
-//        os_log(.info, log: log, "startMIDI")
-//
-//        MIDINetworkSession.default().isEnabled = true
-//        MIDINetworkSession.default().connectionPolicy =
-//            MIDINetworkConnectionPolicy.anyone
-//
-//        let err = MIDIDestinationCreateWithBlock(midiClient, midiInputName as CFString, &midiInput) { packetList, _ in
-//            let packets = packetList.pointee
-//            let packet: MIDIPacket = packets.packet
-//            var ap = UnsafeMutablePointer<MIDIPacket>.allocate(capacity: 1)
-//            ap.initialize(to: packet)
-//
-//            for _ in 0 ..< packets.numPackets {
-//                let p = ap.pointee
-//                os_log(.error, log: self.log, "%d 0x%X 0x%X 0x%X", p.timeStamp, p.data.0, p.data.1, p.data.2)
-//                self.processMIDIPacket(p)
-//                ap = MIDIPacketNext(ap)
-//            }
-//        }
-//
-//        if err != 0 {
-//            os_log(.error, log: log, "startMIDI failed: %d", err)
-//        }
-//
-//        return loadActivePatch()
-//    }
-
-    private func processMIDIPacket(_ packet:MIDIPacket) {
-        let status = packet.data.0
-        let d1 = packet.data.1
-        let d2 = packet.data.2
-        let rawStatus = status & 0xF0 // without channel
-        let channel = status & 0x0F
-
-        switch rawStatus {
-
-        case 0x80:
-            os_log(.error, log: log, "Note OFF: %d %d %d", channel, d1, d2)
-            noteOff(Int(d1))
-        case 0x90:
-            os_log(.error, log: log, "Note ON: %d %d %d", channel, d1, d2)
-            noteOn(Int(d1))
-        default:
-            os_log(.error, log: log, "Unhandled message - %d", rawStatus)
-        }
-    }
-
     /**
      Set the sound font and patch to use in the AVAudioUnitSampler to generate audio output.
     
@@ -158,11 +110,6 @@ public final class Sampler {
      */
     public func load(activePatchKind: ActivePatchKind) -> Result<Void, Failure> {
         os_log(.info, log: log, "load - %s", activePatchKind.description)
-
-        guard self.activePatchKind?.soundFontPatch != activePatchKind.soundFontPatch else {
-            os_log(.info, log: log, "already loaded")
-            return .success(())
-        }
 
         self.activePatchKind = activePatchKind
 
@@ -215,7 +162,7 @@ public final class Sampler {
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
     public func noteOn(_ midiValue: Int) {
-        os_log(.error, log: log, "noteOn - %d", midiValue)
+        os_log(.info, log: log, "noteOn - %d", midiValue)
         guard let sampler = self.ausampler else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(64), onChannel: UInt8(0))
     }
@@ -226,7 +173,7 @@ public final class Sampler {
      - parameter midiValue: MIDI value that indicates the pitch to stop
      */
     public func noteOff(_ midiValue: Int) {
-        os_log(.error, log: log, "noteOff - %d", midiValue)
+        os_log(.info, log: log, "noteOff - %d", midiValue)
         guard let sampler = self.ausampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }
