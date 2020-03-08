@@ -30,13 +30,23 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
 
     @objc public func showGuide() {
         savedParent.add(self)
+        view.alpha = 0.0
         view.isHidden = false
+
+        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        animator.addAnimations { self.view.alpha = 1.0 }
+        animator.startAnimation()
     }
 
     @objc public func hideGuide() {
-        removeFromParent()
-        view.isHidden = true
-        AskForReview.maybe()
+        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        animator.addAnimations { self.view.alpha = 0.0 }
+        animator.addCompletion { _ in
+            self.view.isHidden = true
+            self.removeFromParent()
+            AskForReview.maybe()
+        }
+        animator.startAnimation()
     }
 
     public func soundFontsGuide() {
