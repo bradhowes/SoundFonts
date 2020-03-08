@@ -185,8 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				BD75B262218B8CFD00C7EBD7 /* App */,
-				BD75B277218B8CFE00C7EBD7 /* AppTests */,
 				BD05836323E4C52800E094E0 /* SoundFontsAU */,
+				BD75B277218B8CFE00C7EBD7 /* AppTests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);

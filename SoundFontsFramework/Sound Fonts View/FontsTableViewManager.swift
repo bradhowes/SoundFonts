@@ -87,7 +87,6 @@ extension FontsTableViewManager: UITableViewDelegate {
         UISwipeActionsConfiguration? {
         guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
-        guard soundFont.removable else { return nil }
         let action = fontEditorActionGenerator.createDeleteSwipeAction(at: cell, with: soundFont, indexPath: indexPath)
         let actions = UISwipeActionsConfiguration(actions: [action])
         actions.performsFirstActionWithFullSwipe = false

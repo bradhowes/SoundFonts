@@ -111,7 +111,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
     }
 
     private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
-        guard let index = soundFonts.index(of: soundFont.key), soundFont.removable else {
+        guard let index = soundFonts.index(of: soundFont.key) else {
             completionHandler?(false)
             return
         }
