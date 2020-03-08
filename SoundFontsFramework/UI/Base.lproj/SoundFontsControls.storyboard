@@ -582,7 +582,7 @@
         <scene sceneID="62U-h3-DvH">
             <objects>
                 <viewController storyboardIdentifier="InfoBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YeB-KN-4f1" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="utY-mU-BUQ" userLabel="InfoBar">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="utY-mU-BUQ" userLabel="InfoBar">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -645,11 +645,12 @@
                                     <constraint firstItem="L4b-eK-8gI" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="lbN-MH-Lgi"/>
                                 </constraints>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="Buttons">
+                            <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
                                 <rect key="frame" x="295" y="0.0" width="74" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnb-O4-iay" userLabel="Help">
                                         <rect key="frame" x="41" y="7.6666666666666679" width="25" height="25.000000000000004"/>
+                                        <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" image="Help"/>
                                         <connections>
                                             <action selector="showGuide:" destination="YeB-KN-4f1" eventType="touchUpInside" id="l3y-ET-PrG"/>
@@ -657,6 +658,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7YL-wn-sth" userLabel="Settings">
                                         <rect key="frame" x="8" y="7.6666666666666679" width="25" height="25.000000000000004"/>
+                                        <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" image="Settings"/>
                                         <connections>
                                             <action selector="showSettings:" destination="YeB-KN-4f1" eventType="touchUpInside" id="Ch9-fz-rOg"/>
@@ -674,7 +676,7 @@
                                     <constraint firstItem="7YL-wn-sth" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="oLG-xY-qvM"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eU4-JN-cWZ">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xhd-zn-gSn" userLabel="Background">
                                 <rect key="frame" x="377" y="0.0" width="37" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
@@ -693,11 +695,11 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
                         <constraints>
-                            <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="eU4-JN-cWZ" secondAttribute="leading" id="1dB-Jh-ERu"/>
                             <constraint firstAttribute="bottom" secondItem="JeZ-VG-nmd" secondAttribute="bottom" id="2vZ-IT-Nhh"/>
-                            <constraint firstItem="eP8-kW-JPv" firstAttribute="bottom" secondItem="eU4-JN-cWZ" secondAttribute="bottom" id="4na-CG-b6i"/>
+                            <constraint firstAttribute="trailing" secondItem="Xhd-zn-gSn" secondAttribute="trailing" id="GCn-V3-JGU"/>
                             <constraint firstItem="gBF-bM-n1r" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="Ji0-do-ZUa"/>
                             <constraint firstItem="IO0-ky-FSn" firstAttribute="leading" secondItem="ub1-7q-fxl" secondAttribute="trailing" constant="16" id="LQl-Gm-CgV"/>
+                            <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="Xhd-zn-gSn" secondAttribute="leading" id="OQw-zK-V5H"/>
                             <constraint firstItem="ub1-7q-fxl" firstAttribute="leading" secondItem="utY-mU-BUQ" secondAttribute="leading" constant="12" id="UAX-fd-5OC"/>
                             <constraint firstItem="gBF-bM-n1r" firstAttribute="leading" secondItem="IO0-ky-FSn" secondAttribute="trailing" constant="16" id="YWd-tB-dxw"/>
                             <constraint firstAttribute="trailing" secondItem="D81-HT-18k" secondAttribute="trailing" constant="12" id="YcV-bw-55y"/>
@@ -705,10 +707,10 @@
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="leading" secondItem="gBF-bM-n1r" secondAttribute="trailing" constant="12" id="aKg-UP-aZT"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="trailing" constant="8" id="bxu-Ks-Ick"/>
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="height" secondItem="So5-iS-wEF" secondAttribute="height" id="eZL-jb-AVP"/>
-                            <constraint firstAttribute="trailing" secondItem="eU4-JN-cWZ" secondAttribute="trailing" id="iHx-pN-Ax9"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="trailing" constant="12" id="l5m-Pc-mDP"/>
+                            <constraint firstAttribute="bottom" secondItem="Xhd-zn-gSn" secondAttribute="bottom" id="lFl-WD-Ai9"/>
+                            <constraint firstItem="Xhd-zn-gSn" firstAttribute="top" secondItem="utY-mU-BUQ" secondAttribute="top" id="mSw-rh-XMs"/>
                             <constraint firstItem="ub1-7q-fxl" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="nrG-5w-Kpr"/>
-                            <constraint firstItem="eU4-JN-cWZ" firstAttribute="top" secondItem="utY-mU-BUQ" secondAttribute="top" id="sSo-Rg-YE7"/>
                             <constraint firstItem="IO0-ky-FSn" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="v3L-iO-v1V"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="vIe-T5-VU5"/>
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="top" secondItem="utY-mU-BUQ" secondAttribute="top" id="vaW-k2-pzz"/>
@@ -720,7 +722,7 @@
                         <outlet property="highestKey" destination="gBF-bM-n1r" id="IYm-Uz-YRq"/>
                         <outlet property="lowestKey" destination="IO0-ky-FSn" id="y9d-PN-YWc"/>
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
-                        <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="ruA-td-5DP"/>
+                        <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
                         <outlet property="patchInfo" destination="L4b-eK-8gI" id="U3A-VC-iWO"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
                         <outlet property="showMoreButtons" destination="D81-HT-18k" id="KgO-eA-LzF"/>

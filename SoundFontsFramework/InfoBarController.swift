@@ -68,6 +68,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
 
     @IBAction
     func showSettings(_ sender: UIButton) {
+        toggleMoreButtons(self.showMoreButtons)
     }
 
     @IBAction
