@@ -14,6 +14,10 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     @IBOutlet private weak var highestKey: UIButton!
     @IBOutlet private weak var touchView: UIView!
     @IBOutlet private weak var showGuide: UIButton!
+    @IBOutlet private weak var showSettings: UIButton!
+    @IBOutlet weak var showMoreButtons: UIButton!
+    @IBOutlet weak var moreButtons: UIView!
+    @IBOutlet weak var moreButtonsXConstraint: NSLayoutConstraint!
 
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
@@ -33,6 +37,42 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         panner.minimumNumberOfTouches = 1
         panner.maximumNumberOfTouches = 1
         view.addGestureRecognizer(panner)
+
+        moreButtons.isHidden = true
+        moreButtonsXConstraint.constant = -moreButtons.frame.width
+    }
+
+    @IBAction
+    func toggleMoreButtons(_ sender: UIButton) {
+        self.view.layoutIfNeeded()
+        let willBeHidden = !moreButtons.isHidden
+        let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
+                               compatibleWith: .none)
+        let newConstraint = willBeHidden ? -moreButtons.frame.width : 8
+
+        moreButtons.isHidden = false
+        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        animator.addCompletion { _ in self.moreButtons.isHidden = willBeHidden }
+
+        animator.addAnimations {
+            self.moreButtonsXConstraint.constant = newConstraint
+            self.view.layoutIfNeeded()
+        }
+
+        UIView.transition(with: sender, duration: 0.4, options: .transitionCrossDissolve, animations: {
+            sender.setImage(newImage, for: .normal)
+        }, completion: nil)
+
+        animator.startAnimation()
+    }
+
+    @IBAction
+    func showSettings(_ sender: UIButton) {
+    }
+
+    @IBAction
+    func showGuide(_ sender: UIButton) {
+        toggleMoreButtons(self.showMoreButtons)
     }
 
     public func establishConnections(_ router: ComponentContainer) {
