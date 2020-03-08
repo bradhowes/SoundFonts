@@ -705,7 +705,7 @@
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ri0-LA-h9e">
                                         <rect key="frame" x="0.0" y="17" width="398" height="66.333333333333329"/>
-                                        <string key="text">Use ⊕ to add a SF2 file from iCloud drive. Press ❰ and ❱ to change keyboard range. Tap twice on status to switch views. 🔇indicates no volume.</string>
+                                        <string key="text">Use ⊕ to add a SF2 file from iCloud drive. Press ❰ and ❱ to change keyboard range. Tap twice on status to switch views. 🔇 indicates no volume.</string>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -833,7 +833,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1391.304347826087" y="-1034.5982142857142"/>
+            <point key="canvasLocation" x="-1281" y="-950"/>
         </scene>
     </scenes>
     <resources>
