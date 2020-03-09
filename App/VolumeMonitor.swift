@@ -8,10 +8,11 @@ import SoundFontsFramework
  Monitor volume setting on device and the "silence" or "mute" switch. When there is no apparent audio
  output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
  */
-final class VolumeMonitor: NSObject {
+final class VolumeMonitor {
 
     private let keyboard: Keyboard
     private let notePlayer: NotePlayer
+    private let sampler: Sampler
 
     private var volume: Float = 0.0 {
         didSet {
@@ -27,7 +28,7 @@ final class VolumeMonitor: NSObject {
         }
     }
 
-    private var isMuted: Bool { volume < 0.01 || muted }
+    private var isMuted: Bool { !sampler.hasPatch || volume < 0.01 || muted }
 
     private struct Observation {
         static let VolumeKey = "outputVolume"
@@ -35,6 +36,7 @@ final class VolumeMonitor: NSObject {
     }
 
     private var observer: NSKeyValueObservation?
+    private var activePatchKindObserver: NSKeyValueObservation?
 
     /**
      Construct new monitor.
@@ -42,10 +44,10 @@ final class VolumeMonitor: NSObject {
      - parameter keyboard: Keyboard instance that handle key renderings
      - parameter notePlayer: NotePlayer instance that handles note playing
      */
-    init(keyboard: Keyboard, notePlayer: NotePlayer) {
+    init(keyboard: Keyboard, notePlayer: NotePlayer, sampler: Sampler) {
         self.keyboard = keyboard
         self.notePlayer = notePlayer
-        super.init()
+        self.sampler = sampler
     }
 
     /**

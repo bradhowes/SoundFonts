@@ -82,11 +82,12 @@
                     <connections>
                         <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>
                         <outlet property="patchesView" destination="eeU-Zp-LO7" id="Ttb-SJ-1CI"/>
+                        <segue destination="7tv-3q-aBr" kind="presentation" identifier="settings" modalPresentationStyle="formSheet" id="HCW-Dk-eEt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-736.23188405797111" y="-1648.6607142857142"/>
+            <point key="canvasLocation" x="-962" y="-1661"/>
         </scene>
         <!--Favorite Editor-->
         <scene sceneID="FbP-kw-aL9">
@@ -299,7 +300,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Je-Vc-Z45" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1887" y="-1898"/>
+            <point key="canvasLocation" x="1533" y="-1360"/>
         </scene>
         <!--SoundFontsController-->
         <scene sceneID="3Rz-C9-6PO">
@@ -368,7 +369,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1310.144927536232" y="-1286.3839285714284"/>
+            <point key="canvasLocation" x="75" y="-1937"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="RD6-oX-VFs">
@@ -416,7 +417,7 @@
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
                 <tapGestureRecognizer id="0DJ-wu-xH2"/>
             </objects>
-            <point key="canvasLocation" x="400" y="-1898"/>
+            <point key="canvasLocation" x="75" y="-1360"/>
         </scene>
         <!--SoundFont Editor-->
         <scene sceneID="Nc1-o8-v27">
@@ -540,7 +541,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMp-bJ-Ndt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1887" y="-1286"/>
+            <point key="canvasLocation" x="1533" y="-1937"/>
         </scene>
         <!--Favorite Editor Navigation Controller-->
         <scene sceneID="If2-3j-gaj">
@@ -558,7 +559,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SIw-xx-7Sc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1194" y="-1898"/>
+            <point key="canvasLocation" x="828" y="-1360"/>
         </scene>
         <!--SoundFont Editor Navigation Controller-->
         <scene sceneID="zXe-TQ-fWZ">
@@ -576,7 +577,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKP-1l-z5S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2079.7101449275365" y="-1286.3839285714284"/>
+            <point key="canvasLocation" x="828" y="-1937"/>
         </scene>
         <!--Info Bar-->
         <scene sceneID="62U-h3-DvH">
@@ -733,7 +734,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3H4-TR-G51" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-497.10144927536237" y="-1214.0625"/>
+            <point key="canvasLocation" x="-962" y="-1171"/>
         </scene>
         <!--Guide View Controller-->
         <scene sceneID="kpx-ZN-AOb">
@@ -882,7 +883,114 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1268" y="-953"/>
+            <point key="canvasLocation" x="2268" y="-1661"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="uPw-wu-W1b">
+            <objects>
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="koc-Pj-3tt" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="ULC-tI-QtR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dke-BS-xwD">
+                                <rect key="frame" x="249" y="159.33333333333334" width="55" height="30"/>
+                                <state key="normal" title="Remove"/>
+                                <connections>
+                                    <action selector="removeDefaultSoundFonts:" destination="koc-Pj-3tt" eventType="touchUpInside" id="boM-hY-ftu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gST-KP-WWg">
+                                <rect key="frame" x="251" y="197.33333333333334" width="53" height="30"/>
+                                <state key="normal" title="Restore"/>
+                                <connections>
+                                    <action selector="restoreDefaultSoundFonts:" destination="koc-Pj-3tt" eventType="touchUpInside" id="gVV-19-Tld"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8g-VQ-qvz">
+                                <rect key="frame" x="16" y="91.666666666666671" width="154" height="63.666666666666671"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUw-U4-qiY">
+                                <rect key="frame" x="16" y="163.33333333333334" width="210" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w1r-nM-xko">
+                                <rect key="frame" x="255" y="108" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleShowSolfegeNotes:" destination="koc-Pj-3tt" eventType="valueChanged" id="IT7-jn-opP"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4K0-gT-ksK">
+                                <rect key="frame" x="16" y="201.33333333333334" width="206.66666666666666" height="20.333333333333343"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4K0-gT-ksK" secondAttribute="bottom" constant="16" id="1A1-KI-vgp"/>
+                            <constraint firstItem="B8g-VQ-qvz" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="1vj-nr-zTe"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gST-KP-WWg" secondAttribute="bottom" constant="16" id="6qN-np-1qR"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="top" secondItem="dke-BS-xwD" secondAttribute="bottom" constant="8" id="8wH-nu-LYR"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="top" secondItem="v3N-bE-EnC" secondAttribute="top" constant="20" id="AXf-l1-9N3"/>
+                            <constraint firstItem="CUw-U4-qiY" firstAttribute="top" secondItem="B8g-VQ-qvz" secondAttribute="bottom" constant="8" id="CSa-ih-HgJ"/>
+                            <constraint firstItem="dke-BS-xwD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CUw-U4-qiY" secondAttribute="trailing" constant="16" id="Edu-5P-yFv"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="firstBaseline" secondItem="B8g-VQ-qvz" secondAttribute="firstBaseline" id="HCQ-0g-jOj"/>
+                            <constraint firstItem="dke-BS-xwD" firstAttribute="firstBaseline" secondItem="CUw-U4-qiY" secondAttribute="firstBaseline" id="In9-ch-b0A"/>
+                            <constraint firstItem="CUw-U4-qiY" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="O5r-nw-Xdv"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="centerY" secondItem="B8g-VQ-qvz" secondAttribute="centerY" id="RPr-Oe-tpX"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="B8g-VQ-qvz" secondAttribute="trailing" constant="16" id="UdS-jt-H0J"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4K0-gT-ksK" secondAttribute="trailing" constant="16" id="VTu-Of-K1u"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="gST-KP-WWg" secondAttribute="trailing" constant="16" id="dk1-ju-j90"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="dke-BS-xwD" secondAttribute="trailing" constant="16" id="hGd-aD-CvX"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="w1r-nM-xko" secondAttribute="trailing" constant="16" id="ngG-6o-Xx6"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="firstBaseline" secondItem="4K0-gT-ksK" secondAttribute="firstBaseline" id="pvF-VI-pIz"/>
+                            <constraint firstItem="4K0-gT-ksK" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="y75-Yo-DE1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="v3N-bE-EnC"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Settings" id="N8q-c8-KEs">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="5f6-53-xq0">
+                            <connections>
+                                <action selector="close:" destination="koc-Pj-3tt" id="ZJf-gc-3ac"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <size key="freeformSize" width="320" height="350"/>
+                    <connections>
+                        <outlet property="doneButton" destination="5f6-53-xq0" id="oIr-mh-YQf"/>
+                        <outlet property="removeDefaultSoundFonts" destination="dke-BS-xwD" id="w8L-ml-m35"/>
+                        <outlet property="restoreDefaultSoundFonts" destination="gST-KP-WWg" id="Er6-0H-YkL"/>
+                        <outlet property="showSolfegeNotes" destination="w1r-nM-xko" id="hQQ-Qh-xJz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SBw-mT-rOn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-268" y="-781"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="R3e-hz-Hqa">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="7tv-3q-aBr" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="LRV-1i-K0q">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="koc-Pj-3tt" kind="relationship" relationship="rootViewController" id="LQT-rt-cQg"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NNp-ee-0Db" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-962" y="-781"/>
         </scene>
     </scenes>
     <resources>

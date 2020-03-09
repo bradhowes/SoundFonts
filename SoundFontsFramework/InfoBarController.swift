@@ -48,7 +48,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         let willBeHidden = !moreButtons.isHidden
         let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
                                compatibleWith: .none)
-        let newConstraint = willBeHidden ? -moreButtons.frame.width : 8
+        let newConstraint = willBeHidden ? -moreButtons.frame.width : 0
 
         moreButtons.isHidden = false
         let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
@@ -103,6 +103,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         case .doubleTap: doubleTap.addTarget(target, action: action)
         case .addSoundFont: addSoundFont.addTarget(target, action: action, for: .touchUpInside)
         case .showGuide: showGuide.addTarget(target, action: action, for: .touchUpInside)
+        case .showSettings: showSettings.addTarget(target, action: action, for: .touchUpInside)
         }
     }
 
@@ -178,17 +179,18 @@ extension InfoBarController {
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-
         if let favorite = activePatchKind.favorite {
             setPatchInfo(name: favorite.name, isFavored: true)
         }
+        else if let soundFontPatch = activePatchKind.soundFontPatch {
+            setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+        }
         else {
-            setPatchInfo(name: activePatchKind.soundFontPatch.patch.name, isFavored: false)
+            setPatchInfo(name: "-", isFavored: false)
         }
     }
 
     private func startStatusAnimation() {
-
         cancelStatusAnimation()
 
         status.isHidden = false

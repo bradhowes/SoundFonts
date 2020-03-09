@@ -49,7 +49,10 @@ final class FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns the favorite found or nil if no match
      */
-    func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { reverseLookup[soundFontPatch] }
+    func getBy(soundFontPatch: SoundFontPatch?) -> Favorite? {
+        guard let soundFontPatch = soundFontPatch else { return nil }
+        return reverseLookup[soundFontPatch]
+    }
 
     /**
      Add a favorite to the end of the collection.

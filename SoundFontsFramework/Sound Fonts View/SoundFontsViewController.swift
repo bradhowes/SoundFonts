@@ -90,7 +90,8 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         nc.popoverPresentationController?.setSourceView(button)
     }
 
-    @IBAction public func addSoundFont(_ sender: UIButton) {
+    @IBAction
+    public func addSoundFont(_ sender: UIButton) {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
@@ -98,12 +99,6 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         documentPicker.allowsMultipleSelection = true
 
         present(documentPicker, animated: true)
-    }
-
-    @IBAction public func removeSoundFont(_ sender: UIButton) {
-        let soundFont = selectedSoundFontManager.selected
-        guard soundFont.removable else { return }
-        remove(soundFont: soundFont, completionHandler: nil)
     }
 
     private func localizedString(_ title: String, comment: String) -> String {
@@ -125,11 +120,13 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
             self.soundFonts.remove(index: index)
             self.favorites.removeAll(associatedWith: soundFont)
             let url = soundFont.fileURL
-            DispatchQueue.global(qos: .userInitiated).async { try? FileManager.default.removeItem(at: url) }
+            if soundFont.removable {
+                DispatchQueue.global(qos: .userInitiated).async { try? FileManager.default.removeItem(at: url) }
+            }
             completionHandler?(true)
         }
 
-        let cancelTitle = localizedString       ("Cancel", comment: "The cancel action")
+        let cancelTitle = localizedString("Cancel", comment: "The cancel action")
         let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in completionHandler?(false) }
 
         alertController.addAction(delete)

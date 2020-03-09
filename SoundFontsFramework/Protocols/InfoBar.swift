@@ -11,6 +11,7 @@ public enum InfoBarEvent {
     case addSoundFont
     case doubleTap
     case showGuide
+    case showSettings
 }
 
 /**

@@ -20,9 +20,8 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
 
-    private var guideManager: GuideManager?
+    private var components: ComponentContainer!
     private var upperViewManager = SlidingViewManager()
-    private var patchesViewManager: PatchesViewManager!
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +40,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     public func establishConnections(_ router: ComponentContainer) {
-
-        patchesViewManager = router.patchesViewManager
+        components = router
 
         let showingFavorites: Bool = {
             if CommandLine.arguments.contains("--screenshots") { return false }
@@ -51,8 +49,8 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
-        guideManager = router.guideManager
 
+        let patchesViewManager = router.patchesViewManager
         patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
@@ -61,6 +59,11 @@ extension SoundFontsControlsController: ControllerConfiguration {
         favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         router.infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
+        router.infoBar.addTarget(.showSettings, target: self, action: #selector(showSettings))
+    }
+
+    @IBAction private func showSettings() {
+        performSegue(withIdentifier: .settings)
     }
 
     @IBAction private func toggleConfigurationViews() {
@@ -78,10 +81,10 @@ extension SoundFontsControlsController: ControllerConfiguration {
      */
     @IBAction public func showNextConfigurationView() {
         if favoritesView.isHidden {
-            patchesViewManager.dismissSearchKeyboard()
+            components.patchesViewManager.dismissSearchKeyboard()
             Settings[.wasShowingFavorites] = favoritesView.isHidden
             upperViewManager.slideNextHorizontally()
-            guideManager?.favoritesGuide()
+            components.guideManager.favoritesGuide()
         }
     }
 
@@ -90,10 +93,42 @@ extension SoundFontsControlsController: ControllerConfiguration {
      */
     @IBAction public func showPreviousConfigurationView() {
         if patchesView.isHidden {
-            patchesViewManager.dismissSearchKeyboard()
+            components.patchesViewManager.dismissSearchKeyboard()
             Settings[.wasShowingFavorites] = favoritesView.isHidden
             upperViewManager.slidePrevHorizontally()
-            guideManager?.soundFontsGuide()
+            components.guideManager.soundFontsGuide()
         }
+    }
+}
+
+extension SoundFontsControlsController: SegueHandler {
+
+    public enum SegueIdentifier: String {
+        case settings
+        case guidedView
+        case favorites
+        case soundFontPatches
+        case infoBar
+    }
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .settings: beginSettingsView(segue, sender: sender)
+        default: break
+        }
+    }
+
+    private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
+        guard let nc = segue.destination as? UINavigationController,
+            let vc = nc.topViewController as? SettingsViewController else { return }
+
+        vc.soundFonts = components.soundFonts
+
+        if !components.isMainApp {
+            vc.modalPresentationStyle = .fullScreen
+            nc.modalPresentationStyle = .fullScreen
+        }
+
+        nc.popoverPresentationController?.setSourceView(view)
     }
 }

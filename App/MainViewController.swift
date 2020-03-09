@@ -90,7 +90,7 @@ extension MainViewController: ControllerConfiguration {
 
         notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
         keyboard.delegate = notePlayer!
-        volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer)
+        volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer, sampler: sampler)
 
         activePatchManager.subscribe(self, notifier: activePatchChange)
     }
