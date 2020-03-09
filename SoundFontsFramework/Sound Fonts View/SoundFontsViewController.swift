@@ -101,20 +101,16 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         present(documentPicker, animated: true)
     }
 
-    private func localizedString(_ title: String, comment: String) -> String {
-        return NSLocalizedString(title, bundle: Bundle(for: Self.self), comment: comment)
-    }
-
     private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
         guard let index = soundFonts.index(of: soundFont.key) else {
             completionHandler?(false)
             return
         }
 
-        let promptTitle = localizedString("DeleteFontTitle", comment: "Title of confirmation prompt")
-        let promptMessage = localizedString("DeleteFontMessage", comment: "Body of confirmation prompt")
+        let promptTitle = "DeleteFontTitle".localized(comment: "Title of confirmation prompt")
+        let promptMessage = "DeleteFontMessage".localized(comment: "Body of confirmation prompt")
         let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-        let deleteTitle = localizedString("Delete", comment: "The delete action")
+        let deleteTitle = "Delete".localized(comment: "The delete action")
 
         let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
             self.soundFonts.remove(index: index)
@@ -126,7 +122,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
             completionHandler?(true)
         }
 
-        let cancelTitle = localizedString("Cancel", comment: "The cancel action")
+        let cancelTitle = "Cancel".localized(comment: "The cancel action")
         let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in completionHandler?(false) }
 
         alertController.addAction(delete)

@@ -2,8 +2,6 @@
 
 import UIKit
 
-private class Tag {}
-
 public enum Formatters {
 
     /**
@@ -30,14 +28,10 @@ public enum Formatters {
 private extension Formatters {
 
     /// Obtain the localized format string for patch counts
-    static let patchesFormatString = localizedString(
-        "patches count", comment: "patches count string format in Localized.stringsdict")
+    static let patchesFormatString = "patches count"
+        .localized(comment: "patches count string format in Localized.stringsdict")
 
     /// Obtain the localized format string for favorite counts
-    static let favoritesFormatString = localizedString(
-        "favorites count", comment: "favorites count string format in Localized.stringsdict")
-
-    private static func localizedString(_ title: String, comment: String) -> String {
-        return NSLocalizedString(title, bundle: Bundle(for: Tag.self), comment: comment)
-    }
+    static let favoritesFormatString = "favorites count"
+        .localized(comment: "favorites count string format in Localized.stringsdict")
 }
