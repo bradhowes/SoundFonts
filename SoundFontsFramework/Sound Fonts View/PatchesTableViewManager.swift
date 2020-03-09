@@ -19,8 +19,8 @@ final class PatchesTableViewManager: NSObject {
     private let favorites: Favorites
     private let keyboard: Keyboard?
 
-    private var showingSoundFont: SoundFont
-    private var patches: [Patch] { showingSoundFont.patches }
+    private var showingSoundFont: SoundFont?
+    private var patches: [Patch] { showingSoundFont?.patches ?? [] }
     private var filtered = [Patch]()
 
     private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
@@ -199,24 +199,19 @@ extension PatchesTableViewManager {
         switch event {
         case let .active(old: old, new: new):
 
-            if showingSoundFont != new.soundFontPatch.soundFont {
-                os_log(.info, log: log, "new soundFont '%s'", new.soundFontPatch.soundFont.description)
-                showingSoundFont = new.soundFontPatch.soundFont
+            if showingSoundFont != new.soundFontPatch?.soundFont {
+                showingSoundFont = new.soundFontPatch?.soundFont
                 reloadView()
             }
             else {
                 os_log(.info, log: log, "same font")
-                if old.soundFontPatch.soundFont == showingSoundFont {
+                if old.soundFontPatch?.soundFont == showingSoundFont {
                     update(with: old.soundFontPatch)
                 }
             }
 
             if let indexPath = update(with: new.soundFontPatch) {
-
-                os_log(.info, log: log, "selecting row '%s'", new.soundFontPatch.description)
                 view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-
-                os_log(.info, log: log, "scrolling to row")
                 view.scrollToRow(at: indexPath, at: .none, animated: false)
             }
 
@@ -229,7 +224,6 @@ extension PatchesTableViewManager {
         switch event {
         case let .changed(old: _, new: new):
             if showingSoundFont != new {
-                os_log(.info, log: log, "new soundFont '%s'", new.description)
                 showingSoundFont = new
                 reloadView()
             }
@@ -257,7 +251,9 @@ extension PatchesTableViewManager {
         hideSearchBar()
     }
 
-    private func getIndexPath(for soundFontPatch: SoundFontPatch) -> IndexPath? {
+    private func getIndexPath(for soundFontPatch: SoundFontPatch?) -> IndexPath? {
+        guard let soundFontPatch = soundFontPatch else { return nil }
+
         os_log(.info, log: log, "indexPath of '%s'", soundFontPatch.description)
         guard showingSoundFont == soundFontPatch.soundFont else {
             os_log(.info, "not showing in view")
@@ -290,7 +286,7 @@ extension PatchesTableViewManager {
     private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * Self.sectionSize + indexPath.row }
 
     private func makeSoundFontPatch(for patch: Patch) -> SoundFontPatch {
-        SoundFontPatch(soundFont: showingSoundFont, patchIndex: patch.soundFontIndex)
+        SoundFontPatch(soundFont: showingSoundFont!, patchIndex: patch.soundFontIndex)
     }
 
     private func isActive(soundFontPatch: SoundFontPatch) -> Bool {
@@ -403,9 +399,9 @@ extension PatchesTableViewManager {
     }
 
     @discardableResult
-    private func update(with soundFontPatch: SoundFontPatch) -> IndexPath? {
+    private func update(with soundFontPatch: SoundFontPatch?) -> IndexPath? {
         guard let indexPath = getIndexPath(for: soundFontPatch) else { return nil }
-        update(at: indexPath, with: soundFontPatch)
+        update(at: indexPath, with: soundFontPatch!)
         return indexPath
     }
 

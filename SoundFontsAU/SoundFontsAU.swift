@@ -89,10 +89,8 @@ final class SoundFontsAU: AUAudioUnit {
         get {
             var fullState = wrapped.fullState ?? [:]
             let encoder = JSONEncoder()
-            if let activePatchKind = self.sampler.activePatchKind {
-                if let data = try? encoder.encode(activePatchKind) {
-                    fullState["soundFontPatch"] = data
-                }
+            if let data = try? encoder.encode(self.sampler.activePatchKind) {
+                fullState["soundFontPatch"] = data
             }
             return fullState
         }

@@ -34,7 +34,12 @@ final class NotePlayer: KeyboardDelegate {
             infoBar.setStatus("🔇")
         }
         else {
-            infoBar.setStatus(note.label + " - " + note.solfege)
+            if Settings[.showSolfegeLabel] {
+                infoBar.setStatus(note.label + " - " + note.solfege)
+            }
+            else {
+                infoBar.setStatus(note.label)
+            }
             sampler.noteOn(note.midiNoteValue)
         }
     }

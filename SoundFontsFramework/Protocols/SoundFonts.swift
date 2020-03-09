@@ -20,7 +20,7 @@ public enum SoundFontsEvent {
 /**
  Actions available on a collection of SoundFont instances. Supports subscribing to changes.
  */
-public protocol SoundFonts {
+public protocol SoundFonts: class {
 
     /// Number of SoundFont instances in the collection
     var count: Int { get }
@@ -78,6 +78,22 @@ public protocol SoundFonts {
      Force a reload of the SoundFont collection.
      */
     func reload()
+
+    /// Determine if there are any bundled fonts in the collection
+    var hasAnyBundled: Bool { get }
+
+    /// Determine if all bundled fonts are in the collection
+    var hasAllBundled: Bool { get }
+
+    /**
+     Remove all built-in SoundFont entries.
+     */
+    func removeBundled()
+
+    /**
+     Restore built-in SoundFonts.
+     */
+    func restoreBundled()
 
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in SoundFontsEvent enum.

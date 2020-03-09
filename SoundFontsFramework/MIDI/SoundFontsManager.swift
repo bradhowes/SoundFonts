@@ -111,6 +111,48 @@ extension SoundFontsManager: SoundFonts {
         save()
         notify(.moved(old: index, new: newIndex, font: soundFont))
     }
+
+    public var hasAnyBundled: Bool {
+        let bundle = Bundle(for: SoundFontsManager.self)
+        let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+        let result = urls.first { collection.index(of: $0) != nil } != nil
+        return result
+    }
+
+    public var hasAllBundled: Bool {
+        let bundle = Bundle(for: SoundFontsManager.self)
+        let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+        let result = urls.first { collection.index(of: $0) == nil } == nil
+        return result
+    }
+
+    public func removeBundled() {
+        os_log(.info, log: log, "removeBundled")
+        let bundle = Bundle(for: SoundFontsManager.self)
+        let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+        for url in urls {
+            if let index = collection.index(of: url) {
+                os_log(.info, log: log, "removing %s", url.absoluteString)
+                remove(index: index)
+            }
+        }
+        save()
+    }
+
+    public func restoreBundled() {
+        os_log(.info, log: log, "restoreBundled")
+        let bundle = Bundle(for: SoundFontsManager.self)
+        let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
+        for url in urls {
+            if collection.index(of: url) == nil {
+                os_log(.info, log: log, "restoring %s", url.absoluteString)
+                let soundFont = Self.addFromBundle(url: url)
+                let index = collection.add(soundFont)
+                notify(.added(new: index, font: soundFont))
+            }
+        }
+        save()
+    }
 }
 
 extension SoundFontsManager {
@@ -120,7 +162,7 @@ extension SoundFontsManager {
     ]
 
     @discardableResult
-    private static func addFromBundle(url: URL) -> SoundFont {
+    fileprivate static func addFromBundle(url: URL) -> SoundFont {
         guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
         let info = GetSoundFontInfo(data: data)
         if info.name.isEmpty || info.patches.isEmpty { fatalError() }

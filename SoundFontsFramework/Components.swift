@@ -60,10 +60,10 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
                 soundFontsControlsController = vc
                 for inner in vc.children {
                     switch inner {
-                    case let vc as InfoBarController: infoBarController = vc
+                    case let vc as GuideViewController: guideController = vc
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
-                    case let vc as GuideViewController: guideController = vc
+                    case let vc as InfoBarController: infoBarController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
@@ -84,8 +84,8 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         favoritesController.establishConnections(self)
         infoBarController.establishConnections(self)
         keyboardController?.establishConnections(self)
-        soundFontsControlsController.establishConnections(self)
         guideController.establishConnections(self)
+        soundFontsControlsController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }
@@ -95,6 +95,7 @@ extension Components {
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")
         precondition(soundFontsControlsController != nil, "nil SoundFontsControlsController")
+        precondition(guideController != nil, "nil GuidesController")
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")

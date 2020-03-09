@@ -53,7 +53,7 @@ public protocol Favorites {
      - parameter soundFontPatch: what to look for
      - returns: optional Favorite instance
      */
-    func getBy(soundFontPatch: SoundFontPatch) -> Favorite?
+    func getBy(soundFontPatch: SoundFontPatch?) -> Favorite?
 
     /**
      Create a new Favorite instance with the given parameters

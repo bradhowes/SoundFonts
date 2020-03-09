@@ -44,7 +44,9 @@ extension FavoritesManager: Favorites {
 
     public func getBy(index: Int) -> Favorite { collection.getBy(index: index) }
 
-    public func getBy(soundFontPatch: SoundFontPatch) -> Favorite? { collection.getBy(soundFontPatch: soundFontPatch) }
+    public func getBy(soundFontPatch: SoundFontPatch?) -> Favorite? {
+        collection.getBy(soundFontPatch: soundFontPatch)
+    }
 
     public func add(soundFontPatch: SoundFontPatch, keyboardLowestNote note: Note?) {
         let favorite = Favorite(soundFontPatch: soundFontPatch, keyboardLowestNote: note)

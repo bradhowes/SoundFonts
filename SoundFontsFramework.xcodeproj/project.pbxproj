@@ -101,6 +101,7 @@
 		BDCCFCB623F59F3800DD518D /* SoundFontBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB523F59F3800DD518D /* SoundFontBrowser.swift */; };
 		BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
+		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 /* End PBXBuildFile section */
@@ -221,6 +222,7 @@
 		BDCCFCB523F59F3800DD518D /* SoundFontBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontBrowser.swift; sourceTree = "<group>"; };
 		BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
+		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -258,6 +260,7 @@
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
 				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
+				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BDCCFCB523F59F3800DD518D /* SoundFontBrowser.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
@@ -610,6 +613,7 @@
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
 				BD074C7623CDAF51001987E9 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD074C7523CDAF51001987E9 /* UIView+Extensions.swift in Sources */,
+				BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */,
 				BD074C6D23CDAF51001987E9 /* SubscriptionManager.swift in Sources */,
 				BD074C7E23CDAF51001987E9 /* UISearchBar+Additions.swift in Sources */,
 				BD074C3E23CDAF51001987E9 /* FavoritesViewController.swift in Sources */,

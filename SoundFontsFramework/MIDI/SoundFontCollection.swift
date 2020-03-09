@@ -29,15 +29,30 @@ public final class SoundFontCollection: Codable {
      Obtain the index of the given SoundFont.Key value.
 
      - parameter key: the key to look for
-     - returns index value if found, else nil
+     - returns: index value if found, else nil
      */
     public func index(of key: SoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
+
+    /**
+     Obtain the index of a SoundFont wiith the given URL.
+
+     - parameter url: the URL to look for
+     - returns: index value if found, else nil
+     */
+    public func index(of url: URL) -> Int? {
+        guard let found = catalog.first(where: { entry in
+            entry.value.fileURL == url
+        }) else {
+            return nil
+        }
+        return index(of: found.key)
+    }
 
     /**
      Obtain a SoundFont by its (sorted) index value
 
      - parameter index: the SoundFont.Key to look for
-     - returns the SoundFont value found
+     - returns: the SoundFont value found
      */
     public func getBy(index: Int) -> SoundFont { catalog[sortedKeys[index]]! }
 
@@ -53,7 +68,7 @@ public final class SoundFontCollection: Codable {
      Add a new SoundFont definition to the collection.
 
      - parameter soundFont: the SoundFont to add
-     - returns index of the SoundFont in the collection
+     - returns: index of the SoundFont in the collection
      */
     public func add(_ soundFont: SoundFont) -> Int {
         catalog[soundFont.key] = soundFont
@@ -67,7 +82,7 @@ public final class SoundFontCollection: Codable {
      Remove a SoundFont from the collection.
 
      - parameter index: the index of the SoundFont to remove.
-     - returns the removed SoundFont instance, nil if not found.
+     - returns: the removed SoundFont instance, nil if not found.
      */
     public func remove(_ index: Int) -> SoundFont? {
         let key = sortedKeys.remove(at: index)
@@ -80,7 +95,7 @@ public final class SoundFontCollection: Codable {
 
      - parameter index: the index of the SoundFont to change
      - parameter name: the new name for the SoundFont
-     - returns 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
+     - returns: 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
      */
     public func rename(_ index: Int, name: String) -> (Int, SoundFont) {
         let key = sortedKeys.remove(at: index)

@@ -28,7 +28,10 @@ public final class Sampler {
     private let mode: Mode
     private var engine: AVAudioEngine?
     private var ausampler: AVAudioUnitSampler?
-    public private(set) var activePatchKind: ActivePatchKind?
+    private var loaded: Bool = false
+
+    public var hasPatch: Bool { activePatchKind != .none }
+    public private(set) var activePatchKind: ActivePatchKind = .none
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     public var auAudioUnit: AUAudioUnit? { return ausampler?.auAudioUnit }
@@ -58,14 +61,7 @@ public final class Sampler {
     }
 
     private func loadActivePatch() -> Result<Void, Failure> {
-        if let activePatchKind = self.activePatchKind {
-            self.activePatchKind = nil
-            os_log(.info, log: log, "done")
-            return load(activePatchKind: activePatchKind)
-        }
-
-        os_log(.info, log: log, "done")
-        return .success(())
+        loaded ? .success(()) : load(activePatchKind: activePatchKind)
     }
 
     /**
@@ -114,14 +110,15 @@ public final class Sampler {
         self.activePatchKind = activePatchKind
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = self.ausampler else { return .success(()) }
+        guard let sampler = self.ausampler, let soundFontPatch = activePatchKind.soundFontPatch else {
+            return .success(())
+        }
 
         if let favorite = activePatchKind.favorite {
             setGain(favorite.gain)
             setPan(favorite.pan)
         }
 
-        let soundFontPatch = activePatchKind.soundFontPatch
         do {
             os_log(.info, log: log, "begin loading")
             try sampler.loadSoundBankInstrument(at: soundFontPatch.soundFont.fileURL,
@@ -129,6 +126,7 @@ public final class Sampler {
                                                 bankMSB: UInt8(soundFontPatch.patch.bankMSB),
                                                 bankLSB: UInt8(soundFontPatch.patch.bankLSB))
             os_log(.info, log: log, "end loading")
+            loaded = true
             return .success(())
         } catch let error as NSError {
             os_log(.error, log: log, "failed loading - %s", error.localizedDescription)
@@ -163,7 +161,7 @@ public final class Sampler {
      */
     public func noteOn(_ midiValue: Int) {
         os_log(.info, log: log, "noteOn - %d", midiValue)
-        guard let sampler = self.ausampler else { return }
+        guard let sampler = self.ausampler, activePatchKind != .none else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(64), onChannel: UInt8(0))
     }
 
