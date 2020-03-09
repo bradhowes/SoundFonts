@@ -8,4 +8,8 @@ extension String {
 
     /// Obtain the width of a string in the system font
     public var systemFontWidth: CGFloat { (self as NSString).size(withAttributes: systemFontAttributes).width }
+
+    public func localized(comment: String) -> String {
+        return NSLocalizedString(self, bundle: Bundle(for: SoundFontsControlsController.self), comment: comment)
+    }
 }
