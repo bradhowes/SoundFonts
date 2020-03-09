@@ -38,16 +38,35 @@ class SettingsViewController: UIViewController {
     private func restoreDefaultSoundFonts(_ sender: Any) {
         soundFonts.restoreBundled()
         updateButtonState()
+        postNotice(msg: "Restored entries to the built-in sound fonts.")
     }
 
     @IBAction
     private func removeDefaultSoundFonts(_ sender: Any) {
         soundFonts.removeBundled()
         updateButtonState()
+        postNotice(msg: "Removed entries to the built-in sound fonts.")
     }
 
     @IBAction
     private func toggleShowSolfegeNotes(_ sender: Any) {
         Settings[.showSolfegeLabel] = self.showSolfegeNotes.isOn
+    }
+
+    private func postNotice(msg: String) {
+        let alertController = UIAlertController(title: "SoundFonts",
+                                                message: msg,
+                                                preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        self.present(alertController, animated: true, completion: nil)
     }
 }
