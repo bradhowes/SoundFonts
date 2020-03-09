@@ -23,7 +23,7 @@ final class FavoriteCollection: Codable {
      Determine if the given soundFont/patch combination is associated with a favorite.
 
      - parameter soundFontPatch: soundFont/patch to look for
-     - returns true if so
+     - returns: true if so
      */
     func isFavored(soundFontPatch: SoundFontPatch) -> Bool { reverseLookup[soundFontPatch] != nil }
 
@@ -31,7 +31,7 @@ final class FavoriteCollection: Codable {
      Obtain the index of the given favorite in the collection.
 
      - parameter favorite: the favorite to look for
-     - returns the index in the collection
+     - returns: the index in the collection
      */
     func index(of favorite: Favorite) -> Int { favorites.firstIndex(of: favorite)! }
 
@@ -39,7 +39,7 @@ final class FavoriteCollection: Codable {
      Obtain the favorite at the given index.
 
      - parameter index: the index to use
-     - returns the favorite instance
+     - returns: the favorite instance
      */
     func getBy(index: Int) -> Favorite { favorites[index] }
 
@@ -47,7 +47,7 @@ final class FavoriteCollection: Codable {
      Obtain the favorite associated with the given soundFont/patch combination.
 
      - parameter soundFontPatch: soundFont/patch to look for
-     - returns the favorite found or nil if no match
+     - returns: the favorite found or nil if no match
      */
     func getBy(soundFontPatch: SoundFontPatch?) -> Favorite? {
         guard let soundFontPatch = soundFontPatch else { return nil }

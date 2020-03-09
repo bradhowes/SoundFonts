@@ -60,7 +60,7 @@ public final class SoundFontCollection: Codable {
      Obtain a SoundFont by its UUID value
 
      - parameter key: the UUID to look for
-     - returns the SoundFont instance found, else nil
+     - returns: the SoundFont instance found, else nil
      */
     public func getBy(key: SoundFont.Key) -> SoundFont? { catalog[key] }
 

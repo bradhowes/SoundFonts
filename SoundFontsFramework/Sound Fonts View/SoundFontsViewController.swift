@@ -218,7 +218,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
      - parameter at: the FontCell that will hold the swipe action
      - parameter with: the SoundFont that will be edited by the swipe action
-     - returns new UIContextualAction that will perform the edit
+     - returns: new UIContextualAction that will perform the edit
      */
     public func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -238,7 +238,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter at: the FontCell that will hold the swipe action
      - parameter with: the SoundFont that will be edited by the swipe action
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
-     - returns new UIContextualAction that will perform the edit
+     - returns: new UIContextualAction that will perform the edit
      */
     public func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont,
                                  indexPath: IndexPath) -> UIContextualAction {
