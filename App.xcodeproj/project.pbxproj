@@ -12,7 +12,6 @@
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */; };
 		BD430FBF2410EAF3009DB9B3 /* SoundFontsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */; };
-		BD477D0B23C7E43800A0DDB8 /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD498F9F23F0101700755AB9 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD498FA223F076F500755AB9 /* NotePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498FA123F076F500755AB9 /* NotePlayer.swift */; };
@@ -111,7 +110,6 @@
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,7 +210,6 @@
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BD75432E23803994004C6A4C /* Mute.swift */,
 				BD498FA123F076F500755AB9 /* NotePlayer.swift */,
-				BDDD1F5C2216E36D003BDD6F /* UIAlertController+Extensions.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
 				BD42F3572388697200E6D576 /* Resources */,
@@ -469,7 +466,6 @@
 				BD75433023803994004C6A4C /* Mute.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD498FA423F07AFC00755AB9 /* VolumeMonitor.swift in Sources */,
-				BD477D0B23C7E43800A0DDB8 /* UIAlertController+Extensions.swift in Sources */,
 				BD498FA223F076F500755AB9 /* NotePlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
