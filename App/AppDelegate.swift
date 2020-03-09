@@ -24,8 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(.playback, mode: .default,
-                                         options: [.mixWithOthers, .allowBluetooth, .allowBluetoothA2DP, .allowAirPlay])
+            try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers])
         } catch let error as NSError {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
