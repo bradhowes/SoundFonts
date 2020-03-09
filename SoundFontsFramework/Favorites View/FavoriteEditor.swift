@@ -94,7 +94,7 @@ extension FavoriteEditor: UITextFieldDelegate {
      Configure name field so that pressing RETURN will exit the editor.
 
      - parameter textField: the name UITextField to work with
-     - returns false
+     - returns: false
      */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

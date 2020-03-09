@@ -29,7 +29,7 @@ public protocol SoundFonts: class {
      Obtain the index in the collection of a SoundFont with the given Key.
 
      - parameter of: the key to look for
-     - returns the index of the matching entry or nil if not found
+     - returns: the index of the matching entry or nil if not found
      */
     func index(of: SoundFont.Key) -> Int?
 
@@ -37,7 +37,7 @@ public protocol SoundFonts: class {
      Obtain the SoundFont in the collection by its unique key
 
      - parameter key: the key to look for
-     - returns the index of the matching entry or nil if not found
+     - returns: the index of the matching entry or nil if not found
      */
     func getBy(key: SoundFont.Key) -> SoundFont?
 
@@ -45,7 +45,7 @@ public protocol SoundFonts: class {
      Obtain the SoundFont in the collection by its orderering index.
 
      - parameter index: the index to fetch
-     - returns the SoundFont found at the index
+     - returns: the SoundFont found at the index
      */
     func getBy(index: Int) -> SoundFont
 
@@ -54,7 +54,7 @@ public protocol SoundFonts: class {
 
      - parameter url: the URL of the file containing SoundFont (SF2) data
 
-     - returns 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
+     - returns: 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
      instance created from the raw data
      */
     func add(url: URL) -> (Int, SoundFont)?

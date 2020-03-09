@@ -34,7 +34,7 @@ public final class Sampler {
     public private(set) var activePatchKind: ActivePatchKind = .none
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-    public var auAudioUnit: AUAudioUnit? { return ausampler?.auAudioUnit }
+    public var auAudioUnit: AUAudioUnit? { ausampler?.auAudioUnit }
 
     /**
      Create a new instance of a Sampler.
@@ -52,7 +52,7 @@ public final class Sampler {
     /**
      Connect up a sampler and start the audio engine to allow the sampler to make sounds.
 
-     - returns Result value indicating success or failure
+     - returns: Result value indicating success or failure
      */
     public func start() -> Result<Void, Failure> {
         os_log(.info, log: log, "start")
@@ -102,7 +102,7 @@ public final class Sampler {
     
      - parameter activePatchKind: the sound font and patch to use
 
-     - returns Result instance indicating success or failure
+     - returns: Result instance indicating success or failure
      */
     public func load(activePatchKind: ActivePatchKind) -> Result<Void, Failure> {
         os_log(.info, log: log, "load - %s", activePatchKind.description)
