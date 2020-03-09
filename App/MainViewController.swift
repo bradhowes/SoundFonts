@@ -26,10 +26,6 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         UIApplication.shared.appDelegate.setMainViewController(self)
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-
-        let midiCons = MIDIConnectivity.shared
-        midiCons.getSourceNames().forEach { name in print("MIDI source '\(name)'")}
-        midiCons.getDestinationNames().forEach { name in print("MIDI destination '\(name)'")}
     }
 }
 
@@ -69,7 +65,7 @@ extension MainViewController {
             try session.setActive(false, options: [])
             os_log(.info, log: log, "set audio session inactive")
         } catch let error as NSError {
-            os_log(.error, log: log, "Failed setActive(false): %s", error.localizedDescription)
+            os_log(.error, log: log, "Failed setActive(false): %{public}s", error.localizedDescription)
         }
     }
 }
