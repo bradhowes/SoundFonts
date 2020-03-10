@@ -48,7 +48,6 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
         super.viewDidAppear(animated)
         soundFontsTableViewDataSource.selectActive()
         patchesTableViewDataSource.selectActive()
-        patchesTableViewDataSource.hideSearchBar()
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {

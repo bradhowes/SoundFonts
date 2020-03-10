@@ -58,10 +58,12 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         if isActive {
             backgroundColor = activeBackgroundColor
             name.textColor = activeForegroundColor
+            borderColor = activeForegroundColor
         }
         else {
             backgroundColor = normalBackgroundColor
             name.textColor = normalForegroundColor
+            borderColor = .darkGray
         }
 
         invalidateIntrinsicContentSize()

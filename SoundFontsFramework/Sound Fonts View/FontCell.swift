@@ -20,5 +20,7 @@ public final class FontCell: FontPatchCellBase, ReusableView, NibLoadableView {
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
         self.accessibilityLabel = "Font " + name
+        setSelected(isSelected, animated: false)
+        // showSelectedIndicator(isSelected)
     }
 }

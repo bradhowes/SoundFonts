@@ -20,4 +20,20 @@ extension UIColor {
                   blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                   alpha: alpha)
     }
+
+    public func lighter(_ factor: CGFloat = 1.25) -> UIColor {
+        var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
+        if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
+            return UIColor(hue: h, saturation: s, brightness: min(b * factor, 1.0), alpha: a)
+        }
+        return self
+    }
+
+    public func darker(_ factor: CGFloat = 0.75) -> UIColor {
+        var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
+        if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
+            return UIColor(hue: h, saturation: s, brightness: b * factor, alpha: a)
+        }
+        return self
+    }
 }
