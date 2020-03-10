@@ -49,14 +49,20 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
                                compatibleWith: .none)
         let newConstraint = willBeHidden ? -moreButtons.frame.width : 0
+        let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
 
         moreButtons.isHidden = false
-        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
-        animator.addCompletion { _ in self.moreButtons.isHidden = willBeHidden }
-
-        animator.addAnimations {
-            self.moreButtonsXConstraint.constant = newConstraint
-            self.view.layoutIfNeeded()
+        let animator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.4,
+            delay: 0.0,
+            options: [],
+            animations: {
+                self.moreButtonsXConstraint.constant = newConstraint
+                self.touchView.alpha = newAlpha
+                self.view.layoutIfNeeded()
+        }) { _ in
+            self.moreButtons.isHidden = willBeHidden
+            self.touchView.alpha = newAlpha
         }
 
         UIView.transition(with: sender, duration: 0.4, options: .transitionCrossDissolve, animations: {
