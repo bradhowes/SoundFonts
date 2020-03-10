@@ -11,8 +11,7 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        let sharedStateMonitor = SharedStateMonitor(changer: .audioUnit)
-        components = Components<SoundFontsAUViewController>(sharedStateMonitor: sharedStateMonitor)
+        components = Components<SoundFontsAUViewController>(changer: .audioUnit)
         components.setMainViewController(self)
     }
 
@@ -34,16 +33,16 @@ extension SoundFontsAUViewController: ControllerConfiguration {
      */
     public func establishConnections(_ router: ComponentContainer) {
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
-        useActivePatchKind(router.activePatchManager.active)
+        useActivePatchKind(router.activePatchManager.active, playSample: false)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        if case let .active(old: _, new: new) = event {
-            useActivePatchKind(new)
+        if case let .active(old: _, new: new, playSample: playSample) = event {
+            useActivePatchKind(new, playSample: playSample)
         }
     }
 
-    private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
-        _ = self.sampler.load(activePatchKind: activePatchKind)
+    private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
+        _ = self.sampler.load(activePatchKind: activePatchKind, playSample: playSample)
     }
 }

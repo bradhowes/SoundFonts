@@ -43,4 +43,16 @@ public struct Note: CustomStringConvertible, Codable {
         let offset = midiNoteValue % 12
         self.accented = (offset < 5 && (offset & 1) == 1) || (offset > 5 && (offset & 1) == 0)
     }
+
+    public init?(_ tag: String) {
+        guard tag.count > 1 && tag.count < 5 else { return nil }
+        let octave = tag.drop { !$0.isNumber }
+        guard let octaveValue = Int(octave) else { return nil }
+        var remaining = tag.dropLast(octave.count)
+        guard let note = remaining.popFirst() else { return nil }
+        let sharp = remaining.popFirst()
+        guard let offset = Self.noteLabels.firstIndex(of: String(note)) else { return nil }
+        self.midiNoteValue = (offset + (sharp != nil ? 1 : 0)) * octaveValue
+        self.accented = sharp != nil
+    }
 }

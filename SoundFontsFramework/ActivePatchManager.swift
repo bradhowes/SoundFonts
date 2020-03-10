@@ -73,7 +73,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 }
 
 public enum ActivePatchEvent {
-    case active(old: ActivePatchKind, new: ActivePatchKind)
+    case active(old: ActivePatchKind, new: ActivePatchKind, playSample: Bool)
 }
 
 /**
@@ -97,11 +97,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         os_log(.info, log: log, "active: %s", active.description)
     }
 
-    public func setActive(_ patch: ActivePatchKind) {
+    public func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %s", patch.description)
         let prev = active
         active = patch
-        DispatchQueue.main.async { self.notify(.active(old: prev, new: patch)) }
+        DispatchQueue.main.async { self.notify(.active(old: prev, new: patch, playSample: playSample)) }
         save()
     }
 

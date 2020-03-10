@@ -12,13 +12,13 @@ import SoundFontsFramework
  */
 final class MainViewController: UIViewController {
     private lazy var log = Logging.logger("MainVC")
-    private lazy var sampler = Sampler(mode: .standalone)
 
     private var keyboard: Keyboard!
     private var infoBar: InfoBar!
     private var activePatchManager: ActivePatchManager!
     private var notePlayer: NotePlayer!
     private var volumeMonitor: VolumeMonitor!
+    private var sampler: Sampler!
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -50,7 +50,7 @@ extension MainViewController {
             postAlert(for: what)
         }
 
-        useActivePatchKind(activePatchManager.active)
+        useActivePatchKind(activePatchManager.active, playSample: false)
     }
 
     /**
@@ -80,6 +80,7 @@ extension MainViewController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     func establishConnections(_ router: ComponentContainer) {
+        sampler = router.sampler
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
         infoBar = router.infoBar
@@ -92,15 +93,15 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        if case let .active(old: _, new: new) = event {
-            useActivePatchKind(new)
+        if case let .active(old: _, new: new, playSample: playSample) = event {
+            useActivePatchKind(new, playSample: playSample)
         }
     }
 
-    private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
+    private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind) {
+            if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind, playSample: playSample) {
                 DispatchQueue.main.async { self.postAlert(for: what) }
             }
         }

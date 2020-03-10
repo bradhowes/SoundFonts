@@ -70,7 +70,7 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
     private func beginEditFont(_ segue: UIStoryboardSegue, sender: Any?) {
         guard let nc = segue.destination as? UINavigationController,
             let vc = nc.topViewController as? FontEditor,
-            let cell = sender as? FontCell,
+            let cell = sender as? UITableViewCell,
             let indexPath = soundFontsView.indexPath(for: cell) else { return }
         vc.delegate = self
         let soundFont = soundFonts.getBy(index: indexPath.row)
@@ -173,7 +173,8 @@ extension SoundFontsViewController: ControllerConfiguration {
         patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, favorites: favorites,
-            keyboard: router.keyboard)
+            keyboard: router.keyboard,
+            sampler: router.sampler)
 
         router.infoBar.addTarget(.addSoundFont, target: self, action: #selector(addSoundFont(_:)))
     }
@@ -215,9 +216,9 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter with: the SoundFont that will be edited by the swipe action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createEditSwipeAction(at cell: FontCell, with soundFont: SoundFont) -> UIContextualAction {
+    public func createEditSwipeAction(at view: UIView, with soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.performSegue(withIdentifier: .fontEditor, sender: cell)
+            self.performSegue(withIdentifier: .fontEditor, sender: view)
             completionHandler(true)
         }
 
@@ -235,7 +236,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createDeleteSwipeAction(at cell: FontCell, with soundFont: SoundFont,
+    public func createDeleteSwipeAction(at view: UIView, with soundFont: SoundFont,
                                  indexPath: IndexPath) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
