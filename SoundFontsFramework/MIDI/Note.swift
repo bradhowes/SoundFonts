@@ -29,7 +29,7 @@ public struct Note: CustomStringConvertible, Codable {
     public var solfege: String { Note.solfegeLabels[midiNoteValue % 12] }
 
     /// Obtain the octave this note is a part of
-    public var octave: Int { midiNoteValue / 12 }
+    public var octave: Int { midiNoteValue / 12 - 1 }
 
     public var description: String { label }
 

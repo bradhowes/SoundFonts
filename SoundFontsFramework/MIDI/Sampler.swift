@@ -12,7 +12,7 @@ public final class Sampler {
     private lazy var log = Logging.logger("Samp")
 
     /// Largest MIDI value available for the last key
-    public static let maxMidiValue = 12 * 9 // C9
+    public static let maxMidiValue = 12 * 9 // C8
 
     public enum Failure: Error {
         case noSampler
@@ -182,18 +182,14 @@ public final class Sampler {
     var workItem: DispatchWorkItem?
 
     private func playSample() {
-        let note = Note("A4")!.midiNoteValue
+        let note = 69 // A4
         self.workItem?.cancel()
-        self.workItem = DispatchWorkItem { [weak self] in
-            guard let wself = self else { return }
-            wself.noteOff(note)
-            wself.noteOn(note)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                guard let wself = self else { return }
-                wself.noteOff(note)
-            }
+        self.workItem = nil
+        self.workItem = DispatchWorkItem {
+            self.noteOn(note)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { self.noteOff(note) }
         }
 
-        DispatchQueue.main.async(execute: self.workItem!)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: self.workItem!)
     }
 }

@@ -156,7 +156,7 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.textColor = .lightText
+        header.textLabel?.textColor = .systemOrange
         header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         header.backgroundView = HeaderView()
         header.backgroundView?.backgroundColor = .black
