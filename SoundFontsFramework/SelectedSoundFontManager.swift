@@ -3,10 +3,6 @@
 import Foundation
 import os
 
-extension SettingKeys {
-    static let lastSelectedSoundFont = SettingKey<Data>("lastSelectedSoundFont", defaultValue: Data())
-}
-
 public enum SelectedSoundFontEvent {
     case changed(old: SoundFont?, new: SoundFont?)
 }
@@ -17,7 +13,7 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
     private(set) var selected: SoundFont?
 
     public init(activePatchManager: ActivePatchManager) {
-        self.selected = Self.restore() ?? activePatchManager.active.soundFontPatch?.soundFont ?? nil
+        self.selected = activePatchManager.active.soundFontPatch?.soundFont ?? nil
         os_log(.info, log: log, "selected: %s", selected?.description ?? "nil")
     }
 
@@ -30,22 +26,6 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
         let old = selected
         selected = soundFont
-        self.save()
         notify(.changed(old: old, new: soundFont))
-    }
-
-    public static func restore() -> SoundFont? {
-        let decoder = JSONDecoder()
-        let data = Settings[.lastSelectedSoundFont]
-        return try? decoder.decode(SoundFont.self, from: data)
-    }
-
-    public func save() {
-        DispatchQueue.global(qos: .background).async {
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(self.selected) {
-                Settings[.lastSelectedSoundFont] = data
-            }
-        }
     }
 }

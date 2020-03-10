@@ -11,7 +11,7 @@ final class PatchesTableViewManager: NSObject {
     /// Number of sections we partition patches into
     static private let sectionSize = 20
 
-    private lazy var log = Logging.logger("PatDS")
+    private lazy var log = Logging.logger("PatTVM")
 
     private let view: UITableView
     private let searchBar: UISearchBar
@@ -43,6 +43,17 @@ final class PatchesTableViewManager: NSObject {
         selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
         activePatchManager.subscribe(self, notifier: activePatchChange)
         favorites.subscribe(self, notifier: favoritesChange)
+
+        view.sectionIndexColor = .darkGray
+
+//        for family in UIFont.familyNames.sorted() {
+//            let names = UIFont.fontNames(forFamilyName: family)
+//            print("Family: \(family) Font names: \(names)")
+//        }
+
+        let customFont = UIFont(name: "EurostileRegular", size: 20)!
+        let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = defaultTextAttribs
     }
 }
 
@@ -145,10 +156,23 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.textColor = UIColor.lightGray
+        header.textLabel?.textColor = .systemTeal
         header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-        header.backgroundView = UIView()
-        header.backgroundView?.backgroundColor = UIColor(hex: "303030")
+        header.backgroundView = HeaderView()
+        header.backgroundView?.backgroundColor = tableView.backgroundColor
+    }
+}
+
+private class HeaderView: UIView {
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        if let context = UIGraphicsGetCurrentContext() {
+            context.setStrokeColor(UIColor.systemTeal.cgColor)
+            context.setLineWidth(0.5)
+            context.move(to: CGPoint(x: 10, y: bounds.height))
+            context.addLine(to: CGPoint(x: 80, y: bounds.height))
+            context.strokePath()
+        }
     }
 }
 
@@ -198,8 +222,8 @@ extension PatchesTableViewManager {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new):
-
             if showingSoundFont != new.soundFontPatch?.soundFont {
+                os_log(.info, log: log, "new font")
                 showingSoundFont = new.soundFontPatch?.soundFont
                 reloadView()
             }
@@ -226,6 +250,17 @@ extension PatchesTableViewManager {
             if showingSoundFont != new {
                 showingSoundFont = new
                 reloadView()
+                DispatchQueue.main.async {
+                    if self.activePatchManager.soundFont == new {
+                        if let indexPath = self.getIndexPath(for: self.activePatchManager.soundFontPatch) {
+                            self.view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                            self.view.scrollToRow(at: indexPath, at: .none, animated: false)
+                        }
+                    }
+                    else if !self.showingSearchResults {
+                        self.hideSearchBar()
+                    }
+                }
             }
         }
     }
@@ -254,7 +289,7 @@ extension PatchesTableViewManager {
     private func getIndexPath(for soundFontPatch: SoundFontPatch?) -> IndexPath? {
         guard let soundFontPatch = soundFontPatch else { return nil }
 
-        os_log(.info, log: log, "indexPath of '%s'", soundFontPatch.description)
+        os_log(.info, log: log, "getIndexPath of '%s'", soundFontPatch.description)
         guard showingSoundFont == soundFontPatch.soundFont else {
             os_log(.info, "not showing in view")
             return nil
@@ -312,17 +347,25 @@ extension PatchesTableViewManager {
 
     func hideSearchBar() {
         dismissSearchKeyboard()
-
-        if !showingSearchResults && view.contentOffset.y < searchBar.frame.size.height {
+        if !showingSearchResults && view.contentOffset.y <= searchBar.frame.size.height {
             os_log(.info, log: log, "hiding search bar")
-            let offset = CGPoint(x: 0, y: searchBar.frame.size.height)
-            UIView.animate(withDuration: 0.4) { self.view.contentOffset = offset }
+            let view = self.view
+            let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.3,
+                delay: 0.0,
+                options: [.curveEaseOut],
+                animations: { view.contentOffset = contentOffset },
+                completion: { _ in view.contentOffset = contentOffset })
         }
     }
 
     func selectActive() {
-        if let index = getIndexPath(for: activePatchManager.soundFontPatch) {
-            view.selectRow(at: index, animated: false, scrollPosition: .none)
+        os_log(.info, log: log, "selectActive")
+        if let indexPath = getIndexPath(for: activePatchManager.soundFontPatch) {
+            view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+            view.scrollToRow(at: indexPath, at: .none, animated: false)
+            hideSearchBar()
         }
     }
 
