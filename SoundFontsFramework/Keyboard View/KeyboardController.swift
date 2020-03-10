@@ -96,7 +96,7 @@ extension KeyboardController {
 
     @IBAction private func shiftKeyboardDown(_ sender: UIButton) {
         assert(!keys.isEmpty)
-        if firstMidiNoteValue > 0 {
+        if firstMidiNoteValue > 12 {
             let shift: Int = {
                 if firstMidiNoteValue % 12 == 0 {
                     return min(firstMidiNoteValue, min(keys.count, 12))
