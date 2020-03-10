@@ -18,6 +18,7 @@ final class PatchesTableViewManager: NSObject {
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
     private let keyboard: Keyboard?
+    private let sampler: Sampler
 
     private var showingSoundFont: SoundFont?
     private var patches: [Patch] { showingSoundFont?.patches ?? [] }
@@ -26,13 +27,15 @@ final class PatchesTableViewManager: NSObject {
     private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
-         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?) {
+         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?,
+         sampler: Sampler) {
         self.view = view
         self.searchBar = searchBar
         self.activePatchManager = activePatchManager
         self.showingSoundFont = activePatchManager.soundFont
         self.favorites = favorites
         self.keyboard = keyboard
+        self.sampler = sampler
         super.init()
 
         view.register(PatchCell.self)
@@ -126,10 +129,6 @@ extension PatchesTableViewManager: UITableViewDelegate {
         return createTrailingSwipeActions(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
-    }
-
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->
         UITableViewCell.EditingStyle {
         .none
@@ -146,34 +145,25 @@ extension PatchesTableViewManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         dismissSearchResults()
+        let playSample = Settings[.playSample]
         if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
-            activePatchManager.setActive(.favorite(favorite: favorite))
+            activePatchManager.setActive(.favorite(favorite: favorite), playSample: playSample)
         }
         else {
-            activePatchManager.setActive(.normal(soundFontPatch: soundFontPatch))
+            activePatchManager.setActive(.normal(soundFontPatch: soundFontPatch), playSample: playSample)
         }
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.textColor = .systemTeal
+        header.textLabel?.textColor = .lightText
         header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         header.backgroundView = HeaderView()
-        header.backgroundView?.backgroundColor = tableView.backgroundColor
+        header.backgroundView?.backgroundColor = .black
     }
 }
 
 private class HeaderView: UIView {
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        if let context = UIGraphicsGetCurrentContext() {
-            context.setStrokeColor(UIColor.systemTeal.cgColor)
-            context.setLineWidth(0.5)
-            context.move(to: CGPoint(x: 10, y: bounds.height))
-            context.addLine(to: CGPoint(x: 80, y: bounds.height))
-            context.strokePath()
-        }
-    }
 }
 
 // MARK: - UISearchBarDelegate Protocol
@@ -221,7 +211,7 @@ extension PatchesTableViewManager {
     private func activePatchChange(_ event: ActivePatchEvent) {
         os_log(.info, log: log, "activePatchChange")
         switch event {
-        case let .active(old: old, new: new):
+        case let .active(old: old, new: new, playSample: _):
             if showingSoundFont != new.soundFontPatch?.soundFont {
                 os_log(.info, log: log, "new font")
                 showingSoundFont = new.soundFontPatch?.soundFont
@@ -235,7 +225,7 @@ extension PatchesTableViewManager {
             }
 
             if let indexPath = update(with: new.soundFontPatch) {
-                view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                 view.scrollToRow(at: indexPath, at: .none, animated: false)
             }
 
@@ -253,7 +243,7 @@ extension PatchesTableViewManager {
                 DispatchQueue.main.async {
                     if self.activePatchManager.soundFont == new {
                         if let indexPath = self.getIndexPath(for: self.activePatchManager.soundFontPatch) {
-                            self.view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                            self.view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                             self.view.scrollToRow(at: indexPath, at: .none, animated: false)
                         }
                     }
@@ -480,14 +470,15 @@ extension PatchesTableViewManager {
             return update(cell: cell, at: indexPath, with: favorite)
         }
 
-        cell.update(name: soundFontPatch.patch.name, isActive: isActive(soundFontPatch: soundFontPatch),
-                    isFavorite: false)
+        let active = isActive(soundFontPatch: soundFontPatch)
+        cell.update(name: soundFontPatch.patch.name, isSelected: active, isActive: active, isFavorite: false)
         return cell
     }
 
     @discardableResult
     private func update(cell: PatchCell, at indexPath: IndexPath, with favorite: Favorite) -> PatchCell {
-        cell.update(name: favorite.name, isActive: isActive(soundFontPatch: favorite.soundFontPatch), isFavorite: true)
+        let active = isActive(soundFontPatch: favorite.soundFontPatch)
+        cell.update(name: favorite.name, isSelected: active, isActive: active, isFavorite: true)
         return cell
     }
 }

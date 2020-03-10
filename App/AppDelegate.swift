@@ -11,8 +11,7 @@ import os
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
-    private let components =
-        Components<MainViewController>(sharedStateMonitor: SharedStateMonitor(changer: .application))
+    private let components = Components<MainViewController>(changer: .application)
 
     var window: UIWindow?
 

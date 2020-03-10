@@ -16,6 +16,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let favorites: Favorites
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
+    public let sampler: Sampler
 
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
@@ -32,11 +33,15 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
 
-    public init(sharedStateMonitor: SharedStateMonitor) {
-        self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
+    public init(changer: SharedStateMonitor.StateChanger) {
+
+        let sharedStateMonitor = SharedStateMonitor(changer: changer)
         self.sharedStateMonitor = sharedStateMonitor
+        self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
         self.soundFonts = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
         self.favorites = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
+        self.sampler = Sampler(mode: sharedStateMonitor.isMain ? .standalone : .audiounit)
+
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
 

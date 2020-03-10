@@ -76,7 +76,7 @@ extension FavoritesViewController: ControllerConfiguration {
     private func activePatchChange(_ event: ActivePatchEvent) {
         os_log(.info, log: log, "activePatchChange")
         switch event {
-        case let .active(old: old, new: new):
+        case let .active(old: old, new: new, playSample: _):
             if let favorite = favorites.getBy(soundFontPatch: old.soundFontPatch), favorite != new.favorite {
                 os_log(.info, log: log, "updating previous favorite cell")
                 updateCell(with: favorite)

@@ -8,7 +8,7 @@ import os
  in the app.
  */
 final class FontsTableViewManager: NSObject {
-    private lazy var log = Logging.logger("FontDS")
+    private lazy var log = Logging.logger("FonTVM")
 
     private let view: UITableView
     private let selectedSoundFontManager: SelectedSoundFontManager
@@ -27,7 +27,7 @@ final class FontsTableViewManager: NSObject {
 
         super.init()
 
-        view.register(FontCell.self)
+        view.register(PatchCell.self)
         view.dataSource = self
         view.delegate = self
 
@@ -64,6 +64,10 @@ extension FontsTableViewManager: UITableViewDataSource {
 
 extension FontsTableViewManager: UITableViewDelegate {
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
     }
@@ -75,7 +79,7 @@ extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
         UISwipeActionsConfiguration? {
-        guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
+        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createEditSwipeAction(at: cell, with: soundFont)
         let actions = UISwipeActionsConfiguration(actions: [action])
@@ -85,7 +89,7 @@ extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
         UISwipeActionsConfiguration? {
-        guard let cell: FontCell = tableView.cellForRow(at: indexPath) else { return nil }
+        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createDeleteSwipeAction(at: cell, with: soundFont, indexPath: indexPath)
         let actions = UISwipeActionsConfiguration(actions: [action])
@@ -101,7 +105,7 @@ extension FontsTableViewManager {
     private func activePatchChange(_ event: ActivePatchEvent) {
         os_log(.info, log: log, "activePatchChange")
         switch event {
-        case let .active(old: old, new: new):
+        case let .active(old: old, new: new, playSample: _):
             selectedSoundFontManager.setSelected(new.soundFontPatch?.soundFont)
             if let key = old.soundFontPatch?.soundFont.key {
                 let row = soundFonts.index(of: key)
@@ -187,18 +191,18 @@ extension FontsTableViewManager {
         guard let row = row else { return }
         os_log(.info, log: log, "update - row %d", row)
         let indexPath = getIndexPath(of: row)
-        if let cell: FontCell = view.cellForRow(at: indexPath) {
+        if let cell: PatchCell = view.cellForRow(at: indexPath) {
             os_log(.info, log: log, "updating row %d", row)
             update(cell: cell, indexPath: indexPath)
         }
     }
 
     @discardableResult
-    private func update(cell: FontCell, indexPath: IndexPath) -> FontCell {
+    private func update(cell: PatchCell, indexPath: IndexPath) -> PatchCell {
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
         cell.update(name: soundFont.displayName, isSelected: isSelected,
-                    isActive: activePatchManager.active.soundFontPatch?.soundFont == soundFont)
+                    isActive: activePatchManager.active.soundFontPatch?.soundFont == soundFont, isFavorite: false)
         return cell
     }
 }

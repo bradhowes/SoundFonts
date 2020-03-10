@@ -29,14 +29,8 @@
 		BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
 		BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */; };
 		BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */; };
-		BDD9792924171DED006121A1 /* EuroStyle Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792724171DDD006121A1 /* EuroStyle Normal.ttf */; };
-		BDD9792A24171DEE006121A1 /* EuroStyle Normal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792724171DDD006121A1 /* EuroStyle Normal.ttf */; };
 		BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
-		BDD9792C24171DF4006121A1 /* Papyrus.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792524171DDD006121A1 /* Papyrus.ttc */; };
-		BDD9792D24171DF4006121A1 /* Skia.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792624171DDD006121A1 /* Skia.ttc */; };
 		BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
-		BDD9792F24171DF4006121A1 /* Papyrus.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792524171DDD006121A1 /* Papyrus.ttc */; };
-		BDD9793024171DF4006121A1 /* Skia.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792624171DDD006121A1 /* Skia.ttc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,9 +112,6 @@
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		BDD9792524171DDD006121A1 /* Papyrus.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Papyrus.ttc; sourceTree = "<group>"; };
-		BDD9792624171DDD006121A1 /* Skia.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Skia.ttc; sourceTree = "<group>"; };
-		BDD9792724171DDD006121A1 /* EuroStyle Normal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "EuroStyle Normal.ttf"; sourceTree = "<group>"; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,10 +175,7 @@
 		BD42F3572388697200E6D576 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BDD9792724171DDD006121A1 /* EuroStyle Normal.ttf */,
 				BDD9792824171DDE006121A1 /* Eurostile.ttc */,
-				BDD9792524171DDD006121A1 /* Papyrus.ttc */,
-				BDD9792624171DDD006121A1 /* Skia.ttc */,
 				BDA0FC3123C73578005BEFD5 /* Assets.xcassets */,
 				BD874C95221A228E00BBD00B /* SoundFonts.entitlements */,
 				BD75432D23803994004C6A4C /* mute.aiff */,
@@ -404,10 +392,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDD9793024171DF4006121A1 /* Skia.ttc in Resources */,
-				BDD9792F24171DF4006121A1 /* Papyrus.ttc in Resources */,
 				BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */,
-				BDD9792A24171DEE006121A1 /* EuroStyle Normal.ttf in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -424,11 +409,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */,
-				BDD9792D24171DF4006121A1 /* Skia.ttc in Resources */,
 				BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */,
 				BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */,
-				BDD9792C24171DF4006121A1 /* Papyrus.ttc in Resources */,
-				BDD9792924171DED006121A1 /* EuroStyle Normal.ttf in Resources */,
 				BD75432F23803994004C6A4C /* mute.aiff in Resources */,
 				BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */,
 			);

@@ -4,6 +4,7 @@ import UIKit
 
 public extension SettingKeys {
     static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
+    static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
 }
 
 /**
@@ -14,6 +15,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var playSample: UISwitch!
 
     var soundFonts: SoundFonts!
 
@@ -21,6 +23,7 @@ class SettingsViewController: UIViewController {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
         showSolfegeNotes.isOn = Settings[.showSolfegeLabel]
+        playSample.isOn = Settings[.playSample]
         updateButtonState()
     }
 
@@ -51,6 +54,10 @@ class SettingsViewController: UIViewController {
     @IBAction
     private func toggleShowSolfegeNotes(_ sender: Any) {
         Settings[.showSolfegeLabel] = self.showSolfegeNotes.isOn
+    }
+
+    @IBAction func togglePlaySample(_ sender: Any) {
+        Settings[.playSample] = self.playSample.isOn
     }
 
     private func postNotice(msg: String) {

@@ -9,6 +9,7 @@ import UIKit
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
 public protocol ComponentContainer {
+    var sampler: Sampler { get }
     var soundFonts: SoundFonts { get }
     var favorites: Favorites { get }
     var activePatchManager: ActivePatchManager { get }

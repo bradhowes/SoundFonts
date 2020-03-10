@@ -21,18 +21,30 @@ extension UIColor {
                   alpha: alpha)
     }
 
-    public func lighter(_ factor: CGFloat = 1.25) -> UIColor {
+    /**
+     Make a color that is lighter than the current one by adjusting the 'brighness' component in HSB space.
+
+     - parameter factor: how much to increase current brightness. A value of 0.5 will increase the existing value by 50%.
+     - returns: new UIColor
+     */
+    public func lighter(_ factor: CGFloat = 0.25) -> UIColor {
         var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
         if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
-            return UIColor(hue: h, saturation: s, brightness: min(b * factor, 1.0), alpha: a)
+            return UIColor(hue: h, saturation: s, brightness: min(b * factor + b, 1.0), alpha: a)
         }
         return self
     }
 
-    public func darker(_ factor: CGFloat = 0.75) -> UIColor {
+    /**
+     Make a color that is darker than the current one by adjust the 'brightness' component in HSB space.
+
+     - parameter factor: how much to decrease current brightness. A value of 0.25 will decrease existing value by 25%.
+     - returns: new UIColor
+     */
+    public func darker(_ factor: CGFloat = 0.25) -> UIColor {
         var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
         if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
-            return UIColor(hue: h, saturation: s, brightness: b * factor, alpha: a)
+            return UIColor(hue: h, saturation: s, brightness: max(b - factor * b, 0.0), alpha: a)
         }
         return self
     }

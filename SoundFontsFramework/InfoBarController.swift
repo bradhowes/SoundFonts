@@ -152,7 +152,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
 extension InfoBarController {
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        if case let .active(old: _, new: new) = event {
+        if case let .active(old: _, new: new, playSample: _) = event {
             useActivePatchKind(new)
         }
     }
