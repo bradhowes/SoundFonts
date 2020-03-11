@@ -34,19 +34,37 @@ final class KeyboardController: UIViewController {
     /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
     var isMuted: Bool = false {
         didSet {
-            Key.isMuted = self.isMuted
-            keys.forEach { $0.setNeedsDisplay() }
+            if oldValue != isMuted {
+                Key.isMuted = self.isMuted
+                keys.forEach { $0.setNeedsDisplay() }
+            }
+        }
+    }
+
+    var showKeyLabels: Bool {
+        get { Key.showKeyLabels }
+        set {
+            if Key.showKeyLabels != newValue {
+                Key.showKeyLabels = newValue
+                keys.forEach { $0.setNeedsDisplay() }
+            }
         }
     }
 
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
         firstMidiNoteValue = max(lowestNote, 0)
+        NotificationCenter.default.addObserver(forName: Notification.showKeyLabelsChanged.name, object: nil,
+                                               queue: nil) { _ in self.showKeyLabelsChanged() }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         createKeys()
+    }
+
+    private func showKeyLabelsChanged() {
+        self.showKeyLabels = Settings[.showKeyLabels]
     }
 }
 

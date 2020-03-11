@@ -27,7 +27,7 @@ final class FontsTableViewManager: NSObject {
 
         super.init()
 
-        view.register(PatchCell.self)
+        view.register(TableCell.self)
         view.dataSource = self
         view.delegate = self
 
@@ -64,10 +64,6 @@ extension FontsTableViewManager: UITableViewDataSource {
 
 extension FontsTableViewManager: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
     }
@@ -79,7 +75,7 @@ extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
         UISwipeActionsConfiguration? {
-        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
+        guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createEditSwipeAction(at: cell, with: soundFont)
         let actions = UISwipeActionsConfiguration(actions: [action])
@@ -89,7 +85,7 @@ extension FontsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
         UISwipeActionsConfiguration? {
-        guard let cell: PatchCell = tableView.cellForRow(at: indexPath) else { return nil }
+        guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createDeleteSwipeAction(at: cell, with: soundFont, indexPath: indexPath)
         let actions = UISwipeActionsConfiguration(actions: [action])
@@ -191,18 +187,18 @@ extension FontsTableViewManager {
         guard let row = row else { return }
         os_log(.info, log: log, "update - row %d", row)
         let indexPath = getIndexPath(of: row)
-        if let cell: PatchCell = view.cellForRow(at: indexPath) {
+        if let cell: TableCell = view.cellForRow(at: indexPath) {
             os_log(.info, log: log, "updating row %d", row)
             update(cell: cell, indexPath: indexPath)
         }
     }
 
     @discardableResult
-    private func update(cell: PatchCell, indexPath: IndexPath) -> PatchCell {
+    private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
-        cell.update(name: soundFont.displayName, isSelected: isSelected,
-                    isActive: activePatchManager.active.soundFontPatch?.soundFont == soundFont, isFavorite: false)
+        let isActive = activePatchManager.active.soundFontPatch?.soundFont == soundFont
+        cell.updateForFont(name: soundFont.displayName, isSelected: isSelected, isActive: isActive)
         return cell
     }
 }

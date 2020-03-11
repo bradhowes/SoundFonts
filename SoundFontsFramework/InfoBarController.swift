@@ -130,7 +130,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
      - parameter isFavored: true if the Patch is a Favorite
      */
     public func setPatchInfo(name: String, isFavored: Bool) {
-        let name = PatchCell.favoriteTag(isFavored) + name
+        let name = TableCell.favoriteTag(isFavored) + name
         patchInfo.text = name
         cancelStatusAnimation()
     }

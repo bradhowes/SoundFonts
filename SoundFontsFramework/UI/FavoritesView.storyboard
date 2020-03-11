@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Favorites View Controller-->
+        <scene sceneID="RD6-oX-VFs">
+            <objects>
+                <viewController storyboardIdentifier="FavoritesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KdY-hl-TpA" customClass="FavoritesViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ss4-ST-6cC" userLabel="FavoritesView">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IR7-rn-XMj" userLabel="Favorites">
+                                <rect key="frame" x="8" y="8" width="398" height="880"/>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="0rF-eW-4kh">
+                                    <size key="itemSize" width="80" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Yb7-t8-5Oz" appends="YES" id="ffO-VO-Xo2"/>
+                                    <outletCollection property="gestureRecognizers" destination="0DJ-wu-xH2" appends="YES" id="Hih-Pj-gAv"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" identifier="FavoritesView" label="FavoritesView"/>
+                        <constraints>
+                            <constraint firstItem="IR7-rn-XMj" firstAttribute="top" secondItem="Ss4-ST-6cC" secondAttribute="top" constant="8" id="WfA-2V-N96"/>
+                            <constraint firstItem="IR7-rn-XMj" firstAttribute="leading" secondItem="Ss4-ST-6cC" secondAttribute="leading" constant="8" id="lQH-GD-WHe"/>
+                            <constraint firstAttribute="trailing" secondItem="IR7-rn-XMj" secondAttribute="trailing" constant="8" id="uHz-JW-Sju"/>
+                            <constraint firstAttribute="bottom" secondItem="IR7-rn-XMj" secondAttribute="bottom" constant="8" id="wJw-fF-zhc"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Bt-nf-V49"/>
+                    </view>
+                    <connections>
+                        <outlet property="doubleTapGestureRecognizer" destination="0DJ-wu-xH2" id="0xj-OV-gNK"/>
+                        <outlet property="favoritesView" destination="IR7-rn-XMj" id="g9T-UH-W6C"/>
+                        <outlet property="longPressGestureRecognizer" destination="Yb7-t8-5Oz" id="B2S-FU-S4i"/>
+                        <segue destination="ddU-no-pJP" kind="presentation" identifier="favoriteEditor" modalPresentationStyle="formSheet" id="LDc-y4-eYM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UlM-mq-v04" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="Yb7-t8-5Oz"/>
+                <tapGestureRecognizer id="0DJ-wu-xH2"/>
+            </objects>
+            <point key="canvasLocation" x="75" y="-1360"/>
+        </scene>
+        <!--FavoriteEditor-->
+        <scene sceneID="WPQ-rg-pSH">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ggg-6I-lgV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="FavoriteEditor" id="ddU-no-pJP" userLabel="FavoriteEditor" sceneMemberID="viewController"/>
+            </objects>
+            <point key="canvasLocation" x="828" y="-1360"/>
+        </scene>
+    </scenes>
+</document>

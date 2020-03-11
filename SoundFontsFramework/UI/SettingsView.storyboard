@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="abC-bT-I7W">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Settings-->
+        <scene sceneID="uPw-wu-W1b">
+            <objects>
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="koc-Pj-3tt" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="ULC-tI-QtR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="318"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dke-BS-xwD">
+                                <rect key="frame" x="249" y="233" width="55" height="30"/>
+                                <state key="normal" title="Remove"/>
+                                <connections>
+                                    <action selector="removeDefaultSoundFonts:" destination="koc-Pj-3tt" eventType="touchUpInside" id="boM-hY-ftu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gST-KP-WWg">
+                                <rect key="frame" x="251" y="271" width="53" height="30"/>
+                                <state key="normal" title="Restore"/>
+                                <connections>
+                                    <action selector="restoreDefaultSoundFonts:" destination="koc-Pj-3tt" eventType="touchUpInside" id="gVV-19-Tld"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B8g-VQ-qvz">
+                                <rect key="frame" x="16" y="113.5" width="154" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUw-U4-qiY">
+                                <rect key="frame" x="16" y="237.5" width="210" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w1r-nM-xko">
+                                <rect key="frame" x="255" y="108" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleShowSolfegeNotes:" destination="koc-Pj-3tt" eventType="valueChanged" id="IT7-jn-opP"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play sample" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vn2-t9-wbY">
+                                <rect key="frame" x="16" y="152.5" width="91.5" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4K0-gT-ksK">
+                                <rect key="frame" x="16" y="275.5" width="207" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lgy-bZ-xdr">
+                                <rect key="frame" x="255" y="147" width="51" height="31"/>
+                                <connections>
+                                    <action selector="togglePlaySample:" destination="koc-Pj-3tt" eventType="valueChanged" id="2lA-Hn-WDA"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show key labels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KnD-Qm-iCl">
+                                <rect key="frame" x="16" y="191" width="123" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k1D-Q0-S3g" userLabel="Show Key Labels">
+                                <rect key="frame" x="255" y="186" width="51" height="31"/>
+                                <connections>
+                                    <action selector="toggleShowKeyLabels:" destination="koc-Pj-3tt" eventType="valueChanged" id="obs-W6-sHD"/>
+                                </connections>
+                            </switch>
+                        </subviews>
+                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4K0-gT-ksK" secondAttribute="bottom" constant="16" id="1A1-KI-vgp"/>
+                            <constraint firstItem="B8g-VQ-qvz" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="1vj-nr-zTe"/>
+                            <constraint firstItem="vn2-t9-wbY" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="4ul-5I-2o5"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gST-KP-WWg" secondAttribute="bottom" constant="16" id="6qN-np-1qR"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="top" secondItem="dke-BS-xwD" secondAttribute="bottom" constant="8" id="8wH-nu-LYR"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="top" secondItem="v3N-bE-EnC" secondAttribute="top" constant="20" id="AXf-l1-9N3"/>
+                            <constraint firstItem="Lgy-bZ-xdr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vn2-t9-wbY" secondAttribute="trailing" constant="16" id="B8o-Bi-but"/>
+                            <constraint firstItem="dke-BS-xwD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="CUw-U4-qiY" secondAttribute="trailing" constant="16" id="Edu-5P-yFv"/>
+                            <constraint firstItem="dke-BS-xwD" firstAttribute="firstBaseline" secondItem="CUw-U4-qiY" secondAttribute="firstBaseline" id="In9-ch-b0A"/>
+                            <constraint firstItem="CUw-U4-qiY" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="O5r-nw-Xdv"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="k1D-Q0-S3g" secondAttribute="trailing" constant="16" id="OUd-Pf-Wrh"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="centerY" secondItem="B8g-VQ-qvz" secondAttribute="centerY" id="RPr-Oe-tpX"/>
+                            <constraint firstItem="w1r-nM-xko" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="B8g-VQ-qvz" secondAttribute="trailing" constant="16" id="UdS-jt-H0J"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4K0-gT-ksK" secondAttribute="trailing" constant="16" id="VTu-Of-K1u"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="Lgy-bZ-xdr" secondAttribute="trailing" constant="16" id="Zcf-sd-y5o"/>
+                            <constraint firstItem="KnD-Qm-iCl" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="aGe-sI-Bmr"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="gST-KP-WWg" secondAttribute="trailing" constant="16" id="dk1-ju-j90"/>
+                            <constraint firstItem="k1D-Q0-S3g" firstAttribute="top" secondItem="Lgy-bZ-xdr" secondAttribute="bottom" constant="8" id="gA2-nV-Djx"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="dke-BS-xwD" secondAttribute="trailing" constant="16" id="hGd-aD-CvX"/>
+                            <constraint firstItem="Lgy-bZ-xdr" firstAttribute="top" secondItem="w1r-nM-xko" secondAttribute="bottom" constant="8" id="lo7-Bv-VOj"/>
+                            <constraint firstItem="v3N-bE-EnC" firstAttribute="trailing" secondItem="w1r-nM-xko" secondAttribute="trailing" constant="16" id="ngG-6o-Xx6"/>
+                            <constraint firstItem="gST-KP-WWg" firstAttribute="firstBaseline" secondItem="4K0-gT-ksK" secondAttribute="firstBaseline" id="pvF-VI-pIz"/>
+                            <constraint firstItem="k1D-Q0-S3g" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KnD-Qm-iCl" secondAttribute="trailing" constant="16" id="pvT-lt-0vJ"/>
+                            <constraint firstItem="k1D-Q0-S3g" firstAttribute="centerY" secondItem="KnD-Qm-iCl" secondAttribute="centerY" id="v0L-ci-1AV"/>
+                            <constraint firstItem="dke-BS-xwD" firstAttribute="top" secondItem="k1D-Q0-S3g" secondAttribute="bottom" constant="16" id="voj-vm-tVf"/>
+                            <constraint firstItem="Lgy-bZ-xdr" firstAttribute="centerY" secondItem="vn2-t9-wbY" secondAttribute="centerY" id="vzg-nt-SNL"/>
+                            <constraint firstItem="4K0-gT-ksK" firstAttribute="leading" secondItem="v3N-bE-EnC" secondAttribute="leading" constant="16" id="y75-Yo-DE1"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="v3N-bE-EnC"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Settings" id="N8q-c8-KEs">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="5f6-53-xq0">
+                            <connections>
+                                <action selector="close:" destination="koc-Pj-3tt" id="ZJf-gc-3ac"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="v2.4.1" id="K36-RC-bpq" userLabel="APP_VERSION">
+                            <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="visitAppStore:" destination="koc-Pj-3tt" id="dWM-hM-da1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <size key="freeformSize" width="320" height="318"/>
+                    <connections>
+                        <outlet property="doneButton" destination="5f6-53-xq0" id="oIr-mh-YQf"/>
+                        <outlet property="playSample" destination="Lgy-bZ-xdr" id="2F8-xJ-usD"/>
+                        <outlet property="removeDefaultSoundFonts" destination="dke-BS-xwD" id="w8L-ml-m35"/>
+                        <outlet property="restoreDefaultSoundFonts" destination="gST-KP-WWg" id="Er6-0H-YkL"/>
+                        <outlet property="showKeyLabels" destination="k1D-Q0-S3g" id="hNT-ko-Apk"/>
+                        <outlet property="showSolfegeNotes" destination="w1r-nM-xko" id="hQQ-Qh-xJz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SBw-mT-rOn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="410" y="-781"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="j3m-ZE-aZA">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="abC-bT-I7W" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="vmV-1z-l3G">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="koc-Pj-3tt" kind="relationship" relationship="rootViewController" id="oD2-V4-8r5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WZ9-EA-SKA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-268.1159420289855" y="-781.47321428571422"/>
+        </scene>
+    </scenes>
+</document>

@@ -28,6 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
+        NotificationCenter.default.addObserver(self, selector: #selector(visitAppStore),
+                                               name: Notification.Name("visitAppStore"), object: nil)
         return true
     }
 
@@ -60,6 +62,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillTerminate")
         components.mainViewController.stopAudio()
+    }
+
+    @objc func visitAppStore() {
+        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review")
+        // guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077")
+            else { fatalError("Expected a valid URL") }
+        UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
 }
 

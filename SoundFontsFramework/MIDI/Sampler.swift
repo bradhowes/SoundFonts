@@ -61,7 +61,7 @@ public final class Sampler {
     }
 
     private func loadActivePatch() -> Result<Void, Failure> {
-        loaded ? .success(()) : load(activePatchKind: activePatchKind, playSample: false)
+        loaded ? .success(()) : load(activePatchKind: activePatchKind)
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Sampler {
 
      - returns: Result instance indicating success or failure
      */
-    public func load(activePatchKind: ActivePatchKind, playSample: Bool) -> Result<Void, Failure> {
+    public func load(activePatchKind: ActivePatchKind, afterLoadBlock: (() -> Void)? = nil) -> Result<Void, Failure> {
         os_log(.info, log: log, "load - %s", activePatchKind.description)
 
         self.activePatchKind = activePatchKind
@@ -127,9 +127,7 @@ public final class Sampler {
                                                 bankLSB: UInt8(soundFontPatch.patch.bankLSB))
             os_log(.info, log: log, "end loading")
             loaded = true
-            if playSample {
-                self.playSample()
-            }
+            afterLoadBlock?()
             return .success(())
         } catch let error as NSError {
             os_log(.error, log: log, "failed loading - %s", error.localizedDescription)
@@ -177,19 +175,5 @@ public final class Sampler {
         os_log(.info, log: log, "noteOff - %d", midiValue)
         guard let sampler = self.ausampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
-    }
-
-    var workItem: DispatchWorkItem?
-
-    private func playSample() {
-        let note = 69 // A4
-        self.workItem?.cancel()
-        self.workItem = nil
-        self.workItem = DispatchWorkItem {
-            self.noteOn(note)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { self.noteOff(note) }
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: self.workItem!)
     }
 }

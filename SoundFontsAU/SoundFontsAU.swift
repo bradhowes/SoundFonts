@@ -36,6 +36,14 @@ final class SoundFontsAU: AUAudioUnit {
         os_log(.info, log:log, "init - done")
     }
 
+    override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration])
+        -> IndexSet {
+        os_log(.error, log: log, "supportedViewConfiigurations")
+        let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 270 ? $0.0 : nil }
+        os_log(.error, log: log, "indices: %{public}s", indices.debugDescription)
+        return IndexSet(indices)
+    }
+
     override public var component: AudioComponent { wrapped.component }
 
     override public func allocateRenderResources() throws {
@@ -50,8 +58,16 @@ final class SoundFontsAU: AUAudioUnit {
     override public func deallocateRenderResources() { wrapped.deallocateRenderResources() }
     override public var renderResourcesAllocated: Bool { wrapped.renderResourcesAllocated }
     override public func reset() { wrapped.reset() }
-    override public var inputBusses: AUAudioUnitBusArray { wrapped.inputBusses }
-    override public var outputBusses: AUAudioUnitBusArray { wrapped.outputBusses }
+    override public var inputBusses: AUAudioUnitBusArray {
+        os_log(.error, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
+        return wrapped.inputBusses
+    }
+
+    override public var outputBusses: AUAudioUnitBusArray {
+        os_log(.error, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
+        return wrapped.outputBusses
+    }
+
     override public var renderBlock: AURenderBlock { wrapped.renderBlock }
     override public var scheduleParameterBlock: AUScheduleParameterBlock { wrapped.scheduleParameterBlock }
 
@@ -76,8 +92,19 @@ final class SoundFontsAU: AUAudioUnit {
 
     override public var allParameterValues: Bool { wrapped.allParameterValues }
     override public var isMusicDeviceOrEffect: Bool { true }
-    override public var virtualMIDICableCount: Int { wrapped.virtualMIDICableCount }
-    override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? { wrapped.scheduleMIDIEventBlock }
+    override public var virtualMIDICableCount: Int {
+        os_log(.error, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
+        return wrapped.virtualMIDICableCount
+    }
+
+    override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
+        return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
+            guard let block = self.wrapped.scheduleMIDIEventBlock else { return }
+            os_log(.error, log: self.log, "scheduleMIDIEventBlock call - %d %d %d %d %d",
+                   when, channel, count, bytes[0], bytes[1])
+            block(when, channel, count, bytes)
+        }
+    }
 
     override public var midiOutputNames: [String] { wrapped.midiOutputNames }
     override public var midiOutputEventBlock: AUMIDIOutputEventBlock? {
@@ -135,19 +162,32 @@ final class SoundFontsAU: AUAudioUnit {
     override public var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
 
     override public var channelMap: [NSNumber]? {
-        get { wrapped.channelMap }
-        set { wrapped.channelMap = newValue }
+        get {
+            os_log(.error, log: log, "channelMap get - %d", wrapped.channelMap?.count ?? -1)
+            return wrapped.channelMap
+        }
+        set {
+            os_log(.error, log: log, "channelMap set - %d", newValue?.count ?? -1)
+            wrapped.channelMap = newValue
+        }
     }
 
     override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber) -> MIDICIProfileState {
         wrapped.profileState(forCable: cable, channel: channel)
     }
 
-    override public var canPerformInput: Bool { wrapped.canPerformInput }
+    override public var canPerformInput: Bool {
+        os_log(.error, log: log, "canPerformInput - %d", wrapped.canPerformInput)
+        return wrapped.canPerformInput
+    }
+
     override public var canPerformOutput: Bool { wrapped.canPerformOutput }
 
     override public var isInputEnabled: Bool {
-        get { wrapped.isInputEnabled }
+        get {
+            os_log(.error, log: log, "isInputEnabled - %d", wrapped.isInputEnabled)
+            return wrapped.isInputEnabled
+        }
         set { wrapped.isInputEnabled = newValue }
     }
 
@@ -167,7 +207,13 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var isRunning: Bool { wrapped.isRunning }
-    override public func startHardware() throws { try wrapped.startHardware() }
-    override public func stopHardware() { wrapped.stopHardware() }
+    override public func startHardware() throws {
+        os_log(.error, log: log, "startHardware")
+        try wrapped.startHardware()
+    }
+    override public func stopHardware() {
+        os_log(.error, log: log, "stopHardware")
+        wrapped.stopHardware()
+    }
     override var internalRenderBlock: AUInternalRenderBlock { wrapped.internalRenderBlock }
 }
