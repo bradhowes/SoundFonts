@@ -19,6 +19,8 @@ final class MainViewController: UIViewController {
     private var notePlayer: NotePlayer!
     private var volumeMonitor: VolumeMonitor!
     private var sampler: Sampler!
+    private var workItem: DispatchWorkItem?
+    fileprivate var noteInjector = NoteInjector()
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
@@ -101,7 +103,11 @@ extension MainViewController: ControllerConfiguration {
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            if case let .failure(what) = self.sampler.load(activePatchKind: activePatchKind, playSample: playSample) {
+            let result = self.sampler.load(activePatchKind: activePatchKind) {
+                if playSample { self.noteInjector.post(to: self.sampler) }
+            }
+
+            if case let .failure(what) = result {
                 DispatchQueue.main.async { self.postAlert(for: what) }
             }
         }

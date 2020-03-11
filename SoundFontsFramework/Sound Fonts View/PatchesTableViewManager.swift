@@ -38,7 +38,7 @@ final class PatchesTableViewManager: NSObject {
         self.sampler = sampler
         super.init()
 
-        view.register(PatchCell.self)
+        view.register(TableCell.self)
         view.dataSource = self
         view.delegate = self
         searchBar.delegate = self
@@ -140,6 +140,10 @@ extension PatchesTableViewManager: UITableViewDelegate {
             hideSearchBar()
         }
         return indexPath
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        os_log(.info, log: log, "didDeselectRow %d", indexPath.row)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -363,7 +367,7 @@ extension PatchesTableViewManager {
         return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
     }
 
-    private func createFaveAction(cell: PatchCell, at indexPath: IndexPath,
+    private func createFaveAction(cell: TableCell, at indexPath: IndexPath,
                                   with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -376,7 +380,7 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createUnfaveAction(cell: PatchCell, at indexPath: IndexPath,
+    private func createUnfaveAction(cell: TableCell, at indexPath: IndexPath,
                                     with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
@@ -395,7 +399,7 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createEditAction(cell: PatchCell, at indexPath: IndexPath,
+    private func createEditAction(cell: TableCell, at indexPath: IndexPath,
                                   with soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -408,7 +412,7 @@ extension PatchesTableViewManager {
     }
 
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let cell: PatchCell = view.cellForRow(at: indexPath) else { return nil }
+        guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         let action = favorites.isFavored(soundFontPatch: soundFontPatch) ?
             createEditAction(cell: cell, at: indexPath, with: soundFontPatch) :
@@ -419,7 +423,7 @@ extension PatchesTableViewManager {
     }
 
     private func createTrailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let cell: PatchCell = view.cellForRow(at: indexPath) else { return nil }
+        guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         let actions = UISwipeActionsConfiguration(actions: favorites.isFavored(soundFontPatch: soundFontPatch) ?
             [createUnfaveAction(cell: cell, at: indexPath, with: soundFontPatch)] : [])
@@ -446,13 +450,13 @@ extension PatchesTableViewManager {
     }
 
     private func update(at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) {
-        if let cell: PatchCell = view.cellForRow(at: indexPath) {
+        if let cell: TableCell = view.cellForRow(at: indexPath) {
             update(cell: cell, at: indexPath, with: soundFontPatch)
         }
     }
 
     private func update(at indexPath: IndexPath, with favorite: Favorite) {
-        if let cell: PatchCell = view.cellForRow(at: indexPath) {
+        if let cell: TableCell = view.cellForRow(at: indexPath) {
             update(cell: cell, at: indexPath, with: favorite)
         }
     }
@@ -465,20 +469,20 @@ extension PatchesTableViewManager {
      - parameter patch: the Patch to use for the updating
      */
     @discardableResult
-    private func update(cell: PatchCell, at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) -> PatchCell {
+    private func update(cell: TableCell, at indexPath: IndexPath, with soundFontPatch: SoundFontPatch) -> TableCell {
         if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
             return update(cell: cell, at: indexPath, with: favorite)
         }
 
         let active = isActive(soundFontPatch: soundFontPatch)
-        cell.update(name: soundFontPatch.patch.name, isSelected: active, isActive: active, isFavorite: false)
+        cell.updateForPatch(name: soundFontPatch.patch.name, isActive: active, isFavorite: false)
         return cell
     }
 
     @discardableResult
-    private func update(cell: PatchCell, at indexPath: IndexPath, with favorite: Favorite) -> PatchCell {
+    private func update(cell: TableCell, at indexPath: IndexPath, with favorite: Favorite) -> TableCell {
         let active = isActive(soundFontPatch: favorite.soundFontPatch)
-        cell.update(name: favorite.name, isSelected: active, isActive: active, isFavorite: true)
+        cell.updateForPatch(name: favorite.name, isActive: active, isFavorite: true)
         return cell
     }
 }

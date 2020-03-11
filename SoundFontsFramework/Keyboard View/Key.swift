@@ -11,6 +11,9 @@ final class Key: UIView {
     /// If true, audio is muted
     static var isMuted: Bool = false
 
+    /// If true, show note on key
+    static var showKeyLabels: Bool = Settings[.showKeyLabels]
+
     /// The note to play when touched
     let note: Note
 
@@ -41,9 +44,7 @@ final class Key: UIView {
      - parameter coder: data container to use
      */
     required init?(coder aDecoder: NSCoder) {
-        self.note = Note(midiNoteValue: aDecoder.decodeInteger(forKey: "note"))
-        super.init(coder: aDecoder)
-        configure()
+        fatalError()
     }
 
     /**
@@ -59,7 +60,8 @@ final class Key: UIView {
         }
         else {
             KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
-                                        isMuted: Self.isMuted)
+                                        isMuted: Self.isMuted,
+                                        note: Self.showKeyLabels ? note.label : "")
         }
     }
 
