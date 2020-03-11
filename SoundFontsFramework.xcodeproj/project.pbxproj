@@ -94,7 +94,6 @@
 		BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB824058C6200067AE2 /* SettingsTests.swift */; };
 		BD6E8ABB2405C7E000067AE2 /* SharedStateMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8ABA2405C7E000067AE2 /* SharedStateMonitorTests.swift */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
-		BD88BCB5241984F700399DE5 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB4241984F700399DE5 /* Checkbox.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
 		BD90AEE62419280300D29E18 /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD90AEE42419280300D29E18 /* SettingsView.storyboard */; };
 		BD90AEE72419280300D29E18 /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD90AEE52419280300D29E18 /* SoundFontsControls.storyboard */; };
@@ -217,7 +216,6 @@
 		BD6E8ABA2405C7E000067AE2 /* SharedStateMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedStateMonitorTests.swift; sourceTree = "<group>"; };
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
-		BD88BCB4241984F700399DE5 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
 		BD90AEE42419280300D29E18 /* SettingsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsView.storyboard; sourceTree = "<group>"; };
 		BD90AEE52419280300D29E18 /* SoundFontsControls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontsControls.storyboard; sourceTree = "<group>"; };
@@ -268,7 +266,6 @@
 				BD125B3D24100C940003DE99 /* Keyboard View */,
 				BD074BF123CDAF51001987E9 /* Sound Fonts View */,
 				BD074C2A23CDAF51001987E9 /* ActivePatchManager.swift */,
-				BD88BCB4241984F700399DE5 /* Checkbox.swift */,
 				BD125B3E241010430003DE99 /* Components.swift */,
 				BD074BDF23CDAF51001987E9 /* GetSoundFontInfo.swift */,
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
@@ -677,7 +674,6 @@
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
-				BD88BCB5241984F700399DE5 /* Checkbox.swift in Sources */,
 				BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */,
 				BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */,
 				BD074C7A23CDAF51001987E9 /* FileManager+Extensions.swift in Sources */,

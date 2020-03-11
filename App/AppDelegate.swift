@@ -12,6 +12,7 @@ import os
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
     private let components = Components<MainViewController>(changer: .application)
+    private var observer: NSObjectProtocol?
 
     var window: UIWindow?
 
@@ -28,8 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(visitAppStore),
-                                               name: Notification.Name("visitAppStore"), object: nil)
+        observer = NotificationCenter.default.addObserver(forName: Notification.visitAppStore.name, object: nil,
+                                                          queue: nil) { _ in
+            self.visitAppStore()
+        }
+
         return true
     }
 
