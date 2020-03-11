@@ -117,7 +117,7 @@
                                 <action selector="close:" destination="koc-Pj-3tt" id="ZJf-gc-3ac"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="v2.4.1" id="K36-RC-bpq" userLabel="APP_VERSION">
+                        <barButtonItem key="rightBarButtonItem" title="v2.4.2" id="K36-RC-bpq" userLabel="APP_VERSION">
                             <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="visitAppStore:" destination="koc-Pj-3tt" id="dWM-hM-da1"/>
