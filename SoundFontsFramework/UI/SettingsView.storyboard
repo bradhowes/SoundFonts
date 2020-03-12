@@ -13,7 +13,7 @@
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="koc-Pj-3tt" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="ULC-tI-QtR">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="318"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dke-BS-xwD">
@@ -124,7 +124,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="320" height="318"/>
+                    <size key="freeformSize" width="320" height="320"/>
                     <connections>
                         <outlet property="doneButton" destination="5f6-53-xq0" id="oIr-mh-YQf"/>
                         <outlet property="playSample" destination="Lgy-bZ-xdr" id="2F8-xJ-usD"/>

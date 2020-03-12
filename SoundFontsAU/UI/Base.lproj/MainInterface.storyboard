@@ -18,6 +18,9 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3SM-8U-9Rx">
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="320" id="FAw-sT-2Si"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="qKl-DY-GQH" kind="embed" id="6ko-Bc-grg"/>
                                 </connections>
