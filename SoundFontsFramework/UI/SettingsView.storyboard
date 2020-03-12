@@ -13,11 +13,11 @@
             <objects>
                 <viewController title="Settings" id="Eyw-X4-KFI" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="446"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="56" width="414" height="390"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="312"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="319.5"/>
@@ -172,7 +172,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="414" height="500"/>
+                    <size key="freeformSize" width="414" height="400"/>
                     <connections>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
                         <outlet property="keyWidthSlider" destination="8zs-tA-EFY" id="N0J-nv-1Pn"/>
