@@ -1,24 +1,30 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 public extension SettingKeys {
     static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
     static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
     static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
+    static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
 }
 
 /**
  Manages window showing various runtime settings and options.
  */
 class SettingsViewController: UIViewController {
+    private let log = Logging.logger("SetVC")
 
-    @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
-    @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
-    @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
+
+    @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet weak var playSample: UISwitch!
     @IBOutlet weak var showKeyLabels: UISwitch!
+    @IBOutlet weak var keyWidthSlider: UISlider!
+
+    @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
+    @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
 
     var soundFonts: SoundFonts!
 
@@ -29,6 +35,11 @@ class SettingsViewController: UIViewController {
         playSample.isOn = Settings[.playSample]
         showKeyLabels.isOn = Settings[.showKeyLabels]
         updateButtonState()
+
+        keyWidthSlider.maximumValue = 96.0
+        keyWidthSlider.minimumValue = 32.0
+        keyWidthSlider.isContinuous = true
+        keyWidthSlider.value = Settings[.keyWidth]
     }
 
     private func updateButtonState() {
@@ -41,18 +52,8 @@ class SettingsViewController: UIViewController {
         self.dismiss(animated: true)
     }
 
-    @IBAction
-    private func restoreDefaultSoundFonts(_ sender: Any) {
-        soundFonts.restoreBundled()
-        updateButtonState()
-        postNotice(msg: "Restored entries to the built-in sound fonts.")
-    }
-
-    @IBAction
-    private func removeDefaultSoundFonts(_ sender: Any) {
-        soundFonts.removeBundled()
-        updateButtonState()
-        postNotice(msg: "Removed entries to the built-in sound fonts.")
+    @IBAction func visitAppStore(_ sender: Any) {
+        NotificationCenter.default.post(.visitAppStore)
     }
 
     @IBAction
@@ -69,8 +70,31 @@ class SettingsViewController: UIViewController {
         NotificationCenter.default.post(.showKeyLabelsChanged)
     }
 
-    @IBAction func visitAppStore(_ sender: Any) {
-        NotificationCenter.default.post(.visitAppStore)
+    @IBAction func keyWidthChange(_ sender: Any) {
+        let prevValue = Settings[.keyWidth].rounded()
+        var newValue = keyWidthSlider.value.rounded()
+        if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
+        keyWidthSlider.value = newValue
+
+        if newValue != prevValue {
+            os_log(.info, log: log, "new key width: %f", newValue)
+            Settings[.keyWidth] = newValue
+            NotificationCenter.default.post(.keyWidthChanged)
+        }
+    }
+
+    @IBAction
+    private func removeDefaultSoundFonts(_ sender: Any) {
+        soundFonts.removeBundled()
+        updateButtonState()
+        postNotice(msg: "Removed entries to the built-in sound fonts.")
+    }
+
+    @IBAction
+    private func restoreDefaultSoundFonts(_ sender: Any) {
+        soundFonts.restoreBundled()
+        updateButtonState()
+        postNotice(msg: "Restored entries to the built-in sound fonts.")
     }
 
     private func postNotice(msg: String) {
