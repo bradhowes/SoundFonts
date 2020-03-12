@@ -137,13 +137,8 @@ extension PatchesTableViewManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if !showingSearchResults {
             dismissSearchKeyboard()
-            hideSearchBar()
         }
         return indexPath
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        os_log(.info, log: log, "didDeselectRow %d", indexPath.row)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -228,12 +223,7 @@ extension PatchesTableViewManager {
                 }
             }
 
-            if let indexPath = update(with: new.soundFontPatch) {
-                view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                view.scrollToRow(at: indexPath, at: .none, animated: false)
-            }
-
-            hideSearchBar()
+            selectActive()
         }
     }
 
@@ -246,10 +236,7 @@ extension PatchesTableViewManager {
                 reloadView()
                 DispatchQueue.main.async {
                     if self.activePatchManager.soundFont == new {
-                        if let indexPath = self.getIndexPath(for: self.activePatchManager.soundFontPatch) {
-                            self.view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                            self.view.scrollToRow(at: indexPath, at: .none, animated: false)
-                        }
+                        self.selectActive()
                     }
                     else if !self.showingSearchResults {
                         self.hideSearchBar()
@@ -358,8 +345,12 @@ extension PatchesTableViewManager {
         os_log(.info, log: log, "selectActive")
         if let indexPath = getIndexPath(for: activePatchManager.soundFontPatch) {
             view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-            view.scrollToRow(at: indexPath, at: .none, animated: false)
-            hideSearchBar()
+            if let visible = view.indexPathsForVisibleRows {
+                if !visible.contains(indexPath) {
+                    view.scrollToRow(at: indexPath, at: .none, animated: false)
+                }
+                hideSearchBar()
+            }
         }
     }
 
