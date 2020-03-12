@@ -24,6 +24,17 @@ extension Int: SettingSerializable {
     }
 }
 
+extension Float: SettingSerializable {
+
+    public static func get(key: String, userDefaults: UserDefaults) -> Float? {
+        userDefaults.number(forKey: key)?.floatValue
+    }
+
+    public static func set(key: String, value: Float, userDefaults: UserDefaults) {
+        userDefaults.set(value, forKey: key)
+    }
+}
+
 extension Double: SettingSerializable {
 
     public static func get(key: String, userDefaults: UserDefaults) -> Double? {
