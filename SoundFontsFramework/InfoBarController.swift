@@ -38,13 +38,20 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         panner.maximumNumberOfTouches = 1
         view.addGestureRecognizer(panner)
 
-        moreButtons.isHidden = true
-        moreButtonsXConstraint.constant = -moreButtons.frame.width
+        if traitCollection.horizontalSizeClass == .compact {
+            moreButtonsXConstraint.constant = -moreButtons.frame.width
+        }
     }
 
     @IBAction
     func toggleMoreButtons(_ sender: UIButton) {
-        self.view.layoutIfNeeded()
+        guard traitCollection.horizontalSizeClass == .compact else { return }
+
+        // Make sure that the 'moreButtons' view is where we expect it to be. This seems to be necessary after
+        // width trait changes.
+        moreButtonsXConstraint.constant = moreButtons.isHidden ? -moreButtons.frame.width : 0
+        view.layoutIfNeeded()
+
         let willBeHidden = !moreButtons.isHidden
         let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
                                compatibleWith: .none)

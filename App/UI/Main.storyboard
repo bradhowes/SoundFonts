@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
-    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -13,19 +13,19 @@
             <objects>
                 <viewController storyboardIdentifier="Main" title="Piano" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FCh-Nr-9cp" userLabel="Main" customClass="MainViewController" customModule="SoundFonts" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9hh-ZJ-oqw">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zh4-QX-qOz">
-                                <rect key="frame" x="0.0" y="44" width="414" height="578"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="341"/>
                                 <connections>
                                     <segue destination="Uyd-5y-IUm" kind="embed" id="sTT-HI-eUZ"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Keyboard" translatesAutoresizingMaskIntoConstraints="NO" id="6sg-ac-0XL" userLabel="Keyboard">
-                                <rect key="frame" x="0.0" y="622" width="414" height="240"/>
+                                <rect key="frame" x="0.0" y="341" width="320" height="227"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="240" id="aqN-cf-K1s"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="340" id="aqN-cf-K1s"/>
                                 </constraints>
                                 <variation key="heightClass=compact">
                                     <mask key="constraints">
@@ -48,14 +48,9 @@
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="top" secondItem="Zh4-QX-qOz" secondAttribute="bottom" id="mb7-xs-gl7"/>
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="leading" secondItem="9hh-ZJ-oqw" secondAttribute="leading" id="qO6-mg-CnC"/>
                             <constraint firstItem="6sg-ac-0XL" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="qUz-7s-KTj"/>
-                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="height" secondItem="6sg-ac-0XL" secondAttribute="height" multiplier="1.5" id="yrG-D2-ncF"/>
+                            <constraint firstItem="Zh4-QX-qOz" firstAttribute="height" secondItem="6sg-ac-0XL" secondAttribute="height" multiplier="1.5" priority="999" id="yrG-D2-ncF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="3Ns-BN-Xtc"/>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="yrG-D2-ncF"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="yrG-D2-ncF"/>
@@ -82,7 +77,7 @@
             <objects>
                 <viewController storyboardIdentifier="KeyboardController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="iPa-Gs-fEb" customClass="KeyboardController" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="omh-8Z-dts">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="240"/>
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="128"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="aD3-XW-FcA"/>

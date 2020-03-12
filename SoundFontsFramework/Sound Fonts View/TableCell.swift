@@ -32,10 +32,14 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private var selectedIndicatorAnimator: UIViewPropertyAnimator?
 
-    override public func prepareForReuse() {
+    private func stopAnimation() {
         selectedIndicatorAnimator?.stopAnimation(true)
         selectedIndicatorAnimator = nil
         selectedIndicator.alpha = 0.0
+    }
+
+    override public func prepareForReuse() {
+        stopAnimation()
         lockSelected = false
     }
 
@@ -50,21 +54,21 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         super.setSelected(selected, animated: animated)
 
         if lockSelected && !selected { return }
+        stopAnimation()
 
-        let alpha: CGFloat = selected ? 1.0 : 0.0
-        if animated {
-            selectedIndicator.alpha = 1.0 - alpha
-            self.selectedIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) {
-                self.selectedIndicator.alpha = alpha
-            }
-            self.selectedIndicatorAnimator?.addCompletion { (state: UIViewAnimatingPosition) in
-                self.selectedIndicator.alpha = state == .end ? alpha : (1.0 - alpha)
-            }
-            self.selectedIndicatorAnimator?.startAnimation()
+        let newAlpha: CGFloat = selected ? 1.0 : 0.0
+        if !animated || !selected {
+            selectedIndicator.alpha = newAlpha
+            return
         }
-        else {
-            selectedIndicator.alpha = alpha
+
+        selectedIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) {
+            self.selectedIndicator.alpha = newAlpha
         }
+        selectedIndicatorAnimator?.addCompletion { (state: UIViewAnimatingPosition) in
+            self.selectedIndicator.alpha = state == .end ? newAlpha : (1.0 - newAlpha)
+        }
+        selectedIndicatorAnimator?.startAnimation()
     }
 
     /**
@@ -78,6 +82,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
+        lockSelected = false
     }
 
     /**
@@ -91,7 +96,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         os_log(.debug, log: log, "update '%s' isActive: %d isFavorite: %d", name, isActive, isFavorite)
         self.name.text = Self.favoriteTag(isFavorite) + name
         self.name.textColor = fontColorWhen(isSelected: isActive, isActive: isActive, isFavorite: isFavorite)
-        self.lockSelected = isActive
+        lockSelected = isActive
     }
 
     private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {

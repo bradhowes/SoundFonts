@@ -25,10 +25,14 @@
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
+		BD88BCBF2419A9D400399DE5 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */; };
+		BD88BCC72419A9FB00399DE5 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCC62419A9FB00399DE5 /* SnapshotHelper.swift */; };
 		BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC3123C73578005BEFD5 /* Assets.xcassets */; };
 		BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */; };
 		BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */; };
 		BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */; };
+		BDC4A9272419B2B8006D9F4D /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDC4A9262419B2B8006D9F4D /* SoundFontInfoLib.framework */; };
+		BDC4A9292419B2B8006D9F4D /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */; };
 		BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 		BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 /* End PBXBuildFile section */
@@ -48,7 +52,7 @@
 			remoteGlobalIDString = BD75B25F218B8CFD00C7EBD7;
 			remoteInfo = SoundFonts;
 		};
-		BD75B280218B8CFE00C7EBD7 /* PBXContainerItemProxy */ = {
+		BD88BCC12419A9D400399DE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
 			proxyType = 1;
@@ -106,12 +110,17 @@
 		BD75B26F218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD75B278218B8CFE00C7EBD7 /* SoundFontsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsTests.swift; sourceTree = "<group>"; };
 		BD75B27A218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenShots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
+		BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenShots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
+		BD88BCC02419A9D400399DE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD88BCC62419A9FB00399DE5 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BDA0FC9E23C78E34005BEFD5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BDC4A9262419B2B8006D9F4D /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,10 +151,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD75B27C218B8CFE00C7EBD7 /* Frameworks */ = {
+		BD88BCB92419A9D400399DE5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDC4A9292419B2B8006D9F4D /* SoundFontsFramework.framework in Frameworks */,
+				BDC4A9272419B2B8006D9F4D /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +200,7 @@
 				BD75B262218B8CFD00C7EBD7 /* App */,
 				BD05836323E4C52800E094E0 /* SoundFontsAU */,
 				BD75B277218B8CFE00C7EBD7 /* AppTests */,
+				BD88BCBD2419A9D400399DE5 /* ScreenShots */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -198,9 +210,9 @@
 			isa = PBXGroup;
 			children = (
 				BD75B260218B8CFD00C7EBD7 /* SoundFonts.app */,
-				BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */,
 				BD05836223E4C52800E094E0 /* SoundFontsAU.appex */,
 				BD430FB22410E657009DB9B3 /* AppTests.xctest */,
+				BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -233,6 +245,8 @@
 		BD874C92221A228E00BBD00B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDC4A9262419B2B8006D9F4D /* SoundFontInfoLib.framework */,
+				BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */,
 				BD430FA92410E57F009DB9B3 /* SoundFontInfoLib.framework */,
 				BD430FAB2410E57F009DB9B3 /* SoundFontsFramework.framework */,
 				BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */,
@@ -240,6 +254,16 @@
 				BD874C93221A228E00BBD00B /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BD88BCBD2419A9D400399DE5 /* ScreenShots */ = {
+			isa = PBXGroup;
+			children = (
+				BD88BCC62419A9FB00399DE5 /* SnapshotHelper.swift */,
+				BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */,
+				BD88BCC02419A9D400399DE5 /* Info.plist */,
+			);
+			path = ScreenShots;
 			sourceTree = "<group>";
 		};
 		BDAE7C982219540A0003A353 /* UI */ = {
@@ -310,22 +334,22 @@
 			productReference = BD75B260218B8CFD00C7EBD7 /* SoundFonts.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BD75B27E218B8CFE00C7EBD7 /* ScreenShots */ = {
+		BD88BCBB2419A9D400399DE5 /* ScreenShots */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BD75B28E218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "ScreenShots" */;
+			buildConfigurationList = BD88BCC32419A9D400399DE5 /* Build configuration list for PBXNativeTarget "ScreenShots" */;
 			buildPhases = (
-				BD75B27B218B8CFE00C7EBD7 /* Sources */,
-				BD75B27C218B8CFE00C7EBD7 /* Frameworks */,
-				BD75B27D218B8CFE00C7EBD7 /* Resources */,
+				BD88BCB82419A9D400399DE5 /* Sources */,
+				BD88BCB92419A9D400399DE5 /* Frameworks */,
+				BD88BCBA2419A9D400399DE5 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				BD75B281218B8CFE00C7EBD7 /* PBXTargetDependency */,
+				BD88BCC22419A9D400399DE5 /* PBXTargetDependency */,
 			);
 			name = ScreenShots;
-			productName = SoundFontsUITests;
-			productReference = BD75B27F218B8CFE00C7EBD7 /* ScreenShots.xctest */;
+			productName = ScreenShots;
+			productReference = BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -356,9 +380,8 @@
 							};
 						};
 					};
-					BD75B27E218B8CFE00C7EBD7 = {
-						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1120;
+					BD88BCBB2419A9D400399DE5 = {
+						CreatedOnToolsVersion = 11.3.1;
 						TestTargetID = BD75B25F218B8CFD00C7EBD7;
 					};
 				};
@@ -381,8 +404,8 @@
 			targets = (
 				BD75B25F218B8CFD00C7EBD7 /* SoundFonts */,
 				BD05836123E4C52800E094E0 /* SoundFontsAU */,
-				BD75B27E218B8CFE00C7EBD7 /* ScreenShots */,
 				BD430FB12410E657009DB9B3 /* AppTests */,
+				BD88BCBB2419A9D400399DE5 /* ScreenShots */,
 			);
 		};
 /* End PBXProject section */
@@ -416,7 +439,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD75B27D218B8CFE00C7EBD7 /* Resources */ = {
+		BD88BCBA2419A9D400399DE5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -477,10 +500,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD75B27B218B8CFE00C7EBD7 /* Sources */ = {
+		BD88BCB82419A9D400399DE5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD88BCBF2419A9D400399DE5 /* ScreenShots.swift in Sources */,
+				BD88BCC72419A9FB00399DE5 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,10 +522,10 @@
 			target = BD75B25F218B8CFD00C7EBD7 /* SoundFonts */;
 			targetProxy = BD430FB72410E657009DB9B3 /* PBXContainerItemProxy */;
 		};
-		BD75B281218B8CFE00C7EBD7 /* PBXTargetDependency */ = {
+		BD88BCC22419A9D400399DE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BD75B25F218B8CFD00C7EBD7 /* SoundFonts */;
-			targetProxy = BD75B280218B8CFE00C7EBD7 /* PBXContainerItemProxy */;
+			targetProxy = BD88BCC12419A9D400399DE5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -789,19 +814,20 @@
 			};
 			name = Release;
 		};
-		BD75B28F218B8CFE00C7EBD7 /* Debug */ = {
+		BD88BCC42419A9D400399DE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ScreenShots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.ScreenShots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -809,19 +835,19 @@
 			};
 			name = Debug;
 		};
-		BD75B290218B8CFE00C7EBD7 /* Release */ = {
+		BD88BCC52419A9D400399DE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ScreenShots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoft.SoundFontsUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.ScreenShots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -868,11 +894,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BD75B28E218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "ScreenShots" */ = {
+		BD88BCC32419A9D400399DE5 /* Build configuration list for PBXNativeTarget "ScreenShots" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BD75B28F218B8CFE00C7EBD7 /* Debug */,
-				BD75B290218B8CFE00C7EBD7 /* Release */,
+				BD88BCC42419A9D400399DE5 /* Debug */,
+				BD88BCC52419A9D400399DE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

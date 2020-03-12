@@ -1,23 +1,16 @@
 # Uncomment the lines below you want to change by removing the # in the beginning
-project("/Users/howes/src/SoundFonts/SoundFonts.xcodeproj")
+workspace("/Users/howes/src/SoundFonts/SoundFonts.xcworkspace")
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iPad (6th generation)",
-  "iPad (7th generation)",
-  "iPad Air (3rd generation)",
-  "iPad Pro (9.7-inch)",
-  "iPad Pro (11-inch)",
-  "iPad Pro (12.9-inch) (3rd generation)",
-  "iPhone 8",
-  "iPhone 8 Plus",
-  "iPhone 11",
-  "iPhone 11 Pro",
-  "iPhone 11 Pro Max",
-  "iPhone SE",
-  "iPhone XR",
-  "iPhone XS",
-  "iPhone XS Max",
+    "iPhone 6s",
+    "iPhone SE",
+    "iPhone Xʀ",
+    "iPhone 11",
+    "iPhone 11 Pro Max",
+    "iPad Pro (12.9-inch) (2nd generation)",
+    "iPad Pro (12.9-inch) (3rd generation)",
+    "iPad Mini"
 ])
 
 languages([
