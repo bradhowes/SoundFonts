@@ -30,20 +30,20 @@ public class SettingsManager: NSObject {
 
             if key.shared {
                 if let value = T.get(key: key.userDefaultsKey, userDefaults: sharedSettings) {
-                    os_log(.info, log: log, "found in sharedSettings")
+                    os_log(.debug, log: log, "found in sharedSettings")
                     return value
                 }
             }
 
             if let value = T.get(key: key.userDefaultsKey, userDefaults: appSettings) {
-                os_log(.info, log: log, "found in appSettings -- copying to sharedSettings")
+                os_log(.debug, log: log, "found in appSettings -- copying to sharedSettings")
                 if key.shared {
                     sharedSettings[key] = value
                 }
                 return value
             }
 
-            os_log(.info, log: log, "not found -- using default value")
+            os_log(.debug, log: log, "not found -- using default value")
             return key.defaultValue
         }
 
