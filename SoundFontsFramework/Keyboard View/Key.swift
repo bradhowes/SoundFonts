@@ -14,6 +14,8 @@ final class Key: UIView {
     /// If true, show note on key
     static var showKeyLabels: Bool = Settings[.showKeyLabels]
 
+    static var keyWidth: CGFloat = CGFloat(Settings[.keyWidth])
+
     /// The note to play when touched
     let note: Note
 
@@ -53,7 +55,8 @@ final class Key: UIView {
      - parameter rect: the region to draw in
      */
     override func draw(_ rect: CGRect) {
-        let roundedCorner: CGFloat = 12.0
+        // let roundedCorner: CGFloat = 12.0
+        let roundedCorner: CGFloat = (0.1875 * rect.width).rounded()
         if note.accented {
             KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
                                         isMuted: Self.isMuted)

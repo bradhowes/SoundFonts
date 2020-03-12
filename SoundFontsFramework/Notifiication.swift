@@ -12,4 +12,7 @@ extension Notification {
 
     /// Notification to visit the app store to review the app
     public static let visitAppStore = Notification(name: Notification.Name(rawValue: "visitAppStore"))
+
+    /// Notification that the key width changed
+    public static let keyWidthChanged = Notification(name: Notification.Name(rawValue: "keyWidthChanged"))
 }

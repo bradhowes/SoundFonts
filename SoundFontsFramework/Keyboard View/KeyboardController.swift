@@ -26,7 +26,7 @@ final class KeyboardController: UIViewController {
     private var keys = [Key]()
 
     /// How wide each key will be
-    private let keyWidth: CGFloat = 64.0
+    private var keyWidth: CGFloat = CGFloat(Settings[.keyWidth])
 
     private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
     private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
@@ -56,11 +56,20 @@ final class KeyboardController: UIViewController {
         firstMidiNoteValue = max(lowestNote, 0)
         NotificationCenter.default.addObserver(forName: Notification.showKeyLabelsChanged.name, object: nil,
                                                queue: nil) { _ in self.showKeyLabelsChanged() }
+        NotificationCenter.default.addObserver(forName: Notification.keyWidthChanged.name, object: nil,
+                                               queue: nil) { _ in self.keyWidthChanged() }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         createKeys()
+    }
+
+    private func keyWidthChanged() {
+        keyWidth = CGFloat(Settings[.keyWidth])
+        Key.keyWidth = keyWidth
+        releaseAllKeys()
+        view.setNeedsLayout()
     }
 
     private func showKeyLabelsChanged() {
