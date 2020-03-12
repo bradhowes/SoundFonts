@@ -6,7 +6,8 @@ import SoundFontsFramework
 class NoteTests: XCTestCase {
 
     func testNotes() {
-        XCTAssertEqual("C0", Note(midiNoteValue: 0).label)
+        XCTAssertEqual("C-1", Note(midiNoteValue: 0).label)
+        XCTAssertEqual("A4", Note(midiNoteValue: 69).label)
     }
 
 //    func testPerformanceExample() {
