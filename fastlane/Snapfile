@@ -2,20 +2,23 @@
 workspace("/Users/howes/src/SoundFonts/SoundFonts.xcworkspace")
 
 # A list of devices you want to take the screenshots from
+# See https://help.apple.com/app-store-connect/#/devd274dd925
 devices([
-    "iPhone 6s",
-    "iPhone SE",
-    "iPhone Xʀ",
-    "iPhone 11",
-    "iPhone 11 Pro Max",
-    "iPad Pro (12.9-inch) (2nd generation)",
-    "iPad Pro (12.9-inch) (3rd generation)",
-    "iPad Mini"
+    "iPhone 11 Pro Max", # 6.5 in
+    "iPhone 11 Pro",     # 5.8 in
+    "iPhone 8 Plus",     # 5.5 in
+    "iPhone 8",          # 4.7 in
+    "iPhone SE",         # 4.0 in
+    "iPad Pro (12.9-inch) (3rd generation)", # 12.9 in
+    "iPad Pro (12.9-inch) (2nd generation)", # 12.9 in
+    "iPad Mini"                              #  9.7 in
 ])
 
 languages([
   "en-US"
 ])
+
+ios_version("13.3")
 
 concurrent_simulators(false)
 
