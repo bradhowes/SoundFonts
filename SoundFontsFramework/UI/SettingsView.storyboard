@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="88" width="414" height="312"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="356"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="319.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="320"/>
                                         <subviews>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ngg-Rs-cwx">
                                                 <rect key="frame" x="349" y="8" width="51" height="31"/>
@@ -43,58 +43,58 @@
                                                     <action selector="toggleShowKeyLabels:" destination="Eyw-X4-KFI" eventType="valueChanged" id="wcH-fm-BpL"/>
                                                 </connections>
                                             </switch>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
-                                                <rect key="frame" x="16" y="13.5" width="154" height="20"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
+                                                <rect key="frame" x="16" y="13" width="140.5" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play note on patch select" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Xj-zs-1iH">
-                                                <rect key="frame" x="16" y="49.5" width="325" height="41"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play note on patch select" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Xj-zs-1iH">
+                                                <rect key="frame" x="16" y="50" width="325" height="40"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show key labels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3d-d7-tA5">
-                                                <rect key="frame" x="16" y="106.5" width="123" height="21"/>
+                                                <rect key="frame" x="16" y="106" width="123" height="22"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key Width" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ce-kL-xHr">
-                                                <rect key="frame" x="168" y="151.5" width="78" height="21"/>
+                                                <rect key="frame" x="168" y="152" width="78" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8zs-tA-EFY">
-                                                <rect key="frame" x="14" y="180.5" width="386" height="31"/>
+                                                <rect key="frame" x="14" y="181" width="386" height="31"/>
                                                 <connections>
                                                     <action selector="keyWidthChange:" destination="Eyw-X4-KFI" eventType="valueChanged" id="uCk-lg-9Kb"/>
                                                 </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-kV-khV">
-                                                <rect key="frame" x="343" y="235.5" width="55" height="30"/>
+                                                <rect key="frame" x="343" y="236" width="55" height="30"/>
                                                 <state key="normal" title="Remove"/>
                                                 <connections>
                                                     <action selector="removeDefaultSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="043-5j-iel"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HvM-L4-c9e">
-                                                <rect key="frame" x="345" y="273.5" width="53" height="30"/>
+                                                <rect key="frame" x="345" y="274" width="53" height="30"/>
                                                 <state key="normal" title="Restore"/>
                                                 <connections>
                                                     <action selector="restoreDefaultSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="egt-Uo-jeq"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feS-ti-Bte">
-                                                <rect key="frame" x="16" y="240" width="210" height="21"/>
+                                                <rect key="frame" x="16" y="240.5" width="210" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ol-Ma-VZZ">
-                                                <rect key="frame" x="16" y="278" width="207" height="20.5"/>
+                                                <rect key="frame" x="16" y="278.5" width="207" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -110,6 +110,7 @@
                                             <constraint firstItem="2Ce-kL-xHr" firstAttribute="centerX" secondItem="LhQ-ia-e1C" secondAttribute="centerX" id="EdR-Ag-nzZ"/>
                                             <constraint firstItem="HvM-L4-c9e" firstAttribute="firstBaseline" secondItem="7ol-Ma-VZZ" secondAttribute="firstBaseline" id="Fgf-U2-rh1"/>
                                             <constraint firstAttribute="bottom" secondItem="HvM-L4-c9e" secondAttribute="bottom" constant="16" id="Ghz-zE-cVe"/>
+                                            <constraint firstItem="Ngg-Rs-cwx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pQ3-VJ-Ghy" secondAttribute="trailing" constant="16" id="GxE-Ca-54H"/>
                                             <constraint firstAttribute="trailing" secondItem="HvM-L4-c9e" secondAttribute="trailing" constant="16" id="IEW-al-9IF"/>
                                             <constraint firstItem="JaD-vu-QJ2" firstAttribute="top" secondItem="Ngg-Rs-cwx" secondAttribute="bottom" constant="15.5" id="PPq-oj-amC"/>
                                             <constraint firstItem="8zs-tA-EFY" firstAttribute="top" secondItem="2Ce-kL-xHr" secondAttribute="bottom" constant="8" id="QZC-Ik-zZi"/>
@@ -127,6 +128,7 @@
                                             <constraint firstItem="HvM-L4-c9e" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7ol-Ma-VZZ" secondAttribute="trailing" constant="16" id="hUU-Sx-wnU"/>
                                             <constraint firstItem="2Ce-kL-xHr" firstAttribute="top" secondItem="d3d-d7-tA5" secondAttribute="bottom" constant="24" id="kxh-i8-b7q"/>
                                             <constraint firstItem="pQ3-VJ-Ghy" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" constant="16" id="mjh-1D-AIO"/>
+                                            <constraint firstItem="nDp-nx-ur7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="d3d-d7-tA5" secondAttribute="trailing" constant="16" id="oqy-6v-9Ds"/>
                                             <constraint firstItem="7ol-Ma-VZZ" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" constant="16" id="pOg-X3-57h"/>
                                             <constraint firstItem="d3d-d7-tA5" firstAttribute="centerY" secondItem="nDp-nx-ur7" secondAttribute="centerY" id="reQ-CG-sUp"/>
                                             <constraint firstItem="Ngg-Rs-cwx" firstAttribute="top" secondItem="LhQ-ia-e1C" secondAttribute="top" constant="8" id="sy6-eb-it9"/>
