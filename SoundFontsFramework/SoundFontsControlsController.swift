@@ -59,11 +59,6 @@ extension SoundFontsControlsController: ControllerConfiguration {
         favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         router.infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
-        router.infoBar.addTarget(.showSettings, target: self, action: #selector(showSettings))
-    }
-
-    @IBAction private func showSettings() {
-        performSegue(withIdentifier: .settings)
     }
 
     @IBAction private func toggleConfigurationViews() {
@@ -104,31 +99,9 @@ extension SoundFontsControlsController: ControllerConfiguration {
 extension SoundFontsControlsController: SegueHandler {
 
     public enum SegueIdentifier: String {
-        case settings
         case guidedView
         case favorites
         case soundFontPatches
         case infoBar
-    }
-
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .settings: beginSettingsView(segue, sender: sender)
-        default: break
-        }
-    }
-
-    private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? SettingsViewController else { return }
-
-        vc.soundFonts = components.soundFonts
-
-        if !components.isMainApp {
-            vc.modalPresentationStyle = .fullScreen
-            nc.modalPresentationStyle = .fullScreen
-        }
-
-        nc.popoverPresentationController?.setSourceView(view)
     }
 }

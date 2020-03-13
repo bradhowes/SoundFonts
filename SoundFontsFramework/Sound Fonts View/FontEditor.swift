@@ -7,9 +7,20 @@ import UIKit
  */
 final class FontEditor: UIViewController {
 
-    var soundFont: SoundFont!
-    var favoriteCount: Int = 0
-    var position: IndexPath = IndexPath()
+    /// Tuple containing values that we forward to prepare(for seque) via `sender`
+    public struct Config {
+        let indexPath: IndexPath
+        let cell: TableCell
+        let soundFont: SoundFont
+        let favoriteCount: Int
+        let completionHandler: UIContextualAction.CompletionHandler?
+    }
+
+    private var soundFont: SoundFont!
+    private var favoriteCount: Int = 0
+    private var position: IndexPath = IndexPath()
+    private var completionHandler: UIContextualAction.CompletionHandler?
+
     weak var delegate: FontEditorDelegate?
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
@@ -30,10 +41,11 @@ final class FontEditor: UIViewController {
      - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
        conveyed to the delegate in the `dismissed` delegate call.
      */
-    func edit(soundFont: SoundFont, favoriteCount: Int, position: IndexPath) {
-        self.soundFont = soundFont
-        self.favoriteCount = favoriteCount
-        self.position = position
+    func configure(_ config: Config) {
+        self.position = config.indexPath
+        self.soundFont = config.soundFont
+        self.favoriteCount = config.favoriteCount
+        self.completionHandler = config.completionHandler
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +72,7 @@ final class FontEditor: UIViewController {
 
         AskForReview.maybe()
         delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
+        completionHandler?(true)
     }
 
     /**
@@ -70,13 +83,34 @@ final class FontEditor: UIViewController {
     @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
         AskForReview.maybe()
         delegate?.dismissed(reason: .cancel)
+        completionHandler?(false)
     }
 }
 
 extension FontEditor: UITextFieldDelegate {
+
+    /**
+     Since the font editor only has this one field, treat a RETURN on the keyboard as clicking on Done
+
+     - parameter textField: the text field being monitored
+     - returns: always true
+     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         donePressed(doneButton)
         return true
     }
 }
+
+extension FontEditor: UIPopoverPresentationControllerDelegate {
+
+    /**
+     Treat touches outside of the popover as a signal to dismiss via Cancel button
+
+     - parameter popoverPresentationController: the controller being monitored
+     */
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        cancelPressed(cancelButton)
+    }
+}
+

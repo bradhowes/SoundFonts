@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+    <device id="retina6_5" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--SoundFontsControls-->
+        <scene sceneID="d3O-ys-p1M">
+            <objects>
+                <viewController storyboardIdentifier="SoundFontsControls" title="Piano" useStoryboardIdentifierAsRestorationIdentifier="YES" id="FCh-Nr-9cp" userLabel="SoundFontsControls" customClass="SoundFontsControlsController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9hh-ZJ-oqw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kcX-5K-Faj" userLabel="Guide Overlay">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <connections>
+                                    <segue destination="48K-pT-64i" kind="embed" identifier="guidedView" id="yV1-yc-eLp"/>
+                                </connections>
+                            </containerView>
+                            <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="Blank" translatesAutoresizingMaskIntoConstraints="NO" id="SxE-vE-5J3" userLabel="Blank">
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <accessibility key="accessibilityConfiguration" identifier="Blank" label="Blank">
+                                    <accessibilityTraits key="traits" notEnabled="YES"/>
+                                </accessibility>
+                            </view>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="Favorites" translatesAutoresizingMaskIntoConstraints="NO" id="efO-vf-51K" userLabel="Favorites">
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
+                                <connections>
+                                    <segue destination="M8C-1m-Paa" kind="embed" identifier="favorites" id="W26-q2-5GP"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Patches" translatesAutoresizingMaskIntoConstraints="NO" id="eeU-Zp-LO7" userLabel="Patches">
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
+                                <connections>
+                                    <segue destination="Y2X-0f-Kke" kind="embed" identifier="soundFontPatches" id="u7z-Un-LBl"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVo-bg-jdk" userLabel="InfoBar">
+                                <rect key="frame" x="0.0" y="822" width="414" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="jF2-Vs-7Yc"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="0Fc-kI-MvD" kind="embed" identifier="infoBar" id="Xxs-et-rec"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MainView" label="MainView"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="kcX-5K-Faj" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="7Ww-5x-tsF"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="CBl-XA-kUN"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="Fnr-o4-GdT"/>
+                            <constraint firstItem="BVo-bg-jdk" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="GSJ-Ba-E29"/>
+                            <constraint firstItem="kcX-5K-Faj" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="Qy1-mH-hvm"/>
+                            <constraint firstItem="BVo-bg-jdk" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="VW9-Ox-ga8"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="WNP-Bx-Ogq"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="Zap-st-ZP1"/>
+                            <constraint firstItem="SxE-vE-5J3" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="Zhf-tQ-Dq9"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="aeH-bf-1ly"/>
+                            <constraint firstItem="BVo-bg-jdk" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="bWe-Nf-T69"/>
+                            <constraint firstItem="SxE-vE-5J3" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="ea6-lm-KE2"/>
+                            <constraint firstItem="BVo-bg-jdk" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="i38-O5-0gh"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="j4d-dQ-03K"/>
+                            <constraint firstItem="kcX-5K-Faj" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="n6a-ob-eHj"/>
+                            <constraint firstItem="kcX-5K-Faj" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="qDq-7t-CqS"/>
+                            <constraint firstItem="eeU-Zp-LO7" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="rSl-M1-i1q"/>
+                            <constraint firstItem="SxE-vE-5J3" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="thj-i2-ulz"/>
+                            <constraint firstItem="efO-vf-51K" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="vYF-Go-O7B"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="3Ns-BN-Xtc"/>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>
+                        <outlet property="patchesView" destination="eeU-Zp-LO7" id="Ttb-SJ-1CI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-962" y="-1661"/>
+        </scene>
+        <!--FavoritesView-->
+        <scene sceneID="dfZ-jT-3vq">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="FavoritesViewController" storyboardName="FavoritesView" referencedIdentifier="FavoritesViewController" id="M8C-1m-Paa" userLabel="FavoritesView" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PZv-fw-qmG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-317" y="-1661"/>
+        </scene>
+        <!--FontsView-->
+        <scene sceneID="ElB-M5-dkN">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="SoundFontPatchesViewController" storyboardName="FontsView" referencedIdentifier="SoundFontPatchesViewController" id="Y2X-0f-Kke" userLabel="FontsView" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mfw-b2-sLT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-317" y="-1799"/>
+        </scene>
+        <!--GuideView-->
+        <scene sceneID="VC6-TI-XOC">
+            <objects>
+                <viewControllerPlaceholder storyboardName="GuideView" id="48K-pT-64i" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9dL-u3-gEp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-332" y="-1515"/>
+        </scene>
+        <!--InfoBarController-->
+        <scene sceneID="y0i-Ae-mDK">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="InfoBarController" storyboardName="InfoBar" referencedIdentifier="InfoBarController" id="0Fc-kI-MvD" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C3U-qV-5rh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-331" y="-1430"/>
+        </scene>
+    </scenes>
+</document>

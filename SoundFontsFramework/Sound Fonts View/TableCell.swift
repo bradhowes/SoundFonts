@@ -14,6 +14,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     public static func favoriteTag(_ isFavorite: Bool) -> String { return isFavorite ? goldStarPrefix + " " : "" }
 
+    private var selectedIndicatorAnimator: UIViewPropertyAnimator?
+
     @IBInspectable public var selectedFontColor: UIColor = .lightGray
     @IBInspectable public var activedFontColor: UIColor = .systemTeal
     @IBInspectable public var favoriteFontColor: UIColor = .systemYellow
@@ -21,16 +23,40 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     @IBOutlet private weak var name: UILabel!
     @IBOutlet private weak var selectedIndicator: UIView!
 
-    /// For patch cells, we want to always show the `selected` indicator when it holds the active patch. When true,
-    /// ignore `setSelected` with a `false` value.
-    private var lockSelected: Bool = false
-
     override public func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = true
     }
 
-    private var selectedIndicatorAnimator: UIViewPropertyAnimator?
+    /**
+     Configure the cell to show font info
+
+     - parameter name: the name to show
+     - parameter isSelected: true if the font is currently selected with its patches visible on the right. NOTE: we do
+     *not* rely on the cell's `isSelected` property for this, since iOS has different rules for how a cell remains
+     selected.
+     - parameter isActive: true if a patch from the font is currently being used
+     */
+    public func updateForFont(name: String, isSelected: Bool, isActive: Bool) {
+        os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
+        self.name.text = name
+        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
+        showSelectionIndicator(selected: isSelected)
+    }
+
+    /**
+     Configure the cell to show patch info
+
+     - parameter name: the name to show
+     - parameter isActive: true if the patch is currently active
+     - parameter isFavorite: true if the patch is a favorite
+     */
+    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool) {
+        os_log(.debug, log: log, "update '%s' isActive: %d isFavorite: %d", name, isActive, isFavorite)
+        self.name.text = Self.favoriteTag(isFavorite) + name
+        self.name.textColor = fontColorWhen(isSelected: isActive, isActive: isActive, isFavorite: isFavorite)
+        showSelectionIndicator(selected: isActive)
+    }
 
     private func stopAnimation() {
         selectedIndicatorAnimator?.stopAnimation(true)
@@ -40,24 +66,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     override public func prepareForReuse() {
         stopAnimation()
-        lockSelected = false
     }
 
-    /**
-     Update the `selected` state of the cell. Customized to animate the `selectedIndicator` view.
-
-     - parameter selected: true if the cell is selected
-     - parameter animated: true if animating the selection
-     */
-    override public func setSelected(_ selected: Bool, animated: Bool) {
-        os_log(.info, log: log, "setSelected '%s' selected: %d animated: %d", name.text ?? "", selected, animated)
-        super.setSelected(selected, animated: animated)
-
-        if lockSelected && !selected { return }
+    private func showSelectionIndicator(selected: Bool) {
         stopAnimation()
 
         let newAlpha: CGFloat = selected ? 1.0 : 0.0
-        if !animated || !selected {
+        if !selected {
             selectedIndicator.alpha = newAlpha
             return
         }
@@ -69,34 +84,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
             self.selectedIndicator.alpha = state == .end ? newAlpha : (1.0 - newAlpha)
         }
         selectedIndicatorAnimator?.startAnimation()
-    }
-
-    /**
-     Configure the cell to show font info
-    
-     - parameter name: the name to show
-     - parameter isSelected: true if the font is currently selected with its patches visible on the right
-     - parameter isActive: true if a patch from the font is currently being used
-     */
-    public func updateForFont(name: String, isSelected: Bool, isActive: Bool) {
-        os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
-        self.name.text = name
-        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
-        lockSelected = false
-    }
-
-    /**
-     Configure the cell to show patch info
-
-     - parameter name: the name to show
-     - parameter isActive: true if the patch is currently active
-     - parameter isFavorite: true if the patch is a favorite
-    */
-    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool) {
-        os_log(.debug, log: log, "update '%s' isActive: %d isFavorite: %d", name, isActive, isFavorite)
-        self.name.text = Self.favoriteTag(isFavorite) + name
-        self.name.textColor = fontColorWhen(isSelected: isActive, isActive: isActive, isFavorite: isFavorite)
-        lockSelected = isActive
     }
 
     private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {
