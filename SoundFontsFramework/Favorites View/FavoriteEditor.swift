@@ -5,7 +5,16 @@ import UIKit
 /**
  Provides an editing facility for Favorite instances.
  */
-final class FavoriteEditor: UIViewController {
+final public class FavoriteEditor: UIViewController {
+
+    public struct Config {
+        let indexPath: IndexPath
+        let view: UIView
+        let rect: CGRect
+        let favorite: Favorite
+        let currentLowestNote: Note?
+        let completionHandler: UIContextualAction.CompletionHandler?
+    }
 
     private var favorite: Favorite! = nil
     private var position: IndexPath = IndexPath(row: -1, section: -1)
@@ -14,7 +23,7 @@ final class FavoriteEditor: UIViewController {
 
     weak var delegate: FavoriteEditorDelegate?
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    override public var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -31,22 +40,14 @@ final class FavoriteEditor: UIViewController {
     @IBOutlet weak var panValue: UILabel!
     @IBOutlet weak var panSlider: UISlider!
 
-    /**
-     Set the Favorite and its index in preparation for editing in the view.
-
-     - parameter favorite: the Favorite instance to edit
-     - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
-     conveyed to the delegate in the `dismissed` delegate call.
-     */
-    func editFavorite(_ favorite: Favorite, position: IndexPath, currentLowestNote: Note?,
-                      completionHandler: UIContextualAction.CompletionHandler?) {
-        self.favorite = favorite
-        self.position = position
-        self.currentLowestNote = currentLowestNote
-        self.completionHandler = completionHandler
+    func configure(_ config: Config) {
+        self.favorite = config.favorite
+        self.position = config.indexPath
+        self.currentLowestNote = config.currentLowestNote
+        self.completionHandler = config.completionHandler
     }
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         lowestNoteStepper.minimumValue = 0
         lowestNoteStepper.maximumValue = Double(Sampler.maxMidiValue)
 
@@ -57,7 +58,7 @@ final class FavoriteEditor: UIViewController {
         panSlider.maximumValue = 1.0
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         precondition(favorite != nil)
         let soundFontPatch = favorite.soundFontPatch
 
@@ -98,7 +99,7 @@ extension FavoriteEditor: UITextFieldDelegate {
      - parameter textField: the name UITextField to work with
      - returns: false
      */
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         donePressed(doneButton)
         return false
@@ -196,14 +197,18 @@ extension FavoriteEditor {
     private func roundFloat(_ value: Float) -> Float { (value * 100.0).rounded() / 100.0 }
 }
 
-extension FavoriteEditor: UIPopoverPresentationControllerDelegate {
+extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
+
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        cancelPressed(cancelButton)
+    }
 
     /**
      Treat touches outside of the popover as a signal to dismiss via Cancel button
 
      - parameter popoverPresentationController: the controller being monitored
      */
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         cancelPressed(cancelButton)
     }
 }

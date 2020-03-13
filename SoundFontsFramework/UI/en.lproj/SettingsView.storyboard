@@ -17,28 +17,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="44" width="414" height="356"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="312"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="320"/>
                                         <subviews>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ngg-Rs-cwx">
                                                 <rect key="frame" x="349" y="8" width="51" height="31"/>
+                                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="onTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="toggleShowSolfegeNotes:" destination="Eyw-X4-KFI" eventType="valueChanged" id="TFk-ha-k9M"/>
                                                 </connections>
                                             </switch>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JaD-vu-QJ2">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="JaD-vu-QJ2">
                                                 <rect key="frame" x="349" y="54.5" width="51" height="31"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="49" id="Iay-5K-aeW"/>
                                                 </constraints>
+                                                <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="onTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="togglePlaySample:" destination="Eyw-X4-KFI" eventType="valueChanged" id="RuG-aT-2CK"/>
                                                 </connections>
                                             </switch>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDp-nx-ur7">
                                                 <rect key="frame" x="349" y="101.5" width="51" height="31"/>
+                                                <color key="onTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="toggleShowKeyLabels:" destination="Eyw-X4-KFI" eventType="valueChanged" id="wcH-fm-BpL"/>
                                                 </connections>
@@ -69,20 +74,25 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="8zs-tA-EFY">
                                                 <rect key="frame" x="14" y="181" width="386" height="31"/>
+                                                <color key="minimumTrackTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="keyWidthChange:" destination="Eyw-X4-KFI" eventType="valueChanged" id="uCk-lg-9Kb"/>
                                                 </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7B-kV-khV">
                                                 <rect key="frame" x="343" y="236" width="55" height="30"/>
-                                                <state key="normal" title="Remove"/>
+                                                <state key="normal" title="Remove">
+                                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="removeDefaultSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="043-5j-iel"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HvM-L4-c9e">
                                                 <rect key="frame" x="345" y="274" width="53" height="30"/>
-                                                <state key="normal" title="Restore"/>
+                                                <state key="normal" title="Restore">
+                                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="restoreDefaultSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="egt-Uo-jeq"/>
                                                 </connections>
@@ -100,7 +110,6 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="feS-ti-Bte" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" constant="16" id="21J-37-vcF"/>
                                             <constraint firstAttribute="trailing" secondItem="Ngg-Rs-cwx" secondAttribute="trailing" constant="16" id="2s3-RY-mHn"/>
@@ -140,7 +149,6 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="top" secondItem="z9Y-jL-97U" secondAttribute="top" id="7XN-4D-jLO"/>
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="trailing" secondItem="z9Y-jL-97U" secondAttribute="trailing" id="E5h-wX-Nwn"/>
@@ -152,7 +160,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="8ar-VF-0TJ"/>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="x8d-G2-ac4" firstAttribute="trailing" secondItem="b5u-sn-F2E" secondAttribute="trailing" id="Aom-Ff-kKE"/>
                             <constraint firstItem="b5u-sn-F2E" firstAttribute="leading" secondItem="x8d-G2-ac4" secondAttribute="leading" id="TIX-gx-Yyc"/>
@@ -163,6 +171,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="lRj-HM-OCk">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="voT-ST-J8p">
+                            <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="close:" destination="Eyw-X4-KFI" id="H0L-1A-HOk"/>
                             </connections>

@@ -105,10 +105,8 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "selected %d", index)
             activePatchManager.setActive(.favorite(favorite: favorite))
 
-        case let .beginEdit(index: index, favorite: favorite, view: view,
-                            completionHandler: completionHandler):
-            os_log(.info, log: log, "begin editing %d", index)
-            edit(favorite: favorite, view: view, completionHandler: completionHandler)
+        case let .beginEdit(config: config):
+            edit(config: config)
 
         case let .changed(index: index, favorite: favorite):
             os_log(.info, log: log, "changed %d", index)
@@ -130,35 +128,42 @@ extension FavoritesViewController: ControllerConfiguration {
 
 extension FavoritesViewController: SegueHandler {
 
+    /// Segues that we support.s
     public enum SegueIdentifier: String {
         case favoriteEditor
     }
 
-    typealias FavoriteEditorPayload = (favorite: Favorite, view: UIView,
-        completionHandler: UIContextualAction.CompletionHandler?)
-
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .favoriteEditor:
-            guard let payload = sender as? FavoriteEditorPayload else { fatalError("expected FavoriteEditorPayload") }
-            prepareToEdit(segue, favorite: payload.favorite, view: payload.view,
-                          completionHandler: payload.completionHandler)
+            guard let config = sender as? FavoriteEditor.Config else { fatalError("expected FavoriteEditor.Config") }
+            prepareToEdit(segue, config: config)
         }
     }
 
-    private func prepareToEdit(_ segue: UIStoryboardSegue, favorite: Favorite, view: UIView,
-                               completionHandler: UIContextualAction.CompletionHandler?) {
+    private func prepareToEdit(_ segue: UIStoryboardSegue, config: FavoriteEditor.Config) {
         guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FavoriteEditor else { return }
+            let vc = nc.topViewController as? FavoriteEditor else {
+                return
+        }
 
         vc.delegate = self
-        vc.editFavorite(favorite, position: indexPath(of: favorite), currentLowestNote: keyboard?.lowestNote,
-                        completionHandler: completionHandler)
+        vc.configure(config)
+
         if keyboard == nil {
             vc.modalPresentationStyle = .fullScreen
             nc.modalPresentationStyle = .fullScreen
         }
-        nc.popoverPresentationController?.setSourceView(view)
+
+        if let ppc = nc.popoverPresentationController {
+            ppc.sourceView = config.view
+            ppc.sourceRect = config.rect
+            ppc.permittedArrowDirections = .any
+            ppc.delegate = vc
+        }
+
+        // Doing this will catch the swipe-down action that we treat as a 'cancel'.
+        nc.presentationController?.delegate = vc
     }
 
     /**
@@ -171,12 +176,14 @@ extension FavoritesViewController: SegueHandler {
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
         guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
-        edit(favorite: favorite, view: view, completionHandler: nil)
+        let config = FavoriteEditor.Config(indexPath: indexPath, view: favoritesView, rect: view.frame,
+                                           favorite: favorite,
+                                           currentLowestNote: keyboard?.lowestNote, completionHandler: nil)
+        edit(config: config)
     }
 
-    func edit(favorite: Favorite, view: UIView, completionHandler: UIContextualAction.CompletionHandler?) {
-        let payload = FavoriteEditorPayload(favorite: favorite, view: view, completionHandler: completionHandler)
-          performSegue(withIdentifier: .favoriteEditor, sender: payload)
+    func edit(config: FavoriteEditor.Config) {
+        performSegue(withIdentifier: .favoriteEditor, sender: config)
     }
 }
 

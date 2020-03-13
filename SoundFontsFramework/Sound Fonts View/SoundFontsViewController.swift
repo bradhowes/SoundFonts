@@ -229,8 +229,11 @@ extension SoundFontsViewController: SegueHandler {
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .fontEditor:
-            guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
+            guard let config = sender as? FontEditor.Config else {
+                fatalError("expected FontEditor.Config")
+            }
             prepareToEdit(segue, config: config)
+
         case .fontBrowser:
             beginBrowseFont(segue, sender: sender)
         }
@@ -238,7 +241,9 @@ extension SoundFontsViewController: SegueHandler {
 
     private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
         guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FontEditor else { return }
+            let vc = nc.topViewController as? FontEditor else {
+                return
+        }
 
         vc.delegate = self
         vc.configure(config)
@@ -255,6 +260,9 @@ extension SoundFontsViewController: SegueHandler {
             ppc.permittedArrowDirections = .any
             ppc.delegate = vc
         }
+
+        // Doing this will catch the swipe-down action that we treat as a 'cancel'.
+        nc.presentationController?.delegate = vc
     }
 
     private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {

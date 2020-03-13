@@ -7,7 +7,6 @@ import UIKit
  */
 final class FontEditor: UIViewController {
 
-    /// Tuple containing values that we forward to prepare(for seque) via `sender`
     public struct Config {
         let indexPath: IndexPath
         let cell: TableCell
@@ -33,14 +32,6 @@ final class FontEditor: UIViewController {
     @IBOutlet weak var patchCountLabel: UILabel!
     @IBOutlet weak var favoriteCountLabel: UILabel!
 
-    /**
-     Set the SoundFont and its index in preparation for editing in the view.
-    
-     - parameter soundFont: the SoundFont instance to edit
-     - parameter favoriteCount: number of favorites associated with this soundFont
-     - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
-       conveyed to the delegate in the `dismissed` delegate call.
-     */
     func configure(_ config: Config) {
         self.position = config.indexPath
         self.soundFont = config.soundFont
@@ -102,7 +93,11 @@ extension FontEditor: UITextFieldDelegate {
     }
 }
 
-extension FontEditor: UIPopoverPresentationControllerDelegate {
+extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        cancelPressed(cancelButton)
+    }
 
     /**
      Treat touches outside of the popover as a signal to dismiss via Cancel button
