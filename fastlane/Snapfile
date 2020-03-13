@@ -19,6 +19,7 @@ languages([
 ])
 
 ios_version("13.3")
+dark_mode(true)
 
 concurrent_simulators(false)
 
