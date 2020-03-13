@@ -55,6 +55,7 @@
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="dNr-nw-vcg">
                                 <rect key="frame" x="131" y="146" width="171" height="31"/>
+                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="volumeChanged:" destination="zYi-ne-58d" eventType="valueChanged" id="XSr-bE-6CR"/>
                                 </connections>
@@ -79,6 +80,7 @@
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rar-Kq-tLp">
                                 <rect key="frame" x="131" y="188" width="171" height="31"/>
+                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="panChanged:" destination="zYi-ne-58d" eventType="valueChanged" id="PXg-YJ-k50"/>
                                 </connections>
@@ -101,6 +103,7 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vvf-8D-awX" userLabel="Lowest Key">
                                                 <rect key="frame" x="124" y="0.0" width="30" height="33"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="C4"/>
                                                 <connections>
                                                     <action selector="useCurrentLowestNote:" destination="zYi-ne-58d" eventType="touchUpInside" id="45m-93-3f7"/>
@@ -108,11 +111,14 @@
                                             </button>
                                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="3H6-6k-aQ4" userLabel="Key Stepper">
                                                 <rect key="frame" x="185" y="0.5" width="94" height="32"/>
+                                                <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="changeLowestKey:" destination="zYi-ne-58d" eventType="valueChanged" id="a45-cP-GCB"/>
                                                 </connections>
                                             </stepper>
                                         </subviews>
+                                        <color key="tintColor" red="0.0" green="0.99143940210000003" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OPL-NR-xp6">
                                         <rect key="frame" x="0.0" y="37" width="100" height="16"/>
@@ -156,7 +162,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="I18-Bg-VKV" firstAttribute="firstBaseline" secondItem="uML-Lh-MgB" secondAttribute="firstBaseline" id="4Ba-QS-Zne"/>
                             <constraint firstItem="ICN-zq-xNm" firstAttribute="leading" secondItem="NOB-fj-QF1" secondAttribute="trailing" constant="8" id="8PF-GX-sq1"/>
@@ -186,6 +192,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Favorite" id="XlQ-af-Avv">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Qr0-64-mpH">
+                            <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <attributedString key="userComments">
                                 <fragment content="Name of button that cancels edit operation"/>
                             </attributedString>
@@ -194,6 +201,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="2MJ-Ub-ws5">
+                            <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="donePressed:" destination="zYi-ne-58d" id="ESZ-2e-qsA"/>
                             </connections>

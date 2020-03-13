@@ -47,7 +47,9 @@
                         <outlet property="doubleTapGestureRecognizer" destination="0DJ-wu-xH2" id="0xj-OV-gNK"/>
                         <outlet property="favoritesView" destination="IR7-rn-XMj" id="g9T-UH-W6C"/>
                         <outlet property="longPressGestureRecognizer" destination="Yb7-t8-5Oz" id="B2S-FU-S4i"/>
-                        <segue destination="xBA-JW-XDJ" kind="presentation" identifier="favoriteEditor" id="G0X-jG-RT4"/>
+                        <segue destination="xBA-JW-XDJ" kind="popoverPresentation" identifier="favoriteEditor" popoverAnchorView="IR7-rn-XMj" id="G0X-jG-RT4">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UlM-mq-v04" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -62,7 +64,7 @@
                 <viewControllerPlaceholder storyboardName="FavoriteEditor" id="xBA-JW-XDJ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uZI-2g-pGk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="715" y="-1427"/>
+            <point key="canvasLocation" x="619" y="-1360"/>
         </scene>
     </scenes>
 </document>

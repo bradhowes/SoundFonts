@@ -389,7 +389,11 @@ extension PatchesTableViewManager {
                                        soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.favorites.beginEdit(favorite: favorite, view: cell, completionHandler: completionHandler)
+            let rect = self.view.rectForRow(at: at)
+            let config = FavoriteEditor.Config(indexPath: at, view: self.view, rect: rect, favorite: favorite,
+                                               currentLowestNote: self.keyboard?.lowestNote,
+                                               completionHandler: completionHandler)
+            self.favorites.beginEdit(config: config)
         }
         action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange

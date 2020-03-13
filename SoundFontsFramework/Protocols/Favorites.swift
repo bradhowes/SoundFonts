@@ -9,8 +9,7 @@ public enum FavoritesEvent {
 
     case added(index: Int, favorite: Favorite)
     case selected(index: Int, favorite: Favorite)
-    case beginEdit(index: Int, favorite: Favorite, view: UIView,
-        completionHandler: UIContextualAction.CompletionHandler?)
+    case beginEdit(config: FavoriteEditor.Config)
     case changed(index: Int, favorite: Favorite)
     case removed(index: Int, favorite: Favorite, bySwiping: Bool)
     case removedAll(associatedWith: SoundFont)
@@ -67,10 +66,10 @@ public protocol Favorites {
     /**
      Begin editing a Favorite
 
-     - parameter favorite: the instance to edit
+     - parameter config: the configuration to apply to the editor
      - parameter view: the UIView which started the editing
      */
-    func beginEdit(favorite: Favorite, view: UIView, completionHandler: UIContextualAction.CompletionHandler?)
+    func beginEdit(config: FavoriteEditor.Config)
 
     /**
      Update the collection due to a change in the given Favorite

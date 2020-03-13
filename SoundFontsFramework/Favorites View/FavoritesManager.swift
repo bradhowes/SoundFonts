@@ -61,8 +61,8 @@ extension FavoritesManager: Favorites {
         save()
     }
 
-    public func beginEdit(favorite: Favorite, view: UIView, completionHandler: UIContextualAction.CompletionHandler?) {
-        notify(.beginEdit(index: index(of: favorite), favorite: favorite, view: view, completionHandler: completionHandler))
+    public func beginEdit(config: FavoriteEditor.Config) {
+        notify(.beginEdit(config: config))
     }
 
     public func move(from: Int, to: Int) {

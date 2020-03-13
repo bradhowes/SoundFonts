@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="J1E-VV-vXb" userLabel="SoundFont Editor" customClass="FontEditor" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVH-2e-a8c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="380"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMC-LO-nex" userLabel="Name Label">
@@ -72,7 +72,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="s2C-3z-yXQ" firstAttribute="firstBaseline" secondItem="eMC-LO-nex" secondAttribute="firstBaseline" id="0Ox-NN-hdt"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tsT-zj-S9L" secondAttribute="trailing" constant="20" id="14J-mA-EUc"/>
@@ -90,6 +90,7 @@
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="MGs-TX-lDb" secondAttribute="trailing" constant="20" id="Znb-Rv-VnR"/>
                             <constraint firstItem="s2C-3z-yXQ" firstAttribute="leading" secondItem="eMC-LO-nex" secondAttribute="trailing" constant="8" id="adD-8t-Ut6"/>
                             <constraint firstItem="7Py-Ud-xmF" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="chB-dW-DsL"/>
+                            <constraint firstItem="gLC-lN-Cot" firstAttribute="bottom" secondItem="tsT-zj-S9L" secondAttribute="bottom" constant="16" id="dYv-ig-hFw"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" secondItem="s2C-3z-yXQ" secondAttribute="trailing" constant="20" id="fsx-W5-khb"/>
                             <constraint firstItem="n9Y-TJ-3aJ" firstAttribute="leading" secondItem="gLC-lN-Cot" secondAttribute="leading" constant="20" id="j28-MR-zfg"/>
                             <constraint firstItem="7Py-Ud-xmF" firstAttribute="top" secondItem="MGs-TX-lDb" secondAttribute="bottom" constant="4" id="nxi-AM-0Zd"/>
@@ -97,10 +98,16 @@
                             <constraint firstItem="rKS-5U-IAi" firstAttribute="top" secondItem="zbT-I1-Hu4" secondAttribute="bottom" constant="4" id="vt7-No-aUT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gLC-lN-Cot"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                <real key="value" value="0.0"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="SoundFont" id="57Y-uy-VVx">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="jZb-mq-MmC" userLabel="Cancel Button">
+                            <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <attributedString key="userComments">
                                 <fragment content="Name of button that cancels edit operation"/>
                             </attributedString>
@@ -109,6 +116,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="PMy-9w-Kgw" userLabel="Save Button">
+                            <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <attributedString key="userComments">
                                 <fragment content="Name of button that saves changes in editor."/>
                             </attributedString>
@@ -117,7 +125,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="320" height="380"/>
+                    <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="cancelButton" destination="jZb-mq-MmC" id="n0o-4s-phH"/>
                         <outlet property="doneButton" destination="PMy-9w-Kgw" id="IFj-1K-Ctn"/>
@@ -130,15 +139,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gMp-bJ-Ndt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2309" y="-1937"/>
+            <point key="canvasLocation" x="2015" y="-1939"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RnL-Kt-Tet">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8Ze-V3-kA1" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="Fvq-75-3mP">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="32"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
