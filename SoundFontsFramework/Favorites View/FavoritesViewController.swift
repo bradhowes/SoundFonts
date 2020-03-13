@@ -105,9 +105,10 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "selected %d", index)
             activePatchManager.setActive(.favorite(favorite: favorite))
 
-        case let .beginEdit(index: index, favorite: favorite, view: view):
+        case let .beginEdit(index: index, favorite: favorite, view: view,
+                            completionHandler: completionHandler):
             os_log(.info, log: log, "begin editing %d", index)
-            edit(favorite: favorite, sender: view)
+            edit(favorite: favorite, view: view, completionHandler: completionHandler)
 
         case let .changed(index: index, favorite: favorite):
             os_log(.info, log: log, "changed %d", index)
@@ -133,18 +134,26 @@ extension FavoritesViewController: SegueHandler {
         case favoriteEditor
     }
 
+    typealias FavoriteEditorPayload = (favorite: Favorite, view: UIView,
+        completionHandler: UIContextualAction.CompletionHandler?)
+
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
-        case .favoriteEditor: beginEditFavorite(segue, sender: sender)
+        case .favoriteEditor:
+            guard let payload = sender as? FavoriteEditorPayload else { fatalError("expected FavoriteEditorPayload") }
+            prepareToEdit(segue, favorite: payload.favorite, view: payload.view,
+                          completionHandler: payload.completionHandler)
         }
     }
 
-    private func beginEditFavorite(_ segue: UIStoryboardSegue, sender: Any?) {
+    private func prepareToEdit(_ segue: UIStoryboardSegue, favorite: Favorite, view: UIView,
+                               completionHandler: UIContextualAction.CompletionHandler?) {
         guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FavoriteEditor,
-            let (favorite, view) = sender as? (Favorite, UIView) else { return }
+            let vc = nc.topViewController as? FavoriteEditor else { return }
+
         vc.delegate = self
-        vc.editFavorite(favorite, position: indexPath(of: favorite), currentLowestNote: keyboard?.lowestNote)
+        vc.editFavorite(favorite, position: indexPath(of: favorite), currentLowestNote: keyboard?.lowestNote,
+                        completionHandler: completionHandler)
         if keyboard == nil {
             vc.modalPresentationStyle = .fullScreen
             nc.modalPresentationStyle = .fullScreen
@@ -161,12 +170,13 @@ extension FavoritesViewController: SegueHandler {
         let pos = gr.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
-        guard let cell = favoritesView.cellForItem(at: indexPath) else { fatalError() }
-        edit(favorite: favorite, sender: cell)
+        guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
+        edit(favorite: favorite, view: view, completionHandler: nil)
     }
 
-    func edit(favorite: Favorite, sender: UIView) {
-        performSegue(withIdentifier: .favoriteEditor, sender: (favorite, sender))
+    func edit(favorite: Favorite, view: UIView, completionHandler: UIContextualAction.CompletionHandler?) {
+        let payload = FavoriteEditorPayload(favorite: favorite, view: view, completionHandler: completionHandler)
+          performSegue(withIdentifier: .favoriteEditor, sender: payload)
     }
 }
 

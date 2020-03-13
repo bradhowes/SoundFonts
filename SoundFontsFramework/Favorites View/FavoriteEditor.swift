@@ -7,11 +7,14 @@ import UIKit
  */
 final class FavoriteEditor: UIViewController {
 
-    var favorite: Favorite! = nil
-    var position: IndexPath = IndexPath(row: -1, section: -1)
-    var currentLowestNote: Note?
+    private var favorite: Favorite! = nil
+    private var position: IndexPath = IndexPath(row: -1, section: -1)
+    private var currentLowestNote: Note?
+    private var completionHandler: UIContextualAction.CompletionHandler?
 
     weak var delegate: FavoriteEditorDelegate?
+
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     @IBOutlet weak var doneButton: UIBarButtonItem!
@@ -28,8 +31,20 @@ final class FavoriteEditor: UIViewController {
     @IBOutlet weak var panValue: UILabel!
     @IBOutlet weak var panSlider: UISlider!
 
+    /**
+     Set the Favorite and its index in preparation for editing in the view.
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+     - parameter favorite: the Favorite instance to edit
+     - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
+     conveyed to the delegate in the `dismissed` delegate call.
+     */
+    func editFavorite(_ favorite: Favorite, position: IndexPath, currentLowestNote: Note?,
+                      completionHandler: UIContextualAction.CompletionHandler?) {
+        self.favorite = favorite
+        self.position = position
+        self.currentLowestNote = currentLowestNote
+        self.completionHandler = completionHandler
+    }
 
     override func viewDidLoad() {
         lowestNoteStepper.minimumValue = 0
@@ -70,19 +85,6 @@ final class FavoriteEditor: UIViewController {
         panSlider.value = favorite.pan
 
         super.viewWillAppear(animated)
-    }
-
-    /**
-     Set the Favorite and its index in preparation for editing in the view.
-
-     - parameter favorite: the Favorite instance to edit
-     - parameter position: the associated IndexPath for the Favorite instance. Not used internally, but it will be
-       conveyed to the delegate in the `dismissed` delegate call.
-     */
-    func editFavorite(_ favorite: Favorite, position: IndexPath, currentLowestNote: Note?) {
-        self.favorite = favorite
-        self.position = position
-        self.currentLowestNote = currentLowestNote
     }
 }
 
@@ -127,6 +129,7 @@ extension FavoriteEditor {
 
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .done(update: favorite))
+        completionHandler?(true)
     }
 
     /**
@@ -138,6 +141,7 @@ extension FavoriteEditor {
         favorite = nil
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .cancel)
+        completionHandler?(false)
     }
 
     /**
@@ -191,3 +195,16 @@ extension FavoriteEditor {
      */
     private func roundFloat(_ value: Float) -> Float { (value * 100.0).rounded() / 100.0 }
 }
+
+extension FavoriteEditor: UIPopoverPresentationControllerDelegate {
+
+    /**
+     Treat touches outside of the popover as a signal to dismiss via Cancel button
+
+     - parameter popoverPresentationController: the controller being monitored
+     */
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        cancelPressed(cancelButton)
+    }
+}
+

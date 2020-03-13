@@ -23,6 +23,8 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     private var panOrigin: CGPoint = CGPoint.zero
     private var fader: UIViewPropertyAnimator?
     private var activePatchManager: ActivePatchManager!
+    private var soundFonts: SoundFonts!
+    private var isMainApp: Bool!
 
     public override func viewDidLoad() {
 
@@ -79,6 +81,10 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         animator.startAnimation()
     }
 
+    @IBAction private func editSettings() {
+        performSegue(withIdentifier: .settings)
+    }
+
     @IBAction
     func showSettings(_ sender: UIButton) {
         toggleMoreButtons(self.showMoreButtons)
@@ -92,6 +98,8 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     public func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
         activePatchManager.subscribe(self, notifier: activePatchChange)
+        soundFonts = router.soundFonts
+        isMainApp = router.isMainApp
         router.favorites.subscribe(self, notifier: favoritesChange)
         useActivePatchKind(activePatchManager.active)
     }
@@ -161,6 +169,33 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
 }
 
 // MARK: - Private
+
+extension InfoBarController: SegueHandler {
+
+    public enum SegueIdentifier: String {
+        case settings
+    }
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .settings: beginSettingsView(segue, sender: sender)
+        }
+    }
+
+    private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
+        guard let nc = segue.destination as? UINavigationController,
+            let vc = nc.topViewController as? SettingsViewController else { return }
+
+        vc.soundFonts = soundFonts
+
+        if !isMainApp {
+            vc.modalPresentationStyle = .fullScreen
+            nc.modalPresentationStyle = .fullScreen
+        }
+
+        nc.popoverPresentationController?.setSourceView(view)
+    }
+}
 
 extension InfoBarController {
 

@@ -49,11 +49,6 @@ final class PatchesTableViewManager: NSObject {
 
         view.sectionIndexColor = .darkGray
 
-//        for family in UIFont.familyNames.sorted() {
-//            let names = UIFont.fontNames(forFamilyName: family)
-//            print("Family: \(family) Font names: \(names)")
-//        }
-
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
         let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = defaultTextAttribs
@@ -358,12 +353,12 @@ extension PatchesTableViewManager {
         return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
     }
 
-    private func createFaveAction(cell: TableCell, at indexPath: IndexPath,
-                                  with soundFontPatch: SoundFontPatch) -> UIContextualAction {
+    private func createFaveSwipeAction(at: IndexPath, cell: TableCell,
+                                       soundFontPatch: SoundFontPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.favorites.add(soundFontPatch: soundFontPatch, keyboardLowestNote: lowestNote)
-            self.update(cell: cell, at: indexPath, with: soundFontPatch)
+            self.update(cell: cell, at: at, with: soundFontPatch)
             completionHandler(true)
         }
         action.image = getActionImage("Fave")
@@ -371,8 +366,8 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createUnfaveAction(cell: TableCell, at indexPath: IndexPath,
-                                    with soundFontPatch: SoundFontPatch) -> UIContextualAction {
+    private func createUnfaveSwipeAction(at: IndexPath, cell: TableCell,
+                                    soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -381,7 +376,7 @@ extension PatchesTableViewManager {
             }
             self.favorites.remove(index: index, bySwiping: true)
             self.view.beginUpdates()
-            self.update(cell: cell, at: indexPath, with: soundFontPatch)
+            self.update(cell: cell, at: at, with: soundFontPatch)
             self.view.endUpdates()
             completionHandler(true)
         }
@@ -390,12 +385,11 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createEditAction(cell: TableCell, at indexPath: IndexPath,
-                                  with soundFontPatch: SoundFontPatch) -> UIContextualAction {
+    private func createEditSwipeAction(at: IndexPath, cell: TableCell,
+                                       soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.favorites.beginEdit(favorite: favorite, view: cell)
-            completionHandler(true)
+            self.favorites.beginEdit(favorite: favorite, view: cell, completionHandler: completionHandler)
         }
         action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
@@ -406,8 +400,8 @@ extension PatchesTableViewManager {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         let action = favorites.isFavored(soundFontPatch: soundFontPatch) ?
-            createEditAction(cell: cell, at: indexPath, with: soundFontPatch) :
-            createFaveAction(cell: cell, at: indexPath, with: soundFontPatch)
+            createEditSwipeAction(at: indexPath, cell: cell, soundFontPatch: soundFontPatch) :
+            createFaveSwipeAction(at: indexPath, cell: cell, soundFontPatch: soundFontPatch)
         let actions = UISwipeActionsConfiguration(actions: [action])
         actions.performsFirstActionWithFullSwipe = true
         return actions
@@ -417,7 +411,7 @@ extension PatchesTableViewManager {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontPatch = getSoundFontPatch(for: indexPath)
         let actions = UISwipeActionsConfiguration(actions: favorites.isFavored(soundFontPatch: soundFontPatch) ?
-            [createUnfaveAction(cell: cell, at: indexPath, with: soundFontPatch)] : [])
+            [createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontPatch: soundFontPatch)] : [])
         actions.performsFirstActionWithFullSwipe = false
         return actions
     }

@@ -11,7 +11,7 @@ import os
 
  Perhaps this should be split into two, one for a soundfont view, and one for the patches view.
  */
-public final class SoundFontsViewController: UIViewController, SegueHandler {
+public final class SoundFontsViewController: UIViewController {
     private lazy var log = Logging.logger("SFVC")
 
     @IBOutlet private weak var soundFontsView: UITableView!
@@ -53,40 +53,6 @@ public final class SoundFontsViewController: UIViewController, SegueHandler {
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         patchesTableViewDataSource.hideSearchBar()
-    }
-
-    public enum SegueIdentifier: String {
-        case fontEditor
-        case fontBrowser
-    }
-
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .fontEditor: beginEditFont(segue, sender: sender)
-        case .fontBrowser: beginBrowseFont(segue, sender: sender)
-        }
-    }
-
-    private func beginEditFont(_ segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FontEditor,
-            let cell = sender as? UITableViewCell,
-            let indexPath = soundFontsView.indexPath(for: cell) else { return }
-        vc.delegate = self
-        let soundFont = soundFonts.getBy(index: indexPath.row)
-        vc.edit(soundFont: soundFont, favoriteCount: favorites.count(associatedWith: soundFont), position: indexPath)
-        if keyboard == nil {
-            vc.modalPresentationStyle = .fullScreen
-            nc.modalPresentationStyle = .fullScreen
-        }
-        nc.popoverPresentationController?.setSourceView(cell)
-    }
-
-    private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-            (nc.topViewController as? UIDocumentPickerViewController) != nil,
-            let button = sender as? UIButton else { return }
-        nc.popoverPresentationController?.setSourceView(button)
     }
 
     @IBAction
@@ -216,10 +182,11 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter with: the SoundFont that will be edited by the swipe action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createEditSwipeAction(at view: UIView, with soundFont: SoundFont) -> UIContextualAction {
+    public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            self.performSegue(withIdentifier: .fontEditor, sender: view)
-            completionHandler(true)
+            let config = FontEditor.Config(indexPath: at, cell: cell, soundFont: soundFont, favoriteCount:
+                self.favorites.count(associatedWith: soundFont), completionHandler: completionHandler)
+            self.performSegue(withIdentifier: .fontEditor, sender: config)
         }
 
         action.image = getActionImage("Edit")
@@ -236,8 +203,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createDeleteSwipeAction(at view: UIView, with soundFont: SoundFont,
-                                 indexPath: IndexPath) -> UIContextualAction {
+    public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
@@ -249,6 +215,53 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
     private func getActionImage(_ name: String) -> UIImage? {
         return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
+    }
+}
+
+extension SoundFontsViewController: SegueHandler {
+
+    /// Segues that we support.
+    public enum SegueIdentifier: String {
+        case fontEditor
+        case fontBrowser
+    }
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .fontEditor:
+            guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
+            prepareToEdit(segue, config: config)
+        case .fontBrowser:
+            beginBrowseFont(segue, sender: sender)
+        }
+    }
+
+    private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
+        guard let nc = segue.destination as? UINavigationController,
+            let vc = nc.topViewController as? FontEditor else { return }
+
+        vc.delegate = self
+        vc.configure(config)
+
+        if keyboard == nil {
+            vc.modalPresentationStyle = .fullScreen
+            nc.modalPresentationStyle = .fullScreen
+        }
+
+        if let ppc = nc.popoverPresentationController {
+            let rect = soundFontsView.rectForRow(at: config.indexPath)
+            ppc.sourceView = soundFontsView
+            ppc.sourceRect = rect
+            ppc.permittedArrowDirections = .any
+            ppc.delegate = vc
+        }
+    }
+
+    private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {
+        guard let nc = segue.destination as? UINavigationController,
+            (nc.topViewController as? UIDocumentPickerViewController) != nil,
+            let button = sender as? UIButton else { return }
+        nc.popoverPresentationController?.setSourceView(button)
     }
 }
 
