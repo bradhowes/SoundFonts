@@ -153,6 +153,7 @@
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration" hint="SettingsView" identifier="SettingsView"/>
                         <constraints>
                             <constraint firstItem="x8d-G2-ac4" firstAttribute="trailing" secondItem="b5u-sn-F2E" secondAttribute="trailing" id="Aom-Ff-kKE"/>
                             <constraint firstItem="b5u-sn-F2E" firstAttribute="leading" secondItem="x8d-G2-ac4" secondAttribute="leading" id="TIX-gx-Yyc"/>
@@ -167,7 +168,7 @@
                                 <action selector="close:" destination="Eyw-X4-KFI" id="H0L-1A-HOk"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="v2.6.3" id="3v6-UW-ag2" userLabel="APP_VERSION">
+                        <barButtonItem key="rightBarButtonItem" title="v2.6.4" id="3v6-UW-ag2" userLabel="APP_VERSION">
                             <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="visitAppStore:" destination="Eyw-X4-KFI" id="Kn1-gJ-OZh"/>

@@ -163,6 +163,9 @@
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration" hint="FavoriteEditor" identifier="FavoriteEditor" label="FavoriteEditor">
+                            <bool key="isElement" value="NO"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="I18-Bg-VKV" firstAttribute="firstBaseline" secondItem="uML-Lh-MgB" secondAttribute="firstBaseline" id="4Ba-QS-Zne"/>
                             <constraint firstItem="ICN-zq-xNm" firstAttribute="leading" secondItem="NOB-fj-QF1" secondAttribute="trailing" constant="8" id="8PF-GX-sq1"/>

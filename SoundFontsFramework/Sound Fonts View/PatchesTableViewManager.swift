@@ -363,6 +363,9 @@ extension PatchesTableViewManager {
         }
         action.image = getActionImage("Fave")
         action.backgroundColor = UIColor.orange
+        action.accessibilityLabel = "FavoriteCreateButton"
+        action.accessibilityHint = "FavoriteCreateButton"
+        action.isAccessibilityElement = true
         return action
     }
 
@@ -395,8 +398,12 @@ extension PatchesTableViewManager {
                                                completionHandler: completionHandler)
             self.favorites.beginEdit(config: config)
         }
+
         action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
+        action.accessibilityLabel = "FavoriteEditButton"
+        action.accessibilityHint = "FavoriteEditButton"
+        action.isAccessibilityElement = true
         return action
     }
 
@@ -407,7 +414,7 @@ extension PatchesTableViewManager {
             createEditSwipeAction(at: indexPath, cell: cell, soundFontPatch: soundFontPatch) :
             createFaveSwipeAction(at: indexPath, cell: cell, soundFontPatch: soundFontPatch)
         let actions = UISwipeActionsConfiguration(actions: [action])
-        actions.performsFirstActionWithFullSwipe = true
+        actions.performsFirstActionWithFullSwipe = false
         return actions
     }
 

@@ -9,33 +9,19 @@ import SoundFontsFramework
 class ScreenShots: XCTestCase {
 
     var app: XCUIApplication!
+    var suffix: String!
 
-    func __testExample() {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
+    func snap(_ title: String) { snapshot(title + suffix) }
+
+    func initialize(_ orientation: UIDeviceOrientation) {
+        suffix = orientation.isPortrait ? "-Portrait" : "-Landscape"
+        XCUIDevice.shared.orientation = orientation
+        continueAfterFailure = false
+        app = XCUIApplication()
         setupSnapshot(app)
         app.launch()
-
-        snapshot("01MainScreen")
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func __testTest() {
         let mainView = app.otherElements["MainView"]
         XCTAssert(mainView.waitForExistence(timeout: 5))
-
-        let soundFontsView = app.otherElements["SoundFontsView"]
-        XCTAssert(soundFontsView.exists)
-
-        let favoritesView = app.otherElements["FavoritesView"]
-        XCTAssert(!favoritesView.exists)
-
-        let touchView = app.otherElements["TouchView"]
-        XCTAssert(touchView.exists)
-
-        touchView.doubleTap()
-        XCTAssert(favoritesView.waitForExistence(timeout: 5))
     }
 
     func switchViews() {
@@ -44,8 +30,6 @@ class ScreenShots: XCTestCase {
     }
 
     func showSoundFontsView() {
-
-        // Make sure that the SoundFontsView is visible
         let soundFontsView = app.otherElements["SoundFontsView"]
         guard !soundFontsView.exists else { return }
         switchViews()
@@ -53,41 +37,116 @@ class ScreenShots: XCTestCase {
     }
 
     func showFavoritesView() {
-
-        // Make sure that the FavoritesView is visible
         let favoritesView = app.otherElements["FavoritesView"]
         guard !favoritesView.exists else { return }
         switchViews()
         XCTAssert(favoritesView.waitForExistence(timeout: 5))
     }
 
-    func initialize(_ orientation: UIDeviceOrientation) {
-
-        // Do this before creating the app
-        XCUIDevice.shared.orientation = orientation
-        continueAfterFailure = false
-
-        // Create the app but wait until the MainView is visible
-        app = XCUIApplication()
-        setupSnapshot(app)
-        app.launch()
-        let mainView = app.otherElements["MainView"]
-        XCTAssert(mainView.waitForExistence(timeout: 5))
+    func showSettingsView() {
+        let settingsView = app.otherElements["SettingsView"]
+        if app.buttons["More"].exists {
+            app.buttons["More"].tap()
+        }
+        app.buttons["Settings"].tap()
+        XCTAssert(settingsView.waitForExistence(timeout: 5))
     }
 
-    func testPortrait() {
-        initialize(.portrait)
-        showSoundFontsView()
-        snapshot("Patches-Portrait")
-        showFavoritesView()
-        snapshot("Favorites-Portrait")
+    func showFontEditView() {
+        let musescoreStaticText = app.tables.staticTexts["MuseScore"]
+        musescoreStaticText.tap()
+        musescoreStaticText.swipeRight()
+        app.tables.buttons["leading0"].tap()
     }
 
-    func testLandscape() {
-        initialize(.landscapeLeft)
-        showSoundFontsView()
-        snapshot("Patches-Landscape")
-        showFavoritesView()
-        snapshot("Favorites-Landscape")
+    func showFavoriteEditView() {
+        let musescoreStaticText = app.tables.staticTexts["MuseScore"]
+        musescoreStaticText.tap()
+        app.scrollToTop()
+
+        let tineElectricPianoText = app.tables.staticTexts["Tine Electric Piano"]
+        XCTAssert(tineElectricPianoText.waitForExistence(timeout: 5))
+        tineElectricPianoText.tap()
+
+        let electricGrandStaticText = app.tables.staticTexts["Electric Grand"]
+        if electricGrandStaticText.exists {
+            electricGrandStaticText.swipeRight()
+            let action = app.tables.buttons["leading0"]
+            XCTAssert(action.waitForExistence(timeout: 5))
+            action.tap()
+        }
+
+        let faveElectricGrandStaticText = app.tables.staticTexts["✪ Electric Grand"]
+        faveElectricGrandStaticText.swipeRight()
+        app.tables.buttons["leading0"].tap()
+
+        let editView = app.otherElements["FavoriteEditor"]
+        XCTAssert(editView.waitForExistence(timeout: 5))
+    }
+
+    func run(_ orientation: UIDeviceOrientation, _ title: String, setup: () -> Void) {
+        initialize(orientation)
+        setup()
+        snap(title)
+    }
+
+    func testPatchesPortrait() { run(.portrait, "patches") { showSoundFontsView() } }
+    func testPatchesLandscape() { run(.landscapeLeft, "patches") { showSoundFontsView() } }
+
+    func testFavoritesPortrait() { run(.portrait, "favorites") { showFavoritesView() } }
+    func testFavoritesLandscape() { run(.landscapeLeft, "favorites") { showFavoritesView() } }
+
+    func testSettingsPortrait() { run(.portrait, "settings") { showSettingsView() } }
+    func testSettingsLandscape() { run(.landscapeLeft, "settings") { showSettingsView() } }
+
+    func testFontEditPortrait() { run(.portrait, "fontedit") { showFontEditView() } }
+    func testFontEditLandscape() { run(.landscapeLeft, "fontedit") { showFontEditView() } }
+
+    func testFavoriteEditPortrait() { run(.portrait, "favoriteedit") { showFavoriteEditView() } }
+    func testFavoriteEditLandscape() { run(.landscapeLeft, "favoriteedit") { showFavoriteEditView() } }
+}
+
+extension XCUIApplication {
+    private struct Constants {
+        // Half way accross the screen and 10% from top
+        static let topOffset = CGVector(dx: 0.5, dy: 0.1)
+
+        // Half way accross the screen and 90% from top
+        static let bottomOffset = CGVector(dx: 0.5, dy: 0.9)
+    }
+
+    var screenTopCoordinate: XCUICoordinate {
+        windows.firstMatch.coordinate(withNormalizedOffset: Constants.topOffset)
+    }
+
+    var screenBottomCoordinate: XCUICoordinate {
+        windows.firstMatch.coordinate(withNormalizedOffset: Constants.bottomOffset)
+    }
+
+    func scrollDownToElement(element: XCUIElement, maxScrolls: Int = 5) {
+        for _ in 0..<maxScrolls {
+            if element.exists && element.isHittable { element.scrollToTop(); break }
+            scrollDown()
+        }
+    }
+
+    func scrollDown() {
+        screenBottomCoordinate.press(forDuration: 0.1, thenDragTo: screenTopCoordinate)
     }
 }
+
+extension XCUIElement {
+    func scrollToTop() {
+        let topCoordinate = XCUIApplication().screenTopCoordinate
+        let elementCoordinate = coordinate(withNormalizedOffset: .zero)
+
+        // Adjust coordinate so that the drag is straight up, otherwise
+        // an embedded horizontal scrolling element will get scrolled instead
+        let delta = topCoordinate.screenPoint.x - elementCoordinate.screenPoint.x
+        let deltaVector = CGVector(dx: delta, dy: 0.0)
+
+        elementCoordinate.withOffset(deltaVector).press(forDuration: 0.1, thenDragTo: topCoordinate)
+    }
+s}
+
+

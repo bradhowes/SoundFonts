@@ -191,6 +191,9 @@ extension SoundFontsViewController: FontEditorActionGenerator {
 
         action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
+        action.accessibilityLabel = "FontEditButton"
+        action.accessibilityHint = "FontEditButton"
+        action.isAccessibilityElement = true
         return action
     }
 

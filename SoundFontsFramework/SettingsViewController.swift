@@ -13,7 +13,7 @@ public extension SettingKeys {
 /**
  Manages window showing various runtime settings and options.
  */
-class SettingsViewController: UIViewController {
+public final class SettingsViewController: UIViewController {
     private let log = Logging.logger("SetVC")
 
     @IBOutlet private weak var doneButton: UIBarButtonItem!
@@ -28,7 +28,7 @@ class SettingsViewController: UIViewController {
 
     var soundFonts: SoundFonts!
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
         showSolfegeNotes.isOn = Settings[.showSolfegeLabel]
