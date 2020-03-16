@@ -38,6 +38,12 @@ extension UICollectionView {
         return cell
     }
 
+    /**
+     Generic method to obtain the cell at a given index. Will return nil if index is invalid or not visible.
+
+     - parameter indexPath: the index to use
+     - returns: optional cell of the indicated type
+     */
     public func cellForItem<T: UICollectionViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
         return cellForItem(at: indexPath) as? T
     }

@@ -238,7 +238,7 @@ extension SoundFontsViewController: SegueHandler {
             prepareToEdit(segue, config: config)
 
         case .fontBrowser:
-            beginBrowseFont(segue, sender: sender)
+            break
         }
     }
 
@@ -265,13 +265,6 @@ extension SoundFontsViewController: SegueHandler {
 
         // Doing this will catch the swipe-down action that we treat as a 'cancel'.
         nc.presentationController?.delegate = vc
-    }
-
-    private func beginBrowseFont(_ segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-            (nc.topViewController as? UIDocumentPickerViewController) != nil,
-            let button = sender as? UIButton else { return }
-        nc.popoverPresentationController?.setSourceView(button)
     }
 }
 

@@ -97,7 +97,9 @@
                                         <state key="normal" image="Settings"/>
                                         <connections>
                                             <action selector="showSettings:" destination="YeB-KN-4f1" eventType="touchUpInside" id="Ch9-fz-rOg"/>
-                                            <segue destination="N9t-kE-VI5" kind="presentation" identifier="settings" modalPresentationStyle="formSheet" id="qIW-bJ-CrM"/>
+                                            <segue destination="N9t-kE-VI5" kind="popoverPresentation" identifier="settings" popoverAnchorView="7YL-wn-sth" id="qIW-bJ-CrM">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </button>
                                 </subviews>
