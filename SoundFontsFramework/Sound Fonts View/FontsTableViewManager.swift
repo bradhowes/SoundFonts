@@ -80,7 +80,7 @@ extension FontsTableViewManager: UITableViewDelegate {
         let action = fontEditorActionGenerator.createEditSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
 
         let actions = UISwipeActionsConfiguration(actions: [action])
-        actions.performsFirstActionWithFullSwipe = true
+        actions.performsFirstActionWithFullSwipe = false
         return actions
     }
 
