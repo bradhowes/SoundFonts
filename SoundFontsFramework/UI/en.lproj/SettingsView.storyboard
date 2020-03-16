@@ -117,7 +117,7 @@
                                                     <action selector="visitAppStore:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="Flf-ZO-ZIg"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                 <rect key="frame" x="16" y="316.5" width="47" height="21"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
