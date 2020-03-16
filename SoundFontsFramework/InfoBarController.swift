@@ -193,7 +193,15 @@ extension InfoBarController: SegueHandler {
             nc.modalPresentationStyle = .fullScreen
         }
 
-        nc.popoverPresentationController?.setSourceView(view)
+        if let ppc = nc.popoverPresentationController {
+            ppc.sourceView = showSettings
+            ppc.sourceRect = showSettings.bounds
+            ppc.permittedArrowDirections = .any
+            // ppc.delegate = vc
+        }
+
+        // nc.presentationController?.delegate = vc
+
     }
 }
 

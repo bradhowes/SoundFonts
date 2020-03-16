@@ -46,7 +46,6 @@
 		BD074C7523CDAF51001987E9 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */; };
 		BD074C7623CDAF51001987E9 /* RandomAccessCollection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */; };
 		BD074C7723CDAF51001987E9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1F23CDAF51001987E9 /* String+Extensions.swift */; };
-		BD074C7823CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C2023CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift */; };
 		BD074C7923CDAF51001987E9 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */; };
 		BD074C7A23CDAF51001987E9 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C2223CDAF51001987E9 /* FileManager+Extensions.swift */; };
 		BD074C7B23CDAF51001987E9 /* Foundation+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C2323CDAF51001987E9 /* Foundation+Extensions.swift */; };
@@ -173,7 +172,6 @@
 		BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extensions.swift"; sourceTree = "<group>"; };
 		BD074C1F23CDAF51001987E9 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		BD074C2023CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+Extensions.swift"; sourceTree = "<group>"; };
 		BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		BD074C2223CDAF51001987E9 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager+Extensions.swift"; sourceTree = "<group>"; };
 		BD074C2323CDAF51001987E9 /* Foundation+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Foundation+Extensions.swift"; sourceTree = "<group>"; };
@@ -441,7 +439,6 @@
 				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
 				BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */,
 				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
-				BD074C2023CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift */,
 				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
 				BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */,
 				BD074C2523CDAF51001987E9 /* UserDefaults+Extensions.swift */,
@@ -680,7 +677,6 @@
 				BD074C5223CDAF51001987E9 /* Patch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
-				BD074C7823CDAF51001987E9 /* UIPopoverPresentationController+Extensions.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
 				BD125B3F241010430003DE99 /* Components.swift in Sources */,
