@@ -16,12 +16,13 @@ public extension SettingKeys {
 public final class SettingsViewController: UIViewController {
     private let log = Logging.logger("SetVC")
 
+    @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
 
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
-    @IBOutlet weak var playSample: UISwitch!
-    @IBOutlet weak var showKeyLabels: UISwitch!
-    @IBOutlet weak var keyWidthSlider: UISlider!
+    @IBOutlet private weak var playSample: UISwitch!
+    @IBOutlet private weak var showKeyLabels: UISwitch!
+    @IBOutlet private weak var keyWidthSlider: UISlider!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -40,6 +41,8 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.minimumValue = 32.0
         keyWidthSlider.isContinuous = true
         keyWidthSlider.value = Settings[.keyWidth]
+
+        preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
     private func updateButtonState() {

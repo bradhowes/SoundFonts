@@ -393,7 +393,9 @@ extension PatchesTableViewManager {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             let rect = self.view.rectForRow(at: at)
-            let config = FavoriteEditor.Config(indexPath: at, view: self.view, rect: rect, favorite: favorite,
+            let position = self.favorites.index(of: favorite)
+            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0), view: self.view,
+                                               rect: rect, favorite: favorite,
                                                currentLowestNote: self.keyboard?.lowestNote,
                                                completionHandler: completionHandler)
             self.favorites.beginEdit(config: config)

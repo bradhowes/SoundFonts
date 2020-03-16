@@ -40,6 +40,7 @@ final class FontEditor: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         guard let soundFont = self.soundFont else { fatalError() }
         name.text = soundFont.displayName
         name.delegate = self
@@ -47,7 +48,8 @@ final class FontEditor: UIViewController {
         embeddedNameLabel.text = soundFont.embeddedName
         patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
         favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
-        super.viewWillAppear(animated)
+
+        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
     /**
@@ -96,16 +98,16 @@ extension FontEditor: UITextFieldDelegate {
 extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
 
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        cancelPressed(cancelButton)
+        donePressed(doneButton)
     }
 
     /**
-     Treat touches outside of the popover as a signal to dismiss via Cancel button
+     Treat touches outside of the popover as a signal to dismiss via Done button
 
      - parameter popoverPresentationController: the controller being monitored
      */
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        cancelPressed(cancelButton)
+        donePressed(doneButton)
     }
 }
 
