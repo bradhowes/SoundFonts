@@ -158,7 +158,7 @@ extension FavoritesViewController: SegueHandler {
         if let ppc = nc.popoverPresentationController {
             ppc.sourceView = config.view
             ppc.sourceRect = config.rect
-            ppc.permittedArrowDirections = .any
+            ppc.permittedArrowDirections = [.up, .down]
             ppc.delegate = vc
         }
 

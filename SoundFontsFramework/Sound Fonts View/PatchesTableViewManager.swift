@@ -356,7 +356,7 @@ extension PatchesTableViewManager {
     private func createFaveSwipeAction(at: IndexPath, cell: TableCell,
                                        soundFontPatch: SoundFontPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
-        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             self.favorites.add(soundFontPatch: soundFontPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, at: at, with: soundFontPatch)
             completionHandler(true)
@@ -373,7 +373,7 @@ extension PatchesTableViewManager {
                                     soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
-        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             if favorite == self.activePatchManager.favorite {
                 self.activePatchManager.setActive(.normal(soundFontPatch: favorite.soundFontPatch))
             }
@@ -391,11 +391,14 @@ extension PatchesTableViewManager {
     private func createEditSwipeAction(at: IndexPath, cell: TableCell,
                                        soundFontPatch: SoundFontPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontPatch: soundFontPatch) else { fatalError() }
-        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            let rect = self.view.rectForRow(at: at)
+        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+            var rect = self.view.rectForRow(at: at)
+            rect.size.width = 240.0
             let position = self.favorites.index(of: favorite)
-            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0), view: self.view,
-                                               rect: rect, favorite: favorite,
+            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0),
+                                               view: view,
+                                               rect: view.bounds,
+                                               favorite: favorite,
                                                currentLowestNote: self.keyboard?.lowestNote,
                                                completionHandler: completionHandler)
             self.favorites.beginEdit(config: config)
