@@ -9,7 +9,8 @@ final class FontEditor: UIViewController {
 
     public struct Config {
         let indexPath: IndexPath
-        let cell: TableCell
+        let view: UIView
+        let rect: CGRect
         let soundFont: SoundFont
         let favoriteCount: Int
         let completionHandler: UIContextualAction.CompletionHandler?

@@ -183,16 +183,16 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - returns: new UIContextualAction that will perform the edit
      */
     public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-            let config = FontEditor.Config(indexPath: at, cell: cell, soundFont: soundFont, favoriteCount:
-                self.favorites.count(associatedWith: soundFont), completionHandler: completionHandler)
+        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+            let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFont: soundFont,
+                                           favoriteCount: self.favorites.count(associatedWith: soundFont),
+                                           completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)
         }
 
         action.image = getActionImage("Edit")
         action.backgroundColor = UIColor.orange
         action.accessibilityLabel = "FontEditButton"
-        action.accessibilityHint = "FontEditButton"
         action.isAccessibilityElement = true
         return action
     }
@@ -207,7 +207,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - returns: new UIContextualAction that will perform the edit
      */
     public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
+        let action = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
 
@@ -257,10 +257,9 @@ extension SoundFontsViewController: SegueHandler {
         }
 
         if let ppc = nc.popoverPresentationController {
-            let rect = soundFontsView.rectForRow(at: config.indexPath)
-            ppc.sourceView = soundFontsView
-            ppc.sourceRect = rect
-            ppc.permittedArrowDirections = .any
+            ppc.sourceView = config.view
+            ppc.sourceRect = config.rect
+            ppc.permittedArrowDirections = [.up, .down]
             ppc.delegate = vc
         }
 
