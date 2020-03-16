@@ -147,6 +147,6 @@ extension XCUIElement {
 
         elementCoordinate.withOffset(deltaVector).press(forDuration: 0.1, thenDragTo: topCoordinate)
     }
-s}
+}
 
 

@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="zYi-ne-58d" userLabel="Favorite Editor" customClass="FavoriteEditor" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="c1U-jY-Jwr">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="350"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="339"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOB-fj-QF1">
@@ -190,6 +190,7 @@
                             <constraint firstItem="NOB-fj-QF1" firstAttribute="leading" secondItem="omQ-3R-1Aq" secondAttribute="leading" constant="20" id="ris-7x-kaj"/>
                             <constraint firstItem="HRf-Oq-DEn" firstAttribute="leading" secondItem="omQ-3R-1Aq" secondAttribute="leading" constant="20" id="ryk-lx-OOG"/>
                             <constraint firstItem="HRf-Oq-DEn" firstAttribute="top" secondItem="rar-Kq-tLp" secondAttribute="bottom" constant="8" id="tIe-fm-jPc"/>
+                            <constraint firstItem="omQ-3R-1Aq" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HRf-Oq-DEn" secondAttribute="bottom" priority="750" constant="20" id="yeg-1U-Sxc"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="omQ-3R-1Aq"/>
                     </view>
@@ -210,7 +211,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="320" height="350"/>
+                    <size key="freeformSize" width="320" height="339"/>
                     <connections>
                         <outlet property="bank" destination="Spc-mS-Xzz" id="VAa-ZB-75y"/>
                         <outlet property="cancelButton" destination="Qr0-64-mpH" id="Kkf-Vi-M9T"/>
@@ -218,6 +219,7 @@
                         <outlet property="gainSlider" destination="dNr-nw-vcg" id="Hkk-Hn-Mgg"/>
                         <outlet property="gainValue" destination="Odd-hy-oDM" id="1QJ-sb-kGd"/>
                         <outlet property="index" destination="GR7-wi-7E0" id="eTY-Tw-soK"/>
+                        <outlet property="infoView" destination="HRf-Oq-DEn" id="MC9-qW-17C"/>
                         <outlet property="lowestNote" destination="Vvf-8D-awX" id="Veg-WQ-nb5"/>
                         <outlet property="lowestNoteCollection" destination="bJN-k4-RTV" id="FYq-31-xTf"/>
                         <outlet property="lowestNoteStepper" destination="3H6-6k-aQ4" id="lCz-EU-trD"/>

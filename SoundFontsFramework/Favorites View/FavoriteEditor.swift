@@ -59,6 +59,8 @@ final public class FavoriteEditor: UIViewController {
     }
 
     override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         precondition(favorite != nil)
         let soundFontPatch = favorite.soundFontPatch
 
@@ -85,7 +87,7 @@ final public class FavoriteEditor: UIViewController {
         panValue.text = formatFloat(favorite.pan)
         panSlider.value = favorite.pan
 
-        super.viewWillAppear(animated)
+        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }
 
@@ -200,16 +202,16 @@ extension FavoriteEditor {
 extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
 
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        cancelPressed(cancelButton)
+        donePressed(doneButton)
     }
 
     /**
-     Treat touches outside of the popover as a signal to dismiss via Cancel button
+     Treat touches outside of the popover as a signal to dismiss via Dones button
 
      - parameter popoverPresentationController: the controller being monitored
      */
     public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        cancelPressed(cancelButton)
+        donePressed(doneButton)
     }
 }
 

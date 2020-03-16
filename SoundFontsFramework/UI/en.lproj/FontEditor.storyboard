@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="J1E-VV-vXb" userLabel="SoundFont Editor" customClass="FontEditor" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PVH-2e-a8c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="260"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMC-LO-nex" userLabel="Name Label">
@@ -60,7 +60,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Original:" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9Y-TJ-3aJ">
-                                <rect key="frame" x="20" y="164" width="50.666666666666657" height="15.666666666666657"/>
+                                <rect key="frame" x="19.999999999999996" y="164" width="50.666666666666657" height="15.666666666666657"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                 <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -75,6 +75,7 @@
                         <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" hint="FontEditor" identifier="FontEditor" label="FontEditor"/>
                         <constraints>
+                            <constraint firstItem="gLC-lN-Cot" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="tsT-zj-S9L" secondAttribute="bottom" constant="20" id="06J-YJ-2Yf"/>
                             <constraint firstItem="s2C-3z-yXQ" firstAttribute="firstBaseline" secondItem="eMC-LO-nex" secondAttribute="firstBaseline" id="0Ox-NN-hdt"/>
                             <constraint firstItem="gLC-lN-Cot" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="tsT-zj-S9L" secondAttribute="trailing" constant="20" id="14J-mA-EUc"/>
                             <constraint firstItem="zbT-I1-Hu4" firstAttribute="firstBaseline" secondItem="n9Y-TJ-3aJ" secondAttribute="firstBaseline" id="2pN-ez-vLx"/>
@@ -126,7 +127,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="200"/>
+                    <size key="freeformSize" width="320" height="260"/>
                     <connections>
                         <outlet property="cancelButton" destination="jZb-mq-MmC" id="n0o-4s-phH"/>
                         <outlet property="doneButton" destination="PMy-9w-Kgw" id="IFj-1K-Ctn"/>

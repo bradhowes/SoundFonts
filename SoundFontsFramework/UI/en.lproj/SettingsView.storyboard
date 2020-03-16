@@ -13,11 +13,11 @@
             <objects>
                 <viewController title="Settings" id="Eyw-X4-KFI" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="459"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="446"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="88" width="414" height="371"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="358"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="358"/>
@@ -117,7 +117,7 @@
                                                     <action selector="visitAppStore:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="Flf-ZO-ZIg"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                 <rect key="frame" x="16" y="316.5" width="47" height="21"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -198,8 +198,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="414" height="459"/>
+                    <size key="freeformSize" width="414" height="446"/>
                     <connections>
+                        <outlet property="contentView" destination="LhQ-ia-e1C" id="Gek-ln-duq"/>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
                         <outlet property="keyWidthSlider" destination="8zs-tA-EFY" id="N0J-nv-1Pn"/>
                         <outlet property="playSample" destination="JaD-vu-QJ2" id="N6G-zv-aub"/>
@@ -211,7 +212,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uXx-w9-DqU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2046" y="-579"/>
+            <point key="canvasLocation" x="2084" y="-545"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JbL-Hk-dDI">
