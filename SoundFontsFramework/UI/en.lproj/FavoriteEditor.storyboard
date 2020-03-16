@@ -219,7 +219,6 @@
                         <outlet property="gainSlider" destination="dNr-nw-vcg" id="Hkk-Hn-Mgg"/>
                         <outlet property="gainValue" destination="Odd-hy-oDM" id="1QJ-sb-kGd"/>
                         <outlet property="index" destination="GR7-wi-7E0" id="eTY-Tw-soK"/>
-                        <outlet property="infoView" destination="HRf-Oq-DEn" id="MC9-qW-17C"/>
                         <outlet property="lowestNote" destination="Vvf-8D-awX" id="Veg-WQ-nb5"/>
                         <outlet property="lowestNoteCollection" destination="bJN-k4-RTV" id="FYq-31-xTf"/>
                         <outlet property="lowestNoteStepper" destination="3H6-6k-aQ4" id="lCz-EU-trD"/>
