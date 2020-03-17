@@ -187,6 +187,7 @@ extension InfoBarController: SegueHandler {
             let vc = nc.topViewController as? SettingsViewController else { return }
 
         vc.soundFonts = soundFonts
+        vc.isMainApp = isMainApp
 
         if !isMainApp {
             vc.modalPresentationStyle = .fullScreen

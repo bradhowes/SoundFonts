@@ -21,22 +21,18 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var showKeyLabels: UISwitch!
-
     @IBOutlet private weak var keyWidthSlider: UISlider!
-    @IBOutlet weak var keyWidthLabel: UILabel!
-
-    @IBOutlet weak var removeDefaultSoundFontsLabel: UILabel!
+    @IBOutlet private weak var keyWidthLabel: UILabel!
+    @IBOutlet private weak var removeDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
-
-    @IBOutlet weak var restoreDefaultSoundFontsLabel: UILabel!
+    @IBOutlet private weak var restoreDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
+    @IBOutlet private weak var versionLabel: UILabel!
+    @IBOutlet private weak var review: UIButton!
+    @IBOutlet private weak var lowerContent: UIView!
 
-    @IBOutlet weak var versionLabel: UILabel!
-    @IBOutlet weak var review: UIButton!
-
-    @IBOutlet weak var lowerContent: UIView!
-
-    var soundFonts: SoundFonts!
+    public var soundFonts: SoundFonts!
+    public var isMainApp = true
 
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
@@ -52,6 +48,7 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.value = Settings[.keyWidth]
 
         endShowKeyboard()
+
         preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
@@ -83,6 +80,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidBegin")
+        guard isMainApp else { return }
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
                                                        animations: self.beginShowKeyboard,
                                                        completion: { _ in self.beginShowKeyboard() })
@@ -90,6 +88,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction func keyWidthEditingDidEnd(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidEnd")
+        guard isMainApp else { return }
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
                                                        animations: self.endShowKeyboard,
                                                        completion: { _ in self.endShowKeyboard() })
