@@ -38,7 +38,7 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
         panner.minimumNumberOfTouches = 1
         panner.maximumNumberOfTouches = 1
-        view.addGestureRecognizer(panner)
+        touchView.addGestureRecognizer(panner)
 
         if traitCollection.horizontalSizeClass == .compact {
             moreButtonsXConstraint.constant = -moreButtons.frame.width
