@@ -32,7 +32,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var lowerContent: UIView!
 
     public var soundFonts: SoundFonts!
-    public var isMainApp = true
+    public var revealKeyboardForKeyWidthChanges = true
 
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
@@ -80,7 +80,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidBegin")
-        guard isMainApp else { return }
+        guard revealKeyboardForKeyWidthChanges else { return }
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
                                                        animations: self.beginShowKeyboard,
                                                        completion: { _ in self.beginShowKeyboard() })
@@ -88,7 +88,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction func keyWidthEditingDidEnd(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidEnd")
-        guard isMainApp else { return }
+        guard revealKeyboardForKeyWidthChanges else { return }
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
                                                        animations: self.endShowKeyboard,
                                                        completion: { _ in self.endShowKeyboard() })
