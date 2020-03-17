@@ -31,6 +31,8 @@ final class KeyboardController: UIViewController {
     private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
     private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
 
+    private var activePatchManager: ActivePatchManager!
+
     /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
     var isMuted: Bool = false {
         didSet {
@@ -81,6 +83,7 @@ final class KeyboardController: UIViewController {
 extension KeyboardController: ControllerConfiguration {
 
     func establishConnections(_ router: ComponentContainer) {
+        activePatchManager = router.activePatchManager
         router.infoBar.addTarget(.shiftKeyboardUp, target: self, action: #selector(shiftKeyboardUp))
         router.infoBar.addTarget(.shiftKeyboardDown, target: self, action: #selector(shiftKeyboardDown))
         setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
@@ -89,12 +92,20 @@ extension KeyboardController: ControllerConfiguration {
 
     private func favoritesChange(_ event: FavoritesEvent) {
         switch event {
-        case let .selected(index: _, favorite: favorite):
-            if let lowest = favorite.keyboardLowestNote {
-                lowestNote = lowest
+        case let .changed(index: _, favorite: favorite):
+            if activePatchManager.favorite == favorite {
+                updateWith(favorite: favorite)
             }
+        case let .selected(index: _, favorite: favorite):
+            updateWith(favorite: favorite)
         default:
             break
+        }
+    }
+
+    private func updateWith(favorite: Favorite) {
+        if let lowest = favorite.keyboardLowestNote {
+            lowestNote = lowest
         }
     }
 }
@@ -108,7 +119,12 @@ extension KeyboardController {
         if lastMidiNoteValue < Sampler.maxMidiValue {
             let shift: Int = {
                 if firstMidiNoteValue % 12 == 0 {
-                    return min(keys.count, 12)
+                    if keys.count < 12 {
+                        return 12 - keys.count
+                    }
+                    else {
+                        return 12
+                    }
                 }
                 else {
                     return 12 - firstMidiNoteValue % 12

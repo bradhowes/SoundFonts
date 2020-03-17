@@ -142,6 +142,8 @@ extension PatchesTableViewManager: UITableViewDelegate {
         let playSample = Settings[.playSample]
         if let favorite = favorites.getBy(soundFontPatch: soundFontPatch) {
             activePatchManager.setActive(.favorite(favorite: favorite), playSample: playSample)
+            let index = favorites.index(of: favorite)
+            favorites.selected(index: index)
         }
         else {
             activePatchManager.setActive(.normal(soundFontPatch: soundFontPatch), playSample: playSample)

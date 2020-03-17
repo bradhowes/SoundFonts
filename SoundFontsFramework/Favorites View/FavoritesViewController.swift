@@ -192,7 +192,7 @@ extension FavoritesViewController: SegueHandler {
 extension FavoritesViewController: FavoriteEditorDelegate {
 
     public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
-        if case let .done(favorite) =  reason {
+        if case let .done(favorite) = reason {
             favorites.update(index: indexPath.item, with: favorite)
             favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
