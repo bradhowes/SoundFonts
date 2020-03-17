@@ -197,11 +197,7 @@ extension InfoBarController: SegueHandler {
             ppc.sourceView = showSettings
             ppc.sourceRect = showSettings.bounds
             ppc.permittedArrowDirections = .any
-            // ppc.delegate = vc
         }
-
-        // nc.presentationController?.delegate = vc
-
     }
 }
 
