@@ -17,26 +17,44 @@ public final class SettingsViewController: UIViewController {
     private let log = Logging.logger("SetVC")
 
     @IBOutlet private weak var contentView: UIView!
+    @IBOutlet weak var upperBackground: UIView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
+
+    @IBOutlet weak var playSamplesStackView: UIStackView!
+    @IBOutlet weak var solfegeStackView: UIStackView!
+    @IBOutlet weak var keyLabelsStackView: UIStackView!
+    @IBOutlet weak var keyWidthStackView: UIStackView!
+    @IBOutlet weak var removeSoundFontsStackView: UIStackView!
+    @IBOutlet weak var restoreSoundFontsStackView: UIStackView!
+    @IBOutlet weak var versionReviewStackView: UIStackView!
+
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var showKeyLabels: UISwitch!
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var keyWidthLabel: UILabel!
+
     @IBOutlet private weak var removeDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var versionLabel: UILabel!
     @IBOutlet private weak var review: UIButton!
-    @IBOutlet private weak var lowerContent: UIView!
+
+    private var revealKeyboardForKeyWidthChanges = false
 
     public var soundFonts: SoundFonts!
-    public var revealKeyboardForKeyWidthChanges = true
+    public var isMainApp = true
 
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
+
+        revealKeyboardForKeyWidthChanges = false
+        if let popoverPresentationVC = self.parent?.popoverPresentationController {
+            revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
+        }
+
         showSolfegeNotes.isOn = Settings[.showSolfegeLabel]
         playSample.isOn = Settings[.playSample]
         showKeyLabels.isOn = Settings[.showKeyLabels]
@@ -47,35 +65,32 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.isContinuous = true
         keyWidthSlider.value = Settings[.keyWidth]
 
+        let isAUv3 = !isMainApp
+        solfegeStackView.isHidden = isAUv3
+        keyLabelsStackView.isHidden = isAUv3
+        keyWidthStackView.isHidden = isAUv3
+
+        review.isEnabled = isMainApp
+
         endShowKeyboard()
 
         preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
     private func beginShowKeyboard() {
-        let newColor = view.backgroundColor?.withAlphaComponent(0.2)
-        view.backgroundColor = newColor
-        lowerContent.alpha = 0.0
-        removeDefaultSoundFontsLabel.alpha = 0.0
-        removeDefaultSoundFonts.alpha = 0.0
-        restoreDefaultSoundFontsLabel.alpha = 0.0
-        restoreDefaultSoundFonts.alpha = 0.0
-        versionLabel.alpha = 0.0
-        review.alpha = 0.0
-        keyWidthLabel.alpha = 0.0
+        removeSoundFontsStackView.isHidden = true
+        restoreSoundFontsStackView.isHidden = true
+        versionReviewStackView.isHidden = true
+        view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
+        contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
     }
 
     private func endShowKeyboard() {
-        let newColor = view.backgroundColor?.withAlphaComponent(1.0)
-        view.backgroundColor = newColor
-        lowerContent.alpha = 1.0
-        removeDefaultSoundFontsLabel.alpha = 1.0
-        removeDefaultSoundFonts.alpha = 1.0
-        restoreDefaultSoundFontsLabel.alpha = 1.0
-        restoreDefaultSoundFonts.alpha = 1.0
-        versionLabel.alpha = 1.0
-        review.alpha = 1.0
-        keyWidthLabel.alpha = 1.0
+        removeSoundFontsStackView.isHidden = false
+        restoreSoundFontsStackView.isHidden = false
+        versionReviewStackView.isHidden = false
+        view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
+        contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
     }
 
     @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
