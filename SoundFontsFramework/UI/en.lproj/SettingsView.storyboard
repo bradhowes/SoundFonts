@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="358"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="325.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="349.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJm-Kh-cBE" userLabel="Upper Background">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
@@ -29,8 +29,8 @@
                                                     <constraint firstAttribute="height" constant="200" id="BlF-fE-UcA"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
-                                                <rect key="frame" x="20" y="20" width="374" height="285.5"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
+                                                <rect key="frame" x="20" y="20" width="374" height="309.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="goE-tS-nbI" userLabel="Play Samples">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
@@ -52,7 +52,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tmr-5h-0DY" userLabel="Solfege Tags">
-                                                        <rect key="frame" x="0.0" y="39" width="374" height="31"/>
+                                                        <rect key="frame" x="0.0" y="43" width="374" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
                                                                 <rect key="frame" x="0.0" y="5.5" width="140.5" height="20.5"/>
@@ -71,7 +71,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Key Labels">
-                                                        <rect key="frame" x="0.0" y="78" width="374" height="31"/>
+                                                        <rect key="frame" x="0.0" y="86" width="374" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show key labels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3d-d7-tA5">
                                                                 <rect key="frame" x="0.0" y="5.5" width="122.5" height="20.5"/>
@@ -79,17 +79,21 @@
                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDp-nx-ur7">
-                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
-                                                                <color key="onTintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="ajK-bt-gBN">
+                                                                <rect key="frame" x="258" y="0.0" width="116" height="32"/>
+                                                                <segments>
+                                                                    <segment title="Off"/>
+                                                                    <segment title="All"/>
+                                                                    <segment title="C"/>
+                                                                </segments>
                                                                 <connections>
-                                                                    <action selector="toggleShowKeyLabels:" destination="Eyw-X4-KFI" eventType="valueChanged" id="wcH-fm-BpL"/>
+                                                                    <action selector="keyLabelOptionChanged:" destination="Eyw-X4-KFI" eventType="valueChanged" id="EVv-6H-hwP"/>
                                                                 </connections>
-                                                            </switch>
+                                                            </segmentedControl>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gdn-yw-SU4" userLabel="Key Width">
-                                                        <rect key="frame" x="0.0" y="117" width="374" height="54.5"/>
+                                                        <rect key="frame" x="0.0" y="129" width="374" height="54.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key Width" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ce-kL-xHr">
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
@@ -113,7 +117,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-WA-CKG" userLabel="Remove">
-                                                        <rect key="frame" x="0.0" y="179.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="195.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feS-ti-Bte">
                                                                 <rect key="frame" x="0.0" y="5" width="209.5" height="20.5"/>
@@ -133,7 +137,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cY9-56-y6L" userLabel="Restore">
-                                                        <rect key="frame" x="0.0" y="217.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="237.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ol-Ma-VZZ">
                                                                 <rect key="frame" x="0.0" y="5" width="207" height="20.5"/>
@@ -153,9 +157,9 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EGM-L9-3DV" userLabel="Version Review">
-                                                        <rect key="frame" x="0.0" y="255.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="279.5" width="374" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                                 <rect key="frame" x="0.0" y="5" width="47" height="20.5"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -225,6 +229,7 @@
                     <connections>
                         <outlet property="contentView" destination="LhQ-ia-e1C" id="Gek-ln-duq"/>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
+                        <outlet property="keyLabelOption" destination="ajK-bt-gBN" id="t1n-L2-f6P"/>
                         <outlet property="keyLabelsStackView" destination="Dxo-aN-fl6" id="we4-5R-t2n"/>
                         <outlet property="keyWidthLabel" destination="2Ce-kL-xHr" id="T9K-7h-BBH"/>
                         <outlet property="keyWidthSlider" destination="8zs-tA-EFY" id="N0J-nv-1Pn"/>
@@ -238,7 +243,6 @@
                         <outlet property="restoreDefaultSoundFontsLabel" destination="7ol-Ma-VZZ" id="XeC-Nn-mjT"/>
                         <outlet property="restoreSoundFontsStackView" destination="cY9-56-y6L" id="mfE-fl-LMu"/>
                         <outlet property="review" destination="vQR-Pe-bJM" id="XCc-GN-b8i"/>
-                        <outlet property="showKeyLabels" destination="nDp-nx-ur7" id="8U7-6W-auX"/>
                         <outlet property="showSolfegeNotes" destination="Ngg-Rs-cwx" id="FxF-mH-RiW"/>
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>
                         <outlet property="upperBackground" destination="gJm-Kh-cBE" id="bct-YV-mXV"/>

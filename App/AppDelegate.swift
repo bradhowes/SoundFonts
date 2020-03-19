@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        observer = NotificationCenter.default.addObserver(forName: Notification.visitAppStore.name, object: nil,
+        observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
                                                           queue: nil) { _ in
             self.visitAppStore()
         }

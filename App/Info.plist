@@ -9,7 +9,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>SoundFonts</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

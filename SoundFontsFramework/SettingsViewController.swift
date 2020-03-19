@@ -7,7 +7,25 @@ public extension SettingKeys {
     static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
     static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
     static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
+    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: -1)
     static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
+}
+
+public enum KeyLabelOption: Int {
+    case off
+    case all
+    case c
+
+    public static var savedSetting: KeyLabelOption {
+        if let option = Self(rawValue: Settings[.keyLabelOption]) {
+            return option
+        }
+
+        let showKeyLabels = Settings[.showKeyLabels]
+        let option: Self = showKeyLabels ? .all : .off
+        Settings[.keyLabelOption] = option.rawValue
+        return option
+    }
 }
 
 /**
@@ -30,7 +48,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var playSample: UISwitch!
-    @IBOutlet private weak var showKeyLabels: UISwitch!
+    @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var keyWidthLabel: UILabel!
 
@@ -57,7 +75,8 @@ public final class SettingsViewController: UIViewController {
 
         showSolfegeNotes.isOn = Settings[.showSolfegeLabel]
         playSample.isOn = Settings[.playSample]
-        showKeyLabels.isOn = Settings[.showKeyLabels]
+        keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
+
         updateButtonState()
 
         keyWidthSlider.maximumValue = 96.0
@@ -119,7 +138,7 @@ public final class SettingsViewController: UIViewController {
     }
 
     @IBAction func visitAppStore(_ sender: Any) {
-        NotificationCenter.default.post(.visitAppStore)
+        NotificationCenter.default.post(Notification(name: .visitAppStore))
     }
 
     @IBAction
@@ -131,9 +150,9 @@ public final class SettingsViewController: UIViewController {
         Settings[.playSample] = self.playSample.isOn
     }
 
-    @IBAction func toggleShowKeyLabels(_ sender: Any) {
-        Settings[.showKeyLabels] = self.showKeyLabels.isOn
-        NotificationCenter.default.post(.showKeyLabelsChanged)
+    @IBAction func keyLabelOptionChanged(_ sender: Any) {
+        Settings[.keyLabelOption] = self.keyLabelOption.selectedSegmentIndex
+        NotificationCenter.default.post(Notification(name: .keyLabelOptionChanged, object: KeyLabelOption.savedSetting))
     }
 
     @IBAction func keyWidthChange(_ sender: Any) {
@@ -145,7 +164,7 @@ public final class SettingsViewController: UIViewController {
         if newValue != prevValue {
             os_log(.info, log: log, "new key width: %f", newValue)
             Settings[.keyWidth] = newValue
-            NotificationCenter.default.post(.keyWidthChanged)
+            NotificationCenter.default.post(Notification(name: .keyWidthChanged))
         }
     }
 

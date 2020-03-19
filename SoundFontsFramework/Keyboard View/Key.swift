@@ -12,7 +12,7 @@ final class Key: UIView {
     static var isMuted: Bool = false
 
     /// If true, show note on key
-    static var showKeyLabels: Bool = Settings[.showKeyLabels]
+    static var keyLabelOption = KeyLabelOption.savedSetting
 
     static var keyWidth: CGFloat = CGFloat(Settings[.keyWidth])
 
@@ -62,9 +62,16 @@ final class Key: UIView {
                                         isMuted: Self.isMuted)
         }
         else {
+            let label: String = {
+                switch Self.keyLabelOption {
+                case .all: return note.label
+                case .c where note.midiNoteValue % 12 == 0: return note.label
+                default: return ""
+                }
+            }()
+
             KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
-                                        isMuted: Self.isMuted,
-                                        note: Self.showKeyLabels ? note.label : "")
+                                        isMuted: Self.isMuted, note: label)
         }
     }
 

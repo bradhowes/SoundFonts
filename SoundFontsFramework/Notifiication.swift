@@ -2,17 +2,17 @@
 
 import UIKit
 
-extension Notification {
+extension Notification.Name {
 
     /// Notification to check if now is a good time to ask for a review of the app
-    public static let askForReview = Notification(name: Notification.Name(rawValue: "askForReview"))
+    public static let askForReview = Notification.Name(rawValue: "askForReview")
 
     /// Notification that the `showKeyLabels` setting changed
-    public static let showKeyLabelsChanged = Notification(name: Notification.Name(rawValue: "showKeyLabelsChanged"))
+    public static let keyLabelOptionChanged = Notification.Name(rawValue: "keyLabelOptionChanged")
 
     /// Notification to visit the app store to review the app
-    public static let visitAppStore = Notification(name: Notification.Name(rawValue: "visitAppStore"))
+    public static let visitAppStore = Notification.Name(rawValue: "visitAppStore")
 
     /// Notification that the key width changed
-    public static let keyWidthChanged = Notification(name: Notification.Name(rawValue: "keyWidthChanged"))
+    public static let keyWidthChanged = Notification.Name(rawValue: "keyWidthChanged")
 }
