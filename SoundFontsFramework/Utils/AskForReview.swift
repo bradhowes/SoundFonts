@@ -18,7 +18,7 @@ public final class AskForReview: NSObject {
 
     private let log = Logging.logger("AskR")
 
-    static public func maybe() { NotificationCenter.default.post(.askForReview) }
+    static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
     /// Obtain the version found in the main bundle.
     let currentVersion: String = {
@@ -66,8 +66,7 @@ public final class AskForReview: NSObject {
         os_log(.info, log: log, "init: dateSinceFirstLaunch - %s  dateSinceLastReviewRequest - %s",
                dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
         if isMain {
-            NotificationCenter.default.addObserver(forName: Notification.askForReview.name, object: nil,
-                                                   queue: nil) { _ in self.ask() }
+            NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in self.ask() }
         }
     }
 

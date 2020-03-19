@@ -43,11 +43,11 @@ final class KeyboardController: UIViewController {
         }
     }
 
-    var showKeyLabels: Bool {
-        get { Key.showKeyLabels }
+    var keyLabelOption: KeyLabelOption {
+        get { Key.keyLabelOption }
         set {
-            if Key.showKeyLabels != newValue {
-                Key.showKeyLabels = newValue
+            if Key.keyLabelOption != newValue {
+                Key.keyLabelOption = newValue
                 keys.forEach { $0.setNeedsDisplay() }
             }
         }
@@ -56,9 +56,9 @@ final class KeyboardController: UIViewController {
     override func viewDidLoad() {
         let lowestNote = Settings[.lowestKeyNote]
         firstMidiNoteValue = max(lowestNote, 0)
-        NotificationCenter.default.addObserver(forName: Notification.showKeyLabelsChanged.name, object: nil,
-                                               queue: nil) { _ in self.showKeyLabelsChanged() }
-        NotificationCenter.default.addObserver(forName: Notification.keyWidthChanged.name, object: nil,
+        NotificationCenter.default.addObserver(forName: .keyLabelOptionChanged, object: nil,
+                                               queue: nil) { notification in self.keyLabelOptionChanged(notification) }
+        NotificationCenter.default.addObserver(forName: .keyWidthChanged, object: nil,
                                                queue: nil) { _ in self.keyWidthChanged() }
     }
 
@@ -74,8 +74,9 @@ final class KeyboardController: UIViewController {
         view.setNeedsLayout()
     }
 
-    private func showKeyLabelsChanged() {
-        self.showKeyLabels = Settings[.showKeyLabels]
+    private func keyLabelOptionChanged(_ notification: Notification) {
+        let option = notification.object as! KeyLabelOption
+        self.keyLabelOption = option
     }
 }
 
