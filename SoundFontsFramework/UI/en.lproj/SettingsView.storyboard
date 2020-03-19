@@ -155,7 +155,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EGM-L9-3DV" userLabel="Version Review">
                                                         <rect key="frame" x="0.0" y="255.5" width="374" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.8" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.6.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                                 <rect key="frame" x="0.0" y="5" width="47" height="20.5"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
