@@ -188,8 +188,8 @@ extension InfoBarController: SegueHandler {
 
         vc.soundFonts = soundFonts
 
-        // Only reveal keyboard if main app (not AUv3) and settings view is not popover 
-        vc.revealKeyboardForKeyWidthChanges = isMainApp && nc.popoverPresentationController != nil
+        // Only reveal keyboard if main app (not AUv3) and settings view is not popover
+        vc.isMainApp = isMainApp
 
         if !isMainApp {
             vc.modalPresentationStyle = .fullScreen
