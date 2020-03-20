@@ -55,8 +55,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFonts.app"
-            BlueprintName = "SoundFonts"
+            BuildableName = "SoundFontsApp.app"
+            BlueprintName = "SoundFontsApp"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

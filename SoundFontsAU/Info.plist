@@ -2,17 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Papyrus.ttc</string>
-		<string>Skia.ttc</string>
-		<string>EuroStyle Normal.ttf</string>
-		<string>Eurostile.ttc</string>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>SoundFontsAU</string>
+	<string>SoundFonts</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -35,13 +28,13 @@
 			<array>
 				<dict>
 					<key>description</key>
-					<string>SoundFontsAU</string>
+					<string>SoundFonts</string>
 					<key>factoryFunction</key>
 					<string>$(PRODUCT_MODULE_NAME).SoundFontsAUViewController</string>
 					<key>manufacturer</key>
 					<string>bray</string>
 					<key>name</key>
-					<string>bray: SoundFontsAU</string>
+					<string>bray: SoundFonts</string>
 					<key>sandboxSafe</key>
 					<true/>
 					<key>subtype</key>
@@ -62,5 +55,12 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.AudioUnit-UI</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Papyrus.ttc</string>
+		<string>Skia.ttc</string>
+		<string>EuroStyle Normal.ttf</string>
+		<string>Eurostile.ttc</string>
+	</array>
 </dict>
 </plist>

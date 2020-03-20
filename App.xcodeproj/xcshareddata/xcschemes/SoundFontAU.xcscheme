@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-               BuildableName = "SoundFonts.app"
-               BlueprintName = "SoundFonts"
+               BuildableName = "SoundFontsApp.app"
+               BlueprintName = "SoundFontsApp"
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,7 +30,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD05836123E4C52800E094E0"
-               BuildableName = "SoundFontsAU.appex"
+               BuildableName = "SoundFonts.appex"
                BlueprintName = "SoundFontsAU"
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
@@ -60,7 +60,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD05836123E4C52800E094E0"
-            BuildableName = "SoundFontsAU.appex"
+            BuildableName = "SoundFonts.appex"
             BlueprintName = "SoundFontsAU"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
@@ -69,8 +69,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFonts.app"
-            BlueprintName = "SoundFonts"
+            BuildableName = "SoundFontsApp.app"
+            BlueprintName = "SoundFontsApp"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -87,8 +87,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFonts.app"
-            BlueprintName = "SoundFonts"
+            BuildableName = "SoundFontsApp.app"
+            BlueprintName = "SoundFontsApp"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
