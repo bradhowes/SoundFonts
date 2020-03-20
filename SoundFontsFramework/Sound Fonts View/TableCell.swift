@@ -41,7 +41,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
-        showSelectionIndicator(selected: isSelected)
+        if isSelected != (selectedIndicator.alpha == 1.0) {
+            showSelectionIndicator(selected: isSelected)
+        }
     }
 
     /**

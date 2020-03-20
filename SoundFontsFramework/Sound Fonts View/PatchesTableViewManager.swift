@@ -15,6 +15,7 @@ final class PatchesTableViewManager: NSObject {
 
     private let view: UITableView
     private let searchBar: UISearchBar
+    private let selectedSoundFontManager: SelectedSoundFontManager
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
     private let keyboard: Keyboard?
@@ -31,6 +32,7 @@ final class PatchesTableViewManager: NSObject {
          sampler: Sampler) {
         self.view = view
         self.searchBar = searchBar
+        self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
         self.showingSoundFont = activePatchManager.soundFont
         self.favorites = favorites
@@ -210,16 +212,18 @@ extension PatchesTableViewManager {
         case let .active(old: old, new: new, playSample: _):
             if showingSoundFont != new.soundFontPatch?.soundFont {
                 os_log(.info, log: log, "new font")
-                showingSoundFont = new.soundFontPatch?.soundFont
-                reloadView()
+                selectedSoundFontManager.setSelected(new.soundFontPatch?.soundFont)
+                view.reloadData()
             }
             else {
                 os_log(.info, log: log, "same font")
                 if old.soundFontPatch?.soundFont == showingSoundFont {
+                    view.beginUpdates()
                     update(with: old.soundFontPatch)
+                    update(with: new.soundFontPatch)
+                    view.endUpdates()
                 }
             }
-
             selectActive()
         }
     }
