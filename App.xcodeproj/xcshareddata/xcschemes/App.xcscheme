@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-               BuildableName = "SoundFonts.app"
-               BlueprintName = "SoundFonts"
+               BuildableName = "SoundFontsApp.app"
+               BlueprintName = "SoundFontsApp"
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -59,7 +59,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD430FB12410E657009DB9B3"
+               BlueprintIdentifier = "BD3CF701241FA779004A13D1"
                BuildableName = "AppTests.xctest"
                BlueprintName = "AppTests"
                ReferencedContainer = "container:App.xcodeproj">
@@ -102,8 +102,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFonts.app"
-            BlueprintName = "SoundFonts"
+            BuildableName = "SoundFontsApp.app"
+            BlueprintName = "SoundFontsApp"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -118,8 +118,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFonts.app"
-            BlueprintName = "SoundFonts"
+            BuildableName = "SoundFontsApp.app"
+            BlueprintName = "SoundFontsApp"
             ReferencedContainer = "container:App.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
