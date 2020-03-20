@@ -102,14 +102,15 @@ extension FontsTableViewManager {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            selectedSoundFontManager.setSelected(new.soundFontPatch?.soundFont)
-            if let key = old.soundFontPatch?.soundFont.key {
-                let row = soundFonts.index(of: key)
-                update(row: row)
-            }
-            if let key = new.soundFontPatch?.soundFont.key {
-                let row = soundFonts.index(of: key)
-                update(row: row)
+            if old.soundFontPatch?.soundFont.key != new.soundFontPatch?.soundFont.key {
+                if let key = old.soundFontPatch?.soundFont.key {
+                    let row = soundFonts.index(of: key)
+                    update(row: row)
+                }
+                if let key = new.soundFontPatch?.soundFont.key {
+                    let row = soundFonts.index(of: key)
+                    update(row: row)
+                }
             }
         }
     }
