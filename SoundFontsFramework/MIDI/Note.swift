@@ -56,3 +56,11 @@ public struct Note: CustomStringConvertible, Codable {
         self.accented = sharp != nil
     }
 }
+
+extension Note: Equatable {
+    public static func ==(lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
+}
+
+extension Note: Comparable {
+    public static func <(lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue < rhs.midiNoteValue }
+}
