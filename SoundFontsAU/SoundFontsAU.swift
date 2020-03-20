@@ -56,8 +56,11 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public func deallocateRenderResources() { wrapped.deallocateRenderResources() }
+
     override public var renderResourcesAllocated: Bool { wrapped.renderResourcesAllocated }
+
     override public func reset() { wrapped.reset() }
+
     override public var inputBusses: AUAudioUnitBusArray {
         os_log(.error, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
         return wrapped.inputBusses
@@ -69,6 +72,7 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var renderBlock: AURenderBlock { wrapped.renderBlock }
+
     override public var scheduleParameterBlock: AUScheduleParameterBlock { wrapped.scheduleParameterBlock }
 
     override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
@@ -91,7 +95,9 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var allParameterValues: Bool { wrapped.allParameterValues }
+
     override public var isMusicDeviceOrEffect: Bool { true }
+
     override public var virtualMIDICableCount: Int {
         os_log(.error, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
         return wrapped.virtualMIDICableCount
@@ -107,6 +113,7 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var midiOutputNames: [String] { wrapped.midiOutputNames }
+
     override public var midiOutputEventBlock: AUMIDIOutputEventBlock? {
         get { wrapped.midiOutputEventBlock }
         set { wrapped.midiOutputEventBlock = newValue }
