@@ -2,10 +2,12 @@
 
 import os
 
+private class Tag {}
+
 public struct Logging {
 
     /// The top-level identifier for this app
-    public static let subsystem = "com.braysoftware.SoundFonts"
+    public static let subsystem = Bundle(for: Tag.self).bundleID
 
     /**
      Create a new logger for a subsystem
