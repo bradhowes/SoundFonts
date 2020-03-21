@@ -6,10 +6,10 @@ import CoreAudioKit
 public final class NoteInjector {
     private let log = Logging.logger("NoInj")
     private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInitiated)
-    private var workItems: [DispatchWorkItem]()
+    private var workItems = [DispatchWorkItem]()
 
     private let note = 69 // A4
-    private let noteOnDuration = 0.7
+    private let noteOnDuration = 1.0
 
     public init() {}
 
@@ -18,17 +18,14 @@ public final class NoteInjector {
         let note = self.note
         let noteOnDuration = self.noteOnDuration
 
-        let noteOn = DispatchWorkItem { sampler.noteOn(note) }
-        let noteOff = DispatchWorkItem { sampler.noteOff(note) }
+        let noteOn = DispatchWorkItem { sampler.noteOn(note, velocity: 32) }
+        playingQueue.asyncAfter(deadline: .now() + 0.1, execute: noteOn)
 
-        noteOn.notify(queue: playingQueue) {
-            self.playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
-        }
+        let noteOff = DispatchWorkItem { sampler.noteOff(note) }
+        playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
         workItems.forEach { $0.cancel() }
         workItems = [noteOn, noteOff]
-
-        playingQueue.async(execute: noteOn)
     }
 
     public func post(to audioUnit: AUAudioUnit) {
@@ -48,19 +45,15 @@ public final class NoteInjector {
             let cbytes: [UInt8] = [channel1NoteOn, note, velocity]
             noteBlock(AUEventSampleTimeImmediate, channel, cbytes.count, cbytes)
         }
+        playingQueue.async(execute: noteOn)
 
         let noteOff = DispatchWorkItem {
             let cbytes: [UInt8] = [channel1NoteOn, note, 0]
             noteBlock(AUEventSampleTimeImmediate, 0, cbytes.count, cbytes)
         }
-
-        noteOn.notify(queue: playingQueue) {
-            self.playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
-        }
+        playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
         workItems.forEach { $0.cancel() }
         workItems = [noteOn, noteOff]
-
-        playingQueue.async(execute: noteOn)
     }
 }
