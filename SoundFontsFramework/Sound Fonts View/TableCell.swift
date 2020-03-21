@@ -39,11 +39,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      */
     public func updateForFont(name: String, isSelected: Bool, isActive: Bool) {
         os_log(.debug, log: log, "update '%s' isSelected: %d isActive: %d", name, isSelected, isActive)
-        self.name.text = name
-        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: false)
-        if isSelected != (selectedIndicator.alpha == 1.0) {
-            showSelectionIndicator(selected: isSelected)
-        }
+        update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false)
     }
 
     /**
@@ -55,9 +51,19 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      */
     public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool) {
         os_log(.debug, log: log, "update '%s' isActive: %d isFavorite: %d", name, isActive, isFavorite)
-        self.name.text = Self.favoriteTag(isFavorite) + name
-        self.name.textColor = fontColorWhen(isSelected: isActive, isActive: isActive, isFavorite: isFavorite)
-        showSelectionIndicator(selected: isActive)
+        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive,
+               isFavorite: isFavorite)
+    }
+
+    private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool) {
+        self.name.text = name
+        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
+
+        // Since the selected indicator is animated, make sure we do not show something already shown
+        if isSelected != (selectedIndicator.alpha == 1.0) {
+            showSelectionIndicator(selected: isSelected)
+        }
+
     }
 
     private func stopAnimation() {
