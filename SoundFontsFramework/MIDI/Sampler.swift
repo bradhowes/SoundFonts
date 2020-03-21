@@ -160,10 +160,10 @@ public final class Sampler {
     
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
-    public func noteOn(_ midiValue: Int) {
+    public func noteOn(_ midiValue: Int, velocity: Int = 64) {
         os_log(.info, log: log, "noteOn - %d", midiValue)
         guard let sampler = self.ausampler, activePatchKind != .none else { return }
-        sampler.startNote(UInt8(midiValue), withVelocity: UInt8(64), onChannel: UInt8(0))
+        sampler.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
     }
 
     /**
