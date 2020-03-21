@@ -20,7 +20,7 @@ final class SoundFontsAU: AUAudioUnit {
 
     public init(componentDescription: AudioComponentDescription, sampler: Sampler,
                 activePatchManager: ActivePatchManager) throws {
-        os_log(.info, log:log, "init - flags: %d man: %d type: sub: %d",
+        os_log(.error, log:log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
@@ -33,7 +33,7 @@ final class SoundFontsAU: AUAudioUnit {
 
         try super.init(componentDescription: componentDescription, options: [])
 
-        os_log(.info, log:log, "init - done")
+        os_log(.error, log:log, "init - done")
     }
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration])
@@ -47,7 +47,7 @@ final class SoundFontsAU: AUAudioUnit {
     override public var component: AudioComponent { wrapped.component }
 
     override public func allocateRenderResources() throws {
-        os_log(.info, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
+        os_log(.error, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
         for index in 0..<outputBusses.count {
             outputBusses[index].shouldAllocateBuffer = true
         }
@@ -71,9 +71,9 @@ final class SoundFontsAU: AUAudioUnit {
         return wrapped.outputBusses
     }
 
-    override public var renderBlock: AURenderBlock { wrapped.renderBlock }
-
-    override public var scheduleParameterBlock: AUScheduleParameterBlock { wrapped.scheduleParameterBlock }
+    override public var scheduleParameterBlock: AUScheduleParameterBlock {
+        wrapped.scheduleParameterBlock
+    }
 
     override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
         wrapped.token(byAddingRenderObserver: observer)
@@ -91,7 +91,8 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
-        wrapped.parametersForOverview(withCount: count)
+        os_log(.error, log: log, "parametersForOverview: %d", count)
+        return wrapped.parametersForOverview(withCount: count)
     }
 
     override public var allParameterValues: Bool { wrapped.allParameterValues }
@@ -101,15 +102,6 @@ final class SoundFontsAU: AUAudioUnit {
     override public var virtualMIDICableCount: Int {
         os_log(.error, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
         return wrapped.virtualMIDICableCount
-    }
-
-    override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
-        return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
-            guard let block = self.wrapped.scheduleMIDIEventBlock else { return }
-            os_log(.error, log: self.log, "scheduleMIDIEventBlock call - %d %d %d %d %d",
-                   when, channel, count, bytes[0], bytes[1])
-            block(when, channel, count, bytes)
-        }
     }
 
     override public var midiOutputNames: [String] { wrapped.midiOutputNames }
@@ -209,7 +201,10 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var inputHandler: AUInputHandler? {
-        get { wrapped.inputHandler }
+        get {
+            os_log(.error, log: log, "inputHandler")
+            return wrapped.inputHandler
+        }
         set { wrapped.inputHandler = newValue }
     }
 
@@ -222,5 +217,66 @@ final class SoundFontsAU: AUAudioUnit {
         os_log(.error, log: log, "stopHardware")
         wrapped.stopHardware()
     }
-    override var internalRenderBlock: AUInternalRenderBlock { wrapped.internalRenderBlock }
+
+    override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
+        let block = self.wrapped.scheduleMIDIEventBlock
+        let log = self.log
+        return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
+            os_log(.error, log: log,
+                   "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
+                   when, channel, count, bytes[0], bytes[1], bytes[2])
+            block?(when, channel, count, bytes)
+        }
+    }
+
+    override public var renderBlock: AURenderBlock {
+        let block = wrapped.renderBlock
+        return { (actionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
+                  timestamp: UnsafePointer<AudioTimeStamp>,
+                  frameCount: AUAudioFrameCount,
+                  outputBusNumber: Int,
+                  outputData: UnsafeMutablePointer<AudioBufferList>,
+                  pullInputBlock: AURenderPullInputBlock?) -> AUAudioUnitStatus in
+            os_log(.error, log: self.log,
+                   "renderBlock - %d %ld %ld %d %d",
+                   actionFlags.pointee.rawValue,
+                   timestamp.pointee.mHostTime,
+                   frameCount,
+                   outputBusNumber)
+            return block(actionFlags, timestamp, frameCount, outputBusNumber, outputData, pullInputBlock)
+        }
+    }
+
+    override var internalRenderBlock: AUInternalRenderBlock {
+        typealias AUInternalRenderBlock = (
+            UnsafeMutablePointer<AudioUnitRenderActionFlags>,
+            UnsafePointer<AudioTimeStamp>,
+            AUAudioFrameCount,
+            Int,
+            UnsafeMutablePointer<AudioBufferList>,
+            UnsafePointer<AURenderEvent>?,
+            AURenderPullInputBlock?) -> AUAudioUnitStatus
+        let block = wrapped.internalRenderBlock
+        let log = self.log
+        return { (flags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
+                  timestamp: UnsafePointer<AudioTimeStamp>,
+                  frameCount: AUAudioFrameCount,
+                  outputBusNumber: Int,
+                  outputData: UnsafeMutablePointer<AudioBufferList>,
+                  realtimeEventListHead: UnsafePointer<AURenderEvent>?,
+                  pullInputBlock: AURenderPullInputBlock?) -> AUAudioUnitStatus in
+            var aure = realtimeEventListHead?.pointee
+            while aure != nil {
+                if aure!.head.eventType == .MIDI {
+                    let aumi = aure!.MIDI
+                    os_log(.error, log: log, "%d internalRenderBlock - %ld MIDI %d %d %d",
+                           outputBusNumber, aumi.eventSampleTime, aumi.data.0, aumi.data.1, aumi.data.2)
+                }
+                aure = aure!.head.next?.pointee
+            }
+
+            return block(flags, timestamp, frameCount, outputBusNumber, outputData, realtimeEventListHead,
+                         pullInputBlock)
+        }
+    }
 }
