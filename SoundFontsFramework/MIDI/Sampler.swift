@@ -176,4 +176,10 @@ public final class Sampler {
         guard let sampler = self.ausampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }
+
+    public func sendMIDI(_ cmd: UInt8, data1: UInt8, data2: UInt8) {
+        os_log(.info, log: log, "sendMIDI - %d %d %d", cmd, data1, data2)
+        guard let sampler = self.ausampler else { return }
+        sampler.sendMIDIEvent(cmd, data1: data1, data2: data2)
+    }
 }
