@@ -28,6 +28,24 @@ public final class NoteInjector {
         workItems = [noteOn, noteOff]
     }
 
+    public func postMIDI(to sampler: Sampler) {
+        guard Settings[.playSample] == true else { return }
+
+        let channel1NoteOn: UInt8 = 0x90
+        let note = UInt8(self.note)
+        let noteOnDuration = 1.0
+        let velocity: UInt8 = 64
+
+        let noteOn = DispatchWorkItem { sampler.sendMIDI(channel1NoteOn, data1: note, data2: velocity) }
+        playingQueue.async(execute: noteOn)
+
+        let noteOff = DispatchWorkItem { sampler.sendMIDI(channel1NoteOn, data1: note, data2: 0) }
+        playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
+
+        workItems.forEach { $0.cancel() }
+        workItems = [noteOn, noteOff]
+    }
+
     public func post(to audioUnit: AUAudioUnit) {
         guard Settings[.playSample] == true else { return }
 

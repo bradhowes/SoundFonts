@@ -51,11 +51,10 @@ extension SoundFontsAUViewController: ControllerConfiguration {
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         os_log(.error, log: log, "useActivePatchKind - playSample: %d", playSample)
-        guard let audioUnit = self.audioUnit else { return }
+        // guard let audioUnit = self.audioUnit else { return }
         _ = self.sampler.load(activePatchKind: activePatchKind) {
             if playSample {
-                self.noteInjector.post(to: audioUnit)
-                self.noteInjector.post(to: self.sampler)
+                self.noteInjector.postMIDI(to: self.sampler)
             }
         }
     }
