@@ -222,6 +222,14 @@
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContextualAction+Extensions.swift"; sourceTree = "<group>"; };
 		BD7B30C5241BE11E0080784D /* FontEditPrep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditPrep.swift; sourceTree = "<group>"; };
+		BD856229244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
+		BD85622A244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FontsView.storyboard; sourceTree = "<group>"; };
+		BD85622B244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
+		BD85622C244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
+		BD85622D244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
+		BD85622E244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
+		BD85622F244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
+		BD856230244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GuideView.storyboard; sourceTree = "<group>"; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
 		BD90AEF424192E7C00D29E18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -237,35 +245,27 @@
 		BDC7EC4F241B753B00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BDC7EC50241B753B00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BDC7EC51241B7AF900F789B2 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
-		BDC7EC54241BA3CD00F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC56241BA3F900F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC57241BA3FF00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC58241BA40100F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
-		BDC7EC5A241BA41C00F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC5C241BA42100F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC5D241BA42300F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC5E241BA42400F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
-		BDC7EC60241BA42E00F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC62241BA43300F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC63241BA43500F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC64241BA43700F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
-		BDC7EC66241BAC7200F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDC7EC68241BAC7800F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDC7EC69241BAC7A00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDC7EC6A241BAC7B00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
-		BDC7EC6C241BAC8500F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/FontsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC6E241BAC8800F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FontsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC6F241BAC8A00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FontsView.storyboard; sourceTree = "<group>"; };
 		BDC7EC70241BAC8C00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FontsView.storyboard; sourceTree = "<group>"; };
-		BDC7EC72241BAC9300F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
 		BDC7EC74241BAC9800F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
 		BDC7EC75241BAC9A00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
 		BDC7EC76241BAC9C00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
-		BDC7EC78241BACAA00F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
 		BDC7EC7A241BACAE00F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
 		BDC7EC7B241BACB000F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
 		BDC7EC7C241BACB300F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
-		BDC7EC7E241BACC300F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/GuideView.storyboard; sourceTree = "<group>"; };
 		BDC7EC80241BACC800F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/GuideView.storyboard; sourceTree = "<group>"; };
 		BDC7EC81241BACCA00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/GuideView.storyboard; sourceTree = "<group>"; };
 		BDC7EC82241BACCB00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/GuideView.storyboard; sourceTree = "<group>"; };
@@ -609,6 +609,7 @@
 				fr,
 				es,
 				de,
+				Base,
 			);
 			mainGroup = BD5824F723CDABCD0034A31B;
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
@@ -798,10 +799,10 @@
 		BDC7EC55241BA3CD00F789B2 /* SettingsView.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC54241BA3CD00F789B2 /* en */,
 				BDC7EC56241BA3F900F789B2 /* fr */,
 				BDC7EC57241BA3FF00F789B2 /* de */,
 				BDC7EC58241BA40100F789B2 /* es */,
+				BD85622D244993EC00C00159 /* Base */,
 			);
 			name = SettingsView.storyboard;
 			sourceTree = "<group>";
@@ -809,10 +810,10 @@
 		BDC7EC5B241BA41C00F789B2 /* FavoriteEditor.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC5A241BA41C00F789B2 /* en */,
 				BDC7EC5C241BA42100F789B2 /* fr */,
 				BDC7EC5D241BA42300F789B2 /* de */,
 				BDC7EC5E241BA42400F789B2 /* es */,
+				BD85622E244993EC00C00159 /* Base */,
 			);
 			name = FavoriteEditor.storyboard;
 			sourceTree = "<group>";
@@ -820,10 +821,10 @@
 		BDC7EC61241BA42E00F789B2 /* FontEditor.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC60241BA42E00F789B2 /* en */,
 				BDC7EC62241BA43300F789B2 /* fr */,
 				BDC7EC63241BA43500F789B2 /* de */,
 				BDC7EC64241BA43700F789B2 /* es */,
+				BD85622F244993EC00C00159 /* Base */,
 			);
 			name = FontEditor.storyboard;
 			sourceTree = "<group>";
@@ -831,10 +832,10 @@
 		BDC7EC67241BAC7200F789B2 /* SoundFontsControls.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC66241BAC7200F789B2 /* en */,
 				BDC7EC68241BAC7800F789B2 /* fr */,
 				BDC7EC69241BAC7A00F789B2 /* de */,
 				BDC7EC6A241BAC7B00F789B2 /* es */,
+				BD856229244993EC00C00159 /* Base */,
 			);
 			name = SoundFontsControls.storyboard;
 			sourceTree = "<group>";
@@ -842,10 +843,10 @@
 		BDC7EC6D241BAC8500F789B2 /* FontsView.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC6C241BAC8500F789B2 /* en */,
 				BDC7EC6E241BAC8800F789B2 /* fr */,
 				BDC7EC6F241BAC8A00F789B2 /* de */,
 				BDC7EC70241BAC8C00F789B2 /* es */,
+				BD85622A244993EC00C00159 /* Base */,
 			);
 			name = FontsView.storyboard;
 			sourceTree = "<group>";
@@ -853,10 +854,10 @@
 		BDC7EC73241BAC9300F789B2 /* FavoritesView.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC72241BAC9300F789B2 /* en */,
 				BDC7EC74241BAC9800F789B2 /* fr */,
 				BDC7EC75241BAC9A00F789B2 /* de */,
 				BDC7EC76241BAC9C00F789B2 /* es */,
+				BD85622B244993EC00C00159 /* Base */,
 			);
 			name = FavoritesView.storyboard;
 			sourceTree = "<group>";
@@ -864,10 +865,10 @@
 		BDC7EC79241BACAA00F789B2 /* InfoBar.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC78241BACAA00F789B2 /* en */,
 				BDC7EC7A241BACAE00F789B2 /* fr */,
 				BDC7EC7B241BACB000F789B2 /* de */,
 				BDC7EC7C241BACB300F789B2 /* es */,
+				BD85622C244993EC00C00159 /* Base */,
 			);
 			name = InfoBar.storyboard;
 			sourceTree = "<group>";
@@ -875,10 +876,10 @@
 		BDC7EC7F241BACC300F789B2 /* GuideView.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BDC7EC7E241BACC300F789B2 /* en */,
 				BDC7EC80241BACC800F789B2 /* fr */,
 				BDC7EC81241BACCA00F789B2 /* de */,
 				BDC7EC82241BACCB00F789B2 /* es */,
+				BD856230244993EC00C00159 /* Base */,
 			);
 			name = GuideView.storyboard;
 			sourceTree = "<group>";

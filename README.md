@@ -30,8 +30,22 @@ Here is what you can do with it:
 * Swipe right on a patch name to make it a favorite (same to unfavorite). Favorited patches have a star next to
   their name.
 * Add/Remove sound font files. In the "patches view" press the "+" button to bring up a file picker. Locate a sound font file
-  to add from a location on your device or from your iCloud drive. Added files can be removed via the "-" button or a
+  to add from a location on your device, or from your iCloud drive or Google Drive. Added files can be removed via the "-" button or a
   left-swipe on the sound font name.
+
+## Notes on Adding From Cloud Drives
+
+* __Files app (iCloud)__ — long-press on the file you want to import, select "Share" option. You should then be able to select "Copy to SoundFonts"
+from the sharing sheet that appears.
+
+* __Google Drive__ — touch the "•••" button next to the file name and then choose "Open in" from the list of available options. You 
+should then be able to select "Copy to SoundFonts" from the sharing sheet that appears.
+
+* __Dropbox__ —  touch on the circled "•••" button below the file you want to import. Choose "Copy Link" option that appears. Select "Open In…" 
+and then "Copy to SoundFonts" from the sharing sheet that appears.
+
+Unfortunately as far as I can tell there is no way to import directly from a web page with a native SF2 URL link. One must first have the file available on
+a cloud drive before it can be imported via the iOS sharing sheet.
 
 ## Favorites
 
