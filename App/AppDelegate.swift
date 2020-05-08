@@ -80,20 +80,24 @@ extension AppDelegate {
 
     private func addSoundFont(url: URL) {
         let alert: UIAlertController = {
-            if let (_, soundFont) = components.soundFonts.add(url: url) {
-                let alert = UIAlertController(
+            switch components.soundFonts.add(url: url) {
+            case .success(let (_, soundFont)):
+                return UIAlertController(
                     title: "SoundFont Added",
                     message: "New SoundFont added under the name '\(soundFont.displayName)'",
                     preferredStyle: .alert)
-                return alert
-            }
-            else {
-                let alert = UIAlertController(
+            case .failure(let failure):
+                let reason: String = {
+                    switch failure {
+                    case .emptyFile: return "Download file first before adding."
+                    case .invalidSoundFont: return "Invalid SF2 file contents."
+                    case .unableToCreateFile: return "Unable to save the SF2 file to app storage."
+                    }
+                }()
+                return UIAlertController(
                     title: "SoundFont Failure",
-                    message: "Failed to add new SoundFont.",
+                    message: "Failed to add SoundFont. " + reason,
                     preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                return alert
             }
         }()
 

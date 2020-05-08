@@ -115,8 +115,9 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
         os_log(.info, log: log, "documentPicker didPickDocumentAt")
         for each in urls {
             os_log(.info, log: log, "processing %s", each.path)
-            if let result = soundFonts.add(url: each) {
-                os_log(.info, log: log, "soundFonts.add - %d %s", result.0, result.1.description)
+            switch soundFonts.add(url: each) {
+            case .success(let (index, soundFont)): os_log(.info, log: log, "OK: %d %s", index, soundFont.displayName)
+            case .failure(let failure): os_log(.error, log: log, "failed: ", failure.localizedDescription)
             }
         }
     }
