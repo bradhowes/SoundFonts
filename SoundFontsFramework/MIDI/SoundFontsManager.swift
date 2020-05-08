@@ -92,12 +92,15 @@ extension SoundFontsManager: SoundFonts {
     public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
 
     @discardableResult
-    public func add(url: URL) -> (Int, SoundFont)? {
-        guard let soundFont = SoundFont.makeSoundFont(from: url, saveToDisk: true) else { return nil }
-        let index = collection.add(soundFont)
-        save()
-        notify(.added(new: index, font: soundFont))
-        return (index, soundFont)
+    public func add(url: URL) -> Result<(Int, SoundFont), SoundFont.Failure> {
+        switch SoundFont.makeSoundFont(from: url, saveToDisk: true) {
+        case .failure(let failure): return .failure(failure)
+        case.success(let soundFont):
+            let index = collection.add(soundFont)
+            save()
+            notify(.added(new: index, font: soundFont))
+            return .success((index, soundFont))
+        }
     }
 
     public func remove(index: Int) {

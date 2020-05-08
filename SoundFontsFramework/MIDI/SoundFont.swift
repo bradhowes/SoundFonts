@@ -36,7 +36,13 @@ public final class SoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [Patch]
 
-    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> SoundFont? {
+    public enum Failure: Error {
+        case emptyFile
+        case invalidSoundFont
+        case unableToCreateFile
+    }
+
+    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<SoundFont, Failure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
         let displayName = url.deletingPathExtension().lastPathComponent
@@ -49,7 +55,7 @@ public final class SoundFont: Codable {
 
         guard let content = data else {
             os_log(.error, log: Self.logger, "failed to fetch content")
-            return nil
+            return .failure(.emptyFile)
         }
 
         var info = GetSoundFontInfo(data: content)
@@ -59,18 +65,20 @@ public final class SoundFont: Codable {
 
         if info.patches.isEmpty {
             os_log(.error, log: Self.logger, "failed to parse content")
-            return nil
+            return .failure(.invalidSoundFont)
         }
 
         let soundFont = SoundFont(displayName, soundFontInfo: info)
         if saveToDisk {
-            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", soundFont.fileURL.lastPathComponent)
-            let result = FileManager.default.createFile(atPath: soundFont.fileURL.path, contents: data, attributes: nil)
-            os_log(.info, log: Self.logger, "created - %s", result ? "true" : "false")
-            return result ? soundFont : nil
+            let path = soundFont.fileURL
+            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", path.lastPathComponent)
+            guard FileManager.default.createFile(atPath: path.path, contents: content, attributes: nil) else {
+                os_log(.error, log: Self.logger, "failed to create file")
+                return .failure(.unableToCreateFile)
+            }
         }
 
-        return soundFont
+        return .success(soundFont)
     }
 
     /**
