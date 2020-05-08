@@ -17,6 +17,7 @@ final class SoundFontsAU: AUAudioUnit {
     private let sampler: Sampler
     private let activePatchManager: ActivePatchManager
     private var wrapped: AUAudioUnit { sampler.auAudioUnit! }
+    private var ourParameterTree: AUParameterTree?
 
     public init(componentDescription: AudioComponentDescription, sampler: Sampler,
                 activePatchManager: ActivePatchManager) throws {
@@ -86,16 +87,52 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var parameterTree: AUParameterTree? {
-        get { wrapped.parameterTree }
-        set { wrapped.parameterTree = newValue }
+        get {
+            if ourParameterTree == nil { buildParameterTree() }
+            os_log(.error, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
+            return ourParameterTree
+        }
+        set {
+            os_log(.error, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
+            wrapped.parameterTree = newValue
+            ourParameterTree = nil
+        }
+    }
+
+    private func dumpParameters(name: String, tree: AUParameterGroup?, level: Int) {
+        let indentation = String(repeating: " ", count: level)
+        os_log(.error, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
+        defer { os_log(.error, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
+        guard let children = tree?.children else { return }
+        for child in children {
+            os_log(.error, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
+            if let group = child as? AUParameterGroup {
+                dumpParameters(name: group.displayName, tree: group, level: level + 1)
+            }
+        }
+    }
+
+    private func buildParameterTree() {
+        os_log(.error, log: self.log, "buildParameterTree BEGIN")
+        defer { os_log(.error, log: self.log, "buildParameterTree END") }
+        dumpParameters(name: "root", tree: wrapped.parameterTree, level: 0)
+        guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
+        guard let clump_1 = global.children.first as? AUParameterGroup else { return }
+        os_log(.error, log: self.log, "creating parameterTree from clump_1")
+        ourParameterTree = AUParameterTree.createTree(withChildren: clump_1.children)
+        dumpParameters(name: clump_1.displayName, tree: ourParameterTree, level: 0)
     }
 
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
         os_log(.error, log: log, "parametersForOverview: %d", count)
-        return wrapped.parametersForOverview(withCount: count)
+        if ourParameterTree == nil { buildParameterTree() }
+        if ourParameterTree?.children.count ?? 0 < 1 { return [] }
+        return [0]
     }
 
-    override public var allParameterValues: Bool { wrapped.allParameterValues }
+    override public var allParameterValues: Bool {
+        wrapped.allParameterValues
+    }
 
     override public var isMusicDeviceOrEffect: Bool { true }
 
