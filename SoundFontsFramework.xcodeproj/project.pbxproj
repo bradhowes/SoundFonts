@@ -118,6 +118,10 @@
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
+		BDF86309246EB7160006D8CD /* EnvelopeViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */; };
+		BDF8630C246EB7940006D8CD /* EnvelopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */; };
+		BDF8630E246EB8A30006D8CD /* EnvelopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */; };
+		BDF86310246EB8E70006D8CD /* EnvelopeView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */; };
 		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 /* End PBXBuildFile section */
 
@@ -277,6 +281,10 @@
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
+		BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeViewManager.swift; sourceTree = "<group>"; };
+		BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeViewController.swift; sourceTree = "<group>"; };
+		BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeView.swift; sourceTree = "<group>"; };
+		BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EnvelopeView.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +314,7 @@
 				BD074BD923CDAF51001987E9 /* UI */,
 				BD074BF123CDAF51001987E9 /* Sound Fonts View */,
 				BD074BD123CDAF51001987E9 /* Favorites View */,
+				BDF8630A246EB77E0006D8CD /* Envelope View */,
 				BD125B3D24100C940003DE99 /* Keyboard View */,
 				BD074C2A23CDAF51001987E9 /* ActivePatchManager.swift */,
 				BDC7EC51241B7AF900F789B2 /* LocalizedStrings.swift */,
@@ -356,6 +365,7 @@
 				BDC7EC7F241BACC300F789B2 /* GuideView.storyboard */,
 				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
+				BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -458,6 +468,7 @@
 				BD074C2E23CDAF51001987E9 /* Favorites.swift */,
 				BD074C3523CDAF51001987E9 /* FavoriteEditorDelegate.swift */,
 				BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */,
+				BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */,
 				BD074C3023CDAF51001987E9 /* FontEditorDelegate.swift */,
 				BD1F11B923FE625500AE9F3D /* GuideManager.swift */,
 				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
@@ -530,6 +541,15 @@
 				BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BDF8630A246EB77E0006D8CD /* Envelope View */ = {
+			isa = PBXGroup;
+			children = (
+				BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */,
+				BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */,
+			);
+			path = "Envelope View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -632,6 +652,7 @@
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
 				BD430FC12410EC54009DB9B3 /* FreeFont.sf2 in Resources */,
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
+				BDF86310246EB8E70006D8CD /* EnvelopeView.storyboard in Resources */,
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
 				BD074C5E23CDAF51001987E9 /* (null) in Resources */,
@@ -680,6 +701,7 @@
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
+				BDF86309246EB7160006D8CD /* EnvelopeViewManager.swift in Sources */,
 				BD125B3F241010430003DE99 /* Components.swift in Sources */,
 				BD125B42241010880003DE99 /* KeyboardRender.swift in Sources */,
 				BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */,
@@ -701,6 +723,7 @@
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
 				BD3FDBCE23F2BAA100C73E88 /* MIDIConnectivity.swift in Sources */,
+				BDF8630E246EB8A30006D8CD /* EnvelopeView.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
@@ -710,6 +733,7 @@
 				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,
 				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
 				BD498F9823EF7F7400755AB9 /* SharedStateMonitor.swift in Sources */,
+				BDF8630C246EB7940006D8CD /* EnvelopeViewController.swift in Sources */,
 				BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */,
 				BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */,
 				BDD7219D24190D9700FD3567 /* Bundle+Extensions.swift in Sources */,

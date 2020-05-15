@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UkX-yO-8aS">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Envelope-->
+        <scene sceneID="XtD-fb-Pfj">
+            <objects>
+                <viewController storyboardIdentifier="EnvelopeViewController" title="Envelope" id="UkX-yO-8aS" customClass="EnvelopeViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Rk8-8n-I7Y">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uX4-mg-L8N" customClass="EnvelopeView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                <rect key="frame" x="8" y="52" width="398" height="802"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="p4r-Yk-jY8" firstAttribute="bottom" secondItem="uX4-mg-L8N" secondAttribute="bottom" constant="8" id="jIL-zx-KZG"/>
+                            <constraint firstItem="uX4-mg-L8N" firstAttribute="top" secondItem="p4r-Yk-jY8" secondAttribute="top" constant="8" id="kaZ-lN-9MV"/>
+                            <constraint firstItem="uX4-mg-L8N" firstAttribute="leading" secondItem="p4r-Yk-jY8" secondAttribute="leading" constant="8" id="qAj-Ld-WS6"/>
+                            <constraint firstItem="p4r-Yk-jY8" firstAttribute="trailing" secondItem="uX4-mg-L8N" secondAttribute="trailing" constant="8" id="tBd-f7-ccX"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="p4r-Yk-jY8"/>
+                    </view>
+                    <connections>
+                        <outlet property="envelopeView" destination="uX4-mg-L8N" id="Oqq-DV-Aje"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pj4-k6-sA4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139" y="138"/>
+        </scene>
+    </scenes>
+</document>

@@ -19,6 +19,7 @@ public final class SoundFontsControlsController: UIViewController {
 
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
+    @IBOutlet private weak var envelopeView: UIView!
 
     private var components: ComponentContainer!
     private var upperViewManager = SlidingViewManager()
@@ -27,6 +28,7 @@ public final class SoundFontsControlsController: UIViewController {
         super.viewDidLoad()
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
+        upperViewManager.add(view: envelopeView)
     }
 }
 

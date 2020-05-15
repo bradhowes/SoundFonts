@@ -22,9 +22,10 @@ public final class ViewSlider: CustomStringConvertible {
         guard let constraints = view.superview?.constraints else {
             preconditionFailure("missing constraints in superview")
         }
-        self.view = view
 
+        self.view = view
         var found = [NSLayoutConstraint?](repeating: nil, count: 2)
+
         constraints.forEach {
             if $0.firstItem === view {
                 switch $0.firstAttribute {
