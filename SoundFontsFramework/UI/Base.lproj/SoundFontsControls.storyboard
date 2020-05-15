@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,6 +29,12 @@
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
                                 </accessibility>
                             </view>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1tO-63-V45" userLabel="Envelope">
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
+                                <connections>
+                                    <segue destination="bIh-EN-LFm" kind="embed" identifier="envelope" id="jcI-2e-GMF"/>
+                                </connections>
+                            </containerView>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="Favorites" translatesAutoresizingMaskIntoConstraints="NO" id="efO-vf-51K" userLabel="Favorites">
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <connections>
@@ -57,10 +63,14 @@
                         <constraints>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="7Ww-5x-tsF"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="CBl-XA-kUN"/>
+                            <constraint firstItem="1tO-63-V45" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="DAR-c2-NE7"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="Fnr-o4-GdT"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="GSJ-Ba-E29"/>
+                            <constraint firstItem="1tO-63-V45" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="OKw-Gt-ZFh"/>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="Qy1-mH-hvm"/>
+                            <constraint firstItem="1tO-63-V45" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="UND-AF-cq1"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="VW9-Ox-ga8"/>
+                            <constraint firstItem="1tO-63-V45" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="VZg-HX-m28"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="WNP-Bx-Ogq"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="Zap-st-ZP1"/>
                             <constraint firstItem="SxE-vE-5J3" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="Zhf-tQ-Dq9"/>
@@ -80,13 +90,14 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="envelopeView" destination="1tO-63-V45" id="XO9-hX-lO4"/>
                         <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>
                         <outlet property="patchesView" destination="eeU-Zp-LO7" id="Ttb-SJ-1CI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-962" y="-1661"/>
+            <point key="canvasLocation" x="-1243" y="-1722"/>
         </scene>
         <!--FavoritesView-->
         <scene sceneID="dfZ-jT-3vq">
@@ -94,7 +105,15 @@
                 <viewControllerPlaceholder storyboardIdentifier="FavoritesViewController" storyboardName="FavoritesView" referencedIdentifier="FavoritesViewController" id="M8C-1m-Paa" userLabel="FavoritesView" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PZv-fw-qmG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-317" y="-1661"/>
+            <point key="canvasLocation" x="-420" y="-1963"/>
+        </scene>
+        <!--EnvelopeView-->
+        <scene sceneID="PyP-KV-6U4">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="EnvelopeView" storyboardName="EnvelopeView" referencedIdentifier="EnvelopeViewController" id="bIh-EN-LFm" userLabel="EnvelopeView" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6tC-KN-faj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-293" y="-1598"/>
         </scene>
         <!--FontsView-->
         <scene sceneID="ElB-M5-dkN">
@@ -102,7 +121,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="SoundFontPatchesViewController" storyboardName="FontsView" referencedIdentifier="SoundFontPatchesViewController" id="Y2X-0f-Kke" userLabel="FontsView" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mfw-b2-sLT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-317" y="-1799"/>
+            <point key="canvasLocation" x="-436" y="-1820"/>
         </scene>
         <!--GuideView-->
         <scene sceneID="VC6-TI-XOC">

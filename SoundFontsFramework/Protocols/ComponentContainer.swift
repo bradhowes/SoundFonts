@@ -20,6 +20,7 @@ public protocol ComponentContainer {
     var favoritesViewManager: FavoritesViewManager { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
     var guideManager: GuideManager { get }
+    var envelopeViewManager: EnvelopeViewManager { get }
 }
 
 public extension ComponentContainer {

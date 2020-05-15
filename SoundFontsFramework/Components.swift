@@ -25,6 +25,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
+    private var envelopeViewController: EnvelopeViewController! { didSet { oneTimeSet(oldValue )}}
 
     public var infoBar: InfoBar { infoBarController }
     public var keyboard: Keyboard? { keyboardController }
@@ -32,7 +33,8 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var favoritesViewManager: FavoritesViewManager { favoritesController }
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
-
+    public var envelopeViewManager: EnvelopeViewManager { envelopeViewController }
+    
     public init(changer: SharedStateMonitor.StateChanger) {
 
         let sharedStateMonitor = SharedStateMonitor(changer: changer)
@@ -69,6 +71,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
                     case let vc as InfoBarController: infoBarController = vc
+                    case let vc as EnvelopeViewController: envelopeViewController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
@@ -104,6 +107,7 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
+        precondition(envelopeViewController != nil, "nil envelopeViewController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {
