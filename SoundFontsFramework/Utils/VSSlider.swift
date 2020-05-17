@@ -5,6 +5,7 @@
 //  Created by Melissa Ludowise on 8/24/17.
 //  Copyright © 2017 Mel Ludowise. All rights reserved.
 //
+//  Modifications: Copyright © 2020 Brad Howes. All rights reserved.
 
 import UIKit
 
@@ -212,8 +213,11 @@ public class VSSlider: UIControl {
         updateTrackImage()
         super.draw(rect)
     }
+}
 
-    // MARK: - Drawing methods
+// MARK: - Drawing methods
+
+extension VSSlider {
 
     private func updateTrackImage() {
 
@@ -284,5 +288,20 @@ public class VSSlider: UIControl {
         UIGraphicsEndImageContext()
 
         return image
+    }
+}
+
+extension VSSlider {
+
+    public func addTapGesture() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(_:))))
+    }
+
+    @objc private func handleTap(_ sender: UITapGestureRecognizer) {
+        let location = sender.location(in: self)
+        let value: Float = vertical ? minimumValue + Float((bounds.height - location.y) / bounds.height) * maximumValue
+            : minimumValue + Float(location.x / bounds.width) * maximumValue
+        slider.setValue(value, animated: true)
+        slider.sendActions(for: .valueChanged)
     }
 }
