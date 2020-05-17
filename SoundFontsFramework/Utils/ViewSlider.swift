@@ -8,10 +8,8 @@ import UIKit
 public final class ViewSlider: CustomStringConvertible {
 
     public let view: UIView
-    public let leading: NSLayoutConstraint
-    public let trailing: NSLayoutConstraint
-
     public var description: String { "UpperViewSlider(\(view.restorationIdentifier ?? "NA")" }
+    public let constraints: [NSLayoutConstraint]
 
     /**
      Create a new slider for the given view.
@@ -19,76 +17,60 @@ public final class ViewSlider: CustomStringConvertible {
      - parameter view: the view to slide
      */
     public init(view: UIView) {
-        guard let constraints = view.superview?.constraints else {
+        guard let allConstraints = view.superview?.constraints else {
             preconditionFailure("missing constraints in superview")
         }
 
         self.view = view
-        var found = [NSLayoutConstraint?](repeating: nil, count: 2)
-
-        constraints.forEach {
-            if $0.firstItem === view {
-                switch $0.firstAttribute {
-                case .leading: found[0] = $0
-                case .trailing: found[1] = $0
-                default: break
-                }
-            }
-        }
-
-        guard found.allSatisfy({ $0 != nil }) else { preconditionFailure("missing one or more constraints")}
-        self.leading = found[0]!
-        self.trailing = found[1]!
-    }
-
-    /**
-     Slide the view in the direction managed by the given constraints. Uses CoreAnimation to show the
-     view sliding in/out
-     
-     - parameter state: indicates if the view is sliding into view (true) or sliding out of view (false)
-     - parameter a: the constraint for left or top
-     - parameter b: the constraint for right or bottom
-     - parameter constant: the value that will be used to animate over
-     */
-    private func slide(from: NSLayoutConstraint, to: NSLayoutConstraint, offset: CGFloat) {
-        let slidingIn = view.isHidden
-
-        if slidingIn {
-            to.constant = offset
-            from.constant = offset
-            view.superview?.layoutIfNeeded()
-            self.view.isHidden = false
-        }
-
-        UIView.animate(withDuration: 0.25,
-                       animations: {
-                        if slidingIn {
-                            to.constant = 0
-                            from.constant = 0
-                        }
-                        else {
-                            to.constant = -offset
-                            from.constant = -offset
-                        }
-                        self.view.superview?.layoutIfNeeded()
-        },
-                       completion: { _ in
-                        self.view.superview?.layoutIfNeeded()
-                        self.view.isHidden = !slidingIn
-        })
+        self.constraints = allConstraints
+            .filter {$0.firstItem === view && ($0.firstAttribute == .leading || $0.firstAttribute == .trailing)}
+        precondition(self.constraints.count == 2, "missing one or more constraints")
     }
 
     /**
      Slide the view to the left.
      */
     public func slideLeft() {
-        slide(from: trailing, to: leading, offset: view.frame.size.width)
+        slide(offset: view.frame.size.width)
     }
 
     /**
      Slide the view to the right.
      */
     public func slideRight() {
-        slide(from: leading, to: trailing, offset: -view.frame.size.width)
+        slide(offset: -view.frame.size.width)
+    }
+}
+
+extension ViewSlider {
+
+    /**
+     Slide the view in the direction managed by the given constraints. Uses CoreAnimation to show the
+     view sliding in/out
+
+     - parameter state: indicates if the view is sliding into view (true) or sliding out of view (false)
+     - parameter a: the constraint for left or top
+     - parameter b: the constraint for right or bottom
+     - parameter constant: the value that will be used to animate over
+     */
+    private func slide(offset: CGFloat) {
+        let slidingIn = view.isHidden
+
+        if slidingIn {
+            constraints.forEach { $0.constant = offset }
+            view.superview?.layoutIfNeeded()
+            self.view.isHidden = false
+        }
+
+        let goal = slidingIn ? 0 : -offset;
+
+        UIView.animate(withDuration: 0.25, animations: {
+            self.constraints.forEach { $0.constant = goal }
+            self.view.superview?.layoutIfNeeded()
+        },
+                       completion: { _ in
+                        self.view.isHidden = !slidingIn
+                        self.view.superview?.layoutIfNeeded()
+        })
     }
 }

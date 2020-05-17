@@ -5,7 +5,5 @@ import UIKit
 public protocol GuideManager {
     func showGuide()
     func hideGuide()
-
-    func favoritesGuide()
-    func soundFontsGuide()
+    func prepareGuide(for: Int)
 }

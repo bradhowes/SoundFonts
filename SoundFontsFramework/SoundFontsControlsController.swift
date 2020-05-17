@@ -22,13 +22,25 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var envelopeView: UIView!
 
     private var components: ComponentContainer!
-    private var upperViewManager = SlidingViewManager()
+    private var upperViewManager: SlidingViewManager!
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
+        let showingFavorites: Bool = {
+            if CommandLine.arguments.contains("--screenshots") { return false }
+            return Settings[.wasShowingFavorites]
+        }()
+
+        patchesView.isHidden = showingFavorites
+        favoritesView.isHidden = !showingFavorites
+        envelopeView.isHidden = true
+        upperViewManager = SlidingViewManager(active: showingFavorites ? 1: 0)
+
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
         upperViewManager.add(view: envelopeView)
+
     }
 }
 
@@ -44,17 +56,9 @@ extension SoundFontsControlsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
         components = router
 
-        let showingFavorites: Bool = {
-            if CommandLine.arguments.contains("--screenshots") { return false }
-            return Settings[.wasShowingFavorites]
-        }()
-
-        patchesView.isHidden = showingFavorites
-        favoritesView.isHidden = !showingFavorites
-
         let patchesViewManager = router.patchesViewManager
         patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+        // patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         let favoritesViewManager = router.favoritesViewManager
         favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
@@ -64,7 +68,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     }
 
     @IBAction private func toggleConfigurationViews() {
-        if favoritesView.isHidden {
+        if upperViewManager.active == 0 {
             showNextConfigurationView()
         }
         else {
@@ -77,24 +81,22 @@ extension SoundFontsControlsController: ControllerConfiguration {
      Show the next (right) view in the space above the info bar.
      */
     @IBAction public func showNextConfigurationView() {
-        if favoritesView.isHidden {
+        if upperViewManager.active == 0 {
             components.patchesViewManager.dismissSearchKeyboard()
-            Settings[.wasShowingFavorites] = favoritesView.isHidden
-            upperViewManager.slideNextHorizontally()
-            components.guideManager.favoritesGuide()
         }
+
+        upperViewManager.slideNextHorizontally()
+        components.guideManager.prepareGuide(for: upperViewManager.active)
+        Settings[.wasShowingFavorites] = upperViewManager.active == 1
     }
 
     /**
      Show the previous (left) view in the space above the info bar.
      */
     @IBAction public func showPreviousConfigurationView() {
-        if patchesView.isHidden {
-            components.patchesViewManager.dismissSearchKeyboard()
-            Settings[.wasShowingFavorites] = favoritesView.isHidden
-            upperViewManager.slidePrevHorizontally()
-            components.guideManager.soundFontsGuide()
-        }
+        upperViewManager.slidePrevHorizontally()
+        components.guideManager.prepareGuide(for: upperViewManager.active)
+        Settings[.wasShowingFavorites] = upperViewManager.active == 1
     }
 }
 
@@ -105,5 +107,6 @@ extension SoundFontsControlsController: SegueHandler {
         case favorites
         case soundFontPatches
         case infoBar
+        case envelope
     }
 }

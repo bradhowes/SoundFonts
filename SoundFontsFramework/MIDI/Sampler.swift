@@ -5,10 +5,14 @@ import AVFoundation
 import AudioToolbox
 import os
 
+public enum SamplerEvent {
+    case loaded(patch: ActivePatchKind)
+}
+
 /**
  This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
  */
-public final class Sampler {
+public final class Sampler: SubscriptionManager<SamplerEvent> {
     private lazy var log = Logging.logger("Samp")
 
     /// Largest MIDI value available for the last key
@@ -27,14 +31,14 @@ public final class Sampler {
 
     private let mode: Mode
     private var engine: AVAudioEngine?
-    private var ausampler: AVAudioUnitSampler?
+    private var auSampler: AVAudioUnitSampler?
     private var loaded: Bool = false
 
     public var hasPatch: Bool { activePatchKind != .none }
     public private(set) var activePatchKind: ActivePatchKind = .none
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-    public var auAudioUnit: AUAudioUnit? { ausampler?.auAudioUnit }
+    public var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
 
     /**
      Create a new instance of a Sampler.
@@ -47,6 +51,8 @@ public final class Sampler {
      */
     public init(mode: Mode) {
         self.mode = mode
+        super.init()
+        self.subscribe(self) { _ in self.blah() }
     }
 
     /**
@@ -56,7 +62,7 @@ public final class Sampler {
      */
     public func start() -> Result<Void, Failure> {
         os_log(.info, log: log, "start")
-        ausampler = AVAudioUnitSampler()
+        auSampler = AVAudioUnitSampler()
         return startEngine()
     }
 
@@ -73,7 +79,7 @@ public final class Sampler {
     }
 
     private func startEngine() -> Result<Void, Failure> {
-        guard let sampler = ausampler else { return .failure(.noSampler) }
+        guard let sampler = auSampler else { return .failure(.noSampler) }
         let engine = AVAudioEngine()
         self.engine = engine
 
@@ -93,13 +99,13 @@ public final class Sampler {
                 return .failure(.engineStarting(error: error))
             }
         }
-             
+
         return loadActivePatch()
     }
 
     /**
      Set the sound font and patch to use in the AVAudioUnitSampler to generate audio output.
-    
+
      - parameter activePatchKind: the sound font and patch to use
 
      - returns: Result instance indicating success or failure
@@ -110,7 +116,7 @@ public final class Sampler {
         self.activePatchKind = activePatchKind
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = self.ausampler, let soundFontPatch = activePatchKind.soundFontPatch else {
+        guard let sampler = self.auSampler, let soundFontPatch = activePatchKind.soundFontPatch else {
             return .success(())
         }
 
@@ -128,6 +134,11 @@ public final class Sampler {
             os_log(.info, log: log, "end loading")
             loaded = true
             afterLoadBlock?()
+
+            DispatchQueue.main.async {
+                self.notify(.loaded(patch: activePatchKind))
+            }
+
             return .success(())
         } catch let error as NSError {
             os_log(.error, log: log, "failed loading - %s", error.localizedDescription)
@@ -141,7 +152,7 @@ public final class Sampler {
      - parameter value: the value to set
      */
     public func setGain(_ value: Float) {
-        guard let sampler = self.ausampler else { fatalError("unexpected nil ausampler") }
+        guard let sampler = self.auSampler else { fatalError("unexpected nil ausampler") }
         sampler.masterGain = value
     }
 
@@ -151,35 +162,104 @@ public final class Sampler {
      - parameter value: the value to set
      */
     public func setPan(_ value: Float) {
-        guard let sampler = self.ausampler else { fatalError("unexpected nil ausampler") }
+        guard let sampler = self.auSampler else { fatalError("unexpected nil ausampler") }
         sampler.stereoPan = value
     }
 
     /**
      Start playing a sound at the given pitch.
-    
+
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
     public func noteOn(_ midiValue: Int, velocity: Int = 64) {
         os_log(.info, log: log, "noteOn - %d", midiValue)
-        guard let sampler = self.ausampler, activePatchKind != .none else { return }
+        guard let sampler = self.auSampler, activePatchKind != .none else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
     }
 
     /**
      Stop playing a sound at the given pitch.
-    
+
      - parameter midiValue: MIDI value that indicates the pitch to stop
      */
     public func noteOff(_ midiValue: Int) {
         os_log(.info, log: log, "noteOff - %d", midiValue)
-        guard let sampler = self.ausampler else { return }
+        guard let sampler = self.auSampler else { return }
         sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }
 
     public func sendMIDI(_ cmd: UInt8, data1: UInt8, data2: UInt8) {
         os_log(.info, log: log, "sendMIDI - %d %d %d", cmd, data1, data2)
-        guard let sampler = self.ausampler else { return }
+        guard let sampler = self.auSampler else { return }
         sampler.sendMIDIEvent(cmd, data1: data1, data2: data2)
     }
+
+    private func blah() {
+        os_log(.info, log: log, "blah - BEGIN")
+        defer { os_log(.info, log: log, "blah - END") }
+        guard let sampler = self.auSampler else { return }
+        guard let presets = try? sampler.audioUnit.getPropertyValue(kAudioUnitProperty_ClassInfo) as CFPropertyList else { return }
+        guard let instrument = presets["Instrument"] as? NSMutableDictionary else { return }
+        guard let existingLayers = instrument["Layers"] as? NSArray else { return }
+        for layer in existingLayers {
+            guard let layerDict = layer as? NSDictionary else { continue }
+            guard let existingConnections = layerDict["Connections"] as? NSArray else { continue }
+            if existingConnections.count > 0 {
+                os_log(.info, log: log, "existing connection")
+            }
+        }
+    }
 }
+
+//this is the connection we will be adding
+//NSMutableDictionary *attackConnection = [NSMutableDictionary dictionaryWithDictionary:
+//                                        @{@"ID"        :@0,
+//                                          @"control"   :@0,
+//                                          @"destination":@570425344,
+//                                          @"enabled"   :[NSNumber numberWithBool:1],
+//                                          @"inverse"   :[NSNumber numberWithBool:0],
+//                                          @"scale"     :@10,
+//                                          @"source"    :@73,
+//                                          @"transform" :@1,
+//                                        }];
+//
+//AVAudioUnitSampler *sampler;//already initialized and loaded with samples or this won't work
+//
+//CFPropertyListRef presetPlist;
+//UInt32 presetSize = sizeof(CFPropertyListRef);
+//AudioUnitGetProperty(sampler.audioUnit, kAudioUnitProperty_ClassInfo, kAudioUnitScope_Global, 0, &presetPlist, &presetSize);
+//NSMutableDictionary *mutablePreset = [NSMutableDictionary dictionaryWithDictionary:(__bridge NSDictionary *)presetPlist];
+//CFRelease(presetPlist);
+//NSMutableDictionary *instrument = [NSMutableDictionary dictionaryWithDictionary: mutablePreset[@"Instrument"]];
+//
+//NSArray *existingLayers = instrument[@"Layers"];
+//if (existingLayers.count) {
+//    NSMutableArray      *layers     = [[NSMutableArray alloc]init];
+//    for (NSDictionary *layer in existingLayers){
+//        NSMutableDictionary *mutableLayer = [NSMutableDictionary dictionaryWithDictionary:layer];
+//        NSArray *existingConections = mutableLayer[@"Connections"];
+//
+//        if (existingConections) {
+//            attackConnection[@"ID"] = [NSNumber numberWithInteger:existingConections.count];
+//            NSMutableArray *connections = [NSMutableArray arrayWithArray:existingConections];
+//            [connections addObject:attackConnection];
+//            [mutableLayer setObject:connections forKey:@"Connections"];
+//        }
+//        else{
+//            attackConnection[@"ID"] = [NSNumber numberWithInteger:0];
+//            [mutableLayer setObject:@[attackConnection] forKey:@"Connections"];
+//        }
+//        [layers addObject:mutableLayer];
+//    }
+//    [instrument setObject:layers forKeyedSubscript:@"Layers"];
+//}
+//else{
+//    instrument[@"Layers"] = @[@{@"Connections":@[attackConnection]}];
+//}
+//[mutablePreset setObject:instrument forKey:@"Instrument"];
+//
+//CFPropertyListRef editedPreset = (__bridge CFPropertyListRef)mutablePreset;
+//AudioUnitSetProperty(sampler.audioUnit,kAudioUnitProperty_ClassInfo,kAudioUnitScope_Global,0,&editedPreset,sizeof(presetPlist));
+//Then after this connection has been made you set the attack like this.
+//
+//uint8_t value = 100; //0 -> 127
