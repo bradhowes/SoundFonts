@@ -8,11 +8,32 @@ import UIKit
 public struct SlidingViewManager {
 
     private var views = [ViewSlider]()
-    private var active: Int = 0
+    public private(set) var active: Int = 0
 
+    init(active: Int) {
+        self.active = active
+    }
+    
     public mutating func add(view: UIView) {
         views.append(ViewSlider(view: view))
     }
+
+    /**
+     Show the next view by sliding the existing / next views to the left.
+     */
+    public mutating func slideNextHorizontally() {
+        transition(activate: active + 1, method: ViewSlider.slideLeft)
+    }
+
+    /**
+     Show the previous view by sliding the existing / previous views to the right.
+     */
+    public mutating func slidePrevHorizontally() {
+        transition(activate: active - 1, method: ViewSlider.slideRight)
+    }
+}
+
+extension SlidingViewManager {
 
     /**
      Slide two views, the old one slides out while the new one slides it.
@@ -33,17 +54,4 @@ public struct SlidingViewManager {
         method(views[active])()
     }
 
-    /**
-     Show the next view by sliding the existing / next views to the left.
-     */
-    public mutating func slideNextHorizontally() {
-        transition(activate: active + 1, method: ViewSlider.slideLeft)
-    }
-
-    /**
-     Show the previous view by sliding the existing / previous views to the right.
-     */
-    public mutating func slidePrevHorizontally() {
-        transition(activate: active - 1, method: ViewSlider.slideRight)
-    }
 }

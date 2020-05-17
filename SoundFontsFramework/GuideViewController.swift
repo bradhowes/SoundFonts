@@ -13,13 +13,7 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
         super.viewDidLoad()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGuide))
         view.addGestureRecognizer(tapGestureRecognizer)
-
-        if Settings[.wasShowingFavorites] {
-            favoritesGuide()
-        }
-        else {
-            soundFontsGuide()
-        }
+        prepareGuide(for: Settings[.wasShowingFavorites] ? 1 : 0)
     }
 
     public func establishConnections(_ router: ComponentContainer) {
@@ -49,15 +43,22 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
         animator.startAnimation()
     }
 
-    public func soundFontsGuide() {
-        fontsPanel.isHidden = false
-        patchesPanel.isHidden = false
-        favoritesPanel.isHidden = true
-    }
-
-    public func favoritesGuide() {
-        fontsPanel.isHidden = true
-        patchesPanel.isHidden = true
-        favoritesPanel.isHidden = false
+    public func prepareGuide(for panel: Int) {
+        switch panel {
+        case 0:
+            fontsPanel.isHidden = false
+            patchesPanel.isHidden = false
+            favoritesPanel.isHidden = true
+        case 1:
+            fontsPanel.isHidden = true
+            patchesPanel.isHidden = true
+            favoritesPanel.isHidden = false
+        case 2:
+            fontsPanel.isHidden = true
+            patchesPanel.isHidden = true
+            favoritesPanel.isHidden = true
+        default:
+            break
+        }
     }
 }

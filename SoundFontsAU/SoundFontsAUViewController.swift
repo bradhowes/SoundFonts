@@ -7,10 +7,10 @@ import os
 public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
     private let log = Logging.logger("ViewC")
     private let sampler = Sampler(mode: .audiounit)
+    private let noteInjector = NoteInjector()
+
     private var components: Components<SoundFontsAUViewController>!
-    private var myKVOContext = 0
     private var audioUnit: SoundFontsAU?
-    fileprivate let noteInjector = NoteInjector()
 
     override public func viewDidLoad() {
         os_log(.error, log: log, "viewDidLoad")

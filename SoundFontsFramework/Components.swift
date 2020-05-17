@@ -94,6 +94,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         keyboardController?.establishConnections(self)
         guideController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
+        envelopeViewController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }

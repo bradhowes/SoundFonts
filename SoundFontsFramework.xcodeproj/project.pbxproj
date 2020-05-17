@@ -115,13 +115,17 @@
 		BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
 		BDD7219D24190D9700FD3567 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD7219C24190D9700FD3567 /* Bundle+Extensions.swift */; };
+		BDD828A6246F005F00589854 /* ADSRView_AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD828A5246F005F00589854 /* ADSRView_AudioKit.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
+		BDDA424424708FAA005E2886 /* VerticalSteppedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */; };
+		BDDA42462470AC42005E2886 /* EnvelopeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA42452470AC42005E2886 /* EnvelopeSelector.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDF86309246EB7160006D8CD /* EnvelopeViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */; };
 		BDF8630C246EB7940006D8CD /* EnvelopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */; };
-		BDF8630E246EB8A30006D8CD /* EnvelopeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */; };
+		BDF8630E246EB8A30006D8CD /* ADSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630D246EB8A30006D8CD /* ADSRView.swift */; };
 		BDF86310246EB8E70006D8CD /* EnvelopeView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */; };
+		BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */; };
 		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 /* End PBXBuildFile section */
 
@@ -278,13 +282,17 @@
 		BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
 		BDD7219C24190D9700FD3567 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
+		BDD828A5246F005F00589854 /* ADSRView_AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADSRView_AudioKit.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
+		BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalSteppedSlider.swift; sourceTree = "<group>"; };
+		BDDA42452470AC42005E2886 /* EnvelopeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeSelector.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 		BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeViewManager.swift; sourceTree = "<group>"; };
 		BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeViewController.swift; sourceTree = "<group>"; };
-		BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeView.swift; sourceTree = "<group>"; };
+		BDF8630D246EB8A30006D8CD /* ADSRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADSRView.swift; sourceTree = "<group>"; };
 		BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EnvelopeView.storyboard; sourceTree = "<group>"; };
+		BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioUnit+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -435,6 +443,7 @@
 				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
 				BD074C1A23CDAF51001987E9 /* SlidingViewManager.swift */,
 				BD074C1623CDAF51001987E9 /* ViewSlider.swift */,
+				BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -442,6 +451,7 @@
 		BD074C1C23CDAF51001987E9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */,
 				BDD7219C24190D9700FD3567 /* Bundle+Extensions.swift */,
 				BD074C2223CDAF51001987E9 /* FileManager+Extensions.swift */,
 				BD074C2323CDAF51001987E9 /* Foundation+Extensions.swift */,
@@ -547,7 +557,9 @@
 			isa = PBXGroup;
 			children = (
 				BDF8630B246EB7940006D8CD /* EnvelopeViewController.swift */,
-				BDF8630D246EB8A30006D8CD /* EnvelopeView.swift */,
+				BDF8630D246EB8A30006D8CD /* ADSRView.swift */,
+				BDD828A5246F005F00589854 /* ADSRView_AudioKit.swift */,
+				BDDA42452470AC42005E2886 /* EnvelopeSelector.swift */,
 			);
 			path = "Envelope View";
 			sourceTree = "<group>";
@@ -693,8 +705,10 @@
 				BD074C8A23CDAF51001987E9 /* FavoriteEditorDelegate.swift in Sources */,
 				BD074C7F23CDAF51001987E9 /* UICollectionView+Extensions.swift in Sources */,
 				BD074C7D23CDAF51001987E9 /* UserDefaults+Extensions.swift in Sources */,
+				BDD828A6246F005F00589854 /* ADSRView_AudioKit.swift in Sources */,
 				BD074C8123CDAF51001987E9 /* SelectedSoundFontManager.swift in Sources */,
 				BD074C7723CDAF51001987E9 /* String+Extensions.swift in Sources */,
+				BDDA424424708FAA005E2886 /* VerticalSteppedSlider.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* Patch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,
@@ -723,7 +737,8 @@
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
 				BD3FDBCE23F2BAA100C73E88 /* MIDIConnectivity.swift in Sources */,
-				BDF8630E246EB8A30006D8CD /* EnvelopeView.swift in Sources */,
+				BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */,
+				BDF8630E246EB8A30006D8CD /* ADSRView.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
@@ -742,6 +757,7 @@
 				BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */,
 				BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */,
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
+				BDDA42462470AC42005E2886 /* EnvelopeSelector.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* Favorite.swift in Sources */,
