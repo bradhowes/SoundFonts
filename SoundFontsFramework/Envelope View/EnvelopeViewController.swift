@@ -21,6 +21,7 @@ public class EnvelopeViewController: UIViewController {
     @IBOutlet private weak var ruhlease: VSSlider!
 
     public override func viewDidLoad() {
+
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeLeft)

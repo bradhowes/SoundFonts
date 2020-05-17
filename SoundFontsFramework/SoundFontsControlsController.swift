@@ -58,11 +58,13 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         let patchesViewManager = router.patchesViewManager
         patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        // patchesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         let favoritesViewManager = router.favoritesViewManager
         favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
+
+        let envelopeViewManager = router.envelopeViewManager
+        envelopeViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
 
         router.infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
     }
