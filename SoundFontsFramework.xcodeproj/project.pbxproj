@@ -118,7 +118,7 @@
 		BDD828A6246F005F00589854 /* ADSRView_AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD828A5246F005F00589854 /* ADSRView_AudioKit.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
-		BDDA424424708FAA005E2886 /* VerticalSteppedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */; };
+		BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA424324708FAA005E2886 /* VSSlider.swift */; };
 		BDDA42462470AC42005E2886 /* EnvelopeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA42452470AC42005E2886 /* EnvelopeSelector.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDF86309246EB7160006D8CD /* EnvelopeViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */; };
@@ -285,7 +285,7 @@
 		BDD828A5246F005F00589854 /* ADSRView_AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ADSRView_AudioKit.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
-		BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalSteppedSlider.swift; sourceTree = "<group>"; };
+		BDDA424324708FAA005E2886 /* VSSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSSlider.swift; sourceTree = "<group>"; };
 		BDDA42452470AC42005E2886 /* EnvelopeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvelopeSelector.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 		BDF86308246EB7160006D8CD /* EnvelopeViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvelopeViewManager.swift; sourceTree = "<group>"; };
@@ -443,7 +443,7 @@
 				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
 				BD074C1A23CDAF51001987E9 /* SlidingViewManager.swift */,
 				BD074C1623CDAF51001987E9 /* ViewSlider.swift */,
-				BDDA424324708FAA005E2886 /* VerticalSteppedSlider.swift */,
+				BDDA424324708FAA005E2886 /* VSSlider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -708,7 +708,7 @@
 				BDD828A6246F005F00589854 /* ADSRView_AudioKit.swift in Sources */,
 				BD074C8123CDAF51001987E9 /* SelectedSoundFontManager.swift in Sources */,
 				BD074C7723CDAF51001987E9 /* String+Extensions.swift in Sources */,
-				BDDA424424708FAA005E2886 /* VerticalSteppedSlider.swift in Sources */,
+				BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* Patch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,

@@ -22,6 +22,11 @@ public class EnvelopeViewController: UIViewController {
 
     public override func viewDidLoad() {
 
+        attack.addTapGesture()
+        decay.addTapGesture()
+        sustain.addTapGesture()
+        ruhlease.addTapGesture()
+        
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeLeft)

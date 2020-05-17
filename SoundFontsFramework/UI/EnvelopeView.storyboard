@@ -17,26 +17,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ief-Ys-1Rt" userLabel="Border">
-                                <rect key="frame" x="32" y="237.5" width="54.5" height="93.5"/>
+                                <rect key="frame" x="16" y="235.5" width="54.5" height="97.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="1jS-Hl-h9X" userLabel="Targets">
-                                        <rect key="frame" x="4" y="4" width="46.5" height="85.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1jS-Hl-h9X" userLabel="Targets">
+                                        <rect key="frame" x="4" y="4" width="46.5" height="89.5"/>
                                         <subviews>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dwe-6l-NpU" userLabel="Env 1">
-                                                <rect key="frame" x="0.0" y="0.0" width="46.5" height="28.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="46.5" height="24.5"/>
                                                 <state key="normal" title="Env 1">
                                                     <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WrD-8o-KBx" userLabel="Env 2">
-                                                <rect key="frame" x="0.0" y="28.5" width="46.5" height="28.5"/>
+                                                <rect key="frame" x="0.0" y="32.5" width="46.5" height="24.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Env 2">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9qP-b4-8HE" userLabel="Both">
-                                                <rect key="frame" x="0.0" y="57" width="46.5" height="28.5"/>
+                                                <rect key="frame" x="0.0" y="65" width="46.5" height="24.5"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Both">
                                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -74,14 +74,14 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="KaB-ZX-hCw">
-                                <rect key="frame" x="118.5" y="8" width="185.5" height="552"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="KaB-ZX-hCw">
+                                <rect key="frame" x="102.5" y="8" width="192" height="552"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ge7-mA-Qw3" userLabel="Attack">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="552"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="552"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2eM-3B-LfO" customClass="VSSlider" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="528.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="528.5"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="vertical" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -121,7 +121,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCb-BF-d5b">
-                                                <rect key="frame" x="0.0" y="532.5" width="50" height="19.5"/>
+                                                <rect key="frame" x="0.0" y="532.5" width="30" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -129,10 +129,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Mu5-1y-Zlz" userLabel="Decay">
-                                        <rect key="frame" x="66" y="0.0" width="19" height="552"/>
+                                        <rect key="frame" x="54" y="0.0" width="30" height="552"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cud-hi-zAD" customClass="VSSlider" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="19" height="528.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="528.5"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="vertical" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isContinuous" value="YES"/>
@@ -163,7 +163,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="D" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mhc-O1-tZz" userLabel="Decay">
-                                                <rect key="frame" x="0.0" y="532.5" width="19" height="19.5"/>
+                                                <rect key="frame" x="0.0" y="532.5" width="30" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -171,10 +171,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="g5m-s2-Svx" userLabel="Sustain">
-                                        <rect key="frame" x="101" y="0.0" width="50" height="552"/>
+                                        <rect key="frame" x="108" y="0.0" width="30" height="552"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SXb-it-2Gz" customClass="VSSlider" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="528.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="528.5"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="vertical" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -208,7 +208,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFI-O4-qbW" userLabel="Sustain">
-                                                <rect key="frame" x="0.0" y="532.5" width="50" height="19.5"/>
+                                                <rect key="frame" x="0.0" y="532.5" width="30" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -216,10 +216,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vhq-XP-7ZA" userLabel="Release">
-                                        <rect key="frame" x="167" y="0.0" width="18.5" height="552"/>
+                                        <rect key="frame" x="162" y="0.0" width="30" height="552"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IeA-vl-Mah" customClass="VSSlider" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="18.5" height="528.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="528.5"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="vertical" value="YES"/>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
@@ -253,7 +253,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="R" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0UL-rQ-Xav" userLabel="Release">
-                                                <rect key="frame" x="0.0" y="532.5" width="18.5" height="19.5"/>
+                                                <rect key="frame" x="0.0" y="532.5" width="30" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -265,7 +265,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ief-Ys-1Rt" firstAttribute="leading" secondItem="p4r-Yk-jY8" secondAttribute="leading" constant="32" id="2Xh-Gm-JHG"/>
+                            <constraint firstItem="ief-Ys-1Rt" firstAttribute="leading" secondItem="p4r-Yk-jY8" secondAttribute="leading" constant="16" id="2Xh-Gm-JHG"/>
                             <constraint firstItem="ief-Ys-1Rt" firstAttribute="centerY" secondItem="Rk8-8n-I7Y" secondAttribute="centerY" id="3Jh-Vi-doI"/>
                             <constraint firstItem="KaB-ZX-hCw" firstAttribute="top" secondItem="p4r-Yk-jY8" secondAttribute="top" constant="8" id="6Ub-w0-k9F"/>
                             <constraint firstItem="KaB-ZX-hCw" firstAttribute="leading" secondItem="ief-Ys-1Rt" secondAttribute="trailing" constant="32" id="Ns9-Ff-qeL"/>
