@@ -32,7 +32,7 @@ public class VSSlider: UIControl {
 
         private func initialize() {
             addTarget(self, action: #selector(endSliding), for: .touchUpInside)
-            addTarget(self, action: #selector(endSliding), for: .touchUpOutside)
+            // addTarget(self, action: #selector(endSliding), for: .touchUpOutside)
         }
 
         @objc private func endSliding() {
@@ -95,7 +95,7 @@ public class VSSlider: UIControl {
     @IBInspectable
     public var minimumTrackTintColor: UIColor? { didSet { updateSlider() } }
 
-    @IBInspectable open var maximumTrackTintColor: UIColor? { didSet { updateSlider() } }
+    @IBInspectable public var maximumTrackTintColor: UIColor? { didSet { updateSlider() } }
 
     @IBInspectable
     public var thumbTintColor: UIColor? { didSet { updateSlider() } }
@@ -115,7 +115,17 @@ public class VSSlider: UIControl {
     @IBInspectable
     public var isContinuous: Bool = true { didSet { updateSlider() } }
 
-    override public var isEnabled: Bool { didSet { super.isEnabled = self.isEnabled } }
+    override public var isEnabled: Bool {
+        didSet {
+            super.isEnabled = self.isEnabled
+            updateSlider(animated: true)
+        }
+    }
+
+    override public var tag: Int {
+        get { slider.tag }
+        set { slider.tag = newValue }
+    }
 
     @available(iOS 9.0, *)
     public override var semanticContentAttribute: UISemanticContentAttribute {
@@ -145,12 +155,12 @@ public class VSSlider: UIControl {
         initialize()
     }
 
-    fileprivate func initialize() {
+    private func initialize() {
         updateSlider()
         addSubview(slider)
     }
 
-    fileprivate func updateSlider() {
+    private func updateSlider(animated: Bool = false) {
         let layoutDirection = slider.effectiveUserInterfaceLayoutDirection
 
         switch (vertical, ascending, layoutDirection) {
@@ -175,13 +185,24 @@ public class VSSlider: UIControl {
         if let thumbImage = thumbImage {
             slider.setThumbImage(thumbImage, for: .normal)
         } else if let thumbTintColor = thumbTintColor {
-            slider.thumbTintColor = thumbTintColor
+            let color = isEnabled ? thumbTintColor : UIColor.gray
+            if animated {
+                UIView.animate(withDuration: 0.5) {
+                    self.slider.thumbTintColor = color
+                }
+            } else {
+                self.slider.thumbTintColor = color
+            }
         }
 
-        updateTrackImage()
+        updateTrackImage(animated: animated)
     }
 
-    override open func layoutSubviews() {
+    public func setValue(_ value: Float, animated: Bool) {
+        slider.setValue(value, animated: animated)
+    }
+
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         slider.transform = .identity
@@ -195,7 +216,7 @@ public class VSSlider: UIControl {
         updateSlider()
     }
 
-    override open var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         get {
             if vertical {
                 return CGSize(width: slider.intrinsicContentSize.height, height: slider.intrinsicContentSize.width)
@@ -210,7 +231,7 @@ public class VSSlider: UIControl {
     }
 
     public override func draw(_ rect: CGRect) {
-        updateTrackImage()
+        updateTrackImage(animated: false)
         super.draw(rect)
     }
 }
@@ -219,7 +240,7 @@ public class VSSlider: UIControl {
 
 extension VSSlider {
 
-    private func updateTrackImage() {
+    private func updateTrackImage(animated: Bool) {
 
         // Get slider dimensions
         let sliderBounds = slider.bounds
@@ -232,16 +253,37 @@ extension VSSlider {
         // Get the range for drawing marks
         let range = markRange
 
-        let minTrackColor = minimumTrackTintColor ?? tintColor ?? UIColor.blue
-        let maxTrackColor = maximumTrackTintColor ?? UIColor.lightGray
+        var minTrackColor = minimumTrackTintColor ?? tintColor ?? UIColor.blue
+        if !isEnabled {
+            minTrackColor = minTrackColor.darker()
+        }
+
+        var maxTrackColor = maximumTrackTintColor ?? UIColor.lightGray
+        if !isEnabled {
+            maxTrackColor = maxTrackColor.darker()
+        }
 
         if let minimumSide = getTrackImage(innerRect: innerRect, thumbWidth: thumbWidth, range: range,
                                            trackColor: minTrackColor, trackImage: minimumTrackImage) {
-            slider.setMinimumTrackImage(minimumSide, for: .normal)
+            if animated {
+                UIView.animate(withDuration: 0.5) {
+                    self.slider.setMinimumTrackImage(minimumSide, for: .normal)
+                }
+            }
+            else {
+                self.slider.setMinimumTrackImage(minimumSide, for: .normal)
+            }
         }
         if let maximumSide = getTrackImage(innerRect: innerRect, thumbWidth: thumbWidth, range: range,
                                            trackColor: maxTrackColor, trackImage: maximumTrackImage) {
-            slider.setMaximumTrackImage(maximumSide, for: .normal)
+            if animated {
+                UIView.animate(withDuration: 0.5) {
+                    self.slider.setMaximumTrackImage(maximumSide, for: .normal)
+                }
+            }
+            else {
+                self.slider.setMaximumTrackImage(maximumSide, for: .normal)
+            }
         }
     }
 

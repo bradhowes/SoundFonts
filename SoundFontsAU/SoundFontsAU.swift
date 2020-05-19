@@ -119,7 +119,29 @@ final class SoundFontsAU: AUAudioUnit {
         guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
         guard let clump_1 = global.children.first as? AUParameterGroup else { return }
         os_log(.error, log: self.log, "creating parameterTree from clump_1")
-        ourParameterTree = AUParameterTree.createTree(withChildren: clump_1.children)
+
+        var parameters: [AUParameterNode] = [
+            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
+                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
+                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+                                            dependentParameters: nil),
+            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
+                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
+                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+                                            dependentParameters: nil),
+            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
+                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
+                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+                                            dependentParameters: nil),
+            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
+                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
+                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+                                            dependentParameters: nil)
+        ]
+
+        parameters.append(contentsOf: clump_1.children)
+
+        ourParameterTree = AUParameterTree.createTree(withChildren: parameters)
         dumpParameters(name: clump_1.displayName, tree: ourParameterTree, level: 0)
     }
 
@@ -198,32 +220,20 @@ final class SoundFontsAU: AUAudioUnit {
     override public var channelCapabilities: [NSNumber]? { wrapped.channelCapabilities }
 
     override public var channelMap: [NSNumber]? {
-        get {
-            os_log(.error, log: log, "channelMap get - %d", wrapped.channelMap?.count ?? -1)
-            return wrapped.channelMap
-        }
-        set {
-            os_log(.error, log: log, "channelMap set - %d", newValue?.count ?? -1)
-            wrapped.channelMap = newValue
-        }
+        get { wrapped.channelMap }
+        set { wrapped.channelMap = newValue }
     }
 
     override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber) -> MIDICIProfileState {
         wrapped.profileState(forCable: cable, channel: channel)
     }
 
-    override public var canPerformInput: Bool {
-        os_log(.error, log: log, "canPerformInput - %d", wrapped.canPerformInput)
-        return wrapped.canPerformInput
-    }
+    override public var canPerformInput: Bool { wrapped.canPerformInput }
 
     override public var canPerformOutput: Bool { wrapped.canPerformOutput }
 
     override public var isInputEnabled: Bool {
-        get {
-            os_log(.error, log: log, "isInputEnabled - %d", wrapped.isInputEnabled)
-            return wrapped.isInputEnabled
-        }
+        get { wrapped.isInputEnabled }
         set { wrapped.isInputEnabled = newValue }
     }
 
@@ -238,22 +248,15 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var inputHandler: AUInputHandler? {
-        get {
-            os_log(.error, log: log, "inputHandler")
-            return wrapped.inputHandler
-        }
+        get { wrapped.inputHandler }
         set { wrapped.inputHandler = newValue }
     }
 
     override public var isRunning: Bool { wrapped.isRunning }
-    override public func startHardware() throws {
-        os_log(.error, log: log, "startHardware")
-        try wrapped.startHardware()
-    }
-    override public func stopHardware() {
-        os_log(.error, log: log, "stopHardware")
-        wrapped.stopHardware()
-    }
+
+    override public func startHardware() throws { try wrapped.startHardware() }
+
+    override public func stopHardware() { wrapped.stopHardware() }
 
     override public var scheduleMIDIEventBlock: AUScheduleMIDIEventBlock? {
         let block = self.wrapped.scheduleMIDIEventBlock
@@ -266,54 +269,6 @@ final class SoundFontsAU: AUAudioUnit {
         }
     }
 
-    override public var renderBlock: AURenderBlock {
-        let block = wrapped.renderBlock
-        return { (actionFlags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
-                  timestamp: UnsafePointer<AudioTimeStamp>,
-                  frameCount: AUAudioFrameCount,
-                  outputBusNumber: Int,
-                  outputData: UnsafeMutablePointer<AudioBufferList>,
-                  pullInputBlock: AURenderPullInputBlock?) -> AUAudioUnitStatus in
-            os_log(.error, log: self.log,
-                   "renderBlock - %d %ld %ld %d %d",
-                   actionFlags.pointee.rawValue,
-                   timestamp.pointee.mHostTime,
-                   frameCount,
-                   outputBusNumber)
-            return block(actionFlags, timestamp, frameCount, outputBusNumber, outputData, pullInputBlock)
-        }
-    }
-
-    override var internalRenderBlock: AUInternalRenderBlock {
-        typealias AUInternalRenderBlock = (
-            UnsafeMutablePointer<AudioUnitRenderActionFlags>,
-            UnsafePointer<AudioTimeStamp>,
-            AUAudioFrameCount,
-            Int,
-            UnsafeMutablePointer<AudioBufferList>,
-            UnsafePointer<AURenderEvent>?,
-            AURenderPullInputBlock?) -> AUAudioUnitStatus
-        let block = wrapped.internalRenderBlock
-        let log = self.log
-        return { (flags: UnsafeMutablePointer<AudioUnitRenderActionFlags>,
-                  timestamp: UnsafePointer<AudioTimeStamp>,
-                  frameCount: AUAudioFrameCount,
-                  outputBusNumber: Int,
-                  outputData: UnsafeMutablePointer<AudioBufferList>,
-                  realtimeEventListHead: UnsafePointer<AURenderEvent>?,
-                  pullInputBlock: AURenderPullInputBlock?) -> AUAudioUnitStatus in
-            var aure = realtimeEventListHead?.pointee
-            while aure != nil {
-                if aure!.head.eventType == .MIDI {
-                    let aumi = aure!.MIDI
-                    os_log(.error, log: log, "%d internalRenderBlock - %ld MIDI %d %d %d",
-                           outputBusNumber, aumi.eventSampleTime, aumi.data.0, aumi.data.1, aumi.data.2)
-                }
-                aure = aure!.head.next?.pointee
-            }
-
-            return block(flags, timestamp, frameCount, outputBusNumber, outputData, realtimeEventListHead,
-                         pullInputBlock)
-        }
-    }
+    override public var renderBlock: AURenderBlock { wrapped.renderBlock }
+    override var internalRenderBlock: AUInternalRenderBlock { wrapped.internalRenderBlock }
 }

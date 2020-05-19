@@ -31,10 +31,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     private let mode: Mode
     private var engine: AVAudioEngine?
-    private var auSampler: AVAudioUnitSampler?
     private var loaded: Bool = false
 
     public var hasPatch: Bool { activePatchKind != .none }
+
+    public private(set) var auSampler: AVAudioUnitSampler?
     public private(set) var activePatchKind: ActivePatchKind = .none
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
@@ -52,7 +53,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public init(mode: Mode) {
         self.mode = mode
         super.init()
-        self.subscribe(self) { _ in self.blah() }
     }
 
     /**
@@ -193,73 +193,4 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         guard let sampler = self.auSampler else { return }
         sampler.sendMIDIEvent(cmd, data1: data1, data2: data2)
     }
-
-    private func blah() {
-        os_log(.info, log: log, "blah - BEGIN")
-        defer { os_log(.info, log: log, "blah - END") }
-        guard let sampler = self.auSampler else { return }
-        guard let presets = try? sampler.audioUnit.getPropertyValue(kAudioUnitProperty_ClassInfo) as CFPropertyList else { return }
-        guard let instrument = presets["Instrument"] as? NSMutableDictionary else { return }
-        guard let existingLayers = instrument["Layers"] as? NSArray else { return }
-        for layer in existingLayers {
-            guard let layerDict = layer as? NSDictionary else { continue }
-            guard let existingConnections = layerDict["Connections"] as? NSArray else { continue }
-            if existingConnections.count > 0 {
-                os_log(.info, log: log, "existing connection")
-            }
-        }
-    }
 }
-
-//this is the connection we will be adding
-//NSMutableDictionary *attackConnection = [NSMutableDictionary dictionaryWithDictionary:
-//                                        @{@"ID"        :@0,
-//                                          @"control"   :@0,
-//                                          @"destination":@570425344,
-//                                          @"enabled"   :[NSNumber numberWithBool:1],
-//                                          @"inverse"   :[NSNumber numberWithBool:0],
-//                                          @"scale"     :@10,
-//                                          @"source"    :@73,
-//                                          @"transform" :@1,
-//                                        }];
-//
-//AVAudioUnitSampler *sampler;//already initialized and loaded with samples or this won't work
-//
-//CFPropertyListRef presetPlist;
-//UInt32 presetSize = sizeof(CFPropertyListRef);
-//AudioUnitGetProperty(sampler.audioUnit, kAudioUnitProperty_ClassInfo, kAudioUnitScope_Global, 0, &presetPlist, &presetSize);
-//NSMutableDictionary *mutablePreset = [NSMutableDictionary dictionaryWithDictionary:(__bridge NSDictionary *)presetPlist];
-//CFRelease(presetPlist);
-//NSMutableDictionary *instrument = [NSMutableDictionary dictionaryWithDictionary: mutablePreset[@"Instrument"]];
-//
-//NSArray *existingLayers = instrument[@"Layers"];
-//if (existingLayers.count) {
-//    NSMutableArray      *layers     = [[NSMutableArray alloc]init];
-//    for (NSDictionary *layer in existingLayers){
-//        NSMutableDictionary *mutableLayer = [NSMutableDictionary dictionaryWithDictionary:layer];
-//        NSArray *existingConections = mutableLayer[@"Connections"];
-//
-//        if (existingConections) {
-//            attackConnection[@"ID"] = [NSNumber numberWithInteger:existingConections.count];
-//            NSMutableArray *connections = [NSMutableArray arrayWithArray:existingConections];
-//            [connections addObject:attackConnection];
-//            [mutableLayer setObject:connections forKey:@"Connections"];
-//        }
-//        else{
-//            attackConnection[@"ID"] = [NSNumber numberWithInteger:0];
-//            [mutableLayer setObject:@[attackConnection] forKey:@"Connections"];
-//        }
-//        [layers addObject:mutableLayer];
-//    }
-//    [instrument setObject:layers forKeyedSubscript:@"Layers"];
-//}
-//else{
-//    instrument[@"Layers"] = @[@{@"Connections":@[attackConnection]}];
-//}
-//[mutablePreset setObject:instrument forKey:@"Instrument"];
-//
-//CFPropertyListRef editedPreset = (__bridge CFPropertyListRef)mutablePreset;
-//AudioUnitSetProperty(sampler.audioUnit,kAudioUnitProperty_ClassInfo,kAudioUnitScope_Global,0,&editedPreset,sizeof(presetPlist));
-//Then after this connection has been made you set the attack like this.
-//
-//uint8_t value = 100; //0 -> 127
