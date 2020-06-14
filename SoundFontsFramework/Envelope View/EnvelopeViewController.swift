@@ -27,7 +27,6 @@ public class EnvelopeViewController: UIViewController {
     }
 
     public override func viewDidLoad() {
-
         addControls()
 
         swipeLeft.direction = .left
@@ -62,7 +61,7 @@ extension EnvelopeViewController: ControllerConfiguration {
         os_log(.info, log: log, "patchLoaded")
         switch event {
         case .loaded(patch: _):
-            connectControls()
+            // connectControls()
             break
         }
     }
@@ -119,6 +118,7 @@ extension EnvelopeViewController {
     @objc func sliderChanged(_ slider: UISlider) {
         os_log(.info, log: log, "valueChanged - BEGIN %d %f", slider.tag, slider.value)
         infoBar.setStatus(Formatters.formatted(sliderValue: slider.value))
+        try? sampler.auSampler?.audioUnit.setPropertyValue(UInt32(slider.tag), value: slider.value)
     }
 
     private func connectControls() {

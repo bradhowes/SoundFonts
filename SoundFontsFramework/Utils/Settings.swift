@@ -26,29 +26,23 @@ public class SettingsManager: NSObject {
 
     public subscript<T: SettingSerializable>(key: SettingKey<T>) -> T {
         get {
-            os_log(.info, log: log, "get '%s'", key.userDefaultsKey)
-
             if key.shared {
                 if let value = T.get(key: key.userDefaultsKey, userDefaults: sharedSettings) {
-                    os_log(.debug, log: log, "found in sharedSettings")
                     return value
                 }
             }
 
             if let value = T.get(key: key.userDefaultsKey, userDefaults: appSettings) {
-                os_log(.debug, log: log, "found in appSettings -- copying to sharedSettings")
                 if key.shared {
                     sharedSettings[key] = value
                 }
                 return value
             }
 
-            os_log(.debug, log: log, "not found -- using default value")
             return key.defaultValue
         }
 
         set {
-            os_log(.info, log: log, "setting '%s'", key.userDefaultsKey)
             if key.shared {
                 T.set(key: key.userDefaultsKey, value: newValue, userDefaults: sharedSettings)
             }
@@ -66,7 +60,6 @@ public class SettingsManager: NSObject {
 /// Global variable to keep things concise.
 public let Settings = SettingsManager(shared: UserDefaults(suiteName: "group.com.braysoftware.SoundFontsShare")!,
                                       app: UserDefaults.standard)
-
 //swiftlint:enable identifier_name
 
 /**
