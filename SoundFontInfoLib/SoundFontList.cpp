@@ -6,7 +6,7 @@
 #include <string>
 
 #include "SoundFontList.hpp"
-#include "SF2.h"
+#include "Parser.hpp"
 
 /**
  Roughly accurate C representation of a 'phdr' entry in a sound font resource. Used to access packed values from a
@@ -36,32 +36,23 @@ struct PatchInfo {
 };
 
 struct InternalSoundFontInfo {
-    std::string name;
-    std::vector<PatchInfo> patches;
-};
+    InternalSoundFontInfo(const void* data, size_t size)
+    : data_{data}, size_{size}, top_{SF2::Parser::parse(data, size)}
+    {}
 
-const InternalSoundFontInfo*
-InternalSoundFontParse(const void* data, size_t size)
-{
-    static_assert(sizeof(sfPresetHeader) == 38, "sfPresetHeader size is not 38");
-
-    InternalSoundFontInfo* soundFontInfo = new InternalSoundFontInfo();
-    soundFontInfo->name = "";
-
-    try {
-        // We only have a `parser` if there the given resource parses correctly.
-        auto parser = SF2::Parser::parse(data, size);
-        auto info = parser.find(SF2::Tag::info);
-        if (info != parser.end()) {
+    void initialize()
+    {
+        auto info = top_.find(SF2::Tag::info);
+        if (info != top_.end()) {
             auto name = info->find(SF2::Tag::inam);
             if (name != info->end()) {
-                soundFontInfo->name = std::string(name->dataPtr(), name->size());
+                name_ = std::string(name->dataPtr(), name->size());
             }
         }
 
         // Locate the chunk holding the "patch data"
-        auto patchData = parser.find(SF2::Tag::pdta);
-        if (patchData != parser.end()) {
+        auto patchData = top_.find(SF2::Tag::pdta);
+        if (patchData != top_.end()) {
 
             // Locate all "patch header" chunks.
             auto patchHeader = patchData->find(SF2::Tag::phdr);
@@ -72,45 +63,74 @@ InternalSoundFontParse(const void* data, size_t size)
                 auto end = patchHeader->dataPtr() + (*patchHeader).size();
                 while (pos < end) {
                     const sfPresetHeader* preset = reinterpret_cast<const sfPresetHeader*>(pos);
-                    soundFontInfo->patches.push_back(preset);
+                    patches_.push_back(preset);
                     pos += sizeof(sfPresetHeader);
                 }
 
                 // Sort patches in increasing order by bank, patch
-                std::sort(soundFontInfo->patches.begin(), soundFontInfo->patches.end(),
-                          [](const PatchInfo& a, const PatchInfo& b) {
-                    return a.bank < b.bank || (a.bank == b.bank && a.patch < b.patch); });
-
+                std::sort(patches_.begin(), patches_.end(), [](const PatchInfo& a, const PatchInfo& b) {
+                    return a.bank < b.bank || (a.bank == b.bank && a.patch < b.patch);
+                });
                 break;
             }
         }
     }
+
+    const void* data_;
+    size_t size_;
+    SF2::Chunk top_;
+    std::string name_;
+    std::vector<PatchInfo> patches_;
+};
+
+const InternalSoundFontInfo*
+InternalSoundFontParse(const void* data, size_t size)
+{
+    static_assert(sizeof(sfPresetHeader) == 38, "sfPresetHeader size is not 38");
+    try {
+        auto soundFontInfo = new InternalSoundFontInfo(data, size);
+        soundFontInfo->initialize();
+        return soundFontInfo;
+    }
     catch (enum SF2::Format value) {
         ;
     }
-    return soundFontInfo;
+
+    return nullptr;
 }
 
-SoundFontInfo SoundFontParse(const void* data, size_t size) {
+SoundFontInfo SoundFontParse(const void* data, size_t size)
+{
     return static_cast<SoundFontInfo>(InternalSoundFontParse(data, size));
 }
 
-const char* SoundFontName(SoundFontInfo object) {
-    return static_cast<const InternalSoundFontInfo*>(object)->name.c_str();
+const char* SoundFontName(SoundFontInfo object)
+{
+    return static_cast<const InternalSoundFontInfo*>(object)->name_.c_str();
 }
 
-size_t SoundFontPatchCount(SoundFontInfo object) {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches.size();
+size_t SoundFontPatchCount(SoundFontInfo object)
+{
+    return static_cast<const InternalSoundFontInfo*>(object)->patches_.size();
 }
 
-const char* SoundFontPatchName(SoundFontInfo object, size_t index) {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].name.c_str();
+const char* SoundFontPatchName(SoundFontInfo object, size_t index)
+{
+    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].name.c_str();
 }
 
-int SoundFontPatchBank(SoundFontInfo object, size_t index) {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].bank;
+int SoundFontPatchBank(SoundFontInfo object, size_t index)
+{
+    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].bank;
 }
 
-int SoundFontPatchPatch(SoundFontInfo object, size_t index) {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches[index].patch;
+int SoundFontPatchPatch(SoundFontInfo object, size_t index)
+{
+    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].patch;
+}
+
+void SoundFontDump(SoundFontInfo object)
+{
+    auto sfi = static_cast<const InternalSoundFontInfo*>(object);
+    sfi->top_.dump("");
 }

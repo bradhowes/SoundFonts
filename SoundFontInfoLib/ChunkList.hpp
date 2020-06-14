@@ -23,7 +23,11 @@ class ChunkList {
 public:
     typedef std::vector<Chunk>::const_iterator const_iterator;
 
-    void push_back(Chunk&& chunk) { chunks_.push_back(chunk); }
+    ChunkList() = default;
+    ChunkList(ChunkList&& rhs) = default;
+    ChunkList& operator=(ChunkList&& rhs) = default;
+
+    void push_back(Chunk&& chunk) { chunks_.emplace_back(std::move(chunk)); }
 
     /**
      Obtain iterator that points to the first chunk.
@@ -53,9 +57,13 @@ public:
     const_iterator findNext(const_iterator it, const Tag& tag) const;
 
 private:
+    ChunkList(const ChunkList& rhs) = delete;
+    ChunkList& operator=(const ChunkList& rhs) = delete;
+    void* operator new(size_t) = delete;
+    void* operator new[](size_t) = delete;
+
     std::vector<Chunk> chunks_;
 };
 
 }
-
 #endif /* ChunkList_hpp */

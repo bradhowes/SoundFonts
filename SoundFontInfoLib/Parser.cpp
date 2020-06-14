@@ -1,11 +1,9 @@
 // Copyright (c) 2019 Brad Howes. All rights reserved.
 
-#include "SF2.h"
-
 #include <algorithm>
 #include <iostream>
 
-#include "Chunk.hpp"
+#include "Parser.hpp"
 
 using namespace SF2;
 
@@ -96,17 +94,8 @@ private:
 struct Defer
 {
     Defer(std::function<void ()>&& func) : func_(std::forward<std::function<void ()>>(func)) {}
-
     ~Defer() { func_(); }
-
-    Defer(const Defer&) = delete;
-    void operator = (const Defer&) = delete;
-
-private:
     std::function<void ()> func_;
-
-    void* operator new(size_t);
-    void* operator new[](size_t);
 };
 
 Chunk
@@ -134,6 +123,8 @@ Parser::parse(const void* data, size_t size)
     auto pos = Pos(static_cast<const char*>(data), size);
     if (pos.tag() != Tag::riff) throw FormatError;
 
+    // Check that the total size given of the given data matches what is recorded in the header of the top-level
+    // chunk.
     auto len = pos.size() - 4;
     if (len != size - 12) throw FormatError;
 

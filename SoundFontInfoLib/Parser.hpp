@@ -4,15 +4,11 @@
 // it safely parses bogus files by throwing an IFF_FMT_ERROR exception anytime there is an access outside of valid
 // memory. Additional cleanup and rework for modern C++ compilers.
 
-#ifndef __IFFPARSER_H
-#define __IFFPARSER_H
-
-#include <list>
-#include <string>
+#ifndef SF2_PARSER_H
+#define SF2_PARSER_H
 
 #include "Chunk.hpp"
 #include "ChunkList.hpp"
-#include "Tag.hpp"
 
 namespace SF2 {
 
@@ -22,20 +18,26 @@ namespace SF2 {
 enum Format { FormatRIFF, FormatError };
 
 /**
- SoundFont file parser
+ SoundFont file parser.
  */
 class Parser {
 public:
 
     /**
-     Attempt to parse a SoundFont resource. Any failures to do so will throw an IFF_FMT_ERROR exception.
+     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception.
 
      @param data pointer to the first byte of the SoundFont resource to parse
      @param size number of bytes in the resource
+     @return Chunk instance representing all of the items in the given data
      */
     static Chunk parse(const void* data, size_t size);
 
 private:
+    Parser(const Parser& rhs) = delete;
+    Parser& operator=(const Parser& rhs) = delete;
+    void* operator new(size_t) = delete;
+    void* operator new[](size_t) = delete;
+
     struct Pos;
     static Chunk parseChunk(Pos& pos);
     static ChunkList parseChunks(Pos pos);
