@@ -9,6 +9,8 @@
 #ifndef Chunk_hpp
 #define Chunk_hpp
 
+#include <iostream>
+
 #include "ChunkList.hpp"
 #include "Tag.hpp"
 
@@ -29,7 +31,8 @@ public:
      @param size length of the data
      */
     // Chunk(const Tag& tag, const char* ptr, uint32_t size) : tag_{tag}, data_{ptr}, size_{size}, chunks_() {}
-    Chunk(const Tag& tag, const char* ptr, uint32_t size) : tag_{tag}, data_{ptr}, size_{size}, chunks_() {}
+    Chunk(Tag tag, const char* ptr, uint32_t size)
+    : tag_{std::move(tag)}, data_{ptr}, size_{size}, chunks_() {}
 
     /**
      Constructor for a list of chunks
@@ -38,8 +41,8 @@ public:
      @param chunks list of chunks
      */
     // Chunk(const Tag& tag, ChunkList&& chunks)
-    Chunk(const Tag& tag, const ChunkList& chunks)
-    : tag_{tag}, data_{nullptr}, size_{0}, chunks_{chunks} {}
+    Chunk(Tag tag, ChunkList chunks)
+    : tag_{std::move(tag)}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
 
     /**
      @returns the chunk ID.
@@ -87,7 +90,26 @@ public:
         return chunks_.findNext(it, tag);
     }
 
+    void dump(const std::string& indent) const {
+        std::cout << indent << tag_.toString();
+        if (data_ != nullptr) {
+            std::cout << " size: " << size_ << std::endl;
+        }
+        else {
+            auto ourIndent = indent + " ";
+            std::cout << std::endl;
+            std::for_each(begin(), end(), [ourIndent](const Chunk& chunk) { chunk.dump(ourIndent); });
+        }
+    }
+
+    Chunk(Chunk&& rhs) = default;
+    Chunk& operator=(Chunk&& value) = default;
+
 private:
+    Chunk(const Chunk& rhs) = delete;
+    void* operator new(size_t) = delete;
+    void* operator new[](size_t) = delete;
+
     Tag tag_;
     const char* data_;
     uint32_t size_;

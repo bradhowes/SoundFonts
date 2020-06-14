@@ -1,44 +1,42 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import XCTest
-import SoundFontsFramework
+import SoundFontInfoLib
 
 class SoundFontInfoLibTests: XCTestCase {
 
-    private var soundFont: URL? {
-        let bundle = Bundle(identifier: "com.braysoftware.SoundFontsFramework")
-        return bundle?.urls(forResourcesWithExtension: "sf2", subdirectory: nil)?.first { $0.path.contains("FreeFont") }
+    var soundFont: Data {
+        let bundle = Bundle(for: type(of: self))
+        let url = bundle.url(forResource: "FreeFont", withExtension: "sf2")!
+        return try! Data(contentsOf: url)
     }
 
     func testParsing() {
-        let data = try! Data.init(contentsOf: soundFont!)
-        let contents = GetSoundFontInfo(data: data)
-        XCTAssertFalse(contents.patches.isEmpty)
-        XCTAssertEqual(contents.patches.count, 235)
+        let sfi = soundFont.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
 
-        let firstPatch = contents.patches[0]
-        XCTAssertEqual(firstPatch.name, "Piano 1")
-        XCTAssertEqual(firstPatch.bank, 0)
-        XCTAssertEqual(firstPatch.patch, 0)
+        XCTAssertEqual(String(cString: SoundFontName(sfi)), "Free Font GM Ver. 3.2")
+        XCTAssertEqual(SoundFontPatchCount(sfi), 236)
 
-        let lastPatch = contents.patches[contents.patches.count - 1]
-        XCTAssertEqual(lastPatch.name, "SFX")
-        XCTAssertEqual(lastPatch.bank, 128)
-        XCTAssertEqual(lastPatch.patch, 56)
+        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Piano 1")
+        XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
+        XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 0)
+
+        let lastPatchIndex = SoundFontPatchCount(sfi) - 1
+        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "EOP")
+        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 255)
+        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 255)
     }
 
     /**
      Generate file with random contents and try to process them to make sure that there are no BAD_ACCESS
      exceptions.
      */
-
     func testRobustnessWithRandomPayload() {
         let size = 2048
         var data = Data(count: size)
         _ = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, size, $0.baseAddress!) }
-        let contents = GetSoundFontInfo(data: data)
-        XCTAssertTrue(contents.name.isEmpty)
-        XCTAssertTrue(contents.patches.isEmpty)
+        let sfi = data.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count) }
+        XCTAssertNil(sfi)
     }
 
     /**
@@ -46,21 +44,12 @@ class SoundFontInfoLibTests: XCTestCase {
      exceptions.
      */
     func testRobustnessWIthPartialPayload() {
-        let original = try! Data(contentsOf: soundFont!)
+        let original = soundFont
         for _ in 0..<500 {
-            let truncatedCount = Int.random(in: 1 ... original.count);
+            let truncatedCount = Int.random(in: 1..<original.count);
             let data = original.subdata(in: 0..<truncatedCount)
-            let contents = GetSoundFontInfo(data: data)
-            XCTAssertTrue(contents.name.isEmpty)
-            XCTAssertTrue(contents.patches.isEmpty)
+            let sfi = data.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count) }
+            XCTAssertNil(sfi)
         }
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
 }

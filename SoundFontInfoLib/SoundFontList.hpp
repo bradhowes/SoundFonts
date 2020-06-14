@@ -22,7 +22,7 @@ typedef const void* SoundFontInfo;
  */
 SoundFontInfo SoundFontParse(const void* data, size_t size);
 
-extern const char* SoundFontName(SoundFontInfo object);
+const char* SoundFontName(SoundFontInfo object);
 
 /**
  Obtain the number of patches found in a previously-parsed sound font.
@@ -30,7 +30,7 @@ extern const char* SoundFontName(SoundFontInfo object);
  @param object the result of a prior SoundFontListWrapper call.
  @returns number of patches in the sound font
  */
-extern size_t SoundFontPatchCount(SoundFontInfo object);
+size_t SoundFontPatchCount(SoundFontInfo object);
 
 /**
  Obtain the name of the indicated patch.
@@ -39,7 +39,7 @@ extern size_t SoundFontPatchCount(SoundFontInfo object);
  @param index the index of the patch to query (undefined if index >= PatchInfoListSize())
  @returns name of the patch
 */
-extern const char* SoundFontPatchName(SoundFontInfo object, size_t index);
+const char* SoundFontPatchName(SoundFontInfo object, size_t index);
 
 /**
  Obtain the bank number of the indicated patch.
@@ -48,7 +48,7 @@ extern const char* SoundFontPatchName(SoundFontInfo object, size_t index);
  @param index the index of the patch to query (undefined if index >= PatchInfoListSize())
  @returns bank number where the patch resides
 */
-extern int SoundFontPatchBank(SoundFontInfo object, size_t index);
+int SoundFontPatchBank(SoundFontInfo object, size_t index);
 
 /**
  Obtain the bank patch number of the indicated patch.
@@ -57,7 +57,9 @@ extern int SoundFontPatchBank(SoundFontInfo object, size_t index);
  @param index the index of the patch to query (undefined if index >= PatchInfoListSize())
  @returns the patch number of the bank where the patch resides
 */
-extern int SoundFontPatchPatch(SoundFontInfo object, size_t index);
+int SoundFontPatchPatch(SoundFontInfo object, size_t index);
+
+void SoundFontDump(SoundFontInfo object);
 
 #ifdef __cplusplus
 }
