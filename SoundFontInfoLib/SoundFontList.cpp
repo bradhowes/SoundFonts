@@ -6,7 +6,7 @@
 #include <string>
 
 #include "SoundFontList.hpp"
-#include "iffdigest.h"
+#include "SF2.h"
 
 /**
  Roughly accurate C representation of a 'phdr' entry in a sound font resource. Used to access packed values from a
@@ -50,26 +50,26 @@ InternalSoundFontParse(const void* data, size_t size)
 
     try {
         // We only have a `parser` if there the given resource parses correctly.
-        auto parser = IFFParser::parse(data, size);
-        auto info = parser.find("INFO");
+        auto parser = SF2::Parser::parse(data, size);
+        auto info = parser.find(SF2::Tag::info);
         if (info != parser.end()) {
-            auto name = info->find("INAM");
+            auto name = info->find(SF2::Tag::inam);
             if (name != info->end()) {
                 soundFontInfo->name = std::string(name->dataPtr(), name->size());
             }
         }
 
         // Locate the chunk holding the "patch data"
-        auto patchData = parser.find("pdta");
+        auto patchData = parser.find(SF2::Tag::pdta);
         if (patchData != parser.end()) {
 
             // Locate all "patch header" chunks.
-            auto patchHeader = (*patchData).find("phdr");
-            while (patchHeader != (*patchData).end()) {
+            auto patchHeader = patchData->find(SF2::Tag::phdr);
+            while (patchHeader != patchData->end()) {
 
                 // Treat as a (packed) array of sfPresetHeader values
-                auto pos = (*patchHeader).dataPtr();
-                auto end = (*patchHeader).dataPtr() + (*patchHeader).size();
+                auto pos = patchHeader->dataPtr();
+                auto end = patchHeader->dataPtr() + (*patchHeader).size();
                 while (pos < end) {
                     const sfPresetHeader* preset = reinterpret_cast<const sfPresetHeader*>(pos);
                     soundFontInfo->patches.push_back(preset);
@@ -85,7 +85,7 @@ InternalSoundFontParse(const void* data, size_t size)
             }
         }
     }
-    catch (enum IFFFormat value) {
+    catch (enum SF2::Format value) {
         ;
     }
     return soundFontInfo;

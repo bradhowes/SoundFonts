@@ -1,16 +1,20 @@
 // Copyright (c) 2019 Brad Howes. All rights reserved.
 
-#include "iffdigest.h"
+#include "SF2.h"
+
 #include <algorithm>
 #include <iostream>
+
+#include "Chunk.hpp"
+
+using namespace SF2;
 
 /**
  Position bookeeping and a few accessors for locations within a SoundFont data stream. All accessors rigorously check
  for available bytes to protect against buffer overruns, throwing an IFF_FMT_ERROR when there is not enough bytes to
  handle a request.
  */
-class IFFParser::Pos {
-public:
+struct Parser::Pos {
 
     /**
      Constructor for a new position.
@@ -30,44 +34,42 @@ public:
      @param offset number of bytes to advance.
      @returns new instance
      */
-    Pos advance(size_t offset) const { return static_cast<void>(validate(offset)), Pos(*this, offset); }
+    Pos advance(size_t offset) const { validate(offset); return Pos(*this, offset); }
 
     /**
      Obtain a new Pos instance that is advanced from our current position *and* has a different end position.
      @param offset number of bytes to advance.
      @param size number of bytes available to parse from the offset position
      */
-    Pos advance(size_t offset, size_t size) const {
-        return static_cast<void>(validate(offset + size)), Pos(*this, offset, size);
-    }
+    Pos advance(size_t offset, size_t size) const { validate(offset + size); return Pos(*this, offset, size); }
 
     /**
      Obtain the tag for a chunk we are pointing into
 
      @returns tag field of current chunk
      */
-    IFFChunkTag tag() const { return static_cast<void>(validate(sizeof(uint32_t) * 1)), IFFChunkTag(pos); }
+    Tag tag() const { validate(sizeof(uint32_t) * 1); return Tag(pos); }
 
     /**
      Obtain the size for a chunk we are pointing into
 
      @returns size of current chunk
      */
-    uint32_t size() const { return static_cast<void>(validate(sizeof(uint32_t) * 2)), ints(pos)[1]; }
+    uint32_t size() const { validate(sizeof(uint32_t) * 2); return ints(pos)[1]; }
 
     /**
      Obtain the tag for a list we are pointing into
 
      @returns tag of current list
      */
-    IFFChunkTag list_tag() const { return static_cast<void>(validate(12)), IFFChunkTag(chars(pos) + 8); }
+    Tag list_tag() const { validate(12); return Tag(chars(pos) + 8); }
 
     /**
      Obtain a pointer to the first byte of a data blob
 
      @returns data pointer
      */
-    const char* data(size_t len) const { return static_cast<void>(validate(8 + len)), chars(pos) + 8; }
+    const char* data(size_t len) const { validate(8 + len); return chars(pos) + 8; }
 
 private:
 
@@ -75,7 +77,11 @@ private:
     Pos(const Pos& base, size_t offset) : pos(chars(base.pos) + offset), end(base.end) {}
     Pos(const Pos& base, size_t offset, size_t len) : pos(chars(base.pos) + offset), end(chars(pos) + len) {}
 
-    void validate(size_t need) const { if (remaining() < need) throw IFF_FMT_ERROR; }
+    /**
+     Make sure that there is enough bytes to satisfy some data request. Throws IFF_FMT_ERROR if there is not enough.
+     @param need number of bytes to consume
+     */
+    void validate(size_t need) const { if (remaining() < need) throw FormatError; }
 
     static const char* chars(const void* p) { return static_cast<const char*>(p); }
     static const uint32_t* ints(const void* p) { return reinterpret_cast<const uint32_t*>(p); }
@@ -87,43 +93,49 @@ private:
 /**
  Utility class which uses RAII to execute a closure / function when the holding instance is destroyed.
  */
-class OnExit
+struct Defer
 {
-public:
-    OnExit(std::function<void ()> func) : func_(func) {}
-    ~OnExit() { func_(); }
+    Defer(std::function<void ()>&& func) : func_(std::forward<std::function<void ()>>(func)) {}
+
+    ~Defer() { func_(); }
+
+    Defer(const Defer&) = delete;
+    void operator = (const Defer&) = delete;
 
 private:
     std::function<void ()> func_;
+
+    void* operator new(size_t);
+    void* operator new[](size_t);
 };
 
-IFFChunk
-IFFParser::parseChunk(Pos& pos)
+Chunk
+Parser::parseChunk(Pos& pos)
 {
     auto len = pos.size();
     auto clen = ((len + 8) + 1) & 0xfffffffe;
-    OnExit onExit([&] { pos = pos.advance(clen); });
-    return pos.tag() == "LIST"
-    ? IFFChunk(pos.list_tag(), parseChunks(pos.advance(12, len - 4)))
-    : IFFChunk(pos.tag(), pos.data(len), len);
+    Defer defer([&] { pos = pos.advance(clen); });
+    return pos.tag() == Tag::list
+    ? Chunk(pos.list_tag(), parseChunks(pos.advance(12, len - 4)))
+    : Chunk(pos.tag(), pos.data(len), len);
 }
 
-IFFChunkList
-IFFParser::parseChunks(Pos pos)
+ChunkList
+Parser::parseChunks(Pos pos)
 {
-    IFFChunkList result;
+    ChunkList result;
     while (pos.remaining() > 0) result.push_back(parseChunk(pos));
     return result;
 }
 
-IFFParser
-IFFParser::parse(const void* data, size_t size)
+Chunk
+Parser::parse(const void* data, size_t size)
 {
     auto pos = Pos(static_cast<const char*>(data), size);
-    if (pos.tag() != "RIFF") throw IFF_FMT_ERROR;
+    if (pos.tag() != Tag::riff) throw FormatError;
 
     auto len = pos.size() - 4;
-    if (len != size - 12) throw IFF_FMT_ERROR;
+    if (len != size - 12) throw FormatError;
 
-    return IFFParser(pos.list_tag(), data, parseChunks(pos.advance(12, len)));
+    return Chunk(pos.list_tag(), parseChunks(pos.advance(12, len)));
 }

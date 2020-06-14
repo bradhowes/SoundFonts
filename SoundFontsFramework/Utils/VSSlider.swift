@@ -1,11 +1,12 @@
 //
-//  VSSlider.swift
-//  VerticalSteppedSlider
+// VSSlider.swift
+// VerticalSteppedSlider
 //
-//  Created by Melissa Ludowise on 8/24/17.
-//  Copyright © 2017 Mel Ludowise. All rights reserved.
+// Created by Melissa Ludowise on 8/24/17.
+// Copyright © 2017 Mel Ludowise. All rights reserved.
+// (https://github.com/mludowise/VerticalSteppedSlider)
 //
-//  Modifications: Copyright © 2020 Brad Howes. All rights reserved.
+// Modifications: Copyright © 2020 Brad Howes. All rights reserved.
 
 import UIKit
 

@@ -26,7 +26,7 @@ public extension AudioUnit {
 
     func setPropertyValue<T>(_ pid: AudioUnitPropertyID, value: T) throws {
         let (size, _) = try getPropertyInfo(pid)
-        return try setPropertyValue(pid, size: size, value: value)
+        try setPropertyValue(pid, size: size, value: value)
     }
 
     func setPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32, value: T) throws {

@@ -10,10 +10,16 @@
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD74D17623CDB1D200204ED4 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
 		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BD74D18523CDB36200204ED4 /* iffdigest.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18123CDB36200204ED4 /* iffdigest.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		BD74D18523CDB36200204ED4 /* SF2.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18123CDB36200204ED4 /* SF2.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		BD74D18623CDB36200204ED4 /* SoundFontList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18223CDB36200204ED4 /* SoundFontList.hpp */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD74D18723CDB36200204ED4 /* SoundFontList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18323CDB36200204ED4 /* SoundFontList.cpp */; };
-		BD74D18823CDB36200204ED4 /* iffdigest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18423CDB36200204ED4 /* iffdigest.cc */; };
+		BD74D18823CDB36200204ED4 /* SF2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18423CDB36200204ED4 /* SF2.cpp */; };
+		BDB1B4622491805800F3F361 /* Tag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4602491805800F3F361 /* Tag.cpp */; };
+		BDB1B4632491805800F3F361 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; };
+		BDB1B4662491823400F3F361 /* ChunkList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4642491823400F3F361 /* ChunkList.cpp */; };
+		BDB1B4672491823400F3F361 /* ChunkList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4652491823400F3F361 /* ChunkList.hpp */; };
+		BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4682491829000F3F361 /* Chunk.cpp */; };
+		BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,10 +39,16 @@
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontInfoLibTests.swift; sourceTree = "<group>"; };
 		BD74D17723CDB1D200204ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD74D18123CDB36200204ED4 /* iffdigest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iffdigest.h; sourceTree = "<group>"; };
+		BD74D18123CDB36200204ED4 /* SF2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SF2.h; sourceTree = "<group>"; };
 		BD74D18223CDB36200204ED4 /* SoundFontList.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SoundFontList.hpp; sourceTree = "<group>"; };
 		BD74D18323CDB36200204ED4 /* SoundFontList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundFontList.cpp; sourceTree = "<group>"; };
-		BD74D18423CDB36200204ED4 /* iffdigest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iffdigest.cc; sourceTree = "<group>"; };
+		BD74D18423CDB36200204ED4 /* SF2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SF2.cpp; sourceTree = "<group>"; };
+		BDB1B4602491805800F3F361 /* Tag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tag.cpp; sourceTree = "<group>"; };
+		BDB1B4612491805800F3F361 /* Tag.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tag.hpp; sourceTree = "<group>"; };
+		BDB1B4642491823400F3F361 /* ChunkList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkList.cpp; sourceTree = "<group>"; };
+		BDB1B4652491823400F3F361 /* ChunkList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkList.hpp; sourceTree = "<group>"; };
+		BDB1B4682491829000F3F361 /* Chunk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Chunk.cpp; sourceTree = "<group>"; };
+		BDB1B4692491829000F3F361 /* Chunk.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Chunk.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,8 +92,14 @@
 			isa = PBXGroup;
 			children = (
 				BD74D16B23CDB1D200204ED4 /* Info.plist */,
-				BD74D18423CDB36200204ED4 /* iffdigest.cc */,
-				BD74D18123CDB36200204ED4 /* iffdigest.h */,
+				BD74D18423CDB36200204ED4 /* SF2.cpp */,
+				BD74D18123CDB36200204ED4 /* SF2.h */,
+				BDB1B4682491829000F3F361 /* Chunk.cpp */,
+				BDB1B4692491829000F3F361 /* Chunk.hpp */,
+				BDB1B4642491823400F3F361 /* ChunkList.cpp */,
+				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
+				BDB1B4602491805800F3F361 /* Tag.cpp */,
+				BDB1B4612491805800F3F361 /* Tag.hpp */,
 				BD74D18323CDB36200204ED4 /* SoundFontList.cpp */,
 				BD74D18223CDB36200204ED4 /* SoundFontList.hpp */,
 				BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */,
@@ -105,9 +123,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD74D18523CDB36200204ED4 /* iffdigest.h in Headers */,
+				BDB1B4672491823400F3F361 /* ChunkList.hpp in Headers */,
+				BD74D18523CDB36200204ED4 /* SF2.h in Headers */,
+				BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */,
 				BD74D18623CDB36200204ED4 /* SoundFontList.hpp in Headers */,
 				BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */,
+				BDB1B4632491805800F3F361 /* Tag.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +231,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD74D18723CDB36200204ED4 /* SoundFontList.cpp in Sources */,
-				BD74D18823CDB36200204ED4 /* iffdigest.cc in Sources */,
+				BDB1B4622491805800F3F361 /* Tag.cpp in Sources */,
+				BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */,
+				BD74D18823CDB36200204ED4 /* SF2.cpp in Sources */,
+				BDB1B4662491823400F3F361 /* ChunkList.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
