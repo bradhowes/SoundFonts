@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Brad Howes. All rights reserved.
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #include <algorithm>
 #include <iostream>

@@ -1,10 +1,4 @@
-//
-//  Tag.hpp
-//  SoundFontInfoLib
-//
-//  Created by Brad Howes on 6/10/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #ifndef Tag_hpp
 #define Tag_hpp
@@ -26,6 +20,7 @@ public:
     bool operator ==(const Tag& rhs) const { return tag_ == rhs.tag_; }
     bool operator !=(const Tag& rhs) const { return tag_ != rhs.tag_; }
 
+    uint32_t toInt() const { return tag_; }
     std::string toString() const { return std::string(reinterpret_cast<const char*>(&tag_), 4); }
 
     static const Tag riff;
