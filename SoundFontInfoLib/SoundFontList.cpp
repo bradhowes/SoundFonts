@@ -1,38 +1,23 @@
-// Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #include <algorithm>
 #include <iostream>
 #include <vector>
 #include <string>
 
-#include "SoundFontList.hpp"
 #include "Parser.hpp"
+#include "Preset.hpp"
+#include "SoundFontList.hpp"
 
-/**
- Roughly accurate C representation of a 'phdr' entry in a sound font resource. Used to access packed values from a
- resource.
- */
-struct sfPresetHeader {
-    char achPresetName[20];
-    uint16_t wPreset;
-    uint16_t wBank;
-    uint16_t wPresetBagNdx;
-
-    // Due to alignment padding, the following cannot be represented as 32-bit values. Must combine parts instead.
-    uint16_t dwLibrary_1;
-    uint16_t dwLibrary_2;
-    uint16_t dwGenre_1;
-    uint16_t dwGenre_2;
-    uint16_t dwMorphology_1;
-    uint16_t dwMorphology_2;
-};
+using namespace SF2;
 
 struct PatchInfo {
     std::string name;
     int bank;
     int patch;
 
-    PatchInfo(const sfPresetHeader* preset) : name(preset->achPresetName), bank(preset->wBank), patch(preset->wPreset) {}
+    PatchInfo(const sfPreset& preset)
+    : name(preset.achPresetName), bank(preset.wBank), patch(preset.wPreset) {}
 };
 
 struct InternalSoundFontInfo {
@@ -42,30 +27,24 @@ struct InternalSoundFontInfo {
 
     void initialize()
     {
-        auto info = top_.find(SF2::Tag::info);
+        auto info = top_.find(Tag::info);
         if (info != top_.end()) {
-            auto name = info->find(SF2::Tag::inam);
+            auto name = info->find(Tag::inam);
             if (name != info->end()) {
                 name_ = std::string(name->dataPtr(), name->size());
             }
         }
 
         // Locate the chunk holding the "patch data"
-        auto patchData = top_.find(SF2::Tag::pdta);
+        auto patchData = top_.find(Tag::pdta);
         if (patchData != top_.end()) {
 
             // Locate all "patch header" chunks.
-            auto patchHeader = patchData->find(SF2::Tag::phdr);
+            auto patchHeader = patchData->find(Tag::phdr);
             while (patchHeader != patchData->end()) {
-
-                // Treat as a (packed) array of sfPresetHeader values
-                auto pos = patchHeader->dataPtr();
-                auto end = patchHeader->dataPtr() + (*patchHeader).size();
-                while (pos < end) {
-                    const sfPresetHeader* preset = reinterpret_cast<const sfPresetHeader*>(pos);
-                    patches_.push_back(preset);
-                    pos += sizeof(sfPresetHeader);
-                }
+                auto presetHeader = Preset(*patchHeader);
+                std::for_each(presetHeader.begin(), presetHeader.end(),
+                              [this](const sfPreset& entry) { patches_.emplace_back(entry); });
 
                 // Sort patches in increasing order by bank, patch
                 std::sort(patches_.begin(), patches_.end(), [](const PatchInfo& a, const PatchInfo& b) {
@@ -86,7 +65,6 @@ struct InternalSoundFontInfo {
 const InternalSoundFontInfo*
 InternalSoundFontParse(const void* data, size_t size)
 {
-    static_assert(sizeof(sfPresetHeader) == 38, "sfPresetHeader size is not 38");
     try {
         auto soundFontInfo = new InternalSoundFontInfo(data, size);
         soundFontInfo->initialize();

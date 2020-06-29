@@ -1,15 +1,7 @@
-//
-//  Chunk.hpp
-//  SoundFontInfoLib
-//
-//  Created by Brad Howes on 6/10/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #ifndef Chunk_hpp
 #define Chunk_hpp
-
-#include <iostream>
 
 #include "ChunkList.hpp"
 #include "Tag.hpp"
@@ -90,17 +82,7 @@ public:
         return chunks_.findNext(it, tag);
     }
 
-    void dump(const std::string& indent) const {
-        std::cout << indent << tag_.toString();
-        if (data_ != nullptr) {
-            std::cout << " size: " << size_ << std::endl;
-        }
-        else {
-            auto ourIndent = indent + " ";
-            std::cout << std::endl;
-            std::for_each(begin(), end(), [ourIndent](const Chunk& chunk) { chunk.dump(ourIndent); });
-        }
-    }
+    void dump(const std::string& indent) const;
 
     Chunk(Chunk&& rhs) = default;
     Chunk& operator=(Chunk&& value) = default;

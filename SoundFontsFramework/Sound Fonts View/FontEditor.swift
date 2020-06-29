@@ -111,4 +111,3 @@ extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresent
         donePressed(doneButton)
     }
 }
-
