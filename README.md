@@ -3,7 +3,7 @@
 **New! Version 2.0 now includes AUv3 app extension that allows SoundFonts to run inside of GarageBand and other
 AudioUnit hosts.**
 
-![](https://github.com/bradhowes/SoundFonts/blob/master/image.gif?raw=true)
+![](image.gif)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
@@ -55,7 +55,7 @@ others. You can also change the starting key of the keyboard in the favorite as
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
 double-tap on the it and you should see an edit view:
 
-![](https://github.com/bradhowes/SoundFonts/blob/master/FavoriteDetail.png?raw=true)
+![](FavoriteDetail.png)
 
 Nothing fancy. Note that the _gain_ is not exactly like a volume. By default, it will be at 0.0 which means that
 there is no gain applied to the synthesizer output. Positive values (max +12) will boost the signal, while
