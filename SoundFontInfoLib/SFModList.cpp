@@ -5,12 +5,12 @@
 
 using namespace SF2;
 
-const char*
-sfModList::load(const char* pos, size_t available)
+char const*
+sfModList::load(char const* pos, size_t available)
 {
-    if (available < sizeof(*this)) throw FormatError;
-    memcpy(this, pos, sizeof(*this));
-    pos += sizeof(*this);
+    if (sizeof(sfModList) != size || available < size) throw FormatError;
+    memcpy(this, pos, size);
+    pos += size;
     return pos;
 }
 
@@ -21,7 +21,7 @@ sfModList::dump(const std::string& indent, int index) const
     << ": src: " << sfModSrcOper
     << " dest: " << sfModDestOper.name()
     << " amount: " << modAmount
-    << " amountOp: " << sfModAmtSrcOper
+    << " op: " << sfModAmtSrcOper
     << " xform: " << sfModTransOper.bits_
     << std::endl;
 }

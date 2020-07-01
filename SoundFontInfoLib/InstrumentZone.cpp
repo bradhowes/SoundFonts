@@ -4,8 +4,8 @@
 
 using namespace SF2;
 
-const char*
-sfInstBag::load(const char* pos, size_t available)
+char const*
+sfInstBag::load(char const* pos, size_t available)
 {
     if (available < sizeof(*this)) throw FormatError;
     memcpy(this, pos, sizeof(*this));

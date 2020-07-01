@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -16,12 +17,12 @@ struct PatchInfo {
     int bank;
     int patch;
 
-    PatchInfo(const sfPreset& preset)
+    explicit PatchInfo(sfPreset const& preset)
     : name(preset.achPresetName), bank(preset.wBank), patch(preset.wPreset) {}
 };
 
 struct InternalSoundFontInfo {
-    InternalSoundFontInfo(const void* data, size_t size)
+    InternalSoundFontInfo(void const* data, size_t size)
     : data_{data}, size_{size}, top_{SF2::Parser::parse(data, size)}
     {}
 
@@ -39,31 +40,33 @@ struct InternalSoundFontInfo {
         auto patchData = top_.find(Tag::pdta);
         if (patchData != top_.end()) {
 
-            // Locate all "patch header" chunks.
+            // Locate all "patch header" chunks. There actually should only be one.
             auto patchHeader = patchData->find(Tag::phdr);
-            while (patchHeader != patchData->end()) {
+            if (patchHeader != patchData->end()) {
                 auto presetHeader = Preset(*patchHeader);
-                std::for_each(presetHeader.begin(), presetHeader.end(),
-                              [this](const sfPreset& entry) { patches_.emplace_back(entry); });
+                patches_.reserve(presetHeader.size());
+
+                // Do not load the last entry (which should always be "EOP")
+                std::for_each(presetHeader.begin(), presetHeader.end() - 1,
+                              [this](sfPreset const& entry) { patches_.emplace_back(PatchInfo(entry)); });
 
                 // Sort patches in increasing order by bank, patch
-                std::sort(patches_.begin(), patches_.end(), [](const PatchInfo& a, const PatchInfo& b) {
+                std::sort(patches_.begin(), patches_.end(), [](PatchInfo const& a, PatchInfo const& b) {
                     return a.bank < b.bank || (a.bank == b.bank && a.patch < b.patch);
                 });
-                break;
             }
         }
     }
 
-    const void* data_;
+    void const* data_;
     size_t size_;
     SF2::Chunk top_;
     std::string name_;
     std::vector<PatchInfo> patches_;
 };
 
-const InternalSoundFontInfo*
-InternalSoundFontParse(const void* data, size_t size)
+InternalSoundFontInfo const*
+InternalSoundFontParse(void const* data, size_t size)
 {
     try {
         auto soundFontInfo = new InternalSoundFontInfo(data, size);
@@ -77,38 +80,57 @@ InternalSoundFontParse(const void* data, size_t size)
     return nullptr;
 }
 
-SoundFontInfo SoundFontParse(const void* data, size_t size)
+SoundFontInfo SoundFontParse(void const* data, size_t size)
 {
     return static_cast<SoundFontInfo>(InternalSoundFontParse(data, size));
 }
 
-const char* SoundFontName(SoundFontInfo object)
+char const* SoundFontName(SoundFontInfo object)
 {
-    return static_cast<const InternalSoundFontInfo*>(object)->name_.c_str();
+    return static_cast<InternalSoundFontInfo const*>(object)->name_.c_str();
 }
 
 size_t SoundFontPatchCount(SoundFontInfo object)
 {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches_.size();
+    return static_cast<InternalSoundFontInfo const*>(object)->patches_.size();
 }
 
-const char* SoundFontPatchName(SoundFontInfo object, size_t index)
+char const* SoundFontPatchName(SoundFontInfo object, size_t index)
 {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].name.c_str();
+    return static_cast<InternalSoundFontInfo const*>(object)->patches_[index].name.c_str();
 }
 
 int SoundFontPatchBank(SoundFontInfo object, size_t index)
 {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].bank;
+    return static_cast<InternalSoundFontInfo const*>(object)->patches_[index].bank;
 }
 
 int SoundFontPatchPatch(SoundFontInfo object, size_t index)
 {
-    return static_cast<const InternalSoundFontInfo*>(object)->patches_[index].patch;
+    return static_cast<InternalSoundFontInfo const*>(object)->patches_[index].patch;
 }
 
-void SoundFontDump(SoundFontInfo object)
+struct Redirector {
+    std::ofstream* file = nullptr;
+    std::streambuf* original = nullptr;
+
+    explicit Redirector(char const* fileName)
+    {
+        if (fileName != nullptr) {
+            file = new std::ofstream(fileName);
+            original = std::cout.rdbuf(file->rdbuf());
+        }
+    }
+
+    ~Redirector() {
+        if (original != nullptr) std::cout.rdbuf(original);
+        if (file != nullptr) file->close();
+    }
+};
+
+void SoundFontDump(SoundFontInfo object, char const* fileName)
 {
-    auto sfi = static_cast<const InternalSoundFontInfo*>(object);
+    auto sfi = static_cast<InternalSoundFontInfo const*>(object);
+    Redirector redirector(fileName);
     sfi->top_.dump("");
 }

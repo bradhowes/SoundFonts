@@ -77,7 +77,7 @@ struct SFGenerator {
 
     uint16_t value() const { return bits_; }
 
-    const char* name() const { return names[bits_]; }
+    char const* name() const { return names[bits_]; }
 
 private:
 

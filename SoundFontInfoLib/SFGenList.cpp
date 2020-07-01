@@ -7,12 +7,12 @@
 
 using namespace SF2;
 
-const char*
-sfGenList::load(const char* pos, size_t available)
+char const*
+sfGenList::load(char const* pos, size_t available)
 {
-    if (available < sizeof(sfGenList)) throw FormatError;
-    memcpy(&sfGenOper, pos, sizeof(sfGenList));
-    pos += sizeof(sfGenList);
+    if (sizeof(sfGenList) != size || available < size) throw FormatError;
+    memcpy(this, pos, size);
+    pos += size;
     return pos;
 }
 
@@ -20,8 +20,8 @@ void
 sfGenList::dump(const std::string& indent, int index) const
 {
     std::cout << indent << index << ": " << sfGenOper.name()
-    << " wAmount: " << genAmount.wAmount()
-    << " shAmount: " << genAmount.shAmount()
+    << " unsigned: " << genAmount.wAmount()
+    << " signed: " << genAmount.shAmount()
     << " low: " << genAmount.low()
     << " hi: " << genAmount.high()
     << std::endl;

@@ -40,7 +40,7 @@ public:
      @param tag identifier for the chunk to look for
      @returns iterator to first chunk or end() if none found.
      */
-    const_iterator find(const Tag& tag) const;
+    const_iterator find(Tag const& tag) const;
 
     /**
      Search for the *next* chunk with a given IFFChunkId
@@ -48,11 +48,11 @@ public:
      @param tag identifier for the chunk to look for
      @returns iterator to the next chunk or end() if none found.
      */
-    const_iterator findNext(const_iterator it, const Tag& tag) const;
+    const_iterator findNext(const_iterator it, Tag const& tag) const;
 
 private:
-    ChunkList(const ChunkList& rhs) = delete;
-    ChunkList& operator=(const ChunkList& rhs) = delete;
+    ChunkList(ChunkList const& rhs) = delete;
+    ChunkList& operator=(ChunkList const& rhs) = delete;
     void* operator new(size_t) = delete;
     void* operator new[](size_t) = delete;
 

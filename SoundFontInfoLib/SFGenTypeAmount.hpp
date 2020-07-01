@@ -15,7 +15,7 @@ struct SFGenTypeAmount {
     int16_t shAmount() const { return raw_.shAmount; }
     uint16_t low() const { return raw_.ranges[0]; }
     uint16_t high() const { return raw_.ranges[1]; }
-    const uint8_t* const ranges() const { return raw_.ranges; }
+    uint8_t const* const ranges() const { return raw_.ranges; }
 
     union {
         uint16_t wAmount;

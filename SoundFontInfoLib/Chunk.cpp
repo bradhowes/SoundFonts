@@ -15,19 +15,19 @@
 
 using namespace SF2;
 
-static void dumpVersion(const char* data, size_t size)
+static void dumpVersion(char const* data, size_t size)
 {
-    auto ptr = reinterpret_cast<const int16_t*>(data);
+    auto ptr = reinterpret_cast<int16_t const*>(data);
     std::cout << "major: " << ptr[0] << " minor: " << ptr[1];
 }
 
-static void dumpString(const char* data, size_t size)
+static void dumpString(char const* data, size_t size)
 {
     std::cout << "'" << data << "'";
 }
 
 void
-Chunk::dump(const std::string& indent) const
+Chunk::dump(std::string const& indent) const
 {
     std::cout << indent << tag_.toString();
     if (data_ != nullptr) {
@@ -59,7 +59,7 @@ Chunk::dump(const std::string& indent) const
     else {
         auto ourIndent = indent + " ";
         std::cout << std::endl;
-        std::for_each(begin(), end(), [ourIndent](const Chunk& chunk) { chunk.dump(ourIndent); });
+        std::for_each(begin(), end(), [ourIndent](Chunk const& chunk) { chunk.dump(ourIndent); });
     }
 }
 

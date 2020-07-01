@@ -25,7 +25,7 @@ struct sfSample {
     uint16_t sampleLink;
     uint16_t sampleType;
 
-    const char* load(const char* pos, size_t available);
+    char const* load(char const* pos, size_t available);
     void dump(const std::string& indent, int index) const;
 };
 
@@ -33,7 +33,7 @@ struct Sample : ChunkItems<sfSample, 46>
 {
     using Super = ChunkItems<sfSample, 46>;
 
-    Sample(const Chunk& chunk) : Super(chunk) {}
+    Sample(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

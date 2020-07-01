@@ -23,14 +23,14 @@ struct sfPreset {
     uint32_t dwMorphology;
 
     void dump(const std::string& indent, int index) const;
-    const char* load(const char* pos, size_t available);
+    char const* load(char const* pos, size_t available);
 };
 
 struct Preset : ChunkItems<sfPreset, 38>
 {
     using Super = ChunkItems<sfPreset, 38>;
 
-    Preset(const Chunk& chunk) : Super(chunk) {}
+    Preset(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

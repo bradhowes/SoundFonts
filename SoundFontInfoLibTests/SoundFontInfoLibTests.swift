@@ -15,16 +15,21 @@ class SoundFontInfoLibTests: XCTestCase {
         let sfi = soundFont.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
 
         XCTAssertEqual(String(cString: SoundFontName(sfi)), "Free Font GM Ver. 3.2")
-        XCTAssertEqual(SoundFontPatchCount(sfi), 236)
+        XCTAssertEqual(SoundFontPatchCount(sfi), 235)
 
         XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Piano 1")
         XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
         XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 0)
 
         let lastPatchIndex = SoundFontPatchCount(sfi) - 1
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "EOP")
-        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 255)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 255)
+        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "SFX")
+        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 128)
+        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 56)
+    }
+
+    func testDump() {
+        let sfi = soundFont.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
+        SoundFontDump(sfi, "/tmp/SoundFontDump.txt");
     }
 
     /**

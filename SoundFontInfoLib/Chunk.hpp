@@ -22,8 +22,7 @@ public:
      @param ptr pointer to the data start
      @param size length of the data
      */
-    // Chunk(const Tag& tag, const char* ptr, uint32_t size) : tag_{tag}, data_{ptr}, size_{size}, chunks_() {}
-    Chunk(Tag tag, const char* ptr, uint32_t size)
+    Chunk(Tag tag, char const* ptr, uint32_t size)
     : tag_{std::move(tag)}, data_{ptr}, size_{size}, chunks_() {}
 
     /**
@@ -32,20 +31,19 @@ public:
      @param tag identifier for this chunk
      @param chunks list of chunks
      */
-    // Chunk(const Tag& tag, ChunkList&& chunks)
-    Chunk(Tag tag, ChunkList chunks)
+    Chunk(Tag tag, ChunkList&& chunks)
     : tag_{std::move(tag)}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
 
     /**
      @returns the chunk ID.
      */
-    const Tag& tag() const { return tag_; }
+    Tag const& tag() const { return tag_; }
 
     /**
      Obtain the pointer to the data blob.
      @returns data blob pointer
      */
-    const char* dataPtr() const { return data_; }
+    char const* dataPtr() const { return data_; }
 
     /**
      Obtain the size of the data blob.
@@ -70,7 +68,7 @@ public:
      @param tag identifier for the chunk to look for
      @returns iterator to first chunk or end() if none found.
      */
-    ChunkList::const_iterator find(const Tag& tag) const { return chunks_.find(tag); }
+    ChunkList::const_iterator find(Tag const& tag) const { return chunks_.find(tag); }
 
     /**
      Search for the *next* chunk with a given ChunkId
@@ -78,22 +76,22 @@ public:
      @param tag identifier for the chunk to look for
      @returns iterator to the next chunk or end() if none found.
      */
-    ChunkList::const_iterator findNext(ChunkList::const_iterator it, const Tag& tag) const {
+    ChunkList::const_iterator findNext(ChunkList::const_iterator it, Tag const& tag) const {
         return chunks_.findNext(it, tag);
     }
 
-    void dump(const std::string& indent) const;
+    void dump(std::string const& indent) const;
 
     Chunk(Chunk&& rhs) = default;
     Chunk& operator=(Chunk&& value) = default;
 
 private:
-    Chunk(const Chunk& rhs) = delete;
+    Chunk(Chunk const& rhs) = delete;
     void* operator new(size_t) = delete;
     void* operator new[](size_t) = delete;
 
     Tag tag_;
-    const char* data_;
+    char const* data_;
     uint32_t size_;
     ChunkList chunks_;
 };

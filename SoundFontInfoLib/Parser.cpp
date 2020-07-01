@@ -19,7 +19,7 @@ struct Parser::Pos {
      @param ptr pointer into SoundFont data to begin working with
      @param size number of bytes available to work with from ptr
      */
-    Pos(const char* ptr, size_t size) : pos(ptr), end(ptr + size) {}
+    Pos(char const* ptr, size_t size) : pos(ptr), end(ptr + size) {}
 
     /**
      Obtain the number of bytes remaining to work with
@@ -67,13 +67,13 @@ struct Parser::Pos {
 
      @returns data pointer
      */
-    const char* data(size_t len) const { validate(8 + len); return chars(pos) + 8; }
+    char const* data(size_t len) const { validate(8 + len); return chars(pos) + 8; }
 
 private:
 
-    Pos(const char* p, const void* e) : pos(p), end(e) {}
-    Pos(const Pos& base, size_t offset) : pos(chars(base.pos) + offset), end(base.end) {}
-    Pos(const Pos& base, size_t offset, size_t len) : pos(chars(base.pos) + offset), end(chars(pos) + len) {}
+    Pos(char const* p, void const* e) : pos(p), end(e) {}
+    Pos(Pos const& base, size_t offset) : pos(chars(base.pos) + offset), end(base.end) {}
+    Pos(Pos const& base, size_t offset, size_t len) : pos(chars(base.pos) + offset), end(chars(pos) + len) {}
 
     /**
      Make sure that there is enough bytes to satisfy some data request. Throws IFF_FMT_ERROR if there is not enough.
@@ -81,11 +81,11 @@ private:
      */
     void validate(size_t need) const { if (remaining() < need) throw FormatError; }
 
-    static const char* chars(const void* p) { return static_cast<const char*>(p); }
-    static const uint32_t* ints(const void* p) { return reinterpret_cast<const uint32_t*>(p); }
+    static char const* chars(void const* p) { return static_cast<char const*>(p); }
+    static uint32_t const* ints(void const* p) { return reinterpret_cast<uint32_t const*>(p); }
 
-    const void* pos;
-    const void* end;
+    void const* pos;
+    void const* end;
 };
 
 /**
@@ -118,9 +118,9 @@ Parser::parseChunks(Pos pos)
 }
 
 Chunk
-Parser::parse(const void* data, size_t size)
+Parser::parse(void const* data, size_t size)
 {
-    auto pos = Pos(static_cast<const char*>(data), size);
+    auto pos = Pos(static_cast<char const*>(data), size);
     if (pos.tag() != Tag::riff) throw FormatError;
 
     // Check that the total size given of the given data matches what is recorded in the header of the top-level

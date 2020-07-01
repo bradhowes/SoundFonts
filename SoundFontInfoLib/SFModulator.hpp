@@ -20,9 +20,9 @@ struct SFModulator {
     bool continuousController() const { return bits_ & (1 << 7); }
     short index() const { return bits_ & 0x7F; }
 
-    const char* typeName() const { return typeNames[type()]; }
+    char const* typeName() const { return typeNames[type()]; }
 
-    friend std::ostream& operator<<(std::ostream& os, const SFModulator& mod)
+    friend std::ostream& operator<<(std::ostream& os, SFModulator const& mod)
     {
         return os << "[type: " << mod.typeName()
         << " P: " << mod.polarity()

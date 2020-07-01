@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 /// Opaque wrapper around C++ data structure for use in C realm
-typedef const void* SoundFontInfo;
+typedef void const* SoundFontInfo;
 
 /**
  Parse a sound font resource to obtain info on the patches found in the file. The parsing should be robust enough to
@@ -20,9 +20,9 @@ typedef const void* SoundFontInfo;
  @param data pointer to the raw data of the sound font resource
  @param size the number of bytes in the resource
  */
-SoundFontInfo SoundFontParse(const void* data, size_t size);
+SoundFontInfo SoundFontParse(void const* data, size_t size);
 
-const char* SoundFontName(SoundFontInfo object);
+char const* SoundFontName(SoundFontInfo object);
 
 /**
  Obtain the number of patches found in a previously-parsed sound font.
@@ -39,7 +39,7 @@ size_t SoundFontPatchCount(SoundFontInfo object);
  @param index the index of the patch to query (undefined if index >= PatchInfoListSize())
  @returns name of the patch
 */
-const char* SoundFontPatchName(SoundFontInfo object, size_t index);
+char const* SoundFontPatchName(SoundFontInfo object, size_t index);
 
 /**
  Obtain the bank number of the indicated patch.
@@ -59,7 +59,7 @@ int SoundFontPatchBank(SoundFontInfo object, size_t index);
 */
 int SoundFontPatchPatch(SoundFontInfo object, size_t index);
 
-void SoundFontDump(SoundFontInfo object);
+void SoundFontDump(SoundFontInfo object, char const* fileName);
 
 #ifdef __cplusplus
 }

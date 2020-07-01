@@ -23,7 +23,7 @@ struct sfPresetBag {
     uint16_t wGenNdx;
     uint16_t wModNdx;
 
-    const char* load(const char* pos, size_t available);
+    char const* load(char const* pos, size_t available);
     void dump(const std::string& indent, int index) const;
 };
 
@@ -31,7 +31,7 @@ struct PresetZone : ChunkItems<sfPresetBag, 4>
 {
     using Super = ChunkItems<sfPresetBag, 4>;
 
-    PresetZone(const Chunk& chunk) : Super(chunk) {}
+    PresetZone(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

@@ -30,11 +30,11 @@ public:
      @param size number of bytes in the resource
      @return Chunk instance representing all of the items in the given data
      */
-    static Chunk parse(const void* data, size_t size);
+    static Chunk parse(void const* data, size_t size);
 
 private:
-    Parser(const Parser& rhs) = delete;
-    Parser& operator=(const Parser& rhs) = delete;
+    Parser(Parser const& rhs) = delete;
+    Parser& operator=(Parser const& rhs) = delete;
     void* operator new(size_t) = delete;
     void* operator new[](size_t) = delete;
 
