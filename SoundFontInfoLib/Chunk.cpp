@@ -62,4 +62,3 @@ Chunk::dump(std::string const& indent) const
         std::for_each(begin(), end(), [ourIndent](Chunk const& chunk) { chunk.dump(ourIndent); });
     }
 }
-

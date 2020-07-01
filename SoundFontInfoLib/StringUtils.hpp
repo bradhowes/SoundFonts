@@ -23,6 +23,7 @@ static inline void rtrim(std::string &s) {
 static inline void trim(std::string &s) {
     ltrim(s);
     rtrim(s);
+    s.erase(std::find_if(s.begin(), s.end(), [](int ch) { return ch == 0; }), s.end());
 }
 
 // trim from start (copying)

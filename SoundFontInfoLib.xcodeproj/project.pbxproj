@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD63B14924AC8BD70015236D /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */; };
+		BD63B14A24AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */; };
+		BD63B14B24AC8BD70015236D /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */; };
+		BD63B14D24ACCDC70015236D /* SFGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD63B14C24ACCDC70015236D /* SFGenerator.cpp */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD74D17623CDB1D200204ED4 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
 		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -91,6 +95,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = RolandNicePiano.sf2; path = SoundFontsFramework/Resources/SoundFonts/RolandNicePiano.sf2; sourceTree = SOURCE_ROOT; };
+		BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GeneralUser GS MuseScore v1.442.sf2"; path = "SoundFontsFramework/Resources/SoundFonts/GeneralUser GS MuseScore v1.442.sf2"; sourceTree = SOURCE_ROOT; };
+		BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FluidR3_GM.sf2; path = SoundFontsFramework/Resources/SoundFonts/FluidR3_GM.sf2; sourceTree = SOURCE_ROOT; };
+		BD63B14C24ACCDC70015236D /* SFGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenerator.cpp; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontInfoLib.h; sourceTree = "<group>"; };
 		BD74D16B23CDB1D200204ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -208,6 +216,7 @@
 				BDEC000E24975BD200A52507 /* PresetZoneMod.hpp */,
 				BDEC0039249795AB00A52507 /* Sample.cpp */,
 				BDEC003A249795AB00A52507 /* Sample.hpp */,
+				BD63B14C24ACCDC70015236D /* SFGenerator.cpp */,
 				BDEC001A2497669300A52507 /* SFGenerator.hpp */,
 				BDEC00452497E7BF00A52507 /* SFGenList.cpp */,
 				BDEC00462497E7BF00A52507 /* SFGenList.hpp */,
@@ -230,7 +239,10 @@
 		BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */ = {
 			isa = PBXGroup;
 			children = (
+				BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */,
 				BDECFFFF2496D6DD00A52507 /* FreeFont.sf2 */,
+				BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */,
+				BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */,
 				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD74D17723CDB1D200204ED4 /* Info.plist */,
 			);
@@ -396,7 +408,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD63B14A24AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
+				BD63B14924AC8BD70015236D /* RolandNicePiano.sf2 in Resources */,
 				BDEC00002496D6DD00A52507 /* FreeFont.sf2 in Resources */,
+				BD63B14B24AC8BD70015236D /* FluidR3_GM.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDEC003B249795AB00A52507 /* Sample.cpp in Sources */,
+				BD63B14D24ACCDC70015236D /* SFGenerator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontList.cpp in Sources */,
 				BDEC000324974AF100A52507 /* Preset.cpp in Sources */,
 				BDB1B4622491805800F3F361 /* Tag.cpp in Sources */,
@@ -663,6 +679,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Debug;
 		};
@@ -681,6 +698,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Release;
 		};
