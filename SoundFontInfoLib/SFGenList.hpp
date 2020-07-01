@@ -10,11 +10,16 @@
 
 namespace SF2 {
 
+/**
+ Memory layout of a 'pgen'/'igen' entry. The size of this is defined to be 4.
+ */
 struct sfGenList {
+    static constexpr size_t size = 4;
+
     SFGenerator sfGenOper;
     SFGenTypeAmount genAmount;
 
-    const char* load(const char* pos, size_t available);
+    char const* load(char const* pos, size_t available);
     void dump(const std::string& indent, int index) const;
 };
 

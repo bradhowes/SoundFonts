@@ -14,14 +14,14 @@ namespace SF2 {
 class Tag {
 public:
     Tag(uint32_t tag) : tag_(tag) {}
-    Tag(const char* s) : Tag(*(reinterpret_cast<const uint32_t*>(s))) {}
-    Tag(const void* s) : Tag(static_cast<const char*>(s)) {}
+    Tag(char const* s) : Tag(*(reinterpret_cast<uint32_t const*>(s))) {}
+    Tag(void const* s) : Tag(static_cast<char const*>(s)) {}
 
-    bool operator ==(const Tag& rhs) const { return tag_ == rhs.tag_; }
-    bool operator !=(const Tag& rhs) const { return tag_ != rhs.tag_; }
+    bool operator ==(Tag const& rhs) const { return tag_ == rhs.tag_; }
+    bool operator !=(Tag const& rhs) const { return tag_ != rhs.tag_; }
 
     uint32_t toInt() const { return tag_; }
-    std::string toString() const { return std::string(reinterpret_cast<const char*>(&tag_), 4); }
+    std::string toString() const { return std::string(reinterpret_cast<char const*>(&tag_), 4); }
 
     static const Tag riff;
     static const Tag list;

@@ -12,7 +12,7 @@ struct PresetZoneGen : ChunkItems<sfGenList, 4>
 {
     using Super = ChunkItems<sfGenList, 4>;
 
-    PresetZoneGen(const Chunk& chunk) : Super(chunk) {}
+    PresetZoneGen(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

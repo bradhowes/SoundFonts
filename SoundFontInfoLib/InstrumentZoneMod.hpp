@@ -16,7 +16,7 @@ struct InstrumentZoneMod : ChunkItems<sfModList, 4>
 {
     using Super = ChunkItems<sfModList, 4>;
 
-    InstrumentZoneMod(const Chunk& chunk) : Super(chunk) {}
+    InstrumentZoneMod(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

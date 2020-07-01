@@ -12,7 +12,7 @@ struct InstrumentZoneGen : ChunkItems<sfGenList, 4>
 {
     using Super = ChunkItems<sfGenList, 4>;
 
-    InstrumentZoneGen(const Chunk& chunk) : Super(chunk) {}
+    InstrumentZoneGen(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

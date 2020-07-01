@@ -15,8 +15,8 @@ sfSample::dump(const std::string& indent, int index) const
     << std::endl;
 }
 
-const char*
-sfSample::load(const char* pos, size_t available)
+char const*
+sfSample::load(char const* pos, size_t available)
 {
     if (available < 46) throw FormatError;
     memcpy(&achSampleName, pos, 40);

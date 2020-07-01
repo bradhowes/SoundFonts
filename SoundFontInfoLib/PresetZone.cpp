@@ -4,8 +4,8 @@
 
 using namespace SF2;
 
-const char*
-sfPresetBag::load(const char* pos, size_t available)
+char const*
+sfPresetBag::load(char const* pos, size_t available)
 {
     if (available < 4) throw FormatError;
     memcpy(this, pos, 4);

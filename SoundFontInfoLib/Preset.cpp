@@ -13,8 +13,8 @@ sfPreset::dump(const std::string &indent, int index) const
     << " zone: " << wPresetBagNdx << std::endl;
 }
 
-const char*
-sfPreset::load(const char* pos, size_t available)
+char const*
+sfPreset::load(char const* pos, size_t available)
 {
     if (available < 38) throw FormatError;
     memcpy(&achPresetName, pos, 26);

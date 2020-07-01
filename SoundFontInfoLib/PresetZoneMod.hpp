@@ -14,7 +14,7 @@ struct PresetZoneMod : ChunkItems<sfModList, 10>
 {
     using Super = ChunkItems<sfModList, 10>;
 
-    PresetZoneMod(const Chunk& chunk) : Super(chunk) {}
+    PresetZoneMod(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

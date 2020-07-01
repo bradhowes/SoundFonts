@@ -5,12 +5,12 @@
 
 using namespace SF2;
 
-ChunkList::const_iterator ChunkList::find(const Tag& tag) const
+ChunkList::const_iterator ChunkList::find(Tag const& tag) const
 {
-    return find_if(begin(), end(), [&] (const Chunk& value) { return value.tag() == tag; });
+    return find_if(begin(), end(), [&] (Chunk const& value) { return value.tag() == tag; });
 }
 
-ChunkList::const_iterator ChunkList::findNext(ChunkList::const_iterator it, const Tag& tag) const
+ChunkList::const_iterator ChunkList::findNext(ChunkList::const_iterator it, Tag const& tag) const
 {
-    return find_if(++it, end(), [&] (const Chunk& value) { return value.tag() == tag; });
+    return find_if(++it, end(), [&] (Chunk const& value) { return value.tag() == tag; });
 }

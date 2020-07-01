@@ -14,10 +14,9 @@ template <typename T, size_t S>
 struct ChunkItems
 {
     using ItemType = T;
-
     static constexpr size_t itemSize = S;
 
-    ChunkItems(const Chunk& source) : source_{source}, items_{}
+    ChunkItems(Chunk const& source) : source_{source}, items_{}
     {
         items_.reserve(source.size() / itemSize);
         load();
@@ -25,7 +24,7 @@ struct ChunkItems
 
     size_t size() const { return items_.size(); }
 
-    const ItemType& operator[](size_t index) const { return items_[index]; }
+    ItemType const& operator[](size_t index) const { return items_[index]; }
 
     typename std::vector<ItemType>::const_iterator begin() const { return items_.begin(); }
 
@@ -33,27 +32,27 @@ struct ChunkItems
 
     void load()
     {
-        const char* p = source_.dataPtr();
-        const char* end = p + source_.size() - itemSize;;
-        while (p < end) {
+        char const* pos = source_.dataPtr();
+        char const* limit = pos + source_.size();
+        while (pos < limit) {
             ItemType entry;
-            if (end - p < itemSize) throw FormatError;
-            p = entry.load(p, end - p);
+            pos = entry.load(pos, limit - pos);
             items_.emplace_back(entry);
         }
-
     }
 
-    void dump(const std::string& indent ) const {
-        std::cout << indent << "count: " << size() << std::endl;
+    void dump(std::string const& indent ) const {
         auto index = 0;
-        std::for_each(begin(), end(), [&](const ItemType& item) {
+
+        // All collections in SF2 end with a sentinal entry that is *not* a member of the collection.
+        std::cout << " count: " << (size() - 1) << std::endl;
+        std::for_each(begin(), end() - 1, [&](ItemType const& item) {
             item.dump(indent, index);
             index += 1;
         });
     }
 
-    const Chunk& source_;
+    Chunk const& source_;
     std::vector<ItemType> items_;
 };
 

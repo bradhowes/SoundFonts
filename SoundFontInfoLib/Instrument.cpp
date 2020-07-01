@@ -5,8 +5,8 @@
 
 using namespace SF2;
 
-const char*
-sfInst::load(const char* pos, size_t available)
+char const*
+sfInst::load(char const* pos, size_t available)
 {
     if (available < sizeof(*this)) throw FormatError;
     memcpy(this, pos, sizeof(*this));
@@ -15,7 +15,7 @@ sfInst::load(const char* pos, size_t available)
 }
 
 void
-sfInst::dump(const std::string& indent, int index) const
+sfInst::dump(std::string const& indent, int index) const
 {
     std::string name(achInstName, 19);
     trim(name);
