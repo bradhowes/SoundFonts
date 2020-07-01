@@ -20,8 +20,8 @@ struct sfSample {
     uint32_t dwStartLoop;
     uint32_t dwEndLoop;
     uint32_t dwSampleRate;
-    uint8_t originalIPitch;
-    int8_t pitchCorrection;
+    uint8_t originalKey;
+    int8_t correction;
     uint16_t sampleLink;
     uint16_t sampleType;
 

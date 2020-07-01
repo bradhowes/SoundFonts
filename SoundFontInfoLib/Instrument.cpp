@@ -17,8 +17,9 @@ sfInst::load(char const* pos, size_t available)
 void
 sfInst::dump(std::string const& indent, int index) const
 {
+    auto next = this + 1;
     std::string name(achInstName, 19);
     trim(name);
     std::cout << indent << index << ": '" << name
-    << "' index: " << wInstBagNdx << std::endl;
+    << "' ibagIndex: " << wInstBagNdx << " count: " << (next->wInstBagNdx - wInstBagNdx) << std::endl;
 }

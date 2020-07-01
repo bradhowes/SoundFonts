@@ -17,9 +17,9 @@ sfPresetBag::dump(const std::string& indent, int index) const
 {
     auto next = this + 1;
     std::cout << indent << index
-    << ": gen: " << wGenNdx
+    << ": genIndex: " << wGenNdx
     << " count: " << (next->wGenNdx - wGenNdx)
-    << " mod: " << wModNdx
+    << " modIndex: " << wModNdx
     << " count: " << (next->wModNdx - wModNdx)
     << std::endl;
 }

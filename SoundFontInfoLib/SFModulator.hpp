@@ -29,7 +29,7 @@ struct SFModulator {
         << " D: " << mod.direction()
         << " CC: " << mod.continuousController()
         << " index: " << mod.index()
-        << "]" << std::endl;
+        << "]";
     }
 
 private:

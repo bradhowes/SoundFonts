@@ -8,9 +8,11 @@ using namespace SF2;
 void
 sfPreset::dump(const std::string &indent, int index) const
 {
+    auto next = this + 1;
     std::cout << indent << index << ": '" << achPresetName << "' preset: " << wPreset
     << " bank: " << wBank
-    << " zone: " << wPresetBagNdx << std::endl;
+    << " pbagIndex: " << wPresetBagNdx
+    << " count: " << (next->wPresetBagNdx - wPresetBagNdx) << std::endl;
 }
 
 char const*
