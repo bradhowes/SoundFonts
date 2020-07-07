@@ -3,46 +3,40 @@
 #ifndef SFGenerator_hpp
 #define SFGenerator_hpp
 
-#include <algorithm>
-#include <cstdlib>
-#include <limits>
+#include <iosfwd>
 #include <vector>
-
-#include "SFGenTypeAmount.hpp"
 
 namespace SF2 {
 
+class SFGenTypeAmount;
+
 class GenDef {
 public:
-    static float fromUnsigned(SFGenTypeAmount amount) { return float(amount.wAmount()); }
-    static float fromSigned(SFGenTypeAmount amount) { return float(amount.shAmount()); }
-    static float fromLow(SFGenTypeAmount amount) { return float(amount.low()); }
-    static float fromHigh(SFGenTypeAmount amount) { return float(amount.high()); }
 
-    template <typename T>
-    GenDef(char const* name, T const& def)
-    : name_(name),
-    minValue_(def.min()),
-    maxValue_(def.max()),
-    initialValue_(def.initial()),
-    getter_{def.getter()}
-    {}
+    enum ValueKind {
+        kValueKindUnsigned = 1,
+        kValueKindSigned,
+        kValueKindRange,
+        kValueKindOffset,
+        kValueKindCoarseOffset,
+        kValueKindSignedCents,
+        kValueKindSignedCentsBel,
+        kValueKindUnsignedPercent,
+        kValueKindSignedPercent,
+        kValueKindSignedFreqCents,
+        kValueKindSignedTimeCents,
+        kValueKindSignedSemitones
+    };
 
-    GenDef(char const* name, float minValue, float maxValue, float initialValue, float (*getter)(SFGenTypeAmount))
-    : name_{name}, minValue_{minValue}, maxValue_{maxValue}, initialValue_{initialValue}, getter_{getter} {}
+    GenDef(char const* name, ValueKind kind)
+    : name_{name}, kind_{kind} {}
 
     char const* name() const { return name_; }
-    float minValue() const { return minValue_; }
-    float maxValue() const { return maxValue_; }
-    float initialValue() const { return initialValue_; }
-    float clamp(float value) const { return std::max(std::min(value, maxValue_), minValue_); }
+    void dump(SFGenTypeAmount const& amount) const;
 
 private:
     char const* name_;
-    float minValue_;
-    float maxValue_;
-    float initialValue_;
-    std::function<float (SFGenTypeAmount)> getter_;
+    ValueKind kind_;
 };
 
 struct SFGenerator {
@@ -55,6 +49,19 @@ struct SFGenerator {
 
     GenDef const& def() const { return defs[bits_]; }
     char const* name() const { return defs[bits_].name(); }
+
+    struct Dumper {
+        GenDef const& genDef_;
+        SFGenTypeAmount const& amount_;
+        explicit Dumper(GenDef const& genDef, SFGenTypeAmount const& amount) : genDef_{genDef}, amount_{amount} {}
+        friend std::ostream& operator <<(std::ostream& os, Dumper const& dumper)
+        {
+            dumper.genDef_.dump(dumper.amount_);
+            return os;
+        }
+    };
+
+    Dumper dump(SFGenTypeAmount const& amount) const { return Dumper(defs[bits_], amount); }
 
 private:
     const uint16_t bits_;
