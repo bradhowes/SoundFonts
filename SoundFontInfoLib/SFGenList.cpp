@@ -19,10 +19,5 @@ sfGenList::load(char const* pos, size_t available)
 void
 sfGenList::dump(const std::string& indent, int index) const
 {
-    std::cout << indent << index << ": " << sfGenOper.name()
-    << " unsigned: " << genAmount.wAmount()
-    << " signed: " << genAmount.shAmount()
-    << " low: " << genAmount.low()
-    << " hi: " << genAmount.high()
-    << std::endl;
+    std::cout << indent << index << ": " << sfGenOper.name() << " setting: " << sfGenOper.dump(genAmount) << std::endl;
 }
