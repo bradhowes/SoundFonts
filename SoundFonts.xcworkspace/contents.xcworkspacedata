@@ -8,20 +8,20 @@
       location = "container:Playgrounds"
       name = "Playgrounds">
       <FileRef
-         location = "group:/Users/howes/src/SoundFonts/Playgrounds/Mac MIDI.playground">
+         location = "group:Mac MIDI.playground">
       </FileRef>
       <FileRef
-         location = "group:/Users/howes/src/SoundFonts/Playgrounds/iOS MIDI.playground">
+         location = "group:iOS MIDI.playground">
       </FileRef>
    </Group>
    <FileRef
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
-      location = "group:/Users/howes/src/SoundFonts/App.xcodeproj">
+      location = "group:App.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:/Users/howes/src/SoundFonts/SoundFontsFramework.xcodeproj">
+      location = "group:SoundFontsFramework.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SoundFontInfoLib.xcodeproj">
