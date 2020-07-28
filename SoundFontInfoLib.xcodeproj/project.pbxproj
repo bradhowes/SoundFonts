@@ -49,9 +49,6 @@
 		BDEC00472497E7BF00A52507 /* SFGenList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC00452497E7BF00A52507 /* SFGenList.cpp */; };
 		BDEC00482497E7BF00A52507 /* SFGenList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* SFGenList.hpp */; };
 		BDEC004C2497F0A700A52507 /* SFModList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* SFModList.hpp */; };
-		BDECFFE92496BA6600A52507 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDECFFE82496BA6600A52507 /* main.swift */; };
-		BDECFFF82496C24100A52507 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
-		BDECFFF92496C24100A52507 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,37 +59,7 @@
 			remoteGlobalIDString = BD74D16623CDB1D200204ED4;
 			remoteInfo = SoundFontInfoLib;
 		};
-		BDECFFFA2496C24100A52507 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BD74D15E23CDB1D200204ED4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BD74D16623CDB1D200204ED4;
-			remoteInfo = SoundFontInfoLib;
-		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		BDECFFE42496BA6600A52507 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		BDECFFFC2496C24100A52507 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				BDECFFF92496C24100A52507 /* SoundFontInfoLib.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = RolandNicePiano.sf2; path = SoundFontsFramework/Resources/SoundFonts/RolandNicePiano.sf2; sourceTree = SOURCE_ROOT; };
@@ -139,7 +106,6 @@
 		BDEC00452497E7BF00A52507 /* SFGenList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenList.cpp; sourceTree = "<group>"; };
 		BDEC00462497E7BF00A52507 /* SFGenList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenList.hpp; sourceTree = "<group>"; };
 		BDEC004A2497F0A700A52507 /* SFModList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModList.hpp; sourceTree = "<group>"; };
-		BDECFFE62496BA6600A52507 /* sf2dump */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sf2dump; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDECFFE82496BA6600A52507 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BDECFFFF2496D6DD00A52507 /* FreeFont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeFont.sf2; path = SoundFontsFramework/Resources/SoundFonts/FreeFont.sf2; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -157,14 +123,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BDECFFE32496BA6600A52507 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BDECFFF82496C24100A52507 /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,7 +145,6 @@
 			children = (
 				BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */,
 				BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */,
-				BDECFFE62496BA6600A52507 /* sf2dump */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -336,25 +293,6 @@
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BDECFFE52496BA6600A52507 /* sf2dump */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BDECFFEA2496BA6600A52507 /* Build configuration list for PBXNativeTarget "sf2dump" */;
-			buildPhases = (
-				BDECFFE22496BA6600A52507 /* Sources */,
-				BDECFFE32496BA6600A52507 /* Frameworks */,
-				BDECFFE42496BA6600A52507 /* CopyFiles */,
-				BDECFFFC2496C24100A52507 /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BDECFFFB2496C24100A52507 /* PBXTargetDependency */,
-			);
-			name = sf2dump;
-			productName = sf2dump;
-			productReference = BDECFFE62496BA6600A52507 /* sf2dump */;
-			productType = "com.apple.product-type.tool";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -370,9 +308,6 @@
 					};
 					BD74D16F23CDB1D200204ED4 = {
 						CreatedOnToolsVersion = 11.3;
-					};
-					BDECFFE52496BA6600A52507 = {
-						CreatedOnToolsVersion = 11.5;
 					};
 				};
 			};
@@ -391,7 +326,6 @@
 			targets = (
 				BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */,
 				BD74D16F23CDB1D200204ED4 /* SoundFontInfoLibTests */,
-				BDECFFE52496BA6600A52507 /* sf2dump */,
 			);
 		};
 /* End PBXProject section */
@@ -446,14 +380,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BDECFFE22496BA6600A52507 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BDECFFE92496BA6600A52507 /* main.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -461,11 +387,6 @@
 			isa = PBXTargetDependency;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
-		};
-		BDECFFFB2496C24100A52507 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
-			targetProxy = BDECFFFA2496C24100A52507 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -627,7 +548,6 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Debug;
 		};
@@ -660,7 +580,6 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Release;
 		};
@@ -702,35 +621,6 @@
 			};
 			name = Release;
 		};
-		BDECFFEB2496BA6600A52507 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		BDECFFEC2496BA6600A52507 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				ENABLE_HARDENED_RUNTIME = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -757,15 +647,6 @@
 			buildConfigurations = (
 				BD74D17F23CDB1D200204ED4 /* Debug */,
 				BD74D18023CDB1D200204ED4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BDECFFEA2496BA6600A52507 /* Build configuration list for PBXNativeTarget "sf2dump" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BDECFFEB2496BA6600A52507 /* Debug */,
-				BDECFFEC2496BA6600A52507 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

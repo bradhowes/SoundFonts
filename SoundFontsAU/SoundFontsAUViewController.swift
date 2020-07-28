@@ -4,7 +4,7 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
-public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
+public class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("ViewC")
     private let sampler = Sampler(mode: .audiounit)
     private let noteInjector = NoteInjector()
@@ -18,6 +18,9 @@ public class SoundFontsAUViewController: AUViewController, AUAudioUnitFactory {
         components = Components<SoundFontsAUViewController>(changer: .audioUnit)
         components.setMainViewController(self)
     }
+}
+
+extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         os_log(.error, log: log, "createAudioUnit")
