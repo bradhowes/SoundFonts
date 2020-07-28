@@ -60,7 +60,7 @@ class SubscriptionManagerTests: XCTestCase {
         wait(for: [exp1, exp2], timeout: 5.0)
     }
 
-    func testAudoUnsubscribe() {
+    func testAutoUnsubscribe() {
         let sm = SubscriptionManager<Event>()
         let exp1 = expectation(description: "received 'one' notification")
         let exp2 = expectation(description: "received 'two' notification")
