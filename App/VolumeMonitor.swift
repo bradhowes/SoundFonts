@@ -8,13 +8,20 @@ import SoundFontsFramework
  output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
  */
 final class VolumeMonitor {
+
+    enum Reason {
+        case volumeLevel
+        case muteSwitch
+        case noPatch
+    }
+
     private let keyboard: Keyboard
     private let notePlayer: NotePlayer
     private let sampler: Sampler
 
     private var volume: Float = 0.0 { didSet { update() } }
     private var muted = false { didSet { update() } }
-    private var isSilenced: Bool { !sampler.hasPatch || volume < 0.01 || muted }
+    private var reason: Reason?
 
     private var sessionVolumeObserver: NSKeyValueObservation?
 
@@ -41,6 +48,7 @@ final class VolumeMonitor {
         sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
             self.volume = session.outputVolume
         }
+        update()
     }
 
     /**
@@ -54,8 +62,38 @@ final class VolumeMonitor {
         sessionVolumeObserver = nil
     }
 
-    private func update() {
-        keyboard.isMuted = isSilenced
-        notePlayer.isMuted = isSilenced
+    func update() {
+        let pastReason = reason
+        if volume < 0.01 {
+            reason = .volumeLevel
+        }
+        else if muted {
+            reason = .muteSwitch
+        }
+        else if !sampler.hasPatch {
+            reason = .noPatch
+        }
+        else {
+            reason = .none
+        }
+
+        keyboard.isMuted = reason != .none
+        notePlayer.isMuted = reason != .none
+
+        if pastReason == .none {
+            switch reason {
+            case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
+            case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
+            case .noPatch: InfoHUD.show(text: "No patch is currently selected.")
+            case .none: InfoHUD.clear()
+            }
+        }
+    }
+
+    func repostNotice() {
+        if reason != .none {
+            reason = .none
+            update()
+        }
     }
 }
