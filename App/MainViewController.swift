@@ -29,6 +29,13 @@ final class MainViewController: UIViewController {
         UIApplication.shared.appDelegate.setMainViewController(self)
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
+
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in
+            self.volumeMonitor.repostNotice()
+        })
+    }
 }
 
 extension MainViewController {
@@ -46,13 +53,13 @@ extension MainViewController {
             os_log(.error, log: log, "Failed setActive(true): %s", error.localizedDescription)
         }
 
-        volumeMonitor.start(session: session)
-
         if case let .failure(what) = sampler.start() {
             postAlert(for: what)
         }
 
         useActivePatchKind(activePatchManager.active, playSample: false)
+
+        volumeMonitor.start(session: session)
     }
 
     /**
@@ -97,6 +104,7 @@ extension MainViewController: ControllerConfiguration {
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
+            volumeMonitor.update()
         }
     }
 
