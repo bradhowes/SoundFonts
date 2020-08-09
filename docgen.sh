@@ -3,8 +3,7 @@
 set -x
 
 rm -rf ./docs/*
-# mkdir ./docs
-cp images/* docs/
+cp -r images docs/
 
 # xcodebuild -workspace SoundFonts.xcworkspace -scheme App
 
