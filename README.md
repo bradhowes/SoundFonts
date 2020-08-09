@@ -1,9 +1,6 @@
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
-**New! Version 2.0 now includes AUv3 app extension that allows SoundFonts to run inside of GarageBand and other
-AudioUnit hosts.**
-
-![](image.gif)
+![](docs/image.gif)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
@@ -11,12 +8,22 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quaility). This app only supports sound font files that are bundled with the application, though it would be
 nice to remotely fetch one to try it out.
 
-> NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform to spec. Unfortunately, 
-> there is no way to insulate the app from this so it too will crash along with AVAudioUnitSampler.
+> NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
+> to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
+> AVAudioUnitSampler.
 
-I have also curated a small collection of SoundFont files that I found useful and/or interesting:
-[Sample SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS device and touch
-one of the links, you can add the fire directly to the SoundFonts application.
+I have also curated a small collection of SoundFont files that I found useful and/or interesting: [Sample
+SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS
+device and touch one of the links, you can add the fire directly to the SoundFonts application.
+
+## AUv3 App Extension
+
+Starting with v2.0, the application now contains an AUv3 app extension that can be loaded by other music
+applications that support AUv3 audio units, such as
+[GarageBand](https://apps.apple.com/us/app/garageband/id408709785) and
+[AUM](https://apps.apple.com/app/id1055636344).
+
+![](docs/AUM.png)
 
 ## User Interface
 
@@ -38,10 +45,10 @@ Here is what you can do with it:
 * __Files app (iCloud)__ — long-press on the file you want to import, select "Share" option. You should then be able to select "Copy to SoundFonts"
 from the sharing sheet that appears.
 
-* __Google Drive__ — touch the "•••" button next to the file name and then choose "Open in" from the list of available options. You 
+* __Google Drive__ — touch the "•••" button next to the file name and then choose "Open in" from the list of available options. You
 should then be able to select "Copy to SoundFonts" from the sharing sheet that appears.
 
-* __Dropbox__ —  touch on the circled "•••" button below the file you want to import. Choose "Copy Link" option that appears. Select "Open In…" 
+* __Dropbox__ —  touch on the circled "•••" button below the file you want to import. Choose "Copy Link" option that appears. Select "Open In…"
 and then "Copy to SoundFonts" from the sharing sheet that appears.
 
 Unfortunately as far as I can tell there is no way to import directly from a web page with a native SF2 URL link. One must first have the file available on
@@ -55,7 +62,7 @@ others. You can also change the starting key of the keyboard in the favorite as
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
 double-tap on the it and you should see an edit view:
 
-![](FavoriteDetail.png)
+![](docs/FavoriteDetail.png)
 
 Nothing fancy. Note that the _gain_ is not exactly like a volume. By default, it will be at 0.0 which means that
 there is no gain applied to the synthesizer output. Positive values (max +12) will boost the signal, while
