@@ -1,6 +1,6 @@
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
-![](docs/image.gif)
+![](images/image.gif)
 
 This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
@@ -23,7 +23,7 @@ applications that support AUv3 audio units, such as
 [GarageBand](https://apps.apple.com/us/app/garageband/id408709785) and
 [AUM](https://apps.apple.com/app/id1055636344).
 
-![](docs/AUM.png)
+![](images/AUM.png)
 
 ## User Interface
 
@@ -62,7 +62,7 @@ others. You can also change the starting key of the keyboard in the favorite as
 well as gain and stereo pan settings that will apply when the favorite is touched. To edit a favorite,
 double-tap on the it and you should see an edit view:
 
-![](docs/FavoriteDetail.png)
+![](images/FavoriteDetail.png)
 
 Nothing fancy. Note that the _gain_ is not exactly like a volume. By default, it will be at 0.0 which means that
 there is no gain applied to the synthesizer output. Positive values (max +12) will boost the signal, while

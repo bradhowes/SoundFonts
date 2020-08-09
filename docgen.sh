@@ -1,19 +1,20 @@
 #!/bin/bash
 
 set -x
-rm -rf ./docs
-mkdir ./docs
-cp *.gif *.png docs/
 
-# xcodebuild -workspace SoundFonts.xcworkspace -scheme SoundFonts
+rm -rf ./docs/*
+# mkdir ./docs
+cp images/* docs/
+
+# xcodebuild -workspace SoundFonts.xcworkspace -scheme App
 
 JAZZY=$(type -p jazzy)
 
 ${JAZZY} --sdk iphoneos \
-         --swift-build-tool xcodebuild \
          --min-acl internal \
+         --swift-build-tool xcodebuild \
+         -b -sdk,iphoneos,-workspace,SoundFonts.xcworkspace,-scheme,SoundFontsFramework \
          -g https://github.com/bradhowes/SoundFonts \
          -a "Brad Howes" \
          -u https://linkedin.com/in/bradhowes \
-         -b -workspace,SoundFonts.xcworkspace,-scheme,SoundFontsFramework \
-         -m SoundFontsFramework --module-version 2.0
+         -m SoundFontsFramework --module-version 2.3.8
