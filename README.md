@@ -104,3 +104,8 @@ The `catalog.py` script uses the [sf2utils](https://pypi.org/project/sf2utils/) 
 parsing.
 
 As mentioned above, additional sound fonts can be added to the running application when installed on a device.
+
+# API Documentation
+
+If you are interested, there is some [deverloper documentation](https://bradhowes.github.io/SoundFonts/)
+available.
