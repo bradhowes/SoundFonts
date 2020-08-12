@@ -24,24 +24,26 @@ struct PatchInfo {
 struct InternalSoundFontInfo {
     InternalSoundFontInfo(void const* data, size_t size)
     : data_{data}, size_{size}, top_{SF2::Parser::parse(data, size)}
-    {}
+    {
+        top_.dump("");
+    }
 
     void initialize()
     {
-        auto info = top_.find(Tag::info);
+        auto info = top_.find(Tags::info);
         if (info != top_.end()) {
-            auto name = info->find(Tag::inam);
+            auto name = info->find(Tags::inam);
             if (name != info->end()) {
                 name_ = std::string(name->dataPtr(), name->size());
             }
         }
 
         // Locate the chunk holding the "patch data"
-        auto patchData = top_.find(Tag::pdta);
+        auto patchData = top_.find(Tags::pdta);
         if (patchData != top_.end()) {
 
             // Locate all "patch header" chunks. There actually should only be one.
-            auto patchHeader = patchData->find(Tag::phdr);
+            auto patchHeader = patchData->find(Tags::phdr);
             if (patchHeader != patchData->end()) {
                 auto presetHeader = Preset(*patchHeader);
                 patches_.reserve(presetHeader.size());
