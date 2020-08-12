@@ -104,7 +104,7 @@ Parser::parseChunk(Pos& pos)
     auto len = pos.size();
     auto clen = ((len + 8) + 1) & 0xfffffffe;
     Defer defer([&] { pos = pos.advance(clen); });
-    return pos.tag() == Tag::list
+    return pos.tag() == Tags::list
     ? Chunk(pos.list_tag(), parseChunks(pos.advance(12, len - 4)))
     : Chunk(pos.tag(), pos.data(len), len);
 }
@@ -121,7 +121,7 @@ Chunk
 Parser::parse(void const* data, size_t size)
 {
     auto pos = Pos(static_cast<char const*>(data), size);
-    if (pos.tag() != Tag::riff) throw FormatError;
+    if (pos.tag() != Tags::riff) throw FormatError;
 
     // Check that the total size given of the given data matches what is recorded in the header of the top-level
     // chunk.

@@ -32,28 +32,20 @@ Chunk::dump(std::string const& indent) const
     std::cout << indent << tag_.toString();
     if (data_ != nullptr) {
         std::cout << " size: " << size_ << ' ';
-        if (tag_ == Tag::ifil) dumpVersion(data_, size_);
-        else if (tag_ == Tag::isng) dumpString(data_, size_);
-        else if (tag_ == Tag::inam) dumpString(data_, size_);
-        else if (tag_ == Tag::irom) dumpString(data_, size_);
-        else if (tag_ == Tag::irom) dumpString(data_, size_);
-        else if (tag_ == Tag::iver) dumpVersion(data_, size_);
-        else if (tag_ == Tag::icrd) dumpString(data_, size_);
-        else if (tag_ == Tag::ieng) dumpString(data_, size_);
-        else if (tag_ == Tag::iprd) dumpString(data_, size_);
-        else if (tag_ == Tag::icop) dumpString(data_, size_);
-        else if (tag_ == Tag::icmt) dumpString(data_, size_);
-        else if (tag_ == Tag::isft) dumpString(data_, size_);
-        else if (tag_ == Tag::phdr) Preset(*this).dump(indent + ' ');
-        else if (tag_ == Tag::pbag) PresetZone(*this).dump(indent + ' ');
-        else if (tag_ == Tag::pmod) PresetZoneMod(*this).dump(indent + ' ');
-        else if (tag_ == Tag::pgen) PresetZoneGen(*this).dump(indent + ' ');
-        else if (tag_ == Tag::inst) Instrument(*this).dump(indent + ' ');
-        else if (tag_ == Tag::ibag) InstrumentZone(*this).dump(indent + ' ');
-        else if (tag_ == Tag::imod) InstrumentZoneMod(*this).dump(indent + ' ');
-        else if (tag_ == Tag::igen) InstrumentZoneGen(*this).dump(indent + ' ');
-        else if (tag_ == Tag::shdr) Sample(*this).dump(indent + ' ');
-
+        switch (tag_.toInt()) {
+            case Tags::phdr: Preset(*this).dump(indent + ' '); break;
+            case Tags::pbag: PresetZone(*this).dump(indent + ' '); break;
+            case Tags::pmod: PresetZoneMod(*this).dump(indent + ' '); break;
+            case Tags::pgen: PresetZoneGen(*this).dump(indent + ' '); break;
+            case Tags::inst: Instrument(*this).dump(indent + ' '); break;
+            case Tags::ibag: InstrumentZone(*this).dump(indent + ' '); break;
+            case Tags::imod: InstrumentZoneMod(*this).dump(indent + ' '); break;
+            case Tags::igen: InstrumentZoneGen(*this).dump(indent + ' '); break;
+            case Tags::shdr: Sample(*this).dump(indent + ' '); break;
+            case Tags::ifil: dumpVersion(data_, size_); break;
+            case Tags::iver: dumpVersion(data_, size_); break;
+            default: dumpString(data_, size_); break;
+        }
         std::cout << std::endl;
     }
     else {
