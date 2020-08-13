@@ -12,7 +12,7 @@ namespace SF2 {
 /**
  Memory layout of a 'pmod'/'imod' entry. The size of this is defined to be 10.
  */
-struct SFModList {
+struct SFMod {
     static constexpr size_t size = 10;
 
     SFModulator sfModSrcOper;
@@ -21,7 +21,7 @@ struct SFModList {
     SFModulator sfModAmtSrcOper;
     SFTransform sfModTransOper;
 
-    SFModList(BinaryStream& is) { is.copyInto(this); }
+    SFMod(BinaryStream& is) { is.copyInto(this); }
     
     void dump(const std::string& indent, int index) const
     {

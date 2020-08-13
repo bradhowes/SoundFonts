@@ -3,16 +3,16 @@
 #pragma once
 
 #include "ChunkItems.hpp"
-#include "SFGenList.hpp"
+#include "SFGen.hpp"
 
 namespace SF2 {
 
 /**
  Collection of SFGenList entities that represents all of the gen definitions for the zones in an SF2 file.
  */
-struct PresetZoneGens : ChunkItems<SFGenList>
+struct PresetZoneGens : ChunkItems<SFGen>
 {
-    using Super = ChunkItems<SFGenList>;
+    using Super = ChunkItems<SFGen>;
 
     PresetZoneGens() : Super() {}
     

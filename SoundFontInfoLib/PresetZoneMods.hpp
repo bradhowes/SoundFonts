@@ -3,16 +3,16 @@
 #pragma once
 
 #include "ChunkItems.hpp"
-#include "SFModList.hpp"
+#include "SFMod.hpp"
 
 namespace SF2 {
 
 /**
  Collection of SFModList entities that represents all of the mod definitions for the zones in an SF2 file.
  */
-struct PresetZoneMods : ChunkItems<SFModList>
+struct PresetZoneMods : ChunkItems<SFMod>
 {
-    using Super = ChunkItems<SFModList>;
+    using Super = ChunkItems<SFMod>;
 
     PresetZoneMods() : Super() {}
     
