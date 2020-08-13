@@ -1,10 +1,10 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef ChunkItems_hpp
-#define ChunkItems_hpp
+#pragma once
 
 #include <iostream>
 
+#include "BinaryStream.hpp"
 #include "Chunk.hpp"
 #include "Parser.hpp"
 
@@ -32,13 +32,8 @@ struct ChunkItems
 
     void load()
     {
-        char const* pos = source_.dataPtr();
-        char const* limit = pos + source_.size();
-        while (pos < limit) {
-            ItemType entry;
-            pos = entry.load(pos, limit - pos);
-            items_.emplace_back(entry);
-        }
+        BinaryStream is(source_.dataPtr(), source_.size());
+        while (is) items_.emplace_back(is);
     }
 
     void dump(std::string const& indent ) const {
@@ -57,5 +52,3 @@ struct ChunkItems
 };
 
 }
-
-#endif /* ChunkItems_hpp */

@@ -1,20 +1,17 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef PresetZoneGen_hpp
-#define PresetZoneGen_hpp
+#pragma once
 
 #include "ChunkItems.hpp"
 #include "SFGenList.hpp"
 
 namespace SF2 {
 
-struct PresetZoneGen : ChunkItems<sfGenList>
+struct PresetZoneGen : ChunkItems<SFGenList>
 {
-    using Super = ChunkItems<sfGenList>;
+    using Super = ChunkItems<SFGenList>;
 
     PresetZoneGen(Chunk const& chunk) : Super(chunk) {}
 };
 
 }
-
-#endif /* PresetZoneGen_hpp */

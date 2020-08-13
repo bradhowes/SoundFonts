@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef StringUtils_hpp
-#define StringUtils_hpp
+#pragma once
 
 #include <string>
 
@@ -44,4 +43,15 @@ static inline std::string trim_copy(std::string s) {
     return s;
 }
 
-#endif /* StringUtils_hpp */
+static inline void trim_property(char* property, size_t size)
+{
+    std::string name(property, size - 1);
+    trim(name);
+    strncpy(property, name.c_str(), std::min(name.size() + 1, size));
+}
+
+template <typename T>
+static inline void trim_property(T& property)
+{
+    trim_property(property, sizeof(property));
+}

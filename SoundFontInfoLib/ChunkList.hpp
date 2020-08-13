@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef ChunkList_hpp
-#define ChunkList_hpp
+#pragma once
 
 #include <vector>
 
@@ -60,4 +59,3 @@ private:
 };
 
 }
-#endif /* ChunkList_hpp */

@@ -4,8 +4,7 @@
 // it safely parses bogus files by throwing an IFF_FMT_ERROR exception anytime there is an access outside of valid
 // memory. Additional cleanup and rework for modern C++ compilers.
 
-#ifndef SF2_PARSER_H
-#define SF2_PARSER_H
+#pragma once
 
 #include "Chunk.hpp"
 #include "ChunkList.hpp"
@@ -44,5 +43,3 @@ private:
 };
 
 }
-
-#endif

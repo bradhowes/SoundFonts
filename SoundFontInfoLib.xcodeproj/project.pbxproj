@@ -11,6 +11,12 @@
 		BD63B14A24AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */; };
 		BD63B14B24AC8BD70015236D /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */; };
 		BD63B14D24ACCDC70015236D /* SFGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD63B14C24ACCDC70015236D /* SFGenerator.cpp */; };
+		BD64EB6524E52EDF00EA8473 /* BinaryStream.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */; };
+		BD64EB6824E5328100EA8473 /* SFInst.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6724E5328100EA8473 /* SFInst.hpp */; };
+		BD64EB6A24E5341900EA8473 /* SFInstBag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6924E5341900EA8473 /* SFInstBag.hpp */; };
+		BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6B24E534B700EA8473 /* SFPreset.hpp */; };
+		BD64EB6E24E5362A00EA8473 /* SFPresetBag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6D24E5362A00EA8473 /* SFPresetBag.hpp */; };
+		BD64EB7024E536A200EA8473 /* SFSample.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6F24E536A200EA8473 /* SFSample.hpp */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD74D17623CDB1D200204ED4 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
 		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -25,28 +31,21 @@
 		BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4682491829000F3F361 /* Chunk.cpp */; };
 		BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; };
 		BDEC00002496D6DD00A52507 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDECFFFF2496D6DD00A52507 /* FreeFont.sf2 */; };
-		BDEC000324974AF100A52507 /* Preset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC000124974AF100A52507 /* Preset.cpp */; };
 		BDEC000424974AF100A52507 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC000224974AF100A52507 /* Preset.hpp */; };
-		BDEC0007249755C600A52507 /* PresetZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC0005249755C600A52507 /* PresetZone.cpp */; };
 		BDEC0008249755C600A52507 /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0006249755C600A52507 /* PresetZone.hpp */; };
-		BDEC000F24975BD200A52507 /* SFModList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC000D24975BD200A52507 /* SFModList.cpp */; };
 		BDEC001024975BD200A52507 /* PresetZoneMod.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC000E24975BD200A52507 /* PresetZoneMod.hpp */; };
 		BDEC00142497615100A52507 /* PresetZoneGen.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00122497615100A52507 /* PresetZoneGen.hpp */; };
 		BDEC00182497665D00A52507 /* SFModulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00162497665D00A52507 /* SFModulator.hpp */; };
 		BDEC001C2497669300A52507 /* SFGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001A2497669300A52507 /* SFGenerator.hpp */; };
 		BDEC00202497672000A52507 /* SFTransform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001E2497672000A52507 /* SFTransform.hpp */; };
 		BDEC0024249768E200A52507 /* SFGenTypeAmount.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0022249768E200A52507 /* SFGenTypeAmount.hpp */; };
-		BDEC0027249775FE00A52507 /* Instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC0025249775FE00A52507 /* Instrument.cpp */; };
 		BDEC0028249775FE00A52507 /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0026249775FE00A52507 /* Instrument.hpp */; };
 		BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002A2497790A00A52507 /* StringUtils.hpp */; };
-		BDEC002F249789ED00A52507 /* InstrumentZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC002D249789ED00A52507 /* InstrumentZone.cpp */; };
 		BDEC0030249789ED00A52507 /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002E249789ED00A52507 /* InstrumentZone.hpp */; };
 		BDEC003424978AA900A52507 /* InstrumentZoneMod.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003224978AA900A52507 /* InstrumentZoneMod.hpp */; };
 		BDEC003824978AB300A52507 /* InstrumentZoneGen.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003624978AB300A52507 /* InstrumentZoneGen.hpp */; };
-		BDEC003B249795AB00A52507 /* Sample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC0039249795AB00A52507 /* Sample.cpp */; };
 		BDEC003C249795AB00A52507 /* Sample.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003A249795AB00A52507 /* Sample.hpp */; };
 		BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; };
-		BDEC00472497E7BF00A52507 /* SFGenList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDEC00452497E7BF00A52507 /* SFGenList.cpp */; };
 		BDEC00482497E7BF00A52507 /* SFGenList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* SFGenList.hpp */; };
 		BDEC004C2497F0A700A52507 /* SFModList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* SFModList.hpp */; };
 /* End PBXBuildFile section */
@@ -66,6 +65,12 @@
 		BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GeneralUser GS MuseScore v1.442.sf2"; path = "SoundFontsFramework/Resources/SoundFonts/GeneralUser GS MuseScore v1.442.sf2"; sourceTree = SOURCE_ROOT; };
 		BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FluidR3_GM.sf2; path = SoundFontsFramework/Resources/SoundFonts/FluidR3_GM.sf2; sourceTree = SOURCE_ROOT; };
 		BD63B14C24ACCDC70015236D /* SFGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenerator.cpp; sourceTree = "<group>"; };
+		BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BinaryStream.hpp; sourceTree = "<group>"; };
+		BD64EB6724E5328100EA8473 /* SFInst.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFInst.hpp; sourceTree = "<group>"; };
+		BD64EB6924E5341900EA8473 /* SFInstBag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFInstBag.hpp; sourceTree = "<group>"; };
+		BD64EB6B24E534B700EA8473 /* SFPreset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFPreset.hpp; sourceTree = "<group>"; };
+		BD64EB6D24E5362A00EA8473 /* SFPresetBag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFPresetBag.hpp; sourceTree = "<group>"; };
+		BD64EB6F24E536A200EA8473 /* SFSample.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFSample.hpp; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontInfoLib.h; sourceTree = "<group>"; };
 		BD74D16B23CDB1D200204ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,28 +87,21 @@
 		BDB1B4652491823400F3F361 /* ChunkList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkList.hpp; sourceTree = "<group>"; };
 		BDB1B4682491829000F3F361 /* Chunk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Chunk.cpp; sourceTree = "<group>"; };
 		BDB1B4692491829000F3F361 /* Chunk.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Chunk.hpp; sourceTree = "<group>"; };
-		BDEC000124974AF100A52507 /* Preset.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Preset.cpp; sourceTree = "<group>"; };
 		BDEC000224974AF100A52507 /* Preset.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
-		BDEC0005249755C600A52507 /* PresetZone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PresetZone.cpp; sourceTree = "<group>"; };
 		BDEC0006249755C600A52507 /* PresetZone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PresetZone.hpp; sourceTree = "<group>"; };
-		BDEC000D24975BD200A52507 /* SFModList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SFModList.cpp; sourceTree = "<group>"; };
 		BDEC000E24975BD200A52507 /* PresetZoneMod.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PresetZoneMod.hpp; sourceTree = "<group>"; };
 		BDEC00122497615100A52507 /* PresetZoneGen.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PresetZoneGen.hpp; sourceTree = "<group>"; };
 		BDEC00162497665D00A52507 /* SFModulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModulator.hpp; sourceTree = "<group>"; };
 		BDEC001A2497669300A52507 /* SFGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenerator.hpp; sourceTree = "<group>"; };
 		BDEC001E2497672000A52507 /* SFTransform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFTransform.hpp; sourceTree = "<group>"; };
 		BDEC0022249768E200A52507 /* SFGenTypeAmount.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenTypeAmount.hpp; sourceTree = "<group>"; };
-		BDEC0025249775FE00A52507 /* Instrument.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Instrument.cpp; sourceTree = "<group>"; };
 		BDEC0026249775FE00A52507 /* Instrument.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
 		BDEC002A2497790A00A52507 /* StringUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
-		BDEC002D249789ED00A52507 /* InstrumentZone.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentZone.cpp; sourceTree = "<group>"; };
 		BDEC002E249789ED00A52507 /* InstrumentZone.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZone.hpp; sourceTree = "<group>"; };
 		BDEC003224978AA900A52507 /* InstrumentZoneMod.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZoneMod.hpp; sourceTree = "<group>"; };
 		BDEC003624978AB300A52507 /* InstrumentZoneGen.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZoneGen.hpp; sourceTree = "<group>"; };
-		BDEC0039249795AB00A52507 /* Sample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sample.cpp; sourceTree = "<group>"; };
 		BDEC003A249795AB00A52507 /* Sample.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Sample.hpp; sourceTree = "<group>"; };
 		BDEC00422497DD5700A52507 /* ChunkItems.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkItems.hpp; sourceTree = "<group>"; };
-		BDEC00452497E7BF00A52507 /* SFGenList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenList.cpp; sourceTree = "<group>"; };
 		BDEC00462497E7BF00A52507 /* SFGenList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenList.hpp; sourceTree = "<group>"; };
 		BDEC004A2497F0A700A52507 /* SFModList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModList.hpp; sourceTree = "<group>"; };
 		BDECFFE82496BA6600A52507 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -129,6 +127,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD64EB6624E5301500EA8473 /* SF2 Entities */ = {
+			isa = PBXGroup;
+			children = (
+				BDEC00462497E7BF00A52507 /* SFGenList.hpp */,
+				BDEC004A2497F0A700A52507 /* SFModList.hpp */,
+				BD64EB6724E5328100EA8473 /* SFInst.hpp */,
+				BD64EB6924E5341900EA8473 /* SFInstBag.hpp */,
+				BD64EB6B24E534B700EA8473 /* SFPreset.hpp */,
+				BD64EB6D24E5362A00EA8473 /* SFPresetBag.hpp */,
+				BD64EB6F24E536A200EA8473 /* SFSample.hpp */,
+			);
+			name = "SF2 Entities";
+			sourceTree = "<group>";
+		};
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
@@ -152,35 +164,28 @@
 		BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */ = {
 			isa = PBXGroup;
 			children = (
+				BD64EB6624E5301500EA8473 /* SF2 Entities */,
+				BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */,
 				BDB1B4682491829000F3F361 /* Chunk.cpp */,
 				BDB1B4692491829000F3F361 /* Chunk.hpp */,
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
 				BDB1B4642491823400F3F361 /* ChunkList.cpp */,
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
-				BDEC0025249775FE00A52507 /* Instrument.cpp */,
 				BDEC0026249775FE00A52507 /* Instrument.hpp */,
-				BDEC002D249789ED00A52507 /* InstrumentZone.cpp */,
 				BDEC002E249789ED00A52507 /* InstrumentZone.hpp */,
 				BDEC003624978AB300A52507 /* InstrumentZoneGen.hpp */,
 				BDEC003224978AA900A52507 /* InstrumentZoneMod.hpp */,
 				BD74D18423CDB36200204ED4 /* Parser.cpp */,
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
-				BDEC000124974AF100A52507 /* Preset.cpp */,
 				BDEC000224974AF100A52507 /* Preset.hpp */,
-				BDEC0005249755C600A52507 /* PresetZone.cpp */,
 				BDEC0006249755C600A52507 /* PresetZone.hpp */,
 				BDEC00122497615100A52507 /* PresetZoneGen.hpp */,
 				BDEC000E24975BD200A52507 /* PresetZoneMod.hpp */,
-				BDEC0039249795AB00A52507 /* Sample.cpp */,
 				BDEC003A249795AB00A52507 /* Sample.hpp */,
 				BD63B14C24ACCDC70015236D /* SFGenerator.cpp */,
 				BDEC001A2497669300A52507 /* SFGenerator.hpp */,
-				BDEC00452497E7BF00A52507 /* SFGenList.cpp */,
-				BDEC00462497E7BF00A52507 /* SFGenList.hpp */,
 				BDEC0022249768E200A52507 /* SFGenTypeAmount.hpp */,
 				BDEC00162497665D00A52507 /* SFModulator.hpp */,
-				BDEC000D24975BD200A52507 /* SFModList.cpp */,
-				BDEC004A2497F0A700A52507 /* SFModList.hpp */,
 				BDEC001E2497672000A52507 /* SFTransform.hpp */,
 				BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */,
 				BD74D18323CDB36200204ED4 /* SoundFontList.cpp */,
@@ -234,12 +239,17 @@
 				BDEC00182497665D00A52507 /* SFModulator.hpp in Headers */,
 				BDB1B4672491823400F3F361 /* ChunkList.hpp in Headers */,
 				BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */,
+				BD64EB7024E536A200EA8473 /* SFSample.hpp in Headers */,
+				BD64EB6A24E5341900EA8473 /* SFInstBag.hpp in Headers */,
+				BD64EB6E24E5362A00EA8473 /* SFPresetBag.hpp in Headers */,
 				BDEC001C2497669300A52507 /* SFGenerator.hpp in Headers */,
 				BDEC0030249789ED00A52507 /* InstrumentZone.hpp in Headers */,
 				BD74D18523CDB36200204ED4 /* Parser.hpp in Headers */,
 				BDEC000424974AF100A52507 /* Preset.hpp in Headers */,
+				BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */,
 				BDEC001024975BD200A52507 /* PresetZoneMod.hpp in Headers */,
 				BDEC0008249755C600A52507 /* PresetZone.hpp in Headers */,
+				BD64EB6824E5328100EA8473 /* SFInst.hpp in Headers */,
 				BDEC003824978AB300A52507 /* InstrumentZoneGen.hpp in Headers */,
 				BDEC00142497615100A52507 /* PresetZoneGen.hpp in Headers */,
 				BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */,
@@ -251,6 +261,7 @@
 				BDEC0028249775FE00A52507 /* Instrument.hpp in Headers */,
 				BDB1B4632491805800F3F361 /* Tag.hpp in Headers */,
 				BDEC0024249768E200A52507 /* SFGenTypeAmount.hpp in Headers */,
+				BD64EB6524E52EDF00EA8473 /* BinaryStream.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,19 +367,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDEC003B249795AB00A52507 /* Sample.cpp in Sources */,
 				BD63B14D24ACCDC70015236D /* SFGenerator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontList.cpp in Sources */,
-				BDEC000324974AF100A52507 /* Preset.cpp in Sources */,
 				BDB1B4622491805800F3F361 /* Tag.cpp in Sources */,
 				BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */,
-				BDEC002F249789ED00A52507 /* InstrumentZone.cpp in Sources */,
-				BDEC00472497E7BF00A52507 /* SFGenList.cpp in Sources */,
 				BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */,
-				BDEC0007249755C600A52507 /* PresetZone.cpp in Sources */,
 				BDB1B4662491823400F3F361 /* ChunkList.cpp in Sources */,
-				BDEC000F24975BD200A52507 /* SFModList.cpp in Sources */,
-				BDEC0027249775FE00A52507 /* Instrument.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef SFGenerator_hpp
-#define SFGenerator_hpp
+#pragma once
 
 #include <iosfwd>
 #include <vector>
@@ -68,5 +67,3 @@ private:
 };
 
 }
-
-#endif /* SFGenerator_hpp */
