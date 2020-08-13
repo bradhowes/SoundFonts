@@ -10,9 +10,9 @@
 
 namespace SF2 {
 
-struct PresetZoneMod : ChunkItems<sfModList, 10>
+struct PresetZoneMod : ChunkItems<sfModList>
 {
-    using Super = ChunkItems<sfModList, 10>;
+    using Super = ChunkItems<sfModList>;
 
     PresetZoneMod(Chunk const& chunk) : Super(chunk) {}
 };

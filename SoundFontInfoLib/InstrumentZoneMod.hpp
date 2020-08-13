@@ -12,9 +12,9 @@
 
 namespace SF2 {
 
-struct InstrumentZoneMod : ChunkItems<sfModList, 4>
+struct InstrumentZoneMod : ChunkItems<sfModList>
 {
-    using Super = ChunkItems<sfModList, 4>;
+    using Super = ChunkItems<sfModList>;
 
     InstrumentZoneMod(Chunk const& chunk) : Super(chunk) {}
 };
