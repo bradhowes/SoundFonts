@@ -7,7 +7,8 @@
 #include <string>
 
 #include "Parser.hpp"
-#include "Preset.hpp"
+#include "Presets.hpp"
+#include "SFFile.hpp"
 #include "SoundFontList.hpp"
 
 using namespace SF2;
@@ -28,7 +29,7 @@ struct InternalSoundFontInfo {
         top_.dump("");
     }
 
-    void initialize()
+    void buildPatches()
     {
         auto info = top_.find(Tags::info);
         if (info != top_.end()) {
@@ -45,7 +46,7 @@ struct InternalSoundFontInfo {
             // Locate all "patch header" chunks. There actually should only be one.
             auto patchHeader = patchData->find(Tags::phdr);
             if (patchHeader != patchData->end()) {
-                auto presetHeader = Preset(*patchHeader);
+                auto presetHeader = Presets(*patchHeader);
                 patches_.reserve(presetHeader.size());
 
                 // Do not load the last entry (which should always be "EOP")
@@ -72,7 +73,7 @@ InternalSoundFontParse(void const* data, size_t size)
 {
     try {
         auto soundFontInfo = new InternalSoundFontInfo(data, size);
-        soundFontInfo->initialize();
+        soundFontInfo->buildPatches();
         return soundFontInfo;
     }
     catch (enum SF2::Format value) {
@@ -135,4 +136,10 @@ void SoundFontDump(SoundFontInfo object, char const* fileName)
     auto sfi = static_cast<InternalSoundFontInfo const*>(object);
     Redirector redirector(fileName);
     sfi->top_.dump("");
+}
+
+void SoundFontTest(SoundFontInfo object)
+{
+    auto sfi = static_cast<InternalSoundFontInfo const*>(object);
+    SFFile file(sfi->top_);
 }

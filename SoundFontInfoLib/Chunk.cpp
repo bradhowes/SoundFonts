@@ -3,15 +3,15 @@
 #include <iostream>
 
 #include "Chunk.hpp"
-#include "Instrument.hpp"
-#include "InstrumentZone.hpp"
-#include "InstrumentZoneGen.hpp"
-#include "InstrumentZoneMod.hpp"
-#include "Preset.hpp"
-#include "PresetZone.hpp"
-#include "PresetZoneGen.hpp"
-#include "PresetZoneMod.hpp"
-#include "Sample.hpp"
+#include "Instruments.hpp"
+#include "InstrumentZones.hpp"
+#include "InstrumentZoneGens.hpp"
+#include "InstrumentZoneMods.hpp"
+#include "Presets.hpp"
+#include "PresetZones.hpp"
+#include "PresetZoneGens.hpp"
+#include "PresetZoneMods.hpp"
+#include "Samples.hpp"
 
 using namespace SF2;
 
@@ -33,15 +33,15 @@ Chunk::dump(std::string const& indent) const
     if (data_ != nullptr) {
         std::cout << " size: " << size_ << ' ';
         switch (tag_.toInt()) {
-            case Tags::phdr: Preset(*this).dump(indent + ' '); break;
-            case Tags::pbag: PresetZone(*this).dump(indent + ' '); break;
-            case Tags::pmod: PresetZoneMod(*this).dump(indent + ' '); break;
-            case Tags::pgen: PresetZoneGen(*this).dump(indent + ' '); break;
-            case Tags::inst: Instrument(*this).dump(indent + ' '); break;
-            case Tags::ibag: InstrumentZone(*this).dump(indent + ' '); break;
-            case Tags::imod: InstrumentZoneMod(*this).dump(indent + ' '); break;
-            case Tags::igen: InstrumentZoneGen(*this).dump(indent + ' '); break;
-            case Tags::shdr: Sample(*this).dump(indent + ' '); break;
+            case Tags::phdr: Presets(*this).dump(indent + ' '); break;
+            case Tags::pbag: PresetZones(*this).dump(indent + ' '); break;
+            case Tags::pgen: PresetZoneGens(*this).dump(indent + ' '); break;
+            case Tags::pmod: PresetZoneMods(*this).dump(indent + ' '); break;
+            case Tags::inst: Instruments(*this).dump(indent + ' '); break;
+            case Tags::ibag: InstrumentZones(*this).dump(indent + ' '); break;
+            case Tags::imod: InstrumentZoneMods(*this).dump(indent + ' '); break;
+            case Tags::igen: InstrumentZoneGens(*this).dump(indent + ' '); break;
+            case Tags::shdr: Samples(*this).dump(indent + ' '); break;
             case Tags::ifil: dumpVersion(data_, size_); break;
             case Tags::iver: dumpVersion(data_, size_); break;
             default: dumpString(data_, size_); break;

@@ -9,7 +9,8 @@
 namespace SF2 {
 
 /**
- Memory layout of a 'pgen'/'igen' entry. The size of this is defined to be 4.
+ Memory layout of a 'pgen'/'igen' entry. The size of this is defined to be 4. Each instance represents a generator
+ configuration for a specific SFGenerator.
  */
 struct SFGenList {
     static constexpr size_t size = 4;
@@ -17,10 +18,7 @@ struct SFGenList {
     SFGenerator sfGenOper;
     SFGenTypeAmount genAmount;
 
-    SFGenList(BinaryStream& is)
-    {
-        is.copyInto(this);
-    }
+    SFGenList(BinaryStream& is) { is.copyInto(this); }
     
     void dump(const std::string& indent, int index) const
     {

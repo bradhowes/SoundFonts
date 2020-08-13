@@ -16,8 +16,7 @@ struct SFInst {
     char achInstName[20];
     uint16_t wInstBagNdx;
 
-    SFInst(BinaryStream& is)
-    {
+    SFInst(BinaryStream& is) {
         is.copyInto(this);
         trim_property(achInstName);
     }

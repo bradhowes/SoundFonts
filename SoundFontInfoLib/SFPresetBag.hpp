@@ -17,10 +17,7 @@ struct SFPresetBag {
     uint16_t wGenNdx;
     uint16_t wModNdx;
 
-    SFPresetBag(BinaryStream& is)
-    {
-        is.copyInto(this);
-    }
+    SFPresetBag(BinaryStream& is) { is.copyInto(this); }
 
     void dump(const std::string& indent, int index) const
     {
