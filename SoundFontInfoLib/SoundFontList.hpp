@@ -60,6 +60,8 @@ int SoundFontPatchPatch(SoundFontInfo object, size_t index);
 
 void SoundFontDump(SoundFontInfo object, char const* fileName);
 
+void SoundFontTest(SoundFontInfo object);
+
 #ifdef __cplusplus
 }
 #endif

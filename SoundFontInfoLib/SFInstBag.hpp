@@ -16,10 +16,7 @@ struct SFInstBag {
     uint16_t wInstGenNdx;
     uint16_t wInstModNdx;
 
-    SFInstBag(BinaryStream& is)
-    {
-        is.copyInto(this);
-    }
+    SFInstBag(BinaryStream& is) { is.copyInto(this); }
 
     void dump(const std::string& indent, int index) const
     {

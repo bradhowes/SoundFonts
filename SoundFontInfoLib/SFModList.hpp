@@ -21,10 +21,7 @@ struct SFModList {
     SFModulator sfModAmtSrcOper;
     SFTransform sfModTransOper;
 
-    SFModList(BinaryStream& is)
-    {
-        is.copyInto(this);
-    }
+    SFModList(BinaryStream& is) { is.copyInto(this); }
     
     void dump(const std::string& indent, int index) const
     {
