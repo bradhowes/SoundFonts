@@ -8,9 +8,9 @@
 
 namespace SF2 {
 
-struct PresetZoneGen : ChunkItems<sfGenList, 4>
+struct PresetZoneGen : ChunkItems<sfGenList>
 {
-    using Super = ChunkItems<sfGenList, 4>;
+    using Super = ChunkItems<sfGenList>;
 
     PresetZoneGen(Chunk const& chunk) : Super(chunk) {}
 };

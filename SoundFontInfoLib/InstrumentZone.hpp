@@ -14,6 +14,8 @@ namespace SF2 {
  resource. The size of this must be 4.
  */
 struct sfInstBag {
+    constexpr static size_t size = 4;
+
     uint16_t wInstGenNdx;
     uint16_t wInstModNdx;
 
@@ -21,9 +23,9 @@ struct sfInstBag {
     void dump(const std::string& indent, int index) const;
 };
 
-struct InstrumentZone : ChunkItems<sfInstBag, 4>
+struct InstrumentZone : ChunkItems<sfInstBag>
 {
-    using Super = ChunkItems<sfInstBag, 4>;
+    using Super = ChunkItems<sfInstBag>;
 
     InstrumentZone(Chunk const& chunk) : Super(chunk) {}
 };

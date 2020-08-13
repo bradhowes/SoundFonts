@@ -10,11 +10,11 @@
 
 namespace SF2 {
 
-template <typename T, size_t S>
+template <typename T>
 struct ChunkItems
 {
     using ItemType = T;
-    static constexpr size_t itemSize = S;
+    static constexpr size_t itemSize = T::size;
 
     ChunkItems(Chunk const& source) : source_{source}, items_{}
     {

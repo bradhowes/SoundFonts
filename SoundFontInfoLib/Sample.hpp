@@ -14,6 +14,8 @@ namespace SF2 {
  to alignment/padding the struct below is 48 bytes.
  */
 struct sfSample {
+    constexpr static size_t size = 46;
+
     char achSampleName[20];
     uint32_t dwStart;
     uint32_t dwEnd;
@@ -29,9 +31,9 @@ struct sfSample {
     void dump(const std::string& indent, int index) const;
 };
 
-struct Sample : ChunkItems<sfSample, 46>
+struct Sample : ChunkItems<sfSample>
 {
-    using Super = ChunkItems<sfSample, 46>;
+    using Super = ChunkItems<sfSample>;
 
     Sample(Chunk const& chunk) : Super(chunk) {}
 };

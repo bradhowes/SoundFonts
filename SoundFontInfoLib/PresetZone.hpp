@@ -20,6 +20,8 @@ namespace SF2 {
  resource. The size of this must be 4.
  */
 struct sfPresetBag {
+    constexpr static size_t size = 4;
+
     uint16_t wGenNdx;
     uint16_t wModNdx;
 
@@ -27,9 +29,9 @@ struct sfPresetBag {
     void dump(const std::string& indent, int index) const;
 };
 
-struct PresetZone : ChunkItems<sfPresetBag, 4>
+struct PresetZone : ChunkItems<sfPresetBag>
 {
-    using Super = ChunkItems<sfPresetBag, 4>;
+    using Super = ChunkItems<sfPresetBag>;
 
     PresetZone(Chunk const& chunk) : Super(chunk) {}
 };
