@@ -1,10 +1,8 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef SFModList_hpp
-#define SFModList_hpp
+#pragma once
 
-#include <string>
-
+#include "BinaryStream.hpp"
 #include "SFModulator.hpp"
 #include "SFGenerator.hpp"
 #include "SFTransform.hpp"
@@ -14,7 +12,7 @@ namespace SF2 {
 /**
  Memory layout of a 'pmod'/'imod' entry. The size of this is defined to be 10.
  */
-struct sfModList {
+struct SFModList {
     static constexpr size_t size = 10;
 
     SFModulator sfModSrcOper;
@@ -23,10 +21,21 @@ struct sfModList {
     SFModulator sfModAmtSrcOper;
     SFTransform sfModTransOper;
 
-    char const* load(char const* pos, size_t available);
-    void dump(const std::string& indent, int index) const;
+    SFModList(BinaryStream& is)
+    {
+        is.copyInto(this);
+    }
+    
+    void dump(const std::string& indent, int index) const
+    {
+        std::cout << indent << index
+        << ": src: " << sfModSrcOper
+        << " dest: " << sfModDestOper.name()
+        << " amount: " << modAmount
+        << " op: " << sfModAmtSrcOper
+        << " xform: " << sfModTransOper.bits_
+        << std::endl;
+    }
 };
 
 }
-
-#endif /* SFModList_hpp */

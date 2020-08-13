@@ -1,24 +1,17 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef InstrumentZoneMod_hpp
-#define InstrumentZoneMod_hpp
-
-#include <cstdlib>
-#include <iostream>
-#include <string>
+#pragma once
 
 #include "ChunkItems.hpp"
 #include "SFModList.hpp"
 
 namespace SF2 {
 
-struct InstrumentZoneMod : ChunkItems<sfModList>
+struct InstrumentZoneMod : ChunkItems<SFModList>
 {
-    using Super = ChunkItems<sfModList>;
+    using Super = ChunkItems<SFModList>;
 
     InstrumentZoneMod(Chunk const& chunk) : Super(chunk) {}
 };
 
 }
-
-#endif /* InstrumentZoneMod_hpp */

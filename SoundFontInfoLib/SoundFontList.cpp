@@ -17,7 +17,7 @@ struct PatchInfo {
     int bank;
     int patch;
 
-    explicit PatchInfo(sfPreset const& preset)
+    explicit PatchInfo(SFPreset const& preset)
     : name(preset.achPresetName), bank(preset.wBank), patch(preset.wPreset) {}
 };
 
@@ -50,7 +50,7 @@ struct InternalSoundFontInfo {
 
                 // Do not load the last entry (which should always be "EOP")
                 std::for_each(presetHeader.begin(), presetHeader.end() - 1,
-                              [this](sfPreset const& entry) { patches_.emplace_back(PatchInfo(entry)); });
+                              [this](SFPreset const& entry) { patches_.emplace_back(PatchInfo(entry)); });
 
                 // Sort patches in increasing order by bank, patch
                 std::sort(patches_.begin(), patches_.end(), [](PatchInfo const& a, PatchInfo const& b) {

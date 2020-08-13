@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef SFModulator_hpp
-#define SFModulator_hpp
+#pragma once
 
 #include <cstdlib>
 #include <iostream>
@@ -37,5 +36,3 @@ private:
 };
 
 }
-
-#endif /* SFModulator_hpp */

@@ -1,7 +1,6 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
-#ifndef SoundFontList_hpp
-#define SoundFontList_hpp
+#pragma once
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -63,5 +62,4 @@ void SoundFontDump(SoundFontInfo object, char const* fileName);
 
 #ifdef __cplusplus
 }
-#endif
 #endif

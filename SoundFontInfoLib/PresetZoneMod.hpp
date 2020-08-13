@@ -1,22 +1,17 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef PresetZoneMod_hpp
-#define PresetZoneMod_hpp
-
-#include <string>
+#pragma once
 
 #include "ChunkItems.hpp"
 #include "SFModList.hpp"
 
 namespace SF2 {
 
-struct PresetZoneMod : ChunkItems<sfModList>
+struct PresetZoneMod : ChunkItems<SFModList>
 {
-    using Super = ChunkItems<sfModList>;
+    using Super = ChunkItems<SFModList>;
 
     PresetZoneMod(Chunk const& chunk) : Super(chunk) {}
 };
 
 }
-
-#endif /* PresetZoneMod_hpp */

@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef SFGenTypeAmount_hpp
-#define SFGenTypeAmount_hpp
+#pragma once
 
 #include <cstdlib>
 
@@ -25,5 +24,3 @@ struct SFGenTypeAmount {
 };
 
 }
-
-#endif /* SFGenTypeAmount_hpp */

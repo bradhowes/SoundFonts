@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef Chunk_hpp
-#define Chunk_hpp
+#pragma once
 
 #include "ChunkList.hpp"
 #include "Tag.hpp"
@@ -97,5 +96,3 @@ private:
 };
 
 }
-
-#endif /* Chunk_hpp */

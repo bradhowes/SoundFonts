@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef SFTransform_hpp
-#define SFTransform_hpp
+#pragma once
 
 #include <cstdlib>
 
@@ -14,5 +13,3 @@ struct SFTransform {
 };
 
 }
-
-#endif /* SFTransform_hpp */

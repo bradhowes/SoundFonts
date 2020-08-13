@@ -1,20 +1,17 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef InstrumentZoneGen_hpp
-#define InstrumentZoneGen_hpp
+#pragma once
 
 #include "ChunkItems.hpp"
 #include "SFGenList.hpp"
 
 namespace SF2 {
 
-struct InstrumentZoneGen : ChunkItems<sfGenList>
+struct InstrumentZoneGen : ChunkItems<SFGenList>
 {
-    using Super = ChunkItems<sfGenList>;
+    using Super = ChunkItems<SFGenList>;
 
     InstrumentZoneGen(Chunk const& chunk) : Super(chunk) {}
 };
 
 }
-
-#endif /* InstrumentZoneGen_hpp */
