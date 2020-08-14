@@ -27,15 +27,16 @@ public:
         kValueKindSignedSemitones
     };
 
-    GenDef(char const* name, ValueKind kind)
-    : name_{name}, kind_{kind} {}
+    GenDef(char const* name, ValueKind kind, bool availableInPreset)
+    : name_{name}, kind_{kind}, availableInPreset_{availableInPreset} {}
 
-    char const* name() const { return name_; }
+    std::string const& name() const { return name_; }
     void dump(SFGenTypeAmount const& amount) const;
 
 private:
-    char const* name_;
+    std::string name_;
     ValueKind kind_;
+    bool availableInPreset_;
 };
 
 struct SFGenerator {
@@ -44,10 +45,10 @@ struct SFGenerator {
     SFGenerator() : bits_(0) {}
     SFGenerator(uint16_t bits) : bits_{bits} {}
 
-    uint16_t value() const { return bits_; }
+    uint16_t index() const { return bits_; }
 
     GenDef const& def() const { return defs[bits_]; }
-    char const* name() const { return defs[bits_].name(); }
+    std::string const& name() const { return defs[bits_].name(); }
 
     struct Dumper {
         GenDef const& genDef_;
