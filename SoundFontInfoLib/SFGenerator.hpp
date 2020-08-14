@@ -42,7 +42,7 @@ private:
 struct SFGenerator {
     static std::vector<GenDef> const defs;
 
-    SFGenerator() : bits_(0) {}
+    SFGenerator() : bits_{0} {}
     SFGenerator(uint16_t bits) : bits_{bits} {}
 
     uint16_t index() const { return bits_; }

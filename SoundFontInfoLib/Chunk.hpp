@@ -22,7 +22,7 @@ public:
      @param size length of the data
      */
     Chunk(Tag tag, char const* ptr, uint32_t size)
-    : tag_{std::move(tag)}, data_{ptr}, size_{size}, chunks_() {}
+    : tag_{std::move(tag)}, data_{ptr}, size_{size}, chunks_{} {}
 
     /**
      Constructor for a list of chunks

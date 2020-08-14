@@ -93,7 +93,7 @@ private:
  */
 struct Defer
 {
-    Defer(std::function<void ()>&& func) : func_(std::forward<std::function<void ()>>(func)) {}
+    Defer(std::function<void ()>&& func) : func_{std::forward<std::function<void ()>>(func)} {}
     ~Defer() { func_(); }
     std::function<void ()> func_;
 };
