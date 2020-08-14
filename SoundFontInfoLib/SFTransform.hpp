@@ -7,7 +7,7 @@
 namespace SF2 {
 
 struct SFTransform {
-    SFTransform() : bits_(0) {}
+    SFTransform() : bits_{0} {}
     SFTransform(uint16_t bits) : bits_{bits} {}
     const uint16_t bits_;
 };

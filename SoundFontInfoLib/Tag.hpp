@@ -13,7 +13,7 @@ namespace SF2 {
  */
 class Tag {
 public:
-    Tag(uint32_t tag) : tag_(tag) {}
+    Tag(uint32_t tag) : tag_{tag} {}
     Tag(char const* s) : Tag(*(reinterpret_cast<uint32_t const*>(s))) {}
     Tag(void const* s) : Tag(static_cast<char const*>(s)) {}
 
