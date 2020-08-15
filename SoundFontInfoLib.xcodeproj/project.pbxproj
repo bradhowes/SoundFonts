@@ -560,6 +560,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv72 x86_64";
 			};
 			name = Debug;
 		};
@@ -592,6 +593,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv72 x86_64";
 			};
 			name = Release;
 		};
