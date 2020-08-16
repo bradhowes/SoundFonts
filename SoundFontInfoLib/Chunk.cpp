@@ -15,15 +15,15 @@
 
 using namespace SF2;
 
-static void dumpVersion(char const* data, size_t size)
+static void dumpVersion(void const* data, size_t size)
 {
     auto ptr = reinterpret_cast<int16_t const*>(data);
     std::cout << "major: " << ptr[0] << " minor: " << ptr[1];
 }
 
-static void dumpString(char const* data, size_t size)
+static void dumpString(void const* data, size_t size)
 {
-    std::cout << "'" << data << "'";
+    std::cout << "'" << static_cast<char const*>(data) << "'";
 }
 
 void

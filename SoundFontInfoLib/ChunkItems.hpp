@@ -14,8 +14,9 @@ namespace SF2 {
  Container of SF2 entities. All SF2 containers are homogenous (all entities have the same type).
  */
 template <typename T>
-struct ChunkItems
+class ChunkItems
 {
+public:
     using ItemType = T;
     static constexpr size_t itemSize = T::size;
 
@@ -37,7 +38,7 @@ struct ChunkItems
     void load(Chunk const& source)
     {
         items_.reserve(source.size() / itemSize);
-        BinaryStream is(source.dataPtr(), source.size());
+        BinaryStream is(source.bytePtr(), source.size());
         while (is) items_.emplace_back(is);
     }
 

@@ -21,7 +21,7 @@ public:
      - parameter pos: pointer to the first byte to read
      - parameter available: number of bytes available for reading
      */
-    BinaryStream(char const* pos, size_t available) : pos_{pos}, available_{available} {}
+    BinaryStream(uint8_t const* pos, size_t available) : pos_{pos}, available_{available} {}
 
     /**
      Determine if the stream is empty
@@ -64,7 +64,7 @@ private:
         available_ -= size;
     }
 
-    char const* pos_;
+    uint8_t const* pos_;
     size_t available_;
 };
 
