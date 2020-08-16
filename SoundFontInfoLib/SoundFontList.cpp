@@ -35,7 +35,7 @@ struct InternalSoundFontInfo {
         if (info != top_.end()) {
             auto name = info->find(Tags::inam);
             if (name != info->end()) {
-                name_ = std::string(name->dataPtr(), name->size());
+                name_ = std::string(name->charPtr(), name->size());
             }
         }
 

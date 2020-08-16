@@ -21,8 +21,8 @@ public:
      @param ptr pointer to the data start
      @param size length of the data
      */
-    Chunk(Tag tag, char const* ptr, uint32_t size)
-    : tag_{std::move(tag)}, data_{ptr}, size_{size}, chunks_{} {}
+    Chunk(Tag tag, void const* ptr, uint32_t size)
+    : tag_{tag}, data_{ptr}, size_{size}, chunks_{} {}
 
     /**
      Constructor for a list of chunks
@@ -31,18 +31,30 @@ public:
      @param chunks list of chunks
      */
     Chunk(Tag tag, ChunkList&& chunks)
-    : tag_{std::move(tag)}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
+    : tag_{tag}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
 
     /**
      @returns the chunk ID.
      */
-    Tag const& tag() const { return tag_; }
+    Tag tag() const { return tag_; }
 
     /**
      Obtain the pointer to the data blob.
      @returns data blob pointer
      */
-    char const* dataPtr() const { return data_; }
+    void const* dataPtr() const { return data_; }
+
+    /**
+     Obtain the pointer to the data blob as a stream of bytes.
+     @returns data blob pointer
+     */
+    uint8_t const* bytePtr() const { return static_cast<uint8_t const*>(data_); }
+
+    /**
+     Obtain the pointer to the data blob as a stream of characters.
+     @returns data blob pointer
+     */
+    char const* charPtr() const { return static_cast<char const*>(data_); }
 
     /**
      Obtain the size of the data blob.
@@ -90,7 +102,7 @@ private:
     void* operator new[](size_t) = delete;
 
     Tag tag_;
-    char const* data_;
+    void const* data_;
     uint32_t size_;
     ChunkList chunks_;
 };
