@@ -6,21 +6,21 @@
 #include "Presets.hpp"
 #include "Samples.hpp"
 #include "Zones.hpp"
-#include "ZoneGens.hpp"
-#include "ZoneMods.hpp"
+#include "ZoneGenerators.hpp"
+#include "ZoneModulators.hpp"
 
 namespace SF2 {
 
 struct SFFile {
     Presets presets;
     Zones presetZones;
-    ZoneGens presetZoneGens;
-    ZoneMods presetZoneMods;
+    ZoneGenerators presetZoneGenerators;
+    ZoneModulators presetZoneModulators;
 
     Instruments instruments;
     Zones instrumentZones;
-    ZoneGens instrumentZoneGens;
-    ZoneMods instrumentZoneMods;
+    ZoneGenerators instrumentZoneGenerators;
+    ZoneModulators instrumentZoneModulators;
 
     Samples samples;
 
@@ -32,12 +32,12 @@ private:
             switch (chunk.tag().toInt()) {
                 case Tags::phdr: presets.load(chunk); break;
                 case Tags::pbag: presetZones.load(chunk); break;
-                case Tags::pgen: presetZoneGens.load(chunk); break;
-                case Tags::pmod: presetZoneMods.load(chunk); break;
+                case Tags::pgen: presetZoneGenerators.load(chunk); break;
+                case Tags::pmod: presetZoneModulators.load(chunk); break;
                 case Tags::inst: instruments.load(chunk); break;
                 case Tags::ibag: instrumentZones.load(chunk); break;
-                case Tags::igen: instrumentZoneGens.load(chunk); break;
-                case Tags::imod: instrumentZoneMods.load(chunk); break;
+                case Tags::igen: instrumentZoneGenerators.load(chunk); break;
+                case Tags::imod: instrumentZoneModulators.load(chunk); break;
                 case Tags::shdr: samples.load(chunk); break;
                 case Tags::smpl: break;
             }

@@ -2,44 +2,39 @@
 
 #pragma once
 
-#include <cstdlib>
-#include <iostream>
+#include "BinaryStream.hpp"
+#include "SFGenerator.hpp"
+#include "SFModulatorSource.hpp"
+#include "SFTransform.hpp"
 
 namespace SF2 {
 
-struct SFModulator {
-    static constexpr char const* typeNames[] = { "linear", "concave", "convex", "switch" };
+/**
+ Memory layout of a 'pmod'/'imod' entry. The size of this is defined to be 10.
+ */
+class SFModulator {
+public:
+    static constexpr size_t size = 10;
 
-    constexpr SFModulator() : bits_{0} {}
-    constexpr SFModulator(uint16_t bits) : bits_{bits} {}
-
-    short type() const { return bits_ >> 10; }
-
-    short polarity() const { return bits_ & (1 << 9); }
-    bool isUnipolar() const { return polarity() == 0; }
-    bool isBipolar() const { return !isUnipolar(); }
-
-    bool direction() const { return bits_ & (1 << 8); }
-    bool isMinToMax() const { return direction() == 0; }
-    bool isMaxToMin() const { return !isMinToMax(); }
-
-    bool isContinuousController() const { return (bits_ & (1 << 7)) ? true : false; }
-
-    short index() const { return bits_ & 0x7F; }
-    char const* typeName() const { return typeNames[type()]; }
-
-    friend std::ostream& operator<<(std::ostream& os, SFModulator const& mod)
+    SFModulator(BinaryStream& is) { is.copyInto(this); }
+    
+    void dump(const std::string& indent, int index) const
     {
-        return os << "[type: " << mod.typeName()
-        << " P: " << mod.polarity()
-        << " D: " << mod.direction()
-        << " CC: " << mod.isContinuousController()
-        << " index: " << mod.index()
-        << "]";
+        std::cout << indent << index
+        << ": src: " << sfModSrcOper
+        << " dest: " << SFGenerator::definition(sfModDestOper).name()
+        << " amount: " << modAmount
+        << " op: " << sfModAmtSrcOper
+        << " xform: " << sfModTransOper
+        << std::endl;
     }
 
 private:
-    uint16_t bits_;
+    SFModulatorSource sfModSrcOper;
+    SFGeneratorIndex sfModDestOper;
+    int16_t modAmount;
+    SFModulatorSource sfModAmtSrcOper;
+    SFTransform sfModTransOper;
 };
 
 }

@@ -7,8 +7,8 @@
 #include "Presets.hpp"
 #include "Samples.hpp"
 #include "Zones.hpp"
-#include "ZoneGens.hpp"
-#include "ZoneMods.hpp"
+#include "ZoneGenerators.hpp"
+#include "ZoneModulators.hpp"
 
 using namespace SF2;
 
@@ -32,12 +32,12 @@ Chunk::dump(std::string const& indent) const
         switch (tag_.toInt()) {
             case Tags::phdr: Presets(*this).dump(indent + ' '); break;
             case Tags::pbag: Zones(*this).dump(indent + ' '); break;
-            case Tags::pgen: ZoneGens(*this).dump(indent + ' '); break;
-            case Tags::pmod: ZoneMods(*this).dump(indent + ' '); break;
+            case Tags::pgen: ZoneGenerators(*this).dump(indent + ' '); break;
+            case Tags::pmod: ZoneModulators(*this).dump(indent + ' '); break;
             case Tags::inst: Instruments(*this).dump(indent + ' '); break;
             case Tags::ibag: Zones(*this).dump(indent + ' '); break;
-            case Tags::imod: ZoneMods(*this).dump(indent + ' '); break;
-            case Tags::igen: ZoneGens(*this).dump(indent + ' '); break;
+            case Tags::imod: ZoneModulators(*this).dump(indent + ' '); break;
+            case Tags::igen: ZoneGenerators(*this).dump(indent + ' '); break;
             case Tags::shdr: Samples(*this).dump(indent + ' '); break;
             case Tags::ifil: dumpVersion(data_, size_); break;
             case Tags::iver: dumpVersion(data_, size_); break;
