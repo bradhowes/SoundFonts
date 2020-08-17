@@ -10,13 +10,13 @@ namespace SF2 {
 /**
  Collection of SFModList entities that represent mod definitions for the instrument zones of an SF2 file.
  */
-struct InstrumentZoneMods : ChunkItems<SFMod>
+struct ZoneMods : ChunkItems<SFMod>
 {
     using Super = ChunkItems<SFMod>;
 
-    InstrumentZoneMods() : Super() {}
+    ZoneMods() : Super() {}
     
-    InstrumentZoneMods(Chunk const& chunk) : Super(chunk) {}
+    ZoneMods(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

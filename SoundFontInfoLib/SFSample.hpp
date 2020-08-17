@@ -10,19 +10,9 @@ namespace SF2 {
  Memory layout of a 'shdr' entry. The size of this is defined to be 46 bytes, but due
  to alignment/padding the struct below is 48 bytes.
  */
-struct SFSample {
+class SFSample {
+public:
     constexpr static size_t size = 46;
-
-    char achSampleName[20];
-    uint32_t dwStart;
-    uint32_t dwEnd;
-    uint32_t dwStartLoop;
-    uint32_t dwEndLoop;
-    uint32_t dwSampleRate;
-    uint8_t originalKey;
-    int8_t correction;
-    uint16_t sampleLink;
-    uint16_t sampleType;
 
     SFSample(BinaryStream& is)
     {
@@ -38,6 +28,11 @@ struct SFSample {
         linkedSample = 8,
         rom = 0x8000
     };
+
+    constexpr bool isMono() const { return sampleType & monoSample; }
+    constexpr bool isRight() const { return sampleType & rightSample; }
+    constexpr bool isLeft() const { return sampleType & leftSample; }
+    constexpr bool isROM() const { return sampleType & rom; }
 
     std::string sampleTypeDescription() const
     {
@@ -57,6 +52,19 @@ struct SFSample {
         << " type: " << sampleType << ' ' << sampleTypeDescription()
         << std::endl;
     }
+
+private:
+    char achSampleName[20];
+    uint32_t dwStart;
+    uint32_t dwEnd;
+    uint32_t dwStartLoop;
+    uint32_t dwEndLoop;
+    uint32_t dwSampleRate;
+    uint8_t originalKey;
+    int8_t correction;
+    uint16_t sampleLink;
+    uint16_t sampleType;
+
 };
 
 }
