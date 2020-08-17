@@ -3,20 +3,20 @@
 #pragma once
 
 #include "ChunkItems.hpp"
-#include "SFInstBag.hpp"
+#include "SFBag.hpp"
 
 namespace SF2 {
 
 /**
  Collection of SFInstBag instances representing all of the instrument zones in an SF2 file.
  */
-struct InstrumentZones : ChunkItems<SFInstBag>
+struct Zones : ChunkItems<SFBag>
 {
-    using Super = ChunkItems<SFInstBag>;
+    using Super = ChunkItems<SFBag>;
 
-    InstrumentZones() : Super() {}
+    Zones() : Super() {}
     
-    InstrumentZones(Chunk const& chunk) : Super(chunk) {}
+    Zones(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

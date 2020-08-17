@@ -4,14 +4,11 @@
 
 #include "Chunk.hpp"
 #include "Instruments.hpp"
-#include "InstrumentZones.hpp"
-#include "InstrumentZoneGens.hpp"
-#include "InstrumentZoneMods.hpp"
 #include "Presets.hpp"
-#include "PresetZones.hpp"
-#include "PresetZoneGens.hpp"
-#include "PresetZoneMods.hpp"
 #include "Samples.hpp"
+#include "Zones.hpp"
+#include "ZoneGens.hpp"
+#include "ZoneMods.hpp"
 
 using namespace SF2;
 
@@ -34,16 +31,17 @@ Chunk::dump(std::string const& indent) const
         std::cout << " size: " << size_ << ' ';
         switch (tag_.toInt()) {
             case Tags::phdr: Presets(*this).dump(indent + ' '); break;
-            case Tags::pbag: PresetZones(*this).dump(indent + ' '); break;
-            case Tags::pgen: PresetZoneGens(*this).dump(indent + ' '); break;
-            case Tags::pmod: PresetZoneMods(*this).dump(indent + ' '); break;
+            case Tags::pbag: Zones(*this).dump(indent + ' '); break;
+            case Tags::pgen: ZoneGens(*this).dump(indent + ' '); break;
+            case Tags::pmod: ZoneMods(*this).dump(indent + ' '); break;
             case Tags::inst: Instruments(*this).dump(indent + ' '); break;
-            case Tags::ibag: InstrumentZones(*this).dump(indent + ' '); break;
-            case Tags::imod: InstrumentZoneMods(*this).dump(indent + ' '); break;
-            case Tags::igen: InstrumentZoneGens(*this).dump(indent + ' '); break;
+            case Tags::ibag: Zones(*this).dump(indent + ' '); break;
+            case Tags::imod: ZoneMods(*this).dump(indent + ' '); break;
+            case Tags::igen: ZoneGens(*this).dump(indent + ' '); break;
             case Tags::shdr: Samples(*this).dump(indent + ' '); break;
             case Tags::ifil: dumpVersion(data_, size_); break;
             case Tags::iver: dumpVersion(data_, size_); break;
+            case Tags::smpl: break;
             default: dumpString(data_, size_); break;
         }
         std::cout << std::endl;

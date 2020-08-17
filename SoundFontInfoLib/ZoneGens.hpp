@@ -12,13 +12,13 @@ namespace SF2 {
  given instrument zone contains in index into this collection. The number of items that belong to a given instrument
  zone is defined by the span between the index of the zone and the index of the next zone.
  */
-struct InstrumentZoneGens : ChunkItems<SFGen>
+struct ZoneGens : ChunkItems<SFGen>
 {
     using Super = ChunkItems<SFGen>;
 
-    InstrumentZoneGens() : Super() {}
+    ZoneGens() : Super() {}
     
-    InstrumentZoneGens(Chunk const& chunk) : Super(chunk) {}
+    ZoneGens(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

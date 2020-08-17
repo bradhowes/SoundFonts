@@ -3,27 +3,24 @@
 #pragma once
 
 #include "Instruments.hpp"
-#include "InstrumentZones.hpp"
-#include "InstrumentZoneGens.hpp"
-#include "InstrumentZoneMods.hpp"
 #include "Presets.hpp"
-#include "PresetZones.hpp"
-#include "PresetZoneGens.hpp"
-#include "PresetZoneMods.hpp"
 #include "Samples.hpp"
+#include "Zones.hpp"
+#include "ZoneGens.hpp"
+#include "ZoneMods.hpp"
 
 namespace SF2 {
 
 struct SFFile {
     Presets presets;
-    PresetZones presetZones;
-    PresetZoneGens presetZoneGens;
-    PresetZoneMods presetZoneMods;
+    Zones presetZones;
+    ZoneGens presetZoneGens;
+    ZoneMods presetZoneMods;
 
     Instruments instruments;
-    InstrumentZones instrumentZones;
-    InstrumentZoneGens instrumentZoneGens;
-    InstrumentZoneMods instrumentZoneMods;
+    Zones instrumentZones;
+    ZoneGens instrumentZoneGens;
+    ZoneMods instrumentZoneMods;
 
     Samples samples;
 
@@ -42,6 +39,7 @@ private:
                 case Tags::igen: instrumentZoneGens.load(chunk); break;
                 case Tags::imod: instrumentZoneMods.load(chunk); break;
                 case Tags::shdr: samples.load(chunk); break;
+                case Tags::smpl: break;
             }
         }
         else {

@@ -10,21 +10,21 @@ namespace SF2 {
  Memory layout of a 'ibag' entry in a sound font resource. Used to access packed values from a
  resource. The size of this must be 4.
  */
-struct SFInstBag {
+struct SFBag {
     constexpr static size_t size = 4;
 
-    uint16_t wInstGenNdx;
-    uint16_t wInstModNdx;
+    uint16_t wGenNdx;
+    uint16_t wModNdx;
 
-    SFInstBag(BinaryStream& is) { is.copyInto(this); }
+    SFBag(BinaryStream& is) { is.copyInto(this); }
 
     void dump(const std::string& indent, int index) const
     {
         auto next = this + 1;
         std::cout << indent << index
-        << ": gen: " << wInstGenNdx
-        << " count: " << (next->wInstGenNdx - wInstGenNdx)
-        << " mod: " << wInstModNdx << " count: " << (next->wInstModNdx - wInstModNdx)
+        << ": genIndex: " << wGenNdx
+        << " count: " << (next->wGenNdx - wGenNdx)
+        << " modIndex: " << wModNdx << " count: " << (next->wModNdx - wModNdx)
         << std::endl;
     }
 };
