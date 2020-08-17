@@ -39,7 +39,8 @@ private:
     bool availableInPreset_;
 };
 
-struct SFGenerator {
+class SFGenerator {
+public:
     static std::vector<GenDef> const defs;
 
     SFGenerator() : bits_{0} {}
