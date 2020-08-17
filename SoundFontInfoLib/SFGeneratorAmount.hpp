@@ -6,9 +6,9 @@
 
 namespace SF2 {
 
-struct SFGenTypeAmount {
-    SFGenTypeAmount() : raw_{} {}
-    SFGenTypeAmount(uint16_t raw) : raw_{raw} {}
+struct SFGeneratorAmount {
+    SFGeneratorAmount() : raw_{} {}
+    SFGeneratorAmount(uint16_t raw) : raw_{raw} {}
 
     uint16_t index() const { return raw_.wAmount; }
     int16_t amount() const { return raw_.shAmount; }

@@ -64,7 +64,6 @@ private:
     int8_t correction;
     uint16_t sampleLink;
     uint16_t sampleType;
-
 };
 
 }

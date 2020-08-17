@@ -3,7 +3,7 @@
 #pragma once
 
 #include "ChunkItems.hpp"
-#include "SFGen.hpp"
+#include "SFGenerator.hpp"
 
 namespace SF2 {
 
@@ -12,13 +12,13 @@ namespace SF2 {
  given instrument zone contains in index into this collection. The number of items that belong to a given instrument
  zone is defined by the span between the index of the zone and the index of the next zone.
  */
-struct ZoneGens : ChunkItems<SFGen>
+struct ZoneGenerators : ChunkItems<SFGenerator>
 {
-    using Super = ChunkItems<SFGen>;
+    using Super = ChunkItems<SFGenerator>;
 
-    ZoneGens() : Super() {}
+    ZoneGenerators() : Super() {}
     
-    ZoneGens(Chunk const& chunk) : Super(chunk) {}
+    ZoneGenerators(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

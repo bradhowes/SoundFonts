@@ -10,13 +10,11 @@ namespace SF2 {
 /**
  Memory layout of a 'inst' entry. The size of this is defined to be 22 bytes.
  */
-struct SFInst {
+class SFInstrument {
+public:
     constexpr static size_t size = 22;
 
-    char achInstName[20];
-    uint16_t wInstBagNdx;
-
-    SFInst(BinaryStream& is) {
+    SFInstrument(BinaryStream& is) {
         is.copyInto(this);
         trim_property(achInstName);
     }
@@ -29,6 +27,10 @@ struct SFInst {
         std::cout << indent << index << ": '" << name
         << "' ibagIndex: " << wInstBagNdx << " count: " << (next->wInstBagNdx - wInstBagNdx) << std::endl;
     }
+
+private:
+    char achInstName[20];
+    uint16_t wInstBagNdx;
 };
 
 }
