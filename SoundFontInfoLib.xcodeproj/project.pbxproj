@@ -27,6 +27,9 @@
 		BD827FFE24EA8E1B00533D80 /* SFGeneratorDefinition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */; };
 		BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */; };
 		BD82800224EA8EC500533D80 /* SFGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD82800124EA8EC500533D80 /* SFGenerator.cpp */; };
+		BD82800424EC061400533D80 /* Envelope.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD82800324EC061400533D80 /* Envelope.hpp */; };
+		BD82800624EC16F200533D80 /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD82800524EC16F200533D80 /* Envelope.cpp */; };
+		BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD82800A24EC91A600533D80 /* EnvelopeTests.mm */; };
 		BDB1B4622491805800F3F361 /* Tag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4602491805800F3F361 /* Tag.cpp */; };
 		BDB1B4632491805800F3F361 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; };
 		BDB1B4662491823400F3F361 /* ChunkList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4642491823400F3F361 /* ChunkList.cpp */; };
@@ -84,6 +87,10 @@
 		BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFGeneratorDefinition.hpp; sourceTree = "<group>"; };
 		BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGeneratorDefinition.cpp; sourceTree = "<group>"; };
 		BD82800124EA8EC500533D80 /* SFGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenerator.cpp; sourceTree = "<group>"; };
+		BD82800324EC061400533D80 /* Envelope.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Envelope.hpp; sourceTree = "<group>"; };
+		BD82800524EC16F200533D80 /* Envelope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
+		BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SoundFontInfoLibTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		BD82800A24EC91A600533D80 /* EnvelopeTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EnvelopeTests.mm; sourceTree = "<group>"; };
 		BDB1B4602491805800F3F361 /* Tag.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tag.cpp; sourceTree = "<group>"; };
 		BDB1B4612491805800F3F361 /* Tag.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tag.hpp; sourceTree = "<group>"; };
 		BDB1B4642491823400F3F361 /* ChunkList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkList.cpp; sourceTree = "<group>"; };
@@ -177,12 +184,14 @@
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
 				BDB1B4642491823400F3F361 /* ChunkList.cpp */,
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
-				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
+				BD82800524EC16F200533D80 /* Envelope.cpp */,
+				BD82800324EC061400533D80 /* Envelope.hpp */,
 				BDEC0026249775FE00A52507 /* Instruments.hpp */,
 				BD74D18423CDB36200204ED4 /* Parser.cpp */,
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
 				BDEC000224974AF100A52507 /* Presets.hpp */,
 				BDEC003A249795AB00A52507 /* Samples.hpp */,
+				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
 				BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */,
 				BD74D18323CDB36200204ED4 /* SoundFontList.cpp */,
 				BD74D18223CDB36200204ED4 /* SoundFontList.hpp */,
@@ -207,6 +216,8 @@
 				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD64EB7324E5DACD00EA8473 /* SFFileTests.swift */,
 				BD74D17723CDB1D200204ED4 /* Info.plist */,
+				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
+				BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */,
 			);
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
@@ -259,6 +270,7 @@
 				BDB1B4632491805800F3F361 /* Tag.hpp in Headers */,
 				BDEC0024249768E200A52507 /* SFGeneratorAmount.hpp in Headers */,
 				BD64EB6524E52EDF00EA8473 /* BinaryStream.hpp in Headers */,
+				BD82800424EC061400533D80 /* Envelope.hpp in Headers */,
 				BD827FFE24EA8E1B00533D80 /* SFGeneratorDefinition.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +329,7 @@
 					};
 					BD74D16F23CDB1D200204ED4 = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1160;
 					};
 				};
 			};
@@ -368,6 +381,7 @@
 				BD82800224EA8EC500533D80 /* SFGenerator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontList.cpp in Sources */,
 				BDB1B4622491805800F3F361 /* Tag.cpp in Sources */,
+				BD82800624EC16F200533D80 /* Envelope.cpp in Sources */,
 				BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */,
 				BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */,
 				BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */,
@@ -380,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD64EB7424E5DACD00EA8473 /* SFFileTests.swift in Sources */,
+				BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */,
 				BD74D17623CDB1D200204ED4 /* SoundFontInfoLibTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -592,6 +607,7 @@
 		BD74D17F23CDB1D200204ED4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontInfoLibTests/Info.plist;
@@ -602,6 +618,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -611,6 +629,7 @@
 		BD74D18023CDB1D200204ED4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontInfoLibTests/Info.plist;
@@ -621,6 +640,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
