@@ -30,8 +30,7 @@ public:
      @param tag identifier for this chunk
      @param chunks list of chunks
      */
-    Chunk(Tag tag, ChunkList&& chunks)
-    : tag_{tag}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
+    Chunk(Tag tag, ChunkList&& chunks) : tag_{tag}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
 
     /**
      @returns the chunk ID.
