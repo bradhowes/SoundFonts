@@ -11,7 +11,7 @@ constexpr double Envelope::minimumCurvature;
 constexpr double Envelope::maxiumCurvature;
 
 void
-Envelope::SegmentConfiguration::setAttackRate(double duration, double curvature)
+Envelope::StageConfiguration::setAttackRate(double duration, double curvature)
 {
     curvature = clampCurvature(curvature);
     initial = 0.0;
@@ -21,7 +21,7 @@ Envelope::SegmentConfiguration::setAttackRate(double duration, double curvature)
 }
 
 void
-Envelope::SegmentConfiguration::setConstant(double duration, double value)
+Envelope::StageConfiguration::setConstant(double duration, double value)
 {
     initial = value;
     alpha = 1.0;
@@ -30,7 +30,7 @@ Envelope::SegmentConfiguration::setConstant(double duration, double value)
 }
 
 void
-Envelope::SegmentConfiguration::setDecayRate(double duration, double curvature, double sustainLevel)
+Envelope::StageConfiguration::setDecayRate(double duration, double curvature, double sustainLevel)
 {
     curvature = clampCurvature(curvature);
     initial = 1.0;
@@ -40,7 +40,7 @@ Envelope::SegmentConfiguration::setDecayRate(double duration, double curvature, 
 }
 
 void
-Envelope::SegmentConfiguration::setSustainLevel(double sustainLevel)
+Envelope::StageConfiguration::setSustainLevel(double sustainLevel)
 {
     initial = sustainLevel;
     alpha = 1.0;
@@ -49,7 +49,7 @@ Envelope::SegmentConfiguration::setSustainLevel(double sustainLevel)
 }
 
 void
-Envelope::SegmentConfiguration::setReleaseRate(double duration, double curvature, double sustainLevel)
+Envelope::StageConfiguration::setReleaseRate(double duration, double curvature, double sustainLevel)
 {
     curvature = clampCurvature(curvature);
     alpha = calculateCoefficient(duration, curvature);
@@ -66,7 +66,7 @@ void
 Envelope::setDelay(double duration)
 {
     delayDuration_ = duration;
-    segment(Stage::delay).setConstant(samplesFor(duration), 0.0);
+    stage(Stage::delay).setConstant(samplesFor(duration), 0.0);
 }
 
 void
@@ -74,14 +74,14 @@ Envelope::setAttackRate(double duration, double curvature)
 {
     attackDuration_ = duration;
     attackCurvature_ = curvature;
-    segment(Stage::attack).setAttackRate(samplesFor(duration), curvature);
+    stage(Stage::attack).setAttackRate(samplesFor(duration), curvature);
 }
 
 void
 Envelope::setHoldDuration(double duration)
 {
     holdDuration_ = duration;
-    segment(Stage::hold).setConstant(samplesFor(duration), 1.0);
+    stage(Stage::hold).setConstant(samplesFor(duration), 1.0);
 }
 
 void
@@ -89,16 +89,16 @@ Envelope::setDecayRate(double duration, double curvature)
 {
     decayDuration_ = duration;
     decayCurvature_ = curvature;
-    segment(Stage::decay).setDecayRate(samplesFor(duration), curvature, sustainLevel_);
+    stage(Stage::decay).setDecayRate(samplesFor(duration), curvature, sustainLevel_);
 }
 
 void
 Envelope::setSustainLevel(double sustainLevel)
 {
     sustainLevel_ = sustainLevel;
-    segment(Stage::decay).setDecayRate(samplesFor(decayDuration_), decayCurvature_, sustainLevel_);
-    segment(Stage::sustain).setSustainLevel(sustainLevel);
-    segment(Stage::release).setReleaseRate(samplesFor(releaseDuration_), releaseCurvature_, sustainLevel_);
+    stage(Stage::decay).setDecayRate(samplesFor(decayDuration_), decayCurvature_, sustainLevel_);
+    stage(Stage::sustain).setSustainLevel(sustainLevel);
+    stage(Stage::release).setReleaseRate(samplesFor(releaseDuration_), releaseCurvature_, sustainLevel_);
 }
 
 void
@@ -106,6 +106,6 @@ Envelope::setReleaseRate(double duration, double curvature)
 {
     releaseDuration_ = duration;
     releaseCurvature_ = curvature;
-    segment(Stage::release).setReleaseRate(samplesFor(duration), curvature, sustainLevel_);
+    stage(Stage::release).setReleaseRate(samplesFor(duration), curvature, sustainLevel_);
 }
 
