@@ -14,11 +14,8 @@ namespace SF2 {
  configuration for a specific SFGenerator.
  */
 class SFGenerator {
-    static std::vector<SFGeneratorDefinition> const definitions_;
 public:
     static constexpr size_t size = 4;
-
-    static SFGeneratorDefinition const& definition(SFGeneratorIndex index) { return definitions_.at(index.index()); }
 
     SFGenerator(BinaryStream& is) { is.copyInto(this); }
     
@@ -28,7 +25,7 @@ public:
         << std::endl;
     }
 
-    SFGeneratorDefinition const& definition() const { return definitions_[index_.index()]; }
+    SFGeneratorDefinition const& definition() const { return SFGeneratorDefinition::definitions_[index_.index()]; }
 
     std::string const& name() const { return definition().name(); }
 

@@ -22,7 +22,7 @@ public:
     {
         std::cout << indent << index
         << ": src: " << sfModSrcOper
-        << " dest: " << SFGenerator::definition(sfModDestOper).name()
+        << " dest: " << SFGeneratorDefinition::definition(sfModDestOper).name()
         << " amount: " << modAmount
         << " op: " << sfModAmtSrcOper
         << " xform: " << sfModTransOper
