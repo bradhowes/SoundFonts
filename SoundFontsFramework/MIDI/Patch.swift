@@ -18,7 +18,7 @@ public struct Patch: Codable {
     public let bank: Int
 
     /// Program patch number where the patch resides in the sound font
-    public let patch: Int
+    public let program: Int
 
     /// The index into the owning soundFont's patches array
     public var soundFontIndex: Int
@@ -79,14 +79,14 @@ public struct Patch: Codable {
      - parameter bank: the bank where the patch resides
      - parameter patch: the program ID of the patch in the sound font
      */
-    public init(_ name: String, _ bank: Int, _ patch: Int, _ index: Int) {
+    public init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
         self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         self.bank = bank
-        self.patch = patch
+        self.program = program
         self.soundFontIndex = index
     }
 }
 
 extension Patch: CustomStringConvertible {
-    public var description: String { "[Patch '\(name)' \(bank):\(patch)]" }
+    public var description: String { "[Patch '\(name)' \(bank):\(program)]" }
 }

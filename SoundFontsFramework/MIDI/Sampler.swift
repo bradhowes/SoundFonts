@@ -116,7 +116,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         self.activePatchKind = activePatchKind
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = self.auSampler, let soundFontPatch = activePatchKind.soundFontAndPatch else {
+        guard let sampler = self.auSampler, let soundFontAndPatch = activePatchKind.soundFontAndPatch else {
             return .success(())
         }
 
@@ -127,10 +127,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         do {
             os_log(.info, log: log, "begin loading")
-            try sampler.loadSoundBankInstrument(at: soundFontPatch.soundFont.fileURL,
-                                                program: UInt8(soundFontPatch.patch.patch),
-                                                bankMSB: UInt8(soundFontPatch.patch.bankMSB),
-                                                bankLSB: UInt8(soundFontPatch.patch.bankLSB))
+            try sampler.loadSoundBankInstrument(at: soundFontAndPatch.soundFont.fileURL,
+                                                program: UInt8(soundFontAndPatch.patch.program),
+                                                bankMSB: UInt8(soundFontAndPatch.patch.bankMSB),
+                                                bankLSB: UInt8(soundFontAndPatch.patch.bankLSB))
             os_log(.info, log: log, "end loading")
             loaded = true
             afterLoadBlock?()
