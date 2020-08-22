@@ -60,6 +60,13 @@ using namespace SF2;
     XCTAssertEqualWithAccuracy(0.0, xfm.value(127), self.epsilon);
 }
 
+- (void)testBipolarAscendingConcave {
+    auto xfm = Transform(Transform::Kind::concave, Transform::Direction::ascending, Transform::Polarity::bipolar);
+    XCTAssertEqualWithAccuracy(-1.0, xfm.value(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(-0.746280690415, xfm.value(64), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, xfm.value(127), self.epsilon);
+}
+
 - (void)testAscendingConvex {
     auto xfm = Transform(Transform::Kind::convex, Transform::Direction::ascending, Transform::Polarity::unipolar);
     XCTAssertEqualWithAccuracy(0.0, xfm.value(0), self.epsilon);
