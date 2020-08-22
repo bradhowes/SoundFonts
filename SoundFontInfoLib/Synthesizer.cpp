@@ -6,6 +6,13 @@
 
 using namespace SF2;
 
+// Hmmm. Looks like constexpr members still need a symbol to link with -- sometimes.
+constexpr int Synthesizer::MaxMIDINote;
+constexpr int Synthesizer::MaxCentValue;
+
+constexpr size_t Synthesizer::SineLookupTableSize;
+constexpr double Synthesizer::SineLookupTableScale;
+
 std::array<double, Synthesizer::MaxMIDINote + 1> Synthesizer::standardNoteFrequencies_ = [] {
     auto init = decltype(Synthesizer::standardNoteFrequencies_){};
     auto frequency = Synthesizer::LowestNoteFrequency;

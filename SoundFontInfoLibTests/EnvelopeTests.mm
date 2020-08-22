@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #include "Envelope.hpp"
+#include "Synthesizer.hpp"
 
 using namespace SF2;
 
