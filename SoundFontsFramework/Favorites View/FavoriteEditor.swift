@@ -79,7 +79,7 @@ final public class FavoriteEditor: UIViewController {
         soundFontName.text = soundFontAndPatch.soundFont.displayName
         patchName.text = soundFontAndPatch.patch.name
         bank.text = "Bank: \(soundFontAndPatch.patch.bank)"
-        index.text = "Index: \(soundFontAndPatch.patch.patch)"
+        index.text = "Index: \(soundFontAndPatch.patch.program)"
 
         gainValue.text = formatFloat(favorite.gain)
         gainSlider.value = favorite.gain
