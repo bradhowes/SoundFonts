@@ -34,74 +34,69 @@ class SoundFontInfoLibTests: XCTestCase {
     }()
 
     func testParsing1() {
-        let sfi = soundFont1.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
+        let sfi = soundFont1.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
 
-        XCTAssertEqual(String(cString: SoundFontName(sfi)), "Fluid R3 GM")
-        XCTAssertEqual(SoundFontPatchCount(sfi), 189)
+        XCTAssertEqual(sfi.embeddedName, "Fluid R3 GM")
+        XCTAssertEqual(sfi.patches.count, 189)
 
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Yamaha Grand Piano")
-        XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 0)
+        XCTAssertEqual(sfi.patches[0].name, "Yamaha Grand Piano")
+        XCTAssertEqual(sfi.patches[0].bank, 0)
+        XCTAssertEqual(sfi.patches[0].patch, 0)
 
-        let lastPatchIndex = SoundFontPatchCount(sfi) - 1
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "Orchestra Kit")
-        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 128)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 48)
+        let lastPatchIndex = sfi.patches.count - 1
+        XCTAssertEqual(sfi.patches[lastPatchIndex].name, "Orchestra Kit")
+        XCTAssertEqual(sfi.patches[lastPatchIndex].bank, 128)
+        XCTAssertEqual(sfi.patches[lastPatchIndex].patch, 48)
     }
 
     func testParsing2() {
-        let sfi = soundFont2.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
+        let sfi = soundFont2.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
 
-        XCTAssertEqual(String(cString: SoundFontName(sfi)), "Free Font GM Ver. 3.2")
-        XCTAssertEqual(SoundFontPatchCount(sfi), 235)
+        XCTAssertEqual(sfi.embeddedName, "Free Font GM Ver. 3.2")
+        XCTAssertEqual(sfi.patches.count, 235)
 
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Piano 1")
-        XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 0)
+        XCTAssertEqual(sfi.patches[0].name, "Piano 1")
+        XCTAssertEqual(sfi.patches[0].bank, 0)
+        XCTAssertEqual(sfi.patches[0].patch, 0)
 
-        let lastPatchIndex = SoundFontPatchCount(sfi) - 1
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "SFX")
-        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 128)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 56)
+        let lastPatchIndex = sfi.patches.count - 1
+        XCTAssertEqual(sfi.patches[lastPatchIndex].name, "SFX")
+        XCTAssertEqual(sfi.patches[lastPatchIndex].bank, 128)
+        XCTAssertEqual(sfi.patches[lastPatchIndex].patch, 56)
     }
 
     func testParsing3() {
-        let sfi = soundFont3.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
+        let sfi = soundFont3.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
 
-        XCTAssertEqual(String(cString: SoundFontName(sfi)), "GeneralUser GS MuseScore version 1.442")
-        XCTAssertEqual(SoundFontPatchCount(sfi), 270)
+        XCTAssertEqual(sfi.embeddedName, "GeneralUser GS MuseScore version 1.442")
+        XCTAssertEqual(sfi.patches.count, 270)
 
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Stereo Grand")
-        XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 0)
+        XCTAssertEqual(sfi.patches[0].name, "Stereo Grand")
+        XCTAssertEqual(sfi.patches[0].bank, 0)
+        XCTAssertEqual(sfi.patches[0].patch, 0)
 
-        let lastPatchIndex = SoundFontPatchCount(sfi) - 1
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "SFX")
-        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 128)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 56)
+        let lastPatchIndex = sfi.patches.count - 1
+        XCTAssertEqual(sfi.patches[lastPatchIndex].name, "SFX")
+        XCTAssertEqual(sfi.patches[lastPatchIndex].bank, 128)
+        XCTAssertEqual(sfi.patches[lastPatchIndex].patch, 56)
     }
 
     func testParsing4() {
-        let sfi = soundFont4.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
+        let sfi = soundFont4.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
 
-        XCTAssertEqual(String(cString: SoundFontName(sfi)), "User Bank")
-        XCTAssertEqual(SoundFontPatchCount(sfi), 1)
+        XCTAssertEqual(sfi.embeddedName, "User Bank")
+        XCTAssertEqual(sfi.patches.count, 1)
 
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, 0)!), "Nice Piano")
-        XCTAssertEqual(SoundFontPatchBank(sfi, 0), 0)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, 0), 1)
-
-        let lastPatchIndex = SoundFontPatchCount(sfi) - 1
-        XCTAssertEqual(String(cString: SoundFontPatchName(sfi, lastPatchIndex)), "Nice Piano")
-        XCTAssertEqual(SoundFontPatchBank(sfi, lastPatchIndex), 0)
-        XCTAssertEqual(SoundFontPatchPatch(sfi, lastPatchIndex), 1)
+        XCTAssertEqual(sfi.patches[0].name, "Nice Piano")
+        XCTAssertEqual(sfi.patches[0].bank, 0)
+        XCTAssertEqual(sfi.patches[0].patch, 1)
     }
 
     func testDumps() {
         for sf in soundFonts {
-            let sfi = sf.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count)! }
-            let name = String(cString: SoundFontName(sfi)).replacingOccurrences(of: " ", with: "_")
-            SoundFontDump(sfi, "/tmp/\(name)_dump.txt")
+            let sfi = sf.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+            let name = sfi.embeddedName.replacingOccurrences(of: " ", with: "_")
+            sfi.dump("/tmp/\(name)_dump.txt")
         }
     }
 
@@ -113,7 +108,7 @@ class SoundFontInfoLibTests: XCTestCase {
         let size = 2048
         var data = Data(count: size)
         _ = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, size, $0.baseAddress!) }
-        let sfi = data.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count) }
+        let sfi = data.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count) }
         XCTAssertNil(sfi)
     }
 
@@ -126,7 +121,7 @@ class SoundFontInfoLibTests: XCTestCase {
         for _ in 0..<500 {
             let truncatedCount = Int.random(in: 1..<original.count);
             let data = original.subdata(in: 0..<truncatedCount)
-            let sfi = data.withUnsafeBytes { SoundFontParse($0.baseAddress, $0.count) }
+            let sfi = data.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count) }
             XCTAssertNil(sfi)
         }
     }

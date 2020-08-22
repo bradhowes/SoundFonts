@@ -116,7 +116,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         self.activePatchKind = activePatchKind
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = self.auSampler, let soundFontPatch = activePatchKind.soundFontPatch else {
+        guard let sampler = self.auSampler, let soundFontPatch = activePatchKind.soundFontAndPatch else {
             return .success(())
         }
 

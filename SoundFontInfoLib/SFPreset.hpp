@@ -14,16 +14,9 @@ namespace SF2 {
 struct SFPreset {
     constexpr static size_t size = 38;
 
-    char achPresetName[20];
-    uint16_t wPreset;
-    uint16_t wBank;
-    uint16_t wPresetBagNdx;
-    uint32_t dwLibrary;
-    uint32_t dwGenre;
-    uint32_t dwMorphology;
-
     SFPreset(BinaryStream& is)
     {
+        // Account for the extra padding by reading twice.
         is.copyInto(&achPresetName, 26);
         is.copyInto(&dwLibrary, 12);
         trim_property(achPresetName);
@@ -37,6 +30,20 @@ struct SFPreset {
         << " pbagIndex: " << wPresetBagNdx
         << " count: " << (next->wPresetBagNdx - wPresetBagNdx) << std::endl;
     }
+
+    char const* name() const { return achPresetName; }
+    uint16_t preset() const { return wPreset; }
+    uint16_t bank() const { return wBank; }
+    uint16_t bagIndex() const { return wPresetBagNdx; }
+
+private:
+    char achPresetName[20];
+    uint16_t wPreset;
+    uint16_t wBank;
+    uint16_t wPresetBagNdx;
+    uint32_t dwLibrary;
+    uint32_t dwGenre;
+    uint32_t dwMorphology;
 };
 
 }

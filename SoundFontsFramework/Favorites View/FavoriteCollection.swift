@@ -9,7 +9,7 @@ import os
 final class FavoriteCollection: Codable {
 
     private var favorites: [Favorite]
-    private var reverseLookup: [SoundFontPatch: Favorite]
+    private var reverseLookup: [SoundFontAndPatch: Favorite]
 
     /// Number of favorites defined
     var count: Int { favorites.count }
@@ -25,7 +25,7 @@ final class FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: true if so
      */
-    func isFavored(soundFontPatch: SoundFontPatch) -> Bool { reverseLookup[soundFontPatch] != nil }
+    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool { reverseLookup[soundFontAndPatch] != nil }
 
     /**
      Obtain the index of the given favorite in the collection.
@@ -49,9 +49,9 @@ final class FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: the favorite found or nil if no match
      */
-    func getBy(soundFontPatch: SoundFontPatch?) -> Favorite? {
-        guard let soundFontPatch = soundFontPatch else { return nil }
-        return reverseLookup[soundFontPatch]
+    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite? {
+        guard let soundFontAndPatch = soundFontAndPatch else { return nil }
+        return reverseLookup[soundFontAndPatch]
     }
 
     /**
@@ -60,7 +60,7 @@ final class FavoriteCollection: Codable {
      - parameter favorite: the new favorite to add
      */
     func add(favorite: Favorite) {
-        reverseLookup[favorite.soundFontPatch] = favorite
+        reverseLookup[favorite.soundFontAndPatch] = favorite
         AskForReview.maybe()
         favorites.append(favorite)
     }
@@ -72,9 +72,9 @@ final class FavoriteCollection: Codable {
      - parameter favorite: the new value to store
      */
     func replace(index: Int, with favorite: Favorite) {
-        reverseLookup.removeValue(forKey: favorites[index].soundFontPatch)
+        reverseLookup.removeValue(forKey: favorites[index].soundFontAndPatch)
         favorites[index] = favorite
-        reverseLookup[favorite.soundFontPatch] = favorite
+        reverseLookup[favorite.soundFontAndPatch] = favorite
     }
 
     func move(from: Int, to: Int) {
@@ -84,7 +84,7 @@ final class FavoriteCollection: Codable {
 
     func remove(index: Int) -> Favorite {
         let favorite = favorites.remove(at: index)
-        reverseLookup.removeValue(forKey: favorite.soundFontPatch)
+        reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
         AskForReview.maybe()
         return favorite
     }
@@ -103,10 +103,10 @@ extension FavoriteCollection {
     private func remove(favorite: Favorite) {
         guard let index = favorites.firstIndex(of: favorite) else { return }
         favorites.remove(at: index)
-        reverseLookup.removeValue(forKey: favorite.soundFontPatch)
+        reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
     }
 
     private func findAll(associatedWith soundFont: SoundFont) -> [Favorite] {
-        favorites.filter { $0.soundFontPatch.soundFont.key == soundFont.key }
+        favorites.filter { $0.soundFontAndPatch.soundFont.key == soundFont.key }
     }
 }

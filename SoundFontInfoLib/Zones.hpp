@@ -8,7 +8,7 @@
 namespace SF2 {
 
 /**
- Collection of SFInstBag instances representing all of the instrument zones in an SF2 file.
+ Collection of SFInstBag instances representing all of the instrument/preset zones in an SF2 file.
  */
 struct Zones : ChunkItems<SFBag>
 {

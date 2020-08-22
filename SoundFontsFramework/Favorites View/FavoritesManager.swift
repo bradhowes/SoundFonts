@@ -38,18 +38,20 @@ extension FavoritesManager: Favorites {
 
     public var count: Int { collection.count }
 
-    public func isFavored(soundFontPatch: SoundFontPatch) -> Bool { collection.isFavored(soundFontPatch: soundFontPatch) }
+    public func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool {
+        collection.isFavored(soundFontAndPatch: soundFontAndPatch)
+    }
 
     public func index(of favorite: Favorite) -> Int { collection.index(of: favorite) }
 
     public func getBy(index: Int) -> Favorite { collection.getBy(index: index) }
 
-    public func getBy(soundFontPatch: SoundFontPatch?) -> Favorite? {
-        collection.getBy(soundFontPatch: soundFontPatch)
+    public func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite? {
+        collection.getBy(soundFontAndPatch: soundFontAndPatch)
     }
 
-    public func add(soundFontPatch: SoundFontPatch, keyboardLowestNote note: Note?) {
-        let favorite = Favorite(soundFontPatch: soundFontPatch, keyboardLowestNote: note)
+    public func add(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
+        let favorite = Favorite(soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
         save()
         notify(.added(index: count - 1, favorite: favorite))

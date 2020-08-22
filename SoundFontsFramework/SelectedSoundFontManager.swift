@@ -13,7 +13,7 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
     private(set) var selected: SoundFont?
 
     public init(activePatchManager: ActivePatchManager) {
-        self.selected = activePatchManager.active.soundFontPatch?.soundFont ?? nil
+        self.selected = activePatchManager.active.soundFontAndPatch?.soundFont ?? nil
         os_log(.info, log: log, "selected: %s", selected?.description ?? "nil")
     }
 

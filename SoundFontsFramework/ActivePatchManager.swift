@@ -9,14 +9,14 @@ extension SettingKeys {
 
 public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
-    case normal(soundFontPatch: SoundFontPatch)
+    case normal(soundFontAndPatch: SoundFontAndPatch)
     case favorite(favorite: Favorite)
     case none
 
-    public var soundFontPatch: SoundFontPatch? {
+    public var soundFontAndPatch: SoundFontAndPatch? {
         switch self {
-        case .normal(let soundFontPatch): return soundFontPatch
-        case .favorite(let favorite): return favorite.soundFontPatch
+        case .normal(let soundFontAndPatch): return soundFontAndPatch
+        case .favorite(let favorite): return favorite.soundFontAndPatch
         case .none: return nil
         }
     }
@@ -31,7 +31,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
     public var description: String {
         switch self {
-        case let .normal(soundFontPatch: soundFontPatch): return ".normal(\(soundFontPatch)"
+        case let .normal(soundFontAndPatch: soundFontPatch): return ".normal(\(soundFontPatch)"
         case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
         case .none: return "nil"
         }
@@ -44,7 +44,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
         static func key(for kind: ActivePatchKind) -> InternalKey {
             switch kind {
-            case .normal(soundFontPatch: _): return .normal
+            case .normal(soundFontAndPatch: _): return .normal
             case .favorite(favorite:_): return .favorite
             case .none: return .none
             }
@@ -55,7 +55,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
         var container = try decoder.unkeyedContainer()
         guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
         switch kind {
-        case .normal: self = .normal(soundFontPatch: try container.decode(SoundFontPatch.self))
+        case .normal: self = .normal(soundFontAndPatch: try container.decode(SoundFontAndPatch.self))
         case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
         case .none: self = .none
         }
@@ -85,14 +85,14 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public private(set) var active: ActivePatchKind
 
     public var favorite: Favorite? { active.favorite }
-    public var soundFontPatch: SoundFontPatch? { active.soundFontPatch }
-    public var soundFont: SoundFont? { soundFontPatch?.soundFont }
-    public var patch: Patch? { soundFont?.patches[soundFontPatch!.patchIndex] }
+    public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
+    public var soundFont: SoundFont? { soundFontAndPatch?.soundFont }
+    public var patch: Patch? { soundFont?.patches[soundFontAndPatch!.patchIndex] }
 
     public init(soundFonts: SoundFonts) {
         self.active = Self.restore() ??
             (soundFonts.count > 0
-                ? .normal(soundFontPatch: soundFonts.getBy(index: 0).makeSoundFontPatch(for: 0))
+                ? .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0))
                 : .none)
         os_log(.info, log: log, "active: %s", active.description)
     }
