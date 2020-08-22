@@ -167,9 +167,10 @@ extension SoundFontsManager {
     @discardableResult
     fileprivate static func addFromBundle(url: URL) -> SoundFont {
         guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
-        let info = GetSoundFontInfo(data: data)
-        if info.name.isEmpty || info.patches.isEmpty { fatalError() }
-        let displayName = niceNames.first { (key, _) in info.name.hasPrefix(key) }?.value ?? info.name
+        guard let info = GetSoundFontInfo(data: data) else { fatalError() }
+        guard let infoName = info.embeddedName else { fatalError() }
+        if infoName.isEmpty || info.patches.isEmpty { fatalError() }
+        let displayName = niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName
         return SoundFont(displayName, soundFontInfo: info, resource: url)
     }
 

@@ -26,10 +26,10 @@ public protocol Favorites {
     /**
      Determine if the given SoundFontPatch is associated with a Favorite
 
-     - parameter soundFontPatch: what to look for
+     - parameter soundFontAndPatch: what to look for
      - returns: true if so
      */
-    func isFavored(soundFontPatch: SoundFontPatch) -> Bool
+    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool
 
     /**
      Obtain the index of the given Favorite in the collection.
@@ -50,18 +50,18 @@ public protocol Favorites {
     /**
      Get the Favorite associated with the given SoundFontPatch
 
-     - parameter soundFontPatch: what to look for
+     - parameter soundFontAndPatch: what to look for
      - returns: optional Favorite instance
      */
-    func getBy(soundFontPatch: SoundFontPatch?) -> Favorite?
+    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite?
 
     /**
      Create a new Favorite instance with the given parameters
     
-     - parameter patch: the Patch to associate with
+     - parameter soundFontAndPatch: the Patch to associate with
      - parameter keyboardLowestNote: the lowest note of the keyboard
      */
-    func add(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note?)
+    func add(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
 
     /**
      Begin editing a Favorite

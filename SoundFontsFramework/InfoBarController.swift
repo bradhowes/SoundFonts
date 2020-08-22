@@ -216,20 +216,20 @@ extension InfoBarController {
         switch event {
         case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
         case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontPatch)
+        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontAndPatch)
         default: break
         }
     }
 
     private func updateInfoBar(with favorite: Favorite) {
-        if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+        if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
             setPatchInfo(name: favorite.name, isFavored: true)
         }
     }
 
-    private func updateInfoBar(with soundFontPatch: SoundFontPatch) {
-        if soundFontPatch == activePatchManager.soundFontPatch {
-            setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+    private func updateInfoBar(with soundFontAndPatch: SoundFontAndPatch) {
+        if soundFontAndPatch == activePatchManager.soundFontAndPatch {
+            setPatchInfo(name: soundFontAndPatch.patch.name, isFavored: false)
         }
     }
 
@@ -237,8 +237,8 @@ extension InfoBarController {
         if let favorite = activePatchKind.favorite {
             setPatchInfo(name: favorite.name, isFavored: true)
         }
-        else if let soundFontPatch = activePatchKind.soundFontPatch {
-            setPatchInfo(name: soundFontPatch.patch.name, isFavored: false)
+        else if let soundFontAndPatch = activePatchKind.soundFontAndPatch {
+            setPatchInfo(name: soundFontAndPatch.patch.name, isFavored: false)
         }
         else {
             setPatchInfo(name: "-", isFavored: false)

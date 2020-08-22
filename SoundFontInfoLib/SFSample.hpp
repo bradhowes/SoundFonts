@@ -16,6 +16,7 @@ public:
 
     SFSample(BinaryStream& is)
     {
+        // Account for the extra paddingy by reading twice.
         is.copyInto(&achSampleName, 40);
         is.copyInto(&originalKey, 6);
         trim_property(achSampleName);

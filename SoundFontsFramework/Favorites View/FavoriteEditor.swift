@@ -62,7 +62,7 @@ final public class FavoriteEditor: UIViewController {
         super.viewWillAppear(animated)
 
         precondition(favorite != nil)
-        let soundFontPatch = favorite.soundFontPatch
+        let soundFontAndPatch = favorite.soundFontAndPatch
 
         name.text = favorite.name
         name.delegate = self
@@ -76,10 +76,10 @@ final public class FavoriteEditor: UIViewController {
             lowestNoteCollection.isHidden = true
         }
         
-        soundFontName.text = soundFontPatch.soundFont.displayName
-        patchName.text = soundFontPatch.patch.name
-        bank.text = "Bank: \(soundFontPatch.patch.bank)"
-        index.text = "Index: \(soundFontPatch.patch.patch)"
+        soundFontName.text = soundFontAndPatch.soundFont.displayName
+        patchName.text = soundFontAndPatch.patch.name
+        bank.text = "Bank: \(soundFontAndPatch.patch.bank)"
+        index.text = "Index: \(soundFontAndPatch.patch.patch)"
 
         gainValue.text = formatFloat(favorite.gain)
         gainSlider.value = favorite.gain

@@ -77,7 +77,7 @@ extension FavoritesViewController: ControllerConfiguration {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            if let favorite = favorites.getBy(soundFontPatch: old.soundFontPatch), favorite != new.favorite {
+            if let favorite = favorites.getBy(soundFontAndPatch: old.soundFontAndPatch), favorite != new.favorite {
                 os_log(.info, log: log, "updating previous favorite cell")
                 updateCell(with: favorite)
             }
@@ -95,7 +95,7 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .added(index: index, favorite: favorite):
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-            if favorite.soundFontPatch == activePatchManager.soundFontPatch {
+            if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
                 favoritesView.selectItem(at: indexPath(of: favorite), animated: false,
                                          scrollPosition: .centeredVertically)
                 updateCell(with: favorite)
@@ -110,7 +110,7 @@ extension FavoritesViewController: ControllerConfiguration {
 
         case let .changed(index: index, favorite: favorite):
             os_log(.info, log: log, "changed %d", index)
-            if let favorite = favorites.getBy(soundFontPatch: favorite.soundFontPatch) {
+            if let favorite = favorites.getBy(soundFontAndPatch: favorite.soundFontAndPatch) {
                 updateCell(with: favorite)
             }
 
@@ -283,7 +283,8 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontPatch == activePatchManager.soundFontPatch)
+        cell.update(favoriteName: favorite.name,
+                    isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
         return cell
     }
 

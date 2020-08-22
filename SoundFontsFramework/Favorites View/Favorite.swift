@@ -12,7 +12,7 @@ public struct Favorite: Codable {
     public let key: Key
 
     /// The patch to load
-    public let soundFontPatch: SoundFontPatch
+    public let soundFontAndPatch: SoundFontAndPatch
 
     /// The name of the favorite configuration
     public var name: String
@@ -33,11 +33,11 @@ public struct Favorite: Codable {
      - parameter patch: the Patch to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-    public init(soundFontPatch: SoundFontPatch, keyboardLowestNote: Note?) {
+    public init(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
         self.key = Key()
-        self.name = soundFontPatch.patch.name
+        self.name = soundFontAndPatch.patch.name
         self.keyboardLowestNote = keyboardLowestNote
-        self.soundFontPatch = soundFontPatch
+        self.soundFontAndPatch = soundFontAndPatch
         self.keyboardLowestNote = keyboardLowestNote
         self.gain = 0.0
         self.pan = 0.0
@@ -49,5 +49,5 @@ extension Favorite: Equatable {
 }
 
 extension Favorite: CustomStringConvertible {
-    public var description: String { "['\(name)' - \(soundFontPatch)]" }
+    public var description: String { "['\(name)' - \(soundFontAndPatch)]" }
 }

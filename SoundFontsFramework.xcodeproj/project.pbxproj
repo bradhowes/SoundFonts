@@ -25,7 +25,7 @@
 		BD074C5223CDAF51001987E9 /* Patch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BED23CDAF51001987E9 /* Patch.swift */; };
 		BD074C5323CDAF51001987E9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEE23CDAF51001987E9 /* Note.swift */; };
 		BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* Sampler.swift */; };
-		BD074C5523CDAF51001987E9 /* SoundFontPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontPatch.swift */; };
+		BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */; };
 		BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */; };
 		BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */; };
 		BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */; };
@@ -93,6 +93,7 @@
 		BD6E8ABB2405C7E000067AE2 /* SharedStateMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8ABA2405C7E000067AE2 /* SharedStateMonitorTests.swift */; };
 		BD7B30C4241BCED90080784D /* UIContextualAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */; };
 		BD7B30C6241BE11E0080784D /* FontEditPrep.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B30C5241BE11E0080784D /* FontEditPrep.swift */; };
+		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
 		BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC347E72403B93F00A848BA /* FileMonitorTests.swift */; };
@@ -124,7 +125,6 @@
 		BDF8630E246EB8A30006D8CD /* ADSRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF8630D246EB8A30006D8CD /* ADSRView.swift */; };
 		BDF86310246EB8E70006D8CD /* EnvelopeView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */; };
 		BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */; };
-		BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,7 +156,7 @@
 		BD074BED23CDAF51001987E9 /* Patch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patch.swift; sourceTree = "<group>"; };
 		BD074BEE23CDAF51001987E9 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		BD074BEF23CDAF51001987E9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
-		BD074BF023CDAF51001987E9 /* SoundFontPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontPatch.swift; sourceTree = "<group>"; };
+		BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPatch.swift; sourceTree = "<group>"; };
 		BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsTableViewManager.swift; sourceTree = "<group>"; };
 		BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesTableViewManager.swift; sourceTree = "<group>"; };
@@ -296,7 +296,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDFC1D9523EEEC47000A8ABC /* SoundFontInfoLib.framework in Frameworks */,
+				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,7 +384,7 @@
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
-				BD074BF023CDAF51001987E9 /* SoundFontPatch.swift */,
+				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
 			);
 			path = MIDI;
@@ -767,7 +767,7 @@
 				BD074C4823CDAF51001987E9 /* GetSoundFontInfo.swift in Sources */,
 				BD074C5323CDAF51001987E9 /* Note.swift in Sources */,
 				BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */,
-				BD074C5523CDAF51001987E9 /* SoundFontPatch.swift in Sources */,
+				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */,
