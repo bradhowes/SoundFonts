@@ -61,4 +61,21 @@ using namespace SF2;
     }
 }
 
+- (void)testCentibelsToAttenuation {
+    XCTAssertEqualWithAccuracy(1.0, Synthesizer::attenuation(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.891250938134, Synthesizer::attenuation(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.316227766017, Synthesizer::attenuation(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-05, Synthesizer::attenuation(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(6.3095734448e-08, Synthesizer::attenuation(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-07, Synthesizer::attenuation(1441), self.epsilon);
+}
+
+- (void)testCentibelsToGain {
+    XCTAssertEqualWithAccuracy(1.0, Synthesizer::gain(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.1220184543, Synthesizer::gain(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(3.16227766017, Synthesizer::gain(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(100000, Synthesizer::gain(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, Synthesizer::gain(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, Synthesizer::gain(1441), self.epsilon);
+}
 @end

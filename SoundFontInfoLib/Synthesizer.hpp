@@ -11,6 +11,8 @@
 namespace SF2 {
 
 inline double clamp(double value, double min, double max) { return std::min(std::max(value, min), max); }
+// cb = -200 * log10(amp)
+// amp = pow(10, cb/-200)
 
 class Synthesizer {
 public:
@@ -18,9 +20,6 @@ public:
     constexpr static double TwoPI = 2.0 * PI;     // 360°
     constexpr static double HalfPI = PI / 2.0;    // 90°
     constexpr static double QuarterPI = PI / 4.0; // 45°
-
-    constexpr static int MaxMIDINote = 127;
-    constexpr static int MaxCentValue = 1200;
 
     // 440 * pow(2.0, (N - 69) / 12)
     constexpr static double LowestNoteFrequency = 8.175798915643707; // C-1
@@ -37,9 +36,13 @@ public:
     static void setSampleRate(double sampleRate) { sampleRate_ = sampleRate; }
     static double sampleRate() { return sampleRate_; }
 
+    constexpr static int MaxMIDINote = 127;
+
     static double midiKeyToFrequency(int key) {
         return standardNoteFrequencies_[clamp(key, 0, MaxMIDINote)];
     }
+
+    constexpr static int MaxCentValue = 1200;
 
     static double centToFrequencyMultiplier(int cent) {
         return centFrequencyMultiplier_[clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
@@ -54,7 +57,7 @@ public:
         return value;
     }
 
-    static constexpr double sin(double radians) {
+    constexpr static double sin(double radians) {
         if (radians < 0.0) {                // < 0°
             return -sin(-radians);
         }
@@ -75,12 +78,28 @@ public:
         }
     }
 
+    constexpr static int CentibelsTableSize = 1441;
+
+    constexpr static double attenuation(int centibels) {
+        if (centibels <= 0) return 1.0;
+        if (centibels >= CentibelsTableSize) return 0.0;
+        return centibelsToAttenuation_[centibels];
+    }
+    
+    constexpr static double gain(int centibels) {
+        if (centibels <= 0.0) return 1.0;
+        if (centibels >= CentibelsTableSize) centibels = CentibelsTableSize - 1;
+        return centibelsToGain_[centibels];
+    }
+
 private:
     static double sampleRate_;
 
     static std::array<double, MaxMIDINote + 1> standardNoteFrequencies_;
     static std::array<double, MaxCentValue * 2 + 1> centFrequencyMultiplier_;
     static std::array<double, SineLookupTableSize> sineLookup_;
+    static std::array<double, CentibelsTableSize> centibelsToAttenuation_;
+    static std::array<double, CentibelsTableSize> centibelsToGain_;
 };
 
 }
