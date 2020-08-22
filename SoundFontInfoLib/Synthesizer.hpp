@@ -2,12 +2,15 @@
 
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
 namespace SF2 {
+
+inline double clamp(double value, double min, double max) { return std::min(std::max(value, min), max); }
 
 class Synthesizer {
 public:
@@ -35,18 +38,15 @@ public:
     static double sampleRate() { return sampleRate_; }
 
     static double midiKeyToFrequency(int key) {
-        assert(key >= 0 && key <= MaxMIDINote);
-        return standardNoteFrequencies_[key];
+        return standardNoteFrequencies_[clamp(key, 0, MaxMIDINote)];
     }
 
     static double centToFrequencyMultiplier(int cent) {
-        assert(cent >= -MaxCentValue && cent <= MaxCentValue);
-        return centFrequencyMultiplier_[cent + MaxCentValue];
+        return centFrequencyMultiplier_[clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
     }
 
     static double sineLookup(double radians) {
-        assert(radians >= 0.0 && radians <= HalfPI);
-        double phase = radians * SineLookupTableScale;
+        double phase = clamp(radians, 0.0, HalfPI) * SineLookupTableScale;
         int index = int(phase);
         double frac = phase - index;
         double value = sineLookup_[index] * (1.0 - frac);
