@@ -3,7 +3,6 @@
 #include <cmath>
 
 #include "Transform.hpp"
-#include "Synthesizer.hpp"
 
 using namespace SF2;
 
@@ -27,21 +26,21 @@ Transform::Transform(Kind kind, Direction direction, Polarity polarity)
 static double
 positiveConcaveCurve(int index)
 {
-    return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Synthesizer::MaxMIDINote - index) /
-                                                     Synthesizer::MaxMIDINote);
+    return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Transform::MaxMIDIControllerValue - index) /
+                                                     Transform::MaxMIDIControllerValue);
 }
 
 static double
 negativeConcaveCurve(int index)
 {
     // From SF2 spec - output = -20/96 * log((value^2)/(range^2)) == -40/96 * log(value / range)
-    return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Synthesizer::MaxMIDINote);
+    return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Transform::MaxMIDIControllerValue);
 }
 
 Transform::TransformArrayType const Transform::positiveLinear_ = [] {
     auto init = decltype(Transform::positiveLinear_){};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = double(index) / Synthesizer::MaxMIDINote;
+        init[index] = double(index) / MaxMIDIControllerValue;
     }
     return init;
 }();
@@ -49,7 +48,7 @@ Transform::TransformArrayType const Transform::positiveLinear_ = [] {
 Transform::TransformArrayType const Transform::negativeLinear_ = [] {
     auto init = decltype(Transform::negativeLinear_){};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = double(Synthesizer::MaxMIDINote - index) / Synthesizer::MaxMIDINote;
+        init[index] = double(MaxMIDIControllerValue - index) / MaxMIDIControllerValue;
     }
     return init;
 }();
@@ -86,7 +85,7 @@ Transform::TransformArrayType const Transform::negativeConvex_ = [] {
     return init;
 }();
 
-std::array<double, Synthesizer::MaxMIDINote + 1> const Transform::positiveSwitched_ = [] {
+Transform::TransformArrayType const Transform::positiveSwitched_ = [] {
     auto init = decltype(Transform::positiveSwitched_){};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 0.0 : 1.0;
@@ -94,7 +93,7 @@ std::array<double, Synthesizer::MaxMIDINote + 1> const Transform::positiveSwitch
     return init;
 }();
 
-std::array<double, Synthesizer::MaxMIDINote + 1> const Transform::negativeSwitched_ = [] {
+Transform::TransformArrayType const Transform::negativeSwitched_ = [] {
     auto init = decltype(Transform::negativeSwitched_){};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 1.0 : 0.0;

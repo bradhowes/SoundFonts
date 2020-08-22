@@ -6,14 +6,19 @@
 #include <algorithm>
 #include <array>
 
-#include "Synthesizer.hpp"
-
 namespace SF2 {
 
 class Transform {
 public:
     constexpr static int const MaxMIDIControllerValue = 127;
 
+    /**
+     Kind specifies the curvature of the transformation function.
+     - linear -- straight line from min to 1.0
+     - concave -- curved line that slowly inreases in value and then rapidly increases to 1.
+     - convex -- curved line that rapidly incxreases in value and then slowly increases until 1.
+     - switched -- emits 0 for conrol values <= 64, and 1 for those > 64.
+     */
     enum struct Kind {
         linear,
         concave,
@@ -21,11 +26,13 @@ public:
         switched
     };
 
+    /// Polarity determins the lower bound: unipolar == 0, bipolar == -1.
     enum struct Polarity {
         unipolar,
         bipolar
     };
 
+    /// Direction controls the ordering of the min/max values.
     enum struct Direction {
         ascending,
         descending
