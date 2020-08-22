@@ -41,3 +41,21 @@ std::array<double, Synthesizer::SineLookupTableSize> Synthesizer::sineLookup_ = 
     }
     return init;
 }();
+
+static double centibelsToNorm(int centibels) { return std::pow(10.0, centibels / -200.0); }
+
+std::array<double, Synthesizer::CentibelsTableSize> Synthesizer::centibelsToAttenuation_ = [] {
+    auto init = decltype(Synthesizer::centibelsToAttenuation_){};
+    for (auto index = 0; index < init.size(); ++index) {
+        init[index] = centibelsToNorm(index);
+    }
+    return init;
+}();
+
+std::array<double, Synthesizer::CentibelsTableSize> Synthesizer::centibelsToGain_ = [] {
+    auto init = decltype(Synthesizer::centibelsToGain_){};
+    for (auto index = 0; index < init.size(); ++index) {
+        init[index] = 1.0 / centibelsToNorm(index);
+    }
+    return init;
+}();
