@@ -33,7 +33,7 @@ SFGeneratorDefinition::dump(const SFGeneratorAmount& amount) const
     }
 }
 
-std::vector<SFGeneratorDefinition> const SFGeneratorDefinition::definitions_ = {
+std::array<SFGeneratorDefinition, SFGeneratorDefinition::NumDefinitions> const SFGeneratorDefinition::definitions_{
     /**
      The offset, in sample data points, beyond the Start sample header parameter to the first sample data point to be
      played for this instrument. For example, if Start were 7 and startAddrOffset were 2, the first sample data point

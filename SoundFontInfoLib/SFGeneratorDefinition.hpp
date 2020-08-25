@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <vector>
+#include <array>
 
 #include "SFGeneratorIndex.hpp"
 
@@ -13,7 +13,8 @@ class SFGeneratorAmount;
 class SFGeneratorDefinition {
 public:
 
-    static std::vector<SFGeneratorDefinition> const definitions_;
+    static constexpr size_t NumDefinitions = 59;
+    static std::array<SFGeneratorDefinition, NumDefinitions> const definitions_;
 
     enum struct ValueKind {
         unsignedShort = 1,
@@ -38,17 +39,17 @@ public:
         additiveInPreset = 3
     };
 
-    static SFGeneratorDefinition const& definition(SFGeneratorIndex index) { return definitions_.at(index.index()); }
+    static auto definition(SFGeneratorIndex index) -> auto { return definitions_.at(index.index()); }
 
     SFGeneratorDefinition(char const* name, ValueKind valueKind, uint16_t flags)
     : name_{name}, valueKind_{valueKind}, flags_{flags} {}
 
-    std::string const& name() const { return name_; }
-    ValueKind valueKind() const { return valueKind_; }
-    int flags() const { return flags_; }
+    auto name() const -> auto { return name_; }
+    auto valueKind() const -> auto { return valueKind_; }
+    auto flags() const -> auto { return flags_; }
 
-    bool isAvailableInPreset() const { return (flags_ & availableInPreset) == availableInPreset; }
-    bool isAdditiveInPreset() const { return (flags_ & additiveInPreset) == additiveInPreset; }
+    auto isAvailableInPreset() const -> auto { return (flags_ & availableInPreset) == availableInPreset; }
+    auto isAdditiveInPreset() const -> auto { return (flags_ & additiveInPreset) == additiveInPreset; }
 
     void dump(SFGeneratorAmount const& amount) const;
 

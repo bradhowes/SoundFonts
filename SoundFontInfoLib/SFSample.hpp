@@ -7,6 +7,8 @@
 namespace SF2 {
 
 /**
+ Define the audio samples to be used for playing a specific sound.
+
  Memory layout of a 'shdr' entry. The size of this is defined to be 46 bytes, but due
  to alignment/padding the struct below is 48 bytes.
  */
@@ -14,15 +16,15 @@ class SFSample {
 public:
     constexpr static size_t size = 46;
 
-    SFSample(BinaryStream& is)
+    explicit SFSample(BinaryStream& is)
     {
-        // Account for the extra paddingy by reading twice.
+        // Account for the extra padding by reading twice.
         is.copyInto(&achSampleName, 40);
         is.copyInto(&originalKey, 6);
         trim_property(achSampleName);
     }
-    
-    enum SFSampleLink {
+
+    enum LinkType {
         monoSample = 1,
         rightSample = 2,
         leftSample = 4,
@@ -30,12 +32,12 @@ public:
         rom = 0x8000
     };
 
-    constexpr bool isMono() const { return sampleType & monoSample; }
-    constexpr bool isRight() const { return sampleType & rightSample; }
-    constexpr bool isLeft() const { return sampleType & leftSample; }
-    constexpr bool isROM() const { return sampleType & rom; }
+    constexpr auto isMono() const -> auto { return (sampleType & monoSample) == monoSample; }
+    constexpr auto isRight() const -> auto { return (sampleType & rightSample) == rightSample; }
+    constexpr auto isLeft() const -> auto { return (sampleType & leftSample) == leftSample; }
+    constexpr auto isROM() const -> auto { return (sampleType & rom) == rom; }
 
-    std::string sampleTypeDescription() const
+    auto sampleTypeDescription() const -> auto
     {
         std::string tag("");
         if (sampleType & monoSample) tag += "M";

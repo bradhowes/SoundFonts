@@ -16,7 +16,7 @@ class SFModulator {
 public:
     static constexpr size_t size = 10;
 
-    SFModulator(BinaryStream& is) { is.copyInto(this); }
+    explicit SFModulator(BinaryStream& is) { is.copyInto(this); }
     
     void dump(const std::string& indent, int index) const
     {

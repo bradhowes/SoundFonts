@@ -17,19 +17,19 @@ public:
 
     SFTransform() : bits_{0} {}
 
-    TransformKind kind() const { return bits_ == 0 ? kTransformKindLinear : kTransformKindAbsolute; }
+    auto kind() const -> auto { return bits_ == 0 ? kTransformKindLinear : kTransformKindAbsolute; }
 
-    friend std::ostream& operator<<(std::ostream& os, SFTransform const& value)
-    {
-        return os << (value.kind() == kTransformKindLinear ? "Linear" : "Absolute");
-    }
-
-    float transform(float value) const {
+    auto transform(float value) const -> auto {
         switch (kind()) {
             case kTransformKindLinear: return value;
             case kTransformKindAbsolute: return abs(value);
             default: throw "unexpected tranform kind";
         }
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, SFTransform const& value)
+    {
+        return os << (value.kind() == kTransformKindLinear ? "Linear" : "Absolute");
     }
 
 private:

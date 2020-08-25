@@ -15,8 +15,8 @@ class Pan {
         leftScaling_ = 
     }
 
-    double leftScaling() const { return leftScaling_; }
-    double rightScaling() const { return rightScaling_; }
+    auto leftScaling() const -> auto { return leftScaling_; }
+    auto rightScaling() const -> auto { return rightScaling_; }
 
 private:
     double position_;

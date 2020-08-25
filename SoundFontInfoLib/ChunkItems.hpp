@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <iostream>
 
 #include "BinaryStream.hpp"
@@ -27,7 +28,7 @@ public:
 
      - parameter source: the bytes that will be used to generate the entities
      */
-    ChunkItems(Chunk const& source) : items_{}
+    explicit ChunkItems(Chunk const& source) : items_{}
     {
         // This is a hard constraint: the number of items is in the collection is defined by the overall source size
         // since there is no padding involved in the SF2 file format. There resulting vector of items may be larger
@@ -47,7 +48,7 @@ public:
 
      - returns: number of items in collection
      */
-    size_t size() const { return items_.size(); }
+    auto size() const -> auto { return items_.size(); }
 
     /**
      Obtain a (read-only) reference to an entity in the collection.
@@ -55,21 +56,27 @@ public:
      - parameter index: the entity to fetch
      - returns: entity
      */
-    ItemType const& operator[](size_t index) const { return items_.at(index); }
+    auto operator[](size_t index) const -> auto const& { return items_.at(index); }
+
+    auto span(size_t index, std::function<int (T const&)> getter) const -> auto {
+        T const& a = items_[index];
+        T const& b = items_[index + 1];
+        return getter(b) - getter(a);
+    }
 
     /**
      Obtain iterator to the start of the collection
 
      - returns: iterator to start of the collection
      */
-    typename std::vector<ItemType>::const_iterator begin() const { return items_.begin(); }
+    auto begin() const -> auto { return items_.begin(); }
 
     /**
      Obtain iterator at the end of the collection
 
      - returns: iterator at the end of the collection
      */
-    typename std::vector<ItemType>::const_iterator end() const { return items_.end(); }
+    auto end() const -> auto { return items_.end(); }
 
     void dump(std::string const& indent ) const {
         auto index = 0;

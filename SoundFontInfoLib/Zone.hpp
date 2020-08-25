@@ -2,14 +2,11 @@
 
 #pragma once
 
-#include <cassert>
-
 namespace SF2 {
 
-enum struct Message {};
-
-class MIDI {
-public:
+struct Zone
+{
+    Zone();
 };
 
 }

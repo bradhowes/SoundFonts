@@ -12,7 +12,7 @@ public:
 
     SFGeneratorIndex() : index_{0} {}
 
-    uint16_t index() const { return index_; }
+    auto index() const -> auto { return index_; }
 
 private:
     const uint16_t index_;

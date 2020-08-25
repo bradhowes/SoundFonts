@@ -40,18 +40,18 @@ using namespace SF2;
 + (SoundFontInfo*)parse:(void const*)data size:(size_t)size {
     try {
         auto top = SF2::Parser::parse(data, size);
-        auto info = top.find(Tags::info);
+        auto info = top.find(Tag(Tags::info));
         if (info == top.end()) return nil;
 
-        auto inam = info->find(Tags::inam);
+        auto inam = info->find(Tag(Tags::inam));
         if (inam == info->end()) return nil;
 
         NSString* embeddedName = [NSString stringWithUTF8String:inam->charPtr()];
 
-        auto patchData = top.find(Tags::pdta);
+        auto patchData = top.find(Tag(Tags::pdta));
         if (patchData == top.end()) return nil;
 
-        auto patchHeader = patchData->find(Tags::phdr);
+        auto patchHeader = patchData->find(Tag(Tags::phdr));
         if (patchHeader == patchData->end()) return nil;
 
         auto presetHeader = Presets(*patchHeader);

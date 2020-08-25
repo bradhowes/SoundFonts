@@ -8,13 +8,13 @@ namespace SF2 {
 
 struct SFGeneratorAmount {
     SFGeneratorAmount() : raw_{} {}
-    SFGeneratorAmount(uint16_t raw) : raw_{raw} {}
+    explicit SFGeneratorAmount(uint16_t raw) : raw_{raw} {}
 
-    uint16_t index() const { return raw_.wAmount; }
-    int16_t amount() const { return raw_.shAmount; }
-    uint16_t low() const { return raw_.ranges[0]; }
-    uint16_t high() const { return raw_.ranges[1]; }
-    uint8_t const* const ranges() const { return raw_.ranges; }
+    auto index() const -> auto { return raw_.wAmount; }
+    auto amount() const -> auto { return raw_.shAmount; }
+    auto low() const -> auto { return raw_.ranges[0]; }
+    auto high() const -> auto { return raw_.ranges[1]; }
+    auto ranges() const -> auto { return raw_.ranges; }
 
     union {
         uint16_t wAmount;

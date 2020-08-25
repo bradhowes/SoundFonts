@@ -10,9 +10,24 @@
 
 namespace SF2 {
 
-inline double clamp(double value, double min, double max) { return std::min(std::max(value, min), max); }
+inline auto clamp(double value, double min, double max) -> auto { return std::min(std::max(value, min), max); }
 // cb = -200 * log10(amp)
 // amp = pow(10, cb/-200)
+
+struct SampleRateBased {
+    constexpr static double sampleRate = 44100.0;
+};
+
+struct Duration : SampleRateBased {
+    constexpr explicit Duration(double duration) : samples{duration * sampleRate} {}
+    double const samples;
+};
+
+struct Frequency : SampleRateBased {
+    constexpr explicit Frequency(double frequency) : samples{frequency * sampleRate} {}
+    double const samples;
+    double const value() const { return samples / sampleRate; }
+};
 
 class Synthesizer {
 public:
@@ -34,21 +49,21 @@ public:
     constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
     static void setSampleRate(double sampleRate) { sampleRate_ = sampleRate; }
-    static double sampleRate() { return sampleRate_; }
+    static auto sampleRate() -> auto { return sampleRate_; }
 
     constexpr static int MaxMIDINote = 127;
 
-    static double midiKeyToFrequency(int key) {
+    static auto midiKeyToFrequency(int key) -> auto {
         return standardNoteFrequencies_[clamp(key, 0, MaxMIDINote)];
     }
 
     constexpr static int MaxCentValue = 1200;
 
-    static double centToFrequencyMultiplier(int cent) {
+    static auto centToFrequencyMultiplier(int cent) -> auto {
         return centFrequencyMultiplier_[clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
     }
 
-    static double sineLookup(double radians) {
+    static auto sineLookup(double radians) -> double {
         double phase = clamp(radians, 0.0, HalfPI) * SineLookupTableScale;
         int index = int(phase);
         double frac = phase - index;
@@ -57,7 +72,7 @@ public:
         return value;
     }
 
-    constexpr static double sin(double radians) {
+    constexpr static auto sin(double radians) -> double {
         if (radians < 0.0) {                // < 0°
             return -sin(-radians);
         }
@@ -80,13 +95,13 @@ public:
 
     constexpr static int CentibelsTableSize = 1441;
 
-    constexpr static double attenuation(int centibels) {
+    constexpr static auto attenuation(int centibels) -> auto {
         if (centibels <= 0) return 1.0;
         if (centibels >= CentibelsTableSize) return 0.0;
         return centibelsToAttenuation_[centibels];
     }
     
-    constexpr static double gain(int centibels) {
+    constexpr static auto gain(int centibels) -> auto {
         if (centibels <= 0.0) return 1.0;
         if (centibels >= CentibelsTableSize) centibels = CentibelsTableSize - 1;
         return centibelsToGain_[centibels];
