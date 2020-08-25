@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "BinaryStream.hpp"
 
 namespace SF2 {
