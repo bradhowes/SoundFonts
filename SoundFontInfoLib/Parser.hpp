@@ -23,7 +23,8 @@ class Parser {
 public:
 
     /**
-     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception.
+     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this really just parses any RIFF
+     format. We postpone the SF2 evaluation until the initial loading is done.
 
      @param data pointer to the first byte of the SoundFont resource to parse
      @param size number of bytes in the resource

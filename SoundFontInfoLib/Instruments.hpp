@@ -18,7 +18,7 @@ struct Instruments : ChunkItems<SFInstrument>
 
     Instruments() : Super() {}
 
-    Instruments(Chunk const& chunk) : Super(chunk) {}
+    explicit Instruments(Chunk const& chunk) : Super(chunk) {}
 };
 
 }

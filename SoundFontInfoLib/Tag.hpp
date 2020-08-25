@@ -13,22 +13,21 @@ namespace SF2 {
  */
 class Tag {
 public:
-    Tag(uint32_t tag) : tag_{tag} {}
-    Tag(char const* s) : Tag(*(reinterpret_cast<uint32_t const*>(s))) {}
-    Tag(void const* s) : Tag(static_cast<char const*>(s)) {}
+    explicit Tag(uint32_t tag) : tag_{tag} {}
+    explicit Tag(char const* s) : Tag(*(reinterpret_cast<uint32_t const*>(s))) {}
+    explicit Tag(void const* s) : Tag(static_cast<char const*>(s)) {}
 
     bool operator ==(Tag const& rhs) const { return tag_ == rhs.tag_; }
     bool operator !=(Tag const& rhs) const { return tag_ != rhs.tag_; }
 
-    uint32_t toInt() const { return tag_; }
+    constexpr uint32_t toInt() const { return tag_; }
     std::string toString() const { return std::string(reinterpret_cast<char const*>(&tag_), 4); }
 
 private:
     uint32_t tag_;
 };
 
-
-inline constexpr uint32_t Pack4Chars(const char* const c)
+inline constexpr uint32_t Pack4Chars(char const* c)
 {
     return ((uint32_t)(c[3])) << 24 | ((uint32_t)(c[2])) << 16 | ((uint32_t)(c[1])) << 8 | ((uint32_t)(c[0]));
 }

@@ -12,40 +12,33 @@
 namespace SF2 {
 
 struct SFFile {
-    Presets presets;
-    Zones presetZones;
-    ZoneGenerators presetZoneGenerators;
-    ZoneModulators presetZoneModulators;
+    ChunkItems<SFPreset> presets;
+    ChunkItems<SFBag> presetZones;
+    ChunkItems<SFGenerator> presetZoneGenerators;
+    ChunkItems<SFModulator> presetZoneModulators;
 
-    Instruments instruments;
-    Zones instrumentZones;
-    ZoneGenerators instrumentZoneGenerators;
-    ZoneModulators instrumentZoneModulators;
+    ChunkItems<SFInstrument> instruments;
+    ChunkItems<SFBag> instrumentZones;
+    ChunkItems<SFGenerator> instrumentZoneGenerators;
+    ChunkItems<SFModulator> instrumentZoneModulators;
 
-    Samples samples;
+    ChunkItems<SFSample> samples;
 
-    SFFile(Chunk const& chunk) { buildWith(chunk); }
+    uint8_t const* sampleData;
+    uint8_t const* sampleDataEnd;
+
+    /**
+     Use the given RIFF chunk to locate specific SF2 components.
+     */
+    explicit SFFile(Chunk const& chunk) {
+        buildWith(chunk);
+        validate();
+    }
 
 private:
-    void buildWith(Chunk const& chunk) {
-        if (chunk.dataPtr() != nullptr) {
-            switch (chunk.tag().toInt()) {
-                case Tags::phdr: presets.load(chunk); break;
-                case Tags::pbag: presetZones.load(chunk); break;
-                case Tags::pgen: presetZoneGenerators.load(chunk); break;
-                case Tags::pmod: presetZoneModulators.load(chunk); break;
-                case Tags::inst: instruments.load(chunk); break;
-                case Tags::ibag: instrumentZones.load(chunk); break;
-                case Tags::igen: instrumentZoneGenerators.load(chunk); break;
-                case Tags::imod: instrumentZoneModulators.load(chunk); break;
-                case Tags::shdr: samples.load(chunk); break;
-                case Tags::smpl: break;
-            }
-        }
-        else {
-            std::for_each(chunk.begin(), chunk.end(), [this](Chunk const& chunk) { buildWith(chunk); });
-        }
-    }
+
+    void buildWith(Chunk const& chunk);
+    void validate();
 };
 
 }

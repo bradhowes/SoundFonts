@@ -17,31 +17,32 @@ class SFGenerator {
 public:
     static constexpr size_t size = 4;
 
-    SFGenerator(BinaryStream& is) { is.copyInto(this); }
+    explicit SFGenerator(BinaryStream& is) { is.copyInto(this); }
     
-    void dump(const std::string& indent, int index) const
-    {
-        std::cout << indent << index << ": " << name() << " setting: " << dump(amount_)
-        << std::endl;
-    }
-
-    SFGeneratorDefinition const& definition() const { return SFGeneratorDefinition::definitions_[index_.index()]; }
-
-    std::string const& name() const { return definition().name(); }
+    auto definition() const -> auto { return SFGeneratorDefinition::definitions_[index_.index()]; }
+    auto name() const -> auto { return definition().name(); }
 
     struct Dumper {
         SFGeneratorDefinition const& genDef_;
         SFGeneratorAmount const& amount_;
+
         explicit Dumper(SFGeneratorDefinition const& genDef, SFGeneratorAmount const& amount)
         : genDef_{genDef}, amount_{amount} {}
-        friend std::ostream& operator <<(std::ostream& os, Dumper const& dumper)
+
+        friend auto operator <<(std::ostream& os, Dumper const& dumper) -> std::ostream&
         {
             dumper.genDef_.dump(dumper.amount_);
             return os;
         }
     };
 
-    Dumper dump(SFGeneratorAmount const& amount) const { return Dumper(definition(), amount); }
+    auto dump(SFGeneratorAmount const& amount) const -> auto { return Dumper(definition(), amount); }
+
+    void dump(const std::string& indent, int index) const
+    {
+        std::cout << indent << index << ": " << name() << " setting: " << dump(amount_)
+        << std::endl;
+    }
 
 private:
     SFGeneratorIndex index_;

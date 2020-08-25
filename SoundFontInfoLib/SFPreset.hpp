@@ -14,7 +14,7 @@ namespace SF2 {
 struct SFPreset {
     constexpr static size_t size = 38;
 
-    SFPreset(BinaryStream& is)
+    explicit SFPreset(BinaryStream& is)
     {
         // Account for the extra padding by reading twice.
         is.copyInto(&achPresetName, 26);
@@ -22,19 +22,20 @@ struct SFPreset {
         trim_property(achPresetName);
     }
 
+    auto name() const -> auto{ return achPresetName; }
+    auto preset() const -> auto { return wPreset; }
+    auto bank() const -> auto { return wBank; }
+    auto zoneIndex() const -> auto { return wPresetBagNdx; }
+
+    auto next() const -> auto { return *(this + 1); }
+    auto zoneCount() const -> auto { return next().zoneIndex() - zoneIndex(); }
+
     void dump(const std::string& indent, int index) const
     {
-        auto next = this + 1;
-        std::cout << indent << index << ": '" << achPresetName << "' preset: " << wPreset
-        << " bank: " << wBank
-        << " pbagIndex: " << wPresetBagNdx
-        << " count: " << (next->wPresetBagNdx - wPresetBagNdx) << std::endl;
+        std::cout << indent << index << ": '" << name() << "' preset: " << preset()
+        << " bank: " << bank()
+        << " zoneIndex: " << zoneIndex() << " count: " << zoneCount() << std::endl;
     }
-
-    char const* name() const { return achPresetName; }
-    uint16_t preset() const { return wPreset; }
-    uint16_t bank() const { return wBank; }
-    uint16_t bagIndex() const { return wPresetBagNdx; }
 
 private:
     char achPresetName[20];

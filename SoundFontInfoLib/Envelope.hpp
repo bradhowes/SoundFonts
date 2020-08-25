@@ -47,7 +47,6 @@ public:
      Number of stages being used.
      */
     static constexpr int numStages = static_cast<int>(Stage::release) + 1;
-
     static constexpr double defaultCurvature = 0.01;
     static constexpr double minimumCurvature = 0.000000001;
     static constexpr double maxiumCurvature = 10.0;
@@ -60,7 +59,7 @@ public:
         /**
          Obtain the next value of a stage. Requires the last value that was generated (by this stage or the prevous one).
          */
-        double next(double last) const { return std::max(std::min(last * alpha + beta, 1.0), 0.0); }
+        auto next(double last) const -> auto { return std::max(std::min(last * alpha + beta, 1.0), 0.0); }
 
         /**
          Generate a configuration for the attack stage.
@@ -103,17 +102,17 @@ public:
         /**
          Construct a new envelope generator.
          */
-        Generator(StageConfigs const& configs) : configs_{configs} {}
+        explicit Generator(StageConfigs const& configs) : configs_{configs} {}
 
         /**
          Obtain the currently active stage.
          */
-        Stage stage() const { return stage_; }
+        auto stage() const -> auto { return stage_; }
 
         /**
          Obtain the current envelope value.
          */
-        double value() const { return value_; }
+        auto value() const -> auto { return value_; }
 
         /**
          Set the status of a note playing. When true, the evenlope begins proper. When set to false, the envelope will jump to the release stage.
@@ -132,7 +131,7 @@ public:
         /**
          Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
          */
-        double process()
+        auto process() -> auto
         {
             switch (stage_) {
                 case Stage::delay: checkIfEndStage(Stage::attack); break;
@@ -174,10 +173,10 @@ public:
 
     private:
 
-        constexpr int stageAsIndex() const { return static_cast<int>(stage_); }
-        StageConfiguration const& active() const { return configs_[stageAsIndex()]; }
-        StageConfiguration const& stage(Stage stage) const { return configs_[static_cast<int>(stage)]; }
-        double sustainLevel() const { return stage(Stage::sustain).initial; }
+        constexpr auto stageAsIndex() const -> auto { return static_cast<int>(stage_); }
+        auto active() const -> auto& { return configs_[stageAsIndex()]; }
+        auto stage(Stage stage) const -> auto& { return configs_[static_cast<int>(stage)]; }
+        auto sustainLevel() const -> double { return stage(Stage::sustain).initial; }
 
         void updateValue() { value_ = active().next(value_); }
 
@@ -247,27 +246,27 @@ public:
     void setReleaseRate(double duration, double curvature = defaultCurvature);
 
     /**
-     Create a new enveloope generaor using the configured envelope settings.
+     Create a new envelope generator using the configured envelope settings.
      */
-    Generator generator() const { return Generator(configs_); }
+    auto generator() const -> auto { return Generator(configs_); }
 
 private:
 
     constexpr static int stageAsIndex(Stage stage) { return static_cast<int>(stage); }
 
-    StageConfiguration& stage(Stage stage) { return configs_[static_cast<int>(stage)]; }
+    auto stage(Stage stage) -> auto& { return configs_[static_cast<int>(stage)]; }
 
-    static double clampCurvature(double curvature)
+    static auto clampCurvature(double curvature) -> auto
     {
         return std::max(std::min(curvature, maxiumCurvature), minimumCurvature);
     }
 
-    static double calculateCoefficient(double rate, double curvature)
+    static auto calculateCoefficient(double rate, double curvature) -> auto
     {
         return (rate <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / rate);
     }
 
-    double samplesFor(double duration) const { return round(sampleRate_ * duration); }
+    auto samplesFor(double duration) const -> auto { return round(sampleRate_ * duration); }
 
     StageConfiguration configs_[numStages];
 

@@ -54,12 +54,12 @@ public:
         advance(size);
     }
 
-    constexpr size_t available() const { return available_; }
+    constexpr auto available() const -> auto { return available_; }
 
 private:
 
     void advance(size_t size) {
-        if  (available_ < size) throw FormatError;
+        if (available_ < size) throw FormatError;
         pos_ += size;
         available_ -= size;
     }
