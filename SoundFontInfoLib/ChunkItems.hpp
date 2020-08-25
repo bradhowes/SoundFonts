@@ -58,10 +58,12 @@ public:
      */
     auto operator[](size_t index) const -> auto const& { return items_.at(index); }
 
+    /** Obtain the number of some item that exists based on the indices of two objects in this collection. The first object is given by the `index` value, while the
+     second one is simply the subsequent index value. The calcuation uses the two values from the given `getter` method which simply accepts an obect of type
+     T.
+     */
     auto span(size_t index, std::function<int (T const&)> getter) const -> auto {
-        T const& a = items_[index];
-        T const& b = items_[index + 1];
-        return getter(b) - getter(a);
+        return getter(items_[index + 1]) - getter(items_[index]);
     }
 
     /**

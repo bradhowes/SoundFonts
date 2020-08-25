@@ -12,13 +12,9 @@ namespace SF2 {
 /**
  Collection of SFInst representing all of the instruments defined in an SF2 file.
  */
-struct Instruments : ChunkItems<SFInstrument>
+class Voice
 {
-    using Super = ChunkItems<SFInstrument>;
-
-    Instruments() : Super() {}
-
-    explicit Instruments(Chunk const& chunk) : Super(chunk) {}
+    Voice() {}
 };
 
 }
