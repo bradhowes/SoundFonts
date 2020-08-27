@@ -1,0 +1,94 @@
+
+A Sequencer receives MIDI musical instrument and note information and tells a Synthesizer what notes to play with what simulated instruments.
+
+Most software Synthesizers use SoundFont files that contain musical instrument sound samples, along with info on altering those sound samples, to create sound data that they send to a digital/audio converter (DAC) to play the notes.
+
+E-mu (now part of Creative Technology) created the SoundFont specification for their sound cards, and subsequently made the specification public domain.
+
+A SoundFont2 file (with an sf2 filename extension) contains data in a format specified in the SoundFont 2.01 and 2.04 Technical Specifications. Download either one from the Internet.
+View the contents of sf2 files with ViewAnything (at jdmcox.com).
+[SoundFont 2.04 simply allows sound sample data to be 24 bits/data point instead of 16. I haven't seen any sf2 files with 24-bit sound samples yet.]
+
+An sf2 file is in RIFF format. A RIFF file puts data into "chunks". The RIFF format specifies that the four characters naming a "chunk" are followed by a 4 byte number giving the size (in number of bytes) of the data in the chunk, which is followed by the data.
+
+The 2 main chunk types in sf2 files are "RIFF" and "LIST".
+
+The "RIFF" chunk encompasses the entire file.
+Following its 4 byte size are the 4 letters "sfbk", identifying it as an sf2 file.
+
+There's a "LIST" chunk for "INFO",
+a "LIST" chunk for "sdta", and
+a "LIST" chunk for "pdta".
+I don't know if case matters, but the usage here seems to be universal in sf2 files.
+
+"INFO" follows the first LIST size bytes. It contains file creation info, and is comprised of up to 11 sub-chunks.
+
+"sdta" follows the second LIST size bytes.
+"smpl" follows "sdta".
+The "smpl" size bytes follow, and then a lot of instrument sound samples in WAVE data format (16-bit numbers, as points on complex sine waves).
+[If an sf2 file uses 24 bits to define a sine wave point, there'll be an "sm24" sub-chunk, which contains the least significant byte counterparts to each sample data point contained in the "smpl" sub-chunk.]
+
+These sound samples will be altered by information in a "pdta" chunk (below) to make more accurate instrument sounds. When a MIDI instrument is played at roughly the pitch of one of the sound samples, the Synthesizer alters that sound sample and sends it to Windows (or whatever) to play.
+
+The third "LIST" is at an offset found by adding the second LIST size to the offset of its data (which follows its 4 byte size number).
+
+"pdta" follows the third LIST size bytes. "pdta" contains 9 sub-chunks: "phdr", "pbag", "pmod", "pgen", "inst", "ibag", "imod", "igen", and "shdr".
+These 9 sub-chunks comprise a complex database that contains instrument names, data, and indexes to data.
+
+In the sf2 specification, MIDI instruments are called Presets (for historic reasons), and virtual sub-instruments are called Instruments.
+
+"phdr" names the Presets, and points to each of a Preset's Zones (which sub-divide each Preset) in the "pbag" sub-chunk.
+
+The series of pbags -- that each phdr points to -- begins with the pbag that a phdr points to, and ends just before the pbag that the next phdr points to. The series are always numbered sequentially. This methodology is used by most of the sub-chunks that point to another sub-chunk.
+
+"pbag" points each Preset Zone to data pointers and values in "pmod" and "pgen".
+
+"pmod" points to Modulators (there are just a few of them) that mainly convert a Preset's special parameters that might be contained in a MIDI file to an sf2 parameter format.
+
+"pgen" points to Generators (there are 58), along with their values. The 58 Generators specify parameters like pitch (MIDI note number), volume, vibrato (low frequency oscillator), volume of each part of the sound sample, etc. When a Preset Zone's "pgen" points to Generator 41, the value associated with it will point to an Instrument in the "inst" sub-chunk (not a series). Generator 41 is always the last Generator in a Preset Zone.
+
+Normally, Generator 44 (velocity ranges (MIDI instrument volume)) will also be in the "pgen" sub-chunk. This allows for different Generator values to be associated with different velocity ranges. Other Generators might also be here.
+
+"inst" contains an Instrument, which names the virtual sub-instrument and points to Instrument Zones (like Preset Zones) in "ibag".
+
+"ibag" points each Instrument Zone to data pointers and values in "imod" and "igen".
+
+"imod" and "igen" are like "pmod" and "pgen" except that Generators and Modulators that are pointed to here alter with their values, while Generators and Modulators pointed to in "pmod" and "pgen" alter additively with their values. When "igen" points to Generator 53, the value associated with it will point to a sound sample pointer in "shdr" (not a series). Generator 53 is always the last Generator in an Instrument Zone.
+
+"shdr" contains a sound sample's information and a pointer to the sound sample in "sdta".
+
+Normally, most Generators will be in the "igen" sub-chunk. Here are the main ones:
+
+Generator 8:  Frequencies will be attenuated gradually from about 8 Hz up to this low-pass filter cut-off frequency, where they will be cut off entirely. This smooths out harsh sounds.
+
+Generator 11: Adds to the low-pass filter cut-off frequency in Generator 8, and is altered by the Mod Envelope Generators, 25 thru 30.
+
+Mod Envelopes: Generators 25 thru 30. Mod envelopes are used to alter either the filter frequency modified by Generator 11, or a note's pitch, over time.
+
+Volume Envelopes: Generators 33 thru 38. Volume envelopes limit sound sample volume (primarily) by delaying at 0 for a specified time, then sloping up to full-value over a specified time, then holding it for a specified time, then sloping down over a specified time to a sustained reduced-from-full-value amount for an unknown time, then sloping down to 0 over a specified time.
+
+Generator 43: Specifies the group of keys that will be created from a sound sample. These keys are named by their MIDI note numbers.
+
+Generator 44: Specifies the velocity ranges that each virtual sub-instrument will be selected for. This is usually in the "pgen" sub-chunk.
+
+Generators 51 and 52: Coarse and Fine Tuning that may be necessary to bring a sound sample to its proper pitch.
+
+Generator 58: Overrides the note value that's in a sound sample.
+
+If the first series of pbags doesn't have Generator 41 (Instrument) at the end, its Generators are considered to be Global, and it's as if those Generators are in all pbags.
+If the first series of ibags doesn't have Generator 53 (sampleID) at the end, its Generators are considered to be Global, and it's as if those Generators are in all ibags.
+
+PianoRollComposer.exe can show a SoundFont's Generator data. Select MIDI Output -PianoRollComposer Synthesizer, select an SF2 file, and press the Y key.
+Download PianoRollComposer.c from jdmcox.com to see my C source code. Search on "usingsoundfonts".
+Download SynthFont from www.SynthFont.com to hear how it plays MIDI files using sf2 data.
+Download Viena from www.SynthFont.com to see how it shows (and allows editing of) SoundFont data.
+
+Doug Cox
+7:10pm May 6 2010
+http://jdmcox.com/
+jdmcox@jdmcox.com
+
+Also useful:
+http://jdmcox.com/SoundFont Patent.txt
+http://jdmcox.com/SoundFont Filters.txt
+http://jdmcox.com/Digital Sound.txt
