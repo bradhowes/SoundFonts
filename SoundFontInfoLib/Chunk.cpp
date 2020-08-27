@@ -10,6 +10,7 @@
 #include "SFModulator.hpp"
 #include "SFPreset.hpp"
 #include "SFSample.hpp"
+#include "Voice.hpp"
 
 using namespace SF2;
 

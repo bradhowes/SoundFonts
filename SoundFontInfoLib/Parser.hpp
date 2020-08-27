@@ -12,11 +12,6 @@
 namespace SF2 {
 
 /**
- We only operate with FormatRIFF.
- */
-enum Format { FormatRIFF, FormatError };
-
-/**
  SoundFont file parser.
  */
 class Parser {

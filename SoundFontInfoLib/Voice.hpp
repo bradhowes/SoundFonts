@@ -2,19 +2,26 @@
 
 #pragma once
 
-#include <string>
+#include <array>
 
-#include "ChunkItems.hpp"
-#include "SFInstrument.hpp"
+#include "SFGenerator.hpp"
+#include "Zone.hpp"
 
 namespace SF2 {
 
-/**
- Collection of SFInst representing all of the instruments defined in an SF2 file.
- */
 class Voice
 {
-    Voice() {}
+public:
+    using Configuration = std::array<SFGeneratorAmount,static_cast<size_t>(SFGenIndex::numValues)>;
+
+    Voice(Zone const& instrument, Zone const* globalInstrument, Zone const&) : configuration_{}
+    {
+        configuration_.fill(SFGeneratorAmount(0));
+
+    }
+
+private:
+    Configuration configuration_;
 };
 
 }

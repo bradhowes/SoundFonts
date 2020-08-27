@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD2AEE4324F692C5009EAABE /* SFGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */; };
+		BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4424F69E21009EAABE /* Instrument.hpp */; };
+		BD2AEE4724F6B8D7009EAABE /* Instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */; };
+		BD2AEE4924F6BF94009EAABE /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4824F6BF94009EAABE /* Zone.cpp */; };
+		BD2AEE4B24F738ED009EAABE /* SFManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4A24F738ED009EAABE /* SFManager.hpp */; };
+		BD2AEE4D24F73E16009EAABE /* SFManagerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4C24F73E16009EAABE /* SFManagerTests.mm */; };
+		BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */; };
+		BD2AEE5124F81867009EAABE /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; };
 		BD63B14924AC8BD70015236D /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */; };
 		BD63B14A24AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */; };
 		BD63B14B24AC8BD70015236D /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */; };
@@ -38,8 +46,8 @@
 		BDABC42924F172CD00F8C874 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42824F172CD00F8C874 /* Transform.cpp */; };
 		BDABC42B24F1AD8800F8C874 /* TransformTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42A24F1AD8800F8C874 /* TransformTests.mm */; };
 		BDABC42D24F46A2000F8C874 /* SFFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42C24F46A2000F8C874 /* SFFile.cpp */; };
-		BDABC42F24F46CF000F8C874 /* Patch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42E24F46CF000F8C874 /* Patch.hpp */; };
-		BDABC43124F46E1300F8C874 /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC43024F46E1300F8C874 /* Patch.cpp */; };
+		BDABC42F24F46CF000F8C874 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42E24F46CF000F8C874 /* Preset.hpp */; };
+		BDABC43124F46E1300F8C874 /* Preset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC43024F46E1300F8C874 /* Preset.cpp */; };
 		BDABC43324F46EFA00F8C874 /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC43224F46EFA00F8C874 /* Zone.hpp */; };
 		BDB1B4632491805800F3F361 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; };
 		BDB1B4662491823400F3F361 /* ChunkList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4642491823400F3F361 /* ChunkList.cpp */; };
@@ -50,7 +58,6 @@
 		BDD08E1224F111C800339A69 /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E1124F111C800339A69 /* LFO.hpp */; };
 		BDD08E1424F111D300339A69 /* LFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDD08E1324F111D300339A69 /* LFO.cpp */; };
 		BDEC00002496D6DD00A52507 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDECFFFF2496D6DD00A52507 /* FreeFont.sf2 */; };
-		BDEC000424974AF100A52507 /* Presets.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC000224974AF100A52507 /* Presets.hpp */; };
 		BDEC00182497665D00A52507 /* SFModulatorSource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00162497665D00A52507 /* SFModulatorSource.hpp */; };
 		BDEC001C2497669300A52507 /* SFGeneratorIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */; };
 		BDEC00202497672000A52507 /* SFTransform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001E2497672000A52507 /* SFTransform.hpp */; };
@@ -59,7 +66,6 @@
 		BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002A2497790A00A52507 /* StringUtils.hpp */; };
 		BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003224978AA900A52507 /* ZoneModulators.hpp */; };
 		BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003624978AB300A52507 /* ZoneGenerators.hpp */; };
-		BDEC003C249795AB00A52507 /* Samples.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003A249795AB00A52507 /* Samples.hpp */; };
 		BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; };
 		BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* SFGenerator.hpp */; };
 		BDEC004C2497F0A700A52507 /* SFModulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* SFModulator.hpp */; };
@@ -76,6 +82,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenerator.cpp; sourceTree = "<group>"; };
+		BD2AEE4424F69E21009EAABE /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
+		BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Instrument.cpp; sourceTree = "<group>"; };
+		BD2AEE4824F6BF94009EAABE /* Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Zone.cpp; sourceTree = "<group>"; };
+		BD2AEE4A24F738ED009EAABE /* SFManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFManager.hpp; sourceTree = "<group>"; };
+		BD2AEE4C24F73E16009EAABE /* SFManagerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFManagerTests.mm; sourceTree = "<group>"; };
+		BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFGeneratorAmountTests.mm; sourceTree = "<group>"; };
+		BD2AEE5024F81867009EAABE /* Format.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Format.hpp; sourceTree = "<group>"; };
 		BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = RolandNicePiano.sf2; path = SoundFontsFramework/Resources/SoundFonts/RolandNicePiano.sf2; sourceTree = SOURCE_ROOT; };
 		BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GeneralUser GS MuseScore v1.442.sf2"; path = "SoundFontsFramework/Resources/SoundFonts/GeneralUser GS MuseScore v1.442.sf2"; sourceTree = SOURCE_ROOT; };
 		BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FluidR3_GM.sf2; path = SoundFontsFramework/Resources/SoundFonts/FluidR3_GM.sf2; sourceTree = SOURCE_ROOT; };
@@ -111,8 +125,8 @@
 		BDABC42824F172CD00F8C874 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		BDABC42A24F1AD8800F8C874 /* TransformTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransformTests.mm; sourceTree = "<group>"; };
 		BDABC42C24F46A2000F8C874 /* SFFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFFile.cpp; sourceTree = "<group>"; };
-		BDABC42E24F46CF000F8C874 /* Patch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Patch.hpp; sourceTree = "<group>"; };
-		BDABC43024F46E1300F8C874 /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Patch.cpp; sourceTree = "<group>"; };
+		BDABC42E24F46CF000F8C874 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
+		BDABC43024F46E1300F8C874 /* Preset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Preset.cpp; sourceTree = "<group>"; };
 		BDABC43224F46EFA00F8C874 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Zone.hpp; sourceTree = "<group>"; };
 		BDB1B4612491805800F3F361 /* Tag.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tag.hpp; sourceTree = "<group>"; };
 		BDB1B4642491823400F3F361 /* ChunkList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ChunkList.cpp; sourceTree = "<group>"; };
@@ -122,7 +136,6 @@
 		BDD08E0F24F09FB800339A69 /* Pan.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pan.hpp; sourceTree = "<group>"; };
 		BDD08E1124F111C800339A69 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LFO.hpp; sourceTree = "<group>"; };
 		BDD08E1324F111D300339A69 /* LFO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LFO.cpp; sourceTree = "<group>"; };
-		BDEC000224974AF100A52507 /* Presets.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Presets.hpp; sourceTree = "<group>"; };
 		BDEC00162497665D00A52507 /* SFModulatorSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModulatorSource.hpp; sourceTree = "<group>"; };
 		BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGeneratorIndex.hpp; sourceTree = "<group>"; };
 		BDEC001E2497672000A52507 /* SFTransform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFTransform.hpp; sourceTree = "<group>"; };
@@ -131,7 +144,6 @@
 		BDEC002A2497790A00A52507 /* StringUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		BDEC003224978AA900A52507 /* ZoneModulators.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZoneModulators.hpp; sourceTree = "<group>"; };
 		BDEC003624978AB300A52507 /* ZoneGenerators.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZoneGenerators.hpp; sourceTree = "<group>"; };
-		BDEC003A249795AB00A52507 /* Samples.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Samples.hpp; sourceTree = "<group>"; };
 		BDEC00422497DD5700A52507 /* ChunkItems.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkItems.hpp; sourceTree = "<group>"; };
 		BDEC00462497E7BF00A52507 /* SFGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenerator.hpp; sourceTree = "<group>"; };
 		BDEC004A2497F0A700A52507 /* SFModulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModulator.hpp; sourceTree = "<group>"; };
@@ -162,14 +174,15 @@
 			isa = PBXGroup;
 			children = (
 				BD64EB6924E5341900EA8473 /* SFBag.hpp */,
+				BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */,
 				BDEC00462497E7BF00A52507 /* SFGenerator.hpp */,
+				BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */,
 				BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */,
 				BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */,
 				BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */,
-				BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */,
+				BD64EB6724E5328100EA8473 /* SFInstrument.hpp */,
 				BDEC004A2497F0A700A52507 /* SFModulator.hpp */,
 				BDEC00162497665D00A52507 /* SFModulatorSource.hpp */,
-				BD64EB6724E5328100EA8473 /* SFInstrument.hpp */,
 				BD64EB6B24E534B700EA8473 /* SFPreset.hpp */,
 				BD64EB6F24E536A200EA8473 /* SFSample.hpp */,
 				BDEC001E2497672000A52507 /* SFTransform.hpp */,
@@ -209,28 +222,31 @@
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
 				BD82800524EC16F200533D80 /* Envelope.cpp */,
 				BD82800324EC061400533D80 /* Envelope.hpp */,
-				BD97191424EF21ED0009ED6E /* MIDI.cpp */,
-				BD97191224EF21E40009ED6E /* MIDI.hpp */,
+				BD2AEE5024F81867009EAABE /* Format.hpp */,
+				BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */,
+				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
 				BDD08E1324F111D300339A69 /* LFO.cpp */,
 				BDD08E1124F111C800339A69 /* LFO.hpp */,
+				BD97191424EF21ED0009ED6E /* MIDI.cpp */,
+				BD97191224EF21E40009ED6E /* MIDI.hpp */,
+				BDD08E0F24F09FB800339A69 /* Pan.hpp */,
 				BD74D18423CDB36200204ED4 /* Parser.cpp */,
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
-				BDEC000224974AF100A52507 /* Presets.hpp */,
-				BDEC003A249795AB00A52507 /* Samples.hpp */,
-				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
-				BDABC42E24F46CF000F8C874 /* Patch.hpp */,
-				BDABC43024F46E1300F8C874 /* Patch.cpp */,
+				BDABC43024F46E1300F8C874 /* Preset.cpp */,
+				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
 				BDABC42C24F46A2000F8C874 /* SFFile.cpp */,
+				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
+				BD2AEE4A24F738ED009EAABE /* SFManager.hpp */,
 				BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */,
 				BD74D18223CDB36200204ED4 /* SoundFontInfo.h */,
 				BDEC002A2497790A00A52507 /* StringUtils.hpp */,
 				BD97190E24EF18530009ED6E /* Synthesizer.cpp */,
 				BD97190C24EF182D0009ED6E /* Synthesizer.hpp */,
-				BDD08E0F24F09FB800339A69 /* Pan.hpp */,
 				BDB1B4612491805800F3F361 /* Tag.hpp */,
 				BDABC42824F172CD00F8C874 /* Transform.cpp */,
 				BDABC42624F1727A00F8C874 /* Transform.hpp */,
 				BDEC0026249775FE00A52507 /* Voice.hpp */,
+				BD2AEE4824F6BF94009EAABE /* Zone.cpp */,
 				BDABC43224F46EFA00F8C874 /* Zone.hpp */,
 				BDEC003624978AB300A52507 /* ZoneGenerators.hpp */,
 				BDEC003224978AA900A52507 /* ZoneModulators.hpp */,
@@ -249,11 +265,13 @@
 				BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */,
 				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD64EB7324E5DACD00EA8473 /* SFFileTests.swift */,
-				BD74D17723CDB1D200204ED4 /* Info.plist */,
 				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
 				BDABC42A24F1AD8800F8C874 /* TransformTests.mm */,
 				BD97191024EF1E9C0009ED6E /* SynthesizerTests.mm */,
+				BD2AEE4C24F73E16009EAABE /* SFManagerTests.mm */,
+				BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */,
 				BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */,
+				BD74D17723CDB1D200204ED4 /* Info.plist */,
 			);
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
@@ -281,9 +299,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDABC42724F1727A00F8C874 /* Transform.hpp in Headers */,
-				BDEC003C249795AB00A52507 /* Samples.hpp in Headers */,
 				BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */,
+				BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */,
+				BD2AEE4B24F738ED009EAABE /* SFManager.hpp in Headers */,
 				BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */,
+				BD2AEE5124F81867009EAABE /* Format.hpp in Headers */,
 				BDEC00182497665D00A52507 /* SFModulatorSource.hpp in Headers */,
 				BDB1B4672491823400F3F361 /* ChunkList.hpp in Headers */,
 				BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */,
@@ -293,9 +313,8 @@
 				BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */,
 				BD64EB6A24E5341900EA8473 /* SFBag.hpp in Headers */,
 				BDEC001C2497669300A52507 /* SFGeneratorIndex.hpp in Headers */,
-				BDABC42F24F46CF000F8C874 /* Patch.hpp in Headers */,
+				BDABC42F24F46CF000F8C874 /* Preset.hpp in Headers */,
 				BD74D18523CDB36200204ED4 /* Parser.hpp in Headers */,
-				BDEC000424974AF100A52507 /* Presets.hpp in Headers */,
 				BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */,
 				BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */,
 				BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */,
@@ -421,12 +440,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD97191524EF21ED0009ED6E /* MIDI.cpp in Sources */,
+				BD2AEE4324F692C5009EAABE /* SFGenerator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontInfo.mm in Sources */,
 				BD82800624EC16F200533D80 /* Envelope.cpp in Sources */,
 				BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */,
 				BDB1B46A2491829000F3F361 /* Chunk.cpp in Sources */,
 				BDABC42924F172CD00F8C874 /* Transform.cpp in Sources */,
-				BDABC43124F46E1300F8C874 /* Patch.cpp in Sources */,
+				BDABC43124F46E1300F8C874 /* Preset.cpp in Sources */,
+				BD2AEE4724F6B8D7009EAABE /* Instrument.cpp in Sources */,
+				BD2AEE4924F6BF94009EAABE /* Zone.cpp in Sources */,
 				BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */,
 				BDABC42D24F46A2000F8C874 /* SFFile.cpp in Sources */,
 				BDD08E1424F111D300339A69 /* LFO.cpp in Sources */,
@@ -439,10 +461,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */,
 				BD64EB7424E5DACD00EA8473 /* SFFileTests.swift in Sources */,
 				BDABC42B24F1AD8800F8C874 /* TransformTests.mm in Sources */,
 				BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */,
 				BD97191124EF1E9C0009ED6E /* SynthesizerTests.mm in Sources */,
+				BD2AEE4D24F73E16009EAABE /* SFManagerTests.mm in Sources */,
 				BD74D17623CDB1D200204ED4 /* SoundFontInfoLibTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -589,6 +613,7 @@
 		BD74D17C23CDB1D200204ED4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -598,6 +623,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -622,6 +648,7 @@
 		BD74D17D23CDB1D200204ED4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -631,6 +658,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_WARN_PEDANTIC = YES;
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

@@ -3,11 +3,11 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 
 #include "BinaryStream.hpp"
 #include "Chunk.hpp"
-#include "Parser.hpp"
 
 namespace SF2 {
 
@@ -19,6 +19,10 @@ class ChunkItems
 {
 public:
     using ItemType = T;
+    using ItemCollection = std::vector<ItemType>;
+    using const_iterator = typename std::vector<ItemType>::const_iterator;
+    using ItemRefCollection = std::vector<std::reference_wrapper<ItemType const>>;
+
     static constexpr size_t itemSize = T::size;
 
     ChunkItems() : items_{} {}
@@ -48,7 +52,7 @@ public:
 
      - returns: number of items in collection
      */
-    auto size() const -> auto { return items_.size(); }
+    size_t size() const { return items_.size(); }
 
     /**
      Obtain a (read-only) reference to an entity in the collection.
@@ -56,14 +60,15 @@ public:
      - parameter index: the entity to fetch
      - returns: entity
      */
-    auto operator[](size_t index) const -> auto const& { return items_.at(index); }
+    ItemType const& operator[](size_t index) const { return items_.at(index); }
 
-    /** Obtain the number of some item that exists based on the indices of two objects in this collection. The first object is given by the `index` value, while the
-     second one is simply the subsequent index value. The calcuation uses the two values from the given `getter` method which simply accepts an obect of type
-     T.
-     */
-    auto span(size_t index, std::function<int (T const&)> getter) const -> auto {
-        return getter(items_[index + 1]) - getter(items_[index]);
+    ItemRefCollection slice(size_t first, size_t count) const
+    {
+        assert(first < size() && first + count <= size());
+//        ItemRefCollection result;
+//        std::copy(items_.begin() + first, items_.begin() + first + count,
+//                  std::back_inserter(result));
+        return ItemRefCollection(items_.begin() + first, items_.begin() + first + count);
     }
 
     /**
@@ -71,14 +76,14 @@ public:
 
      - returns: iterator to start of the collection
      */
-    auto begin() const -> auto { return items_.begin(); }
+    const_iterator begin() const { return items_.begin(); }
 
     /**
      Obtain iterator at the end of the collection
 
      - returns: iterator at the end of the collection
      */
-    auto end() const -> auto { return items_.end(); }
+    const_iterator end() const { return items_.end(); }
 
     void dump(std::string const& indent ) const {
         auto index = 0;
@@ -92,7 +97,7 @@ public:
     }
 
 private:
-    std::vector<ItemType> items_;
+    ItemCollection items_;
 };
 
 }

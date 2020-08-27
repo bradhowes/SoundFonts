@@ -17,18 +17,18 @@ namespace SF2 {
  operate in this way have a terminating instance whose index value is the total number of generators or
  modulators in the preset or instrument zones.
  */
-struct SFBag {
+class SFBag {
+    SFBag const& next() const { return *(this + 1); }
+public:
     constexpr static size_t size = 4;
 
     SFBag(BinaryStream& is) { is.copyInto(this); }
 
-    auto next() const -> SFBag const& { return *(this + 1); }
+    uint16_t generatorIndex() const { return wGenNdx; }
+    uint16_t generatorCount() const { return next().generatorIndex() - generatorIndex(); }
 
-    auto generatorIndex() const -> auto { return wGenNdx; }
-    auto generatorCount() const -> auto { return next().generatorIndex() - generatorIndex(); }
-
-    auto modulatorIndex() const -> auto { return wModNdx; }
-    auto modulatorCount() const -> auto { return next().modulatorIndex() - modulatorIndex(); }
+    uint16_t modulatorIndex() const { return wModNdx; }
+    uint16_t modulatorCount() const { return next().modulatorIndex() - modulatorIndex(); }
 
     void dump(const std::string& indent, int index) const
     {

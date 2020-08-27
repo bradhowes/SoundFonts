@@ -10,7 +10,8 @@
 
 namespace SF2 {
 
-inline auto clamp(double value, double min, double max) -> auto { return std::min(std::max(value, min), max); }
+inline double clamp(double value, double min, double max) { return std::min(std::max(value, min), max); }
+
 // cb = -200 * log10(amp)
 // amp = pow(10, cb/-200)
 
@@ -49,21 +50,19 @@ public:
     constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
     static void setSampleRate(double sampleRate) { sampleRate_ = sampleRate; }
-    static auto sampleRate() -> auto { return sampleRate_; }
+    static double sampleRate() { return sampleRate_; }
 
     constexpr static int MaxMIDINote = 127;
 
-    static auto midiKeyToFrequency(int key) -> auto {
-        return standardNoteFrequencies_[clamp(key, 0, MaxMIDINote)];
-    }
+    static double midiKeyToFrequency(int key) { return standardNoteFrequencies_[clamp(key, 0, MaxMIDINote)]; }
 
     constexpr static int MaxCentValue = 1200;
 
-    static auto centToFrequencyMultiplier(int cent) -> auto {
+    static double centToFrequencyMultiplier(int cent) {
         return centFrequencyMultiplier_[clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
     }
 
-    static auto sineLookup(double radians) -> double {
+    static double sineLookup(double radians) {
         double phase = clamp(radians, 0.0, HalfPI) * SineLookupTableScale;
         int index = int(phase);
         double frac = phase - index;
@@ -72,7 +71,7 @@ public:
         return value;
     }
 
-    constexpr static auto sin(double radians) -> double {
+    constexpr static double sin(double radians) {
         if (radians < 0.0) {                // < 0°
             return -sin(-radians);
         }
@@ -95,13 +94,13 @@ public:
 
     constexpr static int CentibelsTableSize = 1441;
 
-    constexpr static auto attenuation(int centibels) -> auto {
+    constexpr static double attenuation(int centibels) {
         if (centibels <= 0) return 1.0;
         if (centibels >= CentibelsTableSize) return 0.0;
         return centibelsToAttenuation_[centibels];
     }
     
-    constexpr static auto gain(int centibels) -> auto {
+    constexpr static double gain(int centibels) {
         if (centibels <= 0.0) return 1.0;
         if (centibels >= CentibelsTableSize) centibels = CentibelsTableSize - 1;
         return centibelsToGain_[centibels];

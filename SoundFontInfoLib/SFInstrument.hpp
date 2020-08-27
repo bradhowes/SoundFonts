@@ -22,11 +22,9 @@ public:
         trim_property(achInstName);
     }
 
-    auto name() const -> auto{ return achInstName; }
-    auto zoneIndex() const -> auto { return wInstBagNdx; }
-
-    auto next() const -> auto { return *(this + 1); }
-    auto zoneCount() const -> auto { return next().zoneIndex() - zoneIndex(); }
+    std::string name() const { return std::string(achInstName); }
+    uint16_t zoneIndex() const { return wInstBagNdx; }
+    uint16_t zoneCount() const { return (this + 1)->zoneIndex() - zoneIndex(); }
 
     void dump(std::string const& indent, int index) const
     {

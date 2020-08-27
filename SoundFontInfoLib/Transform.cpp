@@ -9,7 +9,7 @@ using namespace SF2;
 int const Transform::MaxMIDIControllerValue;
 
 
-auto Transform::selectActive(Kind kind, Direction direction) -> auto const&
+Transform::TransformArrayType const& Transform::selectActive(Kind kind, Direction direction)
 {
     switch (kind) {
         case Kind::linear: return direction == Direction::ascending ? positiveLinear_ : negativeLinear_; break;
@@ -23,13 +23,13 @@ Transform::Transform(Kind kind, Direction direction, Polarity polarity)
 : active_{selectActive(kind, direction)}, polarity_{polarity}
 {}
 
-static auto positiveConcaveCurve(int index) -> double
+static double positiveConcaveCurve(int index)
 {
     return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Transform::MaxMIDIControllerValue - index) /
                                                      Transform::MaxMIDIControllerValue);
 }
 
-static auto negativeConcaveCurve(int index) -> double
+static double negativeConcaveCurve(int index)
 {
     // From SF2 spec - output = -20/96 * log((value^2)/(range^2)) == -40/96 * log(value / range)
     return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Transform::MaxMIDIControllerValue);

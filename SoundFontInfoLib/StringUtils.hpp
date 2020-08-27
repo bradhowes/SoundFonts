@@ -26,19 +26,19 @@ static inline void trim(std::string &s) {
 }
 
 // trim from start (copying)
-static inline auto ltrim_copy(std::string s) -> auto {
+static inline std::string ltrim_copy(std::string s) {
     ltrim(s);
     return s;
 }
 
 // trim from end (copying)
-static inline auto rtrim_copy(std::string s) -> auto {
+static inline std::string rtrim_copy(std::string s) {
     rtrim(s);
     return s;
 }
 
 // trim from both ends (copying)
-static inline auto trim_copy(std::string s) -> auto {
+static inline std::string trim_copy(std::string s) {
     trim(s);
     return s;
 }

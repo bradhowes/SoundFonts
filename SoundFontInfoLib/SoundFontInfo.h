@@ -23,6 +23,5 @@
 + (SoundFontInfo*)parse:(void const*)data size:(size_t)size;
 
 - (void)dump:(NSString*)path;
-- (void)test;
 
 @end

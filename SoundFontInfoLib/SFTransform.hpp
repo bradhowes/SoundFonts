@@ -10,26 +10,25 @@ namespace SF2 {
 class SFTransform {
 public:
 
-    enum TransformKind {
-        kTransformKindLinear = 0,
-        kTransformKindAbsolute = 2
+    enum struct Kind {
+        linear = 0,
+        absolute = 2
     };
 
     SFTransform() : bits_{0} {}
 
-    auto kind() const -> auto { return bits_ == 0 ? kTransformKindLinear : kTransformKindAbsolute; }
+    Kind kind() const { return bits_ == 0 ? Kind::linear : Kind::absolute; }
 
-    auto transform(float value) const -> auto {
+    float transform(float value) const {
         switch (kind()) {
-            case kTransformKindLinear: return value;
-            case kTransformKindAbsolute: return abs(value);
+            case Kind::linear: return value;
+            case Kind::absolute: return abs(value);
             default: throw "unexpected tranform kind";
         }
     }
 
-    friend std::ostream& operator<<(std::ostream& os, SFTransform const& value)
-    {
-        return os << (value.kind() == kTransformKindLinear ? "Linear" : "Absolute");
+    friend std::ostream& operator<<(std::ostream& os, SFTransform const& value) {
+        return os << (value.kind() == Kind::linear ? "linear" : "absolute");
     }
 
 private:

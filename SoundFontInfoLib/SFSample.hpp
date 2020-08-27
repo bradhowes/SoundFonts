@@ -32,12 +32,12 @@ public:
         rom = 0x8000
     };
 
-    constexpr auto isMono() const -> auto { return (sampleType & monoSample) == monoSample; }
-    constexpr auto isRight() const -> auto { return (sampleType & rightSample) == rightSample; }
-    constexpr auto isLeft() const -> auto { return (sampleType & leftSample) == leftSample; }
-    constexpr auto isROM() const -> auto { return (sampleType & rom) == rom; }
+    bool isMono() const { return (sampleType & monoSample) == monoSample; }
+    bool isRight() const { return (sampleType & rightSample) == rightSample; }
+    bool isLeft() const { return (sampleType & leftSample) == leftSample; }
+    bool isROM() const { return (sampleType & rom) == rom; }
 
-    auto sampleTypeDescription() const -> auto
+    std::string sampleTypeDescription() const
     {
         std::string tag("");
         if (sampleType & monoSample) tag += "M";

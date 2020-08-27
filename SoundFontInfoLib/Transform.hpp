@@ -40,7 +40,7 @@ public:
 
     Transform(Kind kind, Direction direction, Polarity polarity);
 
-    auto value(int controllerValue) const -> double {
+    double value(int controllerValue) const {
         controllerValue = ::std::max(::std::min(controllerValue, MaxMIDIControllerValue), 0);
         return (polarity_ == Polarity::unipolar) ? unipolarValue(controllerValue) : bipolarValue(controllerValue);
     }
@@ -48,10 +48,10 @@ public:
 private:
     using TransformArrayType = std::array<double, MaxMIDIControllerValue + 1>;
 
-    auto unipolarValue(int controllerValue) const -> double { return active_[controllerValue]; }
-    auto bipolarValue(int controllerValue) const -> double { return 2.0 * active_[controllerValue] - 1.0; }
+    double unipolarValue(int controllerValue) const { return active_[controllerValue]; }
+    double bipolarValue(int controllerValue) const { return 2.0 * active_[controllerValue] - 1.0; }
 
-    static auto selectActive(Kind kind, Direction direction) -> auto const&;
+    static TransformArrayType const& selectActive(Kind kind, Direction direction);
 
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "BinaryStream.hpp"
-#include "SFGenerator.hpp"
+#include "SFGeneratorDefinition.hpp"
 #include "SFModulatorSource.hpp"
 #include "SFTransform.hpp"
 
