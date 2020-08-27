@@ -7,8 +7,8 @@
 #include <string>
 
 #include "Parser.hpp"
-#include "Presets.hpp"
 #include "SFFile.hpp"
+#include "SFManager.hpp"
 #include "SoundFontInfo.h"
 
 using namespace SF2;
@@ -54,7 +54,7 @@ using namespace SF2;
         auto patchHeader = patchData->find(Tag(Tags::phdr));
         if (patchHeader == patchData->end()) return nil;
 
-        auto presetHeader = Presets(*patchHeader);
+        auto presetHeader = ChunkItems<SFPreset>(*patchHeader);
         NSMutableArray* patches = [NSMutableArray arrayWithCapacity:presetHeader.size()];
 
         for (auto it = presetHeader.begin(); it != presetHeader.end() - 1; ++it) {
@@ -103,11 +103,6 @@ struct Redirector {
     Redirector redirector(fileName.UTF8String);
     auto top = SF2::Parser::parse(dataPtr, dataSize);
     top.dump("");
-}
-
-- (void) test {
-    auto top = SF2::Parser::parse(dataPtr, dataSize);
-    SFFile file(top);
 }
 
 @end

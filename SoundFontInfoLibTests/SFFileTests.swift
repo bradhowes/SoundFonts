@@ -34,7 +34,8 @@ class SFFileTests: XCTestCase {
     }()
 
     func testInit() {
-        let sfi = soundFont1.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size:$0.count)! }
-        sfi.test();
+        for sf in soundFonts {
+            let _ = sf.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size:$0.count)! }
+        }
     }
 }

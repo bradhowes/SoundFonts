@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Chunk.hpp"
-#include "Parser.hpp"
+#include "Format.hpp"
 
 namespace SF2 {
 
@@ -38,7 +38,7 @@ public:
      */
     template <typename T>
     void copyInto(T* destination) {
-        if (sizeof(T) != T::size) throw FormatError;
+        if (sizeof(T) != T::size) throw Format::error;
         copyInto(destination, T::size);
     }
 
@@ -49,7 +49,7 @@ public:
      - parameter size: the number of bytes to write
      */
     void copyInto(void* destination, size_t size) {
-        if (available_ < size) throw FormatError;
+        if (available_ < size) throw Format::error;
         memcpy(destination, pos_, size);
         advance(size);
     }
@@ -59,7 +59,7 @@ public:
 private:
 
     void advance(size_t size) {
-        if (available_ < size) throw FormatError;
+        if (available_ < size) throw Format::error;
         pos_ += size;
         available_ -= size;
     }

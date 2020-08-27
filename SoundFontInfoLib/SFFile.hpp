@@ -2,7 +2,10 @@
 
 #pragma once
 
+#include <fstream>
+
 #include "ChunkItems.hpp"
+#include "Parser.hpp"
 #include "SFBag.hpp"
 #include "SFGenerator.hpp"
 #include "SFInstrument.hpp"
@@ -43,15 +46,30 @@ struct SFFile {
     /**
      Use the given RIFF chunk to locate specific SF2 components.
      */
+    explicit SFFile(std::string const& path) : data_{} {
+        std::ifstream file(path, std::ios::binary | std::ios::ate);
+        std::streamsize size = file.tellg();
+        file.seekg(0, std::ios::beg);
+        data_.resize(size);
+        if (file.read(data_.data(), size)) {
+            buildWith(Parser::parse(data_.data(), size));
+        }
+    }
+
     explicit SFFile(Chunk const& chunk) {
         buildWith(chunk);
-        validate();
+    }
+
+    SFFile(void const* data, size_t size) {
+        buildWith(Parser::parse(data, size));
     }
 
 private:
 
     void buildWith(Chunk const& chunk);
     void validate();
+
+    std::vector<char> data_;
 };
 
 }

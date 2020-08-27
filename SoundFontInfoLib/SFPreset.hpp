@@ -11,7 +11,8 @@ namespace SF2 {
  Memory layout of 'phdr' entry in sound font. The size of this is defined to be 38 bytes, but due
  to alignment/padding the struct below is 40 bytes.
  */
-struct SFPreset {
+class SFPreset {
+public:
     constexpr static size_t size = 38;
 
     explicit SFPreset(BinaryStream& is)
@@ -22,13 +23,12 @@ struct SFPreset {
         trim_property(achPresetName);
     }
 
-    auto name() const -> auto{ return achPresetName; }
-    auto preset() const -> auto { return wPreset; }
-    auto bank() const -> auto { return wBank; }
-    auto zoneIndex() const -> auto { return wPresetBagNdx; }
+    char const* name() const { return achPresetName; }
+    uint16_t preset() const { return wPreset; }
+    uint16_t bank() const { return wBank; }
 
-    auto next() const -> auto { return *(this + 1); }
-    auto zoneCount() const -> auto { return next().zoneIndex() - zoneIndex(); }
+    uint16_t zoneIndex() const { return wPresetBagNdx; }
+    uint16_t zoneCount() const { return (this + 1)->zoneIndex() - zoneIndex(); }
 
     void dump(const std::string& indent, int index) const
     {

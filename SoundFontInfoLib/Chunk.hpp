@@ -35,31 +35,31 @@ public:
     /**
      @returns the chunk ID.
      */
-    auto tag() const -> auto { return tag_; }
+    Tag tag() const { return tag_; }
 
     /**
      Obtain the pointer to the data blob.
      @returns data blob pointer
      */
-    auto dataPtr() const -> auto { return data_; }
+    void const* dataPtr() const { return data_; }
 
     /**
      Obtain the pointer to the data blob as a stream of bytes.
      @returns data blob pointer
      */
-    auto bytePtr() const -> auto { return static_cast<uint8_t const*>(data_); }
+    uint8_t const* bytePtr() const { return static_cast<uint8_t const*>(data_); }
 
     /**
      Obtain the pointer to the data blob as a stream of characters.
      @returns data blob pointer
      */
-    auto charPtr() const -> auto { return static_cast<char const*>(data_); }
+    char const* charPtr() const { return static_cast<char const*>(data_); }
 
     /**
      Obtain the size of the data blob.
      @returns data blob size
      */
-    auto size() const -> auto { return size_; }
+    size_t size() const { return size_; }
 
     /**
      Obtain iterator that points to the first chunk.

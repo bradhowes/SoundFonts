@@ -2,6 +2,9 @@
 
 #include "SFFile.hpp"
 
+#include "Instrument.hpp"
+#include "Preset.hpp"
+
 using namespace SF2;
 
 void
@@ -36,5 +39,5 @@ SFFile::buildWith(Chunk const& chunk)
 void
 SFFile::validate()
 {
-    if (presets.size() <2) throw FormatError;
+    ;
 }

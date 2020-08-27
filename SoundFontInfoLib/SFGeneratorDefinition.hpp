@@ -4,17 +4,15 @@
 
 #include <array>
 
+#include "SFGeneratorAmount.hpp"
 #include "SFGeneratorIndex.hpp"
 
 namespace SF2 {
-
-class SFGeneratorAmount;
 
 class SFGeneratorDefinition {
 public:
 
     static constexpr size_t NumDefinitions = 59;
-    static std::array<SFGeneratorDefinition, NumDefinitions> const definitions_;
 
     enum struct ValueKind {
         unsignedShort = 1,
@@ -39,21 +37,29 @@ public:
         additiveInPreset = 3
     };
 
-    static auto definition(SFGeneratorIndex index) -> auto { return definitions_.at(index.index()); }
+    static SFGeneratorDefinition const& definition(SFGeneratorIndex index) {
+        return definitions_.at(index.raw());
+    }
 
-    SFGeneratorDefinition(char const* name, ValueKind valueKind, uint16_t flags)
-    : name_{name}, valueKind_{valueKind}, flags_{flags} {}
+    static SFGeneratorDefinition const& definition(SFGenIndex index) {
+        return definitions_.at(static_cast<uint16_t>(index));
+    }
 
-    auto name() const -> auto { return name_; }
-    auto valueKind() const -> auto { return valueKind_; }
-    auto flags() const -> auto { return flags_; }
+    std::string const& name() const { return name_; }
+    ValueKind valueKind() const { return valueKind_; }
+    uint16_t flags() const { return flags_; }
 
-    auto isAvailableInPreset() const -> auto { return (flags_ & availableInPreset) == availableInPreset; }
-    auto isAdditiveInPreset() const -> auto { return (flags_ & additiveInPreset) == additiveInPreset; }
+    bool isAvailableInPreset() const { return (flags_ & availableInPreset) == availableInPreset; }
+    bool isAdditiveInPreset() const { return (flags_ & additiveInPreset) == additiveInPreset; }
 
     void dump(SFGeneratorAmount const& amount) const;
 
 private:
+    static std::array<SFGeneratorDefinition, NumDefinitions> const definitions_;
+
+    SFGeneratorDefinition(char const* name, ValueKind valueKind, uint16_t flags)
+    : name_{name}, valueKind_{valueKind}, flags_{flags} {}
+
     std::string name_;
     ValueKind valueKind_;
     uint16_t flags_;

@@ -59,7 +59,7 @@ public:
         /**
          Obtain the next value of a stage. Requires the last value that was generated (by this stage or the prevous one).
          */
-        auto next(double last) const -> auto { return std::max(std::min(last * alpha + beta, 1.0), 0.0); }
+        double next(double last) const { return std::max(std::min(last * alpha + beta, 1.0), 0.0); }
 
         /**
          Generate a configuration for the attack stage.
@@ -107,12 +107,12 @@ public:
         /**
          Obtain the currently active stage.
          */
-        auto stage() const -> auto { return stage_; }
+        Stage stage() const { return stage_; }
 
         /**
          Obtain the current envelope value.
          */
-        auto value() const -> auto { return value_; }
+        double value() const { return value_; }
 
         /**
          Set the status of a note playing. When true, the evenlope begins proper. When set to false, the envelope will jump to the release stage.
@@ -131,7 +131,7 @@ public:
         /**
          Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
          */
-        auto process() -> auto
+        double process()
         {
             switch (stage_) {
                 case Stage::delay: checkIfEndStage(Stage::attack); break;
@@ -173,10 +173,13 @@ public:
 
     private:
 
-        constexpr auto stageAsIndex() const -> auto { return static_cast<int>(stage_); }
-        auto active() const -> auto& { return configs_[stageAsIndex()]; }
-        auto stage(Stage stage) const -> auto& { return configs_[static_cast<int>(stage)]; }
-        auto sustainLevel() const -> double { return stage(Stage::sustain).initial; }
+        int stageAsIndex() const { return static_cast<int>(stage_); }
+
+        StageConfiguration const& active() const { return configs_[stageAsIndex()]; }
+
+        StageConfiguration const& stage(Stage stage) const { return configs_[static_cast<int>(stage)]; }
+
+        double sustainLevel() const { return stage(Stage::sustain).initial; }
 
         void updateValue() { value_ = active().next(value_); }
 
@@ -248,25 +251,25 @@ public:
     /**
      Create a new envelope generator using the configured envelope settings.
      */
-    auto generator() const -> auto { return Generator(configs_); }
+    Generator generator() const { return Generator(configs_); }
 
 private:
 
-    constexpr static int stageAsIndex(Stage stage) { return static_cast<int>(stage); }
+    static int stageAsIndex(Stage stage) { return static_cast<int>(stage); }
 
-    auto stage(Stage stage) -> auto& { return configs_[static_cast<int>(stage)]; }
+    StageConfiguration& stage(Stage stage) { return configs_[static_cast<int>(stage)]; }
 
-    static auto clampCurvature(double curvature) -> auto
+    static double clampCurvature(double curvature)
     {
         return std::max(std::min(curvature, maxiumCurvature), minimumCurvature);
     }
 
-    static auto calculateCoefficient(double rate, double curvature) -> auto
+    static double calculateCoefficient(double rate, double curvature)
     {
         return (rate <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / rate);
     }
 
-    auto samplesFor(double duration) const -> auto { return round(sampleRate_ * duration); }
+    double samplesFor(double duration) const { return round(sampleRate_ * duration); }
 
     StageConfiguration configs_[numStages];
 

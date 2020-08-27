@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 
+#include "Format.hpp"
 #include "Parser.hpp"
 
 using namespace SF2;
@@ -14,7 +15,7 @@ using namespace SF2;
  */
 struct Parser::Pos {
     static auto chars(void const* p) -> auto { return static_cast<char const*>(p); }
-    static auto ints(void const* p) -> auto { return reinterpret_cast<uint32_t const*>(p); }
+    static auto sizes(void const* p) -> auto { return reinterpret_cast<uint32_t const*>(p); }
 
     /**
      Constructor for a new position.
@@ -27,49 +28,49 @@ struct Parser::Pos {
      Obtain the number of bytes remaining to work with
      @returns remaining number of bytes
      */
-    auto remaining() const -> auto { return chars(end) - chars(pos); }
+    size_t remaining() const { return chars(end) - chars(pos); }
 
     /**
      Obtain a new Pos instance that is advanced from our current position. Shares the same end position.
      @param offset number of bytes to advance.
      @returns new instance
      */
-    auto advance(size_t offset) const -> auto { validate(offset); return Pos(*this, offset); }
+    Pos advance(size_t offset) const { validate(offset); return Pos(*this, offset); }
 
     /**
      Obtain a new Pos instance that is advanced from our current position *and* has a different end position.
      @param offset number of bytes to advance.
      @param size number of bytes available to parse from the offset position
      */
-    auto advance(size_t offset, size_t size) const -> auto { validate(offset + size); return Pos(*this, offset, size); }
+    Pos advance(size_t offset, size_t size) const { validate(offset + size); return Pos(*this, offset, size); }
 
     /**
      Obtain the tag for a chunk we are pointing into
 
      @returns tag field of current chunk
      */
-    auto tag() const -> auto { validate(sizeof(uint32_t) * 1); return Tag(pos); }
+    Tag tag() const { validate(sizeof(uint32_t) * 1); return Tag(pos); }
 
     /**
      Obtain the size for a chunk we are pointing into
 
      @returns size of current chunk
      */
-    auto size() const -> auto { validate(sizeof(uint32_t) * 2); return ints(pos)[1]; }
+    uint32_t size() const { validate(sizeof(uint32_t) * 2); return sizes(pos)[1]; }
 
     /**
      Obtain the tag for a list we are pointing into
 
      @returns tag of current list
      */
-    auto list_tag() const -> auto { validate(12); return Tag(chars(pos) + 8); }
+    Tag list_tag() const { validate(12); return Tag(chars(pos) + 8); }
 
     /**
      Obtain a pointer to the first byte of a data blob
 
      @returns data pointer
      */
-    auto data(size_t len) const -> auto { validate(8 + len); return chars(pos) + 8; }
+    void const* data(size_t len) const { validate(8 + len); return chars(pos) + 8; }
 
 private:
 
@@ -81,7 +82,7 @@ private:
      Make sure that there is enough bytes to satisfy some data request. Throws IFF_FMT_ERROR if there is not enough.
      @param need number of bytes to consume
      */
-    void validate(size_t need) const { if (remaining() < need) throw FormatError; }
+    void validate(size_t need) const { if (remaining() < need) throw Format::error; }
 
     void const* pos;
     void const* end;
@@ -120,12 +121,13 @@ Chunk
 Parser::parse(void const* data, size_t size)
 {
     auto pos = Pos(static_cast<char const*>(data), size);
-    if (pos.tag() != Tag(Tags::riff)) throw FormatError;
+    if (pos.tag() != Tag(Tags::riff)) throw Format::error;
 
     // Check that the total size given of the given data matches what is recorded in the header of the top-level
     // chunk.
     auto len = pos.size() - 4;
-    if (len != size - 12) throw FormatError;
+    if (len != size - 12) throw Format::error;
 
     return Chunk(pos.list_tag(), parseChunks(pos.advance(12, len)));
 }
+

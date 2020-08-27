@@ -14,7 +14,7 @@ class Tag;
  */
 class ChunkList {
 public:
-    typedef std::vector<Chunk>::const_iterator const_iterator;
+    using const_iterator = std::vector<Chunk>::const_iterator;
 
     ChunkList() = default;
     ChunkList(ChunkList&& rhs) = default;
