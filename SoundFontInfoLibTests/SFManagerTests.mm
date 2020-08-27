@@ -63,16 +63,13 @@ SF2::Preset::Matches getMatches(SFManager const& mgr)
     XCTAssertEqual(2, zones.size());
     auto const& pair0 = zones.at(0);
     PresetZone const& presetZone0 = pair0.first;
-    presetZone0.dump("");
 
-    XCTAssertEqual(2, presetZone0.zoneId());
     XCTAssertEqual(false, presetZone0.isGlobal());
     XCTAssertEqual("Instrument4", presetZone0.instrument().configuration().name());
     XCTAssertEqual(0, presetZone0.keyRange().low());
     XCTAssertEqual(127, presetZone0.keyRange().high());
     XCTAssertEqual(64, presetZone0.velocityRange().low());
     XCTAssertEqual(77, presetZone0.velocityRange().high());
-
     XCTAssertEqual(2, presetZone0.generators().size());
     XCTAssertEqual(SFGenIndex::velRange, presetZone0.generators()[0].get().index());
     XCTAssertEqual(SFGenIndex::instrument, presetZone0.generators()[1].get().index());
@@ -80,9 +77,8 @@ SF2::Preset::Matches getMatches(SFManager const& mgr)
     XCTAssertEqual(0, presetZone0.modulators().size());
 
     auto const& instrumentZone0 = pair0.second.get();
-    auto const& keyRange = instrumentZone0.keyRange();
-    XCTAssertEqual(68, keyRange.low());
-    XCTAssertEqual(72, keyRange.high());
+    XCTAssertEqual(68, instrumentZone0.keyRange().low());
+    XCTAssertEqual(72, instrumentZone0.keyRange().high());
 }
 
 @end

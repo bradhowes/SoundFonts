@@ -66,12 +66,11 @@ protected:
         return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
     }
 
-    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, SFGenIndex terminal, size_t zoneId) :
+    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, SFGenIndex terminal) :
     generators_{gens},
     modulators_{mods},
     isGlobal_{IsGlobal(gens, terminal, mods)},
-    keyRange_{KeyRange(gens)}, velocityRange_{VelRange(gens)},
-    zoneId_{zoneId}
+    keyRange_{KeyRange(gens)}, velocityRange_{VelRange(gens)}
     {}
 
 public:
@@ -81,23 +80,17 @@ public:
         return keyRange_.contains(key) && velocityRange_.contains(velocity);
     }
 
-    void apply(Configuration& configuration) const
+    void apply(Configuration& cfg) const
     {
-        std::for_each(generators_.begin(), generators_.end(),
-                      [&](std::reference_wrapper<SFGenerator const> const& ref) {
-            SFGenerator const& gen = ref.get();
-            configuration[gen.index()] = gen.value();
+        std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) {
+            cfg[gen.index()] = gen.value();
         });
     }
 
-    void refine(Configuration& configuration) const
+    void refine(Configuration& cfg) const
     {
-        std::for_each(generators_.begin(), generators_.end(),
-                      [&](std::reference_wrapper<SFGenerator const> const& ref) {
-            SFGenerator const& gen = ref.get();
-            if (gen.definition().isAdditiveInPreset()) {
-                configuration[gen.index()].refine(gen.value().amount());
-            }
+        std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) {
+            if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());
         });
     }
 
@@ -108,23 +101,12 @@ public:
         return generators_.back().get().value().index();
     }
 
-    size_t zoneId() const { return zoneId_; }
-
-    void dump(std::string const& indent) const {
-        std::cout << "Zone: " << zoneId_ << " genCount: " << generators_.size() << std::endl;
-        for (auto index = 0; index < generators_.size(); ++index) {
-            SFGenerator const& gen = generators_[index];
-            gen.dump(indent + " ", index);
-        }
-    }
-
 private:
     GeneratorCollection generators_;
     ModulatorCollection modulators_;
 
     Range keyRange_;
     Range velocityRange_;
-    size_t zoneId_;
     bool isGlobal_;
 };
 
