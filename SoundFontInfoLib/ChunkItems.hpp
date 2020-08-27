@@ -65,9 +65,6 @@ public:
     ItemRefCollection slice(size_t first, size_t count) const
     {
         assert(first < size() && first + count <= size());
-//        ItemRefCollection result;
-//        std::copy(items_.begin() + first, items_.begin() + first + count,
-//                  std::back_inserter(result));
         return ItemRefCollection(items_.begin() + first, items_.begin() + first + count);
     }
 
