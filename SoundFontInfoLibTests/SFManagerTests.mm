@@ -29,7 +29,7 @@ using namespace SF2;
 
 SFManager makeManager(NSString* path)
 {
-    return SFManager(new SFFile(path.fileSystemRepresentation));
+    return SFManager(path.fileSystemRepresentation);
 }
 
 SF2::Preset::Matches getMatches(SFManager const& mgr)
@@ -46,6 +46,7 @@ SF2::Preset::Matches getMatches(SFManager const& mgr)
 
 - (void)testFreeFont {
     auto mgr = makeManager([self soundFontPath:@"FreeFont"]);
+    mgr.fileData().dump();
     auto zones = getMatches(mgr);
     XCTAssertEqual(1, zones.size());
 }

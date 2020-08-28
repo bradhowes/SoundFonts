@@ -22,15 +22,14 @@ SFGeneratorDefinition::dump(const SFGeneratorAmount& amount) const
         case ValueKind::coarseOffset: std::cout << (amount.index() * 32768) << " bytes"; break;
         case ValueKind::signedCents: std::cout << (amount.amount() / 1200.0) << " oct"; break;
         case ValueKind::signedCentsBel: std::cout << (amount.amount() / 10.0) << " dB"; break;
-        case ValueKind::unsignedPercent: std::cout << (amount.index() / 10.0) << "%"; break;
+        case ValueKind::unsignedPercent: std::cout << (amount.amount() / 10.0) << "%"; break;
         case ValueKind::signedPercent: std::cout << (amount.amount() / 10.0) << "%"; break;
-        case ValueKind::signedFreqCents: std::cout << toFreqCents(amount.amount()) << " Hz ("
-            << amount.amount() << ')'; break;
-        case ValueKind::signedTimeCents: std::cout << toTimeCents(amount.amount()) << " seconds ("
-            << amount.amount() << ')'; break;
+        case ValueKind::signedFreqCents: std::cout << toFreqCents(amount.amount()) << " Hz"; break;
+        case ValueKind::signedTimeCents: std::cout << toTimeCents(amount.amount()) << " seconds"; break;
         case ValueKind::signedSemitones: std::cout << amount.amount() << " notes"; break;
-        default: std::cout << amount.amount(); break;
+        default: std::cout << amount.amount(); return;
     }
+    std::cout << " (" << amount.amount() << ')';
 }
 
 std::array<SFGeneratorDefinition, SFGeneratorDefinition::NumDefinitions> const SFGeneratorDefinition::definitions_{
