@@ -14,15 +14,14 @@ class SFManager {
 public:
 
     explicit SFManager(std::string const& path)
-    : file_{new SFFile(path)}, instruments_{*file_}, presets_{*file_, instruments_} {}
+    : file_{SFFile::Make(path)}, instruments_{file_}, presets_{file_, instruments_} {}
 
-    explicit SFManager(SFFile const* file)
-    : file_{file}, instruments_{*file}, presets_{*file, instruments_} {}
-
+    SFFile const& fileData() const { return file_; }
     PresetCollection const& presets() const { return presets_; }
+    InstrumentCollection const& instruments() const { return instruments_; }
 
 private:
-    std::unique_ptr<SFFile const> file_;
+    SFFile file_;
     InstrumentCollection instruments_;
     PresetCollection presets_;
 };

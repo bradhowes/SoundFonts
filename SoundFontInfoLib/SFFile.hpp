@@ -43,26 +43,34 @@ struct SFFile {
     /// Pointer to the last+1 sample byte from the file
     uint8_t const* sampleDataEnd;
 
+    explicit SFFile(std::vector<char>&& data) : data_{data}, top_{Parser::parse(data_.data(), data_.size())}
+    {
+        buildWith(top_);
+    }
+
+    explicit SFFile(Chunk&& chunk) : data_{}, top_{std::move(chunk)}
+    {
+        buildWith(top_);
+    }
+
+    SFFile(void const* data, size_t size) : data_{}, top_{Parser::parse(data, size)}
+    {
+        buildWith(top_);
+    }
+
     /**
-     Use the given RIFF chunk to locate specific SF2 components.
+     Load data from a file.
      */
-    explicit SFFile(std::string const& path) : data_{} {
+    static SFFile Make(std::string const& path) {
         std::ifstream file(path, std::ios::binary | std::ios::ate);
         std::streamsize size = file.tellg();
         file.seekg(0, std::ios::beg);
-        data_.resize(size);
-        if (file.read(data_.data(), size)) {
-            buildWith(Parser::parse(data_.data(), size));
-        }
+        std::vector<char> data(size);
+        if (!file.read(data.data(), size)) throw Format::error;
+        return SFFile(std::move(data));
     }
 
-    explicit SFFile(Chunk const& chunk) {
-        buildWith(chunk);
-    }
-
-    SFFile(void const* data, size_t size) {
-        buildWith(Parser::parse(data, size));
-    }
+    void dump() const { top_.dump(""); }
 
 private:
 
@@ -70,6 +78,7 @@ private:
     void validate();
 
     std::vector<char> data_;
+    Chunk top_;
 };
 
 }
