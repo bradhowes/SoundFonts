@@ -13,14 +13,13 @@
 @end
 
 @interface SoundFontInfo : NSObject {
-    void const* dataPtr;
-    size_t dataSize;
 }
 
+@property (nonatomic, retain) NSData* contents;
 @property (nonatomic, retain) NSString* embeddedName;
 @property (nonatomic, retain) NSArray<SoundFontInfoPatch*>* patches;
 
-+ (SoundFontInfo*)parse:(void const*)data size:(size_t)size;
++ (SoundFontInfo*)load:(NSURL*)url;
 
 - (void)dump:(NSString*)path;
 

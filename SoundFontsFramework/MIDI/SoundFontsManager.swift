@@ -2,6 +2,7 @@
 
 import Foundation
 import os
+import SoundFontInfoLib
 
 /**
  Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
@@ -166,8 +167,7 @@ extension SoundFontsManager {
 
     @discardableResult
     fileprivate static func addFromBundle(url: URL) -> SoundFont {
-        guard let data = try? Data(contentsOf: url, options: .dataReadingMapped) else { fatalError() }
-        guard let info = GetSoundFontInfo(data: data) else { fatalError() }
+        guard let info = SoundFontInfo.load(url) else { fatalError() }
         guard let infoName = info.embeddedName else { fatalError() }
         if infoName.isEmpty || info.patches.isEmpty { fatalError() }
         let displayName = niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName
