@@ -18,6 +18,9 @@ public:
     int low() const { return int(raw_.ranges[0]); }
     int high() const { return int(raw_.ranges[1]); }
 
+    void setIndex(uint16_t value) { raw_.wAmount = value; }
+    void setAmount(int16_t value) { raw_.shAmount = value; }
+    
     void refine(uint16_t value) { raw_.wAmount += value; }
     void refine(int16_t value) { raw_.shAmount += value; }
 

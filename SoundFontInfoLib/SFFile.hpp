@@ -15,6 +15,9 @@
 
 namespace SF2 {
 
+/**
+ Contains collection of SF2 elements found in a SF2 file.
+ */
 struct SFFile {
     /// Collection of presets defined in the file
     ChunkItems<SFPreset> presets;
@@ -43,16 +46,26 @@ struct SFFile {
     /// Pointer to the last+1 sample byte from the file
     uint8_t const* sampleDataEnd;
 
+    /**
+     Parse the given collection of bytes from an SF2 file and build up the collections. Since the data vector is moved into the new SFFile instance, there are no lifetime
+     issues to contend with.
+     */
     explicit SFFile(std::vector<char>&& data) : data_{data}, top_{Parser::parse(data_.data(), data_.size())}
     {
         buildWith(top_);
     }
 
+    /**
+     Build the collections from the given Chunk. NOTE: the Chunk lifetime must outlive the SFFile instance for the contents of the collections to be valid.
+     */
     explicit SFFile(Chunk&& chunk) : data_{}, top_{std::move(chunk)}
     {
         buildWith(top_);
     }
 
+    /**
+     Build the collections from the given data after parsing it. NOTE the data pointer musrt outlve the SFFle instance for the contents of the collections to be valid.
+     */
     SFFile(void const* data, size_t size) : data_{}, top_{Parser::parse(data, size)}
     {
         buildWith(top_);

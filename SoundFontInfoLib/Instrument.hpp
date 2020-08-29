@@ -17,6 +17,8 @@ public:
     sampleData_{file.sampleData}
     {}
 
+    void apply(Configuration& configuration) const { Zone::apply(configuration); }
+
 private:
     SFSample const* sample_;
     uint8_t const* sampleData_;
@@ -41,7 +43,7 @@ public:
     InstrumentZoneCollection::Matches find(int key, int velocity) const { return zones_.find(key, velocity); }
 
     bool hasGlobalZone() const { return zones_.hasGlobal(); }
-    Zone const* globalZone() const { return zones_.global(); }
+    InstrumentZone const* globalZone() const { return zones_.global(); }
     SFInstrument const& configuration() const { return cfg_; }
 
 private:
@@ -52,6 +54,7 @@ private:
 class InstrumentCollection
 {
 public:
+
     InstrumentCollection(SFFile const& file) :
     instruments_{}
     {

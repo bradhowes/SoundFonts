@@ -17,6 +17,8 @@ public:
     instrument_{isGlobal() ? nullptr : &instruments.at(resourceLink())}
     {}
 
+    void refine(Configuration& configuration) const { Zone::refine(configuration); }
+
     Instrument const& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
 
 private:
@@ -26,7 +28,28 @@ private:
 class Preset {
 public:
     using PresetZoneCollection = ZoneCollection<PresetZone>;
-    using ZonePair = std::pair<std::reference_wrapper<PresetZone const>, std::reference_wrapper<InstrumentZone const>>;
+
+    struct ZonePair {
+        PresetZone const& presetZone;
+        PresetZone const* presetGlobal;
+        InstrumentZone const& instrumentZone;
+        InstrumentZone const* instrumentGlobal;
+
+        ZonePair(PresetZone const& pz, PresetZone const* pg, InstrumentZone const& iz, InstrumentZone const* ig)
+        : presetZone{pz}, presetGlobal{pg}, instrumentZone{iz}, instrumentGlobal{ig} {}
+
+        void apply(Configuration& configuration) {
+
+            // Instrument first for override absolute values
+            if (instrumentGlobal != nullptr) instrumentGlobal->apply(configuration);
+            instrumentZone.apply(configuration);
+
+            // Preset values only refine those from instrument
+            if (presetGlobal != nullptr) presetGlobal->refine(configuration);
+            presetZone.refine(configuration);
+        }
+    };
+
     using Matches = std::vector<ZonePair>;
 
     Preset(SFFile const& file, InstrumentCollection const& instruments, SFPreset const& cfg) :
@@ -43,8 +66,10 @@ public:
     Matches find(int key, int velocity) const {
         Matches zonePairs;
         for (PresetZone const& presetZone : zones_.find(key, velocity)) {
-            for (InstrumentZone const& instrumentZone : presetZone.instrument().find(key, velocity)) {
-                zonePairs.emplace_back(presetZone, instrumentZone);
+            Instrument const& instrument = presetZone.instrument();
+            InstrumentZone const* instrumentGlobal = instrument.globalZone();
+            for (InstrumentZone const& instrumentZone : instrument.find(key, velocity)) {
+                zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal);
             }
         }
 
