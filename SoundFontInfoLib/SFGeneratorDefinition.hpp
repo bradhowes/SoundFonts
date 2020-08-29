@@ -62,6 +62,7 @@ private:
 
     std::string name_;
     ValueKind valueKind_;
+    int16_t default_;
     uint16_t flags_;
 };
 

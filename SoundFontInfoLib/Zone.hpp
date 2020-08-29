@@ -5,16 +5,12 @@
 #include <functional>
 #include <vector>
 
+#include "Configuration.hpp"
 #include "SFBag.hpp"
 #include "SFFile.hpp"
 #include "SFGenerator.hpp"
 
 namespace SF2 {
-
-struct Configuration : std::array<SFGeneratorAmount, static_cast<size_t>(SFGenIndex::numValues)>
-{
-    SFGeneratorAmount& operator[](SFGenIndex index) { return at(static_cast<size_t>(index)); }
-};
 
 class Zone
 {
@@ -73,13 +69,6 @@ protected:
     keyRange_{KeyRange(gens)}, velocityRange_{VelRange(gens)}
     {}
 
-public:
-
-    bool appliesTo(int key, int velocity) const {
-        assert(!isGlobal_);
-        return keyRange_.contains(key) && velocityRange_.contains(velocity);
-    }
-
     void apply(Configuration& cfg) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) {
@@ -92,6 +81,13 @@ public:
         std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) {
             if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());
         });
+    }
+
+public:
+
+    bool appliesTo(int key, int velocity) const {
+        assert(!isGlobal_);
+        return keyRange_.contains(key) && velocityRange_.contains(velocity);
     }
 
     bool isGlobal() const { return isGlobal_; }
