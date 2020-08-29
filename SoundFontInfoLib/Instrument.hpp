@@ -2,27 +2,11 @@
 
 #pragma once
 
+#include "InstrumentZone.hpp"
 #include "SFFile.hpp"
 #include "Zone.hpp"
 
 namespace SF2 {
-
-class InstrumentZone : public Zone {
-public:
-    InstrumentZone(SFFile const& file, SFBag const& bag) :
-    Zone(file.instrumentZoneGenerators.slice(bag.generatorIndex(), bag.generatorCount()),
-         file.instrumentZoneModulators.slice(bag.modulatorIndex(), bag.modulatorCount()),
-         SFGenIndex::sampleID),
-    sample_{isGlobal() ? nullptr : &file.samples[resourceLink()]},
-    sampleData_{file.sampleData}
-    {}
-
-    void apply(Configuration& configuration) const { Zone::apply(configuration); }
-
-private:
-    SFSample const* sample_;
-    uint8_t const* sampleData_;
-};
 
 class Instrument
 {
@@ -49,27 +33,6 @@ public:
 private:
     SFInstrument const& cfg_;
     InstrumentZoneCollection zones_;
-};
-
-class InstrumentCollection
-{
-public:
-
-    InstrumentCollection(SFFile const& file) :
-    instruments_{}
-    {
-        // Do *not* process the last record. It is a sentinal used only for bag calculations.
-        auto count = file.instruments.size() - 1;
-        instruments_.reserve(count);
-        for (SFInstrument const& configuration : file.instruments.slice(0, count)) {
-            instruments_.emplace_back(file, configuration);
-        }
-    }
-
-    Instrument const& at(size_t index) const { return instruments_.at(index); }
-
-private:
-    std::vector<Instrument> instruments_;
 };
 
 }

@@ -4,8 +4,8 @@
 
 #include <memory>
 
-#include "Instrument.hpp"
-#include "Preset.hpp"
+#include "InstrumentCollection.hpp"
+#include "PresetCollection.hpp"
 #include "SFFile.hpp"
 
 namespace SF2 {
