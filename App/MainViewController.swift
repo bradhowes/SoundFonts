@@ -20,6 +20,8 @@ final class MainViewController: UIViewController {
     private var volumeMonitor: VolumeMonitor!
     private var sampler: Sampler!
     private var workItem: DispatchWorkItem?
+    private var midi: MIDI?
+
     fileprivate var noteInjector = NoteInjector()
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
@@ -28,6 +30,7 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         UIApplication.shared.appDelegate.setMainViewController(self)
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+        midi = MIDI()
     }
 
     override func willTransition(to newCollection: UITraitCollection,
