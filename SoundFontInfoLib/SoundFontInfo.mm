@@ -29,17 +29,31 @@ using namespace SF2;
 
 @implementation SoundFontInfo
 
-- (id)init:(NSString*)embeddedName patches:(NSArray*)patches {
+- (id)init:(NSData*)contents name:(NSString*)embeddedName patches:(NSArray*)patches {
     if (self = [super init]) {
+        self.contents = contents;
         self.embeddedName = embeddedName;
         self.patches = patches;
     }
     return self;
 }
 
-+ (SoundFontInfo*)parse:(void const*)data size:(size_t)size {
++ (SoundFontInfo*)load:(NSURL*)url {
     try {
-        auto top = SF2::Parser::parse(data, size);
+        BOOL secured = [url startAccessingSecurityScopedResource];
+        NSData* data = [NSData dataWithContentsOfURL:url];
+        if (data == nil) return nil;
+        if (secured) [url stopAccessingSecurityScopedResource];
+        return [SoundFontInfo parse:data];
+    }
+    catch (enum SF2::Format value) {
+        return nil;
+    }
+}
+
++ (SoundFontInfo*)parse:(NSData*)data {
+    try {
+        auto top = SF2::Parser::parse(data.bytes, data.length);
         auto info = top.find(Tag(Tags::info));
         if (info == top.end()) return nil;
 
@@ -71,9 +85,7 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        auto obj = [[SoundFontInfo alloc] init:(NSString*)embeddedName patches:(NSArray*)patches];
-        obj->dataPtr = data;
-        obj->dataSize = size;
+        auto obj = [[SoundFontInfo alloc] init:(NSData*)data name:(NSString*)embeddedName patches:(NSArray*)patches];
         return obj;
     }
     catch (enum SF2::Format value) {
@@ -100,8 +112,9 @@ struct Redirector {
 };
 
 - (void) dump:(NSString* )fileName {
+    if (self.contents == nil) return;
     Redirector redirector(fileName.UTF8String);
-    auto top = SF2::Parser::parse(dataPtr, dataSize);
+    auto top = SF2::Parser::parse(self.contents.bytes, self.contents.length);
     top.dump("");
 }
 
