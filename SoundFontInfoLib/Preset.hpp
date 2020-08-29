@@ -3,27 +3,11 @@
 #pragma once
 
 #include "Instrument.hpp"
+#include "PresetZone.hpp"
 #include "SFFile.hpp"
 #include "Zone.hpp"
 
 namespace SF2 {
-
-class PresetZone : public Zone {
-public:
-    PresetZone(SFFile const& file, InstrumentCollection const& instruments, SFBag const& bag) :
-    Zone(file.presetZoneGenerators.slice(bag.generatorIndex(), bag.generatorCount()),
-         file.presetZoneModulators.slice(bag.modulatorIndex(), bag.modulatorCount()),
-         SFGenIndex::instrument),
-    instrument_{isGlobal() ? nullptr : &instruments.at(resourceLink())}
-    {}
-
-    void refine(Configuration& configuration) const { Zone::refine(configuration); }
-
-    Instrument const& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
-
-private:
-    Instrument const* instrument_;
-};
 
 class Preset {
 public:
@@ -83,26 +67,6 @@ public:
 private:
     SFPreset const& cfg_;
     PresetZoneCollection zones_;
-};
-
-class PresetCollection
-{
-public:
-    PresetCollection(SFFile const& file, InstrumentCollection const& instruments) :
-    presets_{}
-    {
-        // Do *not* process the last record. It is a sentinal used only for bag calculations.
-        auto count = file.presets.size() - 1;
-        presets_.reserve(count);
-        for (SFPreset const& configuration : file.presets.slice(0, count)) {
-            presets_.emplace_back(file, instruments, configuration);
-        }
-    }
-
-    Preset const& at(size_t index) const { return presets_.at(index); }
-
-private:
-    std::vector<Preset> presets_;
 };
 
 }

@@ -16,6 +16,10 @@
 		BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */; };
 		BD2AEE5124F81867009EAABE /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; };
 		BD2AEE5324F9C689009EAABE /* Configuration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* Configuration.hpp */; };
+		BD2AEE5524F9DEB9009EAABE /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */; };
+		BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */; };
+		BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */; };
+		BD2AEE5B24F9DFB8009EAABE /* PresetCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */; };
 		BD63B14924AC8BD70015236D /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */; };
 		BD63B14A24AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */; };
 		BD63B14B24AC8BD70015236D /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */; };
@@ -92,6 +96,10 @@
 		BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFGeneratorAmountTests.mm; sourceTree = "<group>"; };
 		BD2AEE5024F81867009EAABE /* Format.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Format.hpp; sourceTree = "<group>"; };
 		BD2AEE5224F9C689009EAABE /* Configuration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Configuration.hpp; sourceTree = "<group>"; };
+		BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetZone.hpp; sourceTree = "<group>"; };
+		BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZone.hpp; sourceTree = "<group>"; };
+		BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentCollection.hpp; sourceTree = "<group>"; };
+		BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetCollection.hpp; sourceTree = "<group>"; };
 		BD63B14624AC8BD70015236D /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = RolandNicePiano.sf2; path = SoundFontsFramework/Resources/SoundFonts/RolandNicePiano.sf2; sourceTree = SOURCE_ROOT; };
 		BD63B14724AC8BD70015236D /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GeneralUser GS MuseScore v1.442.sf2"; path = "SoundFontsFramework/Resources/SoundFonts/GeneralUser GS MuseScore v1.442.sf2"; sourceTree = SOURCE_ROOT; };
 		BD63B14824AC8BD70015236D /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FluidR3_GM.sf2; path = SoundFontsFramework/Resources/SoundFonts/FluidR3_GM.sf2; sourceTree = SOURCE_ROOT; };
@@ -228,6 +236,8 @@
 				BD2AEE5024F81867009EAABE /* Format.hpp */,
 				BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */,
 				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
+				BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */,
+				BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */,
 				BDD08E1324F111D300339A69 /* LFO.cpp */,
 				BDD08E1124F111C800339A69 /* LFO.hpp */,
 				BD97191424EF21ED0009ED6E /* MIDI.cpp */,
@@ -237,6 +247,8 @@
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
 				BDABC43024F46E1300F8C874 /* Preset.cpp */,
 				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
+				BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */,
+				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
 				BDABC42C24F46A2000F8C874 /* SFFile.cpp */,
 				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
 				BD2AEE4A24F738ED009EAABE /* SFManager.hpp */,
@@ -304,7 +316,9 @@
 				BDABC42724F1727A00F8C874 /* Transform.hpp in Headers */,
 				BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */,
 				BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */,
+				BD2AEE5524F9DEB9009EAABE /* PresetZone.hpp in Headers */,
 				BD2AEE4B24F738ED009EAABE /* SFManager.hpp in Headers */,
+				BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */,
 				BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */,
 				BD2AEE5124F81867009EAABE /* Format.hpp in Headers */,
 				BDEC00182497665D00A52507 /* SFModulatorSource.hpp in Headers */,
@@ -316,11 +330,13 @@
 				BD64EB7224E5A5DC00EA8473 /* SFFile.hpp in Headers */,
 				BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */,
 				BD64EB6A24E5341900EA8473 /* SFBag.hpp in Headers */,
+				BD2AEE5B24F9DFB8009EAABE /* PresetCollection.hpp in Headers */,
 				BDEC001C2497669300A52507 /* SFGeneratorIndex.hpp in Headers */,
 				BDABC42F24F46CF000F8C874 /* Preset.hpp in Headers */,
 				BD74D18523CDB36200204ED4 /* Parser.hpp in Headers */,
 				BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */,
 				BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */,
+				BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */,
 				BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */,
 				BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */,
 				BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */,
