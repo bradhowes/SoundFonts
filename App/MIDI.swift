@@ -13,11 +13,6 @@ final class MIDI {
     let portName = "SoundFontAppIn"
     let destinationName = "SoundFontAppIn"
 
-    var notifyProc: MIDINotifyProc = { (msg: UnsafePointer<MIDINotification>, refCon: UnsafeMutableRawPointer?) in }
-    var readProc: MIDIReadProc = { (msg: UnsafePointer<MIDIPacketList>, readProcRefCon: UnsafeMutableRawPointer?,
-        srcConnRefCon: UnsafeMutableRawPointer?) in
-    }
-
     var client: MIDIClientRef = 0
     var inputPort: MIDIPortRef = 0
     var destination: MIDIEndpointRef = 0

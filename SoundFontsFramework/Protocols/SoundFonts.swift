@@ -95,6 +95,10 @@ public protocol SoundFonts: class {
      */
     func restoreBundled()
 
+    func exportToLocalDocumentsDirectory() -> (good: Int, total: Int)
+
+    func importFromLocalDocumentsDirectory() -> (good: Int, total: Int)
+
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in SoundFontsEvent enum.
 

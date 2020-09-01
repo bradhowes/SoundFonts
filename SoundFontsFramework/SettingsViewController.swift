@@ -198,4 +198,40 @@ public final class SettingsViewController: UIViewController {
 
         self.present(alertController, animated: true, completion: nil)
     }
+
+    @IBAction
+    private func exportSoundFonts(_ sender: Any) {
+        let (good, total) = soundFonts.exportToLocalDocumentsDirectory()
+        switch total {
+        case 0:
+            postNotice(msg: "Nothing found to export.")
+        case 1:
+            if good == 1 {
+                postNotice(msg: "Exported \(total) soundfont.")
+            }
+            else {
+                postNotice(msg: "Failed to export soundfont.")
+            }
+        default:
+            postNotice(msg: "Exported \(good) out of \(total) soundfonts.")
+        }
+    }
+
+    @IBAction
+    private func importSoundFonts(_ sender: Any) {
+        let (good, total) = soundFonts.importFromLocalDocumentsDirectory()
+        switch total {
+        case 0:
+            postNotice(msg: "Nothing found to import.")
+        case 1:
+            if good == 1 {
+                postNotice(msg: "Imported \(total) soundfont.")
+            }
+            else {
+                postNotice(msg: "Failed to import soundfont.")
+            }
+        default:
+            postNotice(msg: "Imported \(good) out of \(total) soundfonts.")
+        }
+    }
 }
