@@ -41,10 +41,10 @@ using namespace SF2;
 + (SoundFontInfo*)load:(NSURL*)url {
     try {
         BOOL secured = [url startAccessingSecurityScopedResource];
+        // TODO: use NSInputStream instead of reading everything at once
         NSData* data = [NSData dataWithContentsOfURL:url];
-        if (data == nil) return nil;
         if (secured) [url stopAccessingSecurityScopedResource];
-        return [SoundFontInfo parse:data];
+        return data ? [SoundFontInfo parse:data] : nil;
     }
     catch (enum SF2::Format value) {
         return nil;
@@ -72,7 +72,7 @@ using namespace SF2;
         NSMutableArray* patches = [NSMutableArray arrayWithCapacity:presetHeader.size()];
 
         for (auto it = presetHeader.begin(); it != presetHeader.end() - 1; ++it) {
-            [patches addObject: [[SoundFontInfoPatch alloc] init:*it]];
+            [patches addObject:[[SoundFontInfoPatch alloc] init:*it]];
         }
 
         [patches sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -85,8 +85,7 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        auto obj = [[SoundFontInfo alloc] init:(NSData*)data name:(NSString*)embeddedName patches:(NSArray*)patches];
-        return obj;
+        return [[SoundFontInfo alloc] init:data name:embeddedName patches:patches];
     }
     catch (enum SF2::Format value) {
         return nil;
@@ -111,7 +110,7 @@ struct Redirector {
     }
 };
 
-- (void) dump:(NSString* )fileName {
+- (void) dump:(NSString*)fileName {
     if (self.contents == nil) return;
     Redirector redirector(fileName.UTF8String);
     auto top = SF2::Parser::parse(self.contents.bytes, self.contents.length);
