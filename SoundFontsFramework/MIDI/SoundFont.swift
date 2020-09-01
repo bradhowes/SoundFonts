@@ -15,7 +15,6 @@ public final class SoundFont: Codable {
 
     public static let soundFontDottedExtension = "." + soundFontExtension
 
-
     /// Presentation name of the sound font
     public var displayName: String
 
@@ -56,13 +55,13 @@ public final class SoundFont: Codable {
             return .failure(.invalidSoundFont)
         }
 
-        if info.embeddedName.isEmpty {
-            info.embeddedName = displayName
-        }
-
-        if info.patches.isEmpty {
+        guard !info.patches.isEmpty else {
             os_log(.error, log: Self.logger, "failed to parse content")
             return .failure(.invalidSoundFont)
+        }
+
+        if info.embeddedName.isEmpty {
+            info.embeddedName = displayName
         }
 
         let soundFont = SoundFont(displayName, embeddedName: info.embeddedName, patches: info.patches)

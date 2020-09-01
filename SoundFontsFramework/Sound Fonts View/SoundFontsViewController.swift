@@ -114,11 +114,32 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
     public func documentPicker(_ dpvc: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         os_log(.info, log: log, "documentPicker didPickDocumentAt")
         for each in urls {
+            let name = each.lastPathComponent
             os_log(.info, log: log, "processing %s", each.path)
-            switch soundFonts.add(url: each) {
-            case .success(let (index, soundFont)): os_log(.info, log: log, "OK: %d %s", index, soundFont.displayName)
-            case .failure(let failure): os_log(.error, log: log, "failed: ", failure.localizedDescription)
-            }
+            let alert: UIAlertController = {
+                switch soundFonts.add(url: each) {
+                case .success(let (_, soundFont)):
+                    return UIAlertController(
+                        title: "Added",
+                        message: "\(name)\n\nNew SoundFont added under the name '\(soundFont.displayName)'",
+                        preferredStyle: .alert)
+                case .failure(let failure):
+                    let reason: String = {
+                        switch failure {
+                        case .emptyFile: return "\(name)\n\nThe SF2 file must be downloaded before adding."
+                        case .invalidSoundFont: return "\(name)\n\nThe SF2 file is invalid and cannot be used."
+                        case .unableToCreateFile: return "\(name)\n\nNot enough space to keep the SF2 file."
+                        }
+                    }()
+                    return UIAlertController(
+                        title: "Add Failure",
+                        message: reason,
+                        preferredStyle: .alert)
+                }
+            }()
+
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }
