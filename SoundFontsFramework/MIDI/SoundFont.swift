@@ -13,6 +13,9 @@ public final class SoundFont: Codable {
     /// Extension for all SoundFont files in the application bundle
     public static let soundFontExtension = "sf2"
 
+    public static let soundFontDottedExtension = "." + soundFontExtension
+
+
     /// Presentation name of the sound font
     public var displayName: String
 

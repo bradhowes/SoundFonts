@@ -112,7 +112,6 @@ public class Mute: NSObject {
             AudioServicesRemoveSystemSoundCompletion(self.soundId)
             AudioServicesDisposeSystemSoundID(self.soundId)
         }
-        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: Notification Handlers

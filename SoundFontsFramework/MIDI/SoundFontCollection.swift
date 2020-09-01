@@ -8,8 +8,12 @@ import Foundation
  */
 public final class SoundFontCollection: Codable {
 
-    private var catalog: [SoundFont.Key: SoundFont]
-    private var sortedKeys: [SoundFont.Key]
+    public typealias Element = SoundFont
+    public typealias CatalogMap = [SoundFont.Key: SoundFont];
+    public typealias SortedKeyArray = [SoundFont.Key];
+
+    private var catalog: CatalogMap
+    private var sortedKeys: SortedKeyArray
 
     /// Obtain the number of SoundFont instances in the collection
     public var count: Int { sortedKeys.count }
@@ -24,6 +28,8 @@ public final class SoundFontCollection: Codable {
         self.sortedKeys = soundFonts.sorted {
             $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }.map { $0.key }
     }
+
+    public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
     /**
      Obtain the index of the given SoundFont.Key value.

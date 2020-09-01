@@ -157,6 +157,62 @@ extension SoundFontsManager: SoundFonts {
         }
         save()
     }
+
+    /**
+     Copy all of the known SF2 files to the local document directory.
+     */
+    public func exportToLocalDocumentsDirectory() -> (good: Int, total: Int) {
+        let fm = FileManager.default
+        guard let contents = try? fm.contentsOfDirectory(atPath: fm.sharedDocumentsDirectory.path) else {
+            return (good: 0, total: 0)
+        }
+
+        var good = 0
+        var bad = 0
+        for path in contents {
+            if path.hasSuffix(SoundFont.soundFontDottedExtension) {
+                let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
+                let pos = path.lastIndex(of: "_") ?? path.endIndex
+                let dst = fm.localDocumentsDirectory.appendingPathComponent(
+                    String(path.prefix(upTo: pos)).appending(SoundFont.soundFontDottedExtension))
+                do {
+                    os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
+                    try? fm.removeItem(at: dst)
+                    os_log(.info, log: Self.log, "copying '%s' to '%s'", src.path, dst.path)
+                    try fm.copyItem(at: src, to: dst)
+                    good += 1
+                } catch let error as NSError {
+                    os_log(.error, log: Self.log, "%s", error.localizedDescription)
+                    bad += 1
+                }
+            }
+        }
+        return (good: good, total: good + bad)
+    }
+
+    /**
+     Copy all of the known SF2 files to the local document directory.
+     */
+    public func importFromLocalDocumentsDirectory() -> (good: Int, total: Int) {
+        let fm = FileManager.default
+        guard let contents = try? fm.contentsOfDirectory(atPath: fm.localDocumentsDirectory.path) else {
+            return (good: 0, total: 0)
+        }
+
+        var good = 0
+        var bad = 0
+        for path in contents {
+            if path.hasSuffix(SoundFont.soundFontDottedExtension) {
+                let src = fm.localDocumentsDirectory.appendingPathComponent(path)
+                switch add(url: src) {
+                case .success: good += 1
+                case .failure: bad += 1
+                }
+            }
+        }
+
+        return (good: good, total: good + bad)
+    }
 }
 
 extension SoundFontsManager {

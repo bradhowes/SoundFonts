@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UPB-vU-Flh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UPB-vU-Flh">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,14 +13,14 @@
             <objects>
                 <viewController title="Settings" id="Eyw-X4-KFI" customClass="SettingsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="446"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="426"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="88" width="414" height="358"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="370"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="349.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="475.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJm-Kh-cBE" userLabel="Upper Background">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
@@ -30,7 +30,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
-                                                <rect key="frame" x="20" y="20" width="374" height="309.5"/>
+                                                <rect key="frame" x="20" y="20" width="374" height="435.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="goE-tS-nbI" userLabel="Play Samples">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
@@ -116,8 +116,48 @@
                                                             </slider>
                                                         </subviews>
                                                     </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZSn-hb-XVu" userLabel="Import">
+                                                        <rect key="frame" x="0.0" y="195.5" width="374" height="41"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import all SF2 files found in the SoundFonts folder on this device." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNF-HH-dxG" userLabel="Import soundfonts">
+                                                                <rect key="frame" x="0.0" y="0.0" width="320" height="41"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iAM-ei-MYr" userLabel="Import">
+                                                                <rect key="frame" x="328" y="5.5" width="46" height="30"/>
+                                                                <state key="normal" title="Import">
+                                                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="importSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="X6J-Ke-hm8"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XZh-fL-DHb" userLabel="Export ">
+                                                        <rect key="frame" x="0.0" y="248.5" width="374" height="61"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export all SF2 files to the SoundFonts folder on this device for access via Files app or macOS Finder." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kwt-cq-nbZ" userLabel="Export soundfonts">
+                                                                <rect key="frame" x="0.0" y="0.0" width="321" height="61"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z6j-d1-hgi" userLabel="Export">
+                                                                <rect key="frame" x="329" y="15.5" width="45" height="30"/>
+                                                                <state key="normal" title="Export">
+                                                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                </state>
+                                                                <connections>
+                                                                    <action selector="exportSoundFonts:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="STL-7w-J7c"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-WA-CKG" userLabel="Remove">
-                                                        <rect key="frame" x="0.0" y="195.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="321.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feS-ti-Bte">
                                                                 <rect key="frame" x="0.0" y="5" width="209.5" height="20.5"/>
@@ -137,7 +177,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cY9-56-y6L" userLabel="Restore">
-                                                        <rect key="frame" x="0.0" y="237.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="363.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restore default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ol-Ma-VZZ">
                                                                 <rect key="frame" x="0.0" y="5" width="207" height="20.5"/>
@@ -157,7 +197,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EGM-L9-3DV" userLabel="Version Review">
-                                                        <rect key="frame" x="0.0" y="279.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="405.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.8.5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                                 <rect key="frame" x="0.0" y="5" width="47" height="20.5"/>
@@ -225,7 +265,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="414" height="446"/>
+                    <size key="freeformSize" width="414" height="480"/>
                     <connections>
                         <outlet property="contentView" destination="LhQ-ia-e1C" id="Gek-ln-duq"/>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
