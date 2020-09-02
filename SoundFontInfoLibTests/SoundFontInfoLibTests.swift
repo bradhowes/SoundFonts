@@ -34,7 +34,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }()
 
     func testParsing1() {
-        let sfi = soundFont1.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+        let sfi = SoundFontInfo.parse(soundFont1)!
 
         XCTAssertEqual(sfi.embeddedName, "Fluid R3 GM")
         XCTAssertEqual(sfi.patches.count, 189)
@@ -50,7 +50,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing2() {
-        let sfi = soundFont2.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+        let sfi = SoundFontInfo.parse(soundFont2)!
 
         XCTAssertEqual(sfi.embeddedName, "Free Font GM Ver. 3.2")
         XCTAssertEqual(sfi.patches.count, 235)
@@ -66,7 +66,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing3() {
-        let sfi = soundFont3.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+        let sfi = SoundFontInfo.parse(soundFont3)!
 
         XCTAssertEqual(sfi.embeddedName, "GeneralUser GS MuseScore version 1.442")
         XCTAssertEqual(sfi.patches.count, 270)
@@ -82,7 +82,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing4() {
-        let sfi = soundFont4.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+        let sfi = SoundFontInfo.parse(soundFont4)!
 
         XCTAssertEqual(sfi.embeddedName, "User Bank")
         XCTAssertEqual(sfi.patches.count, 1)
@@ -94,7 +94,7 @@ class SoundFontInfoLibTests: XCTestCase {
 
     func testDumps() {
         for sf in soundFonts {
-            let sfi = sf.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count)! }
+            let sfi = SoundFontInfo.parse(sf)!
             let name = sfi.embeddedName.replacingOccurrences(of: " ", with: "_")
             sfi.dump("/tmp/\(name)_dump.txt")
         }
@@ -108,7 +108,7 @@ class SoundFontInfoLibTests: XCTestCase {
         let size = 2048
         var data = Data(count: size)
         _ = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, size, $0.baseAddress!) }
-        let sfi = data.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count) }
+        let sfi = SoundFontInfo.parse(data)
         XCTAssertNil(sfi)
     }
 
@@ -121,7 +121,7 @@ class SoundFontInfoLibTests: XCTestCase {
         for _ in 0..<500 {
             let truncatedCount = Int.random(in: 1..<original.count);
             let data = original.subdata(in: 0..<truncatedCount)
-            let sfi = data.withUnsafeBytes { SoundFontInfo.parse($0.baseAddress, size: $0.count) }
+            let sfi = SoundFontInfo.parse(data)
             XCTAssertNil(sfi)
         }
     }

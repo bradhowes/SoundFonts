@@ -63,7 +63,7 @@ SF2::Preset::Matches getMatches(SFManager const& mgr)
 
     XCTAssertEqual(2, zones.size());
     auto const& pair0 = zones.at(0);
-    PresetZone const& presetZone0 = pair0.first;
+    PresetZone const& presetZone0 = pair0.presetZone;
 
     XCTAssertEqual(false, presetZone0.isGlobal());
     XCTAssertEqual("Instrument4", presetZone0.instrument().configuration().name());
@@ -77,7 +77,7 @@ SF2::Preset::Matches getMatches(SFManager const& mgr)
 
     XCTAssertEqual(0, presetZone0.modulators().size());
 
-    auto const& instrumentZone0 = pair0.second.get();
+    InstrumentZone const& instrumentZone0 = pair0.instrumentZone;
     XCTAssertEqual(68, instrumentZone0.keyRange().low());
     XCTAssertEqual(72, instrumentZone0.keyRange().high());
 }

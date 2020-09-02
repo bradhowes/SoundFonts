@@ -6,7 +6,7 @@ import os
 /**
  Collection of Favorite instances created by the user.
  */
-final class FavoriteCollection: Codable {
+final public class FavoriteCollection: Codable {
 
     private var favorites: [Favorite]
     private var reverseLookup: [SoundFontAndPatch: Favorite]
@@ -17,6 +17,11 @@ final class FavoriteCollection: Codable {
     init() {
         self.favorites = []
         self.reverseLookup = [:]
+    }
+
+    public func validate(_ favorite: Favorite) -> Bool {
+        guard let held = getBy(soundFontAndPatch: favorite.soundFontAndPatch) else { return false }
+        return held == favorite
     }
 
     /**

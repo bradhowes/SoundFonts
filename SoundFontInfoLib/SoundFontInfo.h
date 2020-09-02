@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSArray<SoundFontInfoPatch*>* patches;
 
 + (SoundFontInfo*)load:(NSURL*)url;
++ (SoundFontInfo*)parse:(NSData*)data;
 
 - (void)dump:(NSString*)path;
 

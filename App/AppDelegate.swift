@@ -11,12 +11,19 @@ import os
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
-    private let components = Components<MainViewController>(changer: .application)
+    private lazy var components = Components<MainViewController>(changer: .application)
     private var observers: [NSObjectProtocol] = []
 
     var window: UIWindow?
 
     func setMainViewController(_ mainViewController: MainViewController) {
+        for issue in [Notification.Name.soundFontsCollectionLoadFailure,
+                      .soundFontsCollectionOrphans,
+                      .favoritesCollectionLoadFailure] {
+            observers.append(NotificationCenter.default.addObserver(forName: issue, object: nil, queue: nil) { notif in
+                self.notify(notif)
+            })
+        }
         components.setMainViewController(mainViewController)
     }
 
@@ -29,18 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        observers.append(NotificationCenter.default.addObserver(forName: .soundFontsCollectionLoadFailure,
-                                                                object: nil, queue: nil) { notification in
-                                                                    self.notify(notification)
-        })
-
-        observers.append(NotificationCenter.default.addObserver(forName: .favoritesCollectionLoadFailure,
-                                                                object: nil, queue: nil) { notification in
-                                                                    self.notify(notification)
-        })
-
-        observers.append(NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
-                                                                queue: nil) { _ in
+        observers.append(NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
             self.visitAppStore()
         })
 
@@ -48,27 +44,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func notify(_ notification: Notification) {
-        // let path: URL = notification.object as! URL
-        let alert: UIAlertController = {
+        let (title, body): (String, String) = {
             switch notification.name {
             case .soundFontsCollectionLoadFailure:
-                return UIAlertController(
-                    title: "Startup Failure",
-                    message: "Unable to load the last saved sound font collection information. Starting from scratch.",
-                    preferredStyle: .alert)
-
+                return ("Startup Failure", """
+Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
+have been lost.
+""")
             case .favoritesCollectionLoadFailure:
-                return UIAlertController(
-                    title: "Startup Failure",
-                    message: "Unable to load the last saved favorites information. Starting from scratch.",
-                    preferredStyle: .alert)
-
+                return ("Startup Failure", "Unable to load the last saved favorites information.")
+            case .soundFontsCollectionOrphans:
+                guard let count = notification.object as? NSNumber else { fatalError() }
+                return ("Orphaned SF2 Files", """
+Found \(count.intValue) SF2 files that are not being used and moved them to local SoundFonts folder.
+""")
             default:
                 fatalError("unexpected notification - \(notification.name)")
             }
         }()
 
-        post(alert: alert)
+        AlertManager.shared.post(alert: AlertConfig(title: title, message: body))
     }
 
     func application(_ app: UIApplication, open url: URL,

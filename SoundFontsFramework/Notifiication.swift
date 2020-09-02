@@ -16,7 +16,12 @@ extension Notification.Name {
     /// Notification that the key width changed
     public static let keyWidthChanged = Notification.Name(rawValue: "keyWidthChanged")
 
+    /// Notification that we failed to load the SoundFontCollection.plist file
     public static let soundFontsCollectionLoadFailure = Notification.Name("soundFontsCollectionLoadFailure")
 
+    /// Notification that we found some orphan files
+    public static let soundFontsCollectionOrphans = Notification.Name("soundFontsCollectionOrphans")
+
+    /// Notification that we failed to load the Favorites.plist file
     public static let favoritesCollectionLoadFailure = Notification.Name("favoritesCollectionLoadFailure")
 }

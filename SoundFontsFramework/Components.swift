@@ -40,11 +40,14 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         let sharedStateMonitor = SharedStateMonitor(changer: changer)
         self.sharedStateMonitor = sharedStateMonitor
         self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
-        self.soundFonts = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
-        self.favorites = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
+        let soundFontsManager = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
+        self.soundFonts = soundFontsManager
+        let favoritesManager = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
+        self.favorites = favoritesManager
         self.sampler = Sampler(mode: sharedStateMonitor.isMain ? .standalone : .audiounit)
 
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
+        self.activePatchManager.validate(soundFonts: soundFontsManager, favorites: favoritesManager)
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
 
         sharedStateMonitor.block = { stateChange in
