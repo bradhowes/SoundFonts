@@ -11,6 +11,7 @@ public final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private static let log = Logging.logger("FavMgr")
 
+    /// @deprecated
     private static let appArchivePath = FileManager.default.privateDocumentsDirectory
         .appendingPathComponent("Favorites.plist")
     private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
@@ -112,6 +113,9 @@ extension FavoritesManager {
                 if let collection = try? PropertyListDecoder().decode(FavoriteCollection.self, from: data) {
                     os_log(.info, log: log, "restored")
                     return collection
+                }
+                else {
+                    NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: url))
                 }
             }
         }

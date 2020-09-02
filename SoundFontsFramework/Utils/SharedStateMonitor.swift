@@ -63,7 +63,6 @@ final public class SharedStateMonitor: NSObject {
             return
         }
 
-        // A usable value is "N TTT..." where N is either 1 or 2 and TTT... is a timestamp.
         guard let keyPath = keyPath,
             let rawValue = Settings.sharedSettings.string(forKey: keyPath),
             let tmp = Int(rawValue.split(separator: " ")[0]),

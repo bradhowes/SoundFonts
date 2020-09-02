@@ -35,28 +35,27 @@ public final class SettingsViewController: UIViewController {
     private let log = Logging.logger("SetVC")
 
     @IBOutlet private weak var contentView: UIView!
-    @IBOutlet weak var upperBackground: UIView!
+    @IBOutlet private weak var upperBackground: UIView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
 
-    @IBOutlet weak var playSamplesStackView: UIStackView!
-    @IBOutlet weak var solfegeStackView: UIStackView!
-    @IBOutlet weak var keyLabelsStackView: UIStackView!
-    @IBOutlet weak var keyWidthStackView: UIStackView!
-    @IBOutlet weak var removeSoundFontsStackView: UIStackView!
-    @IBOutlet weak var restoreSoundFontsStackView: UIStackView!
-    @IBOutlet weak var versionReviewStackView: UIStackView!
+    @IBOutlet private weak var playSamplesStackView: UIStackView!
+    @IBOutlet private weak var solfegeStackView: UIStackView!
+    @IBOutlet private weak var keyLabelsStackView: UIStackView!
+    @IBOutlet private weak var keyWidthStackView: UIStackView!
+    @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var versionReviewStackView: UIStackView!
+
+    @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var importSoundFontsStackView: UIStackView!
 
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var keyWidthSlider: UISlider!
-    @IBOutlet private weak var keyWidthLabel: UILabel!
 
-    @IBOutlet private weak var removeDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
-    @IBOutlet private weak var restoreDefaultSoundFontsLabel: UILabel!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
-    @IBOutlet private weak var versionLabel: UILabel!
     @IBOutlet private weak var review: UIButton!
 
     private var revealKeyboardForKeyWidthChanges = false
@@ -97,6 +96,8 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func beginShowKeyboard() {
+        exportSoundFontsStackView.isHidden = true
+        importSoundFontsStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
         restoreSoundFontsStackView.isHidden = true
         versionReviewStackView.isHidden = true
@@ -105,6 +106,8 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func endShowKeyboard() {
+        exportSoundFontsStackView.isHidden = false
+        importSoundFontsStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
         versionReviewStackView.isHidden = false

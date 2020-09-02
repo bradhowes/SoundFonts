@@ -15,4 +15,8 @@ extension Notification.Name {
 
     /// Notification that the key width changed
     public static let keyWidthChanged = Notification.Name(rawValue: "keyWidthChanged")
+
+    public static let soundFontsCollectionLoadFailure = Notification.Name("soundFontsCollectionLoadFailure")
+
+    public static let favoritesCollectionLoadFailure = Notification.Name("favoritesCollectionLoadFailure")
 }
