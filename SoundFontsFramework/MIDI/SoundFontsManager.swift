@@ -35,6 +35,9 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
                     os_log(.info, log: log, "restored")
                     return collection
                 }
+                else {
+                    NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: url))
+                }
             }
         }
 
@@ -156,6 +159,25 @@ extension SoundFontsManager: SoundFonts {
             }
         }
         save()
+    }
+
+    /**
+     Copy all of the known SF2 files to the local document directory.
+     */
+    public func copyToLocalDocumentsDirectory(name: String) -> Bool {
+        let fm = FileManager.default
+        let src = fm.sharedDocumentsDirectory.appendingPathComponent(name)
+        let dst = fm.localDocumentsDirectory.appendingPathComponent(name)
+        do {
+            os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
+            try? fm.removeItem(at: dst)
+            os_log(.info, log: Self.log, "copying '%s' to '%s'", src.path, dst.path)
+            try fm.copyItem(at: src, to: dst)
+            return true
+        } catch let error as NSError {
+            os_log(.error, log: Self.log, "%s", error.localizedDescription)
+        }
+        return false
     }
 
     /**

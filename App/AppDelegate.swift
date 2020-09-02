@@ -12,7 +12,7 @@ import os
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
     private let components = Components<MainViewController>(changer: .application)
-    private var observer: NSObjectProtocol?
+    private var observers: [NSObjectProtocol] = []
 
     var window: UIWindow?
 
@@ -29,12 +29,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
-                                                          queue: nil) { _ in
+        observers.append(NotificationCenter.default.addObserver(forName: .soundFontsCollectionLoadFailure,
+                                                                object: nil, queue: nil) { notification in
+                                                                    self.notify(notification)
+        })
+
+        observers.append(NotificationCenter.default.addObserver(forName: .favoritesCollectionLoadFailure,
+                                                                object: nil, queue: nil) { notification in
+                                                                    self.notify(notification)
+        })
+
+        observers.append(NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
+                                                                queue: nil) { _ in
             self.visitAppStore()
-        }
+        })
 
         return true
+    }
+
+    func notify(_ notification: Notification) {
+        // let path: URL = notification.object as! URL
+        let alert: UIAlertController = {
+            switch notification.name {
+            case .soundFontsCollectionLoadFailure:
+                return UIAlertController(
+                    title: "Startup Failure",
+                    message: "Unable to load the last saved sound font collection information. Starting from scratch.",
+                    preferredStyle: .alert)
+
+            case .favoritesCollectionLoadFailure:
+                return UIAlertController(
+                    title: "Startup Failure",
+                    message: "Unable to load the last saved favorites information. Starting from scratch.",
+                    preferredStyle: .alert)
+
+            default:
+                fatalError("unexpected notification - \(notification.name)")
+            }
+        }()
+
+        post(alert: alert)
     }
 
     func application(_ app: UIApplication, open url: URL,
@@ -102,6 +136,10 @@ extension AppDelegate {
         }()
 
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        post(alert: alert)
+    }
+
+    public func post(alert: UIAlertController) {
         self.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }
