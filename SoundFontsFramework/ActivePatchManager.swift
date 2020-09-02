@@ -94,6 +94,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             (soundFonts.count > 0
                 ? .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0))
                 : .none)
+        super.init()
         os_log(.info, log: log, "active: %s", active.description)
     }
 
@@ -118,6 +119,17 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             if let data = try? encoder.encode(self.active) {
                 Settings[.lastActivePatch] = data
             }
+        }
+    }
+}
+
+extension ActivePatchManager {
+
+    public func validate(soundFonts: SoundFontsManager, favorites: FavoritesManager) {
+        switch active {
+        case .favorite(let favorite): if !favorites.validate(favorite) { active = .none }
+        case .normal(let soundFontAndPatch): if !soundFonts.validate(soundFontAndPatch) { active = .none }
+        case .none: break
         }
     }
 }

@@ -48,8 +48,6 @@ public final class SoundFont: Codable {
     public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<SoundFont, Failure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
-        let displayName = url.deletingPathExtension().lastPathComponent
-
         guard let info = SoundFontInfo.load(url) else {
             os_log(.error, log: Self.logger, "failed to fetch content")
             return .failure(.invalidSoundFont)
@@ -60,11 +58,13 @@ public final class SoundFont: Codable {
             return .failure(.invalidSoundFont)
         }
 
+        let (fileName, uuid) = url.lastPathComponent.stripEmbeddedUUID()
+        let displayName = fileName.split(separator: ".")[0].trimmingCharacters(in: .whitespacesAndNewlines)
         if info.embeddedName.isEmpty {
             info.embeddedName = displayName
         }
 
-        let soundFont = SoundFont(displayName, embeddedName: info.embeddedName, patches: info.patches)
+        let soundFont = SoundFont(displayName, soundFontInfo: info, file: url, key: uuid ?? Key())
         if saveToDisk {
             let path = soundFont.fileURL
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", path.lastPathComponent)
@@ -83,14 +83,13 @@ public final class SoundFont: Codable {
      - parameter displayName: the display name of the resource
      - parameter soundFontInfo: patch info from the sound font
      */
-    public init(_ displayName: String, embeddedName: String, patches: [SoundFontInfoPatch]) {
-        let key = Key()
+    public init(_ displayName: String, soundFontInfo: SoundFontInfo, file: URL, key: Key) {
         self.key = key
-        self.displayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
-        self.originalDisplayName = self.displayName
-        self.embeddedName = embeddedName
+        self.displayName = displayName
+        self.originalDisplayName = displayName
+        self.embeddedName = soundFontInfo.embeddedName
         self.kind = .installed(fileName:displayName + "_" + key.uuidString + "." + Self.soundFontExtension)
-        self.patches = Self.makePatches(patches)
+        self.patches = Self.makePatches(soundFontInfo.patches)
     }
 
     /**

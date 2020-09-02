@@ -21,7 +21,12 @@ public class SubscriptionManager<Event> {
         public func unsubscribe() { unsubscribeProc() }
     }
 
-    public init() {}
+    private var lastEvent: Event?
+    private let cacheEvent: Bool
+
+    public init(_ cacheEvent: Bool = false) {
+        self.cacheEvent = cacheEvent
+    }
 
     /**
      Establish a connection between the SubscriptionManager and the notifier such that any future Events will be sent
@@ -44,10 +49,16 @@ public class SubscriptionManager<Event> {
                 token.unsubscribe()
             }
         }
+
+        if let event = lastEvent, cacheEvent {
+            DispatchQueue.main.async { notifier(event) }
+        }
+
         return token
     }
 
     public func notify(_ event: Event) {
+        if cacheEvent { lastEvent = event }
         subscriptions.values.forEach { $0(event) }
     }
 }

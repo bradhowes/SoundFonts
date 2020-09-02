@@ -17,6 +17,8 @@ public final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
     private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("Favorites.plist")
 
+    static public var loadError: Notification.Name?
+
     private var log: OSLog { Self.log }
     private let sharedStateMonitor: SharedStateMonitor
     private var collection: FavoriteCollection
@@ -31,6 +33,8 @@ public final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
         save()
         os_log(.info, log: log, "collection size: %d", collection.count)
     }
+
+    public func validate(_ favorite: Favorite) -> Bool { collection.validate(favorite) }
 }
 
 // MARK: - Favorites protocol
@@ -106,20 +110,19 @@ extension FavoritesManager {
 
     static func restore() -> FavoriteCollection? {
         os_log(.info, log: log, "attempting to restore collection")
-        for url in [Self.sharedArchivePath, Self.appArchivePath] {
-            os_log(.info, log: log, "trying to read from '%s'", url.path)
-            if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
-                os_log(.info, log: log, "restoring from '%s'", url.path)
-                if let collection = try? PropertyListDecoder().decode(FavoriteCollection.self, from: data) {
-                    os_log(.info, log: log, "restored")
-                    return collection
-                }
-                else {
-                    NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: url))
-                }
+        let url = Self.sharedArchivePath
+        os_log(.info, log: log, "trying to read from '%s'", url.path)
+        if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
+            os_log(.info, log: log, "restoring from '%s'", url.path)
+            if let collection = try? PropertyListDecoder().decode(FavoriteCollection.self, from: data) {
+                os_log(.info, log: log, "restored")
+                return collection
+            }
+            else {
+                loadError = .favoritesCollectionLoadFailure
+                NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: url))
             }
         }
-
         return nil
     }
 
@@ -140,7 +143,7 @@ extension FavoritesManager {
                 os_log(.info, log: log, "obtained archive")
                 do {
                     os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
-                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite, .completeFileProtection])
+                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite])
                     self.sharedStateMonitor.notifyFavoritesChanged()
                     os_log(.info, log: log, "saving OK")
                 } catch {
