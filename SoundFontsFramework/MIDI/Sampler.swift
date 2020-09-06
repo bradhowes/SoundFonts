@@ -32,11 +32,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     private let mode: Mode
     private var engine: AVAudioEngine?
     private var loaded: Bool = false
-
-    public var hasPatch: Bool { activePatchKind != .none }
+    private let activePatchManager: ActivePatchManager
 
     public private(set) var auSampler: AVAudioUnitSampler?
-    public private(set) var activePatchKind: ActivePatchKind = .none
+    public var hasPatch: Bool { activePatchManager.active != .none }
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     public var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
@@ -50,8 +49,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter mode: determines how the sampler is hosted.
      */
-    public init(mode: Mode) {
+    public init(mode: Mode, activePatchManager: ActivePatchManager) {
         self.mode = mode
+        self.activePatchManager = activePatchManager
         super.init()
     }
 
@@ -66,9 +66,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         return startEngine()
     }
 
-    private func loadActivePatch() -> Result<Void, Failure> {
-        loaded ? .success(()) : load(activePatchKind: activePatchKind)
-    }
+    private func loadActivePatch() -> Result<Void, Failure> { loaded ? .success(()) : load() }
 
     /**
      Stop the existing audio engine. Releases the sampler and engine.
@@ -110,33 +108,31 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result instance indicating success or failure
      */
-    public func load(activePatchKind: ActivePatchKind, afterLoadBlock: (() -> Void)? = nil) -> Result<Void, Failure> {
-        os_log(.info, log: log, "load - %s", activePatchKind.description)
-
-        self.activePatchKind = activePatchKind
+    public func load(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, Failure> {
+        os_log(.info, log: log, "load - %s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = self.auSampler, let soundFontAndPatch = activePatchKind.soundFontAndPatch else {
-            return .success(())
-        }
+        guard let sampler = auSampler else { return .success(()) }
+        guard let soundFont = activePatchManager.soundFont else { return .success(()) }
+        guard let patch = activePatchManager.patch else { return .success(()) }
 
-        if let favorite = activePatchKind.favorite {
+        if let favorite = activePatchManager.favorite {
             setGain(favorite.gain)
             setPan(favorite.pan)
         }
 
         do {
             os_log(.info, log: log, "begin loading")
-            try sampler.loadSoundBankInstrument(at: soundFontAndPatch.soundFont.fileURL,
-                                                program: UInt8(soundFontAndPatch.patch.program),
-                                                bankMSB: UInt8(soundFontAndPatch.patch.bankMSB),
-                                                bankLSB: UInt8(soundFontAndPatch.patch.bankLSB))
+            try sampler.loadSoundBankInstrument(at: soundFont.fileURL,
+                                                program: UInt8(patch.program),
+                                                bankMSB: UInt8(patch.bankMSB),
+                                                bankLSB: UInt8(patch.bankLSB))
             os_log(.info, log: log, "end loading")
             loaded = true
             afterLoadBlock?()
 
             DispatchQueue.main.async {
-                self.notify(.loaded(patch: activePatchKind))
+                self.notify(.loaded(patch: self.activePatchManager.active))
             }
 
             return .success(())
@@ -173,7 +169,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func noteOn(_ midiValue: Int, velocity: Int = 64) {
         os_log(.info, log: log, "noteOn - %d", midiValue)
-        guard let sampler = self.auSampler, activePatchKind != .none else { return }
+        guard let sampler = self.auSampler, activePatchManager.active != .none else { return }
         sampler.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
     }
 

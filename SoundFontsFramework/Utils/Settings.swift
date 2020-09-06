@@ -1,4 +1,4 @@
-// Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2020 Brad Howes. All rights reserved.
 //
 // NOTE: this uses some concepts found in the nice [SwiftyUserDefaults](https://github.com/radex/SwiftyUserDefaults)
 // package. I did not have the need for the whole shebang so I just borrowed some of the functionality I found there.
@@ -12,54 +12,28 @@ import os
  in a `shared` UserDefaults collection called "group.com.braysoftware.SoundFontsShare". To work with older app installs,
  the manager will fall back to `standard` collection if a setting does not exist in the `shared` collection.
  */
-public class SettingsManager: NSObject {
+public final class SettingsManager: NSObject {
 
     private let log = Logging.logger("SetMgr")
 
-    private let appSettings: UserDefaults
-    public let sharedSettings: UserDefaults!
+    public let settings: UserDefaults
 
-    public init(shared: UserDefaults, app: UserDefaults) {
-        self.sharedSettings = shared
-        self.appSettings = app
+    public init(settings: UserDefaults) {
+        self.settings = settings
     }
 
     public subscript<T: SettingSerializable>(key: SettingKey<T>) -> T {
-        get {
-            if key.shared {
-                if let value = T.get(key: key.userDefaultsKey, userDefaults: sharedSettings) {
-                    return value
-                }
-            }
-
-            if let value = T.get(key: key.userDefaultsKey, userDefaults: appSettings) {
-                if key.shared {
-                    sharedSettings[key] = value
-                }
-                return value
-            }
-
-            return key.defaultValue
-        }
-
-        set {
-            if key.shared {
-                T.set(key: key.userDefaultsKey, value: newValue, userDefaults: sharedSettings)
-            }
-            T.set(key: key.userDefaultsKey, value: newValue, userDefaults: appSettings)
-        }
+        get { T.get(key: key.userDefaultsKey, userDefaults: settings) ?? key.defaultValue }
+        set { T.set(key: key.userDefaultsKey, value: newValue, userDefaults: settings) }
     }
 
-    public func remove<T>(key: SettingKey<T>) {
-        appSettings.remove(key)
-        sharedSettings.remove(key)
-    }
+    public func remove<T>(key: SettingKey<T>) { settings.remove(key) }
 }
 
 //swiftlint:disable identifier_name
 /// Global variable to keep things concise.
-public let Settings = SettingsManager(shared: UserDefaults(suiteName: "group.com.braysoftware.SoundFontsShare")!,
-                                      app: UserDefaults.standard)
+public let Settings = SettingsManager(settings:
+    UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard)
 //swiftlint:enable identifier_name
 
 /**
@@ -129,9 +103,6 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
     /// The unique identifier for this setting key
     public let userDefaultsKey: String
 
-    /// If true, the setting is shared with others on the same devices
-    public let shared: Bool
-
     /// The default value to use when the setting has not yet been set. We defer the setting of in case it is from a
     /// generator and the initial value must come from runtime code.
     public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
@@ -144,9 +115,8 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
      - parameter key: the unique identifier to use for this setting
      - parameter defaultValue: the constant default value to use
      */
-    public init(_ key: String, defaultValue: ValueType, shared: Bool = false) {
+    public init(_ key: String, defaultValue: ValueType) {
         self.userDefaultsKey = key
-        self.shared = shared
         self._defaultValue = .constant(defaultValue)
     }
 
@@ -157,9 +127,8 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
      - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
      only be called at most one time.
      */
-    public init(_ key: String, shared: Bool = false, defaultValueGenerator: @escaping ()->ValueType) {
+    public init(_ key: String, defaultValueGenerator: @escaping ()->ValueType) {
         self.userDefaultsKey = key
-        self.shared = shared
         self._defaultValue = .generator(defaultValueGenerator)
     }
 }

@@ -32,7 +32,7 @@ public final class SoundFontCollection: Codable {
     public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
     public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool {
-        guard let soundFont = getBy(key: soundFontAndPatch.soundFont.key) else { return false }
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return false }
         return soundFontAndPatch.patchIndex < soundFont.patches.count
     }
 
@@ -129,6 +129,8 @@ public final class SoundFontCollection: Codable {
      - returns: the index in the collection to insert
      */
     private func insertionIndex(of key: SoundFont.Key) -> Int {
-        sortedKeys.insertionIndex(of: key) { catalog[$0]!.displayName < catalog[$1]!.displayName }
+        sortedKeys.insertionIndex(of: key) {
+            catalog[$0]!.displayName.localizedCaseInsensitiveCompare(catalog[$1]!.displayName) == .orderedAscending
+        }
     }
 }

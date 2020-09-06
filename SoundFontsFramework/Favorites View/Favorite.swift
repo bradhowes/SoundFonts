@@ -33,9 +33,9 @@ public struct Favorite: Codable {
      - parameter patch: the Patch to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-    public init(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
+    public init(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
         self.key = Key()
-        self.name = soundFontAndPatch.patch.name
+        self.name = name
         self.keyboardLowestNote = keyboardLowestNote
         self.soundFontAndPatch = soundFontAndPatch
         self.keyboardLowestNote = keyboardLowestNote

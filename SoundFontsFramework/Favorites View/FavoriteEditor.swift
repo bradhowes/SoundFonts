@@ -14,12 +14,16 @@ final public class FavoriteEditor: UIViewController {
         let favorite: Favorite
         let currentLowestNote: Note?
         let completionHandler: UIContextualAction.CompletionHandler?
+        let soundFont: SoundFont
+        let patch: Patch
     }
 
     private var favorite: Favorite! = nil
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: UIContextualAction.CompletionHandler?
+    private var soundFont: SoundFont?
+    private var patch: Patch?
 
     weak var delegate: FavoriteEditorDelegate?
 
@@ -45,6 +49,8 @@ final public class FavoriteEditor: UIViewController {
         self.position = config.indexPath
         self.currentLowestNote = config.currentLowestNote
         self.completionHandler = config.completionHandler
+        self.soundFont = config.soundFont
+        self.patch = config.patch
     }
 
     override public func viewDidLoad() {
@@ -62,7 +68,6 @@ final public class FavoriteEditor: UIViewController {
         super.viewWillAppear(animated)
 
         precondition(favorite != nil)
-        let soundFontAndPatch = favorite.soundFontAndPatch
 
         name.text = favorite.name
         name.delegate = self
@@ -75,11 +80,11 @@ final public class FavoriteEditor: UIViewController {
         else {
             lowestNoteCollection.isHidden = true
         }
-        
-        soundFontName.text = soundFontAndPatch.soundFont.displayName
-        patchName.text = soundFontAndPatch.patch.name
-        bank.text = "Bank: \(soundFontAndPatch.patch.bank)"
-        index.text = "Index: \(soundFontAndPatch.patch.program)"
+    
+        soundFontName.text = soundFont?.displayName
+        patchName.text = patch?.name
+        bank.text = "Bank: \(patch!.bank)"
+        index.text = "Index: \(patch!.program)"
 
         gainValue.text = formatFloat(favorite.gain)
         gainSlider.value = favorite.gain

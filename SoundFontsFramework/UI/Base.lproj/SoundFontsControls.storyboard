@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -31,9 +31,6 @@
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1tO-63-V45" userLabel="Envelope">
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
-                                <connections>
-                                    <segue destination="bIh-EN-LFm" kind="embed" identifier="envelope" id="jcI-2e-GMF"/>
-                                </connections>
                             </containerView>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="Favorites" translatesAutoresizingMaskIntoConstraints="NO" id="efO-vf-51K" userLabel="Favorites">
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
@@ -106,14 +103,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PZv-fw-qmG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-420" y="-1963"/>
-        </scene>
-        <!--EnvelopeView-->
-        <scene sceneID="PyP-KV-6U4">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="EnvelopeView" storyboardName="EnvelopeView" referencedIdentifier="EnvelopeViewController" id="bIh-EN-LFm" userLabel="EnvelopeView" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="6tC-KN-faj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-293" y="-1598"/>
         </scene>
         <!--FontsView-->
         <scene sceneID="ElB-M5-dkN">

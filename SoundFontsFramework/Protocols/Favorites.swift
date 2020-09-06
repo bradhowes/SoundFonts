@@ -61,7 +61,7 @@ public protocol Favorites {
      - parameter soundFontAndPatch: the Patch to associate with
      - parameter keyboardLowestNote: the lowest note of the keyboard
      */
-    func add(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
+    func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
 
     /**
      Begin editing a Favorite

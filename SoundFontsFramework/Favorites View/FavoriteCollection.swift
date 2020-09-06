@@ -112,6 +112,6 @@ extension FavoriteCollection {
     }
 
     private func findAll(associatedWith soundFont: SoundFont) -> [Favorite] {
-        favorites.filter { $0.soundFontAndPatch.soundFont.key == soundFont.key }
+        favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFont.key }
     }
 }

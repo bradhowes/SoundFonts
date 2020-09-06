@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include "Chunk.hpp"
-#include "ChunkList.hpp"
-
 namespace SF2 {
 
 /**

@@ -4,8 +4,8 @@ import Foundation
 import os
 
 extension SettingKeys {
-    static let favoritesChanged = SettingKey<String>("favoritesChanged", defaultValue: "", shared: true)
-    static let soundFontsChanged = SettingKey<String>("soundFontsChanged", defaultValue: "", shared: true)
+    static let favoritesChanged = SettingKey<String>("favoritesChanged", defaultValue: "")
+    static let soundFontsChanged = SettingKey<String>("soundFontsChanged", defaultValue: "")
 }
 
 /**
@@ -50,10 +50,10 @@ final public class SharedStateMonitor: NSObject {
     public init(changer: StateChanger) {
         self.changer = changer
         super.init()
-        Settings.sharedSettings.addObserver(self, forKeyPath: SettingKeys.favoritesChanged.userDefaultsKey,
-                                            options: .new, context: &myContext)
-        Settings.sharedSettings.addObserver(self, forKeyPath: SettingKeys.soundFontsChanged.userDefaultsKey,
-                                            options: .new, context: &myContext)
+        Settings.settings.addObserver(self, forKeyPath: SettingKeys.favoritesChanged.userDefaultsKey,
+                                      options: .new, context: &myContext)
+        Settings.settings.addObserver(self, forKeyPath: SettingKeys.soundFontsChanged.userDefaultsKey,
+                                      options: .new, context: &myContext)
     }
 
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?,
@@ -64,7 +64,7 @@ final public class SharedStateMonitor: NSObject {
         }
 
         guard let keyPath = keyPath,
-            let rawValue = Settings.sharedSettings.string(forKey: keyPath),
+            let rawValue = Settings.settings.string(forKey: keyPath),
             let tmp = Int(rawValue.split(separator: " ")[0]),
             let changer = StateChanger(rawValue: tmp),
             changer != self.changer else {

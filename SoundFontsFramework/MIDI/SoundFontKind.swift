@@ -35,19 +35,16 @@ public enum SoundFontKind {
             let local = FileManager.default.localDocumentsDirectory.appendingPathComponent(name)
             os_log(.info, log: Self.log, "using local")
 
-            // Copy local file to the shared container so that it can be seen/used by both app and extension
-            DispatchQueue.global(qos: .background).async {
-                do {
-                    os_log(.info, log: Self.log, "copying to shared")
-                    try FileManager.default.copyItem(at: local, to: shared)
-                    os_log(.info, log: Self.log, "removing local file")
-                    try FileManager.default.removeItem(at: local)
-                } catch let error as NSError {
-                    os_log(.error, log: Self.log, "%s", error.localizedDescription)
-                }
+            do {
+                os_log(.info, log: Self.log, "copying to shared")
+                try FileManager.default.copyItem(at: local, to: shared)
+                os_log(.info, log: Self.log, "removing local file")
+                try FileManager.default.removeItem(at: local)
+            } catch let error as NSError {
+                os_log(.error, log: Self.log, "%s", error.localizedDescription)
             }
 
-            return local
+            return shared
         }
     }
 

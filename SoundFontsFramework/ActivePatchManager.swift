@@ -82,20 +82,39 @@ public enum ActivePatchEvent {
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
 
+    private let soundFonts: SoundFonts
+
     public private(set) var active: ActivePatchKind
 
     public var favorite: Favorite? { active.favorite }
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
-    public var soundFont: SoundFont? { soundFontAndPatch?.soundFont }
-    public var patch: Patch? { soundFont?.patches[soundFontAndPatch!.patchIndex] }
+
+    public var soundFont: SoundFont? {
+        guard let key = soundFontAndPatch?.soundFontKey else { return nil }
+        return soundFonts.getBy(key: key)
+    }
+
+    public var patch: Patch? {
+        guard let index = soundFontAndPatch?.patchIndex else { return nil }
+        return soundFont?.patches[index]
+    }
 
     public init(soundFonts: SoundFonts) {
+        self.soundFonts = soundFonts
         self.active = Self.restore() ??
             (soundFonts.count > 0
                 ? .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0))
                 : .none)
         super.init()
         os_log(.info, log: log, "active: %s", active.description)
+    }
+
+    public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> SoundFont? {
+        return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
+    }
+
+    public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> Patch? {
+        return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 
     public func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {

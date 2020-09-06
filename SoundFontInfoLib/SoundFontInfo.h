@@ -4,23 +4,25 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SoundFontInfoPatch : NSObject
+@interface SoundFontInfoPreset : NSObject
 
 @property (nonatomic, retain) NSString* name;
 @property (nonatomic, assign) int bank;
-@property (nonatomic, assign) int patch;
+@property (nonatomic, assign) int preset;
 
 @end
 
 @interface SoundFontInfo : NSObject {
 }
 
-@property (nonatomic, retain) NSData* contents;
+@property (nonatomic, retain) NSURL* path;
 @property (nonatomic, retain) NSString* embeddedName;
-@property (nonatomic, retain) NSArray<SoundFontInfoPatch*>* patches;
+@property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* patches;
 
 + (SoundFontInfo*)load:(NSURL*)url;
-+ (SoundFontInfo*)parse:(NSData*)data;
+
+/// NOTE: Only used for testing
++ (SoundFontInfo*)parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
 - (void)dump:(NSString*)path;
 
