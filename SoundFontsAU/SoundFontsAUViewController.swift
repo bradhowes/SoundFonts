@@ -6,7 +6,6 @@ import os
 
 public class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("ViewC")
-    private let sampler = Sampler(mode: .audiounit)
     private let noteInjector = NoteInjector()
 
     private var components: Components<SoundFontsAUViewController>!
@@ -24,7 +23,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         os_log(.error, log: log, "createAudioUnit")
-        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: sampler,
+        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler,
                                          activePatchManager: components.activePatchManager)
         self.audioUnit = audioUnit
         return audioUnit
@@ -42,22 +41,22 @@ extension SoundFontsAUViewController: ControllerConfiguration {
      */
     public func establishConnections(_ router: ComponentContainer) {
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
-        useActivePatchKind(router.activePatchManager.active, playSample: false)
+        useActivePatchKind(playSample: false)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        if case let .active(old: _, new: new, playSample: playSample) = event {
+        if case let .active(old: _, new: _, playSample: playSample) = event {
             os_log(.error, log: log, "activePatchChange - playSample: %d", playSample)
-            useActivePatchKind(new, playSample: playSample)
+            useActivePatchKind(playSample: playSample)
         }
     }
 
-    private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
+    private func useActivePatchKind(playSample: Bool) {
         os_log(.error, log: log, "useActivePatchKind - playSample: %d", playSample)
-        // guard let audioUnit = self.audioUnit else { return }
-        _ = self.sampler.load(activePatchKind: activePatchKind) {
+        let sampler = components.sampler
+        _ = sampler.load() {
             if playSample {
-                self.noteInjector.postMIDI(to: self.sampler)
+                self.noteInjector.postMIDI(to: sampler)
             }
         }
     }

@@ -18,7 +18,7 @@ public extension AudioUnit {
 
     func getPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32) throws -> T {
         var size = size
-        var data = UnsafeMutablePointer<T>.allocate(capacity: Int(size))
+        let data = UnsafeMutablePointer<T>.allocate(capacity: Int(size))
         defer { data.deallocate() }
         try AudioUnitGetProperty(self, pid, kAudioUnitScope_Global, 0, data, &size).check()
         return data.pointee

@@ -102,12 +102,12 @@ extension FontsTableViewManager {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            if old.soundFontAndPatch?.soundFont.key != new.soundFontAndPatch?.soundFont.key {
-                if let key = old.soundFontAndPatch?.soundFont.key {
+            if old.soundFontAndPatch?.soundFontKey != new.soundFontAndPatch?.soundFontKey {
+                if let key = old.soundFontAndPatch?.soundFontKey {
                     let row = soundFonts.index(of: key)
                     update(row: row)
                 }
-                if let key = new.soundFontAndPatch?.soundFont.key {
+                if let key = new.soundFontAndPatch?.soundFontKey {
                     let row = soundFonts.index(of: key)
                     update(row: row)
                 }
@@ -163,8 +163,8 @@ extension FontsTableViewManager {
                                         let newSoundFont = self.soundFonts.getBy(index: newRow)
                                         if self.activePatchManager.soundFont == deletedSoundFont {
                                             self.activePatchManager.setActive(
-                                                .normal(soundFontAndPatch: SoundFontAndPatch(soundFont: newSoundFont,
-                                                                                             patchIndex: 0)))
+                                                .normal(soundFontAndPatch:
+                                                    SoundFontAndPatch(soundFontKey: newSoundFont.key, patchIndex: 0)))
                                             self.selectedSoundFontManager.setSelected(newSoundFont)
                                         }
                                         else if self.selectedSoundFontManager.selected == deletedSoundFont {
@@ -198,7 +198,7 @@ extension FontsTableViewManager {
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
-        let isActive = activePatchManager.active.soundFontAndPatch?.soundFont == soundFont
+        let isActive = activePatchManager.soundFont == soundFont
         cell.updateForFont(name: soundFont.displayName, isSelected: isSelected, isActive: isActive)
         return cell
     }

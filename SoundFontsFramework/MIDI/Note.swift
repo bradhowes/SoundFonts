@@ -10,7 +10,7 @@ public struct Note: CustomStringConvertible, Codable {
     static let sharpTag = "♯"
     static let noteLabels: [String] = ["C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"]
     static let solfegeLabels: [String] = ["Do", "Do", "Re", "Re", "Mi", "Fa", "Fa", "Sol", "Sol", "La", "La",
-                                                 "Ti"]
+                                          "Ti"]
 
     /// The MIDI value to emit to generate this note
     public let midiNoteValue: Int

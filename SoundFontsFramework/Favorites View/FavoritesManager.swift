@@ -55,8 +55,8 @@ extension FavoritesManager: Favorites {
         collection.getBy(soundFontAndPatch: soundFontAndPatch)
     }
 
-    public func add(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
-        let favorite = Favorite(soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
+    public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
+        let favorite = Favorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
         save()
         notify(.added(index: count - 1, favorite: favorite))
@@ -110,6 +110,7 @@ extension FavoritesManager {
 
     static func restore() -> FavoriteCollection? {
         os_log(.info, log: log, "attempting to restore collection")
+        // return nil
         let url = Self.sharedArchivePath
         os_log(.info, log: log, "trying to read from '%s'", url.path)
         if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
@@ -135,20 +136,15 @@ extension FavoritesManager {
      */
     private func save() {
         do {
-            let data = try PropertyListEncoder().encode(collection)
-            let log = self.log
-
             os_log(.info, log: log, "archiving")
-            DispatchQueue.global(qos: .background).async {
-                os_log(.info, log: log, "obtained archive")
-                do {
-                    os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
-                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite])
-                    self.sharedStateMonitor.notifyFavoritesChanged()
-                    os_log(.info, log: log, "saving OK")
-                } catch {
-                    os_log(.error, log: log, "saving FAILED")
-                }
+            let data = try PropertyListEncoder().encode(collection)
+            os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
+            do {
+                try data.write(to: Self.sharedArchivePath, options: [.atomicWrite])
+                self.sharedStateMonitor.notifyFavoritesChanged()
+                os_log(.info, log: log, "saving OK")
+            } catch {
+                os_log(.error, log: log, "saving FAILED")
             }
         } catch {
             os_log(.error, log: Self.log, "archiving FAILED")

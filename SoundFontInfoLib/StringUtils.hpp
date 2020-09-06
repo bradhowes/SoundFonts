@@ -8,11 +8,6 @@
 #include <cctype>
 #include <locale>
 
-// trim from both ends (in place)
-static inline void trim(std::string &s)
-{
-}
-
 static inline void trim_property(char* property, size_t size)
 {
     // This is really inefficient, but these sizes are very small (< 50) so...

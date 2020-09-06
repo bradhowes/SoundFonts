@@ -27,6 +27,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
      */
     private static func restore() -> SoundFontCollection? {
         os_log(.info, log: log, "attempting to restore collection")
+        // return nil
         let url = Self.sharedArchivePath
         os_log(.info, log: log, "trying to read from '%s'", url.path)
         if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
@@ -180,6 +181,7 @@ extension SoundFontsManager: SoundFonts {
             if let index = collection.index(of: url) {
                 os_log(.info, log: log, "removing %s", url.absoluteString)
                 remove(index: index)
+                // favorites.removeAll(associatedWith: soundFont)
             }
         }
         save()

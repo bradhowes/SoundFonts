@@ -1,18 +1,8 @@
 import PlaygroundSupport
+import Foundation
 
-enum Tag: String {
-    case one
-    case two
-}
+let url = URL(fileURLWithPath: "Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Resources/SoundFonts/FreeFont.sf2")
+let data = Data(contentsOf: url)
 
-enum Payload {
-    case one(view: String, completionHandler: (Bool) -> Void)
-    var tag: String {
-        switch self {
-        case .one: return "one"
-        }
-    }
-}
-
-let z = Payload.one(view: "mom", completionHandler: { did in } )
-
+let file = FileHandle(forReadingAtPath: url.path)!
+file.seekToEnd()

@@ -2,7 +2,10 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "BinaryStream.hpp"
+#include "Chunk.hpp"
 #include "StringUtils.hpp"
 
 namespace SF2 {
@@ -15,6 +18,15 @@ class SFPreset {
 public:
     constexpr static size_t size = 38;
 
+    SFPreset() {}
+
+    explicit SFPreset(Pos const& pos)
+    {
+        // Account for the extra padding by reading twice.
+        pos.readInto(&achPresetName, 26).readInto(&dwLibrary, 12);
+        trim_property(achPresetName);
+    }
+    
     explicit SFPreset(BinaryStream& is)
     {
         // Account for the extra padding by reading twice.

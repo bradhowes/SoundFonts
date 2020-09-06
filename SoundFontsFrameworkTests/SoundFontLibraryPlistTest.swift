@@ -31,12 +31,11 @@ class SoundFontLibraryPListTest: XCTestCase {
         let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
         let data = try! Data(contentsOf: url)
         let collection = try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
-        XCTAssertEqual(collection.count, 1)
+        XCTAssertEqual(collection.count, 5)
 
         let favorite = collection.getBy(index: 0)
-        XCTAssertEqual(favorite.name, "Yamaha Grand Piano")
-        XCTAssertEqual(favorite.gain, 12)
+        XCTAssertEqual(favorite.name, "Nice Pianopppp")
+        XCTAssertEqual(favorite.gain, 0.0)
         XCTAssertEqual(favorite.soundFontAndPatch.patchIndex, 0)
-        XCTAssertEqual(favorite.soundFontAndPatch.soundFont.key.uuidString, "5F0017BD-33E2-45DD-B4C6-57C5C4466F4D")
     }
 }

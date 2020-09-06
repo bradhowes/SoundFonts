@@ -42,9 +42,9 @@ public:
 
     void load(Chunk const& source)
     {
-        items_.reserve(source.size() / itemSize);
-        BinaryStream is(source.bytePtr(), source.size());
-        while (is) items_.emplace_back(is);
+//        items_.reserve(source.size() / itemSize);
+//        BinaryStream is(source.bytePtr(), source.size());
+//        while (is) items_.emplace_back(is);
     }
 
     /**

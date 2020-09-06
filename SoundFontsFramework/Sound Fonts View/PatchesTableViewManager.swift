@@ -210,14 +210,17 @@ extension PatchesTableViewManager {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            if showingSoundFont != new.soundFontAndPatch?.soundFont {
+            if showingSoundFont?.key != new.soundFontAndPatch?.soundFontKey {
                 os_log(.info, log: log, "new font")
-                selectedSoundFontManager.setSelected(new.soundFontAndPatch?.soundFont)
-                view.reloadData()
+                if let soundFontAndPatch = new.soundFontAndPatch,
+                    let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) {
+                    selectedSoundFontManager.setSelected(soundFont)
+                    view.reloadData()
+                }
             }
             else {
                 os_log(.info, log: log, "same font")
-                if old.soundFontAndPatch?.soundFont == showingSoundFont {
+                if old.soundFontAndPatch?.soundFontKey == showingSoundFont?.key {
                     view.beginUpdates()
                     update(with: old.soundFontAndPatch)
                     update(with: new.soundFontAndPatch)
@@ -271,13 +274,15 @@ extension PatchesTableViewManager {
     private func getIndexPath(for soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
         guard let soundFontAndPatch = soundFontAndPatch else { return nil }
 
-        os_log(.info, log: log, "getIndexPath of '%s'", soundFontAndPatch.description)
-        guard showingSoundFont == soundFontAndPatch.soundFont else {
+        guard showingSoundFont?.key == soundFontAndPatch.soundFontKey else {
             os_log(.info, "not showing in view")
             return nil
         }
 
-        let patch = soundFontAndPatch.patch
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else {
+            return nil
+        }
+
         if showingSearchResults {
             os_log(.info, "showing search results")
             guard let row: Int = filtered.firstIndex(where: { $0.soundFontIndex == patch.soundFontIndex }) else {
@@ -303,7 +308,7 @@ extension PatchesTableViewManager {
     private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * Self.sectionSize + indexPath.row }
 
     private func makeSoundFontAndPatch(for patch: Patch) -> SoundFontAndPatch {
-        SoundFontAndPatch(soundFont: showingSoundFont!, patchIndex: patch.soundFontIndex)
+        SoundFontAndPatch(soundFontKey: showingSoundFont!.key, patchIndex: patch.soundFontIndex)
     }
 
     private func isActive(soundFontAndPatch: SoundFontAndPatch) -> Bool {
@@ -362,8 +367,9 @@ extension PatchesTableViewManager {
     private func createFaveSwipeAction(at: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
-            self.favorites.add(soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: lowestNote)
+            self.favorites.add(name: patch.name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, at: at, with: soundFontAndPatch)
             completionHandler(true)
         }
@@ -397,6 +403,8 @@ extension PatchesTableViewManager {
     private func createEditSwipeAction(at: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) else { fatalError() }
+        guard let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) else { fatalError() }
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             var rect = self.view.rectForRow(at: at)
             rect.size.width = 240.0
@@ -406,7 +414,10 @@ extension PatchesTableViewManager {
                                                rect: view.bounds,
                                                favorite: favorite,
                                                currentLowestNote: self.keyboard?.lowestNote,
-                                               completionHandler: completionHandler)
+                                               completionHandler: completionHandler,
+                                               soundFont: soundFont,
+                                               patch: patch
+                                               )
             self.favorites.beginEdit(config: config)
         }
 
@@ -483,8 +494,10 @@ extension PatchesTableViewManager {
             return update(cell: cell, at: indexPath, with: favorite)
         }
 
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { return cell }
         let active = isActive(soundFontAndPatch: soundFontAndPatch)
-        cell.updateForPatch(name: soundFontAndPatch.patch.name, isActive: active, isFavorite: false)
+        cell.updateForPatch(name: patch.name, isActive: active,
+        isFavorite: false)
         return cell
     }
 

@@ -25,7 +25,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
-    private var envelopeViewController: EnvelopeViewController! { didSet { oneTimeSet(oldValue )}}
 
     public var infoBar: InfoBar { infoBarController }
     public var keyboard: Keyboard? { keyboardController }
@@ -33,8 +32,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var favoritesViewManager: FavoritesViewManager { favoritesController }
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
-    public var envelopeViewManager: EnvelopeViewManager { envelopeViewController }
-    
+
     public init(changer: SharedStateMonitor.StateChanger) {
 
         let sharedStateMonitor = SharedStateMonitor(changer: changer)
@@ -44,11 +42,20 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.soundFonts = soundFontsManager
         let favoritesManager = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
         self.favorites = favoritesManager
-        self.sampler = Sampler(mode: sharedStateMonitor.isMain ? .standalone : .audiounit)
 
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
+
         self.activePatchManager.validate(soundFonts: soundFontsManager, favorites: favoritesManager)
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+
+        self.sampler = Sampler(mode: sharedStateMonitor.isMain ? .standalone : .audiounit,
+                               activePatchManager: activePatchManager)
+
+        self.soundFonts.subscribe(favoritesManager) { event in
+            if case let .removed(_, soundFont) = event {
+                favoritesManager.removeAll(associatedWith: soundFont)
+            }
+        }
 
         sharedStateMonitor.block = { stateChange in
             switch stateChange {
@@ -74,7 +81,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
                     case let vc as InfoBarController: infoBarController = vc
-                    case let vc as EnvelopeViewController: envelopeViewController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
@@ -97,7 +103,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         keyboardController?.establishConnections(self)
         guideController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
-        envelopeViewController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }
@@ -111,7 +116,6 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
-        precondition(envelopeViewController != nil, "nil envelopeViewController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {

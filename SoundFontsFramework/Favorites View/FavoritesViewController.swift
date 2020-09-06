@@ -128,7 +128,6 @@ extension FavoritesViewController: ControllerConfiguration {
 
 extension FavoritesViewController: SegueHandler {
 
-    /// Segues that we support.s
     public enum SegueIdentifier: String {
         case favoriteEditor
     }
@@ -176,15 +175,42 @@ extension FavoritesViewController: SegueHandler {
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
         guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
+
+        guard let soundFont = activePatchManager.resolveToSoundFont(favorite.soundFontAndPatch) else {
+            let item = indexPath.item
+            favorites.remove(index: item, bySwiping: false)
+            postNotice(msg: "Removed favorite that was invalid.")
+            return
+        }
+
+        guard let patch = activePatchManager.resolveToPatch(favorite.soundFontAndPatch) else { fatalError() }
         let config = FavoriteEditor.Config(indexPath: indexPath, view: favoritesView, rect: view.frame,
-                                           favorite: favorite,
-                                           currentLowestNote: keyboard?.lowestNote, completionHandler: nil)
+                                           favorite: favorite, currentLowestNote: keyboard?.lowestNote,
+                                           completionHandler: nil, soundFont: soundFont, patch: patch)
         edit(config: config)
     }
 
     func edit(config: FavoriteEditor.Config) {
         performSegue(withIdentifier: .favoriteEditor, sender: config)
     }
+
+    private func postNotice(msg: String) {
+        let alertController = UIAlertController(title: "Favorites",
+                                                message: msg,
+                                                preferredStyle: .alert)
+        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
+
 }
 
 // MARK: - FavoriteDetailControllerDelegate

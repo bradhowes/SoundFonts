@@ -7,11 +7,6 @@ import Foundation
  and what a `favorite` item points to.
  */
 public struct SoundFontAndPatch: Codable, Hashable {
-    public let soundFont: SoundFont
+    public let soundFontKey: SoundFont.Key
     public let patchIndex: Int
-    public var patch: Patch { soundFont.patches[patchIndex] }
-}
-
-extension SoundFontAndPatch: CustomStringConvertible {
-    public var description: String { "['\(soundFont.displayName)' - '\(patch.name)']" }
 }

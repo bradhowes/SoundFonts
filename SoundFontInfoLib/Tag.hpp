@@ -13,14 +13,11 @@ namespace SF2 {
  */
 class Tag {
 public:
-    explicit Tag(uint32_t tag) : tag_{tag} {}
-    explicit Tag(char const* s) : Tag(*(reinterpret_cast<uint32_t const*>(s))) {}
-    explicit Tag(void const* s) : Tag(static_cast<char const*>(s)) {}
+    Tag(uint32_t tag) : tag_{tag} {}
 
     bool operator ==(Tag const& rhs) const { return tag_ == rhs.tag_; }
     bool operator !=(Tag const& rhs) const { return tag_ != rhs.tag_; }
 
-    constexpr uint32_t toInt() const { return tag_; }
     std::string toString() const { return std::string(reinterpret_cast<char const*>(&tag_), 4); }
 
 private:

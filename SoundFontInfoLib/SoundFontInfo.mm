@@ -13,13 +13,13 @@
 
 using namespace SF2;
 
-@implementation SoundFontInfoPatch
+@implementation SoundFontInfoPreset
 
-- (id)init:(SFPreset const &)preset {
+- (id)init:(Parser::Preset const &)preset {
     if (self = [super init]) {
-        self.name = [NSString stringWithUTF8String:preset.name()];
-        self.bank = preset.bank();
-        self.patch = preset.preset();
+        self.name = [NSString stringWithUTF8String:preset.name.c_str()];
+        self.bank = preset.bank;
+        self.preset = preset.preset;
     }
 
     return self;
@@ -29,9 +29,9 @@ using namespace SF2;
 
 @implementation SoundFontInfo
 
-- (id)init:(NSData*)contents name:(NSString*)embeddedName patches:(NSArray*)patches {
+- (id)init:(NSString*)embeddedName url:(NSURL*)url patches:(NSArray*)patches {
     if (self = [super init]) {
-        self.contents = contents;
+        self.path = url;
         self.embeddedName = embeddedName;
         self.patches = patches;
     }
@@ -41,51 +41,36 @@ using namespace SF2;
 + (SoundFontInfo*)load:(NSURL*)url {
     try {
         BOOL secured = [url startAccessingSecurityScopedResource];
-        // TODO: use NSInputStream instead of reading everything at once
-        NSData* data = [NSData dataWithContentsOfURL:url];
+        uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
+        int fd = ::open(url.path.UTF8String, O_RDONLY);
         if (secured) [url stopAccessingSecurityScopedResource];
-        return data ? [SoundFontInfo parse:data] : nil;
+        return fd != -1 ? [SoundFontInfo parse:url fileDescriptor:fd fileSize:fileSize] : nil;
     }
     catch (enum SF2::Format value) {
         return nil;
     }
 }
 
-+ (SoundFontInfo*)parse:(NSData*)data {
++ (SoundFontInfo*)parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
     try {
-        auto top = SF2::Parser::parse(data.bytes, data.length);
-        auto info = top.find(Tag(Tags::info));
-        if (info == top.end()) return nil;
-
-        auto inam = info->find(Tag(Tags::inam));
-        if (inam == info->end()) return nil;
-
-        NSString* embeddedName = [NSString stringWithUTF8String:inam->charPtr()];
-
-        auto patchData = top.find(Tag(Tags::pdta));
-        if (patchData == top.end()) return nil;
-
-        auto patchHeader = patchData->find(Tag(Tags::phdr));
-        if (patchHeader == patchData->end()) return nil;
-
-        auto presetHeader = ChunkItems<SFPreset>(*patchHeader);
-        NSMutableArray* patches = [NSMutableArray arrayWithCapacity:presetHeader.size()];
-
-        for (auto it = presetHeader.begin(); it != presetHeader.end() - 1; ++it) {
-            [patches addObject:[[SoundFontInfoPatch alloc] init:*it]];
+        auto info = SF2::Parser::parse(fd, fileSize);
+        NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName.c_str()];
+        NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets.size()];
+        for (auto it = info.presets.begin(); it != info.presets.end(); ++it) {
+            [presets addObject:[[SoundFontInfoPreset alloc] init:*it]];
         }
 
-        [patches sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            SoundFontInfoPatch* patch1 = obj1;
-            SoundFontInfoPatch* patch2 = obj2;
+        [presets sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            SoundFontInfoPreset* patch1 = obj1;
+            SoundFontInfoPreset* patch2 = obj2;
             if (patch1.bank < patch2.bank) return NSOrderedAscending;
             if (patch1.bank > patch2.bank) return NSOrderedDescending;
-            if (patch1.patch < patch2.patch) return NSOrderedAscending;
-            if (patch1.patch == patch2.patch) return NSOrderedSame;
+            if (patch1.preset < patch2.preset) return NSOrderedAscending;
+            if (patch1.preset == patch2.preset) return NSOrderedSame;
             return NSOrderedDescending;
         }];
 
-        return [[SoundFontInfo alloc] init:data name:embeddedName patches:patches];
+        return [[SoundFontInfo alloc] init:embeddedName url:url patches:presets];
     }
     catch (enum SF2::Format value) {
         return nil;
@@ -111,10 +96,10 @@ struct Redirector {
 };
 
 - (void) dump:(NSString*)fileName {
-    if (self.contents == nil) return;
-    Redirector redirector(fileName.UTF8String);
-    auto top = SF2::Parser::parse(self.contents.bytes, self.contents.length);
-    top.dump("");
+//    if (self.contents == nil) return;
+//    Redirector redirector(fileName.UTF8String);
+//    auto top = SF2::Parser::parse(self.contents.bytes, self.contents.length);
+//    top.dump("");
 }
 
 @end

@@ -229,7 +229,9 @@ extension InfoBarController {
 
     private func updateInfoBar(with soundFontAndPatch: SoundFontAndPatch) {
         if soundFontAndPatch == activePatchManager.soundFontAndPatch {
-            setPatchInfo(name: soundFontAndPatch.patch.name, isFavored: false)
+            if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
+                setPatchInfo(name: patch.name, isFavored: false)
+            }
         }
     }
 
@@ -238,7 +240,9 @@ extension InfoBarController {
             setPatchInfo(name: favorite.name, isFavored: true)
         }
         else if let soundFontAndPatch = activePatchKind.soundFontAndPatch {
-            setPatchInfo(name: soundFontAndPatch.patch.name, isFavored: false)
+            if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
+                setPatchInfo(name: patch.name, isFavored: false)
+            }
         }
         else {
             setPatchInfo(name: "-", isFavored: false)

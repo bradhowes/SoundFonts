@@ -114,7 +114,7 @@ extension MainViewController: ControllerConfiguration {
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            let result = self.sampler.load(activePatchKind: activePatchKind) {
+            let result = self.sampler.load {
                 if playSample { self.noteInjector.post(to: self.sampler) }
             }
 

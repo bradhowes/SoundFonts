@@ -6,8 +6,7 @@
 
 #pragma once
 
-#include "Chunk.hpp"
-#include "ChunkList.hpp"
+#include <vector>
 
 namespace SF2 {
 
@@ -17,25 +16,23 @@ namespace SF2 {
 class Parser {
 public:
 
+    struct Preset {
+        Preset(std::string n, uint16_t b, uint16_t p) : name{n}, bank{b}, preset{p} {}
+        std::string name;
+        uint16_t bank;
+        uint16_t preset;
+    };
+
+    struct Info {
+        std::string embeddedName;
+        std::vector<Preset> presets;
+    };
+
     /**
      Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this really just parses any RIFF
      format. We postpone the SF2 evaluation until the initial loading is done.
-
-     @param data pointer to the first byte of the SoundFont resource to parse
-     @param size number of bytes in the resource
-     @return Chunk instance representing all of the items in the given data
      */
-    static Chunk parse(void const* data, size_t size);
-
-private:
-    Parser(Parser const& rhs) = delete;
-    Parser& operator=(Parser const& rhs) = delete;
-    void* operator new(size_t) = delete;
-    void* operator new[](size_t) = delete;
-
-    struct Pos;
-    static Chunk parseChunk(Pos& pos);
-    static ChunkList parseChunks(Pos pos);
+    static Info parse(int fd, size_t size);
 };
 
 }

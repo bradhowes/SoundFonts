@@ -68,7 +68,9 @@ public final class SoundFont: Codable {
         if saveToDisk {
             let path = soundFont.fileURL
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", path.lastPathComponent)
-            guard FileManager.default.createFile(atPath: path.path, contents: info.contents, attributes: nil) else {
+            do {
+                try FileManager.default.copyItem(at: url, to: path)
+            } catch {
                 os_log(.error, log: Self.logger, "failed to create file")
                 return .failure(.unableToCreateFile)
             }
@@ -108,8 +110,8 @@ public final class SoundFont: Codable {
         self.patches = Self.makePatches(soundFontInfo.patches)
     }
 
-    private static func makePatches(_ patches: [SoundFontInfoPatch]) -> [Patch] {
-        patches.enumerated().map { Patch($0.1.name, Int($0.1.bank), Int($0.1.patch), $0.0) }
+    private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [Patch] {
+        patches.enumerated().map { Patch($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
     }
 }
 
@@ -119,7 +121,7 @@ extension SoundFont {
     public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
     public func makeSoundFontAndPatch(for patchIndex: Int) -> SoundFontAndPatch {
-        SoundFontAndPatch(soundFont: self, patchIndex: patchIndex)
+        SoundFontAndPatch(soundFontKey: self.key, patchIndex: patchIndex)
     }
 }
 

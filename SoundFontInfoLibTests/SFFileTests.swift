@@ -5,37 +5,17 @@ import SoundFontInfoLib
 
 class SFFileTests: XCTestCase {
 
-    lazy var soundFont1: Data = {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "FluidR3_GM", withExtension: "sf2")!
-        return try! Data(contentsOf: url)
-    }()
+    func urlNamed(_ name: String) -> URL { Bundle(for: type(of: SFFileTests)).url(forResource: name, withExtension: "sf2")! }
 
-    lazy var soundFont2: Data = {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "FreeFont", withExtension: "sf2")!
-        return try! Data(contentsOf: url)
-    }()
-
-    lazy var soundFont3: Data = {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "GeneralUser GS MuseScore v1.442", withExtension: "sf2")!
-        return try! Data(contentsOf: url)
-    }()
-
-    lazy var soundFont4: Data = {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "RolandNicePiano", withExtension: "sf2")!
-        return try! Data(contentsOf: url)
-    }()
-
-    lazy var soundFonts: [Data] = {
-        return [soundFont1, soundFont2, soundFont3, soundFont4]
-    }()
+    var soundFont1: URL { urlNamed("FluidR3_GM") }
+    var soundFont2: URL { urlNamed("FreeFont") }
+    var soundFont3: URL { urlNamed("GeneralUser GS MuseScore v1.442") }
+    var soundFont4: URL { urlNamed("RolandNicePiano") }
+    var soundFonts: [URL] { [soundFont1, soundFont2, soundFont3, soundFont4] }
 
     func testInit() {
-        for sf in soundFonts {
-            let _ = SoundFontInfo.parse(sf)
+        for url in soundFonts {
+            let _ = SoundFontInfo.load(url)
         }
     }
 }

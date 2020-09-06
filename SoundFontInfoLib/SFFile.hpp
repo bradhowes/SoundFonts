@@ -50,10 +50,10 @@ struct SFFile {
      Parse the given collection of bytes from an SF2 file and build up the collections. Since the data vector is moved into the new SFFile instance, there are no lifetime
      issues to contend with.
      */
-    explicit SFFile(std::vector<char>&& data) : data_{data}, top_{Parser::parse(data_.data(), data_.size())}
-    {
-        buildWith(top_);
-    }
+//    explicit SFFile(std::vector<char>&& data) : data_{data}, top_{Parser::parse(data_.data(), data_.size())}
+//    {
+//        buildWith(top_);
+//    }
 
     /**
      Build the collections from the given Chunk. NOTE: the Chunk lifetime must outlive the SFFile instance for the contents of the collections to be valid.
@@ -66,24 +66,24 @@ struct SFFile {
     /**
      Build the collections from the given data after parsing it. NOTE the data pointer musrt outlve the SFFle instance for the contents of the collections to be valid.
      */
-    SFFile(void const* data, size_t size) : data_{}, top_{Parser::parse(data, size)}
-    {
-        buildWith(top_);
-    }
+//    SFFile(void const* data, size_t size) : data_{}, top_{Parser::parse(data, size)}
+//    {
+//        buildWith(top_);
+//    }
 
     /**
      Load data from a file.
      */
-    static SFFile Make(std::string const& path) {
-        std::ifstream file(path, std::ios::binary | std::ios::ate);
-        std::streamsize size = file.tellg();
-        file.seekg(0, std::ios::beg);
-        std::vector<char> data(size);
-        if (!file.read(data.data(), size)) throw Format::error;
-        return SFFile(std::move(data));
-    }
+//    static SFFile Make(std::string const& path) {
+//        std::ifstream file(path, std::ios::binary | std::ios::ate);
+//        std::streamsize size = file.tellg();
+//        file.seekg(0, std::ios::beg);
+//        std::vector<char> data(size);
+//        if (!file.read(data.data(), size)) throw Format::error;
+//        return SFFile(std::move(data));
+//    }
 
-    void dump() const { top_.dump(""); }
+//    void dump() const { top_.dump(""); }
 
 private:
 

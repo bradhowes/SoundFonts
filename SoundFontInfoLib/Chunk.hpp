@@ -2,108 +2,81 @@
 
 #pragma once
 
-#include "ChunkList.hpp"
+#include <unistd.h>
+
+#include "Format.hpp"
 #include "Tag.hpp"
 
 namespace SF2 {
 
-/**
- A blob of data defined by a Tag. Internally, a chunk can just be a sequence of bytes or it can be a list (bag) of
- other Chunk instances.
- */
-class Chunk {
-public:
+class Chunk;
+class ChunkList;
 
-    /**
-     Constructor for a chunk of data
+struct Pos {
+    Pos(int fd, size_t pos) : fd_(fd), pos_(pos) {}
 
-     @param tag identifier for this chunk
-     @param ptr pointer to the data start
-     @param size length of the data
-     */
-    Chunk(Tag tag, void const* ptr, uint32_t size)
-    : tag_{tag}, data_{ptr}, size_{size}, chunks_{} {}
+    ChunkList makeChunkList() const;
+    Chunk makeChunk() const;
 
-    /**
-     Constructor for a list of chunks
-
-     @param tag identifier for this chunk
-     @param chunks list of chunks
-     */
-    Chunk(Tag tag, ChunkList&& chunks) : tag_{tag}, data_{nullptr}, size_{0}, chunks_{std::move(chunks)} {}
-
-    /**
-     @returns the chunk ID.
-     */
-    Tag tag() const { return tag_; }
-
-    /**
-     Obtain the pointer to the data blob.
-     @returns data blob pointer
-     */
-    void const* dataPtr() const { return data_; }
-
-    /**
-     Obtain the pointer to the data blob as a stream of bytes.
-     @returns data blob pointer
-     */
-    uint8_t const* bytePtr() const { return static_cast<uint8_t const*>(data_); }
-
-    /**
-     Obtain the pointer to the data blob as a stream of characters.
-     @returns data blob pointer
-     */
-    char const* charPtr() const { return static_cast<char const*>(data_); }
-
-    /**
-     Obtain the size of the data blob.
-     @returns data blob size
-     */
-    size_t size() const { return size_; }
-
-    /**
-     Obtain iterator that points to the first chunk.
-     @returns iterator to the first chunk
-     */
-    ChunkList::const_iterator begin() const { return chunks_.begin(); }
-
-    /**
-     Obtain iterator that points right after the last chunk.
-     @returns iterator after the last chunk
-     */
-    ChunkList::const_iterator end() const { return chunks_.end(); }
-
-    /**
-     Search for the first chunk with a given ChunkId
-     @param tag identifier for the chunk to look for
-     @returns iterator to first chunk or end() if none found.
-     */
-    ChunkList::const_iterator find(Tag const& tag) const { return chunks_.find(tag); }
-
-    /**
-     Search for the *next* chunk with a given ChunkId
-     @param it iterator pointing to the first chunk to search
-     @param tag identifier for the chunk to look for
-     @returns iterator to the next chunk or end() if none found.
-     */
-    ChunkList::const_iterator findNext(ChunkList::const_iterator it, Tag const& tag) const {
-        return chunks_.findNext(it, tag);
+    template <typename T>
+    Pos readInto(T& buffer, size_t maxCount) const {
+        if (::lseek(fd_, pos_, SEEK_SET) != pos_) throw Format::error;
+        size_t desired = std::min(sizeof(buffer), maxCount);
+        auto result = ::read(fd_, &buffer, desired);
+        if (result != desired) throw Format::error;
+        return advance(result);
     }
 
-    void dump(std::string const& indent) const;
+    Pos readInto(void* buffer, size_t count) const {
+        if (::lseek(fd_, pos_, SEEK_SET) != pos_) throw Format::error;
+        auto result = ::read(fd_, buffer, count);
+        if (result != count) throw Format::error;
+        return advance(result);
+    }
 
-    Chunk(Chunk&& rhs) = default;
-    Chunk& operator=(Chunk&& value) = default;
+    Pos advance(size_t offset) const { return Pos(fd_, pos_ + offset); }
+
+    friend bool operator <(Pos const& lhs, Pos const& rhs) {
+        return lhs.pos_ < rhs.pos_;
+    }
 
 private:
-    Chunk(Chunk const& rhs) = delete;
-    void* operator new(size_t) = delete;
-    void* operator new[](size_t) = delete;
+    int fd_;
+    size_t pos_;
+};
+
+class Chunk {
+public:
+    Chunk(Tag tag, uint32_t size, Pos pos) : tag_{tag}, size_{size}, dataPos_{pos} {}
+
+    Tag tag() const { return tag_; }
+    size_t dataSize() const { return size_; }
+
+    Pos dataPos() const { return dataPos_; }
+    Pos dataEnd() const { return dataPos_.advance(size_); }
+
+    Pos next() const { return dataPos_.advance(paddedSize()); }
+
+private:
+    uint32_t paddedSize() const { return size_ + ((size_ & 1) ? 1 : 0); }
 
     Tag tag_;
-    void const* data_;
     uint32_t size_;
-    ChunkList chunks_;
+    Pos dataPos_;
+};
+
+class ChunkList : public Chunk {
+public:
+
+    ChunkList(Tag tag, uint32_t size, Tag kind, Pos pos) : Chunk(tag, size, pos), kind_{kind} {}
+
+    Tag kind() const { return kind_; }
+
+    Pos begin() const { return dataPos(); }
+    Pos end() const { return dataEnd(); }
+
+private:
+    Tag kind_;
 };
 
 }
