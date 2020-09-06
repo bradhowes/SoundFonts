@@ -40,7 +40,6 @@ public final class SoundFontsControlsController: UIViewController {
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
         upperViewManager.add(view: envelopeView)
-
     }
 }
 
@@ -62,10 +61,6 @@ extension SoundFontsControlsController: ControllerConfiguration {
         let favoritesViewManager = router.favoritesViewManager
         favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
-
-        let envelopeViewManager = router.envelopeViewManager
-        envelopeViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
-
         router.infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
     }
 
