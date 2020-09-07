@@ -105,6 +105,8 @@
 		BD8A31652502E6920077320F /* FavoriteEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A315F2502E6920077320F /* FavoriteEntity.swift */; };
 		BD8A31672502E6920077320F /* SoundFontEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A31612502E6920077320F /* SoundFontEntity.swift */; };
 		BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A317E2503B5400077320F /* CoreDataStackTests.swift */; };
+		BD9782002506003600CEFB59 /* FavoritesConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9781FF2506003600CEFB59 /* FavoritesConfigFile.swift */; };
+		BD9782022506A22E00CEFB59 /* SoundFontsConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9782012506A22E00CEFB59 /* SoundFontsConfigFile.swift */; };
 		BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC347E72403B93F00A848BA /* FileMonitorTests.swift */; };
 		BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */; };
 		BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3C241AE97000F789B2 /* Localizable.strings */; };
@@ -262,6 +264,8 @@
 		BD8A31612502E6920077320F /* SoundFontEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontEntity.swift; sourceTree = "<group>"; };
 		BD8A317E2503B5400077320F /* CoreDataStackTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackTests.swift; sourceTree = "<group>"; };
 		BD90AEF424192E7C00D29E18 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BD9781FF2506003600CEFB59 /* FavoritesConfigFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesConfigFile.swift; sourceTree = "<group>"; };
+		BD9782012506A22E00CEFB59 /* SoundFontsConfigFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsConfigFile.swift; sourceTree = "<group>"; };
 		BDC347E72403B93F00A848BA /* FileMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitorTests.swift; sourceTree = "<group>"; };
 		BDC7EC3B241AE97000F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BDC7EC3D241AE97000F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -378,6 +382,7 @@
 				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
 				BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */,
 				BD074BD423CDAF51001987E9 /* FavoriteMover.swift */,
+				BD9781FF2506003600CEFB59 /* FavoritesConfigFile.swift */,
 				BD074BD523CDAF51001987E9 /* FavoritesManager.swift */,
 				BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */,
 			);
@@ -413,6 +418,7 @@
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
+				BD9782012506A22E00CEFB59 /* SoundFontsConfigFile.swift */,
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
 			);
@@ -805,12 +811,14 @@
 				BDD7219D24190D9700FD3567 /* Bundle+Extensions.swift in Sources */,
 				BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */,
 				BD074C3F23CDAF51001987E9 /* FavoriteMover.swift in Sources */,
+				BD9782002506003600CEFB59 /* FavoritesConfigFile.swift in Sources */,
 				BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */,
 				BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */,
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* Favorite.swift in Sources */,
+				BD9782022506A22E00CEFB59 /* SoundFontsConfigFile.swift in Sources */,
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,

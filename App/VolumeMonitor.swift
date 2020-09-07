@@ -13,6 +13,7 @@ final class VolumeMonitor {
         case volumeLevel
         case muteSwitch
         case noPatch
+        case otherAudio
     }
 
     private let keyboard: Keyboard
@@ -42,9 +43,11 @@ final class VolumeMonitor {
 
      - parameter session: the AVAudioSession to monitor
      */
-    func start(session: AVAudioSession) {
+    func start() {
+        reason = nil
         Mute.shared.notify = {muted in self.muted = muted }
         Mute.shared.isPaused = false
+        let session = AVAudioSession.sharedInstance()
         sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
             self.volume = session.outputVolume
         }
@@ -56,6 +59,7 @@ final class VolumeMonitor {
      */
     func stop() {
         guard !Mute.shared.isPaused else { return }
+        reason = nil
         Mute.shared.notify = nil
         Mute.shared.isPaused = true
         sessionVolumeObserver?.invalidate()
@@ -64,7 +68,10 @@ final class VolumeMonitor {
 
     func update() {
         let pastReason = reason
-        if volume < 0.01 {
+        if AVAudioSession.sharedInstance().isOtherAudioPlaying {
+            reason = .otherAudio
+        }
+        else if volume < 0.01 {
             reason = .volumeLevel
         }
         else if muted {
@@ -85,6 +92,7 @@ final class VolumeMonitor {
             case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
             case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
             case .noPatch: InfoHUD.show(text: "No patch is currently selected.")
+            case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
             case .none: InfoHUD.clear()
             }
         }

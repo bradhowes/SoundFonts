@@ -13,7 +13,9 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let askForReview: AskForReview
     public let sharedStateMonitor: SharedStateMonitor
     public let soundFonts: SoundFonts
+    public let soundFontsConfigFile: SoundFontsConfigFile
     public let favorites: Favorites
+    public let favoritesConfigFile: FavoritesConfigFile
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
     public let sampler: Sampler
@@ -33,15 +35,20 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
 
+
     public init(changer: SharedStateMonitor.StateChanger) {
 
         let sharedStateMonitor = SharedStateMonitor(changer: changer)
         self.sharedStateMonitor = sharedStateMonitor
         self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
+
         let soundFontsManager = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
         self.soundFonts = soundFontsManager
-        let favoritesManager = FavoritesManager(sharedStateMonitor: sharedStateMonitor)
+        self.soundFontsConfigFile = SoundFontsConfigFile(soundFontsManager: soundFontsManager)
+
+        let favoritesManager = FavoritesManager()
         self.favorites = favoritesManager
+        self.favoritesConfigFile = FavoritesConfigFile(favoritesManager: favoritesManager)
 
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
 
@@ -54,17 +61,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.soundFonts.subscribe(favoritesManager) { event in
             if case let .removed(_, soundFont) = event {
                 favoritesManager.removeAll(associatedWith: soundFont)
-            }
-        }
-
-        sharedStateMonitor.block = { stateChange in
-            switch stateChange {
-            case .favorites:
-                self.favorites.reload()
-                self.favoritesController.reload()
-            case .soundFonts:
-                self.soundFonts.reload()
-                self.soundFontsController.reload()
             }
         }
     }
