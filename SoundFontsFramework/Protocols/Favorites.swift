@@ -6,13 +6,13 @@ import UIKit
  The different events which are emitted by a Favorites collection when the collection changes.
 */
 public enum FavoritesEvent {
-
     case added(index: Int, favorite: Favorite)
     case selected(index: Int, favorite: Favorite)
     case beginEdit(config: FavoriteEditor.Config)
     case changed(index: Int, favorite: Favorite)
     case removed(index: Int, favorite: Favorite, bySwiping: Bool)
     case removedAll(associatedWith: SoundFont)
+    case restored
 }
 
 /**
@@ -116,11 +116,6 @@ public protocol Favorites {
      - returns: count
      */
     func count(associatedWith: SoundFont) -> Int
-
-    /**
-     Force a reload of the Favorite collection from storage.
-     */
-    func reload()
 
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

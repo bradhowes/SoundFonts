@@ -15,6 +15,8 @@ public enum SoundFontsEvent {
 
     /// Existing SoundFont instance removed from the collection
     case removed(old: Int, font: SoundFont)
+
+    case restored
 }
 
 /**

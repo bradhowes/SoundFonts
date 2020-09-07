@@ -62,7 +62,7 @@ extension MainViewController {
 
         useActivePatchKind(activePatchManager.active, playSample: false)
 
-        volumeMonitor.start(session: session)
+        volumeMonitor.start()
     }
 
     /**

@@ -118,9 +118,10 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "removed %d", index)
             favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
 
-        case .removedAll:
-            favoritesView.reloadData()
+        case .removedAll: favoritesView.reloadData()
+        case .restored: favoritesView.reloadData()
         }
+
     }
 }
 

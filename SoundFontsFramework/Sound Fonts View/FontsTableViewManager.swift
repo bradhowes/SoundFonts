@@ -173,6 +173,8 @@ extension FontsTableViewManager {
 
                                         self.selectAndShow(row: newRow)
             })
+
+        case .restored: view.reloadData()
         }
     }
 

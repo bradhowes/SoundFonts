@@ -11,8 +11,6 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
     private static let log = Logging.logger("SFLib")
 
-    private static let appArchivePath = FileManager.default.privateDocumentsDirectory
-        .appendingPathComponent("SoundFontLibrary.plist")
     private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("SoundFontLibrary.plist")
 
@@ -324,5 +322,29 @@ extension SoundFontsManager {
         } catch {
             os_log(.error, log: log, "archiving FAILED")
         }
+    }
+}
+
+extension SoundFontsManager {
+
+    internal func configurationData() throws -> Data {
+        os_log(.info, log: log, "archiving")
+        let data = try PropertyListEncoder().encode(collection)
+        os_log(.info, log: log, "done - %d", data.count)
+        return data
+    }
+
+    internal func loadConfigurationData(contents: Any) throws {
+        os_log(.info, log: log, "loading configuration")
+        if let data = contents as? Data {
+            os_log(.info, log: log, "has Data")
+            if let collection = try? PropertyListDecoder().decode(SoundFontCollection.self, from: data) {
+                os_log(.info, log: log, "properly decoded")
+                self.collection = collection
+                notify(.restored)
+                return
+            }
+        }
+        NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
     }
 }
