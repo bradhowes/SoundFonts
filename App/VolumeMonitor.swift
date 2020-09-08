@@ -2,12 +2,14 @@
 
 import AVKit
 import SoundFontsFramework
+import os
 
 /**
  Monitor volume setting on device and the "silence" or "mute" switch. When there is no apparent audio
  output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
  */
 final class VolumeMonitor {
+    private let log = Logging.logger("VolMon")
 
     enum Reason {
         case volumeLevel
@@ -20,13 +22,18 @@ final class VolumeMonitor {
     private let notePlayer: NotePlayer
     private let sampler: Sampler
 
-    private var volume: Float = 0.0 { didSet { update() } }
+    private var volume: Float = 0.0 {
+        didSet {
+            os_log(.info, log: log, "volume changed %f", volume)
+            update()
+        }
+    }
 
     private var muted = false {
         didSet {
-            if oldValue != muted {
-                update()
-            }
+            guard oldValue != muted else { return }
+            os_log(.info, log: log, "muted flag changed %d", muted)
+            update()
         }
     }
 
@@ -51,6 +58,7 @@ final class VolumeMonitor {
      - parameter session: the AVAudioSession to monitor
      */
     func start() {
+        os_log(.info, log: log, "start")
         reason = nil
         Mute.shared.notify = {muted in self.muted = muted }
         Mute.shared.isPaused = false
@@ -65,7 +73,7 @@ final class VolumeMonitor {
      Stop monitoring the output volume of an AVAudioSession
      */
     func stop() {
-        guard !Mute.shared.isPaused else { return }
+        os_log(.info, log: log, "stop")
         reason = nil
         Mute.shared.notify = nil
         Mute.shared.isPaused = true
@@ -84,25 +92,23 @@ final class VolumeMonitor {
      Show any previously-posted silence reason.
      */
     func repostNotice() {
-        if reason != .none {
-            reason = .none
-            update()
-        }
+        showReason()
     }
 }
 
 extension VolumeMonitor {
 
     private func update() {
-        let pastReason = reason
-        if AVAudioSession.sharedInstance().isOtherAudioPlaying {
-            reason = .otherAudio
-        }
-        else if volume < 0.01 {
+        if volume < 0.01 {
             reason = .volumeLevel
         }
         else if muted {
-            reason = .muteSwitch
+            if AVAudioSession.sharedInstance().isOtherAudioPlaying {
+                reason = .otherAudio
+            }
+            else {
+                reason = .muteSwitch
+            }
         }
         else if !sampler.hasPatch {
             reason = .noPatch
@@ -114,14 +120,17 @@ extension VolumeMonitor {
         keyboard.isMuted = reason != .none
         notePlayer.isMuted = reason != .none
 
-        if pastReason == .none {
-            switch reason {
-            case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
-            case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
-            case .noPatch: InfoHUD.show(text: "No patch is currently selected.")
-            case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
-            case .none: InfoHUD.clear()
-            }
+        os_log(.info, log: log, "reason: %s", reason.debugDescription)
+        showReason()
+    }
+
+    private func showReason() {
+        switch reason {
+        case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
+        case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
+        case .noPatch: InfoHUD.show(text: "No patch is currently selected.")
+        case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
+        case .none: InfoHUD.clear()
         }
     }
 }
