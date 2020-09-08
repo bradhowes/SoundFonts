@@ -53,7 +53,7 @@ public final class SoundFont: Codable {
             return .failure(.invalidSoundFont)
         }
 
-        guard !info.patches.isEmpty else {
+        guard !info.presets.isEmpty else {
             os_log(.error, log: Self.logger, "failed to parse content")
             return .failure(.invalidSoundFont)
         }
@@ -91,7 +91,7 @@ public final class SoundFont: Codable {
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
         self.kind = .installed(fileName:displayName + "_" + key.uuidString + "." + Self.soundFontExtension)
-        self.patches = Self.makePatches(soundFontInfo.patches)
+        self.patches = Self.makePatches(soundFontInfo.presets)
     }
 
     /**
@@ -107,7 +107,7 @@ public final class SoundFont: Codable {
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
         self.kind = .builtin(resource: resource)
-        self.patches = Self.makePatches(soundFontInfo.patches)
+        self.patches = Self.makePatches(soundFontInfo.presets)
     }
 
     private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [Patch] {

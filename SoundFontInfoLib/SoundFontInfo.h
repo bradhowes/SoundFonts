@@ -10,19 +10,21 @@
 @property (nonatomic, assign) int bank;
 @property (nonatomic, assign) int preset;
 
+- (id) init:(NSString*)name bank:(int)bank preset:(int)preset;
+
 @end
 
-@interface SoundFontInfo : NSObject {
-}
+@interface SoundFontInfo : NSObject
 
 @property (nonatomic, retain) NSURL* path;
 @property (nonatomic, retain) NSString* embeddedName;
-@property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* patches;
+@property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* presets;
 
 + (SoundFontInfo*)load:(NSURL*)url;
 
-/// NOTE: Only used for testing
-+ (SoundFontInfo*)parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (id) parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
+
+- (id) init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets;
 
 - (void)dump:(NSString*)path;
 

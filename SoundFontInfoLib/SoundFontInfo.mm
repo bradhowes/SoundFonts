@@ -25,15 +25,25 @@ using namespace SF2;
     return self;
 }
 
+- (id)init:(NSString*)name bank:(int)bank preset:(int)preset {
+    if (self = [super init]) {
+        self.name = name;
+        self.bank = bank;
+        self.preset = preset;
+    }
+
+    return self;
+}
+
 @end
 
 @implementation SoundFontInfo
 
-- (id)init:(NSString*)embeddedName url:(NSURL*)url patches:(NSArray*)patches {
+- (id)init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets {
     if (self = [super init]) {
         self.path = url;
-        self.embeddedName = embeddedName;
-        self.patches = patches;
+        self.embeddedName = name;
+        self.presets = presets;
     }
     return self;
 }
@@ -70,7 +80,7 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        return [[SoundFontInfo alloc] init:embeddedName url:url patches:presets];
+        return [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
     }
     catch (enum SF2::Format value) {
         return nil;

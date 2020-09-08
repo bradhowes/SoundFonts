@@ -288,7 +288,7 @@ extension SoundFontsManager {
     fileprivate static func addFromBundle(url: URL) -> SoundFont? {
         guard let info = SoundFontInfo.load(url) else { return nil }
         guard let infoName = info.embeddedName else { return nil }
-        guard !(infoName.isEmpty || info.patches.isEmpty) else { return nil }
+        guard !(infoName.isEmpty || info.presets.isEmpty) else { return nil }
         let displayName = niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName
         return SoundFont(displayName, soundFontInfo: info, resource: url)
     }

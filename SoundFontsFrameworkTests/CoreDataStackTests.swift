@@ -2,6 +2,7 @@
 
 import XCTest
 import SoundFontsFramework
+import SoundFontInfoLib
 import CoreData
 
 extension PersistentContainer {
@@ -14,11 +15,37 @@ extension PersistentContainer {
 
 class CoreDataStackTests: XCTestCase {
 
-    func testAnnounceWhenReady() {
+    let stack: CoreDataStack<PersistentContainer> = {
         let container = PersistentContainer(name: "SoundFonts")
         container.configureInMemory()
+        return CoreDataStack<PersistentContainer>(container: container)
+    }()
 
-        let stack = CoreDataStack<PersistentContainer>(container: container)
+    let sf1 = SoundFontInfo("one", url: URL(fileURLWithPath: "SF1.sf2"), presets: [
+        SoundFontInfoPreset("One", bank: 1, preset: 1),
+        SoundFontInfoPreset("Two", bank: 1, preset: 2),
+        SoundFontInfoPreset("Three", bank: 1, preset: 3),
+        SoundFontInfoPreset("Four", bank: 1, preset: 4),
+    ])!
+
+    let sf2 = SoundFontInfo("two", url: URL(fileURLWithPath: "SF2.sf2"), presets: [
+        SoundFontInfoPreset("A", bank: 1, preset: 1),
+        SoundFontInfoPreset("B", bank: 1, preset: 2),
+        SoundFontInfoPreset("C", bank: 1, preset: 3),
+        SoundFontInfoPreset("D", bank: 1, preset: 4),
+    ])!
+
+    func getSoundFonts(_ context: NSManagedObjectContext) -> [SoundFontEntity]? {
+        let fetch: NSFetchRequest<SoundFontEntity> = SoundFontEntity.fetchRequest()
+        do {
+            return try context.fetch(fetch)
+        } catch let error as NSError {
+            print("Fetch error: \(error) description: \(error.userInfo)")
+        }
+        return nil
+    }
+
+    func testAnnounceWhenReady() {
         let exp = expectation(description: "testing")
         let registration = stack.availableNotification.registerOnAny { _ in exp.fulfill() }
         waitForExpectations(timeout: 5.0) { XCTAssertNil($0) }
@@ -26,11 +53,45 @@ class CoreDataStackTests: XCTestCase {
     }
 
     func testAddSoundFont() {
+        let exp = expectation(description: "testing")
+        _ = stack.availableNotification.registerOnAny { _ in
+            let context = self.stack.newDerivedContext()
+            _ = SoundFontEntity(context: context, config: self.sf1)
+            self.stack.saveDerivedContext(context)
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 5.0) { XCTAssertNil($0) }
     }
 
+    func testRootContextIsSavedAfterCreating() {
+        let exp = expectation(description: "testing")
+        expectation(forNotification: .NSManagedObjectContextDidSave, object: stack.mainContext) { _ in return true }
+        _ = stack.availableNotification.registerOnAny { _ in
+            let context = self.stack.newDerivedContext()
+            context.perform {
+                _ = SoundFontEntity(context: context, config: self.sf1)
+                self.stack.saveDerivedContext(context)
+                exp.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 5.0) { error in XCTAssertNil(error, "Save did not occur") }
+    }
 
-//    func testPerformanceExample() {
-//        self.measure {
-//        }
-//    }
+    func FLAKY_testQuery() {
+        let exp = expectation(description: "testing")
+        _ = stack.availableNotification.registerOnAny { _ in
+            let context = self.stack.newDerivedContext()
+            _ = SoundFontEntity(context: context, config: self.sf1)
+            _ = SoundFontEntity(context: context, config: self.sf2)
+            self.stack.saveDerivedContext(context)
+            let soundFonts = self.getSoundFonts(context)
+            XCTAssertNotNil(soundFonts)
+            XCTAssertEqual(soundFonts?.count, 2)
+//            let sf1 = soundFonts![0]
+//            XCTAssertEqual(sf1.name, "one")
+//            XCTAssertEqual(sf1.presets.count, 4)
+            exp.fulfill()
+        }
+        waitForExpectations(timeout: 5.0) { XCTAssertNil($0) }
+    }
 }

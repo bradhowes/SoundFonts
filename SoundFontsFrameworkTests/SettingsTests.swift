@@ -7,15 +7,13 @@ extension SettingKeys {
     static let intSetting = SettingKey<Int>("intSetting", defaultValue: 123)
     static let stringSetting = SettingKey<String>("stringSetting", defaultValueGenerator: { "stringSetting" })
     static let timeIntervalSetting = SettingKey<TimeInterval>("timeIntervalSetting", defaultValueGenerator: { Date().timeIntervalSince1970 })
-    static let sharedIntSetting = SettingKey<Int>("sharedIntSetting", defaultValue: 123, shared: true)
+    static let sharedIntSetting = SettingKey<Int>("sharedIntSetting", defaultValue: 123)
 }
 
 class SettingsTests: XCTestCase {
 
-    static let appSettings = UserDefaults(suiteName: "com.braysoftware.SoundFonts.AppSettings")!
-    static let sharedSettings = UserDefaults(suiteName: "com.braysoftware.SoundFonts.SharedSettings")!
-
-    let Settings = SettingsManager(shared: appSettings, app: sharedSettings)
+    static let settings = UserDefaults(suiteName: "com.braysoftware.SoundFonts.SharedSettings")!
+    let Settings = SettingsManager(settings: settings)
 
     override func setUp() {
         Settings.remove(key: .intSetting)
@@ -52,7 +50,7 @@ class SettingsTests: XCTestCase {
 
     func testMigration() {
         XCTAssertEqual(123, Settings[.sharedIntSetting])
-        Self.appSettings.set(1000, forKey: SettingKeys.sharedIntSetting.userDefaultsKey)
+        Self.settings.set(1000, forKey: SettingKeys.sharedIntSetting.userDefaultsKey)
         XCTAssertEqual(1000, Settings[.sharedIntSetting])
     }
 }
