@@ -21,9 +21,16 @@ final class VolumeMonitor {
     private let sampler: Sampler
 
     private var volume: Float = 0.0 { didSet { update() } }
-    private var muted = false { didSet { update() } }
-    private var reason: Reason?
 
+    private var muted = false {
+        didSet {
+            if oldValue != muted {
+                update()
+            }
+        }
+    }
+
+    private var reason: Reason?
     private var sessionVolumeObserver: NSKeyValueObservation?
 
     /**
@@ -66,7 +73,27 @@ final class VolumeMonitor {
         sessionVolumeObserver = nil
     }
 
-    func update() {
+    /**
+     Check the current volume sttae.
+     */
+    func check() {
+        update()
+    }
+
+    /**
+     Show any previously-posted silence reason.
+     */
+    func repostNotice() {
+        if reason != .none {
+            reason = .none
+            update()
+        }
+    }
+}
+
+extension VolumeMonitor {
+
+    private func update() {
         let pastReason = reason
         if AVAudioSession.sharedInstance().isOtherAudioPlaying {
             reason = .otherAudio
@@ -95,13 +122,6 @@ final class VolumeMonitor {
             case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
             case .none: InfoHUD.clear()
             }
-        }
-    }
-
-    func repostNotice() {
-        if reason != .none {
-            reason = .none
-            update()
         }
     }
 }
