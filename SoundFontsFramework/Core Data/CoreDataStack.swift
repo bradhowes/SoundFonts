@@ -24,7 +24,7 @@ open class CoreDataStack<T: NSPersistentContainer> {
     public required init(container: T) {
         availableNotification = AvailableNotification(name: container.name + "ManagedObjectContext")
         persistentContainer = container
-        create()
+        createStack()
     }
 }
 
@@ -53,7 +53,7 @@ extension CoreDataStack {
 
 extension CoreDataStack {
 
-    private func create() {
+    private func createStack() {
         persistentContainer.loadPersistentStores { [weak self] _, _ in
             guard let self = self else { return }
             let viewContext = self.persistentContainer.viewContext

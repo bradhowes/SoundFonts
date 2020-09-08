@@ -5,12 +5,14 @@
         <attribute name="key" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="keyboardLowestNote" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" minValueString="1"/>
+        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pan" attributeType="Float" usesScalarValueType="YES"/>
         <relationship name="preset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
     </entity>
     <entity name="Preset" representedClassName="PatchEntity" syncable="YES">
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
+        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" spotlightIndexingEnabled="YES"/>
         <attribute name="originalName" attributeType="String"/>
         <attribute name="preset" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="visible" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -21,12 +23,14 @@
         <attribute name="embeddedName" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="path" attributeType="URI"/>
-        <attribute name="soundFontKey" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="resource" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="visible" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="presets" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Preset" inverseName="soundFont" inverseEntity="Preset"/>
     </entity>
     <elements>
-        <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="133"/>
-        <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="148"/>
-        <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="118"/>
+        <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="148"/>
+        <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="163"/>
+        <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="148"/>
     </elements>
 </model>
