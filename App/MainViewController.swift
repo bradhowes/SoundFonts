@@ -107,7 +107,7 @@ extension MainViewController: ControllerConfiguration {
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
-            volumeMonitor.update()
+            volumeMonitor.check()
         }
     }
 
