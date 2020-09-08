@@ -237,15 +237,15 @@
 			children = (
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
 				BDAE7C982219540A0003A353 /* UI */,
+				BD1C5D5725003DBE00374E3A /* AlertManager.swift */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BD75432E23803994004C6A4C /* Mute.swift */,
 				BD498FA123F076F500755AB9 /* NotePlayer.swift */,
-				BD1C5D5725003DBE00374E3A /* AlertManager.swift */,
 				BD0E9EE724FAC0C6009316F2 /* MIDI.swift */,
-				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
+				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
 				BD42F3572388697200E6D576 /* Resources */,
 			);
 			path = App;

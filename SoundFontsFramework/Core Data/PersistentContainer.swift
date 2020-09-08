@@ -3,8 +3,5 @@
 import CoreData
 
 public final class PersistentContainer: NSPersistentContainer {
-
-    convenience init() {
-        self.init(name: "SoundFonts")
-    }
+    convenience init() { self.init(name: "SoundFonts") }
 }

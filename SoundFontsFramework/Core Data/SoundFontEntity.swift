@@ -21,34 +21,28 @@ extension SoundFontEntity: Managed {
         return NSFetchRequest<SoundFontEntity>(entityName: "SoundFont")
     }
 
-    convenience init(context: NSManagedObjectContext, config: SoundFontInfo) {
+    public convenience init(context: NSManagedObjectContext, config: SoundFontInfo) {
         self.init(context: context)
 
-        let key = UUID()
-        soundFontKey = key
-        displayName = config.embeddedName
+        soundFontKey = UUID()
+        name = config.embeddedName
         embeddedName = config.embeddedName
-        
-        config.patches.forEach { config in
-            let patch = PatchEntity(context: context)
-            patch.bank = Int16(config.bank)
-            patch.preset = Int16(config.preset)
-            patch.embeddedName = config.name
-            patch.displayName = config.name
-            patch.alias = nil
-            addToPatches(patch)
+        path = config.path
+
+        config.presets.forEach { config in
+            addToPresets(PresetEntity(context: context, config: config))
         }
     }
 
-    @NSManaged private(set) var displayName: String
-    @NSManaged private(set) var path: URL
-    @NSManaged private(set) var soundFontKey: UUID
-    @NSManaged private(set) var embeddedName: String
-    @NSManaged private(set) var patches: NSOrderedSet
+    @NSManaged public private(set) var name: String
+    @NSManaged public private(set) var path: URL
+    @NSManaged public private(set) var soundFontKey: UUID
+    @NSManaged public private(set) var embeddedName: String
+    @NSManaged public private(set) var presets: NSOrderedSet
 }
 
 extension SoundFontEntity {
 
-    @objc(addPatchesObject:)
-    @NSManaged private func addToPatches(_ value: PatchEntity)
+    @objc(addPresetsObject:)
+    @NSManaged private func addToPresets(_ value: PresetEntity)
 }
