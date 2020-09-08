@@ -5,19 +5,10 @@ import SoundFontsFramework
 import SoundFontInfoLib
 import CoreData
 
-extension PersistentContainer {
-    public func configureInMemory() {
-        let psd = NSPersistentStoreDescription()
-        psd.type = NSInMemoryStoreType
-        self.persistentStoreDescriptions = [psd]
-    }
-}
-
 class CoreDataStackTests: XCTestCase {
 
     let stack: CoreDataStack<PersistentContainer> = {
-        let container = PersistentContainer(name: "SoundFonts")
-        container.configureInMemory()
+        let container = PersistentContainer(kind: .temporary)
         return CoreDataStack<PersistentContainer>(container: container)
     }()
 
@@ -36,13 +27,7 @@ class CoreDataStackTests: XCTestCase {
     ])!
 
     func getSoundFonts(_ context: NSManagedObjectContext) -> [SoundFontEntity]? {
-        let fetch: NSFetchRequest<SoundFontEntity> = SoundFontEntity.fetchRequest()
-        do {
-            return try context.fetch(fetch)
-        } catch let error as NSError {
-            print("Fetch error: \(error) description: \(error.userInfo)")
-        }
-        return nil
+        return try? context.fetch(SoundFontEntity.sortedFetchRequest)
     }
 
     func testAnnounceWhenReady() {
