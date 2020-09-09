@@ -36,9 +36,6 @@ extension FavoriteEntity {
         self.preset = preset
         self.gain = 0.0
         self.pan = 0.0
-
-        let fo = FavoriteOrdering.get(context: context)
-        fo.addToFavorites(self)
     }
 
     public func setName(_ value: String) { name = value }
