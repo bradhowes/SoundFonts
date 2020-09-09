@@ -29,9 +29,9 @@ extension SoundFontEntity {
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var path: URL
     @NSManaged public private(set) var embeddedName: String
-    @NSManaged public private(set) var presets: NSOrderedSet
     @NSManaged public private(set) var resource: Bool
     @NSManaged public private(set) var visible: Bool
+    @NSManaged private var children: NSOrderedSet
 
     public var kind: Kind { resource ? .builtin(path: path) : .installed(path: path) }
     public var exists: Bool { FileManager.default.fileExists(atPath: path.path) }
@@ -47,22 +47,16 @@ extension SoundFontEntity {
         path = config.path
         resource = isResource
         visible = true
-
-        config.presets.enumerated().forEach { index, config in
-            addToPresets(PresetEntity(context: context, index: index, config: config))
-        }
+        config.presets.forEach { addToChildren(PresetEntity(context: context, config: $0)) }
     }
 
-    public func makeSoundFontAndPatch(for patchIndex: Int) -> SoundFontAndPatch {
-        SoundFontAndPatch(soundFontKey: uuid, patchIndex: patchIndex)
-    }
+    public func setName(_ value: String) { name = value }
+    public func setVisible(_ value: Bool) { visible = value }
 
-    public func setName(_ name: String) {
-        self.name = name
-    }
+    public var presets: EntityCollection<PresetEntity> { EntityCollection(children) }
 }
 
 extension SoundFontEntity {
-    @objc(addPresetsObject:)
-    @NSManaged private func addToPresets(_ value: PresetEntity)
+    @objc(addChildrenObject:)
+    @NSManaged private func addToChildren(_ value: PresetEntity)
 }
