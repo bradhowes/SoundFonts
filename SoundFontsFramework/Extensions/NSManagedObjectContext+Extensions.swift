@@ -12,13 +12,17 @@ public extension NSManagedObjectContext {
 
      - returns: new managed object of type A
      */
-    func insertObject<A>() -> A where A: Managed {
+    @discardableResult func insertObject<A>(_ config: ((A) -> A) = {$0}) -> A where A: Managed {
         guard let obj = NSEntityDescription.insertNewObject(forEntityName: A.entityName, into: self) as? A else {
             fatalError("Wrong object type")
         }
-        return obj
+        return config(obj)
     }
 
+    func saveChanges() throws {
+        if hasChanges { try save() }
+    }
+    
     /**
      Attempt to save the context to storage, rollingback if the save fails.
 
@@ -26,7 +30,7 @@ public extension NSManagedObjectContext {
      */
     @discardableResult func saveOrRollback() -> Bool {
         do {
-            try save()
+            try saveChanges()
             return true
         }
         catch {
@@ -43,7 +47,7 @@ public extension NSManagedObjectContext {
     func performChanges(block: @escaping () -> Void) {
         perform {
             block()
-            _ = self.saveOrRollback()
+            self.saveOrRollback()
         }
     }
 }

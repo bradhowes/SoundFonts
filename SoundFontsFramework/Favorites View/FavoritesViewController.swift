@@ -121,7 +121,6 @@ extension FavoritesViewController: ControllerConfiguration {
         case .removedAll: favoritesView.reloadData()
         case .restored: favoritesView.reloadData()
         }
-
     }
 }
 
