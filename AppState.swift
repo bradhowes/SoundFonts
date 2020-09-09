@@ -3,11 +3,11 @@
 import Foundation
 import CoreData
 
-@objc(FavoriteOrdering)
-public final class FavoriteOrdering: NSManagedObject, Managed {
+@objc(AppState)
+public final class AppState: NSManagedObject, Managed {
 
-    static var fetchRequest: NSFetchRequest<FavoriteOrdering> {
-        let fetchRequest = NSFetchRequest<FavoriteOrdering>(entityName: entityName)
+    static var fetchRequest: FetchRequest {
+        let fetchRequest = FetchRequest(entityName: entityName)
         fetchRequest.returnsObjectsAsFaults = false
         fetchRequest.resultType = .managedObjectResultType
         return fetchRequest
@@ -15,32 +15,29 @@ public final class FavoriteOrdering: NSManagedObject, Managed {
 
     @NSManaged private var lastUpdated: Date?
     @NSManaged private var favorites: NSOrderedSet
-
+    @NSManaged private var activePreset: PresetEntity?
 }
 
-extension FavoriteOrdering {
+extension AppState {
 
-    public static func get(context: NSManagedObjectContext) -> FavoriteOrdering {
-        if let s = try? context.fetch(Self.fetchRequest), !s.isEmpty {
-            return s[0]
-        }
-
-        return FavoriteOrdering(context: context)
+    public static func get(context: NSManagedObjectContext) -> AppState {
+        Self.findOrCreate(in: context, matching: nil) {_ in }
     }
 
-    public var count: Int { favorites.count }
+    public var favoritesCount: Int { favorites.count }
 
-    public func create(context: NSManagedObjectContext, preset: PresetEntity, keyboardLowestNote: Int) -> FavoriteEntity {
+    public func createFavorite(context: NSManagedObjectContext, preset: PresetEntity,
+                               keyboardLowestNote: Int) -> FavoriteEntity {
         let fav = FavoriteEntity(context: context, preset: preset, keyboardLowestNote: keyboardLowestNote)
         addToFavorites(fav)
         return fav
     }
 
-    public func delete(favorite: FavoriteEntity) {
+    public func deleteFavorite(favorite: FavoriteEntity) {
         removeFromFavorites(favorite)
         favorite.delete()
     }
-    
+
     public var ordering: EntityCollection<FavoriteEntity> { EntityCollection(favorites) }
 
     public func move(favorite: FavoriteEntity, to newIndex: Int) {
@@ -50,9 +47,15 @@ extension FavoriteOrdering {
         mutableFavorites.moveObjects(at: IndexSet(integer: oldIndex), to: newIndex)
         self.favorites = mutableFavorites
     }
+
+    public func setActive(preset: PresetEntity) {
+        self.activePreset?.setActivated(nil)
+        self.activePreset = preset
+        preset.setActivated(self)
+    }
 }
 
-extension FavoriteOrdering {
+extension AppState {
 
     @objc(insertObject:inFavoritesAtIndex:)
     @NSManaged private func insertIntoFavorites(_ value: FavoriteEntity, at idx: Int)

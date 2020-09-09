@@ -6,15 +6,6 @@ import SoundFontInfoLib
 
 @objc(FavoriteEntity)
 public final class FavoriteEntity: NSManagedObject, Managed {
-
-    public static let defaultSortDescriptors: [NSSortDescriptor] = {
-        let sortDescriptor = NSSortDescriptor(key: "orderIndex", ascending: true)
-        return [sortDescriptor]
-    }()
-
-    public static func count(_ context: NSManagedObjectContext) throws -> Int {
-        return try context.count(for: FavoriteEntity.fetchRequest);
-    }
 }
 
 extension FavoriteEntity {
@@ -25,7 +16,7 @@ extension FavoriteEntity {
     @NSManaged public private(set) var pan: Float
     @NSManaged public private(set) var keyboardLowestNote: Int16
     @NSManaged public private(set) var preset: PresetEntity
-    @NSManaged public private(set) var orderedBy: FavoriteOrdering
+    @NSManaged public private(set) var orderedBy: AppState
 
     @discardableResult
     internal convenience init(context: NSManagedObjectContext, preset: PresetEntity, keyboardLowestNote: Int) {
