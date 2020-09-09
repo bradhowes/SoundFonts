@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 
 open class CoreDataStack<T: NSPersistentContainer> {
+
     public typealias AvailableNotification = CachedValueTypedNotification<NSManagedObjectContext>
 
     /// Notification that will be emitted when the persistent container is available to use.
@@ -31,24 +32,9 @@ open class CoreDataStack<T: NSPersistentContainer> {
 extension CoreDataStack {
 
     /**
-     Create a new managed object context that works in the background.
-
-     - returns: new NSManagedObjectContext
-     */
-    public func newDerivedContext() -> NSManagedObjectContext { persistentContainer.newBackgroundContext() }
-
-    /**
      Save any changes in main managed object context.
      */
     public func saveMainContext() { saveOneContext(mainContext) }
-
-    /**
-     Save any changes in background managed object context, and then save the main context.
-     */
-    public func saveDerivedContext(_ context: NSManagedObjectContext) {
-        if context != mainContext { saveOneContext(context) }
-        saveOneContext(mainContext)
-    }
 }
 
 extension CoreDataStack {

@@ -21,12 +21,17 @@ public extension Managed {
     /// Default sort definition
     static var defaultSortDescriptors: [NSSortDescriptor] { [] }
 
+    /// Obtain generic fetch request
+    static var fetchRequest: NSFetchRequest<Self> { NSFetchRequest<Self>(entityName: entityName) }
+
     /// Obtain a fetch request that is sorted according to defaultSortDescriptors
     static var sortedFetchRequest: NSFetchRequest<Self> {
-        let request = NSFetchRequest<Self>(entityName: entityName)
+        let request = fetchRequest
         request.sortDescriptors = defaultSortDescriptors
         return request
     }
+
+    static func count(_ context: NSManagedObjectContext) throws -> Int { try context.count(for: fetchRequest); }
 
     /**
      Obtain a fetch request that is sorted according to a given predicate
@@ -56,7 +61,7 @@ public extension Managed where Self: NSManagedObject {
      */
     static func fetch(in context: NSManagedObjectContext,
                       configurationBlock: (NSFetchRequest<Self>) -> Void = { _ in }) -> [Self] {
-        let request = NSFetchRequest<Self>(entityName: entityName)
+        let request = fetchRequest
         configurationBlock(request)
         return try! context.fetch(request)
     }
@@ -110,5 +115,9 @@ public extension Managed where Self: NSManagedObject {
             return result
         }
         return nil
+    }
+
+    func delete() {
+        managedObjectContext?.delete(self)
     }
 }

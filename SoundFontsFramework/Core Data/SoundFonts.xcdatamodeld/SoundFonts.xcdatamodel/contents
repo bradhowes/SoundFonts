@@ -5,19 +5,19 @@
         <attribute name="key" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="keyboardLowestNote" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" minValueString="1"/>
-        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="orderIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pan" attributeType="Float" usesScalarValueType="YES"/>
-        <relationship name="preset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
+        <relationship name="preset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
     </entity>
     <entity name="Preset" representedClassName="PatchEntity" syncable="YES">
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String"/>
-        <attribute name="order" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" spotlightIndexingEnabled="YES"/>
+        <attribute name="orderIndex" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" spotlightIndexingEnabled="YES"/>
         <attribute name="originalName" attributeType="String"/>
         <attribute name="preset" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="visible" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="alias" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favorite" inverseName="preset" inverseEntity="Favorite"/>
-        <relationship name="soundFont" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SoundFont" inverseName="presets" inverseEntity="SoundFont"/>
+        <relationship name="soundFont" maxCount="1" deletionRule="Nullify" destinationEntity="SoundFont" inverseName="presets" inverseEntity="SoundFont"/>
     </entity>
     <entity name="SoundFont" representedClassName="SoundFontEntity" syncable="YES">
         <attribute name="embeddedName" attributeType="String"/>
@@ -26,7 +26,7 @@
         <attribute name="resource" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="visible" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <relationship name="presets" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Preset" inverseName="soundFont" inverseEntity="Preset"/>
+        <relationship name="presets" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Preset" inverseName="soundFont" inverseEntity="Preset"/>
     </entity>
     <elements>
         <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="148"/>

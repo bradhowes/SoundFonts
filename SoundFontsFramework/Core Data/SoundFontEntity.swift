@@ -6,11 +6,16 @@ import SoundFontInfoLib
 
 @objc(SoundFontEntity)
 public final class SoundFontEntity: NSManagedObject, Managed {
+
     public static var defaultSortDescriptors: [NSSortDescriptor] = {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true,
                                               selector: #selector(NSString.localizedCaseInsensitiveCompare))
         return [sortDescriptor]
     }()
+
+    public static func count(_ context: NSManagedObjectContext) throws -> Int {
+        return try context.count(for: fetchRequest);
+    }
 }
 
 extension SoundFontEntity {
@@ -31,6 +36,7 @@ extension SoundFontEntity {
     public var kind: Kind { resource ? .builtin(path: path) : .installed(path: path) }
     public var exists: Bool { FileManager.default.fileExists(atPath: path.path) }
 
+    @discardableResult
     public convenience init(context: NSManagedObjectContext, config: SoundFontInfo,
                             isResource: Bool = false) {
         self.init(context: context)
@@ -49,6 +55,10 @@ extension SoundFontEntity {
 
     public func makeSoundFontAndPatch(for patchIndex: Int) -> SoundFontAndPatch {
         SoundFontAndPatch(soundFontKey: uuid, patchIndex: patchIndex)
+    }
+
+    public func setName(_ name: String) {
+        self.name = name
     }
 }
 

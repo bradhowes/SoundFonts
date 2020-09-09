@@ -14,8 +14,7 @@ extension FileManager {
      - throws: exceptions encountered by FileManager while locating location for temporary file
      */
     public func newTemporaryFile() throws -> URL {
-        let temporaryDirectoryURL = try self.url(for: .itemReplacementDirectory, in: .userDomainMask,
-                                                 appropriateFor: URL(fileURLWithPath: ""), create: true)
+        let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString)
         precondition(self.createFile(atPath: temporaryFileURL.path, contents: nil))
         os_log(.info, log: log, "newTemporaryFile - %@", temporaryFileURL.absoluteString)
