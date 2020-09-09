@@ -4,8 +4,9 @@ import Foundation
 import CoreData
 import SoundFontInfoLib
 
-@objc(PatchEntity)
+@objc(PresetEntity)
 public final class PresetEntity: NSManagedObject, Managed {
+
     public static let defaultSortDescriptors: [NSSortDescriptor] = {
         let sortDescriptor = NSSortDescriptor(key: "orderIndex", ascending: true)
         return [sortDescriptor]
@@ -20,7 +21,8 @@ extension PresetEntity {
     @NSManaged public private(set) var preset: Int16
     @NSManaged public private(set) var visible: Bool
     @NSManaged public private(set) var alias: FavoriteEntity?
-    @NSManaged public private(set) var soundFont: SoundFontEntity
+    @NSManaged public private(set) var parent: SoundFontEntity
+    @NSManaged public private(set) var activated: AppState?
 
     @discardableResult
     public convenience init(context: NSManagedObjectContext, config: SoundFontInfoPreset) {
@@ -35,6 +37,7 @@ extension PresetEntity {
 
     public func setName(_ value: String) { name = value }
     public func setVisibility(_ value: Bool) { visible = value }
+    public func setActivated(_ value: AppState?) { activated = value }
 
     public var hasFavorite: Bool { alias != nil }
 }

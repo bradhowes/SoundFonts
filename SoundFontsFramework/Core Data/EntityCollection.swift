@@ -1,13 +1,15 @@
 import Foundation
 
+/**
+ Light-weight wrapper around an NSOrderedSet that provides typed and indexed access to the contents.
+ */
 public struct EntityCollection<T>: RandomAccessCollection where T: Managed {
 
     private let source: NSOrderedSet
 
-    public var startIndex: Int { return 0 }
-    public var endIndex: Int { return source.count }
-
     public var count: Int { source.count }
+    public var startIndex: Int { 0 }
+    public var endIndex: Int { source.count }
 
     public init(_ source: NSOrderedSet) { self.source = source }
 

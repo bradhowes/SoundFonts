@@ -34,27 +34,27 @@ class SoundFontEntityTests: XCTestCase {
 
     func testFavoriteOrderingSingleton() {
         doWhenCoreDataReady(#function) { cdth, context in
-            let favs = FavoriteOrdering.get(context: context)
-            XCTAssertEqual(favs.count, 0)
-            let favs2 = FavoriteOrdering.get(context: context)
-            XCTAssertEqual(favs, favs2)
+            let app = AppState.get(context: context)
+            XCTAssertEqual(app.favoritesCount, 0)
+            let app2 = AppState.get(context: context)
+            XCTAssertEqual(app, app2)
 
             let sf = SoundFontEntity(context: context, config: CoreDataTestData.sf1)
-            _ = favs.create(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
-            XCTAssertEqual(favs.count, 1)
-            XCTAssertEqual(favs2.count, 1)
+            _ = app.createFavorite(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            XCTAssertEqual(app.favoritesCount, 1)
+            XCTAssertEqual(app2.favoritesCount, 1)
         }
     }
 
     func testAddFavorite() {
         doWhenCoreDataReady(#function) { cdth, context in
-            let favs = FavoriteOrdering.get(context: context)
-            XCTAssertEqual(favs.count, 0)
+            let app = AppState.get(context: context)
+            XCTAssertEqual(app.favoritesCount, 0)
 
             let sf = SoundFontEntity(context: context, config: CoreDataTestData.sf1)
             let preset = sf.presets[1]
-            let fav = favs.create(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
-            XCTAssertEqual(favs.count, 1)
+            let fav = app.createFavorite(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            XCTAssertEqual(app.favoritesCount, 1)
 
             XCTAssertEqual(fav.name, preset.name)
             XCTAssertEqual(fav.gain, 0.0)
@@ -62,38 +62,36 @@ class SoundFontEntityTests: XCTestCase {
             XCTAssertEqual(fav.keyboardLowestNote, 35)
             XCTAssertTrue(preset.hasFavorite)
             XCTAssertEqual(fav.orderedBy.ordering.count, 1)
-
-            XCTAssertEqual(favs.count, 1)
         }
     }
 
     func testFavoriteOrdering() {
         doWhenCoreDataReady(#function) { cdth, context in
-            let favs = FavoriteOrdering.get(context: context)
-            XCTAssertEqual(favs.count, 0)
+            let app = AppState.get(context: context)
+            XCTAssertEqual(app.favoritesCount, 0)
 
             let sf = SoundFontEntity(context: context, config: CoreDataTestData.sf1)
-            let f1 = favs.create(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
-            XCTAssertEqual(favs.count, 1)
+            let f1 = app.createFavorite(context: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            XCTAssertEqual(app.favoritesCount, 1)
 
             f1.setName("first")
-            let f2 = favs.create(context: context, preset: sf.presets[2], keyboardLowestNote: 36)
+            let f2 = app.createFavorite(context: context, preset: sf.presets[2], keyboardLowestNote: 36)
 
             f2.setName("second")
-            XCTAssertEqual(favs.count, 2)
+            XCTAssertEqual(app.favoritesCount, 2)
 
-            XCTAssertEqual(favs.ordering[0], f1)
-            XCTAssertEqual(favs.ordering[1], f2)
+            XCTAssertEqual(app.ordering[0], f1)
+            XCTAssertEqual(app.ordering[1], f2)
 
-            favs.move(favorite: f1, to: 1)
-            XCTAssertEqual(favs.ordering[0], f2)
-            XCTAssertEqual(favs.ordering[0].name, "second")
-            XCTAssertEqual(favs.ordering[1], f1)
-            XCTAssertEqual(favs.ordering[1].name, "first")
+            app.move(favorite: f1, to: 1)
+            XCTAssertEqual(app.ordering[0], f2)
+            XCTAssertEqual(app.ordering[0].name, "second")
+            XCTAssertEqual(app.ordering[1], f1)
+            XCTAssertEqual(app.ordering[1].name, "first")
 
-            favs.delete(favorite: f1)
+            app.deleteFavorite(favorite: f1)
 
-            XCTAssertEqual(favs.count, 1)
+            XCTAssertEqual(app.favoritesCount, 1)
         }
     }
 }
