@@ -15,7 +15,6 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         .appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }
-    private let sharedStateMonitor: SharedStateMonitor
     private var collection: SoundFontCollection
 
     /**
@@ -61,11 +60,8 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
     /**
      Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
      fails then creates a new one containing SoundFont instances embedded in the app.
-
-     - parameter sharedStateMonitor: monitor to use to signal when the collection has changed
      */
-    public init(sharedStateMonitor: SharedStateMonitor) {
-        self.sharedStateMonitor = sharedStateMonitor
+    public init() {
         self.collection = Self.restore() ?? Self.create()
         super.init()
         save()
@@ -313,7 +309,6 @@ extension SoundFontsManager {
                 do {
                     os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
                     try data.write(to: Self.sharedArchivePath, options: [.atomicWrite])
-                    self.sharedStateMonitor.notifySoundFontsChanged()
                     os_log(.info, log: log, "saving OK")
                 } catch {
                     os_log(.error, log: log, "saving FAILED")

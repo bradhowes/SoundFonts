@@ -14,7 +14,7 @@ public class SoundFontsAUViewController: AUViewController {
     override public func viewDidLoad() {
         os_log(.error, log: log, "viewDidLoad")
         super.viewDidLoad()
-        components = Components<SoundFontsAUViewController>(changer: .audioUnit)
+        components = Components<SoundFontsAUViewController>(inApp: false)
         components.setMainViewController(self)
     }
 }
