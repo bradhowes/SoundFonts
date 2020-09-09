@@ -11,7 +11,6 @@ import UIKit
 public final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
     public let askForReview: AskForReview
-    public let sharedStateMonitor: SharedStateMonitor
     public let soundFonts: SoundFonts
     public let soundFontsConfigFile: SoundFontsConfigFile
     public let favorites: Favorites
@@ -36,13 +35,11 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var guideManager: GuideManager { guideController }
 
 
-    public init(changer: SharedStateMonitor.StateChanger) {
+    public init(inApp: Bool) {
 
-        let sharedStateMonitor = SharedStateMonitor(changer: changer)
-        self.sharedStateMonitor = sharedStateMonitor
-        self.askForReview = AskForReview(isMain: sharedStateMonitor.isMain)
+        self.askForReview = AskForReview(isMain: inApp)
 
-        let soundFontsManager = SoundFontsManager(sharedStateMonitor: sharedStateMonitor)
+        let soundFontsManager = SoundFontsManager()
         self.soundFonts = soundFontsManager
         self.soundFontsConfigFile = SoundFontsConfigFile(soundFontsManager: soundFontsManager)
 
@@ -55,8 +52,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.activePatchManager.validate(soundFonts: soundFontsManager, favorites: favoritesManager)
         self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
 
-        self.sampler = Sampler(mode: sharedStateMonitor.isMain ? .standalone : .audiounit,
-                               activePatchManager: activePatchManager)
+        self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager)
 
         self.soundFonts.subscribe(favoritesManager) { event in
             if case let .removed(_, soundFont) = event {

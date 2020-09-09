@@ -11,7 +11,7 @@ import os
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
-    private lazy var components = Components<MainViewController>(changer: .application)
+    private lazy var components = Components<MainViewController>(inApp: true)
     private var observers: [NSObjectProtocol] = []
 
     var window: UIWindow?
