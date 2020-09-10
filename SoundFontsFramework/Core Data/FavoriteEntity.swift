@@ -29,6 +29,17 @@ extension FavoriteEntity {
         self.pan = 0.0
     }
 
+    @discardableResult
+    internal convenience init(context: NSManagedObjectContext, import favorite: Favorite, preset: PresetEntity) {
+        self.init(context: context)
+        self.key = favorite.key
+        self.name = favorite.name
+        self.keyboardLowestNote = Int16(favorite.keyboardLowestNote?.midiNoteValue ?? 64)
+        self.preset = preset
+        self.gain = favorite.gain
+        self.pan = favorite.pan
+    }
+
     public func setName(_ value: String) { name = value }
     public func setGain(_ value: Float) { gain = value }
     public func setPan(_ value: Float) { pan = value }

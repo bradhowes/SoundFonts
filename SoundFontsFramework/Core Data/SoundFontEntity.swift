@@ -50,6 +50,25 @@ extension SoundFontEntity {
         config.presets.forEach { addToChildren(PresetEntity(context: context, config: $0)) }
     }
 
+    @discardableResult
+    public convenience init(context: NSManagedObjectContext, import soundFont: SoundFont) {
+        self.init(context: context)
+
+        uuid = soundFont.key
+        name = soundFont.displayName
+        embeddedName = soundFont.embeddedName
+        path = soundFont.fileURL
+        switch soundFont.kind {
+        case .builtin: resource = true
+        case .installed: resource = false
+        }
+
+        visible = true
+
+        soundFont.patches.forEach { addToChildren(PresetEntity(context: context, import: $0)) }
+    }
+
+
     public func setName(_ value: String) { name = value }
     public func setVisible(_ value: Bool) { visible = value }
 

@@ -35,7 +35,10 @@ extension FileManager {
 
     /// Location of shared documents between app and extension
     public var sharedDocumentsDirectory: URL {
-        let url = self.containerURL(forSecurityApplicationGroupIdentifier: "group.com.braysoftware.SoundFontsShare")!
+        guard let url = self.containerURL(forSecurityApplicationGroupIdentifier: "group.com.braysoftware.SoundFontsShare") else {
+            os_log(.error, log: log, "unable to obtain container URL for 'group.com.braysoftware.SoundFontsShare'")
+            return localDocumentsDirectory
+        }
         if !self.fileExists(atPath: url.path) {
             DispatchQueue.global(qos: .userInitiated).async {
                 try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)

@@ -20,31 +20,10 @@ public enum SoundFontKind {
     /// The URL that points to the data file that defnes the SoundFont.
     public var fileURL: URL {
         switch self {
-
         case .builtin(let resource):
             return resource
-
-        case .installed(let name):
-            os_log(.info, log: Self.log, "checking shared - %s", name)
-            let shared = FileManager.default.sharedDocumentsDirectory.appendingPathComponent(name)
-            if FileManager.default.fileExists(atPath: shared.path) {
-                os_log(.info, log: Self.log, "found in shared")
-                return shared
-            }
-
-            let local = FileManager.default.localDocumentsDirectory.appendingPathComponent(name)
-            os_log(.info, log: Self.log, "using local")
-
-            do {
-                os_log(.info, log: Self.log, "copying to shared")
-                try FileManager.default.copyItem(at: local, to: shared)
-                os_log(.info, log: Self.log, "removing local file")
-                try FileManager.default.removeItem(at: local)
-            } catch let error as NSError {
-                os_log(.error, log: Self.log, "%s", error.localizedDescription)
-            }
-
-            return shared
+        case .installed(let fileName):
+            return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(fileName)
         }
     }
 

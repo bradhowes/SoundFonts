@@ -6,36 +6,48 @@ import XCTest
 
 class SoundFontLibraryPListTest: XCTestCase {
 
-    func testDecodingSoundFontLibrary() {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "SoundFontLibrary", withExtension: "plist")!
-        let data = try! Data(contentsOf: url)
-        let collection = try! PropertyListDecoder().decode(SoundFontCollection.self, from: data)
-        XCTAssertEqual(collection.count, 4)
+    func testDecodingLegacyConfigurationFiles() {
+        let soundFonts: SoundFontCollection = {
+            let bundle = Bundle(for: type(of: self))
+            let url = bundle.url(forResource: "SoundFontLibrary", withExtension: "plist")!
+            let data = try! Data(contentsOf: url)
+            return try! PropertyListDecoder().decode(SoundFontCollection.self, from: data)
+        }()
 
-        let soundFont = collection.getBy(index: 0)
-        XCTAssertEqual(soundFont.displayName, "Fluid R3")
-        XCTAssertEqual(soundFont.embeddedName, "Fluid R3 GM")
-        XCTAssertEqual(soundFont.patches.count, 189)
-        XCTAssertEqual(soundFont.key.uuidString, "5F0017BD-33E2-45DD-B4C6-57C5C4466F4D")
+        XCTAssertEqual(soundFonts.count, 9)
+
+        let soundFont = soundFonts.getBy(index: 0)
+        XCTAssertEqual(soundFont.displayName, "Dirtelec")
+        XCTAssertEqual(soundFont.embeddedName, "User Define Bank")
+        XCTAssertEqual(soundFont.patches.count, 1)
+        XCTAssertEqual(soundFont.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
 
         let patch = soundFont.patches[0]
-        XCTAssertEqual(patch.name, "Yamaha Grand Piano")
+        XCTAssertEqual(patch.name, "Dirty Elec Organ")
         XCTAssertEqual(patch.soundFontIndex, 0)
         XCTAssertEqual(patch.bank, 0)
         XCTAssertEqual(patch.program, 0)
-    }
 
-    func testDecodingFavorites() {
-        let bundle = Bundle(for: type(of: self))
-        let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
-        let data = try! Data(contentsOf: url)
-        let collection = try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
-        XCTAssertEqual(collection.count, 5)
+        let favorites: FavoriteCollection = {
+            let bundle = Bundle(for: type(of: self))
+            let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
+            let data = try! Data(contentsOf: url)
+            return try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
+        }()
 
-        let favorite = collection.getBy(index: 0)
-        XCTAssertEqual(favorite.name, "Nice Pianopppp")
+        XCTAssertEqual(favorites.count, 6)
+
+        let favorite = favorites.getBy(index: 0)
+        XCTAssertEqual(favorite.name, "Synclavier")
         XCTAssertEqual(favorite.gain, 0.0)
+        XCTAssertEqual(favorite.pan, -1.0)
         XCTAssertEqual(favorite.soundFontAndPatch.patchIndex, 0)
+
+        let sf = soundFonts.getBy(key: favorite.soundFontAndPatch.soundFontKey)
+        XCTAssertNotNil(sf)
+        XCTAssertEqual(sf!.displayName, "Evil synclavier")
+        let p = sf?.patches[favorite.soundFontAndPatch.patchIndex]
+        XCTAssertNotNil(p)
+        XCTAssertEqual(p!.name, "Evil Synclavier")
     }
 }
