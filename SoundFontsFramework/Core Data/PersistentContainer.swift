@@ -13,6 +13,11 @@ open class PersistentContainer: NSPersistentContainer {
     private static let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!
     private static let mom = NSManagedObjectModel(contentsOf: momUrl)!
 
+    /// Place the DB into the shared documents directory so both the app and the AUV3 extention can see it.
+    override open class func defaultDirectoryURL() -> URL {
+        FileManager.default.sharedDocumentsDirectory
+    }
+
     public init() {
         super.init(name: Self.modelName, managedObjectModel: Self.mom)
     }

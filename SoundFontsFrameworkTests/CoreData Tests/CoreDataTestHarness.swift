@@ -22,17 +22,24 @@ public extension XCTestCase {
 
 public class TemporaryPersistentContainer: PersistentContainer {
 
-    /// Just to be safe, store any files in a unique temporary directory
+    public enum Kind {
+        case on_disk
+        case in_memory
+    }
+
+    /// Just to be safe, store any files in a unique temporary directory. The can be per-test if configured correctly.
     override public static func defaultDirectoryURL() -> URL {
         URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
             .appendingPathComponent(UUID().uuidString, isDirectory: true)
     }
 
-    override public init() {
+    public init(_ kind: Kind = .in_memory) {
         super.init()
-        let psd = NSPersistentStoreDescription()
-        psd.type = NSInMemoryStoreType
-        persistentStoreDescriptions = [psd]
+        if kind == .in_memory {
+            let psd = NSPersistentStoreDescription()
+            psd.type = NSInMemoryStoreType
+            persistentStoreDescriptions = [psd]
+        }
     }
 }
 
