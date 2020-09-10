@@ -59,7 +59,10 @@ public final class SoundFont: Codable {
         }
 
         let (fileName, uuid) = url.lastPathComponent.stripEmbeddedUUID()
-        let displayName = fileName.split(separator: ".")[0].trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Strip off the extension to make a display name. We set the embedded name if it is empty, but we do not use
+        // the embedded name as it is often garbage. We do show it in the SoundFont editor sheet.
+        let displayName = String(fileName[fileName.startIndex..<(fileName.lastIndex(of: ".") ?? fileName.endIndex)])
         if info.embeddedName.isEmpty {
             info.embeddedName = displayName
         }
