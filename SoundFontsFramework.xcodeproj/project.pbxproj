@@ -140,6 +140,7 @@
 		BDD913F42508DEEE0068E3CE /* DispatchQueue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD913F32508DEEE0068E3CE /* DispatchQueue+Extensions.swift */; };
 		BDD913F72508F4AD0068E3CE /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD913F52508F4AD0068E3CE /* AppState.swift */; };
 		BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD913FD2508FCC50068E3CE /* EntityCollection.swift */; };
+		BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD91411250983F60068E3CE /* PlistTranslation.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA424324708FAA005E2886 /* VSSlider.swift */; };
@@ -326,6 +327,7 @@
 		BDD913F32508DEEE0068E3CE /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		BDD913F52508F4AD0068E3CE /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = SOURCE_ROOT; };
 		BDD913FD2508FCC50068E3CE /* EntityCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityCollection.swift; sourceTree = "<group>"; };
+		BDD91411250983F60068E3CE /* PlistTranslation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistTranslation.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
 		BDDA424324708FAA005E2886 /* VSSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSSlider.swift; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 				BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */,
 				BD8A317E2503B5400077320F /* CoreDataStackTests.swift */,
 				BDC35B5625081B66009CEFAF /* SoundFontEntityTests.swift */,
+				BDD91411250983F60068E3CE /* PlistTranslation.swift */,
 			);
 			path = "CoreData Tests";
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				BDC35B5725081B66009CEFAF /* SoundFontEntityTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
+				BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */,
 				BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,

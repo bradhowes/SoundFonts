@@ -35,6 +35,17 @@ extension PresetEntity {
         self.alias = nil
     }
 
+    @discardableResult
+    public convenience init(context: NSManagedObjectContext, import patch: Patch) {
+        self.init(context: context)
+        self.name = patch.name
+        self.embeddedName = patch.name
+        self.bank = Int16(patch.bank)
+        self.preset = Int16(patch.program)
+        self.visible = true
+        self.alias = nil
+    }
+
     public func setName(_ value: String) { name = value }
     public func setVisibility(_ value: Bool) { visible = value }
     public func setActivated(_ value: AppState?) { activated = value }
