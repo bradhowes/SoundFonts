@@ -1,9 +1,10 @@
 import Foundation
+import CoreData
 
 /**
  Light-weight wrapper around an NSOrderedSet that provides typed and indexed access to the contents.
  */
-public struct EntityCollection<T>: RandomAccessCollection where T: Managed {
+public struct EntityCollection<T>: RandomAccessCollection where T: NSManagedObject {
 
     private let source: NSOrderedSet
 

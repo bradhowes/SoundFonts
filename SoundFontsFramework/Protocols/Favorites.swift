@@ -6,11 +6,11 @@ import UIKit
  The different events which are emitted by a Favorites collection when the collection changes.
 */
 public enum FavoritesEvent {
-    case added(index: Int, favorite: Favorite)
-    case selected(index: Int, favorite: Favorite)
+    case added(index: Int, favorite: LegacyFavorite)
+    case selected(index: Int, favorite: LegacyFavorite)
     case beginEdit(config: FavoriteEditor.Config)
-    case changed(index: Int, favorite: Favorite)
-    case removed(index: Int, favorite: Favorite, bySwiping: Bool)
+    case changed(index: Int, favorite: LegacyFavorite)
+    case removed(index: Int, favorite: LegacyFavorite, bySwiping: Bool)
     case removedAll(associatedWith: SoundFont)
     case restored
 }
@@ -37,7 +37,7 @@ public protocol Favorites {
      - parameter favorite: what to look for
      - returns: the position of the Favorite
      */
-    func index(of favorite: Favorite) -> Int
+    func index(of favorite: LegacyFavorite) -> Int
 
     /**
      Obtain the Favorite at the given index
@@ -45,7 +45,7 @@ public protocol Favorites {
      - parameter index: the location to get
      - returns: Favorite at the index
      */
-    func getBy(index: Int) -> Favorite
+    func getBy(index: Int) -> LegacyFavorite
 
     /**
      Get the Favorite associated with the given SoundFontPatch
@@ -53,7 +53,7 @@ public protocol Favorites {
      - parameter soundFontAndPatch: what to look for
      - returns: optional Favorite instance
      */
-    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite?
+    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite?
 
     /**
      Create a new Favorite instance with the given parameters
@@ -77,7 +77,7 @@ public protocol Favorites {
      - parameter index: the location where the Favorite should be
      - parameter with: the Favorite instance to use
      */
-    func update(index: Int, with: Favorite)
+    func update(index: Int, with: LegacyFavorite)
 
     /**
      Move a Favorite from one place in the collection to another.

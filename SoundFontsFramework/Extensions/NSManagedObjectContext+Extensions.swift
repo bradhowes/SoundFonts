@@ -40,7 +40,7 @@ public extension NSManagedObjectContext {
     }
 
     /**
-     Execute a block and then try to save the context.
+     Execute a block asynchronously and then try to save the context.
 
      - parameter block: block to execute
      */
@@ -54,19 +54,48 @@ public extension NSManagedObjectContext {
 
 public extension NSManagedObjectContext {
 
-    /**
-     Receive notifications when the context is saved.
+    private var NC: NotificationCenter { NotificationCenter.default }
 
-     - parameter handler: the block to execute after a save. It will receive a ContextDidSaveNotification that
+    /**
+     Regiser to receive notifications when this context has been saved.
+
+     - parameter block: the block to execute after a save. It will receive a ContextNotification that
        identifies the objects that were added, updated, and/or deleted since the last save event.
      - returns: reference to the observation
      */
-    func addContextDidSaveNotification<T: NSManagedObject>(_ handler: @escaping (ContextDidSaveNotification<T>) -> Void)
-        -> NSObjectProtocol {
-        return NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave, object: self,
-                                                      queue: nil) { notification in
-            let wrapped = ContextDidSaveNotification<T>(notification: notification)
-            handler(wrapped)
+    func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
+        NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) { notification in
+            block(ContextNotification<T>(notification: notification))
         }
+    }
+
+    /**
+     Regiser to receive notifications when this context is processing changes but before they have been saved.
+
+     - parameter block: the block to execute after a save. It will receive a ContextNotification that
+     identifies the objects that were added, updated, and/or deleted since the last save event.
+     - returns: reference to the observation
+     */
+    func notifyOnChanges<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
+        NC.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil) { notification in
+            block(ContextNotification<T>(notification: notification))
+        }
+    }
+}
+
+private let SingleObjectCacheKey = "SingleObjectCache"
+private typealias SingleObjectCache = [String:NSManagedObject]
+
+public extension NSManagedObjectContext {
+
+    func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
+        var cache = userInfo[SingleObjectCacheKey] as? SingleObjectCache ?? [:]
+        cache[key] = object
+        userInfo[SingleObjectCacheKey] = cache
+    }
+
+    func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
+        guard let cache = userInfo[SingleObjectCacheKey] as? SingleObjectCache else { return nil }
+        return cache[key] as? T
     }
 }

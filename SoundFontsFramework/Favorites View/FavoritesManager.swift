@@ -7,29 +7,29 @@ import os
  Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
  restored when the app relaunches.
  */
-public final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
+public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private static let log = Logging.logger("FavMgr")
 
     static public var loadError: Notification.Name?
 
     private var log: OSLog { Self.log }
-    private var collection: FavoriteCollection
+    private var collection: LegacyFavoriteCollection
 
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
     public init() {
-        self.collection = FavoriteCollection()
+        self.collection = LegacyFavoriteCollection()
         super.init()
     }
 
-    public func validate(_ favorite: Favorite) -> Bool { collection.validate(favorite) }
+    public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
 }
 
 // MARK: - Favorites protocol
 
-extension FavoritesManager: Favorites {
+extension LegacyFavoritesManager: Favorites {
 
     public var count: Int { collection.count }
 
@@ -37,21 +37,21 @@ extension FavoritesManager: Favorites {
         collection.isFavored(soundFontAndPatch: soundFontAndPatch)
     }
 
-    public func index(of favorite: Favorite) -> Int { collection.index(of: favorite) }
+    public func index(of favorite: LegacyFavorite) -> Int { collection.index(of: favorite) }
 
-    public func getBy(index: Int) -> Favorite { collection.getBy(index: index) }
+    public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
-    public func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite? {
+    public func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
         collection.getBy(soundFontAndPatch: soundFontAndPatch)
     }
 
     public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
-        let favorite = Favorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
+        let favorite = LegacyFavorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
         notify(.added(index: count - 1, favorite: favorite))
     }
 
-    public func update(index: Int, with favorite: Favorite) {
+    public func update(index: Int, with favorite: LegacyFavorite) {
         collection.replace(index: index, with: favorite)
         notify(.changed(index: index, favorite: favorite))
     }
@@ -83,7 +83,7 @@ extension FavoritesManager: Favorites {
     }
 }
 
-extension FavoritesManager {
+extension LegacyFavoritesManager {
 
     internal func configurationData() throws -> Data {
         os_log(.info, log: log, "archiving")
@@ -96,7 +96,7 @@ extension FavoritesManager {
         os_log(.info, log: log, "loading configuration")
         if let data = contents as? Data {
             os_log(.info, log: log, "has Data")
-            if let collection = try? PropertyListDecoder().decode(FavoriteCollection.self, from: data) {
+            if let collection = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) {
                 os_log(.info, log: log, "properly decoded")
                 self.collection = collection
                 notify(.restored)

@@ -250,7 +250,7 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func getFavorite(from event: FavoritesEvent) -> Favorite? {
+    private func getFavorite(from event: FavoritesEvent) -> LegacyFavorite? {
         switch event {
         case let .added(index: _, favorite: favorite): return favorite
         case let .changed(index: _, favorite: favorite): return favorite
@@ -462,7 +462,7 @@ extension PatchesTableViewManager {
     }
 
     @discardableResult
-    private func update(with favorite: Favorite) -> IndexPath? {
+    private func update(with favorite: LegacyFavorite) -> IndexPath? {
         guard let indexPath = getIndexPath(for: favorite.soundFontAndPatch) else { return nil }
         update(at: indexPath, with: favorite)
         return indexPath
@@ -474,7 +474,7 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func update(at indexPath: IndexPath, with favorite: Favorite) {
+    private func update(at indexPath: IndexPath, with favorite: LegacyFavorite) {
         if let cell: TableCell = view.cellForRow(at: indexPath) {
             update(cell: cell, at: indexPath, with: favorite)
         }
@@ -502,7 +502,7 @@ extension PatchesTableViewManager {
     }
 
     @discardableResult
-    private func update(cell: TableCell, at indexPath: IndexPath, with favorite: Favorite) -> TableCell {
+    private func update(cell: TableCell, at indexPath: IndexPath, with favorite: LegacyFavorite) -> TableCell {
         let active = isActive(soundFontAndPatch: favorite.soundFontAndPatch)
         cell.updateForPatch(name: favorite.name, isActive: active, isFavorite: true)
         return cell

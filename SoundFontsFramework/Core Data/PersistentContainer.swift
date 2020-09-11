@@ -8,18 +8,16 @@ import CoreData
  */
 open class PersistentContainer: NSPersistentContainer {
 
-    private static let modelName: String = "SoundFonts"
-    private static let bundle = Bundle(for: PersistentContainer.self)
-    private static let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!
-    private static let mom = NSManagedObjectModel(contentsOf: momUrl)!
-
     /// Place the DB into the shared documents directory so both the app and the AUV3 extention can see it.
     override open class func defaultDirectoryURL() -> URL {
         FileManager.default.sharedDocumentsDirectory
     }
 
-    public init() {
-        super.init(name: Self.modelName, managedObjectModel: Self.mom)
+    public init(modelName: String) {
+        let bundle = Bundle(for: PersistentContainer.self)
+        let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!
+        let mom = NSManagedObjectModel(contentsOf: momUrl)!
+        super.init(name: modelName, managedObjectModel: mom)
     }
 }
 
@@ -33,35 +31,6 @@ public extension PersistentContainer {
 
     func removeStores() throws {
         try persistentStoreCoordinator.removeStores()
-    }
-
-    func loadPersistentStoresSync() throws {
-        persistentStoreDescriptions.forEach { $0.shouldAddStoreAsynchronously = false }
-
-        var errors: [LoadStoreError] = []
-        loadPersistentStores { desc, error in
-            error.map {errors.append(LoadStoreError(desc, $0))}
-        }
-        guard errors.isEmpty else { throw CodePointInfo(errors) }
-    }
-
-    func loadPersistentStoresAsync(_ block: @escaping (Error?) -> Void) {
-        let dg = DispatchGroup()
-        persistentStoreDescriptions.forEach {
-            dg.enter()
-            $0.shouldAddStoreAsynchronously = true
-        }
-
-        var errors: [LoadStoreError] = []
-        loadPersistentStores { desc, error in
-            error.map {errors.append(LoadStoreError(desc, $0))}
-            dg.leave()
-        }
-
-        dg.notify(queue: .main) {
-            let error = errors.isEmpty ? nil : CodePointInfo(errors)
-            block(error)
-        }
     }
 }
 

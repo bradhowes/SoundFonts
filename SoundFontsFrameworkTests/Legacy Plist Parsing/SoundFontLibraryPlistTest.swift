@@ -28,11 +28,11 @@ class SoundFontLibraryPListTest: XCTestCase {
         XCTAssertEqual(patch.bank, 0)
         XCTAssertEqual(patch.program, 0)
 
-        let favorites: FavoriteCollection = {
+        let favorites: LegacyFavoriteCollection = {
             let bundle = Bundle(for: type(of: self))
             let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
             let data = try! Data(contentsOf: url)
-            return try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
+            return try! PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data)
         }()
 
         XCTAssertEqual(favorites.count, 6)

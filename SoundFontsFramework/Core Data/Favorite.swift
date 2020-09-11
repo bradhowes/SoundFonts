@@ -4,11 +4,11 @@ import Foundation
 import CoreData
 import SoundFontInfoLib
 
-@objc(FavoriteEntity)
-public final class FavoriteEntity: NSManagedObject, Managed {
+@objc(Favorite)
+public final class Favorite: NSManagedObject, Managed {
 }
 
-extension FavoriteEntity {
+extension Favorite {
 
     @NSManaged public private(set) var key: UUID
     @NSManaged public private(set) var name: String
@@ -30,14 +30,15 @@ extension FavoriteEntity {
     }
 
     @discardableResult
-    internal convenience init(context: NSManagedObjectContext, import favorite: Favorite, preset: PresetEntity) {
+    internal convenience init(context: NSManagedObjectContext, import legacyFavorite: LegacyFavorite,
+                              preset: PresetEntity) {
         self.init(context: context)
-        self.key = favorite.key
-        self.name = favorite.name
-        self.keyboardLowestNote = Int16(favorite.keyboardLowestNote?.midiNoteValue ?? 64)
+        self.key = legacyFavorite.key
+        self.name = legacyFavorite.name
+        self.keyboardLowestNote = Int16(legacyFavorite.keyboardLowestNote?.midiNoteValue ?? 64)
         self.preset = preset
-        self.gain = favorite.gain
-        self.pan = favorite.pan
+        self.gain = legacyFavorite.gain
+        self.pan = legacyFavorite.pan
     }
 
     public func setName(_ value: String) { name = value }

@@ -297,18 +297,18 @@ extension FavoritesViewController: FavoritesViewManager {
 
 extension FavoritesViewController {
 
-    private func indexPath(of favorite: Favorite) -> IndexPath {
+    private func indexPath(of favorite: LegacyFavorite) -> IndexPath {
         IndexPath(row: favorites.index(of: favorite), section: 0)
     }
 
-    private func updateCell(with favorite: Favorite) {
+    private func updateCell(with favorite: LegacyFavorite) {
         if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath(of: favorite)) {
             update(cell: cell, with: favorite)
         }
     }
 
     @discardableResult
-    private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
+    private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
         cell.update(favoriteName: favorite.name,
                     isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
         return cell

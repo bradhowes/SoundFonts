@@ -17,11 +17,11 @@ class PlistTranslationTests: XCTestCase {
             return try! PropertyListDecoder().decode(SoundFontCollection.self, from: data)
         }()
 
-        let oldFavorites: FavoriteCollection = {
+        let oldFavorites: LegacyFavoriteCollection = {
             let bundle = Bundle(for: type(of: self))
             let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
             let data = try! Data(contentsOf: url)
-            return try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
+            return try! PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data)
         }()
 
         doWhenCoreDataReady(#function) { cdth, context in
@@ -55,7 +55,7 @@ class PlistTranslationTests: XCTestCase {
                 }
             }
 
-            var favorites = [FavoriteEntity]()
+            var favorites = [Favorite]()
             for index in 0..<oldFavorites.count {
                 let oldFave = oldFavorites.getBy(index: index)
                 let soundFontKey = oldFave.soundFontAndPatch.soundFontKey
