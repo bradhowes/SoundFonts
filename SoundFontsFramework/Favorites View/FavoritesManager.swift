@@ -73,12 +73,12 @@ extension LegacyFavoritesManager: Favorites {
         notify(.removed(index: index, favorite: favorite, bySwiping: bySwiping))
     }
 
-    public func removeAll(associatedWith soundFont: SoundFont) {
+    public func removeAll(associatedWith soundFont: LegacySoundFont) {
         collection.removeAll(associatedWith: soundFont)
         notify(.removedAll(associatedWith: soundFont))
     }
 
-    public func count(associatedWith soundFont: SoundFont) -> Int {
+    public func count(associatedWith soundFont: LegacySoundFont) -> Int {
         collection.count(associatedWith: soundFont)
     }
 }

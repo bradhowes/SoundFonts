@@ -39,7 +39,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
         self.askForReview = AskForReview(isMain: inApp)
 
-        let soundFontsManager = SoundFontsManager()
+        let soundFontsManager = LegacySoundFontsManager()
         self.soundFonts = soundFontsManager
         self.soundFontsConfigFile = SoundFontsConfigFile(soundFontsManager: soundFontsManager)
 

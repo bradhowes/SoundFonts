@@ -7,6 +7,6 @@ import Foundation
  and what a `favorite` item points to.
  */
 public struct SoundFontAndPatch: Codable, Hashable {
-    public let soundFontKey: SoundFont.Key
+    public let soundFontKey: LegacySoundFont.Key
     public let patchIndex: Int
 }

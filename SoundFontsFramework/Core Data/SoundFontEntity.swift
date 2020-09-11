@@ -51,7 +51,7 @@ extension SoundFontEntity {
     }
 
     @discardableResult
-    public convenience init(context: NSManagedObjectContext, import soundFont: SoundFont) {
+    public convenience init(context: NSManagedObjectContext, import soundFont: LegacySoundFont) {
         self.init(context: context)
 
         uuid = soundFont.key

@@ -11,7 +11,7 @@ public enum FavoritesEvent {
     case beginEdit(config: FavoriteEditor.Config)
     case changed(index: Int, favorite: LegacyFavorite)
     case removed(index: Int, favorite: LegacyFavorite, bySwiping: Bool)
-    case removedAll(associatedWith: SoundFont)
+    case removedAll(associatedWith: LegacySoundFont)
     case restored
 }
 
@@ -107,7 +107,7 @@ public protocol Favorites {
 
      - parameter associatedWith: the SoundFont to look for
      */
-    func removeAll(associatedWith: SoundFont)
+    func removeAll(associatedWith: LegacySoundFont)
 
     /**
      Obtain a count of the number of Favorite instances associated with the given SoundFont.
@@ -115,7 +115,7 @@ public protocol Favorites {
      - parameter associatedWith: what to look for
      - returns: count
      */
-    func count(associatedWith: SoundFont) -> Int
+    func count(associatedWith: LegacySoundFont) -> Int
 
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

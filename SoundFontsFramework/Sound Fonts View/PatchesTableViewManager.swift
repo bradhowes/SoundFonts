@@ -21,7 +21,7 @@ final class PatchesTableViewManager: NSObject {
     private let keyboard: Keyboard?
     private let sampler: Sampler
 
-    private var showingSoundFont: SoundFont?
+    private var showingSoundFont: LegacySoundFont?
     private var patches: [LegacyPatch] { showingSoundFont?.patches ?? [] }
     private var filtered = [LegacyPatch]()
 

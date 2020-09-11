@@ -7,7 +7,7 @@ import SoundFontInfoLib
 /**
  Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
  */
-public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
+public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
     private static let log = Logging.logger("SFLib")
 
@@ -15,21 +15,21 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         .appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }
-    private var collection: SoundFontCollection
+    private var collection: LegacySoundFontCollection
 
     /**
      Attempt to restore the last saved collection.
 
      - returns: restored SoundFont collection or nil if unable to do so
      */
-    private static func restore() -> SoundFontCollection? {
+    private static func restore() -> LegacySoundFontCollection? {
         os_log(.info, log: log, "attempting to restore collection")
         // return nil
         let url = Self.sharedArchivePath
         os_log(.info, log: log, "trying to read from '%s'", url.path)
         if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
             os_log(.info, log: log, "restoring from '%s'", url.path)
-            if let collection = try? PropertyListDecoder().decode(SoundFontCollection.self, from: data) {
+            if let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) {
                 os_log(.info, log: log, "restored")
                 return collection
             }
@@ -45,15 +45,15 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
      - returns: new SoundFontCollection
      */
-    private static func create() -> SoundFontCollection {
+    private static func create() -> LegacySoundFontCollection {
         os_log(.info, log: log, "creating new collection")
-        let bundle = Bundle(for: SoundFontsManager.self)
+        let bundle = Bundle(for: LegacySoundFontsManager.self)
         let bundleUrls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
         if bundleUrls.count == 0 { fatalError("no SF2 files in bundle") }
         let fileNames = (try? FileManager.default.contentsOfDirectory(atPath:
             FileManager.default.sharedDocumentsDirectory.path)) ?? [String]()
         let fileUrls = fileNames.map { FileManager.default.sharedDocumentsDirectory.appendingPathComponent($0) }
-        return SoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) +
+        return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) +
             (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
     }
 
@@ -83,7 +83,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
         var found = 0
         for path in contents {
             let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
-            guard src.pathExtension == SoundFont.soundFontExtension else { continue }
+            guard src.pathExtension == LegacySoundFont.soundFontExtension else { continue }
             let (stripped, uuid) = path.stripEmbeddedUUID()
             if let uuid = uuid, collection.getBy(key:uuid) != nil { continue }
             let dst = fm.localDocumentsDirectory.appendingPathComponent(stripped)
@@ -119,19 +119,19 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
 // MARK: - SoundFonts Protocol
 
-extension SoundFontsManager: SoundFonts {
+extension LegacySoundFontsManager: SoundFonts {
 
     public var count: Int { collection.count }
 
     public func index(of uuid: UUID) -> Int? { collection.index(of: uuid) }
 
-    public func getBy(index: Int) -> SoundFont { collection.getBy(index: index) }
+    public func getBy(index: Int) -> LegacySoundFont { collection.getBy(index: index) }
 
-    public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
+    public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
     @discardableResult
-    public func add(url: URL) -> Result<(Int, SoundFont), SoundFont.Failure> {
-        switch SoundFont.makeSoundFont(from: url, saveToDisk: true) {
+    public func add(url: URL) -> Result<(Int, LegacySoundFont), LegacySoundFont.Failure> {
+        switch LegacySoundFont.makeSoundFont(from: url, saveToDisk: true) {
         case .failure(let failure): return .failure(failure)
         case.success(let soundFont):
             let index = collection.add(soundFont)
@@ -154,14 +154,14 @@ extension SoundFontsManager: SoundFonts {
     }
 
     public var hasAnyBundled: Bool {
-        let bundle = Bundle(for: SoundFontsManager.self)
+        let bundle = Bundle(for: LegacySoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
         let result = urls.first { collection.index(of: $0) != nil } != nil
         return result
     }
 
     public var hasAllBundled: Bool {
-        let bundle = Bundle(for: SoundFontsManager.self)
+        let bundle = Bundle(for: LegacySoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
         let result = urls.first { collection.index(of: $0) == nil } == nil
         return result
@@ -169,7 +169,7 @@ extension SoundFontsManager: SoundFonts {
 
     public func removeBundled() {
         os_log(.info, log: log, "removeBundled")
-        let bundle = Bundle(for: SoundFontsManager.self)
+        let bundle = Bundle(for: LegacySoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
         for url in urls {
             if let index = collection.index(of: url) {
@@ -183,7 +183,7 @@ extension SoundFontsManager: SoundFonts {
 
     public func restoreBundled() {
         os_log(.info, log: log, "restoreBundled")
-        let bundle = Bundle(for: SoundFontsManager.self)
+        let bundle = Bundle(for: LegacySoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
         for url in urls {
             if collection.index(of: url) == nil {
@@ -262,7 +262,7 @@ extension SoundFontsManager: SoundFonts {
         var good = 0
         var bad = 0
         for path in contents {
-            guard path.hasSuffix(SoundFont.soundFontDottedExtension) else { continue }
+            guard path.hasSuffix(LegacySoundFont.soundFontDottedExtension) else { continue }
             let src = fm.localDocumentsDirectory.appendingPathComponent(path)
             switch add(url: src) {
             case .success: good += 1
@@ -274,24 +274,24 @@ extension SoundFontsManager: SoundFonts {
     }
 }
 
-extension SoundFontsManager {
+extension LegacySoundFontsManager {
 
     private static let niceNames = [
         "Fluid": "Fluid R3", "Free Font": "FreeFont", "GeneralUser": "MuseScore", "User": "Roland"
     ]
 
     @discardableResult
-    fileprivate static func addFromBundle(url: URL) -> SoundFont? {
+    fileprivate static func addFromBundle(url: URL) -> LegacySoundFont? {
         guard let info = SoundFontInfo.load(url) else { return nil }
         guard let infoName = info.embeddedName else { return nil }
         guard !(infoName.isEmpty || info.presets.isEmpty) else { return nil }
         let displayName = niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName
-        return SoundFont(displayName, soundFontInfo: info, resource: url)
+        return LegacySoundFont(displayName, soundFontInfo: info, resource: url)
     }
 
     @discardableResult
-    fileprivate static func addFromSharedFolder(url: URL) -> SoundFont? {
-        switch SoundFont.makeSoundFont(from: url, saveToDisk: false) {
+    fileprivate static func addFromSharedFolder(url: URL) -> LegacySoundFont? {
+        switch LegacySoundFont.makeSoundFont(from: url, saveToDisk: false) {
         case .success(let soundFont): return soundFont
         case .failure: return nil
         }
@@ -320,7 +320,7 @@ extension SoundFontsManager {
     }
 }
 
-extension SoundFontsManager {
+extension LegacySoundFontsManager {
 
     internal func configurationData() throws -> Data {
         os_log(.info, log: log, "archiving")
@@ -333,7 +333,7 @@ extension SoundFontsManager {
         os_log(.info, log: log, "loading configuration")
         if let data = contents as? Data {
             os_log(.info, log: log, "has Data")
-            if let collection = try? PropertyListDecoder().decode(SoundFontCollection.self, from: data) {
+            if let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) {
                 os_log(.info, log: log, "properly decoded")
                 self.collection = collection
                 notify(.restored)
