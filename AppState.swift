@@ -15,7 +15,7 @@ public final class AppState: NSManagedObject, Managed {
 
     @NSManaged private var lastUpdated: Date?
     @NSManaged private var favorites: NSOrderedSet
-    @NSManaged private var activePreset: PresetEntity?
+    @NSManaged private var activePreset: Preset?
 }
 
 extension AppState {
@@ -31,7 +31,7 @@ extension AppState {
 
     public var favoritesCount: Int { favorites.count }
 
-    public func createFavorite(context: NSManagedObjectContext, preset: PresetEntity,
+    public func createFavorite(context: NSManagedObjectContext, preset: Preset,
                                keyboardLowestNote: Int) -> Favorite {
         let fav = Favorite(context: context, preset: preset, keyboardLowestNote: keyboardLowestNote)
         addToFavorites(fav)
@@ -53,7 +53,7 @@ extension AppState {
         self.favorites = mutableFavorites
     }
 
-    public func setActive(preset: PresetEntity) {
+    public func setActive(preset: Preset) {
         self.activePreset?.setActivated(nil)
         self.activePreset = preset
         preset.setActivated(self)

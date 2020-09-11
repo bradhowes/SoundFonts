@@ -94,7 +94,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFonts.getBy(key: key)
     }
 
-    public var patch: Patch? {
+    public var patch: LegacyPatch? {
         guard let index = soundFontAndPatch?.patchIndex else { return nil }
         return soundFont?.patches[index]
     }
@@ -113,7 +113,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
     }
 
-    public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> Patch? {
+    public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 

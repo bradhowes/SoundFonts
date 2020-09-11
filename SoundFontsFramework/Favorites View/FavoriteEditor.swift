@@ -15,7 +15,7 @@ final public class FavoriteEditor: UIViewController {
         let currentLowestNote: Note?
         let completionHandler: UIContextualAction.CompletionHandler?
         let soundFont: SoundFont
-        let patch: Patch
+        let patch: LegacyPatch
     }
 
     private var favorite: LegacyFavorite! = nil
@@ -23,7 +23,7 @@ final public class FavoriteEditor: UIViewController {
     private var currentLowestNote: Note?
     private var completionHandler: UIContextualAction.CompletionHandler?
     private var soundFont: SoundFont?
-    private var patch: Patch?
+    private var patch: LegacyPatch?
 
     weak var delegate: FavoriteEditorDelegate?
 

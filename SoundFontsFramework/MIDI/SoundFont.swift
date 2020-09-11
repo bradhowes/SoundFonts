@@ -37,7 +37,7 @@ public final class SoundFont: Codable {
     public let kind: SoundFontKind
 
     /// The collection of Patches found in the sound font
-    public let patches: [Patch]
+    public let patches: [LegacyPatch]
 
     public enum Failure: Error {
         case emptyFile
@@ -113,8 +113,8 @@ public final class SoundFont: Codable {
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
 
-    private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [Patch] {
-        patches.enumerated().map { Patch($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
+    private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [LegacyPatch] {
+        patches.enumerated().map { LegacyPatch($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
     }
 }
 

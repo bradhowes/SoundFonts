@@ -47,7 +47,7 @@ extension SoundFontEntity {
         path = config.path
         resource = isResource
         visible = true
-        config.presets.forEach { addToChildren(PresetEntity(context: context, config: $0)) }
+        config.presets.forEach { addToChildren(Preset(context: context, config: $0)) }
     }
 
     @discardableResult
@@ -65,17 +65,17 @@ extension SoundFontEntity {
 
         visible = true
 
-        soundFont.patches.forEach { addToChildren(PresetEntity(context: context, import: $0)) }
+        soundFont.patches.forEach { addToChildren(Preset(context: context, import: $0)) }
     }
 
 
     public func setName(_ value: String) { name = value }
     public func setVisible(_ value: Bool) { visible = value }
 
-    public var presets: EntityCollection<PresetEntity> { EntityCollection(children) }
+    public var presets: EntityCollection<Preset> { EntityCollection(children) }
 }
 
 extension SoundFontEntity {
     @objc(addChildrenObject:)
-    @NSManaged private func addToChildren(_ value: PresetEntity)
+    @NSManaged private func addToChildren(_ value: Preset)
 }

@@ -22,8 +22,8 @@ final class PatchesTableViewManager: NSObject {
     private let sampler: Sampler
 
     private var showingSoundFont: SoundFont?
-    private var patches: [Patch] { showingSoundFont?.patches ?? [] }
-    private var filtered = [Patch]()
+    private var patches: [LegacyPatch] { showingSoundFont?.patches ?? [] }
+    private var filtered = [LegacyPatch]()
 
     private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
 
@@ -307,7 +307,7 @@ extension PatchesTableViewManager {
      */
     private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * Self.sectionSize + indexPath.row }
 
-    private func makeSoundFontAndPatch(for patch: Patch) -> SoundFontAndPatch {
+    private func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
         SoundFontAndPatch(soundFontKey: showingSoundFont!.key, patchIndex: patch.soundFontIndex)
     }
 
