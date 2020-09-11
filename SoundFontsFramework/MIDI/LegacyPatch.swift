@@ -6,7 +6,7 @@ import AudioToolbox
 /**
  Representation of a patch in a sound font.
  */
-public struct Patch: Codable {
+public struct LegacyPatch: Codable {
 
     /// Display name for the patch
     public let name: String
@@ -87,6 +87,6 @@ public struct Patch: Codable {
     }
 }
 
-extension Patch: CustomStringConvertible {
+extension LegacyPatch: CustomStringConvertible {
     public var description: String { "[Patch '\(name)' \(bank):\(program)]" }
 }

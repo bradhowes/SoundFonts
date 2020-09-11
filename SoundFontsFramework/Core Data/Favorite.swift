@@ -15,11 +15,11 @@ extension Favorite {
     @NSManaged public private(set) var gain: Float
     @NSManaged public private(set) var pan: Float
     @NSManaged public private(set) var keyboardLowestNote: Int16
-    @NSManaged public private(set) var preset: PresetEntity
+    @NSManaged public private(set) var preset: Preset
     @NSManaged public private(set) var orderedBy: AppState
 
     @discardableResult
-    internal convenience init(context: NSManagedObjectContext, preset: PresetEntity, keyboardLowestNote: Int) {
+    internal convenience init(context: NSManagedObjectContext, preset: Preset, keyboardLowestNote: Int) {
         self.init(context: context)
         self.key = UUID()
         self.name = preset.name
@@ -31,7 +31,7 @@ extension Favorite {
 
     @discardableResult
     internal convenience init(context: NSManagedObjectContext, import legacyFavorite: LegacyFavorite,
-                              preset: PresetEntity) {
+                              preset: Preset) {
         self.init(context: context)
         self.key = legacyFavorite.key
         self.name = legacyFavorite.name

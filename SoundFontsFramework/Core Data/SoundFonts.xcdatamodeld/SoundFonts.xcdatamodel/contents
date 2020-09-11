@@ -14,7 +14,7 @@
         <relationship name="orderedBy" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="favorites" inverseEntity="AppState"/>
         <relationship name="preset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
     </entity>
-    <entity name="Preset" representedClassName="PresetEntity" syncable="YES">
+    <entity name="Preset" representedClassName="Preset" syncable="YES">
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="embeddedName" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
@@ -36,7 +36,7 @@
     <elements>
         <element name="AppState" positionX="-378" positionY="-126" width="128" height="88"/>
         <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="148"/>
-        <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="28"/>
+        <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="163"/>
         <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="148"/>
     </elements>
 </model>
