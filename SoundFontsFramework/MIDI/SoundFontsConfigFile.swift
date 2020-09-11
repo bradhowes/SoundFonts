@@ -13,14 +13,14 @@ public final class SoundFontsConfigFile: UIDocument {
     private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("SoundFontLibrary.plist")
 
-    private let soundFontsManager: SoundFontsManager
+    private let soundFontsManager: LegacySoundFontsManager
 
-    public init(soundFontsManager: SoundFontsManager) {
+    public init(soundFontsManager: LegacySoundFontsManager) {
         self.soundFontsManager = soundFontsManager
         super.init(fileURL: sharedArchivePath)
         self.open { ok in
             if !ok {
-                let data = try! PropertyListEncoder().encode(SoundFontCollection(soundFonts:[]))
+                let data = try! PropertyListEncoder().encode(LegacySoundFontCollection(soundFonts:[]))
                 try! soundFontsManager.loadConfigurationData(contents: data)
                 self.save(to: self.sharedArchivePath, for: .forCreating)
             }

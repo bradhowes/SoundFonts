@@ -89,7 +89,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public var favorite: LegacyFavorite? { active.favorite }
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
 
-    public var soundFont: SoundFont? {
+    public var soundFont: LegacySoundFont? {
         guard let key = soundFontAndPatch?.soundFontKey else { return nil }
         return soundFonts.getBy(key: key)
     }
@@ -109,7 +109,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         os_log(.info, log: log, "active: %s", active.description)
     }
 
-    public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> SoundFont? {
+    public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> LegacySoundFont? {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
     }
 
@@ -144,7 +144,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
 extension ActivePatchManager {
 
-    public func validate(soundFonts: SoundFontsManager, favorites: LegacyFavoritesManager) {
+    public func validate(soundFonts: LegacySoundFontsManager, favorites: LegacyFavoritesManager) {
         switch active {
         case .favorite(let favorite): if !favorites.validate(favorite) { active = .none }
         case .normal(let soundFontAndPatch): if !soundFonts.validate(soundFontAndPatch) { active = .none }

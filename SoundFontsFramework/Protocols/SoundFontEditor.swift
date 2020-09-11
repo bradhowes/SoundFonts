@@ -14,7 +14,7 @@ public protocol FontEditorActionGenerator {
      - parameter soundFont: the SoundFont instance that will be edited
      - returns: new swipe action
      */
-    func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction
+    func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction
 
     /**
      Obtain a swip action that will delete a SoundFont instance.
@@ -24,6 +24,6 @@ public protocol FontEditorActionGenerator {
      - parameter indexPath: location of the cell to be deleted
      - returns: new swipe action
      */
-    func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont)
+    func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont)
         -> UIContextualAction
 }

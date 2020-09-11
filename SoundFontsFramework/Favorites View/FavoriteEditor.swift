@@ -14,7 +14,7 @@ final public class FavoriteEditor: UIViewController {
         let favorite: LegacyFavorite
         let currentLowestNote: Note?
         let completionHandler: UIContextualAction.CompletionHandler?
-        let soundFont: SoundFont
+        let soundFont: LegacySoundFont
         let patch: LegacyPatch
     }
 
@@ -22,7 +22,7 @@ final public class FavoriteEditor: UIViewController {
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: UIContextualAction.CompletionHandler?
-    private var soundFont: SoundFont?
+    private var soundFont: LegacySoundFont?
     private var patch: LegacyPatch?
 
     weak var delegate: FavoriteEditorDelegate?

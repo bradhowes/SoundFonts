@@ -66,7 +66,7 @@ public final class SoundFontsViewController: UIViewController {
         present(documentPicker, animated: true)
     }
 
-    private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
+    private func remove(soundFont: LegacySoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
         guard let index = soundFonts.index(of: soundFont.key) else {
             completionHandler?(false)
             return
@@ -204,7 +204,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter with: the SoundFont that will be edited by the swipe action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+    public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFont: soundFont,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
@@ -228,7 +228,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
+    public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }

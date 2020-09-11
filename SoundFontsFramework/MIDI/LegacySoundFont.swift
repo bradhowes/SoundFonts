@@ -7,7 +7,7 @@ import SoundFontInfoLib
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
-public final class SoundFont: Codable {
+public final class LegacySoundFont: Codable {
     private static let logger = Logging.logger("SFont")
 
     /// Extension for all SoundFont files in the application bundle
@@ -45,7 +45,7 @@ public final class SoundFont: Codable {
         case unableToCreateFile
     }
 
-    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<SoundFont, Failure> {
+    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, Failure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(url) else {
@@ -67,7 +67,7 @@ public final class SoundFont: Codable {
             info.embeddedName = displayName
         }
 
-        let soundFont = SoundFont(displayName, soundFontInfo: info, file: url, key: uuid ?? Key())
+        let soundFont = LegacySoundFont(displayName, soundFontInfo: info, file: url, key: uuid ?? Key())
         if saveToDisk {
             let path = soundFont.fileURL
             os_log(.info, log: Self.logger, "creating SF2 file at '%s'", path.lastPathComponent)
@@ -118,7 +118,7 @@ public final class SoundFont: Codable {
     }
 }
 
-extension SoundFont {
+extension LegacySoundFont {
 
     /// Determines if the sound font file exists on the device
     public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
@@ -128,14 +128,14 @@ extension SoundFont {
     }
 }
 
-extension SoundFont: Hashable {
+extension LegacySoundFont: Hashable {
 
     public func hash(into hasher: inout Hasher) { hasher.combine(key) }
 
-    public static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.key == rhs.key }
+    public static func == (lhs: LegacySoundFont, rhs: LegacySoundFont) -> Bool { lhs.key == rhs.key }
 }
 
-extension SoundFont: CustomStringConvertible {
+extension LegacySoundFont: CustomStringConvertible {
 
     public var description: String { "[SoundFont '\(displayName)']" }
 }

@@ -8,13 +8,13 @@ import Foundation
 public enum SoundFontsEvent {
 
     /// New SoundFont added to the collection
-    case added(new: Int, font: SoundFont)
+    case added(new: Int, font: LegacySoundFont)
 
     /// Existing SoundFont moved from one position in the collection to another due to name change
-    case moved(old: Int, new: Int, font: SoundFont)
+    case moved(old: Int, new: Int, font: LegacySoundFont)
 
     /// Existing SoundFont instance removed from the collection
-    case removed(old: Int, font: SoundFont)
+    case removed(old: Int, font: LegacySoundFont)
 
     case restored
 }
@@ -33,7 +33,7 @@ public protocol SoundFonts: class {
      - parameter of: the key to look for
      - returns: the index of the matching entry or nil if not found
      */
-    func index(of: SoundFont.Key) -> Int?
+    func index(of: LegacySoundFont.Key) -> Int?
 
     /**
      Obtain the SoundFont in the collection by its unique key
@@ -41,7 +41,7 @@ public protocol SoundFonts: class {
      - parameter key: the key to look for
      - returns: the index of the matching entry or nil if not found
      */
-    func getBy(key: SoundFont.Key) -> SoundFont?
+    func getBy(key: LegacySoundFont.Key) -> LegacySoundFont?
 
     /**
      Obtain the SoundFont in the collection by its orderering index.
@@ -49,7 +49,7 @@ public protocol SoundFonts: class {
      - parameter index: the index to fetch
      - returns: the SoundFont found at the index
      */
-    func getBy(index: Int) -> SoundFont
+    func getBy(index: Int) -> LegacySoundFont
 
     /**
      Add a new SoundFont.
@@ -59,7 +59,7 @@ public protocol SoundFonts: class {
      - returns: 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
      instance created from the raw data
      */
-    func add(url: URL) -> Result<(Int, SoundFont), SoundFont.Failure>
+    func add(url: URL) -> Result<(Int, LegacySoundFont), LegacySoundFont.Failure>
 
     /**
      Remove the SoundFont at the given index

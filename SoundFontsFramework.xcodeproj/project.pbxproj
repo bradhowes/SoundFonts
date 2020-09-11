@@ -20,7 +20,7 @@
 		BD074C4E23CDAF51001987E9 /* SoundFontCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */; };
 		BD074C4F23CDAF51001987E9 /* SoundFontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */; };
 		BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */; };
-		BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEC23CDAF51001987E9 /* SoundFont.swift */; };
+		BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */; };
 		BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BED23CDAF51001987E9 /* LegacyPatch.swift */; };
 		BD074C5323CDAF51001987E9 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEE23CDAF51001987E9 /* Note.swift */; };
 		BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* Sampler.swift */; };
@@ -174,7 +174,7 @@
 		BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontCollection.swift; sourceTree = "<group>"; };
 		BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsManager.swift; sourceTree = "<group>"; };
 		BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontKind.swift; sourceTree = "<group>"; };
-		BD074BEC23CDAF51001987E9 /* SoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFont.swift; sourceTree = "<group>"; };
+		BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacySoundFont.swift; sourceTree = "<group>"; };
 		BD074BED23CDAF51001987E9 /* LegacyPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyPatch.swift; sourceTree = "<group>"; };
 		BD074BEE23CDAF51001987E9 /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		BD074BEF23CDAF51001987E9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
@@ -427,7 +427,7 @@
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
-				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
+				BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
 				BD9782012506A22E00CEFB59 /* SoundFontsConfigFile.swift */,
@@ -873,7 +873,7 @@
 				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,
-				BD074C5123CDAF51001987E9 /* SoundFont.swift in Sources */,
+				BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */,
 				BD074C8223CDAF51001987E9 /* ActivePatchManager.swift in Sources */,
 				BD074C4E23CDAF51001987E9 /* SoundFontCollection.swift in Sources */,
 			);

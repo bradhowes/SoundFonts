@@ -94,11 +94,11 @@ final public class LegacyFavoriteCollection: Codable {
         return favorite
     }
 
-    func removeAll(associatedWith soundFont: SoundFont) {
+    func removeAll(associatedWith soundFont: LegacySoundFont) {
         findAll(associatedWith: soundFont).forEach { self.remove(favorite: $0) }
     }
 
-    func count(associatedWith soundFont: SoundFont) -> Int {
+    func count(associatedWith soundFont: LegacySoundFont) -> Int {
         findAll(associatedWith: soundFont).count
     }
 }
@@ -111,7 +111,7 @@ extension LegacyFavoriteCollection {
         reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
     }
 
-    private func findAll(associatedWith soundFont: SoundFont) -> [LegacyFavorite] {
+    private func findAll(associatedWith soundFont: LegacySoundFont) -> [LegacyFavorite] {
         favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFont.key }
     }
 }
