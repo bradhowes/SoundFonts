@@ -32,25 +32,26 @@ open class CoreDataStack<T: NSPersistentContainer> {
 extension CoreDataStack {
 
     /**
-     Save any changes in main managed object context.
+     Save any changes in main managed object context. NOTE: better to do this from NSManagedObject context.
      */
-    public func saveMainContext() { saveOneContext(mainContext) }
+    public func saveChanges() { saveChanges(in: mainContext) }
 }
 
 extension CoreDataStack {
 
     private func createStack() {
         persistentContainer.loadPersistentStores { [weak self] _, _ in
-            guard let self = self else { return }
-            let viewContext = self.persistentContainer.viewContext
-            self.availableNotification.post(value: viewContext)
+            self.map { $0.availableNotification.post(value: $0.persistentContainer.viewContext) }
         }
     }
 
-    private func saveOneContext(_ context: NSManagedObjectContext) {
+    private func saveChanges(in context: NSManagedObjectContext) {
         context.perform {
             do {
                 try context.save()
+                if let parent = context.parent {
+                    self.saveChanges(in: parent)
+                }
             } catch let error as NSError {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }

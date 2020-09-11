@@ -34,7 +34,7 @@ public class TemporaryPersistentContainer: PersistentContainer {
     }
 
     public init(_ kind: Kind = .in_memory) {
-        super.init()
+        super.init(modelName: "SoundFonts")
         if kind == .in_memory {
             let psd = NSPersistentStoreDescription()
             psd.type = NSInMemoryStoreType

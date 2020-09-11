@@ -11,14 +11,14 @@ final public class FavoriteEditor: UIViewController {
         let indexPath: IndexPath
         let view: UIView
         let rect: CGRect
-        let favorite: Favorite
+        let favorite: LegacyFavorite
         let currentLowestNote: Note?
         let completionHandler: UIContextualAction.CompletionHandler?
         let soundFont: SoundFont
         let patch: Patch
     }
 
-    private var favorite: Favorite! = nil
+    private var favorite: LegacyFavorite! = nil
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: UIContextualAction.CompletionHandler?

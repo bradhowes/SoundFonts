@@ -13,14 +13,14 @@ public final class FavoritesConfigFile: UIDocument {
     private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
         .appendingPathComponent("Favorites.plist")
 
-    private let favoritesManager: FavoritesManager
+    private let favoritesManager: LegacyFavoritesManager
 
-    public init(favoritesManager: FavoritesManager) {
+    public init(favoritesManager: LegacyFavoritesManager) {
         self.favoritesManager = favoritesManager
         super.init(fileURL: sharedArchivePath)
         self.open { ok in
             if !ok {
-                let data = try! PropertyListEncoder().encode(FavoriteCollection())
+                let data = try! PropertyListEncoder().encode(LegacyFavoriteCollection())
                 try! favoritesManager.loadConfigurationData(contents: data)
                 self.save(to: self.sharedArchivePath, for: .forCreating)
             }

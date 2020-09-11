@@ -10,7 +10,7 @@ extension SettingKeys {
 public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
 
     case normal(soundFontAndPatch: SoundFontAndPatch)
-    case favorite(favorite: Favorite)
+    case favorite(favorite: LegacyFavorite)
     case none
 
     public var soundFontAndPatch: SoundFontAndPatch? {
@@ -21,7 +21,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
         }
     }
 
-    public var favorite: Favorite? {
+    public var favorite: LegacyFavorite? {
         switch self {
         case .normal: return nil
         case .favorite(let favorite): return favorite
@@ -56,7 +56,7 @@ public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
         guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
         switch kind {
         case .normal: self = .normal(soundFontAndPatch: try container.decode(SoundFontAndPatch.self))
-        case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
+        case .favorite: self = .favorite(favorite: try container.decode(LegacyFavorite.self))
         case .none: self = .none
         }
     }
@@ -86,7 +86,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public private(set) var active: ActivePatchKind
 
-    public var favorite: Favorite? { active.favorite }
+    public var favorite: LegacyFavorite? { active.favorite }
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
 
     public var soundFont: SoundFont? {
@@ -144,7 +144,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
 extension ActivePatchManager {
 
-    public func validate(soundFonts: SoundFontsManager, favorites: FavoritesManager) {
+    public func validate(soundFonts: SoundFontsManager, favorites: LegacyFavoritesManager) {
         switch active {
         case .favorite(let favorite): if !favorites.validate(favorite) { active = .none }
         case .normal(let soundFontAndPatch): if !soundFonts.validate(soundFontAndPatch) { active = .none }

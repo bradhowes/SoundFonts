@@ -43,7 +43,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.soundFonts = soundFontsManager
         self.soundFontsConfigFile = SoundFontsConfigFile(soundFontsManager: soundFontsManager)
 
-        let favoritesManager = FavoritesManager()
+        let favoritesManager = LegacyFavoritesManager()
         self.favorites = favoritesManager
         self.favoritesConfigFile = FavoritesConfigFile(favoritesManager: favoritesManager)
 

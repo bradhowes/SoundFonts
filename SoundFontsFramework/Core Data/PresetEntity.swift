@@ -20,7 +20,7 @@ extension PresetEntity {
     @NSManaged public private(set) var bank: Int16
     @NSManaged public private(set) var preset: Int16
     @NSManaged public private(set) var visible: Bool
-    @NSManaged public private(set) var alias: FavoriteEntity?
+    @NSManaged public private(set) var alias: Favorite?
     @NSManaged public private(set) var parent: SoundFontEntity
     @NSManaged public private(set) var activated: AppState?
 

@@ -21,26 +21,31 @@ public final class AppState: NSManagedObject, Managed {
 extension AppState {
 
     public static func get(context: NSManagedObjectContext) -> AppState {
-        Self.findOrCreate(in: context, matching: nil) {_ in }
+
+        // Use `useInfo` as a cache for the AppState singleton. NOTE: will cause issues when trying to delete it.
+        if let appState: AppState = context.object(forSingleObjectCacheKey: "AppState") { return appState }
+        let appState = Self.findOrCreate(in: context, matching: nil) {_ in }
+        context.set(appState, forSingleObjectCacheKey: "AppState")
+        return appState
     }
 
     public var favoritesCount: Int { favorites.count }
 
     public func createFavorite(context: NSManagedObjectContext, preset: PresetEntity,
-                               keyboardLowestNote: Int) -> FavoriteEntity {
-        let fav = FavoriteEntity(context: context, preset: preset, keyboardLowestNote: keyboardLowestNote)
+                               keyboardLowestNote: Int) -> Favorite {
+        let fav = Favorite(context: context, preset: preset, keyboardLowestNote: keyboardLowestNote)
         addToFavorites(fav)
         return fav
     }
 
-    public func deleteFavorite(favorite: FavoriteEntity) {
+    public func deleteFavorite(favorite: Favorite) {
         removeFromFavorites(favorite)
         favorite.delete()
     }
 
-    public var ordering: EntityCollection<FavoriteEntity> { EntityCollection(favorites) }
+    public var ordering: EntityCollection<Favorite> { EntityCollection<Favorite>(favorites) }
 
-    public func move(favorite: FavoriteEntity, to newIndex: Int) {
+    public func move(favorite: Favorite, to newIndex: Int) {
         let oldIndex = self.favorites.index(of: favorite)
         guard oldIndex != newIndex else { return }
         let mutableFavorites = favorites.mutableCopy() as! NSMutableOrderedSet
@@ -55,36 +60,35 @@ extension AppState {
     }
 }
 
-extension AppState {
+private extension AppState {
 
     @objc(insertObject:inFavoritesAtIndex:)
-    @NSManaged private func insertIntoFavorites(_ value: FavoriteEntity, at idx: Int)
+    @NSManaged func insertIntoFavorites(_ value: Favorite, at idx: Int)
 
     @objc(removeObjectFromFavoritesAtIndex:)
-    @NSManaged private func removeFromFavorites(at idx: Int)
+    @NSManaged func removeFromFavorites(at idx: Int)
 
     @objc(insertFavorites:atIndexes:)
-    @NSManaged private func insertIntoFavorites(_ values: [FavoriteEntity], at indexes: NSIndexSet)
+    @NSManaged func insertIntoFavorites(_ values: [Favorite], at indexes: NSIndexSet)
 
     @objc(removeFavoritesAtIndexes:)
-    @NSManaged private func removeFromFavorites(at indexes: NSIndexSet)
+    @NSManaged func removeFromFavorites(at indexes: NSIndexSet)
 
     @objc(replaceObjectInFavoritesAtIndex:withObject:)
-    @NSManaged private func replaceFavorites(at idx: Int, with value: FavoriteEntity)
+    @NSManaged func replaceFavorites(at idx: Int, with value: Favorite)
 
     @objc(replaceFavoritesAtIndexes:withFavorites:)
-    @NSManaged private func replaceFavorites(at indexes: NSIndexSet, with values: [FavoriteEntity])
+    @NSManaged func replaceFavorites(at indexes: NSIndexSet, with values: [Favorite])
 
     @objc(addFavoritesObject:)
-    @NSManaged private func addToFavorites(_ value: FavoriteEntity)
+    @NSManaged func addToFavorites(_ value: Favorite)
 
     @objc(removeFavoritesObject:)
-    @NSManaged private func removeFromFavorites(_ value: FavoriteEntity)
+    @NSManaged func removeFromFavorites(_ value: Favorite)
 
     @objc(addFavorites:)
-    @NSManaged private func addToFavorites(_ values: NSOrderedSet)
+    @NSManaged func addToFavorites(_ values: NSOrderedSet)
 
     @objc(removeFavorites:)
-    @NSManaged private func removeFromFavorites(_ values: NSOrderedSet)
-
+    @NSManaged func removeFromFavorites(_ values: NSOrderedSet)
 }

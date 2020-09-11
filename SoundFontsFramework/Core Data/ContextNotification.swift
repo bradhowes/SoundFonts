@@ -12,7 +12,7 @@ import Foundation
    You can only use the managed objects in this notification on the same thread on which it was posted.
 
  */
-public struct ContextDidSaveNotification<T> where T: NSManagedObject {
+public struct ContextNotification<T> where T: NSManagedObject {
 
     private let notification: Notification
 
@@ -34,7 +34,10 @@ public struct ContextDidSaveNotification<T> where T: NSManagedObject {
      - parameter notification: the object to wrap
      */
     public init(notification: Notification) {
-        guard notification.name == .NSManagedObjectContextDidSave else { fatalError("incorrect notification") }
+        guard (notification.name == .NSManagedObjectContextDidSave ||
+            notification.name == .NSManagedObjectContextObjectsDidChange) else {
+                fatalError("incorrect notification")
+        }
         self.notification = notification
     }
 
@@ -46,7 +49,7 @@ public struct ContextDidSaveNotification<T> where T: NSManagedObject {
     }
 }
 
-extension ContextDidSaveNotification: CustomDebugStringConvertible {
+extension ContextNotification: CustomDebugStringConvertible {
 
     public var debugDescription: String {
         let part1 = [notification.name.rawValue, managedObjectContext.description]

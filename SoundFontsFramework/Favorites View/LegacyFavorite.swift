@@ -5,7 +5,7 @@ import Foundation
 /**
  A custom setting with a SoundFont patch and a keyboard configuration.
  */
-public struct Favorite: Codable {
+public struct LegacyFavorite: Codable {
 
     public typealias Key = UUID
 
@@ -17,7 +17,8 @@ public struct Favorite: Codable {
     /// The name of the favorite configuration
     public var name: String
 
-    /// The starting note of the keyboard
+    /// The starting note of the keyboard. Optional since the AUv3 app extension does not have a keyboard, but it can
+    /// still create a favorite.
     public var keyboardLowestNote: Note?
 
     /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
@@ -44,10 +45,10 @@ public struct Favorite: Codable {
     }
 }
 
-extension Favorite: Equatable {
-    public static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.key == rhs.key }
+extension LegacyFavorite: Equatable {
+    public static func == (lhs: LegacyFavorite, rhs: LegacyFavorite) -> Bool { lhs.key == rhs.key }
 }
 
-extension Favorite: CustomStringConvertible {
+extension LegacyFavorite: CustomStringConvertible {
     public var description: String { "['\(name)' - \(soundFontAndPatch)]" }
 }

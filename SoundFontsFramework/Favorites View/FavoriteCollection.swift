@@ -6,10 +6,10 @@ import os
 /**
  Collection of Favorite instances created by the user.
  */
-final public class FavoriteCollection: Codable {
+final public class LegacyFavoriteCollection: Codable {
 
-    private var favorites: [Favorite]
-    private var reverseLookup: [SoundFontAndPatch: Favorite]
+    private var favorites: [LegacyFavorite]
+    private var reverseLookup: [SoundFontAndPatch: LegacyFavorite]
 
     /// Number of favorites defined
     var count: Int { favorites.count }
@@ -19,9 +19,9 @@ final public class FavoriteCollection: Codable {
         self.reverseLookup = [:]
     }
 
-    public func validate(_ favorite: Favorite) -> Bool {
-        guard let held = getBy(soundFontAndPatch: favorite.soundFontAndPatch) else { return false }
-        return held == favorite
+    public func validate(_ legacyFavorite: LegacyFavorite) -> Bool {
+        guard let held = getBy(soundFontAndPatch: legacyFavorite.soundFontAndPatch) else { return false }
+        return held == legacyFavorite
     }
 
     /**
@@ -38,7 +38,7 @@ final public class FavoriteCollection: Codable {
      - parameter favorite: the favorite to look for
      - returns: the index in the collection
      */
-    func index(of favorite: Favorite) -> Int { favorites.firstIndex(of: favorite)! }
+    func index(of favorite: LegacyFavorite) -> Int { favorites.firstIndex(of: favorite)! }
 
     /**
      Obtain the favorite at the given index.
@@ -46,7 +46,7 @@ final public class FavoriteCollection: Codable {
      - parameter index: the index to use
      - returns: the favorite instance
      */
-    func getBy(index: Int) -> Favorite { favorites[index] }
+    func getBy(index: Int) -> LegacyFavorite { favorites[index] }
 
     /**
      Obtain the favorite associated with the given soundFont/patch combination.
@@ -54,7 +54,7 @@ final public class FavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: the favorite found or nil if no match
      */
-    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> Favorite? {
+    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
         guard let soundFontAndPatch = soundFontAndPatch else { return nil }
         return reverseLookup[soundFontAndPatch]
     }
@@ -64,7 +64,7 @@ final public class FavoriteCollection: Codable {
 
      - parameter favorite: the new favorite to add
      */
-    func add(favorite: Favorite) {
+    func add(favorite: LegacyFavorite) {
         reverseLookup[favorite.soundFontAndPatch] = favorite
         AskForReview.maybe()
         favorites.append(favorite)
@@ -76,7 +76,7 @@ final public class FavoriteCollection: Codable {
      - parameter index: the location to replace
      - parameter favorite: the new value to store
      */
-    func replace(index: Int, with favorite: Favorite) {
+    func replace(index: Int, with favorite: LegacyFavorite) {
         reverseLookup.removeValue(forKey: favorites[index].soundFontAndPatch)
         favorites[index] = favorite
         reverseLookup[favorite.soundFontAndPatch] = favorite
@@ -87,7 +87,7 @@ final public class FavoriteCollection: Codable {
         AskForReview.maybe()
     }
 
-    func remove(index: Int) -> Favorite {
+    func remove(index: Int) -> LegacyFavorite {
         let favorite = favorites.remove(at: index)
         reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
         AskForReview.maybe()
@@ -103,15 +103,15 @@ final public class FavoriteCollection: Codable {
     }
 }
 
-extension FavoriteCollection {
+extension LegacyFavoriteCollection {
 
-    private func remove(favorite: Favorite) {
+    private func remove(favorite: LegacyFavorite) {
         guard let index = favorites.firstIndex(of: favorite) else { return }
         favorites.remove(at: index)
         reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
     }
 
-    private func findAll(associatedWith soundFont: SoundFont) -> [Favorite] {
+    private func findAll(associatedWith soundFont: SoundFont) -> [LegacyFavorite] {
         favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFont.key }
     }
 }

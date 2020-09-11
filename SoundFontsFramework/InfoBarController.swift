@@ -221,7 +221,7 @@ extension InfoBarController {
         }
     }
 
-    private func updateInfoBar(with favorite: Favorite) {
+    private func updateInfoBar(with favorite: LegacyFavorite) {
         if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
             setPatchInfo(name: favorite.name, isFavored: true)
         }

@@ -2,32 +2,27 @@ import CoreData
 
 public final class BackgroundManagedObjectContext {
 
-    private var context: NSManagedObjectContext?
+    private var context: NSManagedObjectContext
 
     public init(_ context: NSManagedObjectContext) {
         self.context = context
     }
 
     deinit {
-        context.map {
-            context = nil
-            $0.performAndWait {}
-        }
+        context.performAndWait {}
     }
 }
 
 public extension BackgroundManagedObjectContext {
 
-    convenience init(_ container: NSPersistentContainer, _ setup: (NSManagedObjectContext) -> Void) {
+    convenience init(_ container: NSPersistentContainer, _ configure: (NSManagedObjectContext) -> Void) {
         let context = container.newBackgroundContext()
-        setup(context)
+        configure(context)
         self.init(context)
     }
 
     func performTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
-        context?.perform { [weak self] in
-            self?.context.map {block($0)}
-        }
+        context.perform { [weak self] in self.map { block($0.context) } }
     }
 
     func write(errorBlock: @escaping (Error?) -> Void, _ taskBlock: @escaping (NSManagedObjectContext) throws -> Void) {
