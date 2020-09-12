@@ -6,26 +6,20 @@ import SoundFontInfoLib
 
 @objc(Preset)
 public final class Preset: NSManagedObject, Managed {
-
-    public static let defaultSortDescriptors: [NSSortDescriptor] = {
-        let sortDescriptor = NSSortDescriptor(key: "orderIndex", ascending: true)
-        return [sortDescriptor]
-    }()
-}
-
-extension Preset {
-
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var embeddedName: String
     @NSManaged public private(set) var bank: Int16
     @NSManaged public private(set) var preset: Int16
     @NSManaged public private(set) var visible: Bool
     @NSManaged public private(set) var alias: Favorite?
-    @NSManaged public private(set) var parent: SoundFontEntity
+    @NSManaged public private(set) var parent: SoundFont
     @NSManaged public private(set) var activated: AppState?
+}
+
+extension Preset {
 
     @discardableResult
-    public convenience init(context: NSManagedObjectContext, config: SoundFontInfoPreset) {
+    public convenience init(in context: NSManagedObjectContext, config: SoundFontInfoPreset) {
         self.init(context: context)
         self.name = config.name
         self.embeddedName = config.name
@@ -33,10 +27,11 @@ extension Preset {
         self.preset = Int16(config.preset)
         self.visible = true
         self.alias = nil
+        context.saveChangesAsync()
     }
 
     @discardableResult
-    public convenience init(context: NSManagedObjectContext, import patch: LegacyPatch) {
+    public convenience init(in context: NSManagedObjectContext, import patch: LegacyPatch) {
         self.init(context: context)
         self.name = patch.name
         self.embeddedName = patch.name
@@ -44,6 +39,7 @@ extension Preset {
         self.preset = Int16(patch.program)
         self.visible = true
         self.alias = nil
+        context.saveChangesAsync()
     }
 
     public func setName(_ value: String) { name = value }

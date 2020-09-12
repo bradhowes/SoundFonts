@@ -3,16 +3,21 @@
     <entity name="AppState" representedClassName="AppState" syncable="YES">
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="activePreset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="activated" inverseEntity="Preset"/>
-        <relationship name="favorites" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Favorite" inverseName="orderedBy" inverseEntity="Favorite"/>
+        <relationship name="orderedFavorites" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Favorite" inverseName="orderedBy" inverseEntity="Favorite"/>
     </entity>
     <entity name="Favorite" representedClassName="Favorite" syncable="YES">
         <attribute name="gain" attributeType="Float" usesScalarValueType="YES"/>
-        <attribute name="key" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="keyboardLowestNote" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" minValueString="1"/>
         <attribute name="pan" attributeType="Float" usesScalarValueType="YES"/>
-        <relationship name="orderedBy" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="favorites" inverseEntity="AppState"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="orderedBy" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="orderedFavorites" inverseEntity="AppState"/>
         <relationship name="preset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uuid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Preset" representedClassName="Preset" syncable="YES">
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
@@ -23,8 +28,11 @@
         <relationship name="activated" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="activePreset" inverseEntity="AppState"/>
         <relationship name="alias" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favorite" inverseName="preset" inverseEntity="Favorite"/>
         <relationship name="parent" maxCount="1" deletionRule="Nullify" destinationEntity="SoundFont" inverseName="children" inverseEntity="SoundFont"/>
+        <fetchIndex name="byName">
+            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
-    <entity name="SoundFont" representedClassName="SoundFontEntity" syncable="YES">
+    <entity name="SoundFont" representedClassName="SoundFont" syncable="YES">
         <attribute name="embeddedName" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="path" attributeType="URI"/>
@@ -32,6 +40,9 @@
         <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="visible" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <relationship name="children" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Preset" inverseName="parent" inverseEntity="Preset"/>
+        <fetchIndex name="byName">
+            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+        </fetchIndex>
     </entity>
     <elements>
         <element name="AppState" positionX="-378" positionY="-126" width="128" height="88"/>

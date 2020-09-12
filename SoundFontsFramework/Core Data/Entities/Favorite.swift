@@ -6,39 +6,40 @@ import SoundFontInfoLib
 
 @objc(Favorite)
 public final class Favorite: NSManagedObject, Managed {
-}
-
-extension Favorite {
-
-    @NSManaged public private(set) var key: UUID
+    @NSManaged public private(set) var uuid: UUID
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var gain: Float
     @NSManaged public private(set) var pan: Float
     @NSManaged public private(set) var keyboardLowestNote: Int16
     @NSManaged public private(set) var preset: Preset
     @NSManaged public private(set) var orderedBy: AppState
+}
+
+extension Favorite {
 
     @discardableResult
-    internal convenience init(context: NSManagedObjectContext, preset: Preset, keyboardLowestNote: Int) {
+    internal convenience init(in context: NSManagedObjectContext, preset: Preset, keyboardLowestNote: Int) {
         self.init(context: context)
-        self.key = UUID()
+        self.uuid = UUID()
         self.name = preset.name
         self.keyboardLowestNote = Int16(keyboardLowestNote)
         self.preset = preset
         self.gain = 0.0
         self.pan = 0.0
+        context.saveChangesAsync()
     }
 
     @discardableResult
-    internal convenience init(context: NSManagedObjectContext, import legacyFavorite: LegacyFavorite,
+    internal convenience init(in context: NSManagedObjectContext, import legacyFavorite: LegacyFavorite,
                               preset: Preset) {
         self.init(context: context)
-        self.key = legacyFavorite.key
+        self.uuid = legacyFavorite.key
         self.name = legacyFavorite.name
         self.keyboardLowestNote = Int16(legacyFavorite.keyboardLowestNote?.midiNoteValue ?? 64)
         self.preset = preset
         self.gain = legacyFavorite.gain
         self.pan = legacyFavorite.pan
+        context.saveChangesAsync()
     }
 
     public func setName(_ value: String) { name = value }

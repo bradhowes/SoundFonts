@@ -14,64 +14,43 @@ public protocol Managed: class, NSFetchRequestResult {
     static var defaultSortDescriptors: [NSSortDescriptor] { get }
 }
 
-// MARK: - default implementation
-
 public extension Managed {
 
     typealias FetchRequest = NSFetchRequest<Self>
+    typealias FetchConfigurator = (FetchRequest) -> Void
+    typealias Initializer = (Self) -> Void
 
     /// Default sort definition
     static var defaultSortDescriptors: [NSSortDescriptor] { [] }
 
     /// Obtain generic fetch request
-    static var fetchRequest: FetchRequest { FetchRequest(entityName: entityName) }
+    static var typedFetchRequest: FetchRequest { FetchRequest(entityName: entityName) }
 
     /// Obtain a fetch request that is sorted according to defaultSortDescriptors
     static var sortedFetchRequest: FetchRequest {
-        let request = fetchRequest
+        let request = typedFetchRequest
         request.sortDescriptors = defaultSortDescriptors
         return request
     }
 
-    static func count(_ context: NSManagedObjectContext) -> Int { (try? context.count(for: fetchRequest)) ?? 0 }
-
-    /**
-     Obtain a fetch request that is sorted according to a given predicate
-
-     - parameter predicate: defines the sorting order
-     - returns: new FetchRequest
-     */
-    static func sortedFetchRequest(with predicate: NSPredicate) -> FetchRequest {
-        let request = sortedFetchRequest
-        request.predicate = predicate
-        return request
+    /// Count the number of items returned by a given fetch request
+    static func count(in context: NSManagedObjectContext, request: FetchRequest) -> Int {
+        (try? context.count(for: request)) ?? 0
     }
 }
-
-// MARK: Specialization when Managed derives from NSManagedObject
 
 public extension Managed where Self: NSManagedObject {
 
     static var entityName: String { entity().name! }
 
-    typealias FetchConfigurator = (FetchRequest) -> Void
-
     /**
      Create a fetch request and execute it.
 
      - parameter context: the context where the managed objects live
-     - paramater configurationBlock: a block to run to configure the fetch request before executing it
+     - paramater request: what to request
      - returns: array of managed objects
      */
-    static func fetch(in context: NSManagedObjectContext, config: FetchConfigurator = {_ in }) -> [Self] {
-        let request = fetchRequest
-        config(request)
-        return try! context.fetch(request)
-    }
-
-    static func sortedFetch(in context: NSManagedObjectContext, config: FetchConfigurator = { _ in }) -> [Self] {
-        let request = sortedFetchRequest
-        config(request)
+    static func fetch(in context: NSManagedObjectContext, request: FetchRequest) -> [Self] {
         return try! context.fetch(request)
     }
 
@@ -79,15 +58,13 @@ public extension Managed where Self: NSManagedObject {
      Find or create a managed object
 
      - parameter context: the context where the managed objects live
-     - parameter predicate: the match definition
-     - parameter configure: block to run with a new managed object
+     - paramater request: what to request
      - returns: found/created managed object
      */
-    static func findOrCreate(in context: NSManagedObjectContext, matching predicate: NSPredicate?,
-                             configure: (Self) -> Void) -> Self {
-        guard let object = findOrFetch(in: context, matching: predicate) else {
+    static func findOrCreate(in context: NSManagedObjectContext, request: FetchRequest, initer: Initializer) -> Self {
+        guard let object = findOrFetch(in: context, request: request) else {
             let newObject: Self = context.insertObject()
-            configure(newObject)
+            initer(newObject)
             return newObject
         }
         return object
@@ -100,13 +77,11 @@ public extension Managed where Self: NSManagedObject {
      - parameter predicate: the match definition
      - returns: optional found object
      */
-    static func findOrFetch(in context: NSManagedObjectContext, matching predicate: NSPredicate?) -> Self? {
-        guard let object = materializedObject(in: context, matching: predicate) else {
-            return fetch(in: context) { request in
-                request.predicate = predicate
-                request.returnsObjectsAsFaults = false
-                request.fetchLimit = 1
-                }.first
+    static func findOrFetch(in context: NSManagedObjectContext, request: FetchRequest) -> Self? {
+        guard let object = materializedObject(in: context, matching: request.predicate) else {
+            request.returnsObjectsAsFaults = false
+            request.fetchLimit = 1
+            return fetch(in: context, request: request).first
         }
         return object
     }
