@@ -23,6 +23,12 @@ public extension NSManagedObjectContext {
         if hasChanges { try save() }
     }
     
+    func saveChangesAsync() {
+        if hasChanges {
+            perform { self.saveOrRollback() }
+        }
+    }
+
     /**
      Attempt to save the context to storage, rollingback if the save fails.
 
@@ -44,7 +50,7 @@ public extension NSManagedObjectContext {
 
      - parameter block: block to execute
      */
-    func performChanges(block: @escaping () -> Void) {
+    func performChangesAndSaveAsync(block: @escaping () -> Void) {
         perform {
             block()
             self.saveOrRollback()

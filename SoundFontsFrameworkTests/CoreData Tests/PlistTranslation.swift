@@ -27,16 +27,16 @@ class PlistTranslationTests: XCTestCase {
         doWhenCoreDataReady(#function) { cdth, context in
             let app = AppState.get(context: context)
 
-            var lookup = [UUID:SoundFontEntity]()
+            var lookup = [UUID:SoundFont]()
             for soundFont in oldSoundFonts.soundFonts {
-                let sf = SoundFontEntity(context: context, import: soundFont)
+                let sf = SoundFont(in: context, import: soundFont)
                 XCTAssertEqual(soundFont.key, sf.uuid)
                 print(sf.uuid.uuidString)
                 lookup[sf.uuid] = sf
             }
 
-            XCTAssertEqual(try? SoundFontEntity.count(context), 9)
-            let soundFonts = SoundFontEntity.fetch(in: context)
+            XCTAssertEqual(SoundFont.countRows(in: context), 9)
+            let soundFonts = SoundFont.fetchRows(in: context)
             XCTAssertEqual(soundFonts.count, 9)
 
             for soundFont in soundFonts {
@@ -62,7 +62,7 @@ class PlistTranslationTests: XCTestCase {
                 print(soundFontKey)
                 let patchIndex = oldFave.soundFontAndPatch.patchIndex
                 if let sf = lookup[soundFontKey] {
-                    let fave = app.createFavorite(context: context, preset: sf.presets[patchIndex], keyboardLowestNote: oldFave.keyboardLowestNote?.midiNoteValue ?? 0)
+                    let fave = app.createFavorite(in: context, preset: sf.presets[patchIndex], keyboardLowestNote: oldFave.keyboardLowestNote?.midiNoteValue ?? 0)
                     fave.setName(oldFave.name)
                     fave.setPan(oldFave.pan)
                     fave.setGain(oldFave.gain)
