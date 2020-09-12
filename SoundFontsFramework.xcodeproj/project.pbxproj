@@ -10,15 +10,15 @@
 		BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD223CDAF51001987E9 /* FavoriteCell.swift */; };
 		BD074C3E23CDAF51001987E9 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */; };
 		BD074C3F23CDAF51001987E9 /* FavoriteMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD423CDAF51001987E9 /* FavoriteMover.swift */; };
-		BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD523CDAF51001987E9 /* FavoritesManager.swift */; };
+		BD074C4023CDAF51001987E9 /* LegacyFavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD523CDAF51001987E9 /* LegacyFavoritesManager.swift */; };
 		BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */; };
 		BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD723CDAF51001987E9 /* LegacyFavorite.swift */; };
-		BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */; };
+		BD074C4323CDAF51001987E9 /* LegacyFavoriteCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BD823CDAF51001987E9 /* LegacyFavoriteCollection.swift */; };
 		BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD074BDA23CDAF51001987E9 /* TableCell.xib */; };
 		BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */; };
 		BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */; };
-		BD074C4E23CDAF51001987E9 /* SoundFontCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */; };
-		BD074C4F23CDAF51001987E9 /* SoundFontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */; };
+		BD074C4E23CDAF51001987E9 /* LegacySoundFontCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BE923CDAF51001987E9 /* LegacySoundFontCollection.swift */; };
+		BD074C4F23CDAF51001987E9 /* LegacySoundFontsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEA23CDAF51001987E9 /* LegacySoundFontsManager.swift */; };
 		BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */; };
 		BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */; };
 		BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BED23CDAF51001987E9 /* LegacyPatch.swift */; };
@@ -164,15 +164,15 @@
 		BD074BD223CDAF51001987E9 /* FavoriteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteCell.swift; sourceTree = "<group>"; };
 		BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		BD074BD423CDAF51001987E9 /* FavoriteMover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteMover.swift; sourceTree = "<group>"; };
-		BD074BD523CDAF51001987E9 /* FavoritesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
+		BD074BD523CDAF51001987E9 /* LegacyFavoritesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyFavoritesManager.swift; sourceTree = "<group>"; };
 		BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteEditor.swift; sourceTree = "<group>"; };
 		BD074BD723CDAF51001987E9 /* LegacyFavorite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyFavorite.swift; sourceTree = "<group>"; };
-		BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteCollection.swift; sourceTree = "<group>"; };
+		BD074BD823CDAF51001987E9 /* LegacyFavoriteCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyFavoriteCollection.swift; sourceTree = "<group>"; };
 		BD074BDA23CDAF51001987E9 /* TableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TableCell.xib; sourceTree = "<group>"; };
 		BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoriteCell.xib; sourceTree = "<group>"; };
 		BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsControlsController.swift; sourceTree = "<group>"; };
-		BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontCollection.swift; sourceTree = "<group>"; };
-		BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsManager.swift; sourceTree = "<group>"; };
+		BD074BE923CDAF51001987E9 /* LegacySoundFontCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacySoundFontCollection.swift; sourceTree = "<group>"; };
+		BD074BEA23CDAF51001987E9 /* LegacySoundFontsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacySoundFontsManager.swift; sourceTree = "<group>"; };
 		BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontKind.swift; sourceTree = "<group>"; };
 		BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacySoundFont.swift; sourceTree = "<group>"; };
 		BD074BED23CDAF51001987E9 /* LegacyPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyPatch.swift; sourceTree = "<group>"; };
@@ -391,11 +391,11 @@
 			children = (
 				BD074BD723CDAF51001987E9 /* LegacyFavorite.swift */,
 				BD074BD223CDAF51001987E9 /* FavoriteCell.swift */,
-				BD074BD823CDAF51001987E9 /* FavoriteCollection.swift */,
+				BD074BD823CDAF51001987E9 /* LegacyFavoriteCollection.swift */,
 				BD074BD623CDAF51001987E9 /* FavoriteEditor.swift */,
 				BD074BD423CDAF51001987E9 /* FavoriteMover.swift */,
 				BD9781FF2506003600CEFB59 /* FavoritesConfigFile.swift */,
-				BD074BD523CDAF51001987E9 /* FavoritesManager.swift */,
+				BD074BD523CDAF51001987E9 /* LegacyFavoritesManager.swift */,
 				BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */,
 			);
 			path = "Favorites View";
@@ -429,10 +429,10 @@
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
 				BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
-				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
+				BD074BE923CDAF51001987E9 /* LegacySoundFontCollection.swift */,
 				BD9782012506A22E00CEFB59 /* SoundFontsConfigFile.swift */,
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
-				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
+				BD074BEA23CDAF51001987E9 /* LegacySoundFontsManager.swift */,
 			);
 			path = MIDI;
 			sourceTree = "<group>";
@@ -783,7 +783,7 @@
 				BD074C8B23CDAF51001987E9 /* SoundFonts.swift in Sources */,
 				BD074C8323CDAF51001987E9 /* Favorites.swift in Sources */,
 				BD074C7023CDAF51001987E9 /* Settings.swift in Sources */,
-				BD074C4F23CDAF51001987E9 /* SoundFontsManager.swift in Sources */,
+				BD074C4F23CDAF51001987E9 /* LegacySoundFontsManager.swift in Sources */,
 				BD8A31652502E6920077320F /* Favorite.swift in Sources */,
 				BD074C8A23CDAF51001987E9 /* FavoriteEditorDelegate.swift in Sources */,
 				BD074C7F23CDAF51001987E9 /* UICollectionView+Extensions.swift in Sources */,
@@ -794,7 +794,7 @@
 				BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */,
-				BD074C4323CDAF51001987E9 /* FavoriteCollection.swift in Sources */,
+				BD074C4323CDAF51001987E9 /* LegacyFavoriteCollection.swift in Sources */,
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
@@ -872,10 +872,10 @@
 				BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
-				BD074C4023CDAF51001987E9 /* FavoritesManager.swift in Sources */,
+				BD074C4023CDAF51001987E9 /* LegacyFavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */,
 				BD074C8223CDAF51001987E9 /* ActivePatchManager.swift in Sources */,
-				BD074C4E23CDAF51001987E9 /* SoundFontCollection.swift in Sources */,
+				BD074C4E23CDAF51001987E9 /* LegacySoundFontCollection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

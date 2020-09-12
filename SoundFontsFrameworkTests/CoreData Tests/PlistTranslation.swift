@@ -10,11 +10,11 @@ class PlistTranslationTests: XCTestCase {
 
     func testSoundFontLibraryLoadiing() {
 
-        let oldSoundFonts: SoundFontCollection = {
+        let oldSoundFonts: LegacySoundFontCollection = {
             let bundle = Bundle(for: type(of: self))
             let url = bundle.url(forResource: "SoundFontLibrary", withExtension: "plist")!
             let data = try! Data(contentsOf: url)
-            return try! PropertyListDecoder().decode(SoundFontCollection.self, from: data)
+            return try! PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data)
         }()
 
         let oldFavorites: LegacyFavoriteCollection = {
