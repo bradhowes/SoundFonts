@@ -11,7 +11,10 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     private lazy var log = Logging.logger("FavCell")
 
     /// The name of the favorite
-    @IBOutlet weak var name: UILabel!
+    @IBOutlet private weak var name: UILabel!
+
+    /// Hack to properly manage the items width. Starts out disabled, but will be enabled when maxWidth is set.
+    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint! { didSet { maxWidthConstraint.isActive = false } }
 
     /// The background color of an inactive favorite cell
     @IBInspectable var normalBackgroundColor: UIColor! { didSet { self.backgroundColor = normalBackgroundColor } }
@@ -27,8 +30,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 
     private var normalBorderColor: UIColor?
 
-    @IBOutlet private var maxWidthConstraint: NSLayoutConstraint! { didSet { maxWidthConstraint.isActive = false } }
-
+    /// Attribute set by the FavoritesViewController to limit the cell's width
     var maxWidth: CGFloat? = nil {
         didSet {
             guard let maxWidth = maxWidth else { return }
@@ -37,13 +39,18 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         }
     }
 
+    /// Indicates if the cell is currently moving around. Update the border color when it is.
+    var moving: Bool = false { didSet { self.borderColor = moving ? UIColor.magenta : normalBorderColor } }
+
+    /// The intrinsic size of the cell is its content view with the current label text.
+    override var intrinsicContentSize: CGSize {
+        contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
-
-    /// Indicates if the cell is currently moving around. Update the border color when it is.
-    var moving: Bool = false { didSet { self.borderColor = moving ? UIColor.magenta : normalBorderColor } }
 
     /**
      Show the Favorite name and `active` indicator.
@@ -69,17 +76,15 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         invalidateIntrinsicContentSize()
     }
 
-    /// The intrinsic size of the cell is that of its content view with the current label text.
-    override var intrinsicContentSize: CGSize {
-        contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    }
-
     /// Report the layout size for a given target size. Foward request to the content view.
     override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
         contentView.systemLayoutSizeFitting(targetSize)
     }
+}
 
-    private func setupView() {
+private extension FavoriteCell {
+
+    func setupView() {
         normalBorderColor = borderColor
         contentView.translatesAutoresizingMaskIntoConstraints = false
         invalidateIntrinsicContentSize()

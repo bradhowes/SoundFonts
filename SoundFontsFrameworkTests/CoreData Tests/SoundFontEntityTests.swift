@@ -54,13 +54,10 @@ class SoundFontTests: XCTestCase {
         doWhenCoreDataReady(#function) { cdth, context in
             let app = AppState.get(context: context)
             XCTAssertEqual(app.favorites.count, 0)
-            let app2 = AppState.get(context: context)
-            XCTAssertEqual(app, app2)
 
             let sf = SoundFont(in: context, config: CoreDataTestData.sf1)
-            _ = app.createFavorite(in: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            _ = app.createFavorite(preset: sf.presets[1], keyboardLowestNote: 35)
             XCTAssertEqual(app.favorites.count, 1)
-            XCTAssertEqual(app2.favorites.count, 1)
         }
     }
 
@@ -71,7 +68,7 @@ class SoundFontTests: XCTestCase {
 
             let sf = SoundFont(in: context, config: CoreDataTestData.sf1)
             let preset = sf.presets[1]
-            let fav = app.createFavorite(in: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            let fav = app.createFavorite(preset: sf.presets[1], keyboardLowestNote: 35)
             XCTAssertEqual(app.favorites.count, 1)
 
             XCTAssertEqual(fav.name, preset.name)
@@ -89,11 +86,11 @@ class SoundFontTests: XCTestCase {
             XCTAssertEqual(app.favorites.count, 0)
 
             let sf = SoundFont(in: context, config: CoreDataTestData.sf1)
-            let f1 = app.createFavorite(in: context, preset: sf.presets[1], keyboardLowestNote: 35)
+            let f1 = app.createFavorite(preset: sf.presets[1], keyboardLowestNote: 35)
             XCTAssertEqual(app.favorites.count, 1)
 
             f1.setName("first")
-            let f2 = app.createFavorite(in: context, preset: sf.presets[2], keyboardLowestNote: 36)
+            let f2 = app.createFavorite(preset: sf.presets[2], keyboardLowestNote: 36)
 
             f2.setName("second")
             XCTAssertEqual(app.favorites.count, 2)
@@ -108,6 +105,22 @@ class SoundFontTests: XCTestCase {
 
             app.deleteFavorite(favorite: f1)
             XCTAssertEqual(app.favorites.count, 1)
+        }
+    }
+
+    func testSetActivePreset() {
+        doWhenCoreDataReady(#function) { cdth, context in
+            let app = AppState.get(context: context)
+            XCTAssertNil(app.activePreset)
+            let sf = SoundFont(in: context, config: CoreDataTestData.sf1)
+            app.setActive(preset: sf.presets[3])
+            XCTAssertNotNil(app.activePreset)
+            XCTAssertEqual("Four", app.activePreset?.name)
+            app.setActive(preset: sf.presets[0])
+            XCTAssertEqual("One", app.activePreset?.name)
+
+            app.setActive(preset: nil)
+            XCTAssertNil(app.activePreset)
         }
     }
 }
