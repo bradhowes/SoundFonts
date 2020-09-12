@@ -62,7 +62,8 @@ class PlistTranslationTests: XCTestCase {
                 print(soundFontKey)
                 let patchIndex = oldFave.soundFontAndPatch.patchIndex
                 if let sf = lookup[soundFontKey] {
-                    let fave = app.createFavorite(in: context, preset: sf.presets[patchIndex], keyboardLowestNote: oldFave.keyboardLowestNote?.midiNoteValue ?? 0)
+                    let fave = app.createFavorite(preset: sf.presets[patchIndex],
+                                                  keyboardLowestNote: oldFave.keyboardLowestNote?.midiNoteValue ?? 0)
                     fave.setName(oldFave.name)
                     fave.setPan(oldFave.pan)
                     fave.setGain(oldFave.gain)

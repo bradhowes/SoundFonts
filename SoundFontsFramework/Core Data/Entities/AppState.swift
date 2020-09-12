@@ -15,20 +15,24 @@ public final class AppState: NSManagedObject, Managed {
 
     @NSManaged private var lastUpdated: Date?
     @NSManaged private var orderedFavorites: NSOrderedSet
-    @NSManaged private var activePreset: Preset?
+    @NSManaged public private(set) var activePreset: Preset?
 }
 
 extension AppState {
-
     public static func get(context: NSManagedObjectContext) -> AppState {
         if let appState: AppState = context.object(forSingleObjectCacheKey: "AppState") { return appState }
         let appState = findOrCreate(in: context, request: typedFetchRequest) { _ in }
         context.set(appState, forSingleObjectCacheKey: "AppState")
+        context.saveChangesAsync()
         return appState
     }
+}
 
-    public func createFavorite(in context: NSManagedObjectContext, preset: Preset,
-                               keyboardLowestNote: Int) -> Favorite {
+extension AppState {
+    public var favorites: EntityCollection<Favorite> { EntityCollection<Favorite>(orderedFavorites) }
+
+    public func createFavorite(preset: Preset, keyboardLowestNote: Int) -> Favorite {
+        guard let context = managedObjectContext else { fatalError() }
         let fav = Favorite(in: context, preset: preset, keyboardLowestNote: keyboardLowestNote)
         self.addToOrderedFavorites(fav)
         context.saveChangesAsync()
@@ -36,16 +40,14 @@ extension AppState {
     }
 
     public func deleteFavorite(favorite: Favorite) {
-        guard let context = favorite.managedObjectContext else { fatalError() }
+        guard let context = managedObjectContext else { fatalError() }
         self.removeFromFavorites(favorite)
         favorite.delete()
         context.saveChangesAsync()
     }
 
-    public var favorites: EntityCollection<Favorite> { EntityCollection<Favorite>(orderedFavorites) }
-
     public func move(favorite: Favorite, to newIndex: Int) {
-        guard let context = favorite.managedObjectContext else { fatalError() }
+        guard let context = managedObjectContext else { fatalError() }
         let oldIndex = self.orderedFavorites.index(of: favorite)
         guard oldIndex != newIndex else { return }
         let mutableFavorites = self.orderedFavorites.mutableCopy() as! NSMutableOrderedSet
@@ -53,14 +55,15 @@ extension AppState {
         self.orderedFavorites = mutableFavorites
         context.saveChangesAsync()
     }
+}
 
-    public func setActive(preset: Preset) {
-        guard let context = preset.managedObjectContext else { fatalError() }
-        context.performChangesAndSaveAsync {
-            self.activePreset?.setActivated(nil)
-            self.activePreset = preset
-            preset.setActivated(self)
-        }
+extension AppState {
+    public func setActive(preset: Preset?) {
+        guard let context = managedObjectContext else { fatalError() }
+        self.activePreset?.setActivated(nil)
+        self.activePreset = preset
+        preset?.setActivated(self)
+        context.saveChangesAsync()
     }
 }
 
