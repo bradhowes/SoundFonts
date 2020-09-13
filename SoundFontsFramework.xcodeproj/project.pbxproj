@@ -564,8 +564,8 @@
 				BDD913FD2508FCC50068E3CE /* EntityCollection.swift */,
 				BDD5FA6E25043C2500367F0B /* Managed.swift */,
 				BD3F44CF2501958000653ABD /* PersistentContainer.swift */,
-				BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */,
 				BDD5FA6C250430AF00367F0B /* SoundFontCoreData.swift */,
+				BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */,
 			);
 			path = "Core Data";
 			sourceTree = "<group>";

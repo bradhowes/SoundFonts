@@ -9,7 +9,7 @@ import CoreData
  instance (`Cell`).
  */
 public protocol TableViewDataSourceDelegate: class {
-    associatedtype Object: NSFetchRequestResult
+    associatedtype Entity: NSFetchRequestResult
     associatedtype Cell: UITableViewCell
 
     /**
@@ -18,7 +18,7 @@ public protocol TableViewDataSourceDelegate: class {
      - parameter cell: the view to render into
      - parameter object: the object to render
      */
-    func configure(_ cell: Cell, for object: Object)
+    func configure(_ cell: Cell, for object: Entity)
 
     /**
      Determine if this row can be deleted.
@@ -34,7 +34,7 @@ public protocol TableViewDataSourceDelegate: class {
      - parameter obj: the object to delete
      - parameter at: the row the object is in
      */
-    func delete(_ obj: Object, at: IndexPath)
+    func delete(_ obj: Entity, at: IndexPath)
 
     /**
      Notification that the table was updated due to NSFetchResultsController activity
@@ -50,16 +50,16 @@ public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObjec
 NSFetchedResultsControllerDelegate {
     private lazy var log = Logging.logger("tvds")
 
-    public typealias Object = Delegate.Object
+    public typealias Entity = Delegate.Entity
     public typealias Cell = Delegate.Cell
 
     private let tableView: UITableView
     private let cellIdentifier: String
-    private let fetchedResultsController: NSFetchedResultsController<Object>
+    private let fetchedResultsController: NSFetchedResultsController<Entity>
     private weak var delegate: Delegate! // Lifetime is always as long as that of the delegate.
 
     /// Obtain the managed object for the currently selected row
-    public var selectedObject: Object? {
+    public var selectedObject: Entity? {
         guard let indexPath = tableView.indexPathForSelectedRow else { return nil }
         return object(at: indexPath)
     }
@@ -73,7 +73,7 @@ NSFetchedResultsControllerDelegate {
      - parameter delegate: the delegate for rendering and deletion handling
      */
     public required init(tableView: UITableView, cellIdentifier: String,
-                         fetchedResultsController: NSFetchedResultsController<Object>, delegate: Delegate) {
+                         fetchedResultsController: NSFetchedResultsController<Entity>, delegate: Delegate) {
         self.tableView = tableView
         self.cellIdentifier = cellIdentifier
         self.fetchedResultsController = fetchedResultsController
@@ -98,14 +98,14 @@ NSFetchedResultsControllerDelegate {
      - parameter indexPath: the row to fetch
      - returns: the found model instance
      */
-    public func object(at indexPath: IndexPath) -> Object { fetchedResultsController.object(at: indexPath) }
+    public func object(at indexPath: IndexPath) -> Entity { fetchedResultsController.object(at: indexPath) }
 
     /**
      Change an existing Core Data fetch request and execute it.
 
      - parameter configure: block to run to edit the request
      */
-    public func reconfigureFetchRequest(_ configure: (NSFetchRequest<Object>) -> Void) {
+    public func reconfigureFetchRequest(_ configure: (NSFetchRequest<Entity>) -> Void) {
         NSFetchedResultsController<NSFetchRequestResult>.deleteCache(withName: fetchedResultsController.cacheName)
         configure(fetchedResultsController.fetchRequest)
         do { try fetchedResultsController.performFetch() } catch { fatalError("fetch request failed") }
