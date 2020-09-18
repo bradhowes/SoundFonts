@@ -20,7 +20,7 @@ final public class LegacyFavoriteCollection: Codable {
     }
 
     public func validate(_ legacyFavorite: LegacyFavorite) -> Bool {
-        guard let held = getBy(soundFontAndPatch: legacyFavorite.soundFontAndPatch) else { return false }
+        guard let held = getBySFP(soundFontAndPatch: legacyFavorite.soundFontAndPatch) else { return false }
         return held == legacyFavorite
     }
 
@@ -54,7 +54,7 @@ final public class LegacyFavoriteCollection: Codable {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: the favorite found or nil if no match
      */
-    func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
+    func getBySFP(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
         guard let soundFontAndPatch = soundFontAndPatch else { return nil }
         return reverseLookup[soundFontAndPatch]
     }

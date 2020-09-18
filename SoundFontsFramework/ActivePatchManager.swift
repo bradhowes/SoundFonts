@@ -84,7 +84,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     private let soundFonts: SoundFonts
 
-    public private(set) var active: ActivePatchKind
+    public private(set) var active: ActivePatchKind {
+        didSet {
+            os_log(.info, log: log, "set active: %s", active.description)
+        }
+    }
 
     public var favorite: LegacyFavorite? { active.favorite }
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }

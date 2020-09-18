@@ -24,7 +24,9 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
         super.init()
     }
 
-    public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
+    public func validate(_ favorite: LegacyFavorite) -> Bool {
+        return true // collection.validate(favorite)        
+    }
 }
 
 // MARK: - Favorites protocol
@@ -42,7 +44,7 @@ extension LegacyFavoritesManager: Favorites {
     public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
     public func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
-        collection.getBy(soundFontAndPatch: soundFontAndPatch)
+        collection.getBySFP(soundFontAndPatch: soundFontAndPatch)
     }
 
     public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {

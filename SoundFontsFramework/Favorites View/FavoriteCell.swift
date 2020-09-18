@@ -14,7 +14,11 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     @IBOutlet private weak var name: UILabel!
 
     /// Hack to properly manage the items width. Starts out disabled, but will be enabled when maxWidth is set.
-    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint! { didSet { maxWidthConstraint.isActive = false } }
+    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint? {
+        didSet {
+            maxWidthConstraint?.isActive = false
+        }
+    }
 
     /// The background color of an inactive favorite cell
     @IBInspectable var normalBackgroundColor: UIColor! { didSet { self.backgroundColor = normalBackgroundColor } }
@@ -34,8 +38,8 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     var maxWidth: CGFloat? = nil {
         didSet {
             guard let maxWidth = maxWidth else { return }
-            maxWidthConstraint.isActive = true
-            maxWidthConstraint.constant = maxWidth
+            maxWidthConstraint?.isActive = true
+            maxWidthConstraint?.constant = maxWidth
         }
     }
 
