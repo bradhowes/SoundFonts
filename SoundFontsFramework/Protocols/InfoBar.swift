@@ -1,6 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
+import UIKit
 
 /**
  The collection of event types that can be targeted in the `InfoBarManager.addTarget` method
@@ -15,7 +16,7 @@ public enum InfoBarEvent {
 }
 
 /**
- Manaages the actions and display of items in the info bar above the keyboard
+ Handles the actions and display of items in a hypothetical info bar above the keyboard
  */
 public protocol InfoBar: class {
 
@@ -26,7 +27,8 @@ public protocol InfoBar: class {
      - parameter target: the object to call when the event takes place
      - parameter action: the function to call when the event takes place
      */
-    func addTarget(_ event: InfoBarEvent, target: Any, action: Selector)
+    func establishEventHandler(_ event: InfoBarEvent, handler: Any, action: Selector)
+    func establishEventHandler(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure)
 
     /**
      Show status information on the bar. This will appear temporarily and then fade back to the patch name.

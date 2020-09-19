@@ -6,7 +6,7 @@ import UIKit
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
  left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
  */
-public final class InfoBarController: UIViewController, ControllerConfiguration, InfoBar {
+public final class InfoBarController: UIViewController {
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
@@ -44,6 +44,9 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
             moreButtonsXConstraint.constant = -moreButtons.frame.width
         }
     }
+}
+
+extension InfoBarController {
 
     @IBAction
     func toggleMoreButtons(_ sender: UIButton) {
@@ -94,6 +97,9 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
     func showGuide(_ sender: UIButton) {
         toggleMoreButtons(self.showMoreButtons)
     }
+}
+
+extension InfoBarController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
@@ -103,7 +109,10 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
         router.favorites.subscribe(self, notifier: favoritesChange)
         useActivePatchKind(activePatchManager.active)
     }
+}
 
+extension InfoBarController: InfoBar {
+    
     /**
      Add an event target to one of the internal UIControl entities.
     
@@ -111,20 +120,37 @@ public final class InfoBarController: UIViewController, ControllerConfiguration,
      - parameter target: the instance to notify when the event fires
      - parameter action: the method to call when the event fires
      */
-    public func addTarget(_ event: InfoBarEvent, target: Any, action: Selector) {
+    public func establishEventHandler(_ event: InfoBarEvent, handler: Any, action: Selector) {
         switch event {
         case .shiftKeyboardUp:
-            highestKey.addTarget(target, action: action, for: .touchUpInside)
+            highestKey.addTarget(handler, action: action, for: .touchUpInside)
             highestKey.isHidden = false
 
         case .shiftKeyboardDown:
-            lowestKey.addTarget(target, action: action, for: .touchUpInside)
+            lowestKey.addTarget(handler, action: action, for: .touchUpInside)
             lowestKey.isHidden = false
 
-        case .doubleTap: doubleTap.addTarget(target, action: action)
-        case .addSoundFont: addSoundFont.addTarget(target, action: action, for: .touchUpInside)
-        case .showGuide: showGuide.addTarget(target, action: action, for: .touchUpInside)
-        case .showSettings: showSettings.addTarget(target, action: action, for: .touchUpInside)
+        case .doubleTap: doubleTap.addTarget(handler, action: action)
+        case .addSoundFont: addSoundFont.addTarget(handler, action: action, for: .touchUpInside)
+        case .showGuide: showGuide.addTarget(handler, action: action, for: .touchUpInside)
+        case .showSettings: showSettings.addTarget(handler, action: action, for: .touchUpInside)
+        }
+    }
+
+    public func establishEventHandler(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure) {
+        switch event {
+        case .shiftKeyboardUp:
+            highestKey.addClosure(closure)
+            highestKey.isHidden = false
+
+        case .shiftKeyboardDown:
+            lowestKey.addClosure(closure)
+            lowestKey.isHidden = false
+
+        case .doubleTap: doubleTap.addClosure(closure)
+        case .addSoundFont: addSoundFont.addClosure(closure)
+        case .showGuide: showGuide.addClosure(closure)
+        case .showSettings: showSettings.addClosure(closure)
         }
     }
 

@@ -55,8 +55,7 @@ public final class SoundFontsViewController: UIViewController {
         patchesTableViewDataSource.hideSearchBar()
     }
 
-    @IBAction
-    public func addSoundFont(_ sender: UIButton) {
+    @objc private func addSoundFont(_ sender: UIButton) {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
@@ -164,7 +163,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             keyboard: router.keyboard,
             sampler: router.sampler)
 
-        router.infoBar.addTarget(.addSoundFont, target: self, action: #selector(addSoundFont(_:)))
+        router.infoBar.establishEventHandler(.addSoundFont, handler: self, action: #selector(addSoundFont(_:)))
     }
 }
 

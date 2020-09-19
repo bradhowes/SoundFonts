@@ -61,7 +61,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
         let favoritesViewManager = router.favoritesViewManager
         favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
         favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
-        router.infoBar.addTarget(.doubleTap, target: self, action: #selector(toggleConfigurationViews))
+        router.infoBar.establishEventHandler(.doubleTap, handler: self, action: #selector(toggleConfigurationViews))
     }
 
     @IBAction private func toggleConfigurationViews() {

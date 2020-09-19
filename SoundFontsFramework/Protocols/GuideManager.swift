@@ -3,7 +3,5 @@
 import UIKit
 
 public protocol GuideManager {
-    func showGuide()
-    func hideGuide()
     func prepareGuide(for: Int)
 }
