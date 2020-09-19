@@ -50,52 +50,15 @@ extension InfoBarController {
 
     @IBAction
     func toggleMoreButtons(_ sender: UIButton) {
-        guard traitCollection.horizontalSizeClass == .compact else { return }
-
-        // Make sure that the 'moreButtons' view is where we expect it to be. This seems to be necessary after
-        // width trait changes.
-        moreButtonsXConstraint.constant = moreButtons.isHidden ? -moreButtons.frame.width : 0
-        view.layoutIfNeeded()
-
-        let willBeHidden = !moreButtons.isHidden
-        let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
-                               compatibleWith: .none)
-        let newConstraint = willBeHidden ? -moreButtons.frame.width : 0
-        let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
-
-        moreButtons.isHidden = false
-        let animator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.4,
-            delay: 0.0,
-            options: [],
-            animations: {
-                self.moreButtonsXConstraint.constant = newConstraint
-                self.touchView.alpha = newAlpha
-                self.view.layoutIfNeeded()
-        }) { _ in
-            self.moreButtons.isHidden = willBeHidden
-            self.touchView.alpha = newAlpha
-        }
-
-        UIView.transition(with: sender, duration: 0.4, options: .transitionCrossDissolve, animations: {
-            sender.setImage(newImage, for: .normal)
-        }, completion: nil)
-
-        animator.startAnimation()
+        animateMoreButtons()
     }
 
-    @IBAction private func editSettings() {
-        performSegue(withIdentifier: .settings)
+    @IBAction private func showSettings(_ sender: UIButton) {
+        animateMoreButtons()
     }
 
-    @IBAction
-    func showSettings(_ sender: UIButton) {
-        toggleMoreButtons(self.showMoreButtons)
-    }
-
-    @IBAction
-    func showGuide(_ sender: UIButton) {
-        toggleMoreButtons(self.showMoreButtons)
+    @IBAction private func showGuide(_ sender: UIButton) {
+        animateMoreButtons()
     }
 }
 
@@ -120,24 +83,7 @@ extension InfoBarController: InfoBar {
      - parameter target: the instance to notify when the event fires
      - parameter action: the method to call when the event fires
      */
-    public func establishEventHandler(_ event: InfoBarEvent, handler: Any, action: Selector) {
-        switch event {
-        case .shiftKeyboardUp:
-            highestKey.addTarget(handler, action: action, for: .touchUpInside)
-            highestKey.isHidden = false
-
-        case .shiftKeyboardDown:
-            lowestKey.addTarget(handler, action: action, for: .touchUpInside)
-            lowestKey.isHidden = false
-
-        case .doubleTap: doubleTap.addTarget(handler, action: action)
-        case .addSoundFont: addSoundFont.addTarget(handler, action: action, for: .touchUpInside)
-        case .showGuide: showGuide.addTarget(handler, action: action, for: .touchUpInside)
-        case .showSettings: showSettings.addTarget(handler, action: action, for: .touchUpInside)
-        }
-    }
-
-    public func establishEventHandler(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure) {
+    public func addEventClosure(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure) {
         switch event {
         case .shiftKeyboardUp:
             highestKey.addClosure(closure)
@@ -203,8 +149,8 @@ extension InfoBarController: SegueHandler {
     }
 
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .settings: beginSettingsView(segue, sender: sender)
+        if case .settings = segueIdentifier(for: segue) {
+            beginSettingsView(segue, sender: sender)
         }
     }
 
@@ -231,6 +177,41 @@ extension InfoBarController: SegueHandler {
 }
 
 extension InfoBarController {
+
+    private func animateMoreButtons() {
+        guard traitCollection.horizontalSizeClass == .compact else { return }
+
+        // Make sure that the 'moreButtons' view is where we expect it to be. This seems to be necessary after
+        // width trait changes.
+        moreButtonsXConstraint.constant = moreButtons.isHidden ? -moreButtons.frame.width : 0
+        view.layoutIfNeeded()
+
+        let willBeHidden = !moreButtons.isHidden
+        let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
+                               compatibleWith: .none)
+        let newConstraint = willBeHidden ? -moreButtons.frame.width : 0
+        let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
+
+        moreButtons.isHidden = false
+        let animator = UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.4,
+            delay: 0.0,
+            options: [],
+            animations: {
+                self.moreButtonsXConstraint.constant = newConstraint
+                self.touchView.alpha = newAlpha
+                self.view.layoutIfNeeded()
+            }) { _ in
+            self.moreButtons.isHidden = willBeHidden
+            self.touchView.alpha = newAlpha
+        }
+
+        UIView.transition(with: showMoreButtons, duration: 0.4, options: .transitionCrossDissolve, animations: {
+            self.showMoreButtons.setImage(newImage, for: .normal)
+        }, completion: nil)
+
+        animator.startAnimation()
+    }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: _) = event {

@@ -2,10 +2,13 @@
 
 import UIKit
 
-extension SettingKeys {
-
-    /// Lowest note of the app keyboard
+extension UserDefaults {
     static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
+
+    @objc dynamic var lowestKeyNote: Int {
+        get { self[Self.lowestKeyNote] }
+        set { self[Self.lowestKeyNote] = newValue}
+    }
 }
 
 /**
@@ -16,7 +19,7 @@ final class KeyboardController: UIViewController {
     weak var delegate: KeyboardDelegate?
 
     /// MIDI value of the first note in the keyboard
-    private var firstMidiNoteValue = 48 { didSet { Settings[.lowestKeyNote] = firstMidiNoteValue } }
+    private var firstMidiNoteValue = 48 { didSet { settings.lowestKeyNote = firstMidiNoteValue } }
 
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
@@ -26,7 +29,7 @@ final class KeyboardController: UIViewController {
     private var keys = [Key]()
 
     /// How wide each key will be
-    private var keyWidth: CGFloat = CGFloat(Settings[.keyWidth])
+    private var keyWidth: CGFloat = CGFloat(settings.keyWidth)
 
     private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
     private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
@@ -54,29 +57,17 @@ final class KeyboardController: UIViewController {
     }
 
     override func viewDidLoad() {
-        let lowestNote = Settings[.lowestKeyNote]
+        let lowestNote = settings.lowestKeyNote
         firstMidiNoteValue = max(lowestNote, 0)
-        NotificationCenter.default.addObserver(forName: .keyLabelOptionChanged, object: nil,
-                                               queue: nil) { notification in self.keyLabelOptionChanged(notification) }
-        NotificationCenter.default.addObserver(forName: .keyWidthChanged, object: nil,
-                                               queue: nil) { _ in self.keyWidthChanged() }
+        let nc = NotificationCenter.default
+        // TODO: change to KVO
+        nc.addObserver(forName: .keyLabelOptionChanged, object: nil, queue: nil) { self.keyLabelOptionChanged($0) }
+        nc.addObserver(forName: .keyWidthChanged, object: nil, queue: nil) { _ in self.keyWidthChanged() }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         createKeys()
-    }
-
-    private func keyWidthChanged() {
-        keyWidth = CGFloat(Settings[.keyWidth])
-        Key.keyWidth = keyWidth
-        releaseAllKeys()
-        view.setNeedsLayout()
-    }
-
-    private func keyLabelOptionChanged(_ notification: Notification) {
-        let option = notification.object as! KeyLabelOption
-        self.keyLabelOption = option
     }
 }
 
@@ -85,8 +76,8 @@ extension KeyboardController: ControllerConfiguration {
 
     func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
-        router.infoBar.establishEventHandler(.shiftKeyboardUp, handler: self, action: #selector(shiftKeyboardUp))
-        router.infoBar.establishEventHandler(.shiftKeyboardDown, handler: self, action: #selector(shiftKeyboardDown))
+        router.infoBar.addEventClosure(.shiftKeyboardUp) { self.shiftKeyboardUp() }
+        router.infoBar.addEventClosure(.shiftKeyboardDown) { self.shiftKeyboardDown() }
         setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
         router.favorites.subscribe(self, notifier: favoritesChange)
     }
@@ -115,7 +106,7 @@ extension KeyboardController: ControllerConfiguration {
 
 extension KeyboardController {
 
-    @IBAction private func shiftKeyboardUp(_ sender: UIButton) {
+    private func shiftKeyboardUp() {
         assert(!keys.isEmpty)
         if lastMidiNoteValue < Sampler.maxMidiValue {
             let shift: Int = {
@@ -138,7 +129,7 @@ extension KeyboardController {
         AskForReview.maybe()
     }
 
-    @IBAction private func shiftKeyboardDown(_ sender: UIButton) {
+    private func shiftKeyboardDown() {
         assert(!keys.isEmpty)
         if firstMidiNoteValue > 12 {
             let shift: Int = {
@@ -270,6 +261,19 @@ extension KeyboardController: Keyboard {
 // MARK: - Key Generation
 
 extension KeyboardController {
+
+    // TODO: Use KVO
+    private func keyWidthChanged() {
+        keyWidth = CGFloat(settings.keyWidth)
+        Key.keyWidth = keyWidth
+        releaseAllKeys()
+        view.setNeedsLayout()
+    }
+
+    private func keyLabelOptionChanged(_ notification: Notification) {
+        let option = notification.object as! KeyLabelOption
+        self.keyLabelOption = option
+    }
 
     private func createKeys() {
         keys.forEach { $0.removeFromSuperview() }

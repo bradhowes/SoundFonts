@@ -55,7 +55,7 @@ public final class SoundFontsViewController: UIViewController {
         patchesTableViewDataSource.hideSearchBar()
     }
 
-    @objc private func addSoundFont(_ sender: UIButton) {
+    private func addSoundFont() {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
@@ -163,7 +163,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             keyboard: router.keyboard,
             sampler: router.sampler)
 
-        router.infoBar.establishEventHandler(.addSoundFont, handler: self, action: #selector(addSoundFont(_:)))
+        router.infoBar.addEventClosure(.addSoundFont) { self.addSoundFont() }
     }
 }
 
@@ -178,10 +178,10 @@ extension SoundFontsViewController: PatchesViewManager {
      - parameter target: the object to notify
      - parameter action: the selector to invoke
      */
-    public func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector) {
+    public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void) {
         switch event {
-        case .swipeLeft: swipeLeft.addTarget(target, action: action)
-        case .swipeRight: swipeRight.addTarget(target, action: action)
+        case .swipeLeft: swipeLeft.addClosure(closure)
+        case .swipeRight: swipeRight.addClosure(closure)
         }
     }
 

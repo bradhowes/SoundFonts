@@ -3,7 +3,7 @@
 import StoreKit
 import os
 
-extension SettingKeys {
+extension UserDefaults {
     static let daysAfterFirstLaunchBeforeRequest = SettingKey<Int>("daysAfterFirstLaunchBeforeRequest",
                                                                    defaultValue: 14)
     static let monthsAfterLastReviewBeforeRequest = SettingKey<Int>("monthsAfterLastReviewBeforeRequest",
@@ -12,6 +12,31 @@ extension SettingKeys {
     static let firstLaunchDate = SettingKey<Date>("firstLaunchDate", defaultValue: Date.distantPast)
     static let lastReviewRequestDate = SettingKey<Date>("lastReviewRequestDate", defaultValue: Date.distantPast)
     static let lastReviewRequestVersion = SettingKey<String>("lastReviewRequestVersion", defaultValue: "")
+
+    @objc dynamic var daysAfterFirstLaunchBeforeRequest: Int {
+        get { self[Self.daysAfterFirstLaunchBeforeRequest] }
+        set { self[Self.daysAfterFirstLaunchBeforeRequest] = newValue }
+    }
+
+    @objc dynamic var monthsAfterLastReviewBeforeRequest: Int {
+        get { self[Self.monthsAfterLastReviewBeforeRequest] }
+        set { self[Self.monthsAfterLastReviewBeforeRequest] = newValue }
+    }
+
+    @objc dynamic var firstLaunchDate: Date {
+        get { self[Self.firstLaunchDate] }
+        set { self[Self.firstLaunchDate] = newValue }
+    }
+
+    @objc dynamic var lastReviewRequestDate: Date {
+        get { self[Self.lastReviewRequestDate] }
+        set { self[Self.lastReviewRequestDate] = newValue }
+    }
+
+    @objc dynamic var lastReviewRequestVersion: String {
+        get { self[Self.lastReviewRequestVersion] }
+        set { self[Self.lastReviewRequestVersion] = newValue }
+    }
 }
 
 public final class AskForReview: NSObject {
@@ -29,34 +54,34 @@ public final class AskForReview: NSObject {
 
     /// Obtain the first time the app was launched by the user after installing.
     let firstLaunchDate: Date = {
-        var value = Settings[.firstLaunchDate]
+        var value = settings.firstLaunchDate
         if value == Date.distantPast {
             value = Date()
-            Settings[.firstLaunchDate] = value
+            settings.firstLaunchDate = value
         }
         return value
     }()
 
     /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-    var lastReviewRequestDate: Date = Settings[.lastReviewRequestDate] {
-        didSet { Settings[.lastReviewRequestDate] = lastReviewRequestDate }
+    var lastReviewRequestDate: Date = settings.lastReviewRequestDate {
+        didSet { settings.lastReviewRequestDate = lastReviewRequestDate }
     }
 
     /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-    var lastReviewRequestVersion: String = Settings[.lastReviewRequestVersion] {
-        didSet { Settings[.lastReviewRequestVersion] = lastReviewRequestVersion }
+    var lastReviewRequestVersion: String = settings.lastReviewRequestVersion {
+        didSet { settings.lastReviewRequestVersion = lastReviewRequestVersion }
     }
 
     /// Get the date N days days since the first launch
     lazy var dateSinceFirstLaunch: Date = Calendar.current.date(
         byAdding: .day,
-        value: Settings[.daysAfterFirstLaunchBeforeRequest],
+        value: settings.daysAfterFirstLaunchBeforeRequest,
         to: firstLaunchDate)!
 
     /// Get the date N months since the last review request
     lazy var dateSinceLastReviewRequest: Date = Calendar.current.date(
         byAdding: .month,
-        value: Settings[.monthsAfterLastReviewBeforeRequest],
+        value: settings.monthsAfterLastReviewBeforeRequest,
         to: lastReviewRequestDate)!
 
     var countDown = 3

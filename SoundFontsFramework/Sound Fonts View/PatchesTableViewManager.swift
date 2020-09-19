@@ -141,7 +141,7 @@ extension PatchesTableViewManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let soundFontAndPatch = getSoundFontAndPatch(for: indexPath)
         dismissSearchResults()
-        let playSample = Settings[.playSample]
+        let playSample = settings.playSample
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
             activePatchManager.setActive(.favorite(favorite: favorite), playSample: playSample)
             let index = favorites.index(of: favorite)

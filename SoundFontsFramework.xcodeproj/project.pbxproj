@@ -483,10 +483,10 @@
 		BD074C1323CDAF51001987E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
 				BD125B37241006200003DE99 /* AskForReview.swift */,
-				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
+				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
 				BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */,
+				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
 				BD074C1723CDAF51001987E9 /* Settings.swift */,

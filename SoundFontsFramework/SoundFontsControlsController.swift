@@ -4,8 +4,13 @@ import UIKit
 import AVKit
 import os
 
-extension SettingKeys {
-    static let wasShowingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
+extension UserDefaults {
+    static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
+
+    @objc dynamic var showingFavorites: Bool {
+        get { self[Self.showingFavorites] }
+        set { self[Self.showingFavorites] = newValue }
+    }
 }
 
 /**
@@ -29,7 +34,7 @@ public final class SoundFontsControlsController: UIViewController {
 
         let showingFavorites: Bool = {
             if CommandLine.arguments.contains("--screenshots") { return false }
-            return Settings[.wasShowingFavorites]
+            return settings.showingFavorites
         }()
 
         patchesView.isHidden = showingFavorites
@@ -56,12 +61,12 @@ extension SoundFontsControlsController: ControllerConfiguration {
         components = router
 
         let patchesViewManager = router.patchesViewManager
-        patchesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
+        patchesViewManager.addEventClosure(.swipeLeft) { self.showNextConfigurationView() }
 
         let favoritesViewManager = router.favoritesViewManager
-        favoritesViewManager.addTarget(.swipeLeft, target: self, action: #selector(showNextConfigurationView))
-        favoritesViewManager.addTarget(.swipeRight, target: self, action: #selector(showPreviousConfigurationView))
-        router.infoBar.establishEventHandler(.doubleTap, handler: self, action: #selector(toggleConfigurationViews))
+        favoritesViewManager.addEventClosure(.swipeLeft) { self.showNextConfigurationView() }
+        favoritesViewManager.addEventClosure(.swipeRight) { self.showPreviousConfigurationView() }
+        router.infoBar.addEventClosure(.doubleTap) { self.toggleConfigurationViews() }
     }
 
     @IBAction private func toggleConfigurationViews() {
@@ -84,7 +89,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         upperViewManager.slideNextHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
-        Settings[.wasShowingFavorites] = upperViewManager.active == 1
+        settings.showingFavorites = upperViewManager.active == 1
     }
 
     /**
@@ -93,7 +98,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     @IBAction public func showPreviousConfigurationView() {
         upperViewManager.slidePrevHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
-        Settings[.wasShowingFavorites] = upperViewManager.active == 1
+        settings.showingFavorites = upperViewManager.active == 1
     }
 }
 

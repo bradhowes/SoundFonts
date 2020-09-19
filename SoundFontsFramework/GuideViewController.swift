@@ -13,14 +13,14 @@ public final class GuideViewController: UIViewController {
         super.viewDidLoad()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGuide))
         view.addGestureRecognizer(tapGestureRecognizer)
-        prepareGuide(for: Settings[.wasShowingFavorites] ? 1 : 0)
+        prepareGuide(for: settings.showingFavorites ? 1 : 0)
     }
 }
 
 extension GuideViewController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
-        router.infoBar.establishEventHandler(.showGuide) { self.showGuide() }
+        router.infoBar.addEventClosure(InfoBarEvent.showGuide) { self.showGuide() }
         savedParent = parent
         removeFromParent()
     }
