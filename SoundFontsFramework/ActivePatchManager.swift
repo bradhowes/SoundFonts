@@ -3,8 +3,13 @@
 import Foundation
 import os
 
-extension SettingKeys {
-    static let lastActivePatch = SettingKey<Data>("lastActivePatch", defaultValue: Data())
+extension UserDefaults {
+    static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
+
+    @objc dynamic var lastActivePatch: Data {
+        get { self[Self.lastActivePatch] }
+        set { self[Self.lastActivePatch] = newValue }
+    }
 }
 
 /**
@@ -74,7 +79,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     private static func restore() -> ActivePatchKind? {
         let decoder = JSONDecoder()
-        let data = Settings[.lastActivePatch]
+        let data = settings.lastActivePatch
         return try? decoder.decode(ActivePatchKind.self, from: data)
     }
 
@@ -83,7 +88,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         DispatchQueue.global(qos: .background).async {
             let encoder = JSONEncoder()
             if let data = try? encoder.encode(self.active) {
-                Settings[.lastActivePatch] = data
+                settings.lastActivePatch = data
             }
         }
     }

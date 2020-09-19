@@ -14,7 +14,7 @@ final class Key: UIView {
     /// If true, show note on key
     static var keyLabelOption = KeyLabelOption.savedSetting
 
-    static var keyWidth: CGFloat = CGFloat(Settings[.keyWidth])
+    static var keyWidth: CGFloat = CGFloat(settings.keyWidth)
 
     /// The note to play when touched
     let note: Note

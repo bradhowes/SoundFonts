@@ -3,12 +3,37 @@
 import UIKit
 import os
 
-public extension SettingKeys {
+public extension UserDefaults {
     static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
     static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
     static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
     static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: -1)
     static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
+
+    @objc dynamic var showSolfegeLabel: Bool {
+        get { self[Self.showSolfegeLabel] }
+        set { self[Self.showSolfegeLabel] = newValue }
+    }
+
+    @objc dynamic var playSample: Bool {
+        get { self[Self.playSample] }
+        set { self[Self.playSample] = newValue }
+    }
+
+    @objc dynamic var showKeyLabels: Bool {
+        get { self[Self.showKeyLabels] }
+        set { self[Self.showKeyLabels] = newValue }
+    }
+
+    @objc dynamic var keyLabelOption: Int {
+        get { self[Self.keyLabelOption] }
+        set { self[Self.keyLabelOption] = newValue }
+    }
+
+    @objc dynamic var keyWidth: Float {
+        get { self[Self.keyWidth] }
+        set { self[Self.keyWidth] = newValue }
+    }
 }
 
 public enum KeyLabelOption: Int {
@@ -17,13 +42,13 @@ public enum KeyLabelOption: Int {
     case c
 
     public static var savedSetting: KeyLabelOption {
-        if let option = Self(rawValue: Settings[.keyLabelOption]) {
+        if let option = Self(rawValue: settings.keyLabelOption) {
             return option
         }
 
-        let showKeyLabels = Settings[.showKeyLabels]
+        let showKeyLabels = settings.showKeyLabels
         let option: Self = showKeyLabels ? .all : .off
-        Settings[.keyLabelOption] = option.rawValue
+        settings.keyLabelOption = option.rawValue
         return option
     }
 }
@@ -72,8 +97,8 @@ public final class SettingsViewController: UIViewController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
         }
 
-        showSolfegeNotes.isOn = Settings[.showSolfegeLabel]
-        playSample.isOn = Settings[.playSample]
+        showSolfegeNotes.isOn = settings.showSolfegeLabel
+        playSample.isOn = settings.playSample
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
 
         updateButtonState()
@@ -81,7 +106,7 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.maximumValue = 96.0
         keyWidthSlider.minimumValue = 32.0
         keyWidthSlider.isContinuous = true
-        keyWidthSlider.value = Settings[.keyWidth]
+        keyWidthSlider.value = settings.keyWidth
 
         let isAUv3 = !isMainApp
         solfegeStackView.isHidden = isAUv3
@@ -146,27 +171,27 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction
     private func toggleShowSolfegeNotes(_ sender: Any) {
-        Settings[.showSolfegeLabel] = self.showSolfegeNotes.isOn
+        settings.showSolfegeLabel = self.showSolfegeNotes.isOn
     }
 
     @IBAction func togglePlaySample(_ sender: Any) {
-        Settings[.playSample] = self.playSample.isOn
+        settings.playSample = self.playSample.isOn
     }
 
     @IBAction func keyLabelOptionChanged(_ sender: Any) {
-        Settings[.keyLabelOption] = self.keyLabelOption.selectedSegmentIndex
+        settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
         NotificationCenter.default.post(Notification(name: .keyLabelOptionChanged, object: KeyLabelOption.savedSetting))
     }
 
     @IBAction func keyWidthChange(_ sender: Any) {
-        let prevValue = Settings[.keyWidth].rounded()
+        let prevValue = settings.keyWidth.rounded()
         var newValue = keyWidthSlider.value.rounded()
         if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
         keyWidthSlider.value = newValue
 
         if newValue != prevValue {
             os_log(.info, log: log, "new key width: %f", newValue)
-            Settings[.keyWidth] = newValue
+            settings.keyWidth = newValue
             NotificationCenter.default.post(Notification(name: .keyWidthChanged))
         }
     }

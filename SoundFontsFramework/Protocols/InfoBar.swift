@@ -22,13 +22,11 @@ public protocol InfoBar: class {
 
     /**
      Link a button / gesture event to a target/selector combination
-    
+
      - parameter event: the event to link to
-     - parameter target: the object to call when the event takes place
-     - parameter action: the function to call when the event takes place
+     - parameter closure: the closure to invoke when the event appears
      */
-    func establishEventHandler(_ event: InfoBarEvent, handler: Any, action: Selector)
-    func establishEventHandler(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure)
+    func addEventClosure(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure)
 
     /**
      Show status information on the bar. This will appear temporarily and then fade back to the patch name.

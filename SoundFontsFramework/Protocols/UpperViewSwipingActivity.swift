@@ -22,5 +22,5 @@ public protocol UpperViewSwipingActivity {
      - parameter target: the object to call when the event takes place
      - parameter action: the function to call when the event takes place
      */
-    func addTarget(_ event: UpperViewSwipingEvent, target: Any, action: Selector)
+    func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void)
 }

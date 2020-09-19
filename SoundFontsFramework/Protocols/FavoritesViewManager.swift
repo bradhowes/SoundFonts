@@ -3,6 +3,4 @@
 import Foundation
 
 public protocol FavoritesViewManager: UpperViewSwipingActivity {
-
-    func reload()
 }

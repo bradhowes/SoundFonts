@@ -1,39 +1,11 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
-//
-// NOTE: this uses some concepts found in the nice [SwiftyUserDefaults](https://github.com/radex/SwiftyUserDefaults)
-// package. I did not have the need for the whole shebang so I just borrowed some of the functionality I found there.
 
 import Foundation
 import os
 
-/**
- Manages access to user settings. Relies on UserDefaults for the actual storage. Originally, all settings were stored in
- the `standard` UserDefaults collection. However, with the introduction of the AUv3 extension, settings are now stored
- in a `shared` UserDefaults collection called "group.com.braysoftware.SoundFontsShare". To work with older app installs,
- the manager will fall back to `standard` collection if a setting does not exist in the `shared` collection.
- */
-public final class SettingsManager: NSObject {
-
-    private let log = Logging.logger("SetMgr")
-
-    public let settings: UserDefaults
-
-    public init(settings: UserDefaults) {
-        self.settings = settings
-    }
-
-    public subscript<T: SettingSerializable>(key: SettingKey<T>) -> T {
-        get { T.get(key: key.userDefaultsKey, userDefaults: settings) ?? key.defaultValue }
-        set { T.set(key: key.userDefaultsKey, value: newValue, userDefaults: settings) }
-    }
-
-    public func remove<T>(key: SettingKey<T>) { settings.remove(key) }
-}
-
 //swiftlint:disable identifier_name
 /// Global variable to keep things concise.
-public let Settings = SettingsManager(settings:
-    UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard)
+public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard
 //swiftlint:enable identifier_name
 
 /**
@@ -69,16 +41,9 @@ public protocol SettingGettable {
 public typealias SettingSerializable = SettingSettable & SettingGettable
 
 /**
- A type to extend with SettingKey definitions
- */
-public class SettingKeys {
-    fileprivate init() {}
-}
-
-/**
  Template class that supports get/set operations for the template type.
  */
-public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
+public class SettingKey<ValueType: SettingSerializable> {
     typealias ValueType = ValueType
 
     /**
@@ -106,8 +71,6 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
     /// The default value to use when the setting has not yet been set. We defer the setting of in case it is from a
     /// generator and the initial value must come from runtime code.
     public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
-
-    fileprivate var observers = [UUID : (ValueType)->Void]()
 
     /**
      Define a new setting key.
