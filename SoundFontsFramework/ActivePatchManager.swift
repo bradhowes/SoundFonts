@@ -1,4 +1,4 @@
-// Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 import Foundation
 import os
@@ -7,72 +7,18 @@ extension SettingKeys {
     static let lastActivePatch = SettingKey<Data>("lastActivePatch", defaultValue: Data())
 }
 
-public enum ActivePatchKind: CustomStringConvertible, Codable, Equatable {
-
-    case normal(soundFontAndPatch: SoundFontAndPatch)
-    case favorite(favorite: LegacyFavorite)
-    case none
-
-    public var soundFontAndPatch: SoundFontAndPatch? {
-        switch self {
-        case .normal(let soundFontAndPatch): return soundFontAndPatch
-        case .favorite(let favorite): return favorite.soundFontAndPatch
-        case .none: return nil
-        }
-    }
-
-    public var favorite: LegacyFavorite? {
-        switch self {
-        case .normal: return nil
-        case .favorite(let favorite): return favorite
-        case .none: return nil
-        }
-    }
-
-    public var description: String {
-        switch self {
-        case let .normal(soundFontAndPatch: soundFontPatch): return ".normal(\(soundFontPatch)"
-        case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
-        case .none: return "nil"
-        }
-    }
-
-    private enum InternalKey: Int {
-        case normal = 0
-        case favorite = 1
-        case none = 2
-
-        static func key(for kind: ActivePatchKind) -> InternalKey {
-            switch kind {
-            case .normal(soundFontAndPatch: _): return .normal
-            case .favorite(favorite:_): return .favorite
-            case .none: return .none
-            }
-        }
-    }
-
-    public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
-        guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
-        switch kind {
-        case .normal: self = .normal(soundFontAndPatch: try container.decode(SoundFontAndPatch.self))
-        case .favorite: self = .favorite(favorite: try container.decode(LegacyFavorite.self))
-        case .none: self = .none
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
-        try container.encode(InternalKey.key(for: self).rawValue)
-        switch self {
-        case .normal(let soundFontPatch): try container.encode(soundFontPatch)
-        case .favorite(let favorite): try container.encode(favorite)
-        case .none: break
-        }
-    }
-}
-
+/**
+ The event notifications that can come from an ActivePatchManager subscription.
+ */
 public enum ActivePatchEvent {
+
+    /**
+     Change event
+
+     - Parameter old: the previous active patch
+     - Parameter new: the new active patch
+     - Parameter playSample: if true, play a note using the new patch
+     */
     case active(old: ActivePatchKind, new: ActivePatchKind, playSample: Bool)
 }
 
@@ -81,13 +27,10 @@ public enum ActivePatchEvent {
  */
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
-
     private let soundFonts: SoundFonts
 
     public private(set) var active: ActivePatchKind {
-        didSet {
-            os_log(.info, log: log, "set active: %s", active.description)
-        }
+        didSet { os_log(.info, log: log, "set active: %s", active.description) }
     }
 
     public var favorite: LegacyFavorite? { active.favorite }
@@ -129,13 +72,13 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         save()
     }
 
-    public static func restore() -> ActivePatchKind? {
+    private static func restore() -> ActivePatchKind? {
         let decoder = JSONDecoder()
         let data = Settings[.lastActivePatch]
         return try? decoder.decode(ActivePatchKind.self, from: data)
     }
 
-    public func save() {
+    private func save() {
         os_log(.info, log: log, "save")
         DispatchQueue.global(qos: .background).async {
             let encoder = JSONEncoder()

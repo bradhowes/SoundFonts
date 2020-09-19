@@ -2,7 +2,7 @@
 
 import UIKit
 
-public final class GuideViewController: UIViewController, ControllerConfiguration, GuideManager {
+public final class GuideViewController: UIViewController {
     @IBOutlet weak var fontsPanel: UIView!
     @IBOutlet weak var patchesPanel: UIView!
     @IBOutlet weak var favoritesPanel: UIView!
@@ -15,33 +15,18 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
         view.addGestureRecognizer(tapGestureRecognizer)
         prepareGuide(for: Settings[.wasShowingFavorites] ? 1 : 0)
     }
+}
+
+extension GuideViewController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
-        router.infoBar.addTarget(.showGuide, target: self, action: #selector(showGuide))
+        router.infoBar.establishEventHandler(.showGuide) { self.showGuide() }
         savedParent = parent
         removeFromParent()
     }
+}
 
-    @objc public func showGuide() {
-        savedParent.add(self)
-        view.alpha = 0.0
-        view.isHidden = false
-
-        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
-        animator.addAnimations { self.view.alpha = 1.0 }
-        animator.startAnimation()
-    }
-
-    @objc public func hideGuide() {
-        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
-        animator.addAnimations { self.view.alpha = 0.0 }
-        animator.addCompletion { _ in
-            self.view.isHidden = true
-            self.removeFromParent()
-            AskForReview.maybe()
-        }
-        animator.startAnimation()
-    }
+extension GuideViewController: GuideManager {
 
     public func prepareGuide(for panel: Int) {
         switch panel {
@@ -62,3 +47,28 @@ public final class GuideViewController: UIViewController, ControllerConfiguratio
         }
     }
 }
+
+extension GuideViewController {
+
+    private func showGuide() {
+        savedParent.add(self)
+        view.alpha = 0.0
+        view.isHidden = false
+
+        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        animator.addAnimations { self.view.alpha = 1.0 }
+        animator.startAnimation()
+    }
+
+    @objc private func hideGuide() {
+        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        animator.addAnimations { self.view.alpha = 0.0 }
+        animator.addCompletion { _ in
+            self.view.isHidden = true
+            self.removeFromParent()
+            AskForReview.maybe()
+        }
+        animator.startAnimation()
+    }
+}
+
