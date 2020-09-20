@@ -9,10 +9,7 @@ enum FavoritesConfigFileError: Error {
 
 public final class FavoritesConfigFile: UIDocument {
     private let log = Logging.logger("FavCfg")
-
-    private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory
-        .appendingPathComponent("Favorites.plist")
-
+    private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("Favorites.plist")
     private let favoritesManager: LegacyFavoritesManager
 
     public init(favoritesManager: LegacyFavoritesManager) {
@@ -20,9 +17,13 @@ public final class FavoritesConfigFile: UIDocument {
         super.init(fileURL: sharedArchivePath)
         self.open { ok in
             if !ok {
-                let data = try! PropertyListEncoder().encode(LegacyFavoriteCollection())
-                try! favoritesManager.loadConfigurationData(contents: data)
-                self.save(to: self.sharedArchivePath, for: .forCreating)
+                do {
+                    let data = try PropertyListEncoder().encode(LegacyFavoriteCollection())
+                    try favoritesManager.loadConfigurationData(contents: data)
+                    self.save(to: self.sharedArchivePath, for: .forCreating)
+                } catch let error as NSError {
+                    fatalError("Failed to initialize new collection: \(error.localizedDescription)")
+                }
             }
         }
 

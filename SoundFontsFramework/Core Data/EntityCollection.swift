@@ -14,5 +14,8 @@ public struct EntityCollection<T>: RandomAccessCollection where T: NSManagedObje
 
     public init(_ source: NSOrderedSet) { self.source = source }
 
-    public subscript(index: Int) -> T { source[index] as! T }
+    public subscript(index: Int) -> T {
+        guard let value = source[index] as? T else { fatalError() }
+        return value
+    }
 }

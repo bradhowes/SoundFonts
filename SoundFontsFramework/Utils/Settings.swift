@@ -3,10 +3,8 @@
 import Foundation
 import os
 
-//swiftlint:disable identifier_name
 /// Global variable to keep things concise.
 public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard
-//swiftlint:enable identifier_name
 
 /**
  Protocol for types that can store a value in UserDefaults
@@ -53,7 +51,7 @@ public class SettingKey<ValueType: SettingSerializable> {
      */
     enum DefaultValue {
         case constant(ValueType)
-        case generator(()->ValueType)
+        case generator(() -> ValueType)
 
         /// Obtain an actual default value. NOTE: for a generator type, this may not be idempotent.
         var defaultValue: ValueType {
@@ -91,7 +89,7 @@ public class SettingKey<ValueType: SettingSerializable> {
      - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
      only be called at most one time.
      */
-    public init(_ key: String, defaultValueGenerator: @escaping ()->ValueType) {
+    public init(_ key: String, defaultValueGenerator: @escaping () -> ValueType) {
         self.userDefaultsKey = key
         self._defaultValue = .generator(defaultValueGenerator)
     }

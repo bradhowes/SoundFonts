@@ -20,9 +20,13 @@ public final class SoundFontsConfigFile: UIDocument {
         super.init(fileURL: sharedArchivePath)
         self.open { ok in
             if !ok {
-                let data = try! PropertyListEncoder().encode(LegacySoundFontCollection(soundFonts:[]))
-                try! soundFontsManager.loadConfigurationData(contents: data)
-                self.save(to: self.sharedArchivePath, for: .forCreating)
+                do {
+                    let data = try PropertyListEncoder().encode(LegacySoundFontCollection(soundFonts: []))
+                    try soundFontsManager.loadConfigurationData(contents: data)
+                    self.save(to: self.sharedArchivePath, for: .forCreating)
+                } catch let error as NSError {
+                    fatalError("Failed to initialize empty collection: \(error.localizedDescription)")
+                }
             }
         }
 

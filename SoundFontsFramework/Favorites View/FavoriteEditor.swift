@@ -80,7 +80,7 @@ final public class FavoriteEditor: UIViewController {
         else {
             lowestNoteCollection.isHidden = true
         }
-    
+
         soundFontName.text = soundFont?.displayName
         patchName.text = patch?.name
         bank.text = "Bank: \(patch!.bank)"
@@ -219,4 +219,3 @@ extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePre
         donePressed(doneButton)
     }
 }
-

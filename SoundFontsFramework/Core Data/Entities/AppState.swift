@@ -50,7 +50,7 @@ extension AppState {
         guard let context = managedObjectContext else { fatalError() }
         let oldIndex = self.orderedFavorites.index(of: favorite)
         guard oldIndex != newIndex else { return }
-        let mutableFavorites = self.orderedFavorites.mutableCopy() as! NSMutableOrderedSet
+        guard let mutableFavorites = self.orderedFavorites.mutableCopy() as? NSMutableOrderedSet else { fatalError() }
         mutableFavorites.moveObjects(at: IndexSet(integer: oldIndex), to: newIndex)
         self.orderedFavorites = mutableFavorites
         context.saveChangesAsync()

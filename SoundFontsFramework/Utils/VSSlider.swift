@@ -130,13 +130,13 @@ public class VSSlider: UIControl {
 
     @available(iOS 9.0, *)
     public override var semanticContentAttribute: UISemanticContentAttribute {
+        get {
+            return super.semanticContentAttribute
+        }
         set {
             super.semanticContentAttribute = newValue
             slider.semanticContentAttribute = newValue
             updateSlider()
-        }
-        get {
-            return super.semanticContentAttribute
         }
     }
 
@@ -218,12 +218,10 @@ public class VSSlider: UIControl {
     }
 
     override public var intrinsicContentSize: CGSize {
-        get {
-            if vertical {
-                return CGSize(width: slider.intrinsicContentSize.height, height: slider.intrinsicContentSize.width)
-            } else {
-                return slider.intrinsicContentSize
-            }
+        if vertical {
+            return CGSize(width: slider.intrinsicContentSize.height, height: slider.intrinsicContentSize.width)
+        } else {
+            return slider.intrinsicContentSize
         }
     }
 

@@ -204,7 +204,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - returns: new UIContextualAction that will perform the edit
      */
     public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFont: soundFont,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
                                            completionHandler: completionHandler)
@@ -228,7 +228,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - returns: new UIContextualAction that will perform the edit
      */
     public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: nil) { action, view, completionHandler in
+        let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
 

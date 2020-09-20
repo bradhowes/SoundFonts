@@ -22,7 +22,7 @@ public extension NSManagedObjectContext {
     func saveChanges() throws {
         if hasChanges { try save() }
     }
-    
+
     func saveChangesAsync() {
         if hasChanges {
             perform { self.saveOrRollback() }
@@ -89,19 +89,19 @@ public extension NSManagedObjectContext {
     }
 }
 
-private let SingleObjectCacheKey = "SingleObjectCache"
-private typealias SingleObjectCache = [String:NSManagedObject]
+private let singleObjectCacheKey = "SingleObjectCache"
+private typealias SingleObjectCache = [String: NSManagedObject]
 
 public extension NSManagedObjectContext {
 
     func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
-        var cache = userInfo[SingleObjectCacheKey] as? SingleObjectCache ?? [:]
+        var cache = userInfo[singleObjectCacheKey] as? SingleObjectCache ?? [:]
         cache[key] = object
-        userInfo[SingleObjectCacheKey] = cache
+        userInfo[singleObjectCacheKey] = cache
     }
 
     func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
-        guard let cache = userInfo[SingleObjectCacheKey] as? SingleObjectCache else { return nil }
+        guard let cache = userInfo[singleObjectCacheKey] as? SingleObjectCache else { return nil }
         return cache[key] as? T
     }
 }

@@ -6,7 +6,7 @@ import os
 public enum KeyLabelOption: Int {
     case off
     case all
-    case c
+    case cOnly
 
     public static var savedSetting: KeyLabelOption {
         if let option = Self(rawValue: settings.keyLabelOption) {

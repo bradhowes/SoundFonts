@@ -9,11 +9,13 @@ import Foundation
 public final class LegacySoundFontCollection: Codable {
 
     public typealias Element = LegacySoundFont
-    public typealias CatalogMap = [LegacySoundFont.Key: LegacySoundFont];
-    public typealias SortedKeyArray = [LegacySoundFont.Key];
+    public typealias CatalogMap = [LegacySoundFont.Key: LegacySoundFont]
+    public typealias SortedKeyArray = [LegacySoundFont.Key]
 
     private var catalog: CatalogMap
     private var sortedKeys: SortedKeyArray
+
+    public var isEmpty: Bool { return sortedKeys.isEmpty }
 
     /// Obtain the number of SoundFont instances in the collection
     public var count: Int { sortedKeys.count }

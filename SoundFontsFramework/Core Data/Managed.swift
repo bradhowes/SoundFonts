@@ -51,7 +51,8 @@ public extension Managed where Self: NSManagedObject {
      - returns: array of managed objects
      */
     static func fetch(in context: NSManagedObjectContext, request: FetchRequest) -> [Self] {
-        return try! context.fetch(request)
+        guard let result = try? context.fetch(request) else { fatalError() }
+        return result
     }
 
     /**

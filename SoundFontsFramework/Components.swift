@@ -34,7 +34,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
 
-
     public init(inApp: Bool) {
 
         self.askForReview = AskForReview(isMain: inApp)

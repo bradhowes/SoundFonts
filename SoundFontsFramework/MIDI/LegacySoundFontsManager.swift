@@ -49,7 +49,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
         os_log(.info, log: log, "creating new collection")
         let bundle = Bundle(for: LegacySoundFontsManager.self)
         let bundleUrls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }
-        if bundleUrls.count == 0 { fatalError("no SF2 files in bundle") }
+        if bundleUrls.isEmpty { fatalError("no SF2 files in bundle") }
         let fileNames = (try? FileManager.default.contentsOfDirectory(atPath:
             FileManager.default.sharedDocumentsDirectory.path)) ?? [String]()
         let fileUrls = fileNames.map { FileManager.default.sharedDocumentsDirectory.appendingPathComponent($0) }
@@ -85,7 +85,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
             let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
             guard src.pathExtension == LegacySoundFont.soundFontExtension else { continue }
             let (stripped, uuid) = path.stripEmbeddedUUID()
-            if let uuid = uuid, collection.getBy(key:uuid) != nil { continue }
+            if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
             let dst = fm.localDocumentsDirectory.appendingPathComponent(stripped)
             os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
             try? fm.removeItem(at: dst)
@@ -121,6 +121,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 
 extension LegacySoundFontsManager: SoundFonts {
 
+    public var isEmpty: Bool { collection.isEmpty }
     public var count: Int { collection.count }
 
     public func index(of uuid: UUID) -> Int? { collection.index(of: uuid) }
@@ -230,7 +231,7 @@ extension LegacySoundFontsManager: SoundFonts {
         for path in contents {
             let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
             guard let attrs = try? fm.attributesOfItem(atPath: src.path) else { continue }
-            let fileType = attrs[.type] as! String
+            guard let fileType = attrs[.type] as? String else { continue }
             guard fileType == "NSFileTypeRegular" else { continue }
             let (stripped, _) = path.stripEmbeddedUUID()
             guard stripped.first != "." else { continue }

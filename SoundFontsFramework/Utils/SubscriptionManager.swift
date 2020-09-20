@@ -8,11 +8,11 @@ import Foundation
 public class SubscriptionManager<Event> {
 
     public typealias NotifierProc = (Event) -> Void
+    public typealias UnsubscribeProc = () -> Void
 
     private var subscriptions = [UUID: NotifierProc]()
 
     private struct Token: SubscriberToken {
-        public typealias UnsubscribeProc = () -> Void
 
         private let unsubscribeProc: UnsubscribeProc
 
