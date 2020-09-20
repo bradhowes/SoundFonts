@@ -27,6 +27,9 @@ final class KeyboardController: UIViewController {
 
     private var activePatchManager: ActivePatchManager!
 
+    private var keyLabelOptionObservation: NSKeyValueObservation?
+    private var keyWidthObservation: NSKeyValueObservation?
+
     /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
     var isMuted: Bool = false {
         didSet {
@@ -50,10 +53,19 @@ final class KeyboardController: UIViewController {
     override func viewDidLoad() {
         let lowestNote = settings.lowestKeyNote
         firstMidiNoteValue = max(lowestNote, 0)
-        let nc = NotificationCenter.default
-        // TODO: change to KVO
-        nc.addObserver(forName: .keyLabelOptionChanged, object: nil, queue: nil) { self.keyLabelOptionChanged($0) }
-        nc.addObserver(forName: .keyWidthChanged, object: nil, queue: nil) { _ in self.keyWidthChanged() }
+
+        keyLabelOptionObservation = settings.observe(\.keyLabelOption, options: [.new]) { _, change in
+            guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else { return }
+            self.keyLabelOption = option
+        }
+
+        keyWidthObservation = settings.observe(\.keyWidth, options: [.new]) { _, change in
+            guard let keyWidth = change.newValue else { return }
+            self.keyWidth = CGFloat(keyWidth)
+            Key.keyWidth = self.keyWidth
+            self.releaseAllKeys()
+            self.view.setNeedsLayout()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -252,19 +264,6 @@ extension KeyboardController: Keyboard {
 // MARK: - Key Generation
 
 extension KeyboardController {
-
-    // TODO: Use KVO
-    private func keyWidthChanged() {
-        keyWidth = CGFloat(settings.keyWidth)
-        Key.keyWidth = keyWidth
-        releaseAllKeys()
-        view.setNeedsLayout()
-    }
-
-    private func keyLabelOptionChanged(_ notification: Notification) {
-        let option = notification.object as! KeyLabelOption
-        self.keyLabelOption = option
-    }
 
     private func createKeys() {
         keys.forEach { $0.removeFromSuperview() }

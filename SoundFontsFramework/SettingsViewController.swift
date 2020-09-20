@@ -3,9 +3,6 @@
 import UIKit
 import os
 
-public extension UserDefaults {
-}
-
 public enum KeyLabelOption: Int {
     case off
     case all
@@ -150,7 +147,6 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction func keyLabelOptionChanged(_ sender: Any) {
         settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
-        NotificationCenter.default.post(Notification(name: .keyLabelOptionChanged, object: KeyLabelOption.savedSetting))
     }
 
     @IBAction func keyWidthChange(_ sender: Any) {
@@ -162,7 +158,6 @@ public final class SettingsViewController: UIViewController {
         if newValue != prevValue {
             os_log(.info, log: log, "new key width: %f", newValue)
             settings.keyWidth = newValue
-            NotificationCenter.default.post(Notification(name: .keyWidthChanged))
         }
     }
 
