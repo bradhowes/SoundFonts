@@ -2,15 +2,6 @@
 
 import UIKit
 
-extension UserDefaults {
-    static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
-
-    @objc dynamic var lowestKeyNote: Int {
-        get { self[Self.lowestKeyNote] }
-        set { self[Self.lowestKeyNote] = newValue}
-    }
-}
-
 /**
  Controller for the keyboard view. Creates the individual key views and handles touch event detection within them.
  */

@@ -3,15 +3,6 @@
 import Foundation
 import os
 
-extension UserDefaults {
-    static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
-
-    @objc dynamic var lastActivePatch: Data {
-        get { self[Self.lastActivePatch] }
-        set { self[Self.lastActivePatch] = newValue }
-    }
-}
-
 /**
  The event notifications that can come from an ActivePatchManager subscription.
  */

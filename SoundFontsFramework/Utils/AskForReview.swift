@@ -3,42 +3,6 @@
 import StoreKit
 import os
 
-extension UserDefaults {
-    static let daysAfterFirstLaunchBeforeRequest = SettingKey<Int>("daysAfterFirstLaunchBeforeRequest",
-                                                                   defaultValue: 14)
-    static let monthsAfterLastReviewBeforeRequest = SettingKey<Int>("monthsAfterLastReviewBeforeRequest",
-                                                                    defaultValue: 2)
-
-    static let firstLaunchDate = SettingKey<Date>("firstLaunchDate", defaultValue: Date.distantPast)
-    static let lastReviewRequestDate = SettingKey<Date>("lastReviewRequestDate", defaultValue: Date.distantPast)
-    static let lastReviewRequestVersion = SettingKey<String>("lastReviewRequestVersion", defaultValue: "")
-
-    @objc dynamic var daysAfterFirstLaunchBeforeRequest: Int {
-        get { self[Self.daysAfterFirstLaunchBeforeRequest] }
-        set { self[Self.daysAfterFirstLaunchBeforeRequest] = newValue }
-    }
-
-    @objc dynamic var monthsAfterLastReviewBeforeRequest: Int {
-        get { self[Self.monthsAfterLastReviewBeforeRequest] }
-        set { self[Self.monthsAfterLastReviewBeforeRequest] = newValue }
-    }
-
-    @objc dynamic var firstLaunchDate: Date {
-        get { self[Self.firstLaunchDate] }
-        set { self[Self.firstLaunchDate] = newValue }
-    }
-
-    @objc dynamic var lastReviewRequestDate: Date {
-        get { self[Self.lastReviewRequestDate] }
-        set { self[Self.lastReviewRequestDate] = newValue }
-    }
-
-    @objc dynamic var lastReviewRequestVersion: String {
-        get { self[Self.lastReviewRequestVersion] }
-        set { self[Self.lastReviewRequestVersion] = newValue }
-    }
-}
-
 public final class AskForReview: NSObject {
 
     private let log = Logging.logger("AskR")

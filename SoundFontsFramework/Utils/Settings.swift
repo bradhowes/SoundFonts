@@ -41,7 +41,8 @@ public protocol SettingGettable {
 public typealias SettingSerializable = SettingSettable & SettingGettable
 
 /**
- Template class that supports get/set operations for the template type.
+ Template class that supports get/set operations for the template type. Using `class` here instead of `struct` due to
+ the lazy initialization of the defaultValue at runtime.
  */
 public class SettingKey<ValueType: SettingSerializable> {
     typealias ValueType = ValueType
@@ -68,7 +69,7 @@ public class SettingKey<ValueType: SettingSerializable> {
     /// The unique identifier for this setting key
     public let userDefaultsKey: String
 
-    /// The default value to use when the setting has not yet been set. We defer the setting of in case it is from a
+    /// The default value to use when the setting has not yet been set. We defer the setting in case it is from a
     /// generator and the initial value must come from runtime code.
     public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
 
@@ -93,5 +94,13 @@ public class SettingKey<ValueType: SettingSerializable> {
     public init(_ key: String, defaultValueGenerator: @escaping ()->ValueType) {
         self.userDefaultsKey = key
         self._defaultValue = .generator(defaultValueGenerator)
+    }
+
+    public func get(_ source: UserDefaults) -> ValueType {
+        ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue
+    }
+
+    public func set(_ source: UserDefaults, _ value: ValueType) {
+        ValueType.set(key: userDefaultsKey, value: value, userDefaults: source)
     }
 }
