@@ -167,9 +167,6 @@ extension PatchesTableViewManager: UISearchBarDelegate {
         if let searchTerm = searchBar.searchTerm {
             search(for: searchTerm)
         }
-        else {
-            dismissSearchResults()
-        }
     }
 }
 
