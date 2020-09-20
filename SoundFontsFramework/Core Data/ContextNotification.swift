@@ -26,7 +26,10 @@ public struct ContextNotification<T> where T: NSManagedObject {
     public var deletedObjects: AnyIterator<T> { iterator(forKey: NSDeletedObjectsKey) }
 
     /// Get the managed object context from the notification payload.
-    public var managedObjectContext: NSManagedObjectContext { notification.object as! NSManagedObjectContext }
+    public var managedObjectContext: NSManagedObjectContext {
+        guard let moc = notification.object as? NSManagedObjectContext else { fatalError() }
+        return moc
+    }
 
     /**
      Create wrapper for the given notification. The notification's name must be .NSManagedObjectContextDidSave.
@@ -34,9 +37,9 @@ public struct ContextNotification<T> where T: NSManagedObject {
      - parameter notification: the object to wrap
      */
     public init(notification: Notification) {
-        guard (notification.name == .NSManagedObjectContextDidSave ||
-            notification.name == .NSManagedObjectContextObjectsDidChange) else {
-                fatalError("incorrect notification")
+        guard notification.name == .NSManagedObjectContextDidSave ||
+                notification.name == .NSManagedObjectContextObjectsDidChange else {
+            fatalError("incorrect notification")
         }
         self.notification = notification
     }

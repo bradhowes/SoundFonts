@@ -368,7 +368,7 @@ extension PatchesTableViewManager {
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
-        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
             self.favorites.add(name: patch.name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: lowestNote)
             self.update(cell: cell, at: at, with: soundFontAndPatch)
             completionHandler(true)
@@ -385,7 +385,7 @@ extension PatchesTableViewManager {
                                          soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
-        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
             if favorite == self.activePatchManager.favorite {
                 self.activePatchManager.setActive(.normal(soundFontAndPatch: favorite.soundFontAndPatch))
             }
@@ -405,7 +405,7 @@ extension PatchesTableViewManager {
         guard let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) else { fatalError() }
         guard let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) else { fatalError() }
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
-        let action = UIContextualAction(style: .normal, title: nil) { action, view, completionHandler in
+        let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
             var rect = self.view.rectForRow(at: at)
             rect.size.width = 240.0
             let position = self.favorites.index(of: favorite)

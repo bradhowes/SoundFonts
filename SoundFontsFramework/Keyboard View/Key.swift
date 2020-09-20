@@ -65,7 +65,7 @@ final class Key: UIView {
             let label: String = {
                 switch Self.keyLabelOption {
                 case .all: return note.label
-                case .c where note.midiNoteValue % 12 == 0: return note.label
+                case .cOnly where note.midiNoteValue % 12 == 0: return note.label
                 default: return ""
                 }
             }()

@@ -55,13 +55,13 @@ extension GuideViewController {
         view.alpha = 0.0
         view.isHidden = false
 
-        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn)
         animator.addAnimations { self.view.alpha = 1.0 }
         animator.startAnimation()
     }
 
     @objc private func hideGuide() {
-        let animator = UIViewPropertyAnimator(duration: 0.4 , curve: .easeIn)
+        let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn)
         animator.addAnimations { self.view.alpha = 0.0 }
         animator.addCompletion { _ in
             self.view.isHidden = true
@@ -71,4 +71,3 @@ extension GuideViewController {
         animator.startAnimation()
     }
 }
-

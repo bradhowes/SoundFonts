@@ -257,7 +257,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
     }
 
     public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
-                        to destinationIndexPath: IndexPath) {
+                               to destinationIndexPath: IndexPath) {
         favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
         collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
     }

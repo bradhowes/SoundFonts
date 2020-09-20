@@ -6,11 +6,13 @@ opt_in_rules: # some rules are only opt-in
 
 included: # paths to include during linting. `--path` is ignored if present.
   - App
+  - SoundFontsFramework
+  - SoundFontInfoLib
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
-  - App/Keyboard/KeyboardRender.swift
+  - SoundFontsFramework/Keyboard View/KeyboardRender.swift
 
 # binary rules can set their severity level
 force_cast: warning # implicitly
@@ -20,7 +22,7 @@ force_try:
 
 # rules that have both warning and error levels, can set just the warning level
 # implicitly
-# line_length: 110
+line_length: 180
 
 # or they can set both explicitly
 file_length:

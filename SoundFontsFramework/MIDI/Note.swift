@@ -58,9 +58,9 @@ public struct Note: CustomStringConvertible, Codable {
 }
 
 extension Note: Equatable {
-    public static func ==(lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
+    public static func == (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
 }
 
 extension Note: Comparable {
-    public static func <(lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue < rhs.midiNoteValue }
+    public static func < (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue < rhs.midiNoteValue }
 }

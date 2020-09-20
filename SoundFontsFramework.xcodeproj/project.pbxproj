@@ -96,7 +96,6 @@
 		BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */; };
 		BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB824058C6200067AE2 /* SettingsTests.swift */; };
 		BD7B30C4241BCED90080784D /* UIContextualAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */; };
-		BD7B30C6241BE11E0080784D /* FontEditPrep.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B30C5241BE11E0080784D /* FontEditPrep.swift */; };
 		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
@@ -144,7 +143,6 @@
 		BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD91411250983F60068E3CE /* PlistTranslation.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
-		BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDA424324708FAA005E2886 /* VSSlider.swift */; };
 		BDE150B1250B460200728402 /* ContextNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B0250B460200728402 /* ContextNotification.swift */; };
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
@@ -256,7 +254,6 @@
 		BD6E8AB824058C6200067AE2 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIContextualAction+Extensions.swift"; sourceTree = "<group>"; };
-		BD7B30C5241BE11E0080784D /* FontEditPrep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontEditPrep.swift; sourceTree = "<group>"; };
 		BD856229244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BD85622A244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FontsView.storyboard; sourceTree = "<group>"; };
 		BD85622B244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FavoritesView.storyboard; sourceTree = "<group>"; };
@@ -334,7 +331,6 @@
 		BDD91411250983F60068E3CE /* PlistTranslation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistTranslation.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
-		BDDA424324708FAA005E2886 /* VSSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VSSlider.swift; sourceTree = "<group>"; };
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
@@ -452,7 +448,6 @@
 				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
-				BD7B30C5241BE11E0080784D /* FontEditPrep.swift */,
 			);
 			path = "Sound Fonts View";
 			sourceTree = "<group>";
@@ -494,7 +489,6 @@
 				BD074C1A23CDAF51001987E9 /* SlidingViewManager.swift */,
 				BD3F44C425018EB000653ABD /* TypedNotification.swift */,
 				BD074C1623CDAF51001987E9 /* ViewSlider.swift */,
-				BDDA424324708FAA005E2886 /* VSSlider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -808,7 +802,6 @@
 				BD074C8123CDAF51001987E9 /* SelectedSoundFontManager.swift in Sources */,
 				BDD5FA6B25042FBA00367F0B /* BackgroundManagedObjectContext.swift in Sources */,
 				BD074C7723CDAF51001987E9 /* String+Extensions.swift in Sources */,
-				BDDA424424708FAA005E2886 /* VSSlider.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* LegacyFavoriteCollection.swift in Sources */,
@@ -878,7 +871,6 @@
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,
-				BD7B30C6241BE11E0080784D /* FontEditPrep.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
 				BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */,
 				BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */,

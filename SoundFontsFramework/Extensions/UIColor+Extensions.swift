@@ -28,9 +28,10 @@ extension UIColor {
      - returns: new UIColor
      */
     public func lighter(_ factor: CGFloat = 0.25) -> UIColor {
-        var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
-        if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
-            return UIColor(hue: h, saturation: s, brightness: min(b * factor + b, 1.0), alpha: a)
+        var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0, alpha: CGFloat = 0.0
+        if getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            return UIColor(hue: hue, saturation: saturation, brightness: min(brightness * factor + brightness, 1.0),
+                           alpha: alpha)
         }
         return self
     }
@@ -42,9 +43,10 @@ extension UIColor {
      - returns: new UIColor
      */
     public func darker(_ factor: CGFloat = 0.25) -> UIColor {
-        var h: CGFloat = 0.0, s: CGFloat = 0.0, b: CGFloat = 0.0, a: CGFloat = 0.0
-        if getHue(&h, saturation: &s, brightness: &b, alpha: &a) {
-            return UIColor(hue: h, saturation: s, brightness: max(b - factor * b, 0.0), alpha: a)
+        var hue: CGFloat = 0.0, saturation: CGFloat = 0.0, brightness: CGFloat = 0.0, alpha: CGFloat = 0.0
+        if getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) {
+            return UIColor(hue: hue, saturation: saturation, brightness: max(brightness - factor * brightness, 0.0),
+                           alpha: alpha)
         }
         return self
     }

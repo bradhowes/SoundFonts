@@ -83,7 +83,7 @@ NSFetchedResultsControllerDelegate {
         os_log(.info, log: log, "init")
 
         fetchedResultsController.delegate = self
-        try! fetchedResultsController.performFetch()
+        guard (try? fetchedResultsController.performFetch()) != nil else { fatalError() }
 
         tableView.dataSource = self
         tableView.reloadData()

@@ -13,7 +13,7 @@ public struct SlidingViewManager {
     init(active: Int) {
         self.active = active
     }
-    
+
     public mutating func add(view: UIView) {
         views.append(ViewSlider(view: view))
     }

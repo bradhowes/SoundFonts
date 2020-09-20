@@ -24,6 +24,8 @@ public enum SoundFontsEvent {
  */
 public protocol SoundFonts: class {
 
+    var isEmpty: Bool { get }
+
     /// Number of SoundFont instances in the collection
     var count: Int { get }
 

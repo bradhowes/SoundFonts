@@ -59,10 +59,6 @@ public final class AskForReview: NSObject {
         }
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     /**
      Ask user for a review. Whether the ask actually happens depends on *when* this method is called:
 

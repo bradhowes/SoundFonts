@@ -75,7 +75,7 @@ extension InfoBarController: ControllerConfiguration {
 }
 
 extension InfoBarController: InfoBar {
-    
+
     /**
      Add an event target to one of the internal UIControl entities.
     
@@ -201,10 +201,12 @@ extension InfoBarController {
                 self.moreButtonsXConstraint.constant = newConstraint
                 self.touchView.alpha = newAlpha
                 self.view.layoutIfNeeded()
-            }) { _ in
-            self.moreButtons.isHidden = willBeHidden
-            self.touchView.alpha = newAlpha
-        }
+            },
+            completion: { _ in
+                self.moreButtons.isHidden = willBeHidden
+                self.touchView.alpha = newAlpha
+            }
+        )
 
         UIView.transition(with: showMoreButtons, duration: 0.4, options: .transitionCrossDissolve, animations: {
             self.showMoreButtons.setImage(newImage, for: .normal)

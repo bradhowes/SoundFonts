@@ -62,7 +62,7 @@ extension ViewSlider {
             self.view.isHidden = false
         }
 
-        let goal = slidingIn ? 0 : -offset;
+        let goal = slidingIn ? 0 : -offset
 
         UIView.animate(withDuration: 0.25, animations: {
             self.constraints.forEach { $0.constant = goal }

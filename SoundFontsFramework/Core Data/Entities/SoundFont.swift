@@ -20,7 +20,7 @@ public final class SoundFont: NSManagedObject, Managed {
     }
 
     public static func countRows(in context: NSManagedObjectContext) -> Int {
-        return count(in: context, request: fetchRequestForRows);
+        return count(in: context, request: fetchRequestForRows)
     }
 
     public static func fetchRows(in context: NSManagedObjectContext) -> [SoundFont] {
@@ -81,7 +81,6 @@ extension SoundFont {
 
         context.saveChangesAsync()
     }
-
 
     public func setName(_ value: String) { name = value }
     public func setVisible(_ value: Bool) { visible = value }

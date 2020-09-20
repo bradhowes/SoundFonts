@@ -17,7 +17,7 @@ final public class FileMonitor {
      - parameter location: closure receives the the URL of the item being monitored
      - returns: nil if the URL is invalid or does not point to an existing item on the device
      */
-    public init?(url: URL, _ block: @escaping (_ location: URL)->Void) {
+    public init?(url: URL, _ block: @escaping (_ location: URL) -> Void) {
         let descriptor = open(url.path, O_EVTONLY)
         if descriptor == -1 { return nil }
 
