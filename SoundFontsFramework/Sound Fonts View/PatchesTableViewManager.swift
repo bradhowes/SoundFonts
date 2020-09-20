@@ -9,10 +9,9 @@ import os
 final class PatchesTableViewManager: NSObject {
 
     /// Number of sections we partition patches into
-    static private let sectionSize = 20
-
     private lazy var log = Logging.logger("PatTVM")
 
+    private let sectionSize = 20
     private let view: UITableView
     private let searchBar: UISearchBar
     private let selectedSoundFontManager: SelectedSoundFontManager
@@ -25,7 +24,7 @@ final class PatchesTableViewManager: NSObject {
     private var patches: [LegacyPatch] { showingSoundFont?.patches ?? [] }
     private var filtered = [LegacyPatch]()
 
-    private var sectionCount: Int { Int((Float(patches.count) / Float(Self.sectionSize)).rounded(.up)) }
+    private var sectionCount: Int { Int((Float(patches.count) / Float(sectionSize)).rounded(.up)) }
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?,
@@ -59,24 +58,19 @@ final class PatchesTableViewManager: NSObject {
 
 extension PatchesTableViewManager: UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        showingSearchResults ? 1 : sectionCount
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { showingSearchResults ? 1 : sectionCount }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        showingSearchResults ? filtered.count : min(patches.count - section * Self.sectionSize, Self.sectionSize)
+        showingSearchResults ? filtered.count : min(patches.count - section * sectionSize, sectionSize)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        update(cell: tableView.dequeueReusableCell(for: indexPath), at: indexPath,
-               with: getSoundFontAndPatch(for: indexPath))
+        update(cell: tableView.dequeueReusableCell(for: indexPath), at: indexPath, with: getSoundFontAndPatch(for: indexPath))
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        showingSearchResults ? nil :
-            [UITableView.indexSearch, "•"] +
-            stride(from: PatchesTableViewManager.sectionSize, to: patches.count - 1,
-                   by: PatchesTableViewManager.sectionSize).map { "\($0)" }
+        guard !showingSearchResults else { return nil }
+        return [UITableView.indexSearch, "•"] + stride(from: sectionSize, to: patches.count - 1, by: sectionSize).map { "\($0)" }
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -103,38 +97,26 @@ extension PatchesTableViewManager: UITableViewDataSource {
         return max(0, index - 1)
     }
 
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        section == 0 ? 0.0 : 18.0
-    }
-
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "\(section * PatchesTableViewManager.sectionSize)"
-    }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat { section == 0 ? 0.0 : 18.0 }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { "\(section * sectionSize)" }
 }
 
 // MARK: - UITableViewDelegate Protocol
 
 extension PatchesTableViewManager: UITableViewDelegate {
 
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
-        UISwipeActionsConfiguration? {
-        return createLeadingSwipeActions(at: indexPath)
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        createLeadingSwipeActions(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->
-        UISwipeActionsConfiguration? {
-        return createTrailingSwipeActions(at: indexPath)
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        createTrailingSwipeActions(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->
-        UITableViewCell.EditingStyle {
-        .none
-    }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle { .none }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if !showingSearchResults {
-            dismissSearchKeyboard()
-        }
+        if !showingSearchResults { dismissSearchKeyboard() }
         return indexPath
     }
 
@@ -161,8 +143,7 @@ extension PatchesTableViewManager: UITableViewDelegate {
     }
 }
 
-private class HeaderView: UIView {
-}
+private class HeaderView: UIView {}
 
 // MARK: - UISearchBarDelegate Protocol
 
@@ -273,16 +254,8 @@ extension PatchesTableViewManager {
 
     private func getIndexPath(for soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
         guard let soundFontAndPatch = soundFontAndPatch else { return nil }
-
-        guard showingSoundFont?.key == soundFontAndPatch.soundFontKey else {
-            os_log(.info, "not showing in view")
-            return nil
-        }
-
-        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else {
-            return nil
-        }
-
+        guard showingSoundFont?.key == soundFontAndPatch.soundFontKey else { return nil }
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { return nil }
         if showingSearchResults {
             os_log(.info, "showing search results")
             guard let row: Int = filtered.firstIndex(where: { $0.soundFontIndex == patch.soundFontIndex }) else {
@@ -293,8 +266,8 @@ extension PatchesTableViewManager {
             return IndexPath(row: row, section: 0)
         }
 
-        let section = patch.soundFontIndex / Self.sectionSize
-        let row = patch.soundFontIndex - Self.sectionSize * section
+        let section = patch.soundFontIndex / sectionSize
+        let row = patch.soundFontIndex - sectionSize * section
         os_log(.info, "IndexPath(row: %d  section: %d)", row, section)
         return IndexPath(row: row, section: section)
     }
@@ -305,7 +278,7 @@ extension PatchesTableViewManager {
      - parameter indexPath: the IndexPath to convert
      - returns: Patch index
      */
-    private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * Self.sectionSize + indexPath.row }
+    private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * sectionSize + indexPath.row }
 
     private func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
         SoundFontAndPatch(soundFontKey: showingSoundFont!.key, patchIndex: patch.soundFontIndex)
@@ -360,10 +333,6 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func getActionImage(_ name: String) -> UIImage? {
-        return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
-    }
-
     private func createFaveSwipeAction(at: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
@@ -373,7 +342,7 @@ extension PatchesTableViewManager {
             self.update(cell: cell, at: at, with: soundFontAndPatch)
             completionHandler(true)
         }
-        action.image = getActionImage("Fave")
+        action.image = UIImage.resourceImage(name: "Fave")
         action.backgroundColor = UIColor.orange
         action.accessibilityLabel = "FavoriteCreateButton"
         action.accessibilityHint = "FavoriteCreateButton"
@@ -395,7 +364,7 @@ extension PatchesTableViewManager {
             self.view.endUpdates()
             completionHandler(true)
         }
-        action.image = getActionImage("Unfave")
+        action.image = UIImage.resourceImage(name: "Unfave")
         action.backgroundColor = UIColor.red
         return action
     }
@@ -409,19 +378,12 @@ extension PatchesTableViewManager {
             var rect = self.view.rectForRow(at: at)
             rect.size.width = 240.0
             let position = self.favorites.index(of: favorite)
-            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0),
-                                               view: view,
-                                               rect: view.bounds,
-                                               favorite: favorite,
-                                               currentLowestNote: self.keyboard?.lowestNote,
-                                               completionHandler: completionHandler,
-                                               soundFont: soundFont,
-                                               patch: patch
-                                               )
+            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0), view: view, rect: view.bounds, favorite: favorite,
+                                               currentLowestNote: self.keyboard?.lowestNote, completionHandler: completionHandler, soundFont: soundFont, patch: patch)
             self.favorites.beginEdit(config: config)
         }
 
-        action.image = getActionImage("Edit")
+        action.image = UIImage.resourceImage(name: "Edit")
         action.backgroundColor = UIColor.orange
         action.accessibilityLabel = "FavoriteEditButton"
         action.accessibilityHint = "FavoriteEditButton"
@@ -455,8 +417,7 @@ extension PatchesTableViewManager {
 
     @discardableResult
     private func update(with soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
-        guard let indexPath = getIndexPath(for: soundFontAndPatch),
-            let soundFontAndPatch = soundFontAndPatch else { return nil }
+        guard let indexPath = getIndexPath(for: soundFontAndPatch), let soundFontAndPatch = soundFontAndPatch else { return nil }
         update(at: indexPath, with: soundFontAndPatch)
         return indexPath
     }
@@ -469,15 +430,13 @@ extension PatchesTableViewManager {
     }
 
     private func update(at indexPath: IndexPath, with soundFontAndPatch: SoundFontAndPatch) {
-        if let cell: TableCell = view.cellForRow(at: indexPath) {
-            update(cell: cell, at: indexPath, with: soundFontAndPatch)
-        }
+        guard let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+        update(cell: cell, at: indexPath, with: soundFontAndPatch)
     }
 
     private func update(at indexPath: IndexPath, with favorite: LegacyFavorite) {
-        if let cell: TableCell = view.cellForRow(at: indexPath) {
-            update(cell: cell, at: indexPath, with: favorite)
-        }
+        guard let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+        update(cell: cell, at: indexPath, with: favorite)
     }
 
     /**
@@ -485,19 +444,15 @@ extension PatchesTableViewManager {
      instead of direct `cell.update` calls.
 
      - parameter cell: the cell to update
-     - parameter patch: the Patch to use for the updating
+     - parameter soundFontAndPatch: the soundfont and patch to use for the updating
      */
     @discardableResult
-    private func update(cell: TableCell, at indexPath: IndexPath,
-                        with soundFontAndPatch: SoundFontAndPatch) -> TableCell {
+    private func update(cell: TableCell, at indexPath: IndexPath, with soundFontAndPatch: SoundFontAndPatch) -> TableCell {
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
             return update(cell: cell, at: indexPath, with: favorite)
         }
-
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { return cell }
-        let active = isActive(soundFontAndPatch: soundFontAndPatch)
-        cell.updateForPatch(name: patch.name, isActive: active,
-        isFavorite: false)
+        cell.updateForPatch(name: patch.name, isActive: isActive(soundFontAndPatch: soundFontAndPatch), isFavorite: false)
         return cell
     }
 

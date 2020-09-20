@@ -50,12 +50,14 @@ public final class AskForReview: NSObject {
 
     var countDown = 3
 
+    private var observer: NSObjectProtocol?
+
     public init(isMain: Bool) {
         super.init()
         os_log(.info, log: log, "init: dateSinceFirstLaunch - %s  dateSinceLastReviewRequest - %s",
                dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
         if isMain {
-            NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in self.ask() }
+            observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in self.ask() }
         }
     }
 
