@@ -4,36 +4,6 @@ import UIKit
 import os
 
 public extension UserDefaults {
-    static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
-    static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
-    static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
-    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: -1)
-    static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
-
-    @objc dynamic var showSolfegeLabel: Bool {
-        get { self[Self.showSolfegeLabel] }
-        set { self[Self.showSolfegeLabel] = newValue }
-    }
-
-    @objc dynamic var playSample: Bool {
-        get { self[Self.playSample] }
-        set { self[Self.playSample] = newValue }
-    }
-
-    @objc dynamic var showKeyLabels: Bool {
-        get { self[Self.showKeyLabels] }
-        set { self[Self.showKeyLabels] = newValue }
-    }
-
-    @objc dynamic var keyLabelOption: Int {
-        get { self[Self.keyLabelOption] }
-        set { self[Self.keyLabelOption] = newValue }
-    }
-
-    @objc dynamic var keyWidth: Float {
-        get { self[Self.keyWidth] }
-        set { self[Self.keyWidth] = newValue }
-    }
 }
 
 public enum KeyLabelOption: Int {

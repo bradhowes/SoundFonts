@@ -4,15 +4,6 @@ import UIKit
 import AVKit
 import os
 
-extension UserDefaults {
-    static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
-
-    @objc dynamic var showingFavorites: Bool {
-        get { self[Self.showingFavorites] }
-        set { self[Self.showingFavorites] = newValue }
-    }
-}
-
 /**
  Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
  touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
