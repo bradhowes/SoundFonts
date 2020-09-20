@@ -193,31 +193,11 @@ NSFetchedResultsControllerDelegate {
     public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any,
                            at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
-        case .insert:
-            os_log(.info, log: log, "controller - insert")
-            guard let indexPath = newIndexPath else { fatalError("indexPath should not be nil") }
-            tableView.insertRows(at: [indexPath], with: .fade)
-
-        case .update:
-            os_log(.info, log: log, "controller - update")
-            guard let indexPath = newIndexPath else { fatalError("indexPath should not be nil") }
-            guard let cell = tableView.cellForRow(at: indexPath) as? Cell else { break }
-            delegate?.configure(cell, for: object(at: indexPath))
-
-        case .move:
-            os_log(.info, log: log, "controller - move")
-            guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
-            guard let newIndexPath = newIndexPath else { fatalError("newIndexPath should not be nil") }
-            tableView.deleteRows(at: [indexPath], with: .fade)
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-
-        case .delete:
-            os_log(.info, log: log, "controller - delete")
-            guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
-            tableView.deleteRows(at: [indexPath], with: .fade)
-
-        @unknown default:
-            fatalError("unexpected NSFetchedResultsChangeType value - \(type) ")
+        case .insert: insertRow(newIndexPath)
+        case .update: updateRow(indexPath)
+        case .move: moveRow(indexPath, newIndexPath)
+        case .delete: deleteRow(indexPath)
+        @unknown default: fatalError("unexpected NSFetchedResultsChangeType value - \(type) ")
         }
     }
 
@@ -231,5 +211,34 @@ NSFetchedResultsControllerDelegate {
         os_log(.info, log: log, "controllerDidChangeContent - endUpdates")
         tableView.endUpdates()
         delegate.updated()
+    }
+}
+
+extension TableViewDataSource {
+    private func insertRow(_ indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
+        os_log(.info, log: log, "insertRow - %d", indexPath.row)
+        tableView.insertRows(at: [indexPath], with: .fade)
+    }
+
+    private func updateRow(_ indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
+        os_log(.info, log: log, "updateRow - %d", indexPath.row)
+        guard let cell = tableView.cellForRow(at: indexPath) as? Cell else { return }
+        delegate?.configure(cell, for: object(at: indexPath))
+    }
+
+    private func moveRow(_ old: IndexPath?, _ new: IndexPath?) {
+        guard let indexPath = old else { fatalError("old should not be nil") }
+        guard let newIndexPath = new else { fatalError("new should not be nil") }
+        os_log(.info, log: log, "moveRow - %d %d", indexPath.row, newIndexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
+        tableView.insertRows(at: [newIndexPath], with: .fade)
+    }
+
+    private func deleteRow(_ indexPath: IndexPath?) {
+        guard let indexPath = indexPath else { fatalError("indexPath should not be nil") }
+        os_log(.info, log: log, "deleteRow")
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
 }

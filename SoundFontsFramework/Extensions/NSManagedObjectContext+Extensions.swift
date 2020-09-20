@@ -70,8 +70,8 @@ public extension NSManagedObjectContext {
      - returns: reference to the observation
      */
     func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
-        NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) { notification in
-            block(ContextNotification<T>(notification: notification))
+        return NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) {
+            block(ContextNotification<T>(notification: $0))
         }
     }
 
@@ -83,8 +83,8 @@ public extension NSManagedObjectContext {
      - returns: reference to the observation
      */
     func notifyOnChanges<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
-        NC.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil) { notification in
-            block(ContextNotification<T>(notification: notification))
+        return NC.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil) {
+            block(ContextNotification<T>(notification: $0))
         }
     }
 }

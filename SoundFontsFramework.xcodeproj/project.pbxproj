@@ -89,6 +89,7 @@
 		BD430FC12410EC54009DB9B3 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0723CDAF51001987E9 /* FreeFont.sf2 */; };
 		BD430FC22410EC54009DB9B3 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0B23CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
 		BD430FC32410EC54009DB9B3 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0E23CDAF51001987E9 /* FluidR3_GM.sf2 */; };
+		BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */; };
 		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
@@ -244,6 +245,7 @@
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44CF2501958000653ABD /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUAudioUnitTests.swift; sourceTree = "<group>"; };
+		BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		BD498F9523EF1EB500755AB9 /* FileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitor.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -506,16 +508,17 @@
 				BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */,
 				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
 				BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */,
-				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
-				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
-				BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */,
-				BD074C2523CDAF51001987E9 /* UserDefaults+Extensions.swift */,
-				BD074C2623CDAF51001987E9 /* UISearchBar+Additions.swift */,
 				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
+				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
+				BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */,
+				BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */,
 				BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */,
 				BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */,
+				BD074C2623CDAF51001987E9 /* UISearchBar+Additions.swift */,
+				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
+				BD074C1D23CDAF51001987E9 /* UIView+Extensions.swift */,
 				BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */,
-				BD7B30C3241BCED90080784D /* UIContextualAction+Extensions.swift */,
+				BD074C2523CDAF51001987E9 /* UserDefaults+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -816,6 +819,7 @@
 				BD074C7B23CDAF51001987E9 /* Foundation+Extensions.swift in Sources */,
 				BD8A31502502E41E0077320F /* SoundFonts.xcdatamodeld in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
+				BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
 				BD074C7623CDAF51001987E9 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD074C7523CDAF51001987E9 /* UIView+Extensions.swift in Sources */,
