@@ -5,7 +5,7 @@ import os
 
 /**
  Typed notification definition. Template argument defines the type of a value that will be transmitted in the
- notification userInfo["value"] slot.
+ notification userInfo["value"] slot. This value will be available to blocks registered to receive it
  */
 open class TypedNotification<A> {
 
@@ -17,19 +17,14 @@ open class TypedNotification<A> {
 
      - parameter name: the unique name for the notification
      */
-    public required init(name: String) {
-        self.name = Notification.Name(name)
-    }
+    public required init(name: String) { self.name = Notification.Name(name) }
 
     /**
      Post this notification to all observers of it
 
      - parameter value: the value to forward to the observers
      */
-    open func post(value: A) {
-        let userInfo = ["value": value]
-        NotificationCenter.default.post(name: name, object: nil, userInfo: userInfo)
-    }
+    open func post(value: A) { NotificationCenter.default.post(name: name, object: nil, userInfo: ["value": value]) }
 
     /**
      Register an observer to receive this notification defintion.
@@ -37,9 +32,7 @@ open class TypedNotification<A> {
      - parameter block: a closure to execute when this kind of notification arrives
      - returns: a NotificationObserver instance that records the registration.
      */
-    open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
-        NotificationObserver(notification: self, block: block)
-    }
+    open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver { NotificationObserver(notification: self, block: block) }
 
     /**
      Register for a notification that *only* takes place on the app's main (UI) thread.
@@ -47,9 +40,7 @@ open class TypedNotification<A> {
      - parameter block: a closure to execute when this kind of notification arrives
      - returns: a NotificationObserver instance that records the registration.
      */
-    open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
-        NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
-    }
+    open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver { NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } } }
 }
 
 /**
@@ -57,7 +48,6 @@ open class TypedNotification<A> {
  unregister the internal observer from future notification events.
  */
 public class NotificationObserver {
-
     private let name: Notification.Name
     private var observer: NSObjectProtocol?
 
@@ -77,10 +67,9 @@ public class NotificationObserver {
      is no longer held by another object).
      */
     public func forget() {
-        if let obs = observer {
-            NotificationCenter.default.removeObserver(obs)
-            self.observer = nil
-        }
+        guard let obs = observer else { return }
+        NotificationCenter.default.removeObserver(obs)
+        observer = nil
     }
 
     /**

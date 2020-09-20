@@ -8,10 +8,11 @@ import os
  */
 final class PatchesTableViewManager: NSObject {
 
-    /// Number of sections we partition patches into
     private lazy var log = Logging.logger("PatTVM")
 
+    /// Number of sections we partition patches into
     private let sectionSize = 20
+
     private let view: UITableView
     private let searchBar: UISearchBar
     private let selectedSoundFontManager: SelectedSoundFontManager

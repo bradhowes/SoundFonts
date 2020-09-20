@@ -21,9 +21,7 @@ open class CachedValueTypedNotification<A>: TypedNotification<A> {
         super.post(value: value)
     }
 
-    public func clear() {
-        cachedValue = nil
-    }
+    public func clear() { cachedValue = nil }
 
     /**
      Register a closure to invoke when `post` is called. Note that if `cachedValue` is not nil, the

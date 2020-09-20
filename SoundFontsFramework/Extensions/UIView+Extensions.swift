@@ -5,9 +5,7 @@ import UIKit
 public extension UIView {
 
     @IBInspectable var cornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        }
+        get { layer.cornerRadius }
         set {
             layer.cornerRadius = newValue
             layer.masksToBounds = newValue > 0
@@ -15,20 +13,12 @@ public extension UIView {
     }
 
     @IBInspectable var borderWidth: CGFloat {
-        get {
-            return layer.borderWidth
-        }
-        set {
-            layer.borderWidth =  newValue
-        }
+        get { layer.borderWidth }
+        set { layer.borderWidth =  newValue }
     }
 
     @IBInspectable var borderColor: UIColor? {
-        get {
-            return layer.borderColor != nil ? UIColor(cgColor: layer.borderColor!) : nil
-        }
-        set {
-            layer.borderColor =  newValue?.cgColor
-        }
+        get { layer.borderColor != nil ? UIColor(cgColor: layer.borderColor!) : nil }
+        set { layer.borderColor =  newValue?.cgColor }
     }
 }

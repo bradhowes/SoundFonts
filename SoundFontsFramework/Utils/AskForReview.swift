@@ -10,14 +10,13 @@ public final class AskForReview: NSObject {
     static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
     /// Obtain the version found in the main bundle.
-    let currentVersion: String = {
-        //swiftlint:disable force_cast
-        Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as! String
-        //swiftlint:enable force_cast
+    private lazy var currentVersion: String = {
+        guard let version = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else { fatalError() }
+        return version
     }()
 
     /// Obtain the first time the app was launched by the user after installing.
-    let firstLaunchDate: Date = {
+    private lazy var firstLaunchDate: Date = {
         var value = settings.firstLaunchDate
         if value == Date.distantPast {
             value = Date()
@@ -27,35 +26,27 @@ public final class AskForReview: NSObject {
     }()
 
     /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-    var lastReviewRequestDate: Date = settings.lastReviewRequestDate {
+    private var lastReviewRequestDate: Date = settings.lastReviewRequestDate {
         didSet { settings.lastReviewRequestDate = lastReviewRequestDate }
     }
 
     /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-    var lastReviewRequestVersion: String = settings.lastReviewRequestVersion {
+    private var lastReviewRequestVersion: String = settings.lastReviewRequestVersion {
         didSet { settings.lastReviewRequestVersion = lastReviewRequestVersion }
     }
 
     /// Get the date N days days since the first launch
-    lazy var dateSinceFirstLaunch: Date = Calendar.current.date(
-        byAdding: .day,
-        value: settings.daysAfterFirstLaunchBeforeRequest,
-        to: firstLaunchDate)!
+    private lazy var dateSinceFirstLaunch: Date = Calendar.current.date(byAdding: .day, value: settings.daysAfterFirstLaunchBeforeRequest, to: firstLaunchDate)!
 
     /// Get the date N months since the last review request
-    lazy var dateSinceLastReviewRequest: Date = Calendar.current.date(
-        byAdding: .month,
-        value: settings.monthsAfterLastReviewBeforeRequest,
-        to: lastReviewRequestDate)!
+    private lazy var dateSinceLastReviewRequest: Date = Calendar.current.date(byAdding: .month, value: settings.monthsAfterLastReviewBeforeRequest, to: lastReviewRequestDate)!
 
-    var countDown = 3
-
+    private var countDown = 3
     private var observer: NSObjectProtocol?
 
     public init(isMain: Bool) {
         super.init()
-        os_log(.info, log: log, "init: dateSinceFirstLaunch - %s  dateSinceLastReviewRequest - %s",
-               dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
+        os_log(.info, log: log, "init: dateSinceFirstLaunch - %s  dateSinceLastReviewRequest - %s", dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
         if isMain {
             observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in self.ask() }
         }

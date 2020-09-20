@@ -13,20 +13,15 @@ public class SubscriptionManager<Event> {
     private var subscriptions = [UUID: NotifierProc]()
 
     private struct Token: SubscriberToken {
-
         private let unsubscribeProc: UnsubscribeProc
-
         fileprivate init(_ unsubscribeProc: @escaping UnsubscribeProc) { self.unsubscribeProc = unsubscribeProc }
-
         public func unsubscribe() { unsubscribeProc() }
     }
 
     private var lastEvent: Event?
     private let cacheEvent: Bool
 
-    public init(_ cacheEvent: Bool = false) {
-        self.cacheEvent = cacheEvent
-    }
+    public init(_ cacheEvent: Bool = false) { self.cacheEvent = cacheEvent }
 
     /**
      Establish a connection between the SubscriptionManager and the notifier such that any future Events will be sent

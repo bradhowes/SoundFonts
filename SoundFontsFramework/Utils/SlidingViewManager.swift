@@ -10,27 +10,19 @@ public struct SlidingViewManager {
     private var views = [ViewSlider]()
     public private(set) var active: Int = 0
 
-    init(active: Int) {
-        self.active = active
-    }
+    init(active: Int) { self.active = active }
 
-    public mutating func add(view: UIView) {
-        views.append(ViewSlider(view: view))
-    }
+    public mutating func add(view: UIView) { views.append(ViewSlider(view: view)) }
 
     /**
      Show the next view by sliding the existing / next views to the left.
      */
-    public mutating func slideNextHorizontally() {
-        transition(activate: active + 1, method: ViewSlider.slideLeft)
-    }
+    public mutating func slideNextHorizontally() { transition(activate: active + 1, method: ViewSlider.slideLeft) }
 
     /**
      Show the previous view by sliding the existing / previous views to the right.
      */
-    public mutating func slidePrevHorizontally() {
-        transition(activate: active - 1, method: ViewSlider.slideRight)
-    }
+    public mutating func slidePrevHorizontally() { transition(activate: active - 1, method: ViewSlider.slideRight) }
 }
 
 extension SlidingViewManager {
@@ -44,8 +36,8 @@ extension SlidingViewManager {
     private mutating func transition(activate: Int, method: (_ : ViewSlider) -> () -> Void ) {
         let index: Int = {
             if activate < 0 { return activate + views.count }
-            else if activate >= views.count { return activate - views.count }
-            else { return activate }
+            if activate >= views.count { return activate - views.count }
+            return activate
         }()
 
         if index == active { return }
@@ -53,5 +45,4 @@ extension SlidingViewManager {
         active = index
         method(views[active])()
     }
-
 }
