@@ -6,7 +6,7 @@ extension Timer {
 
     @discardableResult
     public class func once(after: TimeInterval, _ block: @escaping (Timer) -> Void) -> Timer {
-        return once(when: Date().addingTimeInterval(after), block)
+        once(when: Date().addingTimeInterval(after), block)
     }
 
     @discardableResult
