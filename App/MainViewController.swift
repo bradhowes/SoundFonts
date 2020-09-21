@@ -53,22 +53,27 @@ extension MainViewController {
     private func startAudioBackground() {
         let session = AVAudioSession.sharedInstance()
         do {
+            os_log(.info, log: log, "setting active audio session")
             try session.setActive(true, options: [])
-            os_log(.info, log: log, "set active audio session")
-            if case let .failure(what) = sampler.start() {
-                DispatchQueue.main.async { self.postAlert(for: what) }
-            }
-            else {
-                // TODO: Do this properly
-                DispatchQueue.main.async {
-                    self.useActivePatchKind(self.activePatchManager.active, playSample: false)
-                    self.volumeMonitor.start()
-                }
-            }
+            os_log(.info, log: log, "starting sampler")
+            let result = sampler.start()
+            DispatchQueue.main.async { self.finishStart(result) }
         } catch let error as NSError {
+            let result: SamplerStartFailure = .sessionActivating(error: error)
             os_log(.error, log: log, "Failed setActive(true): %s", error.localizedDescription)
+            DispatchQueue.main.async { self.finishStart(.failure(result)) }
         }
+    }
 
+    private func finishStart(_ result: Result<Void, SamplerStartFailure>) {
+        switch result {
+        case let .failure(what):
+            os_log(.info, log: log, "set active audio session")
+            postAlert(for: what)
+        case .success:
+            useActivePatchKind(activePatchManager.active, playSample: false)
+            volumeMonitor.start()
+        }
     }
 
     /**
@@ -130,7 +135,7 @@ extension MainViewController: ControllerConfiguration {
         }
     }
 
-    private func postAlert(for what: Sampler.Failure) {
+    private func postAlert(for what: SamplerStartFailure) {
         let alertController = UIAlertController(title: "Sampler Issue",
                                                 message: "Unexpected problem with the audio sampler.",
                                                 preferredStyle: .alert)
