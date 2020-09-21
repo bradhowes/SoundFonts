@@ -1,99 +1,79 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import Foundation
-import os
 
 /// Global variable to keep things concise.
 public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard
 
-/**
- Protocol for types that can store a value in UserDefaults
- */
-public protocol SettingSettable {
-
-    /**
-     Store a setting value under the given key.
-
-     - parameter key: the setting name
-     - parameter value: the value to store
-     - parameter userDefaults: the container to store in
-     */
-    static func set(key: String, value: Self, userDefaults: UserDefaults)
+/// Key definitions that include the key name, the value type, and any default value associated with the setting if not found
+public extension SettingKeys {
+    static let daysAfterFirstLaunchBeforeRequest = SettingKey<Int>("daysAfterFirstLaunchBeforeRequest", defaultValue: 14)
+    static let firstLaunchDate = SettingKey<Date>("firstLaunchDate", defaultValue: Date.distantPast)
+    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: -1)
+    static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
+    static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
+    static let lastReviewRequestDate = SettingKey<Date>("lastReviewRequestDate", defaultValue: Date.distantPast)
+    static let lastReviewRequestVersion = SettingKey<String>("lastReviewRequestVersion", defaultValue: "")
+    static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
+    static let monthsAfterLastReviewBeforeRequest = SettingKey<Int>("monthsAfterLastReviewBeforeRequest", defaultValue: 2)
+    static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
+    static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
+    static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
+    static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
 }
 
-/**
- Protocol for types that can fetch a value from UserDefaults
- */
-public protocol SettingGettable {
-
-    /**
-     Obtain the setting value under the given key.
-
-     - parameter key: the setting name
-     - parameter userDefaults: the container to fetch from
-     - returns: optional value
-     */
-    static func get(key: String, userDefaults: UserDefaults) -> Self?
-}
-
-public typealias SettingSerializable = SettingSettable & SettingGettable
-
-/**
- Template class that supports get/set operations for the template type. Using `class` here instead of `struct` due to
- the lazy initialization of the defaultValue at runtime.
- */
-public class SettingKey<ValueType: SettingSerializable> {
-    typealias ValueType = ValueType
-
-    /**
-     There are two types of default values: a constant and a generator. The latter is useful when the value must be
-     determined at runtime.
-     */
-    enum DefaultValue {
-        case constant(ValueType)
-        case generator(() -> ValueType)
-
-        /// Obtain an actual default value. NOTE: for a generator type, this may not be idempotent.
-        var defaultValue: ValueType {
-            switch self {
-            case .constant(let value): return value
-            case .generator(let value): return value()
-            }
-        }
+/// KVO properties based on the above key definitions.
+public extension UserDefaults {
+    @objc dynamic var daysAfterFirstLaunchBeforeRequest: Int {
+        get { self[.daysAfterFirstLaunchBeforeRequest] }
+        set { self[.daysAfterFirstLaunchBeforeRequest] = newValue }
     }
-
-    private let _defaultValue: DefaultValue
-
-    /// The unique identifier for this setting key
-    public let userDefaultsKey: String
-
-    /// The default value to use when the setting has not yet been set. We defer the setting in case it is from a
-    /// generator and the initial value must come from runtime code.
-    public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
-
-    /**
-     Define a new setting key.
-
-     - parameter key: the unique identifier to use for this setting
-     - parameter defaultValue: the constant default value to use
-     */
-    public init(_ key: String, defaultValue: ValueType) {
-        self.userDefaultsKey = key
-        self._defaultValue = .constant(defaultValue)
+    @objc dynamic var firstLaunchDate: Date {
+        get { self[.firstLaunchDate] }
+        set { self[.firstLaunchDate] = newValue }
     }
-
-    /**
-     Define a new setting key.
-
-     - parameter key: the unique identifier to use for this setting
-     - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
-     only be called at most one time.
-     */
-    public init(_ key: String, defaultValueGenerator: @escaping () -> ValueType) {
-        self.userDefaultsKey = key
-        self._defaultValue = .generator(defaultValueGenerator)
+    @objc dynamic var keyLabelOption: Int {
+        get { self[.keyLabelOption] }
+        set { self[.keyLabelOption] = newValue }
     }
-
-    public func get(_ source: UserDefaults) -> ValueType { ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue }
-    public func set(_ source: UserDefaults, _ value: ValueType) { ValueType.set(key: userDefaultsKey, value: value, userDefaults: source) }
+    @objc dynamic var keyWidth: Float {
+        get { self[.keyWidth] }
+        set { self[.keyWidth] = newValue }
+    }
+    @objc dynamic var lastActivePatch: Data {
+        get { self[.lastActivePatch] }
+        set { self[.lastActivePatch] = newValue }
+    }
+    @objc dynamic var lastReviewRequestDate: Date {
+        get { self[.lastReviewRequestDate] }
+        set { self[.lastReviewRequestDate] = newValue }
+    }
+    @objc dynamic var lastReviewRequestVersion: String {
+        get { self[.lastReviewRequestVersion] }
+        set { self[.lastReviewRequestVersion] = newValue }
+    }
+    @objc dynamic var lowestKeyNote: Int {
+        get { self[.lowestKeyNote] }
+        set { self[.lowestKeyNote] = newValue}
+    }
+    @objc dynamic var monthsAfterLastReviewBeforeRequest: Int {
+        get { self[.monthsAfterLastReviewBeforeRequest] }
+        set { self[.monthsAfterLastReviewBeforeRequest] = newValue }
+    }
+    @objc dynamic var playSample: Bool {
+        get { self[.playSample] }
+        set { self[.playSample] = newValue }
+    }
+    @objc dynamic var showKeyLabels: Bool {
+        get { self[.showKeyLabels] }
+        set { self[.showKeyLabels] = newValue }
+    }
+    @objc dynamic var showingFavorites: Bool {
+        get { self[.showingFavorites] }
+        set { self[.showingFavorites] = newValue }
+    }
+    @objc dynamic var showSolfegeLabel: Bool {
+        get { self[.showSolfegeLabel] }
+        set { self[.showSolfegeLabel] = newValue }
+    }
 }
