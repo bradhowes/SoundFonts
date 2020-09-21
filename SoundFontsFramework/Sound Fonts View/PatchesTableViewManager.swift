@@ -15,7 +15,6 @@ final class PatchesTableViewManager: NSObject {
 
     private let view: UITableView
     private let searchBar: UISearchBar
-    private let selectedSoundFontManager: SelectedSoundFontManager
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
     private let keyboard: Keyboard?
@@ -32,7 +31,6 @@ final class PatchesTableViewManager: NSObject {
          sampler: Sampler) {
         self.view = view
         self.searchBar = searchBar
-        self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
         self.showingSoundFont = activePatchManager.soundFont
         self.favorites = favorites
@@ -88,9 +86,6 @@ extension PatchesTableViewManager: UITableViewDataSource {
                 }
                 self.searchBar.becomeFirstResponder()
             }
-            else {
-                hideSearchBar(animated: true)
-            }
         }
         else if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
@@ -127,8 +122,6 @@ extension PatchesTableViewManager: UITableViewDelegate {
         let playSample = settings.playSample
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
             activePatchManager.setActive(.favorite(favorite: favorite), playSample: playSample)
-            let index = favorites.index(of: favorite)
-            favorites.selected(index: index)
         }
         else {
             activePatchManager.setActive(.normal(soundFontAndPatch: soundFontAndPatch), playSample: playSample)
@@ -189,29 +182,12 @@ extension PatchesTableViewManager {
         os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            if showingSoundFont?.key != new.soundFontAndPatch?.soundFontKey {
-                os_log(.info, log: log, "new font")
-                if let soundFontAndPatch = new.soundFontAndPatch,
-                    let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) {
-                    selectedSoundFontManager.setSelected(soundFont)
-                    view.performBatchUpdates({
-                        self.view.reloadData()
-                    }, completion: { finished in
-                        if finished { self.selectActive(animated: true) }
-                    })
-                }
-            }
-            else {
-                os_log(.info, log: log, "same font")
-                if old.soundFontAndPatch?.soundFontKey == showingSoundFont?.key {
-                    view.performBatchUpdates({
-                        update(with: old.soundFontAndPatch)
-                        update(with: new.soundFontAndPatch)
-                    }, completion: { finished in
-                        if finished { self.selectActive(animated: false) }
-                    })
-                }
-            }
+            view.performBatchUpdates({
+                update(with: old.soundFontAndPatch)
+                update(with: new.soundFontAndPatch)
+            }, completion: { finished in
+                if finished { self.selectActive(animated: false) }
+            })
         }
     }
 
@@ -222,13 +198,12 @@ extension PatchesTableViewManager {
             if showingSoundFont != new {
                 showingSoundFont = new
                 reloadView()
-                DispatchQueue.main.async {
-                    if self.activePatchManager.soundFont == new {
-                        self.selectActive(animated: false)
-                    }
-                    else if !self.showingSearchResults {
-                        self.hideSearchBar(animated: true)
-                    }
+                if activePatchManager.soundFont == new {
+                    selectActive(animated: false)
+                }
+                else if !showingSearchResults {
+                    view.layoutIfNeeded()
+                    hideSearchBar(animated: true)
                 }
             }
         }
@@ -308,7 +283,7 @@ extension PatchesTableViewManager {
 
     func hideSearchBar(animated: Bool) {
         dismissSearchKeyboard()
-        if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height { return }
+        if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height * 2 { return }
         os_log(.info, log: log, "hiding search bar")
         let view = self.view
         let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
@@ -324,10 +299,13 @@ extension PatchesTableViewManager {
     func selectActive(animated: Bool) {
         os_log(.info, log: log, "selectActive")
         if let indexPath = getIndexPath(for: activePatchManager.soundFontAndPatch) {
-            self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
-            self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
-            self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
-            self.hideSearchBar(animated: animated)
+            let visibleRows = view.indexPathsForVisibleRows
+            if !(visibleRows?.contains(indexPath) ?? true) {
+                self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
+                self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
+                self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
+                self.hideSearchBar(animated: animated)
+            }
         }
     }
 
@@ -354,7 +332,7 @@ extension PatchesTableViewManager {
         let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
             if favorite == self.activePatchManager.favorite {
-                self.activePatchManager.setActive(.normal(soundFontAndPatch: favorite.soundFontAndPatch))
+                self.activePatchManager.setActive(.normal(soundFontAndPatch: favorite.soundFontAndPatch), playSample: false)
             }
             self.favorites.remove(index: index, bySwiping: true)
             self.view.beginUpdates()

@@ -52,7 +52,11 @@ public final class SoundFontsViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        patchesTableViewDataSource.hideSearchBar(animated: true)
+        coordinator.animate(alongsideTransition: { _ in
+        }, completion: { _ in
+            self.soundFontsTableViewDataSource.selectActive()
+            self.patchesTableViewDataSource.selectActive(animated: false)
+        })
     }
 
     private func addSoundFont() {
