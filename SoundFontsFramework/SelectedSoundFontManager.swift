@@ -14,6 +14,7 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
     public init(activePatchManager: ActivePatchManager) {
         self.selected = activePatchManager.soundFont
+        super.init()
         os_log(.info, log: log, "selected: %s", selected?.description ?? "nil")
     }
 
@@ -26,6 +27,7 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
         let old = selected
         selected = soundFont
+
         notify(.changed(old: old, new: soundFont))
     }
 }

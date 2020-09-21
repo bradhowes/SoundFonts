@@ -107,9 +107,13 @@ extension FontsTableViewManager {
                     let row = soundFonts.index(of: key)
                     update(row: row)
                 }
-                if let key = new.soundFontAndPatch?.soundFontKey {
+
+                // Activating a patch automatically selects the soundfont associated with it
+                if let soundFontAndPatch = new.soundFontAndPatch {
+                    let key = soundFontAndPatch.soundFontKey
                     let row = soundFonts.index(of: key)
                     update(row: row)
+                    selectedSoundFontManager.setSelected(activePatchManager.resolveToSoundFont(soundFontAndPatch))
                 }
             }
         }
@@ -117,8 +121,7 @@ extension FontsTableViewManager {
 
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
         os_log(.info, log: log, "selectedSoundFontChange")
-        switch event {
-        case let .changed(old: old, new: new):
+        if case let .changed(old: old, new: new) = event {
             if let key = old?.key, let row = soundFonts.index(of: key) {
                 update(row: row)
             }
@@ -155,7 +158,7 @@ extension FontsTableViewManager {
                                      completion: { _ in
                                         let newRow = min(old, self.soundFonts.count - 1)
                                         guard newRow >= 0 else {
-                                            self.activePatchManager.setActive(.none)
+                                            self.activePatchManager.setActive(.none, playSample: false)
                                             self.selectedSoundFontManager.setSelected(nil)
                                             return
                                         }
@@ -164,7 +167,7 @@ extension FontsTableViewManager {
                                         if self.activePatchManager.soundFont == deletedSoundFont {
                                             self.activePatchManager.setActive(
                                                 .normal(soundFontAndPatch:
-                                                    SoundFontAndPatch(soundFontKey: newSoundFont.key, patchIndex: 0)))
+                                                    SoundFontAndPatch(soundFontKey: newSoundFont.key, patchIndex: 0)), playSample: false)
                                             self.selectedSoundFontManager.setSelected(newSoundFont)
                                         }
                                         else if self.selectedSoundFontManager.selected == deletedSoundFont {

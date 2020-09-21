@@ -103,7 +103,7 @@ extension FavoritesViewController: ControllerConfiguration {
 
         case let .selected(index: index, favorite: favorite):
             os_log(.info, log: log, "selected %d", index)
-            activePatchManager.setActive(.favorite(favorite: favorite))
+            activePatchManager.setActive(.favorite(favorite: favorite), playSample: true)
 
         case let .beginEdit(config: config):
             edit(config: config)

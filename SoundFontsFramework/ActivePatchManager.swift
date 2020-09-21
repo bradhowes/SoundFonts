@@ -60,7 +60,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 
-    public func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {
+    public func setActive(_ patch: ActivePatchKind, playSample: Bool) {
         os_log(.info, log: log, "setActive: %s", patch.description)
         let prev = active
         active = patch
