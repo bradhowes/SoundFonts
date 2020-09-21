@@ -15,7 +15,6 @@ public final class SoundFontsControlsController: UIViewController {
 
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
-    @IBOutlet private weak var envelopeView: UIView!
 
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!
@@ -30,12 +29,10 @@ public final class SoundFontsControlsController: UIViewController {
 
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
-        envelopeView.isHidden = true
         upperViewManager = SlidingViewManager(active: showingFavorites ? 1: 0)
 
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
-        upperViewManager.add(view: envelopeView)
     }
 }
 

@@ -89,7 +89,7 @@ extension PatchesTableViewManager: UITableViewDataSource {
                 self.searchBar.becomeFirstResponder()
             }
             else {
-                hideSearchBar()
+                hideSearchBar(animated: true)
             }
         }
         else if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
@@ -194,19 +194,24 @@ extension PatchesTableViewManager {
                 if let soundFontAndPatch = new.soundFontAndPatch,
                     let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) {
                     selectedSoundFontManager.setSelected(soundFont)
-                    view.reloadData()
+                    view.performBatchUpdates({
+                        self.view.reloadData()
+                    }, completion: { finished in
+                        if finished { self.selectActive(animated: true) }
+                    })
                 }
             }
             else {
                 os_log(.info, log: log, "same font")
                 if old.soundFontAndPatch?.soundFontKey == showingSoundFont?.key {
-                    view.beginUpdates()
-                    update(with: old.soundFontAndPatch)
-                    update(with: new.soundFontAndPatch)
-                    view.endUpdates()
+                    view.performBatchUpdates({
+                        update(with: old.soundFontAndPatch)
+                        update(with: new.soundFontAndPatch)
+                    }, completion: { finished in
+                        if finished { self.selectActive(animated: false) }
+                    })
                 }
             }
-            selectActive()
         }
     }
 
@@ -219,10 +224,10 @@ extension PatchesTableViewManager {
                 reloadView()
                 DispatchQueue.main.async {
                     if self.activePatchManager.soundFont == new {
-                        self.selectActive()
+                        self.selectActive(animated: false)
                     }
                     else if !self.showingSearchResults {
-                        self.hideSearchBar()
+                        self.hideSearchBar(animated: true)
                     }
                 }
             }
@@ -246,8 +251,6 @@ extension PatchesTableViewManager {
             update(with: favorite)
             view.endUpdates()
         }
-
-        hideSearchBar()
     }
 
     private func getIndexPath(for soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
@@ -303,31 +306,28 @@ extension PatchesTableViewManager {
         view.reloadData()
     }
 
-    func hideSearchBar() {
+    func hideSearchBar(animated: Bool) {
         dismissSearchKeyboard()
-        if !showingSearchResults && view.contentOffset.y <= searchBar.frame.size.height {
-            os_log(.info, log: log, "hiding search bar")
-            let view = self.view
-            let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.3,
-                delay: 0.0,
-                options: [.curveEaseOut],
-                animations: { view.contentOffset = contentOffset },
-                completion: { _ in view.contentOffset = contentOffset })
+        if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height { return }
+        os_log(.info, log: log, "hiding search bar")
+        let view = self.view
+        let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
+        if animated {
+            UIViewPropertyAnimator.runningPropertyAnimator( withDuration: 0.3, delay: 0.0, options: [.curveEaseOut], animations: { view.contentOffset = contentOffset },
+                                                            completion: { _ in view.contentOffset = contentOffset })
+        }
+        else {
+            view.contentOffset = contentOffset
         }
     }
 
-    func selectActive() {
+    func selectActive(animated: Bool) {
         os_log(.info, log: log, "selectActive")
         if let indexPath = getIndexPath(for: activePatchManager.soundFontAndPatch) {
-            view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-            if let visible = view.indexPathsForVisibleRows {
-                if !visible.contains(indexPath) {
-                    view.scrollToRow(at: indexPath, at: .none, animated: false)
-                }
-                hideSearchBar()
-            }
+            self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
+            self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
+            self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
+            self.hideSearchBar(animated: animated)
         }
     }
 
