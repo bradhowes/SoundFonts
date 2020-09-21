@@ -74,6 +74,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public func stop() {
         os_log(.info, log: log, "stop")
         engine?.stop()
+        engine = nil
+        auSampler = nil
     }
 
     private func startEngine() -> Result<Void, Failure> {

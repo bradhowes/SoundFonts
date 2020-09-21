@@ -47,22 +47,28 @@ extension MainViewController {
      Start audio processing. This is done as the app is brought into the foreground.
      */
     func startAudio() {
+        DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground() }
+    }
 
+    private func startAudioBackground() {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setActive(true, options: [])
             os_log(.info, log: log, "set active audio session")
+            if case let .failure(what) = sampler.start() {
+                DispatchQueue.main.async { self.postAlert(for: what) }
+            }
+            else {
+                // TODO: Do this properly
+                DispatchQueue.main.async {
+                    self.useActivePatchKind(self.activePatchManager.active, playSample: false)
+                    self.volumeMonitor.start()
+                }
+            }
         } catch let error as NSError {
             os_log(.error, log: log, "Failed setActive(true): %s", error.localizedDescription)
         }
 
-        if case let .failure(what) = sampler.start() {
-            postAlert(for: what)
-        }
-
-        useActivePatchKind(activePatchManager.active, playSample: false)
-
-        volumeMonitor.start()
     }
 
     /**
