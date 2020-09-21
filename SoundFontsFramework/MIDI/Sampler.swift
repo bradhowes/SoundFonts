@@ -9,6 +9,13 @@ public enum SamplerEvent {
     case loaded(patch: ActivePatchKind)
 }
 
+public enum SamplerStartFailure: Error {
+    case noSampler
+    case sessionActivating(error: NSError)
+    case engineStarting(error: NSError)
+    case patchLoading(error: NSError)
+}
+
 /**
  This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
  */
@@ -17,12 +24,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C8
-
-    public enum Failure: Error {
-        case noSampler
-        case engineStarting(error: NSError)
-        case patchLoading(error: NSError)
-    }
 
     public enum Mode {
         case standalone
@@ -60,13 +61,13 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result value indicating success or failure
      */
-    public func start() -> Result<Void, Failure> {
+    public func start() -> Result<Void, SamplerStartFailure> {
         os_log(.info, log: log, "start")
         auSampler = AVAudioUnitSampler()
         return startEngine()
     }
 
-    private func loadActivePatch() -> Result<Void, Failure> { loaded ? .success(()) : load() }
+    private func loadActivePatch() -> Result<Void, SamplerStartFailure> { loaded ? .success(()) : load() }
 
     /**
      Stop the existing audio engine. Releases the sampler and engine.
@@ -78,7 +79,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         auSampler = nil
     }
 
-    private func startEngine() -> Result<Void, Failure> {
+    private func startEngine() -> Result<Void, SamplerStartFailure> {
         guard let sampler = auSampler else { return .failure(.noSampler) }
         let engine = AVAudioEngine()
         self.engine = engine
@@ -110,7 +111,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result instance indicating success or failure
      */
-    public func load(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, Failure> {
+    public func load(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, SamplerStartFailure> {
         os_log(.info, log: log, "load - %s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
