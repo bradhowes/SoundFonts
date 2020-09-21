@@ -135,7 +135,7 @@ public class Mute: NSObject {
 
         self.isScheduled = true
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + self.checkInterval) {
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + self.checkInterval) {
             self.isScheduled = false
 
             /// Don't play if we're paused
