@@ -15,6 +15,7 @@ final class PatchesTableViewManager: NSObject {
 
     private let view: UITableView
     private let searchBar: UISearchBar
+    private var lastSearchText: String?
     private let activePatchManager: ActivePatchManager
     private let favorites: Favorites
     private let keyboard: Keyboard?
@@ -85,6 +86,10 @@ extension PatchesTableViewManager: UITableViewDataSource {
                     UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero }
                 }
                 self.searchBar.becomeFirstResponder()
+                if let term = lastSearchText, !term.isEmpty {
+                    self.searchBar.text = term
+                    search(for: term)
+                }
             }
         }
         else if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
@@ -157,9 +162,8 @@ extension PatchesTableViewManager: UISearchBarDelegate {
      - parameter textDidChange: the current contents of the text field
      */
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if let searchTerm = searchBar.searchTerm {
-            search(for: searchTerm)
-        }
+        let searchTerm = searchBar.searchTerm ?? ""
+        search(for: searchTerm)
     }
 }
 
@@ -276,6 +280,7 @@ extension PatchesTableViewManager {
 
     private func search(for searchTerm: String) {
         os_log(.info, log: log, "search - '%s'", searchTerm)
+        lastSearchText = searchTerm
         filtered = patches.filter { $0.name.localizedCaseInsensitiveContains(searchTerm) }
         os_log(.info, log: log, "found %d matches", filtered.count)
         view.reloadData()
@@ -304,8 +309,8 @@ extension PatchesTableViewManager {
                 self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
                 self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
                 self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
-                self.hideSearchBar(animated: animated)
             }
+            self.hideSearchBar(animated: true)
         }
     }
 
