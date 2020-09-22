@@ -2,12 +2,12 @@
 
 import UIKit
 
-public struct AlertConfig {
+struct AlertConfig {
     let title: String
     let message: String
 }
 
-private class AlertOperation: Operation {
+private final class AlertOperation: Operation {
 
     private let alert: AlertConfig
     private var _finished: Bool = false
@@ -48,7 +48,7 @@ private class AlertOperation: Operation {
     func operationCompleted() { isFinished = true }
 }
 
-public final class AlertManager {
+final class AlertManager {
 
     static let shared: AlertManager = AlertManager()
 
