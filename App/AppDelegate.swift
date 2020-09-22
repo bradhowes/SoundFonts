@@ -9,7 +9,7 @@ import os
  Delegate for the SoundFonts app.
  */
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
     private lazy var components = Components<MainViewController>(inApp: true)
     private var observers: [NSObjectProtocol] = []
