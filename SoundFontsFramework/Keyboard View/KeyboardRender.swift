@@ -13,7 +13,7 @@
 
 import UIKit
 
-public class KeyboardRender : NSObject {
+public final class KeyboardRender : NSObject {
 
     //// Drawing Methods
 

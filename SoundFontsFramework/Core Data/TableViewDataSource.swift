@@ -46,8 +46,7 @@ public protocol TableViewDataSourceDelegate: class {
  A data source for a UITableView that relies on a NSFetchedResultsController for model values. This design was heavily
  based on code from obj.io Core Data book.
  */
-public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource,
-NSFetchedResultsControllerDelegate {
+public class TableViewDataSource<Delegate: TableViewDataSourceDelegate>: NSObject, UITableViewDataSource, NSFetchedResultsControllerDelegate {
     private lazy var log = Logging.logger("tvds")
 
     public typealias Entity = Delegate.Entity
