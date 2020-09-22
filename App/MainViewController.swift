@@ -16,11 +16,8 @@ final class MainViewController: UIViewController {
     private var keyboard: Keyboard!
     private var infoBar: InfoBar!
     private var activePatchManager: ActivePatchManager!
-    private var notePlayer: NotePlayer!
     private var volumeMonitor: VolumeMonitor!
     private var sampler: Sampler!
-    private var workItem: DispatchWorkItem?
-    private var midi: MIDI?
 
     fileprivate var noteInjector = NoteInjector()
 
@@ -30,14 +27,10 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         UIApplication.shared.appDelegate.setMainViewController(self)
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-        midi = MIDI()
     }
 
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in
-            self.volumeMonitor.repostNotice()
-        })
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in self.volumeMonitor.repostNotice() })
     }
 }
 
@@ -72,7 +65,7 @@ extension MainViewController {
             postAlert(for: what)
         case .success:
             useActivePatchKind(activePatchManager.active, playSample: false)
-            volumeMonitor.start()
+            volumeMonitor?.start()
         }
     }
 
@@ -81,7 +74,7 @@ extension MainViewController {
      */
     func stopAudio() {
         sampler.stop()
-        volumeMonitor.stop()
+        volumeMonitor?.stop()
 
         let session = AVAudioSession.sharedInstance()
         do {
@@ -108,17 +101,17 @@ extension MainViewController: ControllerConfiguration {
         keyboard = router.keyboard
         infoBar = router.infoBar
 
-        notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
-        keyboard.delegate = notePlayer!
-        volumeMonitor = VolumeMonitor(keyboard: keyboard, notePlayer: notePlayer, sampler: sampler)
-
+        let muteDetector = MuteDetector(checkInterval: 1)
+        let notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
+        keyboard.delegate = notePlayer
+        volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer, sampler: sampler)
         activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
-            volumeMonitor.check()
+            volumeMonitor?.check()
         }
     }
 

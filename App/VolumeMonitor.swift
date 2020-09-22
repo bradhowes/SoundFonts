@@ -18,6 +18,7 @@ final class VolumeMonitor {
         case otherAudio
     }
 
+    private let muteDetector: MuteDetector?
     private let keyboard: Keyboard
     private let notePlayer: NotePlayer
     private let sampler: Sampler
@@ -46,11 +47,15 @@ final class VolumeMonitor {
      - parameter keyboard: Keyboard instance that handle key renderings
      - parameter notePlayer: NotePlayer instance that handles note playing
      */
-    init(keyboard: Keyboard, notePlayer: NotePlayer, sampler: Sampler) {
+    init(muteDetector: MuteDetector?, keyboard: Keyboard, notePlayer: NotePlayer, sampler: Sampler) {
+        self.muteDetector = muteDetector
         self.keyboard = keyboard
         self.notePlayer = notePlayer
         self.sampler = sampler
     }
+}
+
+extension VolumeMonitor {
 
     /**
      Begin monitoring volume of the given AVAudioSession
@@ -60,12 +65,12 @@ final class VolumeMonitor {
     func start() {
         os_log(.info, log: log, "start")
         reason = nil
-        Mute.shared.notify = {muted in self.muted = muted }
-        Mute.shared.isPaused = false
+
+        muteDetector?.notifier = {self.muted = $0}
+        muteDetector?.start()
+
         let session = AVAudioSession.sharedInstance()
-        sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
-            self.volume = session.outputVolume
-        }
+        sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in self.volume = session.outputVolume }
         update()
     }
 
@@ -75,25 +80,26 @@ final class VolumeMonitor {
     func stop() {
         os_log(.info, log: log, "stop")
         reason = nil
-        Mute.shared.notify = nil
-        Mute.shared.isPaused = true
+
+        muteDetector?.notifier = nil
+        muteDetector?.stop()
+
         sessionVolumeObserver?.invalidate()
         sessionVolumeObserver = nil
     }
+}
+
+extension VolumeMonitor {
 
     /**
      Check the current volume sttae.
      */
-    func check() {
-        update()
-    }
+    func check() { update() }
 
     /**
      Show any previously-posted silence reason.
      */
-    func repostNotice() {
-        showReason()
-    }
+    func repostNotice() { showReason() }
 }
 
 extension VolumeMonitor {

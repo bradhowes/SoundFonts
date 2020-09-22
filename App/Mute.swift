@@ -1,176 +1,90 @@
-//
-// Mute.swift
-// Mute
-//
-// Created by Akram Hussein on 08/09/2017.
-//
+// Created by Akram Hussein on 08/09/2017. Adaptations by Brad Howes
 
-import UIKit
 import AudioToolbox
+import SoundFontsFramework
+import os
 
-@objcMembers
-public class Mute: NSObject {
+final class MuteDetector {
+    private let log = Logging.logger("MuteD")
 
-    public typealias MuteNotificationCompletion = ((_ mute: Bool) -> Void)
+    public typealias MutedStateChangeClosure = (_ mute: Bool) -> Void
 
-    // MARK: Properties
+    public var notifier: MutedStateChangeClosure?
 
-    /// Shared instance
-    public static let shared = Mute()
+    public private(set) var muted = false
 
-    /// Sound ID for mute sound
-    private let soundUrl = Mute.muteSoundUrl
-
-    /// Should notify every second or only when changes?
-    /// True will notify every second of the state, false only when it changes
-    public var alwaysNotify = true
-
-    /// Notification handler to be triggered when mute status changes
-    /// Triggered every second if alwaysNotify=true, otherwise only when it switches state
-    public var notify: MuteNotificationCompletion?
-
-    /// Currently playing? used when returning from the background (if went to background and foreground really quickly)
-    public private(set) var isPlaying = false
-
-    /// Current mute state
-    public private(set) var isMute = false
-
-    /// Sound is scheduled
-    private var isScheduled = false
-
-    /// State of detection - paused when in background
-    public var isPaused = false {
-        didSet {
-            if !self.isPaused && oldValue && !self.isPlaying {
-                self.schedulePlaySound()
-            }
-        }
-    }
-
-    /// How frequently to check (seconds), minimum = 0.5
-    public var checkInterval = 1.0 {
-        didSet {
-            if self.checkInterval < 0.5 {
-                print("MUTE: checkInterval cannot be less than 0.5s, setting to 0.5")
-                self.checkInterval = 0.5
-            }
-        }
-    }
-
-    /// Silent sound (0.5 sec)
-    private var soundId: SystemSoundID = 0
-
-    /// Time difference between start and finish of mute sound
-    private var interval: TimeInterval = 0
-
-    // MARK: Resources
-
-    /// Mute sound url path
-    private static var muteSoundUrl: URL = {
+    private let soundUrl: URL = {
         guard let muteSoundUrl = Bundle.main.url(forResource: "mute", withExtension: "aiff") else {
             fatalError("mute.aiff not found")
         }
         return muteSoundUrl
     }()
 
-    // MARK: Init
+    private var running = false
+    private var scheduled = false
 
-    /// private init
-    private override init() {
-        super.init()
+    private let soundId: SystemSoundID
+    private let checkInterval: Int
 
-        self.soundId = 1
-
-        if AudioServicesCreateSystemSoundID(self.soundUrl as CFURL, &self.soundId) == kAudioServicesNoError {
-            var yes: UInt32 = 1
-            AudioServicesSetProperty(kAudioServicesPropertyIsUISound,
-                                     UInt32(MemoryLayout.size(ofValue: self.soundId)),
-                                     &self.soundId,
-                                     UInt32(MemoryLayout.size(ofValue: yes)),
-                                     &yes)
-
-            self.schedulePlaySound()
-        } else {
+    init?(checkInterval: Int) {
+        var soundId: SystemSoundID = 1
+        var yes: UInt32 = 1
+        guard AudioServicesCreateSystemSoundID(soundUrl as CFURL, &soundId) == kAudioServicesNoError,
+              AudioServicesSetProperty(kAudioServicesPropertyIsUISound, UInt32(MemoryLayout.size(ofValue: soundId)),
+                                       &soundId, UInt32(MemoryLayout.size(ofValue: yes)), &yes) == kAudioServicesNoError else {
             print("Failed to setup sound player")
-            self.soundId = 0
+            return nil
         }
-
-        // Notifications
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(Mute.didEnterBackground(_:)),
-                                               name: UIApplication.didEnterBackgroundNotification,
-                                               object: nil)
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(Mute.willEnterForeground(_:)),
-                                               name: UIApplication.willEnterForegroundNotification,
-                                               object: nil)
+        self.soundId = soundId
+        self.checkInterval = checkInterval
     }
 
     deinit {
-        if self.soundId != 0 {
-            AudioServicesRemoveSystemSoundCompletion(self.soundId)
-            AudioServicesDisposeSystemSoundID(self.soundId)
-        }
+        guard soundId != 0 else { return }
+        AudioServicesRemoveSystemSoundCompletion(soundId)
+        AudioServicesDisposeSystemSoundID(soundId)
+    }
+}
+
+extension MuteDetector {
+
+    func start() {
+        guard !running else { return }
+        os_log(.info, log: log, "start")
+        running = true
+        schedulePlaySound()
     }
 
-    // MARK: Notification Handlers
-
-    /// Selector called when app enters background
-    @objc private func didEnterBackground(_ sender: Any) {
-        self.isPaused = true
+    func stop() {
+        guard running else { return }
+        os_log(.info, log: log, "stop")
+        running = false
     }
 
-    /// Selector called when app will enter foreground
-    @objc private func willEnterForeground(_ sender: Any) {
-        self.isPaused = false
-    }
-
-    // MARK: Methods
-
-    /// Schedueles mute sound to be played in 1 second
     private func schedulePlaySound() {
-        /// Don't schedule a new one if we already have one queued
-        if self.isScheduled { return }
-
-        self.isScheduled = true
-
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + self.checkInterval) {
-            self.isScheduled = false
-
-            /// Don't play if we're paused
-            if self.isPaused {
-                return
-            }
-
+        guard !scheduled && running else { return }
+        os_log(.info, log: log, "schedulePlaySound")
+        scheduled = true
+        DispatchQueue.global(qos: .background).asyncLater(interval: .seconds(1)) {
+            self.scheduled = false
+            guard self.running else { return }
             self.playSound()
         }
     }
 
-    /// If not paused, playes mute sound
     private func playSound() {
-        if !self.isPaused {
-            self.interval = Date.timeIntervalSinceReferenceDate
-            self.isPlaying = true
-            AudioServicesPlaySystemSoundWithCompletion(self.soundId) { [weak self] in
-                self?.soundFinishedPlaying()
-            }
-        }
+        guard running else { return }
+        schedulePlaySound()
+        let startTime = Date.timeIntervalSinceReferenceDate
+        AudioServicesPlaySystemSoundWithCompletion(soundId) { [weak self] in self?.soundFinishedPlaying(startTime) }
     }
 
-    /// Called when AudioService finished playing sound
-    private func soundFinishedPlaying() {
-        self.isPlaying = false
-
-        let elapsed = Date.timeIntervalSinceReferenceDate - self.interval
-        let isMute = elapsed < 0.1
-
-        if self.isMute != isMute || self.alwaysNotify {
-            self.isMute = isMute
-            DispatchQueue.main.async {
-                self.notify?(isMute)
-            }
+    private func soundFinishedPlaying(_ startTime: TimeInterval) {
+        let elapsed = Date.timeIntervalSinceReferenceDate - startTime
+        let muted = elapsed < 0.1
+        if self.muted != muted {
+            self.muted = muted
+            DispatchQueue.main.async { self.notifier?(muted) }
         }
-        self.schedulePlaySound()
     }
 }
