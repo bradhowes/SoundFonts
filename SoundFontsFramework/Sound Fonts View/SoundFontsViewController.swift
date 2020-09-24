@@ -63,9 +63,12 @@ public final class SoundFontsViewController: UIViewController {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = .fullScreen
+        if #available(iOS 13, *) {
+            documentPicker.modalPresentationStyle = .automatic
+        } else {
+            documentPicker.modalPresentationStyle = .overFullScreen
+        }
         documentPicker.allowsMultipleSelection = true
-
         present(documentPicker, animated: true)
     }
 
@@ -116,31 +119,22 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
 
     public func documentPicker(_ dpvc: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         os_log(.info, log: log, "documentPicker didPickDocumentAt")
+        var ok = [String]()
+        var failures = [LegacySoundFont.Failure]()
         for each in urls {
-            let name = each.lastPathComponent
             os_log(.info, log: log, "processing %s", each.path)
-            let alert: UIAlertController = {
-                switch soundFonts.add(url: each) {
-                case .success(let (_, soundFont)):
-                    return UIAlertController(
-                        title: "Added",
-                        message: "\(name)\n\nNew SoundFont added under the name '\(soundFont.displayName)'",
-                        preferredStyle: .alert)
-                case .failure(let failure):
-                    let reason: String = {
-                        switch failure {
-                        case .emptyFile: return "\(name)\n\nThe SF2 file must be downloaded before adding."
-                        case .invalidSoundFont: return "\(name)\n\nThe SF2 file is invalid and cannot be used."
-                        case .unableToCreateFile: return "\(name)\n\nNot enough space to keep the SF2 file."
-                        }
-                    }()
-                    return UIAlertController(
-                        title: "Add Failure",
-                        message: reason,
-                        preferredStyle: .alert)
-                }
-            }()
+            switch soundFonts.add(url: each) {
+            case .success(let (_, soundFont)): ok.append(soundFont.fileURL.lastPathComponent)
+            case .failure(let failure): failures.append(failure)
+            }
+        }
 
+        if urls.count > 1 || !failures.isEmpty {
+            let message = Formatters.addSoundFontDoneMessage(ok: ok, failures: failures, total: urls.count)
+            let alert = UIAlertController(
+                title: "Add SoundFont",
+                message: message,
+                preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }

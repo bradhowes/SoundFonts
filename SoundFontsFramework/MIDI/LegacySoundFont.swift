@@ -39,10 +39,32 @@ public final class LegacySoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [LegacyPatch]
 
-    public enum Failure: Error {
-        case emptyFile
-        case invalidSoundFont
-        case unableToCreateFile
+    public enum Failure: Error, Hashable, Equatable {
+        case emptyFile(_ file: String)
+        case invalidSoundFont(_ file: String)
+        case unableToCreateFile(_ file: String)
+
+        var id: Int {
+            switch self {
+            case .emptyFile: return 1
+            case .invalidSoundFont: return 2
+            case .unableToCreateFile: return 3
+            }
+        }
+
+        var file: String {
+            switch self {
+            case .emptyFile(let file): return file
+            case .invalidSoundFont(let file): return file
+            case .unableToCreateFile(let file): return file
+            }
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
+
+        public static func == (lhs: Failure, rhs: Failure) -> Bool { lhs.id == rhs.id }
     }
 
     public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, Failure> {
@@ -50,12 +72,12 @@ public final class LegacySoundFont: Codable {
 
         guard let info = SoundFontInfo.load(url) else {
             os_log(.error, log: Self.logger, "failed to fetch content")
-            return .failure(.invalidSoundFont)
+            return .failure(.invalidSoundFont(url.lastPathComponent))
         }
 
         guard !info.presets.isEmpty else {
             os_log(.error, log: Self.logger, "failed to parse content")
-            return .failure(.invalidSoundFont)
+            return .failure(.invalidSoundFont(url.lastPathComponent))
         }
 
         let (fileName, uuid) = url.lastPathComponent.stripEmbeddedUUID()
@@ -75,7 +97,7 @@ public final class LegacySoundFont: Codable {
                 try FileManager.default.copyItem(at: url, to: path)
             } catch {
                 os_log(.error, log: Self.logger, "failed to create file")
-                return .failure(.unableToCreateFile)
+                return .failure(.unableToCreateFile(url.lastPathComponent))
             }
         }
 

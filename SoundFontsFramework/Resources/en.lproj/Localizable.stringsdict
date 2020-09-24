@@ -2,6 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>failed add count</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@failed_add_count@</string>
+		<key>failed_add_count</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+                        <key>zero</key>
+                        <string>no %%@ files</string>
+			<key>one</key>
+			<string>%u %%@ file</string>
+			<key>other</key>
+			<string>%u %%@ files</string>
+		</dict>
+	</dict>
 	<key>patches count</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

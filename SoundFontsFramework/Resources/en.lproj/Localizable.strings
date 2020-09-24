@@ -18,3 +18,13 @@
 
 "DeleteFontTitle" = "Delete the soundfont file?";
 "DeleteFontMessage" = "Deleting will remove the file and also any favorites linked to it.";
+
+"UnableToAddOneFile" = "Unable to add the sound font";
+"UnableToAddAnyFiles" = "Unable to add any sound fonts";
+"AddedOneFile" = "Added the sound font";
+"AddedAllFiles" = "Added all of the sound fonts";
+"AddedSomeFiles" = "Added %d out of %d sound fonts";
+
+"empty" = "empty";
+"invalid" = "invalid";
+"uncopyable" = "uncopyable";
