@@ -63,7 +63,7 @@ extension MuteDetector {
 
     private func schedulePlaySound() {
         guard !scheduled && running else { return }
-        os_log(.info, log: log, "schedulePlaySound")
+        os_log(.debug, log: log, "schedulePlaySound")
         scheduled = true
         DispatchQueue.global(qos: .background).asyncLater(interval: .seconds(1)) {
             self.scheduled = false
