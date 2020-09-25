@@ -61,7 +61,7 @@ public protocol SoundFonts: class {
      - returns: 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
      instance created from the raw data
      */
-    func add(url: URL) -> Result<(Int, LegacySoundFont), LegacySoundFont.Failure>
+    func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure>
 
     /**
      Remove the SoundFont at the given index

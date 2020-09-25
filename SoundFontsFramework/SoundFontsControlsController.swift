@@ -57,7 +57,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
         router.infoBar.addEventClosure(.doubleTap) { self.toggleConfigurationViews() }
     }
 
-    @IBAction private func toggleConfigurationViews() {
+    private func toggleConfigurationViews() {
         if upperViewManager.active == 0 {
             showNextConfigurationView()
         }
@@ -70,7 +70,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     /**
      Show the next (right) view in the space above the info bar.
      */
-    @IBAction public func showNextConfigurationView() {
+    private func showNextConfigurationView() {
         if upperViewManager.active == 0 {
             components.patchesViewManager.dismissSearchKeyboard()
         }
@@ -83,7 +83,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     /**
      Show the previous (left) view in the space above the info bar.
      */
-    @IBAction public func showPreviousConfigurationView() {
+    private func showPreviousConfigurationView() {
         upperViewManager.slidePrevHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
         settings.showingFavorites = upperViewManager.active == 1

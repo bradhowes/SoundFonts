@@ -39,35 +39,7 @@ public final class LegacySoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [LegacyPatch]
 
-    public enum Failure: Error, Hashable, Equatable {
-        case emptyFile(_ file: String)
-        case invalidSoundFont(_ file: String)
-        case unableToCreateFile(_ file: String)
-
-        var id: Int {
-            switch self {
-            case .emptyFile: return 1
-            case .invalidSoundFont: return 2
-            case .unableToCreateFile: return 3
-            }
-        }
-
-        var file: String {
-            switch self {
-            case .emptyFile(let file): return file
-            case .invalidSoundFont(let file): return file
-            case .unableToCreateFile(let file): return file
-            }
-        }
-
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
-
-        public static func == (lhs: Failure, rhs: Failure) -> Bool { lhs.id == rhs.id }
-    }
-
-    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, Failure> {
+    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(url) else {
@@ -91,10 +63,8 @@ public final class LegacySoundFont: Codable {
 
         let soundFont = LegacySoundFont(displayName, soundFontInfo: info, file: url, key: uuid ?? Key())
         if saveToDisk {
-            let path = soundFont.fileURL
-            os_log(.info, log: Self.logger, "creating SF2 file at '%s'", path.lastPathComponent)
             do {
-                try FileManager.default.copyItem(at: url, to: path)
+                try copyToAppFolder(source: url, destination: soundFont.fileURL)
             } catch {
                 os_log(.error, log: Self.logger, "failed to create file")
                 return .failure(.unableToCreateFile(url.lastPathComponent))
@@ -102,6 +72,14 @@ public final class LegacySoundFont: Codable {
         }
 
         return .success(soundFont)
+    }
+
+    private static func copyToAppFolder(source: URL, destination: URL) throws {
+        os_log(.info, log: Self.logger, "SF2 source: '%s'", source.absoluteString)
+        os_log(.info, log: Self.logger, "SF2 destination: '%s'", destination.absoluteString)
+        let secured = source.startAccessingSecurityScopedResource()
+        defer { if secured { source.stopAccessingSecurityScopedResource() } }
+        try FileManager.default.copyItem(at: source, to: destination)
     }
 
     /**

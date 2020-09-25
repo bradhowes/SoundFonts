@@ -127,8 +127,7 @@ public final class SettingsViewController: UIViewController {
         removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
     }
 
-    @IBAction
-    private func close(_ sender: Any) {
+    @IBAction private func close(_ sender: Any) {
         self.dismiss(animated: true)
     }
 
@@ -136,20 +135,19 @@ public final class SettingsViewController: UIViewController {
         NotificationCenter.default.post(Notification(name: .visitAppStore))
     }
 
-    @IBAction
-    private func toggleShowSolfegeNotes(_ sender: Any) {
+    @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
         settings.showSolfegeLabel = self.showSolfegeNotes.isOn
     }
 
-    @IBAction func togglePlaySample(_ sender: Any) {
+    @IBAction private func togglePlaySample(_ sender: Any) {
         settings.playSample = self.playSample.isOn
     }
 
-    @IBAction func keyLabelOptionChanged(_ sender: Any) {
+    @IBAction private func keyLabelOptionChanged(_ sender: Any) {
         settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
     }
 
-    @IBAction func keyWidthChange(_ sender: Any) {
+    @IBAction private func keyWidthChange(_ sender: Any) {
         let prevValue = settings.keyWidth.rounded()
         var newValue = keyWidthSlider.value.rounded()
         if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
@@ -161,18 +159,34 @@ public final class SettingsViewController: UIViewController {
         }
     }
 
-    @IBAction
-    private func removeDefaultSoundFonts(_ sender: Any) {
+    @IBAction private func removeDefaultSoundFonts(_ sender: Any) {
         soundFonts.removeBundled()
         updateButtonState()
         postNotice(msg: "Removed entries to the built-in sound fonts.")
     }
 
-    @IBAction
-    private func restoreDefaultSoundFonts(_ sender: Any) {
+    @IBAction private func restoreDefaultSoundFonts(_ sender: Any) {
         soundFonts.restoreBundled()
         updateButtonState()
         postNotice(msg: "Restored entries to the built-in sound fonts.")
+    }
+
+    @IBAction private func exportSoundFonts(_ sender: Any) {
+        let (good, total) = soundFonts.exportToLocalDocumentsDirectory()
+        switch total {
+        case 0: postNotice(msg: "Nothing to export.")
+        case 1: postNotice(msg: good == 1 ? "Exported \(good) file." :  "Failed to export file.")
+        default: postNotice(msg: "Exported \(good) out of \(total) files.")
+        }
+    }
+
+    @IBAction private func importSoundFonts(_ sender: Any) {
+        let (good, total) = soundFonts.importFromLocalDocumentsDirectory()
+        switch total {
+        case 0: postNotice(msg: "Nothing to import.")
+        case 1: postNotice(msg: good == 1 ? "Imported \(good) soundfont." : "Failed to import soundfont.")
+        default: postNotice(msg: "Imported \(good) out of \(total) soundfonts.")
+        }
     }
 
     private func postNotice(msg: String) {
@@ -190,25 +204,5 @@ public final class SettingsViewController: UIViewController {
         }
 
         present(alertController, animated: true, completion: nil)
-    }
-
-    @IBAction
-    private func exportSoundFonts(_ sender: Any) {
-        let (good, total) = soundFonts.exportToLocalDocumentsDirectory()
-        switch total {
-        case 0: postNotice(msg: "Nothing to export.")
-        case 1: postNotice(msg: good == 1 ? "Exported \(good) file." :  "Failed to export file.")
-        default: postNotice(msg: "Exported \(good) out of \(total) files.")
-        }
-    }
-
-    @IBAction
-    private func importSoundFonts(_ sender: Any) {
-        let (good, total) = soundFonts.importFromLocalDocumentsDirectory()
-        switch total {
-        case 0: postNotice(msg: "Nothing to import.")
-        case 1: postNotice(msg: good == 1 ? "Imported \(good) soundfont." : "Failed to import soundfont.")
-        default: postNotice(msg: "Imported \(good) out of \(total) soundfonts.")
-        }
     }
 }

@@ -131,7 +131,7 @@ extension LegacySoundFontsManager: SoundFonts {
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
     @discardableResult
-    public func add(url: URL) -> Result<(Int, LegacySoundFont), LegacySoundFont.Failure> {
+    public func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure> {
         switch LegacySoundFont.makeSoundFont(from: url, saveToDisk: true) {
         case .failure(let failure): return .failure(failure)
         case.success(let soundFont):
@@ -176,7 +176,6 @@ extension LegacySoundFontsManager: SoundFonts {
             if let index = collection.index(of: url) {
                 os_log(.info, log: log, "removing %s", url.absoluteString)
                 remove(index: index)
-                // favorites.removeAll(associatedWith: soundFont)
             }
         }
         save()

@@ -4,7 +4,7 @@ import UIKit
 import os
 
 /**
- Data source for the Patches UITableView.
+ Data source and delegate for the Patches UITableView.
  */
 final class PatchesTableViewManager: NSObject {
 
@@ -135,20 +135,16 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.textColor = .systemOrange
+        header.textLabel?.textColor = .systemTeal
         header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-        header.backgroundView = HeaderView()
+        header.backgroundView = UIView()
         header.backgroundView?.backgroundColor = .black
     }
 }
 
-private class HeaderView: UIView {}
-
-// MARK: - UISearchBarDelegate Protocol
-
 extension PatchesTableViewManager: UISearchBarDelegate {
 
-    func dismissSearchKeyboard() {
+    private func dismissSearchKeyboard() {
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
         }

@@ -24,8 +24,8 @@ public final class FavoritesViewController: UIViewController {
 
     private var favoriteMover: FavoriteMover!
 
-    private var swipeLeft = UISwipeGestureRecognizer()
-    private var swipeRight = UISwipeGestureRecognizer()
+    public var swipeLeft = UISwipeGestureRecognizer()
+    public var swipeRight = UISwipeGestureRecognizer()
 
     public override func viewDidLoad() {
         favoriteCell.translatesAutoresizingMaskIntoConstraints = false
@@ -280,13 +280,6 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 // MARK: - FavoritesManager
 
 extension FavoritesViewController: FavoritesViewManager {
-
-    public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void) {
-        switch event {
-        case .swipeLeft: swipeLeft.addClosure(closure)
-        case .swipeRight: swipeRight.addClosure(closure)
-        }
-    }
 }
 
 // MARK: - Private

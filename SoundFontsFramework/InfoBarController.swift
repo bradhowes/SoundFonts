@@ -285,7 +285,7 @@ extension InfoBarController {
         }
     }
 
-    @IBAction private func panKeyboard(_ panner: UIPanGestureRecognizer) {
+    @objc private func panKeyboard(_ panner: UIPanGestureRecognizer) {
         if panner.state == .began {
             panOrigin = panner.translation(in: view)
         }
