@@ -31,15 +31,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     }
 
     private let mode: Mode
+
     private var engine: AVAudioEngine?
+    private var auSampler: AVAudioUnitSampler?
+
     private var loaded: Bool = false
     private let activePatchManager: ActivePatchManager
 
-    public private(set) var auSampler: AVAudioUnitSampler?
     public var hasPatch: Bool { activePatchManager.active != .none }
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
-    public var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
+    private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
 
     /**
      Create a new instance of a Sampler.
@@ -61,9 +63,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result value indicating success or failure
      */
-    public func start() -> Result<Void, SamplerStartFailure> {
+    public func start(auSampler: AVAudioUnitSampler) -> Result<Void, SamplerStartFailure> {
         os_log(.info, log: log, "start")
-        auSampler = AVAudioUnitSampler()
+        self.auSampler = auSampler
         return startEngine()
     }
 
@@ -74,9 +76,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func stop() {
         os_log(.info, log: log, "stop")
-        engine?.stop()
-        auSampler?.reset()
-        engine?.reset()
+
+        if let engine = self.engine {
+            engine.stop()
+            if let sampler = self.auSampler {
+                engine.detach(sampler)
+                AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
+                sampler.reset()
+            }
+            engine.reset()
+        }
+
         auSampler = nil
         engine = nil
     }
@@ -91,10 +101,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
-            engine.connect(sampler, to: engine.mainMixerNode,
-                           fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus,
-                           format: sampler.outputFormat(forBus: 0))
-
+            engine.connect(sampler, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: sampler.outputFormat(forBus: 0))
             do {
                 os_log(.debug, log: log, "starting engine")
                 try engine.start()
@@ -128,14 +135,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         do {
             os_log(.info, log: log, "begin loading")
-            try sampler.loadSoundBankInstrument(at: soundFont.fileURL,
-                                                program: UInt8(patch.program),
-                                                bankMSB: UInt8(patch.bankMSB),
-                                                bankLSB: UInt8(patch.bankLSB))
+            try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
             os_log(.info, log: log, "end loading")
             loaded = true
             afterLoadBlock?()
-
             DispatchQueue.main.async {
                 self.notify(.loaded(patch: self.activePatchManager.active))
             }
@@ -153,8 +156,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - parameter value: the value to set
      */
     public func setGain(_ value: Float) {
-        guard let sampler = self.auSampler else { fatalError("unexpected nil ausampler") }
-        sampler.masterGain = value
+        auSampler?.masterGain = value
     }
 
     /**
@@ -163,8 +165,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - parameter value: the value to set
      */
     public func setPan(_ value: Float) {
-        guard let sampler = self.auSampler else { fatalError("unexpected nil ausampler") }
-        sampler.stereoPan = value
+        auSampler?.stereoPan = value
     }
 
     /**
@@ -174,8 +175,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func noteOn(_ midiValue: Int, velocity: Int = 64) {
         os_log(.info, log: log, "noteOn - %d", midiValue)
-        guard let sampler = self.auSampler, activePatchManager.active != .none else { return }
-        sampler.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
+        guard activePatchManager.active != .none else { return }
+        auSampler?.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
     }
 
     /**
@@ -185,13 +186,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func noteOff(_ midiValue: Int) {
         os_log(.info, log: log, "noteOff - %d", midiValue)
-        guard let sampler = self.auSampler else { return }
-        sampler.stopNote(UInt8(midiValue), onChannel: UInt8(0))
+        auSampler?.stopNote(UInt8(midiValue), onChannel: UInt8(0))
     }
 
     public func sendMIDI(_ cmd: UInt8, data1: UInt8, data2: UInt8) {
         os_log(.info, log: log, "sendMIDI - %d %d %d", cmd, data1, data2)
-        guard let sampler = self.auSampler else { return }
-        sampler.sendMIDIEvent(cmd, data1: data1, data2: data2)
+        auSampler?.sendMIDIEvent(cmd, data1: data1, data2: data2)
     }
 }
