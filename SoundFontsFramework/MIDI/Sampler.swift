@@ -136,6 +136,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         do {
             os_log(.info, log: log, "begin loading")
             try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+            AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
             os_log(.info, log: log, "end loading")
             loaded = true
             afterLoadBlock?()
