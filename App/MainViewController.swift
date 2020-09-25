@@ -49,7 +49,7 @@ extension MainViewController {
             os_log(.info, log: log, "setting active audio session")
             try session.setActive(true, options: [])
             os_log(.info, log: log, "starting sampler")
-            let result = sampler.start()
+            let result = sampler.start(auSampler: AVAudioUnitSampler())
             DispatchQueue.main.async { self.finishStart(result) }
         } catch let error as NSError {
             let result: SamplerStartFailure = .sessionActivating(error: error)

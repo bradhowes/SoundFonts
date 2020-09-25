@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import os
+import AVFoundation
 import CoreAudioKit
 import SoundFontsFramework
 
@@ -16,21 +17,26 @@ final class SoundFontsAU: AUAudioUnit {
     private let log = Logging.logger("SFAU")
     private let sampler: Sampler
     private let activePatchManager: ActivePatchManager
-    private var wrapped: AUAudioUnit { sampler.auAudioUnit! }
+    private let wrapped: AUAudioUnit
     private var ourParameterTree: AUParameterTree?
 
-    public init(componentDescription: AudioComponentDescription, sampler: Sampler,
-                activePatchManager: ActivePatchManager) throws {
+    enum Err: Error { case failedToStart }
+
+    public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
         os_log(.error, log:log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
         self.sampler = sampler
-        self.activePatchManager = activePatchManager
-
-        if case let .failure(failure) = sampler.start() {
-            os_log(.error, log: log, "failed to start sampler - %{public}s", failure.localizedDescription)
+        let auSampler = AVAudioUnitSampler()
+        switch sampler.start(auSampler: auSampler) {
+        case .success: self.wrapped = auSampler.auAudioUnit
+        case .failure(let what):
+            os_log(.error, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
+            throw what
         }
+
+        self.activePatchManager = activePatchManager
 
         try super.init(componentDescription: componentDescription, options: [])
 

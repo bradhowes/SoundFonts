@@ -23,8 +23,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         os_log(.error, log: log, "createAudioUnit")
-        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler,
-                                         activePatchManager: components.activePatchManager)
+        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler, activePatchManager: components.activePatchManager)
         self.audioUnit = audioUnit
         return audioUnit
     }
