@@ -62,8 +62,12 @@ using namespace SF2;
 }
 
 + (SoundFontInfo*)parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
+    SoundFontInfo* result = nil;
     try {
         auto info = SF2::Parser::parse(fd, fileSize);
+        ::close(fd);
+        fd = -1;
+
         NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName.c_str()];
         NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets.size()];
         for (auto it = info.presets.begin(); it != info.presets.end(); ++it) {
@@ -80,11 +84,13 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        return [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
+        result = [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
     }
     catch (enum SF2::Format value) {
-        return nil;
+        if (fd != -1) ::close(fd);
     }
+
+    return result;
 }
 
 struct Redirector {
