@@ -5,11 +5,9 @@ import os
 
 /**
  View controller for the SoundFont / Patches UITableView combination. Much of the UITableView management is handled
- by specific *DataSource classes. This controller mainly serves to manage the active Patch state, plus the switching
+ by specific *Manager classes. This controller mainly serves to manage the active Patch state, plus the switching
  between normal Patch table view display and Patch search results display. Apart from the adopted protocols, there is no
  API for this class.
-
- Perhaps this should be split into two, one for a soundfont view, and one for the patches view.
  */
 public final class SoundFontsViewController: UIViewController {
     private lazy var log = Logging.logger("SFVC")
@@ -25,8 +23,8 @@ public final class SoundFontsViewController: UIViewController {
     private var selectedSoundFontManager: SelectedSoundFontManager!
     private var keyboard: Keyboard?
 
-    private var swipeLeft = UISwipeGestureRecognizer()
-    private var swipeRight = UISwipeGestureRecognizer()
+    public var swipeLeft = UISwipeGestureRecognizer()
+    public var swipeRight = UISwipeGestureRecognizer()
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,25 +117,7 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
 
     public func documentPicker(_ dpvc: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         os_log(.info, log: log, "documentPicker didPickDocumentAt")
-        var ok = [String]()
-        var failures = [LegacySoundFont.Failure]()
-        for each in urls {
-            os_log(.info, log: log, "processing %s", each.path)
-            switch soundFonts.add(url: each) {
-            case .success(let (_, soundFont)): ok.append(soundFont.fileURL.lastPathComponent)
-            case .failure(let failure): failures.append(failure)
-            }
-        }
-
-        if urls.count > 1 || !failures.isEmpty {
-            let message = Formatters.addSoundFontDoneMessage(ok: ok, failures: failures, total: urls.count)
-            let alert = UIAlertController(
-                title: "Add SoundFont",
-                message: message,
-                preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
+        addSoundFonts(urls: urls)
     }
 }
 
@@ -155,6 +135,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
             soundFonts: router.soundFonts)
+
         patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, favorites: favorites,
@@ -169,23 +150,34 @@ extension SoundFontsViewController: ControllerConfiguration {
 
 extension SoundFontsViewController: PatchesViewManager {
 
-    /**
-     Attach an event notification to the given object/selector pair so that future events will invoke the selector.
-
-     - parameter event: the event to attach to
-     - parameter target: the object to notify
-     - parameter action: the selector to invoke
-     */
-    public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void) {
-        switch event {
-        case .swipeLeft: swipeLeft.addClosure(closure)
-        case .swipeRight: swipeRight.addClosure(closure)
-        }
-    }
-
     public func dismissSearchKeyboard() {
         if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
             searchBar.resignFirstResponder()
+        }
+    }
+
+    public func addSoundFonts(urls: [URL]) {
+        guard !urls.isEmpty else { return }
+        var ok = [String]()
+        var failures = [SoundFontFileLoadFailure]()
+        for each in urls {
+            os_log(.info, log: log, "processing %s", each.path)
+            switch soundFonts.add(url: each) {
+            case .success(let (_, soundFont)):
+                ok.append(soundFont.fileURL.lastPathComponent)
+            case .failure(let failure):
+                failures.append(failure)
+            }
+        }
+
+        if urls.count > 1 || !failures.isEmpty {
+            let message = Formatters.addSoundFontDoneMessage(ok: ok, failures: failures, total: urls.count)
+            let alert = UIAlertController(
+                title: "Add SoundFont",
+                message: message,
+                preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }

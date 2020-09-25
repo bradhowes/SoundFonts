@@ -69,7 +69,7 @@ Found \(count.intValue) SF2 files that are not being used and moved them to loca
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DispatchQueue.main.async {
-            self.addSoundFont(url: url)
+            self.components.patchesViewManager.addSoundFonts(urls: [url])
         }
         return true
     }
@@ -97,44 +97,10 @@ Found \(count.intValue) SF2 files that are not being used and moved them to loca
         components.mainViewController.stopAudio()
     }
 
-    @objc func visitAppStore() {
+    @objc private func visitAppStore() {
         guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review")
         // guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077")
             else { fatalError("Expected a valid URL") }
         UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
-    }
-}
-
-extension AppDelegate {
-
-    private func addSoundFont(url: URL) {
-        let alert: UIAlertController = {
-            switch components.soundFonts.add(url: url) {
-            case .success(let (_, soundFont)):
-                return UIAlertController(
-                    title: "SoundFont Added",
-                    message: "New SoundFont added under the name '\(soundFont.displayName)'",
-                    preferredStyle: .alert)
-            case .failure(let failure):
-                let reason: String = {
-                    switch failure {
-                    case .emptyFile: return "Download file first before adding."
-                    case .invalidSoundFont: return "Invalid SF2 file contents."
-                    case .unableToCreateFile: return "Unable to save the SF2 file to app storage."
-                    }
-                }()
-                return UIAlertController(
-                    title: "SoundFont Failure",
-                    message: "Failed to add SoundFont. " + reason,
-                    preferredStyle: .alert)
-            }
-        }()
-
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        post(alert: alert)
-    }
-
-    public func post(alert: UIAlertController) {
-        self.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

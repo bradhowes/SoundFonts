@@ -13,16 +13,16 @@ public enum Formatters {
         return String(format: value, condition.localized(comment: "add soundfont failure condition"))
     }
 
-    public static func addSoundFontFailureText(failures: [LegacySoundFont.Failure]) -> String {
+    public static func addSoundFontFailureText(failures: [SoundFontFileLoadFailure]) -> String {
         guard !failures.isEmpty else { return "" }
-        var counts = [LegacySoundFont.Failure: [String]]()
+        var counts = [SoundFontFileLoadFailure: [String]]()
         for failure in failures {
             var files = counts[failure] ?? []
             files.append(failure.file)
             counts[failure] = files
         }
 
-        let strings: [String] = counts.compactMap { (key: LegacySoundFont.Failure, files: [String]) -> String in
+        let strings: [String] = counts.compactMap { (key: SoundFontFileLoadFailure, files: [String]) -> String in
             let statement: String = {
                 switch key {
                 case .emptyFile: return Formatters.formatted(failedAddCount: files.count, condition: "empty".localized(comment: "empty file"))
@@ -35,7 +35,7 @@ public enum Formatters {
         return strings.sorted().joined(separator: ", ")
     }
 
-    public static func addSoundFontDoneMessage(ok: [String], failures: [LegacySoundFont.Failure], total: Int) -> String {
+    public static func addSoundFontDoneMessage(ok: [String], failures: [SoundFontFileLoadFailure], total: Int) -> String {
         let message: String = {
             switch (ok.count, failures.count) {
             case (0, 1): return "UnableToAddOneFile".localized(comment: "unable to add one file")

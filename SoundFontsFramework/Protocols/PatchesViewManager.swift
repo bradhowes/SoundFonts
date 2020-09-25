@@ -11,4 +11,6 @@ public protocol PatchesViewManager: UpperViewSwipingActivity {
      Dismiss the search keyboard.
      */
     func dismissSearchKeyboard()
+
+    func addSoundFonts(urls: [URL])
 }

@@ -4,7 +4,7 @@ import UIKit
 import os
 
 /**
- Data source for the SoundFont UITableView. This view shows all of the names of the SoundFont files that are available
+ Data source and delegate for the SoundFont UITableView. This view shows all of the names of the SoundFont files that are available
  in the app.
  */
 final class FontsTableViewManager: NSObject {
