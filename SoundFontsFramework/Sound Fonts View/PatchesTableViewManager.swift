@@ -17,6 +17,7 @@ final class PatchesTableViewManager: NSObject {
     private let searchBar: UISearchBar
     private var lastSearchText: String?
     private let activePatchManager: ActivePatchManager
+    private let soundFonts: SoundFonts
     private let favorites: Favorites
     private let keyboard: Keyboard?
     private let sampler: Sampler
@@ -33,12 +34,13 @@ final class PatchesTableViewManager: NSObject {
     private var showHiddenPresetsObservation: NSObjectProtocol?
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
-         selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?,
+         selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?,
          sampler: Sampler) {
         self.view = view
         self.searchBar = searchBar
         self.activePatchManager = activePatchManager
         self.showingSoundFont = activePatchManager.soundFont
+        self.soundFonts = soundFonts
         self.favorites = favorites
         self.keyboard = keyboard
         self.sampler = sampler
