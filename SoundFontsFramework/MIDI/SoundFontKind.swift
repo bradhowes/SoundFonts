@@ -2,6 +2,7 @@
 
 import Foundation
 import os
+import SF2Files
 
 public enum SoundFontKindError: Error {
     case invalidKind
@@ -55,13 +56,9 @@ extension SoundFontKind: Codable {
         let value = try container.decode(String.self)
         switch kind {
         case .builtin:
-            let url = URL(fileURLWithPath: value)
-            let name = url.deletingPathExtension().lastPathComponent
-            let bundle = Bundle(for: Sampler.self)
-            guard let path = bundle.path(forResource: name, ofType: LegacySoundFont.soundFontExtension) else {
-                fatalError()
-            }
-            self = .builtin(resource: URL(fileURLWithPath: path))
+            let name = URL(fileURLWithPath: value).deletingPathExtension().lastPathComponent
+            let url = SF2Files.resource(name: name)
+            self = .builtin(resource: url)
         case .installed:
             self = .installed(fileName: value)
         default:

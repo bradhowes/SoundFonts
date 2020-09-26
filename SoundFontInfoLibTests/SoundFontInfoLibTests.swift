@@ -2,13 +2,12 @@
 
 import XCTest
 import SoundFontInfoLib
+import SF2Files
 
 class SoundFontInfoLibTests: XCTestCase {
 
-    lazy var testBundle = Bundle(for: type(of: self))
-
     let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
-    lazy var urls: [URL] = names.map { testBundle.url(forResource: $0, withExtension: "sf2")! }
+    let urls: [URL] = SF2Files.allResources.sorted { $0.lastPathComponent < $1.lastPathComponent }
 
     func testParsing1() {
         let sfi = SoundFontInfo.load(urls[0])!

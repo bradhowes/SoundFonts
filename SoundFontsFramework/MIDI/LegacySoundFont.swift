@@ -3,17 +3,13 @@
 import Foundation
 import os
 import SoundFontInfoLib
+import SF2Files
 
 /**
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
 public final class LegacySoundFont: Codable {
     private static let logger = Logging.logger("SFont")
-
-    /// Extension for all SoundFont files in the application bundle
-    public static let soundFontExtension = "sf2"
-
-    public static let soundFontDottedExtension = "." + soundFontExtension
 
     /// Presentation name of the sound font
     public var displayName: String
@@ -93,7 +89,7 @@ public final class LegacySoundFont: Codable {
         self.displayName = displayName
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
-        self.kind = .installed(fileName:displayName + "_" + key.uuidString + "." + Self.soundFontExtension)
+        self.kind = .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension)
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
 

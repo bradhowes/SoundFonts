@@ -26,4 +26,7 @@
    <FileRef
       location = "group:SoundFontInfoLib.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:SF2Files/SF2Files.xcodeproj">
+   </FileRef>
 </Workspace>
