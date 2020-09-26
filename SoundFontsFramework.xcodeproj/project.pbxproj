@@ -33,7 +33,6 @@
 		BD074C5D23CDAF51001987E9 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		BD074C5E23CDAF51001987E9 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0223CDAF51001987E9 /* Assets.xcassets */; };
-		BD074C6B23CDAF51001987E9 /* RolandNicePiano.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C1123CDAF51001987E9 /* RolandNicePiano.sf2 */; };
 		BD074C6D23CDAF51001987E9 /* SubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */; };
 		BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1523CDAF51001987E9 /* Logging.swift */; };
 		BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C1623CDAF51001987E9 /* ViewSlider.swift */; };
@@ -69,6 +68,7 @@
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
 		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
+		BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC29251F692000EEF187 /* SF2Files.framework */; };
 		BD125B38241006200003DE99 /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B37241006200003DE99 /* AskForReview.swift */; };
 		BD125B3F241010430003DE99 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3E241010430003DE99 /* Components.swift */; };
 		BD125B40241010810003DE99 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3A24100C940003DE99 /* Key.swift */; };
@@ -86,9 +86,6 @@
 		BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C425018EB000653ABD /* TypedNotification.swift */; };
 		BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44CF2501958000653ABD /* PersistentContainer.swift */; };
 		BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */; };
-		BD430FC12410EC54009DB9B3 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0723CDAF51001987E9 /* FreeFont.sf2 */; };
-		BD430FC22410EC54009DB9B3 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0B23CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 */; };
-		BD430FC32410EC54009DB9B3 /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD074C0E23CDAF51001987E9 /* FluidR3_GM.sf2 */; };
 		BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */; };
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
@@ -188,10 +185,6 @@
 		BD074BF723CDAF51001987E9 /* FontEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontEditor.swift; sourceTree = "<group>"; };
 		BD074BF823CDAF51001987E9 /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
 		BD074C0223CDAF51001987E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BD074C0723CDAF51001987E9 /* FreeFont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FreeFont.sf2; sourceTree = "<group>"; };
-		BD074C0B23CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GeneralUser GS MuseScore v1.442.sf2"; sourceTree = "<group>"; };
-		BD074C0E23CDAF51001987E9 /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2; sourceTree = "<group>"; };
-		BD074C1123CDAF51001987E9 /* RolandNicePiano.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = RolandNicePiano.sf2; sourceTree = "<group>"; };
 		BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		BD074C1523CDAF51001987E9 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		BD074C1623CDAF51001987E9 /* ViewSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewSlider.swift; sourceTree = "<group>"; };
@@ -228,6 +221,7 @@
 		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD0FAC29251F692000EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD125B37241006200003DE99 /* AskForReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskForReview.swift; sourceTree = "<group>"; };
 		BD125B3924100C940003DE99 /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
 		BD125B3A24100C940003DE99 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
@@ -348,6 +342,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,20 +458,8 @@
 				BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */,
 				BDD979212417006D006121A1 /* Eurostile.ttc */,
 				BD074C0223CDAF51001987E9 /* Assets.xcassets */,
-				BD074C0523CDAF51001987E9 /* SoundFonts */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		BD074C0523CDAF51001987E9 /* SoundFonts */ = {
-			isa = PBXGroup;
-			children = (
-				BD074C0723CDAF51001987E9 /* FreeFont.sf2 */,
-				BD074C0B23CDAF51001987E9 /* GeneralUser GS MuseScore v1.442.sf2 */,
-				BD074C0E23CDAF51001987E9 /* FluidR3_GM.sf2 */,
-				BD074C1123CDAF51001987E9 /* RolandNicePiano.sf2 */,
-			);
-			path = SoundFonts;
 			sourceTree = "<group>";
 		};
 		BD074C1323CDAF51001987E9 /* Utils */ = {
@@ -623,6 +606,7 @@
 		BD74D18923CDB4C000204ED4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD0FAC29251F692000EEF187 /* SF2Files.framework */,
 				BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */,
 			);
 			name = Frameworks;
@@ -755,24 +739,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD430FC32410EC54009DB9B3 /* FluidR3_GM.sf2 in Resources */,
 				BDC7EC6B241BAC8500F789B2 /* FontsView.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
-				BD430FC12410EC54009DB9B3 /* FreeFont.sf2 in Resources */,
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
 				BDF86310246EB8E70006D8CD /* EnvelopeView.storyboard in Resources */,
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
 				BD074C5E23CDAF51001987E9 /* (null) in Resources */,
 				BDC7EC59241BA41C00F789B2 /* FavoriteEditor.storyboard in Resources */,
-				BD074C6B23CDAF51001987E9 /* RolandNicePiano.sf2 in Resources */,
 				BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */,
 				BDC7EC53241BA3CD00F789B2 /* SettingsView.storyboard in Resources */,
 				BDC7EC71241BAC9300F789B2 /* FavoritesView.storyboard in Resources */,
 				BDC7EC77241BACAA00F789B2 /* InfoBar.storyboard in Resources */,
 				BDC7EC7D241BACC300F789B2 /* GuideView.storyboard in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
-				BD430FC22410EC54009DB9B3 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
 				BDC7EC5F241BA42E00F789B2 /* FontEditor.storyboard in Resources */,
 				BDC7EC65241BAC7200F789B2 /* SoundFontsControls.storyboard in Resources */,

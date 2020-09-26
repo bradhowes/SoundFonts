@@ -10,6 +10,8 @@
 		BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD05837A23E4C52800E094E0 /* MainInterface.storyboard */; };
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E9EE724FAC0C6009316F2 /* MIDI.swift */; };
+		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
+		BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD1C5D5825003DBE00374E3A /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C5D5725003DBE00374E3A /* AlertManager.swift */; };
 		BD3CF705241FA77A004A13D1 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
@@ -71,6 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */,
 				BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */,
 				BD50C7B423D4793F0019EF15 /* SoundFontInfoLib.framework in Embed Frameworks */,
 			);
@@ -95,6 +98,7 @@
 		BD05837B23E4C52800E094E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
+		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsAUViewController.swift; sourceTree = "<group>"; };
 		BD1C5D5725003DBE00374E3A /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		BD3CF702241FA779004A13D1 /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,6 +155,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */,
 				BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */,
 				BD50C7B023D479390019EF15 /* SoundFontsFramework.framework in Frameworks */,
 				BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */,
@@ -254,6 +259,7 @@
 		BD874C92221A228E00BBD00B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD0FAC2D251F694B00EEF187 /* SF2Files.framework */,
 				BDC4A9262419B2B8006D9F4D /* SoundFontInfoLib.framework */,
 				BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */,
 				BD430FA92410E57F009DB9B3 /* SoundFontInfoLib.framework */,
