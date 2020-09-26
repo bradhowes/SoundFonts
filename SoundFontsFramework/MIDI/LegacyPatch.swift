@@ -6,7 +6,7 @@ import AudioToolbox
 /**
  Representation of a patch in a sound font.
  */
-public struct LegacyPatch: Codable {
+public class LegacyPatch: Codable {
 
     /// Display name for the patch
     public let name: String
@@ -22,6 +22,8 @@ public struct LegacyPatch: Codable {
 
     /// The index into the owning soundFont's patches array
     public var soundFontIndex: Int
+
+    @DecodableDefault.False var isHidden: Bool
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion
