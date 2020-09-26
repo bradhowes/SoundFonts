@@ -21,11 +21,16 @@ final class PatchesTableViewManager: NSObject {
     private let keyboard: Keyboard?
     private let sampler: Sampler
 
+    static private let allRows: (LegacyPatch) -> Bool = {_ in true}
+    static private let onlyVisibleRows: (LegacyPatch) -> Bool = {!$0.isHidden}
+    private var rowFilter: (LegacyPatch) -> Bool = settings.showHiddenPresets ? PatchesTableViewManager.onlyVisibleRows : PatchesTableViewManager.allRows
+
     private var showingSoundFont: LegacySoundFont?
     private var patches: [LegacyPatch] { showingSoundFont?.patches ?? [] }
     private var filtered = [LegacyPatch]()
 
     private var sectionCount: Int { Int((Float(patches.count) / Float(sectionSize)).rounded(.up)) }
+    private var showHiddenPresetsObservation: NSObjectProtocol?
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, favorites: Favorites, keyboard: Keyboard?,
@@ -53,6 +58,16 @@ final class PatchesTableViewManager: NSObject {
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
         let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = defaultTextAttribs
+
+        showHiddenPresetsObservation = settings.observe(\.showHiddenPresets, options: [.new]) { _, change in
+            guard let newValue = change.newValue else { return }
+            self.updateRowFilter(showHiddenRows: newValue)
+        }
+    }
+
+    private func updateRowFilter(showHiddenRows: Bool) {
+        rowFilter = showHiddenRows ? PatchesTableViewManager.allRows : PatchesTableViewManager.onlyVisibleRows
+        // reloadView()
     }
 }
 
@@ -310,8 +325,7 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func createFaveSwipeAction(at: IndexPath, cell: TableCell,
-                                       soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+    private func createFaveSwipeAction(at: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         let lowestNote = keyboard?.lowestNote
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
         let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
@@ -327,8 +341,7 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createUnfaveSwipeAction(at: IndexPath, cell: TableCell,
-                                         soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+    private func createUnfaveSwipeAction(at: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) else { fatalError() }
         let index = favorites.index(of: favorite)
         let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
@@ -346,8 +359,7 @@ extension PatchesTableViewManager {
         return action
     }
 
-    private func createEditSwipeAction(at: IndexPath, cell: TableCell,
-                                       soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+    private func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         guard let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) else { fatalError() }
         guard let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) else { fatalError() }
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { fatalError() }
@@ -368,6 +380,34 @@ extension PatchesTableViewManager {
         return action
     }
 
+    private func createHideSwipeAction(at: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            self.soundFonts.hidePreset(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex)
+            self.view.reloadData()
+            completionHandler(true)
+        }
+        action.image = UIImage.resourceImage(name: "Hide")
+        action.backgroundColor = UIColor.orange
+        action.accessibilityLabel = "PresetHideButton"
+        action.accessibilityHint = "PresetHideButton"
+        action.isAccessibilityElement = true
+        return action
+    }
+
+    private func createUnhideSwipeAction(at: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            self.soundFonts.unhidePreset(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex)
+            self.view.reloadData()
+            completionHandler(true)
+        }
+        action.image = UIImage.resourceImage(name: "Show")
+        action.backgroundColor = UIColor.orange
+        action.accessibilityLabel = "PresetShowButton"
+        action.accessibilityHint = "PresetShowButton"
+        action.isAccessibilityElement = true
+        return action
+    }
+
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontAndPatch = getSoundFontAndPatch(for: indexPath)
@@ -382,8 +422,13 @@ extension PatchesTableViewManager {
     private func createTrailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         let soundFontAndPatch = getSoundFontAndPatch(for: indexPath)
-        let actions = UISwipeActionsConfiguration(actions: favorites.isFavored(soundFontAndPatch: soundFontAndPatch) ?
-            [createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)] : [])
+        guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { return nil }
+        let action = patch.isHidden ?
+            createUnhideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+            favorites.isFavored(soundFontAndPatch: soundFontAndPatch) ?
+                createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+                createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)
+        let actions = UISwipeActionsConfiguration(actions: [action])
         actions.performsFirstActionWithFullSwipe = false
         return actions
     }

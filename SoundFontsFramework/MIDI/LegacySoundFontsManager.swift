@@ -154,6 +154,18 @@ extension LegacySoundFontsManager: SoundFonts {
         notify(.moved(old: index, new: newIndex, font: soundFont))
     }
 
+    public func hidePreset(key: LegacySoundFont.Key, index: Int) {
+        guard let soundFont = getBy(key: key) else { return }
+        soundFont.patches[index].isHidden = true
+        save()
+    }
+
+    public func unhidePreset(key: LegacySoundFont.Key, index: Int) {
+        guard let soundFont = getBy(key: key) else { return }
+        soundFont.patches[index].isHidden = false
+        save()
+    }
+
     public var hasAnyBundled: Bool {
         let bundle = Bundle(for: LegacySoundFontsManager.self)
         let urls = bundle.paths(forResourcesOfType: "sf2", inDirectory: nil).map { URL(fileURLWithPath: $0) }

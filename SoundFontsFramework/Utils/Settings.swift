@@ -20,6 +20,7 @@ public extension SettingKeys {
     static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
     static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
     static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
+    static let showHiddenPresets = SettingKey<Bool>("showHiddenPresets", defaultValue: false)
 }
 
 /// KVO properties based on the above key definitions.
@@ -75,5 +76,9 @@ public extension UserDefaults {
     @objc dynamic var showSolfegeLabel: Bool {
         get { self[.showSolfegeLabel] }
         set { self[.showSolfegeLabel] = newValue }
+    }
+    @objc dynamic var showHiddenPresets: Bool {
+        get { self[.showHiddenPresets] }
+        set { self[.showHiddenPresets] = newValue }
     }
 }

@@ -31,9 +31,10 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var doneButton: UIBarButtonItem!
 
     @IBOutlet private weak var playSamplesStackView: UIStackView!
-    @IBOutlet private weak var solfegeStackView: UIStackView!
+    @IBOutlet private weak var showHiddenPresetsStackView: UIStackView!
     @IBOutlet private weak var keyLabelsStackView: UIStackView!
     @IBOutlet private weak var keyWidthStackView: UIStackView!
+    @IBOutlet private weak var solfegeStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
     @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
     @IBOutlet private weak var versionReviewStackView: UIStackView!
@@ -41,10 +42,11 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
     @IBOutlet private weak var importSoundFontsStackView: UIStackView!
 
-    @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var playSample: UISwitch!
+    @IBOutlet private weak var showHiddenPresets: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var keyWidthSlider: UISlider!
+    @IBOutlet private weak var showSolfegeNotes: UISwitch!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -88,6 +90,7 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func beginShowKeyboard() {
+        solfegeStackView.isHidden = true
         exportSoundFontsStackView.isHidden = true
         importSoundFontsStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
@@ -98,6 +101,7 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func endShowKeyboard() {
+        solfegeStackView.isHidden = false
         exportSoundFontsStackView.isHidden = false
         importSoundFontsStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
