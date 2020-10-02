@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,7 +24,12 @@
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="il0-aC-ept" userLabel="Patches">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="y6I-gs-Bkq" userLabel="Visibility">
+                                        <rect key="frame" x="164" y="0.0" width="250" height="896"/>
+                                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="sectionIndexColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="il0-aC-ept" userLabel="Patches">
                                         <rect key="frame" x="164" y="0.0" width="250" height="896"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -49,13 +54,18 @@
                                     <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="Aqb-hq-MeU"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="Mvo-0D-YFt"/>
                                     <constraint firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="Pw5-9k-6te"/>
+                                    <constraint firstItem="y6I-gs-Bkq" firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="XDG-9G-BME"/>
                                     <constraint firstAttribute="bottom" secondItem="fmV-bj-iZB" secondAttribute="bottom" id="XKh-jf-Wun"/>
+                                    <constraint firstItem="y6I-gs-Bkq" firstAttribute="top" secondItem="il0-aC-ept" secondAttribute="top" id="Z00-uj-hea"/>
                                     <constraint firstAttribute="trailing" secondItem="il0-aC-ept" secondAttribute="trailing" id="d3t-rg-LLR"/>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.6" id="j1h-Lp-Qhe"/>
+                                    <constraint firstItem="y6I-gs-Bkq" firstAttribute="leading" secondItem="il0-aC-ept" secondAttribute="leading" id="kPg-gU-2Gq"/>
+                                    <constraint firstItem="y6I-gs-Bkq" firstAttribute="trailing" secondItem="il0-aC-ept" secondAttribute="trailing" id="pMp-R9-OHf"/>
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="oTm-H0-ZYi"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <accessibility key="accessibilityConfiguration" identifier="SoundFontsView" label="SoundFontsView"/>
                         <constraints>
@@ -64,12 +74,12 @@
                             <constraint firstAttribute="trailing" secondItem="V3j-Cj-T3A" secondAttribute="trailing" id="Eaw-tu-cy7"/>
                             <constraint firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" id="Odo-ni-gyN"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="oTm-H0-ZYi"/>
                     </view>
                     <connections>
                         <outlet property="patchesView" destination="il0-aC-ept" id="1ff-gv-FFp"/>
                         <outlet property="searchBar" destination="Fl2-Sg-7ea" id="LaW-BL-rxP"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
+                        <outlet property="visibilityView" destination="y6I-gs-Bkq" id="gB4-7S-esE"/>
                         <segue destination="Fc4-Sm-RhE" kind="popoverPresentation" identifier="fontEditor" popoverAnchorView="fmV-bj-iZB" id="Oj6-XR-yF0">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>

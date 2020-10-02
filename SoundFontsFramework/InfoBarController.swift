@@ -15,6 +15,8 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var touchView: UIView!
     @IBOutlet private weak var showGuide: UIButton!
     @IBOutlet private weak var showSettings: UIButton!
+    @IBOutlet private weak var editVisibility: UIButton!
+
     @IBOutlet weak var showMoreButtons: UIButton!
     @IBOutlet weak var moreButtons: UIView!
     @IBOutlet weak var moreButtonsXConstraint: NSLayoutConstraint!
@@ -51,6 +53,10 @@ extension InfoBarController {
     @IBAction
     func toggleMoreButtons(_ sender: UIButton) {
         animateMoreButtons()
+    }
+
+    @IBAction private func editVisibilityMode(_ sender: UIButton) {
+        // animateMoreButtons()
     }
 
     @IBAction private func showSettings(_ sender: UIButton) {
@@ -97,6 +103,7 @@ extension InfoBarController: InfoBar {
         case .addSoundFont: addSoundFont.addClosure(closure)
         case .showGuide: showGuide.addClosure(closure)
         case .showSettings: showSettings.addClosure(closure)
+        case .editVisibility: editVisibility.addClosure(closure)
         }
     }
 

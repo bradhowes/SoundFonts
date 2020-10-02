@@ -14,6 +14,7 @@ public final class SoundFontsViewController: UIViewController {
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
+    @IBOutlet private weak var visibilityView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
 
     private var soundFonts: SoundFonts!
@@ -137,10 +138,10 @@ extension SoundFontsViewController: ControllerConfiguration {
             soundFonts: router.soundFonts)
 
         patchesTableViewDataSource = PatchesTableViewManager(
-            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
+            view: patchesView, visibilityView: visibilityView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts, favorites: favorites,
             keyboard: router.keyboard,
-            sampler: router.sampler)
+            sampler: router.sampler, infoBar: router.infoBar)
 
         router.infoBar.addEventClosure(.addSoundFont) { self.addSoundFont() }
     }
@@ -194,7 +195,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - returns: new UIContextualAction that will perform the edit
      */
     public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: nil) { _, view, completionHandler in
+        let action = UIContextualAction(tag: "Edit", color: .orange) { _, view, completionHandler in
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFont: soundFont,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
                                            completionHandler: completionHandler)

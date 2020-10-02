@@ -66,8 +66,9 @@ public final class SettingsViewController: UIViewController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
         }
 
-        showSolfegeNotes.isOn = settings.showSolfegeLabel
         playSample.isOn = settings.playSample
+        showHiddenPresets.isOn = settings.showHiddenPresets
+        showSolfegeNotes.isOn = settings.showSolfegeLabel
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
 
         updateButtonState()
@@ -145,6 +146,10 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction private func togglePlaySample(_ sender: Any) {
         settings.playSample = self.playSample.isOn
+    }
+
+    @IBAction private func toggleShowHiddenPresets(_ sender: Any) {
+        settings.showHiddenPresets = self.showHiddenPresets.isOn
     }
 
     @IBAction private func keyLabelOptionChanged(_ sender: Any) {

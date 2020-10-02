@@ -13,13 +13,13 @@ final class FontEditor: UIViewController {
         let rect: CGRect
         let soundFont: LegacySoundFont
         let favoriteCount: Int
-        let completionHandler: UIContextualAction.CompletionHandler?
+        let completionHandler: ((Bool) -> Void)?
     }
 
     private var soundFont: LegacySoundFont!
     private var favoriteCount: Int = 0
     private var position: IndexPath = IndexPath()
-    private var completionHandler: UIContextualAction.CompletionHandler?
+    private var completionHandler: ((Bool) -> Void)?
 
     weak var delegate: FontEditorDelegate?
 
