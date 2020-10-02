@@ -22,7 +22,6 @@ final class PatchesTableViewManager: NSObject {
     private let soundFonts: SoundFonts
     private let favorites: Favorites
     private let keyboard: Keyboard?
-    private let sampler: Sampler
 
     private var showingSoundFont: LegacySoundFont?
     private var viewPresets = [LegacyPatch]()
@@ -33,7 +32,7 @@ final class PatchesTableViewManager: NSObject {
 
     init(view: UITableView, visibilityView: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?,
-         sampler: Sampler, infoBar: InfoBar) {
+         infoBar: InfoBar) {
         self.view = view
         self.visibilityView = visibilityView
         self.searchBar = searchBar
@@ -42,7 +41,6 @@ final class PatchesTableViewManager: NSObject {
         self.soundFonts = soundFonts
         self.favorites = favorites
         self.keyboard = keyboard
-        self.sampler = sampler
         super.init()
 
         updateVisibilityPresets()
@@ -63,6 +61,7 @@ final class PatchesTableViewManager: NSObject {
         favorites.subscribe(self, notifier: favoritesChange)
 
         view.sectionIndexColor = .darkGray
+        visibilityView.sectionIndexColor = .darkGray
 
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
         let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
@@ -93,25 +92,22 @@ extension PatchesTableViewManager: UITableViewDataSource {
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        guard !showingSearchResults else { return nil }
+        if showingSearchResults { return nil }
+        if tableView == view && visibilityView.isEditing { return nil }
         if tableView == view {
             return [UITableView.indexSearch, "•"] + stride(from: sectionSize, to: viewPresets.count - 1, by: sectionSize).map { "\($0)" }
         }
-        return [UITableView.indexSearch, "•"] + stride(from: sectionSize, to: visibilityPresets.count - 1, by: sectionSize).map { "\($0)" }
+        if tableView == visibilityView {
+            return ["•"] + stride(from: sectionSize, to: visibilityPresets.count - 1, by: sectionSize).map { "\($0)" }
+        }
+        return nil
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        if tableView == visibilityView { return index }
         if index == 0 {
-
-            // Going to show the search bar. We first tell UITableView to show the 0 section which shows the first
-            // patch. We then have the UITableView reveal the search bar by updating the contentOffset in an animation.
-            // This is done in an async block on the main thread so that it happens *after* the movement to the 0
-            // section. *HACK*
-            //
             if !self.searchBar.isFirstResponder {
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero }
-                }
+                DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
                 self.searchBar.becomeFirstResponder()
                 if let term = lastSearchText, !term.isEmpty {
                     self.searchBar.text = term
@@ -150,13 +146,6 @@ extension PatchesTableViewManager: UITableViewDelegate {
         guard tableView == visibilityView else { return false }
         return favorites.getBy(soundFontAndPatch: makeSoundFontAndPatch(for: getVisibilityPreset(for: indexPath))) == nil
     }
-
-//    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-//        guard !view.isEditing else { return indexPath }
-//        if !showingSearchResults { dismissSearchKeyboard() }
-//        return indexPath
-//    }
-//
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard tableView == view else {
@@ -238,56 +227,77 @@ extension PatchesTableViewManager {
         if view.isHidden == false {
             os_log(.debug, log: log, "editing visibility table")
             visibilityView.setEditing(true, animated: true)
-
-            // Get the preset at the top of the screen.
-            if let firstVisible = view.indexPathsForVisibleRows?.first {
-                let patch = viewPresets[patchIndex(of: firstVisible)]
-                if let visibilityIndex = visibilityPresets.firstIndex(of: patch) {
-                    let section = visibilityIndex / sectionSize
-                    let row = visibilityIndex - sectionSize * section
-                    let indexPath = IndexPath(row: row, section: section)
-                    visibilityView.scrollToRow(at: indexPath, at: .top, animated: false)
-                }
-            }
-
-            view.alpha = 1.0
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
-                os_log(.debug, log: self.log, "animation begin")
-                self.view.alpha = 0.0
-            }, completion: { _ in
-                os_log(.debug, log: self.log, "animation end")
-                self.view.isHidden = true
-                self.view.alpha = 1.0
-            })
-
-            os_log(.debug, log: self.log, "selecting visible presets")
-            for (index, preset) in visibilityPresets.enumerated() {
-                let section = index / sectionSize
-                let row = index - sectionSize * section
-                let indexPath = IndexPath(row: row, section: section)
-                let isFavorite = favorites.getBy(soundFontAndPatch: makeSoundFontAndPatch(for: preset)) != nil
-                if preset.isVisible || isFavorite {
-                    preset.isVisible = true
-                    visibilityView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                }
-            }
-            os_log(.debug, log: log, "selecting visible presets")
+            view.reloadSectionIndexTitles()
+            synchronizeVisibilityScroll()
+            showVisibilityView()
+            updateVisibilitySelections()
         }
         else {
             os_log(.debug, log: log, "finished editing visibility table")
             updateViewPresets()
-            self.view.isHidden = false
-            view.alpha = 0.0
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
-                os_log(.debug, log: self.log, "animation begin")
-                self.view.alpha = 1.0
-                self.visibilityView.setEditing(false, animated: true)
-            }, completion: { _ in
-                os_log(.debug, log: self.log, "animation end")
-                self.view.alpha = 1.0
-                os_log(.debug, log: self.log, "reloading view")
-                self.view.reloadData()
-            })
+            synchronizeViewScroll()
+            hideVisibilityView()
+        }
+    }
+
+    private func showVisibilityView() {
+        view.alpha = 1.0
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
+            self.view.alpha = 0.0
+        }, completion: { _ in
+            self.view.isHidden = true
+            self.view.alpha = 1.0
+        })
+    }
+
+    private func hideVisibilityView() {
+        view.isHidden = false
+        view.alpha = 0.0
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
+            self.view.alpha = 1.0
+            self.visibilityView.setEditing(false, animated: true)
+            self.view.reloadSectionIndexTitles()
+        }, completion: { _ in
+            self.view.alpha = 1.0
+            self.view.reloadData()
+        })
+    }
+
+    private func synchronizeViewScroll() {
+        if let firstVisible = visibilityView.indexPathsForVisibleRows?.first {
+            let patch = visibilityPresets[patchIndex(of: firstVisible)]
+            if let viewIndex = viewPresets.firstIndex(of: patch) {
+                let section = viewIndex / sectionSize
+                let row = viewIndex - sectionSize * section
+                let indexPath = IndexPath(row: row, section: section)
+                view.scrollToRow(at: indexPath, at: .top, animated: false)
+            }
+        }
+    }
+
+    private func synchronizeVisibilityScroll() {
+        if let firstVisible = view.indexPathsForVisibleRows?.first {
+            let patch = viewPresets[patchIndex(of: firstVisible)]
+            if let visibilityIndex = visibilityPresets.firstIndex(of: patch) {
+                let section = visibilityIndex / sectionSize
+                let row = visibilityIndex - sectionSize * section
+                let indexPath = IndexPath(row: row, section: section)
+                visibilityView.scrollToRow(at: indexPath, at: .top, animated: false)
+            }
+        }
+    }
+
+    private func updateVisibilitySelections() {
+        os_log(.debug, log: self.log, "updateVisibilitySelections")
+        for (index, preset) in visibilityPresets.enumerated() {
+            let section = index / sectionSize
+            let row = index - sectionSize * section
+            let indexPath = IndexPath(row: row, section: section)
+            let isFavorite = favorites.getBy(soundFontAndPatch: makeSoundFontAndPatch(for: preset)) != nil
+            if preset.isVisible || isFavorite {
+                preset.isVisible = true
+                visibilityView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            }
         }
     }
 
