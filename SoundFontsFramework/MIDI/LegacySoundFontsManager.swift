@@ -153,22 +153,28 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func hidePreset(key: LegacySoundFont.Key, index: Int) {
         guard let soundFont = getBy(key: key) else { return }
-        soundFont.patches[index].isHidden = true
+        soundFont.patches[index].isVisible = false
+        assert(soundFont.patches[index].isVisible == false)
         save()
     }
 
     public func unhidePreset(key: LegacySoundFont.Key, index: Int) {
         guard let soundFont = getBy(key: key) else { return }
-        soundFont.patches[index].isHidden = false
+        soundFont.patches[index].isVisible = true
+        assert(soundFont.patches[index].isVisible == true)
         save()
     }
 
     public var hasAnyBundled: Bool {
-        SF2Files.allResources.first { collection.index(of: $0) != nil } != nil
+        let urls = SF2Files.allResources
+        let found = urls.first { collection.index(of: $0) != nil }
+        return found != nil
     }
 
     public var hasAllBundled: Bool {
-        SF2Files.allResources.first { collection.index(of: $0) == nil } == nil
+        let urls = SF2Files.allResources
+        let found = urls.filter { collection.index(of: $0) != nil }
+        return found.count == urls.count
     }
 
     public func removeBundled() {

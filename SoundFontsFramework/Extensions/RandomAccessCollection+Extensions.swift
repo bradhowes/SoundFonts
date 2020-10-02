@@ -30,7 +30,44 @@ public extension RandomAccessCollection {
     }
 }
 
+public extension RandomAccessCollection where Iterator.Element: AnyObject {
+
+    /**
+     Obtain the index in a collection for a given object.
+
+     - parameter value: the object to look for
+     - returns: index of the give value or `endIndex` if not found
+     */
+    func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
+        let pos = insertionIndex(of: value, predicate: predicate)
+        return pos < endIndex && self[pos] === value ? pos : endIndex
+    }
+
+    /**
+     Binary search operation which simply determines if a given value is in the collection.
+
+     - parameter value: the value to look for
+     - parameter predicate: a closure/function that determines ordering of two elements
+     - returns: true if element is in the collections
+     */
+    func contains(value: Iterator.Element, predicate: OrderPredicate) -> Bool {
+        let pos = insertionIndex(of: value, predicate: predicate)
+        return pos < endIndex && self[pos] === value
+    }
+}
+
 public extension RandomAccessCollection where Iterator.Element: Equatable {
+
+    /**
+     Obtain the index in a collection for a given value.
+
+     - parameter value: the value to look for
+     - returns: index of the give value or `endIndex` if not found
+     */
+    func search(for value: Iterator.Element, predicate: OrderPredicate) -> Index {
+        let pos = insertionIndex(of: value, predicate: predicate)
+        return pos < endIndex && self[pos] == value ? pos : endIndex
+    }
 
     /**
      Binary search operation which simply determines if a given value is in the collection.

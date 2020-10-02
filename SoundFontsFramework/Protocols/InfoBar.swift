@@ -13,6 +13,7 @@ public enum InfoBarEvent {
     case doubleTap
     case showGuide
     case showSettings
+    case editVisibility
 }
 
 /**

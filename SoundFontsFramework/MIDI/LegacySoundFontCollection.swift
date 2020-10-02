@@ -53,9 +53,7 @@ public final class LegacySoundFontCollection: Codable {
      - returns: index value if found, else nil
      */
     public func index(of url: URL) -> Int? {
-        guard let found = catalog.first(where: { entry in entry.value.fileURL == url }) else {
-            return nil
-        }
+        guard let found = catalog.first(where: { entry in entry.value.fileURL.absoluteString == url.absoluteString }) else { return nil }
         return index(of: found.key)
     }
 

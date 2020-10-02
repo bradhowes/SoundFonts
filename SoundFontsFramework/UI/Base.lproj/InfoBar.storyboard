@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -27,23 +28,23 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="02T-YG-hEw"/>
                                 </constraints>
-                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="systemTealColor"/>
                                 <state key="normal" image="Add"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IO0-ky-FSn" userLabel="LowestKey">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IO0-ky-FSn" userLabel="LowestKey">
                                 <rect key="frame" x="53" y="3" width="30" height="34"/>
                                 <accessibility key="accessibilityConfiguration" identifier="LowestKey" label="LowestKey"/>
                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                 <state key="normal" title="C2">
-                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemTealColor"/>
                                 </state>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBF-bM-n1r" userLabel="HighestKey">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBF-bM-n1r" userLabel="HighestKey">
                                 <rect key="frame" x="99" y="3" width="30" height="34"/>
                                 <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                 <state key="normal" title="C3">
-                                    <color key="titleColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" systemColor="systemTealColor"/>
                                 </state>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-VG-nmd" userLabel="TouchView">
@@ -54,7 +55,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
-                                        <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" contentMode="left" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwl-He-nQi" userLabel="Status">
@@ -62,7 +63,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
-                                        <color key="textColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -81,19 +82,19 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
-                                <rect key="frame" x="279" y="0.0" width="98" height="40"/>
+                                <rect key="frame" x="238" y="0.0" width="139" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnb-O4-iay" userLabel="Help">
-                                        <rect key="frame" x="57" y="7.5" width="25" height="25"/>
-                                        <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="98" y="7.5" width="25" height="25"/>
+                                        <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="Help"/>
                                         <connections>
                                             <action selector="showGuide:" destination="YeB-KN-4f1" eventType="touchUpInside" id="l3y-ET-PrG"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7YL-wn-sth" userLabel="Settings">
-                                        <rect key="frame" x="16" y="7.5" width="25" height="25"/>
-                                        <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="57" y="7.5" width="25" height="25"/>
+                                        <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="Settings"/>
                                         <connections>
                                             <action selector="showSettings:" destination="YeB-KN-4f1" eventType="touchUpInside" id="Ch9-fz-rOg"/>
@@ -102,14 +103,24 @@
                                             </segue>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWy-3z-Rka" userLabel="Visibility">
+                                        <rect key="frame" x="16" y="7.5" width="25" height="25"/>
+                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                        <state key="normal" image="EditVisibility"/>
+                                        <connections>
+                                            <action selector="editVisibilityMode:" destination="YeB-KN-4f1" eventType="touchUpInside" id="Leq-DX-9gV"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="7YL-wn-sth" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="5oD-kV-kUJ"/>
+                                    <constraint firstItem="oWy-3z-Rka" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="leading" constant="16" id="Jmq-ly-4TX"/>
                                     <constraint firstItem="dnb-O4-iay" firstAttribute="leading" secondItem="7YL-wn-sth" secondAttribute="trailing" constant="16" id="URi-Sd-Wde"/>
                                     <constraint firstItem="dnb-O4-iay" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="VKH-HH-mv4"/>
                                     <constraint firstAttribute="trailing" secondItem="dnb-O4-iay" secondAttribute="trailing" constant="16" id="cd3-Xl-ZBO"/>
-                                    <constraint firstItem="7YL-wn-sth" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="leading" constant="16" id="ny2-Ig-8Xl"/>
+                                    <constraint firstItem="oWy-3z-Rka" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="gPV-2p-AZq"/>
+                                    <constraint firstItem="7YL-wn-sth" firstAttribute="leading" secondItem="oWy-3z-Rka" secondAttribute="trailing" constant="16" id="ny2-Ig-8Xl"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -128,7 +139,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="Fhy-lJ-vxH"/>
                                 </constraints>
-                                <color key="tintColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" systemColor="systemTealColor"/>
                                 <state key="normal" image="More"/>
                                 <variation key="widthClass=regular" hidden="YES"/>
                                 <connections>
@@ -136,6 +147,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="eP8-kW-JPv"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
                         <constraints>
@@ -163,7 +175,6 @@
                             <constraint firstItem="D81-HT-18k" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="vIe-T5-VU5"/>
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="top" secondItem="utY-mU-BUQ" secondAttribute="top" id="vaW-k2-pzz"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="eP8-kW-JPv"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedTopBarMetrics"/>
@@ -172,6 +183,7 @@
                     <size key="freeformSize" width="414" height="40"/>
                     <connections>
                         <outlet property="addSoundFont" destination="ub1-7q-fxl" id="jRn-FL-bhT"/>
+                        <outlet property="editVisibility" destination="oWy-3z-Rka" id="aYs-eJ-ELf"/>
                         <outlet property="highestKey" destination="gBF-bM-n1r" id="IYm-Uz-YRq"/>
                         <outlet property="lowestKey" destination="IO0-ky-FSn" id="y9d-PN-YWc"/>
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
@@ -199,8 +211,12 @@
     </scenes>
     <resources>
         <image name="Add" width="25" height="25"/>
+        <image name="EditVisibility" width="25" height="25"/>
         <image name="Help" width="25" height="25"/>
         <image name="More" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

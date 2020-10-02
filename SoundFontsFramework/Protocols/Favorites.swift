@@ -13,6 +13,15 @@ public enum FavoritesEvent {
     case removed(index: Int, favorite: LegacyFavorite, bySwiping: Bool)
     case removedAll(associatedWith: LegacySoundFont)
     case restored
+
+    var favorite: LegacyFavorite? {
+        switch self {
+        case let .added(index: _, favorite: favorite): return favorite
+        case let .changed(index: _, favorite: favorite): return favorite
+        case let .removed(index: _, favorite: favorite, bySwiping: _): return favorite
+        default: return nil
+        }
+    }
 }
 
 /**

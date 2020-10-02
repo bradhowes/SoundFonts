@@ -9,21 +9,22 @@ import AudioToolbox
 public class LegacyPatch: Codable {
 
     /// Display name for the patch
-    public let name: String
+    let name: String
 
     /// Width of the name in the system font
     // lazy var nameWidth: CGFloat = name.systemFontWidth
 
     /// Bank number where the patch resides in the sound font
-    public let bank: Int
+    let bank: Int
 
     /// Program patch number where the patch resides in the sound font
-    public let program: Int
+    let program: Int
 
     /// The index into the owning soundFont's patches array
-    public var soundFontIndex: Int
+    var soundFontIndex: Int
 
-    @DecodableDefault.False var isHidden: Bool
+    ///
+    @DecodableDefault.True var isVisible: Bool
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion
@@ -91,4 +92,9 @@ public class LegacyPatch: Codable {
 
 extension LegacyPatch: CustomStringConvertible {
     public var description: String { "[Patch '\(name)' \(bank):\(program)]" }
+}
+
+extension LegacyPatch: Comparable {
+    public static func < (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs.soundFontIndex < rhs.soundFontIndex }
+    public static func == (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs === rhs }
 }

@@ -15,7 +15,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="ib6-JJ-tpc" style="IBUITableViewCellStyleDefault" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="ib6-JJ-tpc" style="IBUITableViewCellStyleDefault" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0Cs-lR-8tg" id="UqT-gz-ivI">
@@ -29,7 +29,7 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="vTo-oj-deq" userLabel="SeletedIndicator">
+                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="vTo-oj-deq" userLabel="ActiveIndicator">
                         <rect key="frame" x="1" y="0.0" width="4" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemTealColor"/>
@@ -43,8 +43,8 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
+                <outlet property="activeIndicator" destination="vTo-oj-deq" id="vPu-we-yHf"/>
                 <outlet property="name" destination="ib6-JJ-tpc" id="3Hz-gv-eBo"/>
-                <outlet property="selectedIndicator" destination="vTo-oj-deq" id="R6j-ck-jZn"/>
             </connections>
             <point key="canvasLocation" x="-304" y="-965"/>
         </tableViewCell>

@@ -4,7 +4,7 @@ import UIKit
 
 public extension UIContextualAction {
 
-    convenience init(tag: String, color: UIColor, handler: @escaping Handler) {
+    convenience init(tag: String, color: UIColor, handler: @escaping UIContextualAction.Handler) {
         self.init(style: .normal, title: nil, handler: handler)
         self.image = UIImage.resourceImage(name: tag)
         self.backgroundColor = color
