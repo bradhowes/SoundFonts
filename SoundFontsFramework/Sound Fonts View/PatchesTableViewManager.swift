@@ -324,6 +324,11 @@ extension PatchesTableViewManager {
         visibilityView.reloadData()
         view.reloadData()
 
+        if view.isHidden {
+            updateVisibilitySelections()
+            return
+        }
+
         if activePatchManager.soundFont == new {
             selectActive(animated: false)
         }
