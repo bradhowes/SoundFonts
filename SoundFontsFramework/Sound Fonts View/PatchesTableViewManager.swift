@@ -238,6 +238,18 @@ extension PatchesTableViewManager {
         if view.isHidden == false {
             os_log(.debug, log: log, "editing visibility table")
             visibilityView.setEditing(true, animated: true)
+
+            // Get the preset at the top of the screen.
+            if let firstVisible = view.indexPathsForVisibleRows?.first {
+                let patch = viewPresets[patchIndex(of: firstVisible)]
+                if let visibilityIndex = visibilityPresets.firstIndex(of: patch) {
+                    let section = visibilityIndex / sectionSize
+                    let row = visibilityIndex - sectionSize * section
+                    let indexPath = IndexPath(row: row, section: section)
+                    visibilityView.scrollToRow(at: indexPath, at: .top, animated: false)
+                }
+            }
+
             view.alpha = 1.0
             UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
                 os_log(.debug, log: self.log, "animation begin")
