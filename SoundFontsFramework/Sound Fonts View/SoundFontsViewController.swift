@@ -139,9 +139,7 @@ extension SoundFontsViewController: ControllerConfiguration {
 
         patchesTableViewDataSource = PatchesTableViewManager(
             view: patchesView, visibilityView: visibilityView, searchBar: searchBar, activePatchManager: router.activePatchManager,
-            selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts, favorites: favorites,
-            keyboard: router.keyboard,
-            sampler: router.sampler, infoBar: router.infoBar)
+            selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts, favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
 
         router.infoBar.addEventClosure(.addSoundFont) { self.addSoundFont() }
     }
