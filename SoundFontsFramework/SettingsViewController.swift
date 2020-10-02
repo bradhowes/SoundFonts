@@ -31,7 +31,6 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var doneButton: UIBarButtonItem!
 
     @IBOutlet private weak var playSamplesStackView: UIStackView!
-    @IBOutlet private weak var showHiddenPresetsStackView: UIStackView!
     @IBOutlet private weak var keyLabelsStackView: UIStackView!
     @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var solfegeStackView: UIStackView!
@@ -43,7 +42,6 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var importSoundFontsStackView: UIStackView!
 
     @IBOutlet private weak var playSample: UISwitch!
-    @IBOutlet private weak var showHiddenPresets: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
@@ -67,7 +65,6 @@ public final class SettingsViewController: UIViewController {
         }
 
         playSample.isOn = settings.playSample
-        showHiddenPresets.isOn = settings.showHiddenPresets
         showSolfegeNotes.isOn = settings.showSolfegeLabel
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
 
@@ -91,7 +88,6 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func beginShowKeyboard() {
-        solfegeStackView.isHidden = true
         exportSoundFontsStackView.isHidden = true
         importSoundFontsStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
@@ -102,7 +98,6 @@ public final class SettingsViewController: UIViewController {
     }
 
     private func endShowKeyboard() {
-        solfegeStackView.isHidden = false
         exportSoundFontsStackView.isHidden = false
         importSoundFontsStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
@@ -146,10 +141,6 @@ public final class SettingsViewController: UIViewController {
 
     @IBAction private func togglePlaySample(_ sender: Any) {
         settings.playSample = self.playSample.isOn
-    }
-
-    @IBAction private func toggleShowHiddenPresets(_ sender: Any) {
-        settings.showHiddenPresets = self.showHiddenPresets.isOn
     }
 
     @IBAction private func keyLabelOptionChanged(_ sender: Any) {

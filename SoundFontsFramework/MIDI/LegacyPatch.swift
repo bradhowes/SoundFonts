@@ -96,5 +96,5 @@ extension LegacyPatch: CustomStringConvertible {
 
 extension LegacyPatch: Comparable {
     public static func < (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs.soundFontIndex < rhs.soundFontIndex }
-    public static func == (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs === rhs }
+    public static func == (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs.name == rhs.name && lhs.bank == rhs.bank && lhs.program == rhs.program }
 }

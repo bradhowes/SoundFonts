@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="358"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="488.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="445.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJm-Kh-cBE" userLabel="Upper Background">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
@@ -31,7 +31,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
-                                                <rect key="frame" x="20" y="20" width="374" height="448.5"/>
+                                                <rect key="frame" x="20" y="20" width="374" height="405.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="goE-tS-nbI" userLabel="Play Samples">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
@@ -52,27 +52,8 @@
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="M1c-AX-pP6" userLabel="Hidden Patches">
-                                                        <rect key="frame" x="0.0" y="43" width="374" height="31"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show hidden presets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0db-oh-rOS">
-                                                                <rect key="frame" x="0.0" y="5.5" width="160" height="20.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="rVw-tW-byW">
-                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
-                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                <color key="onTintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="toggleShowHiddenPresets:" destination="Eyw-X4-KFI" eventType="valueChanged" id="rPt-jS-GRZ"/>
-                                                                </connections>
-                                                            </switch>
-                                                        </subviews>
-                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Key Labels">
-                                                        <rect key="frame" x="0.0" y="86" width="374" height="31"/>
+                                                        <rect key="frame" x="0.0" y="43" width="374" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show key labels" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3d-d7-tA5">
                                                                 <rect key="frame" x="0.0" y="5.5" width="121.5" height="20.5"/>
@@ -91,6 +72,25 @@
                                                                     <action selector="keyLabelOptionChanged:" destination="Eyw-X4-KFI" eventType="valueChanged" id="EVv-6H-hwP"/>
                                                                 </connections>
                                                             </segmentedControl>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tmr-5h-0DY" userLabel="Solfege Tags">
+                                                        <rect key="frame" x="0.0" y="86" width="374" height="31"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
+                                                                <rect key="frame" x="0.0" y="5.5" width="140" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ngg-Rs-cwx">
+                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                <color key="onTintColor" systemColor="systemTealColor"/>
+                                                                <connections>
+                                                                    <action selector="toggleShowSolfegeNotes:" destination="Eyw-X4-KFI" eventType="valueChanged" id="TFk-ha-k9M"/>
+                                                                </connections>
+                                                            </switch>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gdn-yw-SU4" userLabel="Key Width">
@@ -120,27 +120,8 @@
                                                             </slider>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tmr-5h-0DY" userLabel="Solfege Tags">
-                                                        <rect key="frame" x="0.0" y="195.5" width="374" height="31"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show solfège tags" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
-                                                                <rect key="frame" x="0.0" y="5.5" width="140" height="20.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ngg-Rs-cwx">
-                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
-                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                <color key="onTintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="toggleShowSolfegeNotes:" destination="Eyw-X4-KFI" eventType="valueChanged" id="TFk-ha-k9M"/>
-                                                                </connections>
-                                                            </switch>
-                                                        </subviews>
-                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9qL-FM-FBf" userLabel="Export">
-                                                        <rect key="frame" x="0.0" y="238.5" width="374" height="36"/>
+                                                        <rect key="frame" x="0.0" y="195.5" width="374" height="36"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export all internal files to local SoundFonts folder on device." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjM-gJ-jQO">
                                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
@@ -163,7 +144,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dRV-OG-PKO" userLabel="Import">
-                                                        <rect key="frame" x="0.0" y="286.5" width="374" height="36"/>
+                                                        <rect key="frame" x="0.0" y="243.5" width="374" height="36"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import all SF2 files in local SoundFonts folder on device." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAS-mV-qSc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
@@ -186,7 +167,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-WA-CKG" userLabel="Remove">
-                                                        <rect key="frame" x="0.0" y="334.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="291.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hide all default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feS-ti-Bte">
                                                                 <rect key="frame" x="0.0" y="6" width="334" height="18"/>
@@ -209,7 +190,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cY9-56-y6L" userLabel="Restore">
-                                                        <rect key="frame" x="0.0" y="376.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="333.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show all default soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ol-Ma-VZZ">
                                                                 <rect key="frame" x="0.0" y="6" width="328" height="18"/>
@@ -232,7 +213,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EGM-L9-3DV" userLabel="Version Review">
-                                                        <rect key="frame" x="0.0" y="418.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="375.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.10.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ch-QX-ryD" userLabel="APP_VERSION">
                                                                 <rect key="frame" x="0.0" y="6" width="49" height="18"/>
@@ -319,8 +300,6 @@
                         <outlet property="restoreDefaultSoundFonts" destination="HvM-L4-c9e" id="PfW-ed-xmc"/>
                         <outlet property="restoreSoundFontsStackView" destination="cY9-56-y6L" id="mfE-fl-LMu"/>
                         <outlet property="review" destination="vQR-Pe-bJM" id="XCc-GN-b8i"/>
-                        <outlet property="showHiddenPresets" destination="rVw-tW-byW" id="4Gr-PL-aW2"/>
-                        <outlet property="showHiddenPresetsStackView" destination="M1c-AX-pP6" id="e3w-cs-qIV"/>
                         <outlet property="showSolfegeNotes" destination="Ngg-Rs-cwx" id="FxF-mH-RiW"/>
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>
                         <outlet property="upperBackground" destination="gJm-Kh-cBE" id="bct-YV-mXV"/>

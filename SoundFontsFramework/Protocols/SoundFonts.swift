@@ -78,8 +78,8 @@ public protocol SoundFonts: class {
      */
     func rename(index: Int, name: String)
 
-    func hidePreset(key: LegacySoundFont.Key, index: Int)
-    func unhidePreset(key: LegacySoundFont.Key, index: Int)
+    @discardableResult
+    func toggleVisibility(key: LegacySoundFont.Key, index: Int) -> Bool
 
     /**
      Force a reload of the SoundFont collection.

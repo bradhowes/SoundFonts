@@ -40,26 +40,26 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive, isFavorite: isFavorite, isVisible: isVisible)
     }
 
-    public func updateForEditing(name: String, isFavorite: Bool, isVisible: Bool) {
-        os_log(.debug, log: log, "updateForEditing %s %d %d", name, isFavorite, isVisible)
+    public func updateForVisibility(name: String, isFavorite: Bool, isVisible: Bool) {
+        os_log(.debug, log: log, "updateForVisibility %s %d %d", name, isFavorite, isVisible)
         self.name.text = Self.favoriteTag(isFavorite) + name
         self.name.textColor = isFavorite ? favoriteFontColor : normalFontColor
-        activeIndicator.alpha = 0.0
+        activeIndicator.isHidden = true
         isSelected = isVisible
     }
 
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isVisible: Bool) {
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite, isVisible: isVisible)
-        if isActive != (activeIndicator.alpha == 1.0) {
+        if isActive == activeIndicator.isHidden {
             showActiveIndicator(isActive)
         }
     }
 
     private func stopAnimation() {
-        activeIndicatorAnimator?.stopAnimation(true)
+        activeIndicatorAnimator?.stopAnimation(false)
+        activeIndicatorAnimator?.finishAnimation(at: .end)
         activeIndicatorAnimator = nil
-        activeIndicator.alpha = 0.0
     }
 
     override public func prepareForReuse() {
@@ -69,15 +69,17 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private func showActiveIndicator(_ isActive: Bool) {
         stopAnimation()
-        let newAlpha: CGFloat = isActive ? 1.0 : 0.0
         guard isActive else {
-            activeIndicator.alpha = newAlpha
+            activeIndicator.isHidden = true
             return
         }
 
-        activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) { self.activeIndicator.alpha = newAlpha }
-        activeIndicatorAnimator?.addCompletion { self.activeIndicator.alpha = $0 == .end ? newAlpha : (1.0 - newAlpha) }
-        activeIndicatorAnimator?.startAnimation()
+        activeIndicator.alpha = 0.0
+        activeIndicator.isHidden = false
+        let activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) { self.activeIndicator.alpha = 1.0 }
+        activeIndicatorAnimator.addCompletion { _ in self.activeIndicator.alpha = 1.0 }
+        activeIndicatorAnimator.startAnimation()
+        self.activeIndicatorAnimator = activeIndicatorAnimator
     }
 
     private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool, isVisible: Bool) -> UIColor? {

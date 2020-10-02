@@ -45,9 +45,7 @@ final class PatchesTableViewManager: NSObject {
         self.sampler = sampler
         super.init()
 
-        settings.showHiddenPresets = false
-        visibilityPresets = showingSoundFont?.patches ?? []
-        viewPresets = visibilityPresets.filter { $0.isVisible }
+        updateVisibilityPresets()
 
         infoBar.addEventClosure(.editVisibility) { self.toggleVisibilityEditing() }
 
@@ -69,44 +67,6 @@ final class PatchesTableViewManager: NSObject {
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
         let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = defaultTextAttribs
-    }
-
-    private func toggleVisibilityEditing() {
-        if view.isHidden == false {
-            os_log(.debug, log: log, "showing visibility")
-            visibilityView.setEditing(true, animated: true)
-            view.alpha = 1.0
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0.0, options: [], animations: {
-                self.view.alpha = 0.0
-            }, completion: { _ in
-                self.view.isHidden = true
-                self.view.alpha = 1.0
-            })
-
-            for (index, preset) in visibilityPresets.enumerated() {
-                let section = index / sectionSize
-                let row = index - sectionSize * section
-                let indexPath = IndexPath(row: row, section: section)
-                let isFavorite = favorites.getBy(soundFontAndPatch: makeSoundFontAndPatch(for: preset)) != nil
-                if preset.isVisible || isFavorite {
-                    os_log(.debug, log: log, "selecting row %d", index)
-                    preset.isVisible = true
-                    visibilityView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                }
-            }
-        }
-        else {
-            viewPresets = visibilityPresets.filter { $0.isVisible }
-            self.view.isHidden = false
-            view.alpha = 0.0
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.5, delay: 0.0, options: [], animations: {
-                self.view.alpha = 1.0
-                self.visibilityView.setEditing(false, animated: true)
-            }, completion: { _ in
-                self.view.alpha = 1.0
-                self.view.reloadData()
-            })
-        }
     }
 }
 
@@ -199,34 +159,26 @@ extension PatchesTableViewManager: UITableViewDelegate {
 //
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView == visibilityView {
-            guard let cell = tableView.cellForRow(at: indexPath) as? TableCell else { return }
-            let patch = getVisibilityPreset(for: indexPath)
-            patch.isVisible = !patch.isVisible
-            cell.setSelected(patch.isVisible, animated: true)
-            os_log(.debug, log: log, "didSelect %s %d", patch.name, patch.isVisible)
+        guard tableView == view else {
+            togglePresetVisibility(at: indexPath)
             return
         }
 
         let patch = getViewPreset(for: indexPath)
-        dismissSearchResults()
-        let playSample = settings.playSample
         let soundFontAndPatch = makeSoundFontAndPatch(for: patch)
+        dismissSearchResults()
+
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
-            activePatchManager.setActive(.favorite(favorite: favorite), playSample: playSample)
+            activePatchManager.setActive(favorite: favorite, playSample: settings.playSample)
         }
         else {
-            activePatchManager.setActive(.normal(soundFontAndPatch: soundFontAndPatch), playSample: playSample)
+            activePatchManager.setActive(preset: soundFontAndPatch, playSample: settings.playSample)
         }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView == visibilityView {
-            guard let cell = tableView.cellForRow(at: indexPath) as? TableCell else { return }
-            let patch = getVisibilityPreset(for: indexPath)
-            patch.isVisible = !patch.isVisible
-            cell.setSelected(patch.isVisible, animated: true)
-            os_log(.debug, log: log, "didDeselect %s %d", patch.name, patch.isVisible)
+        guard tableView == view else {
+            togglePresetVisibility(at: indexPath)
             return
         }
     }
@@ -265,30 +217,78 @@ extension PatchesTableViewManager: UISearchBarDelegate {
 
 extension PatchesTableViewManager {
 
-//    private func reloadView() {
-//        if let searchTerm = searchBar.searchTerm {
-//            search(for: searchTerm)
-//        }
-//        else {
-//            view.reloadData()
-//        }
-//    }
+    private func togglePresetVisibility(at indexPath: IndexPath) {
+        guard let cell = visibilityView.cellForRow(at: indexPath) as? TableCell, let soundFont = showingSoundFont else { return }
+        let index = patchIndex(of: indexPath)
+        let isVisible = soundFonts.toggleVisibility(key: soundFont.key, index: index)
+        cell.setSelected(isVisible, animated: true)
+        updateViewPresets()
+    }
+
+    private func updateVisibilityPresets() {
+        visibilityPresets = showingSoundFont?.patches ?? []
+        updateViewPresets()
+    }
+
+    private func updateViewPresets() {
+        viewPresets = visibilityPresets.filter { $0.isVisible }
+    }
+
+    private func toggleVisibilityEditing() {
+        if view.isHidden == false {
+            os_log(.debug, log: log, "editing visibility table")
+            visibilityView.setEditing(true, animated: true)
+            view.alpha = 1.0
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
+                os_log(.debug, log: self.log, "animation begin")
+                self.view.alpha = 0.0
+            }, completion: { _ in
+                os_log(.debug, log: self.log, "animation end")
+                self.view.isHidden = true
+                self.view.alpha = 1.0
+            })
+
+            os_log(.debug, log: self.log, "selecting visible presets")
+            for (index, preset) in visibilityPresets.enumerated() {
+                let section = index / sectionSize
+                let row = index - sectionSize * section
+                let indexPath = IndexPath(row: row, section: section)
+                let isFavorite = favorites.getBy(soundFontAndPatch: makeSoundFontAndPatch(for: preset)) != nil
+                if preset.isVisible || isFavorite {
+                    preset.isVisible = true
+                    visibilityView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                }
+            }
+            os_log(.debug, log: log, "selecting visible presets")
+        }
+        else {
+            os_log(.debug, log: log, "finished editing visibility table")
+            updateViewPresets()
+            self.view.isHidden = false
+            view.alpha = 0.0
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
+                os_log(.debug, log: self.log, "animation begin")
+                self.view.alpha = 1.0
+                self.visibilityView.setEditing(false, animated: true)
+            }, completion: { _ in
+                os_log(.debug, log: self.log, "animation end")
+                self.view.alpha = 1.0
+                os_log(.debug, log: self.log, "reloading view")
+                self.view.reloadData()
+            })
+        }
+    }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
-        os_log(.info, log: log, "activePatchChange")
         switch event {
         case let .active(old: old, new: new, playSample: _):
+            os_log(.debug, log: log, "activePatchChange")
             view.performBatchUpdates({
-                update(with: old.soundFontAndPatch)
-                update(with: new.soundFontAndPatch)
+                updateView(with: old.soundFontAndPatch)
+                updateView(with: new.soundFontAndPatch)
             }, completion: { finished in
-                if finished {
-                    self.selectActive(animated: false)
-                    if !self.showingSearchResults {
-                        self.view.layoutIfNeeded()
-                        self.hideSearchBar(animated: true)
-                    }
-                }
+                guard finished else { return }
+                self.selectActive(animated: false)
             })
         }
     }
@@ -298,9 +298,8 @@ extension PatchesTableViewManager {
         guard case let .changed(old: _, new: new) = event, showingSoundFont != new else { return }
 
         showingSoundFont = new
-        visibilityPresets = showingSoundFont?.patches ?? []
+        updateVisibilityPresets()
         visibilityView.reloadData()
-        viewPresets = visibilityPresets.filter { $0.isVisible }
         view.reloadData()
 
         if activePatchManager.soundFont == new {
@@ -308,7 +307,7 @@ extension PatchesTableViewManager {
         }
         else if !showingSearchResults {
             view.layoutIfNeeded()
-            hideSearchBar(animated: true)
+            hideSearchBar(animated: false)
         }
     }
 
@@ -319,18 +318,30 @@ extension PatchesTableViewManager {
             if let visibleRows = view.indexPathsForVisibleRows {
                 view.reloadRows(at: visibleRows, with: .automatic)
             }
+            else {
+                view.reloadData()
+            }
+            if let visibleRows = visibilityView.indexPathsForVisibleRows {
+                visibilityView.reloadRows(at: visibleRows, with: .automatic)
+            }
+            else {
+                visibilityView.reloadData()
+            }
 
         default:
             if let favorite = event.favorite {
                 os_log(.info, log: log, "updating due to favorite")
                 view.beginUpdates()
-                update(with: favorite)
+                updateView(with: favorite)
                 view.endUpdates()
+                visibilityView.beginUpdates()
+                updateVisibilityView(with: favorite)
+                visibilityView.endUpdates()
             }
         }
     }
 
-    private func getPresetIndexPath(for soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
+    private func getPresetIndexPath(in presets: [LegacyPatch], for soundFontAndPatch: SoundFontAndPatch?) -> IndexPath? {
         guard let soundFontAndPatch = soundFontAndPatch else { return nil }
         guard showingSoundFont?.key == soundFontAndPatch.soundFontKey else { return nil }
         guard let patch = activePatchManager.resolveToPatch(soundFontAndPatch) else { return nil }
@@ -344,7 +355,7 @@ extension PatchesTableViewManager {
             return IndexPath(row: row, section: 0)
         }
 
-        guard let index = viewPresets.firstIndex(of: patch) else { return nil }
+        guard let index = presets.firstIndex(of: patch) else { return nil }
         let section = index / sectionSize
         let row = index - sectionSize * section
         os_log(.info, "IndexPath(row: %d  section: %d)", row, section)
@@ -354,13 +365,15 @@ extension PatchesTableViewManager {
     private func patchIndex(of indexPath: IndexPath) -> Int { indexPath.section * sectionSize + indexPath.row }
 
     private func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
-        SoundFontAndPatch(soundFontKey: showingSoundFont!.key, patchIndex: patch.soundFontIndex)
+        guard let soundFont = showingSoundFont else { fatalError("internal inconsistency") }
+        return SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: patch.soundFontIndex)
     }
 
     private var showingSearchResults: Bool { searchBar.searchTerm != nil }
 
     private func dismissSearchResults() {
         os_log(.info, log: log, "dismissSearchResults")
+        guard searchBar.text != nil else { return }
         searchBar.text = nil
         searchPresets.removeAll()
         view.reloadData()
@@ -391,16 +404,16 @@ extension PatchesTableViewManager {
     }
 
     func selectActive(animated: Bool) {
-        os_log(.info, log: log, "selectActive")
-        if let indexPath = getPresetIndexPath(for: activePatchManager.soundFontAndPatch) {
-            let visibleRows = view.indexPathsForVisibleRows
-            if !(visibleRows?.contains(indexPath) ?? true) {
-                self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
-                self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
-                self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
-            }
-            self.hideSearchBar(animated: true)
+        os_log(.debug, log: log, "selectActive")
+        guard let indexPath = getPresetIndexPath(in: viewPresets, for: activePatchManager.soundFontAndPatch) else { return }
+        let visibleRows = view.indexPathsForVisibleRows
+        if !(visibleRows?.contains(indexPath) ?? false) {
+            os_log(.debug, log: log, "scrolling to selected row")
+            // self.view.layoutIfNeeded() // Needed so that we have a valid view state for the following to have any effect
+            // self.view.scrollToRow(at: indexPath, at: .none, animated: animated)
+            self.view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
         }
+        hideSearchBar(animated: true)
     }
 
     private func createFaveSwipeAction(at: IndexPath, cell: TableCell, patch: LegacyPatch) -> UIContextualAction {
@@ -421,7 +434,7 @@ extension PatchesTableViewManager {
         let index = favorites.index(of: favorite)
         return UIContextualAction(tag: "Unfave", color: .red) { _, view, completionHandler in
             if favorite == self.activePatchManager.favorite {
-                self.activePatchManager.setActive(.normal(soundFontAndPatch: favorite.soundFontAndPatch), playSample: false)
+                self.activePatchManager.setActive(preset: favorite.soundFontAndPatch, playSample: false)
             }
             self.favorites.remove(index: index, bySwiping: true)
             DispatchQueue.main.async {
@@ -446,13 +459,14 @@ extension PatchesTableViewManager {
     }
 
     private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell, patch: LegacyPatch) -> UIContextualAction {
+        guard let soundFont = showingSoundFont else { fatalError("internal inconsistency") }
         return UIContextualAction(tag: "Hide", color: .gray) { _, _, completionHandler in
-            self.soundFonts.hidePreset(key: self.showingSoundFont!.key, index: patch.soundFontIndex)
+            self.soundFonts.toggleVisibility(key: soundFont.key, index: patch.soundFontIndex)
             self.view.performBatchUpdates({
                 self.viewPresets.remove(at: self.patchIndex(of: indexPath))
             }, completion: { _ in
                 if self.activePatchManager.active.soundFontAndPatch == self.makeSoundFontAndPatch(for: patch) {
-                    self.activePatchManager.setActive(.none, playSample: false)
+                    self.activePatchManager.clearActive()
                 }
             })
             completionHandler(true)
@@ -485,13 +499,21 @@ extension PatchesTableViewManager {
     private func getViewPreset(for indexPath: IndexPath) -> LegacyPatch { showingSearchResults ? searchPresets[indexPath.row] : viewPresets[patchIndex(of: indexPath)] }
     private func getVisibilityPreset(for indexPath: IndexPath) -> LegacyPatch { visibilityPresets[patchIndex(of: indexPath)] }
 
-    private func update(with soundFontAndPatch: SoundFontAndPatch?) {
-        guard let indexPath = getPresetIndexPath(for: soundFontAndPatch), let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+    private func updateView(with soundFontAndPatch: SoundFontAndPatch?) {
+        guard let indexPath = getPresetIndexPath(in: viewPresets, for: soundFontAndPatch),
+              let cell: TableCell = view.cellForRow(at: indexPath) else { return }
         updateView(cell: cell, at: indexPath, with: getViewPreset(for: indexPath))
     }
 
-    private func update(with favorite: LegacyFavorite) {
-        guard let indexPath = getPresetIndexPath(for: favorite.soundFontAndPatch), let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+    private func updateView(with favorite: LegacyFavorite) {
+        guard let indexPath = getPresetIndexPath(in: viewPresets, for: favorite.soundFontAndPatch),
+              let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+        updateView(cell: cell, at: indexPath, with: getViewPreset(for: indexPath))
+    }
+
+    private func updateVisibilityView(with favorite: LegacyFavorite) {
+        guard let indexPath = getPresetIndexPath(in: visibilityPresets, for: favorite.soundFontAndPatch),
+              let cell: TableCell = visibilityView.cellForRow(at: indexPath) else { return }
         updateView(cell: cell, at: indexPath, with: getViewPreset(for: indexPath))
     }
 
@@ -500,7 +522,8 @@ extension PatchesTableViewManager {
         let soundFontAndPatch = makeSoundFontAndPatch(for: patch)
         let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch)
         let name = favorite?.name ?? patch.name
-        cell.updateForEditing(name: name, isFavorite: favorite != nil, isVisible: patch.isVisible)
+        os_log(.debug, log: log, "updateVisibility %s %d/%d isFavorite: %d isVisible: %d", name, indexPath.section, indexPath.row, favorite != nil, patch.isVisible)
+        cell.updateForVisibility(name: name, isFavorite: favorite != nil, isVisible: patch.isVisible)
         return cell
     }
 
@@ -509,15 +532,8 @@ extension PatchesTableViewManager {
         let soundFontAndPatch = makeSoundFontAndPatch(for: patch)
         let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch)
         let name = favorite?.name ?? patch.name
-        if view.isEditing {
-            os_log(.debug, log: log, "updateForEditing %s %d/%d %d", name, indexPath.section, indexPath.row, patch.isVisible)
-            cell.updateForEditing(name: name, isFavorite: favorite != nil, isVisible: patch.isVisible)
-        }
-        else {
-            os_log(.debug, log: log, "updateForPatch %s %d/%d %d", name, indexPath.section, indexPath.row, patch.isVisible)
-            cell.updateForPatch(name: name, isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch, isFavorite: favorite != nil,
-                                isVisible: patch.isVisible)
-        }
+        os_log(.debug, log: log, "updateForPatch %s %d/%d isFavorite: %d", name, indexPath.section, indexPath.row, favorite != nil)
+        cell.updateForPatch(name: name, isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch, isFavorite: favorite != nil, isVisible: patch.isVisible)
         return cell
     }
 }
