@@ -189,10 +189,7 @@ final class SoundFontsAU: AUAudioUnit {
             wrapped.fullState = newValue
             if let fullState = newValue {
                 if let data = fullState["soundFontPatch"] as? Data {
-                    let decoder = JSONDecoder()
-                    if let activePatchKind = try? decoder.decode(ActivePatchKind.self, from: data) {
-                        self.activePatchManager.setActive(activePatchKind, playSample: false)
-                    }
+                    self.activePatchManager.restore(from: data)
                 }
             }
         }

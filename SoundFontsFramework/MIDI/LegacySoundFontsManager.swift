@@ -151,18 +151,14 @@ extension LegacySoundFontsManager: SoundFonts {
         notify(.moved(old: index, new: newIndex, font: soundFont))
     }
 
-    public func hidePreset(key: LegacySoundFont.Key, index: Int) {
-        guard let soundFont = getBy(key: key) else { return }
-        soundFont.patches[index].isVisible = false
-        assert(soundFont.patches[index].isVisible == false)
+    @discardableResult
+    public func toggleVisibility(key: LegacySoundFont.Key, index: Int) -> Bool {
+        guard let soundFont = getBy(key: key) else { return false }
+        let patch = soundFont.patches[index]
+        os_log(.debug, log: log, "toggleVisibility %s - %d", patch.name, patch.isVisible)
+        patch.isVisible = !patch.isVisible
         save()
-    }
-
-    public func unhidePreset(key: LegacySoundFont.Key, index: Int) {
-        guard let soundFont = getBy(key: key) else { return }
-        soundFont.patches[index].isVisible = true
-        assert(soundFont.patches[index].isVisible == true)
-        save()
+        return patch.isVisible
     }
 
     public var hasAnyBundled: Bool {

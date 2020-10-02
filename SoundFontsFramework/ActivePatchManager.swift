@@ -44,10 +44,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public init(soundFonts: SoundFonts) {
         self.soundFonts = soundFonts
-        self.active = Self.restore() ??
-            (soundFonts.isEmpty
-                ? .none
-                : .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0)))
+        self.active = Self.restore() ?? (soundFonts.isEmpty ? .none : .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0)))
         super.init()
         os_log(.info, log: log, "active: %s", active.description)
     }
@@ -60,7 +57,23 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 
-    public func setActive(_ patch: ActivePatchKind, playSample: Bool) {
+    public func setActive(preset: SoundFontAndPatch, playSample: Bool) { setActive(.normal(soundFontAndPatch: preset), playSample: playSample) }
+
+    public func setActive(favorite: LegacyFavorite, playSample: Bool) { setActive(.favorite(favorite: favorite), playSample: playSample) }
+
+    public func clearActive() { setActive(.none, playSample: false) }
+
+    public func restore(from data: Data) {
+        let decoder = JSONDecoder()
+        if let activePatchKind = try? decoder.decode(ActivePatchKind.self, from: data) {
+            setActive(activePatchKind)
+        }
+    }
+}
+
+extension ActivePatchManager {
+
+    private func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %s", patch.description)
         let prev = active
         active = patch
@@ -68,7 +81,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         save()
     }
 
-    private static func restore() -> ActivePatchKind? {
+    static func restore() -> ActivePatchKind? {
         let decoder = JSONDecoder()
         let data = settings.lastActivePatch
         return try? decoder.decode(ActivePatchKind.self, from: data)
@@ -76,9 +89,10 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     private func save() {
         os_log(.info, log: log, "save")
+        let copy = self.active
         DispatchQueue.global(qos: .background).async {
             let encoder = JSONEncoder()
-            if let data = try? encoder.encode(self.active) {
+            if let data = try? encoder.encode(copy) {
                 settings.lastActivePatch = data
             }
         }

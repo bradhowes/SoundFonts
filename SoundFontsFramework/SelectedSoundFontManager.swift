@@ -18,8 +18,8 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
         os_log(.info, log: log, "selected: %s", selected?.description ?? "nil")
     }
 
-    public func setSelected(_ soundFont: LegacySoundFont?) {
-        os_log(.info, log: log, "setSelected: %s", soundFont?.description ?? "nil")
+    public func setSelected(_ soundFont: LegacySoundFont) {
+        os_log(.info, log: log, "setSelected: %s", soundFont.description)
         guard selected != soundFont else {
             os_log(.info, log: log, "already active")
             return
@@ -27,7 +27,13 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
         let old = selected
         selected = soundFont
-
         notify(.changed(old: old, new: soundFont))
+    }
+
+    public func clearSelected() {
+        guard selected != nil else { return }
+        let old = selected
+        selected = nil
+        notify(.changed(old: old, new: nil))
     }
 }
