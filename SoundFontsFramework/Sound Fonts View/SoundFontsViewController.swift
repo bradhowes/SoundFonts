@@ -252,9 +252,8 @@ extension SoundFontsViewController: SegueHandler {
     }
 
     private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
-        guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FontEditor else {
-                return
+        guard let nc = segue.destination as? UINavigationController, let vc = nc.topViewController as? FontEditor else {
+            return
         }
 
         vc.delegate = self

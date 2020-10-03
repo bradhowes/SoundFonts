@@ -50,9 +50,21 @@ final class FontEditor: UIViewController {
         embeddedNameLabel.text = "Embedded: \(soundFont.embeddedName)"
         presetsCountLabel.text = Formatters.formatted(presetCount: soundFont.patches.count)
         favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
-        hiddenCountLabel.text = "\(soundFont.patches.filter { $0.isVisible == false}.count) hidden"
 
+        updateHiddenCount()
         preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
+
+    private func updateHiddenCount() {
+        let hiddenCount = soundFont.patches.filter { $0.isVisible == false}.count
+        if hiddenCount > 0 {
+            hiddenCountLabel.text = "\(hiddenCount) hidden"
+            resetVisibilityButton.isHidden = false
+        }
+        else {
+            hiddenCountLabel.text = ""
+            resetVisibilityButton.isHidden = true
+        }
     }
 
     @IBAction private func close(_ sender: UIBarButtonItem) {
@@ -65,12 +77,10 @@ final class FontEditor: UIViewController {
     }
 
     @IBAction private func makeAllVisible(_ sender: UIButton) {
-        let newName = self.name.text ?? ""
-        if !newName.isEmpty { soundFont.displayName = newName }
-        self.dismiss(animated: true)
-        delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
-        completionHandler?(true)
-        AskForReview.maybe()
+        for preset in soundFont.patches.filter({ $0.isVisible == false}) {
+            preset.isVisible = true
+        }
+        updateHiddenCount()
     }
 }
 
