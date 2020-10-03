@@ -25,13 +25,14 @@ final class FontEditor: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var originalNameLabel: UILabel!
-    @IBOutlet weak var embeddedNameLabel: UILabel!
-    @IBOutlet weak var patchCountLabel: UILabel!
-    @IBOutlet weak var favoriteCountLabel: UILabel!
+    @IBOutlet private weak var doneButton: UIBarButtonItem!
+    @IBOutlet private weak var name: UITextField!
+    @IBOutlet private weak var originalNameLabel: UILabel!
+    @IBOutlet private weak var embeddedNameLabel: UILabel!
+    @IBOutlet private weak var presetsCountLabel: UILabel!
+    @IBOutlet private weak var favoritesCountLabel: UILabel!
+    @IBOutlet private weak var hiddenCountLabel: UILabel!
+    @IBOutlet private weak var resetVisibilityButton: UIButton!
 
     func configure(_ config: Config) {
         self.position = config.indexPath
@@ -45,69 +46,44 @@ final class FontEditor: UIViewController {
         guard let soundFont = self.soundFont else { fatalError() }
         name.text = soundFont.displayName
         name.delegate = self
-        originalNameLabel.text = soundFont.originalDisplayName
-        embeddedNameLabel.text = soundFont.embeddedName
-        patchCountLabel.text = Formatters.formatted(patchCount: soundFont.patches.count)
-        favoriteCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
+        originalNameLabel.text = "Original: \(soundFont.originalDisplayName)"
+        embeddedNameLabel.text = "Embedded: \(soundFont.embeddedName)"
+        presetsCountLabel.text = Formatters.formatted(presetCount: soundFont.patches.count)
+        favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
+        hiddenCountLabel.text = "\(soundFont.patches.filter { $0.isVisible == false}.count) hidden"
 
         preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 
-    /**
-     Event handler for the `Done` button. Updates the SoundFont instance with new title from the editing view.
-     
-     - parameter sender: the `Done` button
-     */
-    @IBAction private func donePressed(_ sender: UIBarButtonItem) {
+    @IBAction private func close(_ sender: UIBarButtonItem) {
         let newName = self.name.text ?? ""
-        if !newName.isEmpty {
-            soundFont.displayName = newName
-        }
-
-        AskForReview.maybe()
+        if !newName.isEmpty { soundFont.displayName = newName }
+        self.dismiss(animated: true)
         delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
         completionHandler?(true)
+        AskForReview.maybe()
     }
 
-    /**
-     Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
-     
-     - parameter sender: the `Cancel` button.
-     */
-    @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
+    @IBAction private func makeAllVisible(_ sender: UIButton) {
+        let newName = self.name.text ?? ""
+        if !newName.isEmpty { soundFont.displayName = newName }
+        self.dismiss(animated: true)
+        delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
+        completionHandler?(true)
         AskForReview.maybe()
-        delegate?.dismissed(reason: .cancel)
-        completionHandler?(false)
     }
 }
 
 extension FontEditor: UITextFieldDelegate {
 
-    /**
-     Since the font editor only has this one field, treat a RETURN on the keyboard as clicking on Done
-
-     - parameter textField: the text field being monitored
-     - returns: always true
-     */
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        donePressed(doneButton)
+        close(doneButton)
         return true
     }
 }
 
 extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
-
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        donePressed(doneButton)
-    }
-
-    /**
-     Treat touches outside of the popover as a signal to dismiss via Done button
-
-     - parameter popoverPresentationController: the controller being monitored
-     */
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        donePressed(doneButton)
-    }
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) { close(doneButton) }
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) { close(doneButton) }
 }

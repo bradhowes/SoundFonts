@@ -38,7 +38,7 @@ final class PatchesTableViewManager: NSObject {
         self.keyboard = keyboard
         super.init()
 
-        infoBar.addEventClosure(.editVisibility) { self.toggleVisibilityEditing() }
+        infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
 
         view.register(TableCell.self)
         view.dataSource = self
@@ -216,9 +216,11 @@ extension PatchesTableViewManager {
         soundFonts.setVisibility(key: soundFont.key, index: preset.soundFontIndex, state: state)
     }
 
-    private func toggleVisibilityEditing() {
+    private func toggleVisibilityEditing(_ sender: AnyObject) {
         guard let soundFont = showingSoundFont else { return }
+        let button = sender as? UIButton
         if view.isEditing == false {
+            button?.tintColor = .systemYellow
             os_log(.debug, log: log, "editing visibility")
             viewPresets = soundFont.patches
             os_log(.debug, log: log, "soundFont: %s", soundFont.displayName)
@@ -242,6 +244,7 @@ extension PatchesTableViewManager {
             }
         }
         else {
+            button?.tintColor = .systemTeal
             os_log(.debug, log: log, "finished editing visibility")
             os_log(.debug, log: log, "soundFont: %s", soundFont.displayName)
             os_log(.debug, log: log, "viewPresets.count: %d", viewPresets.count)

@@ -49,20 +49,20 @@ extension SoundFontsControlsController: ControllerConfiguration {
         components = router
 
         let patchesViewManager = router.patchesViewManager
-        patchesViewManager.addEventClosure(.swipeLeft) { self.showNextConfigurationView() }
+        patchesViewManager.addEventClosure(.swipeLeft, self.showNextConfigurationView)
 
         let favoritesViewManager = router.favoritesViewManager
-        favoritesViewManager.addEventClosure(.swipeLeft) { self.showNextConfigurationView() }
-        favoritesViewManager.addEventClosure(.swipeRight) { self.showPreviousConfigurationView() }
-        router.infoBar.addEventClosure(.doubleTap) { self.toggleConfigurationViews() }
+        favoritesViewManager.addEventClosure(.swipeLeft, self.showNextConfigurationView)
+        favoritesViewManager.addEventClosure(.swipeRight, self.showPreviousConfigurationView)
+        router.infoBar.addEventClosure(.doubleTap, self.toggleConfigurationViews)
     }
 
-    private func toggleConfigurationViews() {
+    private func toggleConfigurationViews(_ action: AnyObject) {
         if upperViewManager.active == 0 {
-            showNextConfigurationView()
+            showNextConfigurationView(action)
         }
         else {
-            showPreviousConfigurationView()
+            showPreviousConfigurationView(action)
         }
         AskForReview.maybe()
     }
@@ -70,7 +70,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     /**
      Show the next (right) view in the space above the info bar.
      */
-    private func showNextConfigurationView() {
+    private func showNextConfigurationView(_ action: AnyObject) {
         if upperViewManager.active == 0 {
             components.patchesViewManager.dismissSearchKeyboard()
         }
@@ -83,7 +83,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     /**
      Show the previous (left) view in the space above the info bar.
      */
-    private func showPreviousConfigurationView() {
+    private func showPreviousConfigurationView(_ action: AnyObject) {
         upperViewManager.slidePrevHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
         settings.showingFavorites = upperViewManager.active == 1

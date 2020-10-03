@@ -12,30 +12,30 @@
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
-                        <key>zero</key>
-                        <string>no %%@ files</string>
+			<key>zero</key>
+			<string>no %%@ files</string>
 			<key>one</key>
 			<string>%u %%@ file</string>
 			<key>other</key>
 			<string>%u %%@ files</string>
 		</dict>
 	</dict>
-	<key>patches count</key>
+	<key>presets count</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@patches_count@</string>
-		<key>patches_count</key>
+		<string>%#@presets_count@</string>
+		<key>presets_count</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>zero</key>
-			<string>no patches</string>
+			<string>no presets</string>
 			<key>one</key>
-			<string>1 patch</string>
+			<string>1 preset</string>
 			<key>other</key>
-			<string>%u patches</string>
+			<string>%u presets</string>
 		</dict>
 	</dict>
 	<key>favorites count</key>

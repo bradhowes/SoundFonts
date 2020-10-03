@@ -25,7 +25,7 @@ public protocol UpperViewSwipingActivity {
      - parameter target: the object to call when the event takes place
      - parameter action: the function to call when the event takes place
      */
-    func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void)
+    func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void)
 }
 
 extension UpperViewSwipingActivity {
@@ -37,7 +37,7 @@ extension UpperViewSwipingActivity {
      - parameter target: the object to notify
      - parameter action: the selector to invoke
      */
-    public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping () -> Void) {
+    public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void) {
         switch event {
         case .swipeLeft: swipeLeft.addClosure(closure)
         case .swipeRight: swipeRight.addClosure(closure)

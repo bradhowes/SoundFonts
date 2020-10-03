@@ -4,12 +4,12 @@ import UIKit
 
 public extension UIControl {
 
-    typealias Closure = () -> Void
+    typealias Closure = (AnyObject) -> Void
 
     @discardableResult
     func addClosure(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping Closure) -> UUID {
         let sleeve = BoxedClosure(closure)
-        addTarget(sleeve, action: #selector(BoxedClosure.invoke), for: controlEvents)
+        addTarget(sleeve, action: #selector(BoxedClosure.invoke(_:)), for: controlEvents)
         let key = UUID()
         objc_setAssociatedObject(self, "[\(key)]", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
         return key
@@ -25,5 +25,5 @@ public extension UIControl {
 @objc private class BoxedClosure: NSObject {
     let closure: UIControl.Closure
     init (_ closure: @escaping UIControl.Closure) { self.closure = closure }
-    @objc func invoke () { closure() }
+    @objc func invoke(_ sender: AnyObject) { closure(sender) }
 }

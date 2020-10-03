@@ -4,12 +4,12 @@ import UIKit
 
 public extension UIGestureRecognizer {
 
-    typealias Closure = () -> Void
+    typealias Closure = (AnyObject) -> Void
 
     @discardableResult
     func addClosure(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping Closure) -> UUID {
         let sleeve = BoxedClosure(closure)
-        addTarget(sleeve, action: #selector(BoxedClosure.invoke))
+        addTarget(sleeve, action: #selector(BoxedClosure.invoke(_:)))
         let key = UUID()
         objc_setAssociatedObject(self, "[\(key)]", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
         return key
@@ -23,7 +23,7 @@ public extension UIGestureRecognizer {
 }
 
 @objc private class BoxedClosure: NSObject {
-    let closure: UIControl.Closure
-    init (_ closure: @escaping UIControl.Closure) { self.closure = closure }
-    @objc func invoke () { closure() }
+    let closure: UIGestureRecognizer.Closure
+    init (_ closure: @escaping UIGestureRecognizer.Closure) { self.closure = closure }
+    @objc func invoke(_ sender: AnyObject) { closure(sender) }
 }

@@ -6,8 +6,9 @@ private class Tag {}
 
 public enum Formatters {
 
-    public static func formatted(patchCount: Int) -> String { .localizedStringWithFormat(Self.patchesFormatString, patchCount) }
+    public static func formatted(presetCount: Int) -> String { .localizedStringWithFormat(Self.presetsFormatString, presetCount) }
     public static func formatted(favoriteCount: Int) -> String { .localizedStringWithFormat(Self.favoritesFormatString, favoriteCount) }
+
     public static func formatted(failedAddCount: Int, condition: String) -> String {
         let value = String.localizedStringWithFormat(Self.failedAddCountString, failedAddCount)
         return String(format: value, condition.localized(comment: "add soundfont failure condition"))
@@ -67,7 +68,7 @@ public enum Formatters {
 
 private extension Formatters {
     static let bundle = Bundle(identifier: "com.braysoftware.SoundFontsFramework")!
-    static let patchesFormatString = "patches count".localized(comment: "patches count string format in Localized.stringsdict")
+    static let presetsFormatString = "presets count".localized(comment: "presets count string format in Localized.stringsdict")
     static let favoritesFormatString = "favorites count".localized(comment: "favorites count string format in Localized.stringsdict")
     static let failedAddCountString = "failed add count".localized(comment: "failed add count string format in Localized.stringsdict")
 }

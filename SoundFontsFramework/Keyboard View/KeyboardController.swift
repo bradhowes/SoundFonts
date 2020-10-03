@@ -79,8 +79,8 @@ extension KeyboardController: ControllerConfiguration {
 
     func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
-        router.infoBar.addEventClosure(.shiftKeyboardUp) { self.shiftKeyboardUp() }
-        router.infoBar.addEventClosure(.shiftKeyboardDown) { self.shiftKeyboardDown() }
+        router.infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
+        router.infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
         setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
         router.favorites.subscribe(self, notifier: favoritesChange)
     }
@@ -109,7 +109,7 @@ extension KeyboardController: ControllerConfiguration {
 
 extension KeyboardController {
 
-    private func shiftKeyboardUp() {
+    private func shiftKeyboardUp(_ sender: AnyObject) {
         assert(!keys.isEmpty)
         if lastMidiNoteValue < Sampler.maxMidiValue {
             let shift: Int = {
@@ -132,7 +132,7 @@ extension KeyboardController {
         AskForReview.maybe()
     }
 
-    private func shiftKeyboardDown() {
+    private func shiftKeyboardDown(_ sender: AnyObject) {
         assert(!keys.isEmpty)
         if firstMidiNoteValue > 12 {
             let shift: Int = {

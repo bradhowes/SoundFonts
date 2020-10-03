@@ -57,7 +57,7 @@ public final class SoundFontsViewController: UIViewController {
         })
     }
 
-    private func addSoundFont() {
+    private func addSoundFont(_ button: AnyObject) {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
         documentPicker.delegate = self
@@ -140,7 +140,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager, selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
 
-        router.infoBar.addEventClosure(.addSoundFont) { self.addSoundFont() }
+        router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     }
 }
 
@@ -272,7 +272,6 @@ extension SoundFontsViewController: SegueHandler {
             ppc.delegate = vc
         }
 
-        // Doing this will catch the swipe-down action that we treat as a 'cancel'.
         nc.presentationController?.delegate = vc
     }
 }
