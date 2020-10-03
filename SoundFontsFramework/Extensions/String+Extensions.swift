@@ -13,7 +13,6 @@ extension String {
 }
 
 extension String {
-
     public func stripEmbeddedUUID() -> (stripped: String, uuid: UUID?) {
         let pattern = "[0-9A-F]{8}(-[0-9A-F]{4}){3}-[0-9A-F]{12}"
         let target = self as NSString
@@ -22,5 +21,13 @@ extension String {
         let found = target.substring(with: match)
         let stripped = target.substring(to: match.location - 1) + target.substring(from: match.location + match.length)
         return (stripped: stripped, uuid: UUID(uuidString: found))
+    }
+}
+
+extension String {
+    public static func pointer(_ object: AnyObject?) -> String {
+        guard let object = object else { return "nil" }
+        let opaque: UnsafeMutableRawPointer = Unmanaged.passUnretained(object).toOpaque()
+        return String(describing: opaque)
     }
 }

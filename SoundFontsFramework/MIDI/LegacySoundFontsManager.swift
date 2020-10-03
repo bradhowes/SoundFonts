@@ -152,10 +152,10 @@ extension LegacySoundFontsManager: SoundFonts {
     }
 
     public func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool) {
+        os_log(.debug, log: log, "setVisibility - %s %d %d", key.uuidString, index, state)
         guard let soundFont = getBy(key: key) else { return }
         let patch = soundFont.patches[index]
-        guard state != patch.isVisible else { return }
-        os_log(.debug, log: log, "setVisibility %s - %d %d", patch.name, patch.isVisible, state)
+        os_log(.debug, log: log, "setVisibility %s %s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
         patch.isVisible = state
         save()
     }
