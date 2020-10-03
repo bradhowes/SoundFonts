@@ -253,6 +253,7 @@ extension PatchesTableViewManager {
     private func hideVisibilityView() {
         view.isHidden = false
         view.alpha = 0.0
+        hideSearchBar(animated: false)
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [], animations: {
             self.view.alpha = 1.0
             self.visibilityView.setEditing(false, animated: true)
@@ -264,27 +265,23 @@ extension PatchesTableViewManager {
     }
 
     private func synchronizeViewScroll() {
-        if let firstVisible = visibilityView.indexPathsForVisibleRows?.first {
-            let patch = visibilityPresets[patchIndex(of: firstVisible)]
-            if let viewIndex = viewPresets.firstIndex(of: patch) {
-                let section = viewIndex / sectionSize
-                let row = viewIndex - sectionSize * section
-                let indexPath = IndexPath(row: row, section: section)
-                view.scrollToRow(at: indexPath, at: .top, animated: false)
-            }
-        }
+        guard let firstVisible = visibilityView.indexPathsForVisibleRows?.first else { return }
+        let patch = visibilityPresets[patchIndex(of: firstVisible)]
+        guard let viewIndex = viewPresets.firstIndex(of: patch) else { return }
+        let section = viewIndex / sectionSize
+        let row = viewIndex - sectionSize * section
+        let indexPath = IndexPath(row: row, section: section)
+        view.scrollToRow(at: indexPath, at: .top, animated: false)
     }
 
     private func synchronizeVisibilityScroll() {
-        if let firstVisible = view.indexPathsForVisibleRows?.first {
-            let patch = viewPresets[patchIndex(of: firstVisible)]
-            if let visibilityIndex = visibilityPresets.firstIndex(of: patch) {
-                let section = visibilityIndex / sectionSize
-                let row = visibilityIndex - sectionSize * section
-                let indexPath = IndexPath(row: row, section: section)
-                visibilityView.scrollToRow(at: indexPath, at: .top, animated: false)
-            }
-        }
+        guard let firstVisible = view.indexPathsForVisibleRows?.first else { return }
+        let patch = viewPresets[patchIndex(of: firstVisible)]
+        guard let visibilityIndex = visibilityPresets.firstIndex(of: patch) else { return }
+        let section = visibilityIndex / sectionSize
+        let row = visibilityIndex - sectionSize * section
+        let indexPath = IndexPath(row: row, section: section)
+        visibilityView.scrollToRow(at: indexPath, at: .top, animated: false)
     }
 
     private func updateVisibilitySelections() {
