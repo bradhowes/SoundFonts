@@ -20,7 +20,7 @@ public final class GuideViewController: UIViewController {
 extension GuideViewController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
-        router.infoBar.addEventClosure(InfoBarEvent.showGuide) { self.showGuide() }
+        router.infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
         savedParent = parent
         removeFromParent()
     }
@@ -50,7 +50,7 @@ extension GuideViewController: GuideManager {
 
 extension GuideViewController {
 
-    private func showGuide() {
+    private func showGuide(_ action: AnyObject) {
         savedParent.add(self)
         view.alpha = 0.0
         view.isHidden = false

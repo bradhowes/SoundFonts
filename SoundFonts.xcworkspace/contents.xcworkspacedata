@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/UI/FontEditor.storyboard">
+   </FileRef>
+   <FileRef
       location = "group:README.md">
    </FileRef>
    <Group

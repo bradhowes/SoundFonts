@@ -89,6 +89,7 @@
 		BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C425018EB000653ABD /* TypedNotification.swift */; };
 		BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44CF2501958000653ABD /* PersistentContainer.swift */; };
 		BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */; };
+		BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */; };
 		BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */; };
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
@@ -120,7 +121,6 @@
 		BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EC51241B7AF900F789B2 /* LocalizedStrings.swift */; };
 		BDC7EC53241BA3CD00F789B2 /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC55241BA3CD00F789B2 /* SettingsView.storyboard */; };
 		BDC7EC59241BA41C00F789B2 /* FavoriteEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC5B241BA41C00F789B2 /* FavoriteEditor.storyboard */; };
-		BDC7EC5F241BA42E00F789B2 /* FontEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC61241BA42E00F789B2 /* FontEditor.storyboard */; };
 		BDC7EC65241BAC7200F789B2 /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC67241BAC7200F789B2 /* SoundFontsControls.storyboard */; };
 		BDC7EC6B241BAC8500F789B2 /* FontsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC6D241BAC8500F789B2 /* FontsView.storyboard */; };
 		BDC7EC71241BAC9300F789B2 /* FavoritesView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC73241BAC9300F789B2 /* FavoritesView.storyboard */; };
@@ -239,6 +239,7 @@
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
+		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = FontEditor.storyboard; path = /Users/howes/src/Mine/SoundFonts/SoundFontsFramework/UI/FontEditor.storyboard; sourceTree = "<absolute>"; };
 		BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
@@ -263,7 +264,6 @@
 		BD85622C244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/InfoBar.storyboard; sourceTree = "<group>"; };
 		BD85622D244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingsView.storyboard; sourceTree = "<group>"; };
 		BD85622E244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
-		BD85622F244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
 		BD856230244993EC00C00159 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/GuideView.storyboard; sourceTree = "<group>"; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
@@ -296,9 +296,6 @@
 		BDC7EC5C241BA42100F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC5D241BA42300F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC5E241BA42400F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FavoriteEditor.storyboard; sourceTree = "<group>"; };
-		BDC7EC62241BA43300F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
-		BDC7EC63241BA43500F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
-		BDC7EC64241BA43700F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/FontEditor.storyboard; sourceTree = "<group>"; };
 		BDC7EC68241BAC7800F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = fr; path = fr.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDC7EC69241BAC7A00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = de; path = de.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BDC7EC6A241BAC7B00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/SoundFontsControls.storyboard; sourceTree = "<group>"; };
@@ -412,10 +409,10 @@
 				BDC7EC67241BAC7200F789B2 /* SoundFontsControls.storyboard */,
 				BDC7EC6D241BAC8500F789B2 /* FontsView.storyboard */,
 				BDC7EC73241BAC9300F789B2 /* FavoritesView.storyboard */,
+				BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */,
 				BDC7EC79241BACAA00F789B2 /* InfoBar.storyboard */,
 				BDC7EC55241BA3CD00F789B2 /* SettingsView.storyboard */,
 				BDC7EC5B241BA41C00F789B2 /* FavoriteEditor.storyboard */,
-				BDC7EC61241BA42E00F789B2 /* FontEditor.storyboard */,
 				BDC7EC7F241BACC300F789B2 /* GuideView.storyboard */,
 				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
@@ -744,6 +741,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */,
 				BDC7EC6B241BAC8500F789B2 /* FontsView.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
@@ -758,7 +756,6 @@
 				BDC7EC7D241BACC300F789B2 /* GuideView.storyboard in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
-				BDC7EC5F241BA42E00F789B2 /* FontEditor.storyboard in Resources */,
 				BDC7EC65241BAC7200F789B2 /* SoundFontsControls.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -962,17 +959,6 @@
 				BD85622E244993EC00C00159 /* Base */,
 			);
 			name = FavoriteEditor.storyboard;
-			sourceTree = "<group>";
-		};
-		BDC7EC61241BA42E00F789B2 /* FontEditor.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BDC7EC62241BA43300F789B2 /* fr */,
-				BDC7EC63241BA43500F789B2 /* de */,
-				BDC7EC64241BA43700F789B2 /* es */,
-				BD85622F244993EC00C00159 /* Base */,
-			);
-			name = FontEditor.storyboard;
 			sourceTree = "<group>";
 		};
 		BDC7EC67241BAC7200F789B2 /* SoundFontsControls.storyboard */ = {
