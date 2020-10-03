@@ -24,7 +24,7 @@ extension UITableView {
      - parameter indexPath: the location of the cell that is being rendered
      - returns: instance of a T class
      */
-    public func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T where T: ReusableView {
+    public func dequeueReusableCell<T: UITableViewCell>(at indexPath: IndexPath) -> T where T: ReusableView {
         let ident = T.reuseIdentifier
         guard let cell = dequeueReusableCell(withIdentifier: ident, for: indexPath) as? T else {
             fatalError("could not dequeue cell with identifier \(ident)")

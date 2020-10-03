@@ -44,7 +44,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public init(soundFonts: SoundFonts) {
         self.soundFonts = soundFonts
-        self.active = Self.restore() ?? (soundFonts.isEmpty ? .none : .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(for: 0)))
+        self.active = Self.restore() ?? (soundFonts.isEmpty ? .none : .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0)))
         super.init()
         os_log(.info, log: log, "active: %s", active.description)
     }
