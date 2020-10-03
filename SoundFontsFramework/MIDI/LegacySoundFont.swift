@@ -119,8 +119,12 @@ extension LegacySoundFont {
     /// Determines if the sound font file exists on the device
     public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
-    public func makeSoundFontAndPatch(for patchIndex: Int) -> SoundFontAndPatch {
-        SoundFontAndPatch(soundFontKey: self.key, patchIndex: patchIndex)
+    public func makeSoundFontAndPatch(at index: Int) -> SoundFontAndPatch {
+        SoundFontAndPatch(soundFontKey: self.key, patchIndex: index)
+    }
+
+    public func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
+        SoundFontAndPatch(soundFontKey: self.key, patchIndex: patch.soundFontIndex)
     }
 }
 

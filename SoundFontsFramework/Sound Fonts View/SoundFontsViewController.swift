@@ -14,7 +14,6 @@ public final class SoundFontsViewController: UIViewController {
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
-    @IBOutlet private weak var visibilityView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
 
     private var soundFonts: SoundFonts!
@@ -138,8 +137,8 @@ extension SoundFontsViewController: ControllerConfiguration {
             soundFonts: router.soundFonts)
 
         patchesTableViewDataSource = PatchesTableViewManager(
-            view: patchesView, visibilityView: visibilityView, searchBar: searchBar, activePatchManager: router.activePatchManager,
-            selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts, favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
+            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager, selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
+            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
 
         router.infoBar.addEventClosure(.addSoundFont) { self.addSoundFont() }
     }

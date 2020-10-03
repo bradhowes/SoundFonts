@@ -56,7 +56,7 @@ extension FontsTableViewManager: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { soundFonts.count }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        update(cell: tableView.dequeueReusableCell(for: indexPath), indexPath: indexPath)
+        update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
     }
 }
 

@@ -78,8 +78,7 @@ public protocol SoundFonts: class {
      */
     func rename(index: Int, name: String)
 
-    @discardableResult
-    func toggleVisibility(key: LegacySoundFont.Key, index: Int) -> Bool
+    func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool)
 
     /**
      Force a reload of the SoundFont collection.
