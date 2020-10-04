@@ -49,8 +49,8 @@ final class FontEditor: UIViewController {
         guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
         name.text = soundFont.displayName
         name.delegate = self
-        originalNameLabel.text = "Original: \(soundFont.originalDisplayName)"
-        embeddedNameLabel.text = "Embedded: \(soundFont.embeddedName)"
+        originalNameLabel.text = soundFont.originalDisplayName
+        embeddedNameLabel.text = soundFont.embeddedName
         presetsCountLabel.text = Formatters.formatted(presetCount: soundFont.patches.count)
         favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
 
@@ -88,6 +88,14 @@ final class FontEditor: UIViewController {
     @IBAction private func makeAllVisible(_ sender: UIButton) {
         soundFonts.makeAllVisible(key: soundFontKey)
         updateHiddenCount()
+    }
+
+    @IBAction func copyOriginalName(_ sender: Any) {
+        name.text = originalNameLabel.text
+    }
+
+    @IBAction func copyEmbeddedName(_ sender: Any) {
+        name.text = embeddedNameLabel.text
     }
 }
 
