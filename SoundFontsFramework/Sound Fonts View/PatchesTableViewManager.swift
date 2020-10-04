@@ -118,16 +118,20 @@ extension PatchesTableViewManager: UITableViewDataSource {
 extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return createLeadingSwipeActions(at: indexPath)
+        createLeadingSwipeActions(at: indexPath)
     }
 
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        return createTrailingSwipeActions(at: indexPath)
+        createTrailingSwipeActions(at: indexPath)
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle { .none }
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
+    }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { isFavored(at: indexPath) == false }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        !(view.isEditing && isFavored(at: indexPath))
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if view.isEditing {
@@ -477,10 +481,10 @@ extension PatchesTableViewManager {
             self.viewPresets.remove(at: indexPath.presetIndex)
             self.view.performBatchUpdates({
                 self.view.deleteRows(at: [indexPath], with: .automatic)
+                self.sectionRowCounts[indexPath.section] -= 1
             }, completion: { _ in
-                if self.isActive(soundFontAndPatch) {
-                    self.activePatchManager.clearActive()
-                }
+                self.updateSectionRowCounts()
+                self.view.reloadSections(IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .automatic)
             })
             completionHandler(true)
         }
