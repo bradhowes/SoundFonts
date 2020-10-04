@@ -21,6 +21,7 @@ public final class FavoritesViewController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var keyboard: Keyboard?
     private var favorites: Favorites!
+    private var soundFonts: SoundFonts!
 
     private var favoriteMover: FavoriteMover!
 
@@ -68,6 +69,7 @@ extension FavoritesViewController: ControllerConfiguration {
         activePatchManager = router.activePatchManager
         favorites = router.favorites
         keyboard = router.keyboard
+        soundFonts = router.soundFonts
 
         activePatchManager.subscribe(self, notifier: activePatchChange)
         favorites.subscribe(self, notifier: favoritesChange)
@@ -176,17 +178,15 @@ extension FavoritesViewController: SegueHandler {
         let favorite = favorites.getBy(index: indexPath.item)
         guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
-        guard let soundFont = activePatchManager.resolveToSoundFont(favorite.soundFontAndPatch) else {
+        if activePatchManager.resolveToSoundFont(favorite.soundFontAndPatch) == nil {
             let item = indexPath.item
             favorites.remove(index: item, bySwiping: false)
             postNotice(msg: "Removed favorite that was invalid.")
             return
         }
 
-        guard let patch = activePatchManager.resolveToPatch(favorite.soundFontAndPatch) else { fatalError() }
-        let config = FavoriteEditor.Config(indexPath: indexPath, view: favoritesView, rect: view.frame,
-                                           favorite: favorite, currentLowestNote: keyboard?.lowestNote,
-                                           completionHandler: nil, soundFont: soundFont, patch: patch)
+        let config = FavoriteEditor.Config(indexPath: indexPath, view: favoritesView, rect: view.frame, favorite: favorite, currentLowestNote: keyboard?.lowestNote,
+                                           completionHandler: nil, soundFonts: soundFonts, soundFontAndPatch: favorite.soundFontAndPatch)
         edit(config: config)
     }
 

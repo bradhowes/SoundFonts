@@ -16,6 +16,8 @@ public enum SoundFontsEvent {
     /// Existing SoundFont instance removed from the collection
     case removed(old: Int, font: LegacySoundFont)
 
+    case unhidPresets(font: LegacySoundFont)
+
     case restored
 }
 
@@ -24,10 +26,7 @@ public enum SoundFontsEvent {
  */
 public protocol SoundFonts: class {
 
-    var isEmpty: Bool { get }
-
-    /// Number of SoundFont instances in the collection
-    var count: Int { get }
+    var soundFontNames: [String] { get }
 
     /**
      Obtain the index in the collection of a SoundFont with the given Key.
@@ -80,10 +79,7 @@ public protocol SoundFonts: class {
 
     func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool)
 
-    /**
-     Force a reload of the SoundFont collection.
-     */
-    func reload()
+    func makeAllVisible(key: LegacySoundFont.Key)
 
     /// Determine if there are any bundled fonts in the collection
     var hasAnyBundled: Bool { get }

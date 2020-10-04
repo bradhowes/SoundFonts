@@ -33,17 +33,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
 
     public func updateForFont(name: String, isSelected: Bool, isActive: Bool) {
-        update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isVisible: true, isEditing: false)
+        update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
     }
 
-    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool, isVisible: Bool, isEditing: Bool) {
-        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive, isFavorite: isFavorite,
-               isVisible: isVisible, isEditing: isEditing)
+    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
+        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive, isFavorite: isFavorite, isEditing: isEditing)
     }
 
-    private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isVisible: Bool, isEditing: Bool) {
+    private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
         self.name.text = name
-        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite, isVisible: isVisible)
+        self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
         if isEditing {
             activeIndicator.isHidden = true
         }
@@ -78,7 +77,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         self.activeIndicatorAnimator = activeIndicatorAnimator
     }
 
-    private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool, isVisible: Bool) -> UIColor? {
+    private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {
         if isActive { return activeFontColor }
         if isFavorite { return favoriteFontColor }
         if isSelected { return selectedFontColor }

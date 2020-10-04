@@ -51,4 +51,6 @@ public protocol InfoBar: class {
      - parameter to: the highest note
      */
     func setVisibleKeyLabels(from: String, to: String)
+
+    func hideButtons()
 }

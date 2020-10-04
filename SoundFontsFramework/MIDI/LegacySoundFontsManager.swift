@@ -10,33 +10,17 @@ import SF2Files
  */
 public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
-    private static let log = Logging.logger("SFLib")
+    private static let log = Logging.logger("SFMan")
     private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }
-    private var collection: LegacySoundFontCollection
 
-    /**
-     Attempt to restore the last saved collection.
+    private let configFile: SoundFontsConfigFile
 
-     - returns: restored SoundFont collection or nil if unable to do so
-     */
-    private static func restore() -> LegacySoundFontCollection? {
-        os_log(.info, log: log, "attempting to restore collection")
-        // return nil
-        let url = Self.sharedArchivePath
-        os_log(.info, log: log, "trying to read from '%s'", url.path)
-        if let data = try? Data(contentsOf: url, options: .dataReadingMapped) {
-            os_log(.info, log: log, "restoring from '%s'", url.path)
-            if let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) {
-                os_log(.info, log: log, "restored")
-                return collection
-            }
-            else {
-                NotificationCenter.default.post(name: .soundFontsCollectionLoadFailure, object: url)
-            }
+    private var collection = LegacySoundFontCollection(soundFonts: []) {
+        didSet {
+            os_log(.debug, log: log, "collection changed: %s", collection.description)
         }
-        return nil
     }
 
     /**
@@ -44,7 +28,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 
      - returns: new SoundFontCollection
      */
-    private static func create() -> LegacySoundFontCollection {
+    internal static func create() -> LegacySoundFontCollection {
         os_log(.info, log: log, "creating new collection")
         let bundleUrls: [URL] = SF2Files.allResources
         let fileNames = (try? FileManager.default.contentsOfDirectory(atPath:
@@ -58,12 +42,10 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
      Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
      fails then creates a new one containing SoundFont instances embedded in the app.
      */
-    public init() {
-        self.collection = Self.restore() ?? Self.create()
+    public init(configFile: SoundFontsConfigFile) {
+        self.configFile = configFile
         super.init()
-        save()
-        validate()
-        os_log(.info, log: log, "collection size: %d", collection.count)
+        configFile.initialize(soundFontsManager: self)
     }
 
     public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool { collection.validate(soundFontAndPatch) }
@@ -72,54 +54,49 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
      Look to see if there are any files that are not part of the collection.
      */
     private func validate() {
-        let fm = FileManager.default
-        guard let contents = try? fm.contentsOfDirectory(atPath: fm.sharedDocumentsDirectory.path) else {
-            return
-        }
-
-        var found = 0
-        for path in contents {
-            let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
-            guard src.pathExtension == SF2Files.sf2Extension else { continue }
-            let (stripped, uuid) = path.stripEmbeddedUUID()
-            if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
-            let dst = fm.localDocumentsDirectory.appendingPathComponent(stripped)
-            os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
-            try? fm.removeItem(at: dst)
-            os_log(.info, log: Self.log, "copying '%s' to '%s'", src.path, dst.path)
-            do {
-                try fm.copyItem(at: src, to: dst)
-            } catch let error as NSError {
-                os_log(.error, log: Self.log, "%s", error.localizedDescription)
-            }
-            os_log(.info, log: Self.log, "removing '%s'", src.path)
-            try? fm.removeItem(at: src)
-            found += 1
-        }
-
+        let found = FileManager.default.validateSF2Files(log: log, collection: collection)
         if found > 0 {
             NotificationCenter.default.post(name: .soundFontsCollectionOrphans, object: NSNumber(value: found))
         }
-    }
-
-    /**
-     Reload from disk the managed collection of SoundFonts due to a change made by another process.
-     */
-    public func reload() {
-        os_log(.info, log: log, "reload")
-        if let collection = Self.restore() {
-            os_log(.info, log: log, "updating collection")
-            self.collection = collection
+        for index in 0..<collection.count {
+            let soundFont = collection.getBy(index: index)
+            os_log(.debug, log: log, "loaded SoundFont: %s %s", soundFont.displayName, String.pointer(soundFont))
         }
     }
 }
 
+extension FileManager {
+
+    fileprivate func validateSF2Files(log: OSLog, collection: LegacySoundFontCollection) -> Int {
+        guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else { return -1 }
+        var found = 0
+        for path in contents {
+            let src = sharedDocumentsDirectory.appendingPathComponent(path)
+            guard src.pathExtension == SF2Files.sf2Extension else { continue }
+            let (stripped, uuid) = path.stripEmbeddedUUID()
+            if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
+            let dst = localDocumentsDirectory.appendingPathComponent(stripped)
+            os_log(.info, log: log, "removing '%s' if it exists", dst.path)
+            try? removeItem(at: dst)
+            os_log(.info, log: log, "copying '%s' to '%s'", src.path, dst.path)
+            do {
+                try copyItem(at: src, to: dst)
+            } catch let error as NSError {
+                os_log(.error, log: log, "%s", error.localizedDescription)
+            }
+            os_log(.info, log: log, "removing '%s'", src.path)
+            try? removeItem(at: src)
+            found += 1
+        }
+
+        return found
+    }
+}
 // MARK: - SoundFonts Protocol
 
 extension LegacySoundFontsManager: SoundFonts {
 
-    public var isEmpty: Bool { collection.isEmpty }
-    public var count: Int { collection.count }
+    public var soundFontNames: [String] { return collection.soundFonts.map { $0.displayName } }
 
     public func index(of uuid: UUID) -> Int? { collection.index(of: uuid) }
 
@@ -158,6 +135,14 @@ extension LegacySoundFontsManager: SoundFonts {
         os_log(.debug, log: log, "setVisibility %s %s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
         patch.isVisible = state
         save()
+    }
+
+    public func makeAllVisible(key: LegacySoundFont.Key) {
+        guard let soundFont = getBy(key: key) else { return }
+        for preset in soundFont.patches.filter({ $0.isVisible == false}) {
+            preset.isVisible = true
+        }
+        notify(.unhidPresets(font: soundFont))
     }
 
     public var hasAnyBundled: Bool {
@@ -301,45 +286,34 @@ extension LegacySoundFontsManager {
      Save the current collection to disk.
      */
     private func save() {
-        do {
-            let data = try PropertyListEncoder().encode(collection)
-            let log = self.log
-            os_log(.info, log: log, "archiving")
-            DispatchQueue.global(qos: .userInitiated).async {
-                do {
-                    os_log(.info, log: log, "trying to save to '%s'", Self.sharedArchivePath.path)
-                    try data.write(to: Self.sharedArchivePath, options: [.atomicWrite])
-                    os_log(.info, log: log, "saving OK")
-                } catch {
-                    os_log(.error, log: log, "saving FAILED")
-                }
-            }
-        } catch {
-            os_log(.error, log: log, "archiving FAILED")
-        }
+        self.configFile.save()
     }
 }
 
 extension LegacySoundFontsManager {
 
     internal func configurationData() throws -> Data {
-        os_log(.info, log: log, "archiving")
+        os_log(.info, log: log, "configurationData")
         let data = try PropertyListEncoder().encode(collection)
         os_log(.info, log: log, "done - %d", data.count)
         return data
     }
 
     internal func loadConfigurationData(contents: Any) throws {
-        os_log(.info, log: log, "loading configuration")
-        if let data = contents as? Data {
-            os_log(.info, log: log, "has Data")
-            if let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) {
-                os_log(.info, log: log, "properly decoded")
-                self.collection = collection
-                notify(.restored)
-                return
-            }
+        os_log(.info, log: log, "loadConfigurationData")
+        guard let data = contents as? Data else {
+            NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
+            return
         }
-        NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
+
+        os_log(.info, log: log, "has Data")
+        guard let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) else {
+            NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
+            return
+        }
+
+        os_log(.info, log: log, "properly decoded")
+        self.collection = collection
+        notify(.restored)
     }
 }

@@ -12,14 +12,13 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
     private(set) var selected: LegacySoundFont?
 
-    public init(activePatchManager: ActivePatchManager) {
-        self.selected = activePatchManager.soundFont
+    public init() {
         super.init()
-        os_log(.info, log: log, "selected: %s", selected?.description ?? "nil")
+        os_log(.info, log: log, "selected: %s %s", selected?.displayName ?? "nil", String.pointer(selected))
     }
 
     public func setSelected(_ soundFont: LegacySoundFont) {
-        os_log(.info, log: log, "setSelected: %s", soundFont.description)
+        os_log(.info, log: log, "setSelected: %s %s", soundFont.displayName, String.pointer(soundFont))
         guard selected != soundFont else {
             os_log(.info, log: log, "already active")
             return

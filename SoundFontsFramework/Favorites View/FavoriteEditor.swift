@@ -14,16 +14,16 @@ final public class FavoriteEditor: UIViewController {
         let favorite: LegacyFavorite
         let currentLowestNote: Note?
         let completionHandler: ((Bool) -> Void)?
-        let soundFont: LegacySoundFont
-        let patch: LegacyPatch
+        let soundFonts: SoundFonts
+        let soundFontAndPatch: SoundFontAndPatch
     }
 
     private var favorite: LegacyFavorite! = nil
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: ((Bool) -> Void)?
-    private var soundFont: LegacySoundFont?
-    private var patch: LegacyPatch?
+    private var soundFonts: SoundFonts! = nil
+    private var soundFontAndPatch: SoundFontAndPatch! = nil
 
     weak var delegate: FavoriteEditorDelegate?
 
@@ -49,8 +49,8 @@ final public class FavoriteEditor: UIViewController {
         self.position = config.indexPath
         self.currentLowestNote = config.currentLowestNote
         self.completionHandler = config.completionHandler
-        self.soundFont = config.soundFont
-        self.patch = config.patch
+        self.soundFonts = config.soundFonts
+        self.soundFontAndPatch = config.soundFontAndPatch
     }
 
     override public func viewDidLoad() {
@@ -67,7 +67,7 @@ final public class FavoriteEditor: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        precondition(favorite != nil)
+        precondition(favorite != nil && soundFonts != nil)
 
         name.text = favorite.name
         name.delegate = self
@@ -81,10 +81,13 @@ final public class FavoriteEditor: UIViewController {
             lowestNoteCollection.isHidden = true
         }
 
-        soundFontName.text = soundFont?.displayName
-        patchName.text = patch?.name
-        bank.text = "Bank: \(patch!.bank)"
-        index.text = "Index: \(patch!.program)"
+        guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
+        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+
+        soundFontName.text = soundFont.displayName
+        patchName.text = patch.name
+        bank.text = "Bank: \(patch.bank)"
+        index.text = "Index: \(patch.program)"
 
         gainValue.text = formatFloat(favorite.gain)
         gainSlider.value = favorite.gain

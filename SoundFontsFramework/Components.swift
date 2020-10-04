@@ -25,6 +25,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
     private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+    private var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
 
     public var infoBar: InfoBar { infoBarController }
@@ -38,18 +39,16 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
         self.askForReview = AskForReview(isMain: inApp)
 
-        let soundFontsManager = LegacySoundFontsManager()
+        self.soundFontsConfigFile = SoundFontsConfigFile()
+        let soundFontsManager = LegacySoundFontsManager(configFile: soundFontsConfigFile)
         self.soundFonts = soundFontsManager
-        self.soundFontsConfigFile = SoundFontsConfigFile(soundFontsManager: soundFontsManager)
 
         let favoritesManager = LegacyFavoritesManager()
         self.favorites = favoritesManager
         self.favoritesConfigFile = FavoritesConfigFile(favoritesManager: favoritesManager)
 
-        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts)
-
-        self.activePatchManager.validate(soundFonts: soundFontsManager, favorites: favoritesManager)
-        self.selectedSoundFontManager = SelectedSoundFontManager(activePatchManager: activePatchManager)
+        self.selectedSoundFontManager = SelectedSoundFontManager()
+        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager)
 
         self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager)
 

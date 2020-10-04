@@ -15,6 +15,7 @@ final class FontsTableViewManager: NSObject {
     private let activePatchManager: ActivePatchManager
     private let fontEditorActionGenerator: FontEditorActionGenerator
     private let soundFonts: SoundFonts
+    private var viewSoundFonts = [String]()
 
     init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePatchManager: ActivePatchManager,
          fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts) {
@@ -24,7 +25,6 @@ final class FontsTableViewManager: NSObject {
         self.activePatchManager = activePatchManager
         self.fontEditorActionGenerator = fontEditorActionGenerator
         self.soundFonts = soundFonts
-
         super.init()
 
         view.register(TableCell.self)
@@ -34,16 +34,14 @@ final class FontsTableViewManager: NSObject {
         soundFonts.subscribe(self, notifier: soundFontsChange)
         selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
         activePatchManager.subscribe(self, notifier: activePatchChange)
+
+        viewSoundFonts = soundFonts.soundFontNames
     }
 
     func selectActive() {
         guard let key = activePatchManager.soundFont?.key else { return }
         guard let row = soundFonts.index(of: key) else { return }
         selectAndShow(row: row)
-    }
-
-    public func reload() {
-        view.reloadData()
     }
 }
 
@@ -53,7 +51,7 @@ extension FontsTableViewManager: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { soundFonts.count }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { viewSoundFonts.count }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
@@ -68,13 +66,11 @@ extension FontsTableViewManager: UITableViewDelegate {
         selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
     }
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) ->
-        UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .none
     }
 
-    func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createEditSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
@@ -83,8 +79,7 @@ extension FontsTableViewManager: UITableViewDelegate {
         return actions
     }
 
-    func tableView(_ tableView: UITableView,
-                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let action = fontEditorActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
@@ -137,49 +132,70 @@ extension FontsTableViewManager {
         }
     }
 
+    private func addSoundFont(index: Int, soundFont: LegacySoundFont) {
+        view.performBatchUpdates {
+            view.insertRows(at: [getIndexPath(of: index)], with: .automatic)
+            self.viewSoundFonts = soundFonts.soundFontNames
+        } completion: { completed in
+            if completed {
+                self.selectedSoundFontManager.setSelected(soundFont)
+                self.selectAndShow(row: index)
+            }
+        }
+    }
+
+    private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: LegacySoundFont) {
+        view.performBatchUpdates {
+            view.moveRow(at: getIndexPath(of: oldIndex), to: getIndexPath(of: newIndex))
+            self.viewSoundFonts = soundFonts.soundFontNames
+        } completion: { completed in
+            if completed {
+                self.update(row: newIndex)
+                if self.selectedSoundFontManager.selected == soundFont {
+                    self.selectAndShow(row: newIndex)
+                }
+            }
+        }
+    }
+
+    private func removeSoundFont(index: Int, soundFont: LegacySoundFont) {
+        view.performBatchUpdates {
+            view.deleteRows(at: [getIndexPath(of: index)], with: .automatic)
+            self.viewSoundFonts = soundFonts.soundFontNames
+        } completion: { _ in
+            let newRow = min(index, self.viewSoundFonts.count - 1)
+            guard newRow >= 0 else {
+                self.activePatchManager.clearActive()
+                self.selectedSoundFontManager.clearSelected()
+                return
+            }
+
+            let newSoundFont = self.soundFonts.getBy(index: newRow)
+            if self.activePatchManager.soundFont == soundFont {
+                self.activePatchManager.setActive(preset: SoundFontAndPatch(soundFontKey: newSoundFont.key, patchIndex: 0), playSample: false)
+                self.selectedSoundFontManager.setSelected(newSoundFont)
+            }
+            else if self.selectedSoundFontManager.selected == soundFont {
+                self.selectedSoundFontManager.setSelected(newSoundFont)
+            }
+
+            self.selectAndShow(row: newRow)
+        }
+    }
+
     private func soundFontsChange(_ event: SoundFontsEvent) {
         os_log(.info, log: log, "soundFontsChange")
         switch event {
-        case let .added(new, soundFont):
-            view.performBatchUpdates({ view.insertRows(at: [getIndexPath(of: new)], with: .automatic) },
-                                     completion: { _ in
-                                        self.selectedSoundFontManager.setSelected(soundFont)
-                                        self.selectAndShow(row: new)
-
-            })
-
-        case let .moved(old, new, soundFont):
-            view.performBatchUpdates({ view.moveRow(at: getIndexPath(of: old), to: getIndexPath(of: new)) },
-                                     completion: { _ in
-                                        self.update(row: new)
-                                        if self.selectedSoundFontManager.selected == soundFont {
-                                            self.selectAndShow(row: new)
-                                        }
-            })
-
-        case let .removed(old, deletedSoundFont):
-            view.performBatchUpdates({ view.deleteRows(at: [getIndexPath(of: old)], with: .automatic) },
-                                     completion: { _ in
-                                        let newRow = min(old, self.soundFonts.count - 1)
-                                        guard newRow >= 0 else {
-                                            self.activePatchManager.clearActive()
-                                            self.selectedSoundFontManager.clearSelected()
-                                            return
-                                        }
-
-                                        let newSoundFont = self.soundFonts.getBy(index: newRow)
-                                        if self.activePatchManager.soundFont == deletedSoundFont {
-                                            self.activePatchManager.setActive(preset: SoundFontAndPatch(soundFontKey: newSoundFont.key, patchIndex: 0), playSample: false)
-                                            self.selectedSoundFontManager.setSelected(newSoundFont)
-                                        }
-                                        else if self.selectedSoundFontManager.selected == deletedSoundFont {
-                                            self.selectedSoundFontManager.setSelected(newSoundFont)
-                                        }
-
-                                        self.selectAndShow(row: newRow)
-            })
-
-        case .restored: view.reloadData()
+        case let .added(new, soundFont): addSoundFont(index: new, soundFont: soundFont)
+        case let .moved(old, new, soundFont): movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont)
+        case let .removed(old, deletedSoundFont): removeSoundFont(index: old, soundFont: deletedSoundFont)
+        case .unhidPresets: break
+        case .restored:
+            viewSoundFonts = soundFonts.soundFontNames
+            view.reloadData()
+            if let soundFont = activePatchManager.soundFont {
+                selectedSoundFontManager.setSelected(soundFont)
+            }
         }
     }
 
@@ -206,7 +222,7 @@ extension FontsTableViewManager {
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
         let isActive = activePatchManager.soundFont == soundFont
-        cell.updateForFont(name: soundFont.displayName, isSelected: isSelected, isActive: isActive)
+        cell.updateForFont(name: viewSoundFonts[indexPath.row], isSelected: isSelected, isActive: isActive)
         return cell
     }
 }
