@@ -6,7 +6,11 @@ import Foundation
  Collection of SoundFont entities. The collection maintains a mapping between a SoundFont.Key (UUID) and a SoundFont
  instance. It also maintains an array of SoundFont.Key values that are ordered by SoundFont.name values.
  */
-public final class LegacySoundFontCollection: Codable {
+public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
+
+    public var description: String {
+        "[" + catalog.map { "\(String.pointer($0.value)) '\($0.value.displayName)'" }.joined(separator: ",") + "]"
+    }
 
     public typealias Element = LegacySoundFont
     public typealias CatalogMap = [LegacySoundFont.Key: LegacySoundFont]

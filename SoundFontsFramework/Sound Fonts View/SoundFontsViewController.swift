@@ -193,7 +193,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
     public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
         let action = UIContextualAction(tag: "Edit", color: .orange) { _, view, completionHandler in
-            let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFont: soundFont,
+            let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts, soundFontKey: soundFont.key,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
                                            completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)

@@ -11,12 +11,14 @@ final class FontEditor: UIViewController {
         let indexPath: IndexPath
         let view: UIView
         let rect: CGRect
-        let soundFont: LegacySoundFont
+        let soundFonts: SoundFonts
+        let soundFontKey: LegacySoundFont.Key
         let favoriteCount: Int
         let completionHandler: ((Bool) -> Void)?
     }
 
-    private var soundFont: LegacySoundFont!
+    private var soundFonts: SoundFonts!
+    private var soundFontKey: LegacySoundFont.Key!
     private var favoriteCount: Int = 0
     private var position: IndexPath = IndexPath()
     private var completionHandler: ((Bool) -> Void)?
@@ -36,14 +38,15 @@ final class FontEditor: UIViewController {
 
     func configure(_ config: Config) {
         self.position = config.indexPath
-        self.soundFont = config.soundFont
+        self.soundFonts = config.soundFonts
+        self.soundFontKey = config.soundFontKey
         self.favoriteCount = config.favoriteCount
         self.completionHandler = config.completionHandler
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let soundFont = self.soundFont else { fatalError() }
+        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
         name.text = soundFont.displayName
         name.delegate = self
         originalNameLabel.text = "Original: \(soundFont.originalDisplayName)"
@@ -56,6 +59,7 @@ final class FontEditor: UIViewController {
     }
 
     private func updateHiddenCount() {
+        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
         let hiddenCount = soundFont.patches.filter { $0.isVisible == false}.count
         if hiddenCount > 0 {
             hiddenCountLabel.text = "\(hiddenCount) hidden"
@@ -68,18 +72,21 @@ final class FontEditor: UIViewController {
     }
 
     @IBAction private func close(_ sender: UIBarButtonItem) {
-        let newName = self.name.text ?? ""
-        if !newName.isEmpty { soundFont.displayName = newName }
+        if let soundFont = soundFonts.getBy(key: soundFontKey) {
+            let newName = name.text ?? ""
+            if !newName.isEmpty {
+                soundFont.displayName = newName
+            }
+            delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
+        }
+
         self.dismiss(animated: true)
-        delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
         completionHandler?(true)
         AskForReview.maybe()
     }
 
     @IBAction private func makeAllVisible(_ sender: UIButton) {
-        for preset in soundFont.patches.filter({ $0.isVisible == false}) {
-            preset.isVisible = true
-        }
+        soundFonts.makeAllVisible(key: soundFontKey)
         updateHiddenCount()
     }
 }

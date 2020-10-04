@@ -55,10 +55,6 @@ extension InfoBarController {
         animateMoreButtons()
     }
 
-    @IBAction private func editVisibilityMode(_ sender: UIButton) {
-        // animateMoreButtons()
-    }
-
     @IBAction private func showSettings(_ sender: UIButton) {
         animateMoreButtons()
     }
@@ -145,6 +141,10 @@ extension InfoBarController: InfoBar {
             highestKey.layoutIfNeeded()
         }
     }
+
+    public func hideButtons() {
+        animateMoreButtons()
+    }
 }
 
 // MARK: - Private
@@ -187,15 +187,11 @@ extension InfoBarController {
 
     private func animateMoreButtons() {
         guard traitCollection.horizontalSizeClass == .compact else { return }
-
-        // Make sure that the 'moreButtons' view is where we expect it to be. This seems to be necessary after
-        // width trait changes.
         moreButtonsXConstraint.constant = moreButtons.isHidden ? -moreButtons.frame.width : 0
         view.layoutIfNeeded()
 
         let willBeHidden = !moreButtons.isHidden
-        let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self),
-                               compatibleWith: .none)
+        let newImage = UIImage(named: willBeHidden ? "More" : "MoreFilled", in: Bundle(for: Self.self), compatibleWith: .none)
         let newConstraint = willBeHidden ? -moreButtons.frame.width : 0
         let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
 
@@ -215,9 +211,9 @@ extension InfoBarController {
             }
         )
 
-        UIView.transition(with: showMoreButtons, duration: 0.4, options: .transitionCrossDissolve, animations: {
+        UIView.transition(with: showMoreButtons, duration: 0.4, options: .transitionCrossDissolve) {
             self.showMoreButtons.setImage(newImage, for: .normal)
-        }, completion: nil)
+        }
 
         animator.startAnimation()
     }

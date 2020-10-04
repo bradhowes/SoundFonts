@@ -107,9 +107,6 @@
                                         <rect key="frame" x="16" y="7.5" width="25" height="25"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="EditVisibility"/>
-                                        <connections>
-                                            <action selector="editVisibilityMode:" destination="YeB-KN-4f1" eventType="touchUpInside" id="Leq-DX-9gV"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

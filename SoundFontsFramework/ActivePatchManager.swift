@@ -24,6 +24,7 @@ public enum ActivePatchEvent {
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
     private let soundFonts: SoundFonts
+    private let selectedSoundFontManager: SelectedSoundFontManager
 
     public private(set) var active: ActivePatchKind {
         didSet { os_log(.info, log: log, "set active: %s", active.description) }
@@ -42,9 +43,13 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFont?.patches[index]
     }
 
-    public init(soundFonts: SoundFonts) {
+    public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
         self.soundFonts = soundFonts
-        self.active = Self.restore() ?? (soundFonts.isEmpty ? .none : .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0)))
+        self.selectedSoundFontManager = selectedSoundFontManager
+        self.active = Self.restore() ?? (
+            soundFonts.soundFontNames.isEmpty ?
+                .none :
+                .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0)))
         super.init()
         os_log(.info, log: log, "active: %s", active.description)
     }
@@ -57,15 +62,24 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 
-    public func setActive(preset: SoundFontAndPatch, playSample: Bool) { setActive(.normal(soundFontAndPatch: preset), playSample: playSample) }
+    public func setActive(preset: SoundFontAndPatch, playSample: Bool) {
+        setActive(.normal(soundFontAndPatch: preset), playSample: playSample)
+    }
 
-    public func setActive(favorite: LegacyFavorite, playSample: Bool) { setActive(.favorite(favorite: favorite), playSample: playSample) }
+    public func setActive(favorite: LegacyFavorite, playSample: Bool) {
+        setActive(.favorite(favorite: favorite), playSample: playSample)
+    }
 
-    public func clearActive() { setActive(.none, playSample: false) }
+    public func clearActive() {
+        setActive(.none, playSample: false)
+    }
 
     public func restore(from data: Data) {
         let decoder = JSONDecoder()
         if let activePatchKind = try? decoder.decode(ActivePatchKind.self, from: data) {
+            if let soundFont = self.soundFont {
+                selectedSoundFontManager.setSelected(soundFont)
+            }
             setActive(activePatchKind)
         }
     }
