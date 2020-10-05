@@ -1,5 +1,5 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
-
+// swiftlint:disable file_length
 import UIKit
 import os
 
@@ -167,22 +167,8 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
 extension PatchesTableViewManager: UISearchBarDelegate {
 
-    private func dismissSearchKeyboard() {
-        if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
-            searchBar.resignFirstResponder()
-        }
-    }
-
-    /**
-     Notification that the content of the search field changed. Update the search results based on the new contents. If
-     the search field is empty, replace the search results with the patch listing.
-
-     - parameter searchBar: the UISearchBar where the event took place
-     - parameter textDidChange: the current contents of the text field
-     */
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let searchTerm = searchBar.searchTerm ?? ""
-        search(for: searchTerm)
+        search(for: searchBar.searchTerm ?? "")
     }
 }
 
@@ -190,9 +176,13 @@ extension PatchesTableViewManager: UISearchBarDelegate {
 
 extension PatchesTableViewManager {
 
+    private func dismissSearchKeyboard() {
+        guard searchBar.isFirstResponder && searchBar.canResignFirstResponder else { return }
+        searchBar.resignFirstResponder()
+    }
+
     private func updateViewPresets() {
         let source = selectedSoundFontManager.selected?.patches ?? []
-        os_log(.debug, log: log, "updateViewPresets: %d %d", view.isEditing, source.count)
         viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
         updateSectionRowCounts()
         view.reloadData()
@@ -202,7 +192,6 @@ extension PatchesTableViewManager {
         let numFullSections = viewPresets.count / sectionSize
         sectionRowCounts = [Int](repeating: sectionSize, count: numFullSections)
         sectionRowCounts.append(viewPresets.count - numFullSections * sectionSize)
-        os_log(.debug, log: log, "updateSeciontRowCounts: %s", sectionRowCounts.description)
     }
 
     private func showSearchBar() {
@@ -216,52 +205,56 @@ extension PatchesTableViewManager {
     }
 
     private func setPresetVisibility(at indexPath: IndexPath, state: Bool) {
-        os_log(.debug, log: log, "setPresetVisibility: %s %d", indexPath.description, state)
         guard let soundFont = selectedSoundFontManager.selected else { return }
         let preset = soundFont.patches[viewPresets[indexPath]]
-        os_log(.debug, log: log, "preset: %s", preset.name)
         soundFonts.setVisibility(key: soundFont.key, index: preset.soundFontIndex, state: state)
     }
 
     private func toggleVisibilityEditing(_ sender: AnyObject) {
         guard let soundFont = selectedSoundFontManager.selected else { return }
         let button = sender as? UIButton
+        button?.tintColor = view.isEditing ? .systemTeal : .systemYellow
         if view.isEditing == false {
-            button?.tintColor = .systemYellow
-            viewPresets = soundFont.patches.map { $0.soundFontIndex }
-            let insertions = viewPresets.enumerated()
-                .filter { soundFont.patches[$0.1].isVisible == false }
-                .map { IndexPath(presetIndex: $0.0) }
-            view.performBatchUpdates {
-                self.view.insertRows(at: insertions, with: .automatic)
-                for index in insertions { self.sectionRowCounts[index.section] += 1 }
-            }
-            completion: { _ in
-                self.view.setEditing(true, animated: true)
-                self.updateVisibilitySelections()
-            }
+            beginVisibilityEditing(for: soundFont)
         }
         else {
-            button?.tintColor = .systemTeal
-            infoBar.hideButtons()
-            let deletions = viewPresets.enumerated()
-                .filter { soundFont.patches[$0.1].isVisible == false }
-                .map { IndexPath(presetIndex: $0.0) }
-            view.performBatchUpdates {
-                self.view.deleteRows(at: deletions, with: .automatic)
-                for index in deletions { self.sectionRowCounts[index.section] -= 1 }
-            }
-            completion: { _ in
-                self.view.setEditing(false, animated: true)
-                self.viewPresets = soundFont.patches.filter { $0.isVisible == true } .map { $0.soundFontIndex }
-                self.view.reloadSections(IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .automatic)
-            }
+            endVisibilityEditing(for: soundFont)
         }
     }
 
-    private func updateVisibilitySelections() {
+    private func beginVisibilityEditing(for soundFont: LegacySoundFont) {
+        viewPresets = soundFont.patches.map { $0.soundFontIndex }
+        let insertions = viewPresets.enumerated()
+            .filter { soundFont.patches[$0.1].isVisible == false }
+            .map { IndexPath(presetIndex: $0.0) }
+        view.performBatchUpdates {
+            self.view.insertRows(at: insertions, with: .automatic)
+            for index in insertions { self.sectionRowCounts[index.section] += 1 }
+        }
+        completion: { _ in
+            self.view.setEditing(true, animated: true)
+            self.updateVisibilitySelections(soundFont: soundFont)
+        }
+    }
+
+    private func endVisibilityEditing(for soundFont: LegacySoundFont) {
+        infoBar.hideButtons()
+        let deletions = viewPresets.enumerated()
+            .filter { soundFont.patches[$0.1].isVisible == false }
+            .map { IndexPath(presetIndex: $0.0) }
+        view.performBatchUpdates {
+            self.view.deleteRows(at: deletions, with: .automatic)
+            for index in deletions { self.sectionRowCounts[index.section] -= 1 }
+        }
+        completion: { _ in
+            self.view.setEditing(false, animated: true)
+            self.viewPresets = soundFont.patches.filter { $0.isVisible == true } .map { $0.soundFontIndex }
+            self.view.reloadSections(IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .automatic)
+        }
+    }
+
+    private func updateVisibilitySelections(soundFont: LegacySoundFont) {
         precondition(view.isEditing)
-        guard let soundFont = selectedSoundFontManager.selected else { return }
         os_log(.debug, log: self.log, "updateVisibilitySelections")
         for (index, presetIndex) in viewPresets.enumerated() {
             let indexPath = IndexPath(presetIndex: index)
@@ -292,21 +285,18 @@ extension PatchesTableViewManager {
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
         guard case let .changed(old: old, new: new) = event else { return }
         os_log(.info, log: log, "selectedSoundFontChange - old: '%s' new: '%s'", old?.displayName ?? "N/A", new?.displayName ?? "N/A")
-
         updateViewPresets()
-
         if view.isEditing {
-            os_log(.info, log: log, "view.isEditing true")
-            updateVisibilitySelections()
+            if let soundFont = new {
+                updateVisibilitySelections(soundFont: soundFont)
+            }
             return
         }
 
         if activePatchManager.soundFont == new {
-            os_log(.info, log: log, "new is same as active patch")
             selectActive(animated: false)
         }
         else if !showingSearchResults {
-            os_log(.info, log: log, "hiding search bar")
             view.layoutIfNeeded()
             hideSearchBar(animated: false)
         }
