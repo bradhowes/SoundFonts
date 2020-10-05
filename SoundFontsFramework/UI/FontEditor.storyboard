@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UPB-vU-Flh">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
@@ -14,11 +14,11 @@
             <objects>
                 <viewController title="FontEditor" id="Eyw-X4-KFI" userLabel="FontEditor" customClass="FontEditor" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="405"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="385"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="88" width="414" height="317"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="329"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="318.5"/>
@@ -42,7 +42,7 @@
                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="This is a test" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="rDX-8U-Yv3">
+                                                            <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="This is a test" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="rDX-8U-Yv3">
                                                                 <rect key="frame" x="53" y="0.0" width="321" height="34"/>
                                                                 <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -50,6 +50,9 @@
                                                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                                             </textField>
                                                         </subviews>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="374" id="SN4-HT-yFc"/>
+                                                        </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Original">
                                                         <rect key="frame" x="0.0" y="71.5" width="374" height="22"/>
@@ -162,6 +165,7 @@
                                             <constraint firstAttribute="trailing" secondItem="mMk-qS-UW8" secondAttribute="trailing" constant="20" symbolic="YES" id="5G5-75-ORD"/>
                                             <constraint firstAttribute="bottom" secondItem="mMk-qS-UW8" secondAttribute="bottom" constant="20" symbolic="YES" id="AUT-X6-1e7"/>
                                             <constraint firstItem="mMk-qS-UW8" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" constant="20" symbolic="YES" id="J5X-NK-8Hu"/>
+                                            <constraint firstAttribute="width" priority="750" constant="414" id="OYV-xz-kiI"/>
                                             <constraint firstItem="mMk-qS-UW8" firstAttribute="top" secondItem="LhQ-ia-e1C" secondAttribute="top" constant="20" symbolic="YES" id="UVe-XZ-s1C"/>
                                             <constraint firstItem="gJm-Kh-cBE" firstAttribute="top" secondItem="LhQ-ia-e1C" secondAttribute="top" id="bs6-WE-zaQ"/>
                                             <constraint firstItem="gJm-Kh-cBE" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" id="q2m-16-9T3"/>
@@ -217,7 +221,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uXx-w9-DqU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2337.68115942029" y="-545.42410714285711"/>
+            <point key="canvasLocation" x="2238" y="-601"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JbL-Hk-dDI">

@@ -14,10 +14,9 @@ final class MainViewController: UIViewController {
     private lazy var log = Logging.logger("MainVC")
 
     private var keyboard: Keyboard!
-    private var infoBar: InfoBar!
     private var activePatchManager: ActivePatchManager!
-    private var volumeMonitor: VolumeMonitor!
     private var sampler: Sampler!
+    private var volumeMonitor: VolumeMonitor?
 
     fileprivate var noteInjector = NoteInjector()
 
@@ -30,7 +29,7 @@ final class MainViewController: UIViewController {
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in self.volumeMonitor.repostNotice() })
+        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in self.volumeMonitor?.repostNotice() })
     }
 }
 
@@ -99,19 +98,25 @@ extension MainViewController: ControllerConfiguration {
         sampler = router.sampler
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
-        infoBar = router.infoBar
 
         let muteDetector = MuteDetector(checkInterval: 1)
-        let notePlayer = NotePlayer(infoBar: infoBar, sampler: sampler)
+        let notePlayer = NotePlayer(infoBar: router.infoBar, sampler: sampler)
         keyboard.delegate = notePlayer
         volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer, sampler: sampler)
-        activePatchManager.subscribe(self, notifier: activePatchChange)
+        router.activePatchManager.subscribe(self, notifier: activePatchChange)
+        router.soundFonts.subscribe(self, notifier: soundFontsChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
             volumeMonitor?.check()
+        }
+    }
+
+    private func soundFontsChange(_ event: SoundFontsEvent) {
+        if case .restored = event {
+            volumeMonitor?.checkForPreset = true
         }
     }
 

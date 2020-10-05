@@ -9,7 +9,7 @@ public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware
 public extension SettingKeys {
     static let daysAfterFirstLaunchBeforeRequest = SettingKey<Int>("daysAfterFirstLaunchBeforeRequest", defaultValue: 14)
     static let firstLaunchDate = SettingKey<Date>("firstLaunchDate", defaultValue: Date.distantPast)
-    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: -1)
+    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: 0)
     static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
     static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
     static let lastReviewRequestDate = SettingKey<Date>("lastReviewRequestDate", defaultValue: Date.distantPast)
