@@ -6,9 +6,9 @@ import SoundFontsFramework
 class FormattersTests: XCTestCase {
 
     func testPatches() {
-        XCTAssertEqual("no patches", Formatters.formatted(patchCount: 0))
-        XCTAssertEqual("1 patch", Formatters.formatted(patchCount: 1))
-        XCTAssertEqual("200 patches", Formatters.formatted(patchCount: 200))
+        XCTAssertEqual("no presets", Formatters.formatted(presetCount: 0))
+        XCTAssertEqual("1 preset", Formatters.formatted(presetCount: 1))
+        XCTAssertEqual("200 presets", Formatters.formatted(presetCount: 200))
     }
 
     func testFavorites() {
