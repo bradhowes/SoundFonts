@@ -72,6 +72,7 @@
 		BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */; };
 		BD0FAC592520B65700EEF187 /* FiteredOrderedCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */; };
 		BD0FAC802523CAEC00EEF187 /* UIContextualAction+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC7F2523CAEC00EEF187 /* UIContextualAction+Extensions.swift */; };
+		BD1232D9252B029F00F80056 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD1232D8252B029F00F80056 /* SoundFontInfoLib.framework */; };
 		BD125B38241006200003DE99 /* AskForReview.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B37241006200003DE99 /* AskForReview.swift */; };
 		BD125B3F241010430003DE99 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3E241010430003DE99 /* Components.swift */; };
 		BD125B40241010810003DE99 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3A24100C940003DE99 /* Key.swift */; };
@@ -226,6 +227,7 @@
 		BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOrderedCollection.swift; sourceTree = "<group>"; };
 		BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiteredOrderedCollectionTests.swift; sourceTree = "<group>"; };
 		BD0FAC7F2523CAEC00EEF187 /* UIContextualAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIContextualAction+Extensions.swift"; sourceTree = "<group>"; };
+		BD1232D8252B029F00F80056 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD125B37241006200003DE99 /* AskForReview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskForReview.swift; sourceTree = "<group>"; };
 		BD125B3924100C940003DE99 /* Keyboard.pcvd */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Keyboard.pcvd; sourceTree = "<group>"; };
 		BD125B3A24100C940003DE99 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */,
+				BD1232D9252B029F00F80056 /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +611,7 @@
 		BD74D18923CDB4C000204ED4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD1232D8252B029F00F80056 /* SoundFontInfoLib.framework */,
 				BD0FAC29251F692000EEF187 /* SF2Files.framework */,
 				BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */,
 			);
