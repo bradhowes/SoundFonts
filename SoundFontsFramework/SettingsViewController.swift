@@ -9,7 +9,9 @@ public enum KeyLabelOption: Int {
     case cOnly
 
     public static var savedSetting: KeyLabelOption {
-        if let option = Self(rawValue: settings.keyLabelOption) {
+        let value = settings.keyLabelOption
+
+        if let option = Self(rawValue: value) {
             return option
         }
 
@@ -66,7 +68,11 @@ public final class SettingsViewController: UIViewController {
 
         playSample.isOn = settings.playSample
         showSolfegeNotes.isOn = settings.showSolfegeLabel
+
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
+
+        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
+        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
 
         updateButtonState()
 
@@ -86,6 +92,9 @@ public final class SettingsViewController: UIViewController {
 
         preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
+}
+
+extension SettingsViewController {
 
     private func beginShowKeyboard() {
         exportSoundFontsStackView.isHidden = true

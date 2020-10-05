@@ -68,6 +68,8 @@
                                                                     <segment title="All"/>
                                                                     <segment title="C"/>
                                                                 </segments>
+                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                <color key="selectedSegmentTintColor" systemColor="systemTealColor"/>
                                                                 <connections>
                                                                     <action selector="keyLabelOptionChanged:" destination="Eyw-X4-KFI" eventType="valueChanged" id="EVv-6H-hwP"/>
                                                                 </connections>

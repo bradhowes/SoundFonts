@@ -23,6 +23,8 @@ final class VolumeMonitor {
     private let notePlayer: NotePlayer
     private let sampler: Sampler
 
+    public var checkForPreset = false
+
     private var volume: Float = 0.0 {
         didSet {
             os_log(.info, log: log, "volume changed %f", volume)
@@ -116,7 +118,7 @@ extension VolumeMonitor {
                 reason = .muteSwitch
             }
         }
-        else if !sampler.hasPatch {
+        else if checkForPreset && !sampler.hasPatch {
             reason = .noPatch
         }
         else {
