@@ -7,12 +7,10 @@ import os
  Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
  settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
  */
-public final class FavoritesViewController: UIViewController {
+public final class FavoritesViewController: UIViewController, FavoritesViewManager {
     private lazy var log = Logging.logger("FavsVC")
 
-    //swiftlint:disable force_cast
-    private let favoriteCell = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as! FavoriteCell
-    //swiftlint:enable force_cast
+    private let favoriteCell: FavoriteCell! = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as? FavoriteCell
 
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
@@ -163,7 +161,6 @@ extension FavoritesViewController: SegueHandler {
             ppc.delegate = vc
         }
 
-        // Doing this will catch the swipe-down action that we treat as a 'cancel'.
         nc.presentationController?.delegate = vc
     }
 
@@ -195,16 +192,13 @@ extension FavoritesViewController: SegueHandler {
     }
 
     private func postNotice(msg: String) {
-        let alertController = UIAlertController(title: "Favorites",
-                                                message: msg,
-                                                preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Favorites", message: msg, preferredStyle: .alert)
         let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
         alertController.addAction(cancel)
 
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = self.view
-            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
-                                                  width: 0, height: 0)
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
             popoverController.permittedArrowDirections = []
         }
 
@@ -233,14 +227,10 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
     public func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        favorites.count
-    }
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { favorites.count }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) ->
-        UICollectionViewCell {
-        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath),
-                                with: favorites.getBy(index: indexPath.row)))
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorites.getBy(index: indexPath.row)))
     }
 }
 
@@ -256,8 +246,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
         favorites.count > 1
     }
 
-    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
-                               to destinationIndexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
         collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
     }
@@ -267,19 +256,13 @@ extension FavoritesViewController: UICollectionViewDelegate {
 
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let favorite = favorites.getBy(index: indexPath.item)
         let cell = update(cell: favoriteCell, with: favorite)
         let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
         return constrainedSize
     }
-}
-
-// MARK: - FavoritesManager
-
-extension FavoritesViewController: FavoritesViewManager {
 }
 
 // MARK: - Private
@@ -298,8 +281,7 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.name,
-                    isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
+        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
         return cell
     }
 
