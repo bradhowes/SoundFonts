@@ -70,7 +70,6 @@ public final class SettingsViewController: UIViewController {
         showSolfegeNotes.isOn = settings.showSolfegeLabel
 
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
-
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
 
