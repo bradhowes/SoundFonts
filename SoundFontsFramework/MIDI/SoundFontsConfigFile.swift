@@ -27,7 +27,7 @@ public final class SoundFontsConfigFile: UIDocument {
                     try soundFontsManager.loadConfigurationData(contents: data)
                     self.save(to: self.sharedArchivePath, for: .forCreating)
                 } catch let error as NSError {
-                    fatalError("Failed to initialize empty collection: \(error.localizedDescription)")
+                    fatalError("Failed to initialize initial collection: \(error.localizedDescription)")
                 }
             }
         }
@@ -45,6 +45,11 @@ public final class SoundFontsConfigFile: UIDocument {
     override public func load(fromContents contents: Any, ofType typeName: String?) throws {
         guard let soundFontsManager = self.soundFontsManager else { fatalError() }
         try soundFontsManager.loadConfigurationData(contents: contents)
+    }
+
+    override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
+        os_log(.info, log: log, "revert url: '%s' - ignoring", url.path)
+        completionHandler?(false)
     }
 
     private func soundFontsChanged(_ event: SoundFontsEvent) {

@@ -11,7 +11,6 @@ import SF2Files
 public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
     private static let log = Logging.logger("SFMan")
-    private static let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
 
     private var log: OSLog { Self.log }
 
@@ -31,11 +30,8 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
     internal static func create() -> LegacySoundFontCollection {
         os_log(.info, log: log, "creating new collection")
         let bundleUrls: [URL] = SF2Files.allResources
-        let fileNames = (try? FileManager.default.contentsOfDirectory(atPath:
-            FileManager.default.sharedDocumentsDirectory.path)) ?? [String]()
-        let fileUrls = fileNames.map { FileManager.default.sharedDocumentsDirectory.appendingPathComponent($0) }
-        return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) +
-            (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
+        let fileUrls = FileManager.default.installedSF2Files
+        return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
     }
 
     /**
@@ -66,6 +62,11 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 }
 
 extension FileManager {
+
+    fileprivate var installedSF2Files: [URL] {
+        let fileNames = (try? FileManager.default.contentsOfDirectory(atPath: FileManager.default.sharedDocumentsDirectory.path)) ?? [String]()
+        return fileNames.map { FileManager.default.sharedDocumentsDirectory.appendingPathComponent($0) }
+    }
 
     fileprivate func validateSF2Files(log: OSLog, collection: LegacySoundFontCollection) -> Int {
         guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else { return -1 }
