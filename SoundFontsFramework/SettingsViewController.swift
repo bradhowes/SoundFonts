@@ -1,5 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+import MessageUI
 import UIKit
 import os
 
@@ -51,6 +52,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var review: UIButton!
+    @IBOutlet private weak var contactButton: UIButton!
 
     private var revealKeyboardForKeyWidthChanges = false
 
@@ -212,5 +214,26 @@ extension SettingsViewController {
         }
 
         present(alertController, animated: true, completion: nil)
+    }
+}
+
+extension SettingsViewController: MFMailComposeViewControllerDelegate {
+
+    @IBAction private func sendEmail(_ sender: Any) {
+        if MFMailComposeViewController.canSendMail() {
+            let bundle = Bundle(for: Self.self)
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["bradhowes@mac.com"])
+            mail.setSubject("Note about your SoundFonts app")
+            mail.setMessageBody("<p>Regarding your SoundFonts app (\(bundle.versionString)):</p><p></p>", isHTML: true)
+            present(mail, animated: true)
+        } else {
+            postNotice(msg: "Unable to send an email message from the app.")
+        }
+    }
+
+    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
 }
