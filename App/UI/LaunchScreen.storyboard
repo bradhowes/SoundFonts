@@ -50,8 +50,14 @@ Synthesizer</string>
                                     <constraint firstItem="rZj-m5-DCU" firstAttribute="top" secondItem="rs3-wg-48r" secondAttribute="bottom" constant="30" id="yBG-3A-Xfi"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.11.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgP-cx-wPP" userLabel="APP_VERSION">
-                                <rect key="frame" x="158.5" y="627.5" width="58.5" height="19.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2020 Brad Howes. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GdK-Tp-uQE" userLabel="Copyright">
+                                <rect key="frame" x="38.5" y="627" width="298" height="16"/>
+                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="14"/>
+                                <color key="textColor" systemColor="systemTealColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.11.1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgP-cx-wPP" userLabel="APP_VERSION">
+                                <rect key="frame" x="158.5" y="599" width="58.5" height="19.5"/>
                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="18"/>
                                 <color key="textColor" systemColor="systemTealColor"/>
                                 <nil key="highlightedColor"/>
@@ -60,16 +66,18 @@ Synthesizer</string>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="sgP-cx-wPP" secondAttribute="bottom" constant="20" id="6kX-r3-vta"/>
                             <constraint firstItem="57w-MN-scF" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-40" id="BTN-wC-McS"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="GdK-Tp-uQE" secondAttribute="bottom" constant="24" id="DWg-Sv-HZb"/>
                             <constraint firstItem="sgP-cx-wPP" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="J6e-gS-4x7"/>
+                            <constraint firstItem="GdK-Tp-uQE" firstAttribute="top" secondItem="sgP-cx-wPP" secondAttribute="bottom" constant="8.5" id="MYY-QF-Dr5"/>
                             <constraint firstItem="57w-MN-scF" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="O1k-Z9-Ajc"/>
+                            <constraint firstItem="GdK-Tp-uQE" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Wmc-l4-Xcg"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.724637681159422" y="374.33035714285711"/>
+            <point key="canvasLocation" x="50.399999999999999" y="373.76311844077964"/>
         </scene>
     </scenes>
     <resources>

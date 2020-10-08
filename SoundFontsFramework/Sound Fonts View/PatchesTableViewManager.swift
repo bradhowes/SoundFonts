@@ -55,7 +55,7 @@ final class PatchesTableViewManager: NSObject {
         view.sectionIndexColor = .darkGray
 
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
-        let defaultTextAttribs = [NSAttributedString.Key.font: customFont]
+        let defaultTextAttribs = [NSAttributedString.Key.font: customFont, NSAttributedString.Key.foregroundColor: UIColor.lightGray]
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes = defaultTextAttribs
 
         updateViewPresets()
