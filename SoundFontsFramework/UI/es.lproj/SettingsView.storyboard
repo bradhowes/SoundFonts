@@ -168,7 +168,7 @@
                                 <action selector="close:" destination="Eyw-X4-KFI" id="H0L-1A-HOk"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="v2.11.1" id="3v6-UW-ag2" userLabel="APP_VERSION">
+                        <barButtonItem key="rightBarButtonItem" title="v2.11.2" id="3v6-UW-ag2" userLabel="APP_VERSION">
                             <color key="tintColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="visitAppStore:" destination="Eyw-X4-KFI" id="Kn1-gJ-OZh"/>
