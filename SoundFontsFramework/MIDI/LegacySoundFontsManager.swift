@@ -268,7 +268,7 @@ extension LegacySoundFontsManager {
 
     @discardableResult
     fileprivate static func addFromBundle(url: URL) -> LegacySoundFont? {
-        guard let info = SoundFontInfo.load(url) else { return nil }
+        guard let info = SoundFontInfo.load(viaParser: url) else { return nil }
         guard let infoName = info.embeddedName else { return nil }
         guard !(infoName.isEmpty || info.presets.isEmpty) else { return nil }
         let displayName = niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName

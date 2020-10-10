@@ -6,7 +6,6 @@
 #include <functional>
 #include <iostream>
 
-#include "BinaryStream.hpp"
 #include "Chunk.hpp"
 
 namespace SF2 {
