@@ -71,9 +71,7 @@ protected:
 
     void apply(Configuration& cfg) const
     {
-        std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) {
-            cfg[gen.index()] = gen.value();
-        });
+        std::for_each(generators_.begin(), generators_.end(), [&](SFGenerator const& gen) { cfg[gen.index()] = gen.value(); });
     }
 
     void refine(Configuration& cfg) const

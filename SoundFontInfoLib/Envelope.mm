@@ -11,6 +11,97 @@ constexpr double Envelope::minimumCurvature;
 constexpr double Envelope::maxiumCurvature;
 
 void
+Envelope::Generator::gate(bool noteOn)
+{
+    if (noteOn) {
+        value_ = 0.0;
+        enterStage(Stage::delay);
+    }
+    else if (stage_ != Stage::idle) {
+        enterStage(Stage::release);
+    }
+}
+
+double
+Envelope::Generator::process()
+{
+    switch (stage_) {
+        case Stage::delay: checkIfEndStage(Stage::attack); break;
+
+        case Stage::attack:
+            updateValue();
+            checkIfEndStage(Stage::hold);
+            break;
+
+        case Stage::hold: checkIfEndStage(Stage::decay); break;
+
+        case Stage::decay:
+            updateValue();
+            if (value_ <= sustainLevel() ) {
+                enterStage(Stage::sustain);
+            }
+            else {
+                checkIfEndStage(Stage::sustain);
+            }
+            break;
+
+        case Stage::sustain: break;
+
+        case Stage::release:
+            updateValue();
+            if (value_ <= 0.0 ) {
+                enterStage(Stage::idle);
+            }
+            else {
+                checkIfEndStage(Stage::idle);
+            }
+            break;
+
+        case Stage::idle: break;
+    }
+
+    return value_;
+}
+
+void
+Envelope::Generator::enterStage(Stage next)
+{
+    stage_ = next;
+    switch (stage_) {
+        case Stage::delay:
+            if (active().sampleCount != 0) break;
+            stage_ = Stage::attack;
+
+        case Stage::attack:
+            if (active().sampleCount != 0) break;
+            stage_ = Stage::hold;
+
+        case Stage::hold:
+            value_ = 1.0;
+            if (active().sampleCount != 0) break;
+            stage_ = Stage::decay;
+
+        case Stage::decay:
+            if (active().sampleCount != 0) break;
+            stage_ = Stage::sustain;
+
+        case Stage::sustain:
+            value_ = active().initial;
+            break;
+
+        case Stage::release:
+            if (active().sampleCount != 0) break;
+            stage_ = Stage::idle;
+            value_ = 0.0;
+
+        case Stage::idle: return;
+    }
+
+    remainingDuration_ = active().sampleCount;
+}
+
+
+void
 Envelope::StageConfiguration::setAttackRate(double duration, double curvature)
 {
     curvature = clampCurvature(curvature);

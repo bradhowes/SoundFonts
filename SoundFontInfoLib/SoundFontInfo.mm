@@ -15,7 +15,7 @@ using namespace SF2;
 
 @implementation SoundFontInfoPreset
 
-- (id)init:(Parser::Preset const &)preset {
+- (id)init:(Parser::PresetInfo const &)preset {
     if (self = [super init]) {
         self.name = [NSString stringWithUTF8String:preset.name.c_str()];
         self.bank = preset.bank;

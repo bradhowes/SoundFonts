@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include <iostream>
+#include <cstdint>
+#include <string>
 
-#include "BinaryStream.hpp"
+#include "Pos.hpp"
 
 namespace SF2 {
 
@@ -18,27 +19,27 @@ namespace SF2 {
  modulators in the preset or instrument zones.
  */
 class SFBag {
-    SFBag const& next() const { return *(this + 1); }
 public:
     constexpr static size_t size = 4;
 
-    SFBag(BinaryStream& is) { is.copyInto(this); }
+    explicit SFBag(Pos& pos) { pos = pos.readInto(*this); }
 
     uint16_t generatorIndex() const { return wGenNdx; }
-    uint16_t generatorCount() const { return next().generatorIndex() - generatorIndex(); }
+    uint16_t generatorCount() const;
 
     uint16_t modulatorIndex() const { return wModNdx; }
-    uint16_t modulatorCount() const { return next().modulatorIndex() - modulatorIndex(); }
+    uint16_t modulatorCount() const;
 
-    void dump(const std::string& indent, int index) const
-    {
-        std::cout << indent << index << ": genIndex: " << generatorIndex() << " count: " << generatorCount()
-        << " modIndex: " << modulatorIndex() << " count: " << modulatorCount() << std::endl;
-    }
+    void dump(const std::string& indent, int index) const;
 
 private:
+    SFBag const& next() const { return *(this + 1); }
+
     uint16_t wGenNdx;
     uint16_t wModNdx;
 };
+
+inline uint16_t SFBag::generatorCount() const { return next().generatorIndex() - generatorIndex(); }
+inline uint16_t SFBag::modulatorCount() const { return next().modulatorIndex() - modulatorIndex(); }
 
 }

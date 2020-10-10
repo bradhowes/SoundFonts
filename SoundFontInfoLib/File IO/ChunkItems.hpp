@@ -32,19 +32,22 @@ public:
 
      - parameter source: the bytes that will be used to generate the entities
      */
-    explicit ChunkItems(Chunk const& source) : items_{}
+    explicit ChunkItems(ChunkList const& source) : items_{}
     {
         // This is a hard constraint: the number of items is in the collection is defined by the overall source size
-        // since there is no padding involved in the SF2 file format. There resulting vector of items may be larger
-        // due to memory layout, but the item count will be the same.
+        // since there is no padding involved in the SF2 file format. The resulting vector of items may be larger
+        // due to memory layout, but the item count must be the same.
         load(source);
     }
 
     void load(Chunk const& source)
     {
-//        items_.reserve(source.size() / itemSize);
-//        BinaryStream is(source.bytePtr(), source.size());
-//        while (is) items_.emplace_back(is);
+        items_.reserve(source.dataSize() / itemSize);
+        Pos pos = source.dataPos();
+        Pos end = source.dataEnd();
+        while (pos < end) {
+            items_.emplace_back(pos);
+        }
     }
 
     /**

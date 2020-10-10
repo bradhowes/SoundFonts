@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Chunk.hpp"
+#include "ChunkList.hpp"
 #include "Format.hpp"
 #include "Parser.hpp"
 #include "StringUtils.hpp"
@@ -11,11 +11,11 @@
 using namespace SF2;
 
 Parser::Info
-Parser::parse(int fd, size_t size)
+Parser::parse(int fd, size_t fileSize)
 {
     Parser::Info info;
 
-    auto riff = Pos(fd, 0).makeChunkList();
+    auto riff = Pos(fd, 0, fileSize).makeChunkList();
     if (riff.tag() != Tags::riff) throw Format::error;
     if (riff.kind() != Tags::sfbk) throw Format::error;
 
@@ -36,7 +36,6 @@ Parser::parse(int fd, size_t size)
                 while (p2 < chunk.dataEnd()) {
                     SFPreset sfp(p2);
                     info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.preset());
-                    p2 = p2.advance(SFPreset::size);
                 }
 
                 info.presets.pop_back();
