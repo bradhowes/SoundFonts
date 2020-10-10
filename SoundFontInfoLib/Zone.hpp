@@ -5,10 +5,12 @@
 #include <functional>
 #include <vector>
 
+#include "ChunkItems.hpp"
 #include "Configuration.hpp"
 #include "SFBag.hpp"
 #include "SFFile.hpp"
 #include "SFGenerator.hpp"
+#include "SFModulator.hpp"
 
 namespace SF2 {
 

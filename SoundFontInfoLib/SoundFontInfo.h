@@ -20,9 +20,11 @@
 @property (nonatomic, retain) NSString* embeddedName;
 @property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* presets;
 
-+ (SoundFontInfo*)load:(NSURL*)url;
++ (SoundFontInfo*)loadViaParser:(NSURL*)url;
++ (SoundFontInfo*)loadViaSFFile:(NSURL*)url;
 
-+ (id) parse:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (SoundFontInfo*)parseViaSFFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
 - (id) init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets;
 

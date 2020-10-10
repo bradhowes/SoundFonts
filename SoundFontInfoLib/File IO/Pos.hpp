@@ -34,10 +34,12 @@ struct Pos {
         return advance(result);
     }
 
-    Pos advance(size_t offset) const { return Pos(fd_, std::min(pos_ + offset, end_), end_); }
+    constexpr size_t offset() const { return pos_; }
 
     /// Return number of bytes available to read at this position in the file.
     constexpr size_t available() const { return end_ - pos_; }
+
+    Pos advance(size_t offset) const { return Pos(fd_, std::min(pos_ + offset, end_), end_); }
 
     /// Return true if Pos is invalid
     constexpr explicit operator bool() const { return fd_ < 0 || pos_ >= end_; }

@@ -23,6 +23,7 @@ public:
     using const_iterator = typename std::vector<ItemType>::const_iterator;
     using ItemRefCollection = std::vector<std::reference_wrapper<ItemType const>>;
 
+
     static constexpr size_t itemSize = T::size;
 
     ChunkItems() : items_{} {}
@@ -34,20 +35,19 @@ public:
      */
     explicit ChunkItems(ChunkList const& source) : items_{}
     {
-        // This is a hard constraint: the number of items is in the collection is defined by the overall source size
-        // since there is no padding involved in the SF2 file format. The resulting vector of items may be larger
-        // due to memory layout, but the item count must be the same.
         load(source);
     }
 
     void load(Chunk const& source)
     {
-        items_.reserve(source.dataSize() / itemSize);
-        Pos pos = source.dataPos();
-        Pos end = source.dataEnd();
+        size_t size = source.size() / itemSize - 1;
+        items_.reserve(size);
+        Pos pos = source.begin();
+        Pos end = source.begin().advance(size * itemSize);
         while (pos < end) {
             items_.emplace_back(pos);
         }
+        // items_.pop_back();
     }
 
     /**
@@ -56,7 +56,8 @@ public:
      - returns: number of items in collection
      */
     size_t size() const { return items_.size(); }
-
+    bool empty() const { return items_.empty(); }
+    
     /**
      Obtain a (read-only) reference to an entity in the collection.
 
@@ -96,8 +97,11 @@ public:
         });
     }
 
+
 private:
     ItemCollection items_;
+
+    friend class SFFile;
 };
 
 }

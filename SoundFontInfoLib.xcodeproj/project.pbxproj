@@ -11,7 +11,6 @@
 		BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4424F69E21009EAABE /* Instrument.hpp */; };
 		BD2AEE4724F6B8D7009EAABE /* Instrument.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.mm */; };
 		BD2AEE4924F6BF94009EAABE /* Zone.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4824F6BF94009EAABE /* Zone.mm */; };
-		BD2AEE4B24F738ED009EAABE /* SFManager.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4A24F738ED009EAABE /* SFManager.hpp */; };
 		BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */; };
 		BD2AEE5124F81867009EAABE /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; };
 		BD2AEE5324F9C689009EAABE /* Configuration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* Configuration.hpp */; };
@@ -60,6 +59,8 @@
 		BDB266152531AA16005BEAD1 /* Pos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB266142531AA16005BEAD1 /* Pos.hpp */; };
 		BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB266182531AE2E005BEAD1 /* Pos.mm */; };
 		BDB2661F2531B5C8005BEAD1 /* SFBag.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2661E2531B5C8005BEAD1 /* SFBag.mm */; };
+		BDB2662725323FE7005BEAD1 /* SFFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2662625323FE7005BEAD1 /* SFFileTests.swift */; };
+		BDB2662D25324780005BEAD1 /* SFFileTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2662C25324780005BEAD1 /* SFFileTests.mm */; };
 		BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E0F24F09FB800339A69 /* Pan.hpp */; };
 		BDD08E1224F111C800339A69 /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E1124F111C800339A69 /* LFO.hpp */; };
 		BDD08E1424F111D300339A69 /* LFO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDD08E1324F111D300339A69 /* LFO.mm */; };
@@ -91,8 +92,6 @@
 		BD2AEE4424F69E21009EAABE /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
 		BD2AEE4624F6B8D7009EAABE /* Instrument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Instrument.mm; sourceTree = "<group>"; };
 		BD2AEE4824F6BF94009EAABE /* Zone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Zone.mm; sourceTree = "<group>"; };
-		BD2AEE4A24F738ED009EAABE /* SFManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFManager.hpp; sourceTree = "<group>"; };
-		BD2AEE4C24F73E16009EAABE /* SFManagerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFManagerTests.mm; sourceTree = "<group>"; };
 		BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFGeneratorAmountTests.mm; sourceTree = "<group>"; };
 		BD2AEE5024F81867009EAABE /* Format.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Format.hpp; sourceTree = "<group>"; };
 		BD2AEE5224F9C689009EAABE /* Configuration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Configuration.hpp; sourceTree = "<group>"; };
@@ -146,6 +145,8 @@
 		BDB266142531AA16005BEAD1 /* Pos.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pos.hpp; sourceTree = "<group>"; };
 		BDB266182531AE2E005BEAD1 /* Pos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Pos.mm; sourceTree = "<group>"; };
 		BDB2661E2531B5C8005BEAD1 /* SFBag.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFBag.mm; sourceTree = "<group>"; };
+		BDB2662625323FE7005BEAD1 /* SFFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFFileTests.swift; sourceTree = "<group>"; };
+		BDB2662C25324780005BEAD1 /* SFFileTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFFileTests.mm; sourceTree = "<group>"; };
 		BDD08E0F24F09FB800339A69 /* Pan.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pan.hpp; sourceTree = "<group>"; };
 		BDD08E1124F111C800339A69 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LFO.hpp; sourceTree = "<group>"; };
 		BDD08E1324F111D300339A69 /* LFO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LFO.mm; sourceTree = "<group>"; };
@@ -225,15 +226,11 @@
 				BDB2660E253040CF005BEAD1 /* PresetCollection.mm */,
 				BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */,
 				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
-				BDABC42C24F46A2000F8C874 /* SFFile.mm */,
-				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
-				BD2AEE4A24F738ED009EAABE /* SFManager.hpp */,
 				BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */,
 				BD74D18223CDB36200204ED4 /* SoundFontInfo.h */,
 				BDEC002A2497790A00A52507 /* StringUtils.hpp */,
 				BD97190E24EF18530009ED6E /* Synthesizer.mm */,
 				BD97190C24EF182D0009ED6E /* Synthesizer.hpp */,
-				BDB1B4612491805800F3F361 /* Tag.hpp */,
 				BDABC42824F172CD00F8C874 /* Transform.mm */,
 				BDABC42624F1727A00F8C874 /* Transform.hpp */,
 				BDEC0026249775FE00A52507 /* Voice.hpp */,
@@ -250,13 +247,14 @@
 		BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */ = {
 			isa = PBXGroup;
 			children = (
-				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
 				BDABC42A24F1AD8800F8C874 /* TransformTests.mm */,
-				BD97191024EF1E9C0009ED6E /* SynthesizerTests.mm */,
-				BD2AEE4C24F73E16009EAABE /* SFManagerTests.mm */,
+				BDB2662C25324780005BEAD1 /* SFFileTests.mm */,
+				BDB2662625323FE7005BEAD1 /* SFFileTests.swift */,
 				BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */,
+				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */,
+				BD97191024EF1E9C0009ED6E /* SynthesizerTests.mm */,
 				BD74D17723CDB1D200204ED4 /* Info.plist */,
 			);
 			path = SoundFontInfoLibTests;
@@ -299,6 +297,9 @@
 				BDB266142531AA16005BEAD1 /* Pos.hpp */,
 				BDABC43024F46E1300F8C874 /* Preset.mm */,
 				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
+				BDABC42C24F46A2000F8C874 /* SFFile.mm */,
+				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
+				BDB1B4612491805800F3F361 /* Tag.hpp */,
 			);
 			path = "File IO";
 			sourceTree = "<group>";
@@ -329,7 +330,6 @@
 				BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */,
 				BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */,
 				BD2AEE5524F9DEB9009EAABE /* PresetZone.hpp in Headers */,
-				BD2AEE4B24F738ED009EAABE /* SFManager.hpp in Headers */,
 				BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */,
 				BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */,
 				BD2AEE5124F81867009EAABE /* Format.hpp in Headers */,
@@ -495,11 +495,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB2662725323FE7005BEAD1 /* SFFileTests.swift in Sources */,
 				BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */,
 				BDABC42B24F1AD8800F8C874 /* TransformTests.mm in Sources */,
 				BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */,
 				BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */,
 				BD97191124EF1E9C0009ED6E /* SynthesizerTests.mm in Sources */,
+				BDB2662D25324780005BEAD1 /* SFFileTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

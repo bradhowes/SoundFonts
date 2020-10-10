@@ -5,8 +5,8 @@
 using namespace SF2;
 
 InstrumentZone::InstrumentZone(SFFile const& file, SFBag const& bag) :
-Zone(file.instrumentZoneGenerators.slice(bag.generatorIndex(), bag.generatorCount()),
-     file.instrumentZoneModulators.slice(bag.modulatorIndex(), bag.modulatorCount()),
+Zone(file.instrumentZoneGenerators().slice(bag.generatorIndex(), bag.generatorCount()),
+     file.instrumentZoneModulators().slice(bag.modulatorIndex(), bag.modulatorCount()),
      SFGenIndex::sampleID),
-sample_{isGlobal() ? nullptr : &file.samples[resourceLink()]}, sampleData_{file.sampleData}
+sample_{isGlobal() ? nullptr : &file.samples()[resourceLink()]}, sampleDataBegin_{Pos(-1, 0, 0)}
 {}
