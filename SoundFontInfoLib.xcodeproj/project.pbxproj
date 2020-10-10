@@ -53,6 +53,13 @@
 		BDB1B4662491823400F3F361 /* ChunkList.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4642491823400F3F361 /* ChunkList.mm */; };
 		BDB1B46A2491829000F3F361 /* Chunk.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4682491829000F3F361 /* Chunk.mm */; };
 		BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; };
+		BDB265FF25303E38005BEAD1 /* Configuration.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB265FE25303E38005BEAD1 /* Configuration.mm */; };
+		BDB2660525303FE0005BEAD1 /* InstrumentCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */; };
+		BDB2660B25304037005BEAD1 /* InstrumentZone.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660A25304037005BEAD1 /* InstrumentZone.mm */; };
+		BDB2660F253040CF005BEAD1 /* PresetCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660E253040CF005BEAD1 /* PresetCollection.mm */; };
+		BDB266152531AA16005BEAD1 /* Pos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB266142531AA16005BEAD1 /* Pos.hpp */; };
+		BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB266182531AE2E005BEAD1 /* Pos.mm */; };
+		BDB2661F2531B5C8005BEAD1 /* SFBag.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2661E2531B5C8005BEAD1 /* SFBag.mm */; };
 		BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E0F24F09FB800339A69 /* Pan.hpp */; };
 		BDD08E1224F111C800339A69 /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E1124F111C800339A69 /* LFO.hpp */; };
 		BDD08E1424F111D300339A69 /* LFO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDD08E1324F111D300339A69 /* LFO.mm */; };
@@ -132,6 +139,13 @@
 		BDB1B4652491823400F3F361 /* ChunkList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkList.hpp; sourceTree = "<group>"; };
 		BDB1B4682491829000F3F361 /* Chunk.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Chunk.mm; sourceTree = "<group>"; };
 		BDB1B4692491829000F3F361 /* Chunk.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Chunk.hpp; sourceTree = "<group>"; };
+		BDB265FE25303E38005BEAD1 /* Configuration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Configuration.mm; sourceTree = "<group>"; };
+		BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentCollection.mm; sourceTree = "<group>"; };
+		BDB2660A25304037005BEAD1 /* InstrumentZone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentZone.mm; sourceTree = "<group>"; };
+		BDB2660E253040CF005BEAD1 /* PresetCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetCollection.mm; sourceTree = "<group>"; };
+		BDB266142531AA16005BEAD1 /* Pos.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pos.hpp; sourceTree = "<group>"; };
+		BDB266182531AE2E005BEAD1 /* Pos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Pos.mm; sourceTree = "<group>"; };
+		BDB2661E2531B5C8005BEAD1 /* SFBag.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFBag.mm; sourceTree = "<group>"; };
 		BDD08E0F24F09FB800339A69 /* Pan.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pan.hpp; sourceTree = "<group>"; };
 		BDD08E1124F111C800339A69 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LFO.hpp; sourceTree = "<group>"; };
 		BDD08E1324F111D300339A69 /* LFO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LFO.mm; sourceTree = "<group>"; };
@@ -168,26 +182,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BD64EB6624E5301500EA8473 /* SF2 Entities */ = {
-			isa = PBXGroup;
-			children = (
-				BD64EB6924E5341900EA8473 /* SFBag.hpp */,
-				BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */,
-				BDEC00462497E7BF00A52507 /* SFGenerator.hpp */,
-				BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */,
-				BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */,
-				BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */,
-				BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */,
-				BD64EB6724E5328100EA8473 /* SFInstrument.hpp */,
-				BDEC004A2497F0A700A52507 /* SFModulator.hpp */,
-				BDEC00162497665D00A52507 /* SFModulatorSource.hpp */,
-				BD64EB6B24E534B700EA8473 /* SFPreset.hpp */,
-				BD64EB6F24E536A200EA8473 /* SFSample.hpp */,
-				BDEC001E2497672000A52507 /* SFTransform.hpp */,
-			);
-			name = "SF2 Entities";
-			sourceTree = "<group>";
-		};
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
@@ -211,30 +205,24 @@
 		BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */ = {
 			isa = PBXGroup;
 			children = (
-				BD64EB6624E5301500EA8473 /* SF2 Entities */,
-				BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */,
-				BDB1B4682491829000F3F361 /* Chunk.mm */,
-				BDB1B4692491829000F3F361 /* Chunk.hpp */,
-				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
-				BDB1B4642491823400F3F361 /* ChunkList.mm */,
-				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
+				BDB265F7252FB31F005BEAD1 /* File IO */,
+				BDB265F4252FB2CB005BEAD1 /* SF2 Entities */,
+				BDB265FE25303E38005BEAD1 /* Configuration.mm */,
 				BD2AEE5224F9C689009EAABE /* Configuration.hpp */,
 				BD82800524EC16F200533D80 /* Envelope.mm */,
 				BD82800324EC061400533D80 /* Envelope.hpp */,
-				BD2AEE5024F81867009EAABE /* Format.hpp */,
 				BD2AEE4624F6B8D7009EAABE /* Instrument.mm */,
 				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
+				BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */,
 				BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */,
+				BDB2660A25304037005BEAD1 /* InstrumentZone.mm */,
 				BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */,
 				BDD08E1324F111D300339A69 /* LFO.mm */,
 				BDD08E1124F111C800339A69 /* LFO.hpp */,
 				BD97191424EF21ED0009ED6E /* MIDI.mm */,
 				BD97191224EF21E40009ED6E /* MIDI.hpp */,
 				BDD08E0F24F09FB800339A69 /* Pan.hpp */,
-				BD74D18423CDB36200204ED4 /* Parser.mm */,
-				BD74D18123CDB36200204ED4 /* Parser.hpp */,
-				BDABC43024F46E1300F8C874 /* Preset.mm */,
-				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
+				BDB2660E253040CF005BEAD1 /* PresetCollection.mm */,
 				BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */,
 				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
 				BDABC42C24F46A2000F8C874 /* SFFile.mm */,
@@ -272,6 +260,47 @@
 				BD74D17723CDB1D200204ED4 /* Info.plist */,
 			);
 			path = SoundFontInfoLibTests;
+			sourceTree = "<group>";
+		};
+		BDB265F4252FB2CB005BEAD1 /* SF2 Entities */ = {
+			isa = PBXGroup;
+			children = (
+				BD64EB6924E5341900EA8473 /* SFBag.hpp */,
+				BDB2661E2531B5C8005BEAD1 /* SFBag.mm */,
+				BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */,
+				BDEC00462497E7BF00A52507 /* SFGenerator.hpp */,
+				BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */,
+				BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */,
+				BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */,
+				BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */,
+				BD64EB6724E5328100EA8473 /* SFInstrument.hpp */,
+				BDEC004A2497F0A700A52507 /* SFModulator.hpp */,
+				BDEC00162497665D00A52507 /* SFModulatorSource.hpp */,
+				BD64EB6B24E534B700EA8473 /* SFPreset.hpp */,
+				BD64EB6F24E536A200EA8473 /* SFSample.hpp */,
+				BDEC001E2497672000A52507 /* SFTransform.hpp */,
+			);
+			path = "SF2 Entities";
+			sourceTree = "<group>";
+		};
+		BDB265F7252FB31F005BEAD1 /* File IO */ = {
+			isa = PBXGroup;
+			children = (
+				BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */,
+				BDB1B4682491829000F3F361 /* Chunk.mm */,
+				BDB1B4692491829000F3F361 /* Chunk.hpp */,
+				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
+				BDB1B4642491823400F3F361 /* ChunkList.mm */,
+				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
+				BD2AEE5024F81867009EAABE /* Format.hpp */,
+				BD74D18423CDB36200204ED4 /* Parser.mm */,
+				BD74D18123CDB36200204ED4 /* Parser.hpp */,
+				BDB266182531AE2E005BEAD1 /* Pos.mm */,
+				BDB266142531AA16005BEAD1 /* Pos.hpp */,
+				BDABC43024F46E1300F8C874 /* Preset.mm */,
+				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
+			);
+			path = "File IO";
 			sourceTree = "<group>";
 		};
 		BDECFFE72496BA6600A52507 /* sf2dump */ = {
@@ -319,6 +348,7 @@
 				BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */,
 				BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */,
 				BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */,
+				BDB266152531AA16005BEAD1 /* Pos.hpp in Headers */,
 				BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */,
 				BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */,
 				BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */,
@@ -437,19 +467,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */,
+				BDB265FF25303E38005BEAD1 /* Configuration.mm in Sources */,
 				BD97191524EF21ED0009ED6E /* MIDI.mm in Sources */,
 				BD2AEE4324F692C5009EAABE /* SFGenerator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontInfo.mm in Sources */,
 				BD82800624EC16F200533D80 /* Envelope.mm in Sources */,
 				BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */,
 				BDB1B46A2491829000F3F361 /* Chunk.mm in Sources */,
+				BDB2661F2531B5C8005BEAD1 /* SFBag.mm in Sources */,
 				BDABC42924F172CD00F8C874 /* Transform.mm in Sources */,
 				BDABC43124F46E1300F8C874 /* Preset.mm in Sources */,
 				BD2AEE4724F6B8D7009EAABE /* Instrument.mm in Sources */,
 				BD2AEE4924F6BF94009EAABE /* Zone.mm in Sources */,
 				BD74D18823CDB36200204ED4 /* Parser.mm in Sources */,
+				BDB2660F253040CF005BEAD1 /* PresetCollection.mm in Sources */,
 				BDABC42D24F46A2000F8C874 /* SFFile.mm in Sources */,
 				BDD08E1424F111D300339A69 /* LFO.mm in Sources */,
+				BDB2660B25304037005BEAD1 /* InstrumentZone.mm in Sources */,
+				BDB2660525303FE0005BEAD1 /* InstrumentCollection.mm in Sources */,
 				BD97190F24EF18530009ED6E /* Synthesizer.mm in Sources */,
 				BDB1B4662491823400F3F361 /* ChunkList.mm in Sources */,
 			);

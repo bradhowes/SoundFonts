@@ -117,59 +117,12 @@ public:
         /**
          Set the status of a note playing. When true, the evenlope begins proper. When set to false, the envelope will jump to the release stage.
          */
-        void gate(bool noteOn)
-        {
-            if (noteOn) {
-                value_ = 0.0;
-                enterStage(Stage::delay);
-            }
-            else if (stage_ != Stage::idle) {
-                enterStage(Stage::release);
-            }
-        }
+        void gate(bool noteOn);
 
         /**
          Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
          */
-        double process()
-        {
-            switch (stage_) {
-                case Stage::delay: checkIfEndStage(Stage::attack); break;
-
-                case Stage::attack:
-                    updateValue();
-                    checkIfEndStage(Stage::hold);
-                    break;
-
-                case Stage::hold: checkIfEndStage(Stage::decay); break;
-
-                case Stage::decay:
-                    updateValue();
-                    if (value_ <= sustainLevel() ) {
-                        enterStage(Stage::sustain);
-                    }
-                    else {
-                        checkIfEndStage(Stage::sustain);
-                    }
-                    break;
-
-                case Stage::sustain: break;
-
-                case Stage::release:
-                    updateValue();
-                    if (value_ <= 0.0 ) {
-                        enterStage(Stage::idle);
-                    }
-                    else {
-                        checkIfEndStage(Stage::idle);
-                    }
-                    break;
-
-                case Stage::idle: break;
-            }
-
-            return value_;
-        }
+        double process();
 
     private:
 
@@ -189,41 +142,7 @@ public:
          Enter the given stage, setting it up for processing. If the stage has no activity, move to the next one until there is one with non-zero samples or the end of
          the stage sequence is reached.
          */
-        void enterStage(Stage next)
-        {
-            stage_ = next;
-            switch (stage_) {
-                case Stage::delay:
-                    if (active().sampleCount != 0) break;
-                    stage_ = Stage::attack;
-
-                case Stage::attack:
-                    if (active().sampleCount != 0) break;
-                    stage_ = Stage::hold;
-
-                case Stage::hold:
-                    value_ = 1.0;
-                    if (active().sampleCount != 0) break;
-                    stage_ = Stage::decay;
-
-                case Stage::decay:
-                    if (active().sampleCount != 0) break;
-                    stage_ = Stage::sustain;
-
-                case Stage::sustain:
-                    value_ = active().initial;
-                    break;
-
-                case Stage::release:
-                    if (active().sampleCount != 0) break;
-                    stage_ = Stage::idle;
-                    value_ = 0.0;
-
-                case Stage::idle: return;
-            }
-
-            remainingDuration_ = active().sampleCount;
-        }
+        void enterStage(Stage next);
 
         StageConfigs const& configs_;
         Stage stage_{Stage::idle};
@@ -259,15 +178,9 @@ private:
 
     StageConfiguration& stage(Stage stage) { return configs_[static_cast<int>(stage)]; }
 
-    static double clampCurvature(double curvature)
-    {
-        return std::max(std::min(curvature, maxiumCurvature), minimumCurvature);
-    }
+    static double clampCurvature(double curvature) { return std::max(std::min(curvature, maxiumCurvature), minimumCurvature); }
 
-    static double calculateCoefficient(double rate, double curvature)
-    {
-        return (rate <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / rate);
-    }
+    static double calculateCoefficient(double rate, double curvature) { return (rate <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / rate); }
 
     double samplesFor(double duration) const { return round(sampleRate_ * duration); }
 

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "BinaryStream.hpp"
+#include "Pos.hpp"
 #include "SFGeneratorDefinition.hpp"
 
 namespace SF2 {
@@ -15,7 +15,7 @@ class SFGenerator {
 public:
     static constexpr size_t size = 4;
 
-    explicit SFGenerator(BinaryStream& is) { is.copyInto(this); }
+    explicit SFGenerator(Pos& pos) { pos = pos.readInto(*this); }
 
     SFGenIndex index() const { return index_.index(); }
     SFGeneratorAmount value() const { return amount_; }

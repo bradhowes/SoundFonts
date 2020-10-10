@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "BinaryStream.hpp"
+#include "Pos.hpp"
 #include "StringUtils.hpp"
 
 namespace SF2 {
@@ -17,8 +17,8 @@ class SFInstrument {
 public:
     constexpr static size_t size = 22;
 
-    explicit SFInstrument(BinaryStream& is) {
-        is.copyInto(this);
+    explicit SFInstrument(Pos& pos) {
+        pos = pos.readInto(*this);
         trim_property(achInstName);
     }
 
@@ -26,15 +26,17 @@ public:
     uint16_t zoneIndex() const { return wInstBagNdx; }
     uint16_t zoneCount() const { return (this + 1)->zoneIndex() - zoneIndex(); }
 
-    void dump(std::string const& indent, int index) const
-    {
-        std::cout << indent << index << ": '" << name() << "' zoneIndex: " << zoneIndex() << " count: " << zoneCount()
-        << std::endl;
-    }
+    void dump(std::string const& indent, int index) const;
 
 private:
     char achInstName[20];
     uint16_t wInstBagNdx;
 };
+
+inline void SFInstrument::dump(std::string const& indent, int index) const
+{
+    std::cout << indent << index << ": '" << name() << "' zoneIndex: " << zoneIndex() << " count: " << zoneCount()
+    << std::endl;
+}
 
 }

@@ -19,13 +19,7 @@ public:
 
     Kind kind() const { return bits_ == 0 ? Kind::linear : Kind::absolute; }
 
-    float transform(float value) const {
-        switch (kind()) {
-            case Kind::linear: return value;
-            case Kind::absolute: return abs(value);
-            default: throw "unexpected tranform kind";
-        }
-    }
+    float transform(float value) const;
 
     friend std::ostream& operator<<(std::ostream& os, SFTransform const& value) {
         return os << (value.kind() == Kind::linear ? "linear" : "absolute");
@@ -34,5 +28,14 @@ public:
 private:
     const uint16_t bits_;
 };
+
+inline float SFTransform::transform(float value) const
+{
+    switch (kind()) {
+        case Kind::linear: return value;
+        case Kind::absolute: return abs(value);
+        default: throw "unexpected tranform kind";
+    }
+}
 
 }

@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "BinaryStream.hpp"
+#include "Pos.hpp"
 #include "SFGeneratorDefinition.hpp"
 #include "SFModulatorSource.hpp"
 #include "SFTransform.hpp"
@@ -16,18 +16,9 @@ class SFModulator {
 public:
     static constexpr size_t size = 10;
 
-    explicit SFModulator(BinaryStream& is) { is.copyInto(this); }
+    explicit SFModulator(Pos& pos) { pos = pos.readInto(*this); }
     
-    void dump(const std::string& indent, int index) const
-    {
-        std::cout << indent << index
-        << ": src: " << sfModSrcOper
-        << " dest: " << SFGeneratorDefinition::definition(sfModDestOper).name()
-        << " amount: " << modAmount
-        << " op: " << sfModAmtSrcOper
-        << " xform: " << sfModTransOper
-        << std::endl;
-    }
+    void dump(const std::string& indent, int index) const;
 
 private:
     SFModulatorSource sfModSrcOper;
@@ -36,5 +27,16 @@ private:
     SFModulatorSource sfModAmtSrcOper;
     SFTransform sfModTransOper;
 };
+
+inline void SFModulator::dump(const std::string& indent, int index) const
+{
+    std::cout << indent << index
+    << ": src: " << sfModSrcOper
+    << " dest: " << SFGeneratorDefinition::definition(sfModDestOper).name()
+    << " amount: " << modAmount
+    << " op: " << sfModAmtSrcOper
+    << " xform: " << sfModTransOper
+    << std::endl;
+}
 
 }

@@ -105,7 +105,7 @@ class SoundFontInfoLibTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: tmp) }
 
         let original = try! Data(contentsOf: urls[0])
-        for _ in 0..<100 {
+        for _ in 0..<20 {
             let truncatedCount = Int.random(in: 1..<(original.count / 2));
             let data = original.subdata(in: 0..<truncatedCount)
             try! data.write(to: tmp, options: .atomic)

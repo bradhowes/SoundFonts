@@ -28,20 +28,22 @@ public:
     uint16_t index() const { return bits_ & 0x7F; }
     std::string typeName() const { return std::string(typeNames[type()]); }
 
-    friend std::ostream& operator<<(std::ostream& os, SFModulatorSource const& mod)
-    {
-        return os << "[type: " << mod.typeName()
-        << " P: " << mod.polarity()
-        << " D: " << mod.direction()
-        << " CC: " << mod.isContinuousController()
-        << " index: " << mod.index()
-        << "]";
-    }
+    friend std::ostream& operator<<(std::ostream& os, SFModulatorSource const& mod);
 
 private:
     static constexpr char const* typeNames[] = { "linear", "concave", "convex", "switch" };
 
     uint16_t bits_;
 };
+
+inline std::ostream& operator<<(std::ostream& os, SFModulatorSource const& mod)
+{
+    return os << "[type: " << mod.typeName()
+    << " P: " << mod.polarity()
+    << " D: " << mod.direction()
+    << " CC: " << mod.isContinuousController()
+    << " index: " << mod.index()
+    << "]";
+}
 
 }

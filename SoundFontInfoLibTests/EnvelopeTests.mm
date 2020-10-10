@@ -13,12 +13,6 @@ using namespace SF2;
 
 @implementation EnvelopeTests
 
-- (void)setUp {
-}
-
-- (void)tearDown {
-}
-
 - (void)testGateOnOff {
     auto env = Envelope(1);
     auto gen = env.generator();
