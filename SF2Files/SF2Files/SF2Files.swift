@@ -1,4 +1,4 @@
-// Created by Brad Howes on 9/26/20.
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 private final class SF2FilesTag {}
 

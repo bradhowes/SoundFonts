@@ -38,7 +38,7 @@ public final class LegacySoundFont: Codable {
     public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
-        guard let info = SoundFontInfo.load(url) else {
+        guard let info = SoundFontInfo.load(viaParser: url) else {
             os_log(.error, log: Self.logger, "failed to fetch content")
             return .failure(.invalidSoundFont(url.lastPathComponent))
         }

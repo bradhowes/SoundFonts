@@ -18,7 +18,6 @@
 		BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */; };
 		BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */; };
 		BD2AEE5B24F9DFB8009EAABE /* PresetCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */; };
-		BD64EB6524E52EDF00EA8473 /* BinaryStream.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */; };
 		BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6724E5328100EA8473 /* SFInstrument.hpp */; };
 		BD64EB6A24E5341900EA8473 /* SFBag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6924E5341900EA8473 /* SFBag.hpp */; };
 		BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6B24E534B700EA8473 /* SFPreset.hpp */; };
@@ -99,7 +98,6 @@
 		BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZone.hpp; sourceTree = "<group>"; };
 		BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentCollection.hpp; sourceTree = "<group>"; };
 		BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetCollection.hpp; sourceTree = "<group>"; };
-		BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BinaryStream.hpp; sourceTree = "<group>"; };
 		BD64EB6724E5328100EA8473 /* SFInstrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFInstrument.hpp; sourceTree = "<group>"; };
 		BD64EB6924E5341900EA8473 /* SFBag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFBag.hpp; sourceTree = "<group>"; };
 		BD64EB6B24E534B700EA8473 /* SFPreset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFPreset.hpp; sourceTree = "<group>"; };
@@ -284,7 +282,6 @@
 		BDB265F7252FB31F005BEAD1 /* File IO */ = {
 			isa = PBXGroup;
 			children = (
-				BD64EB6424E52EDF00EA8473 /* BinaryStream.hpp */,
 				BDB1B4682491829000F3F361 /* Chunk.mm */,
 				BDB1B4692491829000F3F361 /* Chunk.hpp */,
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
@@ -361,7 +358,6 @@
 				BDB1B4632491805800F3F361 /* Tag.hpp in Headers */,
 				BDABC43324F46EFA00F8C874 /* Zone.hpp in Headers */,
 				BDEC0024249768E200A52507 /* SFGeneratorAmount.hpp in Headers */,
-				BD64EB6524E52EDF00EA8473 /* BinaryStream.hpp in Headers */,
 				BD82800424EC061400533D80 /* Envelope.hpp in Headers */,
 				BDD08E1224F111C800339A69 /* LFO.hpp in Headers */,
 				BD827FFE24EA8E1B00533D80 /* SFGeneratorDefinition.hpp in Headers */,

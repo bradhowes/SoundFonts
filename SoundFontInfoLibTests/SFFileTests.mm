@@ -1,8 +1,8 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 #import <XCTest/XCTest.h>
+#import <SF2Files/SF2Files-Swift.h>
 
-#import <SF2Files/SF2Files.h>
 #import "SFFile.hpp"
 
 using namespace SF2;
