@@ -15,6 +15,8 @@ class Tag {
 public:
     Tag(uint32_t tag) : tag_{tag} {}
 
+    uint32_t rawValue() const { return tag_; }
+
     bool operator ==(Tag const& rhs) const { return tag_ == rhs.tag_; }
     bool operator !=(Tag const& rhs) const { return tag_ != rhs.tag_; }
 

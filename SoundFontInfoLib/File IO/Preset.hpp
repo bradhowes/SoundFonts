@@ -38,7 +38,7 @@ public:
 
     Preset(SFFile const& file, InstrumentCollection const& instruments, SFPreset const& cfg) : cfg_{cfg}, zones_{size_t(cfg_.zoneCount())}
     {
-        for (SFBag const& bag : file.presetZones.slice(cfg_.zoneIndex(), cfg_.zoneCount())) {
+        for (SFBag const& bag : file.presetZones().slice(cfg_.zoneIndex(), cfg_.zoneCount())) {
             if (bag.generatorCount() != 0 || bag.modulatorCount() != 0) {
                 zones_.emplace_back(file, instruments, bag);
             }

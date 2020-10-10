@@ -18,7 +18,7 @@ public:
 
 private:
     SFSample const* sample_;
-    uint8_t const* sampleData_;
+    Pos sampleDataBegin_;
 };
 
 }

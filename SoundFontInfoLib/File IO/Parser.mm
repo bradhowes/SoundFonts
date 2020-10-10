@@ -21,30 +21,31 @@ Parser::parse(int fd, size_t fileSize)
 
     auto p0 = riff.begin();
     while (p0 < riff.end()) {
-        auto chunks = p0.makeChunkList();
-        auto p1 = chunks.begin();
-        while (p1 < chunks.end()) {
+        auto chunkList = p0.makeChunkList();
+        std::cout << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString() << std::endl;
+        auto p1 = chunkList.begin();
+        p0 = chunkList.advance();
+        while (p1 < chunkList.end()) {
             auto chunk = p1.makeChunk();
+            p1 = chunk.advance();
+            std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
             if (chunk.tag() == Tags::inam) {
                 char name[256];
-                chunk.dataPos().readInto(name, chunk.dataSize());
+                chunk.begin().readInto(name, chunk.size());
                 trim_property(name);
                 info.embeddedName = std::string(name);
             }
             else if (chunk.tag() == Tags::phdr) {
-                auto p2 = chunk.dataPos();
-                while (p2 < chunk.dataEnd()) {
+                auto p2 = chunk.begin();
+                while (p2 < chunk.end()) {
                     SFPreset sfp(p2);
                     info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.preset());
                 }
-
                 info.presets.pop_back();
-                return info;
             }
-            p1 = chunk.next();
         }
-        p0 = chunks.next();
     }
 
-    throw Format::error;
+    if (info.presets.empty()) throw Format::error;
+    return info;
 }

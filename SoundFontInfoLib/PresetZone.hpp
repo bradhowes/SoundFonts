@@ -14,8 +14,8 @@ class Configuration;
 class PresetZone : public Zone {
 public:
     PresetZone(SFFile const& file, InstrumentCollection const& instruments, SFBag const& bag) :
-    Zone(file.presetZoneGenerators.slice(bag.generatorIndex(), bag.generatorCount()),
-         file.presetZoneModulators.slice(bag.modulatorIndex(), bag.modulatorCount()),
+    Zone(file.presetZoneGenerators().slice(bag.generatorIndex(), bag.generatorCount()),
+         file.presetZoneModulators().slice(bag.modulatorIndex(), bag.modulatorCount()),
          SFGenIndex::instrument),
     instrument_{isGlobal() ? nullptr : &instruments.at(resourceLink())}
     {}

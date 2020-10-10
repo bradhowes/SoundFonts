@@ -10,22 +10,20 @@ namespace SF2 {
 
 class Chunk {
 public:
-    Chunk(Tag tag, uint32_t size, Pos pos) : tag_{tag}, size_{size}, dataPos_{pos} {}
+    Chunk(Tag tag, uint32_t size, Pos pos) : tag_{tag}, size_{size}, pos_{pos} {}
 
     Tag tag() const { return tag_; }
-    size_t dataSize() const { return size_; }
-
-    Pos dataPos() const { return dataPos_; }
-    Pos dataEnd() const { return dataPos_.advance(size_); }
-
-    Pos next() const { return dataPos_.advance(paddedSize()); }
+    size_t size() const { return size_; }
+    Pos begin() const { return pos_; }
+    Pos end() const { return pos_.advance(size_); }
+    Pos advance() const { return pos_.advance(paddedSize()); }
 
 private:
     uint32_t paddedSize() const { return size_ + ((size_ & 1) ? 1 : 0); }
 
-    Tag tag_;
-    uint32_t size_;
-    Pos dataPos_;
+    Tag const tag_;
+    uint32_t const size_;
+    Pos const pos_;
 };
 
 }

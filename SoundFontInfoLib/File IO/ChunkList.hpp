@@ -13,9 +13,6 @@ public:
 
     Tag kind() const { return kind_; }
 
-    Pos begin() const { return dataPos(); }
-    Pos end() const { return dataEnd(); }
-
 private:
     Tag kind_;
 };

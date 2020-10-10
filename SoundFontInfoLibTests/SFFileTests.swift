@@ -4,13 +4,13 @@ import XCTest
 import SoundFontInfoLib
 import SF2Files
 
-class SoundFontInfoLibTests: XCTestCase {
+class SFFileTests: XCTestCase {
 
     let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
     let urls: [URL] = SF2Files.allResources.sorted { $0.lastPathComponent < $1.lastPathComponent }
 
     func testParsing1() {
-        let sfi = SoundFontInfo.load(viaParser: urls[0])!
+        let sfi = SoundFontInfo.load(viaSFFile: urls[0])!
 
         XCTAssertEqual(sfi.embeddedName, "Fluid R3 GM")
         XCTAssertEqual(sfi.presets.count, 189)
@@ -26,7 +26,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing2() {
-        let sfi = SoundFontInfo.load(viaParser: urls[1])!
+        let sfi = SoundFontInfo.load(viaSFFile: urls[1])!
 
         XCTAssertEqual(sfi.embeddedName, "Free Font GM Ver. 3.2")
         XCTAssertEqual(sfi.presets.count, 235)
@@ -42,7 +42,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing3() {
-        let sfi = SoundFontInfo.load(viaParser: urls[2])!
+        let sfi = SoundFontInfo.load(viaSFFile: urls[2])!
 
         XCTAssertEqual(sfi.embeddedName, "GeneralUser GS MuseScore version 1.442")
         XCTAssertEqual(sfi.presets.count, 270)
@@ -58,7 +58,7 @@ class SoundFontInfoLibTests: XCTestCase {
     }
 
     func testParsing4() {
-        let sfi = SoundFontInfo.load(viaParser: urls[3])!
+        let sfi = SoundFontInfo.load(viaSFFile: urls[3])!
 
         XCTAssertEqual(sfi.embeddedName, "User Bank")
         XCTAssertEqual(sfi.presets.count, 1)
@@ -66,51 +66,5 @@ class SoundFontInfoLibTests: XCTestCase {
         XCTAssertEqual(sfi.presets[0].name, "Nice Piano")
         XCTAssertEqual(sfi.presets[0].bank, 0)
         XCTAssertEqual(sfi.presets[0].preset, 1)
-    }
-
-    func testDumps() {
-        for sf in urls {
-            let sfi = SoundFontInfo.load(viaParser: sf)!
-            let name = sfi.embeddedName.replacingOccurrences(of: " ", with: "_")
-            sfi.dump("/tmp/\(name)_dump.txt")
-        }
-    }
-
-    var newTempFileURL: URL {
-        URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString)
-    }
-
-    /**
-     Generate file with random contents and try to process them to make sure that there are no BAD_ACCESS
-     exceptions.
-     */
-    func testRobustnessWithRandomPayload() {
-        let tmp = newTempFileURL
-        defer { try? FileManager.default.removeItem(at: tmp) }
-
-        let size = 2048
-        var data = Data(count: size)
-        _ = data.withUnsafeMutableBytes { SecRandomCopyBytes(kSecRandomDefault, size, $0.baseAddress!) }
-        try! data.write(to: tmp, options: .atomic)
-        let sfi = SoundFontInfo.load(viaParser: tmp)
-        XCTAssertNil(sfi)
-    }
-
-    /**
-     Generate partial soundfont file contents and try to process them to make sure that there are no BAD_ACCESS
-     exceptions.
-     */
-    func testRobustnessWIthPartialPayload() {
-        let tmp = newTempFileURL
-        defer { try? FileManager.default.removeItem(at: tmp) }
-
-        let original = try! Data(contentsOf: urls[0])
-        for _ in 0..<20 {
-            let truncatedCount = Int.random(in: 1..<(original.count / 2));
-            let data = original.subdata(in: 0..<truncatedCount)
-            try! data.write(to: tmp, options: .atomic)
-            let sfi = SoundFontInfo.load(viaParser: tmp)
-            XCTAssertNil(sfi)
-        }
     }
 }
