@@ -2,10 +2,10 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Envelope.hpp"
-#include "Synthesizer.hpp"
+#include "Render/Envelope.hpp"
+#include "Render/Synthesizer.hpp"
 
-using namespace SF2;
+using namespace SF2::Render;
 
 @interface EnvelopeTests : XCTestCase
 
