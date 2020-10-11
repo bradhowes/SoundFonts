@@ -29,20 +29,20 @@ final public class FavoriteEditor: UIViewController {
 
     override public var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
-    @IBOutlet weak var cancelButton: UIBarButtonItem!
-    @IBOutlet weak var doneButton: UIBarButtonItem!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var lowestNoteCollection: UIStackView!
-    @IBOutlet weak var lowestNote: UIButton!
-    @IBOutlet weak var lowestNoteStepper: UIStepper!
-    @IBOutlet weak var soundFontName: UILabel!
-    @IBOutlet weak var patchName: UILabel!
-    @IBOutlet weak var bank: UILabel!
-    @IBOutlet weak var index: UILabel!
-    @IBOutlet weak var gainValue: UILabel!
-    @IBOutlet weak var gainSlider: UISlider!
-    @IBOutlet weak var panValue: UILabel!
-    @IBOutlet weak var panSlider: UISlider!
+    @IBOutlet private weak var cancelButton: UIBarButtonItem!
+    @IBOutlet private weak var doneButton: UIBarButtonItem!
+    @IBOutlet private weak var name: UITextField!
+    @IBOutlet private weak var lowestNoteCollection: UIStackView!
+    @IBOutlet private weak var lowestNote: UIButton!
+    @IBOutlet private weak var lowestNoteStepper: UIStepper!
+    @IBOutlet private weak var soundFontName: UILabel!
+    @IBOutlet private weak var patchName: UILabel!
+    @IBOutlet private weak var bank: UILabel!
+    @IBOutlet private weak var index: UILabel!
+    @IBOutlet private weak var gainValue: UILabel!
+    @IBOutlet private weak var gainSlider: UISlider!
+    @IBOutlet private weak var panValue: UILabel!
+    @IBOutlet private weak var panSlider: UISlider!
 
     func configure(_ config: Config) {
         self.favorite = config.favorite

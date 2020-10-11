@@ -3,9 +3,9 @@
 import UIKit
 
 public final class GuideViewController: UIViewController {
-    @IBOutlet weak var fontsPanel: UIView!
-    @IBOutlet weak var patchesPanel: UIView!
-    @IBOutlet weak var favoritesPanel: UIView!
+    @IBOutlet private weak var fontsPanel: UIView!
+    @IBOutlet private weak var patchesPanel: UIView!
+    @IBOutlet private weak var favoritesPanel: UIView!
 
     private var savedParent: UIViewController!
 
