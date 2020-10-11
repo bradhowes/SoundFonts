@@ -93,6 +93,7 @@ extension FileManager {
         return found
     }
 }
+
 // MARK: - SoundFonts Protocol
 
 extension LegacySoundFontsManager: SoundFonts {

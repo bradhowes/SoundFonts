@@ -1,6 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
-import UIKit
+import Foundation
 import os
 
 /**
@@ -11,17 +11,23 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private static let log = Logging.logger("FavMgr")
 
-    static public var loadError: Notification.Name?
-
     private var log: OSLog { Self.log }
-    private var collection: LegacyFavoriteCollection
+
+    private let configFile: FavoritesConfigFile
+
+    private var collection: LegacyFavoriteCollection = LegacyFavoriteCollection() {
+        didSet {
+            os_log(.debug, log: log, "collection changed: %s", collection.description)
+        }
+    }
 
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
-    public init() {
-        self.collection = LegacyFavoriteCollection()
+    public init(configFile: FavoritesConfigFile) {
+        self.configFile = configFile
         super.init()
+        configFile.initialize(favoritesManager: self)
     }
 
     public func validate(_ favorite: LegacyFavorite) -> Bool {
@@ -50,11 +56,13 @@ extension LegacyFavoritesManager: Favorites {
     public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
         let favorite = LegacyFavorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
+        save()
         notify(.added(index: count - 1, favorite: favorite))
     }
 
     public func update(index: Int, with favorite: LegacyFavorite) {
         collection.replace(index: index, with: favorite)
+        save()
         notify(.changed(index: index, favorite: favorite))
     }
 
@@ -64,6 +72,7 @@ extension LegacyFavoritesManager: Favorites {
 
     public func move(from: Int, to: Int) {
         collection.move(from: from, to: to)
+        save()
     }
 
     public func selected(index: Int) {
@@ -72,11 +81,13 @@ extension LegacyFavoritesManager: Favorites {
 
     public func remove(index: Int, bySwiping: Bool) {
         let favorite = collection.remove(index: index)
+        save()
         notify(.removed(index: index, favorite: favorite, bySwiping: bySwiping))
     }
 
     public func removeAll(associatedWith soundFont: LegacySoundFont) {
         collection.removeAll(associatedWith: soundFont)
+        save()
         notify(.removedAll(associatedWith: soundFont))
     }
 
@@ -88,23 +99,34 @@ extension LegacyFavoritesManager: Favorites {
 extension LegacyFavoritesManager {
 
     internal func configurationData() throws -> Data {
-        os_log(.info, log: log, "archiving")
+        os_log(.info, log: log, "configurationData")
         let data = try PropertyListEncoder().encode(collection)
         os_log(.info, log: log, "done - %d", data.count)
         return data
     }
 
     internal func loadConfigurationData(contents: Any) throws {
-        os_log(.info, log: log, "loading configuration")
-        if let data = contents as? Data {
-            os_log(.info, log: log, "has Data")
-            if let collection = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) {
-                os_log(.info, log: log, "properly decoded")
-                self.collection = collection
-                notify(.restored)
-                return
-            }
+        os_log(.info, log: log, "loadConfigurationData")
+        guard let data = contents as? Data else {
+            NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
+            return
         }
-        NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
+
+        os_log(.info, log: log, "has Data")
+        guard let collection = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) else {
+            NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
+            return
+        }
+
+        os_log(.info, log: log, "properly decoded")
+        self.collection = collection
+        notify(.restored)
+    }
+
+    /**
+     Save the current collection to disk.
+     */
+    private func save() {
+        self.configFile.save()
     }
 }

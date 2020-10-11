@@ -6,7 +6,11 @@ import os
 /**
  Collection of Favorite instances created by the user.
  */
-final public class LegacyFavoriteCollection: Codable {
+final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
+
+    public var description: String {
+        "[" + favorites.map { "\(String.pointer($0)) '\($0.name)'" }.joined(separator: ",") + "]"
+    }
 
     private var favorites: [LegacyFavorite]
     private var reverseLookup: [SoundFontAndPatch: LegacyFavorite]
