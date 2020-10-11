@@ -43,9 +43,9 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         let soundFontsManager = LegacySoundFontsManager(configFile: soundFontsConfigFile)
         self.soundFonts = soundFontsManager
 
-        let favoritesManager = LegacyFavoritesManager()
+        self.favoritesConfigFile = FavoritesConfigFile()
+        let favoritesManager = LegacyFavoritesManager(configFile: favoritesConfigFile)
         self.favorites = favoritesManager
-        self.favoritesConfigFile = FavoritesConfigFile(favoritesManager: favoritesManager)
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager)

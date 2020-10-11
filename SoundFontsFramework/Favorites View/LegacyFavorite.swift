@@ -5,7 +5,7 @@ import Foundation
 /**
  A custom setting with a SoundFont patch and a keyboard configuration.
  */
-public struct LegacyFavorite: Codable {
+public class LegacyFavorite: Codable {
 
     public typealias Key = UUID
 

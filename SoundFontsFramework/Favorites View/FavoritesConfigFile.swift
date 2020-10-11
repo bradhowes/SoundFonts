@@ -10,11 +10,15 @@ enum FavoritesConfigFileError: Error {
 public final class FavoritesConfigFile: UIDocument {
     private let log = Logging.logger("FavCfg")
     private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("Favorites.plist")
-    private let favoritesManager: LegacyFavoritesManager
+    private weak var favoritesManager: LegacyFavoritesManager?
 
-    public init(favoritesManager: LegacyFavoritesManager) {
-        self.favoritesManager = favoritesManager
+    public init() {
         super.init(fileURL: sharedArchivePath)
+    }
+
+    public func initialize(favoritesManager: LegacyFavoritesManager) {
+        favoritesManager.subscribe(self, notifier: favoritesChanged)
+        self.favoritesManager = favoritesManager
         self.open { ok in
             if !ok {
                 do {
@@ -26,20 +30,34 @@ public final class FavoritesConfigFile: UIDocument {
                 }
             }
         }
+    }
 
-        favoritesManager.subscribe(self, notifier: favoritesChanged)
+    public func save() {
+        super.save(to: sharedArchivePath, for: .forOverwriting)
     }
 
     override public func contents(forType typeName: String) throws -> Any {
-        try favoritesManager.configurationData()
+        guard let favoritesManager = self.favoritesManager else { fatalError() }
+        return try favoritesManager.configurationData()
     }
 
     override public func load(fromContents contents: Any, ofType typeName: String?) throws {
+        guard let favoritesManager = self.favoritesManager else { fatalError() }
         try favoritesManager.loadConfigurationData(contents: contents)
+    }
+
+    override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
+        os_log(.info, log: log, "revert url: '%s' - ignoring", url.path)
+        completionHandler?(false)
     }
 
     private func favoritesChanged(_ event: FavoritesEvent) {
         os_log(.info, log: log, "favoritesChanged")
-        updateChangeCount(.done)
+        switch event {
+        case .restored:
+            break
+        default:
+            updateChangeCount(.done)
+        }
     }
 }
