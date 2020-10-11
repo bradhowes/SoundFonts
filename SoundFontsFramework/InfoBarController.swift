@@ -17,9 +17,9 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var showSettings: UIButton!
     @IBOutlet private weak var editVisibility: UIButton!
 
-    @IBOutlet weak var showMoreButtons: UIButton!
-    @IBOutlet weak var moreButtons: UIView!
-    @IBOutlet weak var moreButtonsXConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var showMoreButtons: UIButton!
+    @IBOutlet private weak var moreButtons: UIView!
+    @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
 
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
