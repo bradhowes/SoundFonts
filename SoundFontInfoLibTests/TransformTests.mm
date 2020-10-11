@@ -8,9 +8,9 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Transform.hpp"
+#include "Render/Transform.hpp"
 
-using namespace SF2;
+using namespace SF2::Render;
 
 @interface TransformTests : XCTestCase
 @property (nonatomic, assign) double epsilon;

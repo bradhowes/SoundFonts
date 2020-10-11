@@ -6,16 +6,17 @@
 #include <vector>
 #include <string>
 
-#include "Format.hpp"
-#include "Parser.hpp"
-#include "SFFile.hpp"
+#include "IO/Format.hpp"
+#include "IO/Parser.hpp"
+#include "IO/File.hpp"
+
 #include "SoundFontInfo.h"
 
 using namespace SF2;
 
 @implementation SoundFontInfoPreset
 
-- (id)initForPresetInfo:(Parser::PresetInfo const &)preset {
+- (id)initForPresetInfo:(IO::Parser::PresetInfo const &)preset {
     if (self = [super init]) {
         self.name = [NSString stringWithUTF8String:preset.name.c_str()];
         self.bank = preset.bank;
@@ -25,7 +26,7 @@ using namespace SF2;
     return self;
 }
 
-- (id)initForSFPreset:(SF2::SFPreset const &)preset {
+- (id)initForSFPreset:(Entity::Preset const &)preset {
     if (self = [super init]) {
         self.name = [NSString stringWithUTF8String:preset.name()];
         self.bank = preset.bank();
@@ -66,28 +67,28 @@ using namespace SF2;
         if (secured) [url stopAccessingSecurityScopedResource];
         return fd != -1 ? [SoundFontInfo parseViaParser:url fileDescriptor:fd fileSize:fileSize] : nil;
     }
-    catch (enum SF2::Format value) {
+    catch (enum IO::Format value) {
         return nil;
     }
 }
 
-+ (SoundFontInfo*)loadViaSFFile:(NSURL*)url {
++ (SoundFontInfo*)loadViaFile:(NSURL*)url {
     try {
         BOOL secured = [url startAccessingSecurityScopedResource];
         uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
         int fd = ::open(url.path.UTF8String, O_RDONLY);
         if (secured) [url stopAccessingSecurityScopedResource];
-        return fd != -1 ? [SoundFontInfo parseViaSFFile:url fileDescriptor:fd fileSize:fileSize] : nil;
+        return fd != -1 ? [SoundFontInfo parseViaFile:url fileDescriptor:fd fileSize:fileSize] : nil;
     }
-    catch (enum SF2::Format value) {
+    catch (enum IO::Format value) {
         return nil;
     }
 }
 
-+ (SoundFontInfo*)parseViaSFFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
++ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
     SoundFontInfo* result = nil;
     try {
-        auto info = SF2::SFFile(fd, fileSize);
+        auto info = IO::File(fd, fileSize);
         ::close(fd);
         fd = -1;
 
@@ -109,7 +110,7 @@ using namespace SF2;
 
         result = [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
     }
-    catch (enum SF2::Format value) {
+    catch (enum IO::Format value) {
         if (fd != -1) ::close(fd);
     }
 
@@ -119,7 +120,7 @@ using namespace SF2;
 + (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
     SoundFontInfo* result = nil;
     try {
-        auto info = SF2::Parser::parse(fd, fileSize);
+        auto info = IO::Parser::parse(fd, fileSize);
         ::close(fd);
         fd = -1;
 
@@ -141,7 +142,7 @@ using namespace SF2;
 
         result = [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
     }
-    catch (enum SF2::Format value) {
+    catch (enum IO::Format value) {
         if (fd != -1) ::close(fd);
     }
 

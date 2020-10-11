@@ -3,23 +3,23 @@
 #import <XCTest/XCTest.h>
 #import <SF2Files/SF2Files-Swift.h>
 
-#import "SFFile.hpp"
+#import "File.hpp"
 
 using namespace SF2;
 
 static NSArray<NSURL*>* urls = SF2Files.allResources;
 
-@interface SFFileTests : XCTestCase
+@interface FileTests : XCTestCase
 
 @end
 
-@implementation SFFileTests
+@implementation FileTests
 
 - (void)testParsing1 {
     NSURL* url = [urls objectAtIndex:0];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
-    auto file = SFFile(fd, fileSize);
+    auto file = IO::File(fd, fileSize);
 
     XCTAssertEqual(235, file.presets().size());
     XCTAssertEqual(235, file.presetZones().size());
@@ -36,7 +36,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     NSURL* url = [urls objectAtIndex:1];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
-    auto file = SFFile(fd, fileSize);
+    auto file = IO::File(fd, fileSize);
 
     XCTAssertEqual(270, file.presets().size());
     XCTAssertEqual(2616, file.presetZones().size());
@@ -53,7 +53,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     NSURL* url = [urls objectAtIndex:2];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
-    auto file = SFFile(fd, fileSize);
+    auto file = IO::File(fd, fileSize);
 
     XCTAssertEqual(189, file.presets().size());
     XCTAssertEqual(1054, file.presetZones().size());
@@ -70,7 +70,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     NSURL* url = [urls objectAtIndex:3];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
-    auto file = SFFile(fd, fileSize);
+    auto file = IO::File(fd, fileSize);
 
     XCTAssertEqual(1, file.presets().size());
     XCTAssertEqual(6, file.presetZones().size());

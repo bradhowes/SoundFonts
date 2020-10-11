@@ -7,73 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD2AEE4324F692C5009EAABE /* SFGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */; };
-		BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4424F69E21009EAABE /* Instrument.hpp */; };
-		BD2AEE4724F6B8D7009EAABE /* Instrument.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.mm */; };
-		BD2AEE4924F6BF94009EAABE /* Zone.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4824F6BF94009EAABE /* Zone.mm */; };
+		BD2AEE4324F692C5009EAABE /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4224F692C5009EAABE /* Generator.cpp */; };
+		BD2AEE4724F6B8D7009EAABE /* Instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */; };
+		BD2AEE4924F6BF94009EAABE /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4824F6BF94009EAABE /* Zone.cpp */; };
 		BD2AEE4F24F7E2AA009EAABE /* SFGeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */; };
-		BD2AEE5124F81867009EAABE /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; };
-		BD2AEE5324F9C689009EAABE /* Configuration.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* Configuration.hpp */; };
-		BD2AEE5524F9DEB9009EAABE /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */; };
-		BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */; };
-		BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */; };
-		BD2AEE5B24F9DFB8009EAABE /* PresetCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */; };
-		BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6724E5328100EA8473 /* SFInstrument.hpp */; };
-		BD64EB6A24E5341900EA8473 /* SFBag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6924E5341900EA8473 /* SFBag.hpp */; };
-		BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6B24E534B700EA8473 /* SFPreset.hpp */; };
-		BD64EB7024E536A200EA8473 /* SFSample.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6F24E536A200EA8473 /* SFSample.hpp */; };
-		BD64EB7224E5A5DC00EA8473 /* SFFile.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BD74D18523CDB36200204ED4 /* Parser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18123CDB36200204ED4 /* Parser.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 		BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18223CDB36200204ED4 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD74D18723CDB36200204ED4 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */; };
-		BD74D18823CDB36200204ED4 /* Parser.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18423CDB36200204ED4 /* Parser.mm */; };
-		BD827FFE24EA8E1B00533D80 /* SFGeneratorDefinition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */; };
-		BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */; };
-		BD82800424EC061400533D80 /* Envelope.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD82800324EC061400533D80 /* Envelope.hpp */; };
-		BD82800624EC16F200533D80 /* Envelope.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD82800524EC16F200533D80 /* Envelope.mm */; };
+		BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18423CDB36200204ED4 /* Parser.cpp */; };
+		BD82800024EA8E6800533D80 /* GeneratorDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD827FFF24EA8E6800533D80 /* GeneratorDefinition.cpp */; };
+		BD82800624EC16F200533D80 /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD82800524EC16F200533D80 /* Envelope.cpp */; };
 		BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD82800A24EC91A600533D80 /* EnvelopeTests.mm */; };
-		BD97190D24EF182D0009ED6E /* Synthesizer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD97190C24EF182D0009ED6E /* Synthesizer.hpp */; };
-		BD97190F24EF18530009ED6E /* Synthesizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD97190E24EF18530009ED6E /* Synthesizer.mm */; };
+		BD97190F24EF18530009ED6E /* Synthesizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD97190E24EF18530009ED6E /* Synthesizer.cpp */; };
 		BD97191124EF1E9C0009ED6E /* SynthesizerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD97191024EF1E9C0009ED6E /* SynthesizerTests.mm */; };
-		BD97191324EF21E50009ED6E /* MIDI.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD97191224EF21E40009ED6E /* MIDI.hpp */; };
-		BD97191524EF21ED0009ED6E /* MIDI.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD97191424EF21ED0009ED6E /* MIDI.mm */; };
+		BD97191524EF21ED0009ED6E /* MIDI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD97191424EF21ED0009ED6E /* MIDI.cpp */; };
 		BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
-		BDABC42724F1727A00F8C874 /* Transform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42624F1727A00F8C874 /* Transform.hpp */; };
-		BDABC42924F172CD00F8C874 /* Transform.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42824F172CD00F8C874 /* Transform.mm */; };
+		BDABC42924F172CD00F8C874 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42824F172CD00F8C874 /* Transform.cpp */; };
 		BDABC42B24F1AD8800F8C874 /* TransformTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42A24F1AD8800F8C874 /* TransformTests.mm */; };
-		BDABC42D24F46A2000F8C874 /* SFFile.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42C24F46A2000F8C874 /* SFFile.mm */; };
-		BDABC42F24F46CF000F8C874 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42E24F46CF000F8C874 /* Preset.hpp */; };
-		BDABC43124F46E1300F8C874 /* Preset.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC43024F46E1300F8C874 /* Preset.mm */; };
-		BDABC43324F46EFA00F8C874 /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC43224F46EFA00F8C874 /* Zone.hpp */; };
-		BDB1B4632491805800F3F361 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; };
-		BDB1B4662491823400F3F361 /* ChunkList.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4642491823400F3F361 /* ChunkList.mm */; };
-		BDB1B46A2491829000F3F361 /* Chunk.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1B4682491829000F3F361 /* Chunk.mm */; };
-		BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; };
-		BDB265FF25303E38005BEAD1 /* Configuration.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB265FE25303E38005BEAD1 /* Configuration.mm */; };
-		BDB2660525303FE0005BEAD1 /* InstrumentCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */; };
-		BDB2660B25304037005BEAD1 /* InstrumentZone.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660A25304037005BEAD1 /* InstrumentZone.mm */; };
-		BDB2660F253040CF005BEAD1 /* PresetCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660E253040CF005BEAD1 /* PresetCollection.mm */; };
-		BDB266152531AA16005BEAD1 /* Pos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB266142531AA16005BEAD1 /* Pos.hpp */; };
-		BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB266182531AE2E005BEAD1 /* Pos.mm */; };
-		BDB2661F2531B5C8005BEAD1 /* SFBag.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2661E2531B5C8005BEAD1 /* SFBag.mm */; };
+		BDABC42D24F46A2000F8C874 /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42C24F46A2000F8C874 /* File.cpp */; };
+		BDB265FF25303E38005BEAD1 /* Configuration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB265FE25303E38005BEAD1 /* Configuration.cpp */; };
+		BDB2660525303FE0005BEAD1 /* InstrumentCollection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660425303FE0005BEAD1 /* InstrumentCollection.cpp */; };
+		BDB2660B25304037005BEAD1 /* InstrumentZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB2660A25304037005BEAD1 /* InstrumentZone.cpp */; };
+		BDB266192531AE2E005BEAD1 /* Pos.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB266182531AE2E005BEAD1 /* Pos.cpp */; };
 		BDB2662725323FE7005BEAD1 /* SFFileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB2662625323FE7005BEAD1 /* SFFileTests.swift */; };
 		BDB2662D25324780005BEAD1 /* SFFileTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB2662C25324780005BEAD1 /* SFFileTests.mm */; };
-		BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E0F24F09FB800339A69 /* Pan.hpp */; };
-		BDD08E1224F111C800339A69 /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDD08E1124F111C800339A69 /* LFO.hpp */; };
-		BDD08E1424F111D300339A69 /* LFO.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDD08E1324F111D300339A69 /* LFO.mm */; };
-		BDEC00182497665D00A52507 /* SFModulatorSource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00162497665D00A52507 /* SFModulatorSource.hpp */; };
-		BDEC001C2497669300A52507 /* SFGeneratorIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */; };
-		BDEC00202497672000A52507 /* SFTransform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001E2497672000A52507 /* SFTransform.hpp */; };
-		BDEC0024249768E200A52507 /* SFGeneratorAmount.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */; };
-		BDEC0028249775FE00A52507 /* Voice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0026249775FE00A52507 /* Voice.hpp */; };
-		BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002A2497790A00A52507 /* StringUtils.hpp */; };
-		BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003224978AA900A52507 /* ZoneModulators.hpp */; };
-		BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003624978AB300A52507 /* ZoneGenerators.hpp */; };
-		BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; };
-		BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* SFGenerator.hpp */; };
-		BDEC004C2497F0A700A52507 /* SFModulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* SFModulator.hpp */; };
+		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC003224978AA900A52507 /* ZoneModulators.hpp */; settings = {ATTRIBUTES = (Private, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,22 +47,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGenerator.cpp; sourceTree = "<group>"; };
+		BD2AEE4224F692C5009EAABE /* Generator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
 		BD2AEE4424F69E21009EAABE /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
-		BD2AEE4624F6B8D7009EAABE /* Instrument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Instrument.mm; sourceTree = "<group>"; };
-		BD2AEE4824F6BF94009EAABE /* Zone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Zone.mm; sourceTree = "<group>"; };
+		BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Instrument.cpp; sourceTree = "<group>"; };
+		BD2AEE4824F6BF94009EAABE /* Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Zone.cpp; sourceTree = "<group>"; };
 		BD2AEE4E24F7E2AA009EAABE /* SFGeneratorAmountTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFGeneratorAmountTests.mm; sourceTree = "<group>"; };
 		BD2AEE5024F81867009EAABE /* Format.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Format.hpp; sourceTree = "<group>"; };
 		BD2AEE5224F9C689009EAABE /* Configuration.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Configuration.hpp; sourceTree = "<group>"; };
 		BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetZone.hpp; sourceTree = "<group>"; };
 		BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentZone.hpp; sourceTree = "<group>"; };
 		BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = InstrumentCollection.hpp; sourceTree = "<group>"; };
-		BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetCollection.hpp; sourceTree = "<group>"; };
-		BD64EB6724E5328100EA8473 /* SFInstrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFInstrument.hpp; sourceTree = "<group>"; };
-		BD64EB6924E5341900EA8473 /* SFBag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFBag.hpp; sourceTree = "<group>"; };
-		BD64EB6B24E534B700EA8473 /* SFPreset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFPreset.hpp; sourceTree = "<group>"; };
-		BD64EB6F24E536A200EA8473 /* SFSample.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFSample.hpp; sourceTree = "<group>"; };
-		BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFFile.hpp; sourceTree = "<group>"; };
+		BD64EB6724E5328100EA8473 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
+		BD64EB6924E5341900EA8473 /* Bag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bag.hpp; sourceTree = "<group>"; };
+		BD64EB6B24E534B700EA8473 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
+		BD64EB6F24E536A200EA8473 /* Sample.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Sample.hpp; sourceTree = "<group>"; };
+		BD64EB7124E5A5DC00EA8473 /* File.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = File.hpp; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontInfoLib.h; sourceTree = "<group>"; };
 		BD74D16B23CDB1D200204ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -112,53 +71,49 @@
 		BD74D18123CDB36200204ED4 /* Parser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Parser.hpp; sourceTree = "<group>"; };
 		BD74D18223CDB36200204ED4 /* SoundFontInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundFontInfo.h; sourceTree = "<group>"; };
 		BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundFontInfo.mm; sourceTree = "<group>"; };
-		BD74D18423CDB36200204ED4 /* Parser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Parser.mm; sourceTree = "<group>"; };
-		BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SFGeneratorDefinition.hpp; sourceTree = "<group>"; };
-		BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SFGeneratorDefinition.cpp; sourceTree = "<group>"; };
+		BD74D18423CDB36200204ED4 /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
+		BD827FFD24EA8E1B00533D80 /* GeneratorDefinition.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GeneratorDefinition.hpp; sourceTree = "<group>"; };
+		BD827FFF24EA8E6800533D80 /* GeneratorDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GeneratorDefinition.cpp; sourceTree = "<group>"; };
 		BD82800324EC061400533D80 /* Envelope.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Envelope.hpp; sourceTree = "<group>"; };
-		BD82800524EC16F200533D80 /* Envelope.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Envelope.mm; sourceTree = "<group>"; };
+		BD82800524EC16F200533D80 /* Envelope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Envelope.cpp; sourceTree = "<group>"; };
 		BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SoundFontInfoLibTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		BD82800A24EC91A600533D80 /* EnvelopeTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EnvelopeTests.mm; sourceTree = "<group>"; };
 		BD97190C24EF182D0009ED6E /* Synthesizer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Synthesizer.hpp; sourceTree = "<group>"; };
-		BD97190E24EF18530009ED6E /* Synthesizer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Synthesizer.mm; sourceTree = "<group>"; };
+		BD97190E24EF18530009ED6E /* Synthesizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Synthesizer.cpp; sourceTree = "<group>"; };
 		BD97191024EF1E9C0009ED6E /* SynthesizerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SynthesizerTests.mm; sourceTree = "<group>"; };
 		BD97191224EF21E40009ED6E /* MIDI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MIDI.hpp; sourceTree = "<group>"; };
-		BD97191424EF21ED0009ED6E /* MIDI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDI.mm; sourceTree = "<group>"; };
+		BD97191424EF21ED0009ED6E /* MIDI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MIDI.cpp; sourceTree = "<group>"; };
 		BDABC42624F1727A00F8C874 /* Transform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
-		BDABC42824F172CD00F8C874 /* Transform.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Transform.mm; sourceTree = "<group>"; };
+		BDABC42824F172CD00F8C874 /* Transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Transform.cpp; sourceTree = "<group>"; };
 		BDABC42A24F1AD8800F8C874 /* TransformTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransformTests.mm; sourceTree = "<group>"; };
-		BDABC42C24F46A2000F8C874 /* SFFile.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFFile.mm; sourceTree = "<group>"; };
+		BDABC42C24F46A2000F8C874 /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
 		BDABC42E24F46CF000F8C874 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
-		BDABC43024F46E1300F8C874 /* Preset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Preset.mm; sourceTree = "<group>"; };
 		BDABC43224F46EFA00F8C874 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Zone.hpp; sourceTree = "<group>"; };
 		BDB1B4612491805800F3F361 /* Tag.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tag.hpp; sourceTree = "<group>"; };
-		BDB1B4642491823400F3F361 /* ChunkList.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ChunkList.mm; sourceTree = "<group>"; };
 		BDB1B4652491823400F3F361 /* ChunkList.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkList.hpp; sourceTree = "<group>"; };
-		BDB1B4682491829000F3F361 /* Chunk.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Chunk.mm; sourceTree = "<group>"; };
 		BDB1B4692491829000F3F361 /* Chunk.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Chunk.hpp; sourceTree = "<group>"; };
-		BDB265FE25303E38005BEAD1 /* Configuration.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Configuration.mm; sourceTree = "<group>"; };
-		BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentCollection.mm; sourceTree = "<group>"; };
-		BDB2660A25304037005BEAD1 /* InstrumentZone.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentZone.mm; sourceTree = "<group>"; };
-		BDB2660E253040CF005BEAD1 /* PresetCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetCollection.mm; sourceTree = "<group>"; };
+		BDB265FE25303E38005BEAD1 /* Configuration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Configuration.cpp; sourceTree = "<group>"; };
+		BDB2660425303FE0005BEAD1 /* InstrumentCollection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentCollection.cpp; sourceTree = "<group>"; };
+		BDB2660A25304037005BEAD1 /* InstrumentZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InstrumentZone.cpp; sourceTree = "<group>"; };
 		BDB266142531AA16005BEAD1 /* Pos.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pos.hpp; sourceTree = "<group>"; };
-		BDB266182531AE2E005BEAD1 /* Pos.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Pos.mm; sourceTree = "<group>"; };
-		BDB2661E2531B5C8005BEAD1 /* SFBag.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFBag.mm; sourceTree = "<group>"; };
+		BDB266182531AE2E005BEAD1 /* Pos.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pos.cpp; sourceTree = "<group>"; };
 		BDB2662625323FE7005BEAD1 /* SFFileTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFFileTests.swift; sourceTree = "<group>"; };
 		BDB2662C25324780005BEAD1 /* SFFileTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SFFileTests.mm; sourceTree = "<group>"; };
+		BDB266C725334B3E005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDB266C925334B96005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD08E0F24F09FB800339A69 /* Pan.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pan.hpp; sourceTree = "<group>"; };
 		BDD08E1124F111C800339A69 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LFO.hpp; sourceTree = "<group>"; };
-		BDD08E1324F111D300339A69 /* LFO.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LFO.mm; sourceTree = "<group>"; };
-		BDEC00162497665D00A52507 /* SFModulatorSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModulatorSource.hpp; sourceTree = "<group>"; };
-		BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGeneratorIndex.hpp; sourceTree = "<group>"; };
-		BDEC001E2497672000A52507 /* SFTransform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFTransform.hpp; sourceTree = "<group>"; };
-		BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGeneratorAmount.hpp; sourceTree = "<group>"; };
+		BDEC00162497665D00A52507 /* ModulatorSource.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ModulatorSource.hpp; sourceTree = "<group>"; };
+		BDEC001A2497669300A52507 /* GeneratorIndex.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GeneratorIndex.hpp; sourceTree = "<group>"; };
+		BDEC001E2497672000A52507 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
+		BDEC0022249768E200A52507 /* GeneratorAmount.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GeneratorAmount.hpp; sourceTree = "<group>"; };
 		BDEC0026249775FE00A52507 /* Voice.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Voice.hpp; sourceTree = "<group>"; };
 		BDEC002A2497790A00A52507 /* StringUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringUtils.hpp; sourceTree = "<group>"; };
 		BDEC003224978AA900A52507 /* ZoneModulators.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZoneModulators.hpp; sourceTree = "<group>"; };
 		BDEC003624978AB300A52507 /* ZoneGenerators.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ZoneGenerators.hpp; sourceTree = "<group>"; };
 		BDEC00422497DD5700A52507 /* ChunkItems.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ChunkItems.hpp; sourceTree = "<group>"; };
-		BDEC00462497E7BF00A52507 /* SFGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFGenerator.hpp; sourceTree = "<group>"; };
-		BDEC004A2497F0A700A52507 /* SFModulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SFModulator.hpp; sourceTree = "<group>"; };
+		BDEC00462497E7BF00A52507 /* Generator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Generator.hpp; sourceTree = "<group>"; };
+		BDEC004A2497F0A700A52507 /* Modulator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Modulator.hpp; sourceTree = "<group>"; };
 		BDECFFE82496BA6600A52507 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -174,6 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */,
 				BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,38 +160,11 @@
 		BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */ = {
 			isa = PBXGroup;
 			children = (
-				BDB265F7252FB31F005BEAD1 /* File IO */,
-				BDB265F4252FB2CB005BEAD1 /* SF2 Entities */,
-				BDB265FE25303E38005BEAD1 /* Configuration.mm */,
-				BD2AEE5224F9C689009EAABE /* Configuration.hpp */,
-				BD82800524EC16F200533D80 /* Envelope.mm */,
-				BD82800324EC061400533D80 /* Envelope.hpp */,
-				BD2AEE4624F6B8D7009EAABE /* Instrument.mm */,
-				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
-				BDB2660425303FE0005BEAD1 /* InstrumentCollection.mm */,
-				BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */,
-				BDB2660A25304037005BEAD1 /* InstrumentZone.mm */,
-				BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */,
-				BDD08E1324F111D300339A69 /* LFO.mm */,
-				BDD08E1124F111C800339A69 /* LFO.hpp */,
-				BD97191424EF21ED0009ED6E /* MIDI.mm */,
-				BD97191224EF21E40009ED6E /* MIDI.hpp */,
-				BDD08E0F24F09FB800339A69 /* Pan.hpp */,
-				BDB2660E253040CF005BEAD1 /* PresetCollection.mm */,
-				BD2AEE5A24F9DFB8009EAABE /* PresetCollection.hpp */,
-				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
+				BDB265F4252FB2CB005BEAD1 /* Entity */,
+				BDB265F7252FB31F005BEAD1 /* IO */,
+				BDB26651253269F9005BEAD1 /* Render */,
 				BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */,
 				BD74D18223CDB36200204ED4 /* SoundFontInfo.h */,
-				BDEC002A2497790A00A52507 /* StringUtils.hpp */,
-				BD97190E24EF18530009ED6E /* Synthesizer.mm */,
-				BD97190C24EF182D0009ED6E /* Synthesizer.hpp */,
-				BDABC42824F172CD00F8C874 /* Transform.mm */,
-				BDABC42624F1727A00F8C874 /* Transform.hpp */,
-				BDEC0026249775FE00A52507 /* Voice.hpp */,
-				BD2AEE4824F6BF94009EAABE /* Zone.mm */,
-				BDABC43224F46EFA00F8C874 /* Zone.hpp */,
-				BDEC003624978AB300A52507 /* ZoneGenerators.hpp */,
-				BDEC003224978AA900A52507 /* ZoneModulators.hpp */,
 				BD74D16B23CDB1D200204ED4 /* Info.plist */,
 				BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */,
 			);
@@ -258,47 +187,75 @@
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
 		};
-		BDB265F4252FB2CB005BEAD1 /* SF2 Entities */ = {
+		BDB265F4252FB2CB005BEAD1 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				BD64EB6924E5341900EA8473 /* SFBag.hpp */,
-				BDB2661E2531B5C8005BEAD1 /* SFBag.mm */,
-				BD2AEE4224F692C5009EAABE /* SFGenerator.cpp */,
-				BDEC00462497E7BF00A52507 /* SFGenerator.hpp */,
-				BDEC0022249768E200A52507 /* SFGeneratorAmount.hpp */,
-				BD827FFF24EA8E6800533D80 /* SFGeneratorDefinition.cpp */,
-				BD827FFD24EA8E1B00533D80 /* SFGeneratorDefinition.hpp */,
-				BDEC001A2497669300A52507 /* SFGeneratorIndex.hpp */,
-				BD64EB6724E5328100EA8473 /* SFInstrument.hpp */,
-				BDEC004A2497F0A700A52507 /* SFModulator.hpp */,
-				BDEC00162497665D00A52507 /* SFModulatorSource.hpp */,
-				BD64EB6B24E534B700EA8473 /* SFPreset.hpp */,
-				BD64EB6F24E536A200EA8473 /* SFSample.hpp */,
-				BDEC001E2497672000A52507 /* SFTransform.hpp */,
+				BD64EB6924E5341900EA8473 /* Bag.hpp */,
+				BD2AEE4224F692C5009EAABE /* Generator.cpp */,
+				BDEC00462497E7BF00A52507 /* Generator.hpp */,
+				BDEC0022249768E200A52507 /* GeneratorAmount.hpp */,
+				BD827FFF24EA8E6800533D80 /* GeneratorDefinition.cpp */,
+				BD827FFD24EA8E1B00533D80 /* GeneratorDefinition.hpp */,
+				BDEC001A2497669300A52507 /* GeneratorIndex.hpp */,
+				BD64EB6724E5328100EA8473 /* Instrument.hpp */,
+				BDEC004A2497F0A700A52507 /* Modulator.hpp */,
+				BDEC00162497665D00A52507 /* ModulatorSource.hpp */,
+				BD64EB6B24E534B700EA8473 /* Preset.hpp */,
+				BD64EB6F24E536A200EA8473 /* Sample.hpp */,
+				BDEC001E2497672000A52507 /* Transform.hpp */,
 			);
-			path = "SF2 Entities";
+			path = Entity;
 			sourceTree = "<group>";
 		};
-		BDB265F7252FB31F005BEAD1 /* File IO */ = {
+		BDB265F7252FB31F005BEAD1 /* IO */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1B4682491829000F3F361 /* Chunk.mm */,
 				BDB1B4692491829000F3F361 /* Chunk.hpp */,
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
-				BDB1B4642491823400F3F361 /* ChunkList.mm */,
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
 				BD2AEE5024F81867009EAABE /* Format.hpp */,
-				BD74D18423CDB36200204ED4 /* Parser.mm */,
+				BD74D18423CDB36200204ED4 /* Parser.cpp */,
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
-				BDB266182531AE2E005BEAD1 /* Pos.mm */,
+				BDB266182531AE2E005BEAD1 /* Pos.cpp */,
 				BDB266142531AA16005BEAD1 /* Pos.hpp */,
-				BDABC43024F46E1300F8C874 /* Preset.mm */,
-				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
-				BDABC42C24F46A2000F8C874 /* SFFile.mm */,
-				BD64EB7124E5A5DC00EA8473 /* SFFile.hpp */,
+				BDABC42C24F46A2000F8C874 /* File.cpp */,
+				BD64EB7124E5A5DC00EA8473 /* File.hpp */,
+				BDEC002A2497790A00A52507 /* StringUtils.hpp */,
 				BDB1B4612491805800F3F361 /* Tag.hpp */,
 			);
-			path = "File IO";
+			path = IO;
+			sourceTree = "<group>";
+		};
+		BDB26651253269F9005BEAD1 /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				BDB265FE25303E38005BEAD1 /* Configuration.cpp */,
+				BD2AEE5224F9C689009EAABE /* Configuration.hpp */,
+				BD82800524EC16F200533D80 /* Envelope.cpp */,
+				BD82800324EC061400533D80 /* Envelope.hpp */,
+				BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */,
+				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
+				BDB2660425303FE0005BEAD1 /* InstrumentCollection.cpp */,
+				BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */,
+				BDB2660A25304037005BEAD1 /* InstrumentZone.cpp */,
+				BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */,
+				BDD08E1124F111C800339A69 /* LFO.hpp */,
+				BD97191424EF21ED0009ED6E /* MIDI.cpp */,
+				BD97191224EF21E40009ED6E /* MIDI.hpp */,
+				BDD08E0F24F09FB800339A69 /* Pan.hpp */,
+				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
+				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
+				BD97190E24EF18530009ED6E /* Synthesizer.cpp */,
+				BD97190C24EF182D0009ED6E /* Synthesizer.hpp */,
+				BDABC42824F172CD00F8C874 /* Transform.cpp */,
+				BDABC42624F1727A00F8C874 /* Transform.hpp */,
+				BDEC0026249775FE00A52507 /* Voice.hpp */,
+				BD2AEE4824F6BF94009EAABE /* Zone.cpp */,
+				BDABC43224F46EFA00F8C874 /* Zone.hpp */,
+				BDEC003624978AB300A52507 /* ZoneGenerators.hpp */,
+				BDEC003224978AA900A52507 /* ZoneModulators.hpp */,
+			);
+			path = Render;
 			sourceTree = "<group>";
 		};
 		BDECFFE72496BA6600A52507 /* sf2dump */ = {
@@ -312,6 +269,8 @@
 		BDECFFED2496BEFB00A52507 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDB266C925334B96005BEAD1 /* SF2Files.framework */,
+				BDB266C725334B3E005BEAD1 /* SF2Files.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -323,44 +282,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDABC42724F1727A00F8C874 /* Transform.hpp in Headers */,
-				BDEC002C2497790A00A52507 /* StringUtils.hpp in Headers */,
-				BD2AEE4524F69E21009EAABE /* Instrument.hpp in Headers */,
-				BD2AEE5524F9DEB9009EAABE /* PresetZone.hpp in Headers */,
-				BD2AEE5924F9DF6B009EAABE /* InstrumentCollection.hpp in Headers */,
-				BDEC00482497E7BF00A52507 /* SFGenerator.hpp in Headers */,
-				BD2AEE5124F81867009EAABE /* Format.hpp in Headers */,
-				BDEC00182497665D00A52507 /* SFModulatorSource.hpp in Headers */,
-				BD2AEE5324F9C689009EAABE /* Configuration.hpp in Headers */,
-				BDEC00442497DD5700A52507 /* ChunkItems.hpp in Headers */,
-				BD64EB7024E536A200EA8473 /* SFSample.hpp in Headers */,
-				BD97190D24EF182D0009ED6E /* Synthesizer.hpp in Headers */,
-				BD64EB7224E5A5DC00EA8473 /* SFFile.hpp in Headers */,
-				BDD08E1024F09FB800339A69 /* Pan.hpp in Headers */,
-				BD64EB6A24E5341900EA8473 /* SFBag.hpp in Headers */,
-				BD2AEE5B24F9DFB8009EAABE /* PresetCollection.hpp in Headers */,
-				BDEC001C2497669300A52507 /* SFGeneratorIndex.hpp in Headers */,
-				BDABC42F24F46CF000F8C874 /* Preset.hpp in Headers */,
-				BD74D18523CDB36200204ED4 /* Parser.hpp in Headers */,
-				BD64EB6C24E534B700EA8473 /* SFPreset.hpp in Headers */,
-				BD64EB6824E5328100EA8473 /* SFInstrument.hpp in Headers */,
-				BD2AEE5724F9DF1E009EAABE /* InstrumentZone.hpp in Headers */,
-				BDB266152531AA16005BEAD1 /* Pos.hpp in Headers */,
-				BDEC003824978AB300A52507 /* ZoneGenerators.hpp in Headers */,
-				BDB1B46B2491829000F3F361 /* Chunk.hpp in Headers */,
 				BDEC003424978AA900A52507 /* ZoneModulators.hpp in Headers */,
-				BD97191324EF21E50009ED6E /* MIDI.hpp in Headers */,
-				BDEC004C2497F0A700A52507 /* SFModulator.hpp in Headers */,
-				BDEC00202497672000A52507 /* SFTransform.hpp in Headers */,
 				BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */,
 				BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */,
-				BDEC0028249775FE00A52507 /* Voice.hpp in Headers */,
-				BDB1B4632491805800F3F361 /* Tag.hpp in Headers */,
-				BDABC43324F46EFA00F8C874 /* Zone.hpp in Headers */,
-				BDEC0024249768E200A52507 /* SFGeneratorAmount.hpp in Headers */,
-				BD82800424EC061400533D80 /* Envelope.hpp in Headers */,
-				BDD08E1224F111C800339A69 /* LFO.hpp in Headers */,
-				BD827FFE24EA8E1B00533D80 /* SFGeneratorDefinition.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,27 +387,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */,
-				BDB265FF25303E38005BEAD1 /* Configuration.mm in Sources */,
-				BD97191524EF21ED0009ED6E /* MIDI.mm in Sources */,
-				BD2AEE4324F692C5009EAABE /* SFGenerator.cpp in Sources */,
+				BDB266192531AE2E005BEAD1 /* Pos.cpp in Sources */,
+				BDB265FF25303E38005BEAD1 /* Configuration.cpp in Sources */,
+				BD97191524EF21ED0009ED6E /* MIDI.cpp in Sources */,
+				BD2AEE4324F692C5009EAABE /* Generator.cpp in Sources */,
 				BD74D18723CDB36200204ED4 /* SoundFontInfo.mm in Sources */,
-				BD82800624EC16F200533D80 /* Envelope.mm in Sources */,
-				BD82800024EA8E6800533D80 /* SFGeneratorDefinition.cpp in Sources */,
-				BDB1B46A2491829000F3F361 /* Chunk.mm in Sources */,
-				BDB2661F2531B5C8005BEAD1 /* SFBag.mm in Sources */,
-				BDABC42924F172CD00F8C874 /* Transform.mm in Sources */,
-				BDABC43124F46E1300F8C874 /* Preset.mm in Sources */,
-				BD2AEE4724F6B8D7009EAABE /* Instrument.mm in Sources */,
-				BD2AEE4924F6BF94009EAABE /* Zone.mm in Sources */,
-				BD74D18823CDB36200204ED4 /* Parser.mm in Sources */,
-				BDB2660F253040CF005BEAD1 /* PresetCollection.mm in Sources */,
-				BDABC42D24F46A2000F8C874 /* SFFile.mm in Sources */,
-				BDD08E1424F111D300339A69 /* LFO.mm in Sources */,
-				BDB2660B25304037005BEAD1 /* InstrumentZone.mm in Sources */,
-				BDB2660525303FE0005BEAD1 /* InstrumentCollection.mm in Sources */,
-				BD97190F24EF18530009ED6E /* Synthesizer.mm in Sources */,
-				BDB1B4662491823400F3F361 /* ChunkList.mm in Sources */,
+				BD82800624EC16F200533D80 /* Envelope.cpp in Sources */,
+				BD82800024EA8E6800533D80 /* GeneratorDefinition.cpp in Sources */,
+				BDABC42924F172CD00F8C874 /* Transform.cpp in Sources */,
+				BD2AEE4724F6B8D7009EAABE /* Instrument.cpp in Sources */,
+				BD2AEE4924F6BF94009EAABE /* Zone.cpp in Sources */,
+				BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */,
+				BDABC42D24F46A2000F8C874 /* File.cpp in Sources */,
+				BDB2660B25304037005BEAD1 /* InstrumentZone.cpp in Sources */,
+				BDB2660525303FE0005BEAD1 /* InstrumentCollection.cpp in Sources */,
+				BD97190F24EF18530009ED6E /* Synthesizer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,6 +562,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -672,6 +591,8 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
+				USE_HEADERMAP = NO;
 			};
 			name = Debug;
 		};
@@ -679,6 +600,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -707,6 +629,8 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
+				USE_HEADERMAP = NO;
 			};
 			name = Release;
 		};
@@ -729,6 +653,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/SoundFontInfoLib";
 			};
 			name = Debug;
 		};
@@ -750,6 +675,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/SoundFontInfoLib";
 			};
 			name = Release;
 		};

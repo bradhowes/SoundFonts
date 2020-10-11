@@ -10,9 +10,9 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Synthesizer.hpp"
+#include "Render/Synthesizer.hpp"
 
-using namespace SF2;
+using namespace SF2::Render;
 
 @interface SynthesizerTests : XCTestCase
 @property (nonatomic, assign) double epsilon;

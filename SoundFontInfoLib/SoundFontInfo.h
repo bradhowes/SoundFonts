@@ -21,10 +21,10 @@
 @property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* presets;
 
 + (SoundFontInfo*)loadViaParser:(NSURL*)url;
-+ (SoundFontInfo*)loadViaSFFile:(NSURL*)url;
++ (SoundFontInfo*)loadViaFile:(NSURL*)url;
 
 + (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
-+ (SoundFontInfo*)parseViaSFFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
 - (id) init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets;
 
