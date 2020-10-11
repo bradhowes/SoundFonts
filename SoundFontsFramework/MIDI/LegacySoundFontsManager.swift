@@ -45,20 +45,6 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
     }
 
     public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool { collection.validate(soundFontAndPatch) }
-
-    /**
-     Look to see if there are any files that are not part of the collection.
-     */
-    private func validate() {
-        let found = FileManager.default.validateSF2Files(log: log, collection: collection)
-        if found > 0 {
-            NotificationCenter.default.post(name: .soundFontsCollectionOrphans, object: NSNumber(value: found))
-        }
-        for index in 0..<collection.count {
-            let soundFont = collection.getBy(index: index)
-            os_log(.debug, log: log, "loaded SoundFont: %s %s", soundFont.displayName, String.pointer(soundFont))
-        }
-    }
 }
 
 extension FileManager {
