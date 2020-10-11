@@ -30,9 +30,7 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
         configFile.initialize(favoritesManager: self)
     }
 
-    public func validate(_ favorite: LegacyFavorite) -> Bool {
-        return true // collection.validate(favorite)        
-    }
+    public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
 }
 
 // MARK: - Favorites protocol
