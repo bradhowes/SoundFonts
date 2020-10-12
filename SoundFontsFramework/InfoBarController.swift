@@ -1,12 +1,15 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 /**
  Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
  left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
  */
 public final class InfoBarController: UIViewController {
+    private let log = Logging.logger("InfoBar")
+
     @IBOutlet private weak var status: UILabel!
     @IBOutlet private weak var patchInfo: UILabel!
     @IBOutlet private weak var lowestKey: UIButton!
@@ -29,7 +32,6 @@ public final class InfoBarController: UIViewController {
     private var isMainApp: Bool!
 
     public override func viewDidLoad() {
-
         highestKey.isHidden = true
         lowestKey.isHidden = true
 
@@ -111,18 +113,6 @@ extension InfoBarController: InfoBar {
     public func setStatus(_ value: String) {
         status.text = value
         startStatusAnimation()
-    }
-
-    /**
-     Set the Patch info to show in the display.
-    
-     - parameter name: the name of the Patch to show
-     - parameter isFavored: true if the Patch is a Favorite
-     */
-    public func setPatchInfo(name: String, isFavored: Bool) {
-        let name = TableCell.favoriteTag(isFavored) + name
-        patchInfo.text = name
-        cancelStatusAnimation()
     }
 
     /**
@@ -259,6 +249,12 @@ extension InfoBarController {
         else {
             setPatchInfo(name: "-", isFavored: false)
         }
+    }
+
+    private func setPatchInfo(name: String, isFavored: Bool) {
+        os_log(.info, log: log, "setPatchInfo: %s %d", name, isFavored)
+        patchInfo.text = TableCell.favoriteTag(isFavored) + name
+        cancelStatusAnimation()
     }
 
     private func startStatusAnimation() {

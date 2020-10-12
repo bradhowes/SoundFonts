@@ -26,7 +26,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let soundFonts: SoundFonts
     private let selectedSoundFontManager: SelectedSoundFontManager
 
-    public private(set) var active: ActivePatchKind {
+    public private(set) var active: ActivePatchKind = .none {
         didSet { os_log(.info, log: log, "set active: %s", active.description) }
     }
 
@@ -46,11 +46,9 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
         self.soundFonts = soundFonts
         self.selectedSoundFontManager = selectedSoundFontManager
-        self.active = Self.restore() ?? (
-            soundFonts.soundFontNames.isEmpty ?
-                .none :
-                .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0)))
         super.init()
+
+        soundFonts.subscribe(self, notifier: soundFontsChange)
         os_log(.info, log: log, "active: %s", active.description)
     }
 
@@ -86,6 +84,16 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 }
 
 extension ActivePatchManager {
+
+    private func soundFontsChange(_ event: SoundFontsEvent) {
+        if case .restored = event {
+            setActive(Self.restore() ?? (
+                        soundFonts.soundFontNames.isEmpty ?
+                            .none :
+                            .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0))),
+                      playSample: false)
+        }
+    }
 
     private func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %s", patch.description)

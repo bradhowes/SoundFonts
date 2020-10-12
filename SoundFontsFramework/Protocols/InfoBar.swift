@@ -37,14 +37,6 @@ public protocol InfoBar: class {
     func setStatus(_ value: String)
 
     /**
-     Show the patch name on the bar.
-    
-     - parameter value: the name to display
-     - parameter isFavored: true if this is a Favorite item
-     */
-    func setPatchInfo(name: String, isFavored: Bool)
-
-    /**
      Set the lowest and highest note labels of the keyboard
     
      - parameter from: the lowest note
