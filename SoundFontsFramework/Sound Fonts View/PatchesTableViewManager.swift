@@ -62,8 +62,11 @@ final class PatchesTableViewManager: NSObject {
     }
 }
 
-private extension Array {
-    subscript(indexPath: IndexPath) -> Element { self[indexPath.section * sectionSize + indexPath.row] }
+private extension Array where Element == Int {
+    subscript(indexPath: IndexPath) -> Element? {
+        let index = indexPath.presetIndex
+        return (index >= 0 && index < endIndex) ? self[index] : nil
+    }
 }
 
 private extension IndexPath {
@@ -89,7 +92,9 @@ extension PatchesTableViewManager: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        updateView(cell: tableView.dequeueReusableCell(at: indexPath), at: indexPath)
+        let cell: TableCell = tableView.dequeueReusableCell(at: indexPath)
+        updateView(cell: cell, at: indexPath)
+        return cell
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -139,7 +144,7 @@ extension PatchesTableViewManager: UITableViewDelegate {
             return
         }
 
-        let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath)
+        guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return }
         dismissSearchResults()
 
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
@@ -206,7 +211,8 @@ extension PatchesTableViewManager {
 
     private func setPresetVisibility(at indexPath: IndexPath, state: Bool) {
         guard let soundFont = selectedSoundFontManager.selected else { return }
-        let preset = soundFont.patches[viewPresets[indexPath]]
+        guard let presetIndex = viewPresets[indexPath] else { return }
+        let preset = soundFont.patches[presetIndex]
         soundFonts.setVisibility(key: soundFont.key, index: preset.soundFontIndex, state: state)
     }
 
@@ -482,7 +488,7 @@ extension PatchesTableViewManager {
 
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
-        let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath)
+        guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
         return makeSwipeActionConfiguration(action: isFavored(soundFontAndPatch) ?
                                                 createEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
                                                 createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
@@ -490,7 +496,7 @@ extension PatchesTableViewManager {
 
     private func createTrailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
-        let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath)
+        guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
         return makeSwipeActionConfiguration(action: isFavored(soundFontAndPatch) ?
                                                 createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
                                                 createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
@@ -502,17 +508,19 @@ extension PatchesTableViewManager {
         return actions
     }
 
-    private func getViewPresetIndex(at indexPath: IndexPath) -> Int {
+    private func getViewPresetIndex(at indexPath: IndexPath) -> Int? {
         showingSearchResults ? searchPresets[indexPath] : viewPresets[indexPath]
     }
 
-    private func makeSoundFontAndPatch(at indexPath: IndexPath) -> SoundFontAndPatch {
-        guard let soundFont = selectedSoundFontManager.selected else { fatalError("internal inconsistency") }
-        return soundFont.makeSoundFontAndPatch(at: getViewPresetIndex(at: indexPath))
+    private func makeSoundFontAndPatch(at indexPath: IndexPath) -> SoundFontAndPatch? {
+        guard let soundFont = selectedSoundFontManager.selected else { return nil }
+        guard let presetIndex = getViewPresetIndex(at: indexPath) else { return nil }
+        return soundFont.makeSoundFontAndPatch(at: presetIndex)
     }
 
     private func isFavored(at indexPath: IndexPath) -> Bool {
-        isFavored(makeSoundFontAndPatch(at: indexPath))
+        guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return false }
+        return isFavored(soundFontAndPatch)
     }
 
     private func isFavored(_ soundFontAndPatch: SoundFontAndPatch) -> Bool {
@@ -531,14 +539,21 @@ extension PatchesTableViewManager {
         updateView(cell: cell, at: indexPath)
     }
 
-    @discardableResult
-    private func updateView(cell: TableCell, at indexPath: IndexPath) -> TableCell {
-        guard let soundFont = selectedSoundFontManager.selected else { fatalError() }
-        let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath)
+    private func updateView(cell: TableCell, at indexPath: IndexPath) {
+        guard let presetIndex = getViewPresetIndex(at: indexPath) else {
+            os_log(.error, log: log, "invalid indexPath %d/%d", indexPath.section, indexPath.row)
+            return
+        }
+
+        guard let soundFont = selectedSoundFontManager.selected else {
+            os_log(.error, log: log, "unexpected nil soundFont")
+            return
+        }
+
+        let soundFontAndPatch = soundFont.makeSoundFontAndPatch(at: presetIndex)
         let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch)
-        let preset = soundFont.patches[getViewPresetIndex(at: indexPath)]
+        let preset = soundFont.patches[presetIndex]
         let name = favorite?.name ?? preset.name
         cell.updateForPatch(name: name, isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch, isFavorite: favorite != nil, isEditing: view.isEditing)
-        return cell
     }
 }
