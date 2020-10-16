@@ -26,6 +26,7 @@ public enum SoundFontsEvent {
  */
 public protocol SoundFonts: class {
 
+    var restored: Bool { get }
     var soundFontNames: [String] { get }
 
     /**

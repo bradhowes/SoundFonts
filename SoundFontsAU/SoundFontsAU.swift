@@ -127,22 +127,22 @@ final class SoundFontsAU: AUAudioUnit {
         os_log(.error, log: self.log, "creating parameterTree from clump_1")
 
         var parameters: [AUParameterNode] = [
-            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
-                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
-                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-                                            dependentParameters: nil),
-            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
-                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
-                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-                                            dependentParameters: nil),
-            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
-                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
-                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-                                            dependentParameters: nil),
-            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
-                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
-                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-                                            dependentParameters: nil)
+//            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
+//                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
+//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+//                                            dependentParameters: nil),
+//            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
+//                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
+//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+//                                            dependentParameters: nil),
+//            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
+//                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
+//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+//                                            dependentParameters: nil),
+//            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
+//                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
+//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
+//                                            dependentParameters: nil)
         ]
 
         parameters.append(contentsOf: clump_1.children)
@@ -176,22 +176,25 @@ final class SoundFontsAU: AUAudioUnit {
         set { wrapped.midiOutputEventBlock = newValue }
     }
 
+    private var activeSoundFontPatchKey: String { "soundFontPatch" }
+
     override public var fullState: [String : Any]? {
         get {
             var fullState = wrapped.fullState ?? [:]
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(self.activePatchManager.active) {
-                fullState["soundFontPatch"] = data
+            if let data = ActivePatchManager.encode(self.activePatchManager.active) {
+                fullState[activeSoundFontPatchKey] = data
             }
             return fullState
         }
         set {
-            wrapped.fullState = newValue
             if let fullState = newValue {
-                if let data = fullState["soundFontPatch"] as? Data {
-                    self.activePatchManager.restore(from: data)
+                if let data = fullState[activeSoundFontPatchKey] as? Data {
+                    if let value = ActivePatchManager.decode(data) {
+                        self.activePatchManager.setActive(value)
+                    }
                 }
             }
+            // wrapped.fullState = newValue
         }
     }
 
