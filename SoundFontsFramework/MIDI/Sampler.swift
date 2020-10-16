@@ -76,14 +76,13 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func stop() {
         os_log(.info, log: log, "stop")
-
         if let engine = self.engine {
-            engine.stop()
             if let sampler = self.auSampler {
-                engine.detach(sampler)
                 AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
                 sampler.reset()
+                engine.detach(sampler)
             }
+            engine.stop()
             engine.reset()
         }
 

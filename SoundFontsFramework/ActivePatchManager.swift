@@ -25,6 +25,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
     private let soundFonts: SoundFonts
     private let selectedSoundFontManager: SelectedSoundFontManager
+    private let inApp: Bool
 
     public private(set) var active: ActivePatchKind = .none {
         didSet { os_log(.info, log: log, "set active: %s", active.description) }
@@ -43,11 +44,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         return soundFont?.patches[index]
     }
 
-    public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
+    public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, inApp: Bool) {
         self.soundFonts = soundFonts
         self.selectedSoundFontManager = selectedSoundFontManager
+        self.inApp = inApp
         super.init()
-
         soundFonts.subscribe(self, notifier: soundFontsChange)
         os_log(.info, log: log, "active: %s", active.description)
     }
@@ -66,6 +67,16 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public func setActive(favorite: LegacyFavorite, playSample: Bool) {
         setActive(.favorite(favorite: favorite), playSample: playSample)
+    }
+
+    public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
+        os_log(.info, log: log, "setActive: %{public}s", kind.description)
+        let prev = active
+        active = kind
+        if soundFonts.restored {
+            DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
+        }
+        save(kind)
     }
 
     public func clearActive() {
@@ -87,34 +98,28 @@ extension ActivePatchManager {
 
     private func soundFontsChange(_ event: SoundFontsEvent) {
         if case .restored = event {
-            setActive(Self.restore() ?? (
-                        soundFonts.soundFontNames.isEmpty ?
-                            .none :
-                            .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0))),
-                      playSample: false)
+            if case .none = active {
+                setActive(Self.restore() ?? (
+                                soundFonts.soundFontNames.isEmpty ?
+                                    .none :
+                                    .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0))),
+                          playSample: false)
+            }
+            else {
+                DispatchQueue.main.async { self.notify(.active(old: .none, new: self.active, playSample: false)) }
+            }
         }
     }
 
-    private func setActive(_ patch: ActivePatchKind, playSample: Bool = false) {
-        os_log(.info, log: log, "setActive: %s", patch.description)
-        let prev = active
-        active = patch
-        DispatchQueue.main.async { self.notify(.active(old: prev, new: patch, playSample: playSample)) }
-        save()
-    }
+    static func restore() -> ActivePatchKind? { decode(settings.lastActivePatch) }
 
-    static func restore() -> ActivePatchKind? {
-        let decoder = JSONDecoder()
-        let data = settings.lastActivePatch
-        return try? decoder.decode(ActivePatchKind.self, from: data)
-    }
+    public static func decode(_ data: Data) -> ActivePatchKind? { try? JSONDecoder().decode(ActivePatchKind.self, from: data) }
+    public static func encode(_ kind: ActivePatchKind) -> Data? { try? JSONEncoder().encode(kind) }
 
-    private func save() {
+    private func save(_ kind: ActivePatchKind) {
         os_log(.info, log: log, "save")
-        let copy = self.active
         DispatchQueue.global(qos: .background).async {
-            let encoder = JSONEncoder()
-            if let data = try? encoder.encode(copy) {
+            if let data = Self.encode(kind) {
                 settings.lastActivePatch = data
             }
         }

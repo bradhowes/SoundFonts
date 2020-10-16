@@ -25,7 +25,7 @@ final class VolumeMonitor {
 
     public var checkForPreset = false
 
-    private var volume: Float = 0.0 {
+    private var volume: Float = 1.0 {
         didSet {
             os_log(.info, log: log, "volume changed %f", volume)
             update()

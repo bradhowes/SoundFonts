@@ -48,7 +48,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.favorites = favoritesManager
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
-        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager)
+        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
 
         self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager)
 

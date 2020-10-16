@@ -22,6 +22,8 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
         }
     }
 
+    public private(set) var restored = false
+
     /**
      Create a new collection using the embedded SoundFont files.
 
@@ -302,6 +304,7 @@ extension LegacySoundFontsManager {
 
         os_log(.info, log: log, "properly decoded")
         self.collection = collection
+        self.restored = true
         notify(.restored)
     }
 }
