@@ -10,16 +10,7 @@ public enum KeyLabelOption: Int {
     case cOnly
 
     public static var savedSetting: KeyLabelOption {
-        let value = settings.keyLabelOption
-
-        if let option = Self(rawValue: value) {
-            return option
-        }
-
-        let showKeyLabels = settings.showKeyLabels
-        let option: Self = showKeyLabels ? .all : .off
-        settings.keyLabelOption = option.rawValue
-        return option
+        return Self(rawValue: settings.keyLabelOption) ?? .cOnly
     }
 }
 
@@ -37,17 +28,19 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var keyLabelsStackView: UIStackView!
     @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var solfegeStackView: UIStackView!
+    @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
     @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
-    @IBOutlet private weak var versionReviewStackView: UIStackView!
-
     @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
     @IBOutlet private weak var importSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var versionReviewStackView: UIStackView!
+    @IBOutlet private weak var contactDeveloperStackView: UIStackView!
 
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
+    @IBOutlet private weak var copyFiles: UISwitch!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -82,6 +75,8 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.isContinuous = true
         keyWidthSlider.value = settings.keyWidth
 
+        copyFiles.isOn = settings.copyFilesWhenAdding
+
         let isAUv3 = !isMainApp
         solfegeStackView.isHidden = isAUv3
         keyLabelsStackView.isHidden = isAUv3
@@ -98,21 +93,25 @@ public final class SettingsViewController: UIViewController {
 extension SettingsViewController {
 
     private func beginShowKeyboard() {
-        exportSoundFontsStackView.isHidden = true
-        importSoundFontsStackView.isHidden = true
+        copyFilesStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
         restoreSoundFontsStackView.isHidden = true
+        exportSoundFontsStackView.isHidden = true
+        importSoundFontsStackView.isHidden = true
         versionReviewStackView.isHidden = true
+        contactDeveloperStackView.isHidden = true
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
     }
 
     private func endShowKeyboard() {
-        exportSoundFontsStackView.isHidden = false
-        importSoundFontsStackView.isHidden = false
+        copyFilesStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
+        exportSoundFontsStackView.isHidden = false
+        importSoundFontsStackView.isHidden = false
         versionReviewStackView.isHidden = false
+        contactDeveloperStackView.isHidden = false
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
     }

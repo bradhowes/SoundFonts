@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G2021" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17192" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AppState" representedClassName="AppState" syncable="YES">
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="activePreset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="activated" inverseEntity="Preset"/>
@@ -33,6 +33,7 @@
         </fetchIndex>
     </entity>
     <entity name="SoundFont" representedClassName="SoundFont" syncable="YES">
+        <attribute name="bookmark" optional="YES" attributeType="Binary"/>
         <attribute name="embeddedName" attributeType="String"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="path" attributeType="URI"/>
@@ -48,6 +49,6 @@
         <element name="AppState" positionX="-378" positionY="-126" width="128" height="88"/>
         <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="148"/>
         <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="163"/>
-        <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="148"/>
+        <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="163"/>
     </elements>
 </model>

@@ -33,6 +33,7 @@ public final class SoundFont: NSManagedObject, Managed {
     @NSManaged public private(set) var uuid: UUID
     @NSManaged public private(set) var name: String
     @NSManaged public private(set) var path: URL
+    @NSManaged public private(set) var bookmark: Data?
     @NSManaged public private(set) var embeddedName: String
     @NSManaged public private(set) var resource: Bool
     @NSManaged public private(set) var visible: Bool
@@ -43,20 +44,20 @@ extension SoundFont {
 
     public enum Kind {
         case builtin(path: URL)
-        case installed(path: URL)
+        case bookmark(data: Data?)
     }
 
-    public var kind: Kind { resource ? .builtin(path: path) : .installed(path: path) }
+    public var kind: Kind { resource ? .builtin(path: path) : .bookmark(data: bookmark) }
     public var exists: Bool { FileManager.default.fileExists(atPath: path.path) }
 
     @discardableResult
-    public convenience init(in context: NSManagedObjectContext, config: SoundFontInfo,
-                            isResource: Bool = false) {
+    public convenience init(in context: NSManagedObjectContext, config: SoundFontInfo, isResource: Bool = false) {
         self.init(context: context)
         self.uuid = UUID()
         self.name = config.embeddedName
         self.embeddedName = config.embeddedName
-        self.path = config.path
+        self.path = config.url
+        self.bookmark = try? config.url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: [], relativeTo: nil)
         self.resource = isResource
         self.visible = true
         config.presets.forEach { self.addToChildren(Preset(in: context, config: $0)) }

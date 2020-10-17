@@ -7,19 +7,23 @@ public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware
 
 /// Key definitions that include the key name, the value type, and any default value associated with the setting if not found
 public extension SettingKeys {
-    static let daysAfterFirstLaunchBeforeRequest = SettingKey<Int>("daysAfterFirstLaunchBeforeRequest", defaultValue: 14)
-    static let firstLaunchDate = SettingKey<Date>("firstLaunchDate", defaultValue: Date.distantPast)
-    static let keyLabelOption = SettingKey<Int>("keyLabelOption", defaultValue: 0)
+
+    // AskForReview settings
+    static let daysAfterFirstLaunchBeforeRequest = SettingKey("daysAfterFirstLaunchBeforeRequest", defaultValue: 14)
+    static let monthsAfterLastReviewBeforeRequest = SettingKey("monthsAfterLastReviewBeforeRequest", defaultValue: 2)
+    static let firstLaunchDate = SettingKey("firstLaunchDate", defaultValue: Date.distantPast)
+    static let lastReviewRequestDate = SettingKey("lastReviewRequestDate", defaultValue: Date.distantPast)
+    static let lastReviewRequestVersion = SettingKey("lastReviewRequestVersion", defaultValue: "")
+
+    // App settings
+    static let keyLabelOption = SettingKey("keyLabelOption", defaultValue: KeyLabelOption.cOnly.rawValue)
     static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
     static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
-    static let lastReviewRequestDate = SettingKey<Date>("lastReviewRequestDate", defaultValue: Date.distantPast)
-    static let lastReviewRequestVersion = SettingKey<String>("lastReviewRequestVersion", defaultValue: "")
-    static let lowestKeyNote = SettingKey<Int>("lowestKeyNote", defaultValue: 48)
-    static let monthsAfterLastReviewBeforeRequest = SettingKey<Int>("monthsAfterLastReviewBeforeRequest", defaultValue: 2)
-    static let playSample = SettingKey<Bool>("playSample", defaultValue: false)
-    static let showKeyLabels = SettingKey<Bool>("showKeyLabels", defaultValue: false)
-    static let showingFavorites = SettingKey<Bool>("showingFavorites", defaultValue: false)
-    static let showSolfegeLabel = SettingKey<Bool>("showSolfegeLabel", defaultValue: true)
+    static let lowestKeyNote = SettingKey("lowestKeyNote", defaultValue: 48)
+    static let playSample = SettingKey("playSample", defaultValue: false)
+    static let showingFavorites = SettingKey("showingFavorites", defaultValue: false)
+    static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
+    static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
 }
 
 /// KVO properties based on the above key definitions.
@@ -64,9 +68,9 @@ public extension UserDefaults {
         get { self[.playSample] }
         set { self[.playSample] = newValue }
     }
-    @objc dynamic var showKeyLabels: Bool {
-        get { self[.showKeyLabels] }
-        set { self[.showKeyLabels] = newValue }
+    @objc dynamic var copyFilesWhenAdding: Bool {
+        get { self[.copyFilesWhenAdding] }
+        set { self[.copyFilesWhenAdding] = newValue }
     }
     @objc dynamic var showingFavorites: Bool {
         get { self[.showingFavorites] }
