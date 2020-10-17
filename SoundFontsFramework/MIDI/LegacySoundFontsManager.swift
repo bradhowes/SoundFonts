@@ -86,8 +86,8 @@ extension FileManager {
 
 extension LegacySoundFontsManager: SoundFonts {
 
-    public var soundFontNames: [String] { return collection.soundFonts.map { $0.displayName } }
-
+    public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
+    public var defaultPreset: SoundFontAndPatch? { collection.defaultPreset }
     public func index(of uuid: UUID) -> Int? { collection.index(of: uuid) }
 
     public func getBy(index: Int) -> LegacySoundFont { collection.getBy(index: index) }
