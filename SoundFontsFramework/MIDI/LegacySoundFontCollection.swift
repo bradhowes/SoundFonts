@@ -24,6 +24,9 @@ public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
     /// Obtain the number of SoundFont instances in the collection
     public var count: Int { sortedKeys.count }
 
+    /// Obtain the first preset of the first sound font if one exists.
+    public var defaultPreset: SoundFontAndPatch? { isEmpty ? nil : getBy(index: 0).makeSoundFontAndPatch(at: 0) }
+
     /**
      Create a new collection.
 

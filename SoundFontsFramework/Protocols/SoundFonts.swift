@@ -28,6 +28,7 @@ public protocol SoundFonts: class {
 
     var restored: Bool { get }
     var soundFontNames: [String] { get }
+    var defaultPreset: SoundFontAndPatch? { get }
 
     /**
      Obtain the index in the collection of a SoundFont with the given Key.
