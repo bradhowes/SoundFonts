@@ -135,6 +135,9 @@
                                                                 <rect key="frame" x="325" y="0.0" width="51" height="31"/>
                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <color key="onTintColor" systemColor="systemTealColor"/>
+                                                                <connections>
+                                                                    <action selector="toggleCopyFiles:" destination="Eyw-X4-KFI" eventType="valueChanged" id="PFN-Cs-nnK"/>
+                                                                </connections>
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
