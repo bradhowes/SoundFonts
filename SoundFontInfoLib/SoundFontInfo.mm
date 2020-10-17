@@ -52,7 +52,7 @@ using namespace SF2;
 
 - (id)init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets {
     if (self = [super init]) {
-        self.path = url;
+        self.url = url;
         self.embeddedName = name;
         self.presets = presets;
     }

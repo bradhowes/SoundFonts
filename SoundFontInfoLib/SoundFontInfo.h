@@ -16,7 +16,7 @@
 
 @interface SoundFontInfo : NSObject
 
-@property (nonatomic, retain) NSURL* path;
+@property (nonatomic, retain) NSURL* url;
 @property (nonatomic, retain) NSString* embeddedName;
 @property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* presets;
 
