@@ -7,15 +7,14 @@ import os
 public class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("ViewC")
     private let noteInjector = NoteInjector()
+    private let components = Components<SoundFontsAUViewController>(inApp: false)
 
-    private var components: Components<SoundFontsAUViewController>!
     private var audioUnit: SoundFontsAU?
 
     override public func viewDidLoad() {
         os_log(.error, log: log, "viewDidLoad")
-        components = Components<SoundFontsAUViewController>(inApp: false)
-        components.setMainViewController(self)
         super.viewDidLoad()
+        components.setMainViewController(self)
     }
 }
 
@@ -51,11 +50,16 @@ extension SoundFontsAUViewController: ControllerConfiguration {
     }
 
     private func useActivePatchKind(playSample: Bool) {
-        os_log(.error, log: log, "useActivePatchKind - playSample: %d", playSample)
-        let sampler = components.sampler
-        _ = sampler.load() {
-            if playSample {
-                self.noteInjector.postMIDI(to: sampler)
+        os_log(.info, log: log, "useActivePatchKind - playSample: %d", playSample)
+        guard audioUnit != nil else { return }
+        switch components.sampler.loadActivePreset() {
+        case .success: break
+        case .failure(let reason):
+            switch reason {
+            case .noSampler: os_log(.error, log: log, "no sampler")
+            case .sessionActivating(let error): os_log(.error, log: log, "failed to activate session: %s", error.localizedDescription)
+            case .engineStarting(let error): os_log(.error, log: log, "failed to start engine: %s", error.localizedDescription)
+            case .patchLoading(let error): os_log(.error, log: log, "failed to load patch: %s", error.localizedDescription)
             }
         }
     }

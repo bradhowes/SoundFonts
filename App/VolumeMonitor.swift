@@ -14,16 +14,13 @@ final class VolumeMonitor {
     enum Reason {
         case volumeLevel
         case muteSwitch
-        case noPatch
+        case noPreset
         case otherAudio
     }
 
     private let muteDetector: MuteDetector?
     private let keyboard: Keyboard
     private let notePlayer: NotePlayer
-    private let sampler: Sampler
-
-    public var checkForPreset = false
 
     private var volume: Float = 1.0 {
         didSet {
@@ -43,17 +40,18 @@ final class VolumeMonitor {
     private var reason: Reason?
     private var sessionVolumeObserver: NSKeyValueObservation?
 
+    public var activePreset = true
+
     /**
      Construct new monitor.
 
      - parameter keyboard: Keyboard instance that handle key renderings
      - parameter notePlayer: NotePlayer instance that handles note playing
      */
-    init(muteDetector: MuteDetector?, keyboard: Keyboard, notePlayer: NotePlayer, sampler: Sampler) {
+    init(muteDetector: MuteDetector?, keyboard: Keyboard, notePlayer: NotePlayer) {
         self.muteDetector = muteDetector
         self.keyboard = keyboard
         self.notePlayer = notePlayer
-        self.sampler = sampler
     }
 }
 
@@ -118,8 +116,8 @@ extension VolumeMonitor {
                 reason = .muteSwitch
             }
         }
-        else if checkForPreset && !sampler.hasPatch {
-            reason = .noPatch
+        else if !activePreset {
+            reason = .noPreset
         }
         else {
             reason = .none
@@ -136,7 +134,7 @@ extension VolumeMonitor {
         switch reason {
         case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
         case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
-        case .noPatch: InfoHUD.show(text: "No patch is currently selected.")
+        case .noPreset: InfoHUD.show(text: "No preset is currently selected.")
         case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
         case .none: InfoHUD.clear()
         }

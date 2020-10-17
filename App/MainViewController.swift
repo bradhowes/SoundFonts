@@ -72,8 +72,8 @@ extension MainViewController {
      Stop audio processing. This is done prior to the app moving into the background.
      */
     func stopAudio() {
-        sampler.stop()
         volumeMonitor?.stop()
+        sampler.stop()
 
         let session = AVAudioSession.sharedInstance()
         do {
@@ -102,28 +102,21 @@ extension MainViewController: ControllerConfiguration {
         let muteDetector = MuteDetector(checkInterval: 1)
         let notePlayer = NotePlayer(infoBar: router.infoBar, sampler: sampler)
         keyboard.delegate = notePlayer
-        volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer, sampler: sampler)
+        volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
-        router.soundFonts.subscribe(self, notifier: soundFontsChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
-            volumeMonitor?.check()
-        }
-    }
-
-    private func soundFontsChange(_ event: SoundFontsEvent) {
-        if case .restored = event {
-            volumeMonitor?.checkForPreset = true
         }
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
+        volumeMonitor?.activePreset = activePatchKind != .none
         keyboard.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
-            let result = self.sampler.load {
+            let result = self.sampler.loadActivePreset {
                 if playSample { self.noteInjector.post(to: self.sampler) }
             }
 

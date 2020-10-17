@@ -97,17 +97,25 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 extension ActivePatchManager {
 
     private func soundFontsChange(_ event: SoundFontsEvent) {
-        if case .restored = event {
-            if case .none = active {
-                setActive(Self.restore() ?? (
-                                soundFonts.soundFontNames.isEmpty ?
-                                    .none :
-                                    .normal(soundFontAndPatch: soundFonts.getBy(index: 0).makeSoundFontAndPatch(at: 0))),
-                          playSample: false)
-            }
-            else {
-                DispatchQueue.main.async { self.notify(.active(old: .none, new: self.active, playSample: false)) }
-            }
+
+        // We only care about restoration event
+        guard case .restored = event else { return }
+
+        // If active property is already set, then just announce to others what it is
+        guard case .none = active else {
+            DispatchQueue.main.async { self.notify(.active(old: .none, new: self.active, playSample: false)) }
+            return
+        }
+
+        // If inApp, we don't restore from settings -- only from AUv3 presets. So, one was either applied earlier, thus setting `active` or
+        // it may be applied later and we do nothing more now.
+        guard inApp else { return }
+
+        if let restored = Self.restore() {
+            setActive(restored, playSample: false)
+        }
+        else if let defaultPreset = soundFonts.defaultPreset {
+            setActive(preset: defaultPreset, playSample: false)
         }
     }
 
