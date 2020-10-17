@@ -39,12 +39,12 @@ public final class LegacySoundFont: Codable {
         os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(viaParser: url) else {
-            os_log(.error, log: Self.logger, "failed to fetch content")
+            os_log(.error, log: Self.logger, "failed to process SF2 file")
             return .failure(.invalidSoundFont(url.lastPathComponent))
         }
 
         guard !info.presets.isEmpty else {
-            os_log(.error, log: Self.logger, "failed to parse content")
+            os_log(.error, log: Self.logger, "failed to locate any presets")
             return .failure(.invalidSoundFont(url.lastPathComponent))
         }
 
@@ -79,7 +79,7 @@ public final class LegacySoundFont: Codable {
     }
 
     /**
-     Constructor for installed sound font files -- those added fia File app.
+     Constructor for installed sound font files -- those added via File app.
 
      - parameter displayName: the display name of the resource
      - parameter soundFontInfo: patch info from the sound font
