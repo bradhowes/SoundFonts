@@ -1,17 +1,23 @@
 //  Copyright © 2020 Brad Howes. All rights reserved.
 
 import AVFoundation
+import os
+
+private let log = Logging.logger("AudioUnit")
 
 public extension AudioUnit {
 
     func getPropertyInfo(_ pid: AudioUnitPropertyID) throws -> (size: UInt32, writable: Bool) {
+        os_log(.info, log: log, "getPropertyInfo %d", pid)
         var size: UInt32 = 0
         var writable: DarwinBoolean = false
         try AudioUnitGetPropertyInfo(self, pid, kAudioUnitScope_Global, 0, &size, &writable).check()
+        os_log(.info, log: log, "size: %d writable: %d", size, writable.boolValue)
         return (size: size, writable: writable.boolValue)
     }
 
     func getPropertyValue<T>(_ pid: AudioUnitPropertyID) throws -> T {
+        os_log(.info, log: log, "getPropertyValue %d", pid)
         let (size, _) = try getPropertyInfo(pid)
         return try getPropertyValue(pid, size: size)
     }
@@ -39,6 +45,7 @@ public extension OSStatus {
 
     func check() throws {
         if self != noErr {
+            os_log(.error, log: log, "last call set error %d", Int(self))
             throw NSError(domain: NSOSStatusErrorDomain, code: Int(self), userInfo: nil)
         }
     }

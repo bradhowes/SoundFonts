@@ -20,10 +20,8 @@ final class SoundFontsAU: AUAudioUnit {
     private let wrapped: AUAudioUnit
     private var ourParameterTree: AUParameterTree?
 
-    enum Err: Error { case failedToStart }
-
     public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
-        os_log(.error, log:log, "init - flags: %d man: %d type: sub: %d",
+        os_log(.info, log:log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
@@ -40,21 +38,21 @@ final class SoundFontsAU: AUAudioUnit {
 
         try super.init(componentDescription: componentDescription, options: [])
 
-        os_log(.error, log:log, "init - done")
+        os_log(.info, log:log, "init - done")
     }
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration])
         -> IndexSet {
-        os_log(.error, log: log, "supportedViewConfiigurations")
+        os_log(.info, log: log, "supportedViewConfiigurations")
         let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 270 ? $0.0 : nil }
-        os_log(.error, log: log, "indices: %{public}s", indices.debugDescription)
+        os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
         return IndexSet(indices)
     }
 
     override public var component: AudioComponent { wrapped.component }
 
     override public func allocateRenderResources() throws {
-        os_log(.error, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
+        os_log(.info, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
         for index in 0..<outputBusses.count {
             outputBusses[index].shouldAllocateBuffer = true
         }
@@ -69,12 +67,12 @@ final class SoundFontsAU: AUAudioUnit {
     override public func reset() { wrapped.reset() }
 
     override public var inputBusses: AUAudioUnitBusArray {
-        os_log(.error, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
+        os_log(.info, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
         return wrapped.inputBusses
     }
 
     override public var outputBusses: AUAudioUnitBusArray {
-        os_log(.error, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
+        os_log(.info, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
         return wrapped.outputBusses
     }
 
@@ -95,11 +93,11 @@ final class SoundFontsAU: AUAudioUnit {
     override public var parameterTree: AUParameterTree? {
         get {
             if ourParameterTree == nil { buildParameterTree() }
-            os_log(.error, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
+            os_log(.info, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
             return ourParameterTree
         }
         set {
-            os_log(.error, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
+            os_log(.info, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
             wrapped.parameterTree = newValue
             ourParameterTree = nil
         }
@@ -107,11 +105,11 @@ final class SoundFontsAU: AUAudioUnit {
 
     private func dumpParameters(name: String, tree: AUParameterGroup?, level: Int) {
         let indentation = String(repeating: " ", count: level)
-        os_log(.error, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
-        defer { os_log(.error, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
+        os_log(.info, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
+        defer { os_log(.info, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
         guard let children = tree?.children else { return }
         for child in children {
-            os_log(.error, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
+            os_log(.info, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
             if let group = child as? AUParameterGroup {
                 dumpParameters(name: group.displayName, tree: group, level: level + 1)
             }
@@ -119,12 +117,12 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     private func buildParameterTree() {
-        os_log(.error, log: self.log, "buildParameterTree BEGIN")
-        defer { os_log(.error, log: self.log, "buildParameterTree END") }
+        os_log(.info, log: self.log, "buildParameterTree BEGIN")
+        defer { os_log(.info, log: self.log, "buildParameterTree END") }
         dumpParameters(name: "root", tree: wrapped.parameterTree, level: 0)
         guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
         guard let clump_1 = global.children.first as? AUParameterGroup else { return }
-        os_log(.error, log: self.log, "creating parameterTree from clump_1")
+        os_log(.info, log: self.log, "creating parameterTree from clump_1")
 
         var parameters: [AUParameterNode] = [
 //            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
@@ -152,7 +150,7 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
-        os_log(.error, log: log, "parametersForOverview: %d", count)
+        os_log(.info, log: log, "parametersForOverview: %d", count)
         if ourParameterTree == nil { buildParameterTree() }
         if ourParameterTree?.children.count ?? 0 < 1 { return [] }
         return [0]
@@ -165,7 +163,7 @@ final class SoundFontsAU: AUAudioUnit {
     override public var isMusicDeviceOrEffect: Bool { true }
 
     override public var virtualMIDICableCount: Int {
-        os_log(.error, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
+        os_log(.info, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
         return wrapped.virtualMIDICableCount
     }
 
@@ -194,6 +192,8 @@ final class SoundFontsAU: AUAudioUnit {
                     }
                 }
             }
+
+            // Disable this since there is nothing really to save for the AVAudioUnitSampler
             // wrapped.fullState = newValue
         }
     }
@@ -268,8 +268,7 @@ final class SoundFontsAU: AUAudioUnit {
         let block = self.wrapped.scheduleMIDIEventBlock
         let log = self.log
         return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
-            os_log(.error, log: log,
-                   "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
+            os_log(.info, log: log, "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
                    when, channel, count, bytes[0], bytes[1], bytes[2])
             block?(when, channel, count, bytes)
         }

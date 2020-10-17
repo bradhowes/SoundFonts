@@ -38,8 +38,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     private var loaded: Bool = false
     private let activePatchManager: ActivePatchManager
 
-    public var hasPatch: Bool { activePatchManager.active != .none }
-
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
 
@@ -68,8 +66,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         self.auSampler = auSampler
         return startEngine()
     }
-
-    private func loadActivePatch() -> Result<Void, SamplerStartFailure> { loaded ? .success(()) : load() }
 
     /**
      Stop the existing audio engine. Releases the sampler and engine.
@@ -109,17 +105,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             }
         }
 
-        return loadActivePatch()
+        return loadActivePreset()
     }
 
     /**
-     Set the sound font and patch to use in the AVAudioUnitSampler to generate audio output.
+     Ask the sampler to use the active preset held by the ActivePatchManager.
 
-     - parameter activePatchKind: the sound font and patch to use
+     - parameter afterLoadblock: callback to invoke after the load is successfully done
 
      - returns: Result instance indicating success or failure
      */
-    public func load(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, SamplerStartFailure> {
+    public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, SamplerStartFailure> {
         os_log(.info, log: log, "load - %s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
