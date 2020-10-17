@@ -54,24 +54,24 @@
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="374" id="SN4-HT-yFc"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Original">
-                                                        <rect key="frame" x="0.0" y="71.5" width="374" height="22"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Original">
+                                                        <rect key="frame" x="0.0" y="70" width="374" height="25"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Original:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3d-d7-tA5" userLabel="Original:">
-                                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="22"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="63.5" height="25"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="original name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HS0-rM-EcW" userLabel="Original">
-                                                                <rect key="frame" x="71.5" y="0.0" width="277" height="20.5"/>
+                                                                <rect key="frame" x="71.5" y="2.5" width="269.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJ9-dy-CSD" userLabel="Copy">
-                                                                <rect key="frame" x="356.5" y="0.0" width="17.5" height="22"/>
-                                                                <state key="normal" image="pencil" catalog="system">
+                                                                <rect key="frame" x="349" y="0.0" width="25" height="25"/>
+                                                                <state key="normal" image="Edit">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <state key="disabled">
@@ -86,25 +86,25 @@
                                                             <constraint firstAttribute="bottom" secondItem="d3d-d7-tA5" secondAttribute="bottom" id="Rv3-Tb-iVF"/>
                                                         </constraints>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" id="ph0-K4-AEf" userLabel="Embedded">
-                                                        <rect key="frame" x="0.0" y="131" width="374" height="22"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" id="ph0-K4-AEf" userLabel="Embedded">
+                                                        <rect key="frame" x="0.0" y="131" width="374" height="25"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Embedded:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyM-cd-pJx" userLabel="Embedded:">
-                                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="20.5"/>
+                                                                <rect key="frame" x="0.0" y="2.5" width="87.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="embedded name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c94-3d-tGQ" userLabel="Embedded">
-                                                                <rect key="frame" x="95.5" y="0.0" width="253" height="20.5"/>
+                                                                <rect key="frame" x="95.5" y="2.5" width="245.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mRw-eu-2aH" userLabel="Copy">
-                                                                <rect key="frame" x="356.5" y="0.0" width="17.5" height="22"/>
-                                                                <state key="normal" image="pencil" catalog="system">
+                                                                <rect key="frame" x="349" y="0.0" width="25" height="25"/>
+                                                                <state key="normal" image="Edit">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <state key="disabled">
@@ -118,7 +118,7 @@
                                                         <viewLayoutGuide key="safeArea" id="aAP-bF-YbI"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tmr-5h-0DY" userLabel="PresetsCount">
-                                                        <rect key="frame" x="0.0" y="190.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="192" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Presets: 187" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
                                                                 <rect key="frame" x="0.0" y="5" width="93.5" height="20.5"/>
@@ -247,7 +247,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="pencil" catalog="system" width="128" height="113"/>
+        <image name="Edit" width="25" height="25"/>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

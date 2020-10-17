@@ -241,7 +241,7 @@
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
-		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = FontEditor.storyboard; path = /Users/howes/src/Mine/SoundFonts/SoundFontsFramework/UI/FontEditor.storyboard; sourceTree = "<absolute>"; };
+		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
 		BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
@@ -335,7 +335,6 @@
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
-		BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EnvelopeView.storyboard; sourceTree = "<group>"; };
 		BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioUnit+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -419,7 +418,6 @@
 				BDC7EC7F241BACC300F789B2 /* GuideView.storyboard */,
 				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
-				BDF8630F246EB8E70006D8CD /* EnvelopeView.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
