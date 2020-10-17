@@ -156,6 +156,10 @@ extension SettingsViewController {
         settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
     }
 
+    @IBAction private func toggleCopyFiles(_ sender: Any) {
+        settings.copyFilesWhenAdding = self.copyFiles.isOn
+    }
+
     @IBAction private func keyWidthChange(_ sender: Any) {
         let prevValue = settings.keyWidth.rounded()
         var newValue = keyWidthSlider.value.rounded()
