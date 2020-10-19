@@ -50,7 +50,7 @@ public final class NoteInjector {
         guard settings.playSample == true else { return }
 
         guard let noteBlock = audioUnit.scheduleMIDIEventBlock else { return }
-        os_log(.error, log: log, "post - valid noteBlock")
+        os_log(.info, log: log, "post - valid noteBlock")
 
         let channel: UInt8 = 0
         let channel1NoteOn: UInt8 = 0x90

@@ -159,7 +159,7 @@ extension SoundFontsViewController: PatchesViewManager {
         var ok = [String]()
         var failures = [SoundFontFileLoadFailure]()
         for each in urls {
-            os_log(.info, log: log, "processing %s", each.path)
+            os_log(.info, log: log, "processing %{public}s", each.path)
             switch soundFonts.add(url: each) {
             case .success(let (_, soundFont)):
                 ok.append(soundFont.fileURL.lastPathComponent)

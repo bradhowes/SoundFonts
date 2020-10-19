@@ -36,7 +36,7 @@ public final class LegacySoundFont: Codable {
     public let patches: [LegacyPatch]
 
     public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
-        os_log(.info, log: Self.logger, "makeSoundFont - '%s'", url.lastPathComponent)
+        os_log(.info, log: Self.logger, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(viaParser: url) else {
             os_log(.error, log: Self.logger, "failed to process SF2 file")
@@ -71,8 +71,8 @@ public final class LegacySoundFont: Codable {
     }
 
     private static func copyToAppFolder(source: URL, destination: URL) throws {
-        os_log(.info, log: Self.logger, "SF2 source: '%s'", source.absoluteString)
-        os_log(.info, log: Self.logger, "SF2 destination: '%s'", destination.absoluteString)
+        os_log(.info, log: Self.logger, "SF2 source: '%{public}s'", source.absoluteString)
+        os_log(.info, log: Self.logger, "SF2 destination: '%{public}s'", destination.absoluteString)
         let secured = source.startAccessingSecurityScopedResource()
         defer { if secured { source.stopAccessingSecurityScopedResource() } }
         try FileManager.default.copyItem(at: source, to: destination)

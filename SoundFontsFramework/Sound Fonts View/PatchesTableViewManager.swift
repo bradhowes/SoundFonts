@@ -290,7 +290,7 @@ extension PatchesTableViewManager {
 
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
         guard case let .changed(old: old, new: new) = event else { return }
-        os_log(.info, log: log, "selectedSoundFontChange - old: '%s' new: '%s'", old?.displayName ?? "N/A", new?.displayName ?? "N/A")
+        os_log(.info, log: log, "selectedSoundFontChange - old: '%{publi}s' new: '%{public}s'", old?.displayName ?? "N/A", new?.displayName ?? "N/A")
         updateViewPresets()
         if view.isEditing {
             if let soundFont = new {
@@ -374,7 +374,7 @@ extension PatchesTableViewManager {
     }
 
     private func search(for searchTerm: String) {
-        os_log(.info, log: log, "search - '%s'", searchTerm)
+        os_log(.info, log: log, "search - '%{public}s'", searchTerm)
         guard let soundFont = selectedSoundFontManager.selected else { return }
         lastSearchText = searchTerm
         searchPresets = viewPresets.filter { soundFont.patches[$0].name.localizedCaseInsensitiveContains(searchTerm) }

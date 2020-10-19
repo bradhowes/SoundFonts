@@ -5,14 +5,14 @@ import SoundFontsFramework
 import os
 
 public class SoundFontsAUViewController: AUViewController {
-    private let log = Logging.logger("ViewC")
+    private let log = Logging.logger("SFAUVC")
     private let noteInjector = NoteInjector()
     private let components = Components<SoundFontsAUViewController>(inApp: false)
 
     private var audioUnit: SoundFontsAU?
 
     override public func viewDidLoad() {
-        os_log(.error, log: log, "viewDidLoad")
+        os_log(.info, log: log, "viewDidLoad")
         super.viewDidLoad()
         components.setMainViewController(self)
     }
@@ -21,8 +21,9 @@ public class SoundFontsAUViewController: AUViewController {
 extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-        os_log(.error, log: log, "createAudioUnit")
+        os_log(.info, log: log, "createAudioUnit")
         let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler, activePatchManager: components.activePatchManager)
+        os_log(.info, log: log, "created SoundFontsAU")
         self.audioUnit = audioUnit
         return audioUnit
     }
@@ -44,7 +45,7 @@ extension SoundFontsAUViewController: ControllerConfiguration {
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: _, playSample: playSample) = event {
-            os_log(.error, log: log, "activePatchChange - playSample: %d", playSample)
+            os_log(.info, log: log, "activePatchChange - playSample: %d", playSample)
             useActivePatchKind(playSample: playSample)
         }
     }
@@ -57,9 +58,9 @@ extension SoundFontsAUViewController: ControllerConfiguration {
         case .failure(let reason):
             switch reason {
             case .noSampler: os_log(.error, log: log, "no sampler")
-            case .sessionActivating(let error): os_log(.error, log: log, "failed to activate session: %s", error.localizedDescription)
-            case .engineStarting(let error): os_log(.error, log: log, "failed to start engine: %s", error.localizedDescription)
-            case .patchLoading(let error): os_log(.error, log: log, "failed to load patch: %s", error.localizedDescription)
+            case .sessionActivating(let error): os_log(.error, log: log, "failed to activate session: %{public}s", error.localizedDescription)
+            case .engineStarting(let error): os_log(.error, log: log, "failed to start engine: %{public}s", error.localizedDescription)
+            case .patchLoading(let error): os_log(.error, log: log, "failed to load patch: %{public}s", error.localizedDescription)
             }
         }
     }

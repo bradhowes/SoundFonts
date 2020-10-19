@@ -14,19 +14,24 @@ private extension String {
 }
 
 final class SoundFontsAU: AUAudioUnit {
-    private let log = Logging.logger("SFAU")
+    private let log: OSLog
     private let sampler: Sampler
     private let activePatchManager: ActivePatchManager
     private let wrapped: AUAudioUnit
     private var ourParameterTree: AUParameterTree?
 
     public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
-        os_log(.info, log:log, "init - flags: %d man: %d type: sub: %d",
+        let log = Logging.logger("SFAU")
+        self.log = log
+        os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
         self.sampler = sampler
+        os_log(.info, log: log, "creating AVAudioUnitSampler")
         let auSampler = AVAudioUnitSampler()
+
+        os_log(.info, log: log, "starting AVAudioUnitSampler")
         switch sampler.start(auSampler: auSampler) {
         case .success: self.wrapped = auSampler.auAudioUnit
         case .failure(let what):
@@ -36,13 +41,18 @@ final class SoundFontsAU: AUAudioUnit {
 
         self.activePatchManager = activePatchManager
 
-        try super.init(componentDescription: componentDescription, options: [])
+        os_log(.info, log: log, "super.init")
+        do {
+            try super.init(componentDescription: componentDescription, options: [])
+        } catch {
+            os_log(.error, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription)
+            throw error
+        }
 
         os_log(.info, log:log, "init - done")
     }
 
-    override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration])
-        -> IndexSet {
+    override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         os_log(.info, log: log, "supportedViewConfiigurations")
         let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 270 ? $0.0 : nil }
         os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
@@ -56,15 +66,30 @@ final class SoundFontsAU: AUAudioUnit {
         for index in 0..<outputBusses.count {
             outputBusses[index].shouldAllocateBuffer = true
         }
-        try wrapped.allocateRenderResources()
+        do {
+            try wrapped.allocateRenderResources()
+        } catch {
+            os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
+            throw error
+        }
         os_log(.info, log: log, "allocateRenderResources - done")
     }
 
-    override public func deallocateRenderResources() { wrapped.deallocateRenderResources() }
+    override public func deallocateRenderResources() {
+        os_log(.info, log: log, "deallocateRenderResources")
+        wrapped.deallocateRenderResources()
+    }
 
-    override public var renderResourcesAllocated: Bool { wrapped.renderResourcesAllocated }
+    override public var renderResourcesAllocated: Bool {
+        os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
+        return wrapped.renderResourcesAllocated
 
-    override public func reset() { wrapped.reset() }
+    }
+
+    override public func reset() {
+        os_log(.info, log: log, "reset")
+        wrapped.reset()
+    }
 
     override public var inputBusses: AUAudioUnitBusArray {
         os_log(.info, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
@@ -77,14 +102,19 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     override public var scheduleParameterBlock: AUScheduleParameterBlock {
-        wrapped.scheduleParameterBlock
+        os_log(.info, log: self.log, "scheduleParameterBlock")
+        return wrapped.scheduleParameterBlock
     }
 
     override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
-        wrapped.token(byAddingRenderObserver: observer)
+        os_log(.info, log: self.log, "token by AddingRenderObserver")
+        return wrapped.token(byAddingRenderObserver: observer)
     }
 
-    override public func removeRenderObserver(_ token: Int) { wrapped.removeRenderObserver(token) }
+    override public func removeRenderObserver(_ token: Int) {
+        os_log(.info, log: self.log, "removeRenderObserver")
+        wrapped.removeRenderObserver(token)
+    }
 
     override public var maximumFramesToRender: AUAudioFrameCount {
         didSet { wrapped.maximumFramesToRender = self.maximumFramesToRender }
@@ -260,7 +290,16 @@ final class SoundFontsAU: AUAudioUnit {
 
     override public var isRunning: Bool { wrapped.isRunning }
 
-    override public func startHardware() throws { try wrapped.startHardware() }
+    override public func startHardware() throws {
+        os_log(.info, log: self.log, "startHardware")
+        do {
+            try wrapped.startHardware()
+        } catch {
+            os_log(.error, log: self.log, "startHardware failed - %s", error.localizedDescription)
+            throw error
+        }
+        os_log(.info, log: self.log, "startHardware - done")
+    }
 
     override public func stopHardware() { wrapped.stopHardware() }
 

@@ -63,7 +63,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
      - parameter isActive: true if the Favorite's patch is currently active.
      */
     func update(favoriteName: String, isActive: Bool) {
-        os_log(.info, log: log, "update: %s %d", favoriteName, isActive)
+        os_log(.info, log: log, "update: %{public}s %d", favoriteName, isActive)
 
         name.text = favoriteName
         if isActive {

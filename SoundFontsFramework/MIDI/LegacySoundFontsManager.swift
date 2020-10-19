@@ -18,7 +18,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 
     private var collection = LegacySoundFontCollection(soundFonts: []) {
         didSet {
-            os_log(.debug, log: log, "collection changed: %s", collection.description)
+            os_log(.debug, log: log, "collection changed: %{public}s", collection.description)
         }
     }
 
@@ -65,15 +65,15 @@ extension FileManager {
             let (stripped, uuid) = path.stripEmbeddedUUID()
             if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
             let dst = localDocumentsDirectory.appendingPathComponent(stripped)
-            os_log(.info, log: log, "removing '%s' if it exists", dst.path)
+            os_log(.info, log: log, "removing '%{public}s' if it exists", dst.path)
             try? removeItem(at: dst)
-            os_log(.info, log: log, "copying '%s' to '%s'", src.path, dst.path)
+            os_log(.info, log: log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
             do {
                 try copyItem(at: src, to: dst)
             } catch let error as NSError {
-                os_log(.error, log: log, "%s", error.localizedDescription)
+                os_log(.error, log: log, "%{public}s", error.localizedDescription)
             }
-            os_log(.info, log: log, "removing '%s'", src.path)
+            os_log(.info, log: log, "removing '%{public}s'", src.path)
             try? removeItem(at: src)
             found += 1
         }
@@ -119,10 +119,10 @@ extension LegacySoundFontsManager: SoundFonts {
     }
 
     public func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool) {
-        os_log(.debug, log: log, "setVisibility - %s %d %d", key.uuidString, index, state)
+        os_log(.debug, log: log, "setVisibility - %{public}s %d %d", key.uuidString, index, state)
         guard let soundFont = getBy(key: key) else { return }
         let patch = soundFont.patches[index]
-        os_log(.debug, log: log, "setVisibility %s %s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
+        os_log(.debug, log: log, "setVisibility %{public}s %{public}s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
         patch.isVisible = state
         save()
     }
@@ -151,7 +151,7 @@ extension LegacySoundFontsManager: SoundFonts {
         os_log(.info, log: log, "removeBundled")
         for url in SF2Files.allResources {
             if let index = collection.index(of: url) {
-                os_log(.info, log: log, "removing %s", url.absoluteString)
+                os_log(.info, log: log, "removing %{public}s", url.absoluteString)
                 remove(index: index)
             }
         }
@@ -162,7 +162,7 @@ extension LegacySoundFontsManager: SoundFonts {
         os_log(.info, log: log, "restoreBundled")
         for url in SF2Files.allResources {
             if collection.index(of: url) == nil {
-                os_log(.info, log: log, "restoring %s", url.absoluteString)
+                os_log(.info, log: log, "restoring %{public}s", url.absoluteString)
                 if let soundFont = Self.addFromBundle(url: url) {
                     let index = collection.add(soundFont)
                     notify(.added(new: index, font: soundFont))
@@ -180,13 +180,13 @@ extension LegacySoundFontsManager: SoundFonts {
         let src = fm.sharedDocumentsDirectory.appendingPathComponent(name)
         let dst = fm.localDocumentsDirectory.appendingPathComponent(name)
         do {
-            os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
+            os_log(.info, log: Self.log, "removing '%{public}s' if it exists", dst.path)
             try? fm.removeItem(at: dst)
-            os_log(.info, log: Self.log, "copying '%s' to '%s'", src.path, dst.path)
+            os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
             try fm.copyItem(at: src, to: dst)
             return true
         } catch let error as NSError {
-            os_log(.error, log: Self.log, "%s", error.localizedDescription)
+            os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)
         }
         return false
     }
@@ -212,13 +212,13 @@ extension LegacySoundFontsManager: SoundFonts {
 
             let dst = fm.localDocumentsDirectory.appendingPathComponent(stripped)
             do {
-                os_log(.info, log: Self.log, "removing '%s' if it exists", dst.path)
+                os_log(.info, log: Self.log, "removing '%{public}s' if it exists", dst.path)
                 try? fm.removeItem(at: dst)
-                os_log(.info, log: Self.log, "copying '%s' to '%s'", src.path, dst.path)
+                os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
                 try fm.copyItem(at: src, to: dst)
                 good += 1
             } catch let error as NSError {
-                os_log(.error, log: Self.log, "%s", error.localizedDescription)
+                os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)
                 bad += 1
             }
         }
