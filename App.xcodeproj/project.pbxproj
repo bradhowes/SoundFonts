@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD05837A23E4C52800E094E0 /* MainInterface.storyboard */; };
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E9EE724FAC0C6009316F2 /* MIDI.swift */; };
 		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
@@ -24,6 +23,7 @@
 		BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD50C7B423D4793F0019EF15 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
@@ -95,7 +95,6 @@
 
 /* Begin PBXFileReference section */
 		BD05836223E4C52800E094E0 /* SoundFonts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFonts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD05837B23E4C52800E094E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
 		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +111,7 @@
 		BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMonitor.swift; sourceTree = "<group>"; };
 		BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 		BD05837123E4C52800E094E0 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				BD05837A23E4C52800E094E0 /* MainInterface.storyboard */,
+				BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -429,8 +429,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD05837C23E4C52800E094E0 /* MainInterface.storyboard in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
+				BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,17 +546,6 @@
 			targetProxy = BD88BCC12419A9D400399DE5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		BD05837A23E4C52800E094E0 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BD05837B23E4C52800E094E0 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		BD05838123E4C52800E094E0 /* Debug */ = {
