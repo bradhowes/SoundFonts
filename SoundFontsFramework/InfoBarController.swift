@@ -252,7 +252,7 @@ extension InfoBarController {
     }
 
     private func setPatchInfo(name: String, isFavored: Bool) {
-        os_log(.info, log: log, "setPatchInfo: %s %d", name, isFavored)
+        os_log(.info, log: log, "setPatchInfo: %{public}s %d", name, isFavored)
         patchInfo.text = TableCell.favoriteTag(isFavored) + name
         cancelStatusAnimation()
     }

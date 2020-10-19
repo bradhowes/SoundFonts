@@ -28,7 +28,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let inApp: Bool
 
     public private(set) var active: ActivePatchKind = .none {
-        didSet { os_log(.info, log: log, "set active: %s", active.description) }
+        didSet { os_log(.info, log: log, "set active: %{public}s", active.description) }
     }
 
     public var favorite: LegacyFavorite? { active.favorite }
@@ -50,7 +50,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         self.inApp = inApp
         super.init()
         soundFonts.subscribe(self, notifier: soundFontsChange)
-        os_log(.info, log: log, "active: %s", active.description)
+        os_log(.info, log: log, "active: %{public}s", active.description)
     }
 
     public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> LegacySoundFont? {
@@ -74,9 +74,9 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         let prev = active
         active = kind
         if soundFonts.restored {
+            save(kind)
             DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
         }
-        save(kind)
     }
 
     public func clearActive() {

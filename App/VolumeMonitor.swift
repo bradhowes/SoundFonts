@@ -71,7 +71,6 @@ extension VolumeMonitor {
 
         let session = AVAudioSession.sharedInstance()
         sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in self.volume = session.outputVolume }
-        update()
     }
 
     /**
@@ -126,7 +125,7 @@ extension VolumeMonitor {
         keyboard.isMuted = reason != .none
         notePlayer.isMuted = reason != .none
 
-        os_log(.info, log: log, "reason: %s", reason.debugDescription)
+        os_log(.info, log: log, "reason: %{public}s", reason.debugDescription)
         showReason()
     }
 

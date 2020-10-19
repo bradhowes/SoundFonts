@@ -31,12 +31,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     }
 
     private let mode: Mode
-
+    private let activePatchManager: ActivePatchManager
+    private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
     private var auSampler: AVAudioUnitSampler?
-
     private var loaded: Bool = false
-    private let activePatchManager: ActivePatchManager
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
@@ -64,6 +63,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public func start(auSampler: AVAudioUnitSampler) -> Result<Void, SamplerStartFailure> {
         os_log(.info, log: log, "start")
         self.auSampler = auSampler
+        presetChangeManager.start()
         return startEngine()
     }
 
@@ -72,13 +72,13 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func stop() {
         os_log(.info, log: log, "stop")
+        presetChangeManager.stop()
         if let engine = self.engine {
+            engine.stop()
             if let sampler = self.auSampler {
-                AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
                 sampler.reset()
                 engine.detach(sampler)
             }
-            engine.stop()
             engine.reset()
         }
 
@@ -116,34 +116,27 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - returns: Result instance indicating success or failure
      */
     public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, SamplerStartFailure> {
-        os_log(.info, log: log, "load - %s", activePatchManager.active.description)
+        os_log(.info, log: log, "loadActivePreset - %{public}s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
         guard let sampler = auSampler else { return .success(()) }
         guard let soundFont = activePatchManager.soundFont else { return .success(()) }
         guard let patch = activePatchManager.patch else { return .success(()) }
+        let favorite = activePatchManager.favorite
 
-        if let favorite = activePatchManager.favorite {
-            setGain(favorite.gain)
-            setPan(favorite.pan)
-        }
-
-        do {
-            os_log(.info, log: log, "begin loading")
-            try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
-            AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
-            os_log(.info, log: log, "end loading")
-            loaded = true
+        presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
+            if let fav = favorite {
+                self.setGain(fav.gain)
+                self.setPan(fav.pan)
+            }
+            self.loaded = true
             afterLoadBlock?()
             DispatchQueue.main.async {
                 self.notify(.loaded(patch: self.activePatchManager.active))
             }
-
-            return .success(())
-        } catch let error as NSError {
-            os_log(.error, log: log, "failed loading - %s", error.localizedDescription)
-            return .failure(.patchLoading(error: error))
         }
+
+        return .success(())
     }
 
     /**

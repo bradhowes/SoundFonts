@@ -52,7 +52,7 @@ extension MainViewController {
             DispatchQueue.main.async { self.finishStart(result) }
         } catch let error as NSError {
             let result: SamplerStartFailure = .sessionActivating(error: error)
-            os_log(.error, log: log, "Failed setActive(true): %s", error.localizedDescription)
+            os_log(.error, log: log, "Failed session.setActive(true): %{public}s", error.localizedDescription)
             DispatchQueue.main.async { self.finishStart(.failure(result)) }
         }
     }
@@ -63,7 +63,6 @@ extension MainViewController {
             os_log(.info, log: log, "set active audio session")
             postAlert(for: what)
         case .success:
-            useActivePatchKind(activePatchManager.active, playSample: false)
             volumeMonitor?.start()
         }
     }
@@ -80,7 +79,7 @@ extension MainViewController {
             try session.setActive(false, options: [])
             os_log(.info, log: log, "set audio session inactive")
         } catch let error as NSError {
-            os_log(.error, log: log, "Failed setActive(false): %{public}s", error.localizedDescription)
+            os_log(.error, log: log, "Failed session.setActive(false): %{public}s", error.localizedDescription)
         }
     }
 }

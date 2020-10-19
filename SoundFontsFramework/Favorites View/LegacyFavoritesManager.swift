@@ -17,7 +17,7 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private var collection: LegacyFavoriteCollection = LegacyFavoriteCollection() {
         didSet {
-            os_log(.debug, log: log, "collection changed: %s", collection.description)
+            os_log(.debug, log: log, "collection changed: %{public}s", collection.description)
         }
     }
 

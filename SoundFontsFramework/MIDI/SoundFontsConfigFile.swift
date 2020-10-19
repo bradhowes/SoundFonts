@@ -47,7 +47,7 @@ public final class SoundFontsConfigFile: UIDocument {
     }
 
     override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
-        os_log(.info, log: log, "revert url: '%s' - ignoring", url.path)
+        os_log(.info, log: log, "revert url: '%{public}s' - ignoring", url.path)
         completionHandler?(false)
     }
 

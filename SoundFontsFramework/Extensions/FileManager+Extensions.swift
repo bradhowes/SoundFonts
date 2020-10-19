@@ -17,7 +17,7 @@ extension FileManager {
         let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(ProcessInfo().globallyUniqueString)
         precondition(self.createFile(atPath: temporaryFileURL.path, contents: nil))
-        os_log(.info, log: log, "newTemporaryFile - %@", temporaryFileURL.absoluteString)
+        os_log(.info, log: log, "newTemporaryFile - %{public}@", temporaryFileURL.absoluteString)
         return temporaryFileURL
     }
 
@@ -70,7 +70,7 @@ extension FileManager {
             try? self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
         }
 
-        os_log(.info, log: log, "cloudDocumentsDirectory - %@", dir.absoluteString)
+        os_log(.info, log: log, "cloudDocumentsDirectory - %{public}@", dir.absoluteString)
         return dir
     }
 
@@ -82,7 +82,7 @@ extension FileManager {
      */
     public func fileSizeOf(url: URL) -> UInt64 {
         let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
-        os_log(.info, log: log, "fileSizeOf %@: %d", url.absoluteString, fileSize ?? 0)
+        os_log(.info, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
         return fileSize ?? 0
     }
 }
