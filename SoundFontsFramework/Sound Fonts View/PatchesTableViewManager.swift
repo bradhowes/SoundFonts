@@ -188,9 +188,12 @@ extension PatchesTableViewManager {
 
     private func updateViewPresets() {
         let source = selectedSoundFontManager.selected?.patches ?? []
-        viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
-        updateSectionRowCounts()
-        view.reloadData()
+        let viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
+        if self.viewPresets != viewPresets {
+            self.viewPresets = viewPresets
+            updateSectionRowCounts()
+            view.reloadData()
+        }
     }
 
     private func updateSectionRowCounts() {
@@ -255,6 +258,7 @@ extension PatchesTableViewManager {
         completion: { _ in
             self.view.setEditing(false, animated: true)
             self.viewPresets = soundFont.patches.filter { $0.isVisible == true } .map { $0.soundFontIndex }
+            self.updateSectionRowCounts()
             self.view.reloadSections(IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .automatic)
         }
     }
