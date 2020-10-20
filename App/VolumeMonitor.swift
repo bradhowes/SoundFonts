@@ -108,7 +108,7 @@ extension VolumeMonitor {
             reason = .volumeLevel
         }
         else if muted {
-            if AVAudioSession.sharedInstance().isOtherAudioPlaying {
+            if AVAudioSession.sharedInstance().isOtherAudioPlaying || AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
                 reason = .otherAudio
             }
             else {
