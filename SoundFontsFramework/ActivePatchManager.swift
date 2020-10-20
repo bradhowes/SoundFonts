@@ -106,10 +106,6 @@ extension ActivePatchManager {
             return
         }
 
-        // If inApp, we don't restore from settings -- only from AUv3 presets. So, one was either applied earlier, thus setting `active` or
-        // it may be applied later and we do nothing more now.
-        guard inApp else { return }
-
         if let restored = Self.restore() {
             setActive(restored, playSample: false)
         }
@@ -124,6 +120,7 @@ extension ActivePatchManager {
     public static func encode(_ kind: ActivePatchKind) -> Data? { try? JSONEncoder().encode(kind) }
 
     private func save(_ kind: ActivePatchKind) {
+        guard inApp else { return }
         os_log(.info, log: log, "save")
         DispatchQueue.global(qos: .background).async {
             if let data = Self.encode(kind) {
