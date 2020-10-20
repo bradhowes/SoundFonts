@@ -4,6 +4,7 @@ import UIKit
 
 private class Tag {}
 
+// Rework this
 public enum Formatters {
 
     public static func formatted(presetCount: Int) -> String { .localizedStringWithFormat(Self.presetsFormatString, presetCount) }

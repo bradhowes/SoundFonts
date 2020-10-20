@@ -1,8 +1,7 @@
-/* Copyright © 2019 Brad Howes. All rights reserved. */
-
-"favorite" = "favorite";
-"patch" = "patch";
-"font" = "font";
+"favorite" = "Favorit";
+"patch" = "Voreinstellung";
+"preset" = "Voreinstellung";
+"font" = "Font";
 
 "Cancel" = "Abbrechen";
 "Save" = "Sichern";
@@ -18,3 +17,13 @@
 
 "DeleteFontTitle" = "Soundfont-Datei löschen?";
 "DeleteFontMessage" = "Die Soundfont-Datei und alle zugehörigen Favoriten werden von diesem Gerät entfernt.";
+
+"UnableToAddOneFile" = "Impossible d'ajouter le fichier.";
+"UnableToAddAnyFiles" = "Impossible d'ajouter des fichiers.";
+"AddedOneFile" = "Ajout d'un fichier.";
+"AddedAllFiles" = "Ajout de tous les fichiers.";
+"AddedSomeFiles" = "Ajout de quelques fichiers.";
+
+"empty" = "vide";
+"invalid" = "non valide";
+"uncopyable" = "non copiable";
