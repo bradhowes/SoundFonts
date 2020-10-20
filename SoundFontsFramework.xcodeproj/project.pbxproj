@@ -287,12 +287,6 @@
 		BDC7EC3D241AE97000F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BDC7EC40241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+ExtensionsTests.swift"; sourceTree = "<group>"; };
 		BDC7EC42241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RandomAccessCollection+Extensions.swift"; sourceTree = "<group>"; };
-		BDC7EC4B241B750C00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = es; path = es.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		BDC7EC4C241B750C00F789B2 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		BDC7EC4D241B752600F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		BDC7EC4E241B752600F789B2 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		BDC7EC4F241B753B00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		BDC7EC50241B753B00F789B2 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BDC7EC51241B7AF900F789B2 /* LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStrings.swift; sourceTree = "<group>"; };
 		BDC961A624FFA745003D9BEF /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		BDC961A824FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontLibraryPlistTest.swift; sourceTree = "<group>"; };
@@ -906,9 +900,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				BDC7EC3B241AE97000F789B2 /* en */,
-				BDC7EC4B241B750C00F789B2 /* es */,
-				BDC7EC4D241B752600F789B2 /* fr */,
-				BDC7EC4F241B753B00F789B2 /* de */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -917,9 +908,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				BDC7EC3D241AE97000F789B2 /* en */,
-				BDC7EC4C241B750C00F789B2 /* es */,
-				BDC7EC4E241B752600F789B2 /* fr */,
-				BDC7EC50241B753B00F789B2 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
