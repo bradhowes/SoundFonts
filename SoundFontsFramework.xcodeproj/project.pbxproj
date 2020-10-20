@@ -123,6 +123,7 @@
 		BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC347E72403B93F00A848BA /* FileMonitorTests.swift */; };
 		BDC35B5725081B66009CEFAF /* SoundFontEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5625081B66009CEFAF /* SoundFontEntityTests.swift */; };
 		BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */; };
+		BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC6629F253F92B400C03C5F /* Bookmark.swift */; };
 		BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */; };
 		BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BDC7EC3C241AE97000F789B2 /* Localizable.strings */; };
 		BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC7EC40241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift */; };
@@ -283,6 +284,7 @@
 		BDC347E72403B93F00A848BA /* FileMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitorTests.swift; sourceTree = "<group>"; };
 		BDC35B5625081B66009CEFAF /* SoundFontEntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontEntityTests.swift; sourceTree = "<group>"; };
 		BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestHarness.swift; sourceTree = "<group>"; };
+		BDC6629F253F92B400C03C5F /* Bookmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		BDC7EC3B241AE97000F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BDC7EC3D241AE97000F789B2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BDC7EC40241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Foundation+ExtensionsTests.swift"; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 		BD074BE823CDAF51001987E9 /* MIDI */ = {
 			isa = PBXGroup;
 			children = (
+				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
@@ -841,6 +844,7 @@
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,
+				BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
 				BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */,
 				BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */,

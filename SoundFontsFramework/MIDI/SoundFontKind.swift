@@ -17,25 +17,35 @@ public enum SoundFontKind {
 
     case builtin(resource: URL)
     case installed(fileName: String)
+    case reference(bookmark: Bookmark)
 
     /// The URL that points to the data file that defnes the SoundFont.
     public var fileURL: URL {
         switch self {
-        case .builtin(let resource):
-            return resource
-        case .installed(let fileName):
-            return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(fileName)
+        case .builtin(let resource): return resource
+        case .installed(let fileName): return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(fileName)
+        case .reference(let bookmark): return bookmark.fileURL
         }
     }
 
     /// The String representation of the fileURL
     public var path: String { return fileURL.path }
 
-    /// True if the resoure can be deleted by the user
+    /// True if the file deleted by the user
     public var removable: Bool {
         switch self {
-        case .builtin(resource: _): return false
-        case .installed(fileName: _): return true
+        case .builtin: return false
+        case .installed: return true
+        case .reference: return true
+        }
+    }
+
+    /// True if is resource
+    public var resource: Bool {
+        switch self {
+        case .builtin: return true
+        case .installed: return false
+        case .reference: return false
         }
     }
 
@@ -43,6 +53,7 @@ public enum SoundFontKind {
     private enum InternalKey: Int {
         case builtin = 0
         case installed = 1
+        case reference = 2
     }
 }
 
@@ -75,6 +86,9 @@ extension SoundFontKind: Codable {
         case .installed(let fileName):
             try container.encode(InternalKey.installed.rawValue)
             try container.encode(fileName)
+        case .reference(let bookmark):
+            try container.encode(InternalKey.reference.rawValue)
+            try container.encode(bookmark)
         }
     }
 }
@@ -90,6 +104,9 @@ extension SoundFontKind: Hashable {
         case .installed(let fileName):
             hasher.combine(InternalKey.installed.rawValue)
             hasher.combine(fileName)
+        case .reference(let bookmark):
+            hasher.combine(InternalKey.reference.rawValue)
+            hasher.combine(bookmark)
         }
     }
 }

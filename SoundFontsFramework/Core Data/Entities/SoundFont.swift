@@ -71,11 +71,7 @@ extension SoundFont {
         self.name = soundFont.displayName
         self.embeddedName = soundFont.embeddedName
         self.path = soundFont.fileURL
-        switch soundFont.kind {
-        case .builtin: self.resource = true
-        case .installed: self.resource = false
-        }
-
+        self.resource = soundFont.kind.resource
         self.visible = true
 
         soundFont.patches.forEach { self.addToChildren(Preset(in: context, import: $0)) }
