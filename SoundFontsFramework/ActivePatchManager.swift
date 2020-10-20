@@ -71,12 +71,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
+        guard soundFonts.restored else { return }
         let prev = active
         active = kind
-        if soundFonts.restored {
-            save(kind)
-            DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
-        }
+        save(kind)
+        DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
     }
 
     public func clearActive() {

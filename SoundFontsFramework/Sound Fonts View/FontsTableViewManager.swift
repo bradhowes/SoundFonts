@@ -193,14 +193,6 @@ extension FontsTableViewManager {
         case .restored:
             viewSoundFonts = soundFonts.soundFontNames
             view.reloadData()
-            if let soundFont = activePatchManager.soundFont {
-                selectedSoundFontManager.setSelected(soundFont)
-            }
-            else if selectedSoundFontManager.selected == nil && !viewSoundFonts.isEmpty {
-                let soundFont = soundFonts.getBy(index: 0)
-                selectedSoundFontManager.setSelected(soundFont)
-                activePatchManager.setActive(preset: soundFont.makeSoundFontAndPatch(at: 0), playSample: false)
-            }
         }
     }
 
