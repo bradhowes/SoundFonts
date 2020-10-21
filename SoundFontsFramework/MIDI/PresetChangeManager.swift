@@ -63,8 +63,11 @@ private final class PresetChangeOperation: Operation {
         do {
             try sampler.loadSoundBankInstrument(at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
             AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
-        } catch {
+        } catch let error  as NSError {
             os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
+            if error.code == -54 {
+                NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url.lastPathComponent)
+            }
         }
 
         isExecuting = false

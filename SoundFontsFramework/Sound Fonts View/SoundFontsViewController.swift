@@ -59,7 +59,7 @@ public final class SoundFontsViewController: UIViewController {
 
     private func addSoundFont(_ button: AnyObject) {
         let documentPicker = UIDocumentPickerViewController(
-            documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: .import)
+            documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: settings.copyFilesWhenAdding ? .import : .open)
         documentPicker.delegate = self
         if #available(iOS 13, *) {
             documentPicker.modalPresentationStyle = .automatic

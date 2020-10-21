@@ -19,7 +19,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func setMainViewController(_ mainViewController: MainViewController) {
         for issue in [Notification.Name.soundFontsCollectionLoadFailure,
                       .soundFontsCollectionOrphans,
-                      .favoritesCollectionLoadFailure] {
+                      .favoritesCollectionLoadFailure,
+                      .soundFontFileAccessDenied] {
             observers.append(NotificationCenter.default.addObserver(forName: issue, object: nil, queue: nil) { notif in
                 self.notify(notif)
             })
@@ -51,13 +52,20 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
 have been lost.
 """)
+
             case .favoritesCollectionLoadFailure:
                 return ("Startup Failure", "Unable to load the last saved favorites information.")
+
             case .soundFontsCollectionOrphans:
                 guard let count = notification.object as? NSNumber else { fatalError() }
                 return ("Orphaned SF2 Files", """
 Found \(count.intValue) SF2 files that are not being used and moved them to local SoundFonts folder.
 """)
+
+            case .soundFontFileAccessDenied:
+                guard let name = notification.object as? String else { fatalError() }
+                return ("Access Failure", "Unable to access and use the sound font file '\(name)'.")
+
             default:
                 fatalError("unexpected notification - \(notification.name)")
             }
