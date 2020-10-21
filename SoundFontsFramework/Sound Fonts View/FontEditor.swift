@@ -31,6 +31,7 @@ final class FontEditor: UIViewController {
     @IBOutlet private weak var name: UITextField!
     @IBOutlet private weak var originalNameLabel: UILabel!
     @IBOutlet private weak var embeddedNameLabel: UILabel!
+    @IBOutlet private weak var kindLabel: UILabel!
     @IBOutlet private weak var presetsCountLabel: UILabel!
     @IBOutlet private weak var favoritesCountLabel: UILabel!
     @IBOutlet private weak var hiddenCountLabel: UILabel!
@@ -51,6 +52,14 @@ final class FontEditor: UIViewController {
         name.delegate = self
         originalNameLabel.text = soundFont.originalDisplayName
         embeddedNameLabel.text = soundFont.embeddedName
+        kindLabel.text = {
+            switch soundFont.kind {
+            case .builtin: return "app resource"
+            case .installed: return "file copy"
+            case .reference: return "file reference"
+            }
+        }()
+
         presetsCountLabel.text = Formatters.formatted(presetCount: soundFont.patches.count)
         favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
 
