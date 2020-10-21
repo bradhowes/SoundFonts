@@ -6,6 +6,8 @@ import SF2Files
 
 public enum SoundFontKindError: Error {
     case invalidKind
+    case failedToRead
+    case failedToResolveURL
 }
 
 /**
@@ -64,14 +66,21 @@ extension SoundFontKind: Codable {
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         let kind = InternalKey(rawValue: try container.decode(Int.self))
-        let value = try container.decode(String.self)
         switch kind {
         case .builtin:
+            let value = try container.decode(String.self)
             let name = URL(fileURLWithPath: value).deletingPathExtension().lastPathComponent
             let url = SF2Files.resource(name: name)
             self = .builtin(resource: url)
+
         case .installed:
+            let value = try container.decode(String.self)
             self = .installed(fileName: value)
+
+        case .reference:
+            let value = try container.decode(Bookmark.self)
+            self = .reference(bookmark: value)
+
         default:
             throw SoundFontKindError.invalidKind
         }

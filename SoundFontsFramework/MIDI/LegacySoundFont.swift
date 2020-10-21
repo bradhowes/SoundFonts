@@ -14,9 +14,6 @@ public final class LegacySoundFont: Codable {
     /// Presentation name of the sound font
     public var displayName: String
 
-    /// Width of the sound font name
-    // var nameWidth: CGFloat { displayName.systemFontWidth }
-
     ///  The resolved URL for the sound font
     public var fileURL: URL { kind.fileURL }
 
@@ -35,7 +32,7 @@ public final class LegacySoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [LegacyPatch]
 
-    public static func makeSoundFont(from url: URL, saveToDisk: Bool) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
+    public static func makeSoundFont(from url: URL) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(viaParser: url) else {
@@ -57,8 +54,8 @@ public final class LegacySoundFont: Codable {
             info.embeddedName = displayName
         }
 
-        let soundFont = LegacySoundFont(displayName, soundFontInfo: info, file: url, key: uuid ?? Key())
-        if saveToDisk {
+        let soundFont = LegacySoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key())
+        if settings.copyFilesWhenAdding {
             do {
                 try copyToAppFolder(source: url, destination: soundFont.fileURL)
             } catch {
@@ -83,13 +80,15 @@ public final class LegacySoundFont: Codable {
 
      - parameter displayName: the display name of the resource
      - parameter soundFontInfo: patch info from the sound font
+     - parameter key: UUID for this font
      */
-    public init(_ displayName: String, soundFontInfo: SoundFontInfo, file: URL, key: Key) {
+    public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
         self.key = key
         self.displayName = displayName
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
-        self.kind = .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension)
+        self.kind = settings.copyFilesWhenAdding ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
+            .reference(bookmark: Bookmark(url: url))
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
 

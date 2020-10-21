@@ -96,7 +96,7 @@ extension LegacySoundFontsManager: SoundFonts {
 
     @discardableResult
     public func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure> {
-        switch LegacySoundFont.makeSoundFont(from: url, saveToDisk: true) {
+        switch LegacySoundFont.makeSoundFont(from: url) {
         case .failure(let failure): return .failure(failure)
         case.success(let soundFont):
             let index = collection.add(soundFont)
@@ -266,7 +266,7 @@ extension LegacySoundFontsManager {
 
     @discardableResult
     fileprivate static func addFromSharedFolder(url: URL) -> LegacySoundFont? {
-        switch LegacySoundFont.makeSoundFont(from: url, saveToDisk: false) {
+        switch LegacySoundFont.makeSoundFont(from: url) {
         case .success(let soundFont): return soundFont
         case .failure: return nil
         }
@@ -292,17 +292,23 @@ extension LegacySoundFontsManager {
     internal func loadConfigurationData(contents: Any) throws {
         os_log(.info, log: log, "loadConfigurationData")
         guard let data = contents as? Data else {
+            restoreCollection(Self.create())
             NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
             return
         }
 
         os_log(.info, log: log, "has Data")
         guard let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) else {
+            restoreCollection(Self.create())
             NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
             return
         }
 
         os_log(.info, log: log, "properly decoded")
+        restoreCollection(collection)
+    }
+
+    private func restoreCollection(_ collection: LegacySoundFontCollection) {
         self.collection = collection
         self.restored = true
         notify(.restored)

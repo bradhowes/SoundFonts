@@ -24,4 +24,7 @@ extension Notification.Name {
 
     /// Notification that we failed to load the Favorites.plist file
     public static let favoritesCollectionLoadFailure = Notification.Name("favoritesCollectionLoadFailure")
+
+    /// Notification that we cannot read/use an SF2 file
+    public static let soundFontFileAccessDenied = Notification.Name("soundFontFileAccessDenied")
 }
