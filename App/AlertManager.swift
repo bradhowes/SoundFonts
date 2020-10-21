@@ -35,12 +35,11 @@ private final class AlertOperation: Operation {
             return
         }
 
-        let ac = UIAlertController(title: alert.title, message: alert.message, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
-            self.operationCompleted()
-        }))
-
         DispatchQueue.main.async {
+            let ac = UIAlertController(title: self.alert.title, message: self.alert.message, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+                self.operationCompleted()
+            }))
             UIApplication.shared.keyWindow?.rootViewController?.present(ac, animated: true, completion: nil)
         }
     }
