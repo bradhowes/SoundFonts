@@ -51,6 +51,15 @@ public enum SoundFontKind {
         }
     }
 
+    /// True if is reference
+    public var reference: Bool {
+        switch self {
+        case .builtin: return false
+        case .installed: return false
+        case .reference: return true
+        }
+    }
+
     /// Key used to encode/decode the above case types.
     private enum InternalKey: Int {
         case builtin = 0
