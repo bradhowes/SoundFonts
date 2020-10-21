@@ -188,12 +188,9 @@ extension PatchesTableViewManager {
 
     private func updateViewPresets() {
         let source = selectedSoundFontManager.selected?.patches ?? []
-        let viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
-        if self.viewPresets != viewPresets {
-            self.viewPresets = viewPresets
-            updateSectionRowCounts()
-            view.reloadData()
-        }
+        self.viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
+        updateSectionRowCounts()
+        view.reloadData()
     }
 
     private func updateSectionRowCounts() {
@@ -294,7 +291,7 @@ extension PatchesTableViewManager {
 
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
         guard case let .changed(old: old, new: new) = event else { return }
-        os_log(.info, log: log, "selectedSoundFontChange - old: '%{publi}s' new: '%{public}s'", old?.displayName ?? "N/A", new?.displayName ?? "N/A")
+        os_log(.info, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'", old?.displayName ?? "N/A", new?.displayName ?? "N/A")
         updateViewPresets()
         if view.isEditing {
             if let soundFont = new {
