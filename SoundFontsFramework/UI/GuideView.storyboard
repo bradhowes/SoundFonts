@@ -26,9 +26,8 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ri0-LA-h9e">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Double-tap to switch views. Use ⊕ to add new SF2 file. Press ❰ and ❱ or swipe to change keyboard range. 🔇 indicates no volume." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ri0-LA-h9e">
                                         <rect key="frame" x="0.0" y="19.5" width="398" height="73.5"/>
-                                        <string key="text">Use ⊕ to add a SF2 file from iCloud drive. Press ❰ and ❱ to change keyboard range. Tap twice on status to switch views. 🔇 indicates no volume.</string>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -46,7 +45,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qjN-HO-9G1" userLabel="Fonts">
-                                <rect key="frame" x="8" y="52" width="195" height="76"/>
+                                <rect key="frame" x="8" y="52" width="195" height="152.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fonts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4hS-nQ-kng">
                                         <rect key="frame" x="4" y="4" width="187" height="19.5"/>
@@ -54,8 +53,9 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Swipe to edit name or remove font." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qil-YQ-SC1">
-                                        <rect key="frame" x="0.0" y="21.5" width="195" height="54.5"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qil-YQ-SC1">
+                                        <rect key="frame" x="0.0" y="21.5" width="195" height="131"/>
+                                        <string key="text">List of installed SF2 files. ❖ indicates file reference (may not always be available to app.) Swipe to edit name or remove file.</string>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -73,16 +73,16 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hH-m6-mhx" userLabel="Patches">
-                                <rect key="frame" x="211" y="52" width="195" height="95"/>
+                                <rect key="frame" x="211" y="52" width="195" height="152.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patches" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O11-kc-bjk">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Presets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O11-kc-bjk">
                                         <rect key="frame" x="4" y="4" width="187" height="19.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Swipe to make favorite. Swipe again to edit or to remove favorite." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skJ-Co-0Pl">
-                                        <rect key="frame" x="0.0" y="21.5" width="195" height="73.5"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="List of presets available in the SF2 file. Swipe to make favorite or hide preset. Swipe again to edit or to remove favorite." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="skJ-Co-0Pl">
+                                        <rect key="frame" x="0.0" y="21.5" width="195" height="131"/>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -100,16 +100,16 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eqV-Vi-63I" userLabel="Favorites">
-                                <rect key="frame" x="11.5" y="48" width="391" height="61"/>
+                                <rect key="frame" x="4" y="48" width="406" height="61"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hm-uz-TPq" userLabel="Favorites">
-                                        <rect key="frame" x="4" y="8" width="383" height="19.5"/>
+                                        <rect key="frame" x="4" y="8" width="398" height="19.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Double-tap favorite to edit. Long-press to rearrange." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJS-gM-ndr">
-                                        <rect key="frame" x="0.0" y="25.5" width="391" height="35.5"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Collection of favorited presets. Double-tap favorite to edit. Long-press to rearrange." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QJS-gM-ndr">
+                                        <rect key="frame" x="0.0" y="25.5" width="406" height="35.5"/>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
