@@ -120,7 +120,7 @@ extension ActivePatchManager {
     public static func encode(_ kind: ActivePatchKind) -> Data? { try? JSONEncoder().encode(kind) }
 
     private func save(_ kind: ActivePatchKind) {
-        guard inApp else { return }
+        // guard inApp else { return }
         os_log(.info, log: log, "save")
         DispatchQueue.global(qos: .background).async {
             if let data = Self.encode(kind) {
