@@ -24,6 +24,7 @@ public extension SettingKeys {
     static let showingFavorites = SettingKey("showingFavorites", defaultValue: false)
     static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
+    static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
 }
 
 /// KVO properties based on the above key definitions.
@@ -79,5 +80,9 @@ public extension UserDefaults {
     @objc dynamic var showSolfegeLabel: Bool {
         get { self[.showSolfegeLabel] }
         set { self[.showSolfegeLabel] = newValue }
+    }
+    @objc dynamic var slideKeyboard: Bool {
+        get { self[.slideKeyboard] }
+        set { self[.slideKeyboard] = newValue }
     }
 }

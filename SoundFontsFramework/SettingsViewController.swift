@@ -28,6 +28,8 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var keyLabelsStackView: UIStackView!
     @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var solfegeStackView: UIStackView!
+
+    @IBOutlet private weak var slideKeyboardStackView: UIStackView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
     @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
@@ -41,6 +43,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
     @IBOutlet private weak var copyFiles: UISwitch!
+    @IBOutlet private weak var slideKeyboard: UISwitch!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -75,6 +78,7 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.isContinuous = true
         keyWidthSlider.value = settings.keyWidth
 
+        slideKeyboard.isOn = settings.slideKeyboard
         copyFiles.isOn = settings.copyFilesWhenAdding
 
         let isAUv3 = !isMainApp
