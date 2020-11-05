@@ -83,6 +83,8 @@
 		BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B923FE625500AE9F3D /* GuideManager.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */; };
 		BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */; };
+		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
+		BD23948A25540855004E5E0D /* KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23948925540855004E5E0D /* KeyTests.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePatchKind.swift */; };
 		BD27E98B2516113600591FD0 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */; };
 		BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */; };
@@ -241,6 +243,8 @@
 		BD1F11B923FE625500AE9F3D /* GuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManager.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
+		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
+		BD23948925540855004E5E0D /* KeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTests.swift; sourceTree = "<group>"; };
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
@@ -520,6 +524,7 @@
 			children = (
 				BD125B3924100C940003DE99 /* Keyboard.pcvd */,
 				BD125B3A24100C940003DE99 /* Key.swift */,
+				BD239485255213CB004E5E0D /* KeyParamSequence.swift */,
 				BD125B3B24100C940003DE99 /* KeyboardController.swift */,
 				BD125B3C24100C940003DE99 /* KeyboardRender.swift */,
 			);
@@ -573,6 +578,7 @@
 				BDC347E72403B93F00A848BA /* FileMonitorTests.swift */,
 				BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */,
 				BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */,
+				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
 				BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */,
@@ -844,6 +850,7 @@
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,
+				BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */,
 				BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
 				BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */,
@@ -871,6 +878,7 @@
 				BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */,
 				BDC961A724FFA745003D9BEF /* StringTests.swift in Sources */,
 				BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */,
+				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
 				BDC35B5725081B66009CEFAF /* SoundFontEntityTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
