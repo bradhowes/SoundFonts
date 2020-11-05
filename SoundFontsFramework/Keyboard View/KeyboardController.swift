@@ -156,7 +156,6 @@ extension KeyboardController {
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // Moved touches may become associated with a new key (releasing the old one)
         if settings[.slideKeyboard] {
             guard let touch = touches.first else { return }
             let change = touch.location(in: view).x - touch.previousLocation(in: view).x
@@ -166,21 +165,19 @@ extension KeyboardController {
             print(newConstraint, viewWidth - keyboardWidth)
             offsetKeyboard(by: newConstraint)
         }
-        else {
-            reviseTouchedKeys(touches, with: event)
-        }
+
+        // Moved touches may become associated with a new key (releasing the old one)
+        reviseTouchedKeys(touches, with: event)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Touches no longer in view
-        print("touchesEnded")
         updateTouchedKeys(touches, with: event, pressed: false)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Stop everything -- system has interrupted us.
-        print("touchesCancelled")
-        // updateTouchedKeys(touches, with: event, pressed: false)
+        updateTouchedKeys(touches, with: event, pressed: false)
     }
 
     private func reviseTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?) {
