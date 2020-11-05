@@ -30,7 +30,9 @@ final class KeyboardController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var keyLabelOptionObservation: NSKeyValueObservation?
     private var keyWidthObservation: NSKeyValueObservation?
-    private var panOrigin: CGPoint = CGPoint.zero
+
+    private var trackedTouch: UITouch?
+    private var panPending: CGFloat = 0.0
 
     /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
     var isMuted: Bool = false {
@@ -153,17 +155,26 @@ extension KeyboardController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // New touches will always cause pressed keys
         updateTouchedKeys(touches, with: event, pressed: true)
+        trackedTouch = nil
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if settings[.slideKeyboard] {
-            guard let touch = touches.first else { return }
-            let change = touch.location(in: view).x - touch.previousLocation(in: view).x
-            let keyboardWidth = keyboard.frame.width
-            let viewWidth = view.frame.width
-            let newConstraint = min(0, max(keyboardLeadingConstraint.constant + change, viewWidth - keyboardWidth))
-            print(newConstraint, viewWidth - keyboardWidth)
-            offsetKeyboard(by: newConstraint)
+            if trackedTouch == nil {
+                trackedTouch = touches.first
+                panPending = 0.0
+            }
+
+            for touch in touches where touch === trackedTouch {
+                panPending += touch.location(in: keyboard).x - touch.previousLocation(in: keyboard).x
+                if abs(panPending) > 10.0 {
+                    let keyboardWidth = keyboard.frame.width
+                    let viewWidth = view.frame.width
+                    let newConstraint = min(0, max(keyboardLeadingConstraint.constant + panPending, viewWidth - keyboardWidth))
+                    panPending = 0.0
+                    offsetKeyboard(by: newConstraint)
+                }
+            }
         }
 
         // Moved touches may become associated with a new key (releasing the old one)
@@ -173,11 +184,13 @@ extension KeyboardController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Touches no longer in view
         updateTouchedKeys(touches, with: event, pressed: false)
+        trackedTouch = nil
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Stop everything -- system has interrupted us.
         updateTouchedKeys(touches, with: event, pressed: false)
+        trackedTouch = nil
     }
 
     private func reviseTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?) {
