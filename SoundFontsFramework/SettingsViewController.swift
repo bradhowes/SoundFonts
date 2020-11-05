@@ -64,8 +64,8 @@ public final class SettingsViewController: UIViewController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
         }
 
-        playSample.isOn = settings.playSample
-        showSolfegeNotes.isOn = settings.showSolfegeLabel
+        playSample.isOn = settings[.playSample]
+        showSolfegeNotes.isOn = settings[.showSolfegeLabel]
 
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
@@ -76,10 +76,14 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.maximumValue = 96.0
         keyWidthSlider.minimumValue = 32.0
         keyWidthSlider.isContinuous = true
-        keyWidthSlider.value = settings.keyWidth
+        keyWidthSlider.value = settings[.keyWidth]
 
+        slideKeyboardStackView.isHidden = false
         slideKeyboard.isOn = settings.slideKeyboard
-        copyFiles.isOn = settings.copyFilesWhenAdding
+
+        slideKeyboard.isOn = settings[.slideKeyboard]
+        copyFilesStackView.isHidden = true
+        copyFiles.isOn = settings[.copyFilesWhenAdding]
 
         let isAUv3 = !isMainApp
         solfegeStackView.isHidden = isAUv3
@@ -97,7 +101,8 @@ public final class SettingsViewController: UIViewController {
 extension SettingsViewController {
 
     private func beginShowKeyboard() {
-        copyFilesStackView.isHidden = true
+        // copyFilesStackView.isHidden = true
+        slideKeyboardStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
         restoreSoundFontsStackView.isHidden = true
         exportSoundFontsStackView.isHidden = true
@@ -109,7 +114,8 @@ extension SettingsViewController {
     }
 
     private func endShowKeyboard() {
-        copyFilesStackView.isHidden = false
+        // copyFilesStackView.isHidden = false
+        slideKeyboardStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
         exportSoundFontsStackView.isHidden = false
@@ -149,11 +155,11 @@ extension SettingsViewController {
     }
 
     @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
-        settings.showSolfegeLabel = self.showSolfegeNotes.isOn
+        settings[.showSolfegeLabel] = self.showSolfegeNotes.isOn
     }
 
     @IBAction private func togglePlaySample(_ sender: Any) {
-        settings.playSample = self.playSample.isOn
+        settings[.playSample] = self.playSample.isOn
     }
 
     @IBAction private func keyLabelOptionChanged(_ sender: Any) {
@@ -161,7 +167,11 @@ extension SettingsViewController {
     }
 
     @IBAction private func toggleCopyFiles(_ sender: Any) {
-        settings.copyFilesWhenAdding = self.copyFiles.isOn
+        settings[.copyFilesWhenAdding] = self.copyFiles.isOn
+    }
+
+    @IBAction private func toggleSlideKeyboard(_ sender: Any) {
+        settings[.slideKeyboard] = self.slideKeyboard.isOn
     }
 
     @IBAction private func keyWidthChange(_ sender: Any) {
@@ -172,7 +182,7 @@ extension SettingsViewController {
 
         if newValue != prevValue {
             os_log(.info, log: log, "new key width: %f", newValue)
-            settings.keyWidth = newValue
+            settings[.keyWidth] = newValue
         }
     }
 

@@ -19,11 +19,11 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var showGuide: UIButton!
     @IBOutlet private weak var showSettings: UIButton!
     @IBOutlet private weak var editVisibility: UIButton!
+    @IBOutlet private weak var slidingKeyboard: UIButton!
 
     @IBOutlet private weak var showMoreButtons: UIButton!
     @IBOutlet private weak var moreButtons: UIView!
     @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
-    @IBOutlet weak var keyboardRangeSeparator: UILabel!
 
     private let doubleTap = UITapGestureRecognizer()
     private var panOrigin: CGPoint = CGPoint.zero
@@ -31,30 +31,20 @@ public final class InfoBarController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
     private var isMainApp: Bool!
+    private var slideKeyboardObserver: NSKeyValueObservation?
 
     private var lowestKeyValue = ""
     private var highestKeyValue = ""
 
-    private let lowestKeySlide = UISwipeGestureRecognizer()
-    private let highestKeySlide = UISwipeGestureRecognizer()
-
     public override func viewDidLoad() {
+
         highestKey.isHidden = true
         lowestKey.isHidden = true
+        slidingKeyboard.isHidden = true
 
         doubleTap.numberOfTouchesRequired = 1
         doubleTap.numberOfTapsRequired = 2
         touchView.addGestureRecognizer(doubleTap)
-
-        lowestKeySlide.direction = [.down, .up]
-        lowestKeySlide.numberOfTouchesRequired = 1
-        lowestKeySlide.addTarget(self, action: #selector(toggleSlideKeyboard))
-        lowestKey.addGestureRecognizer(lowestKeySlide)
-
-        highestKeySlide.direction = [.down, .up]
-        highestKeySlide.numberOfTouchesRequired = 1
-        highestKeySlide.addTarget(self, action: #selector(toggleSlideKeyboard))
-        highestKey.addGestureRecognizer(highestKeySlide)
 
         let panner = UIPanGestureRecognizer(target: self, action: #selector(panKeyboard))
         panner.minimumNumberOfTouches = 1
@@ -64,6 +54,10 @@ public final class InfoBarController: UIViewController {
         if traitCollection.horizontalSizeClass == .compact {
             moreButtonsXConstraint.constant = -moreButtons.frame.width
         }
+
+        slideKeyboardObserver = settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() }
+
+        updateSlidingKeyboardState()
     }
 }
 
@@ -80,6 +74,10 @@ extension InfoBarController {
 
     @IBAction private func showGuide(_ sender: UIButton) {
         animateMoreButtons()
+    }
+
+    @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
+        settings[.slideKeyboard] = !settings[.slideKeyboard]
     }
 }
 
@@ -109,10 +107,12 @@ extension InfoBarController: InfoBar {
         case .shiftKeyboardUp:
             highestKey.addClosure(closure)
             highestKey.isHidden = false
+            slidingKeyboard.isHidden = false
 
         case .shiftKeyboardDown:
             lowestKey.addClosure(closure)
             lowestKey.isHidden = false
+            slidingKeyboard.isHidden = false
 
         case .doubleTap: doubleTap.addClosure(closure)
         case .addSoundFont: addSoundFont.addClosure(closure)
@@ -318,13 +318,7 @@ extension InfoBarController {
         }
     }
 
-    @objc private func toggleSlideKeyboard(_ swiper: UISwipeGestureRecognizer) {
-        settings[.slideKeyboard] = !settings[.slideKeyboard]
-        updateKeyLabels()
-    }
-
     private func updateKeyLabels() {
-        keyboardRangeSeparator.text = settings[.slideKeyboard] ? "➠" : " "
         UIView.performWithoutAnimation {
             lowestKey.setTitle("❰" + lowestKeyValue, for: .normal)
             lowestKey.accessibilityLabel = "Keyboard down before " + lowestKeyValue
@@ -333,5 +327,9 @@ extension InfoBarController {
             highestKey.accessibilityLabel = "Keyboard up after " + highestKeyValue
             highestKey.layoutIfNeeded()
         }
+    }
+
+    private func updateSlidingKeyboardState() {
+        slidingKeyboard.setTitleColor(settings[.slideKeyboard] ? .systemTeal : .darkGray, for: .normal)
     }
 }
