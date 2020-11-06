@@ -104,23 +104,27 @@ extension RandomAccessCollection where Element == Key {
             }
         }
 
+        // Don't continue if outside of collection
         guard low < endIndex else { return low }
+
+        // Don't continue if referencing an accented note
         let key = self[low]
         guard !key.note.accented else { return low }
 
+        // Check if following key is accented and has the point
         let next = index(after: low)
-        if next != endIndex && self[next].frame.contains(point) { return next }
+        if next != endIndex && self[next].note.accented && self[next].frame.contains(point) { return next }
+
+        // Check if previous key is accented and has the point
         let prev = index(before: low)
         if prev >= startIndex && self[prev].frame.contains(point) { return prev }
+
         return low
     }
 
-    func key(for point: CGPoint) -> Key? {
+    func touched(by point: CGPoint) -> Key? {
         let pos = orderedInsertionIndex(for: point)
-        guard pos < endIndex else { return nil }
-        if index(after: pos) < endIndex {
-        }
-        return (pos < endIndex && self[pos].frame.contains(point)) ? self[pos] : nil
+        return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
     }
 
     func keySpan(for rect: CGRect) -> Self.SubSequence {
