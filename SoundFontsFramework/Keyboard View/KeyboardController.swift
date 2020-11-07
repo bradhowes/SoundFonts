@@ -21,8 +21,6 @@ final class KeyboardController: UIViewController {
     @IBOutlet weak var keyboardWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var keyboardLeadingConstraint: NSLayoutConstraint!
 
-    private weak var infoBar: InfoBar?
-
     private var allKeys = [Key]()
     private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
@@ -32,16 +30,14 @@ final class KeyboardController: UIViewController {
     private var keyLabelOptionObservation: NSKeyValueObservation?
     private var keyWidthObservation: NSKeyValueObservation?
 
-    private var touchedKeys = TouchKeyMap()
+    private var infoBar: InfoBar!
+    private var sampler: Sampler!
+    private var touchedKeys: TouchKeyMap!
+
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
 
     public private(set) var channel: Int = settings[.midiChannel]
-
-    weak var delegate: KeyboardDelegate? {
-        get { touchedKeys.delegate }
-        set { touchedKeys.delegate = newValue }
-    }
 
     private var keyLabelOption: KeyLabelOption {
         get { Key.keyLabelOption }
@@ -105,8 +101,10 @@ extension KeyboardController: ControllerConfiguration {
     func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
         infoBar = router.infoBar
-        infoBar?.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
-        infoBar?.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
+        infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
+        infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
+        sampler = router.sampler
+        touchedKeys = TouchKeyMap(sampler: sampler)
         router.favorites.subscribe(self, notifier: favoritesChange)
     }
 
@@ -216,31 +214,41 @@ extension KeyboardController {
 
 extension KeyboardController: Keyboard {
 
-    func noteOff(note: UInt8, velocity: UInt8) {
+    func noteOff(note: UInt8) {
+        sampler.noteOff(note)
+        guard note < allKeys.count else { return }
         let key = allKeys[Int(note)]
         DispatchQueue.main.async { key.pressed = false }
-        delegate?.noteOff(Note(midiNoteValue: Int(note)))
     }
 
     func noteOn(note: UInt8, velocity: UInt8) {
+        sampler.noteOn(note, velocity: velocity)
+        guard note < allKeys.count else { return }
         let key = allKeys[Int(note)]
-        DispatchQueue.main.async { key.pressed = true }
-        delegate?.noteOn(Note(midiNoteValue: Int(note)), velocity: Int(velocity))
+        DispatchQueue.main.async {
+            key.pressed = true
+            self.updateInfoBar(note: key.note)
+        }
     }
 
     func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+        sampler.polyphonicKeyPressure(note, pressure: pressure)
     }
 
     func controllerChange(controller: UInt8, value: UInt8) {
+        sampler.controllerChange(controller, value: value)
     }
 
     func programChange(program: UInt8) {
+        sampler.programChange(program)
     }
 
     func channelPressure(pressure: UInt8) {
+        sampler.channelPressure(pressure)
     }
 
     func pitchBend(value: UInt16) {
+        sampler.pitchBend(value)
     }
 
     var lowestNote: Note {
@@ -311,5 +319,19 @@ extension KeyboardController {
         firstMidiNoteValue = visible.startIndex
         lastMidiNoteValue = visible.endIndex - 1
         infoBar?.setVisibleKeyLabels(from: lowestNote.label, to: highestNote.label)
+    }
+
+    private func updateInfoBar(note: Note) {
+        if isMuted {
+            infoBar.setStatus("🔇")
+        }
+        else {
+            if settings.showSolfegeLabel {
+                infoBar.setStatus(note.label + " - " + note.solfege)
+            }
+            else {
+                infoBar.setStatus(note.label)
+            }
+        }
     }
 }
