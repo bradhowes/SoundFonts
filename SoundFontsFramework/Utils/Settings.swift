@@ -25,6 +25,7 @@ public extension SettingKeys {
     static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
+    static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
 }
 
 /// KVO properties based on the above key definitions.
@@ -84,5 +85,9 @@ public extension UserDefaults {
     @objc dynamic var slideKeyboard: Bool {
         get { self[.slideKeyboard] }
         set { self[.slideKeyboard] = newValue }
+    }
+    @objc dynamic var midiChannel: Int {
+        get { self[.midiChannel] }
+        set { self[.midiChannel] = newValue }
     }
 }

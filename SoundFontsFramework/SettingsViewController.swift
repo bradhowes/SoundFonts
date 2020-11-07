@@ -29,6 +29,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var solfegeStackView: UIStackView!
 
+    @IBOutlet weak var midiChannelStackView: UIStackView!
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
@@ -40,10 +41,12 @@ public final class SettingsViewController: UIViewController {
 
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
-    @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
-    @IBOutlet private weak var copyFiles: UISwitch!
+    @IBOutlet private weak var keyWidthSlider: UISlider!
+    @IBOutlet private weak var midiChannel: UILabel!
+    @IBOutlet private weak var midiChannelStepper: UIStepper!
     @IBOutlet private weak var slideKeyboard: UISwitch!
+    @IBOutlet private weak var copyFiles: UISwitch!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -81,6 +84,10 @@ public final class SettingsViewController: UIViewController {
         slideKeyboardStackView.isHidden = false
         slideKeyboard.isOn = settings.slideKeyboard
 
+        // 0-15 MIDI channel; -1: Omni
+        midiChannelStepper.value = Double(settings.midiChannel)
+        updateMidiChannel()
+
         slideKeyboard.isOn = settings[.slideKeyboard]
         copyFilesStackView.isHidden = true
         copyFiles.isOn = settings[.copyFilesWhenAdding]
@@ -89,6 +96,8 @@ public final class SettingsViewController: UIViewController {
         solfegeStackView.isHidden = isAUv3
         keyLabelsStackView.isHidden = isAUv3
         keyWidthStackView.isHidden = isAUv3
+        midiChannelStackView.isHidden = isAUv3
+        slideKeyboardStackView.isHidden = isAUv3
 
         review.isEnabled = isMainApp
 
@@ -102,6 +111,7 @@ extension SettingsViewController {
 
     private func beginShowKeyboard() {
         // copyFilesStackView.isHidden = true
+        midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
         restoreSoundFontsStackView.isHidden = true
@@ -115,6 +125,7 @@ extension SettingsViewController {
 
     private func endShowKeyboard() {
         // copyFilesStackView.isHidden = false
+        midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
@@ -166,6 +177,11 @@ extension SettingsViewController {
         settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
     }
 
+    @IBAction func midiChannelStep(_ sender: UIStepper) {
+        updateMidiChannel()
+        settings.midiChannel = Int(sender.value)
+    }
+
     @IBAction private func toggleCopyFiles(_ sender: Any) {
         settings[.copyFilesWhenAdding] = self.copyFiles.isOn
     }
@@ -214,6 +230,11 @@ extension SettingsViewController {
         case 1: postNotice(msg: good == 1 ? "Imported \(good) soundfont." : "Failed to import soundfont.")
         default: postNotice(msg: "Imported \(good) out of \(total) soundfonts.")
         }
+    }
+
+    private func updateMidiChannel() {
+        let value = Int(midiChannelStepper.value)
+        midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
     }
 
     private func postNotice(msg: String) {

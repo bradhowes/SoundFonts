@@ -29,7 +29,12 @@ final class NotePlayer: KeyboardDelegate {
 
      - parameter note: the note to play
      */
-    func noteOn(_ note: Note) {
+    func noteOn(_ note: Note, velocity: Int) {
+        sampler.noteOn(note.midiNoteValue, velocity: velocity)
+        DispatchQueue.main.async { self.updateInfoBar(note: note) }
+    }
+
+    private func updateInfoBar(note: Note) {
         if isMuted {
             infoBar.setStatus("🔇")
         }
@@ -40,7 +45,6 @@ final class NotePlayer: KeyboardDelegate {
             else {
                 infoBar.setStatus(note.label)
             }
-            sampler.noteOn(note.midiNoteValue)
         }
     }
 

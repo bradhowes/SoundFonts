@@ -12,7 +12,7 @@ public protocol KeyboardDelegate: class {
     
      - parameter note: the note that is pressed
      */
-    func noteOn(_ note: Note)
+    func noteOn(_ note: Note, velocity: Int)
 
     /**
      Notification of a note "OFF" event
@@ -25,7 +25,7 @@ public protocol KeyboardDelegate: class {
 /**
  Manages the state of the keyboard
  */
-public protocol Keyboard: class {
+public protocol Keyboard: MIDIController {
 
     /// Delegate to receive notifications of note ON/OFF events
     var delegate: KeyboardDelegate? { get set }
