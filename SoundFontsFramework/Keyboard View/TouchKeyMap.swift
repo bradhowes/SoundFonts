@@ -51,7 +51,7 @@ extension TouchKeyMap {
 
     private func keyPress(_ key: Key) {
         key.pressed = true
-        delegate?.noteOn(key.note)
+        delegate?.noteOn(key.note, velocity: 64)
     }
 
     private func keyRelease(_ key: Key) {

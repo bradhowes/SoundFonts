@@ -28,12 +28,15 @@ final class KeyboardController: UIViewController {
 
     private var keyWidth: CGFloat = CGFloat(settings.keyWidth)
     private var activePatchManager: ActivePatchManager!
+    private var midiChannelObservation: NSKeyValueObservation?
     private var keyLabelOptionObservation: NSKeyValueObservation?
     private var keyWidthObservation: NSKeyValueObservation?
 
     private var touchedKeys = TouchKeyMap()
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
+
+    public private(set) var channel: Int = settings[.midiChannel]
 
     weak var delegate: KeyboardDelegate? {
         get { touchedKeys.delegate }
@@ -68,6 +71,12 @@ extension KeyboardController {
         let lowestKeyNote = settings.lowestKeyNote
         firstMidiNoteValue = lowestKeyNote
         offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
+
+        midiChannelObservation = settings.observe(\.midiChannel, options: [.new]) { _, change in
+            guard let newValue = change.newValue else { return }
+            self.releaseAllKeys()
+            self.channel = newValue
+        }
 
         keyLabelOptionObservation = settings.observe(\.keyLabelOption, options: [.new]) { _, change in
             guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else { return }
@@ -207,6 +216,33 @@ extension KeyboardController {
 
 extension KeyboardController: Keyboard {
 
+    func noteOff(note: UInt8, velocity: UInt8) {
+        let key = allKeys[Int(note)]
+        DispatchQueue.main.async { key.pressed = false }
+        delegate?.noteOff(Note(midiNoteValue: Int(note)))
+    }
+
+    func noteOn(note: UInt8, velocity: UInt8) {
+        let key = allKeys[Int(note)]
+        DispatchQueue.main.async { key.pressed = true }
+        delegate?.noteOn(Note(midiNoteValue: Int(note)), velocity: Int(velocity))
+    }
+
+    func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+    }
+
+    func controllerChange(controller: UInt8, value: UInt8) {
+    }
+
+    func programChange(program: UInt8) {
+    }
+
+    func channelPressure(pressure: UInt8) {
+    }
+
+    func pitchBend(value: UInt16) {
+    }
+
     var lowestNote: Note {
         get { Note(midiNoteValue: firstMidiNoteValue) }
         set { shiftKeys(by: newValue.midiNoteValue - firstMidiNoteValue) }
@@ -216,6 +252,7 @@ extension KeyboardController: Keyboard {
 
     func releaseAllKeys() {
         touchedKeys.releaseAll()
+        DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
     }
 }
 

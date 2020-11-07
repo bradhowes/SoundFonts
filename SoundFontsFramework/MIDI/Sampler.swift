@@ -162,10 +162,15 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter midiValue: MIDI value that indicates the pitch to play
      */
-    public func noteOn(_ midiValue: Int, velocity: Int = 64) {
-        os_log(.info, log: log, "noteOn - %d", midiValue)
+    public func noteOn(_ midiValue: Int, velocity: Int) {
+        os_log(.info, log: log, "noteOn - %d (%d)", midiValue, velocity)
         guard activePatchManager.active != .none else { return }
         auSampler?.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
+    }
+
+    public func velocityChange(_ midiValue: Int, velocity: Int) {
+        os_log(.info, log: log, "velocityChange - %d (%d)", midiValue, velocity)
+        auSampler?.sendPressure(forKey: UInt8(midiValue), withValue: UInt8(velocity), onChannel: UInt8(0))
     }
 
     /**

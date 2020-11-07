@@ -1,0 +1,3 @@
+[submodule "MIKMIDI"]
+	path = MIKMIDI
+	url = https://github.com/mixedinkey-opensource/MIKMIDI.git
