@@ -84,7 +84,9 @@ public final class SettingsViewController: UIViewController {
         slideKeyboardStackView.isHidden = false
         slideKeyboard.isOn = settings.slideKeyboard
 
-        // 0-15 MIDI channel; -1: Omni
+        // iOS bug? Workaround to get the tint to affect the stepper button labels
+        midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
+        midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
         midiChannelStepper.value = Double(settings.midiChannel)
         updateMidiChannel()
 
