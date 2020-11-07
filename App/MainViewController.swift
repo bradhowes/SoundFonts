@@ -100,14 +100,8 @@ extension MainViewController: ControllerConfiguration {
         sampler = router.sampler
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
-
-        let muteDetector = MuteDetector(checkInterval: 1)
-        let notePlayer = NotePlayer(infoBar: router.infoBar, sampler: sampler)
-
-        keyboard.delegate = notePlayer
         midi.controller = keyboard
-
-        volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer)
+        volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 

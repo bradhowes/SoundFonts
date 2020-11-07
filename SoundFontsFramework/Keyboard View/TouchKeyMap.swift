@@ -7,9 +7,12 @@ import UIKit
  */
 internal struct TouchKeyMap {
 
-    weak var delegate: KeyboardDelegate?
-
+    private let sampler: Sampler
     private var touchedKeys = [UITouch: Key]()
+
+    init(sampler: Sampler) {
+        self.sampler = sampler
+    }
 
     /**
      Remove all assignments.
@@ -51,11 +54,11 @@ extension TouchKeyMap {
 
     private func keyPress(_ key: Key) {
         key.pressed = true
-        delegate?.noteOn(key.note, velocity: 64)
+        sampler.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
     }
 
     private func keyRelease(_ key: Key) {
         key.pressed = false
-        delegate?.noteOff(key.note)
+        sampler.noteOff(UInt8(key.note.midiNoteValue))
     }
 }

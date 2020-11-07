@@ -158,19 +158,19 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     }
 
     /**
-     Start playing a sound at the given pitch.
+     Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
 
      - parameter midiValue: MIDI value that indicates the pitch to play
+     - parameter velocity: how loud to play the note (1-127)
      */
-    public func noteOn(_ midiValue: Int, velocity: Int) {
-        os_log(.info, log: log, "noteOn - %d (%d)", midiValue, velocity)
+    public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
         guard activePatchManager.active != .none else { return }
-        auSampler?.startNote(UInt8(midiValue), withVelocity: UInt8(velocity), onChannel: UInt8(0))
-    }
-
-    public func velocityChange(_ midiValue: Int, velocity: Int) {
-        os_log(.info, log: log, "velocityChange - %d (%d)", midiValue, velocity)
-        auSampler?.sendPressure(forKey: UInt8(midiValue), withValue: UInt8(velocity), onChannel: UInt8(0))
+        guard velocity > 0 else {
+            noteOff(midiValue)
+            return
+        }
+        os_log(.debug, log: log, "noteOn - %d %d", midiValue, velocity)
+        auSampler?.startNote(midiValue, withVelocity: velocity, onChannel: 0)
     }
 
     /**
@@ -178,13 +178,49 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter midiValue: MIDI value that indicates the pitch to stop
      */
-    public func noteOff(_ midiValue: Int) {
-        os_log(.info, log: log, "noteOff - %d", midiValue)
-        auSampler?.stopNote(UInt8(midiValue), onChannel: UInt8(0))
+    public func noteOff(_ midiValue: UInt8) {
+        os_log(.debug, log: log, "noteOff - %d", midiValue)
+        auSampler?.stopNote(midiValue, onChannel: 0)
     }
 
-    public func sendMIDI(_ cmd: UInt8, data1: UInt8, data2: UInt8) {
-        os_log(.info, log: log, "sendMIDI - %d %d %d", cmd, data1, data2)
-        auSampler?.sendMIDIEvent(cmd, data1: data1, data2: data2)
+    /**
+     After-touch for the given playing note.
+
+     - parameter midiValue: MIDI value that indicates the pitch being played
+     - parameter pressure: the after-touch pressure value for the key
+     */
+    public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
+        os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
+        auSampler?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
+    }
+
+    /**
+     After-touch for the whole channel.
+
+     - parameter pressure: the after-touch pressure value for all of the playing keys
+     */
+    public func channelPressure(_ pressure: UInt8) {
+        os_log(.debug, log: log, "channelPressure - %d", pressure)
+        auSampler?.sendPressure(pressure, onChannel: 0)
+    }
+
+    /**
+     Pitch-bend controller value.
+
+     - parameter value: the controller value. Middle is 0x200
+     */
+    public func pitchBend(_ value: UInt16) {
+        os_log(.debug, log: log, "pitchBend - %d", value)
+        auSampler?.sendPitchBend(value, onChannel: 0)
+    }
+
+    public func controllerChange(_ controller: UInt8, value: UInt8) {
+        os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
+        auSampler?.sendController(controller, withValue: value, onChannel: 0)
+    }
+
+    public func programChange(_ program: UInt8) {
+        os_log(.debug, log: log, "programChange - %d", program)
+        auSampler?.sendProgramChange(program, onChannel: 0)
     }
 }

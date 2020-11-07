@@ -37,17 +37,26 @@ final class MIDI {
         kMIDINotPermitted: "kMIDINotPermitted"
     ]
 
+    private var notificationMessageTag: [MIDINotificationMessageID: String] = [
+        .msgSetupChanged: "some aspect of the current MIDI setup changed",
+        .msgObjectAdded: "system added a device, entity, or endpoint",
+        .msgObjectRemoved: "system removed a device, entity, or endpoint",
+        .msgPropertyChanged: "object’s property value changed",
+        .msgThruConnectionsChanged: "system created or destroyed a persistent MIDI Thru connection",
+        .msgSerialPortOwnerChanged: "system changed a serial port owner",
+        .msgIOError: "driver I/O error occurred"
+    ]
+
     private func name(for status: OSStatus) -> String { errorTag[status] ?? "?" }
 
     init() {
-        observeNotifications()
         enableNetwork()
 
-        var err = MIDIClientCreateWithBlock(clientName as CFString, &client, processNotification)
+        var err = MIDIClientCreateWithBlock(clientName as CFString, &client) { notification in self.processNotification(notification: notification.pointee) }
         os_log(.info, log: log, "MIDIClientCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
-        err = MIDIInputPortCreateWithBlock(client, portName as CFString, &inputPort, processMessages)
+        err = MIDIInputPortCreateWithBlock(client, portName as CFString, &inputPort) { packetList, _ in self.processPackets(packetList: packetList.pointee) }
         os_log(.info, log: log, "MIDIInputPortCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
@@ -68,42 +77,30 @@ final class MIDI {
         }
     }
 
-    private func observeNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(midiNetworkChanged(notification:)),
-                                               name: NSNotification.Name(rawValue: MIDINetworkNotificationSessionDidChange), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(midiNetworkContactsChanged(notification:)),
-                                               name: NSNotification.Name(rawValue: MIDINetworkNotificationContactsDidChange), object: nil)
-    }
-
     private func enableNetwork() {
-        MIDINetworkSession.default().isEnabled = true
-        MIDINetworkSession.default().connectionPolicy = .anyone
-        print("net session enabled \(MIDINetworkSession.default().isEnabled)")
-        print("net session networkPort \(MIDINetworkSession.default().networkPort)")
-        print("net session networkName \(MIDINetworkSession.default().networkName)")
-        print("net session localName \(MIDINetworkSession.default().localName)")
+        let mns = MIDINetworkSession.default()
+        mns.isEnabled = true
+        mns.connectionPolicy = .anyone
+        os_log(.info, log: log, "net session enabled: %d", mns.isEnabled)
+        os_log(.info, log: log, "net session networkPort: %d", mns.networkPort)
+        os_log(.info, log: log, "net session networkName: %{public}s", mns.networkName)
+        os_log(.info, log: log, "net session localName: %{public}s", mns.localName)
     }
 
-    @objc private func midiNetworkChanged(notification: NSNotification) {
-        os_log(.info, log: log, "midiNetworkChanged")
-        connectSourcesToInputPort()
+    private func processNotification(notification: MIDINotification) {
+        let info = notificationMessageTag[notification.messageID] ?? "?"
+        os_log(.info, log: log, "processNotification: %d - %{public}s", notification.messageID.rawValue, info)
+        if notification.messageID == .msgObjectAdded || notification.messageID == .msgSetupChanged {
+            connectSourcesToInputPort()
+        }
     }
 
-    @objc private func midiNetworkContactsChanged(notification: NSNotification) {
-        os_log(.info, log: log, "midiNetworkContactsChanged")
-    }
-
-    private func processNotification(midiNotification: UnsafePointer<MIDINotification>) {
-        // print("***", msg.messageID, msg.messageSize)
-    }
-
-    private func processMessages(packetList: UnsafePointer<MIDIPacketList>, srcConnRefCon: UnsafeMutableRawPointer?) -> Swift.Void {
+    private func processPackets(packetList: MIDIPacketList) {
         guard let controller = self.controller else { return }
-        let packets = packetList.pointee
         var ptr = UnsafeMutablePointer<MIDIPacket>.allocate(capacity: 1)
-        ptr.initialize(to: packets.packet)
-        for _ in 0 ..< packets.numPackets {
-            controller.processMessage(packet: ptr.pointee)
+        ptr.initialize(to: packetList.packet)
+        for _ in 0 ..< packetList.numPackets {
+            controller.processPacket(ptr.pointee)
             ptr = MIDIPacketNext(ptr)
         }
     }
@@ -120,11 +117,13 @@ extension MIDI {
             return "nil"
         }
 
-        return param!.takeRetainedValue() as String
+        let value = param!.takeRetainedValue() as String
+        os_log(.info, log: log, "getDisplayName: %d - %{public}s", obj, value)
+        return value
     }
 
-    var destinationNames: [String] { (0..<MIDIGetNumberOfDestinations()).compactMap { getDisplayName(MIDIGetDestination($0)) } }
-    var sourceNames: [String] { (0..<MIDIGetNumberOfSources()).compactMap { getDisplayName(MIDIGetSource($0)) } }
+    private var destinationNames: [String] { (0..<MIDIGetNumberOfDestinations()).compactMap { getDisplayName(MIDIGetDestination($0)) } }
+    private var sourceNames: [String] { (0..<MIDIGetNumberOfSources()).compactMap { getDisplayName(MIDIGetSource($0)) } }
 
     private func showMIDIObjectType(_ ot: MIDIObjectType) {
         switch ot {
@@ -141,95 +140,94 @@ extension MIDI {
         }
     }
 
-    // swiftlint:disable function_body_length
-    private func notifyBlock(midiNotification: UnsafePointer<MIDINotification>) {
-        print("\ngot a MIDINotification!")
-
-        let notification = midiNotification.pointee
-        print("MIDI Notify, messageId= \(notification.messageID)")
-        print("MIDI Notify, messageSize= \(notification.messageSize)")
-
-        switch notification.messageID {
-
-        // Some aspect of the current MIDISetup has changed.  No data.  Should ignore this  message if messages 2-6 are handled.
-        case .msgSetupChanged:
-            print("MIDI setup changed")
-            let ptr = UnsafeMutablePointer<MIDINotification>(mutating: midiNotification)
-            let obj = ptr.pointee
-            print(obj)
-            print("id \(obj.messageID)")
-            print("size \(obj.messageSize)")
-
-        // A device, entity or endpoint was added. Structure is MIDIObjectAddRemoveNotification.
-        case .msgObjectAdded:
-            print("added")
-            midiNotification.withMemoryRebound(to: MIDIObjectAddRemoveNotification.self, capacity: 1) {
-                let obj = $0.pointee
-                print(obj)
-                print("id \(obj.messageID)")
-                print("size \(obj.messageSize)")
-                print("child \(obj.child)")
-                print("child type \(obj.childType)")
-                showMIDIObjectType(obj.childType)
-                print("parent \(obj.parent)")
-                print("parentType \(obj.parentType)")
-                showMIDIObjectType(obj.parentType)
-                print("childName \(String(describing: getDisplayName(obj.child)))")
-            }
-
-        // A device, entity or endpoint was removed. Structure is MIDIObjectAddRemoveNotification.
-        case .msgObjectRemoved:
-            print("kMIDIMsgObjectRemoved")
-            midiNotification.withMemoryRebound(to: MIDIObjectAddRemoveNotification.self, capacity: 1) {
-                let obj = $0.pointee
-                print(obj)
-                print("id \(obj.messageID)")
-                print("size \(obj.messageSize)")
-                print("child \(obj.child)")
-                print("child type \(obj.childType)")
-                print("parent \(obj.parent)")
-                print("parentType \(obj.parentType)")
-                print("childName \(String(describing: getDisplayName(obj.child)))")
-            }
-
-        // An object's property was changed. Structure is MIDIObjectPropertyChangeNotification.
-        case .msgPropertyChanged:
-            print("kMIDIMsgPropertyChanged")
-            midiNotification.withMemoryRebound(to: MIDIObjectPropertyChangeNotification.self, capacity: 1) {
-                let obj = $0.pointee
-                print(obj)
-                print("id \(obj.messageID)")
-                print("size \(obj.messageSize)")
-                print("object \(obj.object)")
-                print("objectType \(obj.objectType)")
-                print("propertyName \(obj.propertyName)")
-                print("propertyName \(obj.propertyName.takeUnretainedValue())")
-                if obj.propertyName.takeUnretainedValue() as String == "apple.midirtp.session" {
-                    print("connected")
-                }
-            }
-
-        //     A persistent MIDI Thru connection wasor destroyed.  No data.
-        case .msgThruConnectionsChanged:
-            print("MIDI thru connections changed.")
-
-        //A persistent MIDI Thru connection was created or destroyed.  No data.
-        case .msgSerialPortOwnerChanged:
-            print("MIDI serial port owner changed.")
-
-        case .msgIOError:
-            print("MIDI I/O error.")
-            midiNotification.withMemoryRebound(to: MIDIIOErrorNotification.self, capacity: 1) {
-                let obj = $0.pointee
-                print(obj)
-                print("id \(obj.messageID)")
-                print("size \(obj.messageSize)")
-                print("driverDevice \(obj.driverDevice)")
-                print("errorCode \(obj.errorCode)")
-            }
-
-        @unknown default:
-            fatalError()
-        }
-    }
+    //    private func notifyBlock(midiNotification: UnsafePointer<MIDINotification>) {
+    //        print("\ngot a MIDINotification!")
+    //
+    //        let notification = midiNotification.pointee
+    //        print("MIDI Notify, messageId= \(notification.messageID)")
+    //        print("MIDI Notify, messageSize= \(notification.messageSize)")
+    //
+    //        switch notification.messageID {
+    //
+    //        // Some aspect of the current MIDISetup has changed.  No data.  Should ignore this  message if messages 2-6 are handled.
+    //        case .msgSetupChanged:
+    //            print("MIDI setup changed")
+    //            let ptr = UnsafeMutablePointer<MIDINotification>(mutating: midiNotification)
+    //            let obj = ptr.pointee
+    //            print(obj)
+    //            print("id \(obj.messageID)")
+    //            print("size \(obj.messageSize)")
+    //
+    //        // A device, entity or endpoint was added. Structure is MIDIObjectAddRemoveNotification.
+    //        case .msgObjectAdded:
+    //            print("added")
+    //            midiNotification.withMemoryRebound(to: MIDIObjectAddRemoveNotification.self, capacity: 1) {
+    //                let obj = $0.pointee
+    //                print(obj)
+    //                print("id \(obj.messageID)")
+    //                print("size \(obj.messageSize)")
+    //                print("child \(obj.child)")
+    //                print("child type \(obj.childType)")
+    //                showMIDIObjectType(obj.childType)
+    //                print("parent \(obj.parent)")
+    //                print("parentType \(obj.parentType)")
+    //                showMIDIObjectType(obj.parentType)
+    //                print("childName \(String(describing: getDisplayName(obj.child)))")
+    //            }
+    //
+    //        // A device, entity or endpoint was removed. Structure is MIDIObjectAddRemoveNotification.
+    //        case .msgObjectRemoved:
+    //            print("kMIDIMsgObjectRemoved")
+    //            midiNotification.withMemoryRebound(to: MIDIObjectAddRemoveNotification.self, capacity: 1) {
+    //                let obj = $0.pointee
+    //                print(obj)
+    //                print("id \(obj.messageID)")
+    //                print("size \(obj.messageSize)")
+    //                print("child \(obj.child)")
+    //                print("child type \(obj.childType)")
+    //                print("parent \(obj.parent)")
+    //                print("parentType \(obj.parentType)")
+    //                print("childName \(String(describing: getDisplayName(obj.child)))")
+    //            }
+    //
+    //        // An object's property was changed. Structure is MIDIObjectPropertyChangeNotification.
+    //        case .msgPropertyChanged:
+    //            print("kMIDIMsgPropertyChanged")
+    //            midiNotification.withMemoryRebound(to: MIDIObjectPropertyChangeNotification.self, capacity: 1) {
+    //                let obj = $0.pointee
+    //                print(obj)
+    //                print("id \(obj.messageID)")
+    //                print("size \(obj.messageSize)")
+    //                print("object \(obj.object)")
+    //                print("objectType \(obj.objectType)")
+    //                print("propertyName \(obj.propertyName)")
+    //                print("propertyName \(obj.propertyName.takeUnretainedValue())")
+    //                if obj.propertyName.takeUnretainedValue() as String == "apple.midirtp.session" {
+    //                    print("connected")
+    //                }
+    //            }
+    //
+    //        //     A persistent MIDI Thru connection wasor destroyed.  No data.
+    //        case .msgThruConnectionsChanged:
+    //            print("MIDI thru connections changed.")
+    //
+    //        //A persistent MIDI Thru connection was created or destroyed.  No data.
+    //        case .msgSerialPortOwnerChanged:
+    //            print("MIDI serial port owner changed.")
+    //
+    //        case .msgIOError:
+    //            print("MIDI I/O error.")
+    //            midiNotification.withMemoryRebound(to: MIDIIOErrorNotification.self, capacity: 1) {
+    //                let obj = $0.pointee
+    //                print(obj)
+    //                print("id \(obj.messageID)")
+    //                print("size \(obj.messageSize)")
+    //                print("driverDevice \(obj.driverDevice)")
+    //                print("errorCode \(obj.errorCode)")
+    //            }
+    //
+    //        @unknown default:
+    //            fatalError()
+    //        }
+    //    }
 }
