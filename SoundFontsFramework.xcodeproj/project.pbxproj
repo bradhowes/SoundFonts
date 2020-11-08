@@ -463,10 +463,10 @@
 				BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
-				BD074C1723CDAF51001987E9 /* Settings.swift */,
 				BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */,
-				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
+				BD074C1723CDAF51001987E9 /* Settings.swift */,
 				BD074C1A23CDAF51001987E9 /* SlidingViewManager.swift */,
+				BD074C1423CDAF51001987E9 /* SubscriptionManager.swift */,
 				BD3F44C425018EB000653ABD /* TypedNotification.swift */,
 				BD074C1623CDAF51001987E9 /* ViewSlider.swift */,
 			);
