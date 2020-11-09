@@ -6,7 +6,8 @@ import CoreMIDI
 import os
 
 /**
- Plays notes from keyboard using Sampler and shows the note values being played on InfoBar.
+ Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create an instance and
+ set the controller (aka delegate) to receive the incoming MIDI traffic.
  */
 final class MIDI {
     private let log = Logging.logger("MIDI")
@@ -16,6 +17,7 @@ final class MIDI {
     private var client: MIDIClientRef = 0
     private var inputPort: MIDIPortRef = 0
 
+    /// Delegate which will receive incoming MIDI messages
     weak var controller: MIDIController?
 
     private var errorTag: [OSStatus: String] = [
@@ -49,6 +51,9 @@ final class MIDI {
 
     private func name(for status: OSStatus) -> String { errorTag[status] ?? "?" }
 
+    /**
+     Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
+     */
     init() {
         enableNetwork()
 
@@ -67,6 +72,9 @@ final class MIDI {
         if inputPort != 0 { MIDIPortDispose(inputPort) }
         if client != 0 { MIDIClientDispose(client) }
     }
+}
+
+extension MIDI {
 
     private func connectSourcesToInputPort() {
         let sourceCount = MIDIGetNumberOfSources()
@@ -108,7 +116,7 @@ final class MIDI {
 
 extension MIDI {
 
-    func getDisplayName(_ obj: MIDIObjectRef) -> String {
+    private func getDisplayName(_ obj: MIDIObjectRef) -> String {
         guard obj != 0 else { return "nil" }
         var param: Unmanaged<CFString>?
         let err = MIDIObjectGetStringProperty(obj, kMIDIPropertyDisplayName, &param)
