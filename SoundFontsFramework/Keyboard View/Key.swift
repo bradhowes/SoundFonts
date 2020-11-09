@@ -6,12 +6,12 @@ import UIKit
  Visual representation of a piano key. Each key has an associated Note value which determines what MIDI note the key
  will emit when touched.
  */
-final class Key: UIView {
+public final class Key: UIView {
 
     /// If true, audio is muted
     static var isMuted: Bool = false
 
-    /// If true, show note on key
+    /// How to label the key
     static var keyLabelOption = KeyLabelOption.savedSetting
 
     static var keyWidth: CGFloat = CGFloat(settings.keyWidth)
@@ -34,7 +34,7 @@ final class Key: UIView {
      - parameter frame: location of the key
      - parameter note: the note that the key playes
      */
-    init(frame: CGRect, note: Note) {
+    public init(frame: CGRect, note: Note) {
         self.note = note
         super.init(frame: frame)
         configure()
@@ -45,7 +45,7 @@ final class Key: UIView {
 
      - parameter coder: data container to use
      */
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
 
@@ -54,12 +54,10 @@ final class Key: UIView {
 
      - parameter rect: the region to draw in
      */
-    override func draw(_ rect: CGRect) {
-        // let roundedCorner: CGFloat = 12.0
+    public override func draw(_ rect: CGRect) {
         let roundedCorner: CGFloat = (0.1875 * rect.width).rounded()
         if note.accented {
-            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
-                                        isMuted: Self.isMuted)
+            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed, isMuted: Self.isMuted)
         }
         else {
             let label: String = {
@@ -70,17 +68,68 @@ final class Key: UIView {
                 }
             }()
 
-            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
-                                        isMuted: Self.isMuted, note: label)
+            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed, isMuted: Self.isMuted, note: label)
         }
     }
 
-    override var description: String { "Key(\(note),\(pressed))" }
+    public override var description: String { "Key(\(note),\(pressed))" }
 
     private func configure() {
         self.backgroundColor = .clear
         self.contentMode = .redraw
         self.accessibilityLabel = self.note.label
         self.isAccessibilityElement = true
+    }
+}
+
+extension RandomAccessCollection where Element == Key {
+
+    func orderedInsertionIndex(for point: CGPoint) -> Index {
+        var low = startIndex
+        var high = endIndex
+        while low != high {
+            let mid = index(low, offsetBy: distance(from: low, to: high) / 2)
+            let key = self[mid]
+
+            if key.frame.contains(point) {
+                low = mid
+                break
+            }
+
+            if key.frame.midX <= point.x {
+                low = index(after: mid)
+            }
+            else {
+                high = mid
+            }
+        }
+
+        // Don't continue if outside of collection
+        guard low < endIndex else { return low }
+
+        // Don't continue if referencing an accented note
+        let key = self[low]
+        guard !key.note.accented else { return low }
+
+        // Check if following key is accented and has the point
+        let next = index(after: low)
+        if next != endIndex && self[next].note.accented && self[next].frame.contains(point) { return next }
+
+        // Check if previous key is accented and has the point
+        let prev = index(before: low)
+        if prev >= startIndex && self[prev].frame.contains(point) { return prev }
+
+        return low
+    }
+
+    func touched(by point: CGPoint) -> Key? {
+        let pos = orderedInsertionIndex(for: point)
+        return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
+    }
+
+    func keySpan(for rect: CGRect) -> Self.SubSequence {
+        let first = orderedInsertionIndex(for: rect.origin)
+        let last = orderedInsertionIndex(for: rect.offsetBy(dx: rect.width, dy: 0.0).origin)
+        return last == endIndex ? self[first..<last] : self[first...last]
     }
 }

@@ -3,32 +3,9 @@
 import Foundation
 
 /**
- Delegate for keyboard note events.
- */
-public protocol KeyboardDelegate: class {
-
-    /**
-     Notification of a note "ON" event
-    
-     - parameter note: the note that is pressed
-     */
-    func noteOn(_ note: Note)
-
-    /**
-     Notification of a note "OFF" event
-    
-     - parameter note: the note that was released
-     */
-    func noteOff(_ note: Note)
-}
-
-/**
  Manages the state of the keyboard
  */
-public protocol Keyboard: class {
-
-    /// Delegate to receive notifications of note ON/OFF events
-    var delegate: KeyboardDelegate? { get set }
+public protocol Keyboard: MIDIController {
 
     /// The value of the first note shown on the keyboard
     var lowestNote: Note { get set }

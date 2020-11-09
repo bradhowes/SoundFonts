@@ -1,13 +1,15 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
 /**
- Controller for the keyboard view. Creates the individual key views and handles touch event detection within them.
+ Controller for the keyboard view. Creates the individual Key views and handles touch event detection within them.
+ The controller creates an entire 108 keyboard which it then showns only a part of on the screen. The keyboard can
+ be shifted up/down by octaves or by sliding via touch (if enabled).
  */
 final class KeyboardController: UIViewController {
-
-    weak var delegate: KeyboardDelegate?
+    private let log = Logging.logger("KeyCon")
 
     /// MIDI value of the first note in the keyboard
     private var firstMidiNoteValue = 48 { didSet { settings.lowestKeyNote = firstMidiNoteValue } }
@@ -15,44 +17,62 @@ final class KeyboardController: UIViewController {
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
 
-    /// Collection of Key instances for the keyboard. Note that in here the 'black' keys appear before the 'white' keys
-    /// so that touch processing happens correctly.
-    private var keys = [Key]()
+    @IBOutlet weak var keyboard: UIView!
+    @IBOutlet weak var keyboardWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var keyboardLeadingConstraint: NSLayoutConstraint!
 
-    /// How wide each key will be
+    private var allKeys = [Key]()
+    private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
+
     private var keyWidth: CGFloat = CGFloat(settings.keyWidth)
-
-    private typealias SetVisibleKeyLabelsProc = (String, String) -> Void
-    private var setVisibleKeyLabels: SetVisibleKeyLabelsProc?
-
     private var activePatchManager: ActivePatchManager!
-
+    private var midiChannelObservation: NSKeyValueObservation?
     private var keyLabelOptionObservation: NSKeyValueObservation?
     private var keyWidthObservation: NSKeyValueObservation?
+
+    private var infoBar: InfoBar!
+    private var sampler: Sampler!
+    private var touchedKeys: TouchKeyMap!
+
+    private var trackedTouch: UITouch?
+    private var panPending: CGFloat = 0.0
+
+    public private(set) var channel: Int = settings[.midiChannel]
+
+    private var keyLabelOption: KeyLabelOption {
+        get { Key.keyLabelOption }
+        set {
+            if Key.keyLabelOption != newValue {
+                Key.keyLabelOption = newValue
+                allKeys.forEach { $0.setNeedsDisplay() }
+            }
+        }
+    }
 
     /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
     var isMuted: Bool = false {
         didSet {
             if oldValue != isMuted {
                 Key.isMuted = self.isMuted
-                keys.forEach { $0.setNeedsDisplay() }
+                allKeys.forEach { $0.setNeedsDisplay() }
             }
         }
     }
+}
 
-    var keyLabelOption: KeyLabelOption {
-        get { Key.keyLabelOption }
-        set {
-            if Key.keyLabelOption != newValue {
-                Key.keyLabelOption = newValue
-                keys.forEach { $0.setNeedsDisplay() }
-            }
-        }
-    }
+extension KeyboardController {
 
     override func viewDidLoad() {
-        let lowestNote = settings.lowestKeyNote
-        firstMidiNoteValue = max(lowestNote, 0)
+        createKeys()
+        let lowestKeyNote = settings.lowestKeyNote
+        firstMidiNoteValue = lowestKeyNote
+        offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
+
+        midiChannelObservation = settings.observe(\.midiChannel, options: [.new]) { _, change in
+            guard let newValue = change.newValue else { return }
+            self.releaseAllKeys()
+            self.channel = newValue
+        }
 
         keyLabelOptionObservation = settings.observe(\.keyLabelOption, options: [.new]) { _, change in
             guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else { return }
@@ -61,16 +81,17 @@ final class KeyboardController: UIViewController {
 
         keyWidthObservation = settings.observe(\.keyWidth, options: [.new]) { _, change in
             guard let keyWidth = change.newValue else { return }
+            precondition(!self.allKeys.isEmpty)
             self.keyWidth = CGFloat(keyWidth)
             Key.keyWidth = self.keyWidth
             self.releaseAllKeys()
-            self.view.setNeedsLayout()
+            self.layoutKeys()
         }
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        createKeys()
+        layoutKeys()
     }
 }
 
@@ -79,9 +100,11 @@ extension KeyboardController: ControllerConfiguration {
 
     func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
-        router.infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
-        router.infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
-        setVisibleKeyLabels = { router.infoBar.setVisibleKeyLabels(from: $0, to: $1) }
+        infoBar = router.infoBar
+        infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
+        infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
+        sampler = router.sampler
+        touchedKeys = TouchKeyMap(sampler: sampler)
         router.favorites.subscribe(self, notifier: favoritesChange)
     }
 
@@ -110,54 +133,33 @@ extension KeyboardController: ControllerConfiguration {
 extension KeyboardController {
 
     private func shiftKeyboardUp(_ sender: AnyObject) {
-        assert(!keys.isEmpty)
+        os_log(.info, log: log, "shiftKeyBoardUp")
+        precondition(!allKeys.isEmpty)
         if lastMidiNoteValue < Sampler.maxMidiValue {
-            let shift: Int = {
-                if firstMidiNoteValue % 12 == 0 {
-                    if keys.count < 12 {
-                        return 12 - keys.count
-                    }
-                    else {
-                        return 12
-                    }
-                }
-                else {
-                    return 12 - firstMidiNoteValue % 12
-                }
-            }()
-
-            shiftKeys(by: min(shift, Sampler.maxMidiValue - lastMidiNoteValue))
+            let shift: Int = { (firstMidiNoteValue % 12 == 0) ? min(12, Sampler.maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12) }()
+            shiftKeys(by: shift)
         }
-
         AskForReview.maybe()
     }
 
     private func shiftKeyboardDown(_ sender: AnyObject) {
-        assert(!keys.isEmpty)
-        if firstMidiNoteValue > 12 {
-            let shift: Int = {
-                if firstMidiNoteValue % 12 == 0 {
-                    return min(firstMidiNoteValue, min(keys.count, 12))
-                }
-                else {
-                    return firstMidiNoteValue % 12
-                }
-            }()
-
-            if shift > 0 {
-                shiftKeys(by: -shift)
-            }
+        os_log(.info, log: log, "shiftKeyBoardDown")
+        precondition(!allKeys.isEmpty)
+        if firstMidiNoteValue >= 12 {
+            let shift: Int = { (firstMidiNoteValue % 12) == 0 ? min(firstMidiNoteValue, 12) : (firstMidiNoteValue % 12) }()
+            shiftKeys(by: -shift)
         }
-
         AskForReview.maybe()
     }
 
     private func shiftKeys(by: Int) {
-        assert(!keys.isEmpty)
+        assert(!allKeys.isEmpty)
         if by != 0 {
-            releaseAllKeys() // Cancel any touched keys before remaking the keyboard
+            releaseAllKeys()
             firstMidiNoteValue += by
-            view.setNeedsLayout()
+            lastMidiNoteValue += by
+            if lowestNote.accented { firstMidiNoteValue += 1 }
+            offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
         }
     }
 }
@@ -168,86 +170,86 @@ extension KeyboardController {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // New touches will always cause pressed keys
-        updateTouchedKeys(touches, with: event, pressed: true)
+        print("touchesBegan")
+        pressKeys(touches)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if settings[.slideKeyboard] {
+            if trackedTouch == nil {
+                trackedTouch = touches.first
+                panPending = 0.0
+            }
+
+            for touch in touches where touch === trackedTouch {
+                panPending += touch.location(in: keyboard).x - touch.previousLocation(in: keyboard).x
+                if abs(panPending) > 10.0 {
+                    let keyboardWidth = keyboard.frame.width
+                    let viewWidth = view.frame.width
+                    let newConstraint = min(0, max(keyboardLeadingConstraint.constant + panPending, viewWidth - keyboardWidth))
+                    panPending = 0.0
+                    offsetKeyboard(by: newConstraint)
+                }
+            }
+        }
+
         // Moved touches may become associated with a new key (releasing the old one)
-        reviseTouchedKeys(touches, with: event)
+        pressKeys(touches)
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Touches no longer in view
-        updateTouchedKeys(touches, with: event, pressed: false)
+        print("touchesEnded")
+        releaseKeys(touches)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Stop everything -- system has interrupted us.
-        updateTouchedKeys(touches, with: event, pressed: false)
-    }
-
-    private func reviseTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?) {
-
-        // Look for keys that *did* belong to a touch that moved
-        let previous = touches.map { findTouchedKey(touch: $0, with: event, previous: true) }
-
-        // Look for keys that *now* belong to a touch that moved
-        let found = touches.map { findTouchedKey(touch: $0, with: event, previous: false) }
-
-        // Evaluate the old/new pairs and record which key should no longer be pressed and which
-        // ones should now be pressed
-        let changes = zip(previous, found).reduce(into: (released: Set<Key>(), pressed: Set<Key>())) { acc, pair in
-            switch (pair.0, pair.1) {
-            case let (prev?, next?):
-                if prev != next {
-                    acc.released.insert(prev)
-                    acc.pressed.insert(next)
-                }
-            case let (.none, next?): acc.pressed.insert(next)
-            case let (prev?, .none): acc.released.insert(prev)
-            case (.none, .none): break
-            }
-        }
-
-        // For released keys, update their status based on their presence in the pressed set
-        changes.released.forEach { setKeyPressed($0, pressed: changes.pressed.contains($0)) }
-
-        // For the pressed keys, do the usual. There can be some overlap with above, but there are only so many
-        // touches...
-        changes.pressed.forEach { setKeyPressed($0, pressed: true) }
-    }
-
-    private func updateTouchedKeys(_ touches: Set<UITouch>, with event: UIEvent?, pressed: Bool) {
-        touches.compactMap { findTouchedKey(touch: $0, with: event) }
-            .forEach { setKeyPressed($0, pressed: pressed) }
-        if !pressed {
-            touches.compactMap { findTouchedKey(touch: $0, with: event, previous: true) }
-                .forEach { setKeyPressed($0, pressed: pressed) }
-        }
-    }
-
-    private func findTouchedKey(touch: UITouch, with event: UIEvent?, previous: Bool = false) -> Key? {
-        let point = previous ? touch.previousLocation(in: view) : touch.location(in: view)
-        let found = keys.first { $0.point(inside: view.convert(point, to: $0), with: event) }
-        return found
-    }
-
-    private func setKeyPressed(_ key: Key, pressed: Bool) {
-        if pressed != key.pressed {
-            key.pressed = pressed
-            if pressed {
-                delegate?.noteOn(key.note)
-            }
-            else {
-                delegate?.noteOff(key.note)
-            }
-        }
+        print("touchesCancelled")
+        releaseKeys(touches)
     }
 }
 
 // MARK: - Keyboard Protocol
 
 extension KeyboardController: Keyboard {
+
+    func noteOff(note: UInt8) {
+        sampler.noteOff(note)
+        guard note < allKeys.count else { return }
+        let key = allKeys[Int(note)]
+        DispatchQueue.main.async { key.pressed = false }
+    }
+
+    func noteOn(note: UInt8, velocity: UInt8) {
+        sampler.noteOn(note, velocity: velocity)
+        guard note < allKeys.count else { return }
+        let key = allKeys[Int(note)]
+        DispatchQueue.main.async {
+            key.pressed = true
+            self.updateInfoBar(note: key.note)
+        }
+    }
+
+    func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
+        sampler.polyphonicKeyPressure(note, pressure: pressure)
+    }
+
+    func controllerChange(controller: UInt8, value: UInt8) {
+        sampler.controllerChange(controller, value: value)
+    }
+
+    func programChange(program: UInt8) {
+        sampler.programChange(program)
+    }
+
+    func channelPressure(pressure: UInt8) {
+        sampler.channelPressure(pressure)
+    }
+
+    func pitchBend(value: UInt16) {
+        sampler.pitchBend(value)
+    }
 
     var lowestNote: Note {
         get { Note(midiNoteValue: firstMidiNoteValue) }
@@ -257,7 +259,8 @@ extension KeyboardController: Keyboard {
     var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
 
     func releaseAllKeys() {
-        keys.forEach { setKeyPressed($0, pressed: false) }
+        touchedKeys.releaseAll()
+        DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
     }
 }
 
@@ -266,80 +269,69 @@ extension KeyboardController: Keyboard {
 extension KeyboardController {
 
     private func createKeys() {
-        keys.forEach { $0.removeFromSuperview() }
-
-        let newKeyDefs = Array(KeyParamsSequence(midiNoteStart: firstMidiNoteValue, limit: view.bounds.size.width,
-                                                 stride: keyWidth, height: view.bounds.size.height))
-
-        // Handle edge-case where we generated a key with a MIDI value that is too big. This *could* be detected and
-        // dealt with in KeyParamSequence, but this is a bit cleaner, and rarely executed.
-        lastMidiNoteValue = firstMidiNoteValue + newKeyDefs.count - 1
-        if lastMidiNoteValue > Sampler.maxMidiValue {
-            firstMidiNoteValue -= lastMidiNoteValue - Sampler.maxMidiValue
-            createKeys()
-            return
-        }
-
-        // Transform the key definitions into Key instances and partition into two groups, one for the black keys and
-        // another for the white keys.
-        let partitionedKeys = newKeyDefs.reduce(into: (black: [Key](), white: [Key]())) { acc, def in
-            let key = Key(frame: def.0, note: def.1)
+        var blackKeys = [Key]()
+        for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue) {
+            let key = Key(frame: each.0, note: each.1)
             if key.note.accented {
-                acc.black.append(key)
+                blackKeys.append(key)
             }
             else {
-                acc.white.append(key)
+                keyboard.addSubview(key)
             }
+            allKeys.append(key)
         }
 
-        // Create the white keys first so that they will appear below the black keys, but store the 'black' keys
-        // first so that they will receive a touch before a 'white' key if there is an overlap.
-        partitionedKeys.white.forEach { view.addSubview($0) }
-        partitionedKeys.black.forEach { view.addSubview($0) }
-        keys = partitionedKeys.black + partitionedKeys.white
-
-        setVisibleKeyLabels?(lowestNote.label, highestNote.label)
+        blackKeys.forEach { keyboard.addSubview($0) }
+        keyboardWidthConstraint.constant = allKeys[allKeys.count - 1].frame.maxX
     }
 
-    // Custom sequence / iterator that will spit out 2-tuples of CGRect and Note values for the next key
-    // in a keyboard view.
-    private struct KeyParamsSequence: Sequence, IteratorProtocol {
-        private var nextMidiNote: Int
-        private var nextX: CGFloat
-        private let xLimit: CGFloat
-        private let xStride: CGFloat
-        private let height: CGFloat
-        private let blackKeyHeightScale: CGFloat = 0.6
-
-        init(midiNoteStart: Int, limit: CGFloat, stride: CGFloat, height: CGFloat) {
-            self.nextMidiNote = midiNoteStart
-            self.nextX = 0
-            self.xLimit = limit
-            self.xStride = stride
-            self.height = height
+    private func layoutKeys() {
+        for (key, def) in zip(allKeys, KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue)) {
+            key.frame = def.0
         }
 
-        func makeIterator() -> KeyParamsSequence { self }
+        updateVisibleKeys()
+    }
 
-        mutating func next() -> (CGRect, Note)? {
-            guard nextX < xLimit else { return nil }
+    private func offsetKeyboard(by offset: CGFloat) {
+        keyboardLeadingConstraint.constant = offset
+        updateVisibleKeys()
+    }
 
-            // Obtain the next note. If it is a sharp, then make sure we replay the `x` value for the next 'white' key
-            let note = Note(midiNoteValue: nextMidiNote)
-            let advance = note.accented ? 0 : xStride
-
-            // Update sequence values upon exit
-            defer {
-                nextMidiNote += 1
-                nextX += advance
+    private func pressKeys(_ touches: Set<UITouch>) {
+        for touch in touches {
+            if let key = visibleKeys.touched(by: touch.location(in: keyboard)) {
+                touchedKeys.assign(touch, key: key)
             }
+        }
+    }
 
-            // The 'black' keys are positioned between the last key and the next 'white' one, and it is
-            // not as high
-            let xPos = note.accented ? nextX - xStride / 2 : nextX
-            let height = note.accented ? self.height * blackKeyHeightScale : self.height
+    private func releaseKeys(_ touches: Set<UITouch>) {
+        touches.forEach { touchedKeys.release($0) }
+        if let touch = trackedTouch, touches.contains(touch) {
+            trackedTouch = nil
+        }
+    }
 
-            return (CGRect(x: xPos, y: 0, width: xStride, height: height), note)
+    private func updateVisibleKeys() {
+        let offset = keyboardLeadingConstraint.constant
+        let visible = allKeys.keySpan(for: view.bounds.offsetBy(dx: -offset, dy: 0.0))
+        firstMidiNoteValue = visible.startIndex
+        lastMidiNoteValue = visible.endIndex - 1
+        infoBar?.setVisibleKeyLabels(from: lowestNote.label, to: highestNote.label)
+    }
+
+    private func updateInfoBar(note: Note) {
+        if isMuted {
+            infoBar.setStatus("🔇")
+        }
+        else {
+            if settings.showSolfegeLabel {
+                infoBar.setStatus(note.label + " - " + note.solfege)
+            }
+            else {
+                infoBar.setStatus(note.label)
+            }
         }
     }
 }

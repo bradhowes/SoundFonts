@@ -1,7 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import XCTest
-import SoundFontsFramework
+@testable import SoundFontsFramework
 
 class FormattersTests: XCTestCase {
 

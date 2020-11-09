@@ -8,7 +8,7 @@ public final class NoteInjector {
     private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInitiated)
     private var workItems = [DispatchWorkItem]()
 
-    private let note = 69 // A4
+    private let note: UInt8 = 69 // A4
     private let noteOnDuration = 1.0
 
     public init() {}
@@ -22,24 +22,6 @@ public final class NoteInjector {
         playingQueue.asyncAfter(deadline: .now() + 0.1, execute: noteOn)
 
         let noteOff = DispatchWorkItem { sampler.noteOff(note) }
-        playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
-
-        workItems.forEach { $0.cancel() }
-        workItems = [noteOn, noteOff]
-    }
-
-    public func postMIDI(to sampler: Sampler) {
-        guard settings.playSample == true else { return }
-
-        let channel1NoteOn: UInt8 = 0x90
-        let note = UInt8(self.note)
-        let noteOnDuration = 1.0
-        let velocity: UInt8 = 64
-
-        let noteOn = DispatchWorkItem { sampler.sendMIDI(channel1NoteOn, data1: note, data2: velocity) }
-        playingQueue.async(execute: noteOn)
-
-        let noteOff = DispatchWorkItem { sampler.sendMIDI(channel1NoteOn, data1: note, data2: 0) }
         playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
         workItems.forEach { $0.cancel() }
