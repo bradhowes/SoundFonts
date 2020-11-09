@@ -19,6 +19,7 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var showGuide: UIButton!
     @IBOutlet private weak var showSettings: UIButton!
     @IBOutlet private weak var editVisibility: UIButton!
+    @IBOutlet private weak var slidingKeyboard: UIButton!
 
     @IBOutlet private weak var showMoreButtons: UIButton!
     @IBOutlet private weak var moreButtons: UIView!
@@ -30,10 +31,16 @@ public final class InfoBarController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
     private var isMainApp: Bool!
+    private var slideKeyboardObserver: NSKeyValueObservation?
+
+    private var lowestKeyValue = ""
+    private var highestKeyValue = ""
 
     public override func viewDidLoad() {
+
         highestKey.isHidden = true
         lowestKey.isHidden = true
+        slidingKeyboard.isHidden = true
 
         doubleTap.numberOfTouchesRequired = 1
         doubleTap.numberOfTapsRequired = 2
@@ -47,6 +54,10 @@ public final class InfoBarController: UIViewController {
         if traitCollection.horizontalSizeClass == .compact {
             moreButtonsXConstraint.constant = -moreButtons.frame.width
         }
+
+        slideKeyboardObserver = settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() }
+
+        updateSlidingKeyboardState()
     }
 }
 
@@ -63,6 +74,10 @@ extension InfoBarController {
 
     @IBAction private func showGuide(_ sender: UIButton) {
         animateMoreButtons()
+    }
+
+    @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
+        settings[.slideKeyboard] = !settings[.slideKeyboard]
     }
 }
 
@@ -92,10 +107,12 @@ extension InfoBarController: InfoBar {
         case .shiftKeyboardUp:
             highestKey.addClosure(closure)
             highestKey.isHidden = false
+            slidingKeyboard.isHidden = false
 
         case .shiftKeyboardDown:
             lowestKey.addClosure(closure)
             lowestKey.isHidden = false
+            slidingKeyboard.isHidden = false
 
         case .doubleTap: doubleTap.addClosure(closure)
         case .addSoundFont: addSoundFont.addClosure(closure)
@@ -122,14 +139,9 @@ extension InfoBarController: InfoBar {
      - parameter to: the last key label
      */
     public func setVisibleKeyLabels(from: String, to: String) {
-        UIView.performWithoutAnimation {
-            lowestKey.setTitle("❰" + from, for: .normal)
-            lowestKey.accessibilityLabel = "Keyboard down before " + from
-            lowestKey.layoutIfNeeded()
-            highestKey.setTitle(to + "❱", for: .normal)
-            highestKey.accessibilityLabel = "Keyboard up after " + to
-            highestKey.layoutIfNeeded()
-        }
+        lowestKeyValue = from
+        highestKeyValue = to
+        updateKeyLabels()
     }
 
     public func hideButtons() {
@@ -304,5 +316,20 @@ extension InfoBarController {
                 panOrigin = point
             }
         }
+    }
+
+    private func updateKeyLabels() {
+        UIView.performWithoutAnimation {
+            lowestKey.setTitle("❰" + lowestKeyValue, for: .normal)
+            lowestKey.accessibilityLabel = "Keyboard down before " + lowestKeyValue
+            lowestKey.layoutIfNeeded()
+            highestKey.setTitle(highestKeyValue + "❱", for: .normal)
+            highestKey.accessibilityLabel = "Keyboard up after " + highestKeyValue
+            highestKey.layoutIfNeeded()
+        }
+    }
+
+    private func updateSlidingKeyboardState() {
+        slidingKeyboard.setTitleColor(settings[.slideKeyboard] ? .systemTeal : .darkGray, for: .normal)
     }
 }

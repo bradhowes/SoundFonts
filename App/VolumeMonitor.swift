@@ -20,7 +20,6 @@ final class VolumeMonitor {
 
     private let muteDetector: MuteDetector?
     private let keyboard: Keyboard
-    private let notePlayer: NotePlayer
 
     private var volume: Float = 1.0 {
         didSet {
@@ -48,10 +47,9 @@ final class VolumeMonitor {
      - parameter keyboard: Keyboard instance that handle key renderings
      - parameter notePlayer: NotePlayer instance that handles note playing
      */
-    init(muteDetector: MuteDetector?, keyboard: Keyboard, notePlayer: NotePlayer) {
+    init(muteDetector: MuteDetector?, keyboard: Keyboard) {
         self.muteDetector = muteDetector
         self.keyboard = keyboard
-        self.notePlayer = notePlayer
     }
 }
 
@@ -123,7 +121,6 @@ extension VolumeMonitor {
         }
 
         keyboard.isMuted = reason != .none
-        notePlayer.isMuted = reason != .none
 
         os_log(.info, log: log, "reason: %{public}s", reason.debugDescription)
         showReason()

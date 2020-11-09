@@ -17,6 +17,7 @@ final class MainViewController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var sampler: Sampler!
     private var volumeMonitor: VolumeMonitor?
+    private let midi = MIDI()
 
     fileprivate var noteInjector = NoteInjector()
 
@@ -63,6 +64,7 @@ extension MainViewController {
             os_log(.info, log: log, "set active audio session")
             postAlert(for: what)
         case .success:
+            midi.controller = keyboard
             volumeMonitor?.start()
         }
     }
@@ -71,6 +73,7 @@ extension MainViewController {
      Stop audio processing. This is done prior to the app moving into the background.
      */
     func stopAudio() {
+        midi.controller = nil
         volumeMonitor?.stop()
         sampler.stop()
 
@@ -97,11 +100,8 @@ extension MainViewController: ControllerConfiguration {
         sampler = router.sampler
         activePatchManager = router.activePatchManager
         keyboard = router.keyboard
-
-        let muteDetector = MuteDetector(checkInterval: 1)
-        let notePlayer = NotePlayer(infoBar: router.infoBar, sampler: sampler)
-        keyboard.delegate = notePlayer
-        volumeMonitor = VolumeMonitor(muteDetector: muteDetector, keyboard: keyboard, notePlayer: notePlayer)
+        midi.controller = keyboard
+        volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 

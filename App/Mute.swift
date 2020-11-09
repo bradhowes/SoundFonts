@@ -7,10 +7,13 @@ import os
 final class MuteDetector {
     private let log = Logging.logger("MuteD")
 
+    /// Type of the closure to invoke on mute state change
     public typealias MutedStateChangeClosure = (_ mute: Bool) -> Void
 
+    /// Closure to invoke when the detected mute state changes
     public var notifier: MutedStateChangeClosure?
 
+    /// Current detected mute state
     public private(set) var muted = false
 
     private let soundUrl: URL = {
@@ -26,6 +29,11 @@ final class MuteDetector {
     private let soundId: SystemSoundID
     private let checkInterval: Int
 
+    /**
+     Create a new mute detector
+
+     - parameter checkInterval: number of seconds between checks
+     */
     init?(checkInterval: Int) {
         var soundId: SystemSoundID = 1
         var yes: UInt32 = 1
@@ -60,6 +68,9 @@ extension MuteDetector {
         os_log(.info, log: log, "stop")
         running = false
     }
+}
+
+extension MuteDetector {
 
     private func schedulePlaySound() {
         guard !scheduled && running else { return }

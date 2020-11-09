@@ -107,5 +107,5 @@ As mentioned above, additional sound fonts can be added to the running applicati
 
 # API Documentation
 
-If you are interested, there is some [deverloper documentation](https://bradhowes.github.io/SoundFonts/)
+If you are interested, there is some [developer documentation](https://bradhowes.github.io/SoundFonts/)
 available.
