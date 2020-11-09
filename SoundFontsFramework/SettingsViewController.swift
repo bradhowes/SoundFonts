@@ -91,7 +91,7 @@ public final class SettingsViewController: UIViewController {
         updateMidiChannel()
 
         slideKeyboard.isOn = settings[.slideKeyboard]
-        copyFilesStackView.isHidden = true
+        copyFilesStackView.isHidden = false
         copyFiles.isOn = settings[.copyFilesWhenAdding]
 
         let isAUv3 = !isMainApp
@@ -112,7 +112,7 @@ public final class SettingsViewController: UIViewController {
 extension SettingsViewController {
 
     private func beginShowKeyboard() {
-        // copyFilesStackView.isHidden = true
+        copyFilesStackView.isHidden = true
         midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
@@ -126,7 +126,7 @@ extension SettingsViewController {
     }
 
     private func endShowKeyboard() {
-        // copyFilesStackView.isHidden = false
+        copyFilesStackView.isHidden = false
         midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
