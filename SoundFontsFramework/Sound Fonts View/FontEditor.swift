@@ -36,6 +36,7 @@ final class FontEditor: UIViewController {
     @IBOutlet private weak var favoritesCountLabel: UILabel!
     @IBOutlet private weak var hiddenCountLabel: UILabel!
     @IBOutlet private weak var resetVisibilityButton: UIButton!
+    @IBOutlet private weak var path: UILabel!
 
     func configure(_ config: Config) {
         self.position = config.indexPath
@@ -64,6 +65,9 @@ final class FontEditor: UIViewController {
         favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
 
         updateHiddenCount()
+
+        path.text = "Path: " + soundFont.fileURL.path
+
         preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 

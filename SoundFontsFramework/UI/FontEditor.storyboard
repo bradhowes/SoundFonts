@@ -3,7 +3,7 @@
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -48,7 +48,7 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Original">
-                                                        <rect key="frame" x="0.0" y="59" width="374" height="25"/>
+                                                        <rect key="frame" x="0.0" y="51.5" width="374" height="25"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Original Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d3d-d7-tA5" userLabel="Original Name:">
                                                                 <rect key="frame" x="0.0" y="0.0" width="112.5" height="25"/>
@@ -81,7 +81,7 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" id="ph0-K4-AEf" userLabel="Embedded">
-                                                        <rect key="frame" x="0.0" y="108.5" width="374" height="25"/>
+                                                        <rect key="frame" x="0.0" y="93.5" width="374" height="25"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Embedded Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyM-cd-pJx" userLabel="Embedded:">
@@ -112,7 +112,7 @@
                                                         <viewLayoutGuide key="safeArea" id="aAP-bF-YbI"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Q2I-43-k0V" userLabel="Kind">
-                                                        <rect key="frame" x="0.0" y="158.5" width="374" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="136" width="374" height="20.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Kind:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vYR-rZ-GQL">
                                                                 <rect key="frame" x="0.0" y="0.0" width="39" height="20.5"/>
@@ -130,7 +130,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Tmr-5h-0DY" userLabel="PresetsCount">
-                                                        <rect key="frame" x="0.0" y="203.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="173.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Presets: 187" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pQ3-VJ-Ghy">
                                                                 <rect key="frame" x="0.0" y="5" width="93.5" height="20.5"/>
@@ -158,11 +158,30 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dRV-OG-PKO" userLabel="FavoritesCount">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="751-6B-DkT" userLabel="Favorites">
+                                                        <rect key="frame" x="0.0" y="221" width="374" height="20.5"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Favorites:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qj-SE-rYl">
+                                                                <rect key="frame" x="0.0" y="0.0" width="73.5" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="owy-UZ-6qg" userLabel="favorites">
+                                                                <rect key="frame" x="81.5" y="0.0" width="292.5" height="20.5"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="s6E-ry-2sQ" userLabel="Path">
                                                         <rect key="frame" x="0.0" y="258.5" width="374" height="20.5"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorites: 3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KNj-5S-LFN">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="path" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yv9-Wx-Dcq">
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -220,11 +239,12 @@
                     <connections>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
                         <outlet property="embeddedNameLabel" destination="c94-3d-tGQ" id="KLT-MF-4jF"/>
-                        <outlet property="favoritesCountLabel" destination="KNj-5S-LFN" id="CEd-hV-EKH"/>
+                        <outlet property="favoritesCountLabel" destination="owy-UZ-6qg" id="RZk-mV-aXK"/>
                         <outlet property="hiddenCountLabel" destination="DAS-mV-qSc" id="pLS-JZ-z2u"/>
                         <outlet property="kindLabel" destination="1Zk-if-YP0" id="IA5-Qj-SIx"/>
                         <outlet property="name" destination="rDX-8U-Yv3" id="N27-qw-FY5"/>
                         <outlet property="originalNameLabel" destination="HS0-rM-EcW" id="h0t-MO-Zaz"/>
+                        <outlet property="path" destination="Yv9-Wx-Dcq" id="9zf-Oq-8WN"/>
                         <outlet property="presetsCountLabel" destination="pQ3-VJ-Ghy" id="SNZ-Af-Enf"/>
                         <outlet property="resetVisibilityButton" destination="BiZ-Mu-WKC" id="3aR-YC-PPs"/>
                     </connections>
