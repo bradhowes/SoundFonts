@@ -88,7 +88,7 @@ public final class LegacySoundFont: Codable {
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
         self.kind = settings.copyFilesWhenAdding ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
-            .reference(bookmark: Bookmark(url: url))
+            .reference(bookmark: Bookmark(url: url, name: displayName))
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
 
