@@ -65,6 +65,7 @@
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJ9-dy-CSD" userLabel="Copy">
                                                                 <rect key="frame" x="349" y="0.0" width="25" height="25"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                                <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <state key="normal" image="Copy">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
@@ -98,6 +99,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mRw-eu-2aH" userLabel="Copy">
                                                                 <rect key="frame" x="349" y="0.0" width="25" height="25"/>
+                                                                <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <state key="normal" image="Copy">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
