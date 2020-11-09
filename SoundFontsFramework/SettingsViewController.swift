@@ -186,10 +186,10 @@ extension SettingsViewController {
 
     @IBAction private func toggleCopyFiles(_ sender: Any) {
         if self.copyFiles.isOn == false {
-            let ac = UIAlertController(title: "Disable Copying", message: """
+            let ac = UIAlertController(title: "Disable Copying?", message: """
 Direct file access can lead to unusable SF2 file references if the file moves or is not immedately available on the device. Are you sure you want to disable copying?
 """, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Disable", style: .default) { _ in settings.copyFilesWhenAdding = false })
+            ac.addAction(UIAlertAction(title: "Yes", style: .default) { _ in settings.copyFilesWhenAdding = false })
             ac.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in self.copyFiles.isOn = true })
             present(ac, animated: true)
         }
