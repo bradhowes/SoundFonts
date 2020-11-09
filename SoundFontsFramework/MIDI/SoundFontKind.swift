@@ -24,7 +24,7 @@ public enum SoundFontKind {
         switch self {
         case .builtin(let resource): return resource
         case .installed(let fileName): return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(fileName)
-        case .reference(let bookmark): return bookmark.fileURL
+        case .reference(let bookmark): return bookmark.url
         }
     }
 
