@@ -71,7 +71,8 @@ public extension UserDefaults {
         set { self[.playSample] = newValue }
     }
     @objc dynamic var copyFilesWhenAdding: Bool {
-        get { self[.copyFilesWhenAdding] }
+        // TODO: remove when copyFiles support is done
+        get { self[.copyFilesWhenAdding] || true }
         set { self[.copyFilesWhenAdding] = newValue }
     }
     @objc dynamic var showingFavorites: Bool {
