@@ -62,6 +62,9 @@ public final class SettingsViewController: UIViewController {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
 
+        // TODO: remove when copyFiles support is done
+        copyFilesStackView.isHidden = true
+
         revealKeyboardForKeyWidthChanges = false
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
@@ -91,7 +94,6 @@ public final class SettingsViewController: UIViewController {
         updateMidiChannel()
 
         slideKeyboard.isOn = settings[.slideKeyboard]
-        copyFilesStackView.isHidden = false
         copyFiles.isOn = settings[.copyFilesWhenAdding]
 
         let isAUv3 = !isMainApp
@@ -126,7 +128,8 @@ extension SettingsViewController {
     }
 
     private func endShowKeyboard() {
-        copyFilesStackView.isHidden = false
+        // TODO: remove when copyFiles support is done
+        // copyFilesStackView.isHidden = false
         midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false

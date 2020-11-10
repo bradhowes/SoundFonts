@@ -35,8 +35,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     public func updateForFont(name: String, isSelected: Bool, isActive: Bool, isReference: Bool) {
         var name = name
         if isReference {
-            os_log(.info, log: log, "reference font")
-            name = "❖ " + name
+            name += "°"
         }
         update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
     }
