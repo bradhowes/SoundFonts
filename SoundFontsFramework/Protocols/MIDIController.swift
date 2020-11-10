@@ -11,27 +11,26 @@ public protocol MIDIController: class {
     func noteOff(note: UInt8)
     func noteOn(note: UInt8, velocity: UInt8)
     func polyphonicKeyPressure(note: UInt8, pressure: UInt8)
-    func controllerChange(controller: UInt8, value: UInt8)
+    func controlChange(controller: UInt8, value: UInt8)
     func programChange(program: UInt8)
     func channelPressure(pressure: UInt8)
-    func pitchBend(value: UInt16)
+    func pitchBendChange(value: UInt16)
 }
 
 extension MIDIController {
+    public func accepted(_ channel: UInt8) -> Bool { self.channel == -1 || self.channel == channel }
 
-    public func processPacket(_ packet: MIDIPacket) {
-        let status = packet.data.0
-        if self.channel != -1 && self.channel != (status & 0x0F) { return }
-
-        switch status & 0xF0 {
-        case 0x80: noteOff(note: packet.data.1)
-        case 0x90: noteOn(note: packet.data.1, velocity: packet.data.2)
-        case 0xA0: polyphonicKeyPressure(note: packet.data.1, pressure: packet.data.2)
-        case 0xB0: controllerChange(controller: packet.data.1, value: packet.data.2)
-        case 0xC0: programChange(program: packet.data.1)
-        case 0xD0: channelPressure(pressure: packet.data.1)
-        case 0xE0: pitchBend(value: UInt16(packet.data.2) * 256 + UInt16(packet.data.1))
-        default: break
+    public func process(_ msgs: [MIDIMsg]) {
+        for msg in msgs {
+            switch msg {
+            case let .noteOff(note, _): self.noteOff(note: note)
+            case let .noteOn(note, velocity): self.noteOn(note: note, velocity: velocity)
+            case let .polyphonicKeyPressure(note, pressure): self.polyphonicKeyPressure(note: note, pressure: pressure)
+            case let .controlChange(controller, value): self.controlChange(controller: controller, value: value)
+            case let .programChange(program): self.programChange(program: program)
+            case let .channelPressure(pressure): self.channelPressure(pressure: pressure)
+            case let .pitchBendChange(value): self.pitchBendChange(value: value)
+            }
         }
     }
 }

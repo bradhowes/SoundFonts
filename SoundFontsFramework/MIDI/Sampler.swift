@@ -209,12 +209,12 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter value: the controller value. Middle is 0x200
      */
-    public func pitchBend(_ value: UInt16) {
+    public func pitchBendChange(_ value: UInt16) {
         os_log(.debug, log: log, "pitchBend - %d", value)
         auSampler?.sendPitchBend(value, onChannel: 0)
     }
 
-    public func controllerChange(_ controller: UInt8, value: UInt8) {
+    public func controlChange(_ controller: UInt8, value: UInt8) {
         os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
         auSampler?.sendController(controller, withValue: value, onChannel: 0)
     }

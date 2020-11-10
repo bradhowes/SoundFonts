@@ -155,6 +155,7 @@
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDE150B1250B460200728402 /* ContextNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B0250B460200728402 /* ContextNotification.swift */; };
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
+		BDEA0B54255B0AA80097F1CE /* MIDIParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
 		BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */; };
 /* End PBXBuildFile section */
@@ -321,6 +322,7 @@
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIParser.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
 		BDF86311246EC4300006D8CD /* AudioUnit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AudioUnit+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -414,6 +416,7 @@
 			children = (
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
+				BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
@@ -805,6 +808,7 @@
 				BD074C7523CDAF51001987E9 /* UIView+Extensions.swift in Sources */,
 				BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */,
 				BD074C6D23CDAF51001987E9 /* SubscriptionManager.swift in Sources */,
+				BDEA0B54255B0AA80097F1CE /* MIDIParser.swift in Sources */,
 				BD074C7E23CDAF51001987E9 /* UISearchBar+Additions.swift in Sources */,
 				BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */,
 				BD0FAC802523CAEC00EEF187 /* UIContextualAction+Extensions.swift in Sources */,

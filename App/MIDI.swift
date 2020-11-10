@@ -20,7 +20,51 @@ final class MIDI {
     /// Delegate which will receive incoming MIDI messages
     weak var controller: MIDIController?
 
-    private var errorTag: [OSStatus: String] = [
+    public enum MsgKind: UInt8 {
+        case noteOff               = 0x80
+        case noteOn                = 0x90
+        case polyphonicKeyPressure = 0xA0
+        case controlChange         = 0xB0 // also channelMode messages
+        case programChange         = 0xC0
+        case channelPressure       = 0xD0
+        case pitchBendChange       = 0xE0
+        case systemExclusive       = 0xF0
+        case midiTimeCode          = 0xF1
+        case songPosition          = 0xF2
+        case songSelect            = 0xF3
+        case tuneRequest           = 0xF6
+        case endSystemExclusive    = 0xF7
+        case timingClock           = 0xF8
+        case sequenceStart         = 0xFA
+        case sequenceContinue      = 0xFB
+        case sequenceStop          = 0xFC
+        case activeSensing         = 0xFE
+        case reset                 = 0xFF
+
+        init?(_ value: UInt8) {
+            let command = value & 0xF0
+            self.init(rawValue: command == 0xF0 ? value : command)
+        }
+
+        var hasChannel: Bool { self.rawValue < 0xF0 }
+    }
+
+    private let msgSizes: [MsgKind: Int] = [
+        .noteOff: 2,
+        .noteOn: 2,
+        .polyphonicKeyPressure: 2,
+        .controlChange: 2,
+        .programChange: 1,
+        .channelPressure: 1,
+        .pitchBendChange: 2,
+        .midiTimeCode: 1,
+        .songPosition: 2,
+        .songSelect: 1
+    ]
+
+    private func msgSize(for kind: MsgKind) -> Int { msgSizes[kind] ?? 0 }
+
+    private let errorTag: [OSStatus: String] = [
         noErr: "",
         kMIDIInvalidClient: "kMIDIInvalidClient",
         kMIDIInvalidPort: "kMIDIInvalidPort",
@@ -39,7 +83,7 @@ final class MIDI {
         kMIDINotPermitted: "kMIDINotPermitted"
     ]
 
-    private var notificationMessageTag: [MIDINotificationMessageID: String] = [
+    private let notificationMessageTag: [MIDINotificationMessageID: String] = [
         .msgSetupChanged: "some aspect of the current MIDI setup changed",
         .msgObjectAdded: "system added a device, entity, or endpoint",
         .msgObjectRemoved: "system removed a device, entity, or endpoint",
@@ -105,12 +149,7 @@ extension MIDI {
 
     private func processPackets(packetList: MIDIPacketList) {
         guard let controller = self.controller else { return }
-        var ptr = UnsafeMutablePointer<MIDIPacket>.allocate(capacity: 1)
-        ptr.initialize(to: packetList.packet)
-        for _ in 0 ..< packetList.numPackets {
-            controller.processPacket(ptr.pointee)
-            ptr = MIDIPacketNext(ptr)
-        }
+        MIDIParser.processPackets(controller: controller, packetList: packetList)
     }
 }
 
