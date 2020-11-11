@@ -18,7 +18,6 @@ public protocol MIDIController: class {
 }
 
 extension MIDIController {
-    public func accepted(_ channel: UInt8) -> Bool { self.channel == -1 || self.channel == channel }
 
     public func process(_ msgs: [MIDIMsg]) {
         for msg in msgs {
