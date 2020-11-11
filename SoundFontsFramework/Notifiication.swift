@@ -27,4 +27,7 @@ extension Notification.Name {
 
     /// Notification that we cannot read/use an SF2 file
     public static let soundFontFileAccessDenied = Notification.Name("soundFontFileAccessDenied")
+
+    /// Notification that we cannot locate an SF2 file
+    public static let soundFontFileNotAvailable = Notification.Name("soundFontFileNotAvailable")
 }

@@ -63,7 +63,7 @@ public final class SettingsViewController: UIViewController {
         super.viewWillAppear(animated)
 
         // TODO: remove when copyFiles support is done
-        copyFilesStackView.isHidden = true
+        // copyFilesStackView.isHidden = true
 
         revealKeyboardForKeyWidthChanges = false
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
@@ -129,7 +129,7 @@ extension SettingsViewController {
 
     private func endShowKeyboard() {
         // TODO: remove when copyFiles support is done
-        // copyFilesStackView.isHidden = false
+        copyFilesStackView.isHidden = false
         midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false

@@ -34,6 +34,9 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var favoritesViewManager: FavoritesViewManager { favoritesController }
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var guideManager: GuideManager { guideController }
+    public var alertManager: AlertManager { _alertManager! }
+
+    private var _alertManager: AlertManager?
 
     public init(inApp: Bool) {
 
@@ -61,6 +64,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
     public func setMainViewController(_ mvc: T) {
         mainViewController = mvc
+        _alertManager = AlertManager(presenter: mvc)
         for obj in mvc.children {
             switch obj {
             case let vc as SoundFontsControlsController:

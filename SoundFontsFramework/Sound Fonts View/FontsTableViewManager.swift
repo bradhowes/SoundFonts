@@ -219,7 +219,7 @@ extension FontsTableViewManager {
         let soundFont = soundFonts.getBy(index: indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
         let isActive = activePatchManager.soundFont == soundFont
-        cell.updateForFont(name: viewSoundFonts[indexPath.row], isSelected: isSelected, isActive: isActive, isReference: soundFont.kind.reference)
+        cell.updateForFont(name: viewSoundFonts[indexPath.row], kind: soundFont.kind, isSelected: isSelected, isActive: isActive)
         return cell
     }
 }

@@ -12,19 +12,10 @@ import os
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
     private lazy var components = Components<MainViewController>(inApp: true)
-    private var observers: [NSObjectProtocol] = []
-
+    private var observer: NSObjectProtocol?
     var window: UIWindow?
 
     func setMainViewController(_ mainViewController: MainViewController) {
-        for issue in [Notification.Name.soundFontsCollectionLoadFailure,
-                      .soundFontsCollectionOrphans,
-                      .favoritesCollectionLoadFailure,
-                      .soundFontFileAccessDenied] {
-            observers.append(NotificationCenter.default.addObserver(forName: issue, object: nil, queue: nil) { notif in
-                self.notify(notif)
-            })
-        }
         components.setMainViewController(mainViewController)
     }
 
@@ -37,48 +28,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        observers.append(NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
-            self.visitAppStore()
-        })
-
+        observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in self.visitAppStore() }
         return true
     }
 
-    func notify(_ notification: Notification) {
-        let (title, body): (String, String) = {
-            switch notification.name {
-            case .soundFontsCollectionLoadFailure:
-                return ("Startup Failure", """
-Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
-have been lost.
-""")
-
-            case .favoritesCollectionLoadFailure:
-                return ("Startup Failure", "Unable to load the last saved favorites information.")
-
-            case .soundFontsCollectionOrphans:
-                guard let count = notification.object as? NSNumber else { fatalError() }
-                return ("Orphaned SF2 Files", """
-Found \(count.intValue) SF2 files that are not being used and moved them to local SoundFonts folder.
-""")
-
-            case .soundFontFileAccessDenied:
-                guard let name = notification.object as? String else { fatalError() }
-                return ("Access Failure", "Unable to access and use the sound font file '\(name)'.")
-
-            default:
-                fatalError("unexpected notification - \(notification.name)")
-            }
-        }()
-
-        AlertManager.shared.post(alert: AlertConfig(title: title, message: body))
-    }
-
-    func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        DispatchQueue.main.async {
-            self.components.patchesViewManager.addSoundFonts(urls: [url])
-        }
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        DispatchQueue.main.async { self.components.patchesViewManager.addSoundFonts(urls: [url]) }
         return true
     }
 
