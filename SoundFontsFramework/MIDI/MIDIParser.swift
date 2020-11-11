@@ -26,7 +26,6 @@ public struct MIDIParser {
         let numPackets = packetList.numPackets
         os_log(.info, log: log, "processPackets - %d", numPackets)
         var packet: MIDIPacket = packetList.packet
-        var msgs = [MIDIMsg]()
         for index in 0..<numPackets {
             os_log(.info, log: log, "packet %d - %d bytes", index, packet.length)
             // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with really zero or really big sizes of 26624
@@ -34,10 +33,9 @@ public struct MIDIParser {
                 os_log(.error, log: log, "suspect packet size %d", packet.length)
                 break
             }
-            msgs += processPacket(packet, controller)
+            processPacket(packet, controller)
             packet = MIDIPacketNext(&packet).pointee
         }
-        DispatchQueue.global(qos: .userInteractive).async { controller.process(msgs) }
     }
 
     private enum MsgKind: UInt8 {
@@ -128,22 +126,26 @@ public struct MIDIParser {
         mutating func consume(_ amount: Int) { index += min(amount, available) }
     }
 
-    private static func processPacket(_ packet: MIDIPacket, _ controller: MIDIController) -> [MIDIMsg] {
+    private static func processPacket(_ packet: MIDIPacket, _ controller: MIDIController) {
         let count = Int(packet.length)
-        var msgs = [MIDIMsg]()
         os_log(.info, log: log, "processPacket - %d bytes", count)
+
+        // Send all MIDI messages in one packet at once to a MIDI controller
+        var msgs = [MIDIMsg]()
         withUnsafeBytes(of: packet.data) { ptr in
             var pos = Pos(ptr: ptr, count: count)
             while pos.available > 0 {
-                if let msg = processMessage(&pos, controller) {
+                if let msg = parseMIDIMsg(&pos, controller) {
                     msgs.append(msg)
                 }
             }
         }
-        return msgs
+        if !msgs.isEmpty {
+            DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
+        }
     }
 
-    private static func processMessage(_ pos: inout Pos, _ controller: MIDIController) -> MIDIMsg? {
+    private static func parseMIDIMsg(_ pos: inout Pos, _ controller: MIDIController) -> MIDIMsg? {
         let status = pos.next()
         guard let command = MsgKind(status) else { return nil }
         let needed = msgPayloadSize(for: command)
@@ -155,17 +157,15 @@ public struct MIDIParser {
         }
 
         let channel = status & 0x0F
-        if controller.accepted(channel) {
-            if let msg = processMessage(&pos, command, controller) {
-                return msg
-            }
+        if !controller.accepted(channel) {
+            pos.consume(needed)
+            return nil
         }
 
-        pos.consume(needed)
-        return nil
+        return makeMIDIMsg(&pos, command)
     }
 
-    private static func processMessage(_ pos: inout Pos, _ command: MsgKind, _ controller: MIDIController) -> MIDIMsg? {
+    private static func makeMIDIMsg(_ pos: inout Pos, _ command: MsgKind) -> MIDIMsg? {
         switch command {
         case .noteOff:
             let note = pos.next()
