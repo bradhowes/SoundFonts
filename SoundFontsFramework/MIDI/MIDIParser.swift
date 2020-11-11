@@ -24,17 +24,31 @@ public struct MIDIParser {
 
     public static func processPackets(controller: MIDIController, packetList: MIDIPacketList) {
         let numPackets = packetList.numPackets
-        os_log(.info, log: log, "processPackets - %d", numPackets)
+        os_log(.debug, log: log, "processPackets - %d", numPackets)
         var packet: MIDIPacket = packetList.packet
         for index in 0..<numPackets {
             os_log(.info, log: log, "packet %d - %d bytes", index, packet.length)
             // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with really zero or really big sizes of 26624
-            if packet.length == 0 || packet.length > 30 {
+            if packet.length == 0 || packet.length > 64 {
                 os_log(.error, log: log, "suspect packet size %d", packet.length)
                 break
             }
-            processPacket(packet, controller)
+            parsePacket(packet, controller)
             packet = MIDIPacketNext(&packet).pointee
+        }
+    }
+
+    private static func parsePacket(_ packet: MIDIPacket, _ controller: MIDIController) {
+        let when = packet.timeStamp
+        let count = Int(packet.length)
+        os_log(.debug, log: log, "processPacket - %ld %d bytes", when, count)
+
+        // Send all MIDI messages in one packet at once to a MIDI controller
+        withUnsafeBytes(of: packet.data) { ptr in
+            let msgs = Generator(ptr: ptr, count: count, channel: controller.channel).messages
+            if !msgs.isEmpty {
+                DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
+            }
         }
     }
 
@@ -104,105 +118,67 @@ public struct MIDIParser {
 
     static private func msgPayloadSize(for kind: MsgKind) -> Int { msgSizes[kind] ?? 0 }
 
-    private struct Pos {
+    private struct Generator: Sequence, IteratorProtocol {
+        typealias Element = MIDIMsg
+
+        private let log = Logging.logger("MIDIParser.Pos")
+
         private var ptr: UnsafeRawBufferPointer
         public let count: Int
         private var index: Int = 0
+        private let channel: Int
 
-        var available: Int { max(count - index, 0) }
+        private var available: Int { Swift.max(count - index, 0) }
 
-        init(ptr: UnsafeRawBufferPointer, count: Int) {
+        var messages: [MIDIMsg] { [MIDIMsg](self) }
+
+        init(ptr: UnsafeRawBufferPointer, count: Int, channel: Int) {
             self.ptr = ptr
-            self.index = 0
             self.count = count
+            self.channel = channel
         }
 
-        mutating func next() -> UInt8 {
+        func makeIterator() -> Self { self }
+
+        mutating func next() -> MIDIMsg? {
+            guard available > 0 else { return nil }
+            return parseMIDIMsg() ?? next()
+        }
+
+        mutating private func parseMIDIMsg() -> MIDIMsg? {
+            let status = pop()
+            guard let command = MsgKind(status) else { return nil }
+            let needed = msgPayloadSize(for: command)
+
+            if needed > available {
+                consume(available)
+                return nil
+            }
+
+            defer { consume(needed) }
+            return (channel == -1 || channel == (status & 0x0F)) ? makeMIDIMsg(command) : nil
+        }
+
+        mutating private func makeMIDIMsg(_ command: MsgKind) -> MIDIMsg? {
+            switch command {
+            case .noteOff: return .noteOff(note: ptr[index], velocity: ptr[index + 1])
+            case .noteOn: return .noteOn(note: ptr[index], velocity: ptr[index + 1])
+            case .polyphonicKeyPressure: return .polyphonicKeyPressure(note: ptr[index], pressure: ptr[index + 1])
+            case .controlChange: return .controlChange(controller: ptr[index], value: ptr[index + 1])
+            case .programChange: return .programChange(program: ptr[index])
+            case .channelPressure: return .channelPressure(pressure: ptr[index])
+            case .pitchBendChange: return .pitchBendChange(value: UInt16(ptr[index + 1]) << 7 + UInt16(ptr[index]))
+            default: break
+            }
+            return nil
+        }
+
+        mutating private func pop() -> UInt8 {
             precondition(index < count)
-            defer { index = index + 1 }
+            defer { consume(1) }
             return ptr[index]
         }
 
-        mutating func consume(_ amount: Int) { index += min(amount, available) }
-    }
-
-    private static func processPacket(_ packet: MIDIPacket, _ controller: MIDIController) {
-        let count = Int(packet.length)
-        os_log(.info, log: log, "processPacket - %d bytes", count)
-
-        // Send all MIDI messages in one packet at once to a MIDI controller
-        var msgs = [MIDIMsg]()
-        withUnsafeBytes(of: packet.data) { ptr in
-            var pos = Pos(ptr: ptr, count: count)
-            while pos.available > 0 {
-                if let msg = parseMIDIMsg(&pos, controller) {
-                    msgs.append(msg)
-                }
-            }
-        }
-        if !msgs.isEmpty {
-            DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
-        }
-    }
-
-    private static func parseMIDIMsg(_ pos: inout Pos, _ controller: MIDIController) -> MIDIMsg? {
-        let status = pos.next()
-        guard let command = MsgKind(status) else { return nil }
-        let needed = msgPayloadSize(for: command)
-
-        os_log(.debug, log: log, "processMessage - %d %d", command.rawValue, needed)
-        if needed > pos.available {
-            pos.consume(pos.available)
-            return nil
-        }
-
-        let channel = status & 0x0F
-        if !controller.accepted(channel) {
-            pos.consume(needed)
-            return nil
-        }
-
-        return makeMIDIMsg(&pos, command)
-    }
-
-    private static func makeMIDIMsg(_ pos: inout Pos, _ command: MsgKind) -> MIDIMsg? {
-        switch command {
-        case .noteOff:
-            let note = pos.next()
-            let velocity = pos.next()
-            return .noteOff(note: note, velocity: velocity)
-
-        case .noteOn:
-            let note = pos.next()
-            let velocity = pos.next()
-            return .noteOn(note: note, velocity: velocity)
-
-        case .polyphonicKeyPressure:
-            let note = pos.next()
-            let pressure = pos.next()
-            return .polyphonicKeyPressure(note: note, pressure: pressure)
-
-        case .controlChange:
-            let ctl = pos.next()
-            let value = pos.next()
-            return .controlChange(controller: ctl, value: value)
-
-        case .programChange:
-            let program = pos.next()
-            return .programChange(program: program)
-
-        case .channelPressure:
-            let pressure = pos.next()
-            return .channelPressure(pressure: pressure)
-
-        case .pitchBendChange:
-            let lsb = pos.next()
-            let msb = pos.next()
-            return .pitchBendChange(value: UInt16(msb) << 7 + UInt16(lsb))
-
-        default: break
-        }
-
-        return nil
+        mutating private func consume(_ amount: Int) { index += Swift.min(amount, available) }
     }
 }
