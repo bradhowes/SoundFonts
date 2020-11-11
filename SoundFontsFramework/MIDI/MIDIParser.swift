@@ -17,11 +17,17 @@ public enum MIDIMsg {
 }
 
 /**
- MIDIPacketList parser that generates MIDIMsg entities for the bytes in the packets.
+ MIDIPacketList parser that generates MIDIMsg entities for the bytes in the packets and forwards them to a MIDIController
  */
 public struct MIDIParser {
     static private let log = Logging.logger("MIDIParser")
 
+    /**
+     Extract MIDI messages and send to controller.
+
+     - parameter packetList: the MIDI data to parse
+     - parameter controller: the recipient of the MIDI messages
+     */
     public static func parse(packetList: MIDIPacketList, for controller: MIDIController) {
         let numPackets = packetList.numPackets
         os_log(.debug, log: log, "processPackets - %d", numPackets)
