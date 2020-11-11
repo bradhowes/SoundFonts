@@ -17,13 +17,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     private var activeIndicatorAnimator: UIViewPropertyAnimator?
 
     @IBInspectable public var normalFontColor: UIColor = .lightGray
-    @IBInspectable public var hiddenFontColor: UIColor = (UIColor.lightGray).withAlphaComponent(0.3)
     @IBInspectable public var selectedFontColor: UIColor = .white
     @IBInspectable public var activeFontColor: UIColor = .systemTeal
     @IBInspectable public var favoriteFontColor: UIColor = .systemYellow
 
     @IBOutlet private weak var name: UILabel!
     @IBOutlet private weak var activeIndicator: UIView!
+
+    private var bookmark: Bookmark?
+    private var timer: Timer?
+    var activeAlert: UIAlertController?
 
     override public func awakeFromNib() {
         super.awakeFromNib()
@@ -32,10 +35,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         multipleSelectionBackgroundView = UIView()
     }
 
-    public func updateForFont(name: String, isSelected: Bool, isActive: Bool, isReference: Bool) {
+    public func updateForFont(name: String, kind: SoundFontKind, isSelected: Bool, isActive: Bool) {
         var name = name
-        if isReference {
+        if case let .reference(bookmark) = kind {
+            self.bookmark = bookmark
             name += "°"
+            updateButton()
+            startMonitor()
         }
         update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
     }
@@ -63,7 +69,19 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     override public func prepareForReuse() {
         stopAnimation()
+        stopMonitor()
+        accessoryView = nil
+        activeAlert = nil
         super.prepareForReuse()
+    }
+
+    private func stopMonitor() {
+        timer?.invalidate()
+    }
+
+    private func startMonitor() {
+        stopMonitor()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in self.updateButton() }
     }
 
     private func showActiveIndicator(_ isActive: Bool) {
@@ -86,5 +104,62 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         if isFavorite { return favoriteFontColor }
         if isSelected { return selectedFontColor }
         return normalFontColor
+    }
+
+    private func updateButton() {
+        accessoryView = infoButton
+        if accessoryView == nil && activeAlert != nil {
+            activeAlert?.dismiss(animated: true)
+            activeAlert = nil
+        }
+    }
+
+    private var infoButton: UIButton? {
+        guard let bookmark = self.bookmark else { return nil }
+        if bookmark.isAvailable { return nil }
+        if !bookmark.isUbiquitous { return missingFileButton }
+        return downloadableFileButton
+    }
+
+    private var downloadableFileButton: UIButton {
+        let image = UIImage(named: "Download", in: Bundle(for: Self.self), compatibleWith: nil)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(downloadMissingFile), for: .touchUpInside)
+        return button
+    }
+
+    @objc private func downloadMissingFile() {
+        guard let bookmark = self.bookmark else { return }
+        let alert = UIAlertController(title: "Downloading", message: "Downloading the SF2 file for '\(bookmark.name)'", preferredStyle: .alert)
+        activeAlert = alert
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
+        viewController?.present(alert, animated: true)
+    }
+
+    private var missingFileButton: UIButton {
+        let image = UIImage(named: "Error", in: Bundle(for: Self.self), compatibleWith: nil)
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+        button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(showMissingFileAlert), for: .touchUpInside)
+        return button
+    }
+
+    @objc private func showMissingFileAlert() {
+        guard let bookmark = self.bookmark else { return }
+        let alert = UIAlertController(title: "File Missing", message: "Unable to access the SF2 file for '\(bookmark.name)'", preferredStyle: .alert)
+        activeAlert = alert
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
+        viewController?.present(alert, animated: true)
+    }
+
+    private var viewController: UIViewController? {
+        var responder: UIResponder? = superview
+        while responder != nil {
+            if let controller = responder as? UIViewController { return controller }
+            responder = responder?.next
+        }
+
+        return nil
     }
 }

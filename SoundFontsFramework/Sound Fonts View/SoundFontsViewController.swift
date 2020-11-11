@@ -104,7 +104,7 @@ public final class SoundFontsViewController: UIViewController {
             popoverController.permittedArrowDirections = []
         }
 
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     public func reload() {

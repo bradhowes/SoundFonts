@@ -72,7 +72,7 @@ public extension UserDefaults {
     }
     @objc dynamic var copyFilesWhenAdding: Bool {
         // TODO: remove when copyFiles support is done
-        get { self[.copyFilesWhenAdding] || true }
+        get { self[.copyFilesWhenAdding] || false }
         set { self[.copyFilesWhenAdding] = newValue }
     }
     @objc dynamic var showingFavorites: Bool {
