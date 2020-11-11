@@ -418,8 +418,8 @@
 			isa = PBXGroup;
 			children = (
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
-				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */,
+				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,

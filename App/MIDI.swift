@@ -149,7 +149,7 @@ extension MIDI {
 
     private func processPackets(packetList: MIDIPacketList) {
         guard let controller = self.controller else { return }
-        MIDIParser.processPackets(controller: controller, packetList: packetList)
+        MIDIParser.parse(packetList: packetList, for: controller)
     }
 }
 

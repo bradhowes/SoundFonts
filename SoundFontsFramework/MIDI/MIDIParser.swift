@@ -22,33 +22,29 @@ public enum MIDIMsg {
 public struct MIDIParser {
     static private let log = Logging.logger("MIDIParser")
 
-    public static func processPackets(controller: MIDIController, packetList: MIDIPacketList) {
+    public static func parse(packetList: MIDIPacketList, for controller: MIDIController) {
         let numPackets = packetList.numPackets
         os_log(.debug, log: log, "processPackets - %d", numPackets)
         var packet: MIDIPacket = packetList.packet
         for index in 0..<numPackets {
-            os_log(.info, log: log, "packet %d - %d bytes", index, packet.length)
-            // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with really zero or really big sizes of 26624
-            if packet.length == 0 || packet.length > 64 {
-                os_log(.error, log: log, "suspect packet size %d", packet.length)
+            let when = packet.timeStamp
+            let length = Int(packet.length)
+            os_log(.debug, log: log, "packet %d - %ld %d bytes", index, when, length)
+
+            // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big sizes of 26624 (0x6800!)
+            if length == 0 || length > 64 {
+                os_log(.error, log: log, "suspect packet size %d", length)
                 break
             }
-            parsePacket(packet, controller)
-            packet = MIDIPacketNext(&packet).pointee
-        }
-    }
 
-    private static func parsePacket(_ packet: MIDIPacket, _ controller: MIDIController) {
-        let when = packet.timeStamp
-        let count = Int(packet.length)
-        os_log(.debug, log: log, "processPacket - %ld %d bytes", when, count)
-
-        // Send all MIDI messages in one packet at once to a MIDI controller
-        withUnsafeBytes(of: packet.data) { ptr in
-            let msgs = Generator(ptr: ptr, count: count, channel: controller.channel).messages
-            if !msgs.isEmpty {
-                DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
+            // Send all MIDI messages in one packet at once to a MIDI controller
+            withUnsafeBytes(of: packet.data) { ptr in
+                let msgs = Generator(ptr: ptr, count: length, channel: controller.channel).messages
+                if !msgs.isEmpty {
+                    DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
+                }
             }
+            packet = MIDIPacketNext(&packet).pointee
         }
     }
 
@@ -73,12 +69,10 @@ public struct MIDIParser {
         case activeSensing         = 0xFE
         case reset                 = 0xFF
 
-        init?(_ value: UInt8) {
-            let command = value & 0xF0
-            self.init(rawValue: command == 0xF0 ? value : command)
+        init?(_ raw: UInt8) {
+            let highNibble = raw & 0xF0
+            self.init(rawValue: highNibble == 0xF0 ? raw : highNibble)
         }
-
-        var hasChannel: Bool { self.rawValue < 0xF0 }
     }
 
     static private let msgSizes: [MsgKind: Int] = [
@@ -94,40 +88,12 @@ public struct MIDIParser {
         .songSelect: 1
     ]
 
-    static private let msgNames: [MsgKind: String] = [
-        .noteOff: "noteOff",
-        .noteOn: "noteOn",
-        .polyphonicKeyPressure: "polyphonicKeyPressure",
-        .controlChange: "controlChange",
-        .programChange: "programChange",
-        .channelPressure: "channelPressure",
-        .pitchBendChange: "pitchBendChange",
-        .systemExclusive: "systemExclusive",
-        .midiTimeCode: "midiTimeCode",
-        .songPosition: "songPosition",
-        .songSelect: "songSelect",
-        .tuneRequest: "tuneRequest",
-        .endSystemExclusive: "endSystemExclusive",
-        .timingClock: "timingClock",
-        .sequenceStart: "sequenceStart",
-        .sequenceContinue: "sequenceContinue",
-        .sequenceStop: "sequenceStop",
-        .activeSensing: "activeSensing",
-        .reset: "reset"
-    ]
-
-    static private func msgPayloadSize(for kind: MsgKind) -> Int { msgSizes[kind] ?? 0 }
-
     private struct Generator: Sequence, IteratorProtocol {
-        typealias Element = MIDIMsg
-
         private let log = Logging.logger("MIDIParser.Pos")
-
         private var ptr: UnsafeRawBufferPointer
-        public let count: Int
+        private let count: Int
         private var index: Int = 0
         private let channel: Int
-
         private var available: Int { Swift.max(count - index, 0) }
 
         var messages: [MIDIMsg] { [MIDIMsg](self) }
@@ -146,10 +112,10 @@ public struct MIDIParser {
         }
 
         mutating private func parseMIDIMsg() -> MIDIMsg? {
-            let status = pop()
+            let status = ptr[index]
+            consume(1)
             guard let command = MsgKind(status) else { return nil }
-            let needed = msgPayloadSize(for: command)
-
+            let needed = msgSizes[command] ?? 0
             if needed > available {
                 consume(available)
                 return nil
@@ -171,12 +137,6 @@ public struct MIDIParser {
             default: break
             }
             return nil
-        }
-
-        mutating private func pop() -> UInt8 {
-            precondition(index < count)
-            defer { consume(1) }
-            return ptr[index]
         }
 
         mutating private func consume(_ amount: Int) { index += Swift.min(amount, available) }

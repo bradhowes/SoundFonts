@@ -16,6 +16,11 @@ I have also curated a small collection of SoundFont files that I found useful an
 SoundFonts](https://keystrokecountdown.com/extras/SoundFonts/index.html). If you visit the site from your iOS
 device and touch one of the links, you can add the fire directly to the SoundFonts application.
 
+Here are some additional sites that have curated or custom SF2 files that should work with the application:
+
+* [Soundfonts 4u](https://sites.google.com/site/soundfonts4u/)
+* [Les Productions Zvon](https://lesproductionszvon.com/freesounds.htm)
+
 ## AUv3 App Extension
 
 Starting with v2.0, the application now contains an AUv3 app extension that can be loaded by other music
