@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TableViewDataSource Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/TableViewDataSource" class="dashAnchor"></a>
+    <a title="TableViewDataSource Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">SoundFontsFramework 2.3.8 Docs</a> (45% documented)</p>
+        <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">SoundFontsFramework Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        TableViewDataSource Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AlertManager.html">AlertManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AppState.html">AppState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AskForReview.html">AskForReview</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/BackgroundManagedObjectContext.html">BackgroundManagedObjectContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Bookmark.html">Bookmark</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Bookmark/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Bookmark/CloudState.html">– CloudState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CachedValueTypedNotification.html">CachedValueTypedNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CodePointInfo.html">CodePointInfo</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Components.html">Components</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/CoreDataStack.html">CoreDataStack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Favorite.html">Favorite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteCell.html">FavoriteCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteEditor.html">FavoriteEditor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteEditor/Config.html">– Config</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoriteMover.html">FavoriteMover</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesConfigFile.html">FavoritesConfigFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesViewController.html">FavoritesViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FileMonitor.html">FileMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontEditor.html">FontEditor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontEditor/Config.html">– Config</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/FontsTableViewManager.html">FontsTableViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GuideViewController.html">GuideViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InfoBarController.html">InfoBarController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/InfoBarController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Key.html">Key</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardController.html">KeyboardController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/KeyboardRender.html">KeyboardRender</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacyFavorite.html">LegacyFavorite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacyFavoriteCollection.html">LegacyFavoriteCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacyFavoritesManager.html">LegacyFavoritesManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacyPatch.html">LegacyPatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacySoundFont.html">LegacySoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacySoundFontCollection.html">LegacySoundFontCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/LegacySoundFontsManager.html">LegacySoundFontsManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NoteInjector.html">NoteInjector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/NotificationObserver.html">NotificationObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PatchesTableViewManager.html">PatchesTableViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PersistentContainer.html">PersistentContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Preset.html">Preset</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/PresetChangeManager.html">PresetChangeManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler.html">Sampler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Sampler/Mode.html">– Mode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SelectedSoundFontManager.html">SelectedSoundFontManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKey.html">SettingKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKey/DefaultValue.html">– DefaultValue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingKeys.html">SettingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SettingsViewController.html">SettingsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFont.html">SoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFont/Kind.html">– Kind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontCoreData.html">SoundFontCoreData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsConfigFile.html">SoundFontsConfigFile</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsControlsController.html">SoundFontsControlsController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsControlsController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsViewController.html">SoundFontsViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SoundFontsViewController/SegueIdentifier.html">– SegueIdentifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SubscriptionManager.html">SubscriptionManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TableCell.html">TableCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TableViewDataSource.html">TableViewDataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedNotification.html">TypedNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ViewSlider.html">ViewSlider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:19SoundFontsFramework8settingsSo14NSUserDefaultsCvp">settings</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ActivePatchEvent.html">ActivePatchEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DecodableDefault.html">DecodableDefault</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DecodableDefault/Wrapper.html">– Wrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/DecodableDefault/Sources.html">– Sources</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoriteEditorDismissedReason.html">FavoriteEditorDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoritesConfigFileError.html">FavoritesConfigFileError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FavoritesEvent.html">FavoritesEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Formatters.html">Formatters</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/KeyLabelOption.html">KeyLabelOption</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/LocalizedStrings.html">LocalizedStrings</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MIDIMsg.html">MIDIMsg</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SamplerEvent.html">SamplerEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SamplerStartFailure.html">SamplerStartFailure</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SelectedSoundFontEvent.html">SelectedSoundFontEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontFileLoadFailure.html">SoundFontFileLoadFailure</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontKind.html">SoundFontKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontKindError.html">SoundFontKindError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontsConfigFileError.html">SoundFontsConfigFileError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SoundFontsEvent.html">SoundFontsEvent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/UpperViewSwipingEvent.html">UpperViewSwipingEvent</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/AudioUnit.html">AudioUnit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bundle.html">Bundle</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Collection.html">Collection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Date.html">Date</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DispatchQueue.html">DispatchQueue</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/DispatchTime.html">DispatchTime</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/FileManager.html">FileManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Float.html">Float</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/FourCharCode.html">FourCharCode</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/KeyedDecodingContainer.html">KeyedDecodingContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSManagedObjectContext.html">NSManagedObjectContext</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/NSPersistentStoreCoordinator.html">NSPersistentStoreCoordinator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification/Name.html">– Name</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/OSStatus.html">OSStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/RandomAccessCollection.html">RandomAccessCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Timer.html">Timer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UICollectionView.html">UICollectionView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIColor.html">UIColor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIContextualAction.html">UIContextualAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIControl.html">UIControl</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIGestureRecognizer.html">UIGestureRecognizer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIImage.html">UIImage</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UISearchBar.html">UISearchBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UITableView.html">UITableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIView.html">UIView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIViewController.html">UIViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UserDefaults.html">UserDefaults</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ComponentContainer.html">ComponentContainer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ControllerConfiguration.html">ControllerConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Favorites.html">Favorites</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:19SoundFontsFramework20FavoritesViewManagerP">FavoritesViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FontEditorActionGenerator.html">FontEditorActionGenerator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/FontEditorDelegate.html">FontEditorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/GuideManager.html">GuideManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/InfoBar.html">InfoBar</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Keyboard.html">Keyboard</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/MIDIController.html">MIDIController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Managed.html">Managed</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/NibLoadableView.html">NibLoadableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PatchesViewManager.html">PatchesViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ReusableView.html">ReusableView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SegueHandler.html">SegueHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingGettable.html">SettingGettable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SettingSettable.html">SettingSettable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SoundFonts.html">SoundFonts</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/SubscriberToken.html">SubscriberToken</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/TableViewDataSourceDelegate.html">TableViewDataSourceDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/UpperViewSwipingActivity.html">UpperViewSwipingActivity</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/AlertConfig.html">AlertConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ContextNotification.html">ContextNotification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/EntityCollection.html">EntityCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/FilteredOrderedCollection.html">FilteredOrderedCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Logging.html">Logging</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MIDIParser.html">MIDIParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Note.html">Note</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SlidingViewManager.html">SlidingViewManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TouchKeyMap.html">TouchKeyMap</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:19SoundFontsFramework19SettingSerializablea">SettingSerializable</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>TableViewDataSource</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TableViewDataSource</span><span class="o">&lt;</span><span class="kt">Delegate</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">UITableViewDataSource</span><span class="p">,</span> <span class="kt">NSFetchedResultsControllerDelegate</span> <span class="k">where</span> <span class="kt">Delegate</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/TableViewDataSourceDelegate.html">TableViewDataSourceDelegate</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>A data source for a UITableView that relies on a NSFetchedResultsController for model values. This design was heavily
+based on code from obj.io Core Data book.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC6Entitya"></a>
+                    <a name="//apple_ref/swift/Alias/Entity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC6Entitya">Entity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Entity</span> <span class="o">=</span> <span class="kt">Delegate</span><span class="o">.</span><span class="kt">Entity</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC4Cella"></a>
+                    <a name="//apple_ref/swift/Alias/Cell" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC4Cella">Cell</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Cell</span> <span class="o">=</span> <span class="kt">Delegate</span><span class="o">.</span><span class="kt">Cell</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC14selectedObject6EntityQzSgvp"></a>
+                    <a name="//apple_ref/swift/Property/selectedObject" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC14selectedObject6EntityQzSgvp">selectedObject</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain the managed object for the currently selected row</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">selectedObject</span><span class="p">:</span> <span class="kt"><a href="../Classes/TableViewDataSource.html#/s:19SoundFontsFramework19TableViewDataSourceC6Entitya">Entity</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC05tableE014cellIdentifier24fetchedResultsController8delegateACyxGSo07UITableE0C_SSSo09NSFetchedlM0Cy6EntityQzGxtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(tableView:cellIdentifier:fetchedResultsController:delegate:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC05tableE014cellIdentifier24fetchedResultsController8delegateACyxGSo07UITableE0C_SSSo09NSFetchedlM0Cy6EntityQzGxtcfc">init(tableView:<wbr>cellIdentifier:<wbr>fetchedResultsController:<wbr>delegate:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Construct a new instance.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">(</span><span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="nv">cellIdentifier</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+                     <span class="nv">fetchedResultsController</span><span class="p">:</span> <span class="kt">NSFetchedResultsController</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/TableViewDataSource.html#/s:19SoundFontsFramework19TableViewDataSourceC6Entitya">Entity</a></span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt">Delegate</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tableView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the UITableView that will show the rendered model instances</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cellIdentifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the identifier of the UITableViewCell to use for rendering</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fetchedResultsController</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the source of model instances from Core Data</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>delegate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the delegate for rendering and deletion handling</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC5countSivp"></a>
+                    <a name="//apple_ref/swift/Property/count" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC5countSivp">count</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain the number of model instances, or the number of rows in the UITableView.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC6object2at6EntityQz10Foundation9IndexPathV_tF"></a>
+                    <a name="//apple_ref/swift/Method/object(at:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC6object2at6EntityQz10Foundation9IndexPathV_tF">object(at:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain the model instance for a given UITableView row.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">object</span><span class="p">(</span><span class="n">at</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/TableViewDataSource.html#/s:19SoundFontsFramework19TableViewDataSourceC6Entitya">Entity</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the row to fetch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>the found model instance</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC23reconfigureFetchRequestyyySo07NSFetchJ0Cy6EntityQzGXEF"></a>
+                    <a name="//apple_ref/swift/Method/reconfigureFetchRequest(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC23reconfigureFetchRequestyyySo07NSFetchJ0Cy6EntityQzGXEF">reconfigureFetchRequest(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Change an existing Core Data fetch request and execute it.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">reconfigureFetchRequest</span><span class="p">(</span><span class="n">_</span> <span class="nv">configure</span><span class="p">:</span> <span class="p">(</span><span class="kt">NSFetchRequest</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/TableViewDataSource.html#/s:19SoundFontsFramework19TableViewDataSourceC6Entitya">Entity</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>configure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>block to run to edit the request</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/UITableViewDataSource"></a>
+                <a name="//apple_ref/swift/Section/UITableViewDataSource" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/UITableViewDataSource"></a>
+                  <h3 class="section-name"><p>UITableViewDataSource</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_21numberOfRowsInSectionSiSo07UITableE0C_SitF"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:numberOfRowsInSection:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_21numberOfRowsInSectionSiSo07UITableE0C_SitF">tableView(_:<wbr>numberOfRowsInSection:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Query for the number of rows in a table view section.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">numberOfRowsInSection</span> <span class="nv">section</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tableView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the UITableView being asked about</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>section</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the section being asked about</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>row count in the section</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_12cellForRowAtSo07UITableE4CellCSo0mE0C_10Foundation9IndexPathVtF"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:cellForRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_12cellForRowAtSo07UITableE4CellCSo0mE0C_10Foundation9IndexPathVtF">tableView(_:<wbr>cellForRowAt:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a formatted UITableViewCell for a specific row in a table view. The delegate&rsquo;s <code>configure</code> method performs
+the necessary configuration on the cell before it is used.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">cellForRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UITableViewCell</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tableView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the UITableView being worked on</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index of the row being displayed</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>the UITableViewCell to use to display the row</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_12canEditRowAtSbSo07UITableE0C_10Foundation9IndexPathVtF"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:canEditRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_12canEditRowAtSbSo07UITableE0C_10Foundation9IndexPathVtF">tableView(_:<wbr>canEditRowAt:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Query to find out if a row in a table view can be edited.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">canEditRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tableView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the UITableView being worked on</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index of the row being asked about</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>true if so</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_6commit8forRowAtySo07UITableE0C_So0mE16CellEditingStyleV10Foundation9IndexPathVtF"></a>
+                    <a name="//apple_ref/swift/Method/tableView(_:commit:forRowAt:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC05tableE0_6commit8forRowAtySo07UITableE0C_So0mE16CellEditingStyleV10Foundation9IndexPathVtF">tableView(_:<wbr>commit:<wbr>forRowAt:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Perform an edit action on a specific row</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tableView</span><span class="p">(</span><span class="n">_</span> <span class="nv">tableView</span><span class="p">:</span> <span class="kt">UITableView</span><span class="p">,</span> <span class="n">commit</span> <span class="nv">editingStyle</span><span class="p">:</span> <span class="kt">UITableViewCell</span><span class="o">.</span><span class="kt">EditingStyle</span><span class="p">,</span>
+                      <span class="n">forRowAt</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tableView</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the UITableView being worked on</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>editingStyle</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the operation being performed. The only one supported is <code>.delete</code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index of the row being edited</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/NSFetchedResultsControllerDelegate"></a>
+                <a name="//apple_ref/swift/Section/NSFetchedResultsControllerDelegate" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/NSFetchedResultsControllerDelegate"></a>
+                  <h3 class="section-name"><p>NSFetchedResultsControllerDelegate</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC27controllerWillChangeContentyySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pGF"></a>
+                    <a name="//apple_ref/swift/Method/controllerWillChangeContent(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC27controllerWillChangeContentyySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pGF">controllerWillChangeContent(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notification from NSFetchedResultsController that it is is going to make changes that affect the view</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">controllerWillChangeContent</span><span class="p">(</span><span class="n">_</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt">NSFetchedResultsController</span><span class="o">&lt;</span><span class="kt">NSFetchRequestResult</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>controller</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the controller performing the work</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC10controller_9didChange2at3for12newIndexPathySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pG_yp10Foundation0nO0VSgSo0pqJ4TypeVAPtF"></a>
+                    <a name="//apple_ref/swift/Method/controller(_:didChange:at:for:newIndexPath:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC10controller_9didChange2at3for12newIndexPathySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pG_yp10Foundation0nO0VSgSo0pqJ4TypeVAPtF">controller(_:<wbr>didChange:<wbr>at:<wbr>for:<wbr>newIndexPath:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notification from NSFetchedResultsController about a change at a given index.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">controller</span><span class="p">(</span><span class="n">_</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt">NSFetchedResultsController</span><span class="o">&lt;</span><span class="kt">NSFetchRequestResult</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">didChange</span> <span class="nv">anObject</span><span class="p">:</span> <span class="kt">Any</span><span class="p">,</span>
+                       <span class="n">at</span> <span class="nv">indexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">?,</span> <span class="k">for</span> <span class="nv">type</span><span class="p">:</span> <span class="kt">NSFetchedResultsChangeType</span><span class="p">,</span> <span class="nv">newIndexPath</span><span class="p">:</span> <span class="kt">IndexPath</span><span class="p">?)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>controller</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the controller performing the work</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>anObject</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the object being affected</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index of the object being affected</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>type</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the type of change being performed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>newIndexPath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the new index of the object after the operation (optional)</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework19TableViewDataSourceC26controllerDidChangeContentyySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pGF"></a>
+                    <a name="//apple_ref/swift/Method/controllerDidChangeContent(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework19TableViewDataSourceC26controllerDidChangeContentyySo26NSFetchedResultsControllerCySo20NSFetchRequestResult_pGF">controllerDidChangeContent(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Notification from NSFetchedResultsController that all changes are done. Notify the delegate that the view was
+changed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">controllerDidChangeContent</span><span class="p">(</span><span class="n">_</span> <span class="nv">controller</span><span class="p">:</span> <span class="kt">NSFetchedResultsController</span><span class="o">&lt;</span><span class="kt">NSFetchRequestResult</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>controller</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the controller that performed the work</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2020-11-11)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
