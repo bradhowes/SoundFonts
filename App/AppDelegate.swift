@@ -19,8 +19,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         components.setMainViewController(mainViewController)
     }
 
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
@@ -52,6 +51,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         os_log(.info, log: log, "applicationDidBecomeActive")
+        UIApplication.shared.isIdleTimerDisabled = true
         components.mainViewController.startAudio()
     }
 
