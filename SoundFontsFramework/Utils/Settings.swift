@@ -26,6 +26,8 @@ public extension SettingKeys {
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
+    static let reverbPreset = SettingKey("reverbPreset", defaultValue: -1) // no reverb
+    static let reverbMix = SettingKey("reverbMix", defaultValue: Float(0.20))
 }
 
 /// KVO properties based on the above key definitions.
@@ -90,5 +92,13 @@ public extension UserDefaults {
     @objc dynamic var midiChannel: Int {
         get { self[.midiChannel] }
         set { self[.midiChannel] = newValue }
+    }
+    @objc dynamic var reverbPreset: Int {
+        get { self[.reverbPreset] }
+        set { self[.reverbPreset] = newValue }
+    }
+    @objc dynamic var reverbMix: Float {
+        get { self[.reverbMix] }
+        set { self[.reverbMix] = newValue }
     }
 }
