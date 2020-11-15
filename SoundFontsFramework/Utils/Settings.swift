@@ -27,7 +27,8 @@ public extension SettingKeys {
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
     static let reverbPreset = SettingKey("reverbPreset", defaultValue: -1) // no reverb
-    static let reverbMix = SettingKey("reverbMix", defaultValue: Float(0.20))
+    static let reverbMix = SettingKey("reverbMix", defaultValue: Float(20.0))
+    static let showEffects = SettingKey("showEffects", defaultValue: false)
 }
 
 /// KVO properties based on the above key definitions.
@@ -100,5 +101,9 @@ public extension UserDefaults {
     @objc dynamic var reverbMix: Float {
         get { self[.reverbMix] }
         set { self[.reverbMix] = newValue }
+    }
+    @objc dynamic var showEffects: Bool {
+        get { self[.showEffects] }
+        set { self[.showEffects] = newValue }
     }
 }
