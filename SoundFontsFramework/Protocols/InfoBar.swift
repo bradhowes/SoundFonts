@@ -14,6 +14,7 @@ public enum InfoBarEvent {
     case showGuide
     case showSettings
     case editVisibility
+    case showEffects
 }
 
 /**

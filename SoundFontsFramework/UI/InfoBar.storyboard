@@ -18,9 +18,8 @@
         <scene sceneID="62U-h3-DvH">
             <objects>
                 <viewController storyboardIdentifier="InfoBarController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="YeB-KN-4f1" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="utY-mU-BUQ" userLabel="InfoBar">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utY-mU-BUQ" userLabel="InfoBar">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ub1-7q-fxl" userLabel="Add">
                                 <rect key="frame" x="12" y="7.5" width="25" height="25"/>
@@ -166,7 +165,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="eP8-kW-JPv"/>
+                        <viewLayoutGuide key="safeArea" id="Ggm-BG-IW3"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
                         <constraints>

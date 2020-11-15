@@ -8,18 +8,20 @@ import os
 public final class Reverb {
     private lazy var log = Logging.logger("Reverb")
 
-    public let reverb: AVAudioUnitReverb
+    public let audioUnit: AVAudioUnitReverb
     private var observers = [NSKeyValueObservation]()
 
     public init() {
-        self.reverb = AVAudioUnitReverb()
+        self.audioUnit = AVAudioUnitReverb()
         observers.append(settings.observe(\.reverbPreset, options: .new) { _, change in
             guard let newValue = change.newValue else { return }
+            os_log(.info, log: self.log, "reverb preset: %d", newValue)
             self.updatePreset(newValue: newValue)
         })
 
         observers.append(settings.observe(\.reverbMix, options: .new) { _, change in
             guard let newValue = change.newValue else { return }
+            os_log(.info, log: self.log, "reverb wetDry: %f", newValue)
             self.updateWetDryMix(newValue: newValue)
         })
     }
@@ -28,17 +30,11 @@ public final class Reverb {
 extension Reverb {
 
     private func updatePreset(newValue: Int) {
-        if newValue == -1 {
-            reverb.bypass = true
-            return
-        }
-
         guard let preset = AVAudioUnitReverbPreset(rawValue: newValue) else { fatalError("invalid preseet enum value - \(newValue)") }
-        reverb.bypass = true
-        reverb.loadFactoryPreset(preset)
+        audioUnit.loadFactoryPreset(preset)
     }
 
     private func updateWetDryMix(newValue: Float) {
-        reverb.wetDryMix = newValue
+        audioUnit.wetDryMix = newValue
     }
 }
