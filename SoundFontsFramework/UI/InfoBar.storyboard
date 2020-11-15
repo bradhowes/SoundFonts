@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -94,10 +94,10 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
-                                <rect key="frame" x="238" y="0.0" width="139" height="40"/>
+                                <rect key="frame" x="197" y="0.0" width="180" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnb-O4-iay" userLabel="Help">
-                                        <rect key="frame" x="98" y="7.5" width="25" height="25"/>
+                                        <rect key="frame" x="139" y="7.5" width="25" height="25"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="Help"/>
                                         <connections>
@@ -105,7 +105,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7YL-wn-sth" userLabel="Settings">
-                                        <rect key="frame" x="57" y="7.5" width="25" height="25"/>
+                                        <rect key="frame" x="98" y="7.5" width="25" height="25"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="Settings"/>
                                         <connections>
@@ -116,19 +116,29 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWy-3z-Rka" userLabel="Visibility">
-                                        <rect key="frame" x="16" y="7.5" width="25" height="25"/>
+                                        <rect key="frame" x="57" y="7.5" width="25" height="25"/>
                                         <color key="tintColor" systemColor="systemTealColor"/>
                                         <state key="normal" image="EditVisibility"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyJ-h2-UbA" userLabel="Effects">
+                                        <rect key="frame" x="16" y="7.5" width="25" height="25"/>
+                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                        <state key="normal" image="Effects"/>
+                                        <connections>
+                                            <action selector="toggleShowEffects:" destination="YeB-KN-4f1" eventType="touchUpInside" id="dBb-Sq-cB5"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="7YL-wn-sth" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="5oD-kV-kUJ"/>
-                                    <constraint firstItem="oWy-3z-Rka" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="leading" constant="16" id="Jmq-ly-4TX"/>
+                                    <constraint firstItem="nyJ-h2-UbA" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="863-KO-nNs"/>
+                                    <constraint firstItem="nyJ-h2-UbA" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="leading" constant="16" id="Ofi-wi-Gmh"/>
                                     <constraint firstItem="dnb-O4-iay" firstAttribute="leading" secondItem="7YL-wn-sth" secondAttribute="trailing" constant="16" id="URi-Sd-Wde"/>
                                     <constraint firstItem="dnb-O4-iay" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="VKH-HH-mv4"/>
                                     <constraint firstAttribute="trailing" secondItem="dnb-O4-iay" secondAttribute="trailing" constant="16" id="cd3-Xl-ZBO"/>
                                     <constraint firstItem="oWy-3z-Rka" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="gPV-2p-AZq"/>
+                                    <constraint firstItem="oWy-3z-Rka" firstAttribute="leading" secondItem="nyJ-h2-UbA" secondAttribute="trailing" constant="16" id="k03-Ve-eJZ"/>
                                     <constraint firstItem="7YL-wn-sth" firstAttribute="leading" secondItem="oWy-3z-Rka" secondAttribute="trailing" constant="16" id="ny2-Ig-8Xl"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -201,6 +211,7 @@
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
                         <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
                         <outlet property="patchInfo" destination="L4b-eK-8gI" id="U3A-VC-iWO"/>
+                        <outlet property="showEffects" destination="nyJ-h2-UbA" id="d4q-Bs-2oZ"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
                         <outlet property="showMoreButtons" destination="D81-HT-18k" id="KgO-eA-LzF"/>
                         <outlet property="showSettings" destination="7YL-wn-sth" id="aT3-P4-LH3"/>
@@ -225,6 +236,7 @@
     <resources>
         <image name="Add" width="25" height="25"/>
         <image name="EditVisibility" width="25" height="25"/>
+        <image name="Effects" width="25" height="25"/>
         <image name="Help" width="25" height="25"/>
         <image name="More" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>

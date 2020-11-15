@@ -81,6 +81,7 @@
 		BD125B40241010810003DE99 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3A24100C940003DE99 /* Key.swift */; };
 		BD125B41241010840003DE99 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3B24100C940003DE99 /* KeyboardController.swift */; };
 		BD125B42241010880003DE99 /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3C24100C940003DE99 /* KeyboardRender.swift */; };
+		BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0025613E2C00D1CDF6 /* Reverb.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B923FE625500AE9F3D /* GuideManager.swift */; };
@@ -246,6 +247,7 @@
 		BD125B3B24100C940003DE99 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BD125B3C24100C940003DE99 /* KeyboardRender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardRender.swift; sourceTree = "<group>"; };
 		BD125B3E241010430003DE99 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		BD130B0025613E2C00D1CDF6 /* Reverb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reverb.swift; sourceTree = "<group>"; };
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11B923FE625500AE9F3D /* GuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideManager.swift; sourceTree = "<group>"; };
@@ -423,6 +425,7 @@
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
+				BD130B0025613E2C00D1CDF6 /* Reverb.swift */,
 				BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
@@ -864,6 +867,7 @@
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
 				BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,
+				BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */,
 				BD9782022506A22E00CEFB59 /* SoundFontsConfigFile.swift in Sources */,
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
