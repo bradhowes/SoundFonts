@@ -16,6 +16,9 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
 
+    @IBOutlet weak var blankBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var effectsHeightConstraint: NSLayoutConstraint!
+
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!
 
@@ -26,6 +29,8 @@ public final class SoundFontsControlsController: UIViewController {
             if CommandLine.arguments.contains("--screenshots") { return false }
             return settings.showingFavorites
         }()
+
+        blankBottomConstraint.constant = 0
 
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
@@ -55,6 +60,8 @@ extension SoundFontsControlsController: ControllerConfiguration {
         favoritesViewManager.addEventClosure(.swipeLeft, self.showNextConfigurationView)
         favoritesViewManager.addEventClosure(.swipeRight, self.showPreviousConfigurationView)
         router.infoBar.addEventClosure(.doubleTap, self.toggleConfigurationViews)
+
+        router.infoBar.addEventClosure(.showEffects, self.toggleShowEffects)
     }
 
     private func toggleConfigurationViews(_ action: AnyObject) {
@@ -65,6 +72,14 @@ extension SoundFontsControlsController: ControllerConfiguration {
             showPreviousConfigurationView(action)
         }
         AskForReview.maybe()
+    }
+
+    private func toggleShowEffects(_ action: AnyObject) {
+        let newValue: CGFloat = blankBottomConstraint.constant == 0.0 ? effectsHeightConstraint.constant : 0.0
+        let curve: UIView.AnimationOptions = newValue != 0.0 ? .curveEaseIn : .curveEaseOut
+        self.blankBottomConstraint.constant = newValue
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, curve],
+                                                       animations: { self.view.layoutIfNeeded() })
     }
 
     /**
@@ -97,6 +112,6 @@ extension SoundFontsControlsController: SegueHandler {
         case favorites
         case soundFontPatches
         case infoBar
-        case envelope
+        case effects
     }
 }

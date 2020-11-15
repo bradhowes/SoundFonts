@@ -85,6 +85,7 @@ extension InfoBarController {
     }
 
     @IBAction private func toggleShowEffects(_ sender: UIButton) {
+        animateMoreButtons()
         settings.showEffects = !settings.showEffects
     }
 }
@@ -127,6 +128,7 @@ extension InfoBarController: InfoBar {
         case .showGuide: showGuide.addClosure(closure)
         case .showSettings: showSettings.addClosure(closure)
         case .editVisibility: editVisibility.addClosure(closure)
+        case .showEffects: showEffects.addClosure(closure)
         }
     }
 

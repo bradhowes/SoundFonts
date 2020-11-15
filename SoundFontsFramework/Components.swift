@@ -27,6 +27,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
+    private var effectsController: EffectsController! { didSet { oneTimeSet(oldValue) } }
 
     public var infoBar: InfoBar { infoBarController }
     public var keyboard: Keyboard? { keyboardController }
@@ -62,6 +63,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     public func setMainViewController(_ mvc: T) {
         mainViewController = mvc
         _alertManager = AlertManager(presenter: mvc)
@@ -75,6 +77,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
                     case let vc as SoundFontsViewController: soundFontsController = vc
                     case let vc as FavoritesViewController: favoritesController = vc
                     case let vc as InfoBarController: infoBarController = vc
+                    case let vc as EffectsController: effectsController = vc
                     default: assertionFailure("unknown child UIViewController")
                     }
                 }
@@ -97,6 +100,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         keyboardController?.establishConnections(self)
         guideController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
+        effectsController.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }
@@ -110,6 +114,7 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
+        precondition(effectsController != nil, "nil InfoBarController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {
