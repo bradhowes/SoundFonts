@@ -34,6 +34,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     private let activePatchManager: ActivePatchManager
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
+    private var reverb: AVAudioUnitReverb?
     private var auSampler: AVAudioUnitSampler?
     private var loaded: Bool = false
 
@@ -96,7 +97,22 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
-            engine.connect(sampler, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: sampler.outputFormat(forBus: 0))
+
+            let reverb = AVAudioUnitReverb()
+            self.reverb = reverb
+
+            if let preset = AVAudioUnitReverbPreset(rawValue: settings.reverbPreset) {
+                reverb.wetDryMix = settings.reverbMix
+                reverb.loadFactoryPreset(preset)
+            }
+            else {
+                reverb.wetDryMix = 0.0
+                reverb.loadFactoryPreset(.smallRoom)
+            }
+
+            engine.attach(reverb)
+            engine.connect(reverb, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: reverb.outputFormat(forBus: 0))
+            engine.connect(sampler, to: reverb, fromBus: 0, toBus: 0, format: sampler.outputFormat(forBus: 0))
             do {
                 os_log(.debug, log: log, "starting engine")
                 try engine.start()
