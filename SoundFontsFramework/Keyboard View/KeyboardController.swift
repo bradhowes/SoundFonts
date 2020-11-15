@@ -68,7 +68,7 @@ extension KeyboardController {
         firstMidiNoteValue = lowestKeyNote
         offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
 
-        midiChannelObservation = settings.observe(\.midiChannel, options: [.new]) { _, change in
+        midiChannelObservation = settings.observe(\.midiChannel, options: .new) { _, change in
             guard let newValue = change.newValue else { return }
             self.releaseAllKeys()
             self.channel = newValue

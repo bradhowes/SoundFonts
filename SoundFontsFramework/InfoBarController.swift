@@ -20,6 +20,7 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var showSettings: UIButton!
     @IBOutlet private weak var editVisibility: UIButton!
     @IBOutlet private weak var slidingKeyboard: UIButton!
+    @IBOutlet private weak var showEffects: UIButton!
 
     @IBOutlet private weak var showMoreButtons: UIButton!
     @IBOutlet private weak var moreButtons: UIView!
@@ -31,7 +32,8 @@ public final class InfoBarController: UIViewController {
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
     private var isMainApp: Bool!
-    private var slideKeyboardObserver: NSKeyValueObservation?
+
+    private var observers = [NSKeyValueObservation]()
 
     private var lowestKeyValue = ""
     private var highestKeyValue = ""
@@ -55,9 +57,11 @@ public final class InfoBarController: UIViewController {
             moreButtonsXConstraint.constant = -moreButtons.frame.width
         }
 
-        slideKeyboardObserver = settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() }
+        observers.append(settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() })
+        observers.append(settings.observe(\.showEffects, options: [.new]) { _, _ in self.updateShowEffectsState() })
 
         updateSlidingKeyboardState()
+        updateShowEffectsState()
     }
 }
 
@@ -77,7 +81,11 @@ extension InfoBarController {
     }
 
     @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
-        settings[.slideKeyboard] = !settings[.slideKeyboard]
+        settings.slideKeyboard = !settings.slideKeyboard
+    }
+
+    @IBAction private func toggleShowEffects(_ sender: UIButton) {
+        settings.showEffects = !settings.showEffects
     }
 }
 
@@ -330,6 +338,10 @@ extension InfoBarController {
     }
 
     private func updateSlidingKeyboardState() {
-        slidingKeyboard.setTitleColor(settings[.slideKeyboard] ? .systemTeal : .darkGray, for: .normal)
+        slidingKeyboard.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+    }
+
+    private func updateShowEffectsState() {
+        showEffects.tintColor = settings.showEffects ? .systemYellow : .systemTeal
     }
 }
