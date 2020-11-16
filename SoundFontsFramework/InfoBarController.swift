@@ -58,10 +58,7 @@ public final class InfoBarController: UIViewController {
         }
 
         observers.append(settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() })
-        observers.append(settings.observe(\.showEffects, options: [.new]) { _, _ in self.updateShowEffectsState() })
-
         updateSlidingKeyboardState()
-        updateShowEffectsState()
     }
 }
 
@@ -98,6 +95,9 @@ extension InfoBarController: ControllerConfiguration {
         isMainApp = router.isMainApp
         router.favorites.subscribe(self, notifier: favoritesChange)
         useActivePatchKind(activePatchManager.active)
+
+        showEffects.isEnabled = router.isMainApp
+        showEffects.isHidden = !router.isMainApp
     }
 }
 
@@ -340,9 +340,5 @@ extension InfoBarController {
 
     private func updateSlidingKeyboardState() {
         slidingKeyboard.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
-    }
-
-    private func updateShowEffectsState() {
-        // showEffects.tintColor = settings.showEffects ? .systemYellow : .systemTeal
     }
 }

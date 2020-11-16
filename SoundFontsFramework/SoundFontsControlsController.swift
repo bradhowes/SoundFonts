@@ -31,8 +31,6 @@ public final class SoundFontsControlsController: UIViewController {
             return settings.showingFavorites
         }()
 
-        blankBottomConstraint.constant = settings.showEffects ? effectsHeightConstraint.constant : 0.0
-
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
         upperViewManager = SlidingViewManager(active: showingFavorites ? 1: 0)
@@ -63,6 +61,12 @@ extension SoundFontsControlsController: ControllerConfiguration {
         router.infoBar.addEventClosure(.doubleTap, self.toggleConfigurationViews)
 
         router.infoBar.addEventClosure(.showEffects, self.toggleShowEffects)
+
+        if router.isMainApp && settings.showEffects {
+            let effectsViewHeight = effectsHeightConstraint.constant
+            self.blankBottomConstraint.constant = effectsViewHeight
+            self.effectsBottomConstraint.constant = 0.0
+        }
     }
 
     private func toggleConfigurationViews(_ action: AnyObject) {
