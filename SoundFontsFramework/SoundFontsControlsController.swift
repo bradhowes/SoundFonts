@@ -16,8 +16,9 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
 
-    @IBOutlet weak var blankBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var effectsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var blankBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var effectsBottomConstraint: NSLayoutConstraint!
 
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!
@@ -75,9 +76,10 @@ extension SoundFontsControlsController: ControllerConfiguration {
     }
 
     private func toggleShowEffects(_ action: AnyObject) {
-        let newValue: CGFloat = settings.showEffects ? effectsHeightConstraint.constant : 0.0
-        self.blankBottomConstraint.constant = newValue
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0.0, options: [.allowUserInteraction, .curveLinear],
+        let effectsViewHeight = effectsHeightConstraint.constant
+        self.blankBottomConstraint.constant = settings.showEffects ? effectsViewHeight : 0.0
+        self.effectsBottomConstraint.constant = settings.showEffects ? 0.0 : effectsViewHeight
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn],
                                                        animations: { self.view.layoutIfNeeded() })
     }
 

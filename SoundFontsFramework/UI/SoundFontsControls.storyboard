@@ -23,7 +23,7 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV0-Rc-kUn" userLabel="Effects">
-                                <rect key="frame" x="0.0" y="702" width="414" height="120"/>
+                                <rect key="frame" x="0.0" y="822" width="414" height="120"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="720-5y-i6l"/>
                                 </constraints>
@@ -32,20 +32,20 @@
                                 </connections>
                             </containerView>
                             <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="Blank" translatesAutoresizingMaskIntoConstraints="NO" id="SxE-vE-5J3" userLabel="Blank">
-                                <rect key="frame" x="0.0" y="44" width="414" height="658"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Blank" label="Blank">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
                                 </accessibility>
                             </view>
                             <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" restorationIdentifier="Favorites" translatesAutoresizingMaskIntoConstraints="NO" id="efO-vf-51K" userLabel="Favorites">
-                                <rect key="frame" x="0.0" y="44" width="414" height="658"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <connections>
                                     <segue destination="M8C-1m-Paa" kind="embed" identifier="favorites" id="W26-q2-5GP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Patches" translatesAutoresizingMaskIntoConstraints="NO" id="eeU-Zp-LO7" userLabel="Patches">
-                                <rect key="frame" x="0.0" y="44" width="414" height="658"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <connections>
                                     <segue destination="Y2X-0f-Kke" kind="embed" identifier="soundFontPatches" id="u7z-Un-LBl"/>
                                 </connections>
@@ -71,7 +71,7 @@
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="Fnr-o4-GdT"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="GSJ-Ba-E29"/>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="Qy1-mH-hvm"/>
-                            <constraint firstItem="BVo-bg-jdk" firstAttribute="top" secondItem="wV0-Rc-kUn" secondAttribute="bottom" id="RjO-VY-hDV"/>
+                            <constraint firstItem="wV0-Rc-kUn" firstAttribute="bottom" secondItem="BVo-bg-jdk" secondAttribute="top" constant="120" id="RjO-VY-hDV"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="VW9-Ox-ga8"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="WNP-Bx-Ogq"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="Zap-st-ZP1"/>
@@ -79,7 +79,7 @@
                             <constraint firstItem="efO-vf-51K" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="aeH-bf-1ly"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="bWe-Nf-T69"/>
                             <constraint firstItem="SxE-vE-5J3" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="ea6-lm-KE2"/>
-                            <constraint firstItem="BVo-bg-jdk" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" constant="120" id="i38-O5-0gh"/>
+                            <constraint firstItem="BVo-bg-jdk" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="i38-O5-0gh"/>
                             <constraint firstItem="wV0-Rc-kUn" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="j46-JU-xSw"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="j4d-dQ-03K"/>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="n6a-ob-eHj"/>
@@ -93,6 +93,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="blankBottomConstraint" destination="i38-O5-0gh" id="bRo-Lt-TFs"/>
+                        <outlet property="effectsBottomConstraint" destination="RjO-VY-hDV" id="arr-WF-8Yn"/>
                         <outlet property="effectsHeightConstraint" destination="720-5y-i6l" id="wew-sf-fb0"/>
                         <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>
                         <outlet property="patchesView" destination="eeU-Zp-LO7" id="Ttb-SJ-1CI"/>
