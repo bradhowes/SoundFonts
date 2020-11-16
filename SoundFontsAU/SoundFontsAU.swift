@@ -186,10 +186,7 @@ final class SoundFontsAU: AUAudioUnit {
         return [0]
     }
 
-    override public var allParameterValues: Bool {
-        wrapped.allParameterValues
-    }
-
+    override public var allParameterValues: Bool { wrapped.allParameterValues }
     override public var isMusicDeviceOrEffect: Bool { true }
 
     override public var virtualMIDICableCount: Int {
