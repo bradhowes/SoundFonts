@@ -85,7 +85,6 @@ extension InfoBarController {
     }
 
     @IBAction private func toggleShowEffects(_ sender: UIButton) {
-        animateMoreButtons()
         settings.showEffects = !settings.showEffects
     }
 }
@@ -209,7 +208,7 @@ extension InfoBarController {
 
         moreButtons.isHidden = false
         let animator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.4,
+            withDuration: 0.15,
             delay: 0.0,
             options: [],
             animations: {
@@ -344,6 +343,6 @@ extension InfoBarController {
     }
 
     private func updateShowEffectsState() {
-        showEffects.tintColor = settings.showEffects ? .systemYellow : .systemTeal
+        // showEffects.tintColor = settings.showEffects ? .systemYellow : .systemTeal
     }
 }

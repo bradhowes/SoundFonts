@@ -1,34 +1,84 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
+import os
 
-@IBDesignable public class Knob: UIControl {
+/**
+ Custom UIControl that depicts a value as a point on a circle. Changing the value is done by touching on the control and moving up to increase
+ and down to decrease the current value. While touching, moving away from the control in either direction will inrease the resolution of the
+ touch changes, causing the value to change more slowly as vertical distance changes.
+ */
+@IBDesignable public final class Knob: UIControl {
+    static let log = Logging.logger("Knob")
+    private lazy var log = Self.log
+
     @IBInspectable public var minimumValue: Float = 0.0 { didSet { draw() }}
     @IBInspectable public var maximumValue: Float = 1.0 { didSet { draw() }}
     @IBInspectable public var value: Float = 0.0 {
         didSet {
-            value = min(maximumValue, max(minimumValue, value))
+            value = value.clamp(min: minimumValue, max: maximumValue)
             setNeedsLayout()
         }
     }
 
-    @IBInspectable public var baseColor: UIColor = .lightGray { didSet { draw() }}
-    @IBInspectable public var pointerColor: UIColor = .lightGray { didSet { draw() }}
-    @IBInspectable public var progressColor: UIColor = .systemTeal { didSet { draw() }}
-    @IBInspectable public var baseLineWidth: CGFloat = 2 { didSet { draw() }}
-    @IBInspectable public var progressLineWidth: CGFloat = 2 { didSet { draw() }}
-    @IBInspectable public var pointerLineWidth: CGFloat = 2 { didSet { draw() }}
+    /// How much travel is need to move 4x the min(width, height) to go from minimumValue to maximumValue. By default this is 4x the smallest
+    /// dimension of the frame.
+    @IBInspectable public var scale: Float = 4.0
 
-    public private(set) var baseLayer = CAShapeLayer()
-    public private(set) var progressLayer = CAShapeLayer()
-    public private(set) var pointerLayer = CAShapeLayer()
-    public var startAngle = -CGFloat.pi * 11 / 8.0
-    public var endAngle = CGFloat.pi * 3 / 8.0
+    @IBInspectable public var trackLineWidth: CGFloat = 4 {
+        didSet {
+            trackLayer.lineWidth = trackLineWidth
+            draw()
+        }
+    }
 
-    private var gestureRecognizer: UIPanGestureRecognizer!
+    @IBInspectable public var trackColor: UIColor = .darkGray {
+        didSet {
+            trackLayer.strokeColor = trackColor.cgColor
+            draw()
+        }
+    }
+
+    @IBInspectable public var progressLineWidth: CGFloat = 2 {
+        didSet {
+            progressLayer.lineWidth = progressLineWidth
+            draw()
+        }
+    }
+
+    @IBInspectable public var progressColor: UIColor = .systemTeal {
+        didSet {
+            progressLayer.strokeColor = progressColor.cgColor
+            draw()
+        }
+    }
+
+    @IBInspectable public var indicatorLineWidth: CGFloat = 2 {
+        didSet {
+            indicatorLayer.lineWidth = indicatorLineWidth
+            draw()
+        }
+    }
+
+    @IBInspectable public var indicatorColor: UIColor = .systemTeal {
+        didSet {
+            indicatorLayer.strokeColor = indicatorColor.cgColor
+            draw()
+        }
+    }
+
+    @IBInspectable public var indicatorLineLength: CGFloat = 0.3 {
+        didSet {
+            draw()
+        }
+    }
+
+    private let trackLayer = CAShapeLayer()
+    private let progressLayer = CAShapeLayer()
+    private let indicatorLayer = CAShapeLayer()
+    private let startAngle = -CGFloat.pi * 2.0 * 11 / 16.0
+    private let endAngle = CGFloat.pi * 2.0 * 3.0 / 16.0
     private var panOrigin: CGPoint = .zero
-
-    // MARK: Init
 
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -40,59 +90,15 @@ import UIKit
         initialize()
     }
 
-    private func initialize() {
-        gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
-        addGestureRecognizer(gestureRecognizer)
-
-        baseLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.fillColor = UIColor.clear.cgColor
-        pointerLayer.fillColor = UIColor.clear.cgColor
-
-        layer.addSublayer(baseLayer)
-        layer.addSublayer(progressLayer)
-        layer.addSublayer(pointerLayer)
-    }
-
     public override func layoutSubviews() {
         super.layoutSubviews()
+        trackLayer.bounds = bounds
+        trackLayer.position = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
+        progressLayer.bounds = trackLayer.bounds
+        progressLayer.position = trackLayer.position
+        indicatorLayer.bounds = trackLayer.bounds
+        indicatorLayer.position = trackLayer.position
         draw()
-    }
-
-    public func draw() {
-        baseLayer.bounds = bounds
-        baseLayer.position = CGPoint(x: bounds.width / 2, y: bounds.height / 2)
-        progressLayer.bounds = baseLayer.bounds
-        progressLayer.position = baseLayer.position
-        pointerLayer.bounds = baseLayer.bounds
-        pointerLayer.position = baseLayer.position
-        baseLayer.lineWidth = baseLineWidth
-        progressLayer.lineWidth = progressLineWidth
-        pointerLayer.lineWidth = pointerLineWidth
-        baseLayer.strokeColor = baseColor.cgColor
-        progressLayer.strokeColor = progressColor.cgColor
-        pointerLayer.strokeColor = pointerColor.cgColor
-
-        let center = CGPoint(x: baseLayer.bounds.width / 2, y: baseLayer.bounds.height / 2)
-        let radius = (min(baseLayer.bounds.width, baseLayer.bounds.height) / 2) - baseLineWidth
-        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-        baseLayer.path = ring.cgPath
-        baseLayer.lineCap = .round
-
-        let pointer = UIBezierPath()
-        pointer.move(to: center)
-        pointer.addLine(to: CGPoint(x: center.x + radius, y: center.y))
-        pointerLayer.path = pointer.cgPath
-        pointerLayer.lineCap = .round
-
-        let angle = CGFloat(angleForValue(value))
-        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: angle, clockwise: true)
-        progressLayer.path = progressRing.cgPath
-        progressLayer.lineCap = .round
-
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        pointerLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
-        CATransaction.commit()
     }
 
     @objc dynamic func handleGesture(_ panner: UIPanGestureRecognizer) {
@@ -101,14 +107,88 @@ import UIKit
         }
         else {
             let point = panner.translation(in: self)
-            let change = Float(point.y - panOrigin.y) / 2.0
-            panOrigin = point
-            self.value -= change
+
+            // Calculate scaling factor to apply to default `scale`. Min value is 1 and it increases logarithmically as X delta grows
+            let scaleT = log10(max(abs(Float(panOrigin.x - point.x)), 1.0)) + 1
+
+            let deltaT = Float(panOrigin.y - point.y) / (Float(min(bounds.height, bounds.width)) * scale * scaleT)
+            defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
+            self.value += deltaT * (maximumValue - minimumValue)
             sendActions(for: .valueChanged)
         }
     }
+}
 
-    public func angleForValue(_ value: Float) -> CGFloat {
+extension Knob {
+
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.count == 1 else { return }
+        guard let touch = touches.first else { return }
+        panOrigin = touch.location(in: self)
+    }
+
+    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard touches.count == 1 else { return }
+        guard let touch = touches.first else { return }
+        let point = touch.location(in: self)
+        let scaleT = log10(max(abs(Float(panOrigin.x - point.x)), 1.0)) + 1
+        let deltaT = Float(panOrigin.y - point.y) / (Float(min(bounds.height, bounds.width)) * scale * scaleT)
+        defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
+        self.value += deltaT * (maximumValue - minimumValue)
+        sendActions(for: .valueChanged)
+    }
+
+    override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {}
+    override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {}
+}
+
+extension Knob {
+
+    private func initialize() {
+        trackLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.fillColor = UIColor.clear.cgColor
+        indicatorLayer.fillColor = UIColor.clear.cgColor
+
+        layer.addSublayer(trackLayer)
+        layer.addSublayer(progressLayer)
+        layer.addSublayer(indicatorLayer)
+
+        trackLayer.lineWidth = trackLineWidth
+        trackLayer.strokeColor = trackColor.cgColor
+
+        progressLayer.lineWidth = progressLineWidth
+        progressLayer.strokeColor = progressColor.cgColor
+
+        indicatorLayer.lineWidth = indicatorLineWidth
+        indicatorLayer.strokeColor = indicatorColor.cgColor
+
+    }
+
+    private func draw() {
+        let center = CGPoint(x: trackLayer.bounds.width / 2, y: trackLayer.bounds.height / 2)
+        let radius = (min(trackLayer.bounds.width, trackLayer.bounds.height) / 2) - trackLineWidth
+        let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        trackLayer.path = ring.cgPath
+        trackLayer.lineCap = .round
+
+        let pointer = UIBezierPath()
+        pointer.move(to: CGPoint(x: center.x + radius, y: center.y))
+        pointer.addLine(to: CGPoint(x: center.x + radius * (1.0 - indicatorLineLength), y: center.y))
+        indicatorLayer.path = pointer.cgPath
+        indicatorLayer.lineCap = .round
+
+        let angle = CGFloat(angleForValue(value))
+        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: angle, clockwise: true)
+        progressLayer.path = progressRing.cgPath
+        progressLayer.lineCap = .round
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        indicatorLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
+        CATransaction.commit()
+    }
+
+    private func angleForValue(_ value: Float) -> CGFloat {
         let angleRange = endAngle - startAngle
         let valueRange = CGFloat(maximumValue - minimumValue)
         return CGFloat(self.value - minimumValue) / valueRange * angleRange + startAngle

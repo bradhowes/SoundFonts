@@ -26,8 +26,17 @@ public extension SettingKeys {
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
-    static let reverbPreset = SettingKey("reverbPreset", defaultValue: -1) // no reverb
-    static let reverbMix = SettingKey("reverbMix", defaultValue: Float(20.0))
+
+    static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
+    static let reverbPreset = SettingKey("reverbPreset", defaultValue: 0)
+    static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(20.0))
+
+    static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
+    static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(20.0))
+    static let delayTime = SettingKey("delayTime", defaultValue: Float(20.0))
+    static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(20.0))
+    static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(20.0))
+
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 }
 
@@ -94,16 +103,40 @@ public extension UserDefaults {
         get { self[.midiChannel] }
         set { self[.midiChannel] = newValue }
     }
+    @objc dynamic var reverbEnabled: Bool {
+        get { self[.reverbEnabled] }
+        set { self[.reverbEnabled] = newValue }
+    }
     @objc dynamic var reverbPreset: Int {
         get { self[.reverbPreset] }
         set { self[.reverbPreset] = newValue }
     }
-    @objc dynamic var reverbMix: Float {
-        get { self[.reverbMix] }
-        set { self[.reverbMix] = newValue }
+    @objc dynamic var reverbWetDryMix: Float {
+        get { self[.reverbWetDryMix] }
+        set { self[.reverbWetDryMix] = newValue }
     }
     @objc dynamic var showEffects: Bool {
         get { self[.showEffects] }
         set { self[.showEffects] = newValue }
+    }
+    @objc dynamic var delayEnabled: Bool {
+        get { self[.delayEnabled] }
+        set { self[.delayEnabled] = newValue }
+    }
+    @objc dynamic var delayTime: Float {
+        get { self[.delayTime] }
+        set { self[.delayTime] = newValue }
+    }
+    @objc dynamic var delayFeedback: Float {
+        get { self[.delayFeedback] }
+        set { self[.delayFeedback] = newValue }
+    }
+    @objc dynamic var delayCutoff: Float {
+        get { self[.delayCutoff] }
+        set { self[.delayCutoff] = newValue }
+    }
+    @objc dynamic var delayWetDryMix: Float {
+        get { self[.delayWetDryMix] }
+        set { self[.delayWetDryMix] = newValue }
     }
 }

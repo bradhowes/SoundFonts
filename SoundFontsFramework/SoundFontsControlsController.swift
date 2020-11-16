@@ -30,7 +30,7 @@ public final class SoundFontsControlsController: UIViewController {
             return settings.showingFavorites
         }()
 
-        blankBottomConstraint.constant = 0
+        blankBottomConstraint.constant = settings.showEffects ? effectsHeightConstraint.constant : 0.0
 
         patchesView.isHidden = showingFavorites
         favoritesView.isHidden = !showingFavorites
@@ -75,10 +75,9 @@ extension SoundFontsControlsController: ControllerConfiguration {
     }
 
     private func toggleShowEffects(_ action: AnyObject) {
-        let newValue: CGFloat = blankBottomConstraint.constant == 0.0 ? effectsHeightConstraint.constant : 0.0
-        let curve: UIView.AnimationOptions = newValue != 0.0 ? .curveEaseIn : .curveEaseOut
+        let newValue: CGFloat = settings.showEffects ? effectsHeightConstraint.constant : 0.0
         self.blankBottomConstraint.constant = newValue
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction, curve],
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.15, delay: 0.0, options: [.allowUserInteraction, .curveLinear],
                                                        animations: { self.view.layoutIfNeeded() })
     }
 

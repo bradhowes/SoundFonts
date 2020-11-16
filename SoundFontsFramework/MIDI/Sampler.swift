@@ -97,11 +97,21 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
 
-            let newReverb = Reverb()
-            let reverb = newReverb.audioUnit
+            let reverbEffect = Reverb()
+            let reverb = reverbEffect.audioUnit
             engine.attach(reverb)
-            engine.connect(reverb, to: engine.mainMixerNode, fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: reverb.outputFormat(forBus: 0))
-            engine.connect(sampler, to: reverb, fromBus: 0, toBus: 0, format: sampler.outputFormat(forBus: 0))
+            engine.connect(reverb, to: engine.mainMixerNode, format: nil)
+            // , fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: reverb.outputFormat(forBus: 0))
+
+            let delayEffect = Delay()
+            let delay = delayEffect.audioUnit
+            engine.attach(delay)
+            engine.connect(delay, to: reverb, format: nil)
+            engine.connect(sampler, to: delay, format: nil)
+
+            engine.prepare()
+
+            // , fromBus: 0, toBus: 0, format: sampler.outputFormat(forBus: 0))
             do {
                 os_log(.debug, log: log, "starting engine")
                 try engine.start()
