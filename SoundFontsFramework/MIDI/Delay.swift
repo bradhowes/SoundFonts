@@ -5,6 +5,9 @@ import AVFoundation
 import AudioToolbox
 import os
 
+/**
+ Delay audio effect.
+ */
 public final class Delay {
     private lazy var log = Logging.logger("Delay")
 

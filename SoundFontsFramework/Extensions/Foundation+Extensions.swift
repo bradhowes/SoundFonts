@@ -56,9 +56,25 @@ extension Double {
 }
 
 extension Float {
+
+    /**
+     Restrict a value to be between two others
+
+     - parameter minValue: the lowest acceptable value
+     - parameter maxValue: the highest acceptable value
+     - returns: clamped value
+     */
     public func clamp(min minValue: Self, max maxValue: Self) -> Self { min(max(self, minValue), maxValue) }
 }
 
 extension Double {
+
+    /**
+     Restrict a value to be between two others
+
+     - parameter minValue: the lowest acceptable value
+     - parameter maxValue: the highest acceptable value
+     - returns: clamped value
+     */
     public func clamp(min minValue: Self, max maxValue: Self) -> Self { min(max(self, minValue), maxValue) }
 }
