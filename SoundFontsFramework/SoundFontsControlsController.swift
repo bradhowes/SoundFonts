@@ -79,8 +79,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
         let effectsViewHeight = effectsHeightConstraint.constant
         self.blankBottomConstraint.constant = settings.showEffects ? effectsViewHeight : 0.0
         self.effectsBottomConstraint.constant = settings.showEffects ? 0.0 : effectsViewHeight
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn],
-                                                       animations: { self.view.layoutIfNeeded() })
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn], animations: self.view.layoutIfNeeded)
     }
 
     /**
