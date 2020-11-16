@@ -54,3 +54,11 @@ extension Double {
     public var days: TimeInterval { hours * 24 }
     public var day: TimeInterval { days }
 }
+
+extension Float {
+    public func clamp(min minValue: Self, max maxValue: Self) -> Self { min(max(self, minValue), maxValue) }
+}
+
+extension Double {
+    public func clamp(min minValue: Self, max maxValue: Self) -> Self { min(max(self, minValue), maxValue) }
+}
