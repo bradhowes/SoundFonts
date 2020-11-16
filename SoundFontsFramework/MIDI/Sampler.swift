@@ -101,7 +101,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             let reverb = reverbEffect.audioUnit
             engine.attach(reverb)
             engine.connect(reverb, to: engine.mainMixerNode, format: nil)
-            // , fromBus: 0, toBus: engine.mainMixerNode.nextAvailableInputBus, format: reverb.outputFormat(forBus: 0))
 
             let delayEffect = Delay()
             let delay = delayEffect.audioUnit
@@ -111,7 +110,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
             engine.prepare()
 
-            // , fromBus: 0, toBus: 0, format: sampler.outputFormat(forBus: 0))
             do {
                 os_log(.debug, log: log, "starting engine")
                 try engine.start()
