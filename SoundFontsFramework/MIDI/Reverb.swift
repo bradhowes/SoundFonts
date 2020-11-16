@@ -5,6 +5,9 @@ import AVFoundation
 import AudioToolbox
 import os
 
+/**
+ Reverberation audio effect.
+ */
 public final class Reverb {
     private lazy var log = Logging.logger("Reverb")
 

@@ -44,6 +44,11 @@ public final class AskForReview: NSObject {
     private var countDown = 3
     private var observer: NSObjectProtocol?
 
+    /**
+     Construct new (sole) instance
+
+     - parameter isMain: true if running inside app (vs AUv3 extension)
+     */
     public init(isMain: Bool) {
         super.init()
         os_log(.info, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s", dateSinceFirstLaunch.description,

@@ -100,23 +100,6 @@ import os
         indicatorLayer.position = trackLayer.position
         draw()
     }
-
-    @objc dynamic func handleGesture(_ panner: UIPanGestureRecognizer) {
-        if panner.state == .began {
-            panOrigin = panner.translation(in: self)
-        }
-        else {
-            let point = panner.translation(in: self)
-
-            // Calculate scaling factor to apply to default `scale`. Min value is 1 and it increases logarithmically as X delta grows
-            let scaleT = log10(max(abs(Float(panOrigin.x - point.x)), 1.0)) + 1
-
-            let deltaT = Float(panOrigin.y - point.y) / (Float(min(bounds.height, bounds.width)) * scale * scaleT)
-            defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
-            self.value += deltaT * (maximumValue - minimumValue)
-            sendActions(for: .valueChanged)
-        }
-    }
 }
 
 extension Knob {
