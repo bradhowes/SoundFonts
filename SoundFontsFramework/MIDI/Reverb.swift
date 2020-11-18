@@ -14,6 +14,46 @@ public final class Reverb {
     public let audioUnit: AVAudioUnitReverb
     private var observers = [NSKeyValueObservation]()
 
+    public static let roomNames = [
+        "Room 1", // smallRoom
+        "Room 2", // mediumRoom
+        "Room 3", // largeRoom
+        "Room 4", // largeRoom2
+
+        "Hall 1", // mediumHall
+        "Hall 2", // mediumHall2
+        "Hall 3", // mediumHall3
+        "Hall 4", // largeHall
+        "Hall 5", // largehall2
+
+        "Chamber 1", // mediumChamber
+        "Chamber 2", // largeChamber
+
+        "Cathedral",
+
+        "Plate"  // plate
+    ]
+
+    public static let roomPresets: [AVAudioUnitReverbPreset] = [
+        .smallRoom,
+        .mediumRoom,
+        .largeRoom,
+        .largeRoom2,
+
+        .mediumHall,
+        .mediumHall2,
+        .mediumHall3,
+        .largeHall,
+        .largeHall2,
+
+        .mediumChamber,
+        .largeChamber,
+
+        .cathedral,
+
+        .plate
+    ]
+
     public init() {
         self.audioUnit = AVAudioUnitReverb()
 

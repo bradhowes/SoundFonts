@@ -21,6 +21,14 @@
 		BD50C7B123D479390019EF15 /* SoundFontsFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD50C7B323D4793F0019EF15 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
 		BD50C7B423D4793F0019EF15 /* SoundFontInfoLib.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BD59075F2565CD4C004DE941 /* ReverbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD59075E2565CD4C004DE941 /* ReverbViewController.swift */; };
+		BD5907612565CD4C004DE941 /* ReverbAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5907602565CD4C004DE941 /* ReverbAU.swift */; };
+		BD59076B2565CD4C004DE941 /* ReverbAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD59074A2565CD4C004DE941 /* ReverbAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BD5907772565CDA1004DE941 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
+		BD5907932565CDDC004DE941 /* DelayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5907922565CDDC004DE941 /* DelayViewController.swift */; };
+		BD5907952565CDDC004DE941 /* DelayAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5907942565CDDC004DE941 /* DelayAU.swift */; };
+		BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD59077E2565CDDC004DE941 /* DelayAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BD5907D12565D28A004DE941 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* MainInterface.storyboard */; };
 		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
@@ -38,6 +46,8 @@
 		BDC5D87F24E0763E00D0B840 /* InfoHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */; };
 		BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 		BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
+		BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
+		BDFAC2102565DDD10013844F /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* MainInterface.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +64,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = BD75B25F218B8CFD00C7EBD7;
 			remoteInfo = SoundFonts;
+		};
+		BD5907692565CD4C004DE941 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD5907492565CD4C004DE941;
+			remoteInfo = SoundFontsReverb;
+		};
+		BD59079D2565CDDC004DE941 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD59077D2565CDDC004DE941;
+			remoteInfo = Delay;
 		};
 		BD88BCC12419A9D400399DE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -84,7 +108,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */,
 				BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */,
+				BD59076B2565CD4C004DE941 /* ReverbAU.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -108,6 +134,15 @@
 		BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMonitor.swift; sourceTree = "<group>"; };
 		BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD59074A2565CD4C004DE941 /* ReverbAU.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ReverbAU.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD59075E2565CD4C004DE941 /* ReverbViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverbViewController.swift; sourceTree = "<group>"; };
+		BD5907602565CD4C004DE941 /* ReverbAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReverbAU.swift; path = "Audio Unit/ReverbAU.swift"; sourceTree = "<group>"; };
+		BD5907682565CD4C004DE941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD59077E2565CDDC004DE941 /* DelayAU.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DelayAU.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD5907922565CDDC004DE941 /* DelayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayViewController.swift; sourceTree = "<group>"; };
+		BD5907942565CDDC004DE941 /* DelayAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DelayAU.swift; path = "Audio Unit/DelayAU.swift"; sourceTree = "<group>"; };
+		BD59079C2565CDDC004DE941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD5907D02565D28A004DE941 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
@@ -129,6 +164,7 @@
 		BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHUD.swift; sourceTree = "<group>"; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
+		BDFAC20F2565DDD10013844F /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +181,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD5907472565CD4C004DE941 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD5907772565CDA1004DE941 /* SoundFontsFramework.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD59077B2565CDDC004DE941 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,11 +263,51 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		BD59074B2565CD4C004DE941 /* ReverbAU */ = {
+			isa = PBXGroup;
+			children = (
+				BD5907682565CD4C004DE941 /* Info.plist */,
+				BD5907602565CD4C004DE941 /* ReverbAU.swift */,
+				BD59075E2565CD4C004DE941 /* ReverbViewController.swift */,
+				BD59075D2565CD4C004DE941 /* UI */,
+			);
+			path = ReverbAU;
+			sourceTree = "<group>";
+		};
+		BD59075D2565CD4C004DE941 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BD5907D02565D28A004DE941 /* MainInterface.storyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		BD59077F2565CDDC004DE941 /* DelayAU */ = {
+			isa = PBXGroup;
+			children = (
+				BD59079C2565CDDC004DE941 /* Info.plist */,
+				BD5907942565CDDC004DE941 /* DelayAU.swift */,
+				BD5907922565CDDC004DE941 /* DelayViewController.swift */,
+				BD5907912565CDDC004DE941 /* UI */,
+			);
+			path = DelayAU;
+			sourceTree = "<group>";
+		};
+		BD5907912565CDDC004DE941 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				BDFAC20F2565DDD10013844F /* MainInterface.storyboard */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
 				BD75B262218B8CFD00C7EBD7 /* App */,
 				BD05836323E4C52800E094E0 /* SoundFontsAU */,
+				BD59074B2565CD4C004DE941 /* ReverbAU */,
+				BD59077F2565CDDC004DE941 /* DelayAU */,
 				BD88BCBD2419A9D400399DE5 /* ScreenShots */,
 				BD3CF703241FA77A004A13D1 /* AppTests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
@@ -230,6 +322,8 @@
 				BD05836223E4C52800E094E0 /* SoundFonts.appex */,
 				BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */,
 				BD3CF702241FA779004A13D1 /* AppTests.xctest */,
+				BD59074A2565CD4C004DE941 /* ReverbAU.appex */,
+				BD59077E2565CDDC004DE941 /* DelayAU.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -324,6 +418,40 @@
 			productReference = BD3CF702241FA779004A13D1 /* AppTests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		BD5907492565CD4C004DE941 /* ReverbAU */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD59076E2565CD4C004DE941 /* Build configuration list for PBXNativeTarget "ReverbAU" */;
+			buildPhases = (
+				BD5907462565CD4C004DE941 /* Sources */,
+				BD5907472565CD4C004DE941 /* Frameworks */,
+				BD5907482565CD4C004DE941 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReverbAU;
+			productName = SoundFontsReverb;
+			productReference = BD59074A2565CD4C004DE941 /* ReverbAU.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BD59077D2565CDDC004DE941 /* DelayAU */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD5907A02565CDDC004DE941 /* Build configuration list for PBXNativeTarget "DelayAU" */;
+			buildPhases = (
+				BD59077A2565CDDC004DE941 /* Sources */,
+				BD59077B2565CDDC004DE941 /* Frameworks */,
+				BD59077C2565CDDC004DE941 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DelayAU;
+			productName = Delay;
+			productReference = BD59077E2565CDDC004DE941 /* DelayAU.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		BD75B25F218B8CFD00C7EBD7 /* SoundFontsApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD75B288218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "SoundFontsApp" */;
@@ -339,6 +467,8 @@
 			);
 			dependencies = (
 				BD05837F23E4C52800E094E0 /* PBXTargetDependency */,
+				BD59076A2565CD4C004DE941 /* PBXTargetDependency */,
+				BD59079E2565CDDC004DE941 /* PBXTargetDependency */,
 			);
 			name = SoundFontsApp;
 			productName = SoundFonts;
@@ -369,7 +499,7 @@
 		BD75B258218B8CFD00C7EBD7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1130;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
@@ -380,6 +510,12 @@
 					BD3CF701241FA779004A13D1 = {
 						CreatedOnToolsVersion = 11.3.1;
 						TestTargetID = BD75B25F218B8CFD00C7EBD7;
+					};
+					BD5907492565CD4C004DE941 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					BD59077D2565CDDC004DE941 = {
+						CreatedOnToolsVersion = 12.2;
 					};
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
@@ -414,6 +550,8 @@
 			targets = (
 				BD75B25F218B8CFD00C7EBD7 /* SoundFontsApp */,
 				BD05836123E4C52800E094E0 /* SoundFontsAU */,
+				BD5907492565CD4C004DE941 /* ReverbAU */,
+				BD59077D2565CDDC004DE941 /* DelayAU */,
 				BD88BCBB2419A9D400399DE5 /* ScreenShots */,
 				BD3CF701241FA779004A13D1 /* AppTests */,
 			);
@@ -434,6 +572,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD5907482565CD4C004DE941 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD5907D12565D28A004DE941 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD59077C2565CDDC004DE941 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDFAC2102565DDD10013844F /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +652,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD5907462565CD4C004DE941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD59075F2565CD4C004DE941 /* ReverbViewController.swift in Sources */,
+				BD5907612565CD4C004DE941 /* ReverbAU.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD59077A2565CDDC004DE941 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD5907952565CDDC004DE941 /* DelayAU.swift in Sources */,
+				BD5907932565CDDC004DE941 /* DelayViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BD75B25C218B8CFD00C7EBD7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -533,6 +705,16 @@
 			isa = PBXTargetDependency;
 			target = BD75B25F218B8CFD00C7EBD7 /* SoundFontsApp */;
 			targetProxy = BD3CF707241FA77A004A13D1 /* PBXContainerItemProxy */;
+		};
+		BD59076A2565CD4C004DE941 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD5907492565CD4C004DE941 /* ReverbAU */;
+			targetProxy = BD5907692565CD4C004DE941 /* PBXContainerItemProxy */;
+		};
+		BD59079E2565CDDC004DE941 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD59077D2565CDDC004DE941 /* DelayAU */;
+			targetProxy = BD59079D2565CDDC004DE941 /* PBXContainerItemProxy */;
 		};
 		BD88BCC22419A9D400399DE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -632,6 +814,104 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = SoundFonts;
+			};
+			name = Release;
+		};
+		BD59076C2565CD4C004DE941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20201116082217;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = "$(SRCROOT)/ReverbAU/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.15.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD59076D2565CD4C004DE941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20201116082217;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = "$(SRCROOT)/ReverbAU/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.15.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BD5907A12565CDDC004DE941 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20201116082217;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = "$(SRCROOT)/DelayAU/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.15.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD5907A22565CDDC004DE941 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20201116082217;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				INFOPLIST_FILE = "$(SRCROOT)/DelayAU/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.15.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -866,6 +1146,24 @@
 			buildConfigurations = (
 				BD3CF70A241FA77A004A13D1 /* Debug */,
 				BD3CF70B241FA77A004A13D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD59076E2565CD4C004DE941 /* Build configuration list for PBXNativeTarget "ReverbAU" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD59076C2565CD4C004DE941 /* Debug */,
+				BD59076D2565CD4C004DE941 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD5907A02565CDDC004DE941 /* Build configuration list for PBXNativeTarget "DelayAU" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD5907A12565CDDC004DE941 /* Debug */,
+				BD5907A22565CDDC004DE941 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

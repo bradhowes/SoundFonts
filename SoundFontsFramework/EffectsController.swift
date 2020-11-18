@@ -11,46 +11,6 @@ import os
 public final class EffectsController: UIViewController {
     private let log = Logging.logger("Effects")
 
-    private let roomNames = [
-        "Room 1", // smallRoom
-        "Room 2", // mediumRoom
-        "Room 3", // largeRoom
-        "Room 4", // largeRoom2
-
-        "Hall 1", // mediumHall
-        "Hall 2", // mediumHall2
-        "Hall 3", // mediumHall3
-        "Hall 4", // largeHall
-        "Hall 5", // largehall2
-
-        "Chamber 1", // mediumChamber
-        "Chamber 2", // largeChamber
-
-        "Cathedral",
-
-        "Plate"  // plate
-    ]
-
-    private let roomPresets: [AVAudioUnitReverbPreset] = [
-        .smallRoom,
-        .mediumRoom,
-        .largeRoom,
-        .largeRoom2,
-
-        .mediumHall,
-        .mediumHall2,
-        .mediumHall3,
-        .largeHall,
-        .largeHall2,
-
-        .mediumChamber,
-        .largeChamber,
-
-        .cathedral,
-
-        .plate
-    ]
-
     @IBOutlet weak var reverbEnabledLED: UIView!
     @IBOutlet weak var reverbEnabled: UIButton!
     @IBOutlet weak var reverbControls: UIStackView!
@@ -147,14 +107,14 @@ public final class EffectsController: UIViewController {
 
 extension EffectsController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { roomNames.count }
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { Reverb.roomNames.count }
 }
 
 extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        os_log(.info, log: log, "new reverb room: %d", roomPresets[row].rawValue)
-        settings.reverbPreset = roomPresets[row].rawValue
+        os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
+        settings.reverbPreset = Reverb.roomPresets[row].rawValue
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -165,7 +125,7 @@ extension EffectsController: UIPickerViewDelegate {
             pickerLabel?.textAlignment = .center
         }
 
-        pickerLabel?.attributedText = NSAttributedString(string: roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
+        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
 
         return pickerLabel!
     }

@@ -57,9 +57,6 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Papyrus.ttc</string>
-		<string>Skia.ttc</string>
-		<string>EuroStyle Normal.ttf</string>
 		<string>Eurostile.ttc</string>
 	</array>
 </dict>

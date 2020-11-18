@@ -4,7 +4,7 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
-public class SoundFontsAUViewController: AUViewController {
+public final class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("SFAUVC")
     private let noteInjector = NoteInjector()
     private let components = Components<SoundFontsAUViewController>(inApp: false)
