@@ -60,9 +60,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result value indicating success or failure
      */
-    public func start(auSampler: AVAudioUnitSampler) -> Result<Void, SamplerStartFailure> {
+    public func start() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
         os_log(.info, log: log, "start")
-        self.auSampler = auSampler
+        auSampler = AVAudioUnitSampler()
         presetChangeManager.start()
         return startEngine()
     }
@@ -86,7 +86,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         engine = nil
     }
 
-    private func startEngine() -> Result<Void, SamplerStartFailure> {
+    private func startEngine() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
         guard let sampler = auSampler else { return .failure(.noSampler) }
         let engine = AVAudioEngine()
         self.engine = engine
@@ -128,13 +128,13 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result instance indicating success or failure
      */
-    public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> Result<Void, SamplerStartFailure> {
+    public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
         os_log(.info, log: log, "loadActivePreset - %{public}s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = auSampler else { return .success(()) }
-        guard let soundFont = activePatchManager.soundFont else { return .success(()) }
-        guard let patch = activePatchManager.patch else { return .success(()) }
+        guard let sampler = auSampler else { return .success(.none) }
+        guard let soundFont = activePatchManager.soundFont else { return .success(sampler) }
+        guard let patch = activePatchManager.patch else { return .success(sampler) }
         let favorite = activePatchManager.favorite
 
         presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
@@ -149,7 +149,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             }
         }
 
-        return .success(())
+        return .success(sampler)
     }
 
     /**

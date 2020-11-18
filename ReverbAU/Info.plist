@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Reverb</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>AudioComponents</key>
+			<array>
+				<dict>
+					<key>description</key>
+					<string>SoundFonts Reverb</string>
+					<key>factoryFunction</key>
+					<string>$(PRODUCT_MODULE_NAME).ReverbViewController</string>
+					<key>manufacturer</key>
+					<string>bray</string>
+					<key>name</key>
+					<string>bray: SoundFonts Reverb</string>
+					<key>sandboxSafe</key>
+					<true/>
+					<key>subtype</key>
+					<string>revb</string>
+					<key>tags</key>
+					<array>
+						<string>Effects</string>
+					</array>
+					<key>type</key>
+					<string>aufx</string>
+					<key>version</key>
+					<integer>67072</integer>
+				</dict>
+			</array>
+		</dict>
+		<key>NSExtensionMainStoryboard</key>
+		<string>MainInterface</string>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.AudioUnit-UI</string>
+	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Eurostile.ttc</string>
+	</array>
+</dict>
+</plist>

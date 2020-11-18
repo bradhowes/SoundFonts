@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Effects-->
+        <scene sceneID="GTL-k8-6DV">
+            <objects>
+                <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="ReverbViewController" customModule="ReverbAU" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQU-9E-SkR">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
+                                        <rect key="frame" x="0.0" y="0.0" width="213.5" height="120"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
+                                                <rect key="frame" x="8" y="8" width="197.5" height="104"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zNv-Im-W2c" userLabel="Reverb VStack">
+                                                        <rect key="frame" x="0.0" y="0.0" width="197.5" height="104"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="lv3-Zf-msy" userLabel="TItle">
+                                                                <rect key="frame" x="69" y="0.0" width="60" height="16"/>
+                                                                <subviews>
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z5A-0M-oid" userLabel="LED">
+                                                                        <rect key="frame" x="0.0" y="4" width="8" height="8"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="8" id="3TL-iP-WQw"/>
+                                                                            <constraint firstAttribute="width" constant="8" id="3tE-4D-n1J"/>
+                                                                        </constraints>
+                                                                    </view>
+                                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
+                                                                        <rect key="frame" x="12" y="0.0" width="48" height="16"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                                        <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
+                                                                        <state key="normal" title="Reverb"/>
+                                                                        <connections>
+                                                                            <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="mlZ-6Q-z7h"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CzH-A1-o2R" userLabel="Reverb Controls">
+                                                                <rect key="frame" x="0.0" y="16" width="197.5" height="88"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="79O-Jd-cFg" userLabel="Mix">
+                                                                        <rect key="frame" x="2" y="2" width="69.5" height="84"/>
+                                                                        <subviews>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T20-Wa-s33" customClass="Knob" customModule="SoundFontsFramework">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="69.5"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" secondItem="T20-Wa-s33" secondAttribute="height" id="7V0-Eb-LF9"/>
+                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="rQq-eB-If9"/>
+                                                                                </constraints>
+                                                                                <userDefinedRuntimeAttributes>
+                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                                                        <real key="value" value="0.0"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                                                        <real key="value" value="100"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                                        <real key="value" value="20"/>
+                                                                                    </userDefinedRuntimeAttribute>
+                                                                                </userDefinedRuntimeAttributes>
+                                                                                <connections>
+                                                                                    <action selector="changWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="Ilt-bM-7bh"/>
+                                                                                </connections>
+                                                                            </view>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liX-ZF-LkS" userLabel="Mix">
+                                                                                <rect key="frame" x="25" y="69.5" width="20" height="14.5"/>
+                                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <color key="textColor" systemColor="systemTealColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-jT-Avp">
+                                                                        <rect key="frame" x="75.5" y="2" width="120" height="84"/>
+                                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="120" id="wYc-Qb-DDg"/>
+                                                                        </constraints>
+                                                                    </pickerView>
+                                                                </subviews>
+                                                                <edgeInsets key="layoutMargins" top="2" left="2" bottom="2" right="2"/>
+                                                            </stackView>
+                                                        </subviews>
+                                                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    </stackView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="FXQ-A6-sfv" secondAttribute="bottom" constant="8" id="Kns-pw-xrT"/>
+                                            <constraint firstItem="FXQ-A6-sfv" firstAttribute="top" secondItem="UHf-8z-8DL" secondAttribute="top" constant="8" id="eMA-8M-Q1Y"/>
+                                            <constraint firstAttribute="trailing" secondItem="FXQ-A6-sfv" secondAttribute="trailing" constant="8" id="hb7-7c-Mvg"/>
+                                            <constraint firstItem="FXQ-A6-sfv" firstAttribute="leading" secondItem="UHf-8z-8DL" secondAttribute="leading" constant="8" id="sHJ-Al-Wxl"/>
+                                            <constraint firstAttribute="height" constant="120" id="yk1-2w-Um7"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="tyu-O2-3t2" firstAttribute="height" secondItem="UHf-8z-8DL" secondAttribute="height" id="8dh-V3-1eS"/>
+                                    <constraint firstItem="UHf-8z-8DL" firstAttribute="leading" secondItem="4RI-js-GIc" secondAttribute="leading" id="PDE-lU-eOJ"/>
+                                    <constraint firstItem="4RI-js-GIc" firstAttribute="trailing" secondItem="UHf-8z-8DL" secondAttribute="trailing" id="c81-4T-iXb"/>
+                                    <constraint firstItem="4RI-js-GIc" firstAttribute="bottom" secondItem="UHf-8z-8DL" secondAttribute="bottom" id="vNr-Pi-sQR"/>
+                                    <constraint firstItem="UHf-8z-8DL" firstAttribute="top" secondItem="4RI-js-GIc" secondAttribute="top" id="voN-7U-Qie"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="4RI-js-GIc"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="tyu-O2-3t2"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Dhe-Tz-U6h"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="tQU-9E-SkR" firstAttribute="bottom" secondItem="w3i-H0-L4h" secondAttribute="bottom" id="6jL-1O-6DZ"/>
+                            <constraint firstItem="tQU-9E-SkR" firstAttribute="top" secondItem="w3i-H0-L4h" secondAttribute="top" id="9oP-z4-efp"/>
+                            <constraint firstItem="tQU-9E-SkR" firstAttribute="trailing" secondItem="w3i-H0-L4h" secondAttribute="trailing" id="EKC-ct-ip9"/>
+                            <constraint firstItem="tQU-9E-SkR" firstAttribute="leading" secondItem="w3i-H0-L4h" secondAttribute="leading" id="MjD-23-YfL"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="414" height="120"/>
+                    <connections>
+                        <outlet property="controls" destination="CzH-A1-o2R" id="qwg-2K-ybn"/>
+                        <outlet property="enabledButton" destination="Vkv-Bw-zse" id="1Xu-bd-LJF"/>
+                        <outlet property="enabledLED" destination="z5A-0M-oid" id="soO-AP-aiT"/>
+                        <outlet property="room" destination="MCb-jT-Avp" id="CJm-Wu-DYe"/>
+                        <outlet property="wetDryMix" destination="T20-Wa-s33" id="HOV-C0-kbS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Gs-1T-Hst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-420.28985507246381" y="-153.34821428571428"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

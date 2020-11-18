@@ -15,7 +15,6 @@ private extension String {
 
 final class SoundFontsAU: AUAudioUnit {
     private let log: OSLog
-    private let sampler: Sampler
     private let activePatchManager: ActivePatchManager
     private let wrapped: AUAudioUnit
     private var ourParameterTree: AUParameterTree?
@@ -23,23 +22,23 @@ final class SoundFontsAU: AUAudioUnit {
     public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
         let log = Logging.logger("SFAU")
         self.log = log
+        self.activePatchManager = activePatchManager
+
         os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
-        self.sampler = sampler
-        os_log(.info, log: log, "creating AVAudioUnitSampler")
-        let auSampler = AVAudioUnitSampler()
-
         os_log(.info, log: log, "starting AVAudioUnitSampler")
-        switch sampler.start(auSampler: auSampler) {
-        case .success: self.wrapped = auSampler.auAudioUnit
+
+        switch sampler.start() {
+        case let .success(auSampler):
+            guard let auSampler = auSampler else { fatalError( "unexpected error") }
+            self.wrapped = auSampler.auAudioUnit
+
         case .failure(let what):
             os_log(.error, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
             throw what
         }
-
-        self.activePatchManager = activePatchManager
 
         os_log(.info, log: log, "super.init")
         do {
