@@ -7,9 +7,9 @@ import SoundFontsFramework
 
 final class DelayAU: AUAudioUnit {
     private let log: OSLog
-    private let delay: Delay
+    private let delay: AVAudioUnitDelay
     private let wrapped: AUAudioUnit
-    private var ourParameterTree: AUParameterTree?
+    private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
     public init(componentDescription: AudioComponentDescription, delay: Delay) throws {
         let log = Logging.logger("DelayAU")
@@ -19,7 +19,7 @@ final class DelayAU: AUAudioUnit {
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
-        self.delay = delay
+        self.delay = delay.audioUnit
         self.wrapped = delay.audioUnit.auAudioUnit
 
         do {
@@ -31,6 +31,32 @@ final class DelayAU: AUAudioUnit {
 
         os_log(.info, log:log, "init - done")
     }
+}
+
+extension DelayAU: AUParameterHandler {
+
+    public func set(_ parameter: AUParameter, value: AUValue) {
+        switch parameter.address {
+        case AudioUnitParameters.Address.time.rawValue: delay.delayTime = Double(value)
+        case AudioUnitParameters.Address.feedback.rawValue: delay.feedback = value
+        case AudioUnitParameters.Address.cutoff.rawValue: delay.lowPassCutoff = value
+        case AudioUnitParameters.Address.wetDryMix.rawValue: delay.wetDryMix = value
+        default: break
+        }
+    }
+
+    public func get(_ parameter: AUParameter) -> AUValue {
+        switch parameter.address {
+        case AudioUnitParameters.Address.time.rawValue: return AUValue(delay.delayTime)
+        case AudioUnitParameters.Address.feedback.rawValue: return delay.feedback
+        case AudioUnitParameters.Address.cutoff.rawValue: return delay.lowPassCutoff
+        case AudioUnitParameters.Address.wetDryMix.rawValue: return delay.wetDryMix
+        default: return 0
+        }
+    }
+}
+
+extension DelayAU {
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         os_log(.info, log: log, "supportedViewConfiigurations")
@@ -102,14 +128,10 @@ final class DelayAU: AUAudioUnit {
 
     override public var parameterTree: AUParameterTree? {
         get {
-            if ourParameterTree == nil { buildParameterTree() }
-            os_log(.info, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
-            return ourParameterTree
+            parameters.parameterTree
         }
         set {
-            os_log(.info, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
-            wrapped.parameterTree = newValue
-            ourParameterTree = nil
+            fatalError("setting parameterTree is unsupported")
         }
     }
 
@@ -126,44 +148,9 @@ final class DelayAU: AUAudioUnit {
         }
     }
 
-    private func buildParameterTree() {
-        os_log(.info, log: self.log, "buildParameterTree BEGIN")
-        defer { os_log(.info, log: self.log, "buildParameterTree END") }
-        dumpParameters(name: "root", tree: wrapped.parameterTree, level: 0)
-        guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
-        guard let clump_1 = global.children.first as? AUParameterGroup else { return }
-        os_log(.info, log: self.log, "creating parameterTree from clump_1")
-
-        var parameters: [AUParameterNode] = [
-            //            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
-            //                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
-            //                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
-            //                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
-            //                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil)
-        ]
-
-        parameters.append(contentsOf: clump_1.children)
-
-        ourParameterTree = AUParameterTree.createTree(withChildren: parameters)
-        dumpParameters(name: clump_1.displayName, tree: ourParameterTree, level: 0)
-    }
-
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
         os_log(.info, log: log, "parametersForOverview: %d", count)
-        if ourParameterTree == nil { buildParameterTree() }
-        if ourParameterTree?.children.count ?? 0 < 1 { return [] }
-        return [0]
+        return [NSNumber(value: parameters.wetDryMix.address)]
     }
 
     override public var allParameterValues: Bool { wrapped.allParameterValues }

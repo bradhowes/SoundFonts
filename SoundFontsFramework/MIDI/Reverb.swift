@@ -19,18 +19,14 @@ public final class Reverb {
         "Room 2", // mediumRoom
         "Room 3", // largeRoom
         "Room 4", // largeRoom2
-
         "Hall 1", // mediumHall
         "Hall 2", // mediumHall2
         "Hall 3", // mediumHall3
         "Hall 4", // largeHall
         "Hall 5", // largehall2
-
         "Chamber 1", // mediumChamber
         "Chamber 2", // largeChamber
-
         "Cathedral",
-
         "Plate"  // plate
     ]
 
@@ -39,18 +35,14 @@ public final class Reverb {
         .mediumRoom,
         .largeRoom,
         .largeRoom2,
-
         .mediumHall,
         .mediumHall2,
         .mediumHall3,
         .largeHall,
         .largeHall2,
-
         .mediumChamber,
         .largeChamber,
-
         .cathedral,
-
         .plate
     ]
 
