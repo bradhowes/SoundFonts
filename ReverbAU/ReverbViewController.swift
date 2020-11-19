@@ -13,6 +13,7 @@ public final class ReverbViewController: AUViewController {
     @IBOutlet private weak var enabledLED: UIView!
     @IBOutlet private weak var controls: UIStackView!
     @IBOutlet private weak var wetDryMix: Knob!
+    @IBOutlet private weak var mixLabel: UILabel!
     @IBOutlet private weak var room: UIPickerView!
 
     public override func viewDidLoad() {
@@ -23,11 +24,13 @@ public final class ReverbViewController: AUViewController {
         room.delegate = self
         room.selectRow(settings.reverbPreset, inComponent: 0, animated: false)
         wetDryMix.value = settings.reverbWetDryMix
-        updateReverbState(settings.reverbEnabled)
+
+        updateReverbState(true)
     }
 
     @IBAction func changWetDryMix(_ sender: Any) {
         let value = wetDryMix.value
+        mixLabel.showStatus(String(format: "%.0f", value) + "%")
         settings.reverbWetDryMix = value
     }
 
