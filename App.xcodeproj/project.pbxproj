@@ -28,7 +28,7 @@
 		BD5907932565CDDC004DE941 /* DelayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5907922565CDDC004DE941 /* DelayViewController.swift */; };
 		BD5907952565CDDC004DE941 /* DelayAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5907942565CDDC004DE941 /* DelayAU.swift */; };
 		BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD59077E2565CDDC004DE941 /* DelayAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BD5907D12565D28A004DE941 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* MainInterface.storyboard */; };
+		BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* Controls.storyboard */; };
 		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
@@ -47,7 +47,7 @@
 		BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 		BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 		BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
-		BDFAC2102565DDD10013844F /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* MainInterface.storyboard */; };
+		BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* Controls.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,7 +142,7 @@
 		BD5907922565CDDC004DE941 /* DelayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayViewController.swift; sourceTree = "<group>"; };
 		BD5907942565CDDC004DE941 /* DelayAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DelayAU.swift; path = "Audio Unit/DelayAU.swift"; sourceTree = "<group>"; };
 		BD59079C2565CDDC004DE941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD5907D02565D28A004DE941 /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		BD5907D02565D28A004DE941 /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
@@ -164,7 +164,7 @@
 		BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHUD.swift; sourceTree = "<group>"; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
-		BDFAC20F2565DDD10013844F /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		BDFAC20F2565DDD10013844F /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,7 +277,7 @@
 		BD59075D2565CD4C004DE941 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				BD5907D02565D28A004DE941 /* MainInterface.storyboard */,
+				BD5907D02565D28A004DE941 /* Controls.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -296,7 +296,7 @@
 		BD5907912565CDDC004DE941 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				BDFAC20F2565DDD10013844F /* MainInterface.storyboard */,
+				BDFAC20F2565DDD10013844F /* Controls.storyboard */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -579,7 +579,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD5907D12565D28A004DE941 /* MainInterface.storyboard in Resources */,
+				BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,7 +587,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDFAC2102565DDD10013844F /* MainInterface.storyboard in Resources */,
+				BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,7 @@ final class ReverbAU: AUAudioUnit {
     private var ourParameterTree: AUParameterTree?
 
     public init(componentDescription: AudioComponentDescription, reverb: Reverb) throws {
-        let log = Logging.logger("SFAU")
+        let log = Logging.logger("ReverbAU")
         self.log = log
 
         os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d",

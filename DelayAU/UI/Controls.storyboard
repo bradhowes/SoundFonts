@@ -19,10 +19,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="416" height="120"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="308" height="120"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
-                                                <rect key="frame" x="8" y="8" width="400" height="104"/>
+                                                <rect key="frame" x="8" y="8" width="292" height="104"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nPu-XI-6xU" userLabel="Delay VStack">
                                                         <rect key="frame" x="0.0" y="0.0" width="292" height="104"/>
@@ -44,7 +44,7 @@
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                                         <state key="normal" title="Delay"/>
                                                                         <connections>
-                                                                            <action selector="toggleDelayEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="d3G-2n-gXa"/>
+                                                                            <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="J3t-SI-18e"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -73,7 +73,7 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="changeDelayTime:" destination="erm-79-XXa" eventType="valueChanged" id="iyS-Z9-wX9"/>
+                                                                                    <action selector="changeTime:" destination="erm-79-XXa" eventType="valueChanged" id="fZt-ul-dUd"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
@@ -106,7 +106,7 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="changeDelayFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="1DU-8a-NBr"/>
+                                                                                    <action selector="changeFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="Rpy-FB-916"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
@@ -139,7 +139,7 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="changeDelayCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="tPl-vE-aBS"/>
+                                                                                    <action selector="changeCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="78w-l8-6b8"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
@@ -172,7 +172,7 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="changeDelayWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="3p7-Ha-rnv"/>
+                                                                                    <action selector="changeWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xqt-8J-Yw4"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
@@ -190,15 +190,6 @@
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </stackView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20 kHz" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sGe-6l-IUb">
-                                                        <rect key="frame" x="300" y="0.0" width="100" height="104"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="100" id="RKr-wL-ioc"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <color key="textColor" systemColor="systemTealColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
@@ -242,13 +233,15 @@
                     <connections>
                         <outlet property="controls" destination="q8p-ND-Why" id="Ybk-CP-QJK"/>
                         <outlet property="cutoff" destination="1pW-XF-kq9" id="mj7-Iy-gmV"/>
-                        <outlet property="delayControls" destination="q8p-ND-Why" id="K4Q-SO-ccz"/>
+                        <outlet property="cutoffLabel" destination="nqZ-vK-8xw" id="ToO-3o-Tyb"/>
                         <outlet property="enabledButton" destination="FKq-Pr-ykg" id="bwc-if-psk"/>
                         <outlet property="enabledLED" destination="uin-Zq-bCI" id="YCP-wV-UxU"/>
                         <outlet property="feedback" destination="iM2-XN-xlU" id="bmq-mI-U6R"/>
+                        <outlet property="feedbackLabel" destination="SpL-9N-09R" id="EXb-OX-N09"/>
                         <outlet property="time" destination="Htb-6b-YVY" id="3Vl-b8-Jaj"/>
-                        <outlet property="valueLabel" destination="sGe-6l-IUb" id="NbG-sv-r1I"/>
+                        <outlet property="timeLabel" destination="R2c-fd-4vs" id="Bzx-p3-qHO"/>
                         <outlet property="wetDryMix" destination="Ex1-3w-meW" id="rp0-Kz-23Y"/>
+                        <outlet property="wetDryMixLabel" destination="JT9-c9-CTS" id="CzW-Jt-nE7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Gs-1T-Hst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
