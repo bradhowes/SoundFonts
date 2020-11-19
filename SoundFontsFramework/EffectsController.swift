@@ -15,17 +15,20 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var reverbEnabled: UIButton!
     @IBOutlet weak var reverbControls: UIStackView!
     @IBOutlet weak var reverbWetDryMix: Knob!
+    @IBOutlet weak var reverbMixLabel: UILabel!
     @IBOutlet weak var reverbRoom: UIPickerView!
 
     @IBOutlet weak var delayEnabledLED: UIView!
     @IBOutlet weak var delayEnabled: UIButton!
     @IBOutlet weak var delayControls: UIStackView!
     @IBOutlet weak var delayTime: Knob!
+    @IBOutlet weak var delayTimeLabel: UILabel!
     @IBOutlet weak var delayFeedback: Knob!
+    @IBOutlet weak var delayFeedbackLabel: UILabel!
     @IBOutlet weak var delayCutoff: Knob!
+    @IBOutlet weak var delayCutoffLabel: UILabel!
     @IBOutlet weak var delayWetDryMix: Knob!
-
-    private var infoBar: InfoBar?
+    @IBOutlet weak var delayMixLabel: UILabel!
 
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
@@ -71,36 +74,36 @@ public final class EffectsController: UIViewController {
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
         let value = reverbWetDryMix.value
-        infoBar?.setStatus(String(format: "%.0f", value) + "%")
+        reverbMixLabel.showStatus(String(format: "%.0f", value) + "%")
         settings.reverbWetDryMix = value
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
         let value = delayTime.value
-        infoBar?.setStatus(String(format: "%.2f", value) + "s")
+        delayTimeLabel.showStatus(String(format: "%.2f", value) + "s")
         settings.delayTime = value
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
         let value = delayFeedback.value
-        infoBar?.setStatus(String(format: "%.0f", value) + "%")
+        delayFeedbackLabel.showStatus(String(format: "%.0f", value) + "%")
         settings.delayFeedback = value
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
         let value = delayCutoff.value
         if value < 1000.0 {
-            infoBar?.setStatus(String(format: "%.1f", value) + " Hz")
+            delayCutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
         }
         else {
-            infoBar?.setStatus(String(format: "%.2f", value / 1000.0) + " kHz")
+            delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
         settings.delayCutoff = value
     }
 
     @IBAction func changeDelayWebDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
-        infoBar?.setStatus(String(format: "%.0f", value) + "%")
+        delayMixLabel.showStatus(String(format: "%.0f", value) + "%")
         settings.delayWetDryMix = value
     }
 }
@@ -133,6 +136,5 @@ extension EffectsController: UIPickerViewDelegate {
 
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
-        self.infoBar = router.infoBar
     }
 }

@@ -13,223 +13,249 @@
             <objects>
                 <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="DelayViewController" customModule="DelayAU" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="146"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tQU-9E-SkR">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAm-TG-WRg" userLabel="Contents">
+                                <rect key="frame" x="19" y="8" width="352" height="130"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="308" height="120"/>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Avm-mv-vxx" userLabel="Title">
+                                        <rect key="frame" x="140.5" y="0.0" width="71" height="24"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
-                                                <rect key="frame" x="8" y="8" width="292" height="104"/>
-                                                <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nPu-XI-6xU" userLabel="Delay VStack">
-                                                        <rect key="frame" x="0.0" y="0.0" width="292" height="104"/>
-                                                        <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-cd-4vi" userLabel="Title">
-                                                                <rect key="frame" x="120.5" y="0.0" width="51" height="16"/>
-                                                                <subviews>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uin-Zq-bCI" userLabel="LED">
-                                                                        <rect key="frame" x="0.0" y="4" width="8" height="8"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="8" id="8dO-Ny-YUA"/>
-                                                                            <constraint firstAttribute="width" constant="8" id="lhE-r2-pNp"/>
-                                                                        </constraints>
-                                                                    </view>
-                                                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
-                                                                        <rect key="frame" x="12" y="0.0" width="39" height="16"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                                        <color key="tintColor" systemColor="systemTealColor"/>
-                                                                        <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                                        <state key="normal" title="Delay"/>
-                                                                        <connections>
-                                                                            <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="J3t-SI-18e"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                </subviews>
-                                                            </stackView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
-                                                                <rect key="frame" x="0.0" y="16.5" width="292" height="87.5"/>
-                                                                <subviews>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
-                                                                        <rect key="frame" x="2" y="2" width="69" height="83.5"/>
-                                                                        <subviews>
-                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="height" multiplier="1:1" id="ezB-q9-Isf"/>
-                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="fZz-5V-9Or"/>
-                                                                                </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="0.0"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="2"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="1"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
-                                                                                <connections>
-                                                                                    <action selector="changeTime:" destination="erm-79-XXa" eventType="valueChanged" id="fZt-ul-dUd"/>
-                                                                                </connections>
-                                                                            </view>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
-                                                                                <rect key="frame" x="20.5" y="69" width="28" height="14.5"/>
-                                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" systemColor="systemTealColor"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                        </subviews>
-                                                                    </stackView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Amount">
-                                                                        <rect key="frame" x="75" y="2" width="69" height="83.5"/>
-                                                                        <subviews>
-                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Amount" customClass="Knob" customModule="SoundFontsFramework">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" secondItem="iM2-XN-xlU" secondAttribute="height" multiplier="1:1" id="f9r-ZB-MMo"/>
-                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="wDo-jb-yE8"/>
-                                                                                </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="-100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="50"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
-                                                                                <connections>
-                                                                                    <action selector="changeFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="Rpy-FB-916"/>
-                                                                                </connections>
-                                                                            </view>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
-                                                                                <rect key="frame" x="7" y="69" width="55.5" height="14.5"/>
-                                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" systemColor="systemTealColor"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                        </subviews>
-                                                                    </stackView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Cutoff">
-                                                                        <rect key="frame" x="148" y="2" width="69" height="83.5"/>
-                                                                        <subviews>
-                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="ltZ-dl-ISb"/>
-                                                                                    <constraint firstAttribute="width" secondItem="1pW-XF-kq9" secondAttribute="height" multiplier="1:1" id="zxz-QP-a9e"/>
-                                                                                </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="10"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="20000"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="15000"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
-                                                                                <connections>
-                                                                                    <action selector="changeCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="78w-l8-6b8"/>
-                                                                                </connections>
-                                                                            </view>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
-                                                                                <rect key="frame" x="16.5" y="69" width="36" height="14.5"/>
-                                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" systemColor="systemTealColor"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                        </subviews>
-                                                                    </stackView>
-                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-nM-ete" userLabel="Mix">
-                                                                        <rect key="frame" x="221" y="2" width="69" height="83.5"/>
-                                                                        <subviews>
-                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ex1-3w-meW" customClass="Knob" customModule="SoundFontsFramework">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
-                                                                                <constraints>
-                                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="I1l-m2-zcI"/>
-                                                                                    <constraint firstAttribute="width" secondItem="Ex1-3w-meW" secondAttribute="height" multiplier="1:1" id="Pzo-7K-RG4"/>
-                                                                                </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="0.0"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="20"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
-                                                                                <connections>
-                                                                                    <action selector="changeWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xqt-8J-Yw4"/>
-                                                                                </connections>
-                                                                            </view>
-                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
-                                                                                <rect key="frame" x="24.5" y="69" width="20" height="14.5"/>
-                                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                                                <color key="textColor" systemColor="systemTealColor"/>
-                                                                                <nil key="highlightedColor"/>
-                                                                            </label>
-                                                                        </subviews>
-                                                                    </stackView>
-                                                                </subviews>
-                                                                <edgeInsets key="layoutMargins" top="2" left="2" bottom="2" right="2"/>
-                                                            </stackView>
-                                                        </subviews>
-                                                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </stackView>
-                                                </subviews>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uin-Zq-bCI" userLabel="LED">
+                                                <rect key="frame" x="8" y="8" width="8" height="8"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="8" id="8dO-Ny-YUA"/>
+                                                    <constraint firstAttribute="width" constant="8" id="lhE-r2-pNp"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
+                                                <rect key="frame" x="24" y="4" width="39" height="16"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
+                                                <state key="normal" title="Delay"/>
+                                                <connections>
+                                                    <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="J3t-SI-18e"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="FXQ-A6-sfv" secondAttribute="bottom" constant="8" id="Kns-pw-xrT"/>
-                                            <constraint firstItem="FXQ-A6-sfv" firstAttribute="top" secondItem="UHf-8z-8DL" secondAttribute="top" constant="8" id="eMA-8M-Q1Y"/>
-                                            <constraint firstAttribute="trailing" secondItem="FXQ-A6-sfv" secondAttribute="trailing" constant="8" id="hb7-7c-Mvg"/>
-                                            <constraint firstItem="FXQ-A6-sfv" firstAttribute="leading" secondItem="UHf-8z-8DL" secondAttribute="leading" constant="8" id="sHJ-Al-Wxl"/>
-                                            <constraint firstAttribute="height" constant="120" id="yk1-2w-Um7"/>
+                                            <constraint firstItem="uin-Zq-bCI" firstAttribute="centerY" secondItem="Avm-mv-vxx" secondAttribute="centerY" id="G8h-dE-7pq"/>
+                                            <constraint firstItem="uin-Zq-bCI" firstAttribute="leading" secondItem="Avm-mv-vxx" secondAttribute="leading" constant="8" id="e6F-zI-Wf5"/>
+                                            <constraint firstAttribute="height" constant="24" id="fZH-gg-zuw"/>
+                                            <constraint firstItem="FKq-Pr-ykg" firstAttribute="centerY" secondItem="Avm-mv-vxx" secondAttribute="centerY" id="tLV-Wt-6JU"/>
+                                            <constraint firstAttribute="trailing" secondItem="FKq-Pr-ykg" secondAttribute="trailing" constant="8" id="xQz-sv-WDv"/>
+                                            <constraint firstItem="FKq-Pr-ykg" firstAttribute="leading" secondItem="uin-Zq-bCI" secondAttribute="trailing" constant="8" id="yRO-4s-S2L"/>
                                         </constraints>
                                     </view>
+                                    <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="fillEqually" alignment="top" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
+                                        <rect key="frame" x="0.0" y="24" width="352" height="106"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
+                                                <rect key="frame" x="2" y="2" width="84" height="102"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework">
+                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="90" id="JtZ-rl-MNW"/>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="Ka2-43-B2J"/>
+                                                            <constraint firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="height" multiplier="1:1" id="ezB-q9-Isf"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                                <real key="value" value="2"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeTime:" destination="erm-79-XXa" eventType="valueChanged" id="fZt-ul-dUd"/>
+                                                        </connections>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
+                                                        <rect key="frame" x="0.0" y="84" width="84" height="18"/>
+                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" systemColor="systemTealColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Amount">
+                                                <rect key="frame" x="90" y="2" width="84" height="102"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Amount" customClass="Knob" customModule="SoundFontsFramework">
+                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="iM2-XN-xlU" secondAttribute="height" multiplier="1:1" id="f9r-ZB-MMo"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                                <real key="value" value="-100"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                                <real key="value" value="100"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <real key="value" value="50"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="Rpy-FB-916"/>
+                                                        </connections>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
+                                                        <rect key="frame" x="0.0" y="84" width="84" height="18"/>
+                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" systemColor="systemTealColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Cutoff">
+                                                <rect key="frame" x="178" y="2" width="84" height="102"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework">
+                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="1pW-XF-kq9" secondAttribute="height" multiplier="1:1" id="zxz-QP-a9e"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                                <real key="value" value="20000"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <real key="value" value="15000"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="78w-l8-6b8"/>
+                                                        </connections>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
+                                                        <rect key="frame" x="0.0" y="84" width="84" height="18"/>
+                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" systemColor="systemTealColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-nM-ete" userLabel="Mix">
+                                                <rect key="frame" x="266" y="2" width="84" height="102"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ex1-3w-meW" customClass="Knob" customModule="SoundFontsFramework">
+                                                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="Ex1-3w-meW" secondAttribute="height" multiplier="1:1" id="Pzo-7K-RG4"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
+                                                                <real key="value" value="100"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
+                                                                <real key="value" value="20"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
+                                                                <real key="value" value="3"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="changeWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xqt-8J-Yw4"/>
+                                                        </connections>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
+                                                        <rect key="frame" x="0.0" y="84" width="84" height="18"/>
+                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                        <color key="textColor" systemColor="systemTealColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="iM2-XN-xlU" firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="width" id="LZd-B3-ccq"/>
+                                            <constraint firstItem="Ex1-3w-meW" firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="width" id="aqd-As-OcR"/>
+                                            <constraint firstItem="1pW-XF-kq9" firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="width" id="hJd-q7-wgC"/>
+                                        </constraints>
+                                        <edgeInsets key="layoutMargins" top="2" left="2" bottom="2" right="2"/>
+                                    </stackView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="tyu-O2-3t2" firstAttribute="height" secondItem="UHf-8z-8DL" secondAttribute="height" id="8dh-V3-1eS"/>
-                                    <constraint firstItem="UHf-8z-8DL" firstAttribute="leading" secondItem="4RI-js-GIc" secondAttribute="leading" id="PDE-lU-eOJ"/>
-                                    <constraint firstItem="4RI-js-GIc" firstAttribute="trailing" secondItem="UHf-8z-8DL" secondAttribute="trailing" id="c81-4T-iXb"/>
-                                    <constraint firstItem="4RI-js-GIc" firstAttribute="bottom" secondItem="UHf-8z-8DL" secondAttribute="bottom" id="vNr-Pi-sQR"/>
-                                    <constraint firstItem="UHf-8z-8DL" firstAttribute="top" secondItem="4RI-js-GIc" secondAttribute="top" id="voN-7U-Qie"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="748" id="1xy-vr-WeF"/>
+                                    <constraint firstItem="q8p-ND-Why" firstAttribute="leading" secondItem="pAm-TG-WRg" secondAttribute="leading" id="6UW-Pw-4UQ"/>
+                                    <constraint firstAttribute="width" secondItem="pAm-TG-WRg" secondAttribute="height" multiplier="176:65" id="EK2-60-2Hg"/>
+                                    <constraint firstAttribute="trailing" secondItem="q8p-ND-Why" secondAttribute="trailing" id="JdA-hY-Hvd"/>
+                                    <constraint firstAttribute="bottom" secondItem="q8p-ND-Why" secondAttribute="bottom" id="MxE-h5-AHM"/>
+                                    <constraint firstItem="Avm-mv-vxx" firstAttribute="centerX" secondItem="pAm-TG-WRg" secondAttribute="centerX" id="Qkg-us-tBH"/>
+                                    <constraint firstItem="q8p-ND-Why" firstAttribute="top" secondItem="Avm-mv-vxx" secondAttribute="bottom" id="dMh-Hf-E7t"/>
+                                    <constraint firstItem="Avm-mv-vxx" firstAttribute="top" secondItem="pAm-TG-WRg" secondAttribute="top" id="fnI-E5-3ZA"/>
                                 </constraints>
-                                <viewLayoutGuide key="contentLayoutGuide" id="4RI-js-GIc"/>
-                                <viewLayoutGuide key="frameLayoutGuide" id="tyu-O2-3t2"/>
-                            </scrollView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Dhe-Tz-U6h"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="tQU-9E-SkR" firstAttribute="bottom" secondItem="w3i-H0-L4h" secondAttribute="bottom" id="6jL-1O-6DZ"/>
-                            <constraint firstItem="tQU-9E-SkR" firstAttribute="top" secondItem="w3i-H0-L4h" secondAttribute="top" id="9oP-z4-efp"/>
-                            <constraint firstItem="tQU-9E-SkR" firstAttribute="trailing" secondItem="w3i-H0-L4h" secondAttribute="trailing" id="EKC-ct-ip9"/>
-                            <constraint firstItem="tQU-9E-SkR" firstAttribute="leading" secondItem="w3i-H0-L4h" secondAttribute="leading" id="MjD-23-YfL"/>
+                            <constraint firstItem="pAm-TG-WRg" firstAttribute="top" relation="greaterThanOrEqual" secondItem="w3i-H0-L4h" secondAttribute="topMargin" constant="8" id="B5X-DJ-7ft"/>
+                            <constraint firstItem="pAm-TG-WRg" firstAttribute="centerX" secondItem="w3i-H0-L4h" secondAttribute="centerX" id="I8m-d3-XKt"/>
+                            <constraint firstItem="pAm-TG-WRg" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Dhe-Tz-U6h" secondAttribute="leading" constant="8" id="J5i-k6-vfa"/>
+                            <constraint firstItem="Dhe-Tz-U6h" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="pAm-TG-WRg" secondAttribute="bottom" constant="8" id="YJa-Fb-lle"/>
+                            <constraint firstItem="pAm-TG-WRg" firstAttribute="centerY" secondItem="w3i-H0-L4h" secondAttribute="centerY" id="m3c-Rf-Fkr"/>
+                            <constraint firstItem="Dhe-Tz-U6h" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pAm-TG-WRg" secondAttribute="trailing" constant="8" id="sYg-m7-HXS"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="414" height="120"/>
+                    <size key="freeformSize" width="390" height="146"/>
                     <connections>
                         <outlet property="controls" destination="q8p-ND-Why" id="Ybk-CP-QJK"/>
                         <outlet property="cutoff" destination="1pW-XF-kq9" id="mj7-Iy-gmV"/>
@@ -246,10 +272,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Gs-1T-Hst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-420.28985507246381" y="-153.34821428571428"/>
+            <point key="canvasLocation" x="-148" y="-334"/>
         </scene>
     </scenes>
     <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
