@@ -7,9 +7,10 @@ import SoundFontsFramework
 
 final class ReverbAU: AUAudioUnit {
     private let log: OSLog
-    private let reverb: Reverb
+    private let reverb: AVAudioUnitReverb
     private let wrapped: AUAudioUnit
-    private var ourParameterTree: AUParameterTree?
+    private var activeRoomPreset: Int = 0
+    private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
     public init(componentDescription: AudioComponentDescription, reverb: Reverb) throws {
         let log = Logging.logger("ReverbAU")
@@ -21,7 +22,7 @@ final class ReverbAU: AUAudioUnit {
 
         os_log(.info, log: log, "starting AVAudioUnitSampler")
 
-        self.reverb = reverb
+        self.reverb = reverb.audioUnit
         self.wrapped = reverb.audioUnit.auAudioUnit
 
         do {
@@ -33,6 +34,32 @@ final class ReverbAU: AUAudioUnit {
 
         os_log(.info, log:log, "init - done")
     }
+}
+
+extension ReverbAU: AUParameterHandler {
+
+    public func set(_ parameter: AUParameter, value: AUValue) {
+        switch parameter.address {
+        case AudioUnitParameters.Address.roomPreset.rawValue:
+            activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
+            reverb.loadFactoryPreset(Reverb.roomPresets[activeRoomPreset])
+        case AudioUnitParameters.Address.wetDryMix.rawValue:
+            reverb.wetDryMix = value
+        default:
+            break
+        }
+    }
+
+    public func get(_ parameter: AUParameter) -> AUValue {
+        switch parameter.address {
+        case AudioUnitParameters.Address.roomPreset.rawValue: return AUValue(activeRoomPreset)
+        case AudioUnitParameters.Address.wetDryMix.rawValue: return reverb.wetDryMix
+        default: return 0
+        }
+    }
+}
+
+extension ReverbAU {
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         os_log(.info, log: log, "supportedViewConfiigurations")
@@ -71,6 +98,7 @@ final class ReverbAU: AUAudioUnit {
     override public func reset() {
         os_log(.info, log: log, "reset")
         wrapped.reset()
+        super.reset()
     }
 
     override public var inputBusses: AUAudioUnitBusArray {
@@ -83,10 +111,10 @@ final class ReverbAU: AUAudioUnit {
         return wrapped.outputBusses
     }
 
-    override public var scheduleParameterBlock: AUScheduleParameterBlock {
-        os_log(.info, log: self.log, "scheduleParameterBlock")
-        return wrapped.scheduleParameterBlock
-    }
+//    override public var scheduleParameterBlock: AUScheduleParameterBlock {
+//        os_log(.info, log: self.log, "scheduleParameterBlock")
+//        return wrapped.scheduleParameterBlock
+//    }
 
     override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
         os_log(.info, log: self.log, "token by AddingRenderObserver")
@@ -104,68 +132,16 @@ final class ReverbAU: AUAudioUnit {
 
     override public var parameterTree: AUParameterTree? {
         get {
-            if ourParameterTree == nil { buildParameterTree() }
-            os_log(.info, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
-            return ourParameterTree
+            parameters.parameterTree
         }
         set {
-            os_log(.info, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
-            wrapped.parameterTree = newValue
-            ourParameterTree = nil
+            fatalError("setting parameterTree is unsupported")
         }
-    }
-
-    private func dumpParameters(name: String, tree: AUParameterGroup?, level: Int) {
-        let indentation = String(repeating: " ", count: level)
-        os_log(.info, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
-        defer { os_log(.info, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
-        guard let children = tree?.children else { return }
-        for child in children {
-            os_log(.info, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
-            if let group = child as? AUParameterGroup {
-                dumpParameters(name: group.displayName, tree: group, level: level + 1)
-            }
-        }
-    }
-
-    private func buildParameterTree() {
-        os_log(.info, log: self.log, "buildParameterTree BEGIN")
-        defer { os_log(.info, log: self.log, "buildParameterTree END") }
-        dumpParameters(name: "root", tree: wrapped.parameterTree, level: 0)
-        guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
-        guard let clump_1 = global.children.first as? AUParameterGroup else { return }
-        os_log(.info, log: self.log, "creating parameterTree from clump_1")
-
-        var parameters: [AUParameterNode] = [
-            //            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
-            //                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
-            //                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
-            //                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil),
-            //            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
-            //                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
-            //                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-            //                                            dependentParameters: nil)
-        ]
-
-        parameters.append(contentsOf: clump_1.children)
-
-        ourParameterTree = AUParameterTree.createTree(withChildren: parameters)
-        dumpParameters(name: clump_1.displayName, tree: ourParameterTree, level: 0)
     }
 
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
         os_log(.info, log: log, "parametersForOverview: %d", count)
-        if ourParameterTree == nil { buildParameterTree() }
-        if ourParameterTree?.children.count ?? 0 < 1 { return [] }
-        return [0]
+        return [NSNumber(value: parameters.wetDryMix.address)]
     }
 
     override public var allParameterValues: Bool { wrapped.allParameterValues }
