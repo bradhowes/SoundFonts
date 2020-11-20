@@ -13,9 +13,10 @@ final class MIDI {
     private let log = Logging.logger("MIDI")
 
     private let clientName = Bundle.main.bundleID
-    private let portName = "SoundFontAppIn"
+    private let portName = "SoundFonts"
     private var client: MIDIClientRef = 0
     private var inputPort: MIDIPortRef = 0
+    private var virtualEndpoint: MIDIEndpointRef = 0
 
     /// Delegate which will receive incoming MIDI messages
     weak var controller: MIDIController?
@@ -109,11 +110,15 @@ final class MIDI {
         os_log(.info, log: log, "MIDIInputPortCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
+        // Create a virtual endpoint for app-to-app MIDI. (?)
+        err = MIDIDestinationCreateWithBlock(client, portName as CFString, &virtualEndpoint) { packetList, _ in self.processPackets(packetList: packetList.pointee) }
+
         connectSourcesToInputPort()
     }
 
     deinit {
         if inputPort != 0 { MIDIPortDispose(inputPort) }
+        if virtualEndpoint != 0 { MIDIEndpointDispose(virtualEndpoint) }
         if client != 0 { MIDIClientDispose(client) }
     }
 }
@@ -124,8 +129,10 @@ extension MIDI {
         let sourceCount = MIDIGetNumberOfSources()
         for srcIndex in 0 ..< sourceCount {
             let midiEndPoint = MIDIGetSource(srcIndex)
-            let err = MIDIPortConnectSource(inputPort, midiEndPoint, nil)
-            os_log(.info, log: log, "MIDIPortConnectSource %d %{public}s: %d - %{public}s", srcIndex, getDisplayName(midiEndPoint), err, errorTag[err] ?? "?")
+            if midiEndPoint != 0 {
+                let err = MIDIPortConnectSource(inputPort, midiEndPoint, nil)
+                os_log(.info, log: log, "MIDIPortConnectSource %d %{public}s: %d - %{public}s", srcIndex, getDisplayName(midiEndPoint), err, errorTag[err] ?? "?")
+            }
         }
     }
 

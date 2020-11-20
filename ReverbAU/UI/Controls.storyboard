@@ -18,7 +18,7 @@
             <objects>
                 <viewController storyboardIdentifier="EffectsController" title="Effects" automaticallyAdjustsScrollViewInsets="NO" interfaceStyle="dark" id="erm-79-XXa" customClass="ReverbViewController" customModule="ReverbAU" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3i-H0-L4h">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
                                 <rect key="frame" x="86.5" y="136.5" width="267" height="127.5"/>
