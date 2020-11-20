@@ -8,6 +8,11 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Eurostile.ttc">
+            <string>EurostileRegular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Effects-->
         <scene sceneID="GTL-k8-6DV">
@@ -20,27 +25,27 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="513.5" height="120"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="513" height="120"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
-                                                <rect key="frame" x="8" y="8" width="497.5" height="104"/>
+                                                <rect key="frame" x="8" y="8" width="497" height="104"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zNv-Im-W2c" userLabel="Reverb VStack">
-                                                        <rect key="frame" x="0.0" y="0.0" width="197.5" height="104"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="197" height="104"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="lv3-Zf-msy" userLabel="TItle">
-                                                                <rect key="frame" x="69" y="0.0" width="60" height="16"/>
+                                                                <rect key="frame" x="67.5" y="0.0" width="62" height="14.5"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z5A-0M-oid" userLabel="LED">
-                                                                        <rect key="frame" x="0.0" y="4" width="8" height="8"/>
+                                                                        <rect key="frame" x="0.0" y="3.5" width="8" height="8"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="8" id="3TL-iP-WQw"/>
                                                                             <constraint firstAttribute="width" constant="8" id="3tE-4D-n1J"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
-                                                                        <rect key="frame" x="12" y="0.0" width="48" height="16"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <rect key="frame" x="12" y="0.0" width="50" height="14.5"/>
+                                                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                                         <state key="normal" title="Reverb"/>
@@ -51,13 +56,13 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CzH-A1-o2R" userLabel="Reverb Controls">
-                                                                <rect key="frame" x="0.0" y="16" width="197.5" height="88"/>
+                                                                <rect key="frame" x="0.0" y="14.5" width="197" height="89.5"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="79O-Jd-cFg" userLabel="Mix">
-                                                                        <rect key="frame" x="2" y="2" width="69.5" height="84"/>
+                                                                        <rect key="frame" x="2" y="2" width="69" height="85.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T20-Wa-s33" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="69.5"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" secondItem="T20-Wa-s33" secondAttribute="height" id="7V0-Eb-LF9"/>
                                                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="rQq-eB-If9"/>
@@ -87,16 +92,16 @@
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liX-ZF-LkS" userLabel="Mix">
-                                                                                <rect key="frame" x="25" y="69.5" width="20" height="14.5"/>
+                                                                                <rect key="frame" x="23.5" y="69" width="22" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-jT-Avp">
-                                                                        <rect key="frame" x="75.5" y="2" width="120" height="84"/>
+                                                                        <rect key="frame" x="75" y="2" width="120" height="85.5"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="120" id="wYc-Qb-DDg"/>
@@ -109,21 +114,21 @@
                                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nPu-XI-6xU" userLabel="Delay VStack">
-                                                        <rect key="frame" x="205.5" y="0.0" width="292" height="104"/>
+                                                        <rect key="frame" x="205" y="0.0" width="292" height="104"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gNy-cd-4vi" userLabel="Title">
-                                                                <rect key="frame" x="120.5" y="0.0" width="51" height="16"/>
+                                                                <rect key="frame" x="120.5" y="0.0" width="51" height="14.5"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uin-Zq-bCI" userLabel="LED">
-                                                                        <rect key="frame" x="0.0" y="4" width="8" height="8"/>
+                                                                        <rect key="frame" x="0.0" y="3.5" width="8" height="8"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="8" id="8dO-Ny-YUA"/>
                                                                             <constraint firstAttribute="width" constant="8" id="lhE-r2-pNp"/>
                                                                         </constraints>
                                                                     </view>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
-                                                                        <rect key="frame" x="12" y="0.0" width="39" height="16"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                        <rect key="frame" x="12" y="0.0" width="39" height="14.5"/>
+                                                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                                         <state key="normal" title="Delay"/>
@@ -134,10 +139,10 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
-                                                                <rect key="frame" x="0.0" y="16.5" width="292" height="87.5"/>
+                                                                <rect key="frame" x="0.0" y="14.5" width="292" height="89.5"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
-                                                                        <rect key="frame" x="2" y="2" width="69" height="83.5"/>
+                                                                        <rect key="frame" x="2" y="2" width="69" height="85.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
@@ -170,16 +175,16 @@
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
-                                                                                <rect key="frame" x="0.0" y="69" width="69" height="14.5"/>
+                                                                                <rect key="frame" x="0.0" y="69" width="69" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Amount">
-                                                                        <rect key="frame" x="75" y="2" width="69" height="83.5"/>
+                                                                        <rect key="frame" x="75" y="2" width="69" height="85.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Amount" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
@@ -212,16 +217,16 @@
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
-                                                                                <rect key="frame" x="0.0" y="69" width="69" height="14.5"/>
+                                                                                <rect key="frame" x="0.0" y="69" width="69" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Cutoff">
-                                                                        <rect key="frame" x="148" y="2" width="69" height="83.5"/>
+                                                                        <rect key="frame" x="148" y="2" width="69" height="85.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
@@ -254,16 +259,16 @@
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
-                                                                                <rect key="frame" x="0.0" y="69" width="69" height="14.5"/>
+                                                                                <rect key="frame" x="0.0" y="69" width="69" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-nM-ete" userLabel="Mix">
-                                                                        <rect key="frame" x="221" y="2" width="69" height="83.5"/>
+                                                                        <rect key="frame" x="221" y="2" width="69" height="85.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ex1-3w-meW" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="69" height="69"/>
@@ -296,9 +301,9 @@
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
-                                                                                <rect key="frame" x="0.0" y="69" width="69" height="14.5"/>
+                                                                                <rect key="frame" x="0.0" y="69" width="69" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>

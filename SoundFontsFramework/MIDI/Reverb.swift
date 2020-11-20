@@ -6,9 +6,10 @@ import AudioToolbox
 import os
 
 /**
- Reverberation audio effect.
+ Reverberation audio effect by way of Apple's AVAudioUnitReverb component. Configuration of the reverb is maintained in UserDefaults so this is only useful in the application
+ setting -- the AUv3 app extension component relies on AUv3 presets to do this instead.
  */
-public final class Reverb {
+public final class AppReverb {
     private lazy var log = Logging.logger("Reverb")
 
     public let audioUnit: AVAudioUnitReverb
@@ -73,7 +74,7 @@ public final class Reverb {
     }
 }
 
-extension Reverb {
+extension AppReverb {
 
     private func updateEnabled(newValue: Bool) {
         audioUnit.wetDryMix = newValue ? settings.reverbWetDryMix : 0.0
