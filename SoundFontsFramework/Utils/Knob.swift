@@ -108,6 +108,7 @@ extension Knob {
         guard touches.count == 1 else { return }
         guard let touch = touches.first else { return }
         panOrigin = touch.location(in: self)
+        sendActions(for: .valueChanged) // Done so we will see the value of the knob when it is first touched.
     }
 
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

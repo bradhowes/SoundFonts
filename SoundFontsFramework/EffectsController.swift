@@ -110,25 +110,25 @@ public final class EffectsController: UIViewController {
 
 extension EffectsController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { Reverb.roomNames.count }
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { AppReverb.roomNames.count }
 }
 
 extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
-        settings.reverbPreset = Reverb.roomPresets[row].rawValue
+        os_log(.info, log: log, "new reverb room: %d", AppReverb.roomPresets[row].rawValue)
+        settings.reverbPreset = AppReverb.roomPresets[row].rawValue
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel?.font = UIFont.systemFont(ofSize: 15.0)
+            pickerLabel?.font = UIFont.init(name: "Eurostile", size: 15.0)
             pickerLabel?.textAlignment = .center
         }
 
-        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
+        pickerLabel?.attributedText = NSAttributedString(string: AppReverb.roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
 
         return pickerLabel!
     }

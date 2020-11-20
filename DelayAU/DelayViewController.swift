@@ -24,11 +24,6 @@ public final class DelayViewController: AUViewController {
     public override func viewDidLoad() {
         os_log(.info, log: log, "viewDidLoad")
         super.viewDidLoad()
-
-        time.value = settings.delayTime
-        feedback.value = settings.delayFeedback
-        cutoff.value = settings.delayCutoff
-        wetDryMix.value = settings.delayWetDryMix
         updateEnabledState(true)
     }
 

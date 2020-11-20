@@ -7,12 +7,13 @@ import SoundFontsFramework
 
 final class ReverbAU: AUAudioUnit {
     private let log: OSLog
-    private let reverb: AVAudioUnitReverb
+    private let reverb = AVAudioUnitReverb()
     private let wrapped: AUAudioUnit
-    private var activeRoomPreset: Int = 0
-    private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
-    public init(componentDescription: AudioComponentDescription, reverb: Reverb) throws {
+    public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
+    public var activeRoomPreset: Int = 0 { didSet { reverb.loadFactoryPreset(AppReverb.roomPresets[activeRoomPreset]) } }
+
+    public init(componentDescription: AudioComponentDescription) throws {
         let log = Logging.logger("ReverbAU")
         self.log = log
 
@@ -22,8 +23,7 @@ final class ReverbAU: AUAudioUnit {
 
         os_log(.info, log: log, "starting AVAudioUnitSampler")
 
-        self.reverb = reverb.audioUnit
-        self.wrapped = reverb.audioUnit.auAudioUnit
+        self.wrapped = reverb.auAudioUnit
 
         do {
             try super.init(componentDescription: componentDescription, options: [])
@@ -40,13 +40,9 @@ extension ReverbAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
         switch parameter.address {
-        case AudioUnitParameters.Address.roomPreset.rawValue:
-            activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
-            reverb.loadFactoryPreset(Reverb.roomPresets[activeRoomPreset])
-        case AudioUnitParameters.Address.wetDryMix.rawValue:
-            reverb.wetDryMix = value
-        default:
-            break
+        case AudioUnitParameters.Address.roomPreset.rawValue: activeRoomPreset = min(max(0, Int(value)), AppReverb.roomPresets.count - 1)
+        case AudioUnitParameters.Address.wetDryMix.rawValue: reverb.wetDryMix = value
+        default: break
         }
     }
 
