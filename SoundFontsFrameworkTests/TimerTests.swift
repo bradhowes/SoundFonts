@@ -10,7 +10,7 @@ class TimerTests: XCTestCase {
         let start = Date()
         let timer = Timer.once(after: 100.milliseconds) { timer in
             let elapsed = Date().timeIntervalSince(start)
-            XCTAssertEqual(elapsed, 0.1, accuracy: 0.006)
+            XCTAssertEqual(elapsed, 0.1, accuracy: 0.01)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 0.2)
@@ -23,7 +23,7 @@ class TimerTests: XCTestCase {
         let when = Date().addingTimeInterval(100.milliseconds)
         let timer = Timer.once(when: when) { timer in
             let elapsed = Date().timeIntervalSince(start)
-            XCTAssertEqual(elapsed, 0.1, accuracy: 0.006)
+            XCTAssertEqual(elapsed, 0.1, accuracy: 0.01)
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 0.25)
