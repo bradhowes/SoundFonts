@@ -59,10 +59,7 @@ extension DelayAU: AUParameterHandler {
 extension DelayAU {
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
-        os_log(.info, log: log, "supportedViewConfiigurations")
-        let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 120 && $0.1.width > 200 ? $0.0 : nil }
-        os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
-        return IndexSet(indices)
+        IndexSet(availableViewConfigurations.indices)
     }
 
     override public var component: AudioComponent { wrapped.component }

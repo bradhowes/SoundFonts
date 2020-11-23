@@ -16,6 +16,11 @@ public final class SoundFontsAUViewController: AUViewController {
         super.viewDidLoad()
         components.setMainViewController(self)
     }
+
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        os_log(.info, log: log, "viewDidLoad")
+    }
 }
 
 extension SoundFontsAUViewController: AUAudioUnitFactory {

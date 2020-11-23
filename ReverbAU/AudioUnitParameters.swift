@@ -22,13 +22,6 @@ public final class AudioUnitParameters: NSObject {
         case enabled
     }
 
-    public let enabled: AUParameter = {
-        let param = AUParameterTree.createParameter(withIdentifier: "enabled", name: "Enabled", address: Address.enabled.rawValue, min: 0.0, max: 1.0, unit: .boolean,
-                                                    unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
-        param.value = 1.0
-        return param
-    }()
-
     public let roomPreset: AUParameter = {
         let param = AUParameterTree.createParameter(withIdentifier: "room", name: "Room", address: Address.roomPreset.rawValue, min: 0.0,
                                                     max: Float(AppReverb.roomNames.count - 1), unit: .indexed, unitName: nil,
@@ -41,6 +34,13 @@ public final class AudioUnitParameters: NSObject {
         let param = AUParameterTree.createParameter(withIdentifier: "wetDryMix", name: "Mix", address: Address.wetDryMix.rawValue, min: 0.0, max: 100.0, unit: .percent,
                                                     unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
         param.value = 30.0
+        return param
+    }()
+
+    public let enabled: AUParameter = {
+        let param = AUParameterTree.createParameter(withIdentifier: "enabled", name: "Enabled", address: Address.enabled.rawValue, min: 0.0, max: 1.0, unit: .boolean,
+                                                    unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
+        param.value = 1.0
         return param
     }()
 
@@ -73,9 +73,9 @@ public final class AudioUnitParameters: NSObject {
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch param.address {
-                case self.enabled.address: return String(format: "%.0f", param.value)
                 case self.roomPreset.address: return AppReverb.roomNames[Int(param.value)]
                 case self.wetDryMix.address: return String(format: "%.2f", param.value) + "%"
+                case self.enabled.address: return String(format: "%.0f", param.value)
                 default: return "?"
                 }
             }()
@@ -93,47 +93,8 @@ public final class AudioUnitParameters: NSObject {
      - parameter resonanceValue: the new resonance value to use
      */
     func setParameterValues(enabled: AUValue, roomPreset: AUValue, wetDryMix: AUValue) {
-        self.enabled.value = enabled
         self.roomPreset.value = roomPreset
         self.wetDryMix.value = wetDryMix
-    }
-}
-
-extension AudioUnitParameters {
-
-    var state: [String: Float] {
-        let enabled = self.enabled.value
-        let roomPreset = self.roomPreset.value
-        let wetDryMix = self.wetDryMix.value
-        return [self.enabled.identifier: enabled, self.roomPreset.identifier: roomPreset, self.wetDryMix.identifier: wetDryMix]
-    }
-
-    func setState(_ state: [String: Any]) {
-        guard let enabled = state[self.enabled.identifier] as? Float else {
-            os_log(.error, log: log, "missing '%s' in state", self.enabled.identifier)
-            return
-        }
         self.enabled.value = enabled
-
-        guard let roomPreset = state[self.roomPreset.identifier] as? Float else {
-            os_log(.error, log: log, "missing '%s' in state", self.roomPreset.identifier)
-            return
-        }
-        self.roomPreset.value = roomPreset
-
-        guard let wetDryMix = state[self.wetDryMix.identifier] as? Float else {
-            os_log(.error, log: log, "missing '%s' in state", self.wetDryMix.identifier)
-            return
-        }
-        self.wetDryMix.value = wetDryMix
-
-        os_log(.info, log: log, "setState - roomPreset: %f wetDryMix: %f", roomPreset, wetDryMix)
-    }
-
-    func matches(_ state: [String: Any]) -> Bool {
-        for (key, value) in self.state {
-            guard let other = state[key] as? Float, other == value else { return false }
-        }
-        return true
     }
 }

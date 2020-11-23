@@ -17,7 +17,7 @@ final class SoundFontsAU: AUAudioUnit {
     private let log: OSLog
     private let activePatchManager: ActivePatchManager
     private let wrapped: AUAudioUnit
-    private var ourParameterTree: AUParameterTree?
+    private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
     public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
         let log = Logging.logger("SFAU")
@@ -50,6 +50,24 @@ final class SoundFontsAU: AUAudioUnit {
 
         os_log(.info, log:log, "init - done")
     }
+}
+
+extension SoundFontsAU: AUParameterHandler {
+
+    public func set(_ parameter: AUParameter, value: AUValue) {
+        switch parameter.address {
+        default: break
+        }
+    }
+
+    public func get(_ parameter: AUParameter) -> AUValue {
+        switch parameter.address {
+        default: return 0
+        }
+    }
+}
+
+extension SoundFontsAU {
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         os_log(.info, log: log, "supportedViewConfiigurations")
@@ -121,70 +139,14 @@ final class SoundFontsAU: AUAudioUnit {
 
     override public var parameterTree: AUParameterTree? {
         get {
-            if ourParameterTree == nil { buildParameterTree() }
-            os_log(.info, log: log, "parameterTree - get %d", ourParameterTree?.allParameters.count ?? 0)
-            return ourParameterTree
+            parameters.parameterTree
         }
         set {
-            os_log(.info, log: log, "parameterTree - set %d", newValue?.allParameters.count ?? 0)
-            wrapped.parameterTree = newValue
-            ourParameterTree = nil
+            fatalError("setting parameterTree is unsupported")
         }
     }
 
-    private func dumpParameters(name: String, tree: AUParameterGroup?, level: Int) {
-        let indentation = String(repeating: " ", count: level)
-        os_log(.info, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
-        defer { os_log(.info, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
-        guard let children = tree?.children else { return }
-        for child in children {
-            os_log(.info, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
-            if let group = child as? AUParameterGroup {
-                dumpParameters(name: group.displayName, tree: group, level: level + 1)
-            }
-        }
-    }
-
-    private func buildParameterTree() {
-        os_log(.info, log: self.log, "buildParameterTree BEGIN")
-        defer { os_log(.info, log: self.log, "buildParameterTree END") }
-        dumpParameters(name: "root", tree: wrapped.parameterTree, level: 0)
-        guard let global = wrapped.parameterTree?.children[0] as? AUParameterGroup else { return }
-        guard let clump_1 = global.children.first as? AUParameterGroup else { return }
-        os_log(.info, log: self.log, "creating parameterTree from clump_1")
-
-        var parameters: [AUParameterNode] = [
-//            AUParameterTree.createParameter(withIdentifier: "Attack", name: "Attack",
-//                                            address: 1000, min: 0, max: 1, unit: .mixerFaderCurve1,
-//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-//                                            dependentParameters: nil),
-//            AUParameterTree.createParameter(withIdentifier: "Decay", name: "Decay",
-//                                            address: 1001, min: 0, max: 1, unit: .mixerFaderCurve1,
-//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-//                                            dependentParameters: nil),
-//            AUParameterTree.createParameter(withIdentifier: "Sustain", name: "Sustain",
-//                                            address: 1002, min: 0, max: 1, unit: .mixerFaderCurve1,
-//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-//                                            dependentParameters: nil),
-//            AUParameterTree.createParameter(withIdentifier: "Release", name: "Release",
-//                                            address: 1003, min: 0, max: 1, unit: .mixerFaderCurve1,
-//                                            unitName: "", flags: .flag_IsWritable, valueStrings: nil,
-//                                            dependentParameters: nil)
-        ]
-
-        parameters.append(contentsOf: clump_1.children)
-
-        ourParameterTree = AUParameterTree.createTree(withChildren: parameters)
-        dumpParameters(name: clump_1.displayName, tree: ourParameterTree, level: 0)
-    }
-
-    override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
-        os_log(.info, log: log, "parametersForOverview: %d", count)
-        if ourParameterTree == nil { buildParameterTree() }
-        if ourParameterTree?.children.count ?? 0 < 1 { return [] }
-        return [0]
-    }
-
+    override public func parametersForOverview(withCount count: Int) -> [NSNumber] { [] }
     override public var allParameterValues: Bool { wrapped.allParameterValues }
     override public var isMusicDeviceOrEffect: Bool { true }
 
@@ -204,7 +166,7 @@ final class SoundFontsAU: AUAudioUnit {
 
     override public var fullState: [String : Any]? {
         get {
-            var fullState = wrapped.fullState ?? [:]
+            var fullState = [String: Any]()
             if let data = ActivePatchManager.encode(self.activePatchManager.active) {
                 fullState[activeSoundFontPatchKey] = data
             }
@@ -218,9 +180,6 @@ final class SoundFontsAU: AUAudioUnit {
                     }
                 }
             }
-
-            // Disable this since there is nothing really to save for the AVAudioUnitSampler
-            // wrapped.fullState = newValue
         }
     }
 
