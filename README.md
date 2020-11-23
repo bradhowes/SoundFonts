@@ -1,6 +1,6 @@
 [![CI](https://github.com/bradhowes/SoundFonts/workflows/CI/badge.svg)](https://github.com/bradhowes/SoundFonts)
 [![Swift 5.0](https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat)](https://swift.org)
-[![AUv3](https://img.shields.io/badge/AUv3-red.svg)](https://github.com/bradhowes/SoundFonts)
+[![AUv3](https://img.shields.io/badge/AU-v3-green.svg)](https://github.com/bradhowes/SoundFonts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # SoundFonts App
