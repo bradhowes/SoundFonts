@@ -24,7 +24,7 @@ public final class AudioUnitParameters: NSObject {
 
     public let roomPreset: AUParameter = {
         let param = AUParameterTree.createParameter(withIdentifier: "room", name: "Room", address: Address.roomPreset.rawValue, min: 0.0,
-                                                    max: Float(AppReverb.roomNames.count - 1), unit: .indexed, unitName: nil,
+                                                    max: Float(Reverb.roomNames.count - 1), unit: .indexed, unitName: nil,
                                                     flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
         param.value = 0.0
         return param
@@ -73,7 +73,7 @@ public final class AudioUnitParameters: NSObject {
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch param.address {
-                case self.roomPreset.address: return AppReverb.roomNames[Int(param.value)]
+                case self.roomPreset.address: return Reverb.roomNames[Int(param.value)]
                 case self.wetDryMix.address: return String(format: "%.2f", param.value) + "%"
                 case self.enabled.address: return String(format: "%.0f", param.value)
                 default: return "?"

@@ -97,7 +97,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
 
-            let reverbEffect = AppReverb()
+            let reverbEffect = Reverb()
             let reverb = reverbEffect.audioUnit
             engine.attach(reverb)
             engine.connect(reverb, to: engine.mainMixerNode, format: nil)
