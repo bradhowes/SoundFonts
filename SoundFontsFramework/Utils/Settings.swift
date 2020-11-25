@@ -28,14 +28,14 @@ public extension SettingKeys {
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
 
     static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
-    static let reverbPreset = SettingKey("reverbPreset", defaultValue: 0)
-    static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(20.0))
+    static let reverbPreset = SettingKey("reverbPreset", defaultValue: 1)
+    static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(35.0))
 
     static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
-    static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(20.0))
-    static let delayTime = SettingKey("delayTime", defaultValue: Float(20.0))
-    static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(20.0))
-    static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(20.0))
+    static let delayTime = SettingKey("delayTime", defaultValue: Float(1.0))
+    static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(50.0))
+    static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(15000.0))
+    static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(35.0))
 
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 }

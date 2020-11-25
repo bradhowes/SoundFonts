@@ -9,7 +9,7 @@ import os
  Reverberation audio effect by way of Apple's AVAudioUnitReverb component. Configuration of the reverb is maintained in UserDefaults so this is only useful in the application
  setting -- the AUv3 app extension component relies on AUv3 presets to do this instead.
  */
-public final class AppReverb {
+public final class Reverb {
     private lazy var log = Logging.logger("Reverb")
 
     public let audioUnit: AVAudioUnitReverb
@@ -72,9 +72,15 @@ public final class AppReverb {
         updateWetDryMix(newValue: settings.reverbWetDryMix)
         updateEnabled(newValue: settings.reverbEnabled)
     }
+
+    public func configure(_ config: ReverbConfig) {
+        updateEnabled(newValue: config.enabled)
+        updatePreset(newValue: config.room)
+        updateWetDryMix(newValue: config.wetDryMix)
+    }
 }
 
-extension AppReverb {
+extension Reverb {
 
     private func updateEnabled(newValue: Bool) {
         audioUnit.wetDryMix = newValue ? settings.reverbWetDryMix : 0.0

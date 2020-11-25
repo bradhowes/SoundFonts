@@ -9,7 +9,7 @@ import os
  Delay audio effect.
  */
 public final class Delay {
-    private lazy var log = Logging.logger("Delay")
+    private lazy var log = Logging.logger("AppDelay")
 
     public let audioUnit: AVAudioUnitDelay
     private var observers = [NSKeyValueObservation]()
@@ -52,6 +52,14 @@ public final class Delay {
         updateFeedback(newValue: settings.delayFeedback)
         updateCutoff(newValue: settings.delayCutoff)
         updateWetDryMix(newValue: settings.delayWetDryMix)
+    }
+
+    public func configure(_ config: DelayConfig) {
+        updateEnabled(newValue: config.enabled)
+        updateTime(newValue: config.time)
+        updateFeedback(newValue: config.feedback)
+        updateCutoff(newValue: config.cutoff)
+        updateWetDryMix(newValue: config.wetDryMix)
     }
 }
 

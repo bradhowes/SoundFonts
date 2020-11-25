@@ -21,7 +21,7 @@ public class LegacyPatch: Codable {
     let program: Int
 
     /// The index into the owning soundFont's patches array
-    var soundFontIndex: Int
+    let soundFontIndex: Int
 
     ///
     @DecodableDefault.True var isVisible: Bool

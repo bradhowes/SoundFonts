@@ -11,7 +11,7 @@ final class ReverbAU: AUAudioUnit {
     private let wrapped: AUAudioUnit
 
     public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
-    public var activeRoomPreset: Int = 0 { didSet { reverb.loadFactoryPreset(AppReverb.roomPresets[activeRoomPreset]) } }
+    public var activeRoomPreset: Int = 0 { didSet { reverb.loadFactoryPreset(Reverb.roomPresets[activeRoomPreset]) } }
 
     public init(componentDescription: AudioComponentDescription) throws {
         let log = Logging.logger("ReverbAU")
@@ -40,7 +40,7 @@ extension ReverbAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
         switch parameter.address {
-        case AudioUnitParameters.Address.roomPreset.rawValue: activeRoomPreset = min(max(0, Int(value)), AppReverb.roomPresets.count - 1)
+        case AudioUnitParameters.Address.roomPreset.rawValue: activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
         case AudioUnitParameters.Address.wetDryMix.rawValue: reverb.wetDryMix = value
         default: break
         }
