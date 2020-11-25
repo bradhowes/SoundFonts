@@ -297,7 +297,7 @@
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
-                                                                                    <action selector="changeDelayWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="heg-eU-h9C"/>
+                                                                                    <action selector="changeDelayWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xiw-KF-84l"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
@@ -333,6 +333,7 @@
                                 <constraints>
                                     <constraint firstItem="tyu-O2-3t2" firstAttribute="height" secondItem="UHf-8z-8DL" secondAttribute="height" id="8dh-V3-1eS"/>
                                     <constraint firstItem="UHf-8z-8DL" firstAttribute="leading" secondItem="4RI-js-GIc" secondAttribute="leading" id="PDE-lU-eOJ"/>
+                                    <constraint firstItem="UHf-8z-8DL" firstAttribute="centerX" secondItem="tQU-9E-SkR" secondAttribute="centerX" id="Qni-0l-34l"/>
                                     <constraint firstItem="4RI-js-GIc" firstAttribute="trailing" secondItem="UHf-8z-8DL" secondAttribute="trailing" id="c81-4T-iXb"/>
                                     <constraint firstItem="4RI-js-GIc" firstAttribute="bottom" secondItem="UHf-8z-8DL" secondAttribute="bottom" id="vNr-Pi-sQR"/>
                                     <constraint firstItem="UHf-8z-8DL" firstAttribute="top" secondItem="4RI-js-GIc" secondAttribute="top" id="voN-7U-Qie"/>

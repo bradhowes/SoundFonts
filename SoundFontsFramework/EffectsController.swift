@@ -30,6 +30,8 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayWetDryMix: Knob!
     @IBOutlet weak var delayMixLabel: UILabel!
 
+    private var activePatchManager: ActivePatchManager!
+
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
         reverbRoom.delegate = self
@@ -101,7 +103,7 @@ public final class EffectsController: UIViewController {
         settings.delayCutoff = value
     }
 
-    @IBAction func changeDelayWebDryMix(_ sender: Any) {
+    @IBAction func changeDelayWetDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
         delayMixLabel.showStatus(String(format: "%.0f", value) + "%")
         settings.delayWetDryMix = value
@@ -136,5 +138,31 @@ extension EffectsController: UIPickerViewDelegate {
 
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
+        activePatchManager = router.activePatchManager
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+    }
+}
+
+extension EffectsController {
+
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        guard case .active(old: _, new: _, playSample: _) = event else { return }
+        guard let patch = activePatchManager.patch else { return }
+        let reverbConfig = patch.reverbConfig
+        reverbRoom.selectRow(reverbConfig.room, inComponent: 0, animated: true)
+        reverbWetDryMix.value = reverbConfig.wetDryMix
+        changeReverbWebDryMix(self)
+        updateReverbState(reverbConfig.enabled)
+
+        let delayConfig = patch.delayConfig
+        delayTime.value = delayConfig.time
+        changeDelayTime(self)
+        delayFeedback.value = delayConfig.feedback
+        changeDelayFeedback(self)
+        delayCutoff.value = delayConfig.cutoff
+        changeDelayCutoff(self)
+        delayWetDryMix.value = delayConfig.wetDryMix
+        changeDelayWetDryMix(self)
+        updateDelayState(delayConfig.enabled)
     }
 }

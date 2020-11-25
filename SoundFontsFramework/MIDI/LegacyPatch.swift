@@ -23,8 +23,9 @@ public class LegacyPatch: Codable {
     /// The index into the owning soundFont's patches array
     let soundFontIndex: Int
 
-    ///
     @DecodableDefault.True var isVisible: Bool
+    @DecodableDefault.DefaultReverbConfig var reverbConfig: ReverbConfig
+    @DecodableDefault.DefaultDelayConfig var delayConfig: DelayConfig
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion

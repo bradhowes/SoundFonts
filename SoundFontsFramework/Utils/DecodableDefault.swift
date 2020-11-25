@@ -42,6 +42,7 @@ extension DecodableDefault {
     typealias Source = DecodableDefaultSource
     typealias List = Decodable & ExpressibleByArrayLiteral
     typealias Map = Decodable & ExpressibleByDictionaryLiteral
+
     enum Sources {
         enum True: Source { public static var defaultValue: Bool { true } }
         enum False: Source { public static var defaultValue: Bool { false } }
