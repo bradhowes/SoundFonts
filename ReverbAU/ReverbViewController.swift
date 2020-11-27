@@ -10,7 +10,6 @@ public final class ReverbViewController: AUViewController {
     private var parameterObserverToken: AUParameterObserverToken?
 
     @IBOutlet private weak var enabledButton: UIButton!
-    @IBOutlet private weak var enabledLED: UIView!
     @IBOutlet private weak var controls: UIStackView!
     @IBOutlet private weak var wetDryMix: Knob!
     @IBOutlet private weak var mixLabel: UILabel!
@@ -21,17 +20,11 @@ public final class ReverbViewController: AUViewController {
         super.viewDidLoad()
         room.dataSource = self
         room.delegate = self
-        updateReverbState(true)
+        updateState(true)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
-        for family: String in UIFont.familyNames {
-            print(family)
-            for names: String in UIFont.fontNames(forFamilyName: family) {
-                print("== \(names)")
-            }
-        }
     }
 
     @IBAction func changWetDryMix(_ sender: Any) {
@@ -42,7 +35,7 @@ public final class ReverbViewController: AUViewController {
 
     @IBAction func toggleEnabled(_ sender: UIButton) {
         let enabled = !wetDryMix.isEnabled
-        updateReverbState(enabled)
+        updateState(enabled)
     }
 }
 
@@ -115,10 +108,10 @@ extension ReverbViewController {
         mixLabel.showStatus(String(format: "%.0f", value) + "%")
     }
 
-    private func updateReverbState(_ enabled: Bool) {
-        enabledLED.backgroundColor = enabled ? .systemGreen  : .darkGray
+    private func updateState(_ enabled: Bool) {
         controls.alpha = enabled ? 1.0 : 0.5
         wetDryMix.isEnabled = enabled
         room.isUserInteractionEnabled = enabled
+        enabledButton.showEnabled(enabled)
     }
 }

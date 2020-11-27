@@ -70,6 +70,8 @@ private final class PresetChangeOperation: Operation {
             }
         }
 
+        afterLoadBlock?()
+
         isExecuting = false
         isFinished = true
     }

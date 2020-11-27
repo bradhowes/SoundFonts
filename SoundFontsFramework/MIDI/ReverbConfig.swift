@@ -1,29 +1,29 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-public struct ReverbConfig: Codable {
+public class ReverbConfig: NSObject, Codable {
+
     public let enabled: Bool
-    public let room: Int
+    public let preset: Int
     public let wetDryMix: Float
 
-    public init() {
-        enabled = false
-        room = 1
-        wetDryMix = 35.0
-    }
-
-    public init(room: Int, wetDryMix: Float) {
-        enabled = true
-        self.room = room
+    public init(enabled: Bool, preset: Int, wetDryMix: Float) {
+        self.enabled = enabled
+        self.preset = preset
         self.wetDryMix = wetDryMix
+        super.init()
     }
+
+    public convenience override init() {
+        self.init(enabled: false, preset: settings.reverbPreset, wetDryMix: settings.delayWetDryMix)
+    }
+
+    public func toggleEnabled() -> ReverbConfig { setEnabled(!enabled) }
+
+    func setEnabled(_ enabled: Bool) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    func setPreset(_ preset: Int) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    func setWetDryMix(_ wetDryMix: Float) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
 }
 
-extension DecodableDefault.Sources {
-    enum DefaultReverbConfig: DecodableDefaultSource {
-        public static var defaultValue: ReverbConfig { ReverbConfig() }
-    }
-}
-
-extension DecodableDefault {
-    typealias DefaultReverbConfig = Wrapper<Sources.DefaultReverbConfig>
+extension ReverbConfig {
+    public override var description: String { "<Reverb \(enabled) \(Reverb.roomNames[preset]) \(wetDryMix)>" }
 }

@@ -22,6 +22,8 @@ final class PatchesTableViewManager: NSObject {
     private let soundFonts: SoundFonts
     private let favorites: Favorites
     private let keyboard: Keyboard?
+    private let delay: Delay?
+    private let reverb: Reverb?
     private let infoBar: InfoBar
 
     private var viewPresets = [Int]()
@@ -29,7 +31,7 @@ final class PatchesTableViewManager: NSObject {
     private var sectionRowCounts = [Int]()
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager, selectedSoundFontManager: SelectedSoundFontManager,
-         soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?, infoBar: InfoBar) {
+         soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?, infoBar: InfoBar, delay: Delay?, reverb: Reverb?) {
         self.view = view
         self.searchBar = searchBar
         self.selectedSoundFontManager = selectedSoundFontManager
@@ -37,6 +39,8 @@ final class PatchesTableViewManager: NSObject {
         self.soundFonts = soundFonts
         self.favorites = favorites
         self.keyboard = keyboard
+        self.delay = delay
+        self.reverb = reverb
         self.infoBar = infoBar
         super.init()
 
@@ -473,7 +477,7 @@ extension PatchesTableViewManager {
     }
 
     private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Hide", color: .gray) { _, _, completionHandler in
+        return UIContextualAction(tag: "HideShield", color: .gray) { _, _, completionHandler in
             self.soundFonts.setVisibility(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex, state: false)
             self.viewPresets.remove(at: indexPath.presetIndex)
             self.view.performBatchUpdates({
@@ -487,24 +491,41 @@ extension PatchesTableViewManager {
         }
     }
 
+    private func createAdoptEffectsConfig(at indexPath: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
+        return UIContextualAction(tag: "Effects", color: .systemBlue) { _, _, completionHandler in
+            guard let delayConfig = self.delay?.active, let reverbConfig = self.reverb?.active else {
+                completionHandler(false)
+                return
+            }
+
+            self.soundFonts.setEffects(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex, delay: delayConfig, reverb: reverbConfig)
+            completionHandler(true)
+        }
+    }
+
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
-        return makeSwipeActionConfiguration(action: isFavored(soundFontAndPatch) ?
-                                                createEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
-                                                createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
+        var actions = [UIContextualAction]()
+        actions.append(isFavored(soundFontAndPatch) ?
+                        createEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+                        createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
+        if delay != nil || reverb != nil {
+            actions.append(createAdoptEffectsConfig(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
+        }
+        return makeSwipeActionConfiguration(actions: actions)
     }
 
     private func createTrailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
-        return makeSwipeActionConfiguration(action: isFavored(soundFontAndPatch) ?
-                                                createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
-                                                createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
+        return makeSwipeActionConfiguration(actions: [isFavored(soundFontAndPatch) ?
+                                                        createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+                                                        createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)])
     }
 
-    private func makeSwipeActionConfiguration(action: UIContextualAction) -> UISwipeActionsConfiguration {
-        let actions = UISwipeActionsConfiguration(actions: [action])
+    private func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
+        let actions = UISwipeActionsConfiguration(actions: actions)
         actions.performsFirstActionWithFullSwipe = false
         return actions
     }

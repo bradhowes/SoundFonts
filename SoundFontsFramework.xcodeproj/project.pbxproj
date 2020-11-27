@@ -162,6 +162,10 @@
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B99256E405E00F904E3 /* DelayConfig.swift */; };
 		BDE03B9E256E40DC00F904E3 /* ReverbConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */; };
+		BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */; };
+		BDE03BAA256F8F2200F904E3 /* DelayEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */; };
+		BDE03BAE256F8F9600F904E3 /* ReverbEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */; };
+		BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BB125706F2F00F904E3 /* UIButton.swift */; };
 		BDE150B1250B460200728402 /* ContextNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B0250B460200728402 /* ContextNotification.swift */; };
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
 		BDEA0B54255B0AA80097F1CE /* MIDIParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */; };
@@ -341,6 +345,10 @@
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
+		BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsManager.swift; sourceTree = "<group>"; };
+		BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayEffect.swift; sourceTree = "<group>"; };
+		BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbEffect.swift; sourceTree = "<group>"; };
+		BDE03BB125706F2F00F904E3 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIParser.swift; sourceTree = "<group>"; };
@@ -523,6 +531,7 @@
 				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
 				BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */,
 				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
+				BDE03BB125706F2F00F904E3 /* UIButton.swift */,
 				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
 				BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */,
 				BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */,
@@ -549,6 +558,9 @@
 				BD074C2E23CDAF51001987E9 /* Favorites.swift */,
 				BD074C3523CDAF51001987E9 /* FavoriteEditorDelegate.swift */,
 				BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */,
+				BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */,
+				BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */,
+				BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */,
 				BD074C3023CDAF51001987E9 /* FontEditorDelegate.swift */,
 				BD1F11B923FE625500AE9F3D /* GuideManager.swift */,
 				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
@@ -841,6 +853,7 @@
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* LegacyFavoriteCollection.swift in Sources */,
+				BDE03BAE256F8F9600F904E3 /* ReverbEffect.swift in Sources */,
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
@@ -849,6 +862,7 @@
 				BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */,
 				BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */,
 				BD074C7B23CDAF51001987E9 /* Foundation+Extensions.swift in Sources */,
+				BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */,
 				BD8A31502502E41E0077320F /* SoundFonts.xcdatamodeld in Sources */,
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
@@ -921,6 +935,7 @@
 				BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */,
 				BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */,
 				BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */,
+				BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */,
 				BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */,
 				BD0E206C2556B78900D36607 /* MIDIController.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
@@ -935,6 +950,7 @@
 				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BDE150B4250CC43A00728402 /* AppState.swift in Sources */,
+				BDE03BAA256F8F2200F904E3 /* DelayEffect.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* LegacyFavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */,
 				BD074C8223CDAF51001987E9 /* ActivePatchManager.swift in Sources */,

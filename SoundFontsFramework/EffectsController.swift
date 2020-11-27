@@ -11,15 +11,15 @@ import os
 public final class EffectsController: UIViewController {
     private let log = Logging.logger("Effects")
 
-    @IBOutlet weak var reverbEnabledLED: UIView!
     @IBOutlet weak var reverbEnabled: UIButton!
+    @IBOutlet weak var reverbGlobal: UIButton!
     @IBOutlet weak var reverbControls: UIStackView!
     @IBOutlet weak var reverbWetDryMix: Knob!
     @IBOutlet weak var reverbMixLabel: UILabel!
     @IBOutlet weak var reverbRoom: UIPickerView!
 
-    @IBOutlet weak var delayEnabledLED: UIView!
     @IBOutlet weak var delayEnabled: UIButton!
+    @IBOutlet weak var delayGlobal: UIButton!
     @IBOutlet weak var delayControls: UIStackView!
     @IBOutlet weak var delayTime: Knob!
     @IBOutlet weak var delayTimeLabel: UILabel!
@@ -30,7 +30,9 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayWetDryMix: Knob!
     @IBOutlet weak var delayMixLabel: UILabel!
 
-    private var activePatchManager: ActivePatchManager!
+    private var delay: Delay!
+    private var reverb: Reverb!
+    private var observers = [NSKeyValueObservation]()
 
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
@@ -49,47 +51,47 @@ public final class EffectsController: UIViewController {
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
         let enabled = !reverbWetDryMix.isEnabled
         updateReverbState(enabled)
+        if let reverb = self.reverb {
+            reverb.active = reverb.active.setEnabled(enabled)
+        }
     }
 
-    private func updateReverbState(_ enabled: Bool) {
-        reverbEnabledLED.backgroundColor = enabled ? .systemGreen  : .darkGray
-        reverbControls.alpha = enabled ? 1.0 : 0.5
-        reverbWetDryMix.isEnabled = enabled
-        reverbRoom.isUserInteractionEnabled = enabled
-        settings.reverbEnabled = enabled
+    @IBAction func toggleReverbGlobal(_ sender: UIButton) {
+        let value = !settings.reverbGlobal
+        reverbGlobal.showEnabled(value)
+        settings.reverbGlobal = value
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
         let enabled = !delayWetDryMix.isEnabled
         updateDelayState(enabled)
+        if let delay = self.delay {
+            delay.active = delay.active.setEnabled(enabled)
+        }
     }
 
-    private func updateDelayState(_ enabled: Bool) {
-        delayEnabledLED.backgroundColor = enabled ? .systemGreen  : .darkGray
-        delayControls.alpha = enabled ? 1.0 : 0.5
-        delayWetDryMix.isEnabled = enabled
-        delayTime.isEnabled = enabled
-        delayFeedback.isEnabled = enabled
-        delayCutoff.isEnabled = enabled
-        settings.delayEnabled = enabled
+    @IBAction func toggleDelayGlobal(_ sender: UIButton) {
+        let value = !settings.delayGlobal
+        delayGlobal.showEnabled(value)
+        settings.delayGlobal = value
     }
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
         let value = reverbWetDryMix.value
         reverbMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        settings.reverbWetDryMix = value
+        reverb.active = reverb.active.setWetDryMix(value)
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
         let value = delayTime.value
         delayTimeLabel.showStatus(String(format: "%.2f", value) + "s")
-        settings.delayTime = value
+        delay.active = delay.active.setTime(value)
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
         let value = delayFeedback.value
         delayFeedbackLabel.showStatus(String(format: "%.0f", value) + "%")
-        settings.delayFeedback = value
+        delay.active = delay.active.setFeedback(value)
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
@@ -100,13 +102,13 @@ public final class EffectsController: UIViewController {
         else {
             delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
-        settings.delayCutoff = value
+        delay.active = delay.active.setCutoff(value)
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
         delayMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        settings.delayWetDryMix = value
+        delay.active = delay.active.setWetDryMix(value)
     }
 }
 
@@ -119,7 +121,7 @@ extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
-        settings.reverbPreset = Reverb.roomPresets[row].rawValue
+        reverb.active = reverb.active.setPreset(row)
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -138,31 +140,54 @@ extension EffectsController: UIPickerViewDelegate {
 
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
-        activePatchManager = router.activePatchManager
-        activePatchManager.subscribe(self, notifier: activePatchChange)
+
+        if let delay = router.delay {
+            self.delay = delay
+            observers.append(delay.observe(\.active, options: .new) { _, change in
+                guard let newValue = change.newValue, settings.delayGlobal == false else { return }
+                DispatchQueue.main.async { self.update(config: newValue) }
+            })
+        }
+
+        if let reverb = router.reverb {
+            self.reverb = reverb
+            observers.append(reverb.observe(\.active, options: .new) { _, change in
+                guard let newValue = change.newValue, settings.reverbGlobal == false else { return }
+                DispatchQueue.main.async { self.update(config: newValue) }
+            })
+        }
     }
 }
 
 extension EffectsController {
 
-    private func activePatchChange(_ event: ActivePatchEvent) {
-        guard case .active(old: _, new: _, playSample: _) = event else { return }
-        guard let patch = activePatchManager.patch else { return }
-        let reverbConfig = patch.reverbConfig
-        reverbRoom.selectRow(reverbConfig.room, inComponent: 0, animated: true)
-        reverbWetDryMix.value = reverbConfig.wetDryMix
-        changeReverbWebDryMix(self)
-        updateReverbState(reverbConfig.enabled)
-
-        let delayConfig = patch.delayConfig
-        delayTime.value = delayConfig.time
-        changeDelayTime(self)
-        delayFeedback.value = delayConfig.feedback
-        changeDelayFeedback(self)
-        delayCutoff.value = delayConfig.cutoff
-        changeDelayCutoff(self)
-        delayWetDryMix.value = delayConfig.wetDryMix
-        changeDelayWetDryMix(self)
-        updateDelayState(delayConfig.enabled)
+    private func update(config: ReverbConfig) {
+        reverbWetDryMix.value = config.wetDryMix
+        updateReverbState(config.enabled)
     }
+
+    private func updateReverbState(_ enabled: Bool) {
+        reverbEnabled.showEnabled(enabled)
+        reverbControls.alpha = enabled ? 1.0 : 0.5
+        reverbWetDryMix.isEnabled = enabled
+        reverbRoom.isUserInteractionEnabled = enabled
+    }
+
+    private func update(config: DelayConfig) {
+        delayTime.value = config.time
+        delayFeedback.value = config.feedback
+        delayCutoff.value = config.cutoff
+        delayWetDryMix.value = config.wetDryMix
+        updateDelayState(config.enabled)
+    }
+
+    private func updateDelayState(_ enabled: Bool) {
+        delayEnabled.showEnabled(enabled)
+        delayControls.alpha = enabled ? 1.0 : 0.5
+        delayWetDryMix.isEnabled = enabled
+        delayTime.isEnabled = enabled
+        delayFeedback.isEnabled = enabled
+        delayCutoff.isEnabled = enabled
+    }
+
 }

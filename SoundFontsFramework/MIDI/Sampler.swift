@@ -32,6 +32,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     private let mode: Mode
     private let activePatchManager: ActivePatchManager
+    private let reverb: Reverb?
+    private let delay: Delay?
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
     private var auSampler: AVAudioUnitSampler?
@@ -49,9 +51,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter mode: determines how the sampler is hosted.
      */
-    public init(mode: Mode, activePatchManager: ActivePatchManager) {
+    public init(mode: Mode, activePatchManager: ActivePatchManager, reverb: Reverb?, delay: Delay?) {
         self.mode = mode
         self.activePatchManager = activePatchManager
+        self.reverb = reverb
+        self.delay = delay
         super.init()
     }
 
@@ -97,13 +101,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
 
-            let reverbEffect = Reverb()
-            let reverb = reverbEffect.audioUnit
+            guard let reverb = self.reverb?.audioUnit else { fatalError("unexpectd nil Reverb") }
             engine.attach(reverb)
             engine.connect(reverb, to: engine.mainMixerNode, format: nil)
 
-            let delayEffect = Delay()
-            let delay = delayEffect.audioUnit
+            guard let delay = self.delay?.audioUnit else { fatalError("unexpectd nil Delay") }
             engine.attach(delay)
             engine.connect(delay, to: reverb, format: nil)
             engine.connect(sampler, to: delay, format: nil)
@@ -142,9 +144,21 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
                 self.setGain(fav.gain)
                 self.setPan(fav.pan)
             }
+
+            if let delay = self.delay {
+                let config = patch.delayConfig ?? delay.active.toggleEnabled()
+                delay.active = config
+            }
+
+            if let reverb = self.reverb {
+                let config = patch.reverbConfig ?? reverb.active.toggleEnabled()
+                reverb.active = config
+            }
+
             self.loaded = true
-            afterLoadBlock?()
+
             DispatchQueue.main.async {
+                afterLoadBlock?()
                 self.notify(.loaded(patch: self.activePatchManager.active))
             }
         }

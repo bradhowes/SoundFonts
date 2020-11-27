@@ -9,11 +9,12 @@ import os
  Reverberation audio effect by way of Apple's AVAudioUnitReverb component. Configuration of the reverb is maintained in UserDefaults so this is only useful in the application
  setting -- the AUv3 app extension component relies on AUv3 presets to do this instead.
  */
-public final class Reverb {
+public final class Reverb: NSObject {
     private lazy var log = Logging.logger("Reverb")
 
-    public let audioUnit: AVAudioUnitReverb
-    private var observers = [NSKeyValueObservation]()
+    public let audioUnit = AVAudioUnitReverb()
+    public private(set) var presets = [String: ReverbConfig]()
+    @objc public dynamic var active: ReverbConfig { didSet { update() } }
 
     public static let roomNames = [
         "Room 1", // smallRoom
@@ -47,51 +48,31 @@ public final class Reverb {
         .plate
     ]
 
-    public init() {
-        self.audioUnit = AVAudioUnitReverb()
+    public override init() {
+        self.active = ReverbConfig(enabled: settings.reverbEnabled, preset: settings.reverbPreset, wetDryMix: settings.reverbWetDryMix)
+        super.init()
+        update()
+    }
+}
 
-        observers.append(settings.observe(\.reverbPreset, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "preset: %d", newValue)
-            self.updatePreset(newValue: newValue)
-        })
+extension Reverb: ReverbEffect {
 
-        observers.append(settings.observe(\.reverbWetDryMix, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "wetDry: %f", newValue)
-            self.updateWetDryMix(newValue: newValue)
-        })
-
-        observers.append(settings.observe(\.reverbEnabled, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "enabled: %d", newValue)
-            self.updateEnabled(newValue: newValue)
-        })
-
-        updatePreset(newValue: settings.reverbPreset)
-        updateWetDryMix(newValue: settings.reverbWetDryMix)
-        updateEnabled(newValue: settings.reverbEnabled)
+    public func savePreset(name: String, config: ReverbConfig) {
+        presets[name] = config
     }
 
-    public func configure(_ config: ReverbConfig) {
-        updateEnabled(newValue: config.enabled)
-        updatePreset(newValue: config.room)
-        updateWetDryMix(newValue: config.wetDryMix)
+    public func removePreset(name: String) {
+        presets.removeValue(forKey: name)
     }
 }
 
 extension Reverb {
 
-    private func updateEnabled(newValue: Bool) {
-        audioUnit.wetDryMix = newValue ? settings.reverbWetDryMix : 0.0
-    }
-
-    private func updatePreset(newValue: Int) {
-        guard let preset = AVAudioUnitReverbPreset(rawValue: newValue) else { fatalError("invalid preseet enum value - \(newValue)") }
+    private func update() {
+        // audioUnit.bypass = !active.enabled
+        // audioUnit.wetDryMix = active.wetDryMix
+        audioUnit.wetDryMix = active.enabled ? active.wetDryMix : 0.0
+        guard let preset = AVAudioUnitReverbPreset(rawValue: active.preset) else { fatalError("invalid preseet enum value - \(active.preset)") }
         audioUnit.loadFactoryPreset(preset)
-    }
-
-    private func updateWetDryMix(newValue: Float) {
-        audioUnit.wetDryMix = newValue
     }
 }
