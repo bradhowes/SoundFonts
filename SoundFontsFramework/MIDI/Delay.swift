@@ -42,9 +42,15 @@ extension Delay {
 
     private func update() {
         audioUnit.bypass = !active.enabled
-        audioUnit.wetDryMix = active.wetDryMix // active.enabled ? active.wetDryMix : 0.0
+        audioUnit.wetDryMix = active.wetDryMix
         audioUnit.delayTime = Double(active.time)
         audioUnit.feedback = active.feedback
         audioUnit.lowPassCutoff = active.cutoff
+
+        settings.delayEnabled = active.enabled
+        settings.delayWetDryMix = active.wetDryMix
+        settings.delayTime = active.time
+        settings.delayFeedback = active.feedback
+        settings.delayCutoff = active.cutoff
     }
 }

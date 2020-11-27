@@ -127,6 +127,7 @@ extension LegacySoundFontsManager: SoundFonts {
         save()
     }
 
+    #if ATTACHED_EFFECTS
     public func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig, reverb: ReverbConfig) {
         os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s", key.uuidString, index, delay.description, reverb.description)
         guard let soundFont = getBy(key: key) else { return }
@@ -144,6 +145,7 @@ extension LegacySoundFontsManager: SoundFonts {
         patch.reverbConfig = nil
         save()
     }
+    #endif
 
     public func makeAllVisible(key: LegacySoundFont.Key) {
         guard let soundFont = getBy(key: key) else { return }

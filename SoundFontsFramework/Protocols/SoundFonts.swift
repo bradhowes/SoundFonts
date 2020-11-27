@@ -95,6 +95,7 @@ public protocol SoundFonts: class {
      */
     func makeAllVisible(key: LegacySoundFont.Key)
 
+    #if ATTACHED_EFFECTS
     /**
      Attach effect configurations to a preset.
 
@@ -112,6 +113,7 @@ public protocol SoundFonts: class {
      - parameter index: the index of the preset in the SoundFont to change
      */
     func dropEffects(key: LegacySoundFont.Key, index: Int)
+    #endif
 
     /// Determine if there are any bundled fonts in the collection
     var hasAnyBundled: Bool { get }
