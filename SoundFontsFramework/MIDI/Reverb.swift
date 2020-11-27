@@ -69,10 +69,12 @@ extension Reverb: ReverbEffect {
 extension Reverb {
 
     private func update() {
-        // audioUnit.bypass = !active.enabled
-        // audioUnit.wetDryMix = active.wetDryMix
         audioUnit.wetDryMix = active.enabled ? active.wetDryMix : 0.0
         guard let preset = AVAudioUnitReverbPreset(rawValue: active.preset) else { fatalError("invalid preseet enum value - \(active.preset)") }
         audioUnit.loadFactoryPreset(preset)
+
+        settings.reverbEnabled = active.enabled
+        settings.reverbPreset = active.preset
+        settings.reverbWetDryMix = active.wetDryMix
     }
 }

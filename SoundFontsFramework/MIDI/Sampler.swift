@@ -145,6 +145,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
                 self.setPan(fav.pan)
             }
 
+            #if ATTACHED_EFFECTS
             if let delay = self.delay {
                 let config = patch.delayConfig ?? delay.active.toggleEnabled()
                 delay.active = config
@@ -154,6 +155,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
                 let config = patch.reverbConfig ?? reverb.active.toggleEnabled()
                 reverb.active = config
             }
+            #endif
 
             self.loaded = true
 
