@@ -34,10 +34,10 @@ public extension SettingKeys {
 
     static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
     static let delayGlobal = SettingKey("delayGlobal", defaultValue: false)
-    static let delayTime = SettingKey("delayTime", defaultValue: Float(1.0))
-    static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(50.0))
+    static let delayTime = SettingKey("delayTime", defaultValue: Float(0.19))
+    static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(-75.0))
     static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(15000.0))
-    static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(35.0))
+    static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
 
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 }
