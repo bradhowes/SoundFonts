@@ -7,11 +7,12 @@ import SoundFontsFramework
 
 final class DelayAU: AUAudioUnit {
     private let log: OSLog
-    private let delay: AVAudioUnitDelay
+    private let delay = AVAudioUnitDelay()
     private let wrapped: AUAudioUnit
-    private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
-    public init(componentDescription: AudioComponentDescription, delay: Delay) throws {
+    public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
+
+    public init(componentDescription: AudioComponentDescription) throws {
         let log = Logging.logger("DelayAU")
         self.log = log
 
@@ -19,8 +20,7 @@ final class DelayAU: AUAudioUnit {
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
 
-        self.delay = delay.audioUnit
-        self.wrapped = delay.audioUnit.auAudioUnit
+        self.wrapped = delay.auAudioUnit
 
         do {
             try super.init(componentDescription: componentDescription, options: [])

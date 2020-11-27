@@ -17,7 +17,10 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let favoritesConfigFile: FavoritesConfigFile
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
+    public let delay: Delay?
+    public let reverb: Reverb?
     public let sampler: Sampler
+    public let inApp: Bool
 
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
@@ -27,7 +30,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
     private var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
-    private var effectsController: EffectsController! { didSet { oneTimeSet(oldValue) } }
+    private var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
 
     public var infoBar: InfoBar { infoBarController }
     public var keyboard: Keyboard? { keyboardController }
@@ -40,7 +43,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var _alertManager: AlertManager?
 
     public init(inApp: Bool) {
-
+        self.inApp = inApp
         self.askForReview = AskForReview(isMain: inApp)
 
         self.soundFontsConfigFile = SoundFontsConfigFile()
@@ -54,7 +57,12 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
 
-        self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager)
+        let reverb = inApp ? Reverb() : nil
+        self.reverb = reverb
+        let delay = inApp ? Delay() : nil
+        self.delay = delay
+
+        self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager, reverb: reverb, delay: delay)
 
         self.soundFonts.subscribe(favoritesManager) { event in
             if case let .removed(_, soundFont) = event {
@@ -100,7 +108,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         keyboardController?.establishConnections(self)
         guideController.establishConnections(self)
         soundFontsControlsController.establishConnections(self)
-        effectsController.establishConnections(self)
+        effectsController?.establishConnections(self)
         mainViewController.establishConnections(self)
     }
 }
@@ -114,7 +122,6 @@ extension Components {
         precondition(soundFontsController != nil, "nil SoundFontsViewController")
         precondition(favoritesController != nil, "nil FavoritesViewController")
         precondition(infoBarController != nil, "nil InfoBarController")
-        precondition(effectsController != nil, "nil InfoBarController")
     }
 
     private func oneTimeSet<T>(_ oldValue: T?) {

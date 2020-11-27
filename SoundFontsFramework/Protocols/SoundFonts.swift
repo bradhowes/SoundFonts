@@ -79,9 +79,39 @@ public protocol SoundFonts: class {
      */
     func rename(index: Int, name: String)
 
+    /**
+     Set the visibility of a preset.
+
+     - parameter key: the unique key of the SoundFont to change
+     - parameter index: the index of the preset in the SoundFont to change
+     - parameter state: the new visibility state for the preset
+     */
     func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool)
 
+    /**
+     Make all presets of a given SoundFont visible.
+
+     - parameter key: the unique key of the SoundFont to change
+     */
     func makeAllVisible(key: LegacySoundFont.Key)
+
+    /**
+     Attach effect configurations to a preset.
+
+     - parameter key: the unique key of the SoundFont to change
+     - parameter index: the index of the preset in the SoundFont to change
+     - parameter delay: the configuration for the delay
+     - parameter reverb: the configuration for the reverb
+     */
+    func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig, reverb: ReverbConfig)
+
+    /**
+     Remove any effect configurations attached to a preset.
+
+     - parameter key: the unique key of the SoundFont to change
+     - parameter index: the index of the preset in the SoundFont to change
+     */
+    func dropEffects(key: LegacySoundFont.Key, index: Int)
 
     /// Determine if there are any bundled fonts in the collection
     var hasAnyBundled: Bool { get }

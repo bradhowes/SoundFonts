@@ -127,6 +127,24 @@ extension LegacySoundFontsManager: SoundFonts {
         save()
     }
 
+    public func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig, reverb: ReverbConfig) {
+        os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s", key.uuidString, index, delay.description, reverb.description)
+        guard let soundFont = getBy(key: key) else { return }
+        let patch = soundFont.patches[index]
+        patch.delayConfig = delay
+        patch.reverbConfig = reverb
+        save()
+    }
+
+    public func dropEffects(key: LegacySoundFont.Key, index: Int) {
+        os_log(.debug, log: log, "dropEffects - %{public}s %d %{public}s %{public}s")
+        guard let soundFont = getBy(key: key) else { return }
+        let patch = soundFont.patches[index]
+        patch.delayConfig = nil
+        patch.reverbConfig = nil
+        save()
+    }
+
     public func makeAllVisible(key: LegacySoundFont.Key) {
         guard let soundFont = getBy(key: key) else { return }
         for preset in soundFont.patches.filter({ $0.isVisible == false}) {

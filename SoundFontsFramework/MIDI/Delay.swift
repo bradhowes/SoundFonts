@@ -8,80 +8,43 @@ import os
 /**
  Delay audio effect.
  */
-public final class Delay {
-    private lazy var log = Logging.logger("AppDelay")
+public final class Delay: NSObject {
+    private lazy var log = Logging.logger("Delay")
 
-    public let audioUnit: AVAudioUnitDelay
-    private var observers = [NSKeyValueObservation]()
-
-    public init() {
-        self.audioUnit = AVAudioUnitDelay()
-
-        observers.append(settings.observe(\.delayTime, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "time: %d", newValue)
-            self.updateTime(newValue: newValue)
-        })
-
-        observers.append(settings.observe(\.delayFeedback, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "feedback: %d", newValue)
-            self.updateFeedback(newValue: newValue)
-        })
-
-        observers.append(settings.observe(\.delayCutoff, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "feedback: %d", newValue)
-            self.updateCutoff(newValue: newValue)
-        })
-
-        observers.append(settings.observe(\.delayWetDryMix, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "wetDry: %f", newValue)
-            self.updateWetDryMix(newValue: newValue)
-        })
-
-        observers.append(settings.observe(\.delayEnabled, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            os_log(.info, log: self.log, "enabled: %d", newValue)
-            self.updateEnabled(newValue: newValue)
-        })
-
-        updateEnabled(newValue: settings.delayEnabled)
-        updateTime(newValue: settings.delayTime)
-        updateFeedback(newValue: settings.delayFeedback)
-        updateCutoff(newValue: settings.delayCutoff)
-        updateWetDryMix(newValue: settings.delayWetDryMix)
+    public let audioUnit = AVAudioUnitDelay()
+    public private(set) var presets = [String: DelayConfig]()
+    @objc public dynamic var active: DelayConfig {
+        didSet {
+            update()
+        }
     }
 
-    public func configure(_ config: DelayConfig) {
-        updateEnabled(newValue: config.enabled)
-        updateTime(newValue: config.time)
-        updateFeedback(newValue: config.feedback)
-        updateCutoff(newValue: config.cutoff)
-        updateWetDryMix(newValue: config.wetDryMix)
+    public override init() {
+        self.active = DelayConfig(enabled: settings.delayEnabled, time: settings.delayTime, feedback: settings.delayFeedback, cutoff: settings.delayCutoff,
+                                  wetDryMix: settings.delayWetDryMix)
+        super.init()
+        update()
+    }
+}
+
+extension Delay: DelayEffect {
+
+    public func savePreset(name: String, config: DelayConfig) {
+        presets[name] = config
+    }
+
+    public func removePreset(name: String) {
+        presets.removeValue(forKey: name)
     }
 }
 
 extension Delay {
 
-    private func updateEnabled(newValue: Bool) {
-        audioUnit.wetDryMix = newValue ? settings.delayWetDryMix : 0.0
-    }
-
-    private func updateTime(newValue: Float) {
-        audioUnit.delayTime = Double(newValue)
-    }
-
-    private func updateFeedback(newValue: Float) {
-        audioUnit.feedback = newValue
-    }
-
-    private func updateCutoff(newValue: Float) {
-        audioUnit.lowPassCutoff = newValue
-    }
-
-    private func updateWetDryMix(newValue: Float) {
-        audioUnit.wetDryMix = newValue
+    private func update() {
+        audioUnit.bypass = !active.enabled
+        audioUnit.wetDryMix = active.wetDryMix // active.enabled ? active.wetDryMix : 0.0
+        audioUnit.delayTime = Double(active.time)
+        audioUnit.feedback = active.feedback
+        audioUnit.lowPassCutoff = active.cutoff
     }
 }

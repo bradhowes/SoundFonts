@@ -23,9 +23,14 @@ public class LegacyPatch: Codable {
     /// The index into the owning soundFont's patches array
     let soundFontIndex: Int
 
+    /// Determines the visiblity of a preset in a UI view.
     @DecodableDefault.True var isVisible: Bool
-    @DecodableDefault.DefaultReverbConfig var reverbConfig: ReverbConfig
-    @DecodableDefault.DefaultDelayConfig var delayConfig: DelayConfig
+
+    /// The reverb configuration attached to the preset
+    var reverbConfig: ReverbConfig?
+
+    // The delay configuration attached to the preset
+    var delayConfig: DelayConfig?
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion

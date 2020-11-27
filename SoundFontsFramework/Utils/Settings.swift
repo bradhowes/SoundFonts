@@ -28,10 +28,12 @@ public extension SettingKeys {
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
 
     static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
+    static let reverbGlobal = SettingKey("reverbGlobal", defaultValue: false)
     static let reverbPreset = SettingKey("reverbPreset", defaultValue: 1)
     static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(35.0))
 
     static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
+    static let delayGlobal = SettingKey("delayGlobal", defaultValue: false)
     static let delayTime = SettingKey("delayTime", defaultValue: Float(1.0))
     static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(50.0))
     static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(15000.0))
@@ -103,9 +105,17 @@ public extension UserDefaults {
         get { self[.midiChannel] }
         set { self[.midiChannel] = newValue }
     }
+    @objc dynamic var showEffects: Bool {
+        get { self[.showEffects] }
+        set { self[.showEffects] = newValue }
+    }
     @objc dynamic var reverbEnabled: Bool {
         get { self[.reverbEnabled] }
         set { self[.reverbEnabled] = newValue }
+    }
+    @objc dynamic var reverbGlobal: Bool {
+        get { self[.reverbGlobal] }
+        set { self[.reverbGlobal] = newValue }
     }
     @objc dynamic var reverbPreset: Int {
         get { self[.reverbPreset] }
@@ -115,13 +125,13 @@ public extension UserDefaults {
         get { self[.reverbWetDryMix] }
         set { self[.reverbWetDryMix] = newValue }
     }
-    @objc dynamic var showEffects: Bool {
-        get { self[.showEffects] }
-        set { self[.showEffects] = newValue }
-    }
     @objc dynamic var delayEnabled: Bool {
         get { self[.delayEnabled] }
         set { self[.delayEnabled] = newValue }
+    }
+    @objc dynamic var delayGlobal: Bool {
+        get { self[.delayGlobal] }
+        set { self[.delayGlobal] = newValue }
     }
     @objc dynamic var delayTime: Float {
         get { self[.delayTime] }
