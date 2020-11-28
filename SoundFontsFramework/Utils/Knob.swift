@@ -15,83 +15,59 @@ import os
 @IBDesignable open class Knob: UIControl {
 
     /// The minimum value reported by the control.
-    @IBInspectable open var minimumValue: Float = 0.0 { didSet { clampValue(valueStore) }}
-    /// The maximum value reported by the control.
-    @IBInspectable open var maximumValue: Float = 1.0 { didSet { clampValue(valueStore) }}
-    /// The current value of the control.
-    @IBInspectable open var value: Float { get { valueStore } set { clampValue(newValue) } }
+    @IBInspectable open var minimumValue: Float = 0.0 { didSet { setValue(clampedValue(value)) }}
 
-    /// How much travel is need to move 4x the width or height of the knob to go from minimumValue to maximumValue. By default this is 4x the knob
-    /// size.
+    /// The maximum value reported by the control.
+    @IBInspectable open var maximumValue: Float = 1.0 { didSet { setValue(clampedValue(value)) }}
+
+    /// The current value of the control.
+    @IBInspectable open var value: Float = 0.0 {
+        didSet {
+            value = clampedValue(value)
+            draw()
+        }
+    }
+
+    /// How much travel is need to move 4x the width or height of the knob to go from minimumValue to maximumValue. By default this is 4x the knob size.
     @IBInspectable open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
-    @IBInspectable open var trackLineWidth: CGFloat = 4 {
-        didSet {
-            trackLayer.lineWidth = trackLineWidth
-            draw()
-        }
-    }
+    @IBInspectable open var trackLineWidth: CGFloat = 4 { didSet { trackLayer.lineWidth = trackLineWidth } }
 
     /// The color of the arc shown after the current value.
-    @IBInspectable open var trackColor: UIColor = .darkGray {
-        didSet {
-            trackLayer.strokeColor = trackColor.cgColor
-            draw()
-        }
-    }
+    @IBInspectable open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
 
     /// The width of the arc from the start up to the current value.
-    @IBInspectable open var progressLineWidth: CGFloat = 2 {
-        didSet {
-            progressLayer.lineWidth = progressLineWidth
-            draw()
-        }
-    }
+    @IBInspectable open var progressLineWidth: CGFloat = 2 { didSet { progressLayer.lineWidth = progressLineWidth } }
 
     /// The color of the arc from the start up to the current value.
-    @IBInspectable open var progressColor: UIColor = .systemTeal {
-        didSet {
-            progressLayer.strokeColor = progressColor.cgColor
-            draw()
-        }
-    }
+    @IBInspectable open var progressColor: UIColor = .systemTeal { didSet { progressLayer.strokeColor = progressColor.cgColor } }
 
     /// The width of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorLineWidth: CGFloat = 2 {
-        didSet {
-            indicatorLayer.lineWidth = indicatorLineWidth
-            draw()
-        }
-    }
+    @IBInspectable open var indicatorLineWidth: CGFloat = 2 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
 
     /// The color of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorColor: UIColor = .systemTeal {
-        didSet {
-            indicatorLayer.strokeColor = indicatorColor.cgColor
-            draw()
-        }
-    }
+    @IBInspectable open var indicatorColor: UIColor = .systemTeal { didSet { indicatorLayer.strokeColor = indicatorColor.cgColor } }
 
     /// The proportion of the radial line drawn from the current value on the arc towards the arc center.
     /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
     /// starting from the arc.
-    @IBInspectable open var indicatorLineLength: CGFloat = 0.3 { didSet { draw() } }
+    @IBInspectable open var indicatorLineLength: CGFloat = 0.3 { didSet { create() } }
 
     /// The starting angle of the arc where a value of 0.0 is located. Arc angles are explained in the UIBezier documentation
     /// for init(arcCenter:radius:startAngle:endAngle:clockwise:). In short, a value of 0.0 will start on the positive X axis,
     /// a positive PI/2 will lie on the negative Y axis. The default values will leave a small gap at the bottom.
-    @IBInspectable open var startAngle: CGFloat = -CGFloat.pi * 2.0 * 11 / 16.0 { didSet { draw() } }
+    @IBInspectable open var startAngle: CGFloat = -CGFloat.pi * 2.0 * 11 / 16.0 { didSet { create() } }
 
     /// The ending angle of the arc where a value of 1.0 is located. See `startAngle` for additional info.
-    @IBInspectable open var endAngle: CGFloat = CGFloat.pi * 2.0 * 3.0 / 16.0 { didSet { draw() } }
+    @IBInspectable open var endAngle: CGFloat = CGFloat.pi * 2.0 * 3.0 / 16.0 { didSet { create() } }
 
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
     private let indicatorLayer = CAShapeLayer()
 
     private var panOrigin: CGPoint = .zero
-    private var valueStore: Float = 0.0 { didSet { draw() } }
+    private var activeTouch: Bool = false
 
     /**
      Construction from an encoded representation.
@@ -125,7 +101,12 @@ import os
         progressLayer.position = trackLayer.position
         indicatorLayer.bounds = trackLayer.bounds
         indicatorLayer.position = trackLayer.position
-        draw()
+        create()
+    }
+
+    public func setValue(_ value: Float, animated: Bool = false) {
+        self.value = clampedValue(value)
+        draw(animated: animated)
     }
 }
 
@@ -133,6 +114,7 @@ extension Knob {
 
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         panOrigin = touch.location(in: self)
+        activeTouch = true
         sendActions(for: .valueChanged) // Done so we will see the value of the knob when it is first touched.
         return true
     }
@@ -150,7 +132,14 @@ extension Knob {
         return true
     }
 
+    override open func cancelTracking(with event: UIEvent?) {
+        activeTouch = false
+        super.cancelTracking(with: event)
+        sendActions(for: .valueChanged)
+    }
+
     override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+        activeTouch = false
         super.endTracking(touch, with: event)
         sendActions(for: .valueChanged)
     }
@@ -175,10 +164,9 @@ extension Knob {
 
         indicatorLayer.lineWidth = indicatorLineWidth
         indicatorLayer.strokeColor = indicatorColor.cgColor
-
     }
 
-    private func draw() {
+    private func create() {
         let center = CGPoint(x: trackLayer.bounds.width / 2, y: trackLayer.bounds.height / 2)
         let radius = (min(trackLayer.bounds.width, trackLayer.bounds.height) / 2) - trackLineWidth
         let ring = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
@@ -191,24 +179,33 @@ extension Knob {
         indicatorLayer.path = pointer.cgPath
         indicatorLayer.lineCap = .round
 
-        let angle = CGFloat(angleForValue(value))
-        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: angle, clockwise: true)
-        progressLayer.path = progressRing.cgPath
+        let progressRing = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         progressLayer.lineCap = .round
+        progressLayer.path = progressRing.cgPath
+        progressLayer.strokeStart = 0.0
+        progressLayer.strokeEnd = 0.0
 
+        draw()
+    }
+
+    private func draw(animated: Bool = false) {
         CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        indicatorLayer.transform = CATransform3DMakeRotation(angle, 0, 0, 1)
+
+        if !activeTouch && animated {
+            CATransaction.setAnimationDuration(0.3)
+        }
+
+        progressLayer.strokeEnd = CGFloat((value - minimumValue) / (maximumValue - minimumValue))
+        indicatorLayer.transform = CATransform3DMakeRotation(angleForValue, 0, 0, 1)
+
         CATransaction.commit()
     }
 
-    private func angleForValue(_ value: Float) -> CGFloat {
+    private var angleForValue: CGFloat {
         let angleRange = endAngle - startAngle
         let valueRange = CGFloat(maximumValue - minimumValue)
         return CGFloat(self.value - minimumValue) / valueRange * angleRange + startAngle
     }
 
-    private func clampValue(_ value: Float) {
-        valueStore = min(maximumValue, max(minimumValue, value))
-    }
+    private func clampedValue(_ value: Float) -> Float { min(maximumValue, max(minimumValue, value)) }
 }

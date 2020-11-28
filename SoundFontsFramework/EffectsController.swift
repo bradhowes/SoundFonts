@@ -47,7 +47,8 @@ public final class EffectsController: UIViewController {
         delayWetDryMix.value = settings.delayWetDryMix
         updateDelayState(settings.delayEnabled)
 
-        #if !ATTACH_EFFECTS
+        #if !ATTACHED_EFFECTS
+        #error("Bad configuration")
         reverbGlobal.isHidden = true
         delayGlobal.isHidden = true
         #endif
@@ -166,33 +167,47 @@ extension EffectsController: ControllerConfiguration {
 
 extension EffectsController {
 
+    private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
+
     private func update(config: ReverbConfig) {
-        reverbWetDryMix.value = config.wetDryMix
+        reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
+        reverbWetDryMix.setValue(config.wetDryMix, animated: true)
         updateReverbState(config.enabled)
     }
 
     private func updateReverbState(_ enabled: Bool) {
-        reverbEnabled.showEnabled(enabled)
-        reverbControls.alpha = enabled ? 1.0 : 0.5
-        reverbWetDryMix.isEnabled = enabled
-        reverbRoom.isUserInteractionEnabled = enabled
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+        animator.addAnimations {
+            self.reverbEnabled.showEnabled(enabled)
+            self.reverbGlobal.isEnabled = enabled
+            self.reverbGlobal.isUserInteractionEnabled = enabled
+            self.reverbControls.alpha = self.alpha(for: enabled)
+            self.reverbWetDryMix.isEnabled = enabled
+            self.reverbRoom.isUserInteractionEnabled = enabled
+        }
+        animator.startAnimation()
     }
 
     private func update(config: DelayConfig) {
-        delayTime.value = config.time
-        delayFeedback.value = config.feedback
-        delayCutoff.value = config.cutoff
-        delayWetDryMix.value = config.wetDryMix
+        delayTime.setValue(config.time, animated: true)
+        delayFeedback.setValue(config.feedback, animated: true)
+        delayCutoff.setValue(config.cutoff, animated: true)
+        delayWetDryMix.setValue(config.wetDryMix, animated: true)
         updateDelayState(config.enabled)
     }
 
     private func updateDelayState(_ enabled: Bool) {
-        delayEnabled.showEnabled(enabled)
-        delayControls.alpha = enabled ? 1.0 : 0.5
-        delayWetDryMix.isEnabled = enabled
-        delayTime.isEnabled = enabled
-        delayFeedback.isEnabled = enabled
-        delayCutoff.isEnabled = enabled
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+        animator.addAnimations {
+            self.delayEnabled.showEnabled(enabled)
+            self.delayGlobal.isEnabled = enabled
+            self.delayGlobal.isUserInteractionEnabled = enabled
+            self.delayControls.alpha = self.alpha(for: enabled)
+            self.delayWetDryMix.isEnabled = enabled
+            self.delayTime.isEnabled = enabled
+            self.delayFeedback.isEnabled = enabled
+            self.delayCutoff.isEnabled = enabled
+        }
+        animator.startAnimation()
     }
-
 }

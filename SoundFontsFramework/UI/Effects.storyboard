@@ -57,6 +57,9 @@
                                                                         <state key="normal" title=" Global" image="EffectOff">
                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                         </state>
+                                                                        <state key="disabled">
+                                                                            <color key="titleColor" red="0.39096304770000001" green="0.82518488170000004" blue="1" alpha="0.70740857661165146" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                        </state>
                                                                         <connections>
                                                                             <action selector="toggleReverbGlobal:" destination="erm-79-XXa" eventType="touchUpInside" id="icz-Bq-6ij"/>
                                                                         </connections>
@@ -147,6 +150,9 @@
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                                         <state key="normal" title=" Global" image="EffectOff">
                                                                             <color key="titleColor" systemColor="systemTealColor"/>
+                                                                        </state>
+                                                                        <state key="disabled">
+                                                                            <color key="titleColor" red="0.39096304770000001" green="0.82518488170000004" blue="1" alpha="0.70740857660000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </state>
                                                                         <connections>
                                                                             <action selector="toggleDelayGlobal:" destination="erm-79-XXa" eventType="touchUpInside" id="Jba-CG-wIf"/>

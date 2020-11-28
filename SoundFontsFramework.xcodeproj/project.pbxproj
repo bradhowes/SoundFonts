@@ -250,6 +250,7 @@
 		BD0E20182555701B00D36607 /* TouchKeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMap.swift; sourceTree = "<group>"; };
 		BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FourCharCode+Extensions.swift"; sourceTree = "<group>"; };
 		BD0E206B2556B78900D36607 /* MIDIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIController.swift; sourceTree = "<group>"; };
+		BD0F93C22571736C0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
 		BD0FAC29251F692000EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOrderedCollection.swift; sourceTree = "<group>"; };
 		BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiteredOrderedCollectionTests.swift; sourceTree = "<group>"; };
@@ -619,6 +620,7 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
+				BD0F93C22571736C0065C147 /* Full.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,
 				BD58250E23CDABCE0034A31B /* SoundFontsFrameworkTests */,
 				BD58250223CDABCD0034A31B /* Products */,
@@ -758,7 +760,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
 					BD58250023CDABCD0034A31B = {
@@ -1017,6 +1019,7 @@
 /* Begin XCBuildConfiguration section */
 		BD58251323CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1051,7 +1054,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20201127165531;
+				CURRENT_PROJECT_VERSION = 20201127173029;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1083,6 +1086,7 @@
 		};
 		BD58251423CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1117,7 +1121,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20201127165531;
+				CURRENT_PROJECT_VERSION = 20201127173029;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1143,9 +1147,10 @@
 		};
 		BD58251623CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20201127165531;
+				CURRENT_PROJECT_VERSION = 20201127173029;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1159,7 +1164,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.2;
+				MARKETING_VERSION = 2.16.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1171,9 +1176,10 @@
 		};
 		BD58251723CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20201127165531;
+				CURRENT_PROJECT_VERSION = 20201127173029;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1187,7 +1193,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.2;
+				MARKETING_VERSION = 2.16.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1199,6 +1205,7 @@
 		};
 		BD58251923CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1218,6 +1225,7 @@
 		};
 		BD58251A23CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
