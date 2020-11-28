@@ -83,32 +83,23 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
-        let value = reverbWetDryMix.value
-        reverbMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        reverb.active = reverb.active.setWetDryMix(value)
+        showReverbMixValue()
+        reverb.active = reverb.active.setWetDryMix(reverbWetDryMix.value)
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
-        let value = delayTime.value
-        delayTimeLabel.showStatus(String(format: "%.2f", value) + "s")
-        delay.active = delay.active.setTime(value)
+        showDelayTime()
+        delay.active = delay.active.setTime(delayTime.value)
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
-        let value = delayFeedback.value
-        delayFeedbackLabel.showStatus(String(format: "%.0f", value) + "%")
-        delay.active = delay.active.setFeedback(value)
+        showDelayFeedback()
+        delay.active = delay.active.setFeedback(delayFeedback.value)
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
-        let value = delayCutoff.value
-        if value < 1000.0 {
-            delayCutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
-        }
-        else {
-            delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
-        }
-        delay.active = delay.active.setCutoff(value)
+        showDelayCutoff()
+        delay.active = delay.active.setCutoff(delayCutoff.value)
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
@@ -173,6 +164,7 @@ extension EffectsController {
         reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
         reverbWetDryMix.setValue(config.wetDryMix, animated: true)
         updateReverbState(config.enabled)
+        showReverbMixValue()
     }
 
     private func updateReverbState(_ enabled: Bool) {
@@ -194,6 +186,10 @@ extension EffectsController {
         delayCutoff.setValue(config.cutoff, animated: true)
         delayWetDryMix.setValue(config.wetDryMix, animated: true)
         updateDelayState(config.enabled)
+        showDelayTime()
+        showDelayFeedback()
+        showDelayCutoff()
+        showDelayMixValue()
     }
 
     private func updateDelayState(_ enabled: Bool) {
@@ -210,4 +206,17 @@ extension EffectsController {
         }
         animator.startAnimation()
     }
+
+    private func showReverbMixValue() { reverbMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%") }
+    private func showDelayTime() { delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s") }
+    private func showDelayFeedback() { delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%") }
+    private func showDelayCutoff() {
+        if delayCutoff.value < 1000.0 {
+            delayCutoffLabel.showStatus(String(format: "%.1f", delayCutoff.value) + " Hz")
+        }
+        else {
+            delayCutoffLabel.showStatus(String(format: "%.2f", delayCutoff.value / 1000.0) + " kHz")
+        }
+    }
+    private func showDelayMixValue() { delayMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%") }
 }
