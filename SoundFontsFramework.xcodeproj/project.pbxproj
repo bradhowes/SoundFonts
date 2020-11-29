@@ -74,6 +74,7 @@
 		BD0F940B25728E610065C147 /* MIDIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F940A25728E610065C147 /* MIDIController.swift */; };
 		BD0F940F257294020065C147 /* SelectSoundFontControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F940E257294020065C147 /* SelectSoundFontControl.swift */; };
 		BD0F942F257302C50065C147 /* ElapsedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F942E257302C50065C147 /* ElapsedTimer.swift */; };
+		BD0F943525733F320065C147 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F943425733F320065C147 /* Checkbox.swift */; };
 		BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC29251F692000EEF187 /* SF2Files.framework */; };
 		BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */; };
 		BD0FAC592520B65700EEF187 /* FiteredOrderedCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */; };
@@ -257,6 +258,7 @@
 		BD0F940A25728E610065C147 /* MIDIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIController.swift; sourceTree = "<group>"; };
 		BD0F940E257294020065C147 /* SelectSoundFontControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundFontControl.swift; sourceTree = "<group>"; };
 		BD0F942E257302C50065C147 /* ElapsedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElapsedTimer.swift; sourceTree = "<group>"; };
+		BD0F943425733F320065C147 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		BD0FAC29251F692000EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOrderedCollection.swift; sourceTree = "<group>"; };
 		BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiteredOrderedCollectionTests.swift; sourceTree = "<group>"; };
@@ -512,6 +514,7 @@
 				BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */,
 				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
 				BD130B182561755F00D1CDF6 /* Knob.swift */,
+				BD0F943425733F320065C147 /* Checkbox.swift */,
 				BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
@@ -859,6 +862,7 @@
 				BD074C8123CDAF51001987E9 /* SelectedSoundFontManager.swift in Sources */,
 				BDD5FA6B25042FBA00367F0B /* BackgroundManagedObjectContext.swift in Sources */,
 				BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */,
+				BD0F943525733F320065C147 /* Checkbox.swift in Sources */,
 				BDEA0BAD255B65FF0097F1CE /* AlertManager.swift in Sources */,
 				BD074C7723CDAF51001987E9 /* String+Extensions.swift in Sources */,
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,

@@ -145,27 +145,35 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
                 self.setPan(fav.pan)
             }
 
+            self.loaded = true
             #if ATTACHED_EFFECTS
-            if let delay = self.delay {
+
+            // - If global mode enabled, don't change anything
+            // - If preset has a config use it.
+            // - Otherwise, if effect was enabled disable it
+            if let delay = self.delay, !settings.delayGlobal {
                 if let config = patch.delayConfig {
+                    os_log(.debug, log: self.log, "reverb preset config")
                     delay.active = config
                 }
-                else if delay.active.enabled && !settings.delayGlobal {
+                else if delay.active.enabled {
+                    os_log(.debug, log: self.log, "reverb disabled")
                     delay.active = delay.active.setEnabled(false)
                 }
             }
 
-            if let reverb = self.reverb {
+            if let reverb = self.reverb, !settings.reverbGlobal {
                 if let config = patch.reverbConfig {
+                    os_log(.debug, log: self.log, "delay preset config")
                     reverb.active = config
                 }
-                else if reverb.active.enabled && !settings.reverbGlobal {
+                else if reverb.active.enabled {
+                    os_log(.debug, log: self.log, "delay disabled")
                     reverb.active = reverb.active.setEnabled(false)
                 }
             }
-            #endif
 
-            self.loaded = true
+            #endif
 
             DispatchQueue.main.async {
                 afterLoadBlock?()

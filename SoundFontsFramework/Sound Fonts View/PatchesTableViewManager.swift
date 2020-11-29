@@ -602,7 +602,6 @@ extension PatchesTableViewManager {
         let preset = soundFont.patches[presetIndex]
         let name = favorite?.name ?? preset.name
         cell.updateForPatch(name: name,
-                            hasEffects: preset.delayConfig != nil || preset.reverbConfig != nil,
                             isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch,
                             isFavorite: favorite != nil,
                             isEditing: view.isEditing)
