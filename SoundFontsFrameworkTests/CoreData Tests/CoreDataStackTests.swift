@@ -14,9 +14,9 @@ class CoreDataStackTests: XCTestCase {
     func testAsyncWaitsInBlock() {
         doWhenCoreDataReady(#function) { cdth, context in
             let exp = XCTestExpectation(description: "invalid")
-            DispatchQueue.global(qos: .background).asyncLater(interval: .milliseconds(5)) { exp.fulfill() }
             let waiter = XCTWaiter()
-            let result = waiter.wait(for: [exp], timeout: 1.0)
+            DispatchQueue.global(qos: .background).asyncLater(interval: .milliseconds(5)) { exp.fulfill() }
+            let result = waiter.wait(for: [exp], timeout: 10.0)
             XCTAssertEqual(result, XCTWaiter.Result.completed)
         }
     }
