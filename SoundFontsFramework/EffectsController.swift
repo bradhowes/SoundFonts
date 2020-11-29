@@ -66,6 +66,7 @@ public final class EffectsController: UIViewController {
         let value = !settings.reverbGlobal
         reverbGlobal.showEnabled(value)
         settings.reverbGlobal = value
+        updatePreset()
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
@@ -79,6 +80,7 @@ public final class EffectsController: UIViewController {
         let value = !settings.delayGlobal
         delayGlobal.showEnabled(value)
         settings.delayGlobal = value
+        updatePreset()
     }
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
