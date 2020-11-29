@@ -510,20 +510,6 @@ extension PatchesTableViewManager {
         }
     }
 
-    #if ATTACHED_EFFECTS
-    private func createAdoptEffectsConfig(at indexPath: IndexPath, cell: TableCell, soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Effects", color: .systemBlue) { _, _, completionHandler in
-            guard let delayConfig = self.delay?.active, let reverbConfig = self.reverb?.active else {
-                completionHandler(false)
-                return
-            }
-
-            self.soundFonts.setEffects(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex, delay: delayConfig, reverb: reverbConfig)
-            completionHandler(true)
-        }
-    }
-    #endif
-
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
@@ -531,13 +517,6 @@ extension PatchesTableViewManager {
         actions.append(isFavored(soundFontAndPatch) ?
                         createEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
                         createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
-
-        #if ATTACHED_EFFECTS
-        if delay != nil || reverb != nil {
-            actions.append(createAdoptEffectsConfig(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
-        }
-        #endif
-
         return makeSwipeActionConfiguration(actions: actions)
     }
 
