@@ -33,6 +33,7 @@ public final class EffectsController: UIViewController {
     private var delay: Delay!
     private var reverb: Reverb!
     private var activePatchManager: ActivePatchManager!
+    private var soundFonts: SoundFonts!
 
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
@@ -58,7 +59,7 @@ public final class EffectsController: UIViewController {
         let enabled = !reverb.active.enabled
         updateReverbState(enabled)
         reverb.active = reverb.active.setEnabled(enabled)
-        activePatchManager.patch?.reverbConfig = enabled ? reverb.active : nil
+        updatePreset()
     }
 
     @IBAction func toggleReverbGlobal(_ sender: UIButton) {
@@ -71,7 +72,7 @@ public final class EffectsController: UIViewController {
         let enabled = !delay.active.enabled
         updateDelayState(enabled)
         delay.active = delay.active.setEnabled(enabled)
-        activePatchManager.patch?.delayConfig = enabled ? delay.active : nil
+        updatePreset()
     }
 
     @IBAction func toggleDelayGlobal(_ sender: UIButton) {
@@ -83,32 +84,38 @@ public final class EffectsController: UIViewController {
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
         showReverbMixValue()
         reverb.active = reverb.active.setWetDryMix(reverbWetDryMix.value)
+        updatePreset()
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
         showDelayTime()
         delay.active = delay.active.setTime(delayTime.value)
+        updatePreset()
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
         showDelayFeedback()
         delay.active = delay.active.setFeedback(delayFeedback.value)
+        updatePreset()
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
         showDelayCutoff()
         delay.active = delay.active.setCutoff(delayCutoff.value)
+        updatePreset()
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
         delayMixLabel.showStatus(String(format: "%.0f", value) + "%")
         delay.active = delay.active.setWetDryMix(value)
+        updatePreset()
     }
 }
 
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
+        soundFonts = router.soundFonts
         activePatchManager = router.activePatchManager
         activePatchManager.subscribe(self, notifier: activePatchChange)
         delay = router.delay
@@ -126,6 +133,7 @@ extension EffectsController: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
         reverb.active = reverb.active.setPreset(row)
+        updatePreset()
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -143,6 +151,14 @@ extension EffectsController: UIPickerViewDelegate {
 }
 
 extension EffectsController {
+
+    private func updatePreset() {
+        guard let soundFont = activePatchManager.soundFont else { return }
+        guard let preset = activePatchManager.patch else { return }
+        let delayConfig = settings.delayGlobal ? preset.delayConfig : (delay.active.enabled ? delay.active : nil)
+        let reverbConfig = settings.delayGlobal ? preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
+        soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig, reverb: reverbConfig)
+    }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         guard case .active = event else { return }
