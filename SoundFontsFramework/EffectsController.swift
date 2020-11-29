@@ -200,8 +200,8 @@ extension EffectsController {
         let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
         animator.addAnimations {
             self.delayEnabled.showEnabled(enabled)
-            self.delayGlobal.isEnabled = enabled
-            self.delayGlobal.isUserInteractionEnabled = enabled
+            self.delayGlobal.isEnabled = true
+            self.delayGlobal.isUserInteractionEnabled = true
             self.delayControls.alpha = self.alpha(for: enabled)
             self.delayWetDryMix.isEnabled = enabled
             self.delayTime.isEnabled = enabled
