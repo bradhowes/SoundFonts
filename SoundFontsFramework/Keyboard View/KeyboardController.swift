@@ -235,14 +235,6 @@ extension KeyboardController: Keyboard {
         sampler.polyphonicKeyPressure(note, pressure: pressure)
     }
 
-    func controlChange(controller: UInt8, value: UInt8) {
-        sampler.controlChange(controller, value: value)
-    }
-
-    func programChange(program: UInt8) {
-        sampler.programChange(program)
-    }
-
     func channelPressure(pressure: UInt8) {
         sampler.channelPressure(pressure)
     }

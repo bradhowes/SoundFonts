@@ -2,12 +2,15 @@
 
 import Foundation
 import CoreMIDI
+import os
 
 /**
  Functionality we expect for entities that can receive MIDI messages
  - SeeAlso: `class`
  */
-public protocol MIDIController: class {
+public protocol MIDIReceiver: class {
+
+    var messageQueue: DispatchQueue { get }
 
     /// The channel the controller listens on. If -1, then it wants msgs from ALL channels
     var channel: Int { get }
@@ -26,6 +29,11 @@ public protocol MIDIController: class {
      - parameter velocity: the velocity to use when playing
      */
     func noteOn(note: UInt8, velocity: UInt8)
+
+    /**
+     Command the keyboard to release any pressed keys
+     */
+    func releaseAllKeys()
 
     /**
      Update the key pressure of a playing note
@@ -65,15 +73,19 @@ public protocol MIDIController: class {
     func pitchBendChange(value: UInt16)
 }
 
-extension MIDIController {
+extension MIDIReceiver {
 
     /**
      Process a collection of MIDI messages for the controller.
 
      - parameter msgs: the MIDIMsg collection
      */
-    public func process(_ msgs: [MIDIMsg]) {
+    public func process(_ msgs: [MIDIMsg], when: MIDITimeStamp ) {
+        #if DEBUG
+        var elapsed = [ElapsedTimer]()
+        #endif
         for msg in msgs {
+            var elapsedTimer = ElapsedTimer(when: when)
             switch msg {
             case let .noteOff(note, _): self.noteOff(note: note)
             case let .noteOn(note, velocity): self.noteOn(note: note, velocity: velocity)
@@ -83,6 +95,18 @@ extension MIDIController {
             case let .channelPressure(pressure): self.channelPressure(pressure: pressure)
             case let .pitchBendChange(value): self.pitchBendChange(value: value)
             }
+            #if DEBUG
+            elapsedTimer.stop()
+            elapsed.append(elapsedTimer)
+            #endif
         }
+
+        #if DEBUG
+        DispatchQueue.global(qos: .background).async {
+            for each in elapsed.enumerated() {
+                os_log("%d MIDIMsg elapsed: %f", each.0, each.1.seconds)
+            }
+        }
+        #endif
     }
 }

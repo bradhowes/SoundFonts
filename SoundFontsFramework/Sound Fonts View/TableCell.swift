@@ -46,8 +46,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
     }
 
-    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
-        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive, isFavorite: isFavorite, isEditing: isEditing)
+    public func updateForPatch(name: String, hasEffects: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
+        let effectsTag = hasEffects ? "°" : ""
+        update(name: Self.favoriteTag(isFavorite) + name + effectsTag, isSelected: isActive, isActive: isActive, isFavorite: isFavorite, isEditing: isEditing)
     }
 
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {

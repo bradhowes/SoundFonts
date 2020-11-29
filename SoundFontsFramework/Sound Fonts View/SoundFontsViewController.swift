@@ -17,8 +17,8 @@ public final class SoundFontsViewController: UIViewController {
     @IBOutlet private weak var searchBar: UISearchBar!
 
     private var soundFonts: SoundFonts!
-    private var soundFontsTableViewDataSource: FontsTableViewManager!
-    private var patchesTableViewDataSource: PatchesTableViewManager!
+    private var fontsTableViewManager: FontsTableViewManager!
+    private var patchesTableViewManager: PatchesTableViewManager!
     private var favorites: Favorites!
     private var selectedSoundFontManager: SelectedSoundFontManager!
     private var keyboard: Keyboard?
@@ -44,16 +44,16 @@ public final class SoundFontsViewController: UIViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        soundFontsTableViewDataSource.selectActive()
-        patchesTableViewDataSource.selectActive(animated: false)
+        fontsTableViewManager.selectActive()
+        patchesTableViewManager.selectActive(animated: false)
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         coordinator.animate(alongsideTransition: { _ in
         }, completion: { _ in
-            self.soundFontsTableViewDataSource.selectActive()
-            self.patchesTableViewDataSource.selectActive(animated: false)
+            self.fontsTableViewManager.selectActive()
+            self.patchesTableViewManager.selectActive(animated: false)
         })
     }
 
@@ -131,17 +131,24 @@ extension SoundFontsViewController: ControllerConfiguration {
         keyboard = router.keyboard
         selectedSoundFontManager = router.selectedSoundFontManager
 
-        soundFontsTableViewDataSource = FontsTableViewManager(
+        fontsTableViewManager = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
             soundFonts: router.soundFonts)
 
-        patchesTableViewDataSource = PatchesTableViewManager(
+        patchesTableViewManager = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager, selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay, reverb: router.reverb)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     }
+}
+
+extension SoundFontsViewController: SelectSoundFontControl {
+    public func previousFont() { DispatchQueue.main.async { self.fontsTableViewManager.selectPrevious() } }
+    public func nextFont() { DispatchQueue.main.async { self.fontsTableViewManager.selectNext() } }
+    public func previousPreset() { DispatchQueue.main.async { self.patchesTableViewManager.selectPrevious() } }
+    public func nextPreset() { DispatchQueue.main.async { self.patchesTableViewManager.selectNext() } }
 }
 
 // MARK: - PatchesViewManager Protocol

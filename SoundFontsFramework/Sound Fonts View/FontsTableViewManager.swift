@@ -89,6 +89,27 @@ extension FontsTableViewManager: UITableViewDelegate {
     }
 }
 
+extension FontsTableViewManager {
+
+    public func selectPrevious() {
+        guard let key = selectedSoundFontManager.selected?.key else { return }
+        guard let index = soundFonts.index(of: key) else { return }
+        var nextIndex = index - 1
+        if nextIndex < 0 { nextIndex = soundFonts.soundFontNames.count - 1 }
+        view.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
+        selectedSoundFontManager.setSelected(soundFonts.getBy(index: nextIndex))
+    }
+
+    public func selectNext() {
+        guard let key = selectedSoundFontManager.selected?.key else { return }
+        guard let index = soundFonts.index(of: key) else { return }
+        var nextIndex = index + 1
+        if nextIndex > soundFonts.soundFontNames.count - 1 { nextIndex = 0 }
+        view.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
+        selectedSoundFontManager.setSelected(soundFonts.getBy(index: nextIndex))
+    }
+}
+
 // MARK: - Private
 
 extension FontsTableViewManager {

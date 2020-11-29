@@ -28,7 +28,7 @@ public struct MIDIParser {
      - parameter packetList: the MIDI data to parse
      - parameter controller: the recipient of the MIDI messages
      */
-    public static func parse(packetList: MIDIPacketList, for controller: MIDIController) {
+    public static func parse(packetList: MIDIPacketList, for controller: MIDIReceiver) {
         let numPackets = packetList.numPackets
         os_log(.debug, log: log, "processPackets - %d", numPackets)
         var packet: MIDIPacket = packetList.packet
@@ -47,7 +47,7 @@ public struct MIDIParser {
             withUnsafeBytes(of: packet.data) { ptr in
                 let msgs = Generator(ptr: ptr, count: length, channel: controller.channel).messages
                 if !msgs.isEmpty {
-                    DispatchQueue.global(qos: .userInitiated).async { controller.process(msgs) }
+                    controller.messageQueue.async { controller.process(msgs, when: when) }
                 }
             }
             packet = MIDIPacketNext(&packet).pointee

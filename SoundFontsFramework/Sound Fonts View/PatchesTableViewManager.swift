@@ -181,6 +181,25 @@ extension PatchesTableViewManager: UISearchBarDelegate {
     }
 }
 
+extension PatchesTableViewManager {
+
+    public func selectPrevious() {
+        guard !view.isEditing else { return }
+        guard let index = view.indexPathForSelectedRow?.row else { return }
+        var nextIndex = index - 1
+        if nextIndex < 0 { nextIndex = viewPresets.count - 1 }
+        view.selectRow(at: IndexPath(presetIndex: nextIndex), animated: true, scrollPosition: .none)
+    }
+
+    public func selectNext() {
+        guard !view.isEditing else { return }
+        guard let index = view.indexPathForSelectedRow?.row else { return }
+        var nextIndex = index + 1
+        if nextIndex >= viewPresets.count - 1 { nextIndex = 0 }
+        view.selectRow(at: IndexPath(presetIndex: nextIndex), animated: true, scrollPosition: .none)
+    }
+}
+
 // MARK: - Private
 
 extension PatchesTableViewManager {
@@ -582,6 +601,10 @@ extension PatchesTableViewManager {
         let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch)
         let preset = soundFont.patches[presetIndex]
         let name = favorite?.name ?? preset.name
-        cell.updateForPatch(name: name, isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch, isFavorite: favorite != nil, isEditing: view.isEditing)
+        cell.updateForPatch(name: name,
+                            hasEffects: preset.delayConfig != nil || preset.reverbConfig != nil,
+                            isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch,
+                            isFavorite: favorite != nil,
+                            isEditing: view.isEditing)
     }
 }
