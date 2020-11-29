@@ -29,22 +29,19 @@ extension UILabel {
         }
 
         let originalText = self.originalText
-
-        let timer = Timer.once(after: 1.0) { _ in
-            self.layer.removeAllAnimations()
-            self.fadeTransition(0.5)
-            self.text = originalText
+        fadeTimer = Timer.once(after: 1.0) { _ in
+            UIView.transition(with: self, duration: 0.5, options: [.curveLinear, .transitionCrossDissolve]) {
+                self.text = originalText
+            } completion: { _ in
+                self.text = originalText
+            }
         }
-
-        fadeTimer = timer
         text = status
     }
 
-    private func fadeTransition(_ duration: CFTimeInterval) {
+    private func fadeTransition() {
         let animation = CATransition()
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         animation.type = CATransitionType.fade
-        animation.duration = duration
-        layer.add(animation, forKey: CATransitionType.fade.rawValue)
+        layer.add(animation, forKey: nil)
     }
 }

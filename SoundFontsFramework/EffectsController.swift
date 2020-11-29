@@ -32,7 +32,7 @@ public final class EffectsController: UIViewController {
 
     private var delay: Delay!
     private var reverb: Reverb!
-    private var observers = [NSKeyValueObservation]()
+    private var activePatchManager: ActivePatchManager!
 
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
@@ -55,11 +55,10 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
-        let enabled = !reverbWetDryMix.isEnabled
+        let enabled = !reverb.active.enabled
         updateReverbState(enabled)
-        if let reverb = self.reverb {
-            reverb.active = reverb.active.setEnabled(enabled)
-        }
+        reverb.active = reverb.active.setEnabled(enabled)
+        activePatchManager.patch?.reverbConfig = enabled ? reverb.active : nil
     }
 
     @IBAction func toggleReverbGlobal(_ sender: UIButton) {
@@ -69,11 +68,10 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
-        let enabled = !delayWetDryMix.isEnabled
+        let enabled = !delay.active.enabled
         updateDelayState(enabled)
-        if let delay = self.delay {
-            delay.active = delay.active.setEnabled(enabled)
-        }
+        delay.active = delay.active.setEnabled(enabled)
+        activePatchManager.patch?.delayConfig = enabled ? delay.active : nil
     }
 
     @IBAction func toggleDelayGlobal(_ sender: UIButton) {
@@ -109,6 +107,15 @@ public final class EffectsController: UIViewController {
     }
 }
 
+extension EffectsController: ControllerConfiguration {
+    public func establishConnections(_ router: ComponentContainer) {
+        activePatchManager = router.activePatchManager
+        activePatchManager.subscribe(self, notifier: activePatchChange)
+        delay = router.delay
+        reverb = router.reverb
+    }
+}
+
 extension EffectsController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { Reverb.roomNames.count }
@@ -125,7 +132,7 @@ extension EffectsController: UIPickerViewDelegate {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel?.font = UIFont.init(name: "Eurostile", size: 15.0)
+            pickerLabel?.font = UIFont.init(name: "Eurostile", size: 17.0)
             pickerLabel?.textAlignment = .center
         }
 
@@ -135,28 +142,30 @@ extension EffectsController: UIPickerViewDelegate {
     }
 }
 
-extension EffectsController: ControllerConfiguration {
-    public func establishConnections(_ router: ComponentContainer) {
+extension EffectsController {
 
-        if let delay = router.delay {
-            self.delay = delay
-            observers.append(delay.observe(\.active, options: .new) { _, change in
-                guard let newValue = change.newValue, settings.delayGlobal == false else { return }
-                DispatchQueue.main.async { self.update(config: newValue) }
-            })
+    private func activePatchChange(_ event: ActivePatchEvent) {
+        guard case .active = event else { return }
+        guard let patch = activePatchManager.patch else { return }
+
+        if !settings.reverbGlobal {
+            if let reverbConfig = patch.reverbConfig {
+                update(config: reverbConfig)
+            }
+            else {
+                updateReverbState(false)
+            }
         }
 
-        if let reverb = router.reverb {
-            self.reverb = reverb
-            observers.append(reverb.observe(\.active, options: .new) { _, change in
-                guard let newValue = change.newValue, settings.reverbGlobal == false else { return }
-                DispatchQueue.main.async { self.update(config: newValue) }
-            })
+        if !settings.delayGlobal {
+            if let delayConfig = patch.delayConfig {
+                update(config: delayConfig)
+            }
+            else {
+                updateDelayState(false)
+            }
         }
     }
-}
-
-extension EffectsController {
 
     private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
@@ -164,15 +173,14 @@ extension EffectsController {
         reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
         reverbWetDryMix.setValue(config.wetDryMix, animated: true)
         updateReverbState(config.enabled)
-        showReverbMixValue()
     }
 
     private func updateReverbState(_ enabled: Bool) {
         let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
         animator.addAnimations {
             self.reverbEnabled.showEnabled(enabled)
-            self.reverbGlobal.isEnabled = enabled
-            self.reverbGlobal.isUserInteractionEnabled = enabled
+            self.reverbGlobal.isEnabled = true
+            self.reverbGlobal.isUserInteractionEnabled = true
             self.reverbControls.alpha = self.alpha(for: enabled)
             self.reverbWetDryMix.isEnabled = enabled
             self.reverbRoom.isUserInteractionEnabled = enabled
@@ -186,10 +194,6 @@ extension EffectsController {
         delayCutoff.setValue(config.cutoff, animated: true)
         delayWetDryMix.setValue(config.wetDryMix, animated: true)
         updateDelayState(config.enabled)
-        showDelayTime()
-        showDelayFeedback()
-        showDelayCutoff()
-        showDelayMixValue()
     }
 
     private func updateDelayState(_ enabled: Bool) {
