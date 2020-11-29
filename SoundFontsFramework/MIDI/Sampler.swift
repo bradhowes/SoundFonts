@@ -147,13 +147,21 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
             #if ATTACHED_EFFECTS
             if let delay = self.delay {
-                let config = patch.delayConfig ?? delay.active.toggleEnabled()
-                delay.active = config
+                if let config = patch.delayConfig {
+                    delay.active = config
+                }
+                else if delay.active.enabled && !settings.delayGlobal {
+                    delay.active = delay.active.setEnabled(false)
+                }
             }
 
             if let reverb = self.reverb {
-                let config = patch.reverbConfig ?? reverb.active.toggleEnabled()
-                reverb.active = config
+                if let config = patch.reverbConfig {
+                    reverb.active = config
+                }
+                else if reverb.active.enabled && !settings.reverbGlobal {
+                    reverb.active = reverb.active.setEnabled(false)
+                }
             }
             #endif
 

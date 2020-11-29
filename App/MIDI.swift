@@ -18,7 +18,7 @@ final class MIDI {
     private var virtualEndpoint: MIDIEndpointRef = 0
 
     /// Delegate which will receive incoming MIDI messages
-    weak var controller: MIDIController?
+    weak var receiver: MIDIReceiver?
 
     private let errorTag: [OSStatus: String] = [
         noErr: "",
@@ -110,8 +110,8 @@ extension MIDI {
     }
 
     private func processPackets(packetList: MIDIPacketList) {
-        guard let controller = self.controller else { return }
-        MIDIParser.parse(packetList: packetList, for: controller)
+        guard let receiver = self.receiver else { return }
+        MIDIParser.parse(packetList: packetList, for: receiver)
     }
 
     private func getDisplayName(_ obj: MIDIObjectRef) -> String {

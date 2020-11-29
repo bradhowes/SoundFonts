@@ -70,7 +70,10 @@
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
 		BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20182555701B00D36607 /* TouchKeyMap.swift */; };
 		BD0E20612555D68900D36607 /* FourCharCode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */; };
-		BD0E206C2556B78900D36607 /* MIDIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E206B2556B78900D36607 /* MIDIController.swift */; };
+		BD0E206C2556B78900D36607 /* MIDIReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E206B2556B78900D36607 /* MIDIReceiver.swift */; };
+		BD0F940B25728E610065C147 /* MIDIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F940A25728E610065C147 /* MIDIController.swift */; };
+		BD0F940F257294020065C147 /* SelectSoundFontControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F940E257294020065C147 /* SelectSoundFontControl.swift */; };
+		BD0F942F257302C50065C147 /* ElapsedTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0F942E257302C50065C147 /* ElapsedTimer.swift */; };
 		BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC29251F692000EEF187 /* SF2Files.framework */; };
 		BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */; };
 		BD0FAC592520B65700EEF187 /* FiteredOrderedCollectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */; };
@@ -249,8 +252,11 @@
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E20182555701B00D36607 /* TouchKeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMap.swift; sourceTree = "<group>"; };
 		BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FourCharCode+Extensions.swift"; sourceTree = "<group>"; };
-		BD0E206B2556B78900D36607 /* MIDIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIController.swift; sourceTree = "<group>"; };
+		BD0E206B2556B78900D36607 /* MIDIReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIReceiver.swift; sourceTree = "<group>"; };
 		BD0F93C22571736C0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
+		BD0F940A25728E610065C147 /* MIDIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIController.swift; sourceTree = "<group>"; };
+		BD0F940E257294020065C147 /* SelectSoundFontControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectSoundFontControl.swift; sourceTree = "<group>"; };
+		BD0F942E257302C50065C147 /* ElapsedTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElapsedTimer.swift; sourceTree = "<group>"; };
 		BD0FAC29251F692000EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredOrderedCollection.swift; sourceTree = "<group>"; };
 		BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiteredOrderedCollectionTests.swift; sourceTree = "<group>"; };
@@ -456,6 +462,7 @@
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
 				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
+				BD0F940A25728E610065C147 /* MIDIController.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD130B0025613E2C00D1CDF6 /* Reverb.swift */,
@@ -498,6 +505,7 @@
 			isa = PBXGroup;
 			children = (
 				BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */,
+				BD0F942E257302C50065C147 /* ElapsedTimer.swift */,
 				BD125B37241006200003DE99 /* AskForReview.swift */,
 				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
 				BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */,
@@ -566,13 +574,14 @@
 				BD1F11B923FE625500AE9F3D /* GuideManager.swift */,
 				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
 				BD074C3823CDAF51001987E9 /* Keyboard.swift */,
-				BD0E206B2556B78900D36607 /* MIDIController.swift */,
+				BD0E206B2556B78900D36607 /* MIDIReceiver.swift */,
 				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
 				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
 				BD074C3223CDAF51001987E9 /* SoundFontEditor.swift */,
 				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
+				BD0F940E257294020065C147 /* SelectSoundFontControl.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
 			);
 			path = Protocols;
@@ -867,6 +876,7 @@
 				BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */,
 				BD8A31502502E41E0077320F /* SoundFonts.xcdatamodeld in Sources */,
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
+				BD0F940F257294020065C147 /* SelectSoundFontControl.swift in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
 				BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
@@ -892,6 +902,7 @@
 				BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */,
 				BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */,
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
+				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
 				BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */,
@@ -922,6 +933,7 @@
 				BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */,
 				BD9782002506003600CEFB59 /* FavoritesConfigFile.swift in Sources */,
 				BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */,
+				BD0F942F257302C50065C147 /* ElapsedTimer.swift in Sources */,
 				BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */,
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
@@ -939,7 +951,7 @@
 				BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */,
 				BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */,
 				BDC662A0253F92B400C03C5F /* Bookmark.swift in Sources */,
-				BD0E206C2556B78900D36607 /* MIDIController.swift in Sources */,
+				BD0E206C2556B78900D36607 /* MIDIReceiver.swift in Sources */,
 				BD074C7123CDAF51001987E9 /* SubscriberToken.swift in Sources */,
 				BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */,
 				BD1F11BA23FE625500AE9F3D /* GuideManager.swift in Sources */,

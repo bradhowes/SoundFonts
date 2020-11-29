@@ -13,7 +13,7 @@ import SoundFontsFramework
 final class MainViewController: UIViewController {
     private lazy var log = Logging.logger("MainVC")
 
-    private var keyboard: Keyboard!
+    private var midiController: MIDIController!
     private var activePatchManager: ActivePatchManager!
     private var sampler: Sampler!
     private var volumeMonitor: VolumeMonitor?
@@ -64,7 +64,7 @@ extension MainViewController {
             os_log(.info, log: log, "set active audio session")
             postAlert(for: what)
         case .success:
-            midi.controller = keyboard
+            midi.receiver = midiController
             volumeMonitor?.start()
         }
     }
@@ -73,7 +73,7 @@ extension MainViewController {
      Stop audio processing. This is done prior to the app moving into the background.
      */
     func stopAudio() {
-        midi.controller = nil
+        midi.receiver = nil
         volumeMonitor?.stop()
         sampler.stop()
 
@@ -99,9 +99,9 @@ extension MainViewController: ControllerConfiguration {
     func establishConnections(_ router: ComponentContainer) {
         sampler = router.sampler
         activePatchManager = router.activePatchManager
-        keyboard = router.keyboard
-        midi.controller = keyboard
-        volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: keyboard)
+        midiController = MIDIController(keyboard: router.keyboard, selectSoundFontControl: router.selectSoundFontControl)
+        midi.receiver = midiController
+        volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 
@@ -113,7 +113,7 @@ extension MainViewController: ControllerConfiguration {
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         volumeMonitor?.activePreset = activePatchKind != .none
-        keyboard.releaseAllKeys()
+        midiController.releaseAllKeys()
         DispatchQueue.global(qos: .userInitiated).async {
             let result = self.sampler.loadActivePreset {
                 if playSample { self.noteInjector.post(to: self.sampler) }

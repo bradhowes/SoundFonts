@@ -22,6 +22,7 @@ public protocol ComponentContainer {
     var guideManager: GuideManager { get }
     var delay: Delay? { get }
     var reverb: Reverb? { get }
+    var selectSoundFontControl: SelectSoundFontControl { get }
 }
 
 public extension ComponentContainer {
