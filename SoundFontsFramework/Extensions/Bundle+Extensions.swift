@@ -20,7 +20,7 @@ extension Bundle {
     public var versionString: String { "Version \(releaseVersionNumber).\(buildVersionNumber)\(scheme)" }
 
     public static func buttonImage(enabled: Bool, compatibleWith: UITraitCollection? = nil) -> UIImage {
-        let name = enabled ? "EffectOn" : "EffectOff"
+        let name = enabled ? "EffectOnOld" : "EffectOffOld"
         guard let image = UIImage(named: name, in: Bundle(for: Tag.self), compatibleWith: compatibleWith) else { fatalError("missing image '\(name)'")}
         return image
     }
