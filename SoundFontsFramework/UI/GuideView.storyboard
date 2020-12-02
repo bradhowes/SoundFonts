@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0RE-Mu-mZZ" userLabel="Info Bar">
-                                <rect key="frame" x="8" y="729" width="398" height="93"/>
+                                <rect key="frame" x="8" y="710" width="398" height="112"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info Bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="md6-iG-dgd">
                                         <rect key="frame" x="4" y="4" width="390" height="19.5"/>
@@ -26,8 +26,9 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Double-tap to switch views. Use ⊕ to add new SF2 file. Press ❰ and ❱ to change keyboard range. 🔇 indicates no volume." selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ri0-LA-h9e">
-                                        <rect key="frame" x="0.0" y="19.5" width="398" height="73.5"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ri0-LA-h9e">
+                                        <rect key="frame" x="0.0" y="19.5" width="398" height="92.5"/>
+                                        <string key="text">Double-tap to switch views. Use ⊕ to add new SF2 file. Tap signal icon to show/hide effects . Press ❰ and ❱ to change keyboard range. 🔇 indicates no volume.</string>
                                         <color key="textColor" white="1" alpha="0.80000535102739723" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -72,7 +73,7 @@
                                     <constraint firstItem="qil-YQ-SC1" firstAttribute="top" secondItem="4hS-nQ-kng" secondAttribute="bottom" constant="-2" id="vL5-mS-r5T"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hH-m6-mhx" userLabel="Patches">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hH-m6-mhx" userLabel="Presets">
                                 <rect key="frame" x="211" y="52" width="195" height="152.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Presets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O11-kc-bjk">
