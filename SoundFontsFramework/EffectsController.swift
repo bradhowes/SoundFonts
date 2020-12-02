@@ -42,6 +42,11 @@ public final class EffectsController: UIViewController {
         reverbWetDryMix.value = settings.reverbWetDryMix
         updateReverbState(settings.reverbEnabled)
 
+        for button: UIButton in [reverbEnabled, reverbGlobal, delayEnabled, delayGlobal] {
+            button.imageView?.contentMode = .scaleAspectFit
+            button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        }
+
         delayTime.value = settings.delayTime
         delayFeedback.value = settings.delayFeedback
         delayCutoff.value = settings.delayCutoff
