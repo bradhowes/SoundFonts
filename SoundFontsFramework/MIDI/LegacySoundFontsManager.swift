@@ -100,22 +100,22 @@ extension LegacySoundFontsManager: SoundFonts {
         case .failure(let failure): return .failure(failure)
         case.success(let soundFont):
             let index = collection.add(soundFont)
-            save()
             notify(.added(new: index, font: soundFont))
+            markDirty()
             return .success((index, soundFont))
         }
     }
 
     public func remove(index: Int) {
         guard let soundFont = collection.remove(index) else { return }
-        save()
         notify(.removed(old: index, font: soundFont))
+        markDirty()
     }
 
     public func rename(index: Int, name: String) {
         let (newIndex, soundFont) = collection.rename(index, name: name)
-        save()
         notify(.moved(old: index, new: newIndex, font: soundFont))
+        markDirty()
     }
 
     public func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool) {
@@ -124,10 +124,9 @@ extension LegacySoundFontsManager: SoundFonts {
         let patch = soundFont.patches[index]
         os_log(.debug, log: log, "setVisibility %{public}s %{public}s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
         patch.isVisible = state
-        save()
+        markDirty()
     }
 
-    #if ATTACHED_EFFECTS
     public func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig?, reverb: ReverbConfig?) {
         os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s", key.uuidString, index,
                delay?.description ?? "nil", reverb?.description ?? "nil")
@@ -135,7 +134,7 @@ extension LegacySoundFontsManager: SoundFonts {
         let patch = soundFont.patches[index]
         patch.delayConfig = delay
         patch.reverbConfig = reverb
-        save()
+        markDirty()
     }
 
     public func dropEffects(key: LegacySoundFont.Key, index: Int) {
@@ -144,9 +143,8 @@ extension LegacySoundFontsManager: SoundFonts {
         let patch = soundFont.patches[index]
         patch.delayConfig = nil
         patch.reverbConfig = nil
-        save()
+        markDirty()
     }
-    #endif
 
     public func makeAllVisible(key: LegacySoundFont.Key) {
         guard let soundFont = getBy(key: key) else { return }
@@ -154,6 +152,7 @@ extension LegacySoundFontsManager: SoundFonts {
             preset.isVisible = true
         }
         notify(.unhidPresets(font: soundFont))
+        markDirty()
     }
 
     public var hasAnyBundled: Bool {
@@ -176,7 +175,7 @@ extension LegacySoundFontsManager: SoundFonts {
                 remove(index: index)
             }
         }
-        save()
+        markDirty()
     }
 
     public func restoreBundled() {
@@ -190,7 +189,7 @@ extension LegacySoundFontsManager: SoundFonts {
                 }
             }
         }
-        save()
+        markDirty()
     }
 
     /**
@@ -294,10 +293,10 @@ extension LegacySoundFontsManager {
     }
 
     /**
-     Save the current collection to disk.
+     Mark the current configuration as dirty so that it will get saved.
      */
-    private func save() {
-        self.configFile.save()
+    private func markDirty() {
+        configFile.updateChangeCount(.done)
     }
 }
 

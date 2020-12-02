@@ -17,7 +17,6 @@ public final class SoundFontsConfigFile: UIDocument {
     }
 
     public func initialize(soundFontsManager: LegacySoundFontsManager) {
-        soundFontsManager.subscribe(self, notifier: soundFontsChanged)
         self.soundFontsManager = soundFontsManager
         self.open { ok in
             if !ok {
@@ -30,10 +29,6 @@ public final class SoundFontsConfigFile: UIDocument {
                 }
             }
         }
-    }
-
-    public func save() {
-        super.save(to: sharedArchivePath, for: .forOverwriting)
     }
 
     override public func contents(forType typeName: String) throws -> Any {
@@ -49,15 +44,5 @@ public final class SoundFontsConfigFile: UIDocument {
     override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
         os_log(.info, log: log, "revert url: '%{public}s' - ignoring", url.path)
         completionHandler?(false)
-    }
-
-    private func soundFontsChanged(_ event: SoundFontsEvent) {
-        os_log(.info, log: log, "soundFontsChanged")
-        switch event {
-        case .restored:
-            break
-        default:
-            updateChangeCount(.done)
-        }
     }
 }
