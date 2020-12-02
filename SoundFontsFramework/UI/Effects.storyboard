@@ -34,14 +34,15 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="201" height="108"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-Yz-uJo">
-                                                                <rect key="frame" x="36.5" y="0.0" width="128" height="17"/>
+                                                                <rect key="frame" x="30.5" y="0.0" width="140" height="17"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="65" height="17"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="71" height="17"/>
                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                                        <state key="normal" title=" Reverb" image="EffectOff">
+                                                                        <inset key="imageEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
+                                                                        <state key="normal" title=" Reverb" image="EffectOffOld">
                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                         </state>
                                                                         <connections>
@@ -49,12 +50,12 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="QeJ-Yv-Djw" userLabel="Global">
-                                                                        <rect key="frame" x="81" y="0.0" width="47" height="17"/>
+                                                                        <rect key="frame" x="87" y="0.0" width="53" height="17"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                                        <state key="normal" title=" Lock" image="EffectOff">
+                                                                        <state key="normal" title=" Lock" image="EffectOffOld">
                                                                             <color key="titleColor" systemColor="systemOrangeColor"/>
                                                                         </state>
                                                                         <state key="disabled">
@@ -128,14 +129,14 @@
                                                         <rect key="frame" x="209" y="0.0" width="296" height="108"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="P7B-ac-grc">
-                                                                <rect key="frame" x="90" y="0.0" width="116" height="17"/>
+                                                                <rect key="frame" x="84" y="0.0" width="128" height="17"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="53" height="17"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="59" height="17"/>
                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                                        <state key="normal" title=" Delay" image="EffectOff">
+                                                                        <state key="normal" title=" Delay" image="EffectOffOld">
                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                         </state>
                                                                         <connections>
@@ -143,12 +144,12 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vQM-4Z-qzy" userLabel="Global">
-                                                                        <rect key="frame" x="69" y="0.0" width="47" height="17"/>
+                                                                        <rect key="frame" x="75" y="0.0" width="53" height="17"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
                                                                         <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
-                                                                        <state key="normal" title=" Lock" image="EffectOff">
+                                                                        <state key="normal" title=" Lock" image="EffectOffOld">
                                                                             <color key="titleColor" systemColor="systemOrangeColor"/>
                                                                         </state>
                                                                         <state key="disabled">
@@ -403,7 +404,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EffectOff" width="10" height="11"/>
+        <image name="EffectOffOld" width="16" height="16"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
