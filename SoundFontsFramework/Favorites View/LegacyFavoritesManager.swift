@@ -54,14 +54,14 @@ extension LegacyFavoritesManager: Favorites {
     public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
         let favorite = LegacyFavorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
-        save()
         notify(.added(index: count - 1, favorite: favorite))
+        markDirty()
     }
 
     public func update(index: Int, with favorite: LegacyFavorite) {
         collection.replace(index: index, with: favorite)
-        save()
         notify(.changed(index: index, favorite: favorite))
+        markDirty()
     }
 
     public func beginEdit(config: FavoriteEditor.Config) {
@@ -70,7 +70,7 @@ extension LegacyFavoritesManager: Favorites {
 
     public func move(from: Int, to: Int) {
         collection.move(from: from, to: to)
-        save()
+        markDirty()
     }
 
     public func selected(index: Int) {
@@ -79,14 +79,14 @@ extension LegacyFavoritesManager: Favorites {
 
     public func remove(index: Int, bySwiping: Bool) {
         let favorite = collection.remove(index: index)
-        save()
         notify(.removed(index: index, favorite: favorite, bySwiping: bySwiping))
+        markDirty()
     }
 
     public func removeAll(associatedWith soundFont: LegacySoundFont) {
         collection.removeAll(associatedWith: soundFont)
-        save()
         notify(.removedAll(associatedWith: soundFont))
+        markDirty()
     }
 
     public func count(associatedWith soundFont: LegacySoundFont) -> Int {
@@ -122,9 +122,9 @@ extension LegacyFavoritesManager {
     }
 
     /**
-     Save the current collection to disk.
+     Mark the current collection as dirty so it will get written to disk.
      */
-    private func save() {
-        self.configFile.save()
+    private func markDirty() {
+        configFile.updateChangeCount(.done)
     }
 }
