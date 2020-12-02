@@ -38,10 +38,6 @@ extension GuideViewController: GuideManager {
             fontsPanel.isHidden = true
             patchesPanel.isHidden = true
             favoritesPanel.isHidden = false
-        case 2:
-            fontsPanel.isHidden = true
-            patchesPanel.isHidden = true
-            favoritesPanel.isHidden = true
         default:
             break
         }
