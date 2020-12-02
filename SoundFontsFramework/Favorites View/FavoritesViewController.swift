@@ -26,6 +26,9 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     public var swipeLeft = UISwipeGestureRecognizer()
     public var swipeRight = UISwipeGestureRecognizer()
 
+    private var activePatchManagerSubscription: SubscriberToken?
+    private var favoritesSubscription: SubscriberToken?
+
     public override func viewDidLoad() {
         favoriteCell.translatesAutoresizingMaskIntoConstraints = false
 
@@ -59,6 +62,22 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
         super.viewWillTransition(to: size, with: coordinator)
         favoritesView.reloadData()
     }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        os_log(.info, log: log, "viewWillAppear")
+        super.viewWillAppear(animated)
+
+        if activePatchManagerSubscription == nil {
+            activePatchManagerSubscription = activePatchManager.subscribe(self, notifier: activePatchChange)
+        }
+
+        if favoritesSubscription == nil {
+            favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
+        }
+
+        guard let favorite = activePatchManager.favorite else { return }
+        updateCell(with: favorite)
+    }
 }
 
 extension FavoritesViewController: ControllerConfiguration {
@@ -68,9 +87,6 @@ extension FavoritesViewController: ControllerConfiguration {
         favorites = router.favorites
         keyboard = router.keyboard
         soundFonts = router.soundFonts
-
-        activePatchManager.subscribe(self, notifier: activePatchChange)
-        favorites.subscribe(self, notifier: favoritesChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
