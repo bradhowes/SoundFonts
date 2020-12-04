@@ -3,9 +3,7 @@
 import UIKit
 
 public final class GuideViewController: UIViewController {
-    @IBOutlet private weak var fontsPanel: UIView!
-    @IBOutlet private weak var patchesPanel: UIView!
-    @IBOutlet private weak var favoritesPanel: UIView!
+    @IBOutlet private weak var mainPanel: UIView!
 
     private var savedParent: UIViewController!
 
@@ -31,13 +29,9 @@ extension GuideViewController: GuideManager {
     public func prepareGuide(for panel: Int) {
         switch panel {
         case 0:
-            fontsPanel.isHidden = false
-            patchesPanel.isHidden = false
-            favoritesPanel.isHidden = true
+            mainPanel.isHidden = false
         case 1:
-            fontsPanel.isHidden = true
-            patchesPanel.isHidden = true
-            favoritesPanel.isHidden = false
+            mainPanel.isHidden = true
         default:
             break
         }
@@ -50,9 +44,10 @@ extension GuideViewController {
         savedParent.add(self)
         view.alpha = 0.0
         view.isHidden = false
-
         let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn)
-        animator.addAnimations { self.view.alpha = 1.0 }
+        animator.addAnimations {
+            self.view.alpha = 1.0
+        }
         animator.startAnimation()
     }
 

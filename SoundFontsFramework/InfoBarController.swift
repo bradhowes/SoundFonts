@@ -74,7 +74,7 @@ extension InfoBarController {
     }
 
     @IBAction private func showGuide(_ sender: UIButton) {
-        animateMoreButtons()
+        // animateMoreButtons()
     }
 
     @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
