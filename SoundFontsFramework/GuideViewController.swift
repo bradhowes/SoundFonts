@@ -3,9 +3,13 @@
 import UIKit
 
 public final class GuideViewController: UIViewController {
-    @IBOutlet private weak var mainPanel: UIView!
 
     private var savedParent: UIViewController!
+    private var infoBar: InfoBar!
+
+    @IBOutlet weak var fontPresetPanel: UIView!
+    @IBOutlet weak var infoBarPanel: UIView!
+    @IBOutlet weak var favoritesPanel: UIView!
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +22,8 @@ public final class GuideViewController: UIViewController {
 extension GuideViewController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
-        router.infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
+        infoBar = router.infoBar
+        infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
         savedParent = parent
         removeFromParent()
     }
@@ -29,9 +34,11 @@ extension GuideViewController: GuideManager {
     public func prepareGuide(for panel: Int) {
         switch panel {
         case 0:
-            mainPanel.isHidden = false
+            fontPresetPanel.isHidden = false
+            favoritesPanel.isHidden = true
         case 1:
-            mainPanel.isHidden = true
+            fontPresetPanel.isHidden = true
+            favoritesPanel.isHidden = false
         default:
             break
         }
@@ -44,21 +51,20 @@ extension GuideViewController {
         savedParent.add(self)
         view.alpha = 0.0
         view.isHidden = false
-        let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn)
-        animator.addAnimations {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0.0, options: .curveEaseIn) {
             self.view.alpha = 1.0
         }
-        animator.startAnimation()
     }
 
     @objc private func hideGuide() {
-        let animator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn)
-        animator.addAnimations { self.view.alpha = 0.0 }
-        animator.addCompletion { _ in
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0.0, options: .curveEaseIn, animations: {
+            self.view.alpha = 0.0
+        },
+        completion: { _ in
             self.view.isHidden = true
             self.removeFromParent()
             AskForReview.maybe()
-        }
-        animator.startAnimation()
+        })
+        infoBar.hideMoreButtons()
     }
 }

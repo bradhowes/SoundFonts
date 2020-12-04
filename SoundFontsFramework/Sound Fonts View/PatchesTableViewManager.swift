@@ -267,7 +267,7 @@ extension PatchesTableViewManager {
     }
 
     private func endVisibilityEditing(for soundFont: LegacySoundFont) {
-        infoBar.hideButtons()
+        infoBar.hideMoreButtons()
         let deletions = viewPresets.enumerated()
             .filter { soundFont.patches[$0.1].isVisible == false }
             .map { IndexPath(presetIndex: $0.0) }

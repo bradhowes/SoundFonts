@@ -45,5 +45,9 @@ public protocol InfoBar: class {
      */
     func setVisibleKeyLabels(from: String, to: String)
 
-    func hideButtons()
+    var moreButtonsVisible: Bool { get }
+
+    func showMoreButtons()
+
+    func hideMoreButtons()
 }

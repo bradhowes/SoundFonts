@@ -16,6 +16,8 @@ final class MainViewController: UIViewController {
     private var midiController: MIDIController!
     private var activePatchManager: ActivePatchManager!
     private var sampler: Sampler!
+    private var infoBar: InfoBar!
+
     private var volumeMonitor: VolumeMonitor?
     private let midi = MIDI()
 
@@ -30,7 +32,19 @@ final class MainViewController: UIViewController {
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        coordinator.animate(alongsideTransition: { _ in InfoHUD.clear() }, completion: { _ in self.volumeMonitor?.repostNotice() })
+        super.willTransition(to: newCollection, with: coordinator)
+        let showMoreButtons = infoBar.moreButtonsVisible
+        coordinator.animate(alongsideTransition: { _ in
+            InfoHUD.clear()
+            if showMoreButtons {
+                self.infoBar.hideMoreButtons()
+            }
+        }, completion: { _ in
+            self.volumeMonitor?.repostNotice()
+            if showMoreButtons {
+                self.infoBar.showMoreButtons()
+            }
+        })
     }
 }
 
@@ -98,6 +112,7 @@ extension MainViewController: ControllerConfiguration {
      */
     func establishConnections(_ router: ComponentContainer) {
         sampler = router.sampler
+        infoBar = router.infoBar
         activePatchManager = router.activePatchManager
         midiController = MIDIController(keyboard: router.keyboard, selectSoundFontControl: router.selectSoundFontControl)
         midi.receiver = midiController
