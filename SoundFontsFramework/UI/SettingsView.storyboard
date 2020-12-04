@@ -203,7 +203,9 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6E-BU-Beb">
                                                                 <rect key="frame" x="307" y="0.0" width="67" height="30"/>
-                                                                <state key="normal" title="Devices…"/>
+                                                                <state key="normal" title="Devices…">
+                                                                    <color key="titleColor" systemColor="systemTealColor"/>
+                                                                </state>
                                                                 <connections>
                                                                     <action selector="connectBluetoothMIDIDevices:" destination="Eyw-X4-KFI" eventType="touchUpInside" id="FUD-dQ-rla"/>
                                                                 </connections>
