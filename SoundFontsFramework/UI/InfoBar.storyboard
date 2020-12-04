@@ -215,7 +215,7 @@
                         <outlet property="patchInfo" destination="L4b-eK-8gI" id="U3A-VC-iWO"/>
                         <outlet property="showEffects" destination="nyJ-h2-UbA" id="d4q-Bs-2oZ"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
-                        <outlet property="showMoreButtons" destination="D81-HT-18k" id="KgO-eA-LzF"/>
+                        <outlet property="showMoreButtonsButton" destination="D81-HT-18k" id="ArG-gf-vjZ"/>
                         <outlet property="showSettings" destination="7YL-wn-sth" id="aT3-P4-LH3"/>
                         <outlet property="slidingKeyboard" destination="BW4-Wd-vsq" id="qMR-q7-x8c"/>
                         <outlet property="status" destination="bwl-He-nQi" id="BUJ-LW-oBD"/>

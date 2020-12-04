@@ -22,224 +22,294 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="502"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone 12.png" translatesAutoresizingMaskIntoConstraints="NO" id="eHH-DX-wks">
-                                <rect key="frame" x="0.0" y="44" width="390" height="766"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="766" id="KAR-Ha-BQN"/>
-                                </constraints>
-                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M8M-5I-KSq" userLabel="Main">
                                 <rect key="frame" x="0.0" y="44" width="390" height="422"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Font list" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBA-6x-9Vl">
-                                        <rect key="frame" x="50.666666666666671" y="7.9999999999999982" width="55.666666666666671" height="18.333333333333329"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe to edit name or remove font." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLi-Uk-y1l" userLabel="Font list">
-                                        <rect key="frame" x="8" y="34.333333333333343" width="140.66666666666666" height="296.33333333333326"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add files" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-an-6Rm">
-                                        <rect key="frame" x="5.9999999999999964" y="338.66666666666669" width="59.666666666666657" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U31-GI-9Y2" userLabel="Add files" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="361" width="16" height="59"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HNc-EK-vQh" userLabel="Favorites">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="340.66666666666669"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4e7-4I-TWW" userLabel="Favorites">
+                                                <rect key="frame" x="156" y="0.0" width="78" height="22.333333333333332"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Favorites">
+                                                        <attributes>
+                                                            <color key="NSColor" systemColor="systemOrangeColor"/>
+                                                            <font key="NSFont" size="19" name="EurostileBold"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="0.0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Double-tap to edit. Long-tap to move." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOv-ZO-3C2" userLabel="Favorites">
+                                                <rect key="frame" x="0.0" y="30.333333333333343" width="390" height="310.33333333333326"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
+                                        <viewLayoutGuide key="safeArea" id="LgK-3M-nu4"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="ccT-BW-1Ub"/>
+                                            <constraint firstItem="EOv-ZO-3C2" firstAttribute="top" secondItem="4e7-4I-TWW" secondAttribute="bottom" constant="8" id="IfF-nS-vxv"/>
+                                            <constraint firstItem="EOv-ZO-3C2" firstAttribute="leading" secondItem="LgK-3M-nu4" secondAttribute="leading" id="Kes-a7-eMF"/>
+                                            <constraint firstAttribute="bottom" secondItem="EOv-ZO-3C2" secondAttribute="bottom" id="Wgd-Sv-Lg1"/>
+                                            <constraint firstItem="4e7-4I-TWW" firstAttribute="top" secondItem="HNc-EK-vQh" secondAttribute="top" id="czO-fO-gDf"/>
+                                            <constraint firstItem="4e7-4I-TWW" firstAttribute="centerX" secondItem="EOv-ZO-3C2" secondAttribute="centerX" id="hHe-Bv-TNW"/>
+                                            <constraint firstAttribute="trailing" secondItem="EOv-ZO-3C2" secondAttribute="trailing" id="rpD-VD-0Km"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Effects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csw-xS-Cbe">
-                                        <rect key="frame" x="40" y="373.66666666666669" width="48" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UTx-ye-aGc" userLabel="Effects" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="56" y="396" width="16" height="24"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jp9-dD-lbO" userLabel="Font/Preset">
+                                        <rect key="frame" x="0.0" y="0.0" width="390" height="340.66666666666669"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBA-6x-9Vl">
+                                                <rect key="frame" x="39.666666666666664" y="0.0" width="67.666666666666686" height="22.333333333333332"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Font list">
+                                                        <attributes>
+                                                            <color key="NSColor" systemColor="systemOrangeColor"/>
+                                                            <font key="NSFont" size="19" name="EurostileBold"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe right to edit name. Swipe left to remove." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLi-Uk-y1l" userLabel="Font list">
+                                                <rect key="frame" x="0.0" y="30.333333333333343" width="147" height="310.33333333333326"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-pz-3Zu">
+                                                <rect key="frame" x="230.66666666666666" y="0.0" width="83.666666666666657" height="22.333333333333332"/>
+                                                <attributedString key="attributedText">
+                                                    <fragment content="Preset list">
+                                                        <attributes>
+                                                            <color key="NSColor" systemColor="systemOrangeColor"/>
+                                                            <font key="NSFont" size="19" name="EurostileBold"/>
+                                                            <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                        </attributes>
+                                                    </fragment>
+                                                </attributedString>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe right to mark favorite. Swipe left to hide." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuY-7w-toc" userLabel="Preset list">
+                                                <rect key="frame" x="155" y="30.333333333333343" width="235" height="310.33333333333326"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="n44-Xg-zlD"/>
+                                            <constraint firstItem="hLi-Uk-y1l" firstAttribute="leading" secondItem="Jp9-dD-lbO" secondAttribute="leading" id="15v-0b-45k"/>
+                                            <constraint firstItem="sWJ-pz-3Zu" firstAttribute="top" secondItem="Jp9-dD-lbO" secondAttribute="top" id="Ctp-wn-JTW"/>
+                                            <constraint firstItem="KuY-7w-toc" firstAttribute="leading" secondItem="hLi-Uk-y1l" secondAttribute="trailing" constant="8" id="F5D-Sx-5kG"/>
+                                            <constraint firstItem="KuY-7w-toc" firstAttribute="width" secondItem="hLi-Uk-y1l" secondAttribute="width" multiplier="1.6" id="Ge1-2C-oyO"/>
+                                            <constraint firstItem="aBA-6x-9Vl" firstAttribute="top" secondItem="Jp9-dD-lbO" secondAttribute="top" id="Idp-t3-FWc"/>
+                                            <constraint firstAttribute="trailing" secondItem="KuY-7w-toc" secondAttribute="trailing" id="MS3-nc-zoL"/>
+                                            <constraint firstItem="hLi-Uk-y1l" firstAttribute="top" secondItem="aBA-6x-9Vl" secondAttribute="bottom" constant="8" id="Qop-bv-glV"/>
+                                            <constraint firstItem="KuY-7w-toc" firstAttribute="top" secondItem="sWJ-pz-3Zu" secondAttribute="bottom" constant="8" id="SKp-VL-TFc"/>
+                                            <constraint firstAttribute="bottom" secondItem="KuY-7w-toc" secondAttribute="bottom" id="cyu-BC-Wzi"/>
+                                            <constraint firstItem="aBA-6x-9Vl" firstAttribute="centerX" secondItem="hLi-Uk-y1l" secondAttribute="centerX" id="ke0-pY-fQR"/>
+                                            <constraint firstItem="sWJ-pz-3Zu" firstAttribute="centerX" secondItem="KuY-7w-toc" secondAttribute="centerX" id="n72-pS-HbJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="hLi-Uk-y1l" secondAttribute="bottom" id="wyA-tM-OSW"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key slide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4u-Am-pP5">
-                                        <rect key="frame" x="105" y="338.66666666666669" width="62" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk9-hi-fal" userLabel="Key slide" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="128" y="361" width="16" height="59"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MoK-A6-2A2" userLabel="InfoBar">
+                                        <rect key="frame" x="0.0" y="340.66666666666669" width="390" height="81.333333333333314"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add files" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-an-6Rm">
+                                                <rect key="frame" x="0.0" y="0.0" width="59.666666666666664" height="18.333333333333332"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U31-GI-9Y2" userLabel="Add files" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="16" y="22.333333333333314" width="16" height="59"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="ccT-BW-1Ub"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Effects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csw-xS-Cbe">
+                                                <rect key="frame" x="40" y="35" width="48" height="18.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UTx-ye-aGc" userLabel="Effects" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="56" y="57.333333333333314" width="16" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="n44-Xg-zlD"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key slide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4u-Am-pP5">
+                                                <rect key="frame" x="105" y="0.0" width="62" height="18.333333333333332"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk9-hi-fal" userLabel="Key slide" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="128" y="22.333333333333314" width="16" height="59"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="LT6-pa-HMp"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glj-gY-jrI">
+                                                <rect key="frame" x="149.33333333333334" y="35" width="71.333333333333343" height="18.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AB1-cC-gCa" userLabel="Key range" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="169" y="57.333333333333314" width="16" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="HqG-mb-NDe"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-qq-3S8">
+                                                <rect key="frame" x="254" y="35" width="58" height="18.333333333333329"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Yf-Eh-IXa" userLabel="Settings" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="275" y="57.333333333333314" width="16" height="24"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="Dfe-qA-61K"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset visibility" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-XK-1yC">
+                                                <rect key="frame" x="191.33333333333334" y="0.0" width="103.66666666666666" height="18.333333333333332"/>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdS-mi-8Eb" userLabel="Preset visibility" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="235" y="22.333333333333314" width="16" height="59"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="16" id="DOz-7Q-idf"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="LT6-pa-HMp"/>
+                                            <constraint firstItem="x4u-Am-pP5" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="10m-Ti-3Po"/>
+                                            <constraint firstItem="UTx-ye-aGc" firstAttribute="leading" secondItem="U31-GI-9Y2" secondAttribute="trailing" constant="24" id="1ks-hH-pTf"/>
+                                            <constraint firstItem="Glj-gY-jrI" firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" id="4ce-Dc-Dqi"/>
+                                            <constraint firstItem="xk9-hi-fal" firstAttribute="leading" secondItem="UTx-ye-aGc" secondAttribute="trailing" constant="56" id="8oc-O3-3Qg"/>
+                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="centerX" secondItem="Glj-gY-jrI" secondAttribute="centerX" constant="-8" id="BgH-yz-Nfl"/>
+                                            <constraint firstItem="UTx-ye-aGc" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="Cja-Lv-ftS"/>
+                                            <constraint firstItem="6Yf-Eh-IXa" firstAttribute="leading" secondItem="TdS-mi-8Eb" secondAttribute="trailing" constant="24" id="Cp8-Nb-HH6"/>
+                                            <constraint firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="28" id="Dki-sB-rYe"/>
+                                            <constraint firstItem="nIB-an-6Rm" firstAttribute="leading" secondItem="MoK-A6-2A2" secondAttribute="leading" id="E5L-NZ-jIl"/>
+                                            <constraint firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" constant="63" id="G2Y-TZ-pV1"/>
+                                            <constraint firstAttribute="trailing" secondItem="kmG-qq-3S8" secondAttribute="trailing" constant="78" id="LfW-IZ-2uX">
+                                                <variation key="heightClass=regular-widthClass=regular" constant="36"/>
+                                            </constraint>
+                                            <constraint firstItem="UTx-ye-aGc" firstAttribute="top" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="4" id="OVo-a7-gQE"/>
+                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="RYx-q6-IvU"/>
+                                            <constraint firstItem="6Yf-Eh-IXa" firstAttribute="centerX" secondItem="kmG-qq-3S8" secondAttribute="centerX" id="Szw-uD-Vba"/>
+                                            <constraint firstItem="TdS-mi-8Eb" firstAttribute="centerX" secondItem="MuL-XK-1yC" secondAttribute="centerX" id="XG3-OM-7Fk"/>
+                                            <constraint firstItem="6Yf-Eh-IXa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="XcH-7S-Yxn"/>
+                                            <constraint firstItem="xk9-hi-fal" firstAttribute="centerX" secondItem="x4u-Am-pP5" secondAttribute="centerX" id="aPd-mf-rIM"/>
+                                            <constraint firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="bfG-Fg-EKc"/>
+                                            <constraint firstItem="U31-GI-9Y2" firstAttribute="top" secondItem="nIB-an-6Rm" secondAttribute="bottom" constant="4" id="bgZ-OW-5G6"/>
+                                            <constraint firstItem="UTx-ye-aGc" firstAttribute="centerX" secondItem="csw-xS-Cbe" secondAttribute="centerX" id="dYT-IH-Ul6"/>
+                                            <constraint firstItem="xk9-hi-fal" firstAttribute="height" secondItem="U31-GI-9Y2" secondAttribute="height" id="dnK-E1-3Qh"/>
+                                            <constraint firstItem="xk9-hi-fal" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="gNy-fJ-0cw"/>
+                                            <constraint firstItem="6Yf-Eh-IXa" firstAttribute="bottom" secondItem="TdS-mi-8Eb" secondAttribute="bottom" id="h6r-8m-Z3f"/>
+                                            <constraint firstAttribute="height" constant="81.329999999999998" id="lNz-jn-CQ3"/>
+                                            <constraint firstItem="U31-GI-9Y2" firstAttribute="leading" secondItem="MoK-A6-2A2" secondAttribute="leading" constant="16" id="lg8-WM-tvh"/>
+                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="miZ-XV-kZa"/>
+                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="leading" secondItem="xk9-hi-fal" secondAttribute="trailing" constant="25" id="mlc-M7-70z"/>
+                                            <constraint firstItem="kmG-qq-3S8" firstAttribute="bottom" secondItem="Glj-gY-jrI" secondAttribute="bottom" id="ptn-w4-Hsz"/>
+                                            <constraint firstItem="MuL-XK-1yC" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="rXW-Wm-Wzj"/>
+                                            <constraint firstItem="TdS-mi-8Eb" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="w8e-Cb-d4t"/>
+                                            <constraint firstItem="TdS-mi-8Eb" firstAttribute="height" secondItem="xk9-hi-fal" secondAttribute="height" id="xyX-Qt-m5j"/>
                                         </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glj-gY-jrI">
-                                        <rect key="frame" x="149.33333333333334" y="373.66666666666669" width="71.333333333333343" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AB1-cC-gCa" userLabel="Key range" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="169" y="396" width="16" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="HqG-mb-NDe"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-qq-3S8">
-                                        <rect key="frame" x="254" y="373.66666666666669" width="58" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Yf-Eh-IXa" userLabel="Settings" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="275" y="396" width="16" height="24"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="Dfe-qA-61K"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset visibility" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-XK-1yC">
-                                        <rect key="frame" x="191.33333333333334" y="338.66666666666669" width="103.66666666666666" height="18.333333333333314"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdS-mi-8Eb" userLabel="Preset visibility" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                        <rect key="frame" x="235" y="361" width="16" height="59"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="DOz-7Q-idf"/>
-                                        </constraints>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                <integer key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                <real key="value" value="1"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset list" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-pz-3Zu">
-                                        <rect key="frame" x="233.33333333333337" y="7.9999999999999982" width="72" height="18.333333333333329"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe to make a favorite or to hide from list." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuY-7w-toc" userLabel="Preset list">
-                                        <rect key="frame" x="156.66666666666663" y="34.333333333333343" width="225.33333333333337" height="296.33333333333326"/>
-                                        <color key="textColor" systemColor="systemOrangeColor"/>
-                                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.30340414489341888" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.60496723099260141" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="nIB-an-6Rm" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" constant="6" id="0A8-5V-kFQ"/>
-                                    <constraint firstItem="KuY-7w-toc" firstAttribute="height" secondItem="hLi-Uk-y1l" secondAttribute="height" id="4ec-YY-diY"/>
-                                    <constraint firstItem="UTx-ye-aGc" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="8QK-M0-d30"/>
-                                    <constraint firstItem="xk9-hi-fal" firstAttribute="leading" secondItem="UTx-ye-aGc" secondAttribute="trailing" constant="56" id="AQX-uC-fcx"/>
-                                    <constraint firstAttribute="trailing" secondItem="kmG-qq-3S8" secondAttribute="trailing" constant="78" id="Aro-5l-VAT">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="36"/>
-                                    </constraint>
-                                    <constraint firstItem="AB1-cC-gCa" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="CkI-xE-nbc"/>
-                                    <constraint firstAttribute="trailing" secondItem="KuY-7w-toc" secondAttribute="trailing" constant="8" id="EnB-RS-Poh"/>
-                                    <constraint firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" constant="2" id="FAK-ek-tAK"/>
-                                    <constraint firstItem="TdS-mi-8Eb" firstAttribute="centerX" secondItem="MuL-XK-1yC" secondAttribute="centerX" id="FMT-tP-F43"/>
-                                    <constraint firstItem="xk9-hi-fal" firstAttribute="centerX" secondItem="x4u-Am-pP5" secondAttribute="centerX" id="FXh-p5-vlb"/>
-                                    <constraint firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="30" id="KNP-vf-sLz"/>
-                                    <constraint firstItem="MuL-XK-1yC" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="KPF-LC-qtf"/>
-                                    <constraint firstItem="nIB-an-6Rm" firstAttribute="top" secondItem="hLi-Uk-y1l" secondAttribute="bottom" constant="8" id="LrH-p8-ZPv"/>
-                                    <constraint firstItem="6Yf-Eh-IXa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="Ntq-P9-MTc"/>
-                                    <constraint firstItem="6Yf-Eh-IXa" firstAttribute="bottom" secondItem="TdS-mi-8Eb" secondAttribute="bottom" id="PED-Vo-Yky"/>
-                                    <constraint firstItem="xk9-hi-fal" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="SgY-b7-8xM"/>
-                                    <constraint firstItem="KuY-7w-toc" firstAttribute="leading" secondItem="hLi-Uk-y1l" secondAttribute="trailing" constant="8" id="TMc-Yx-IwX"/>
-                                    <constraint firstItem="U31-GI-9Y2" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" constant="16" id="Tgq-7R-aE9"/>
-                                    <constraint firstItem="sWJ-pz-3Zu" firstAttribute="top" secondItem="M8M-5I-KSq" secondAttribute="top" constant="8" id="Th9-wM-Izm"/>
-                                    <constraint firstItem="UTx-ye-aGc" firstAttribute="top" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="4" id="US7-x5-Gld"/>
-                                    <constraint firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" constant="65" id="Uhn-Eg-gdd"/>
-                                    <constraint firstItem="kmG-qq-3S8" firstAttribute="bottom" secondItem="Glj-gY-jrI" secondAttribute="bottom" id="Zl5-Xm-J0K"/>
-                                    <constraint firstItem="x4u-Am-pP5" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="ZxE-Aj-agH"/>
-                                    <constraint firstItem="UTx-ye-aGc" firstAttribute="leading" secondItem="U31-GI-9Y2" secondAttribute="trailing" constant="24" id="ca2-LD-aPv"/>
-                                    <constraint firstItem="hLi-Uk-y1l" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" constant="8" id="eUU-sC-EXB"/>
-                                    <constraint firstItem="6Yf-Eh-IXa" firstAttribute="leading" secondItem="TdS-mi-8Eb" secondAttribute="trailing" constant="24" id="j3i-2E-bMo"/>
-                                    <constraint firstItem="hLi-Uk-y1l" firstAttribute="top" secondItem="aBA-6x-9Vl" secondAttribute="bottom" constant="8" id="l9N-93-Ufv"/>
-                                    <constraint firstItem="AB1-cC-gCa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="lj1-Er-pYd"/>
-                                    <constraint firstItem="TdS-mi-8Eb" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="m5M-wO-6Cb"/>
-                                    <constraint firstItem="AB1-cC-gCa" firstAttribute="leading" secondItem="xk9-hi-fal" secondAttribute="trailing" constant="25" id="ob0-a6-Dpi"/>
-                                    <constraint firstItem="sWJ-pz-3Zu" firstAttribute="centerX" secondItem="KuY-7w-toc" secondAttribute="centerX" id="q1o-jT-Phd"/>
-                                    <constraint firstItem="xk9-hi-fal" firstAttribute="height" secondItem="U31-GI-9Y2" secondAttribute="height" id="q7b-ky-ty9"/>
-                                    <constraint firstItem="aBA-6x-9Vl" firstAttribute="centerX" secondItem="hLi-Uk-y1l" secondAttribute="centerX" id="qr9-yP-hwG"/>
-                                    <constraint firstItem="KuY-7w-toc" firstAttribute="width" secondItem="hLi-Uk-y1l" secondAttribute="width" multiplier="1.6" id="rPy-aN-TQY"/>
-                                    <constraint firstItem="KuY-7w-toc" firstAttribute="top" secondItem="sWJ-pz-3Zu" secondAttribute="bottom" constant="8" id="rRh-Fi-bLV"/>
-                                    <constraint firstItem="6Yf-Eh-IXa" firstAttribute="centerX" secondItem="kmG-qq-3S8" secondAttribute="centerX" id="s1N-Gn-q9v"/>
-                                    <constraint firstItem="Glj-gY-jrI" firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" id="wDj-98-ihP"/>
-                                    <constraint firstItem="TdS-mi-8Eb" firstAttribute="height" secondItem="xk9-hi-fal" secondAttribute="height" id="wFS-M1-ww0"/>
-                                    <constraint firstItem="AB1-cC-gCa" firstAttribute="centerX" secondItem="Glj-gY-jrI" secondAttribute="centerX" constant="-8" id="wFf-hC-bEx"/>
-                                    <constraint firstItem="aBA-6x-9Vl" firstAttribute="top" secondItem="M8M-5I-KSq" secondAttribute="top" constant="8" id="wk8-NB-5Sk"/>
-                                    <constraint firstItem="UTx-ye-aGc" firstAttribute="centerX" secondItem="csw-xS-Cbe" secondAttribute="centerX" id="x1a-os-LmQ"/>
-                                    <constraint firstItem="U31-GI-9Y2" firstAttribute="top" secondItem="nIB-an-6Rm" secondAttribute="bottom" constant="4" id="yM4-Jk-fwz"/>
+                                    <constraint firstItem="MoK-A6-2A2" firstAttribute="top" secondItem="HNc-EK-vQh" secondAttribute="bottom" id="C13-ey-Dqr"/>
+                                    <constraint firstAttribute="bottom" secondItem="MoK-A6-2A2" secondAttribute="bottom" id="FCJ-B2-cBR"/>
+                                    <constraint firstItem="HNc-EK-vQh" firstAttribute="top" secondItem="M8M-5I-KSq" secondAttribute="top" id="UWj-Di-VNp"/>
+                                    <constraint firstAttribute="trailing" secondItem="MoK-A6-2A2" secondAttribute="trailing" id="Xzb-tu-rJ2"/>
+                                    <constraint firstItem="Jp9-dD-lbO" firstAttribute="top" secondItem="M8M-5I-KSq" secondAttribute="top" id="a3g-zx-qfe"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jp9-dD-lbO" secondAttribute="trailing" id="apo-Kk-lJp"/>
+                                    <constraint firstAttribute="trailing" secondItem="HNc-EK-vQh" secondAttribute="trailing" id="eKQ-tC-HpH"/>
+                                    <constraint firstItem="MoK-A6-2A2" firstAttribute="top" secondItem="Jp9-dD-lbO" secondAttribute="bottom" id="gED-DF-0m2"/>
+                                    <constraint firstItem="HNc-EK-vQh" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" id="i6I-vU-yub"/>
+                                    <constraint firstItem="Jp9-dD-lbO" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" id="kkh-y8-YAw"/>
+                                    <constraint firstItem="MoK-A6-2A2" firstAttribute="leading" secondItem="M8M-5I-KSq" secondAttribute="leading" id="rny-Su-sZr"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="t4O-1t-IR3"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="M8M-5I-KSq" firstAttribute="top" secondItem="t4O-1t-IR3" secondAttribute="top" id="7Dg-G2-aJh"/>
                             <constraint firstItem="t4O-1t-IR3" firstAttribute="trailing" secondItem="M8M-5I-KSq" secondAttribute="trailing" id="SDo-Qv-WG0"/>
                             <constraint firstItem="M8M-5I-KSq" firstAttribute="leading" secondItem="t4O-1t-IR3" secondAttribute="leading" id="ehO-3Y-fpK"/>
                             <constraint firstItem="M8M-5I-KSq" firstAttribute="bottom" secondItem="t4O-1t-IR3" secondAttribute="bottom" constant="-36" id="gIp-Xb-HUO"/>
-                            <constraint firstItem="eHH-DX-wks" firstAttribute="top" secondItem="t4O-1t-IR3" secondAttribute="top" id="lIo-Gj-plb"/>
-                            <constraint firstItem="eHH-DX-wks" firstAttribute="leading" secondItem="t4O-1t-IR3" secondAttribute="leading" id="taA-Tg-cz9"/>
-                            <constraint firstItem="t4O-1t-IR3" firstAttribute="trailing" secondItem="eHH-DX-wks" secondAttribute="trailing" id="vIo-1j-tP1"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="390" height="502"/>
                     <connections>
-                        <outlet property="mainPanel" destination="M8M-5I-KSq" id="Ojx-Jx-RkH"/>
+                        <outlet property="favoritesPanel" destination="HNc-EK-vQh" id="lht-xp-pdE"/>
+                        <outlet property="fontPresetPanel" destination="Jp9-dD-lbO" id="sh6-wL-Cr4"/>
+                        <outlet property="infoBarPanel" destination="MoK-A6-2A2" id="eZ1-cw-k9h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -248,7 +318,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="iPhone 12.png" width="1170" height="2532"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

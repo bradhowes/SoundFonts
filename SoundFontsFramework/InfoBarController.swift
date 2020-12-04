@@ -22,7 +22,7 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var slidingKeyboard: UIButton!
     @IBOutlet private weak var showEffects: UIButton!
 
-    @IBOutlet private weak var showMoreButtons: UIButton!
+    @IBOutlet private weak var showMoreButtonsButton: UIButton!
     @IBOutlet private weak var moreButtons: UIView!
     @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
 
@@ -66,11 +66,11 @@ extension InfoBarController {
 
     @IBAction
     func toggleMoreButtons(_ sender: UIButton) {
-        animateMoreButtons()
+        setMoreButtonsVisible(state: moreButtons.isHidden)
     }
 
     @IBAction private func showSettings(_ sender: UIButton) {
-        animateMoreButtons()
+        setMoreButtonsVisible(state: false)
     }
 
     @IBAction private func showGuide(_ sender: UIButton) {
@@ -102,6 +102,8 @@ extension InfoBarController: ControllerConfiguration {
 }
 
 extension InfoBarController: InfoBar {
+
+    public var moreButtonsVisible: Bool { !moreButtons.isHidden }
 
     /**
      Add an event target to one of the internal UIControl entities.
@@ -153,8 +155,12 @@ extension InfoBarController: InfoBar {
         updateKeyLabels()
     }
 
-    public func hideButtons() {
-        animateMoreButtons()
+    public func showMoreButtons() {
+        setMoreButtonsVisible(state: true)
+    }
+
+    public func hideMoreButtons() {
+        setMoreButtonsVisible(state: false)
     }
 }
 
@@ -196,8 +202,10 @@ extension InfoBarController: SegueHandler {
 
 extension InfoBarController {
 
-    private func animateMoreButtons() {
+    private func setMoreButtonsVisible(state: Bool) {
+        guard state != !moreButtons.isHidden else { return }
         guard traitCollection.horizontalSizeClass == .compact else { return }
+
         moreButtonsXConstraint.constant = moreButtons.isHidden ? -moreButtons.frame.width : 0
         view.layoutIfNeeded()
 
@@ -207,10 +215,10 @@ extension InfoBarController {
         let newAlpha: CGFloat = willBeHidden ? 1.0 : 0.5
 
         moreButtons.isHidden = false
-        let animator = UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.15,
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.4,
             delay: 0.0,
-            options: [],
+            options: [willBeHidden ? .curveEaseOut : .curveEaseIn],
             animations: {
                 self.moreButtonsXConstraint.constant = newConstraint
                 self.touchView.alpha = newAlpha
@@ -222,11 +230,9 @@ extension InfoBarController {
             }
         )
 
-        UIView.transition(with: showMoreButtons, duration: 0.4, options: .transitionCrossDissolve) {
-            self.showMoreButtons.setImage(newImage, for: .normal)
+        UIView.transition(with: showMoreButtonsButton, duration: 0.4, options: .transitionCrossDissolve) {
+            self.showMoreButtonsButton.setImage(newImage, for: .normal)
         }
-
-        animator.startAnimation()
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
