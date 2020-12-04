@@ -1,5 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+import CoreAudioKit
 import MessageUI
 import UIKit
 import os
@@ -30,6 +31,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var solfegeStackView: UIStackView!
 
     @IBOutlet weak var midiChannelStackView: UIStackView!
+    @IBOutlet weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
@@ -182,6 +184,16 @@ extension SettingsViewController {
     @IBAction func midiChannelStep(_ sender: UIStepper) {
         updateMidiChannel()
         settings.midiChannel = Int(sender.value)
+    }
+
+    @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
+        os_log(.info, log: log, "connectBluetoothMIDIDevices")
+        let vc = CABTMIDICentralViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @IBAction func handleDone(_ blah: Any) {
+
     }
 
     @IBAction private func toggleCopyFiles(_ sender: Any) {

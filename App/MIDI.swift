@@ -65,8 +65,26 @@ final class MIDI {
         os_log(.info, log: log, "MIDIInputPortCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
-        // Create a virtual endpoint for app-to-app MIDI. (?)
         err = MIDIDestinationCreateWithBlock(client, portName as CFString, &virtualEndpoint) { packetList, _ in self.processPackets(packetList: packetList.pointee) }
+        os_log(.info, log: log, "MIDIDestinationCreateWithBlock: %d - %{public}s", err, name(for: err))
+        guard err == noErr else { return }
+
+        var uniqueId = settings.midiVirtualDestinationId
+        err = MIDIObjectSetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, uniqueId)
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
+        if err == kMIDIIDNotUnique {
+            err = MIDIObjectGetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, &uniqueId)
+            os_log(.info, log: log, "MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
+            if err == noErr {
+                settings.midiVirtualDestinationId = uniqueId
+            }
+        }
+
+        err = MIDIObjectSetIntegerProperty(virtualEndpoint, kMIDIPropertyAdvanceScheduleTimeMuSec, 1)
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s", err, name(for: err))
+
+        err = MIDIObjectSetIntegerProperty(inputPort, kMIDIPropertyAdvanceScheduleTimeMuSec, 1)
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s", err, name(for: err))
 
         connectSourcesToInputPort()
     }

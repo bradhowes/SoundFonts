@@ -25,7 +25,9 @@ public extension SettingKeys {
     static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
+
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
+    static let midiVirtualDestinationId = SettingKey("midiVirtualDestinationId", defaultValue: Int32(0))
 
     static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
     static let reverbGlobal = SettingKey("reverbGlobal", defaultValue: false)
@@ -104,6 +106,10 @@ public extension UserDefaults {
     @objc dynamic var midiChannel: Int {
         get { self[.midiChannel] }
         set { self[.midiChannel] = newValue }
+    }
+    @objc dynamic var midiVirtualDestinationId: Int32 {
+        get { self[.midiVirtualDestinationId] }
+        set { self[.midiVirtualDestinationId] = newValue }
     }
     @objc dynamic var showEffects: Bool {
         get { self[.showEffects] }

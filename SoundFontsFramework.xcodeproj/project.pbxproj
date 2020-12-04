@@ -112,6 +112,7 @@
 		BD4CF9912561BEBD00CC5DB6 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* Delay.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
 		BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */; };
+		BD5B897B257A715E00654955 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5B897A257A715E00654955 /* GradientView.swift */; };
 		BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */; };
 		BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */; };
 		BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */; };
@@ -166,6 +167,8 @@
 		BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD91411250983F60068E3CE /* PlistTranslation.swift */; };
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
+		BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */; };
+		BDDE3A96257AE60900B133CB /* BTMIDIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE3A95257AE60900B133CB /* BTMIDIViewController.swift */; };
 		BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B99256E405E00F904E3 /* DelayConfig.swift */; };
 		BDE03B9E256E40DC00F904E3 /* ReverbConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */; };
 		BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */; };
@@ -301,6 +304,7 @@
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsFrameworkTests.swift; sourceTree = "<group>"; };
 		BD58251123CDABCE0034A31B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD5B897A257A715E00654955 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManager.swift; sourceTree = "<group>"; };
 		BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsView.storyboard; sourceTree = "<group>"; };
 		BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingsView.storyboard; sourceTree = "<group>"; };
@@ -356,6 +360,8 @@
 		BDD91411250983F60068E3CE /* PlistTranslation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistTranslation.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
+		BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIndicatorView.swift; sourceTree = "<group>"; };
+		BDDE3A95257AE60900B133CB /* BTMIDIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTMIDIViewController.swift; sourceTree = "<group>"; };
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
 		BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsManager.swift; sourceTree = "<group>"; };
@@ -411,6 +417,7 @@
 				BD130B0A2561506B00D1CDF6 /* EffectsController.swift */,
 				BDC7EC51241B7AF900F789B2 /* LocalizedStrings.swift */,
 				BD88BCB62419952700399DE5 /* Notifiication.swift */,
+				BDDE3A95257AE60900B133CB /* BTMIDIViewController.swift */,
 				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
@@ -521,6 +528,8 @@
 				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
 				BD130B182561755F00D1CDF6 /* Knob.swift */,
 				BD0F943425733F320065C147 /* Checkbox.swift */,
+				BD5B897A257A715E00654955 /* GradientView.swift */,
+				BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */,
 				BD0FAC4C2520AC4500EEF187 /* FilteredOrderedCollection.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
@@ -915,6 +924,7 @@
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
 				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
+				BD5B897B257A715E00654955 /* GradientView.swift in Sources */,
 				BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */,
@@ -940,6 +950,8 @@
 				BDE150B1250B460200728402 /* ContextNotification.swift in Sources */,
 				BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */,
 				BDD7219D24190D9700FD3567 /* Bundle+Extensions.swift in Sources */,
+				BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */,
+				BDDE3A96257AE60900B133CB /* BTMIDIViewController.swift in Sources */,
 				BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */,
 				BD074C3F23CDAF51001987E9 /* FavoriteMover.swift in Sources */,
 				BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */,
