@@ -12,6 +12,11 @@ extension Int: SettingSerializable {
     public static func set(key: String, value: Int, userDefaults: UserDefaults) { userDefaults.set(value, forKey: key) }
 }
 
+extension Int32: SettingSerializable {
+    public static func get(key: String, userDefaults: UserDefaults) -> Int32? { userDefaults.number(forKey: key)?.int32Value }
+    public static func set(key: String, value: Int32, userDefaults: UserDefaults) { userDefaults.set(value, forKey: key) }
+}
+
 extension Float: SettingSerializable {
     public static func get(key: String, userDefaults: UserDefaults) -> Float? { userDefaults.number(forKey: key)?.floatValue }
     public static func set(key: String, value: Float, userDefaults: UserDefaults) { userDefaults.set(value, forKey: key) }
