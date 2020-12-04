@@ -58,9 +58,20 @@ let noteOn = DispatchWorkItem { sampler.startNote(64, withVelocity: 127, onChann
 let noteOff = DispatchWorkItem { sampler.stopNote(64, onChannel: 0) }
 let done = DispatchWorkItem { PlaygroundPage.current.finishExecution() }
 
-DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 0.15.seconds, execute: noteOn)
-DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 0.65.seconds, execute: noteOff)
-DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 5.0.seconds, execute: done)
+let seq = DispatchWorkItem {
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 0.15.seconds, execute: noteOn)
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 0.65.seconds, execute: noteOff)
+}
+
+let loop = DispatchWorkItem {
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 3.seconds, execute: seq)
+}
+
+seq.notify(queue: DispatchQueue.global(qos: .background)) {
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.now() + 3.seconds, execute: seq)
+}
+
+seq.perform()
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 

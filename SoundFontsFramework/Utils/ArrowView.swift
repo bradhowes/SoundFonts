@@ -1,9 +1,15 @@
+// Copyright © 2018 Brad Howes. All rights reserved.
+
 import UIKit
-import PlaygroundSupport
 
-@IBDesignable
-open class Arrow: UIView {
+/**
+ Custom UIView that draws an arrow between an entry and an exit point on the border of the view.
+ */
+@IBDesignable open class ArrowView: UIView {
 
+    /**
+     Supported locations for an entry or an exit
+     */
     public enum Position: Int, CaseIterable {
         case left
         case top
@@ -11,22 +17,38 @@ open class Arrow: UIView {
         case bottom
     }
 
+    /// Entry point for the arrow in this view
     open var entry: Position = .left { didSet { createPath() } }
     @IBInspectable open var entryIB: Int {
         get { entry.rawValue }
         set { entry = Position(rawValue: newValue) ?? .left }
     }
 
+    /// Exit point for the arrow in this view
     open var exit: Position = .bottom { didSet { createPath() } }
     @IBInspectable open var exitIB: Int {
         get { exit.rawValue }
         set { exit = Position(rawValue: newValue) ?? .bottom }
     }
 
+    /// Line width of the line
+    @IBInspectable open var lineWidth: CGFloat = 2.0 { didSet { pathLayer.lineWidth = lineWidth } }
+
+    /// Width of the arrow head flaring (gap across the top of the "V")
     @IBInspectable open var arrowWidth: CGFloat = 8.0 { didSet { createPath() } }
+
+    /// Color of the lines
+    @IBInspectable open var lineColor: UIColor = .systemOrange { didSet { pathLayer.strokeColor = lineColor.cgColor } }
+
+    /// Length of the arrow head
     @IBInspectable open var arrowLength: CGFloat = 10.0 { didSet { createPath() } }
 
+    /// Amount of bending given to a curve. This is multiplied with the dimension of the of the view and added to the dimenion mid point to obtain
+    /// an X or Y coordinate for a control point.
     @IBInspectable open var bendFactor: CGFloat = 0.20 { didSet { createPath() } }
+
+    /// Amount of waviness in horizontal/vertical lines. This is multiplied with the dimension of the of the view and added to the dimenion
+    /// mid point to obtain an X or Y coordinate for a control point.
     @IBInspectable open var wavyFactor: CGFloat = 0.10 { didSet { createPath() } }
 
     private let pathLayer = CAShapeLayer()
@@ -51,7 +73,7 @@ open class Arrow: UIView {
     }
 }
 
-extension Arrow {
+extension ArrowView {
 
     private var entryPoint: CGPoint { positionPoint(entry) }
     private var exitPoint: CGPoint { positionPoint(exit) }
@@ -59,8 +81,8 @@ extension Arrow {
     private func initialize() {
         layer.addSublayer(pathLayer)
         pathLayer.fillColor = UIColor.clear.cgColor
-        pathLayer.strokeColor = UIColor.systemRed.cgColor
-        pathLayer.lineWidth = 2.0
+        pathLayer.strokeColor = lineColor.cgColor
+        pathLayer.lineWidth = lineWidth
         createPath()
     }
 
@@ -93,31 +115,29 @@ extension Arrow {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func controlOffsets() -> (CGPoint, CGPoint) {
         let bounds = pathLayer.bounds
         switch (entry, exit) {
-        case (.left, .top): return controlPoints(CGSize(width: 0.0, height: -bounds.height * bendFactor), CGPoint.zero)
-        case (.left, .right): return controlPoints(CGSize(width: 0.0, height: bounds.height * wavyFactor), CGPoint.zero)
-        case (.left, .bottom): return controlPoints(CGSize(width: 0.0, height: bounds.height * bendFactor), CGPoint.zero)
-        case (.top, .right): return controlPoints(CGSize(width: bounds.width * bendFactor, height: 0.0), CGPoint.zero)
-        case (.top, .bottom): return controlPoints(CGSize(width: bounds.width * wavyFactor, height: 0.0), CGPoint.zero)
-        case (.top, .left): return controlPoints(CGSize(width: -bounds.width * bendFactor, height: 00.0), CGPoint.zero)
-        case (.right, .left): return controlPoints(CGSize(width: 0.0, height: bounds.height * wavyFactor), CGPoint.zero)
-        case (.right, .top): return controlPoints(CGSize(width: 0.0, height: -bounds.height * bendFactor), CGPoint.zero)
-        case (.right, .bottom): return controlPoints(CGSize(width: 0.0, height: bounds.height * bendFactor), CGPoint.zero)
-        case (.bottom, .left): return controlPoints(CGSize(width: -bounds.width * bendFactor, height: 0.0), CGPoint.zero)
-        case (.bottom, .top): return controlPoints(CGSize(width: bounds.width * wavyFactor, height: 0.0), CGPoint.zero)
-        case (.bottom, .right): return controlPoints(CGSize(width: bounds.width * bendFactor, height: 0.0), CGPoint.zero)
-        default: return controlPoints(CGSize.zero, CGPoint.zero)
+        case (.left, .top): return controlPoints(CGSize(width: 0.0, height: -bounds.height * bendFactor))
+        case (.left, .right): return controlPoints(CGSize(width: 0.0, height: bounds.height * wavyFactor))
+        case (.left, .bottom): return controlPoints(CGSize(width: 0.0, height: bounds.height * bendFactor))
+        case (.top, .right): return controlPoints(CGSize(width: bounds.width * bendFactor, height: 0.0))
+        case (.top, .bottom): return controlPoints(CGSize(width: bounds.width * wavyFactor, height: 0.0))
+        case (.top, .left): return controlPoints(CGSize(width: -bounds.width * bendFactor, height: 0.0))
+        case (.right, .left): return controlPoints(CGSize(width: 0.0, height: bounds.height * wavyFactor))
+        case (.right, .top): return controlPoints(CGSize(width: 0.0, height: -bounds.height * bendFactor))
+        case (.right, .bottom): return controlPoints(CGSize(width: 0.0, height: bounds.height * bendFactor))
+        case (.bottom, .left): return controlPoints(CGSize(width: -bounds.width * bendFactor, height: 0.0))
+        case (.bottom, .top): return controlPoints(CGSize(width: bounds.width * wavyFactor, height: 0.0))
+        case (.bottom, .right): return controlPoints(CGSize(width: bounds.width * bendFactor, height: 0.0))
+        default: return controlPoints(CGSize.zero)
         }
     }
 
-    private func controlPoints(_ size: CGSize, _ offset: CGPoint) -> (CGPoint, CGPoint) {
+    private func controlPoints(_ size: CGSize) -> (CGPoint, CGPoint) {
         let bounds = pathLayer.bounds
-        return (
-            CGPoint(x: bounds.midX - size.width / 2 + offset.x, y: bounds.midY - size.height / 2 + offset.y),
-            CGPoint(x: bounds.midX + size.width / 2 + offset.x, y: bounds.midY + size.height / 2 + offset.y)
-        )
+        return (CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2), CGPoint(x: bounds.midX + size.width / 2, y: bounds.midY + size.height / 2))
     }
 
     private func addArrow(_ path: UIBezierPath) {
@@ -143,39 +163,3 @@ extension Arrow {
         }
     }
 }
-
-class MyViewController : UIViewController {
-
-    var arrows = [Arrow]()
-
-    override func loadView() {
-        let view = UIView()
-        view.backgroundColor = .white
-        self.view = view
-
-        for entry in Arrow.Position.allCases {
-            for exit in Arrow.Position.allCases {
-                if entry == exit { continue }
-                let arrow = Arrow()
-                arrow.entry = entry
-                arrow.exit = exit
-                arrows.append(arrow)
-                view.addSubview(arrow)
-            }
-        }
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        let width: CGFloat = 140.0
-        let height: CGFloat = 80.0
-        let spacing: CGFloat = 10.0
-        for (index, arrow) in arrows.enumerated() {
-            let x = CGFloat(spacing) + (index % 2 == 1 ? 1.0 : 0.0) * (width + spacing)
-            let y = CGFloat(spacing + (spacing + height) * CGFloat(index / 2))
-            arrow.frame = CGRect(x: x, y: y, width: width, height: height)
-        }
-    }
-}
-
-PlaygroundPage.current.liveView = MyViewController()

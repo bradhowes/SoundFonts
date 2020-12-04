@@ -96,6 +96,7 @@
 		BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */; };
 		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
 		BD23948A25540855004E5E0D /* KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23948925540855004E5E0D /* KeyTests.swift */; };
+		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePatchKind.swift */; };
 		BD27E98B2516113600591FD0 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */; };
 		BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */; };
@@ -123,6 +124,7 @@
 		BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB824058C6200067AE2 /* SettingsTests.swift */; };
 		BD6EEA2C251E030300253D96 /* SoundFontFileLoadFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */; };
 		BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */; };
+		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
@@ -281,6 +283,7 @@
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
 		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
 		BD23948925540855004E5E0D /* KeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTests.swift; sourceTree = "<group>"; };
+		BD2436AF2579356200162A49 /* ArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
@@ -311,6 +314,7 @@
 		BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontFileLoadFailure.swift; sourceTree = "<group>"; };
 		BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD79915325795D2000943515 /* iPhone 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 12.png"; sourceTree = "<group>"; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
 		BD8A314F2502E41E0077320F /* SoundFonts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SoundFonts.xcdatamodel; sourceTree = "<group>"; };
@@ -495,6 +499,7 @@
 		BD074BF923CDAF51001987E9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BD79915325795D2000943515 /* iPhone 12.png */,
 				BDC7EC3C241AE97000F789B2 /* Localizable.strings */,
 				BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */,
 				BDD979212417006D006121A1 /* Eurostile.ttc */,
@@ -508,6 +513,7 @@
 			children = (
 				BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */,
 				BD0F942E257302C50065C147 /* ElapsedTimer.swift */,
+				BD2436AF2579356200162A49 /* ArrowView.swift */,
 				BD125B37241006200003DE99 /* AskForReview.swift */,
 				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
 				BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */,
@@ -821,6 +827,7 @@
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
 				BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
+				BD79915425795D2000943515 /* iPhone 12.png in Resources */,
 				BD074C5E23CDAF51001987E9 /* (null) in Resources */,
 				BD62CF5C253DE22D00DBDC1B /* FavoritesView.storyboard in Resources */,
 				BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */,
@@ -917,6 +924,7 @@
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
+				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
 				BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
