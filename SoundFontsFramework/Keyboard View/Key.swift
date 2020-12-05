@@ -14,7 +14,7 @@ public final class Key: UIView {
     /// How to label the key
     static var keyLabelOption = KeyLabelOption.savedSetting
 
-    static var keyWidth: CGFloat = CGFloat(settings.keyWidth)
+    static var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
 
     /// The note to play when touched
     let note: Note

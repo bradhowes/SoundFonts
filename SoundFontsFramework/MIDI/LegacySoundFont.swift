@@ -55,7 +55,7 @@ public final class LegacySoundFont: Codable {
         }
 
         let soundFont = LegacySoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key())
-        if settings.copyFilesWhenAdding {
+        if Settings.shared.copyFilesWhenAdding {
             do {
                 try copyToAppFolder(source: url, destination: soundFont.fileURL)
             } catch {
@@ -87,7 +87,7 @@ public final class LegacySoundFont: Codable {
         self.displayName = displayName
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
-        self.kind = settings.copyFilesWhenAdding ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
+        self.kind = Settings.shared.copyFilesWhenAdding ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
             .reference(bookmark: Bookmark(url: url, name: displayName))
         self.patches = Self.makePatches(soundFontInfo.presets)
     }

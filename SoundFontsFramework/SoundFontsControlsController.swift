@@ -28,7 +28,7 @@ public final class SoundFontsControlsController: UIViewController {
 
         let showingFavorites: Bool = {
             if CommandLine.arguments.contains("--screenshots") { return false }
-            return settings.showingFavorites
+            return Settings.instance.showingFavorites
         }()
 
         patchesView.isHidden = showingFavorites
@@ -62,7 +62,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         router.infoBar.addEventClosure(.showEffects, self.toggleShowEffects)
 
-        if router.isMainApp && settings.showEffects {
+        if router.isMainApp && Settings.instance.showEffects {
             let effectsViewHeight = effectsHeightConstraint.constant
             self.blankBottomConstraint.constant = effectsViewHeight
             self.effectsBottomConstraint.constant = 0.0
@@ -81,8 +81,8 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
     private func toggleShowEffects(_ action: AnyObject) {
         let effectsViewHeight = effectsHeightConstraint.constant
-        self.blankBottomConstraint.constant = settings.showEffects ? effectsViewHeight : 0.0
-        self.effectsBottomConstraint.constant = settings.showEffects ? 0.0 : effectsViewHeight
+        self.blankBottomConstraint.constant = Settings.instance.showEffects ? effectsViewHeight : 0.0
+        self.effectsBottomConstraint.constant = Settings.instance.showEffects ? 0.0 : effectsViewHeight
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn], animations: self.view.layoutIfNeeded)
     }
 
@@ -96,7 +96,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
 
         upperViewManager.slideNextHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
-        settings.showingFavorites = upperViewManager.active == 1
+        Settings.instance.showingFavorites = upperViewManager.active == 1
     }
 
     /**
@@ -105,7 +105,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
     private func showPreviousConfigurationView(_ action: AnyObject) {
         upperViewManager.slidePrevHorizontally()
         components.guideManager.prepareGuide(for: upperViewManager.active)
-        settings.showingFavorites = upperViewManager.active == 1
+        Settings.instance.showingFavorites = upperViewManager.active == 1
     }
 }
 

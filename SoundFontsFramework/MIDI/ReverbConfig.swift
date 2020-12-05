@@ -14,7 +14,7 @@ public class ReverbConfig: NSObject, Codable {
     }
 
     public convenience override init() {
-        self.init(enabled: false, preset: settings.reverbPreset, wetDryMix: settings.delayWetDryMix)
+        self.init(enabled: false, preset: Settings.instance.reverbPreset, wetDryMix: Settings.instance.delayWetDryMix)
     }
 
     public func toggleEnabled() -> ReverbConfig { setEnabled(!enabled) }

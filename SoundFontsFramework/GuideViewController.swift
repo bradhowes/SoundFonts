@@ -15,7 +15,7 @@ public final class GuideViewController: UIViewController {
         super.viewDidLoad()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGuide))
         view.addGestureRecognizer(tapGestureRecognizer)
-        prepareGuide(for: settings.showingFavorites ? 1 : 0)
+        prepareGuide(for: Settings.instance.showingFavorites ? 1 : 0)
     }
 }
 

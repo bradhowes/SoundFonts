@@ -49,7 +49,8 @@ public final class Reverb: NSObject {
     ]
 
     public override init() {
-        self.active = ReverbConfig(enabled: settings.reverbEnabled, preset: settings.reverbPreset, wetDryMix: settings.reverbWetDryMix)
+        self.active = ReverbConfig(enabled: Settings.instance.reverbEnabled, preset: Settings.instance.reverbPreset,
+                                   wetDryMix: Settings.instance.reverbWetDryMix)
         super.init()
         update()
     }
@@ -73,8 +74,8 @@ extension Reverb {
         guard let preset = AVAudioUnitReverbPreset(rawValue: active.preset) else { fatalError("invalid preseet enum value - \(active.preset)") }
         audioUnit.loadFactoryPreset(preset)
 
-        settings.reverbEnabled = active.enabled
-        settings.reverbPreset = active.preset
-        settings.reverbWetDryMix = active.wetDryMix
+        Settings.instance.reverbEnabled = active.enabled
+        Settings.instance.reverbPreset = active.preset
+        Settings.instance.reverbWetDryMix = active.wetDryMix
     }
 }

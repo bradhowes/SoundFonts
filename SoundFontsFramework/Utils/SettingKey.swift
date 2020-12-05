@@ -36,7 +36,7 @@ public protocol SettingGettable {
 public typealias SettingSerializable = SettingSettable & SettingGettable
 
 /**
- Container to place SettingKey defintions (as class members)
+ Container to place SettingKey definitions (as class members)
  */
 public class SettingKeys {
     fileprivate init() {}

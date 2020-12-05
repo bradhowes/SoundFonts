@@ -19,7 +19,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     @IBInspectable public var normalFontColor: UIColor = .lightGray
     @IBInspectable public var selectedFontColor: UIColor = .white
     @IBInspectable public var activeFontColor: UIColor = .systemTeal
-    @IBInspectable public var favoriteFontColor: UIColor = .systemYellow
+    @IBInspectable public var favoriteFontColor: UIColor = .systemOrange
 
     @IBOutlet private weak var name: UILabel!
     @IBOutlet private weak var activeIndicator: UIView!

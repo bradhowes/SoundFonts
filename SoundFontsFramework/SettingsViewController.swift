@@ -11,7 +11,7 @@ public enum KeyLabelOption: Int {
     case cOnly
 
     public static var savedSetting: KeyLabelOption {
-        return Self(rawValue: settings.keyLabelOption) ?? .cOnly
+        return Self(rawValue: Settings.shared.keyLabelOption) ?? .cOnly
     }
 }
 
@@ -64,16 +64,13 @@ public final class SettingsViewController: UIViewController {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
 
-        // TODO: remove when copyFiles support is done
-        // copyFilesStackView.isHidden = true
-
         revealKeyboardForKeyWidthChanges = false
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
         }
 
-        playSample.isOn = settings[.playSample]
-        showSolfegeNotes.isOn = settings[.showSolfegeLabel]
+        playSample.isOn = Settings.shared.playSample
+        showSolfegeNotes.isOn = Settings.shared.showSolfegeLabel
 
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
@@ -84,19 +81,19 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.maximumValue = 96.0
         keyWidthSlider.minimumValue = 32.0
         keyWidthSlider.isContinuous = true
-        keyWidthSlider.value = settings[.keyWidth]
+        keyWidthSlider.value = Settings.shared.keyWidth
 
         slideKeyboardStackView.isHidden = false
-        slideKeyboard.isOn = settings.slideKeyboard
+        slideKeyboard.isOn = Settings.shared.slideKeyboard
 
         // iOS bug? Workaround to get the tint to affect the stepper button labels
         midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
         midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
-        midiChannelStepper.value = Double(settings.midiChannel)
+        midiChannelStepper.value = Double(Settings.instance.midiChannel)
         updateMidiChannel()
 
-        slideKeyboard.isOn = settings[.slideKeyboard]
-        copyFiles.isOn = settings[.copyFilesWhenAdding]
+        slideKeyboard.isOn = Settings.shared.slideKeyboard
+        copyFiles.isOn = Settings.shared.copyFilesWhenAdding
 
         let isAUv3 = !isMainApp
         solfegeStackView.isHidden = isAUv3
@@ -130,7 +127,6 @@ extension SettingsViewController {
     }
 
     private func endShowKeyboard() {
-        // TODO: remove when copyFiles support is done
         copyFilesStackView.isHidden = false
         midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
@@ -170,20 +166,20 @@ extension SettingsViewController {
     }
 
     @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
-        settings[.showSolfegeLabel] = self.showSolfegeNotes.isOn
+        Settings.shared.showSolfegeLabel = self.showSolfegeNotes.isOn
     }
 
     @IBAction private func togglePlaySample(_ sender: Any) {
-        settings[.playSample] = self.playSample.isOn
+        Settings.shared.playSample = self.playSample.isOn
     }
 
     @IBAction private func keyLabelOptionChanged(_ sender: Any) {
-        settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
+        Settings.shared.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
     }
 
     @IBAction func midiChannelStep(_ sender: UIStepper) {
         updateMidiChannel()
-        settings.midiChannel = Int(sender.value)
+        Settings.instance.midiChannel = Int(sender.value)
     }
 
     @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
@@ -201,24 +197,24 @@ extension SettingsViewController {
             let ac = UIAlertController(title: "Disable Copying?", message: """
 Direct file access can lead to unusable SF2 file references if the file moves or is not immedately available on the device. Are you sure you want to disable copying?
 """, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Yes", style: .default) { _ in settings.copyFilesWhenAdding = false })
+            ac.addAction(UIAlertAction(title: "Yes", style: .default) { _ in Settings.shared.copyFilesWhenAdding = false })
             ac.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in self.copyFiles.isOn = true })
             present(ac, animated: true)
         }
         else {
-            settings.copyFilesWhenAdding = true
+            Settings.shared.copyFilesWhenAdding = true
         }
     }
 
     @IBAction private func keyWidthChange(_ sender: Any) {
-        let prevValue = settings.keyWidth.rounded()
+        let previousValue = Settings.shared.keyWidth.rounded()
         var newValue = keyWidthSlider.value.rounded()
         if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
         keyWidthSlider.value = newValue
 
-        if newValue != prevValue {
+        if newValue != previousValue {
             os_log(.info, log: log, "new key width: %f", newValue)
-            settings[.keyWidth] = newValue
+            Settings.shared.keyWidth = newValue
         }
     }
 

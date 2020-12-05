@@ -14,7 +14,7 @@ public final class NoteInjector {
     public init() {}
 
     public func post(to sampler: Sampler) {
-        guard settings.playSample == true else { return }
+        guard Settings.shared.playSample == true else { return }
         let note = self.note
         let noteOnDuration = self.noteOnDuration
 
@@ -29,7 +29,7 @@ public final class NoteInjector {
     }
 
     public func post(to audioUnit: AUAudioUnit) {
-        guard settings.playSample == true else { return }
+        guard Settings.shared.playSample == true else { return }
 
         guard let noteBlock = audioUnit.scheduleMIDIEventBlock else { return }
         os_log(.info, log: log, "post - valid noteBlock")

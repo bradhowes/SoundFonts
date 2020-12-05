@@ -152,10 +152,10 @@ extension PatchesTableViewManager: UITableViewDelegate {
         dismissSearchResults()
 
         if let favorite = favorites.getBy(soundFontAndPatch: soundFontAndPatch) {
-            activePatchManager.setActive(favorite: favorite, playSample: settings.playSample)
+            activePatchManager.setActive(favorite: favorite, playSample: Settings.shared.playSample)
         }
         else {
-            activePatchManager.setActive(preset: soundFontAndPatch, playSample: settings.playSample)
+            activePatchManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample)
         }
     }
 

@@ -114,7 +114,7 @@ extension ActivePatchManager {
         }
     }
 
-    static func restore() -> ActivePatchKind? { decode(settings.lastActivePatch) }
+    static func restore() -> ActivePatchKind? { decode(Settings.instance.lastActivePatch) }
 
     public static func decode(_ data: Data) -> ActivePatchKind? { try? JSONDecoder().decode(ActivePatchKind.self, from: data) }
     public static func encode(_ kind: ActivePatchKind) -> Data? { try? JSONEncoder().encode(kind) }
@@ -124,7 +124,7 @@ extension ActivePatchManager {
         os_log(.info, log: log, "save")
         DispatchQueue.global(qos: .background).async {
             if let data = Self.encode(kind) {
-                settings.lastActivePatch = data
+                Settings.instance.lastActivePatch = data
             }
         }
     }

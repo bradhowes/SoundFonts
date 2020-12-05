@@ -12,7 +12,7 @@ final class KeyboardController: UIViewController {
     private let log = Logging.logger("KeyCon")
 
     /// MIDI value of the first note in the keyboard
-    private var firstMidiNoteValue = 48 { didSet { settings.lowestKeyNote = firstMidiNoteValue } }
+    private var firstMidiNoteValue = 48 { didSet { Settings.shared.lowestKeyNote = firstMidiNoteValue } }
 
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
@@ -24,7 +24,7 @@ final class KeyboardController: UIViewController {
     private var allKeys = [Key]()
     private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
-    private var keyWidth: CGFloat = CGFloat(settings.keyWidth)
+    private var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
     private var activePatchManager: ActivePatchManager!
     private var midiChannelObservation: NSKeyValueObservation?
     private var keyLabelOptionObservation: NSKeyValueObservation?
@@ -37,7 +37,7 @@ final class KeyboardController: UIViewController {
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
 
-    public private(set) var channel: Int = settings[.midiChannel]
+    public private(set) var channel: Int = Settings.shared.midiChannel
 
     private var keyLabelOption: KeyLabelOption {
         get { Key.keyLabelOption }
@@ -64,22 +64,22 @@ extension KeyboardController {
 
     override func viewDidLoad() {
         createKeys()
-        let lowestKeyNote = settings.lowestKeyNote
+        let lowestKeyNote = Settings.shared.lowestKeyNote
         firstMidiNoteValue = lowestKeyNote
         offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
 
-        midiChannelObservation = settings.observe(\.midiChannel, options: .new) { _, change in
+        midiChannelObservation = Settings.shared.observe(\.midiChannel, options: .new) { _, change in
             guard let newValue = change.newValue else { return }
             self.releaseAllKeys()
             self.channel = newValue
         }
 
-        keyLabelOptionObservation = settings.observe(\.keyLabelOption, options: [.new]) { _, change in
+        keyLabelOptionObservation = Settings.shared.observe(\.keyLabelOption, options: [.new]) { _, change in
             guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else { return }
             self.keyLabelOption = option
         }
 
-        keyWidthObservation = settings.observe(\.keyWidth, options: [.new]) { _, change in
+        keyWidthObservation = Settings.shared.observe(\.keyWidth, options: [.new]) { _, change in
             guard let keyWidth = change.newValue else { return }
             precondition(!self.allKeys.isEmpty)
             self.keyWidth = CGFloat(keyWidth)
@@ -175,7 +175,7 @@ extension KeyboardController {
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if settings[.slideKeyboard] {
+        if Settings.shared.slideKeyboard {
             if trackedTouch == nil {
                 trackedTouch = touches.first
                 panPending = 0.0
@@ -318,7 +318,7 @@ extension KeyboardController {
             infoBar.setStatus("🔇")
         }
         else {
-            if settings.showSolfegeLabel {
+            if Settings.shared.showSolfegeLabel {
                 infoBar.setStatus(note.label + " - " + note.solfege)
             }
             else {

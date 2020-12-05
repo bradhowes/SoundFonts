@@ -20,8 +20,8 @@ public final class Delay: NSObject {
     }
 
     public override init() {
-        self.active = DelayConfig(enabled: settings.delayEnabled, time: settings.delayTime, feedback: settings.delayFeedback, cutoff: settings.delayCutoff,
-                                  wetDryMix: settings.delayWetDryMix)
+        self.active = DelayConfig(enabled: Settings.instance.delayEnabled, time: Settings.instance.delayTime, feedback: Settings.instance.delayFeedback,
+                                  cutoff: Settings.instance.delayCutoff, wetDryMix: Settings.instance.delayWetDryMix)
         super.init()
         update()
     }
@@ -47,10 +47,10 @@ extension Delay {
         audioUnit.feedback = active.feedback
         audioUnit.lowPassCutoff = active.cutoff
 
-        settings.delayEnabled = active.enabled
-        settings.delayWetDryMix = active.wetDryMix
-        settings.delayTime = active.time
-        settings.delayFeedback = active.feedback
-        settings.delayCutoff = active.cutoff
+        Settings.instance.delayEnabled = active.enabled
+        Settings.instance.delayWetDryMix = active.wetDryMix
+        Settings.instance.delayTime = active.time
+        Settings.instance.delayFeedback = active.feedback
+        Settings.instance.delayCutoff = active.cutoff
     }
 }
