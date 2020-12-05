@@ -35,7 +35,7 @@ public final class DelayViewController: AUViewController {
     @IBAction func changeCutoff(_ sender: Any) { setCutoff(value: cutoff.value) }
     @IBAction func changeWebDryMix(_ sender: Any) { setWetDryMix(value: wetDryMix.value) }
     @IBAction func toggleEnabled(_ sender: UIButton) {
-        settings.delayEnabled = !settings.delayEnabled
+        Settings.instance.delayEnabled = !Settings.instance.delayEnabled
         updateState(!wetDryMix.isEnabled)
     }
 }
@@ -82,13 +82,13 @@ extension DelayViewController {
     private func setTime(value: AUValue) {
         time.value = min(max(value, 0.0), 2.0)
         timeLabel.showStatus(String(format: "%.2f", value) + "s")
-        settings.delayTime = value
+        Settings.instance.delayTime = value
     }
 
     private func setFeedback(value: AUValue) {
         feedback.value = min(max(value, -100.0), 100.0)
         feedbackLabel.showStatus(String(format: "%.0f", value) + "%")
-        settings.delayFeedback = value
+        Settings.instance.delayFeedback = value
     }
 
     private func setCutoff(value: AUValue) {
@@ -99,13 +99,13 @@ extension DelayViewController {
         else {
             cutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
-        settings.delayCutoff = value
+        Settings.instance.delayCutoff = value
     }
 
     private func setWetDryMix(value: AUValue) {
         wetDryMix.value = min(max(value, 0.0), 100.0)
         wetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        settings.delayWetDryMix = value
+        Settings.instance.delayWetDryMix = value
     }
 
     private func updateState(_ enabled: Bool) {

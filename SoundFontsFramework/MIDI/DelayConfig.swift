@@ -18,7 +18,8 @@ public class DelayConfig: NSObject, Codable {
     }
 
     public convenience override init() {
-        self.init(enabled: false, time: settings.delayTime, feedback: settings.delayFeedback, cutoff: settings.delayCutoff, wetDryMix: settings.delayWetDryMix)
+        self.init(enabled: false, time: Settings.instance.delayTime, feedback: Settings.instance.delayFeedback,
+                  cutoff: Settings.instance.delayCutoff, wetDryMix: Settings.instance.delayWetDryMix)
     }
 
     public func toggleEnabled() -> DelayConfig { setEnabled(!enabled) }

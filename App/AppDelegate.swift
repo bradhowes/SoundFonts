@@ -16,6 +16,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func setMainViewController(_ mainViewController: MainViewController) {
+        window?.tintColor = UIColor.systemTeal
         components.setMainViewController(mainViewController)
     }
 

@@ -38,20 +38,15 @@ public final class EffectsController: UIViewController {
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
         reverbRoom.delegate = self
-        reverbRoom.selectRow(settings.reverbPreset, inComponent: 0, animated: false)
-        reverbWetDryMix.value = settings.reverbWetDryMix
-        updateReverbState(settings.reverbEnabled)
+        reverbRoom.selectRow(Settings.instance.reverbPreset, inComponent: 0, animated: false)
+        reverbWetDryMix.value = Settings.instance.reverbWetDryMix
+        updateReverbState(Settings.instance.reverbEnabled)
 
-//        for button: UIButton in [reverbEnabled, reverbGlobal, delayEnabled, delayGlobal] {
-//            button.imageView?.contentMode = .scaleAspectFit
-//            button.imageEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
-//        }
-
-        delayTime.value = settings.delayTime
-        delayFeedback.value = settings.delayFeedback
-        delayCutoff.value = settings.delayCutoff
-        delayWetDryMix.value = settings.delayWetDryMix
-        updateDelayState(settings.delayEnabled)
+        delayTime.value = Settings.instance.delayTime
+        delayFeedback.value = Settings.instance.delayFeedback
+        delayCutoff.value = Settings.instance.delayCutoff
+        delayWetDryMix.value = Settings.instance.delayWetDryMix
+        updateDelayState(Settings.instance.delayEnabled)
 
         #if !ATTACHED_EFFECTS
         #error("Bad configuration")
@@ -68,9 +63,9 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleReverbGlobal(_ sender: UIButton) {
-        let value = !settings.reverbGlobal
+        let value = !Settings.instance.reverbGlobal
         reverbGlobal.showEnabled(value)
-        settings.reverbGlobal = value
+        Settings.instance.reverbGlobal = value
         updatePreset()
     }
 
@@ -82,9 +77,9 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleDelayGlobal(_ sender: UIButton) {
-        let value = !settings.delayGlobal
+        let value = !Settings.instance.delayGlobal
         delayGlobal.showEnabled(value)
-        settings.delayGlobal = value
+        Settings.instance.delayGlobal = value
         updatePreset()
     }
 
@@ -162,8 +157,8 @@ extension EffectsController {
     private func updatePreset() {
         guard let soundFont = activePatchManager.soundFont else { return }
         guard let preset = activePatchManager.patch else { return }
-        let delayConfig = settings.delayGlobal ? preset.delayConfig : (delay.active.enabled ? delay.active : nil)
-        let reverbConfig = settings.delayGlobal ? preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
+        let delayConfig = Settings.instance.delayGlobal ? preset.delayConfig : (delay.active.enabled ? delay.active : nil)
+        let reverbConfig = Settings.instance.delayGlobal ? preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
         soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig, reverb: reverbConfig)
     }
 
@@ -171,7 +166,7 @@ extension EffectsController {
         guard case .active = event else { return }
         guard let patch = activePatchManager.patch else { return }
 
-        if !settings.reverbGlobal {
+        if !Settings.instance.reverbGlobal {
             if let reverbConfig = patch.reverbConfig {
                 update(config: reverbConfig)
             }
@@ -180,7 +175,7 @@ extension EffectsController {
             }
         }
 
-        if !settings.delayGlobal {
+        if !Settings.instance.delayGlobal {
             if let delayConfig = patch.delayConfig {
                 update(config: delayConfig)
             }

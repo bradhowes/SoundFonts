@@ -6,7 +6,7 @@ public final class MIDIController {
     private lazy var log = Logging.logger("MIDIController")
 
     public let messageQueue: DispatchQueue
-    public var channel: Int { settings.midiChannel }
+    public var channel: Int { Settings.shared.midiChannel }
 
     private let selectedFontControllerId = UInt8(112)
     private let selectedPresetControllerId = UInt8(114)

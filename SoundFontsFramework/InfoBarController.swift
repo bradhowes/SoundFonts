@@ -57,7 +57,7 @@ public final class InfoBarController: UIViewController {
             moreButtonsXConstraint.constant = -moreButtons.frame.width
         }
 
-        observers.append(settings.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() })
+        observers.append(Settings.shared.observe(\.slideKeyboard, options: [.new]) { _, _ in self.updateSlidingKeyboardState() })
         updateSlidingKeyboardState()
     }
 }
@@ -78,11 +78,11 @@ extension InfoBarController {
     }
 
     @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
-        settings.slideKeyboard = !settings.slideKeyboard
+        Settings.shared.slideKeyboard = !Settings.shared.slideKeyboard
     }
 
     @IBAction private func toggleShowEffects(_ sender: UIButton) {
-        settings.showEffects = !settings.showEffects
+        Settings.instance.showEffects = !Settings.instance.showEffects
     }
 }
 
@@ -345,6 +345,6 @@ extension InfoBarController {
     }
 
     private func updateSlidingKeyboardState() {
-        slidingKeyboard.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+        slidingKeyboard.setTitleColor(Settings.shared.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
     }
 }

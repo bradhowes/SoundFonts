@@ -2,9 +2,6 @@
 
 import Foundation
 
-/// Global variable to keep things concise.
-public let settings = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") ?? UserDefaults.standard
-
 /// Key definitions that include the key name, the value type, and any default value associated with the setting if not found
 public extension SettingKeys {
 
@@ -44,6 +41,29 @@ public extension SettingKeys {
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 }
 
+/// Global variable to keep things concise.
+public struct Settings {
+
+    public static let shared = singleton._shared
+    public static let instance = singleton._instance
+
+    private static let singleton = Settings()
+
+    private let _shared: UserDefaults
+    private let _instance: UserDefaults
+
+    init() {
+        guard let shared = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") else { fatalError("unable to access SoundFontsShare") }
+        let instance = UserDefaults.standard
+        if let sharedInit = shared.persistentDomain(forName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") {
+            instance.register(defaults: sharedInit)
+        }
+
+        self._shared = shared
+        self._instance = instance
+    }
+}
+
 /// KVO properties based on the above key definitions.
 public extension UserDefaults {
     @objc dynamic var daysAfterFirstLaunchBeforeRequest: Int {
@@ -61,10 +81,6 @@ public extension UserDefaults {
     @objc dynamic var keyWidth: Float {
         get { self[.keyWidth] }
         set { self[.keyWidth] = newValue }
-    }
-    @objc dynamic var lastActivePatch: Data {
-        get { self[.lastActivePatch] }
-        set { self[.lastActivePatch] = newValue }
     }
     @objc dynamic var lastReviewRequestDate: Date {
         get { self[.lastReviewRequestDate] }
@@ -87,13 +103,8 @@ public extension UserDefaults {
         set { self[.playSample] = newValue }
     }
     @objc dynamic var copyFilesWhenAdding: Bool {
-        // TODO: remove when copyFiles support is done
-        get { self[.copyFilesWhenAdding] || false }
+        get { self[.copyFilesWhenAdding] }
         set { self[.copyFilesWhenAdding] = newValue }
-    }
-    @objc dynamic var showingFavorites: Bool {
-        get { self[.showingFavorites] }
-        set { self[.showingFavorites] = newValue }
     }
     @objc dynamic var showSolfegeLabel: Bool {
         get { self[.showSolfegeLabel] }
@@ -114,6 +125,17 @@ public extension UserDefaults {
     @objc dynamic var showEffects: Bool {
         get { self[.showEffects] }
         set { self[.showEffects] = newValue }
+    }
+
+    // These are all per-instance settings
+
+    @objc dynamic var lastActivePatch: Data {
+        get { self[.lastActivePatch] }
+        set { self[.lastActivePatch] = newValue }
+    }
+    @objc dynamic var showingFavorites: Bool {
+        get { self[.showingFavorites] }
+        set { self[.showingFavorites] = newValue }
     }
     @objc dynamic var reverbEnabled: Bool {
         get { self[.reverbEnabled] }

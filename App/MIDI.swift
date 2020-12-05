@@ -69,14 +69,14 @@ final class MIDI {
         os_log(.info, log: log, "MIDIDestinationCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
-        var uniqueId = settings.midiVirtualDestinationId
+        var uniqueId = Settings.shared.midiVirtualDestinationId
         err = MIDIObjectSetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, uniqueId)
         os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
         if err == kMIDIIDNotUnique {
             err = MIDIObjectGetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, &uniqueId)
             os_log(.info, log: log, "MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
             if err == noErr {
-                settings.midiVirtualDestinationId = uniqueId
+                Settings.shared.midiVirtualDestinationId = uniqueId
             }
         }
 
