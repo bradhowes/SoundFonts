@@ -69,6 +69,7 @@ extension DelayViewController {
 
         parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let self = self else { return }
+            os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
             switch address {
             case AudioUnitParameters.Address.time.rawValue: DispatchQueue.main.async { self.setTime(value: value) }
             case AudioUnitParameters.Address.feedback.rawValue: DispatchQueue.main.async { self.setFeedback(value: value) }

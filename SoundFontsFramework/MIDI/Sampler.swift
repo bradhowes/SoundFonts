@@ -138,15 +138,13 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         guard let soundFont = activePatchManager.soundFont else { return .success(sampler) }
         guard let patch = activePatchManager.patch else { return .success(sampler) }
         let favorite = activePatchManager.favorite
+        self.loaded = false
 
         presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
             if let fav = favorite {
                 self.setGain(fav.gain)
                 self.setPan(fav.pan)
             }
-
-            self.loaded = true
-            #if ATTACHED_EFFECTS
 
             // - If global mode enabled, don't change anything
             // - If preset has a config use it.
@@ -173,9 +171,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
                 }
             }
 
-            #endif
-
             DispatchQueue.main.async {
+                self.loaded = true
                 afterLoadBlock?()
                 self.notify(.loaded(patch: self.activePatchManager.active))
             }
@@ -209,7 +206,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - parameter velocity: how loud to play the note (1-127)
      */
     public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
-        guard activePatchManager.active != .none else { return }
+        guard activePatchManager.active != .none, self.loaded else { return }
         guard velocity > 0 else {
             noteOff(midiValue)
             return
@@ -225,6 +222,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func noteOff(_ midiValue: UInt8) {
         os_log(.debug, log: log, "noteOff - %d", midiValue)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.stopNote(midiValue, onChannel: 0)
     }
 
@@ -236,6 +234,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
         os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
     }
 
@@ -246,6 +245,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func channelPressure(_ pressure: UInt8) {
         os_log(.debug, log: log, "channelPressure - %d", pressure)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendPressure(pressure, onChannel: 0)
     }
 
@@ -256,16 +256,19 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      */
     public func pitchBendChange(_ value: UInt16) {
         os_log(.debug, log: log, "pitchBend - %d", value)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendPitchBend(value, onChannel: 0)
     }
 
     public func controlChange(_ controller: UInt8, value: UInt8) {
         os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendController(controller, withValue: value, onChannel: 0)
     }
 
     public func programChange(_ program: UInt8) {
         os_log(.debug, log: log, "programChange - %d", program)
+        guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendProgramChange(program, onChannel: 0)
     }
 }

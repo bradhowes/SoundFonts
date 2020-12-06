@@ -47,12 +47,6 @@ public final class EffectsController: UIViewController {
         delayCutoff.value = Settings.instance.delayCutoff
         delayWetDryMix.value = Settings.instance.delayWetDryMix
         updateDelayState(Settings.instance.delayEnabled)
-
-        #if !ATTACHED_EFFECTS
-        #error("Bad configuration")
-        reverbGlobal.isHidden = true
-        delayGlobal.isHidden = true
-        #endif
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {

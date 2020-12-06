@@ -72,6 +72,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
         guard soundFonts.restored else { return }
+        guard kind != active else { return }
         let prev = active
         active = kind
         save(kind)
