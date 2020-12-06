@@ -12,7 +12,7 @@ class FormattersTests: XCTestCase {
             XCTAssertEqual("1 preset", Formatters.formatted(presetCount: 1))
             XCTAssertEqual("200 presets", Formatters.formatted(presetCount: 200))
         case "es":
-            XCTAssertEqual("no preadjustes", Formatters.formatted(presetCount: 0))
+            XCTAssertEqual("no presets", Formatters.formatted(presetCount: 0))
             XCTAssertEqual("1 preset", Formatters.formatted(presetCount: 1))
             XCTAssertEqual("200 presets", Formatters.formatted(presetCount: 200))
         case "fr":
@@ -34,9 +34,9 @@ class FormattersTests: XCTestCase {
             XCTAssertEqual("1 favorite", Formatters.formatted(favoriteCount: 1))
             XCTAssertEqual("200 favorites", Formatters.formatted(favoriteCount: 200))
         case "es":
-            XCTAssertEqual("no favoritos", Formatters.formatted(favoriteCount: 0))
-            XCTAssertEqual("1 favorito", Formatters.formatted(favoriteCount: 1))
-            XCTAssertEqual("200 favoritos", Formatters.formatted(favoriteCount: 200))
+            XCTAssertEqual("no favorites", Formatters.formatted(favoriteCount: 0))
+            XCTAssertEqual("1 favorite", Formatters.formatted(favoriteCount: 1))
+            XCTAssertEqual("200 favorites", Formatters.formatted(favoriteCount: 200))
         case "fr":
             XCTAssertEqual("pas des préférés", Formatters.formatted(favoriteCount: 0))
             XCTAssertEqual("1 préféré", Formatters.formatted(favoriteCount: 1))
@@ -91,6 +91,24 @@ class FormattersTests: XCTestCase {
                                                                          .emptyFile("five"),
                                                                          .unableToCreateFile("six")]))
         case "fr":
+            XCTAssertEqual("", Formatters.addSoundFontFailureText(failures: []))
+            XCTAssertEqual("1 empty file (one)",
+                           Formatters.addSoundFontFailureText(failures: [.emptyFile("one")]))
+            XCTAssertEqual("2 empty files (one, two)",
+                           Formatters.addSoundFontFailureText(failures: [.emptyFile("one"),
+                                                                         .emptyFile("two")]))
+            XCTAssertEqual("1 invalid file (two), 2 empty files (one, three)",
+                           Formatters.addSoundFontFailureText(failures: [.emptyFile("one"),
+                                                                         .invalidSoundFont("two"),
+                                                                         .emptyFile("three")]))
+            XCTAssertEqual("1 invalid file (two), 2 uncopyable files (four, six), 3 empty files (one, three, five)",
+                           Formatters.addSoundFontFailureText(failures: [.emptyFile("one"),
+                                                                         .invalidSoundFont("two"),
+                                                                         .emptyFile("three"),
+                                                                         .unableToCreateFile("four"),
+                                                                         .emptyFile("five"),
+                                                                         .unableToCreateFile("six")]))
+        case "es":
             XCTAssertEqual("", Formatters.addSoundFontFailureText(failures: []))
             XCTAssertEqual("1 empty file (one)",
                            Formatters.addSoundFontFailureText(failures: [.emptyFile("one")]))
