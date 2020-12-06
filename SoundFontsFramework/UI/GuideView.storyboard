@@ -307,9 +307,15 @@
                     </view>
                     <size key="freeformSize" width="390" height="502"/>
                     <connections>
+                        <outlet property="effectsArrow" destination="UTx-ye-aGc" id="3cG-W1-kSa"/>
+                        <outlet property="effectsLabel" destination="csw-xS-Cbe" id="bVg-Xm-h7I"/>
                         <outlet property="favoritesPanel" destination="HNc-EK-vQh" id="lht-xp-pdE"/>
                         <outlet property="fontPresetPanel" destination="Jp9-dD-lbO" id="sh6-wL-Cr4"/>
                         <outlet property="infoBarPanel" destination="MoK-A6-2A2" id="eZ1-cw-k9h"/>
+                        <outlet property="keyRangeArrow" destination="AB1-cC-gCa" id="vQo-oZ-7Jy"/>
+                        <outlet property="keyRangeLabel" destination="Glj-gY-jrI" id="2Z6-fY-Yzw"/>
+                        <outlet property="keySlideArrow" destination="xk9-hi-fal" id="iU6-d8-WeB"/>
+                        <outlet property="keySlideLabel" destination="x4u-Am-pP5" id="oI9-MO-T1C"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

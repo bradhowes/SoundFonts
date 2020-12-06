@@ -183,8 +183,6 @@ extension InfoBarController: SegueHandler {
             let vc = nc.topViewController as? SettingsViewController else { return }
 
         vc.soundFonts = soundFonts
-
-        // Only reveal keyboard if main app (not AUv3) and settings view is not popover
         vc.isMainApp = isMainApp
 
         if !isMainApp {
