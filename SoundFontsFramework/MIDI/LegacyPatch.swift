@@ -26,13 +26,11 @@ public class LegacyPatch: Codable {
     /// Determines the visiblity of a preset in a UI view.
     @DecodableDefault.True var isVisible: Bool
 
-    #if ATTACHED_EFFECTS
     /// The reverb configuration attached to the preset
     var reverbConfig: ReverbConfig?
 
     // The delay configuration attached to the preset
     var delayConfig: DelayConfig?
-    #endif
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion
