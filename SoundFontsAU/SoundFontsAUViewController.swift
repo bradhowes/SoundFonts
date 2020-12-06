@@ -8,7 +8,6 @@ public final class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("SFAUVC")
     private let noteInjector = NoteInjector()
     private let components = Components<SoundFontsAUViewController>(inApp: false)
-
     private var audioUnit: SoundFontsAU?
 
     override public func viewDidLoad() {

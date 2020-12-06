@@ -33,6 +33,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet weak var midiChannelStackView: UIStackView!
     @IBOutlet weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
+    @IBOutlet weak var bluetoothMIDIConnectStackView: UIStackView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
     @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
@@ -54,6 +55,11 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var review: UIButton!
     @IBOutlet private weak var contactButton: UIButton!
+
+    @IBOutlet private weak var divider1: UIView!
+    @IBOutlet private weak var divider2: UIView!
+    @IBOutlet private weak var divider3: UIView!
+    @IBOutlet private weak var divider4: UIView!
 
     private var revealKeyboardForKeyWidthChanges = false
 
@@ -116,12 +122,17 @@ extension SettingsViewController {
         copyFilesStackView.isHidden = true
         midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
+        bluetoothMIDIConnectStackView.isHidden = true
         removeSoundFontsStackView.isHidden = true
         restoreSoundFontsStackView.isHidden = true
         exportSoundFontsStackView.isHidden = true
         importSoundFontsStackView.isHidden = true
         versionReviewStackView.isHidden = true
         contactDeveloperStackView.isHidden = true
+        divider1.isHidden = true
+        divider2.isHidden = true
+        divider3.isHidden = true
+        divider4.isHidden = true
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
     }
@@ -130,12 +141,17 @@ extension SettingsViewController {
         copyFilesStackView.isHidden = false
         midiChannelStackView.isHidden = false
         slideKeyboardStackView.isHidden = false
+        bluetoothMIDIConnectStackView.isHidden = false
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
         exportSoundFontsStackView.isHidden = false
         importSoundFontsStackView.isHidden = false
         versionReviewStackView.isHidden = false
         contactDeveloperStackView.isHidden = false
+        divider1.isHidden = false
+        divider2.isHidden = false
+        divider3.isHidden = false
+        divider4.isHidden = false
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
     }
