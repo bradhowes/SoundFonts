@@ -166,16 +166,20 @@ extension SoundFontsAU {
 
     override public var fullState: [String : Any]? {
         get {
+            os_log(.debug, log: log, "fullState GET")
             var fullState = [String: Any]()
             if let data = ActivePatchManager.encode(self.activePatchManager.active) {
+                os_log(.debug, log: log, "%{public}s", self.activePatchManager.active.description)
                 fullState[activeSoundFontPatchKey] = data
             }
             return fullState
         }
         set {
+            os_log(.debug, log: log, "fullState SET")
             if let fullState = newValue {
                 if let data = fullState[activeSoundFontPatchKey] as? Data {
                     if let value = ActivePatchManager.decode(data) {
+                        os_log(.debug, log: log, "%{public}s", value.description)
                         self.activePatchManager.setActive(value)
                     }
                 }

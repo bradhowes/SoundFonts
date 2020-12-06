@@ -27,16 +27,24 @@ public extension SettingKeys {
     static let midiVirtualDestinationId = SettingKey("midiVirtualDestinationId", defaultValue: Int32(0))
 
     static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
+    static let reverbEnabledController = SettingKey("reverbEnabledController", defaultValue: -1)
     static let reverbGlobal = SettingKey("reverbGlobal", defaultValue: false)
     static let reverbPreset = SettingKey("reverbPreset", defaultValue: 1)
+    static let reverbPresetController = SettingKey("reverbPresetController", defaultValue: -1)
     static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(35.0))
+    static let reverbWetDryMixController = SettingKey("reverbWetDryMixController", defaultValue: -1)
 
     static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
+    static let delayEnabledController = SettingKey("delayEnabledController", defaultValue: -1)
     static let delayGlobal = SettingKey("delayGlobal", defaultValue: false)
     static let delayTime = SettingKey("delayTime", defaultValue: Float(0.19))
+    static let delayTimeController = SettingKey("delayTimeController", defaultValue: -1)
     static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(-75.0))
+    static let delayFeedbackController = SettingKey("delayFeedbackController", defaultValue: -1)
     static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(15000.0))
+    static let delayCutoffController = SettingKey("delayCutoffController", defaultValue: -1)
     static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
+    static let delayWetDryMixController = SettingKey("delayWetDryMixController", defaultValue: -1)
 
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 }
@@ -141,6 +149,10 @@ public extension UserDefaults {
         get { self[.reverbEnabled] }
         set { self[.reverbEnabled] = newValue }
     }
+    @objc dynamic var reverbEnabledController: Int {
+        get { self[.reverbEnabledController] }
+        set { self[.reverbEnabledController] = newValue }
+    }
     @objc dynamic var reverbGlobal: Bool {
         get { self[.reverbGlobal] }
         set { self[.reverbGlobal] = newValue }
@@ -149,13 +161,25 @@ public extension UserDefaults {
         get { self[.reverbPreset] }
         set { self[.reverbPreset] = newValue }
     }
+    @objc dynamic var reverbPresetController: Int {
+        get { self[.reverbPresetController] }
+        set { self[.reverbPresetController] = newValue }
+    }
     @objc dynamic var reverbWetDryMix: Float {
         get { self[.reverbWetDryMix] }
         set { self[.reverbWetDryMix] = newValue }
     }
+    @objc dynamic var reverbWetDryMixController: Int {
+        get { self[.reverbWetDryMixController] }
+        set { self[.reverbWetDryMixController] = newValue }
+    }
     @objc dynamic var delayEnabled: Bool {
         get { self[.delayEnabled] }
         set { self[.delayEnabled] = newValue }
+    }
+    @objc dynamic var delayEnabledController: Int {
+        get { self[.delayEnabledController] }
+        set { self[.delayEnabledController] = newValue }
     }
     @objc dynamic var delayGlobal: Bool {
         get { self[.delayGlobal] }
@@ -165,16 +189,32 @@ public extension UserDefaults {
         get { self[.delayTime] }
         set { self[.delayTime] = newValue }
     }
+    @objc dynamic var delayTimeController: Int {
+        get { self[.delayTimeController] }
+        set { self[.delayTimeController] = newValue }
+    }
     @objc dynamic var delayFeedback: Float {
         get { self[.delayFeedback] }
         set { self[.delayFeedback] = newValue }
+    }
+    @objc dynamic var delayFeedbackController: Int {
+        get { self[.delayFeedbackController] }
+        set { self[.delayFeedbackController] = newValue }
     }
     @objc dynamic var delayCutoff: Float {
         get { self[.delayCutoff] }
         set { self[.delayCutoff] = newValue }
     }
+    @objc dynamic var delayCutoffController: Int {
+        get { self[.delayCutoffController] }
+        set { self[.delayCutoffController] = newValue }
+    }
     @objc dynamic var delayWetDryMix: Float {
         get { self[.delayWetDryMix] }
         set { self[.delayWetDryMix] = newValue }
+    }
+    @objc dynamic var delayWetDryMixController: Int {
+        get { self[.delayWetDryMixController] }
+        set { self[.delayWetDryMixController] = newValue }
     }
 }
