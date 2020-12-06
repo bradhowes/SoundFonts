@@ -27,6 +27,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let selectedSoundFontManager: SelectedSoundFontManager
     private let inApp: Bool
 
+    private var pending: ActivePatchKind = .none
+
     public private(set) var active: ActivePatchKind = .none {
         didSet { os_log(.info, log: log, "set active: %{public}s", active.description) }
     }
@@ -71,7 +73,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
-        guard soundFonts.restored else { return }
+        guard soundFonts.restored else {
+            pending = kind
+            return
+        }
+        pending = .none
         guard kind != active else { return }
         let prev = active
         active = kind
@@ -107,7 +113,10 @@ extension ActivePatchManager {
             return
         }
 
-        if let restored = Self.restore() {
+        if pending != .none {
+            setActive(pending, playSample: false)
+        }
+        else if let restored = Self.restore() {
             setActive(restored, playSample: false)
         }
         else if let defaultPreset = soundFonts.defaultPreset {
