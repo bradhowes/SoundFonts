@@ -25,41 +25,39 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var upperBackground: UIView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
 
-    @IBOutlet private weak var playSamplesStackView: UIStackView!
     @IBOutlet private weak var keyLabelsStackView: UIStackView!
-    @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var solfegeStackView: UIStackView!
-
-    @IBOutlet weak var midiChannelStackView: UIStackView!
-    @IBOutlet weak var bluetoothMIDIConnect: UIButton!
+    @IBOutlet private weak var playSamplesStackView: UIStackView!
+    @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
-    @IBOutlet weak var bluetoothMIDIConnectStackView: UIStackView!
+    @IBOutlet private weak var divider1: UIView!
+    @IBOutlet private weak var midiChannelStackView: UIStackView!
+    @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
+    @IBOutlet private weak var divider2: UIView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
     @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
     @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var divider3: UIView!
     @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
     @IBOutlet private weak var importSoundFontsStackView: UIStackView!
+    @IBOutlet private weak var divider4: UIView!
     @IBOutlet private weak var versionReviewStackView: UIStackView!
     @IBOutlet private weak var contactDeveloperStackView: UIStackView!
 
-    @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
     @IBOutlet private weak var showSolfegeNotes: UISwitch!
+    @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyWidthSlider: UISlider!
+    @IBOutlet private weak var slideKeyboard: UISwitch!
     @IBOutlet private weak var midiChannel: UILabel!
     @IBOutlet private weak var midiChannelStepper: UIStepper!
-    @IBOutlet private weak var slideKeyboard: UISwitch!
+    @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var copyFiles: UISwitch!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var review: UIButton!
     @IBOutlet private weak var contactButton: UIButton!
-
-    @IBOutlet private weak var divider1: UIView!
-    @IBOutlet private weak var divider2: UIView!
-    @IBOutlet private weak var divider3: UIView!
-    @IBOutlet private weak var divider4: UIView!
 
     private var revealKeyboardForKeyWidthChanges = false
 
@@ -69,6 +67,8 @@ public final class SettingsViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
+
+        review.isEnabled = isMainApp
 
         revealKeyboardForKeyWidthChanges = false
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
@@ -89,7 +89,6 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.isContinuous = true
         keyWidthSlider.value = Settings.shared.keyWidth
 
-        slideKeyboardStackView.isHidden = false
         slideKeyboard.isOn = Settings.shared.slideKeyboard
 
         // iOS bug? Workaround to get the tint to affect the stepper button labels
@@ -101,16 +100,18 @@ public final class SettingsViewController: UIViewController {
         slideKeyboard.isOn = Settings.shared.slideKeyboard
         copyFiles.isOn = Settings.shared.copyFilesWhenAdding
 
-        let isAUv3 = !isMainApp
-        solfegeStackView.isHidden = isAUv3
-        keyLabelsStackView.isHidden = isAUv3
-        keyWidthStackView.isHidden = isAUv3
-        midiChannelStackView.isHidden = isAUv3
-        slideKeyboardStackView.isHidden = isAUv3
-
-        review.isEnabled = isMainApp
-
         endShowKeyboard()
+
+        let isAUv3 = !isMainApp
+        keyLabelsStackView.isHidden = isAUv3
+        solfegeStackView.isHidden = isAUv3
+        playSamplesStackView.isHidden = isAUv3
+        keyWidthStackView.isHidden = isAUv3
+        slideKeyboardStackView.isHidden = isAUv3
+        divider1.isHidden = isAUv3
+        midiChannelStackView.isHidden = isAUv3
+        bluetoothMIDIConnectStackView.isHidden = isAUv3
+        divider2.isHidden = isAUv3
 
         preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
@@ -138,18 +139,19 @@ extension SettingsViewController {
     }
 
     private func endShowKeyboard() {
+        let isAUv3 = !isMainApp
         copyFilesStackView.isHidden = false
-        midiChannelStackView.isHidden = false
-        slideKeyboardStackView.isHidden = false
-        bluetoothMIDIConnectStackView.isHidden = false
+        midiChannelStackView.isHidden = isAUv3
+        slideKeyboardStackView.isHidden = isAUv3
+        bluetoothMIDIConnectStackView.isHidden = isAUv3
         removeSoundFontsStackView.isHidden = false
         restoreSoundFontsStackView.isHidden = false
         exportSoundFontsStackView.isHidden = false
         importSoundFontsStackView.isHidden = false
         versionReviewStackView.isHidden = false
         contactDeveloperStackView.isHidden = false
-        divider1.isHidden = false
-        divider2.isHidden = false
+        divider1.isHidden = isAUv3
+        divider2.isHidden = isAUv3
         divider3.isHidden = false
         divider4.isHidden = false
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
@@ -191,6 +193,10 @@ extension SettingsViewController {
 
     @IBAction private func keyLabelOptionChanged(_ sender: Any) {
         Settings.shared.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
+    }
+
+    @IBAction private func toggleSlideKeyboard(_ sender: Any) {
+        Settings.shared.slideKeyboard = self.slideKeyboard.isOn
     }
 
     @IBAction func midiChannelStep(_ sender: UIStepper) {

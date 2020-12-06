@@ -19,7 +19,6 @@ public protocol ComponentContainer {
     var patchesViewManager: PatchesViewManager { get }
     var favoritesViewManager: FavoritesViewManager { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
-    var guideManager: GuideManager { get }
     var delay: Delay? { get }
     var reverb: Reverb? { get }
     var selectSoundFontControl: SelectSoundFontControl { get }

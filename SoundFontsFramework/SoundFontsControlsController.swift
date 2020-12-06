@@ -93,9 +93,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
         if upperViewManager.active == 0 {
             components.patchesViewManager.dismissSearchKeyboard()
         }
-
         upperViewManager.slideNextHorizontally()
-        components.guideManager.prepareGuide(for: upperViewManager.active)
         Settings.instance.showingFavorites = upperViewManager.active == 1
     }
 
@@ -104,7 +102,6 @@ extension SoundFontsControlsController: ControllerConfiguration {
      */
     private func showPreviousConfigurationView(_ action: AnyObject) {
         upperViewManager.slidePrevHorizontally()
-        components.guideManager.prepareGuide(for: upperViewManager.active)
         Settings.instance.showingFavorites = upperViewManager.active == 1
     }
 }

@@ -11,11 +11,19 @@ public final class GuideViewController: UIViewController {
     @IBOutlet weak var infoBarPanel: UIView!
     @IBOutlet weak var favoritesPanel: UIView!
 
+    @IBOutlet weak var effectsLabel: UILabel!
+    @IBOutlet weak var effectsArrow: ArrowView!
+    @IBOutlet weak var keySlideLabel: UILabel!
+    @IBOutlet weak var keySlideArrow: ArrowView!
+    @IBOutlet weak var keyRangeLabel: UILabel!
+    @IBOutlet weak var keyRangeArrow: ArrowView!
+
+    private var isMainApp = true
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGuide))
         view.addGestureRecognizer(tapGestureRecognizer)
-        prepareGuide(for: Settings.instance.showingFavorites ? 1 : 0)
     }
 }
 
@@ -23,31 +31,34 @@ extension GuideViewController: ControllerConfiguration {
 
     public func establishConnections(_ router: ComponentContainer) {
         infoBar = router.infoBar
+        isMainApp = router.isMainApp
         infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
         savedParent = parent
         removeFromParent()
     }
 }
 
-extension GuideViewController: GuideManager {
-
-    public func prepareGuide(for panel: Int) {
-        switch panel {
-        case 0:
-            fontPresetPanel.isHidden = false
-            favoritesPanel.isHidden = true
-        case 1:
-            fontPresetPanel.isHidden = true
-            favoritesPanel.isHidden = false
-        default:
-            break
-        }
-    }
-}
-
 extension GuideViewController {
 
+    private func prepareGuide() {
+        let isAUv3 = !isMainApp
+        effectsLabel.isHidden = isAUv3
+        effectsArrow.isHidden = isAUv3
+        keySlideLabel.isHidden = isAUv3
+        keySlideArrow.isHidden = isAUv3
+        keyRangeLabel.isHidden = isAUv3
+        keyRangeArrow.isHidden = isAUv3
+        if Settings.instance.showingFavorites {
+            fontPresetPanel.isHidden = true
+            favoritesPanel.isHidden = false
+        }
+        else {
+            fontPresetPanel.isHidden = false
+            favoritesPanel.isHidden = true
+        }
+    }
     private func showGuide(_ action: AnyObject) {
+        prepareGuide()
         savedParent.add(self)
         view.alpha = 0.0
         view.isHidden = false
