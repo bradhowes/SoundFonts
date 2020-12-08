@@ -186,7 +186,6 @@ extension FontsTableViewManager {
         } completion: { _ in
             let newRow = min(index, self.viewSoundFonts.count - 1)
             guard newRow >= 0 else {
-                self.activePatchManager.clearActive()
                 self.selectedSoundFontManager.clearSelected()
                 return
             }
