@@ -47,6 +47,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     }
 
     public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, inApp: Bool) {
+        os_log(.info, log: log, "init")
         self.soundFonts = soundFonts
         self.selectedSoundFontManager = selectedSoundFontManager
         self.inApp = inApp
@@ -74,11 +75,16 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
         guard soundFonts.restored else {
-            pending = kind
+            os_log(.info, log: log, "not yet restored - setting pending - current: %{public}s", kind.description)
+            if pending == .none {
+                pending = kind
+            }
             return
         }
+
         pending = .none
-        guard kind != active else { return }
+
+        // guard kind != active else { return }
         let prev = active
         active = kind
         save(kind)
@@ -86,17 +92,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     }
 
     public func clearActive() {
+        os_log(.info, log: log, "clearActive")
         setActive(.none, playSample: false)
-    }
-
-    public func restore(from data: Data) {
-        let decoder = JSONDecoder()
-        if let activePatchKind = try? decoder.decode(ActivePatchKind.self, from: data) {
-            if let soundFont = self.soundFont {
-                selectedSoundFontManager.setSelected(soundFont)
-            }
-            setActive(activePatchKind)
-        }
     }
 }
 
@@ -106,20 +103,18 @@ extension ActivePatchManager {
 
         // We only care about restoration event
         guard case .restored = event else { return }
-
-        // If active property is already set, then just announce to others what it is
-        guard case .none = active else {
-            DispatchQueue.main.async { self.notify(.active(old: .none, new: self.active, playSample: false)) }
-            return
-        }
+        os_log(.info, log: log, "SF collection restored")
 
         if pending != .none {
+            os_log(.info, log: log, "using pending value")
             setActive(pending, playSample: false)
         }
         else if let restored = Self.restore() {
+            os_log(.info, log: log, "using restored value from UserDefaults")
             setActive(restored, playSample: false)
         }
         else if let defaultPreset = soundFonts.defaultPreset {
+            os_log(.info, log: log, "using soundFonts.defaultPreset")
             setActive(preset: defaultPreset, playSample: false)
         }
     }
@@ -130,8 +125,7 @@ extension ActivePatchManager {
     public static func encode(_ kind: ActivePatchKind) -> Data? { try? JSONEncoder().encode(kind) }
 
     private func save(_ kind: ActivePatchKind) {
-        // guard inApp else { return }
-        os_log(.info, log: log, "save")
+        os_log(.info, log: log, "save - %{public}s", kind.description)
         DispatchQueue.global(qos: .background).async {
             if let data = Self.encode(kind) {
                 Settings.instance.lastActivePatch = data
