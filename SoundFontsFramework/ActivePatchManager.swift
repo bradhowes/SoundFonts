@@ -29,9 +29,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     private var pending: ActivePatchKind = .none
 
-    public private(set) var active: ActivePatchKind = .none {
-        didSet { os_log(.info, log: log, "set active: %{public}s", active.description) }
-    }
+    public private(set) var active: ActivePatchKind
 
     public var favorite: LegacyFavorite? { active.favorite }
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
@@ -48,6 +46,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
     public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, inApp: Bool) {
         os_log(.info, log: log, "init")
+        self.active = .none
         self.soundFonts = soundFonts
         self.selectedSoundFontManager = selectedSoundFontManager
         self.inApp = inApp
@@ -89,11 +88,6 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         active = kind
         save(kind)
         DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
-    }
-
-    public func clearActive() {
-        os_log(.info, log: log, "clearActive")
-        setActive(.none, playSample: false)
     }
 }
 
