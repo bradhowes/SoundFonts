@@ -36,7 +36,7 @@ final class SoundFontsAU: AUAudioUnit {
             self.wrapped = auSampler.auAudioUnit
 
         case .failure(let what):
-            os_log(.error, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
+            os_log(.info, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
             throw what
         }
 
@@ -44,7 +44,7 @@ final class SoundFontsAU: AUAudioUnit {
         do {
             try super.init(componentDescription: componentDescription, options: [])
         } catch {
-            os_log(.error, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription)
+            os_log(.info, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription)
             throw error
         }
 
@@ -166,20 +166,20 @@ extension SoundFontsAU {
 
     override public var fullState: [String : Any]? {
         get {
-            os_log(.debug, log: log, "fullState GET")
+            os_log(.info, log: log, "fullState GET")
             var fullState = [String: Any]()
             if let data = ActivePatchManager.encode(self.activePatchManager.active) {
-                os_log(.debug, log: log, "%{public}s", self.activePatchManager.active.description)
+                os_log(.info, log: log, "%{public}s", self.activePatchManager.active.description)
                 fullState[activeSoundFontPatchKey] = data
             }
             return fullState
         }
         set {
-            os_log(.debug, log: log, "fullState SET")
+            os_log(.info, log: log, "fullState SET")
             if let fullState = newValue {
                 if let data = fullState[activeSoundFontPatchKey] as? Data {
                     if let value = ActivePatchManager.decode(data) {
-                        os_log(.debug, log: log, "%{public}s", value.description)
+                        os_log(.info, log: log, "%{public}s", value.description)
                         self.activePatchManager.setActive(value)
                     }
                 }

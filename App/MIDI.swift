@@ -55,6 +55,10 @@ final class MIDI {
      Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
      */
     init() {
+        DispatchQueue.global(qos: .background).async { self.initialize() }
+    }
+
+    private func initialize() {
         enableNetwork()
 
         var err = MIDIClientCreateWithBlock(clientName as CFString, &client) { notification in self.processNotification(notification: notification.pointee) }
