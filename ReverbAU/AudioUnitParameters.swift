@@ -6,20 +6,15 @@ import SoundFontsFramework
 import os
 
 /**
- Definitions for the runtime parameters of the filter. There are two:
-
- - cutoff -- the frequency at which the filter starts to roll off and filter out the higher frequencies
- - resonance -- a dB setting that can attenuate the frequencies near the cutoff
-
+ Definitions for the runtime parameters of the reverb.
  */
 public final class AudioUnitParameters: NSObject {
 
-    private let log = Logging.logger("FilterParameters")
+    private let log = Logging.logger("ReverbParameters")
 
     enum Address: AUParameterAddress {
         case roomPreset = 1
         case wetDryMix
-        case enabled
     }
 
     public let roomPreset: AUParameter = {
@@ -34,13 +29,6 @@ public final class AudioUnitParameters: NSObject {
         let param = AUParameterTree.createParameter(withIdentifier: "wetDryMix", name: "Mix", address: Address.wetDryMix.rawValue, min: 0.0, max: 100.0, unit: .percent,
                                                     unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
         param.value = 30.0
-        return param
-    }()
-
-    public let enabled: AUParameter = {
-        let param = AUParameterTree.createParameter(withIdentifier: "enabled", name: "Enabled", address: Address.enabled.rawValue, min: 0.0, max: 1.0, unit: .boolean,
-                                                    unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
-        param.value = 1.0
         return param
     }()
 
@@ -75,7 +63,6 @@ public final class AudioUnitParameters: NSObject {
                 switch param.address {
                 case self.roomPreset.address: return Reverb.roomNames[Int(param.value)]
                 case self.wetDryMix.address: return String(format: "%.2f", param.value) + "%"
-                case self.enabled.address: return String(format: "%.0f", param.value)
                 default: return "?"
                 }
             }()
@@ -95,6 +82,12 @@ public final class AudioUnitParameters: NSObject {
     func setParameterValues(enabled: AUValue, roomPreset: AUValue, wetDryMix: AUValue) {
         self.roomPreset.value = roomPreset
         self.wetDryMix.value = wetDryMix
-        self.enabled.value = enabled
+    }
+
+    func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
+        switch address {
+        case .roomPreset: self.roomPreset.setValue(value, originator: originator)
+        case .wetDryMix: self.wetDryMix.setValue(value, originator: originator)
+        }
     }
 }

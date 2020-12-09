@@ -33,9 +33,6 @@
                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                 <state key="normal" title=" Reverb"/>
-                                                <connections>
-                                                    <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="mlZ-6Q-z7h"/>
-                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CzH-A1-o2R" userLabel="Reverb Controls">
                                                 <rect key="frame" x="35.5" y="21" width="268" height="140.5"/>
@@ -71,7 +68,7 @@
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                                 <connections>
-                                                                    <action selector="changWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="Ilt-bM-7bh"/>
+                                                                    <action selector="changeWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="MP4-Tr-xtC"/>
                                                                 </connections>
                                                             </view>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liX-ZF-LkS" userLabel="Mix">
@@ -120,8 +117,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="440" height="400"/>
                     <connections>
-                        <outlet property="controls" destination="CzH-A1-o2R" id="qwg-2K-ybn"/>
-                        <outlet property="enabledButton" destination="Vkv-Bw-zse" id="1Xu-bd-LJF"/>
                         <outlet property="mixLabel" destination="liX-ZF-LkS" id="u5b-iF-vns"/>
                         <outlet property="room" destination="MCb-jT-Avp" id="CJm-Wu-DYe"/>
                         <outlet property="wetDryMix" destination="T20-Wa-s33" id="HOV-C0-kbS"/>

@@ -9,8 +9,6 @@ public final class DelayViewController: AUViewController {
     private var audioUnit: DelayAU?
     private var parameterObserverToken: AUParameterObserverToken?
 
-    @IBOutlet weak var enabledButton: UIButton!
-    @IBOutlet weak var controls: UIStackView!
     @IBOutlet weak var time: Knob!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var feedback: Knob!
@@ -23,10 +21,11 @@ public final class DelayViewController: AUViewController {
     public override func viewDidLoad() {
         os_log(.info, log: log, "viewDidLoad")
         super.viewDidLoad()
-        updateState(true)
+        if audioUnit != nil && parameterObserverToken == nil { connectAU() }
     }
 
     public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
     }
 
@@ -34,10 +33,6 @@ public final class DelayViewController: AUViewController {
     @IBAction func changeFeedback(_ sender: Any) { setFeedback(value: feedback.value) }
     @IBAction func changeCutoff(_ sender: Any) { setCutoff(value: cutoff.value) }
     @IBAction func changeWebDryMix(_ sender: Any) { setWetDryMix(value: wetDryMix.value) }
-    @IBAction func toggleEnabled(_ sender: UIButton) {
-        Settings.instance.delayEnabled = !Settings.instance.delayEnabled
-        updateState(!wetDryMix.isEnabled)
-    }
 }
 
 extension DelayViewController: AUAudioUnitFactory {
@@ -80,41 +75,39 @@ extension DelayViewController {
         })
     }
 
+    private func setParameter(_ address: AudioUnitParameters.Address, _ value: AUValue) {
+        guard let audioUnit = audioUnit else { return }
+        guard let parameterTree = audioUnit.parameterTree else { return }
+        guard let parameter = parameterTree.parameter(withAddress: address.rawValue) else { return }
+        parameter.setValue(value, originator: parameterObserverToken)
+    }
+
     private func setTime(value: AUValue) {
         time.value = min(max(value, 0.0), 2.0)
         timeLabel.showStatus(String(format: "%.2f", value) + "s")
-        Settings.instance.delayTime = value
+        setParameter(.time, value)
     }
 
     private func setFeedback(value: AUValue) {
         feedback.value = min(max(value, -100.0), 100.0)
         feedbackLabel.showStatus(String(format: "%.0f", value) + "%")
-        Settings.instance.delayFeedback = value
+        setParameter(.feedback, value)
     }
 
     private func setCutoff(value: AUValue) {
         cutoff.value = min(max(value, 10.0), 20_000.0)
+        setParameter(.cutoff, value)
         if value < 1000.0 {
             cutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
         }
         else {
             cutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
-        Settings.instance.delayCutoff = value
     }
 
     private func setWetDryMix(value: AUValue) {
         wetDryMix.value = min(max(value, 0.0), 100.0)
+        setParameter(.wetDryMix, value)
         wetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        Settings.instance.delayWetDryMix = value
-    }
-
-    private func updateState(_ enabled: Bool) {
-        controls.alpha = enabled ? 1.0 : 0.5
-        time.isEnabled = enabled
-        feedback.isEnabled = enabled
-        cutoff.isEnabled = enabled
-        wetDryMix.isEnabled = enabled
-        enabledButton.showEnabled(enabled)
     }
 }

@@ -33,9 +33,6 @@
                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                 <inset key="contentEdgeInsets" minX="0.0" minY="-1" maxX="0.0" maxY="-1"/>
                                                 <state key="normal" title=" Delay"/>
-                                                <connections>
-                                                    <action selector="toggleEnabled:" destination="erm-79-XXa" eventType="touchUpInside" id="J3t-SI-18e"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -232,10 +229,8 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="390" height="146"/>
                     <connections>
-                        <outlet property="controls" destination="q8p-ND-Why" id="Ybk-CP-QJK"/>
                         <outlet property="cutoff" destination="1pW-XF-kq9" id="mj7-Iy-gmV"/>
                         <outlet property="cutoffLabel" destination="nqZ-vK-8xw" id="ToO-3o-Tyb"/>
-                        <outlet property="enabledButton" destination="FKq-Pr-ykg" id="bwc-if-psk"/>
                         <outlet property="feedback" destination="iM2-XN-xlU" id="bmq-mI-U6R"/>
                         <outlet property="feedbackLabel" destination="SpL-9N-09R" id="EXb-OX-N09"/>
                         <outlet property="time" destination="Htb-6b-YVY" id="3Vl-b8-Jaj"/>

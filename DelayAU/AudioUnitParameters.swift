@@ -1,35 +1,22 @@
-// Changes: Copyright © 2020 Brad Howes. All rights reserved.
-// Original: See LICENSE folder for this sample’s licensing information.
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 import AudioUnit
 import SoundFontsFramework
 import os
 
 /**
- Definitions for the runtime parameters of the filter. There are two:
-
- - cutoff -- the frequency at which the filter starts to roll off and filter out the higher frequencies
- - resonance -- a dB setting that can attenuate the frequencies near the cutoff
-
+ Definitions for the runtime parameters of the audio unit.
  */
 public final class AudioUnitParameters: NSObject {
 
-    private let log = Logging.logger("FilterParameters")
+    private let log = Logging.logger("DelayParameters")
 
     enum Address: AUParameterAddress {
         case time = 1
         case feedback
         case cutoff
         case wetDryMix
-        case enabled
     }
-
-    public let enabled: AUParameter = {
-        let param = AUParameterTree.createParameter(withIdentifier: "enabled", name: "Enabled", address: Address.enabled.rawValue, min: 0.0, max: 1.0, unit: .boolean,
-                                                    unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
-        param.value = 1.0
-        return param
-    }()
 
     public let time: AUParameter = {
         let param = AUParameterTree.createParameter(withIdentifier: "time", name: "Time", address: Address.time.rawValue, min: 0.0, max: 2.0, unit: .seconds,
@@ -74,8 +61,8 @@ public final class AudioUnitParameters: NSObject {
      */
     init(parameterHandler: AUParameterHandler) {
 
-        // Define a new parameter tree with the parameter defintions
-        parameterTree = AUParameterTree.createTree(withChildren: [time, feedback, cutoff, wetDryMix, enabled])
+        // Define a new parameter tree with the parameter definitions
+        parameterTree = AUParameterTree.createTree(withChildren: [time, feedback, cutoff, wetDryMix])
         super.init()
 
         // Provide a way for the tree to change values in the AudioUnit
@@ -88,7 +75,6 @@ public final class AudioUnitParameters: NSObject {
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch param.address {
-                case self.enabled.address: return String(format: "%.0f", param.value)
                 case self.time.address: return String(format: "%.2f", param.value) + "s"
                 case self.feedback.address: return String(format: "%.2f", param.value) + "%"
                 case self.cutoff.address: return String(format: "%.2f", param.value) + "Hz"
@@ -108,12 +94,20 @@ public final class AudioUnitParameters: NSObject {
      - parameter cutoffValue: the new cutoff value to use
      - parameter resonanceValue: the new resonance value to use
      */
-    func setParameterValues(enabled: AUValue, time: AUValue, feedback: AUValue, cutoff: AUValue, wetDryMix: AUValue) {
+    func setParameterValues(time: AUValue, feedback: AUValue, cutoff: AUValue, wetDryMix: AUValue) {
         os_log(.info, log: log, "setParameterValues")
-        self.enabled.value = enabled
-        self.time.value = time
-        self.feedback.value = feedback
-        self.cutoff.value = cutoff
-        self.wetDryMix.value = wetDryMix
+        self.time.setValue(time, originator: nil)
+        self.feedback.setValue(feedback, originator: nil)
+        self.cutoff.setValue(cutoff, originator: nil)
+        self.wetDryMix.setValue(wetDryMix, originator: nil)
+    }
+
+    func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
+        switch address {
+        case .time: self.time.setValue(value, originator: originator)
+        case .feedback: self.feedback.setValue(value, originator: originator)
+        case .cutoff: self.cutoff.setValue(value, originator: originator)
+        case .wetDryMix: self.wetDryMix.setValue(value, originator: originator)
+        }
     }
 }

@@ -165,12 +165,41 @@ extension DelayAU {
         set { wrapped.midiOutputEventBlock = newValue }
     }
 
+    private var delayTimeKey: String { "delayTime" }
+    private var feedbackKey: String { "feedback" }
+    private var lowPassCutoffKey: String { "lowPassCutoff" }
+    private var wetDryMixKey: String { "wetDryMix" }
+
     override public var fullState: [String : Any]? {
         get {
-            wrapped.fullState ?? [:]
+            os_log(.info, log: log, "fullState GET")
+            var fullState = [String: Any]()
+            fullState[delayTimeKey] = delay.delayTime
+            fullState[feedbackKey] = delay.feedback
+            fullState[lowPassCutoffKey] = delay.lowPassCutoff
+            fullState[wetDryMixKey] = delay.wetDryMix
+            return fullState
         }
         set {
-            wrapped.fullState = newValue
+            os_log(.info, log: log, "fullState SET")
+            if let fullState = newValue {
+                if let delayTime = fullState[delayTimeKey] as? TimeInterval {
+                    delay.delayTime = delayTime
+                    parameters.set(.time, value: AUValue(delayTime), originator: nil)
+                }
+                if let feedback = fullState[feedbackKey] as? Float {
+                    delay.feedback = feedback
+                    parameters.set(.feedback, value: feedback, originator: nil)
+                }
+                if let lowPassCutoff = fullState[lowPassCutoffKey] as? Float {
+                    delay.lowPassCutoff = lowPassCutoff
+                    parameters.set(.cutoff, value: lowPassCutoff, originator: nil)
+                }
+                if let wetDryMix = fullState[wetDryMixKey] as? Float {
+                    delay.wetDryMix = wetDryMix
+                    parameters.set(.wetDryMix, value: wetDryMix, originator: nil)
+                }
+            }
         }
     }
 
