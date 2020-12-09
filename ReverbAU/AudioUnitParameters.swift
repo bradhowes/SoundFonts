@@ -60,9 +60,9 @@ public final class AudioUnitParameters: NSObject {
         // Provide a way to obtain String values for the current settings.
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
-                switch param.address {
-                case self.roomPreset.address: return Reverb.roomNames[Int(param.value)]
-                case self.wetDryMix.address: return String(format: "%.2f", param.value) + "%"
+                switch Address(rawValue: param.address) {
+                case .roomPreset: return Reverb.roomNames[Int(param.value)]
+                case .wetDryMix: return String(format: "%.2f", param.value) + "%"
                 default: return "?"
                 }
             }()
@@ -89,5 +89,11 @@ public final class AudioUnitParameters: NSObject {
         case .roomPreset: self.roomPreset.setValue(value, originator: originator)
         case .wetDryMix: self.wetDryMix.setValue(value, originator: originator)
         }
+    }
+}
+
+extension AUParameterTree {
+    func parameter(withAddress: AudioUnitParameters.Address) -> AUParameter? {
+        parameter(withAddress: withAddress.rawValue)
     }
 }

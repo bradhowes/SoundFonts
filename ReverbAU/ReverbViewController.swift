@@ -74,17 +74,17 @@ extension ReverbViewController {
         guard let audioUnit = audioUnit else { fatalError("nil audioUnit") }
         guard let parameterTree = audioUnit.parameterTree else { fatalError("nil parameterTree") }
 
-        guard let roomPreset = parameterTree.parameter(withAddress: AudioUnitParameters.Address.roomPreset.rawValue) else { fatalError("Undefined roomPreset parameter") }
-        guard let wetDryMix = parameterTree.parameter(withAddress: AudioUnitParameters.Address.wetDryMix.rawValue) else { fatalError("Undefined wetDryMix parameter") }
+        guard let roomPreset = parameterTree.parameter(withAddress: .roomPreset) else { fatalError("Undefined roomPreset parameter") }
+        guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else { fatalError("Undefined wetDryMix parameter") }
 
         setActiveRoom(value: roomPreset.value)
         setWetDryMix(value: wetDryMix.value)
 
         parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let self = self else { return }
-            switch address {
-            case AudioUnitParameters.Address.roomPreset.rawValue: DispatchQueue.main.async { self.setActiveRoom(value: value) }
-            case AudioUnitParameters.Address.wetDryMix.rawValue: DispatchQueue.main.async { self.setWetDryMix(value: value) }
+            switch AudioUnitParameters.Address(rawValue: address) {
+            case .roomPreset: DispatchQueue.main.async { self.setActiveRoom(value: value) }
+            case .wetDryMix: DispatchQueue.main.async { self.setWetDryMix(value: value) }
             default: break
             }
         })

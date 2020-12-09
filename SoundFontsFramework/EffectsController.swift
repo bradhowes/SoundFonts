@@ -44,7 +44,11 @@ public final class EffectsController: UIViewController {
 
         delayTime.value = Settings.instance.delayTime
         delayFeedback.value = Settings.instance.delayFeedback
-        delayCutoff.value = Settings.instance.delayCutoff
+
+        delayCutoff.minimumValue = log10(delayCutoff.minimumValue)
+        delayCutoff.maximumValue = log10(delayCutoff.maximumValue)
+        delayCutoff.value = log10(Settings.instance.delayCutoff)
+
         delayWetDryMix.value = Settings.instance.delayWetDryMix
         updateDelayState(Settings.instance.delayEnabled)
     }
@@ -97,7 +101,7 @@ public final class EffectsController: UIViewController {
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
         showDelayCutoff()
-        delay.active = delay.active.setCutoff(delayCutoff.value)
+        delay.active = delay.active.setCutoff(pow(10.0, delayCutoff.value))
         updatePreset()
     }
 
@@ -203,7 +207,7 @@ extension EffectsController {
     private func update(config: DelayConfig) {
         delayTime.setValue(config.time, animated: true)
         delayFeedback.setValue(config.feedback, animated: true)
-        delayCutoff.setValue(config.cutoff, animated: true)
+        delayCutoff.setValue(log10(config.cutoff), animated: true)
         delayWetDryMix.setValue(config.wetDryMix, animated: true)
         updateDelayState(config.enabled)
     }
@@ -227,11 +231,12 @@ extension EffectsController {
     private func showDelayTime() { delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s") }
     private func showDelayFeedback() { delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%") }
     private func showDelayCutoff() {
-        if delayCutoff.value < 1000.0 {
-            delayCutoffLabel.showStatus(String(format: "%.1f", delayCutoff.value) + " Hz")
+        let value = pow(10.0, delayCutoff.value)
+        if value < 1000.0 {
+            delayCutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
         }
         else {
-            delayCutoffLabel.showStatus(String(format: "%.2f", delayCutoff.value / 1000.0) + " kHz")
+            delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
     }
     private func showDelayMixValue() { delayMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%") }

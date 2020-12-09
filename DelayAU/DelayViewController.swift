@@ -22,6 +22,9 @@ public final class DelayViewController: AUViewController {
         os_log(.info, log: log, "viewDidLoad")
         super.viewDidLoad()
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
+
+        cutoff.minimumValue = log10(cutoff.minimumValue)
+        cutoff.maximumValue = log10(cutoff.maximumValue)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -31,7 +34,7 @@ public final class DelayViewController: AUViewController {
 
     @IBAction func changeTime(_ sender: Any) { setTime(value: time.value) }
     @IBAction func changeFeedback(_ sender: Any) { setFeedback(value: feedback.value) }
-    @IBAction func changeCutoff(_ sender: Any) { setCutoff(value: cutoff.value) }
+    @IBAction func changeCutoff(_ sender: Any) { setCutoff(value: pow(10.0, cutoff.value)) }
     @IBAction func changeWebDryMix(_ sender: Any) { setWetDryMix(value: wetDryMix.value) }
 }
 
@@ -52,10 +55,10 @@ extension DelayViewController {
         guard let audioUnit = audioUnit else { fatalError("nil audioUnit") }
         guard let parameterTree = audioUnit.parameterTree else { fatalError("nil parameterTree") }
 
-        guard let time = parameterTree.parameter(withAddress: AudioUnitParameters.Address.time.rawValue) else { fatalError("Undefined time parameter") }
-        guard let feedback = parameterTree.parameter(withAddress: AudioUnitParameters.Address.feedback.rawValue) else { fatalError("Undefined feedback parameter") }
-        guard let cutoff = parameterTree.parameter(withAddress: AudioUnitParameters.Address.cutoff.rawValue) else { fatalError("Undefined cutoff parameter") }
-        guard let wetDryMix = parameterTree.parameter(withAddress: AudioUnitParameters.Address.wetDryMix.rawValue) else { fatalError("Undefined wetDryMix parameter") }
+        guard let time = parameterTree.parameter(withAddress: .time) else { fatalError("Undefined time parameter") }
+        guard let feedback = parameterTree.parameter(withAddress: .feedback) else { fatalError("Undefined feedback parameter") }
+        guard let cutoff = parameterTree.parameter(withAddress: .cutoff) else { fatalError("Undefined cutoff parameter") }
+        guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else { fatalError("Undefined wetDryMix parameter") }
 
         setTime(value: time.value)
         setFeedback(value: feedback.value)
@@ -65,11 +68,11 @@ extension DelayViewController {
         parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
             guard let self = self else { return }
             os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
-            switch address {
-            case AudioUnitParameters.Address.time.rawValue: DispatchQueue.main.async { self.setTime(value: value) }
-            case AudioUnitParameters.Address.feedback.rawValue: DispatchQueue.main.async { self.setFeedback(value: value) }
-            case AudioUnitParameters.Address.cutoff.rawValue: DispatchQueue.main.async { self.setCutoff(value: value) }
-            case AudioUnitParameters.Address.wetDryMix.rawValue: DispatchQueue.main.async { self.setWetDryMix(value: value) }
+            switch AudioUnitParameters.Address(rawValue: address) {
+            case .time: DispatchQueue.main.async { self.setTime(value: value) }
+            case .feedback: DispatchQueue.main.async { self.setFeedback(value: value) }
+            case .cutoff: DispatchQueue.main.async { self.setCutoff(value: value) }
+            case .wetDryMix: DispatchQueue.main.async { self.setWetDryMix(value: value) }
             default: break
             }
         })
@@ -95,7 +98,7 @@ extension DelayViewController {
     }
 
     private func setCutoff(value: AUValue) {
-        cutoff.value = min(max(value, 10.0), 20_000.0)
+        cutoff.value = log10(min(max(value, 10.0), 20_000.0))
         setParameter(.cutoff, value)
         if value < 1000.0 {
             cutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
