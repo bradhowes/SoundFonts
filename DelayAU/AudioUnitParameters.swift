@@ -26,15 +26,16 @@ public final class AudioUnitParameters: NSObject {
     }()
 
     public let feedback: AUParameter = {
-        let param = AUParameterTree.createParameter(withIdentifier: "feedback", name: "Feedback", address: Address.feedback.rawValue, min: -50.0, max: 100.0,
+        let param = AUParameterTree.createParameter(withIdentifier: "feedback", name: "Feedback", address: Address.feedback.rawValue, min: -100.0, max: 100.0,
                                                     unit: .percent, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
         param.value = 50.0
         return param
     }()
 
     public let cutoff: AUParameter = {
-        let param = AUParameterTree.createParameter(withIdentifier: "cutoff", name: "Cutoff", address: Address.cutoff.rawValue,  min: 12.0, max: 20_000.0,
-                                                    unit: .hertz, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
+        let param = AUParameterTree.createParameter(withIdentifier: "cutoff", name: "Cutoff", address: Address.cutoff.rawValue,  min: 10.0, max: 20_000.0,
+                                                    unit: .hertz, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable, .flag_DisplayLogarithmic], valueStrings: nil,
+                                                    dependentParameters: nil)
         param.value = 18_000.0
         return param
     }()
@@ -74,11 +75,11 @@ public final class AudioUnitParameters: NSObject {
         // Provide a way to obtain String values for the current settings.
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
-                switch param.address {
-                case self.time.address: return String(format: "%.2f", param.value) + "s"
-                case self.feedback.address: return String(format: "%.2f", param.value) + "%"
-                case self.cutoff.address: return String(format: "%.2f", param.value) + "Hz"
-                case self.wetDryMix.address: return String(format: "%.2f", param.value) + "%"
+                switch Address(rawValue: param.address) {
+                case .time: return String(format: "%.2f", param.value) + "s"
+                case .feedback: return String(format: "%.2f", param.value) + "%"
+                case .cutoff: return String(format: "%.2f", param.value) + "Hz"
+                case .wetDryMix: return String(format: "%.2f", param.value) + "%"
                 default: return "?"
                 }
             }()
@@ -104,10 +105,17 @@ public final class AudioUnitParameters: NSObject {
 
     func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
         switch address {
-        case .time: self.time.setValue(value, originator: originator)
-        case .feedback: self.feedback.setValue(value, originator: originator)
-        case .cutoff: self.cutoff.setValue(value, originator: originator)
-        case .wetDryMix: self.wetDryMix.setValue(value, originator: originator)
+        case .time: time.setValue(value, originator: originator)
+        case .feedback: feedback.setValue(value, originator: originator)
+        case .cutoff: cutoff.setValue(value, originator: originator)
+        case .wetDryMix: wetDryMix.setValue(value, originator: originator)
         }
+    }
+}
+
+extension AUParameterTree {
+
+    func parameter(withAddress: AudioUnitParameters.Address) -> AUParameter? {
+        parameter(withAddress: withAddress.rawValue)
     }
 }

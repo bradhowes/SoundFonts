@@ -39,17 +39,17 @@ final class ReverbAU: AUAudioUnit {
 extension ReverbAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
-        switch parameter.address {
-        case AudioUnitParameters.Address.roomPreset.rawValue: activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
-        case AudioUnitParameters.Address.wetDryMix.rawValue: reverb.wetDryMix = value
+        switch AudioUnitParameters.Address(rawValue: parameter.address) {
+        case .roomPreset: activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
+        case .wetDryMix: reverb.wetDryMix = value
         default: break
         }
     }
 
     public func get(_ parameter: AUParameter) -> AUValue {
-        switch parameter.address {
-        case AudioUnitParameters.Address.roomPreset.rawValue: return AUValue(activeRoomPreset)
-        case AudioUnitParameters.Address.wetDryMix.rawValue: return reverb.wetDryMix
+        switch AudioUnitParameters.Address(rawValue: parameter.address) {
+        case .roomPreset: return AUValue(activeRoomPreset)
+        case .wetDryMix: return reverb.wetDryMix
         default: return 0
         }
     }
@@ -277,9 +277,9 @@ extension ReverbAU {
                 case .parameter:
                     let address = event.parameter.parameterAddress
                     let value = event.parameter.value
-                    switch address {
-                    case roomPresetParameter.address: roomPresetParameter.setValue(value, originator: nil)
-                    case wetDryMixParameter.address: wetDryMixParameter.setValue(value, originator: nil)
+                    switch AudioUnitParameters.Address(rawValue: address) {
+                    case .roomPreset: roomPresetParameter.setValue(value, originator: nil)
+                    case .wetDryMix: wetDryMixParameter.setValue(value, originator: nil)
                     default: break
                     }
                 case .parameterRamp: break
