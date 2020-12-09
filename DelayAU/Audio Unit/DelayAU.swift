@@ -36,27 +36,33 @@ final class DelayAU: AUAudioUnit {
 extension DelayAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
-        switch parameter.address {
-        case AudioUnitParameters.Address.time.rawValue: delay.delayTime = Double(value)
-        case AudioUnitParameters.Address.feedback.rawValue: delay.feedback = value
-        case AudioUnitParameters.Address.cutoff.rawValue: delay.lowPassCutoff = value
-        case AudioUnitParameters.Address.wetDryMix.rawValue: delay.wetDryMix = value
+        switch AudioUnitParameters.Address(rawValue: parameter.address) {
+        case .time: delay.delayTime = Double(value)
+        case .feedback: delay.feedback = value
+        case .cutoff: delay.lowPassCutoff = value
+        case .wetDryMix: delay.wetDryMix = value
         default: break
         }
     }
 
     public func get(_ parameter: AUParameter) -> AUValue {
-        switch parameter.address {
-        case AudioUnitParameters.Address.time.rawValue: return AUValue(delay.delayTime)
-        case AudioUnitParameters.Address.feedback.rawValue: return delay.feedback
-        case AudioUnitParameters.Address.cutoff.rawValue: return delay.lowPassCutoff
-        case AudioUnitParameters.Address.wetDryMix.rawValue: return delay.wetDryMix
+        switch AudioUnitParameters.Address(rawValue: parameter.address) {
+        case .time: return AUValue(delay.delayTime)
+        case .feedback: return delay.feedback
+        case .cutoff: return delay.lowPassCutoff
+        case .wetDryMix: return delay.wetDryMix
         default: return 0
         }
     }
 }
 
 extension DelayAU {
+
+    override public var contextName: String? {
+        didSet {
+            os_log(.info, log: log, "contextName: %{public}s", contextName ?? "nil")
+        }
+    }
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         IndexSet(availableViewConfigurations.indices)
@@ -309,11 +315,11 @@ extension DelayAU {
                 case .parameter:
                     let address = event.parameter.parameterAddress
                     let value = event.parameter.value
-                    switch address {
-                    case timeParameter.address: timeParameter.setValue(value, originator: nil)
-                    case feedbackParameter.address: feedbackParameter.setValue(value, originator: nil)
-                    case cutoffParameter.address: cutoffParameter.setValue(value, originator: nil)
-                    case wetDryMixParameter.address: wetDryMixParameter.setValue(value, originator: nil)
+                    switch AudioUnitParameters.Address(rawValue: address) {
+                    case .time: timeParameter.setValue(value, originator: nil)
+                    case .feedback: feedbackParameter.setValue(value, originator: nil)
+                    case .cutoff: cutoffParameter.setValue(value, originator: nil)
+                    case .wetDryMix: wetDryMixParameter.setValue(value, originator: nil)
                     default: break
                     }
                 case .parameterRamp: break
