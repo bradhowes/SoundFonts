@@ -289,5 +289,39 @@ extension DelayAU {
     }
 
     override public var renderBlock: AURenderBlock { wrapped.renderBlock }
-    override var internalRenderBlock: AUInternalRenderBlock { wrapped.internalRenderBlock }
+
+    override var internalRenderBlock: AUInternalRenderBlock {
+
+        // Local copy of values that will be used in render block. Must not dispatch or allocate memory in the block.
+        let wrappedBlock = wrapped.internalRenderBlock
+        let timeParameter = parameters.time
+        let feedbackParameter = parameters.feedback
+        let cutoffParameter = parameters.cutoff
+        let wetDryMixParameter = parameters.wetDryMix
+
+        return { ( actionFlags, timestamp, frameCount, outputBusNumber, outputData, realtimeEventListHead, pullInputBlock) in
+            var head = realtimeEventListHead
+            while head != nil {
+                guard let event = head?.pointee else { break }
+                switch event.head.eventType {
+                case .MIDI: break
+                case .midiSysEx: break
+                case .parameter:
+                    let address = event.parameter.parameterAddress
+                    let value = event.parameter.value
+                    switch address {
+                    case timeParameter.address: timeParameter.setValue(value, originator: nil)
+                    case feedbackParameter.address: feedbackParameter.setValue(value, originator: nil)
+                    case cutoffParameter.address: cutoffParameter.setValue(value, originator: nil)
+                    case wetDryMixParameter.address: wetDryMixParameter.setValue(value, originator: nil)
+                    default: break
+                    }
+                case .parameterRamp: break
+                default: break
+                }
+                head = UnsafePointer<AURenderEvent>(event.head.next)
+            }
+            return wrappedBlock(actionFlags, timestamp, frameCount, outputBusNumber, outputData, head, pullInputBlock)
+        }
+    }
 }
