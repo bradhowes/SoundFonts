@@ -147,14 +147,29 @@ extension ReverbAU {
         set { wrapped.midiOutputEventBlock = newValue }
     }
 
-    private var activeSoundFontPatchKey: String { "soundFontPatch" }
+    private var roomIndexKey: String { "roomIndex" }
+    private var wetDryMixKey: String { "wetDryMix" }
 
     override public var fullState: [String : Any]? {
         get {
-            wrapped.fullState
+            os_log(.info, log: log, "fullState GET")
+            var fullState = [String: Any]()
+            fullState[roomIndexKey] = activeRoomPreset
+            fullState[wetDryMixKey] = reverb.wetDryMix
+            return fullState
         }
         set {
-            wrapped.fullState = newValue
+            os_log(.info, log: log, "fullState SET")
+            if let fullState = newValue {
+                if let roomIndex = fullState[roomIndexKey] as? Int {
+                    activeRoomPreset = roomIndex
+                    parameters.set(.roomPreset, value: AUValue(roomIndex), originator: nil)
+                }
+                if let wetDryMix = fullState[wetDryMixKey] as? Float {
+                    reverb.wetDryMix = wetDryMix
+                    parameters.set(.wetDryMix, value: wetDryMix, originator: nil)
+                }
+            }
         }
     }
 

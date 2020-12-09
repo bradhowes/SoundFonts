@@ -81,8 +81,6 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             return
         }
 
-        pending = .none
-
         // guard kind != active else { return }
         let prev = active
         active = kind

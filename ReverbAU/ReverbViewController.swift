@@ -9,8 +9,6 @@ public final class ReverbViewController: AUViewController {
     private var audioUnit: ReverbAU?
     private var parameterObserverToken: AUParameterObserverToken?
 
-    @IBOutlet private weak var enabledButton: UIButton!
-    @IBOutlet private weak var controls: UIStackView!
     @IBOutlet private weak var wetDryMix: Knob!
     @IBOutlet private weak var mixLabel: UILabel!
     @IBOutlet private weak var room: UIPickerView!
@@ -20,22 +18,16 @@ public final class ReverbViewController: AUViewController {
         super.viewDidLoad()
         room.dataSource = self
         room.delegate = self
-        updateState(true)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
     }
 
-    @IBAction func changWetDryMix(_ sender: Any) {
+    @IBAction func changeWetDryMix(_ sender: Any) {
         let value = wetDryMix.value
         mixLabel.showStatus(String(format: "%.0f", value) + "%")
         audioUnit?.parameters.wetDryMix.setValue(value, originator: parameterObserverToken)
-    }
-
-    @IBAction func toggleEnabled(_ sender: UIButton) {
-        let enabled = !wetDryMix.isEnabled
-        updateState(enabled)
     }
 }
 
@@ -98,20 +90,22 @@ extension ReverbViewController {
         })
     }
 
+    private func setParameter(_ address: AudioUnitParameters.Address, _ value: AUValue) {
+        guard let audioUnit = audioUnit else { return }
+        guard let parameterTree = audioUnit.parameterTree else { return }
+        guard let parameter = parameterTree.parameter(withAddress: address.rawValue) else { return }
+        parameter.setValue(value, originator: parameterObserverToken)
+    }
+
     private func setActiveRoom(value: AUValue) {
         let index = min(max(Int(value), 0), Reverb.roomNames.count - 1)
         room.selectRow(index, inComponent: 0, animated: true)
+        setParameter(.roomPreset, value)
     }
 
     private func setWetDryMix(value: AUValue) {
         wetDryMix.value = min(max(value, 0.0), 100.0)
+        setParameter(.wetDryMix, value)
         mixLabel.showStatus(String(format: "%.0f", value) + "%")
-    }
-
-    private func updateState(_ enabled: Bool) {
-        controls.alpha = enabled ? 1.0 : 0.5
-        wetDryMix.isEnabled = enabled
-        room.isUserInteractionEnabled = enabled
-        enabledButton.showEnabled(enabled)
     }
 }
