@@ -1,29 +1,57 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-public class ReverbConfig: NSObject, Codable {
+import AVFoundation
+
+public struct ReverbConfig: Codable {
+
+    public enum Key: String, CaseIterable {
+        case enabled
+        case preset
+        case wetDryMix
+    }
 
     public let enabled: Bool
     public let preset: Int
-    public let wetDryMix: Float
+    public let wetDryMix: AUValue
 
-    public init(enabled: Bool, preset: Int, wetDryMix: Float) {
+    public init(enabled: Bool, preset: Int, wetDryMix: AUValue) {
         self.enabled = enabled
         self.preset = preset
         self.wetDryMix = wetDryMix
-        super.init()
     }
 
-    public convenience override init() {
-        self.init(enabled: false, preset: Settings.instance.reverbPreset, wetDryMix: Settings.instance.delayWetDryMix)
+    public init() {
+        self.init(enabled: true, preset: Settings.instance.reverbPreset, wetDryMix: Settings.instance.delayWetDryMix)
     }
 
-    public func toggleEnabled() -> ReverbConfig { setEnabled(!enabled) }
+    public init?(state: [String: Any]) {
+        guard let enabled = state[.enabled] == 0.0 ? false : true,
+              let preset = state[.preset],
+              let wetDryMix = state[.wetDryMix] else { return nil }
+        self.init(enabled: enabled, preset: Int(preset), wetDryMix: wetDryMix)
+    }
 
-    func setEnabled(_ enabled: Bool) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
-    func setPreset(_ preset: Int) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
-    func setWetDryMix(_ wetDryMix: Float) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    public func setEnabled(_ enabled: Bool) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    public func setPreset(_ preset: Int) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    public func setWetDryMix(_ wetDryMix: Float) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+
+    public subscript(_ key: Key) -> AUValue {
+        switch key {
+        case .enabled: return AUValue(enabled ? 1.0 : 0.0)
+        case .preset: return AUValue(preset)
+        case .wetDryMix: return wetDryMix
+        }
+    }
+
+    public var fullState: [String: Any] {
+        [String: Any](uniqueKeysWithValues: zip(Key.allCases.map { $0.rawValue }, Key.allCases.map { self[$0] }))
+    }
 }
 
-extension ReverbConfig {
-    public override var description: String { "<Reverb \(enabled) \(Reverb.roomNames[preset]) \(wetDryMix)>" }
+extension ReverbConfig: CustomStringConvertible {
+    public var description: String { "<Reverb \(enabled) \(Reverb.roomNames[preset]) \(wetDryMix)>" }
+}
+
+extension Dictionary where Key == String, Value == Any {
+    fileprivate subscript(_ key: ReverbConfig.Key) -> AUValue? { self[key.rawValue] as? AUValue }
 }

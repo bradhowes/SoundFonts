@@ -5,10 +5,14 @@ import AVFoundation
 import CoreAudioKit
 import SoundFontsFramework
 
+
 final class DelayAU: AUAudioUnit {
     private let log: OSLog
-    private let delay = AVAudioUnitDelay()
-    private let wrapped: AUAudioUnit
+    private let delay = Delay()
+    private lazy var audioUnit = delay.audioUnit
+    private lazy var wrapped = audioUnit.auAudioUnit
+
+    private var _currentPreset: AUAudioUnitPreset?
 
     public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
@@ -19,8 +23,6 @@ final class DelayAU: AUAudioUnit {
         os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
                componentDescription.componentType, componentDescription.componentSubType)
-
-        self.wrapped = delay.auAudioUnit
 
         do {
             try super.init(componentDescription: componentDescription, options: [])
@@ -37,32 +39,34 @@ extension DelayAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
         switch AudioUnitParameters.Address(rawValue: parameter.address) {
-        case .time: delay.delayTime = Double(value)
-        case .feedback: delay.feedback = value
-        case .cutoff: delay.lowPassCutoff = value
-        case .wetDryMix: delay.wetDryMix = value
+        case .time:
+            audioUnit.delayTime = Double(value)
+            delay.active = delay.active.setTime(value)
+        case .feedback:
+            audioUnit.feedback = value
+            delay.active = delay.active.setFeedback(value)
+        case .cutoff:
+            audioUnit.lowPassCutoff = value
+            delay.active = delay.active.setCutoff(value)
+        case .wetDryMix:
+            audioUnit.wetDryMix = value
+            delay.active = delay.active.setWetDryMix(value)
         default: break
         }
     }
 
     public func get(_ parameter: AUParameter) -> AUValue {
         switch AudioUnitParameters.Address(rawValue: parameter.address) {
-        case .time: return AUValue(delay.delayTime)
-        case .feedback: return delay.feedback
-        case .cutoff: return delay.lowPassCutoff
-        case .wetDryMix: return delay.wetDryMix
+        case .time: return AUValue(audioUnit.delayTime)
+        case .feedback: return audioUnit.feedback
+        case .cutoff: return audioUnit.lowPassCutoff
+        case .wetDryMix: return audioUnit.wetDryMix
         default: return 0
         }
     }
 }
 
 extension DelayAU {
-
-    override public var contextName: String? {
-        didSet {
-            os_log(.info, log: log, "contextName: %{public}s", contextName ?? "nil")
-        }
-    }
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
         IndexSet(availableViewConfigurations.indices)
@@ -92,12 +96,12 @@ extension DelayAU {
     override public var renderResourcesAllocated: Bool {
         os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
         return wrapped.renderResourcesAllocated
-
     }
 
     override public func reset() {
         os_log(.info, log: log, "reset")
         wrapped.reset()
+        super.reset()
     }
 
     override public var inputBusses: AUAudioUnitBusArray {
@@ -138,19 +142,6 @@ extension DelayAU {
         }
     }
 
-    private func dumpParameters(name: String, tree: AUParameterGroup?, level: Int) {
-        let indentation = String(repeating: " ", count: level)
-        os_log(.info, log: self.log, "%{public}s dumpParameters BEGIN - %{public}s", indentation, name)
-        defer { os_log(.info, log: self.log, "%{public}s dumpParameters END - %{public}s", indentation, name) }
-        guard let children = tree?.children else { return }
-        for child in children {
-            os_log(.info, log: self.log, "%{public}s parameter %{public}s", indentation, child.displayName)
-            if let group = child as? AUParameterGroup {
-                dumpParameters(name: group.displayName, tree: group, level: level + 1)
-            }
-        }
-    }
-
     override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
         os_log(.info, log: log, "parametersForOverview: %d", count)
         return [NSNumber(value: parameters.wetDryMix.address)]
@@ -171,55 +162,60 @@ extension DelayAU {
         set { wrapped.midiOutputEventBlock = newValue }
     }
 
-    private var delayTimeKey: String { "delayTime" }
-    private var feedbackKey: String { "feedback" }
-    private var lowPassCutoffKey: String { "lowPassCutoff" }
-    private var wetDryMixKey: String { "wetDryMix" }
-
     override public var fullState: [String : Any]? {
-        get {
-            os_log(.info, log: log, "fullState GET")
-            var fullState = [String: Any]()
-            fullState[delayTimeKey] = delay.delayTime
-            fullState[feedbackKey] = delay.feedback
-            fullState[lowPassCutoffKey] = delay.lowPassCutoff
-            fullState[wetDryMixKey] = delay.wetDryMix
-            return fullState
-        }
+        get { delay.active.fullState }
         set {
-            os_log(.info, log: log, "fullState SET")
-            if let fullState = newValue {
-                if let delayTime = fullState[delayTimeKey] as? TimeInterval {
-                    delay.delayTime = delayTime
-                    parameters.set(.time, value: AUValue(delayTime), originator: nil)
-                }
-                if let feedback = fullState[feedbackKey] as? Float {
-                    delay.feedback = feedback
-                    parameters.set(.feedback, value: feedback, originator: nil)
-                }
-                if let lowPassCutoff = fullState[lowPassCutoffKey] as? Float {
-                    delay.lowPassCutoff = lowPassCutoff
-                    parameters.set(.cutoff, value: lowPassCutoff, originator: nil)
-                }
-                if let wetDryMix = fullState[wetDryMixKey] as? Float {
-                    delay.wetDryMix = wetDryMix
-                    parameters.set(.wetDryMix, value: wetDryMix, originator: nil)
-                }
-            }
+            guard let fullState = newValue,
+                  let config = DelayConfig(state: fullState) else { return }
+            delay.active = config
+            parameters.set(.time, value: config.time, originator: nil)
+            parameters.set(.feedback, value: config.feedback, originator: nil)
+            parameters.set(.cutoff, value: config.cutoff, originator: nil)
+            parameters.set(.wetDryMix, value: config.wetDryMix, originator: nil)
         }
     }
 
-    @available(iOS 13.0, *)
+    override public var fullStateForDocument: [String : Any]? {
+        get {
+            var state = fullState ?? [String: Any]()
+            if let preset = _currentPreset {
+                state[kAUPresetNameKey] = preset.name
+                state[kAUPresetNumberKey] = preset.number
+            }
+            state[kAUPresetDataKey] = Data()
+            state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aufx")
+            state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "dlay")
+            state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+            state[kAUPresetVersionKey] = FourCharCode(67072)
+            return state
+        }
+        set { fullState = newValue }
+    }
+
     override var supportsUserPresets: Bool { true }
 
+    public override var factoryPresets: [AUAudioUnitPreset] { delay.factoryPresets }
+
     override var currentPreset: AUAudioUnitPreset? {
-        get { wrapped.currentPreset }
+        get { _currentPreset }
         set {
-            wrapped.currentPreset = newValue
-            if #available(iOS 13.0, *) {
-                if let preset = newValue {
+            guard let preset = newValue else {
+                _currentPreset = nil
+                return
+            }
+
+            if preset.number >= 0 {
+                if preset.number < delay.factoryPresetConfigs.count {
+                    let config = delay.factoryPresetConfigs[preset.number]
+                    parameters.setConfig(config)
+                    _currentPreset = preset
+                }
+            }
+            else {
+                if #available(iOS 13.0, *) {
                     if let fullState = try? presetState(for: preset) {
                         self.fullState = fullState
+                        _currentPreset = preset
                     }
                 }
             }

@@ -153,6 +153,7 @@
 		BDCC40112418336200D8D849 /* NoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC40102418336200D8D849 /* NoteTests.swift */; };
 		BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
+		BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD29FDD258293A0007A5F0F /* PresetEntry.swift */; };
 		BDD5FA672504118100367F0B /* Favorites.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDD5FA662504118000367F0B /* Favorites.plist */; };
 		BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5FA682504220E00367F0B /* CoreDataStack.swift */; };
 		BDD5FA6B25042FBA00367F0B /* BackgroundManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5FA6A25042FB900367F0B /* BackgroundManagedObjectContext.swift */; };
@@ -344,6 +345,7 @@
 		BDCC40102418336200D8D849 /* NoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTests.swift; sourceTree = "<group>"; };
 		BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
+		BDD29FDD258293A0007A5F0F /* PresetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetEntry.swift; sourceTree = "<group>"; };
 		BDD5FA662504118000367F0B /* Favorites.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Favorites.plist; sourceTree = "<group>"; };
 		BDD5FA682504220E00367F0B /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		BDD5FA6A25042FB900367F0B /* BackgroundManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundManagedObjectContext.swift; sourceTree = "<group>"; };
@@ -469,9 +471,10 @@
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
-				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
+				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
+				BDD29FDD258293A0007A5F0F /* PresetEntry.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD130B0025613E2C00D1CDF6 /* Reverb.swift */,
 				BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */,
@@ -956,6 +959,7 @@
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
 				BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */,
+				BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,
 				BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */,
 				BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */,

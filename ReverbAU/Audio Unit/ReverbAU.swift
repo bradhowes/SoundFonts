@@ -7,11 +7,13 @@ import SoundFontsFramework
 
 final class ReverbAU: AUAudioUnit {
     private let log: OSLog
-    private let reverb = AVAudioUnitReverb()
-    private let wrapped: AUAudioUnit
+    private let reverb = Reverb()
+    private lazy var audioUnit = reverb.audioUnit
+    private lazy var wrapped = audioUnit.auAudioUnit
+
+    private var _currentPreset: AUAudioUnitPreset?
 
     public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
-    public var activeRoomPreset: Int = 0 { didSet { reverb.loadFactoryPreset(Reverb.roomPresets[activeRoomPreset]) } }
 
     public init(componentDescription: AudioComponentDescription) throws {
         let log = Logging.logger("ReverbAU")
@@ -22,8 +24,6 @@ final class ReverbAU: AUAudioUnit {
                componentDescription.componentType, componentDescription.componentSubType)
 
         os_log(.info, log: log, "starting AVAudioUnitSampler")
-
-        self.wrapped = reverb.auAudioUnit
 
         do {
             try super.init(componentDescription: componentDescription, options: [])
@@ -40,16 +40,24 @@ extension ReverbAU: AUParameterHandler {
 
     public func set(_ parameter: AUParameter, value: AUValue) {
         switch AudioUnitParameters.Address(rawValue: parameter.address) {
-        case .roomPreset: activeRoomPreset = min(max(0, Int(value)), Reverb.roomPresets.count - 1)
-        case .wetDryMix: reverb.wetDryMix = value
+        case .roomPreset:
+            let index = min(max(Int(value), 0), Reverb.roomPresets.count - 1)
+            let preset = Reverb.roomPresets[index]
+            audioUnit.loadFactoryPreset(preset)
+            reverb.active = reverb.active.setPreset(index)
+
+        case .wetDryMix:
+            audioUnit.wetDryMix = value
+            reverb.active = reverb.active.setWetDryMix(value)
+
         default: break
         }
     }
 
     public func get(_ parameter: AUParameter) -> AUValue {
         switch AudioUnitParameters.Address(rawValue: parameter.address) {
-        case .roomPreset: return AUValue(activeRoomPreset)
-        case .wetDryMix: return reverb.wetDryMix
+        case .roomPreset: return AUValue(reverb.active.preset)
+        case .wetDryMix: return audioUnit.wetDryMix
         default: return 0
         }
     }
@@ -85,7 +93,6 @@ extension ReverbAU {
     override public var renderResourcesAllocated: Bool {
         os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
         return wrapped.renderResourcesAllocated
-
     }
 
     override public func reset() {
@@ -102,6 +109,11 @@ extension ReverbAU {
     override public var outputBusses: AUAudioUnitBusArray {
         os_log(.info, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
         return wrapped.outputBusses
+    }
+
+    override public var scheduleParameterBlock: AUScheduleParameterBlock {
+        os_log(.info, log: self.log, "scheduleParameterBlock")
+        return wrapped.scheduleParameterBlock
     }
 
     override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
@@ -147,43 +159,59 @@ extension ReverbAU {
         set { wrapped.midiOutputEventBlock = newValue }
     }
 
-    private var roomIndexKey: String { "roomIndex" }
-    private var wetDryMixKey: String { "wetDryMix" }
-
     override public var fullState: [String : Any]? {
-        get {
-            os_log(.info, log: log, "fullState GET")
-            var fullState = [String: Any]()
-            fullState[roomIndexKey] = activeRoomPreset
-            fullState[wetDryMixKey] = reverb.wetDryMix
-            return fullState
-        }
+        get { reverb.active.fullState }
         set {
-            os_log(.info, log: log, "fullState SET")
-            if let fullState = newValue {
-                if let roomIndex = fullState[roomIndexKey] as? Int {
-                    activeRoomPreset = roomIndex
-                    parameters.set(.roomPreset, value: AUValue(roomIndex), originator: nil)
-                }
-                if let wetDryMix = fullState[wetDryMixKey] as? Float {
-                    reverb.wetDryMix = wetDryMix
-                    parameters.set(.wetDryMix, value: wetDryMix, originator: nil)
-                }
-            }
+            guard let fullState = newValue,
+                  let config = ReverbConfig(state: fullState) else { return }
+            reverb.active = config
+            parameters.set(.roomPreset, value: AUValue(config.preset), originator: nil)
+            parameters.set(.wetDryMix, value: config.wetDryMix, originator: nil)
         }
     }
 
-    @available(iOS 13.0, *)
+    override public var fullStateForDocument: [String : Any]? {
+        get {
+            var state = fullState ?? [String: Any]()
+            if let preset = _currentPreset {
+                state[kAUPresetNameKey] = preset.name
+                state[kAUPresetNumberKey] = preset.number
+            }
+            state[kAUPresetDataKey] = Data()
+            state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aufx")
+            state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "revb")
+            state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+            state[kAUPresetVersionKey] = FourCharCode(67072)
+            return state
+        }
+        set { fullState = newValue }
+    }
+
+
     override var supportsUserPresets: Bool { true }
 
+    public override var factoryPresets: [AUAudioUnitPreset] { reverb.factoryPresets }
+
     override var currentPreset: AUAudioUnitPreset? {
-        get { wrapped.currentPreset }
+        get { _currentPreset }
         set {
-            wrapped.currentPreset = newValue
-            if #available(iOS 13.0, *) {
-                if let preset = newValue {
+            guard let preset = newValue else {
+                _currentPreset = nil
+                return
+            }
+
+            if preset.number >= 0 {
+                if preset.number < reverb.factoryPresetConfigs.count {
+                    let config = reverb.factoryPresetConfigs[preset.number]
+                    parameters.setConfig(config)
+                    _currentPreset = preset
+                }
+            }
+            else {
+                if #available(iOS 13.0, *) {
                     if let fullState = try? presetState(for: preset) {
                         self.fullState = fullState
+                        _currentPreset = preset
                     }
                 }
             }

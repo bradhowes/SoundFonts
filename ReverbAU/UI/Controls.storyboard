@@ -117,9 +117,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="440" height="400"/>
                     <connections>
-                        <outlet property="mixLabel" destination="liX-ZF-LkS" id="u5b-iF-vns"/>
                         <outlet property="room" destination="MCb-jT-Avp" id="CJm-Wu-DYe"/>
                         <outlet property="wetDryMix" destination="T20-Wa-s33" id="HOV-C0-kbS"/>
+                        <outlet property="wetDryMixLabel" destination="liX-ZF-LkS" id="aTr-PS-Wee"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Gs-1T-Hst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

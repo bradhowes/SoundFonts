@@ -10,7 +10,7 @@ public final class ReverbViewController: AUViewController {
     private var parameterObserverToken: AUParameterObserverToken?
 
     @IBOutlet private weak var wetDryMix: Knob!
-    @IBOutlet private weak var mixLabel: UILabel!
+    @IBOutlet private weak var wetDryMixLabel: UILabel!
     @IBOutlet private weak var room: UIPickerView!
 
     public override func viewDidLoad() {
@@ -21,14 +21,11 @@ public final class ReverbViewController: AUViewController {
     }
 
     public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
     }
 
-    @IBAction func changeWetDryMix(_ sender: Any) {
-        let value = wetDryMix.value
-        mixLabel.showStatus(String(format: "%.0f", value) + "%")
-        audioUnit?.parameters.wetDryMix.setValue(value, originator: parameterObserverToken)
-    }
+    @IBAction func changeWetDryMix(_ sender: Any) { setWetDryMix(value: wetDryMix.value) }
 }
 
 extension ReverbViewController: AUAudioUnitFactory {
@@ -50,7 +47,7 @@ extension ReverbViewController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
-        audioUnit?.activeRoomPreset = row
+        setParameter(.roomPreset, AUValue(row))
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -98,14 +95,14 @@ extension ReverbViewController {
     }
 
     private func setActiveRoom(value: AUValue) {
-        let index = min(max(Int(value), 0), Reverb.roomNames.count - 1)
+        let index = min(max(Int(value), 0), Reverb.roomPresets.count - 1)
         room.selectRow(index, inComponent: 0, animated: true)
-        setParameter(.roomPreset, value)
+        setParameter(.roomPreset, AUValue(index))
     }
 
     private func setWetDryMix(value: AUValue) {
         wetDryMix.value = min(max(value, 0.0), 100.0)
         setParameter(.wetDryMix, value)
-        mixLabel.showStatus(String(format: "%.0f", value) + "%")
+        wetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
     }
 }

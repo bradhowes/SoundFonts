@@ -7,7 +7,7 @@ import os
 /**
  Definitions for the runtime parameters of the audio unit.
  */
-public final class AudioUnitParameters: NSObject {
+public struct AudioUnitParameters {
 
     private let log = Logging.logger("DelayParameters")
 
@@ -60,11 +60,10 @@ public final class AudioUnitParameters: NSObject {
 
      - parameter parameterHandler the object to use to handle the AUParameterTree requests
      */
-    init(parameterHandler: AUParameterHandler) {
+    public init(parameterHandler: AUParameterHandler) {
 
         // Define a new parameter tree with the parameter definitions
         parameterTree = AUParameterTree.createTree(withChildren: [time, feedback, cutoff, wetDryMix])
-        super.init()
 
         // Provide a way for the tree to change values in the AudioUnit
         parameterTree.implementorValueObserver = parameterHandler.set
@@ -73,6 +72,7 @@ public final class AudioUnitParameters: NSObject {
         parameterTree.implementorValueProvider = parameterHandler.get
 
         // Provide a way to obtain String values for the current settings.
+        let log = self.log
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch Address(rawValue: param.address) {
@@ -83,24 +83,17 @@ public final class AudioUnitParameters: NSObject {
                 default: return "?"
                 }
             }()
-            os_log(.info, log: self.log, "parameter %d as string: %d %f %{public}s", param.address, param.value, formatted)
+            os_log(.debug, log: log, "parameter %d as string: %d %f %{public}s", param.address, param.value, formatted)
             return formatted
         }
     }
 
-    /**
-     Accept new values for the filter settings. Uses the AUParameterTree framework for communicating the changes to the
-     AudioUnit.
-
-     - parameter cutoffValue: the new cutoff value to use
-     - parameter resonanceValue: the new resonance value to use
-     */
-    func setParameterValues(time: AUValue, feedback: AUValue, cutoff: AUValue, wetDryMix: AUValue) {
-        os_log(.info, log: log, "setParameterValues")
-        self.time.setValue(time, originator: nil)
-        self.feedback.setValue(feedback, originator: nil)
-        self.cutoff.setValue(cutoff, originator: nil)
-        self.wetDryMix.setValue(wetDryMix, originator: nil)
+    func setConfig(_ config: DelayConfig) {
+        os_log(.info, log: log, "setConfig")
+        self.time.setValue(config.time, originator: nil)
+        self.feedback.setValue(config.feedback, originator: nil)
+        self.cutoff.setValue(config.cutoff, originator: nil)
+        self.wetDryMix.setValue(config.wetDryMix, originator: nil)
     }
 
     func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
