@@ -15,7 +15,7 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var reverbGlobal: UIButton!
     @IBOutlet weak var reverbControls: UIStackView!
     @IBOutlet weak var reverbWetDryMix: Knob!
-    @IBOutlet weak var reverbMixLabel: UILabel!
+    @IBOutlet weak var reverbWetDryMixLabel: UILabel!
     @IBOutlet weak var reverbRoom: UIPickerView!
 
     @IBOutlet weak var delayEnabled: UIButton!
@@ -28,7 +28,7 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayCutoff: Knob!
     @IBOutlet weak var delayCutoffLabel: UILabel!
     @IBOutlet weak var delayWetDryMix: Knob!
-    @IBOutlet weak var delayMixLabel: UILabel!
+    @IBOutlet weak var delayWetDryMixLabel: UILabel!
 
     private var delay: Delay!
     private var reverb: Reverb!
@@ -105,7 +105,7 @@ public final class EffectsController: UIViewController {
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
-        delayMixLabel.showStatus(String(format: "%.0f", value) + "%")
+        delayWetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
         delay.active = delay.active.setWetDryMix(value)
         updatePreset()
     }
@@ -195,9 +195,12 @@ extension EffectsController {
             self.reverbEnabled.showEnabled(enabled)
             self.reverbGlobal.isEnabled = true
             self.reverbGlobal.isUserInteractionEnabled = true
-            self.reverbControls.alpha = self.alpha(for: enabled)
             self.reverbWetDryMix.isEnabled = enabled
             self.reverbRoom.isUserInteractionEnabled = enabled
+
+            self.reverbRoom.alpha = self.alpha(for: enabled)
+            self.reverbWetDryMix.alpha = self.alpha(for: enabled)
+            self.reverbWetDryMixLabel.alpha = self.alpha(for: enabled)
         }
         animator.startAnimation()
     }
@@ -216,16 +219,24 @@ extension EffectsController {
             self.delayEnabled.showEnabled(enabled)
             self.delayGlobal.isEnabled = true
             self.delayGlobal.isUserInteractionEnabled = true
-            self.delayControls.alpha = self.alpha(for: enabled)
             self.delayWetDryMix.isEnabled = enabled
             self.delayTime.isEnabled = enabled
             self.delayFeedback.isEnabled = enabled
             self.delayCutoff.isEnabled = enabled
+
+            self.delayWetDryMix.alpha = self.alpha(for: enabled)
+            self.delayWetDryMixLabel.alpha = self.alpha(for: enabled)
+            self.delayTime.alpha = self.alpha(for: enabled)
+            self.delayTimeLabel.alpha = self.alpha(for: enabled)
+            self.delayFeedback.alpha = self.alpha(for: enabled)
+            self.delayFeedbackLabel.alpha = self.alpha(for: enabled)
+            self.delayCutoff.alpha = self.alpha(for: enabled)
+            self.delayCutoffLabel.alpha = self.alpha(for: enabled)
         }
         animator.startAnimation()
     }
 
-    private func showReverbMixValue() { reverbMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%") }
+    private func showReverbMixValue() { reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%") }
     private func showDelayTime() { delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s") }
     private func showDelayFeedback() { delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%") }
     private func showDelayCutoff() {
@@ -237,5 +248,5 @@ extension EffectsController {
             delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
     }
-    private func showDelayMixValue() { delayMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%") }
+    private func showDelayMixValue() { delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%") }
 }
