@@ -8,7 +8,7 @@ import os
 /**
  Definitions for the runtime parameters of the reverb.
  */
-public final class AudioUnitParameters: NSObject {
+public struct AudioUnitParameters {
 
     private let log = Logging.logger("ReverbParameters")
 
@@ -45,19 +45,12 @@ public final class AudioUnitParameters: NSObject {
 
      - parameter parameterHandler the object to use to handle the AUParameterTree requests
      */
-    init(parameterHandler: AUParameterHandler) {
-
-        // Define a new parameter tree with the parameter defintions
+    public init(parameterHandler: AUParameterHandler) {
         parameterTree = AUParameterTree.createTree(withChildren: [roomPreset, wetDryMix])
-        super.init()
-
-        // Provide a way for the tree to change values in the AudioUnit
         parameterTree.implementorValueObserver = { parameterHandler.set($0, value: $1) }
-
-        // Provide a way for the tree to obtain the current value of a parameter from the AudioUnit
         parameterTree.implementorValueProvider = { parameterHandler.get($0) }
 
-        // Provide a way to obtain String values for the current settings.
+        let log = self.log
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch Address(rawValue: param.address) {
@@ -66,33 +59,28 @@ public final class AudioUnitParameters: NSObject {
                 default: return "?"
                 }
             }()
-            os_log(.info, log: self.log, "parameter %d as string: %d %f %{public}s",
+            os_log(.info, log: log, "parameter %d as string: %d %f %{public}s",
                    param.address, param.value, formatted)
             return formatted
         }
     }
 
-    /**
-     Accept new values for the filter settings. Uses the AUParameterTree framework for communicating the changes to the
-     AudioUnit.
-
-     - parameter cutoffValue: the new cutoff value to use
-     - parameter resonanceValue: the new resonance value to use
-     */
-    func setParameterValues(enabled: AUValue, roomPreset: AUValue, wetDryMix: AUValue) {
-        self.roomPreset.value = roomPreset
-        self.wetDryMix.value = wetDryMix
+    func setConfig(_ config: ReverbConfig) {
+        os_log(.info, log: log, "setConfig")
+        self.roomPreset.setValue(AUValue(config.preset), originator: nil)
+        self.wetDryMix.setValue(config.wetDryMix, originator: nil)
     }
 
     func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
         switch address {
-        case .roomPreset: self.roomPreset.setValue(value, originator: originator)
-        case .wetDryMix: self.wetDryMix.setValue(value, originator: originator)
+        case .roomPreset: roomPreset.setValue(value, originator: originator)
+        case .wetDryMix: wetDryMix.setValue(value, originator: originator)
         }
     }
 }
 
 extension AUParameterTree {
+
     func parameter(withAddress: AudioUnitParameters.Address) -> AUParameter? {
         parameter(withAddress: withAddress.rawValue)
     }

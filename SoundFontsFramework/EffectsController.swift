@@ -54,30 +54,28 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
-        let enabled = !reverb.active.enabled
-        updateReverbState(enabled)
-        reverb.active = reverb.active.setEnabled(enabled)
+        reverb.active = reverb.active.setEnabled(!reverb.active.enabled)
+        updateReverbState(reverb.active.enabled)
         updatePreset()
     }
 
     @IBAction func toggleReverbGlobal(_ sender: UIButton) {
         let value = !Settings.instance.reverbGlobal
-        reverbGlobal.showEnabled(value)
         Settings.instance.reverbGlobal = value
+        reverbGlobal.showEnabled(value)
         updatePreset()
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
-        let enabled = !delay.active.enabled
-        updateDelayState(enabled)
-        delay.active = delay.active.setEnabled(enabled)
+        delay.active = delay.active.setEnabled(!delay.active.enabled)
+        updateDelayState(delay.active.enabled)
         updatePreset()
     }
 
     @IBAction func toggleDelayGlobal(_ sender: UIButton) {
         let value = !Settings.instance.delayGlobal
-        delayGlobal.showEnabled(value)
         Settings.instance.delayGlobal = value
+        delayGlobal.showEnabled(value)
         updatePreset()
     }
 

@@ -45,8 +45,10 @@ public extension SettingKeys {
     static let delayCutoffController = SettingKey("delayCutoffController", defaultValue: -1)
     static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
     static let delayWetDryMixController = SettingKey("delayWetDryMixController", defaultValue: -1)
-
     static let showEffects = SettingKey("showEffects", defaultValue: false)
+
+    static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
+    static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
 }
 
 /// Global variable to keep things concise.
@@ -216,5 +218,13 @@ public extension UserDefaults {
     @objc dynamic var delayWetDryMixController: Int {
         get { self[.delayWetDryMixController] }
         set { self[.delayWetDryMixController] = newValue }
+    }
+    @objc dynamic var delayUserPresets: Data {
+        get { self[.delayUserPresets] }
+        set { self[.delayUserPresets] = newValue }
+    }
+    @objc dynamic var reverbUserPresets: Data {
+        get { self[.reverbUserPresets] }
+        set { self[.reverbUserPresets] = newValue }
     }
 }

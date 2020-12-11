@@ -1,56 +1,38 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import Foundation
 import AVFoundation
-import AudioToolbox
-import os
 
 /**
- Delay audio effect.
+ Delay audio effect by way of Apple's AVAudioUnitDelay component.
  */
 public final class Delay: NSObject {
-    private lazy var log = Logging.logger("Delay")
-
     public let audioUnit = AVAudioUnitDelay()
-    public private(set) var presets = [String: DelayConfig]()
-    @objc public dynamic var active: DelayConfig {
-        didSet {
-            update()
-        }
-    }
+
+    private let _factoryPresetDefs = [
+        PresetEntry(name: "Slap Back", config: DelayConfig(enabled: true, time: 0.25, feedback: 0, cutoff: 20_000.0, wetDryMix: 50)),
+        PresetEntry(name: "Muffled Echo", config: DelayConfig(enabled: true, time: 0.38, feedback: 60, cutoff: 980, wetDryMix: 35)),
+        PresetEntry(name: "Fripptastic", config: DelayConfig(enabled: true, time: 2.0, feedback: 95, cutoff: 640, wetDryMix: 50))
+    ]
+
+    public lazy var factoryPresetConfigs: [DelayConfig] = _factoryPresetDefs.map { $0.config }
+    public lazy var factoryPresets: [AUAudioUnitPreset] = _factoryPresetDefs.enumerated().map { AUAudioUnitPreset(number: $0.offset, name: $0.element.name) }
+
+    public var active: DelayConfig { didSet { applyActiveConfig() } }
 
     public override init() {
-        self.active = DelayConfig(enabled: Settings.instance.delayEnabled, time: Settings.instance.delayTime, feedback: Settings.instance.delayFeedback,
-                                  cutoff: Settings.instance.delayCutoff, wetDryMix: Settings.instance.delayWetDryMix)
+        self.active = DelayConfig(enabled: true, time: 1.0, feedback: 50.0, cutoff: 15_000.0, wetDryMix: 35.0)
         super.init()
-        update()
-    }
-}
-
-extension Delay: DelayEffect {
-
-    public func savePreset(name: String, config: DelayConfig) {
-        presets[name] = config
-    }
-
-    public func removePreset(name: String) {
-        presets.removeValue(forKey: name)
+        applyActiveConfig()
     }
 }
 
 extension Delay {
 
-    private func update() {
+    private func applyActiveConfig() {
         audioUnit.bypass = !active.enabled
         audioUnit.wetDryMix = active.wetDryMix
         audioUnit.delayTime = Double(active.time)
         audioUnit.feedback = active.feedback
         audioUnit.lowPassCutoff = active.cutoff
-
-        Settings.instance.delayEnabled = active.enabled
-        Settings.instance.delayWetDryMix = active.wetDryMix
-        Settings.instance.delayTime = active.time
-        Settings.instance.delayFeedback = active.feedback
-        Settings.instance.delayCutoff = active.cutoff
     }
 }
