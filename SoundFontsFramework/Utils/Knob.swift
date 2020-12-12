@@ -5,7 +5,7 @@ import os
 
 /**
  Custom UIControl that depicts a value as a point on a circle. Changing the value is done by touching on the control and moving up to increase
- and down to decrease the current value. While touching, moving away from the control in either direction will inrease the resolution of the
+ and down to decrease the current value. While touching, moving away from the control in either direction will increase the resolution of the
  touch changes, causing the value to change more slowly as vertical distance changes. Pretty much works like UISlider but with the travel path
  as an arc.
 
@@ -27,7 +27,7 @@ import os
     @IBInspectable open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
-    @IBInspectable open var trackLineWidth: CGFloat = 4 { didSet { trackLayer.lineWidth = trackLineWidth } }
+    @IBInspectable open var trackLineWidth: CGFloat = 7 { didSet { trackLayer.lineWidth = trackLineWidth } }
 
     /// The color of the arc shown after the current value.
     @IBInspectable open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
@@ -59,20 +59,22 @@ import os
     @IBInspectable open var tickLineWidth: CGFloat = 1.0 { didSet { ticksLayer.lineWidth = tickLineWidth } }
 
     /// The color of the tick line.
-    @IBInspectable open var tickLineColor: UIColor = .black { didSet { ticksLayer.strokeColor = tickLineColor.cgColor } }
+    @IBInspectable open var tickLineColor: UIColor = .systemTeal { didSet { ticksLayer.strokeColor = tickLineColor.cgColor } }
 
     /// The starting angle of the arc where a value of 0.0 is located. Arc angles are explained in the UIBezier documentation
     /// for init(arcCenter:radius:startAngle:endAngle:clockwise:). In short, a value of 0.0 will start on the positive X axis,
     /// a positive PI/2 will lie on the negative Y axis. The default values will leave a small gap at the bottom.
-    @IBInspectable open var startAngle: CGFloat = -CGFloat.pi * 2.0 * 11 / 16.0 { didSet { createShapes() } }
+    @IBInspectable open var startAngle: Float = -Float.pi * 2.0 * 11 / 16.0 { didSet { createShapes() } }
 
     /// The ending angle of the arc where a value of 1.0 is located. See `startAngle` for additional info.
-    @IBInspectable open var endAngle: CGFloat = CGFloat.pi * 2.0 * 3.0 / 16.0 { didSet { createShapes() } }
+    @IBInspectable open var endAngle: Float = Float.pi * 2.0 * 3.0 / 16.0 { didSet { createShapes() } }
 
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
+    private let radialLayer = CAShapeLayer()
     private let indicatorLayer = CAShapeLayer()
     private let ticksLayer = CAShapeLayer()
+    private let updateQueue = DispatchQueue(label: "Knob", qos: .userInteractive, attributes: [], autoreleaseFrequency: .inherit, target: .main)
 
     private var _value: Float = 0.0
     private var panOrigin: CGPoint = .zero
@@ -108,7 +110,7 @@ import os
         // To make future calculations easier, configure the layers so that (0, 0) is their center
         let layerBounds = bounds.offsetBy(dx: -bounds.midX, dy: -bounds.midY)
         let layerCenter = CGPoint(x: bounds.midX, y: bounds.midY)
-        for layer in [trackLayer, progressLayer, indicatorLayer, ticksLayer] {
+        for layer in [trackLayer, progressLayer, radialLayer, indicatorLayer, ticksLayer] {
             layer.bounds = layerBounds
             layer.position = layerCenter
         }
@@ -116,8 +118,9 @@ import os
     }
 
     public func setValue(_ value: Float, animated: Bool = false) {
+        let lastValue = _value
         _value = clampedValue(value)
-        draw(animated: animated)
+        draw(previousValue: lastValue, animated: animated)
     }
 }
 
@@ -126,7 +129,7 @@ extension Knob {
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         panOrigin = touch.location(in: self)
         activeTouch = true
-        self.sendActions(for: .valueChanged) // updateQueue.async { self.sendActions(for: .valueChanged) }
+        updateQueue.async { self.sendActions(for: .valueChanged) }
         return true
     }
 
@@ -140,7 +143,7 @@ extension Knob {
         defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
         let change = deltaT * (maximumValue - minimumValue)
         self.value += change
-        self.sendActions(for: .valueChanged)
+        updateQueue.async { self.sendActions(for: .valueChanged) }
         return true
     }
 
@@ -153,7 +156,7 @@ extension Knob {
     override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         activeTouch = false
         super.endTracking(touch, with: event)
-        self.sendActions(for: .valueChanged)
+        updateQueue.async { self.sendActions(for: .valueChanged) }
     }
 }
 
@@ -162,84 +165,127 @@ extension Knob {
     private func initialize() {
         trackLayer.fillColor = UIColor.clear.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
+        radialLayer.fillColor = UIColor.clear.cgColor
         indicatorLayer.fillColor = UIColor.clear.cgColor
         ticksLayer.fillColor = UIColor.clear.cgColor
 
         layer.addSublayer(ticksLayer)
         layer.addSublayer(trackLayer)
-        layer.addSublayer(progressLayer)
+        layer.addSublayer(radialLayer)
         layer.addSublayer(indicatorLayer)
+        layer.addSublayer(progressLayer)
 
         trackLayer.lineWidth = trackLineWidth
         trackLayer.strokeColor = trackColor.cgColor
         trackLayer.lineCap = .round
+        trackLayer.drawsAsynchronously = true
 
         progressLayer.lineWidth = progressLineWidth
         progressLayer.strokeColor = progressColor.cgColor
         progressLayer.lineCap = .round
         progressLayer.strokeStart = 0.0
         progressLayer.strokeEnd = 0.0
+        progressLayer.drawsAsynchronously = true
 
         indicatorLayer.lineWidth = indicatorLineWidth
         indicatorLayer.strokeColor = indicatorColor.cgColor
         indicatorLayer.lineCap = .round
+        indicatorLayer.drawsAsynchronously = true
+
+        radialLayer.lineWidth = 1.0
+        radialLayer.strokeColor = indicatorColor.cgColor
+        radialLayer.lineCap = .round
+        radialLayer.drawsAsynchronously = true
 
         ticksLayer.lineWidth = tickLineWidth
         ticksLayer.strokeColor = tickLineColor.cgColor
         ticksLayer.lineCap = .round
+        ticksLayer.drawsAsynchronously = true
     }
 
     private func createShapes() {
         createTrack()
-        createIndicator()
         createTicks()
+        createRadial()
+        createIndicator()
         createProgressTrack()
-
-        draw(animated: false)
+        draw(previousValue: _value, animated: false)
     }
 
     private func createTrack() {
-        let ring = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        let ring = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle), endAngle: CGFloat(endAngle), clockwise: true)
         trackLayer.path = ring.cgPath
+        trackLayer.shadowPath = ring.cgPath
+    }
 
+    private func createRadial() {
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: radius, y: 0.0))
+        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        radialLayer.path = path.cgPath
+        radialLayer.shadowPath = path.cgPath
     }
 
     private func createIndicator() {
-        let indicator = UIBezierPath()
-        indicator.move(to: CGPoint(x: radius, y: 0.0))
-        indicator.addLine(to: CGPoint(x: radius * (1.0 - indicatorLineLength), y: 0.0))
-        indicatorLayer.path = indicator.cgPath
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: radius, y: 0.0))
+        path.addLine(to: CGPoint(x: radius * (1.0 - indicatorLineLength), y: 0.0))
+        indicatorLayer.path = path.cgPath
+        indicatorLayer.shadowPath = path.cgPath
     }
 
     private func createProgressTrack() {
-        let progressRing = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
-        progressLayer.path = progressRing.cgPath
-    }
+        let path = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle), endAngle: CGFloat(endAngle), clockwise: true)
+        progressLayer.path = path.cgPath
+        progressLayer.shadowPath = path.cgPath
+   }
 
     private func createTicks() {
         let ticks = UIBezierPath()
         for tickIndex in 0..<tickCount {
-            let tick = UIBezierPath()
-            let theta = angle(for: Float(tickIndex) / max(1.0, Float(tickCount - 1)))
-            tick.move(to: CGPoint(x: 0.0 + radius, y: 0.0))
-            tick.addLine(to: CGPoint(x: 0.0 + radius * (1.0 - tickLineLength), y: 0.0))
-            tick.apply(CGAffineTransform(rotationAngle: theta))
-            ticks.append(tick)
+            let path = UIBezierPath()
+            let theta = CGFloat(angle(for: Float(tickIndex) / max(1.0, Float(tickCount - 1))))
+            path.move(to: CGPoint(x: 0.0 + radius, y: 0.0))
+            path.addLine(to: CGPoint(x: 0.0 + radius * (1.0 - tickLineLength), y: 0.0))
+            path.apply(CGAffineTransform(rotationAngle: theta))
+            ticks.append(path)
         }
         ticksLayer.path = ticks.cgPath
+        ticksLayer.shadowPath = ticks.cgPath
     }
 
-    private func draw(animated: Bool = false) {
-        if activeTouch || !animated { CATransaction.setDisableActions(true) }
-        progressLayer.strokeEnd = CGFloat((value - minimumValue) / (maximumValue - minimumValue))
-        indicatorLayer.transform = CATransform3DMakeRotation(angleForValue, 0, 0, 1)
+    private func draw(previousValue: Float, animated: Bool = false) {
+        let steps = 100
+        let startAngle = angle(for: previousValue)
+        let endAngle = angleForValue
+        let angleStep = (endAngle - startAngle) / Float(steps)
+        let endStrokeEnd = CGFloat((value - minimumValue) / (maximumValue - minimumValue))
+        let transform = CATransform3DMakeRotation(CGFloat(endAngle), 0, 0, 1)
+
+        if !animated || activeTouch {
+            CATransaction.setDisableActions(true)
+            self.indicatorLayer.transform = transform
+            self.radialLayer.transform = transform
+            self.progressLayer.strokeEnd = endStrokeEnd
+            return
+        }
+
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        radialLayer.transform = transform
+        indicatorLayer.transform = transform
+        CATransaction.commit()
+
+        CATransaction.begin()
+        progressLayer.strokeEnd = endStrokeEnd
+        CATransaction.commit()
     }
 
     private var radius: CGFloat { (min(trackLayer.bounds.width, trackLayer.bounds.height) / 2) - trackLineWidth }
 
-    private var angleForValue: CGFloat { angle(for: (self.value - minimumValue) / (maximumValue - minimumValue)) }
+    private var angleForValue: Float { angle(for: (_value - minimumValue) / (maximumValue - minimumValue)) }
 
-    private func angle(for normalizedValue: Float) -> CGFloat { CGFloat(normalizedValue) * (endAngle - startAngle) + startAngle }
+    private func angle(for normalizedValue: Float) -> Float { normalizedValue * (endAngle - startAngle) + startAngle }
 
     private func clampedValue(_ value: Float) -> Float { min(maximumValue, max(minimumValue, value)) }
 }

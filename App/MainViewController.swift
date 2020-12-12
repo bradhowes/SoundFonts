@@ -114,7 +114,7 @@ extension MainViewController: ControllerConfiguration {
         sampler = router.sampler
         infoBar = router.infoBar
         activePatchManager = router.activePatchManager
-        midiController = MIDIController(keyboard: router.keyboard, selectSoundFontControl: router.selectSoundFontControl)
+        midiController = MIDIController(sampler: sampler, keyboard: router.keyboard)
         midi.receiver = midiController
         volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)

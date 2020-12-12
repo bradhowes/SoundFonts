@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -23,22 +25,22 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="124"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UHf-8z-8DL" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="707" height="124"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="698" height="124"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FXQ-A6-sfv" userLabel="Effects HStack">
-                                                <rect key="frame" x="0.0" y="8" width="707" height="116"/>
+                                                <rect key="frame" x="0.0" y="8" width="698" height="116"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="zNv-Im-W2c" userLabel="Reverb VStack">
-                                                        <rect key="frame" x="0.0" y="0.0" width="291" height="116"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="287" height="116"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CzH-A1-o2R" userLabel="Reverb Controls">
-                                                                <rect key="frame" x="0.0" y="0.0" width="291" height="116"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="287" height="116"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-Yz-uJo">
-                                                                        <rect key="frame" x="4" y="30" width="75" height="56"/>
+                                                                        <rect key="frame" x="4" y="31" width="71" height="54"/>
                                                                         <subviews>
                                                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vkv-Bw-zse">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="75" height="20"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="71" height="19"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -50,7 +52,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QeJ-Yv-Djw" userLabel="Global">
-                                                                                <rect key="frame" x="0.0" y="36" width="58" height="20"/>
+                                                                                <rect key="frame" x="0.0" y="35" width="53" height="19"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                 <color key="tintColor" systemColor="systemOrangeColor"/>
                                                                                 <state key="normal" title=" Lock" image="EffectOffOld">
@@ -66,7 +68,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="79O-Jd-cFg" userLabel="Mix">
-                                                                        <rect key="frame" x="83" y="9.5" width="80" height="97.5"/>
+                                                                        <rect key="frame" x="79" y="10" width="80" height="96.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T20-Wa-s33" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -84,22 +86,13 @@
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
                                                                                         <real key="value" value="20"/>
                                                                                     </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
-                                                                                        <real key="value" value="3"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeReverbWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="Szd-v6-C24"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="liX-ZF-LkS" userLabel="Mix">
-                                                                                <rect key="frame" x="28" y="80" width="24.5" height="17.5"/>
+                                                                                <rect key="frame" x="29" y="80" width="22" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
@@ -108,7 +101,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCb-jT-Avp">
-                                                                        <rect key="frame" x="167" y="0.0" width="120" height="116"/>
+                                                                        <rect key="frame" x="163" y="0.0" width="120" height="116"/>
                                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="120" id="wYc-Qb-DDg"/>
@@ -121,16 +114,16 @@
                                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="nPu-XI-6xU" userLabel="Delay VStack">
-                                                        <rect key="frame" x="299" y="0.0" width="408" height="116"/>
+                                                        <rect key="frame" x="295" y="0.0" width="403" height="116"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" distribution="equalSpacing" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="q8p-ND-Why" userLabel="Delay Controls">
-                                                                <rect key="frame" x="0.0" y="0.0" width="408" height="116"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="403" height="116"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="P7B-ac-grc">
-                                                                        <rect key="frame" x="4" y="30" width="64" height="56"/>
+                                                                        <rect key="frame" x="4" y="31" width="59" height="54"/>
                                                                         <subviews>
                                                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-Pr-ykg" userLabel="Delay">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="64" height="20"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="59" height="19"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <state key="normal" title=" Delay" image="EffectOffOld">
@@ -141,7 +134,7 @@
                                                                                 </connections>
                                                                             </button>
                                                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vQM-4Z-qzy" userLabel="Global">
-                                                                                <rect key="frame" x="0.0" y="36" width="58" height="20"/>
+                                                                                <rect key="frame" x="0.0" y="35" width="53" height="19"/>
                                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                 <color key="tintColor" systemColor="systemOrangeColor"/>
@@ -158,7 +151,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4ay-ak-jBK" userLabel="Time">
-                                                                        <rect key="frame" x="72" y="9.5" width="80" height="97.5"/>
+                                                                        <rect key="frame" x="67" y="10" width="80" height="96.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Htb-6b-YVY" userLabel="Time" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -176,22 +169,13 @@
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
                                                                                         <real key="value" value="1"/>
                                                                                     </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
-                                                                                        <real key="value" value="3"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayTime:" destination="erm-79-XXa" eventType="valueChanged" id="f7U-NN-lp6"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2c-fd-4vs">
-                                                                                <rect key="frame" x="0.0" y="80" width="80" height="17.5"/>
+                                                                                <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
@@ -200,7 +184,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KG9-Et-JKF" userLabel="Amount">
-                                                                        <rect key="frame" x="156" y="9.5" width="80" height="97.5"/>
+                                                                        <rect key="frame" x="151" y="10" width="80" height="96.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iM2-XN-xlU" userLabel="Amount" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -218,22 +202,13 @@
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
                                                                                         <real key="value" value="50"/>
                                                                                     </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
-                                                                                        <real key="value" value="3"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="wRQ-7d-nE8"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Feedback" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SpL-9N-09R">
-                                                                                <rect key="frame" x="0.0" y="80" width="80" height="17.5"/>
+                                                                                <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
@@ -242,7 +217,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="maH-vs-3Vs" userLabel="Cutoff">
-                                                                        <rect key="frame" x="240" y="9.5" width="80" height="97.5"/>
+                                                                        <rect key="frame" x="235" y="10" width="80" height="96.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-XF-kq9" userLabel="Cutoff" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -260,22 +235,13 @@
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
                                                                                         <real key="value" value="15000"/>
                                                                                     </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
-                                                                                        <real key="value" value="3"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="3n5-fT-Dmu"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Cutoff" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqZ-vK-8xw">
-                                                                                <rect key="frame" x="0.0" y="80" width="80" height="17.5"/>
+                                                                                <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
@@ -284,7 +250,7 @@
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="n7q-nM-ete" userLabel="Mix">
-                                                                        <rect key="frame" x="324" y="9.5" width="80" height="97.5"/>
+                                                                        <rect key="frame" x="319" y="10" width="80" height="96.5"/>
                                                                         <subviews>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ex1-3w-meW" customClass="Knob" customModule="SoundFontsFramework" customModuleProvider="target">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -302,22 +268,13 @@
                                                                                     <userDefinedRuntimeAttribute type="number" keyPath="value">
                                                                                         <real key="value" value="20"/>
                                                                                     </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="trackLineWidth">
-                                                                                        <real key="value" value="3"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="progressLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="indicatorLineWidth">
-                                                                                        <real key="value" value="5"/>
-                                                                                    </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xiw-KF-84l"/>
                                                                                 </connections>
                                                                             </view>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Mix" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JT9-c9-CTS" userLabel="Mix">
-                                                                                <rect key="frame" x="0.0" y="80" width="80" height="17.5"/>
+                                                                                <rect key="frame" x="0.0" y="80" width="80" height="16.5"/>
                                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="15"/>
                                                                                 <color key="textColor" systemColor="systemTealColor"/>
