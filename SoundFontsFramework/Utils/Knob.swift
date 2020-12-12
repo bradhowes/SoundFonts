@@ -27,19 +27,19 @@ import os
     @IBInspectable open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
-    @IBInspectable open var trackLineWidth: CGFloat = 7 { didSet { trackLayer.lineWidth = trackLineWidth } }
+    @IBInspectable open var trackLineWidth: CGFloat = 5 { didSet { trackLayer.lineWidth = trackLineWidth } }
 
     /// The color of the arc shown after the current value.
     @IBInspectable open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
 
     /// The width of the arc from the start up to the current value.
-    @IBInspectable open var progressLineWidth: CGFloat = 2 { didSet { progressLayer.lineWidth = progressLineWidth } }
+    @IBInspectable open var progressLineWidth: CGFloat = 3 { didSet { progressLayer.lineWidth = progressLineWidth } }
 
     /// The color of the arc from the start up to the current value.
     @IBInspectable open var progressColor: UIColor = .systemTeal { didSet { progressLayer.strokeColor = progressColor.cgColor } }
 
     /// The width of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorLineWidth: CGFloat = 2 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
+    @IBInspectable open var indicatorLineWidth: CGFloat = 3 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
 
     /// The color of the radial line drawn from the current value on the arc towards the arc center.
     @IBInspectable open var indicatorColor: UIColor = .systemTeal { didSet { indicatorLayer.strokeColor = indicatorColor.cgColor } }
@@ -48,6 +48,17 @@ import os
     /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
     /// starting from the arc.
     @IBInspectable open var indicatorLineLength: CGFloat = 0.3 { didSet { createShapes() } }
+
+    /// The width of the radial line drawn from the current value on the arc to the arc center.
+    @IBInspectable open var radialLineWidth: CGFloat = 1 { didSet { radialLayer.lineWidth = radialLineWidth } }
+
+    /// The color of the radial line drawn from the current value on the arc towards the arc center.
+    @IBInspectable open var radialLineColor: UIColor = .systemTeal { didSet { radialLayer.strokeColor = radialLineColor.cgColor } }
+
+    /// The proportion of the radial line drawn from the current value on the arc towards the arc center.
+    /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
+    /// starting from the arc.
+    @IBInspectable open var radialLineLength: CGFloat = 0.0 { didSet { createShapes() } }
 
     /// Number of ticks to show inside the track, with the first indicating the `minimumValue` and the last indicating the `maximumValue`
     @IBInspectable open var tickCount: Int = 0 { didSet { createShapes() } }
@@ -74,7 +85,6 @@ import os
     private let radialLayer = CAShapeLayer()
     private let indicatorLayer = CAShapeLayer()
     private let ticksLayer = CAShapeLayer()
-    private let updateQueue = DispatchQueue(label: "Knob", qos: .userInteractive, attributes: [], autoreleaseFrequency: .inherit, target: .main)
 
     private var _value: Float = 0.0
     private var panOrigin: CGPoint = .zero
@@ -129,7 +139,7 @@ extension Knob {
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         panOrigin = touch.location(in: self)
         activeTouch = true
-        updateQueue.async { self.sendActions(for: .valueChanged) }
+        sendActions(for: .valueChanged)
         return true
     }
 
@@ -143,7 +153,7 @@ extension Knob {
         defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
         let change = deltaT * (maximumValue - minimumValue)
         self.value += change
-        updateQueue.async { self.sendActions(for: .valueChanged) }
+        sendActions(for: .valueChanged)
         return true
     }
 
@@ -156,7 +166,7 @@ extension Knob {
     override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         activeTouch = false
         super.endTracking(touch, with: event)
-        updateQueue.async { self.sendActions(for: .valueChanged) }
+        sendActions(for: .valueChanged)
     }
 }
 
@@ -192,8 +202,8 @@ extension Knob {
         indicatorLayer.lineCap = .round
         indicatorLayer.drawsAsynchronously = true
 
-        radialLayer.lineWidth = 1.0
-        radialLayer.strokeColor = indicatorColor.cgColor
+        radialLayer.lineWidth = radialLineWidth
+        radialLayer.strokeColor = radialLineColor.cgColor
         radialLayer.lineCap = .round
         radialLayer.drawsAsynchronously = true
 
@@ -221,7 +231,7 @@ extension Knob {
     private func createRadial() {
         let path = UIBezierPath()
         path.move(to: CGPoint(x: radius, y: 0.0))
-        path.addLine(to: CGPoint(x: 0.0, y: 0.0))
+        path.addLine(to: CGPoint(x: radius * (1.0 - radialLineLength), y: 0.0))
         radialLayer.path = path.cgPath
         radialLayer.shadowPath = path.cgPath
     }
