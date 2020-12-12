@@ -186,6 +186,7 @@ extension EffectsController {
     private func update(config: ReverbConfig) {
         reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
         reverbWetDryMix.setValue(config.wetDryMix, animated: true)
+        showReverbMixValue()
         updateReverbState(config.enabled)
     }
 

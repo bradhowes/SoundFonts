@@ -215,32 +215,18 @@ extension KeyboardController {
 extension KeyboardController: Keyboard {
 
     func noteOff(note: UInt8) {
-        sampler.noteOff(note)
         guard note < allKeys.count else { return }
         let key = allKeys[Int(note)]
         DispatchQueue.main.async { key.pressed = false }
     }
 
     func noteOn(note: UInt8, velocity: UInt8) {
-        sampler.noteOn(note, velocity: velocity)
         guard note < allKeys.count else { return }
         let key = allKeys[Int(note)]
         DispatchQueue.main.async {
             key.pressed = true
             self.updateInfoBar(note: key.note)
         }
-    }
-
-    func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {
-        sampler.polyphonicKeyPressure(note, pressure: pressure)
-    }
-
-    func channelPressure(pressure: UInt8) {
-        sampler.channelPressure(pressure)
-    }
-
-    func pitchBendChange(value: UInt16) {
-        sampler.pitchBendChange(value)
     }
 
     var lowestNote: Note {

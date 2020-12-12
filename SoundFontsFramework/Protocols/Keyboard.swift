@@ -13,7 +13,7 @@ public protocol Keyboard: class {
     /// The value of the last note shown on the keyboard
     var highestNote: Note { get }
 
-    /// Set to true if audio is currently muted on the device. Affects how the keys are rendered.
+    /// Set true if audio is currently muted on the device. Affects how the keys are rendered.
     var isMuted: Bool { get set }
 
     /**
@@ -24,10 +24,4 @@ public protocol Keyboard: class {
     func noteOff(note: UInt8)
 
     func noteOn(note: UInt8, velocity: UInt8)
-
-    func polyphonicKeyPressure(note: UInt8, pressure: UInt8)
-
-    func channelPressure(pressure: UInt8)
-
-    func pitchBendChange(value: UInt16)
 }
