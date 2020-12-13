@@ -346,7 +346,7 @@ extension PatchesTableViewManager {
         switch event {
         case .restored:
             os_log(.info, log: log, "favoritesChange - restored")
-            DispatchQueue.main.async { self.favoritesRestored() }
+            favoritesRestored()
 
         default:
             os_log(.info, log: log, "favoritesChange - default")
@@ -374,7 +374,7 @@ extension PatchesTableViewManager {
 
         case .restored:
             if viewPresets.isEmpty {
-                DispatchQueue.main.async { self.soundFontsRestored() }
+                soundFontsRestored()
             }
 
         default:

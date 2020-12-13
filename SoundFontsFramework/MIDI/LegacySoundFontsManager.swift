@@ -330,6 +330,6 @@ extension LegacySoundFontsManager {
     private func restoreCollection(_ collection: LegacySoundFontCollection) {
         self.collection = collection
         restored = true
-        notify(.restored)
+        DispatchQueue.main.async { self.notify(.restored) }
     }
 }
