@@ -7,7 +7,7 @@ import AVFoundation
  */
 public final class Reverb: NSObject {
 
-    public let audioUnit = AVAudioUnitReverb()
+    public lazy var audioUnit = AVAudioUnitReverb()
 
     private let _factoryPresetDefs = [
         PresetEntry(name: "Metallic Taste", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .plate)!, wetDryMix: 100)),
@@ -19,7 +19,7 @@ public final class Reverb: NSObject {
     public lazy var factoryPresetConfigs: [ReverbConfig] = _factoryPresetDefs.map { $0.config }
     public lazy var factoryPresets: [AUAudioUnitPreset] = _factoryPresetDefs.enumerated().map { AUAudioUnitPreset(number: $0.offset, name: $0.element.name) }
 
-    public var active: ReverbConfig { didSet { applyActiveConfig() } }
+    public var active: ReverbConfig { didSet { applyActiveConfig(self.active) } }
 
     public static let roomNames = [
         "Room 1", // smallRoom
@@ -56,14 +56,16 @@ public final class Reverb: NSObject {
     public override init() {
         self.active = ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!, wetDryMix: 30.0)
         super.init()
-        applyActiveConfig()
+        applyActiveConfig(self.active)
     }
 }
 
 extension Reverb {
 
-    private func applyActiveConfig() {
-        audioUnit.loadFactoryPreset(Reverb.roomPresets[active.preset])
-        audioUnit.wetDryMix = active.enabled ? active.wetDryMix : 0.0
+    private func applyActiveConfig(_ config: ReverbConfig) {
+        DispatchQueue.global(qos: .background).async {
+            self.audioUnit.loadFactoryPreset(Reverb.roomPresets[config.preset])
+            self.audioUnit.wetDryMix = config.enabled ? config.wetDryMix : 0.0
+        }
     }
 }

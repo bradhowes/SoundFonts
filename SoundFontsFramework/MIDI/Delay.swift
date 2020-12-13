@@ -6,7 +6,8 @@ import AVFoundation
  Delay audio effect by way of Apple's AVAudioUnitDelay component.
  */
 public final class Delay: NSObject {
-    public let audioUnit = AVAudioUnitDelay()
+
+    public lazy var audioUnit = AVAudioUnitDelay()
 
     private let _factoryPresetDefs = [
         PresetEntry(name: "Slap Back", config: DelayConfig(enabled: true, time: 0.25, feedback: 0, cutoff: 20_000.0, wetDryMix: 50)),
@@ -17,22 +18,24 @@ public final class Delay: NSObject {
     public lazy var factoryPresetConfigs: [DelayConfig] = _factoryPresetDefs.map { $0.config }
     public lazy var factoryPresets: [AUAudioUnitPreset] = _factoryPresetDefs.enumerated().map { AUAudioUnitPreset(number: $0.offset, name: $0.element.name) }
 
-    public var active: DelayConfig { didSet { applyActiveConfig() } }
+    public var active: DelayConfig { didSet { applyActiveConfig(active) } }
 
     public override init() {
         self.active = DelayConfig(enabled: true, time: 1.0, feedback: 50.0, cutoff: 15_000.0, wetDryMix: 35.0)
         super.init()
-        applyActiveConfig()
+        applyActiveConfig(self.active)
     }
 }
 
 extension Delay {
 
-    private func applyActiveConfig() {
-        audioUnit.bypass = !active.enabled
-        audioUnit.wetDryMix = active.wetDryMix
-        audioUnit.delayTime = Double(active.time)
-        audioUnit.feedback = active.feedback
-        audioUnit.lowPassCutoff = active.cutoff
+    private func applyActiveConfig(_ config: DelayConfig) {
+        DispatchQueue.global(qos: .background).async {
+            self.audioUnit.bypass = !config.enabled
+            self.audioUnit.wetDryMix = config.wetDryMix
+            self.audioUnit.delayTime = Double(config.time)
+            self.audioUnit.feedback = config.feedback
+            self.audioUnit.lowPassCutoff = config.cutoff
+        }
     }
 }

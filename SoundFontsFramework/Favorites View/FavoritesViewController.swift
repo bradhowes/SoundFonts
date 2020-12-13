@@ -135,7 +135,7 @@ extension FavoritesViewController: ControllerConfiguration {
             favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
 
         case .removedAll: favoritesView.reloadData()
-        case .restored: DispatchQueue.main.async { self.favoritesView.reloadData() }
+        case .restored: favoritesView.reloadData()
         }
     }
 }

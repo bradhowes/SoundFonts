@@ -117,7 +117,7 @@ extension LegacyFavoritesManager {
 
         os_log(.info, log: log, "properly decoded")
         self.collection = collection
-        notify(.restored)
+        DispatchQueue.main.async { self.notify(.restored) }
     }
 
     /**
