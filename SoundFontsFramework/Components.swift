@@ -12,9 +12,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
     public let askForReview: AskForReview
     public let soundFonts: SoundFonts
-    public let soundFontsConfigFile: SoundFontsConfigFile
     public let favorites: Favorites
-    public let favoritesConfigFile: FavoritesConfigFile
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
     public let delay: Delay?
@@ -46,12 +44,10 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.inApp = inApp
         self.askForReview = AskForReview(isMain: inApp)
 
-        self.soundFontsConfigFile = SoundFontsConfigFile()
-        let soundFontsManager = LegacySoundFontsManager(configFile: soundFontsConfigFile)
+        let soundFontsManager = LegacySoundFontsManager()
         self.soundFonts = soundFontsManager
 
-        self.favoritesConfigFile = FavoritesConfigFile()
-        let favoritesManager = LegacyFavoritesManager(configFile: favoritesConfigFile)
+        let favoritesManager = LegacyFavoritesManager()
         self.favorites = favoritesManager
 
         self.selectedSoundFontManager = SelectedSoundFontManager()

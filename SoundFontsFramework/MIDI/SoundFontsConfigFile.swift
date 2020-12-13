@@ -4,25 +4,28 @@ import UIKit
 import os
 
 enum SoundFontsConfigFileError: Error {
-    case failedToCreate
+    case nilSoundFontsManager
 }
 
 public final class SoundFontsConfigFile: UIDocument {
+
     private let log = Logging.logger("SFCfg")
     private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
     private weak var soundFontsManager: LegacySoundFontsManager?
 
-    public init() {
+    public init(soundFontsManager: LegacySoundFontsManager) {
+        self.soundFontsManager = soundFontsManager
         super.init(fileURL: sharedArchivePath)
+        initialize()
     }
 
-    public func initialize(soundFontsManager: LegacySoundFontsManager) {
-        self.soundFontsManager = soundFontsManager
+    public func initialize() {
+        let soundFontsManager = self.soundFontsManager
         self.open { ok in
             if !ok {
                 do {
                     let data = try PropertyListEncoder().encode(LegacySoundFontsManager.create())
-                    try soundFontsManager.loadConfigurationData(contents: data)
+                    try soundFontsManager?.loadConfigurationData(contents: data)
                     self.save(to: self.sharedArchivePath, for: .forCreating)
                 } catch let error as NSError {
                     fatalError("Failed to initialize initial collection: \(error.localizedDescription)")
@@ -32,12 +35,12 @@ public final class SoundFontsConfigFile: UIDocument {
     }
 
     override public func contents(forType typeName: String) throws -> Any {
-        guard let soundFontsManager = self.soundFontsManager else { fatalError() }
+        guard let soundFontsManager = soundFontsManager else { throw SoundFontsConfigFileError.nilSoundFontsManager }
         return try soundFontsManager.configurationData()
     }
 
     override public func load(fromContents contents: Any, ofType typeName: String?) throws {
-        guard let soundFontsManager = self.soundFontsManager else { fatalError() }
+        guard let soundFontsManager = soundFontsManager else { throw SoundFontsConfigFileError.nilSoundFontsManager }
         try soundFontsManager.loadConfigurationData(contents: contents)
     }
 

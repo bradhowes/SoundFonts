@@ -14,7 +14,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 
     private var log: OSLog { Self.log }
 
-    private let configFile: SoundFontsConfigFile
+    private var configFile: SoundFontsConfigFile?
 
     private var collection = LegacySoundFontCollection(soundFonts: []) {
         didSet {
@@ -40,10 +40,9 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
      Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
      fails then creates a new one containing SoundFont instances embedded in the app.
      */
-    public init(configFile: SoundFontsConfigFile) {
-        self.configFile = configFile
+    public init() {
         super.init()
-        configFile.initialize(soundFontsManager: self)
+        DispatchQueue.global(qos: .background).async { self.configFile = SoundFontsConfigFile(soundFontsManager: self) }
     }
 
     public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool { collection.validate(soundFontAndPatch) }
@@ -296,7 +295,7 @@ extension LegacySoundFontsManager {
      Mark the current configuration as dirty so that it will get saved.
      */
     private func markDirty() {
-        configFile.updateChangeCount(.done)
+        configFile?.updateChangeCount(.done)
     }
 }
 
@@ -331,6 +330,6 @@ extension LegacySoundFontsManager {
     private func restoreCollection(_ collection: LegacySoundFontCollection) {
         self.collection = collection
         self.restored = true
-        notify(.restored)
+        DispatchQueue.main.async { self.notify(.restored) }
     }
 }

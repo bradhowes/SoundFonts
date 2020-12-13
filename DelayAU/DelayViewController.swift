@@ -99,18 +99,18 @@ extension DelayViewController {
 
     private func setCutoff(value: AUValue) {
         cutoff.value = log10(min(max(value, 10.0), 20_000.0))
-        setParameter(.cutoff, value)
         if value < 1000.0 {
             cutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
         }
         else {
             cutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
+        setParameter(.cutoff, value)
     }
 
     private func setWetDryMix(value: AUValue) {
         wetDryMix.value = min(max(value, 0.0), 100.0)
-        setParameter(.wetDryMix, value)
         wetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
+        setParameter(.wetDryMix, value)
     }
 }
