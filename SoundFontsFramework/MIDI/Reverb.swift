@@ -6,6 +6,7 @@ import AVFoundation
  Reverberation audio effect by way of Apple's AVAudioUnitReverb component.
  */
 public final class Reverb: NSObject {
+
     public let audioUnit = AVAudioUnitReverb()
 
     private let _factoryPresetDefs = [

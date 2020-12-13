@@ -13,7 +13,7 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
     private var log: OSLog { Self.log }
 
-    private let configFile: FavoritesConfigFile
+    private var configFile: FavoritesConfigFile?
 
     private var collection: LegacyFavoriteCollection = LegacyFavoriteCollection() {
         didSet {
@@ -24,10 +24,9 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
-    public init(configFile: FavoritesConfigFile) {
-        self.configFile = configFile
+    public init() {
         super.init()
-        configFile.initialize(favoritesManager: self)
+        DispatchQueue.global(qos: .background).async { self.configFile = FavoritesConfigFile(favoritesManager: self) }
     }
 
     public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
@@ -118,13 +117,13 @@ extension LegacyFavoritesManager {
 
         os_log(.info, log: log, "properly decoded")
         self.collection = collection
-        notify(.restored)
+        DispatchQueue.main.async { self.notify(.restored) }
     }
 
     /**
      Mark the current collection as dirty so it will get written to disk.
      */
     private func markDirty() {
-        configFile.updateChangeCount(.done)
+        configFile?.updateChangeCount(.done)
     }
 }
