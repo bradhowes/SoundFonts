@@ -212,7 +212,7 @@ extension FontsTableViewManager {
         case .unhidPresets: break
         case .restored:
             viewSoundFonts = soundFonts.soundFontNames
-            view.reloadData()
+            DispatchQueue.main.async { self.view.reloadData() }
         }
     }
 

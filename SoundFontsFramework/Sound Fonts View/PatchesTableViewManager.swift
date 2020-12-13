@@ -332,17 +332,21 @@ extension PatchesTableViewManager {
         }
     }
 
+    private func favoritesRestored() {
+        if let visibleRows = view.indexPathsForVisibleRows {
+            view.reloadRows(at: visibleRows, with: .automatic)
+        }
+        else {
+            view.reloadData()
+        }
+    }
+
     private func favoritesChange(_ event: FavoritesEvent) {
         os_log(.info, log: log, "favoritesChange")
         switch event {
         case .restored:
             os_log(.info, log: log, "favoritesChange - restored")
-            if let visibleRows = view.indexPathsForVisibleRows {
-                view.reloadRows(at: visibleRows, with: .automatic)
-            }
-            else {
-                view.reloadData()
-            }
+            DispatchQueue.main.async { self.favoritesRestored() }
 
         default:
             os_log(.info, log: log, "favoritesChange - default")
@@ -355,6 +359,12 @@ extension PatchesTableViewManager {
         }
     }
 
+    private func soundFontsRestored() {
+        updateViewPresets()
+        selectActive(animated: false)
+        hideSearchBar(animated: false)
+    }
+
     private func soundFontsChange(_ event: SoundFontsEvent) {
         switch event {
         case let .unhidPresets(font: soundFont):
@@ -364,9 +374,7 @@ extension PatchesTableViewManager {
 
         case .restored:
             if viewPresets.isEmpty {
-                updateViewPresets()
-                selectActive(animated: false)
-                hideSearchBar(animated: false)
+                DispatchQueue.main.async { self.soundFontsRestored() }
             }
 
         default:
