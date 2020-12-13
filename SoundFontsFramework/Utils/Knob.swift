@@ -27,19 +27,19 @@ import os
     @IBInspectable open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
-    @IBInspectable open var trackLineWidth: CGFloat = 5 { didSet { trackLayer.lineWidth = trackLineWidth } }
+    @IBInspectable open var trackLineWidth: CGFloat = 3 { didSet { trackLayer.lineWidth = trackLineWidth } }
 
     /// The color of the arc shown after the current value.
     @IBInspectable open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
 
     /// The width of the arc from the start up to the current value.
-    @IBInspectable open var progressLineWidth: CGFloat = 3 { didSet { progressLayer.lineWidth = progressLineWidth } }
+    @IBInspectable open var progressLineWidth: CGFloat = 5 { didSet { progressLayer.lineWidth = progressLineWidth } }
 
     /// The color of the arc from the start up to the current value.
     @IBInspectable open var progressColor: UIColor = .systemTeal { didSet { progressLayer.strokeColor = progressColor.cgColor } }
 
     /// The width of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorLineWidth: CGFloat = 3 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
+    @IBInspectable open var indicatorLineWidth: CGFloat = 5 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
 
     /// The color of the radial line drawn from the current value on the arc towards the arc center.
     @IBInspectable open var indicatorColor: UIColor = .systemTeal { didSet { indicatorLayer.strokeColor = indicatorColor.cgColor } }
@@ -58,7 +58,7 @@ import os
     /// The proportion of the radial line drawn from the current value on the arc towards the arc center.
     /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
     /// starting from the arc.
-    @IBInspectable open var radialLineLength: CGFloat = 0.0 { didSet { createShapes() } }
+    @IBInspectable open var radialLineLength: CGFloat = 0.1 { didSet { createShapes() } }
 
     /// Number of ticks to show inside the track, with the first indicating the `minimumValue` and the last indicating the `maximumValue`
     @IBInspectable open var tickCount: Int = 0 { didSet { createShapes() } }
