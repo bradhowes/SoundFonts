@@ -24,9 +24,9 @@
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV0-Rc-kUn" userLabel="Effects">
-                                <rect key="frame" x="0.0" y="822" width="414" height="124"/>
+                                <rect key="frame" x="0.0" y="822" width="414" height="132"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="124" id="720-5y-i6l"/>
+                                    <constraint firstAttribute="height" constant="132" id="720-5y-i6l"/>
                                 </constraints>
                                 <connections>
                                     <segue destination="WFk-3f-XKj" kind="embed" id="PlV-6x-IR7"/>
@@ -72,7 +72,7 @@
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="Fnr-o4-GdT"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="GSJ-Ba-E29"/>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="Qy1-mH-hvm"/>
-                            <constraint firstItem="wV0-Rc-kUn" firstAttribute="bottom" secondItem="BVo-bg-jdk" secondAttribute="top" constant="124" id="RjO-VY-hDV"/>
+                            <constraint firstItem="wV0-Rc-kUn" firstAttribute="bottom" secondItem="BVo-bg-jdk" secondAttribute="top" constant="132" id="RjO-VY-hDV"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="VW9-Ox-ga8"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="WNP-Bx-Ogq"/>
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="Zap-st-ZP1"/>
