@@ -7,7 +7,7 @@ import AVFoundation
  */
 public final class Reverb: NSObject {
 
-    public lazy var audioUnit = AVAudioUnitReverb()
+    public let audioUnit = AVAudioUnitReverb()
 
     private let _factoryPresetDefs = [
         PresetEntry(name: "Metallic Taste", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .plate)!, wetDryMix: 100)),
