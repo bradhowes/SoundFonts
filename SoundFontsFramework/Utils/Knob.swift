@@ -265,10 +265,7 @@ extension Knob {
     }
 
     private func draw(previousValue: Float, animated: Bool = false) {
-        let steps = 100
-        let startAngle = angle(for: previousValue)
         let endAngle = angleForValue
-        let angleStep = (endAngle - startAngle) / Float(steps)
         let endStrokeEnd = CGFloat((value - minimumValue) / (maximumValue - minimumValue))
         let transform = CATransform3DMakeRotation(CGFloat(endAngle), 0, 0, 1)
 
