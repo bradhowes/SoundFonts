@@ -7,7 +7,7 @@ import AVFoundation
  */
 public final class Delay: NSObject {
 
-    public lazy var audioUnit = AVAudioUnitDelay()
+    public let audioUnit = AVAudioUnitDelay()
 
     private let _factoryPresetDefs = [
         PresetEntry(name: "Slap Back", config: DelayConfig(enabled: true, time: 0.25, feedback: 0, cutoff: 20_000.0, wetDryMix: 50)),
