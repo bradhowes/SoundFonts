@@ -58,7 +58,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         let delay = inApp ? Delay() : nil
         self.delay = delay
 
-        self.sampler = Sampler(mode: inApp ? .standalone : .audiounit, activePatchManager: activePatchManager, reverb: reverb, delay: delay)
+        self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager, reverb: reverb, delay: delay)
 
         self.soundFonts.subscribe(favoritesManager) { event in
             if case let .removed(_, soundFont) = event {

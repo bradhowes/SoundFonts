@@ -47,7 +47,7 @@ public struct MIDIParser {
             withUnsafeBytes(of: packet.data) { ptr in
                 let msgs = Generator(ptr: ptr, count: length, channel: controller.channel).messages
                 if !msgs.isEmpty {
-                    controller.messageQueue.async { controller.process(msgs, when: when) }
+                    controller.process(msgs, when: when)
                 }
             }
             packet = MIDIPacketNext(&packet).pointee

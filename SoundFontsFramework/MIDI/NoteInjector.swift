@@ -5,7 +5,9 @@ import CoreAudioKit
 
 public final class NoteInjector {
     private let log = Logging.logger("NoInj")
-    private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInitiated)
+    private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInteractive, attributes: [], autoreleaseFrequency: .never,
+                                             target: DispatchQueue.global(qos: .userInteractive))
+
     private var workItems = [DispatchWorkItem]()
 
     private let note: UInt8 = 69 // A4

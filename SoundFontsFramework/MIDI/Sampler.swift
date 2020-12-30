@@ -17,7 +17,7 @@ public enum SamplerStartFailure: Error {
 }
 
 /**
- This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI soundbank.
+ This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI sound bank.
  */
 public final class Sampler: SubscriptionManager<SamplerEvent> {
     private lazy var log = Logging.logger("Samp")
@@ -27,7 +27,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     public enum Mode {
         case standalone
-        case audiounit
+        case audioUnit
     }
 
     private let mode: Mode
@@ -46,7 +46,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      Create a new instance of a Sampler.
 
      In `standalone` mode, the sampler will create a `AVAudioEngine` to use to host the sampler and to generate sound.
-     In `audiounit` mode, the sampler will exist on its own and will expect an AUv3 host to provide the appropriate
+     In `audioUnit` mode, the sampler will exist on its own and will expect an AUv3 host to provide the appropriate
      context to generate sound from its output.
 
      - parameter mode: determines how the sampler is hosted.
@@ -101,11 +101,11 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
 
-            guard let reverb = self.reverb?.audioUnit else { fatalError("unexpectd nil Reverb") }
+            guard let reverb = self.reverb?.audioUnit else { fatalError("unexpected nil Reverb") }
             engine.attach(reverb)
             engine.connect(reverb, to: engine.mainMixerNode, format: nil)
 
-            guard let delay = self.delay?.audioUnit else { fatalError("unexpectd nil Delay") }
+            guard let delay = self.delay?.audioUnit else { fatalError("unexpected nil Delay") }
             engine.attach(delay)
             engine.connect(delay, to: reverb, format: nil)
             engine.connect(sampler, to: delay, format: nil)
@@ -126,7 +126,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     /**
      Ask the sampler to use the active preset held by the ActivePatchManager.
 
-     - parameter afterLoadblock: callback to invoke after the load is successfully done
+     - parameter afterLoadBlock: callback to invoke after the load is successfully done
 
      - returns: Result instance indicating success or failure
      */
