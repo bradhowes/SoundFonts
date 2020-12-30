@@ -5,18 +5,12 @@ import os
 public final class MIDIController {
     private lazy var log = Logging.logger("MIDIController")
 
-    public let messageQueue: DispatchQueue
     public var channel: Int { Settings.shared.midiChannel }
 
     private let sampler: Sampler
     private let keyboard: Keyboard?
 
     public init(sampler: Sampler, keyboard: Keyboard?) {
-        self.messageQueue = DispatchQueue(label: "MIDIController",
-                                          qos: .userInteractive,
-                                          attributes: [],
-                                          autoreleaseFrequency: .never,
-                                          target: DispatchQueue.global(qos: .userInteractive))
         self.sampler = sampler
         self.keyboard = keyboard
     }

@@ -17,6 +17,9 @@ final class SoundFontsAU: AUAudioUnit {
     private let log: OSLog
     private let activePatchManager: ActivePatchManager
     private let wrapped: AUAudioUnit
+
+    private var _currentPreset: AUAudioUnitPreset?
+
     private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
     public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
@@ -187,22 +190,45 @@ extension SoundFontsAU {
         }
     }
 
-    @available(iOS 13.0, *)
+    override public var fullStateForDocument: [String : Any]? {
+        get {
+            var state = fullState ?? [String: Any]()
+            if let preset = _currentPreset {
+                state[kAUPresetNameKey] = preset.name
+                state[kAUPresetNumberKey] = preset.number
+            }
+            state[kAUPresetDataKey] = Data()
+            state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aumu")
+            state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "sfnt")
+            state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+            state[kAUPresetVersionKey] = FourCharCode(67072)
+            return state
+        }
+        set { fullState = newValue }
+    }
+
+
     override var supportsUserPresets: Bool { true }
 
     override var currentPreset: AUAudioUnitPreset? {
-        get { wrapped.currentPreset }
+        get { _currentPreset }
         set {
-            wrapped.currentPreset = newValue
-            if #available(iOS 13.0, *) {
-                if let preset = newValue {
+            guard let preset = newValue else {
+                _currentPreset = nil
+                return
+            }
+
+            if preset.number < 0 {
+                if #available(iOS 13.0, *) {
                     if let fullState = try? presetState(for: preset) {
                         self.fullState = fullState
+                        _currentPreset = preset
                     }
                 }
             }
         }
     }
+
 
     override public var latency: TimeInterval { wrapped.latency }
     override public var tailTime: TimeInterval { wrapped.tailTime }

@@ -10,8 +10,6 @@ import os
  */
 public protocol MIDIReceiver: class {
 
-    var messageQueue: DispatchQueue { get }
-
     /// The channel the controller listens on. If -1, then it wants msgs from ALL channels
     var channel: Int { get }
 

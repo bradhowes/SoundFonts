@@ -23,7 +23,7 @@ public class LegacyPatch: Codable {
     /// The index into the owning soundFont's patches array
     let soundFontIndex: Int
 
-    /// Determines the visiblity of a preset in a UI view.
+    /// Determines the visibility of a preset in a UI view.
     @DecodableDefault.True var isVisible: Bool
 
     /// The reverb configuration attached to the preset
@@ -84,7 +84,7 @@ public class LegacyPatch: Codable {
     /**
      Initialize Patch instance.
 
-     - parameter name: the diplay name for the patch
+     - parameter name: the display name for the patch
      - parameter bank: the bank where the patch resides
      - parameter patch: the program ID of the patch in the sound font
      */
