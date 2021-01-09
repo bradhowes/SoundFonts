@@ -6,22 +6,22 @@ import AudioToolbox
 /**
  Representation of a patch in a sound font.
  */
-public class LegacyPatch: Codable {
+final public class LegacyPatch: Codable {
 
     /// Display name for the patch
-    let name: String
+    public let name: String
 
     /// Width of the name in the system font
     // lazy var nameWidth: CGFloat = name.systemFontWidth
 
     /// Bank number where the patch resides in the sound font
-    let bank: Int
+    public let bank: Int
 
     /// Program patch number where the patch resides in the sound font
-    let program: Int
+    public let program: Int
 
     /// The index into the owning soundFont's patches array
-    let soundFontIndex: Int
+    public let soundFontIndex: Int
 
     /// Determines the visibility of a preset in a UI view.
     @DecodableDefault.True var isVisible: Bool

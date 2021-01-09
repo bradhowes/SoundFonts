@@ -16,6 +16,7 @@ private extension String {
 final class SoundFontsAU: AUAudioUnit {
     private let log: OSLog
     private let activePatchManager: ActivePatchManager
+    private let sampler: Sampler
     private let wrapped: AUAudioUnit
 
     private var _currentPreset: AUAudioUnitPreset?
@@ -26,6 +27,7 @@ final class SoundFontsAU: AUAudioUnit {
         let log = Logging.logger("SFAU")
         self.log = log
         self.activePatchManager = activePatchManager
+        self.sampler = sampler
 
         os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d",
                componentDescription.componentFlags, componentDescription.componentManufacturer,
@@ -82,7 +84,7 @@ extension SoundFontsAU {
     override public var component: AudioComponent { wrapped.component }
 
     override public func allocateRenderResources() throws {
-        os_log(.info, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
+        os_log(.info, log: log, "allocateRenderResources - outputBusses: %{public}d", outputBusses.count)
         for index in 0..<outputBusses.count {
             outputBusses[index].shouldAllocateBuffer = true
         }
@@ -109,6 +111,10 @@ extension SoundFontsAU {
     override public func reset() {
         os_log(.info, log: log, "reset")
         wrapped.reset()
+        guard let sampler = sampler.auSampler else { return }
+        guard let soundFont = activePatchManager.soundFont else { return }
+        guard let patch = activePatchManager.patch else { return }
+        try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
     }
 
     override public var inputBusses: AUAudioUnitBusArray {
@@ -192,6 +198,7 @@ extension SoundFontsAU {
 
     override public var fullStateForDocument: [String : Any]? {
         get {
+            os_log(.info, log: log, "fullStateForDocument GET")
             var state = fullState ?? [String: Any]()
             if let preset = _currentPreset {
                 state[kAUPresetNameKey] = preset.name
@@ -204,9 +211,11 @@ extension SoundFontsAU {
             state[kAUPresetVersionKey] = FourCharCode(67072)
             return state
         }
-        set { fullState = newValue }
+        set {
+            os_log(.info, log: log, "fullStateForDocument SET")
+            fullState = newValue
+        }
     }
-
 
     override var supportsUserPresets: Bool { true }
 
