@@ -36,7 +36,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     private let delay: Delay?
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
-    private var auSampler: AVAudioUnitSampler?
+    public private(set) var auSampler: AVAudioUnitSampler?
     private var loaded: Bool = false
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
@@ -77,13 +77,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public func stop() {
         os_log(.info, log: log, "stop")
         presetChangeManager.stop()
+
         if let engine = self.engine {
             engine.stop()
             if let sampler = self.auSampler {
-                sampler.reset()
                 engine.detach(sampler)
             }
             engine.reset()
+        }
+
+        if let sampler = self.auSampler {
+            sampler.reset()
         }
 
         auSampler = nil
@@ -92,14 +96,15 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     private func startEngine() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
         guard let sampler = auSampler else { return .failure(.noSampler) }
-        let engine = AVAudioEngine()
-        self.engine = engine
-
-        os_log(.debug, log: log, "attaching sampler")
-        engine.attach(sampler)
 
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
+
+            let engine = AVAudioEngine()
+            self.engine = engine
+
+            os_log(.debug, log: log, "attaching sampler")
+            engine.attach(sampler)
 
             guard let reverb = self.reverb?.audioUnit else { fatalError("unexpected nil Reverb") }
             engine.attach(reverb)
