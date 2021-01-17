@@ -21,11 +21,11 @@ public enum SoundFontKind {
     case installed(fileName: String)
     case reference(bookmark: Bookmark)
 
-    /// The URL that points to the data file that defnes the SoundFont.
+    /// The URL that points to the data file that defines the SoundFont.
     public var fileURL: URL {
         switch self {
         case .builtin(let resource): return resource
-        case .installed(let fileName): return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(fileName)
+        case .installed(let file): return FileManager.default.sharedDocumentsDirectory.appendingPathComponent(file)
         case .reference(let bookmark): return bookmark.url
         }
     }

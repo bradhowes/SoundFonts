@@ -3,7 +3,7 @@
 import UIKit
 
 /**
- Protocol definiton for objects that know about segues between UIView controllers. The protocol basically defines
+ Protocol definition for objects that know about segues between UIView controllers. The protocol basically defines
  a type-safe way to translate from a UIStoryboardSeque.identifier value into a type-specific value (probably an enum)
  */
 public protocol SegueHandler {
@@ -26,7 +26,7 @@ public extension SegueHandler where Self: UIViewController, SegueIdentifier.RawV
     }
 
     /**
-     Peform a known segue transition between two view controllers
+     Perform a known segue transition between two view controllers
 
      - parameter segueIdentifier: the identifier of the segue to perform
      */

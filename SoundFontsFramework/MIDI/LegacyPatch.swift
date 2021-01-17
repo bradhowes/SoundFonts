@@ -11,9 +11,6 @@ final public class LegacyPatch: Codable {
     /// Display name for the patch
     public let name: String
 
-    /// Width of the name in the system font
-    // lazy var nameWidth: CGFloat = name.systemFontWidth
-
     /// Bank number where the patch resides in the sound font
     public let bank: Int
 
@@ -26,10 +23,10 @@ final public class LegacyPatch: Codable {
     /// Determines the visibility of a preset in a UI view.
     @DecodableDefault.True var isVisible: Bool
 
-    /// The reverb configuration attached to the preset
+    /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension)
     var reverbConfig: ReverbConfig?
 
-    // The delay configuration attached to the preset
+    // The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
     var delayConfig: DelayConfig?
 
     /**
@@ -43,14 +40,10 @@ final public class LegacyPatch: Codable {
         case custom(bank: Int)
 
         static func basedOn(bank: Int) -> MidiBankType {
-            if bank == 128 {
-                return .percussion
-            }
-            else if bank == 0 {
-                return .melody
-            }
-            else {
-                return .custom(bank: bank)
+            switch bank {
+            case 0:   return .melody
+            case 128: return .percussion
+            default:  return .custom(bank: bank)
             }
         }
 
@@ -98,9 +91,4 @@ final public class LegacyPatch: Codable {
 
 extension LegacyPatch: CustomStringConvertible {
     public var description: String { "[Patch '\(name)' \(bank):\(program)]" }
-}
-
-extension LegacyPatch: Comparable {
-    public static func < (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs.soundFontIndex < rhs.soundFontIndex }
-    public static func == (lhs: LegacyPatch, rhs: LegacyPatch) -> Bool { lhs.soundFontIndex == rhs.soundFontIndex }
 }

@@ -47,7 +47,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
 
     public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
-        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive, isFavorite: isFavorite, isEditing: isEditing)
+        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive,
+               isFavorite: isFavorite, isEditing: isEditing)
     }
 
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
@@ -93,7 +94,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
         activeIndicator.alpha = 0.0
         activeIndicator.isHidden = false
-        let activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) { self.activeIndicator.alpha = 1.0 }
+        let activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) {
+            self.activeIndicator.alpha = 1.0
+        }
         activeIndicatorAnimator.addCompletion { _ in self.activeIndicator.alpha = 1.0 }
         activeIndicatorAnimator.startAnimation()
         self.activeIndicatorAnimator = activeIndicatorAnimator
@@ -131,7 +134,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     @objc private func downloadMissingFile() {
         guard let bookmark = self.bookmark else { return }
-        let alert = UIAlertController(title: "Downloading", message: "Downloading the SF2 file for '\(bookmark.name)'", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Downloading", message: "Downloading the SF2 file for '\(bookmark.name)'",
+                                      preferredStyle: .alert)
         activeAlert = alert
         alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
         viewController?.present(alert, animated: true)
@@ -147,7 +151,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     @objc private func showMissingFileAlert() {
         guard let bookmark = self.bookmark else { return }
-        let alert = UIAlertController(title: "File Missing", message: "Unable to access the SF2 file for '\(bookmark.name)'", preferredStyle: .alert)
+        let alert = UIAlertController(title: "File Missing",
+                                      message: "Unable to access the SF2 file for '\(bookmark.name)'",
+                                      preferredStyle: .alert)
         activeAlert = alert
         alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
         viewController?.present(alert, animated: true)

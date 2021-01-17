@@ -32,6 +32,43 @@ public final class LegacySoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [LegacyPatch]
 
+    /**
+     Constructor for installed sound font files -- those added via File app.
+
+     - parameter displayName: the display name of the resource
+     - parameter soundFontInfo: patch info from the sound font
+     - parameter key: UUID for this font
+     */
+    public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
+        self.key = key
+        self.displayName = displayName
+        self.originalDisplayName = displayName
+        self.embeddedName = soundFontInfo.embeddedName
+        self.kind = Settings.shared.copyFilesWhenAdding ?
+            .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
+            .reference(bookmark: Bookmark(url: url, name: displayName))
+        self.patches = Self.makePatches(soundFontInfo.presets)
+    }
+
+    /**
+     Constructor for built-in sound font files -- those in the Bundle.
+
+     - parameter displayName: the display name of the resource
+     - parameter soundFontInfo: patch info from the sound font
+     - parameter resource: the name of the resource in the bundle
+     */
+    public init(_ displayName: String, soundFontInfo: SoundFontInfo, resource: URL) {
+        self.key = Key()
+        self.displayName = displayName
+        self.originalDisplayName = displayName
+        self.embeddedName = soundFontInfo.embeddedName
+        self.kind = .builtin(resource: resource)
+        self.patches = Self.makePatches(soundFontInfo.presets)
+    }
+}
+
+extension LegacySoundFont {
+
     public static func makeSoundFont(from url: URL) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
         os_log(.info, log: Self.logger, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
@@ -73,40 +110,6 @@ public final class LegacySoundFont: Codable {
         let secured = source.startAccessingSecurityScopedResource()
         defer { if secured { source.stopAccessingSecurityScopedResource() } }
         try FileManager.default.copyItem(at: source, to: destination)
-    }
-
-    /**
-     Constructor for installed sound font files -- those added via File app.
-
-     - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: patch info from the sound font
-     - parameter key: UUID for this font
-     */
-    public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
-        self.key = key
-        self.displayName = displayName
-        self.originalDisplayName = displayName
-        self.embeddedName = soundFontInfo.embeddedName
-        self.kind = Settings.shared.copyFilesWhenAdding ?
-            .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
-            .reference(bookmark: Bookmark(url: url, name: displayName))
-        self.patches = Self.makePatches(soundFontInfo.presets)
-    }
-
-    /**
-     Constructor for built-in sound font files -- those in the Bundle.
-
-     - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: patch info from the sound font
-     - parameter resource: the name of the resource in the bundle
-     */
-    public init(_ displayName: String, soundFontInfo: SoundFontInfo, resource: URL) {
-        self.key = Key()
-        self.displayName = displayName
-        self.originalDisplayName = displayName
-        self.embeddedName = soundFontInfo.embeddedName
-        self.kind = .builtin(resource: resource)
-        self.patches = Self.makePatches(soundFontInfo.presets)
     }
 
     private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [LegacyPatch] {

@@ -8,7 +8,7 @@ import UIKit
 public protocol FontEditorActionGenerator {
 
     /**
-     Obtain a swip action that will edit a SoundFont instance.
+     Obtain a swipe action that will edit a SoundFont instance.
 
      - parameter cell: the table cell to attach to
      - parameter soundFont: the SoundFont instance that will be edited
@@ -17,7 +17,7 @@ public protocol FontEditorActionGenerator {
     func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction
 
     /**
-     Obtain a swip action that will delete a SoundFont instance.
+     Obtain a swipe action that will delete a SoundFont instance.
 
      - parameter view: the table cell to attach to
      - parameter soundFont: the SoundFont instance that will be edited
