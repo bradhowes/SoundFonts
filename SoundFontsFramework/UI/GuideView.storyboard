@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T8r-NH-bPO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T8r-NH-bPO">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -123,7 +123,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MoK-A6-2A2" userLabel="InfoBar">
                                         <rect key="frame" x="0.0" y="340.66666666666669" width="390" height="81.333333333333314"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add files" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-an-6Rm">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add files" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-an-6Rm" userLabel="Add files Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="59.666666666666664" height="18.333333333333332"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
@@ -144,13 +144,13 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Effects" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csw-xS-Cbe">
-                                                <rect key="frame" x="40" y="35" width="48" height="18.333333333333329"/>
+                                                <rect key="frame" x="40" y="34.333333333333314" width="48" height="18.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UTx-ye-aGc" userLabel="Effects" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="56" y="57.333333333333314" width="16" height="24"/>
+                                                <rect key="frame" x="56" y="56.666666666666622" width="16" height="24.666666666666664"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="n44-Xg-zlD"/>
                                                 </constraints>
@@ -163,14 +163,14 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key slide" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4u-Am-pP5">
-                                                <rect key="frame" x="105" y="0.0" width="62" height="18.333333333333332"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4u-Am-pP5" userLabel="Key Range Label">
+                                                <rect key="frame" x="99" y="-0.66666666666668561" width="72" height="19"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk9-hi-fal" userLabel="Key slide" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="128" y="22.333333333333314" width="16" height="59"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xk9-hi-fal" userLabel="Key Range" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                                <rect key="frame" x="127" y="22.333333333333314" width="16" height="59"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="LT6-pa-HMp"/>
                                                 </constraints>
@@ -183,34 +183,14 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glj-gY-jrI">
-                                                <rect key="frame" x="149.33333333333334" y="35" width="71.333333333333343" height="18.333333333333329"/>
-                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
-                                                <color key="textColor" systemColor="systemOrangeColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AB1-cC-gCa" userLabel="Key range" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="169" y="57.333333333333314" width="16" height="24"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="HqG-mb-NDe"/>
-                                                </constraints>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="entryIB">
-                                                        <integer key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-qq-3S8">
-                                                <rect key="frame" x="254" y="35" width="58" height="18.333333333333329"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-qq-3S8" userLabel="Settings Label">
+                                                <rect key="frame" x="262" y="34.333333333333314" width="58" height="18.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Yf-Eh-IXa" userLabel="Settings" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="275" y="57.333333333333314" width="16" height="24"/>
+                                                <rect key="frame" x="283" y="56.666666666666622" width="16" height="24.666666666666664"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="Dfe-qA-61K"/>
                                                 </constraints>
@@ -223,14 +203,14 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset visibility" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-XK-1yC">
-                                                <rect key="frame" x="191.33333333333334" y="0.0" width="103.66666666666666" height="18.333333333333332"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset visibility" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-XK-1yC" userLabel="Preset visibility Label">
+                                                <rect key="frame" x="199.33333333333334" y="0.0" width="103.66666666666666" height="18.333333333333332"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TdS-mi-8Eb" userLabel="Preset visibility" customClass="ArrowView" customModule="SoundFontsFramework" customModuleProvider="target">
-                                                <rect key="frame" x="235" y="22.333333333333314" width="16" height="59"/>
+                                                <rect key="frame" x="243" y="22.333333333333314" width="16" height="59"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="16" id="DOz-7Q-idf"/>
                                                 </constraints>
@@ -243,24 +223,30 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="➠ Toggles slide mode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glj-gY-jrI" userLabel="Key Slide Label">
+                                                <rect key="frame" x="151" y="34.333333333333314" width="80" height="36.666666666666657"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="80" id="ccP-Od-b4g"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
+                                                <color key="textColor" systemColor="systemOrangeColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
+                                        <viewLayoutGuide key="safeArea" id="H1c-Il-PML"/>
                                         <constraints>
                                             <constraint firstItem="x4u-Am-pP5" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="10m-Ti-3Po"/>
                                             <constraint firstItem="UTx-ye-aGc" firstAttribute="leading" secondItem="U31-GI-9Y2" secondAttribute="trailing" constant="24" id="1ks-hH-pTf"/>
-                                            <constraint firstItem="Glj-gY-jrI" firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" id="4ce-Dc-Dqi"/>
-                                            <constraint firstItem="xk9-hi-fal" firstAttribute="leading" secondItem="UTx-ye-aGc" secondAttribute="trailing" constant="56" id="8oc-O3-3Qg"/>
-                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="centerX" secondItem="Glj-gY-jrI" secondAttribute="centerX" constant="-8" id="BgH-yz-Nfl"/>
                                             <constraint firstItem="UTx-ye-aGc" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="Cja-Lv-ftS"/>
                                             <constraint firstItem="6Yf-Eh-IXa" firstAttribute="leading" secondItem="TdS-mi-8Eb" secondAttribute="trailing" constant="24" id="Cp8-Nb-HH6"/>
-                                            <constraint firstAttribute="bottom" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="28" id="Dki-sB-rYe"/>
                                             <constraint firstItem="nIB-an-6Rm" firstAttribute="leading" secondItem="MoK-A6-2A2" secondAttribute="leading" id="E5L-NZ-jIl"/>
                                             <constraint firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" constant="63" id="G2Y-TZ-pV1"/>
-                                            <constraint firstAttribute="trailing" secondItem="kmG-qq-3S8" secondAttribute="trailing" constant="78" id="LfW-IZ-2uX">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="36"/>
+                                            <constraint firstAttribute="trailing" secondItem="kmG-qq-3S8" secondAttribute="trailing" constant="70" id="LfW-IZ-2uX">
+                                                <variation key="widthClass=regular" constant="34"/>
                                             </constraint>
                                             <constraint firstItem="UTx-ye-aGc" firstAttribute="top" secondItem="csw-xS-Cbe" secondAttribute="bottom" constant="4" id="OVo-a7-gQE"/>
-                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="RYx-q6-IvU"/>
                                             <constraint firstItem="6Yf-Eh-IXa" firstAttribute="centerX" secondItem="kmG-qq-3S8" secondAttribute="centerX" id="Szw-uD-Vba"/>
+                                            <constraint firstItem="Glj-gY-jrI" firstAttribute="leading" secondItem="xk9-hi-fal" secondAttribute="trailing" constant="8" symbolic="YES" id="WAg-ut-0jr"/>
                                             <constraint firstItem="TdS-mi-8Eb" firstAttribute="centerX" secondItem="MuL-XK-1yC" secondAttribute="centerX" id="XG3-OM-7Fk"/>
                                             <constraint firstItem="6Yf-Eh-IXa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="XcH-7S-Yxn"/>
                                             <constraint firstItem="xk9-hi-fal" firstAttribute="centerX" secondItem="x4u-Am-pP5" secondAttribute="centerX" id="aPd-mf-rIM"/>
@@ -270,12 +256,13 @@
                                             <constraint firstItem="xk9-hi-fal" firstAttribute="height" secondItem="U31-GI-9Y2" secondAttribute="height" id="dnK-E1-3Qh"/>
                                             <constraint firstItem="xk9-hi-fal" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="gNy-fJ-0cw"/>
                                             <constraint firstItem="6Yf-Eh-IXa" firstAttribute="bottom" secondItem="TdS-mi-8Eb" secondAttribute="bottom" id="h6r-8m-Z3f"/>
+                                            <constraint firstItem="H1c-Il-PML" firstAttribute="bottom" secondItem="Glj-gY-jrI" secondAttribute="bottom" constant="10.33" id="hjn-mb-gRz"/>
                                             <constraint firstAttribute="height" constant="81.329999999999998" id="lNz-jn-CQ3"/>
+                                            <constraint firstItem="TdS-mi-8Eb" firstAttribute="leading" secondItem="xk9-hi-fal" secondAttribute="trailing" constant="100" id="lZg-Q6-Vht"/>
                                             <constraint firstItem="U31-GI-9Y2" firstAttribute="leading" secondItem="MoK-A6-2A2" secondAttribute="leading" constant="16" id="lg8-WM-tvh"/>
-                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="height" secondItem="UTx-ye-aGc" secondAttribute="height" id="miZ-XV-kZa"/>
-                                            <constraint firstItem="AB1-cC-gCa" firstAttribute="leading" secondItem="xk9-hi-fal" secondAttribute="trailing" constant="25" id="mlc-M7-70z"/>
-                                            <constraint firstItem="kmG-qq-3S8" firstAttribute="bottom" secondItem="Glj-gY-jrI" secondAttribute="bottom" id="ptn-w4-Hsz"/>
+                                            <constraint firstItem="Glj-gY-jrI" firstAttribute="firstBaseline" secondItem="csw-xS-Cbe" secondAttribute="firstBaseline" id="pJV-sh-sKW"/>
                                             <constraint firstItem="MuL-XK-1yC" firstAttribute="bottom" secondItem="nIB-an-6Rm" secondAttribute="bottom" id="rXW-Wm-Wzj"/>
+                                            <constraint firstItem="kmG-qq-3S8" firstAttribute="firstBaseline" secondItem="Glj-gY-jrI" secondAttribute="firstBaseline" id="rsN-ZV-zDe"/>
                                             <constraint firstItem="TdS-mi-8Eb" firstAttribute="bottom" secondItem="U31-GI-9Y2" secondAttribute="bottom" id="w8e-Cb-d4t"/>
                                             <constraint firstItem="TdS-mi-8Eb" firstAttribute="height" secondItem="xk9-hi-fal" secondAttribute="height" id="xyX-Qt-m5j"/>
                                         </constraints>
@@ -312,10 +299,9 @@
                         <outlet property="favoritesPanel" destination="HNc-EK-vQh" id="lht-xp-pdE"/>
                         <outlet property="fontPresetPanel" destination="Jp9-dD-lbO" id="sh6-wL-Cr4"/>
                         <outlet property="infoBarPanel" destination="MoK-A6-2A2" id="eZ1-cw-k9h"/>
-                        <outlet property="keyRangeArrow" destination="AB1-cC-gCa" id="vQo-oZ-7Jy"/>
-                        <outlet property="keyRangeLabel" destination="Glj-gY-jrI" id="2Z6-fY-Yzw"/>
-                        <outlet property="keySlideArrow" destination="xk9-hi-fal" id="iU6-d8-WeB"/>
-                        <outlet property="keySlideLabel" destination="x4u-Am-pP5" id="oI9-MO-T1C"/>
+                        <outlet property="keyRangeArrow" destination="xk9-hi-fal" id="bZ5-XH-JRb"/>
+                        <outlet property="keyRangeLabel" destination="x4u-Am-pP5" id="50D-pP-CKd"/>
+                        <outlet property="keySlideLabel" destination="Glj-gY-jrI" id="baW-f6-jlF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QCi-Yg-u9p" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
