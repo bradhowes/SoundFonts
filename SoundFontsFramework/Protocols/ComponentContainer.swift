@@ -21,7 +21,6 @@ public protocol ComponentContainer {
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
     var delay: Delay? { get }
     var reverb: Reverb? { get }
-    var selectSoundFontControl: SelectSoundFontControl { get }
 }
 
 public extension ComponentContainer {

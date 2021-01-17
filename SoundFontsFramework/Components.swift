@@ -36,7 +36,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var favoritesViewManager: FavoritesViewManager { favoritesController }
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var alertManager: AlertManager { _alertManager! }
-    public var selectSoundFontControl: SelectSoundFontControl { soundFontsController }
 
     private var _alertManager: AlertManager?
 

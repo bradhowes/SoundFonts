@@ -78,13 +78,39 @@ extension SoundFontsControlsController: ControllerConfiguration {
         }
         AskForReview.maybe()
     }
+}
 
-    private func toggleShowEffects(_ action: AnyObject) {
-        let effectsViewHeight = effectsHeightConstraint.constant
-        self.blankBottomConstraint.constant = Settings.instance.showEffects ? effectsViewHeight : 0.0
-        self.effectsBottomConstraint.constant = Settings.instance.showEffects ? 0.0 : effectsViewHeight
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0, options: [.allowUserInteraction, .curveEaseIn], animations: self.view.layoutIfNeeded)
+extension SoundFontsControlsController {
+
+    private var showingEffects: Bool { effectsBottomConstraint.constant == 0.0 }
+
+    private func toggleShowEffects(_ sender: AnyObject) {
+        let button = sender as? UIButton
+        if showingEffects {
+            hideEffects()
+        }
+        else {
+            showEffects()
+        }
+        button?.tintColor = showingEffects ? .systemOrange : .systemTeal
     }
+
+    private func showEffects() {
+        effectsBottomConstraint.constant = 0.0
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                       options: [.allowUserInteraction, .curveEaseIn],
+                                                       animations: self.view.layoutIfNeeded)
+    }
+
+    private func hideEffects() {
+        effectsBottomConstraint.constant = effectsHeightConstraint.constant + 8
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                       options: [.allowUserInteraction, .curveEaseOut],
+                                                       animations: self.view.layoutIfNeeded)
+    }
+}
+
+extension SoundFontsControlsController {
 
     /**
      Show the next (right) view in the space above the info bar.

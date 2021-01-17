@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FCh-Nr-9cp">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,15 +23,6 @@
                                     <segue destination="48K-pT-64i" kind="embed" identifier="guidedView" id="yV1-yc-eLp"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV0-Rc-kUn" userLabel="Effects">
-                                <rect key="frame" x="0.0" y="822" width="414" height="132"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="132" id="720-5y-i6l"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="WFk-3f-XKj" kind="embed" id="PlV-6x-IR7"/>
-                                </connections>
-                            </containerView>
                             <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="Blank" translatesAutoresizingMaskIntoConstraints="NO" id="SxE-vE-5J3" userLabel="Blank">
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
@@ -49,6 +40,15 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <connections>
                                     <segue destination="Y2X-0f-Kke" kind="embed" identifier="soundFontPatches" id="u7z-Un-LBl"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV0-Rc-kUn" userLabel="Effects">
+                                <rect key="frame" x="0.0" y="822" width="414" height="132"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="132" id="720-5y-i6l"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="WFk-3f-XKj" kind="embed" id="PlV-6x-IR7"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVo-bg-jdk" userLabel="InfoBar">
@@ -78,9 +78,9 @@
                             <constraint firstItem="eeU-Zp-LO7" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="Zap-st-ZP1"/>
                             <constraint firstItem="SxE-vE-5J3" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="Zhf-tQ-Dq9"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="bottom" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="aeH-bf-1ly"/>
+                            <constraint firstItem="wV0-Rc-kUn" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="bU7-Xh-XZh"/>
                             <constraint firstItem="BVo-bg-jdk" firstAttribute="bottom" secondItem="3Ns-BN-Xtc" secondAttribute="bottom" id="bWe-Nf-T69"/>
                             <constraint firstItem="SxE-vE-5J3" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="ea6-lm-KE2"/>
-                            <constraint firstItem="BVo-bg-jdk" firstAttribute="top" secondItem="SxE-vE-5J3" secondAttribute="bottom" id="i38-O5-0gh"/>
                             <constraint firstItem="wV0-Rc-kUn" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="j46-JU-xSw"/>
                             <constraint firstItem="efO-vf-51K" firstAttribute="leading" secondItem="3Ns-BN-Xtc" secondAttribute="leading" id="j4d-dQ-03K"/>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="trailing" secondItem="3Ns-BN-Xtc" secondAttribute="trailing" id="n6a-ob-eHj"/>
@@ -93,7 +93,6 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="blankBottomConstraint" destination="i38-O5-0gh" id="bRo-Lt-TFs"/>
                         <outlet property="effectsBottomConstraint" destination="RjO-VY-hDV" id="arr-WF-8Yn"/>
                         <outlet property="effectsHeightConstraint" destination="720-5y-i6l" id="wew-sf-fb0"/>
                         <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>

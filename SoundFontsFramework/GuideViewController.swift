@@ -21,8 +21,6 @@ public final class GuideViewController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGuide))
-        view.addGestureRecognizer(tapGestureRecognizer)
     }
 }
 
@@ -55,7 +53,8 @@ extension GuideViewController {
             favoritesPanel.isHidden = true
         }
     }
-    private func showGuide(_ action: AnyObject) {
+
+    private func showGuide(_ sender: AnyObject) {
         prepareGuide()
         savedParent.add(self)
         view.alpha = 0.0
@@ -63,17 +62,38 @@ extension GuideViewController {
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0.0, options: .curveEaseIn) {
             self.view.alpha = 1.0
         }
+
+        let button = sender as? UIButton
+        button?.tintColor = .systemOrange
+
+        let gesture = BindableGestureRecognizer { gesture in
+            button?.tintColor = .systemTeal
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0.0, options: .curveEaseOut,
+                                                           animations: {
+                self.view.alpha = 0.0
+            },
+            completion: { _ in
+                self.view.isHidden = true
+                self.removeFromParent()
+                AskForReview.maybe()
+            })
+            self.infoBar.hideMoreButtons()
+            self.view.removeGestureRecognizer(gesture)
+        }
+
+        view.addGestureRecognizer(gesture)
+    }
+}
+
+final class BindableGestureRecognizer: UITapGestureRecognizer {
+
+    private var action: (BindableGestureRecognizer) -> Void
+
+    init(action: @escaping (BindableGestureRecognizer) -> Void) {
+        self.action = action
+        super.init(target: nil, action: nil)
+        self.addTarget(self, action: #selector(execute))
     }
 
-    @objc private func hideGuide() {
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0.0, options: .curveEaseIn, animations: {
-            self.view.alpha = 0.0
-        },
-        completion: { _ in
-            self.view.isHidden = true
-            self.removeFromParent()
-            AskForReview.maybe()
-        })
-        infoBar.hideMoreButtons()
-    }
+    @objc private func execute() { action(self) }
 }

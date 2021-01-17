@@ -20,6 +20,7 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var showSettings: UIButton!
     @IBOutlet private weak var editVisibility: UIButton!
     @IBOutlet private weak var slidingKeyboard: UIButton!
+    @IBOutlet private weak var showTags: UIButton!
     @IBOutlet private weak var showEffects: UIButton!
 
     @IBOutlet private weak var showMoreButtonsButton: UIButton!
@@ -97,10 +98,6 @@ extension InfoBarController {
     @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
         Settings.shared.slideKeyboard = !Settings.shared.slideKeyboard
     }
-
-    @IBAction private func toggleShowEffects(_ sender: UIButton) {
-        Settings.instance.showEffects = !Settings.instance.showEffects
-    }
 }
 
 extension InfoBarController: ControllerConfiguration {
@@ -112,7 +109,6 @@ extension InfoBarController: ControllerConfiguration {
         isMainApp = router.isMainApp
         router.favorites.subscribe(self, notifier: favoritesChange)
         useActivePatchKind(activePatchManager.active)
-
         showEffects.isEnabled = router.isMainApp
         showEffects.isHidden = !router.isMainApp
     }
@@ -147,7 +143,23 @@ extension InfoBarController: InfoBar {
         case .showSettings: showSettings.addClosure(closure)
         case .editVisibility: editVisibility.addClosure(closure)
         case .showEffects: showEffects.addClosure(closure)
+        case .showTags: showTags.addClosure(closure)
         }
+    }
+
+    public func resetButtonState(_ event: InfoBarEvent) {
+        let button: UIButton? = {
+            switch event {
+            case .addSoundFont: return addSoundFont
+            case .showGuide: return showGuide
+            case .showSettings: return showSettings
+            case .editVisibility: return editVisibility
+            case .showEffects: return showEffects
+            case .showTags: return showTags
+            default: return nil
+            }
+        }()
+        button?.tintColor = .systemTeal
     }
 
     /**
@@ -196,18 +208,18 @@ extension InfoBarController: SegueHandler {
     }
 
     private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
-        guard let nc = segue.destination as? UINavigationController,
-              let vc = nc.topViewController as? SettingsViewController else { return }
+        guard let navController = segue.destination as? UINavigationController,
+              let viewController = navController.topViewController as? SettingsViewController else { return }
 
-        vc.soundFonts = soundFonts
-        vc.isMainApp = isMainApp
+        viewController.soundFonts = soundFonts
+        viewController.isMainApp = isMainApp
 
         if !isMainApp {
-            vc.modalPresentationStyle = .fullScreen
-            nc.modalPresentationStyle = .fullScreen
+            viewController.modalPresentationStyle = .fullScreen
+            navController.modalPresentationStyle = .fullScreen
         }
 
-        if let ppc = nc.popoverPresentationController {
+        if let ppc = navController.popoverPresentationController {
             ppc.sourceView = showSettings
             ppc.sourceRect = showSettings.bounds
             ppc.permittedArrowDirections = .any

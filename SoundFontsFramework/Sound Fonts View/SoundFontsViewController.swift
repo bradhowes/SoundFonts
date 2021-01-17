@@ -13,13 +13,20 @@ public final class SoundFontsViewController: UIViewController {
     private lazy var log = Logging.logger("SFVC")
 
     @IBOutlet private weak var soundFontsView: UITableView!
+    @IBOutlet private weak var tagsView: UITableView!
     @IBOutlet private weak var patchesView: UITableView!
     @IBOutlet private weak var searchBar: UISearchBar!
+    @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
 
+    private var maxTagsViewHeightConstraint: CGFloat = 0.0
     private var soundFonts: SoundFonts!
+    private var favorites: Favorites!
+    private var infoBar: InfoBar!
+
     private var fontsTableViewManager: FontsTableViewManager!
     private var patchesTableViewManager: PatchesTableViewManager!
-    private var favorites: Favorites!
+    private var tagsTableViewManager: TagsTableViewManager!
     private var selectedSoundFontManager: SelectedSoundFontManager!
     private var keyboard: Keyboard?
 
@@ -36,10 +43,15 @@ public final class SoundFontsViewController: UIViewController {
         swipeRight.direction = .right
         swipeRight.numberOfTouchesRequired = 2
         view.addGestureRecognizer(swipeRight)
+
+        maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
     }
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if Settings.shared.showTags {
+            showTags()
+        }
     }
 
     public override func viewDidAppear(_ animated: Bool) {
@@ -50,6 +62,10 @@ public final class SoundFontsViewController: UIViewController {
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        if showingTags {
+            hideTags()
+        }
+
         coordinator.animate(alongsideTransition: { _ in
         }, completion: { _ in
             self.fontsTableViewManager.selectActive()
@@ -59,7 +75,8 @@ public final class SoundFontsViewController: UIViewController {
 
     private func addSoundFont(_ button: AnyObject) {
         let documentPicker = UIDocumentPickerViewController(
-            documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"], in: Settings.shared.copyFilesWhenAdding ? .import : .open)
+            documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"],
+            in: Settings.shared.copyFilesWhenAdding ? .import : .open)
         documentPicker.delegate = self
         if #available(iOS 13, *) {
             documentPicker.modalPresentationStyle = .automatic
@@ -130,6 +147,7 @@ extension SoundFontsViewController: ControllerConfiguration {
         favorites = router.favorites
         keyboard = router.keyboard
         selectedSoundFontManager = router.selectedSoundFontManager
+        infoBar = router.infoBar
 
         fontsTableViewManager = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
@@ -137,18 +155,16 @@ extension SoundFontsViewController: ControllerConfiguration {
             soundFonts: router.soundFonts)
 
         patchesTableViewManager = PatchesTableViewManager(
-            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager, selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
-            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay, reverb: router.reverb)
+            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
+            selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
+            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay,
+            reverb: router.reverb)
+
+        tagsTableViewManager = TagsTableViewManager(view: tagsView)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
+        router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
     }
-}
-
-extension SoundFontsViewController: SelectSoundFontControl {
-    public func previousFont() { DispatchQueue.main.async { self.fontsTableViewManager.selectPrevious() } }
-    public func nextFont() { DispatchQueue.main.async { self.fontsTableViewManager.selectNext() } }
-    public func previousPreset() { DispatchQueue.main.async { self.patchesTableViewManager.selectPrevious() } }
-    public func nextPreset() { DispatchQueue.main.async { self.patchesTableViewManager.selectNext() } }
 }
 
 // MARK: - PatchesViewManager Protocol
@@ -198,9 +214,11 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter with: the SoundFont that will be edited by the swipe action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
+    public func createEditSwipeAction(at: IndexPath, cell: TableCell,
+                                      soundFont: LegacySoundFont) -> UIContextualAction {
         let action = UIContextualAction(tag: "Edit", color: .orange) { _, view, completionHandler in
-            let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts, soundFontKey: soundFont.key,
+            let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
+                                           soundFontKey: soundFont.key,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
                                            completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)
@@ -222,7 +240,8 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns: new UIContextualAction that will perform the edit
      */
-    public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: LegacySoundFont) -> UIContextualAction {
+    public func createDeleteSwipeAction(at: IndexPath, cell: TableCell,
+                                        soundFont: LegacySoundFont) -> UIContextualAction {
         let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
@@ -259,26 +278,27 @@ extension SoundFontsViewController: SegueHandler {
     }
 
     private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
-        guard let nc = segue.destination as? UINavigationController, let vc = nc.topViewController as? FontEditor else {
+        guard let navController = segue.destination as? UINavigationController,
+              let viewController = navController.topViewController as? FontEditor else {
             return
         }
 
-        vc.delegate = self
-        vc.configure(config)
+        viewController.delegate = self
+        viewController.configure(config)
 
         if keyboard == nil {
-            vc.modalPresentationStyle = .fullScreen
-            nc.modalPresentationStyle = .fullScreen
+            viewController.modalPresentationStyle = .fullScreen
+            navController.modalPresentationStyle = .fullScreen
         }
 
-        if let ppc = nc.popoverPresentationController {
+        if let ppc = navController.popoverPresentationController {
             ppc.sourceView = config.view
             ppc.sourceRect = config.rect
             ppc.permittedArrowDirections = [.up, .down]
-            ppc.delegate = vc
+            ppc.delegate = viewController
         }
 
-        nc.presentationController?.delegate = vc
+        navController.presentationController?.delegate = viewController
     }
 }
 
@@ -290,5 +310,38 @@ extension SoundFontsViewController: FontEditorDelegate {
             soundFonts.rename(index: index, name: soundFont.displayName)
         }
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension SoundFontsViewController {
+
+    private var showingTags: Bool { tagsBottomConstraint.constant == 0.0 }
+
+    private func toggleShowTags(_ sender: AnyObject) {
+        let button = sender as? UIButton
+        if tagsBottomConstraint.constant == 0.0 {
+            hideTags()
+        }
+        else {
+            button?.tintColor = .systemOrange
+            showTags()
+        }
+    }
+
+    private func showTags() {
+        self.tagsViewHeightConstraint.constant = min(maxTagsViewHeightConstraint, soundFontsView.frame.height - 8)
+        self.tagsBottomConstraint.constant = 0.0
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                       options: [.allowUserInteraction, .curveEaseIn],
+                                                       animations: self.view.layoutIfNeeded)
+    }
+
+    private func hideTags() {
+        infoBar.resetButtonState(.showTags)
+        self.tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
+        self.tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                       options: [.allowUserInteraction, .curveEaseOut],
+                                                       animations: self.view.layoutIfNeeded)
     }
 }

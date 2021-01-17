@@ -242,7 +242,7 @@ extension PatchesTableViewManager {
     private func toggleVisibilityEditing(_ sender: AnyObject) {
         guard let soundFont = selectedSoundFontManager.selected else { return }
         let button = sender as? UIButton
-        button?.tintColor = view.isEditing ? .systemTeal : .systemYellow
+        button?.tintColor = view.isEditing ? .systemTeal : .systemOrange
         if view.isEditing == false {
             beginVisibilityEditing(for: soundFont)
         }

@@ -18,7 +18,9 @@ public extension UserDefaults {
      - parameter key: the SettingKey to look for
      - returns: true if found
      */
-    func hasKey<T>(_ key: SettingKey<T>) -> Bool where T: SettingSerializable { object(forKey: key.userDefaultsKey) != nil }
+    func hasKey<T>(_ key: SettingKey<T>) -> Bool where T: SettingSerializable {
+        object(forKey: key.userDefaultsKey) != nil
+    }
 
     /**
      Remove the setting from UserDefaults
@@ -31,7 +33,7 @@ public extension UserDefaults {
      Enable subscripting by SettingKey instances.
 
      - parameter key: SettingKey instance to use as a key into UserDefaults
-     - returns: instance of the tempalte type from UserDefaults or the configured default value if it did not exist.
+     - returns: instance of the template type from UserDefaults or the configured default value if it did not exist.
      */
     subscript<T>(key: SettingKey<T>) -> T where T: SettingSerializable {
         get { T.get(key: key.userDefaultsKey, userDefaults: self) ?? key.defaultValue }
