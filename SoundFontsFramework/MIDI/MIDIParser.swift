@@ -17,7 +17,8 @@ public enum MIDIMsg {
 }
 
 /**
- MIDIPacketList parser that generates MIDIMsg entities for the bytes in the packets and forwards them to a MIDIController
+ MIDIPacketList parser that generates MIDIMsg entities for the bytes in the packets and forwards them to a
+ MIDIController
  */
 public struct MIDIParser {
     static private let log = Logging.logger("MIDIParser")
@@ -29,6 +30,7 @@ public struct MIDIParser {
      - parameter controller: the recipient of the MIDI messages
      */
     public static func parse(packetList: MIDIPacketList, for controller: MIDIReceiver) {
+        os_signpost(.begin, log: log, name: "parse")
         let numPackets = packetList.numPackets
         os_log(.debug, log: log, "processPackets - %d", numPackets)
         var packet: MIDIPacket = packetList.packet
@@ -37,7 +39,8 @@ public struct MIDIParser {
             let length = Int(packet.length)
             os_log(.debug, log: log, "packet %d - %ld %d bytes", index, when, length)
 
-            // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big sizes of 26624 (0x6800!)
+            // Uff. In testing with Arturia Minilab mk II, I can sometimes generate packets with zero or really big
+            // sizes of 26624 (0x6800!)
             if length == 0 || length > 64 {
                 os_log(.error, log: log, "suspect packet size %d", length)
                 break
@@ -47,11 +50,14 @@ public struct MIDIParser {
             withUnsafeBytes(of: packet.data) { ptr in
                 let msgs = Generator(ptr: ptr, count: length, channel: controller.channel).messages
                 if !msgs.isEmpty {
+                    os_signpost(.begin, log: log, name: "sendToController")
                     controller.process(msgs, when: when)
+                    os_signpost(.end, log: log, name: "sendToController")
                 }
             }
             packet = MIDIPacketNext(&packet).pointee
         }
+        os_signpost(.end, log: log, name: "parse")
     }
 
     private enum MsgKind: UInt8 {
@@ -95,7 +101,6 @@ public struct MIDIParser {
     ]
 
     private struct Generator: Sequence, IteratorProtocol {
-        private let log = Logging.logger("MIDIParser.Pos")
         private var ptr: UnsafeRawBufferPointer
         private let count: Int
         private var index: Int = 0

@@ -5,8 +5,7 @@ import CoreMIDI
 import os
 
 /**
- Functionality we expect for entities that can receive MIDI messages
- - SeeAlso: `class`
+ Functionality we expect for entities that can receive MIDI messages.
  */
 public protocol MIDIReceiver: class {
 
@@ -64,9 +63,9 @@ public protocol MIDIReceiver: class {
     func channelPressure(pressure: UInt8)
 
     /**
-     Update the pitchbend controller to a new value
+     Update the pitch-bend controller to a new value
 
-     - parameter value: the new pitchbend value to use
+     - parameter value: the new pitch-bend value to use
      */
     func pitchBendChange(value: UInt16)
 }
@@ -79,11 +78,7 @@ extension MIDIReceiver {
      - parameter msgs: the MIDIMsg collection
      */
     public func process(_ msgs: [MIDIMsg], when: MIDITimeStamp ) {
-        #if DEBUG
-        var elapsed = [ElapsedTimer]()
-        #endif
         for msg in msgs {
-            var elapsedTimer = ElapsedTimer(when: when)
             switch msg {
             case let .noteOff(note, _): self.noteOff(note: note)
             case let .noteOn(note, velocity): self.noteOn(note: note, velocity: velocity)
@@ -93,18 +88,6 @@ extension MIDIReceiver {
             case let .channelPressure(pressure): self.channelPressure(pressure: pressure)
             case let .pitchBendChange(value): self.pitchBendChange(value: value)
             }
-            #if DEBUG
-            elapsedTimer.stop()
-            elapsed.append(elapsedTimer)
-            #endif
         }
-
-        #if DEBUG
-        DispatchQueue.global(qos: .background).async {
-            for each in elapsed.enumerated() {
-                os_log("%d MIDIMsg elapsed: %f", each.0, each.1.seconds)
-            }
-        }
-        #endif
     }
 }

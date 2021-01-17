@@ -57,7 +57,8 @@ extension SoundFont {
         self.name = config.embeddedName
         self.embeddedName = config.embeddedName
         self.path = config.url
-        self.bookmark = try? config.url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: [], relativeTo: nil)
+        self.bookmark = try? config.url.bookmarkData(options: .minimalBookmark, includingResourceValuesForKeys: [],
+                                                     relativeTo: nil)
         self.resource = isResource
         self.visible = true
         config.presets.forEach { self.addToChildren(Preset(in: context, config: $0)) }

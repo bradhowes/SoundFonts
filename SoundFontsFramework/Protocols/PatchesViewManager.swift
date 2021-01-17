@@ -3,7 +3,7 @@
 import Foundation
 
 /**
- Defines the available actions that can be asked of a PatchesViewManager.
+ Defines the available actions of a PatchesViewManager.
  */
 public protocol PatchesViewManager: UpperViewSwipingActivity {
 

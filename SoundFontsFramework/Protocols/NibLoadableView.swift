@@ -15,15 +15,6 @@ public protocol NibLoadableView: class {
 }
 
 public extension NibLoadableView where Self: UIView {
-
-    /// Default implementation of the nibName that uses the name of the class as the name
-    /// of the NIB file.
-    static var nibName: String { return NSStringFromClass(self).components(separatedBy: ".").last! }
-
-    /// Default implementation that obtains a UINib that holds the definition of the class
-    /// that implements the protocol.
-    static var nib: UINib {
-        let bundle = Bundle(for: self) // Safer than Bundle.main
-        return UINib(nibName: nibName, bundle: bundle)
-    }
+    static var nibName: String { NSStringFromClass(self).components(separatedBy: ".").last! }
+    static var nib: UINib { UINib(nibName: nibName, bundle: Bundle(for: self)) }
 }

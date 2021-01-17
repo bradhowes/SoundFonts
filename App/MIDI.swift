@@ -5,8 +5,8 @@ import CoreMIDI
 import os
 
 /**
- Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create an instance and
- set the controller (aka delegate) to receive the incoming MIDI traffic.
+ Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create
+ an instance and set the controller (aka delegate) to receive the incoming MIDI traffic.
  */
 final class MIDI {
     private let log = Logging.logger("MIDI")
@@ -61,34 +61,44 @@ final class MIDI {
     private func initialize() {
         enableNetwork()
 
-        var err = MIDIClientCreateWithBlock(clientName as CFString, &client) { notification in self.processNotification(notification: notification.pointee) }
+        var err = MIDIClientCreateWithBlock(clientName as CFString, &client) { notification in
+            self.processNotification(notification: notification.pointee)
+        }
         os_log(.info, log: log, "MIDIClientCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
-        err = MIDIInputPortCreateWithBlock(client, portName as CFString, &inputPort) { packetList, _ in self.processPackets(packetList: packetList.pointee) }
+        err = MIDIInputPortCreateWithBlock(client, portName as CFString, &inputPort) { packetList, _ in
+            self.processPackets(packetList: packetList.pointee)
+        }
         os_log(.info, log: log, "MIDIInputPortCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
-        err = MIDIDestinationCreateWithBlock(client, portName as CFString, &virtualEndpoint) { packetList, _ in self.processPackets(packetList: packetList.pointee) }
+        err = MIDIDestinationCreateWithBlock(client, portName as CFString, &virtualEndpoint) { packetList, _ in
+            self.processPackets(packetList: packetList.pointee)
+        }
         os_log(.info, log: log, "MIDIDestinationCreateWithBlock: %d - %{public}s", err, name(for: err))
         guard err == noErr else { return }
 
         var uniqueId = Settings.shared.midiVirtualDestinationId
         err = MIDIObjectSetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, uniqueId)
-        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err,
+               name(for: err))
         if err == kMIDIIDNotUnique {
             err = MIDIObjectGetIntegerProperty(virtualEndpoint, kMIDIPropertyUniqueID, &uniqueId)
-            os_log(.info, log: log, "MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err, name(for: err))
+            os_log(.info, log: log, "MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID): %d - %{public}s", err,
+                   name(for: err))
             if err == noErr {
                 Settings.shared.midiVirtualDestinationId = uniqueId
             }
         }
 
         err = MIDIObjectSetIntegerProperty(virtualEndpoint, kMIDIPropertyAdvanceScheduleTimeMuSec, 1)
-        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s", err, name(for: err))
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s",
+               err, name(for: err))
 
         err = MIDIObjectSetIntegerProperty(inputPort, kMIDIPropertyAdvanceScheduleTimeMuSec, 1)
-        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s", err, name(for: err))
+        os_log(.info, log: log, "MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec): %d - %{public}s",
+               err, name(for: err))
 
         connectSourcesToInputPort()
     }
@@ -108,7 +118,8 @@ extension MIDI {
             let midiEndPoint = MIDIGetSource(srcIndex)
             if midiEndPoint != 0 {
                 let err = MIDIPortConnectSource(inputPort, midiEndPoint, nil)
-                os_log(.debug, log: log, "MIDIPortConnectSource %d %{public}s: %d - %{public}s", srcIndex, getDisplayName(midiEndPoint), err, errorTag[err] ?? "?")
+                os_log(.debug, log: log, "MIDIPortConnectSource %d %{public}s: %d - %{public}s", srcIndex,
+                       getDisplayName(midiEndPoint), err, errorTag[err] ?? "?")
             }
         }
     }
