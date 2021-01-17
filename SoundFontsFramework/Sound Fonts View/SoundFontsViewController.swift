@@ -49,9 +49,6 @@ public final class SoundFontsViewController: UIViewController {
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if Settings.shared.showTags {
-            showTags()
-        }
     }
 
     public override func viewDidAppear(_ animated: Bool) {
