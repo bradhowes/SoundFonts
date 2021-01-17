@@ -19,7 +19,7 @@
             <objects>
                 <viewController storyboardIdentifier="InfoBarController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" interfaceStyle="dark" id="YeB-KN-4f1" userLabel="Info Bar" customClass="InfoBarController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utY-mU-BUQ" userLabel="InfoBar">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                        <rect key="frame" x="0.0" y="0.0" width="464" height="40"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ub1-7q-fxl" userLabel="Add">
                                 <rect key="frame" x="12" y="7.5" width="25" height="25"/>
@@ -30,22 +30,27 @@
                                 <color key="tintColor" systemColor="systemTealColor"/>
                                 <state key="normal" image="Add"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyJ-h2-UbA" userLabel="Effects">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyJ-h2-UbA" userLabel="Tags">
                                 <rect key="frame" x="53" y="7.5" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="cEn-qn-c7F"/>
                                 </constraints>
                                 <color key="tintColor" systemColor="systemTealColor"/>
+                                <state key="normal" image="Tags"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vUY-Ob-d91" userLabel="Effects">
+                                <rect key="frame" x="94" y="7.5" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="25" id="wgP-F6-E0L"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="systemTealColor"/>
                                 <state key="normal" image="Effects"/>
-                                <connections>
-                                    <action selector="toggleShowEffects:" destination="YeB-KN-4f1" eventType="touchUpInside" id="dBb-Sq-cB5"/>
-                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-VG-nmd" userLabel="TouchView">
-                                <rect key="frame" x="94" y="0.0" width="104" height="40"/>
+                                <rect key="frame" x="135" y="0.0" width="113" height="40"/>
                                 <subviews>
                                     <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-eK-8gI">
-                                        <rect key="frame" x="0.0" y="0.0" width="96" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
@@ -53,7 +58,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" contentMode="left" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwl-He-nQi" userLabel="Status">
-                                        <rect key="frame" x="0.0" y="0.0" width="96" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
@@ -76,7 +81,7 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
-                                <rect key="frame" x="190" y="0.0" width="225" height="40"/>
+                                <rect key="frame" x="240" y="0.0" width="225" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnb-O4-iay" userLabel="Help">
                                         <rect key="frame" x="190" y="7.5" width="25" height="25"/>
@@ -170,12 +175,12 @@
                                 <variation key="widthClass=regular" hidden="NO"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xhd-zn-gSn" userLabel="Background">
-                                <rect key="frame" x="377" y="0.0" width="37" height="40"/>
+                                <rect key="frame" x="427" y="0.0" width="37" height="40"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <variation key="widthClass=regular" hidden="YES"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D81-HT-18k" userLabel="More">
-                                <rect key="frame" x="377" y="7.5" width="25" height="25"/>
+                                <rect key="frame" x="427" y="7.5" width="25" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="Fhy-lJ-vxH"/>
                                 </constraints>
@@ -192,13 +197,14 @@
                         <accessibility key="accessibilityConfiguration" identifier="InfoBar" label="InfoBar"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="JeZ-VG-nmd" secondAttribute="bottom" id="2vZ-IT-Nhh"/>
+                            <constraint firstItem="vUY-Ob-d91" firstAttribute="leading" secondItem="nyJ-h2-UbA" secondAttribute="trailing" constant="16" id="32p-z1-5iV"/>
                             <constraint firstItem="nyJ-h2-UbA" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="6pb-aL-YUW"/>
                             <constraint firstAttribute="trailing" secondItem="Xhd-zn-gSn" secondAttribute="trailing" id="GCn-V3-JGU"/>
-                            <constraint firstItem="JeZ-VG-nmd" firstAttribute="leading" secondItem="nyJ-h2-UbA" secondAttribute="trailing" constant="16" id="Jhu-K5-a84"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="Xhd-zn-gSn" secondAttribute="leading" id="OQw-zK-V5H"/>
                             <constraint firstItem="So5-iS-wEF" firstAttribute="centerY" secondItem="JeZ-VG-nmd" secondAttribute="centerY" id="QMf-YS-nic"/>
                             <constraint firstItem="ub1-7q-fxl" firstAttribute="leading" secondItem="utY-mU-BUQ" secondAttribute="leading" constant="12" id="UAX-fd-5OC"/>
                             <constraint firstAttribute="trailing" secondItem="D81-HT-18k" secondAttribute="trailing" constant="12" id="YcV-bw-55y"/>
+                            <constraint firstItem="JeZ-VG-nmd" firstAttribute="leading" secondItem="vUY-Ob-d91" secondAttribute="trailing" constant="16" id="aeU-Be-I8t"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="leading" secondItem="So5-iS-wEF" secondAttribute="trailing" id="bxu-Ks-Ick">
                                 <variation key="widthClass=regular" constant="-38"/>
                             </constraint>
@@ -210,6 +216,7 @@
                             <constraint firstItem="ub1-7q-fxl" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="nrG-5w-Kpr"/>
                             <constraint firstItem="D81-HT-18k" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="vIe-T5-VU5"/>
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="top" secondItem="utY-mU-BUQ" secondAttribute="top" id="vaW-k2-pzz"/>
+                            <constraint firstItem="vUY-Ob-d91" firstAttribute="centerY" secondItem="utY-mU-BUQ" secondAttribute="centerY" id="vck-RT-OpH"/>
                             <constraint firstItem="JeZ-VG-nmd" firstAttribute="trailing" secondItem="So5-iS-wEF" secondAttribute="leading" constant="8" id="wNH-dR-Cea"/>
                         </constraints>
                         <variation key="default">
@@ -228,7 +235,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="414" height="40"/>
+                    <size key="freeformSize" width="464" height="40"/>
                     <connections>
                         <outlet property="addSoundFont" destination="ub1-7q-fxl" id="jRn-FL-bhT"/>
                         <outlet property="editVisibility" destination="oWy-3z-Rka" id="aYs-eJ-ELf"/>
@@ -237,10 +244,11 @@
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
                         <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
                         <outlet property="patchInfo" destination="L4b-eK-8gI" id="U3A-VC-iWO"/>
-                        <outlet property="showEffects" destination="nyJ-h2-UbA" id="d4q-Bs-2oZ"/>
+                        <outlet property="showEffects" destination="vUY-Ob-d91" id="moH-Ry-KEb"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
                         <outlet property="showMoreButtonsButton" destination="D81-HT-18k" id="ArG-gf-vjZ"/>
                         <outlet property="showSettings" destination="7YL-wn-sth" id="aT3-P4-LH3"/>
+                        <outlet property="showTags" destination="nyJ-h2-UbA" id="Xcq-R2-c4f"/>
                         <outlet property="slidingKeyboard" destination="BW4-Wd-vsq" id="qMR-q7-x8c"/>
                         <outlet property="status" destination="bwl-He-nQi" id="BUJ-LW-oBD"/>
                         <outlet property="touchView" destination="JeZ-VG-nmd" id="u9O-3R-VIL"/>
@@ -256,7 +264,7 @@
                 <viewControllerPlaceholder storyboardName="SettingsView" id="N9t-kE-VI5" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aq8-v9-PnZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-543" y="-1152"/>
+            <point key="canvasLocation" x="-544" y="-920"/>
         </scene>
     </scenes>
     <resources>
@@ -266,6 +274,7 @@
         <image name="Help" width="25" height="25"/>
         <image name="More Right" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>
+        <image name="Tags" width="25" height="25"/>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

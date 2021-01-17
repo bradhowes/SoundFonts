@@ -15,6 +15,7 @@ public enum InfoBarEvent {
     case showSettings
     case editVisibility
     case showEffects
+    case showTags
 }
 
 /**
@@ -50,4 +51,6 @@ public protocol InfoBar: class {
     func showMoreButtons()
 
     func hideMoreButtons()
+
+    func resetButtonState(_ event: InfoBarEvent)
 }

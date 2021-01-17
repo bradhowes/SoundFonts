@@ -46,6 +46,7 @@ public extension SettingKeys {
     static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
     static let delayWetDryMixController = SettingKey("delayWetDryMixController", defaultValue: -1)
     static let showEffects = SettingKey("showEffects", defaultValue: false)
+    static let showTags = SettingKey("showTags", defaultValue: false)
 
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
@@ -63,7 +64,10 @@ public struct Settings {
     private let _instance: UserDefaults
 
     init() {
-        guard let shared = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") else { fatalError("unable to access SoundFontsShare") }
+        guard let shared = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") else {
+            fatalError("unable to access SoundFontsShare")
+        }
+
         let instance = UserDefaults.standard
         if let sharedInit = shared.persistentDomain(forName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare") {
             instance.register(defaults: sharedInit)
@@ -135,6 +139,11 @@ public extension UserDefaults {
     @objc dynamic var showEffects: Bool {
         get { self[.showEffects] }
         set { self[.showEffects] = newValue }
+    }
+
+    @objc dynamic var showTags: Bool {
+        get { self[.showTags] }
+        set { self[.showTags] = newValue }
     }
 
     // These are all per-instance settings

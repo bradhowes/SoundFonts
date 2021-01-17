@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hF8-Yx-irV">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,18 +41,29 @@
                                             </attributedString>
                                         </searchBar>
                                     </tableView>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-uD-xKG" userLabel="Tags">
+                                        <rect key="frame" x="0.0" y="904" width="156" height="200"/>
+                                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="3lx-F9-yk6"/>
+                                        </constraints>
+                                        <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="Sounds" label="Sounds"/>
                                 <constraints>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
+                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="208" id="1To-12-Edz"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="Aqb-hq-MeU"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="Mvo-0D-YFt"/>
                                     <constraint firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="Pw5-9k-6te"/>
-                                    <constraint firstAttribute="bottom" secondItem="fmV-bj-iZB" secondAttribute="bottom" id="XKh-jf-Wun"/>
+                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="top" secondItem="fmV-bj-iZB" secondAttribute="bottom" constant="8" id="Zet-Sn-wdW"/>
                                     <constraint firstAttribute="trailing" secondItem="il0-aC-ept" secondAttribute="trailing" id="d3t-rg-LLR"/>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.6" id="j1h-Lp-Qhe"/>
+                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="khq-jh-OFk"/>
+                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" id="wPI-ss-8PY"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -70,6 +81,9 @@
                         <outlet property="patchesView" destination="il0-aC-ept" id="1ff-gv-FFp"/>
                         <outlet property="searchBar" destination="Fl2-Sg-7ea" id="LaW-BL-rxP"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
+                        <outlet property="tagsBottomConstraint" destination="1To-12-Edz" id="hIi-Cp-XkC"/>
+                        <outlet property="tagsView" destination="Sk2-uD-xKG" id="od0-Vb-z6v"/>
+                        <outlet property="tagsViewHeightConstraint" destination="3lx-F9-yk6" id="GaN-wc-F9L"/>
                         <segue destination="Fc4-Sm-RhE" kind="popoverPresentation" identifier="fontEditor" popoverAnchorView="fmV-bj-iZB" id="Oj6-XR-yF0">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                         </segue>

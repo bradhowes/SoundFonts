@@ -51,6 +51,10 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
                isFavorite: isFavorite, isEditing: isEditing)
     }
 
+    public func updateForTag(name: String, isActive: Bool) {
+        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false, isEditing: false)
+    }
+
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)

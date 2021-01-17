@@ -123,7 +123,9 @@ extension EffectsController: ControllerConfiguration {
 
 extension EffectsController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { Reverb.roomNames.count }
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        Reverb.roomNames.count
+    }
 }
 
 extension EffectsController: UIPickerViewDelegate {
@@ -134,7 +136,8 @@ extension EffectsController: UIPickerViewDelegate {
         updatePreset()
     }
 
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+                           reusing view: UIView?) -> UIView {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
@@ -142,7 +145,9 @@ extension EffectsController: UIPickerViewDelegate {
             pickerLabel?.textAlignment = .center
         }
 
-        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
+        pickerLabel?.attributedText =
+            NSAttributedString(string: Reverb.roomNames[row],
+                               attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
 
         return pickerLabel!
     }
@@ -153,9 +158,12 @@ extension EffectsController {
     private func updatePreset() {
         guard let soundFont = activePatchManager.soundFont else { return }
         guard let preset = activePatchManager.patch else { return }
-        let delayConfig = Settings.instance.delayGlobal ? preset.delayConfig : (delay.active.enabled ? delay.active : nil)
-        let reverbConfig = Settings.instance.delayGlobal ? preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
-        soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig, reverb: reverbConfig)
+        let delayConfig = Settings.instance.delayGlobal ?
+            preset.delayConfig : (delay.active.enabled ? delay.active : nil)
+        let reverbConfig = Settings.instance.delayGlobal ?
+            preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
+        soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig,
+                              reverb: reverbConfig)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
@@ -237,9 +245,18 @@ extension EffectsController {
         animator.startAnimation()
     }
 
-    private func showReverbMixValue() { reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%") }
-    private func showDelayTime() { delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s") }
-    private func showDelayFeedback() { delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%") }
+    private func showReverbMixValue() {
+        reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%")
+    }
+
+    private func showDelayTime() {
+        delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s")
+    }
+
+    private func showDelayFeedback() {
+        delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%")
+    }
+
     private func showDelayCutoff() {
         let value = pow(10.0, delayCutoff.value)
         if value < 1000.0 {
@@ -249,5 +266,8 @@ extension EffectsController {
             delayCutoffLabel.showStatus(String(format: "%.2f", value / 1000.0) + " kHz")
         }
     }
-    private func showDelayMixValue() { delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%") }
+
+    private func showDelayMixValue() {
+        delayWetDryMixLabel.showStatus(String(format: "%.0f", delayWetDryMix.value) + "%")
+    }
 }
