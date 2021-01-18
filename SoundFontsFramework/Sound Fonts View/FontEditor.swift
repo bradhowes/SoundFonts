@@ -29,6 +29,8 @@ final class FontEditor: UIViewController {
 
     @IBOutlet private weak var doneButton: UIBarButtonItem!
     @IBOutlet private weak var name: UITextField!
+    @IBOutlet private weak var tags: UILabel!
+    @IBOutlet private weak var tagsEdit: UIButton!
     @IBOutlet private weak var originalNameLabel: UILabel!
     @IBOutlet private weak var embeddedNameLabel: UILabel!
     @IBOutlet private weak var kindLabel: UILabel!
