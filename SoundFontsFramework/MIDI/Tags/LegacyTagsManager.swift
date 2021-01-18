@@ -5,10 +5,10 @@ import os
 import SoundFontInfoLib
 
 public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
-    private static let log = Logging.logger("TagsMgr")
-    private var log: OSLog { Self.log }
+    private let log = Logging.logger("TagsMgr")
+
     private var configFile: TagsConfigFile?
-    private lazy var collection = LegacyTagCollection(tags: [], markDirty: self.markDirty) {
+    private var collection: LegacyTagCollection! {
         didSet { os_log(.debug, log: log, "collection changed: %{public}s", collection.description) }
     }
 
@@ -16,18 +16,47 @@ public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
 
     public init() {
         super.init()
-        DispatchQueue.global(qos: .background).async { self.configFile = TagsConfigFile(tagsManager: self) }
+        DispatchQueue.global(qos: .userInitiated).async { self.configFile = TagsConfigFile(tagsManager: self) }
+    }
+}
+
+extension LegacyTagsManager: Tags {
+
+    public var isEmpty: Bool { collection.isEmpty }
+
+    public var count: Int { collection.count }
+
+    public func names(of keys: [LegacyTag.Key]) -> [String] { collection.names(of: keys) }
+
+    public func index(of key: LegacyTag.Key) -> Int? { collection.index(of: key) }
+
+    public func getBy(index: Int) -> LegacyTag { collection.getBy(index: index) }
+
+    public func getBy(key: LegacyTag.Key) -> LegacyTag? { collection.getBy(key: key) }
+
+    public func add(tag: LegacyTag) -> Int {
+        defer { collectionChanged() }
+        return collection.add(tag)
+    }
+
+    public func remove(index: Int) -> LegacyTag {
+        defer { collectionChanged() }
+        return collection.remove(index)
+    }
+
+    public func rename(index: Int, name: String) {
+        defer { collectionChanged() }
+        collection.rename(index, name: name)
     }
 }
 
 extension LegacyTagsManager {
 
-    private func markDirty() {
+    private func collectionChanged() {
+        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+        AskForReview.maybe()
         configFile?.updateChangeCount(.done)
     }
-}
-
-extension LegacyTagsManager {
 
     internal func configurationData() throws -> Data {
         os_log(.info, log: log, "configurationData")
@@ -39,27 +68,27 @@ extension LegacyTagsManager {
     internal func loadConfigurationData(contents: Any) throws {
         os_log(.info, log: log, "loadConfigurationData")
         guard let data = contents as? Data else {
-            restoreCollection(self.collection)
+            restoreCollection(defaultCollection)
             NotificationCenter.default.post(Notification(name: .tagsCollectionLoadFailure, object: nil))
             return
         }
 
         os_log(.info, log: log, "has Data")
-        guard let collection = try? PropertyListDecoder().decode(LegacyTagCollection.self, from: data) else {
+        guard let value = try? PropertyListDecoder().decode(LegacyTagCollection.self, from: data) else {
             NotificationCenter.default.post(Notification(name: .tagsCollectionLoadFailure, object: nil))
-            restoreCollection(self.collection)
+            restoreCollection(defaultCollection)
             return
         }
 
-        collection.markDirty = markDirty
-
         os_log(.info, log: log, "properly decoded")
-        restoreCollection(collection)
+        restoreCollection(value)
     }
 
-    private func restoreCollection(_ collection: LegacyTagCollection) {
-        self.collection = collection
+    private func restoreCollection(_ value: LegacyTagCollection) {
+        collection = value.isEmpty ? defaultCollection : value
         restored = true
         DispatchQueue.main.async { self.notify(.restored) }
     }
+
+    private var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.allTag]) }
 }

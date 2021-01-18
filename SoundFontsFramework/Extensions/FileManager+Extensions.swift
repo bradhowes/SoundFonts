@@ -48,8 +48,8 @@ extension FileManager {
         return url
     }
 
-    public func sharedPath(for: String) -> URL {
-        sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
+    public func sharedPath(for component: String) -> URL {
+        sharedDocumentsDirectory.appendingPathComponent(component)
     }
 
     /// True if the user has an iCloud container available to use

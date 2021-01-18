@@ -23,6 +23,7 @@ public final class SoundFontsViewController: UIViewController {
     private var soundFonts: SoundFonts!
     private var favorites: Favorites!
     private var infoBar: InfoBar!
+    private var tagsManager: LegacyTagsManager!
 
     private var fontsTableViewManager: FontsTableViewManager!
     private var patchesTableViewManager: PatchesTableViewManager!
@@ -145,6 +146,7 @@ extension SoundFontsViewController: ControllerConfiguration {
         keyboard = router.keyboard
         selectedSoundFontManager = router.selectedSoundFontManager
         infoBar = router.infoBar
+        tagsManager = router.tagsManager
 
         fontsTableViewManager = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
@@ -157,7 +159,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay,
             reverb: router.reverb)
 
-        tagsTableViewManager = TagsTableViewManager(view: tagsView)
+        tagsTableViewManager = TagsTableViewManager(view: tagsView, tagsManager: router.tagsManager)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
         router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
@@ -217,6 +219,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
                                            soundFontKey: soundFont.key,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
+                                           tagsManager: self.tagsManager,
                                            completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)
         }
@@ -321,6 +324,7 @@ extension SoundFontsViewController {
         }
         else {
             button?.tintColor = .systemOrange
+            tagsTableViewManager.refresh()
             showTags()
         }
     }

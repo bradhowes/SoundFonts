@@ -7,14 +7,28 @@ final class TagsTableViewManager: NSObject {
     private lazy var log = Logging.logger("TagsTVM")
 
     private let view: UITableView
-    private var tags = ["All", "Percussion", "Strings", "Keys", "Horns"]
+    private let tagsManager: LegacyTagsManager
+    private var token: SubscriberToken?
 
-    init(view: UITableView) {
+    init(view: UITableView, tagsManager: LegacyTagsManager) {
         self.view = view
+        self.tagsManager = tagsManager
         super.init()
+
+        token = tagsManager.subscribe(self) { event in
+            switch event {
+            case .restored: self.refresh()
+            default: break
+            }
+        }
+
         view.register(TableCell.self)
         view.dataSource = self
         view.delegate = self
+    }
+
+    public func refresh() {
+        view.reloadData()
     }
 }
 
@@ -30,7 +44,9 @@ extension TagsTableViewManager: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { tags.count }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tagsManager.restored ? tagsManager.count : 0
+    }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
@@ -72,7 +88,7 @@ extension TagsTableViewManager {
 
     @discardableResult
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-        cell.updateForTag(name: tags[indexPath.row], isActive: true)
+        cell.updateForTag(name: tagsManager.getBy(index: indexPath.row).name, isActive: false)
         return cell
     }
 }

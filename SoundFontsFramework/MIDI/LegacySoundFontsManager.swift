@@ -42,7 +42,9 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
      */
     public init() {
         super.init()
-        DispatchQueue.global(qos: .background).async { self.configFile = SoundFontsConfigFile(soundFontsManager: self) }
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.configFile = SoundFontsConfigFile(soundFontsManager: self)
+        }
     }
 
     public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool { collection.validate(soundFontAndPatch) }
