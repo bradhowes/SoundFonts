@@ -10,7 +10,7 @@ enum SoundFontsConfigFileError: Error {
 public final class SoundFontsConfigFile: UIDocument {
 
     private let log = Logging.logger("SFCfg")
-    private let sharedArchivePath = FileManager.default.sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
+    private let sharedArchivePath = FileManager.default.sharedPath(for: "SoundFontLibrary.plist")
     private weak var soundFontsManager: LegacySoundFontsManager?
 
     public init(soundFontsManager: LegacySoundFontsManager) {

@@ -2,12 +2,12 @@
 
 import os
 
-private class Tag {}
+private class BundleTag {}
 
 public struct Logging {
 
     /// The top-level identifier for this app
-    public static let subsystem = Bundle(for: Tag.self).bundleID
+    public static let subsystem = Bundle(for: BundleTag.self).bundleID
 
     /**
      Create a new logger for a subsystem

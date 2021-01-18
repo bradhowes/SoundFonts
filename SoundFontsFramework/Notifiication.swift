@@ -19,6 +19,9 @@ extension Notification.Name {
     /// Notification that we failed to load the SoundFontCollection.plist file
     public static let soundFontsCollectionLoadFailure = Notification.Name("soundFontsCollectionLoadFailure")
 
+    /// Notification that we failed to load the Tags.plist file
+    public static let tagsCollectionLoadFailure = Notification.Name("tagsCollectionLoadFailure")
+
     /// Notification that we found some orphan files
     public static let soundFontsCollectionOrphans = Notification.Name("soundFontsCollectionOrphans")
 

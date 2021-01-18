@@ -38,6 +38,7 @@ public final class SoundFont: NSManagedObject, Managed {
     @NSManaged public private(set) var resource: Bool
     @NSManaged public private(set) var visible: Bool
     @NSManaged private var children: NSOrderedSet
+    @NSManaged private var tags: NSOrderedSet
 }
 
 extension SoundFont {
@@ -89,4 +90,9 @@ extension SoundFont {
 extension SoundFont {
     @objc(addChildrenObject:)
     @NSManaged private func addToChildren(_ value: Preset)
+}
+
+extension SoundFont {
+    @objc(addTagsObject:)
+    @NSManaged private func addToTags(_ value: Tag)
 }

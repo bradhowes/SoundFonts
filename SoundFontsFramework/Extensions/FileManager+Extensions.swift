@@ -3,10 +3,10 @@
 import os
 import Foundation
 
-private let log = Logging.logger("filem")
+private let log = Logging.logger("FileMgr")
 
 extension FileManager {
-
+    public var groupIdentifier: String { "group.com.braysoftware.SoundFontsShare" }
     /**
      Obtain the URL for a new, temporary file. The file will exist on the system but will be empty.
 
@@ -35,16 +35,21 @@ extension FileManager {
 
     /// Location of shared documents between app and extension
     public var sharedDocumentsDirectory: URL {
-        guard let url = self.containerURL(forSecurityApplicationGroupIdentifier: "group.com.braysoftware.SoundFontsShare") else {
-            os_log(.error, log: log, "unable to obtain container URL for 'group.com.braysoftware.SoundFontsShare'")
+        guard let url = self.containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier) else {
+            os_log(.error, log: log, "unable to obtain container URL for '%{public}@'", groupIdentifier)
             return localDocumentsDirectory
         }
+
         if !self.fileExists(atPath: url.path) {
             DispatchQueue.global(qos: .userInitiated).async {
                 try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
             }
         }
         return url
+    }
+
+    public func sharedPath(for: String) -> URL {
+        sharedDocumentsDirectory.appendingPathComponent("SoundFontLibrary.plist")
     }
 
     /// True if the user has an iCloud container available to use

@@ -2,7 +2,7 @@
 
 import UIKit
 
-private class Tag {}
+private class BundleTag {}
 
 // Rework this
 public enum Formatters {
@@ -68,7 +68,7 @@ public enum Formatters {
 }
 
 private extension Formatters {
-    static let bundle = Bundle(identifier: "com.braysoftware.SoundFontsFramework")!
+    static let bundle = Bundle(for: BundleTag.self)
     static let presetsFormatString = "presets count".localized(comment: "presets count string format in Localized.stringsdict")
     static let favoritesFormatString = "favorites count".localized(comment: "favorites count string format in Localized.stringsdict")
     static let failedAddCountString = "failed add count".localized(comment: "failed add count string format in Localized.stringsdict")

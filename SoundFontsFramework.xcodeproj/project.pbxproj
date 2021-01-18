@@ -139,6 +139,13 @@
 		BD9AC9AE2567A50400B47F12 /* AudioUnitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */; };
 		BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */; };
 		BDBF893E25B4C7AC00B58E23 /* TagsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF893D25B4C7AC00B58E23 /* TagsTableViewManager.swift */; };
+		BDBF894D25B5784300B58E23 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */; };
+		BDBF895325B57A3A00B58E23 /* LegacyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF895225B57A3A00B58E23 /* LegacyTag.swift */; };
+		BDBF895725B57F1000B58E23 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF895625B57F1000B58E23 /* Tag.swift */; };
+		BDBF896625B58AEF00B58E23 /* LegacyTagCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF896525B58AEF00B58E23 /* LegacyTagCollection.swift */; };
+		BDBF897325B58FA100B58E23 /* TagsConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF897225B58FA100B58E23 /* TagsConfigFile.swift */; };
+		BDBF897725B5900900B58E23 /* LegacyTagsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF897625B5900900B58E23 /* LegacyTagsManager.swift */; };
+		BDBF897B25B5930100B58E23 /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF897A25B5930100B58E23 /* Tags.swift */; };
 		BDC347E82403B93F00A848BA /* FileMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC347E72403B93F00A848BA /* FileMonitorTests.swift */; };
 		BDC35B5725081B66009CEFAF /* SoundFontEntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5625081B66009CEFAF /* SoundFontEntityTests.swift */; };
 		BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */; };
@@ -332,6 +339,13 @@
 		BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitManagerDelegate.swift; sourceTree = "<group>"; };
 		BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		BDBF893D25B4C7AC00B58E23 /* TagsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewManager.swift; sourceTree = "<group>"; };
+		BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
+		BDBF895225B57A3A00B58E23 /* LegacyTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyTag.swift; sourceTree = "<group>"; };
+		BDBF895625B57F1000B58E23 /* Tag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		BDBF896525B58AEF00B58E23 /* LegacyTagCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyTagCollection.swift; sourceTree = "<group>"; };
+		BDBF897225B58FA100B58E23 /* TagsConfigFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsConfigFile.swift; sourceTree = "<group>"; };
+		BDBF897625B5900900B58E23 /* LegacyTagsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyTagsManager.swift; sourceTree = "<group>"; };
+		BDBF897A25B5930100B58E23 /* Tags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		BDC347E72403B93F00A848BA /* FileMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitorTests.swift; sourceTree = "<group>"; };
 		BDC35B5625081B66009CEFAF /* SoundFontEntityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontEntityTests.swift; sourceTree = "<group>"; };
 		BDC35B5825081B94009CEFAF /* CoreDataTestHarness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataTestHarness.swift; sourceTree = "<group>"; };
@@ -467,6 +481,7 @@
 		BD074BE823CDAF51001987E9 /* MIDI */ = {
 			isa = PBXGroup;
 			children = (
+				BDBF897E25B5939400B58E23 /* Tags */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
@@ -499,6 +514,7 @@
 				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BDBF893D25B4C7AC00B58E23 /* TagsTableViewManager.swift */,
+				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 			);
 			path = "Sound Fonts View";
@@ -598,6 +614,7 @@
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
 				BD074C3223CDAF51001987E9 /* SoundFontEditor.swift */,
 				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
+				BDBF897A25B5930100B58E23 /* Tags.swift */,
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
 				BD0F940E257294020065C147 /* SelectSoundFontControl.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
@@ -698,6 +715,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BDBF897E25B5939400B58E23 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				BDBF895225B57A3A00B58E23 /* LegacyTag.swift */,
+				BDBF896525B58AEF00B58E23 /* LegacyTagCollection.swift */,
+				BDBF897625B5900900B58E23 /* LegacyTagsManager.swift */,
+				BDBF897225B58FA100B58E23 /* TagsConfigFile.swift */,
+			);
+			path = Tags;
+			sourceTree = "<group>";
+		};
 		BDD9140F25097E610068E3CE /* CoreData Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -724,6 +752,7 @@
 			children = (
 				BDE150B3250CC43A00728402 /* AppState.swift */,
 				BD8A315F2502E6920077320F /* Favorite.swift */,
+				BDBF895625B57F1000B58E23 /* Tag.swift */,
 				BD8A315D2502E6920077320F /* Preset.swift */,
 				BD8A31612502E6920077320F /* SoundFont.swift */,
 			);
@@ -923,6 +952,7 @@
 				BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */,
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
 				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
+				BDBF897725B5900900B58E23 /* LegacyTagsManager.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
 				BD5B897B257A715E00654955 /* GradientView.swift in Sources */,
 				BD0FAC4D2520AC4500EEF187 /* FilteredOrderedCollection.swift in Sources */,
@@ -935,6 +965,9 @@
 				BDBF893E25B4C7AC00B58E23 /* TagsTableViewManager.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
+				BDBF896625B58AEF00B58E23 /* LegacyTagCollection.swift in Sources */,
+				BDBF897325B58FA100B58E23 /* TagsConfigFile.swift in Sources */,
+				BDBF895325B57A3A00B58E23 /* LegacyTag.swift in Sources */,
 				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
 				BD074C3D23CDAF51001987E9 /* FavoriteCell.swift in Sources */,
 				BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */,
@@ -942,6 +975,7 @@
 				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,
 				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
 				BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */,
+				BDBF897B25B5930100B58E23 /* Tags.swift in Sources */,
 				BD8A31632502E6920077320F /* Preset.swift in Sources */,
 				BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */,
 				BDF3B3D52566BB9C003F7BB3 /* UILabel+Extensions.swift in Sources */,
@@ -992,6 +1026,8 @@
 				BD074C4023CDAF51001987E9 /* LegacyFavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */,
 				BD074C8223CDAF51001987E9 /* ActivePatchManager.swift in Sources */,
+				BDBF894D25B5784300B58E23 /* TagsTableViewController.swift in Sources */,
+				BDBF895725B57F1000B58E23 /* Tag.swift in Sources */,
 				BD074C4E23CDAF51001987E9 /* LegacySoundFontCollection.swift in Sources */,
 				BD0E20612555D68900D36607 /* FourCharCode+Extensions.swift in Sources */,
 			);
