@@ -7,7 +7,7 @@ final class TagsTableViewManager: NSObject {
     private lazy var log = Logging.logger("TagsTVM")
 
     private let view: UITableView
-    private var tags = ["All"]
+    private var tags = ["All", "Percussion", "Strings", "Keys", "Horns"]
 
     init(view: UITableView) {
         self.view = view
@@ -15,6 +15,12 @@ final class TagsTableViewManager: NSObject {
         view.register(TableCell.self)
         view.dataSource = self
         view.delegate = self
+    }
+}
+
+extension TagsTableViewManager {
+    func selectTags(_ tags: [String]) {
+
     }
 }
 

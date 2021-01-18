@@ -32,6 +32,9 @@ public final class LegacySoundFont: Codable {
     /// The collection of Patches found in the sound font
     public let patches: [LegacyPatch]
 
+    /// Collection of tags assigned to the sound font
+    @DecodableDefault.EmptyList var tags: [LegacyTag.Key]
+
     /**
      Constructor for installed sound font files -- those added via File app.
 

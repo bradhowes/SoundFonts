@@ -1,7 +1,7 @@
 import UIKit
 import Foundation
 
-private class Tag: NSObject {}
+private class BundleTag: NSObject {}
 
 extension Bundle {
 
@@ -21,7 +21,9 @@ extension Bundle {
 
     public static func buttonImage(enabled: Bool, compatibleWith: UITraitCollection? = nil) -> UIImage {
         let name = enabled ? "EffectOnOld" : "EffectOffOld"
-        guard let image = UIImage(named: name, in: Bundle(for: Tag.self), compatibleWith: compatibleWith) else { fatalError("missing image '\(name)'")}
+        guard let image = UIImage(named: name, in: Bundle(for: BundleTag.self), compatibleWith: compatibleWith) else {
+            fatalError("missing image '\(name)'")
+        }
         return image
     }
 }
