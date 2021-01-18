@@ -124,6 +124,11 @@ extension FontEditor: UITextFieldDelegate {
 }
 
 extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) { close(doneButton) }
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) { close(doneButton) }
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        close(doneButton)
+    }
+
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        close(doneButton)
+    }
 }
