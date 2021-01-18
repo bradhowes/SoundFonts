@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="landscape" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,20 +15,31 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" textLabel="ib6-JJ-tpc" style="IBUITableViewCellStyleDefault" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0Cs-lR-8tg" id="UqT-gz-ivI">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ib6-JJ-tpc">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-Ga-rcB">
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="textColor" systemColor="systemTealColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" borderStyle="line" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="blq-gq-kkl">
+                        <rect key="frame" x="20" y="5" width="374" height="34"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="textColor" systemColor="systemTealColor"/>
+                        <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <action selector="editingChanged:" destination="0Cs-lR-8tg" eventType="editingChanged" id="yo1-xl-Ayg"/>
+                            <action selector="editingDidEnd:" destination="0Cs-lR-8tg" eventType="editingDidEnd" id="qpj-dT-cRG"/>
+                        </connections>
+                    </textField>
                     <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="vTo-oj-deq" userLabel="ActiveIndicator" customClass="ActiveIndicatorView" customModule="SoundFontsFramework" customModuleProvider="target">
                         <rect key="frame" x="1" y="0.0" width="4" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
@@ -39,9 +50,10 @@
             <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="activeIndicator" destination="vTo-oj-deq" id="vPu-we-yHf"/>
-                <outlet property="name" destination="ib6-JJ-tpc" id="3Hz-gv-eBo"/>
+                <outlet property="name" destination="NbC-Ga-rcB" id="JmH-Zl-iZ4"/>
+                <outlet property="tagEditor" destination="blq-gq-kkl" id="FUv-Nh-iOY"/>
             </connections>
-            <point key="canvasLocation" x="-304" y="-965"/>
+            <point key="canvasLocation" x="-304.04797601199402" y="-966.39999999999998"/>
         </tableViewCell>
     </objects>
     <resources>

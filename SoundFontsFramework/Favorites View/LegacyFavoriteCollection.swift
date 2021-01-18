@@ -42,7 +42,10 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter favorite: the favorite to look for
      - returns: the index in the collection
      */
-    func index(of favorite: LegacyFavorite) -> Int { favorites.firstIndex(of: favorite)! }
+    func index(of favorite: LegacyFavorite) -> Int {
+        favorites.firstIndex(of: favorite)!
+
+    }
 
     /**
      Obtain the favorite at the given index.

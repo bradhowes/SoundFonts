@@ -14,6 +14,7 @@ final class FontEditor: UIViewController {
         let soundFonts: SoundFonts
         let soundFontKey: LegacySoundFont.Key
         let favoriteCount: Int
+        let tagsManager: LegacyTagsManager
         let completionHandler: ((Bool) -> Void)?
     }
 
@@ -21,6 +22,9 @@ final class FontEditor: UIViewController {
     private var soundFontKey: LegacySoundFont.Key!
     private var favoriteCount: Int = 0
     private var position: IndexPath = IndexPath()
+    private var tagsManager: LegacyTagsManager!
+    private var activeTags: [LegacyTag.Key] = []
+
     private var completionHandler: ((Bool) -> Void)?
 
     weak var delegate: FontEditorDelegate?
@@ -41,11 +45,15 @@ final class FontEditor: UIViewController {
     @IBOutlet private weak var path: UILabel!
 
     func configure(_ config: Config) {
-        self.position = config.indexPath
-        self.soundFonts = config.soundFonts
-        self.soundFontKey = config.soundFontKey
-        self.favoriteCount = config.favoriteCount
-        self.completionHandler = config.completionHandler
+        position = config.indexPath
+        soundFonts = config.soundFonts
+        soundFontKey = config.soundFontKey
+        favoriteCount = config.favoriteCount
+        tagsManager = config.tagsManager
+        completionHandler = config.completionHandler
+
+        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
+        activeTags = soundFont.tags.isEmpty ? [tagsManager.getBy(index: 0).key] : soundFont.tags
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +77,9 @@ final class FontEditor: UIViewController {
         updateHiddenCount()
 
         path.text = "Path: " + soundFont.fileURL.path
+        let value = tagsManager.names(of: activeTags).joined(separator: ", ")
+        print(value)
+        tags.text = value
 
         preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
@@ -92,6 +103,7 @@ final class FontEditor: UIViewController {
             if !newName.isEmpty {
                 soundFont.displayName = newName
             }
+            soundFont.tags = activeTags
             delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
         }
 
@@ -130,5 +142,33 @@ extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresent
 
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         close(doneButton)
+    }
+}
+
+extension FontEditor: SegueHandler {
+
+    public enum SegueIdentifier: String {
+        case tagsEdit
+    }
+
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .tagsEdit: prepareToEdit(segue)
+        }
+    }
+
+    private func prepareToEdit(_ segue: UIStoryboardSegue) {
+        guard let viewController = segue.destination as? TagsTableViewController else {
+            fatalError("unexpected view configuration")
+        }
+
+        let config = TagsTableViewController.Config(tagsManager: tagsManager, active: activeTags) { tags in
+            print("response from tags VC")
+            print(tags ?? "nil")
+            guard let tags = tags else { return }
+            self.activeTags = tags
+        }
+
+        viewController.configure(config)
     }
 }

@@ -29,6 +29,8 @@ public enum FavoritesEvent {
  */
 public protocol Favorites {
 
+    var restored: Bool { get }
+
     /// Get number of favorites
     var count: Int {get}
 

@@ -21,12 +21,14 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
         }
     }
 
+    public private(set) var restored = false
+
     /**
      Initialize new collection. Attempts to restore a previously-saved collection
      */
     public init() {
         super.init()
-        DispatchQueue.global(qos: .background).async { self.configFile = FavoritesConfigFile(favoritesManager: self) }
+        DispatchQueue.global(qos: .userInitiated).async { self.configFile = FavoritesConfigFile(favoritesManager: self) }
     }
 
     public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
@@ -117,6 +119,7 @@ extension LegacyFavoritesManager {
 
         os_log(.info, log: log, "properly decoded")
         self.collection = collection
+        restored = true
         DispatchQueue.main.async { self.notify(.restored) }
     }
 

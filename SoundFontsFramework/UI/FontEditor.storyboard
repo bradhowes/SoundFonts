@@ -69,7 +69,7 @@
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <segue destination="Kr6-Nm-Npn" kind="show" identifier="editTags" id="JJW-8E-rF3"/>
+                                                                    <segue destination="Kr6-Nm-Npn" kind="show" identifier="tagsEdit" id="JJW-8E-rF3"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -287,11 +287,11 @@
         <!--Tags-->
         <scene sceneID="a1N-jf-8RK">
             <objects>
-                <tableViewController id="Kr6-Nm-Npn" sceneMemberID="viewController">
+                <tableViewController id="Kr6-Nm-Npn" customClass="TagsTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ae1-G9-ryz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="876"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tag" id="WNu-BJ-3uA">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
@@ -308,7 +308,24 @@
                             <outlet property="delegate" destination="Kr6-Nm-Npn" id="5Jq-Va-t2T"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq"/>
+                    <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="ZJW-eu-kBN">
+                                <connections>
+                                    <action selector="addTag:" destination="Kr6-Nm-Npn" id="hfx-CA-WJq"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="DkP-nW-5rx">
+                                <connections>
+                                    <action selector="editTags:" destination="Kr6-Nm-Npn" id="F1I-wi-6KW"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addButton" destination="ZJW-eu-kBN" id="BTS-w2-xoh"/>
+                        <outlet property="editButton" destination="DkP-nW-5rx" id="Vnp-2r-tE9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dda-8v-ayi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -339,9 +356,6 @@
     </scenes>
     <resources>
         <image name="Copy" width="25" height="25"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

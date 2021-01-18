@@ -20,6 +20,8 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let sampler: Sampler
     public let inApp: Bool
 
+    public let tagsManager: LegacyTagsManager
+
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
@@ -29,6 +31,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     private var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
     private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
     private var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
+    private var tagsController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
     public var infoBar: InfoBar { infoBarController }
     public var keyboard: Keyboard? { keyboardController }
@@ -50,20 +53,24 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.favorites = favoritesManager
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
-        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
+        self.activePatchManager = ActivePatchManager(soundFonts: soundFonts,
+                                                     selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
 
         let reverb = inApp ? Reverb() : nil
         self.reverb = reverb
         let delay = inApp ? Delay() : nil
         self.delay = delay
 
-        self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager, reverb: reverb, delay: delay)
+        self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager,
+                               reverb: reverb, delay: delay)
 
         self.soundFonts.subscribe(favoritesManager) { event in
             if case let .removed(_, soundFont) = event {
                 favoritesManager.removeAll(associatedWith: soundFont)
             }
         }
+
+        self.tagsManager = LegacyTagsManager()
     }
 
     // swiftlint:disable cyclomatic_complexity

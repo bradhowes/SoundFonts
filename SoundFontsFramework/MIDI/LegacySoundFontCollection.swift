@@ -9,7 +9,7 @@ import Foundation
 public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
 
     public var description: String {
-        "[" + catalog.map { "\(String.pointer($0.value)) '\($0.value.displayName)'" }.joined(separator: ",") + "]"
+        "[" + catalog.map { "\($0.key): '\($0.value.displayName)'" }.joined(separator: ",") + "]"
     }
 
     public typealias Element = LegacySoundFont
@@ -60,7 +60,11 @@ public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
      - returns: index value if found, else nil
      */
     public func index(of url: URL) -> Int? {
-        guard let found = catalog.first(where: { entry in entry.value.fileURL.absoluteString == url.absoluteString }) else { return nil }
+        guard let found = (catalog.first { entry in
+            entry.value.fileURL.absoluteString == url.absoluteString
+        }) else {
+            return nil
+        }
         return index(of: found.key)
     }
 

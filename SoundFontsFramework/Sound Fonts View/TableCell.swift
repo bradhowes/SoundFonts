@@ -21,8 +21,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     @IBInspectable public var activeFontColor: UIColor = .systemTeal
     @IBInspectable public var favoriteFontColor: UIColor = .systemOrange
 
-    @IBOutlet private weak var name: UILabel!
-    @IBOutlet private weak var activeIndicator: UIView!
+    @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var activeIndicator: UIView!
+    @IBOutlet weak var tagEditor: UITextField!
 
     private var bookmark: Bookmark?
     private var timer: Timer?
@@ -73,11 +74,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
 
     override public func prepareForReuse() {
+        super.prepareForReuse()
+
         stopAnimation()
         stopMonitor()
         accessoryView = nil
         activeAlert = nil
-        super.prepareForReuse()
+
+        name.isHidden = false
+        tagEditor.isHidden = true
+        tagEditor.isEnabled = false
     }
 
     private func stopMonitor() {
@@ -171,5 +177,11 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         }
 
         return nil
+    }
+
+    @IBAction func editingChanged(_ sender: Any) {
+    }
+//
+    @IBAction func editingDidEnd(_ sender: Any) {
     }
 }
