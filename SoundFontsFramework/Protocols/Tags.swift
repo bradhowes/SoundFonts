@@ -34,7 +34,7 @@ public protocol Tags: class {
     func rename(_ index: Int, name: String)
 
     func insert(_ tag: LegacyTag, at index: Int)
-    
+
     func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key>
 
     func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void) -> SubscriberToken
