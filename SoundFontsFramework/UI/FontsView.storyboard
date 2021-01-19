@@ -42,10 +42,10 @@
                                         </searchBar>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-uD-xKG" userLabel="Tags" customClass="I">
-                                        <rect key="frame" x="0.0" y="904" width="156" height="200"/>
+                                        <rect key="frame" x="0.0" y="904" width="156" height="360"/>
                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="200" id="3lx-F9-yk6"/>
+                                            <constraint firstAttribute="height" constant="360" id="3lx-F9-yk6"/>
                                         </constraints>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
@@ -54,7 +54,7 @@
                                 <accessibility key="accessibilityConfiguration" identifier="Sounds" label="Sounds"/>
                                 <constraints>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
-                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="208" id="1To-12-Edz"/>
+                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="1To-12-Edz"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="Aqb-hq-MeU"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="Mvo-0D-YFt"/>
                                     <constraint firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="Pw5-9k-6te"/>

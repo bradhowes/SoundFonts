@@ -327,7 +327,15 @@ extension SoundFontsViewController {
     }
 
     private func showTags() {
-        self.tagsViewHeightConstraint.constant = min(maxTagsViewHeightConstraint, soundFontsView.frame.height - 8)
+        let maxHeight = soundFontsView.frame.height - 8
+        let midHeight = maxHeight / 2.0
+        let minHeight = CGFloat(120.0)
+
+        var bestHeight = midHeight
+        if bestHeight > maxHeight { bestHeight = maxHeight }
+        if bestHeight < minHeight { bestHeight = maxHeight }
+
+        self.tagsViewHeightConstraint.constant = bestHeight
         self.tagsBottomConstraint.constant = 0.0
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                        options: [.allowUserInteraction, .curveEaseIn],

@@ -81,7 +81,9 @@ final class FontEditor: UIViewController {
         print(value)
         tags.text = value
 
-        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        let minSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        preferredContentSize = CGSize(width: min(420, minSize.width), height: min(420, minSize.height))
+        print(preferredContentSize)
     }
 
     private func updateHiddenCount() {

@@ -92,7 +92,18 @@ extension InfoBarController {
     }
 
     @IBAction private func showGuide(_ sender: UIButton) {
-        // animateMoreButtons()
+        guard traitCollection.horizontalSizeClass == .compact else { return }
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.4,
+            delay: 0.0,
+            options: [.curveEaseOut],
+            animations: {
+                self.moreButtonsXConstraint.constant = -40
+            },
+            completion: { _ in
+                self.moreButtonsXConstraint.constant = -40
+            }
+        )
     }
 
     @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
