@@ -8,13 +8,17 @@ public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
     private let log = Logging.logger("TagsMgr")
 
     private var configFile: TagsConfigFile?
-    private var collection: LegacyTagCollection! {
+    private var collection: LegacyTagCollection {
         didSet { os_log(.debug, log: log, "collection changed: %{public}s", collection.description) }
     }
 
-    public private(set) var restored = false
+    public private(set) var restored = false {
+        didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
+    }
 
     public init() {
+        os_log(.info, log: log, "init")
+        self.collection = Self.defaultCollection
         super.init()
         DispatchQueue.global(qos: .userInitiated).async { self.configFile = TagsConfigFile(tagsManager: self) }
     }
@@ -75,23 +79,28 @@ extension LegacyTagsManager {
 
     internal func configurationData() throws -> Data {
         os_log(.info, log: log, "configurationData")
+        os_log(.info, log: log, "tags: %{public}@", collection.description)
         let data = try PropertyListEncoder().encode(collection)
         os_log(.info, log: log, "done - %d", data.count)
+        if !restored {
+            restored = true
+            DispatchQueue.main.async { self.notify(.restored) }
+        }
         return data
     }
 
     internal func loadConfigurationData(contents: Any) throws {
         os_log(.info, log: log, "loadConfigurationData")
         guard let data = contents as? Data else {
-            restoreCollection(defaultCollection)
+            restoreCollection(Self.defaultCollection)
             NotificationCenter.default.post(Notification(name: .tagsCollectionLoadFailure, object: nil))
             return
         }
 
-        os_log(.info, log: log, "has Data")
+        os_log(.info, log: log, "has data")
         guard let value = try? PropertyListDecoder().decode(LegacyTagCollection.self, from: data) else {
             NotificationCenter.default.post(Notification(name: .tagsCollectionLoadFailure, object: nil))
-            restoreCollection(defaultCollection)
+            restoreCollection(Self.defaultCollection)
             return
         }
 
@@ -100,11 +109,11 @@ extension LegacyTagsManager {
     }
 
     private func restoreCollection(_ value: LegacyTagCollection) {
-        collection = value.isEmpty ? defaultCollection : value
+        collection = value.isEmpty ? Self.defaultCollection : value
         collection.cleanup()
         restored = true
         DispatchQueue.main.async { self.notify(.restored) }
     }
 
-    private var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.allTag]) }
+    private static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.allTag]) }
 }

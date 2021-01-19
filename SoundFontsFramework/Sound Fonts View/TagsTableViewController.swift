@@ -18,7 +18,6 @@ public final class TagsTableViewController: UITableViewController {
     private var tagsManager: LegacyTagsManager!
     private var active = Set<Int>()
     private var completionHandler: ((Set<LegacyTag.Key>) -> Void)!
-
     private var editingRow: Int?
 
     override public func viewDidLoad() {
@@ -96,14 +95,15 @@ extension TagsTableViewController {
     }
 
     override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        indexPath.row > 0
+        true
     }
 
     override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        indexPath.row > 0
+        true
     }
 
-    override public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    override public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,
+                                   to destinationIndexPath: IndexPath) {
         let tag = tagsManager.remove(at: sourceIndexPath.row)
         tagsManager.insert(tag, at: destinationIndexPath.row)
     }
