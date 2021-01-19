@@ -310,14 +310,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq">
                         <rightBarButtonItems>
+                            <barButtonItem title="Edit" style="done" id="DkP-nW-5rx">
+                                <connections>
+                                    <action selector="editTags:" destination="Kr6-Nm-Npn" id="F1I-wi-6KW"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem systemItem="add" id="ZJW-eu-kBN">
                                 <connections>
                                     <action selector="addTag:" destination="Kr6-Nm-Npn" id="hfx-CA-WJq"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="edit" id="DkP-nW-5rx">
-                                <connections>
-                                    <action selector="editTags:" destination="Kr6-Nm-Npn" id="F1I-wi-6KW"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>

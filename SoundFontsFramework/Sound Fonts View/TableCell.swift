@@ -56,7 +56,15 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false, isEditing: false)
     }
 
+    override public func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if let view = reorderControlImageView {
+            view.tint(color: .white)
+        }
+    }
+
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
+
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
         if isEditing {
@@ -181,7 +189,23 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     @IBAction func editingChanged(_ sender: Any) {
     }
-//
+
     @IBAction func editingDidEnd(_ sender: Any) {
+    }
+}
+
+extension UITableViewCell {
+    fileprivate var reorderControlImageView: UIImageView? {
+        let reorderControl = self.subviews.first { view -> Bool in
+            view.classForCoder.description() == "UITableViewCellReorderControl"
+        }
+        return reorderControl?.subviews.first { view -> Bool in view is UIImageView } as? UIImageView
+    }
+}
+
+extension UIImageView {
+    fileprivate func tint(color: UIColor) {
+        self.image = self.image?.withRenderingMode(.alwaysTemplate)
+        self.tintColor = color
     }
 }

@@ -34,7 +34,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
-                        <textInputTraits key="textInputTraits"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                         <connections>
                             <action selector="editingChanged:" destination="0Cs-lR-8tg" eventType="editingChanged" id="yo1-xl-Ayg"/>
                             <action selector="editingDidEnd:" destination="0Cs-lR-8tg" eventType="editingDidEnd" id="qpj-dT-cRG"/>
