@@ -36,7 +36,7 @@ public protocol SoundFonts: class {
      - parameter of: the key to look for
      - returns: the index of the matching entry or nil if not found
      */
-    func index(of: LegacySoundFont.Key) -> Int?
+    func firstIndex(of: LegacySoundFont.Key) -> Int?
 
     /**
      Obtain the SoundFont in the collection by its unique key
@@ -47,16 +47,18 @@ public protocol SoundFonts: class {
     func getBy(key: LegacySoundFont.Key) -> LegacySoundFont?
 
     /**
-     Obtain the SoundFont in the collection by its orderering index.
+     Obtain the SoundFont in the collection by its ordering index.
 
      - parameter index: the index to fetch
      - returns: the SoundFont found at the index
      */
-    func getBy(index: Int) -> LegacySoundFont
+    // func getBy(index: Int) -> LegacySoundFont
 
-    func filtered(by tags: Set<LegacyTag.Key>) -> [LegacySoundFont.Key]
+    func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key]
 
-    func filteredIndex(index: Int, tags: Set<LegacyTag.Key>) -> Int
+    func filteredIndex(index: Int, tag: LegacyTag.Key) -> Int
+
+    func names(of keys: [LegacySoundFont.Key]) -> [String]
 
     /**
      Add a new SoundFont.
@@ -73,7 +75,7 @@ public protocol SoundFonts: class {
 
      - parameter index: the location to remove
      */
-    func remove(index: Int)
+    func remove(key: LegacySoundFont.Key)
 
     /**
      Change the name of a SoundFont
@@ -81,7 +83,9 @@ public protocol SoundFonts: class {
      - parameter index: location of the SoundFont to edit
      - parameter name: new name to use
      */
-    func rename(index: Int, name: String)
+    func rename(key: LegacySoundFont.Key, name: String)
+
+    func removeTag(_ tag: LegacyTag.Key)
 
     /**
      Set the visibility of a preset.

@@ -46,7 +46,7 @@ public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
      - parameter key: the key to look for
      - returns: index value if found, else nil
      */
-    public func index(of key: LegacySoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
+    public func firstIndex(of key: LegacySoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
 
     /**
      Obtain the index of a SoundFont wiith the given URL.
@@ -60,7 +60,7 @@ public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
         }) else {
             return nil
         }
-        return index(of: found.key)
+        return firstIndex(of: found.key)
     }
 
     /**

@@ -1,6 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
-import Foundation
+import UIKit
 import os
 
 /**
@@ -8,30 +8,25 @@ import os
  restored when the app relaunches.
  */
 public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
+    private let log = Logging.logger("FavMgr")
 
-    private static let log = Logging.logger("FavMgr")
+    private var configFile: UIDocument?
+    private var collection: LegacyFavoriteCollection {
+        didSet { os_log(.debug, log: log, "collection changed: %{public}s", collection.description) }
+    }
 
-    private var log: OSLog { Self.log }
+    public private(set) var restored = false {
+        didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
+    }
 
-    private var configFile: FavoritesConfigFile?
-
-    private var collection: LegacyFavoriteCollection = LegacyFavoriteCollection() {
-        didSet {
-            os_log(.debug, log: log, "collection changed: %{public}s", collection.description)
+    public init() {
+        os_log(.info, log: log, "init")
+        self.collection = Self.defaultCollection
+        super.init()
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.configFile = ConfigFile<Self>(manager: self)
         }
     }
-
-    public private(set) var restored = false
-
-    /**
-     Initialize new collection. Attempts to restore a previously-saved collection
-     */
-    public init() {
-        super.init()
-        DispatchQueue.global(qos: .userInitiated).async { self.configFile = FavoritesConfigFile(favoritesManager: self) }
-    }
-
-    public func validate(_ favorite: LegacyFavorite) -> Bool { collection.validate(favorite) }
 }
 
 // MARK: - Favorites protocol
@@ -53,16 +48,16 @@ extension LegacyFavoritesManager: Favorites {
     }
 
     public func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote note: Note?) {
+        defer { collectionChanged() }
         let favorite = LegacyFavorite(name: name, soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: note)
         collection.add(favorite: favorite)
         notify(.added(index: count - 1, favorite: favorite))
-        markDirty()
     }
 
     public func update(index: Int, with favorite: LegacyFavorite) {
+        defer { collectionChanged() }
         collection.replace(index: index, with: favorite)
         notify(.changed(index: index, favorite: favorite))
-        markDirty()
     }
 
     public func beginEdit(config: FavoriteEditor.Config) {
@@ -70,8 +65,8 @@ extension LegacyFavoritesManager: Favorites {
     }
 
     public func move(from: Int, to: Int) {
+        defer { collectionChanged() }
         collection.move(from: from, to: to)
-        markDirty()
     }
 
     public func selected(index: Int) {
@@ -79,15 +74,15 @@ extension LegacyFavoritesManager: Favorites {
     }
 
     public func remove(index: Int, bySwiping: Bool) {
+        defer { collectionChanged() }
         let favorite = collection.remove(index: index)
         notify(.removed(index: index, favorite: favorite, bySwiping: bySwiping))
-        markDirty()
     }
 
     public func removeAll(associatedWith soundFont: LegacySoundFont) {
+        defer { collectionChanged() }
         collection.removeAll(associatedWith: soundFont)
         notify(.removedAll(associatedWith: soundFont))
-        markDirty()
     }
 
     public func count(associatedWith soundFont: LegacySoundFont) -> Int {
@@ -95,12 +90,19 @@ extension LegacyFavoritesManager: Favorites {
     }
 }
 
-extension LegacyFavoritesManager {
+extension LegacyFavoritesManager: ConfigFileManager {
 
-    internal func configurationData() throws -> Data {
+    var filename: String { "Favorites.plist" }
+
+    internal func configurationData() throws -> Any {
         os_log(.info, log: log, "configurationData")
+        os_log(.info, log: log, "favorites: %{public}@", collection.description)
         let data = try PropertyListEncoder().encode(collection)
         os_log(.info, log: log, "done - %d", data.count)
+        if !restored {
+            restored = true
+            DispatchQueue.main.async { self.notify(.restored) }
+        }
         return data
     }
 
@@ -111,22 +113,32 @@ extension LegacyFavoritesManager {
             return
         }
 
-        os_log(.info, log: log, "has Data")
-        guard let collection = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) else {
+        os_log(.info, log: log, "has data")
+        guard let value = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) else {
             NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
             return
         }
 
         os_log(.info, log: log, "properly decoded")
-        self.collection = collection
+        restoreCollection(value)
+    }
+}
+
+extension LegacyFavoritesManager {
+
+    private func collectionChanged() {
+        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+        AskForReview.maybe()
+        configFile?.updateChangeCount(.done)
+    }
+
+    private func restoreCollection(_ value: LegacyFavoriteCollection) {
+        collection = value
         restored = true
         DispatchQueue.main.async { self.notify(.restored) }
     }
 
-    /**
-     Mark the current collection as dirty so it will get written to disk.
-     */
-    private func markDirty() {
-        configFile?.updateChangeCount(.done)
+    private static var defaultCollection: LegacyFavoriteCollection {
+        LegacyFavoriteCollection()
     }
 }

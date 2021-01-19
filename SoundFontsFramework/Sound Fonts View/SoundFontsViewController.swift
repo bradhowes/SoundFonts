@@ -86,18 +86,13 @@ public final class SoundFontsViewController: UIViewController {
     }
 
     private func remove(soundFont: LegacySoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
-        guard let index = soundFonts.index(of: soundFont.key) else {
-            completionHandler?(false)
-            return
-        }
-
         let promptTitle = "DeleteFontTitle".localized(comment: "Title of confirmation prompt")
         let promptMessage = "DeleteFontMessage".localized(comment: "Body of confirmation prompt")
         let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
         let deleteTitle = "Delete".localized(comment: "The delete action")
 
         let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
-            self.soundFonts.remove(index: index)
+            self.soundFonts.remove(key: soundFont.key)
             self.favorites.removeAll(associatedWith: soundFont)
             let url = soundFont.fileURL
             if soundFont.removable {
@@ -151,7 +146,7 @@ extension SoundFontsViewController: ControllerConfiguration {
         fontsTableViewManager = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
-            soundFonts: router.soundFonts)
+            soundFonts: router.soundFonts, tags: tagsManager)
 
         patchesTableViewManager = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
@@ -159,7 +154,8 @@ extension SoundFontsViewController: ControllerConfiguration {
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay,
             reverb: router.reverb)
 
-        tagsTableViewManager = TagsTableViewManager(view: tagsView, tagsManager: router.tagsManager)
+        tagsTableViewManager = TagsTableViewManager(view: tagsView, tagsManager: router.tagsManager,
+                                                    tagsHider: self.hideTags)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
         router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
@@ -306,8 +302,9 @@ extension SoundFontsViewController: SegueHandler {
 
 extension SoundFontsViewController: FontEditorDelegate {
     public func dismissed(reason: FontEditorDismissedReason) {
-        if case let .done(index, soundFont) = reason {
-            soundFonts.rename(index: index, name: soundFont.displayName)
+        if case let .done(soundFontKey) = reason {
+            guard let soundFont = soundFonts.getBy(key: soundFontKey) else { return }
+            soundFonts.rename(key: soundFontKey, name: soundFont.displayName)
         }
         self.dismiss(animated: true, completion: nil)
     }

@@ -1,13 +1,13 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-import Foundation
+import UIKit
 import os
 import SoundFontInfoLib
 
 public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
     private let log = Logging.logger("TagsMgr")
 
-    private var configFile: TagsConfigFile?
+    private var configFile: UIDocument?
     private var collection: LegacyTagCollection {
         didSet { os_log(.debug, log: log, "collection changed: %{public}s", collection.description) }
     }
@@ -20,7 +20,9 @@ public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
         os_log(.info, log: log, "init")
         self.collection = Self.defaultCollection
         super.init()
-        DispatchQueue.global(qos: .userInitiated).async { self.configFile = TagsConfigFile(tagsManager: self) }
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.configFile = ConfigFile<Self>(manager: self)
+        }
     }
 }
 
@@ -69,15 +71,11 @@ extension LegacyTagsManager: Tags {
     }
 }
 
-extension LegacyTagsManager {
+extension LegacyTagsManager: ConfigFileManager {
 
-    private func collectionChanged() {
-        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
-        AskForReview.maybe()
-        configFile?.updateChangeCount(.done)
-    }
+    var filename: String { "Tags.plist" }
 
-    internal func configurationData() throws -> Data {
+    internal func configurationData() throws -> Any {
         os_log(.info, log: log, "configurationData")
         os_log(.info, log: log, "tags: %{public}@", collection.description)
         let data = try PropertyListEncoder().encode(collection)
@@ -107,6 +105,15 @@ extension LegacyTagsManager {
         os_log(.info, log: log, "properly decoded")
         restoreCollection(value)
     }
+}
+
+extension LegacyTagsManager {
+
+    private func collectionChanged() {
+        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+        AskForReview.maybe()
+        configFile?.updateChangeCount(.done)
+    }
 
     private func restoreCollection(_ value: LegacyTagCollection) {
         collection = value.isEmpty ? Self.defaultCollection : value
@@ -115,5 +122,5 @@ extension LegacyTagsManager {
         DispatchQueue.main.async { self.notify(.restored) }
     }
 
-    private static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.allTag]) }
+    private static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: []) }
 }

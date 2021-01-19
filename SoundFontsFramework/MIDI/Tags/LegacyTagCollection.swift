@@ -41,6 +41,5 @@ extension LegacyTagCollection: CustomStringConvertible {
 extension LegacyTagCollection {
     internal func cleanup() {
         tags.removeAll { $0.name == "All" }
-        tags.insert(LegacyTag.allTag, at: 0)
     }
 }

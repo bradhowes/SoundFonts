@@ -37,5 +37,6 @@ public protocol Tags: class {
 
     func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key>
 
+    @discardableResult
     func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void) -> SubscriberToken
 }

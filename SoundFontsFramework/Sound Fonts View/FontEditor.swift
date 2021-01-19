@@ -104,7 +104,7 @@ final class FontEditor: UIViewController {
                 soundFont.displayName = newName
             }
             soundFont.tags = activeTags
-            delegate?.dismissed(reason: .done(index: position.row, soundFont: soundFont))
+            delegate?.dismissed(reason: .done(soundFontKey: soundFontKey))
         }
 
         self.dismiss(animated: true)
