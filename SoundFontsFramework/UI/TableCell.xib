@@ -24,14 +24,14 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-Ga-rcB">
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" borderStyle="line" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="blq-gq-kkl">
-                        <rect key="frame" x="20" y="5" width="374" height="34"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="blq-gq-kkl">
+                        <rect key="frame" x="20" y="0.0" width="374" height="44"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
