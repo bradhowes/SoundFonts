@@ -26,7 +26,7 @@ extension LegacyTagsManager: Tags {
 
     public var count: Int { collection.count }
 
-    public func names(of keys: [LegacyTag.Key]) -> [String] { collection.names(of: keys) }
+    public func names(of keys: Set<LegacyTag.Key>) -> [String] { collection.names(of: keys) }
 
     public func index(of key: LegacyTag.Key) -> Int? { collection.index(of: key) }
 
@@ -34,19 +34,34 @@ extension LegacyTagsManager: Tags {
 
     public func getBy(key: LegacyTag.Key) -> LegacyTag? { collection.getBy(key: key) }
 
-    public func add(tag: LegacyTag) -> Int {
+    public func append(_ tag: LegacyTag) -> Int {
         defer { collectionChanged() }
-        return collection.add(tag)
+        let index = collection.append(tag)
+        notify(.added(new: index, tag: tag))
+        return index
     }
 
-    public func remove(index: Int) -> LegacyTag {
+    public func insert(_ tag: LegacyTag, at index: Int) {
         defer { collectionChanged() }
-        return collection.remove(index)
+        collection.insert(tag, at: index)
+        notify(.added(new: index, tag: tag))
     }
 
-    public func rename(index: Int, name: String) {
+    public func remove(at index: Int) -> LegacyTag {
+        defer { collectionChanged() }
+        let tag = collection.remove(at: index)
+        notify(.removed(old: index, tag: tag))
+        return tag
+    }
+
+    public func rename(_ index: Int, name: String) {
         defer { collectionChanged() }
         collection.rename(index, name: name)
+        notify(.changed(index: index, tag: collection.getBy(index: index)))
+    }
+
+    public func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key> {
+        Set(indices.map { collection.getBy(index: $0).key })
     }
 }
 
@@ -86,6 +101,7 @@ extension LegacyTagsManager {
 
     private func restoreCollection(_ value: LegacyTagCollection) {
         collection = value.isEmpty ? defaultCollection : value
+        collection.cleanup()
         restored = true
         DispatchQueue.main.async { self.notify(.restored) }
     }

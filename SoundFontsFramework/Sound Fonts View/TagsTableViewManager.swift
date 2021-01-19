@@ -9,16 +9,16 @@ final class TagsTableViewManager: NSObject {
     private let view: UITableView
     private let tagsManager: LegacyTagsManager
     private var token: SubscriberToken?
+    private var active = Set<Int>()
 
     init(view: UITableView, tagsManager: LegacyTagsManager) {
         self.view = view
         self.tagsManager = tagsManager
         super.init()
 
-        token = tagsManager.subscribe(self) { event in
-            switch event {
-            case .restored: self.refresh()
-            default: break
+        token = tagsManager.subscribe(self) { _ in
+            if tagsManager.restored {
+                self.refresh()
             }
         }
 
@@ -28,17 +28,20 @@ final class TagsTableViewManager: NSObject {
     }
 
     public func refresh() {
+        active.removeAll()
+        for key in Settings.shared.activeTags {
+            if let row = tagsManager.index(of: key) {
+                active.insert(row)
+            }
+        }
+
         view.reloadData()
+
+        for row in active {
+            view.selectRow(at: IndexPath(row: row, section: 0), animated: false, scrollPosition: .none)
+        }
     }
 }
-
-extension TagsTableViewManager {
-    func selectTags(_ tags: [String]) {
-
-    }
-}
-
-// MARK: - UITableViewDataSource Protocol
 
 extension TagsTableViewManager: UITableViewDataSource {
 
@@ -58,7 +61,20 @@ extension TagsTableViewManager: UITableViewDataSource {
 extension TagsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // selectedSoundFontManager.setSelected(soundFonts.getBy(index: indexPath.row))
+        if active.contains(indexPath.row) {
+            active.remove(indexPath.row)
+        }
+        else {
+            active.insert(indexPath.row)
+        }
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        Settings.shared.activeTags = tagsManager.keySet(of: active)
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        active.remove(indexPath.row)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        Settings.shared.activeTags = tagsManager.keySet(of: active)
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -68,27 +84,9 @@ extension TagsTableViewManager: UITableViewDelegate {
 
 extension TagsTableViewManager {
 
-    private func getIndexPath(of row: Int) -> IndexPath { IndexPath(row: row, section: 0) }
-
-    private func selectAndShow(row: Int) {
-        let indexPath = getIndexPath(of: row)
-        view.performBatchUpdates({self.view.selectRow(at: indexPath, animated: true, scrollPosition: .none)},
-                                 completion: {_ in self.view.scrollToRow(at: indexPath, at: .none, animated: true)})
-    }
-
-    private func update(row: Int?) {
-        guard let row = row else { return }
-        os_log(.info, log: log, "update - row %d", row)
-        let indexPath = getIndexPath(of: row)
-        if let cell: TableCell = view.cellForRow(at: indexPath) {
-            os_log(.info, log: log, "updating row %d", row)
-            update(cell: cell, indexPath: indexPath)
-        }
-    }
-
-    @discardableResult
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-        cell.updateForTag(name: tagsManager.getBy(index: indexPath.row).name, isActive: false)
+        cell.updateForTag(name: tagsManager.getBy(index: indexPath.row).name,
+                          isActive: active.contains(indexPath.row))
         return cell
     }
 }

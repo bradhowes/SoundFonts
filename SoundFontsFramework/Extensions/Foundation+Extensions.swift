@@ -42,6 +42,17 @@ extension Date: SettingSerializable {
     public static func set(key: String, value: Date, userDefaults: UserDefaults) { userDefaults.set(value, forKey: key) }
 }
 
+extension Set: SettingSerializable where Set.Element == LegacyTag.Key {
+    public static func set(key: String, value: Set<LegacyTag.Key>, userDefaults: UserDefaults) {
+        userDefaults.set(value.map { $0.uuidString }, forKey: key)
+    }
+
+    public static func get(key: String, userDefaults: UserDefaults) -> Set<LegacyTag.Key>? {
+        guard let tmp = userDefaults.stringArray(forKey: key) else { return Set([LegacyTag.allTag.key]) }
+        return Set(tmp.map { UUID(uuidString: $0)! })
+    }
+}
+
 extension Double {
     public var milliseconds: TimeInterval { self / 1000 }
     public var millisecond: TimeInterval { milliseconds }

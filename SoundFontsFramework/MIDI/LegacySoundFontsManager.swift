@@ -16,11 +16,7 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 
     private var configFile: SoundFontsConfigFile?
 
-    private var collection = LegacySoundFontCollection(soundFonts: []) {
-        didSet {
-            os_log(.debug, log: log, "collection changed: %{public}s", collection.description)
-        }
-    }
+    private var collection = LegacySoundFontCollection(soundFonts: [])
 
     public private(set) var restored = false
 
@@ -46,8 +42,6 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
             self.configFile = SoundFontsConfigFile(soundFontsManager: self)
         }
     }
-
-    public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool { collection.validate(soundFontAndPatch) }
 }
 
 extension FileManager {
@@ -88,12 +82,27 @@ extension FileManager {
 extension LegacySoundFontsManager: SoundFonts {
 
     public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
+
     public var defaultPreset: SoundFontAndPatch? { collection.defaultPreset }
-    public func index(of uuid: UUID) -> Int? { collection.index(of: uuid) }
+
+    public func index(of uuid: LegacySoundFont.Key) -> Int? { collection.index(of: uuid) }
 
     public func getBy(index: Int) -> LegacySoundFont { collection.getBy(index: index) }
 
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
+
+    public func filtered(by tags: Set<LegacyTag.Key>) -> [LegacySoundFont.Key] {
+        collection.soundFonts.filter { !$0.tags.union(LegacyTag.allTagSet).isDisjoint(with: tags) }.map { $0.key }
+    }
+
+    public func filteredIndex(index: Int, tags: Set<LegacyTag.Key>) -> Int {
+        var reduction = 0
+        for entry in collection.soundFonts.enumerated() where entry.offset <= index && !entry.element.tags.union(LegacyTag.allTagSet).isDisjoint(with: tags) {
+            reduction += 1
+        }
+
+        return index - reduction
+    }
 
     @discardableResult
     public func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure> {

@@ -40,11 +40,6 @@ public final class LegacySoundFontCollection: Codable, CustomStringConvertible {
 
     public var soundFonts: [LegacySoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
-    public func validate(_ soundFontAndPatch: SoundFontAndPatch) -> Bool {
-        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return false }
-        return soundFontAndPatch.patchIndex < soundFont.patches.count
-    }
-
     /**
      Obtain the index of the given SoundFont.Key value.
 

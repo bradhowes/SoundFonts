@@ -3,6 +3,10 @@
 import UIKit
 import os
 
+private extension Int {
+    var indexPath: IndexPath { IndexPath(row: self, section: 0) }
+}
+
 /**
  Data source and delegate for the SoundFont UITableView. This view shows all of the names of the SoundFont files that
  are available in the app.
@@ -15,7 +19,9 @@ final class FontsTableViewManager: NSObject {
     private let activePatchManager: ActivePatchManager
     private let fontEditorActionGenerator: FontEditorActionGenerator
     private let soundFonts: SoundFonts
-    private var viewSoundFonts = [String]()
+
+    private var activeTagsObservation: NSKeyValueObservation!
+    private var viewSoundFonts = [LegacySoundFont.Key]()
 
     init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePatchManager: ActivePatchManager,
          fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts) {
@@ -35,12 +41,25 @@ final class FontsTableViewManager: NSObject {
         selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
         activePatchManager.subscribe(self, notifier: activePatchChange)
 
-        viewSoundFonts = soundFonts.soundFontNames
+        activeTagsObservation = Settings.shared.observe(\.activeTags) { _, _ in
+            self.updateViewSoundFonts()
+        }
+
+        updateViewSoundFonts()
+    }
+
+    private func showAllSoundFonts() {
+        // Settings.shared.activeTags = LegacyTag.allTagSet
+    }
+
+    private func updateViewSoundFonts() {
+        viewSoundFonts = soundFonts.filtered(by: Settings.shared.activeTags)
+        view.reloadData()
     }
 
     func selectActive() {
         guard let key = activePatchManager.soundFont?.key else { return }
-        guard let row = soundFonts.index(of: key) else { return }
+        guard let row = viewSoundFonts.firstIndex(of: key) else { return }
         selectAndShow(row: row)
     }
 }
@@ -92,27 +111,6 @@ extension FontsTableViewManager: UITableViewDelegate {
     }
 }
 
-extension FontsTableViewManager {
-
-    public func selectPrevious() {
-        guard let key = selectedSoundFontManager.selected?.key else { return }
-        guard let index = soundFonts.index(of: key) else { return }
-        var nextIndex = index - 1
-        if nextIndex < 0 { nextIndex = soundFonts.soundFontNames.count - 1 }
-        view.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
-        selectedSoundFontManager.setSelected(soundFonts.getBy(index: nextIndex))
-    }
-
-    public func selectNext() {
-        guard let key = selectedSoundFontManager.selected?.key else { return }
-        guard let index = soundFonts.index(of: key) else { return }
-        var nextIndex = index + 1
-        if nextIndex > soundFonts.soundFontNames.count - 1 { nextIndex = 0 }
-        view.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
-        selectedSoundFontManager.setSelected(soundFonts.getBy(index: nextIndex))
-    }
-}
-
 // MARK: - Private
 
 extension FontsTableViewManager {
@@ -157,43 +155,53 @@ extension FontsTableViewManager {
     }
 
     private func addSoundFont(index: Int, soundFont: LegacySoundFont) {
+        let filteredIndex = soundFonts.filteredIndex(index: index, tags: Settings.shared.activeTags)
+        guard filteredIndex >= 0 else {
+            return
+        }
         view.performBatchUpdates {
-            view.insertRows(at: [getIndexPath(of: index)], with: .automatic)
-            self.viewSoundFonts = soundFonts.soundFontNames
+            view.insertRows(at: [filteredIndex.indexPath], with: .automatic)
+            viewSoundFonts.insert(soundFont.key, at: filteredIndex)
         } completion: { completed in
             if completed {
                 self.selectedSoundFontManager.setSelected(soundFont)
-                self.selectAndShow(row: index)
+                self.selectAndShow(row: filteredIndex)
             }
         }
     }
 
     private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: LegacySoundFont) {
+        let oldFilteredIndex = soundFonts.filteredIndex(index: oldIndex, tags: Settings.shared.activeTags)
+        guard oldFilteredIndex >= 0 else { return }
+        let newFilteredIndex = soundFonts.filteredIndex(index: newIndex, tags: Settings.shared.activeTags)
+        guard newFilteredIndex >= 0 else { return }
         view.performBatchUpdates {
-            view.moveRow(at: getIndexPath(of: oldIndex), to: getIndexPath(of: newIndex))
-            self.viewSoundFonts = soundFonts.soundFontNames
+            view.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
+            self.viewSoundFonts.insert(self.viewSoundFonts.remove(at: oldFilteredIndex), at: newFilteredIndex)
         } completion: { completed in
             if completed {
-                self.update(row: newIndex)
+                self.update(row: newFilteredIndex)
                 if self.selectedSoundFontManager.selected == soundFont {
-                    self.selectAndShow(row: newIndex)
+                    self.selectAndShow(row: newFilteredIndex)
                 }
             }
         }
     }
 
     private func removeSoundFont(index: Int, soundFont: LegacySoundFont) {
+        let filteredIndex = soundFonts.filteredIndex(index: index, tags: Settings.shared.activeTags)
+        guard filteredIndex >= 0 else { return }
         view.performBatchUpdates {
-            view.deleteRows(at: [getIndexPath(of: index)], with: .automatic)
-            self.viewSoundFonts = soundFonts.soundFontNames
+            view.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
+            viewSoundFonts.remove(at: filteredIndex)
         } completion: { _ in
-            let newRow = min(index, self.viewSoundFonts.count - 1)
+            let newRow = min(filteredIndex, self.viewSoundFonts.count - 1)
             guard newRow >= 0 else {
                 self.selectedSoundFontManager.clearSelected()
                 return
             }
 
-            let newSoundFont = self.soundFonts.getBy(index: newRow)
+            guard let newSoundFont = self.soundFonts.getBy(key: self.viewSoundFonts[newRow]) else { return }
             if self.activePatchManager.soundFont == soundFont {
                 self.activePatchManager.setActive(preset: SoundFontAndPatch(soundFontKey: newSoundFont.key,
                                                                             patchIndex: 0), playSample: false)
@@ -215,35 +223,34 @@ extension FontsTableViewManager {
         case let .removed(old, deletedSoundFont): removeSoundFont(index: old, soundFont: deletedSoundFont)
         case .unhidPresets: break
         case .restored:
-            viewSoundFonts = soundFonts.soundFontNames
-            view.reloadData()
+            updateViewSoundFonts()
         }
     }
 
-    private func getIndexPath(of row: Int) -> IndexPath { IndexPath(row: row, section: 0) }
-
     private func selectAndShow(row: Int) {
-        let indexPath = getIndexPath(of: row)
-        view.performBatchUpdates({self.view.selectRow(at: indexPath, animated: true, scrollPosition: .none)},
-                                 completion: {_ in self.view.scrollToRow(at: indexPath, at: .none, animated: true)})
+        view.performBatchUpdates {
+            self.view.selectRow(at: row.indexPath, animated: true, scrollPosition: .none)
+        } completion: { _ in
+            self.view.scrollToRow(at: row.indexPath, at: .none, animated: true)
+        }
     }
 
     private func update(row: Int?) {
         guard let row = row else { return }
         os_log(.info, log: log, "update - row %d", row)
-        let indexPath = getIndexPath(of: row)
-        if let cell: TableCell = view.cellForRow(at: indexPath) {
+        if let cell: TableCell = view.cellForRow(at: row.indexPath) {
             os_log(.info, log: log, "updating row %d", row)
-            update(cell: cell, indexPath: indexPath)
+            update(cell: cell, indexPath: row.indexPath)
         }
     }
 
     @discardableResult
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-        let soundFont = soundFonts.getBy(index: indexPath.row)
+        let key = viewSoundFonts[indexPath.row]
+        guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
         let isSelected = selectedSoundFontManager.selected == soundFont
         let isActive = activePatchManager.soundFont == soundFont
-        cell.updateForFont(name: viewSoundFonts[indexPath.row], kind: soundFont.kind, isSelected: isSelected,
+        cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected,
                            isActive: isActive)
         return cell
     }

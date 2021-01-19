@@ -23,7 +23,7 @@ final class FontEditor: UIViewController {
     private var favoriteCount: Int = 0
     private var position: IndexPath = IndexPath()
     private var tagsManager: LegacyTagsManager!
-    private var activeTags: [LegacyTag.Key] = []
+    private var activeTags = Set<LegacyTag.Key>()
 
     private var completionHandler: ((Bool) -> Void)?
 
@@ -53,7 +53,7 @@ final class FontEditor: UIViewController {
         completionHandler = config.completionHandler
 
         guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
-        activeTags = soundFont.tags.isEmpty ? [tagsManager.getBy(index: 0).key] : soundFont.tags
+        activeTags = soundFont.tags
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -164,8 +164,7 @@ extension FontEditor: SegueHandler {
 
         let config = TagsTableViewController.Config(tagsManager: tagsManager, active: activeTags) { tags in
             print("response from tags VC")
-            print(tags ?? "nil")
-            guard let tags = tags else { return }
+            print(tags)
             self.activeTags = tags
         }
 

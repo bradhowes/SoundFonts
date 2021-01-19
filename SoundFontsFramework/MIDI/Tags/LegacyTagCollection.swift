@@ -4,11 +4,7 @@ import Foundation
 import os
 
 internal final class LegacyTagCollection: Codable {
-    private let log = Logging.logger("TagCol")
-
-    enum CodingKeys: String, CodingKey {
-        case tags
-    }
+    private var log: OSLog { Logging.logger("TagCol") }
 
     private var tags: [LegacyTag]
 
@@ -16,13 +12,9 @@ internal final class LegacyTagCollection: Codable {
 
     internal var count: Int { tags.count }
 
-    internal init(tags: [LegacyTag]) {
-        self.tags = tags
-    }
+    internal init(tags: [LegacyTag]) { self.tags = tags }
 
-    internal func names(of keys: [LegacyTag.Key]) -> [String] {
-        keys.compactMap { getBy(key: $0)?.name }
-    }
+    internal func names(of keys: Set<LegacyTag.Key>) -> [String] { keys.compactMap { getBy(key: $0)?.name } }
 
     internal func index(of key: LegacyTag.Key) -> Int? { tags.firstIndex { $0.key == key } }
 
@@ -30,20 +22,25 @@ internal final class LegacyTagCollection: Codable {
 
     internal func getBy(key: LegacyTag.Key) -> LegacyTag? { tags.first { $0.key == key } }
 
-    internal func add(_ tag: LegacyTag) -> Int {
+    internal func append(_ tag: LegacyTag) -> Int {
         tags.append(tag)
         return count - 1
     }
 
-    internal func remove(_ index: Int) -> LegacyTag {
-        tags.remove(at: index)
-    }
+    internal func insert(_ tag: LegacyTag, at index: Int) { tags.insert(tag, at: index) }
 
-    internal func rename(_ index: Int, name: String) {
-        tags[index].name = name
-    }
+    internal func remove(at index: Int) -> LegacyTag { tags.remove(at: index) }
+
+    internal func rename(_ index: Int, name: String) { tags[index].name = name }
 }
 
 extension LegacyTagCollection: CustomStringConvertible {
     public var description: String { tags.description }
+}
+
+extension LegacyTagCollection {
+    internal func cleanup() {
+        tags.removeAll { $0.name == "All" }
+        tags.insert(LegacyTag.allTag, at: 0)
+    }
 }

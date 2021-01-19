@@ -125,14 +125,3 @@ extension ActivePatchManager {
         }
     }
 }
-
-extension ActivePatchManager {
-
-    public func validate(soundFonts: LegacySoundFontsManager, favorites: LegacyFavoritesManager) {
-        switch active {
-        case .favorite(let favorite): if !favorites.validate(favorite) { active = .none }
-        case .normal(let soundFontAndPatch): if !soundFonts.validate(soundFontAndPatch) { active = .none }
-        case .none: break
-        }
-    }
-}

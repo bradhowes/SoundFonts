@@ -54,6 +54,10 @@ public protocol SoundFonts: class {
      */
     func getBy(index: Int) -> LegacySoundFont
 
+    func filtered(by tags: Set<LegacyTag.Key>) -> [LegacySoundFont.Key]
+
+    func filteredIndex(index: Int, tags: Set<LegacyTag.Key>) -> Int
+
     /**
      Add a new SoundFont.
 
