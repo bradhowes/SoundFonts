@@ -47,6 +47,8 @@ public extension SettingKeys {
     static let delayWetDryMixController = SettingKey("delayWetDryMixController", defaultValue: -1)
     static let showEffects = SettingKey("showEffects", defaultValue: false)
 
+    static let activeTags = SettingKey("activeTags", defaultValue: Set<LegacyTag.Key>([LegacyTag.allTag.key]))
+
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
 }
@@ -229,5 +231,9 @@ public extension UserDefaults {
     @objc dynamic var reverbUserPresets: Data {
         get { self[.reverbUserPresets] }
         set { self[.reverbUserPresets] = newValue }
+    }
+    @objc dynamic var activeTags: Set<LegacyTag.Key> {
+        get { self[.activeTags] }
+        set { self[.activeTags] = newValue }
     }
 }

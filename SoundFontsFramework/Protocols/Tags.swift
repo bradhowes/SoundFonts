@@ -6,6 +6,7 @@ public enum TagsEvent {
 
     case added(new: Int, tag: LegacyTag)
     case moved(old: Int, new: Int, tag: LegacyTag)
+    case changed(index: Int, tag: LegacyTag)
     case removed(old: Int, tag: LegacyTag)
     case restored
 }
@@ -18,7 +19,7 @@ public protocol Tags: class {
 
     var count: Int { get }
 
-    func names(of keys: [LegacyTag.Key]) -> [String]
+    func names(of keys: Set<LegacyTag.Key>) -> [String]
 
     func index(of: LegacyTag.Key) -> Int?
 
@@ -26,11 +27,15 @@ public protocol Tags: class {
 
     func getBy(key: LegacyTag.Key) -> LegacyTag?
 
-    func add(tag: LegacyTag) -> Int
+    func append(_ tag: LegacyTag) -> Int
 
-    func remove(index: Int) -> LegacyTag
+    func remove(at index: Int) -> LegacyTag
 
-    func rename(index: Int, name: String)
+    func rename(_ index: Int, name: String)
+
+    func insert(_ tag: LegacyTag, at index: Int)
+    
+    func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key>
 
     func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void) -> SubscriberToken
 }

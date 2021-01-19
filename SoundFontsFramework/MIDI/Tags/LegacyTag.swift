@@ -6,6 +6,7 @@ public final class LegacyTag: Codable {
     public typealias Key = UUID
 
     public static let allTag = LegacyTag()
+    public static let allTagSet = Set([allTag.key])
 
     public let key: Key
     public var name: String
