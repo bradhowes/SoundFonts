@@ -13,14 +13,13 @@
         <scene sceneID="ObU-kV-rxp">
             <objects>
                 <viewController title="FontEditor" id="Eyw-X4-KFI" userLabel="FontEditor" customClass="FontEditor" customModule="SoundFontsFramework" sceneMemberID="viewController">
-                    <view key="view" opaque="NO" contentMode="scaleToFill" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="385"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <view key="view" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mEt-ep-ZyB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
-                                <rect key="frame" x="0.0" y="56" width="414" height="329"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="319"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
@@ -226,6 +225,7 @@
                                             <constraint firstAttribute="bottom" secondItem="mMk-qS-UW8" secondAttribute="bottom" constant="20" symbolic="YES" id="AUT-X6-1e7"/>
                                             <constraint firstItem="mMk-qS-UW8" firstAttribute="leading" secondItem="LhQ-ia-e1C" secondAttribute="leading" constant="20" symbolic="YES" id="J5X-NK-8Hu"/>
                                             <constraint firstAttribute="width" priority="750" constant="414" id="OYV-xz-kiI"/>
+                                            <constraint firstAttribute="height" constant="319" id="Pa5-Zr-Mdm"/>
                                             <constraint firstItem="mMk-qS-UW8" firstAttribute="top" secondItem="LhQ-ia-e1C" secondAttribute="top" constant="20" symbolic="YES" id="UVe-XZ-s1C"/>
                                         </constraints>
                                     </view>
@@ -235,20 +235,20 @@
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="trailing" secondItem="z9Y-jL-97U" secondAttribute="trailing" id="E5h-wX-Nwn"/>
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="leading" secondItem="z9Y-jL-97U" secondAttribute="leading" id="EOv-Uv-Ncd"/>
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="bottom" secondItem="z9Y-jL-97U" secondAttribute="bottom" id="KpL-2J-6iE"/>
+                                    <constraint firstAttribute="width" constant="414" id="R7L-UK-M4r"/>
                                     <constraint firstItem="LhQ-ia-e1C" firstAttribute="width" secondItem="8ar-VF-0TJ" secondAttribute="width" id="Zzh-QO-XXY"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="z9Y-jL-97U"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="8ar-VF-0TJ"/>
                             </scrollView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="x8d-G2-ac4"/>
                         <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="FontEditor" label="FontEditor"/>
                         <constraints>
-                            <constraint firstItem="x8d-G2-ac4" firstAttribute="trailing" secondItem="b5u-sn-F2E" secondAttribute="trailing" id="Aom-Ff-kKE"/>
-                            <constraint firstItem="b5u-sn-F2E" firstAttribute="leading" secondItem="x8d-G2-ac4" secondAttribute="leading" id="TIX-gx-Yyc"/>
-                            <constraint firstItem="b5u-sn-F2E" firstAttribute="top" secondItem="x8d-G2-ac4" secondAttribute="top" id="gcd-8s-z1d"/>
-                            <constraint firstItem="x8d-G2-ac4" firstAttribute="bottom" secondItem="b5u-sn-F2E" secondAttribute="bottom" id="sfR-pU-MDN"/>
+                            <constraint firstAttribute="trailing" secondItem="b5u-sn-F2E" secondAttribute="trailing" id="Aom-Ff-kKE"/>
+                            <constraint firstItem="b5u-sn-F2E" firstAttribute="leading" secondItem="mEt-ep-ZyB" secondAttribute="leading" id="TIX-gx-Yyc"/>
+                            <constraint firstItem="b5u-sn-F2E" firstAttribute="top" secondItem="mEt-ep-ZyB" secondAttribute="top" id="gcd-8s-z1d"/>
+                            <constraint firstAttribute="bottom" secondItem="b5u-sn-F2E" secondAttribute="bottom" id="sfR-pU-MDN"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
@@ -264,7 +264,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <size key="freeformSize" width="414" height="405"/>
+                    <size key="freeformSize" width="414" height="414"/>
                     <connections>
                         <outlet property="doneButton" destination="voT-ST-J8p" id="50R-s8-015"/>
                         <outlet property="embeddedNameLabel" destination="c94-3d-tGQ" id="KLT-MF-4jF"/>
