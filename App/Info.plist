@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>When allowed, SoundFonts can scan for and connect to Blutetooth LE MIDI devices in order to receive MIDI commands from the device.</string>
 	<key>CFBundleDevelopmentRegion</key>

@@ -41,6 +41,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
+    private var tuningObserver: NSKeyValueObservation?
 
     /**
      Create a new instance of a Sampler.
@@ -57,6 +58,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         self.reverb = reverb
         self.delay = delay
         super.init()
+
+        tuningObserver = Settings.shared.observe(\.globalTuning, options: []) { _, _ in
+            self.auSampler?.globalTuning = Settings.shared.globalTuning
+        }
     }
 
     /**
@@ -67,6 +72,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public func start() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
         os_log(.info, log: log, "start")
         auSampler = AVAudioUnitSampler()
+        auSampler?.globalTuning = Settings.shared.globalTuning
         presetChangeManager.start()
         return startEngine()
     }
