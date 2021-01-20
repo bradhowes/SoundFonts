@@ -12,25 +12,28 @@ public final class LegacySoundFont: Codable {
     private static let logger = Logging.logger("SFont")
 
     /// Presentation name of the sound font
-    public var displayName: String
+    var displayName: String
 
     ///  The resolved URL for the sound font
     public var fileURL: URL { kind.fileURL }
 
     /// True if the SF2 file is not part of the install
-    public var removable: Bool { kind.removable }
+    var removable: Bool { kind.removable }
 
     public typealias Key = UUID
-    public let key: Key
+    let key: Key
 
-    public let originalDisplayName: String
+    let originalDisplayName: String
 
-    public let embeddedName: String
+    @DecodableDefault.EmptyString var embeddedName: String
+    @DecodableDefault.EmptyString var embeddedComment: String
+    @DecodableDefault.EmptyString var embeddedAuthor: String
+    @DecodableDefault.EmptyString var embeddedCopyright: String
 
-    public let kind: SoundFontKind
+    let kind: SoundFontKind
 
     /// The collection of Patches found in the sound font
-    public let patches: [LegacyPatch]
+    let patches: [LegacyPatch]
 
     /// Collection of tags assigned to the sound font
     @DecodableDefault.EmptyTagSet var tags: Set<LegacyTag.Key>
@@ -47,6 +50,9 @@ public final class LegacySoundFont: Codable {
         self.displayName = displayName
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
+        self.embeddedComment = soundFontInfo.embeddedComment
+        self.embeddedAuthor = soundFontInfo.embeddedAuthor
+        self.embeddedCopyright = soundFontInfo.embeddedCopyright
         self.kind = Settings.shared.copyFilesWhenAdding ?
             .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension) :
             .reference(bookmark: Bookmark(url: url, name: displayName))
@@ -65,6 +71,9 @@ public final class LegacySoundFont: Codable {
         self.displayName = displayName
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
+        self.embeddedComment = soundFontInfo.embeddedComment
+        self.embeddedAuthor = soundFontInfo.embeddedAuthor.isEmpty ? "Unknown" : soundFontInfo.embeddedAuthor
+        self.embeddedCopyright = soundFontInfo.embeddedCopyright.isEmpty ? "Unknown" : soundFontInfo.embeddedCopyright
         self.kind = .builtin(resource: resource)
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
@@ -131,6 +140,14 @@ extension LegacySoundFont {
 
     public func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
         SoundFontAndPatch(soundFontKey: self.key, patchIndex: patch.soundFontIndex)
+    }
+
+    public func reloadEmbeddedInfo() -> Bool {
+        guard let info = SoundFontInfo.load(viaParser: self.fileURL) else { return false }
+        embeddedComment = info.embeddedComment
+        embeddedAuthor = info.embeddedAuthor.isEmpty ? "Unknown" : info.embeddedAuthor
+        embeddedCopyright = info.embeddedCopyright.isEmpty ? "Unknown" : info.embeddedCopyright
+        return true
     }
 }
 

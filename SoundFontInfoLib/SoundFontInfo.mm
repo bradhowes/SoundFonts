@@ -50,10 +50,18 @@ using namespace SF2;
 
 @implementation SoundFontInfo
 
-- (id)init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets {
+- (id)init:(NSString*)name url:(NSURL*)url
+    author:(NSString*)embeddedAuthor
+   comment:(NSString*)embeddedComment
+ copyright:(NSString*)embeddedCopyright
+   presets:(NSArray<SoundFontInfoPreset*>*)presets
+{
     if (self = [super init]) {
         self.url = url;
         self.embeddedName = name;
+        self.embeddedAuthor = embeddedAuthor;
+        self.embeddedComment = embeddedComment;
+        self.embeddedCopyright = embeddedCopyright;
         self.presets = presets;
     }
     return self;
@@ -93,6 +101,10 @@ using namespace SF2;
         fd = -1;
 
         NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName().c_str()];
+        NSString* embeddedAuthor = [NSString stringWithUTF8String:info.embeddedAuthor().c_str()];
+        NSString* embeddedCopyright = [NSString stringWithUTF8String:info.embeddedCopyright().c_str()];
+        NSString* embeddedComment = [NSString stringWithUTF8String:info.embeddedComment().c_str()];
+
         NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets().size()];
         for (auto it = info.presets().begin(); it != info.presets().end(); ++it) {
             [presets addObject:[[SoundFontInfoPreset alloc] initForSFPreset:*it]];
@@ -108,7 +120,12 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        result = [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
+        result = [[SoundFontInfo alloc] init:embeddedName
+                                         url:url
+                                      author:embeddedAuthor
+                                     comment:embeddedComment
+                                   copyright:embeddedCopyright
+                                     presets:presets];
     }
     catch (enum IO::Format value) {
         if (fd != -1) ::close(fd);
@@ -125,7 +142,11 @@ using namespace SF2;
         fd = -1;
 
         NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName.c_str()];
+        NSString* embeddedAuthor = [NSString stringWithUTF8String:info.embeddedAuthor.c_str()];
+        NSString* embeddedCopyright = [NSString stringWithUTF8String:info.embeddedCopyright.c_str()];
+        NSString* embeddedComment = [NSString stringWithUTF8String:info.embeddedComment.c_str()];
         NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets.size()];
+
         for (auto it = info.presets.begin(); it != info.presets.end(); ++it) {
             [presets addObject:[[SoundFontInfoPreset alloc] initForPresetInfo:*it]];
         }
@@ -140,7 +161,12 @@ using namespace SF2;
             return NSOrderedDescending;
         }];
 
-        result = [[SoundFontInfo alloc] init:embeddedName url:url presets:presets];
+        result = [[SoundFontInfo alloc] init:embeddedName
+                                         url:url
+                                      author:embeddedAuthor
+                                     comment:embeddedComment
+                                   copyright:embeddedCopyright
+                                     presets:presets];
     }
     catch (enum IO::Format value) {
         if (fd != -1) ::close(fd);

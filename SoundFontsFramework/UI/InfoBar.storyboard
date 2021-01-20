@@ -167,11 +167,6 @@
                                     <constraint firstItem="oWy-3z-Rka" firstAttribute="centerY" secondItem="So5-iS-wEF" secondAttribute="centerY" id="gPV-2p-AZq"/>
                                     <constraint firstItem="7YL-wn-sth" firstAttribute="leading" secondItem="oWy-3z-Rka" secondAttribute="trailing" constant="16" id="ny2-Ig-8Xl"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <variation key="widthClass=regular" hidden="NO"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xhd-zn-gSn" userLabel="Background">

@@ -6,7 +6,6 @@ import os
 /**
  Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
  */
-@IBDesignable
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     private lazy var log = Logging.logger("FavCell")
 
@@ -21,18 +20,18 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     }
 
     /// The background color of an inactive favorite cell
-    @IBInspectable var normalBackgroundColor: UIColor! { didSet { self.backgroundColor = normalBackgroundColor } }
+    let normalBackgroundColor = UIColor(hex: "141414")
 
     /// Foreground color of an inactive favorite cell
-    @IBInspectable var normalForegroundColor: UIColor!
+    var normalForegroundColor = UIColor.lightGray
 
     /// Background color of the active favorite cell
-    @IBInspectable var activeBackgroundColor: UIColor!
+    var activeBackgroundColor = UIColor(hex: "141414")
 
     /// Foreground color of the active favorite cell
-    @IBInspectable var activeForegroundColor: UIColor!
+    var activeForegroundColor = UIColor.systemTeal
 
-    private var normalBorderColor: UIColor?
+    let normalBorderColor = UIColor.darkGray
 
     /// Attribute set by the FavoritesViewController to limit the cell's width
     var maxWidth: CGFloat? = nil {
@@ -44,7 +43,9 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     }
 
     /// Indicates if the cell is currently moving around. Update the border color when it is.
-    var moving: Bool = false { didSet { self.borderColor = moving ? UIColor.magenta : normalBorderColor } }
+    var moving: Bool = false {
+        didSet { self.layer.borderColor = (moving ? UIColor.systemOrange : normalBorderColor).cgColor }
+    }
 
     /// The intrinsic size of the cell is its content view with the current label text.
     override var intrinsicContentSize: CGSize {
@@ -69,12 +70,12 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
         if isActive {
             backgroundColor = activeBackgroundColor
             name.textColor = activeForegroundColor
-            borderColor = activeForegroundColor
+            layer.borderColor = activeForegroundColor.cgColor
         }
         else {
             backgroundColor = normalBackgroundColor
             name.textColor = normalForegroundColor
-            borderColor = .darkGray
+            layer.borderColor = UIColor.darkGray.cgColor
         }
 
         invalidateIntrinsicContentSize()
@@ -89,7 +90,10 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
 private extension FavoriteCell {
 
     func setupView() {
-        normalBorderColor = borderColor
+        layer.borderColor = UIColor.darkGray.cgColor
+        layer.borderWidth = 1.0
+        layer.cornerRadius = 10.0
+
         contentView.translatesAutoresizingMaskIntoConstraints = false
         invalidateIntrinsicContentSize()
     }

@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-enum DecodableDefault {}
+public enum DecodableDefault {}
 
 protocol DecodableDefaultSource {
     associatedtype Value: Decodable

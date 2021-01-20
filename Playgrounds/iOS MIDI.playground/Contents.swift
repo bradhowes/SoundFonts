@@ -1,7 +1,6 @@
 import UIKit
 import PlaygroundSupport
 
-@IBDesignable
 open class Arrow: UIView {
 
     public enum Position: Int, CaseIterable {
@@ -12,22 +11,22 @@ open class Arrow: UIView {
     }
 
     open var entry: Position = .left { didSet { createPath() } }
-    @IBInspectable open var entryIB: Int {
+    open var entryIB: Int {
         get { entry.rawValue }
         set { entry = Position(rawValue: newValue) ?? .left }
     }
 
     open var exit: Position = .bottom { didSet { createPath() } }
-    @IBInspectable open var exitIB: Int {
+    open var exitIB: Int {
         get { exit.rawValue }
         set { exit = Position(rawValue: newValue) ?? .bottom }
     }
 
-    @IBInspectable open var arrowWidth: CGFloat = 8.0 { didSet { createPath() } }
-    @IBInspectable open var arrowLength: CGFloat = 10.0 { didSet { createPath() } }
+    open var arrowWidth: CGFloat = 8.0 { didSet { createPath() } }
+    open var arrowLength: CGFloat = 10.0 { didSet { createPath() } }
 
-    @IBInspectable open var bendFactor: CGFloat = 0.20 { didSet { createPath() } }
-    @IBInspectable open var wavyFactor: CGFloat = 0.10 { didSet { createPath() } }
+    open var bendFactor: CGFloat = 0.20 { didSet { createPath() } }
+    open var wavyFactor: CGFloat = 0.10 { didSet { createPath() } }
 
     private let pathLayer = CAShapeLayer()
 

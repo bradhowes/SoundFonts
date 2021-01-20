@@ -7,13 +7,13 @@ import os
  Custom UIControl that shows a traditional checkbox. Touching the box toggles the value. Note that
  iOS 14 now has its own variation of this via UISwitch and its checkbox style.
  */
-@IBDesignable open class Checkbox: UIControl {
+open class Checkbox: UIControl {
 
     /// The current value of the control.
-    @IBInspectable open var isChecked: Bool { get { _value } set { setChecked(newValue, animated: false) } }
+    open var isChecked: Bool { get { _value } set { setChecked(newValue, animated: false) } }
 
     /// The width of the border.
-    @IBInspectable open var borderLineWidth: CGFloat = 3 { didSet { borderLayer.lineWidth = borderLineWidth } }
+    open var borderLineWidth: CGFloat = 3 { didSet { borderLayer.lineWidth = borderLineWidth } }
 
     /// The shapes supported for a border.
     public enum BorderShape: Int {
@@ -23,16 +23,16 @@ import os
 
     /// The shape of the border.
     open var borderShape: BorderShape = .square { didSet { createBorder() } }
-    @IBInspectable open var borderShapeIB: Int {
+    open var borderShapeIB: Int {
         get { borderShape.rawValue }
         set { borderShape = BorderShape(rawValue: newValue)! }
     }
 
     /// The color of the border when in the unchecked state
-    @IBInspectable open var uncheckedBorderColor: UIColor = .darkGray { didSet { draw() } }
+    open var uncheckedBorderColor: UIColor = .darkGray { didSet { draw() } }
 
     /// The color of the border when in the checked state
-    @IBInspectable open var checkedBorderColor: UIColor = .darkGray { didSet { draw() } }
+    open var checkedBorderColor: UIColor = .darkGray { didSet { draw() } }
 
     /// The shapes supported for the checked indicator.
     public enum CheckShape: Int {
@@ -44,17 +44,17 @@ import os
 
     /// The shape of the checked indicator.
     open var checkShape: CheckShape = .check { didSet { createCheck() } }
-    @IBInspectable open var checkShapeIB: Int {
+    open var checkShapeIB: Int {
         get { checkShape.rawValue }
         set { checkShape = CheckShape(rawValue: newValue)! }
     }
 
     /// The stroke width used for checked indicators with lines.
-    @IBInspectable open var checkLineWidth: CGFloat = 4 { didSet { checkLayer.lineWidth = checkLineWidth } }
+    open var checkLineWidth: CGFloat = 4 { didSet { checkLayer.lineWidth = checkLineWidth } }
 
     /// Insets applied to the border frame to get the checked indicator frame.
     open var checkInsets: UIEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7) { didSet { createCheck() } }
-    @IBInspectable open var checkInset: Float {
+    open var checkInset: Float {
         get { Float(checkInsets.top) }
         set { checkInsets = UIEdgeInsets(top: CGFloat(newValue), left: CGFloat(newValue), bottom: CGFloat(newValue), right: CGFloat(newValue)) }
     }

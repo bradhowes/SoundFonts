@@ -5,7 +5,7 @@ import UIKit
 /**
  Custom UIView that draws an arrow between an entry and an exit point on the border of the view.
  */
-@IBDesignable open class ArrowView: UIView {
+open class ArrowView: UIView {
 
     /**
      Supported locations for an entry or an exit
@@ -19,20 +19,20 @@ import UIKit
 
     /// Entry point for the arrow in this view
     open var entry: Position = .left { didSet { createPaths() } }
-    @IBInspectable open var entryIB: Int {
+    open var entryIB: Int {
         get { entry.rawValue }
         set { entry = Position(rawValue: newValue) ?? .left }
     }
 
     /// Exit point for the arrow in this view
     open var exit: Position = .bottom { didSet { createPaths() } }
-    @IBInspectable open var exitIB: Int {
+    open var exitIB: Int {
         get { exit.rawValue }
         set { exit = Position(rawValue: newValue) ?? .bottom }
     }
 
     /// Line width of the line
-    @IBInspectable open var lineWidth: CGFloat = 2.0 {
+    open var lineWidth: CGFloat = 2.0 {
         didSet {
             lineLayer.lineWidth = lineWidth
             arrowLayer.lineWidth = lineWidth
@@ -40,27 +40,27 @@ import UIKit
     }
 
     /// Width of the arrow tail (gap across the top of the "V")
-    @IBInspectable open var arrowWidth: CGFloat = 8.0 { didSet { createArrow() } }
+    open var arrowWidth: CGFloat = 8.0 { didSet { createArrow() } }
 
     /// Color of the line
-    @IBInspectable open var lineColor: UIColor = .systemOrange { didSet { lineLayer.strokeColor = lineColor.cgColor } }
+    open var lineColor: UIColor = .systemOrange { didSet { lineLayer.strokeColor = lineColor.cgColor } }
 
     /// Color of the arrow
-    @IBInspectable open var arrowBorderColor: UIColor = .systemOrange { didSet { arrowLayer.strokeColor = arrowBorderColor.cgColor } }
+    open var arrowBorderColor: UIColor = .systemOrange { didSet { arrowLayer.strokeColor = arrowBorderColor.cgColor } }
 
     /// Color of the arrow
-    @IBInspectable open var arrowFillColor: UIColor = .systemOrange { didSet { arrowLayer.fillColor = arrowFillColor.cgColor } }
+    open var arrowFillColor: UIColor = .systemOrange { didSet { arrowLayer.fillColor = arrowFillColor.cgColor } }
 
     /// Length of the arrow
-    @IBInspectable open var arrowLength: CGFloat = 10.0 { didSet { createPaths() } }
+    open var arrowLength: CGFloat = 10.0 { didSet { createPaths() } }
 
     /// Amount of bending given to a curve. This is multiplied with the dimension of the of the view and added to the dimenion mid point to obtain
     /// an X or Y coordinate for a control point.
-    @IBInspectable open var bendFactor: CGFloat = 0.20 { didSet { createLine() } }
+    open var bendFactor: CGFloat = 0.20 { didSet { createLine() } }
 
     /// Amount of waviness in horizontal/vertical lines. This is multiplied with the dimension of the of the view and added to the dimenion
     /// mid point to obtain an X or Y coordinate for a control point.
-    @IBInspectable open var wavyFactor: CGFloat = 0.10 { didSet { createLine() } }
+    open var wavyFactor: CGFloat = 0.10 { didSet { createLine() } }
 
     private let lineLayer = CAShapeLayer()
     private let arrowLayer = CAShapeLayer()

@@ -40,11 +40,6 @@
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                        <real key="value" value="0.0"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Double-tap to edit. Long-tap to move." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOv-ZO-3C2" userLabel="Favorites">
                                                 <rect key="frame" x="0.0" y="30.333333333333343" width="390" height="310.33333333333326"/>
