@@ -21,6 +21,7 @@ public enum KeyLabelOption: Int {
 public final class SettingsViewController: UIViewController {
     private let log = Logging.logger("SetVC")
 
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var upperBackground: UIView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
@@ -54,50 +55,94 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var copyFiles: UISwitch!
 
+    @IBOutlet weak var divider5: UIView!
+    @IBOutlet weak var globalTuningTitle: UILabel!
+    @IBOutlet weak var standardTuningLabel: UILabel!
+    @IBOutlet weak var standardTuningButton: UIButton!
+    @IBOutlet weak var scientificTuningLabel: UILabel!
+    @IBOutlet weak var scientificTuningButton: UIButton!
+    @IBOutlet weak var globalTuningCentsLabel: UILabel!
+    @IBOutlet weak var globalTuningCents: UITextField!
+    @IBOutlet weak var globalTuningFrequencyLabel: UILabel!
+    @IBOutlet weak var globalTuningFrequency: UITextField!
+    @IBOutlet private weak var useStandardTuning: UIButton!
+    @IBOutlet private weak var useVerdiTuning: UIButton!
+
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var review: UIButton!
     @IBOutlet private weak var contactButton: UIButton!
 
     private var revealKeyboardForKeyWidthChanges = false
+    private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
     public var soundFonts: SoundFonts!
     public var isMainApp = true
+
+    private lazy var numberParserFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        globalTuningCents.delegate = self
+        globalTuningFrequency.delegate = self
+        review.isEnabled = isMainApp
+        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
+        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+        keyWidthSlider.maximumValue = 96.0
+        keyWidthSlider.minimumValue = 32.0
+        keyWidthSlider.isContinuous = true
+
+        // iOS bug? Workaround to get the tint to affect the stepper button labels
+        midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
+        midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
+
+        globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
+        globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
+
+        preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        view.addGestureRecognizer(numberKeyboardDoneProxy)
+        numberKeyboardDoneProxy.addClosure { [weak self] _ in
+            self?.view.endEditing(true)
+        }
+    }
 
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
 
-        review.isEnabled = isMainApp
-
-        revealKeyboardForKeyWidthChanges = false
+        revealKeyboardForKeyWidthChanges = true
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
             revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
         }
 
         playSample.isOn = Settings.shared.playSample
         showSolfegeNotes.isOn = Settings.shared.showSolfegeLabel
-
         keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
-        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
-        keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
-
         updateButtonState()
 
-        keyWidthSlider.maximumValue = 96.0
-        keyWidthSlider.minimumValue = 32.0
-        keyWidthSlider.isContinuous = true
         keyWidthSlider.value = Settings.shared.keyWidth
-
         slideKeyboard.isOn = Settings.shared.slideKeyboard
 
-        // iOS bug? Workaround to get the tint to affect the stepper button labels
-        midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
-        midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
         midiChannelStepper.value = Double(Settings.instance.midiChannel)
         updateMidiChannel()
 
         slideKeyboard.isOn = Settings.shared.slideKeyboard
+
+        let useVerdiTuning = Settings.shared.useVerdiTuning
+        if useVerdiTuning {
+            setVerdiTuningState(useVerdiTuning)
+        }
+        else {
+            let globalTuning = Settings.shared.globalTuning
+            setGlobalTuningCents(globalTuning)
+        }
+
         copyFiles.isOn = Settings.shared.copyFilesWhenAdding
 
         endShowKeyboard()
@@ -114,12 +159,40 @@ public final class SettingsViewController: UIViewController {
         divider2.isHidden = isAUv3
 
         preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
+                                       name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
+                                       name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 }
 
 extension SettingsViewController {
 
+    @IBAction func setStandardTuningState(_ state: Bool) { setGlobalTuningFrequency(440.0) }
+
+    @IBAction func setVerdiTuningState(_ state: Bool) { setGlobalTuningFrequency(432.0) }
+
+    private func centsToFrequency(_ cents: Float) -> Float { pow(2.0, (cents / 1200.0)) * 440.0 }
+
+    private func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
+
+    private func setGlobalTuningCents(_ cents: Float) {
+        let cents = min(max(cents, -2400.0), 2400.0)
+        let frequency = centsToFrequency(cents)
+        globalTuningCents.text = numberParserFormatter.string(from: NSNumber(value: cents))
+        globalTuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: frequency))
+        Settings.shared.globalTuning = cents
+    }
+
+    private func setGlobalTuningFrequency(_ frequency: Float) {
+        let cents = frequencyToCents(frequency)
+        setGlobalTuningCents(cents)
+    }
+
     private func beginShowKeyboard() {
+        print("beginShowKeyboard")
         copyFilesStackView.isHidden = true
         midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
@@ -130,10 +203,22 @@ extension SettingsViewController {
         importSoundFontsStackView.isHidden = true
         versionReviewStackView.isHidden = true
         contactDeveloperStackView.isHidden = true
+        globalTuningTitle.isHidden = true
+        standardTuningLabel.isHidden = true
+        standardTuningButton.isHidden = true
+        scientificTuningLabel.isHidden = true
+        scientificTuningButton.isHidden = true
+        globalTuningCentsLabel.isHidden = true
+        globalTuningCents.isHidden = true
+        globalTuningFrequencyLabel.isHidden = true
+        globalTuningFrequency.isHidden = true
+        useStandardTuning.isHidden = true
+        useVerdiTuning.isHidden = true
         divider1.isHidden = true
         divider2.isHidden = true
         divider3.isHidden = true
         divider4.isHidden = true
+        divider5.isHidden = true
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
     }
@@ -161,13 +246,15 @@ extension SettingsViewController {
     @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidBegin")
         guard revealKeyboardForKeyWidthChanges else { return }
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: self.beginShowKeyboard)
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
+                                                       animations: self.beginShowKeyboard)
     }
 
     @IBAction func keyWidthEditingDidEnd(_ sender: Any) {
         os_log(.info, log: log, "keyWidthEditingDidEnd")
         guard revealKeyboardForKeyWidthChanges else { return }
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction], animations: self.endShowKeyboard)
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
+                                                       animations: self.endShowKeyboard)
     }
 
     private func updateButtonState() {
@@ -175,13 +262,9 @@ extension SettingsViewController {
         removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
     }
 
-    @IBAction private func close(_ sender: Any) {
-        self.dismiss(animated: true)
-    }
+    @IBAction private func close(_ sender: Any) { dismiss(animated: true) }
 
-    @IBAction func visitAppStore(_ sender: Any) {
-        NotificationCenter.default.post(Notification(name: .visitAppStore))
-    }
+    @IBAction func visitAppStore(_ sender: Any) { NotificationCenter.default.post(Notification(name: .visitAppStore)) }
 
     @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
         Settings.shared.showSolfegeLabel = self.showSolfegeNotes.isOn
@@ -210,17 +293,18 @@ extension SettingsViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
-    @IBAction func handleDone(_ blah: Any) {
-
-    }
-
     @IBAction private func toggleCopyFiles(_ sender: Any) {
         if self.copyFiles.isOn == false {
             let ac = UIAlertController(title: "Disable Copying?", message: """
-Direct file access can lead to unusable SF2 file references if the file moves or is not immedately available on the device. Are you sure you want to disable copying?
+Direct file access can lead to unusable SF2 file references if the file moves or is not immedately available on the
+device. Are you sure you want to disable copying?
 """, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "Yes", style: .default) { _ in Settings.shared.copyFilesWhenAdding = false })
-            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in self.copyFiles.isOn = true })
+            ac.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+                Settings.shared.copyFilesWhenAdding = false
+            })
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+                self.copyFiles.isOn = true
+            })
             present(ac, animated: true)
         }
         else {
@@ -309,7 +393,80 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
         }
     }
 
-    public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+    public func mailComposeController(_ controller: MFMailComposeViewController,
+                                      didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
+    }
+}
+
+extension SettingsViewController: UITextFieldDelegate {
+
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("shouldReturn")
+        return true
+    }
+
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("didBeginEditing")
+        DispatchQueue.main.async {
+            textField.selectedTextRange = textField.textRange(from: textField.endOfDocument,
+                                                              to: textField.endOfDocument)
+        }
+    }
+
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == globalTuningCents {
+            parseGlobalTuningCents()
+        }
+        else {
+            parseGlobalTuningFrequency()
+        }
+    }
+
+    @IBAction private func adjustForKeyboard(_ notification: Notification) {
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            scrollView.contentInset = .zero
+        } else {
+            let localFrame = view.convert(keyboardFrame.cgRectValue, from: view.window)
+            let shift = localFrame.height - view.safeAreaInsets.bottom
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: shift, right: 0)
+        }
+
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+    }
+}
+
+extension SettingsViewController {
+
+    private func parseGlobalTuningCents() {
+        guard let text = globalTuningCents.text else {
+            setGlobalTuningCents(Settings.shared.globalTuning)
+            return
+        }
+
+        guard let value = numberParserFormatter.number(from: text) else {
+            setGlobalTuningCents(Settings.shared.globalTuning)
+            return
+        }
+
+        setGlobalTuningCents(value.floatValue)
+    }
+
+    private func parseGlobalTuningFrequency() {
+        guard let text = globalTuningFrequency.text else {
+            setGlobalTuningCents(Settings.shared.globalTuning)
+            return
+        }
+
+        guard let value = numberParserFormatter.number(from: text) else {
+            setGlobalTuningCents(Settings.shared.globalTuning)
+            return
+        }
+
+        setGlobalTuningFrequency(value.floatValue)
     }
 }
