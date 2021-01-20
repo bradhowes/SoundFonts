@@ -23,8 +23,17 @@ public final class DelayViewController: AUViewController {
         super.viewDidLoad()
         if audioUnit != nil && parameterObserverToken == nil { connectAU() }
 
-        cutoff.minimumValue = log10(cutoff.minimumValue)
-        cutoff.maximumValue = log10(cutoff.maximumValue)
+        time.minimumValue = 0
+        time.maximumValue = 2
+
+        feedback.minimumValue = -100.0
+        feedback.maximumValue =  100.0
+
+        cutoff.minimumValue = log10(10.0)
+        cutoff.maximumValue = log10(20_000.0)
+
+        wetDryMix.minimumValue = 0
+        wetDryMix.maximumValue = 100
     }
 
     public override func viewWillAppear(_ animated: Bool) {

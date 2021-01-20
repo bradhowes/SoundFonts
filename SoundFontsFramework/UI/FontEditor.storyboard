@@ -14,9 +14,9 @@
             <objects>
                 <viewController title="FontEditor" id="Eyw-X4-KFI" userLabel="FontEditor" customClass="FontEditor" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mEt-ep-ZyB">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="380"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="400"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" indicatorStyle="white" translatesAutoresizingMaskIntoConstraints="NO" id="b5u-sn-F2E">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="400"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
