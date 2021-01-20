@@ -18,26 +18,13 @@ open class ArrowView: UIView {
     }
 
     /// Entry point for the arrow in this view
-    open var entry: Position = .left { didSet { createPaths() } }
-    open var entryIB: Int {
-        get { entry.rawValue }
-        set { entry = Position(rawValue: newValue) ?? .left }
-    }
+    open var entry: Position = .top
 
     /// Exit point for the arrow in this view
-    open var exit: Position = .bottom { didSet { createPaths() } }
-    open var exitIB: Int {
-        get { exit.rawValue }
-        set { exit = Position(rawValue: newValue) ?? .bottom }
-    }
+    open var exit: Position = .bottom
 
     /// Line width of the line
-    open var lineWidth: CGFloat = 2.0 {
-        didSet {
-            lineLayer.lineWidth = lineWidth
-            arrowLayer.lineWidth = lineWidth
-        }
-    }
+    open var lineWidth: CGFloat = 0.5
 
     /// Width of the arrow tail (gap across the top of the "V")
     open var arrowWidth: CGFloat = 8.0 { didSet { createArrow() } }
