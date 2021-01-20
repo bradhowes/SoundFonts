@@ -84,17 +84,6 @@
                                                                                             <constraint firstAttribute="width" secondItem="T20-Wa-s33" secondAttribute="height" id="7V0-Eb-LF9"/>
                                                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="rQq-eB-If9"/>
                                                                                         </constraints>
-                                                                                        <userDefinedRuntimeAttributes>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                                <real key="value" value="0.0"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                                <real key="value" value="100"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                                <real key="value" value="20"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                        </userDefinedRuntimeAttributes>
                                                                                         <connections>
                                                                                             <action selector="changeReverbWebDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="Szd-v6-C24"/>
                                                                                         </connections>
@@ -177,17 +166,6 @@
                                                                                             <constraint firstAttribute="width" secondItem="Htb-6b-YVY" secondAttribute="height" multiplier="1:1" id="ezB-q9-Isf"/>
                                                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="fZz-5V-9Or"/>
                                                                                         </constraints>
-                                                                                        <userDefinedRuntimeAttributes>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                                <real key="value" value="0.0"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                                <real key="value" value="2"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                            <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                                <real key="value" value="1"/>
-                                                                                            </userDefinedRuntimeAttribute>
-                                                                                        </userDefinedRuntimeAttributes>
                                                                                         <connections>
                                                                                             <action selector="changeDelayTime:" destination="erm-79-XXa" eventType="valueChanged" id="f7U-NN-lp6"/>
                                                                                         </connections>
@@ -212,17 +190,6 @@
                                                                                     <constraint firstAttribute="width" secondItem="iM2-XN-xlU" secondAttribute="height" multiplier="1:1" id="f9r-ZB-MMo"/>
                                                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="wDo-jb-yE8"/>
                                                                                 </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="-100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="50"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayFeedback:" destination="erm-79-XXa" eventType="valueChanged" id="wRQ-7d-nE8"/>
                                                                                 </connections>
@@ -245,17 +212,6 @@
                                                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="ltZ-dl-ISb"/>
                                                                                     <constraint firstAttribute="width" secondItem="1pW-XF-kq9" secondAttribute="height" multiplier="1:1" id="zxz-QP-a9e"/>
                                                                                 </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="10"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="20000"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="15000"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayCutoff:" destination="erm-79-XXa" eventType="valueChanged" id="3n5-fT-Dmu"/>
                                                                                 </connections>
@@ -278,17 +234,6 @@
                                                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="I1l-m2-zcI"/>
                                                                                     <constraint firstAttribute="width" secondItem="Ex1-3w-meW" secondAttribute="height" multiplier="1:1" id="Pzo-7K-RG4"/>
                                                                                 </constraints>
-                                                                                <userDefinedRuntimeAttributes>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                                                        <real key="value" value="0.0"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                                                        <real key="value" value="100"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                    <userDefinedRuntimeAttribute type="number" keyPath="value">
-                                                                                        <real key="value" value="20"/>
-                                                                                    </userDefinedRuntimeAttribute>
-                                                                                </userDefinedRuntimeAttributes>
                                                                                 <connections>
                                                                                     <action selector="changeDelayWetDryMix:" destination="erm-79-XXa" eventType="valueChanged" id="xiw-KF-84l"/>
                                                                                 </connections>

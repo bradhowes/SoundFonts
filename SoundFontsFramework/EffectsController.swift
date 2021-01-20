@@ -39,14 +39,33 @@ public final class EffectsController: UIViewController {
         reverbRoom.dataSource = self
         reverbRoom.delegate = self
         reverbRoom.selectRow(Settings.instance.reverbPreset, inComponent: 0, animated: false)
+
+        reverbWetDryMix.minimumValue = 0
+        reverbWetDryMix.maximumValue = 100
+        reverbWetDryMix.value = 20
+
+        delayTime.minimumValue = 0
+        delayTime.maximumValue = 2
+        delayTime.value = 1
+
+        delayFeedback.minimumValue = -100.0
+        delayFeedback.maximumValue =  100.0
+        delayFeedback.value = 50.0
+
+        delayCutoff.minimumValue = log10(10.0)
+        delayCutoff.maximumValue = log10(20_000.0)
+        delayCutoff.value =        log10(15_000.0)
+
+        delayWetDryMix.minimumValue = 0
+        delayWetDryMix.maximumValue = 100
+        delayWetDryMix.value = 20
+
         reverbWetDryMix.value = Settings.instance.reverbWetDryMix
         updateReverbState(Settings.instance.reverbEnabled)
 
         delayTime.value = Settings.instance.delayTime
         delayFeedback.value = Settings.instance.delayFeedback
 
-        delayCutoff.minimumValue = log10(delayCutoff.minimumValue)
-        delayCutoff.maximumValue = log10(delayCutoff.maximumValue)
         delayCutoff.value = log10(Settings.instance.delayCutoff)
 
         delayWetDryMix.value = Settings.instance.delayWetDryMix

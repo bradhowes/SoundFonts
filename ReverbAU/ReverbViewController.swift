@@ -16,6 +16,10 @@ public final class ReverbViewController: AUViewController {
     public override func viewDidLoad() {
         os_log(.info, log: log, "viewDidLoad")
         super.viewDidLoad()
+
+        wetDryMix.minimumValue = 0
+        wetDryMix.maximumValue = 100
+
         room.dataSource = self
         room.delegate = self
     }
