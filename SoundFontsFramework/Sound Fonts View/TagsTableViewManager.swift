@@ -50,13 +50,6 @@ extension TagsTableViewManager: UITableViewDataSource {
 extension TagsTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        // If double-tap same row, close the tags view
-        if activeIndex == indexPath.row {
-            tagsHider()
-            return
-        }
-
         let oldIndexPath = IndexPath(row: activeIndex, section: 0)
         activeIndex = indexPath.row
         tableView.reloadRows(at: [oldIndexPath, indexPath], with: .automatic)
