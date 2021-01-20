@@ -31,19 +31,30 @@ Parser::parse(int fd, size_t fileSize)
             auto chunk = p1.makeChunk();
             p1 = chunk.advance();
             // std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
-            if (chunk.tag() == Tags::inam) {
-                char name[256];
-                chunk.begin().readInto(name, chunk.size());
-                trim_property(name);
-                info.embeddedName = std::string(name);
-            }
-            else if (chunk.tag() == Tags::phdr) {
-                auto p2 = chunk.begin();
-                while (p2 < chunk.end()) {
-                    Entity::Preset sfp(p2);
-                    info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.preset());
-                }
-                info.presets.pop_back();
+            switch (chunk.tag().rawValue()) {
+                case Tags::inam:
+                    info.embeddedName = chunk.extract();
+                    break;
+                case Tags::icop:
+                    info.embeddedCopyright = chunk.extract();
+                    break;
+
+                case Tags::ieng:
+                    info.embeddedAuthor = chunk.extract();
+                    break;
+
+                case Tags::icmt:
+                    info.embeddedComment = chunk.extract();
+                    break;
+                    
+                case Tags::phdr:
+                    auto p2 = chunk.begin();
+                    while (p2 < chunk.end()) {
+                        Entity::Preset sfp(p2);
+                        info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.preset());
+                    }
+                    info.presets.pop_back();
+                    break;
             }
         }
     }

@@ -31,6 +31,9 @@ public:
 
         /// The name embedded in the SF2 file
         std::string embeddedName;
+        std::string embeddedAuthor;
+        std::string embeddedCopyright;
+        std::string embeddedComment;
 
         /// The collection of preset definitions from the SF2 file
         std::vector<PresetInfo> presets;

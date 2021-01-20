@@ -11,6 +11,7 @@ using namespace SF2::IO;
 
 File::File(int fd, size_t fileSize) : fd_{fd}, size_{fileSize}, sampleDataBegin_{0}, sampleDataEnd_{0}
 {
+
     auto riff = Pos(fd, 0, fileSize).makeChunkList();
     if (riff.tag() != Tags::riff) throw Format::error;
     if (riff.kind() != Tags::sfbk) throw Format::error;
@@ -26,13 +27,10 @@ File::File(int fd, size_t fileSize) : fd_{fd}, size_{fileSize}, sampleDataBegin_
             p1 = chunk.advance();
             //std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
             switch (chunk.tag().rawValue()) {
-                case Tags::inam: {
-                    char name[256];
-                    chunk.begin().readInto(name, chunk.size());
-                    trim_property(name);
-                    embeddedName_ = name;
-                }
-                    break;
+                case Tags::inam: embeddedName_ = chunk.extract(); break;
+                case Tags::icop: embeddedCopyright_ = chunk.extract(); break;
+                case Tags::ieng: embeddedAuthor_ = chunk.extract(); break;
+                case Tags::icmt: embeddedComment_ = chunk.extract(); break;
                 case Tags::phdr: presets_.load(chunk); break;
                 case Tags::pbag: presetZones_.load(chunk); break;
                 case Tags::pgen: presetZoneGenerators_.load(chunk); break;

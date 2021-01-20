@@ -12,73 +12,73 @@ import os
  Visual representation of the knob is done via CoreAnimation components, namely CAShapeLayer and UIBezierPath. The diameter of the arc of the knob is
  defined by the min(width, height) of the view's frame. The start and end of the arc is controlled by the `startAngle` and `endAngle` settings.
  */
-@IBDesignable open class Knob: UIControl {
+open class Knob: UIControl {
 
     /// The minimum value reported by the control.
-    @IBInspectable open var minimumValue: Float = 0.0 { didSet { setValue(clampedValue(value), animated: false) } }
+    open var minimumValue: Float = 0.0 { didSet { setValue(clampedValue(value), animated: false) } }
 
     /// The maximum value reported by the control.
-    @IBInspectable open var maximumValue: Float = 1.0 { didSet { setValue(clampedValue(value), animated: false) } }
+    open var maximumValue: Float = 1.0 { didSet { setValue(clampedValue(value), animated: false) } }
 
     /// The current value of the control.
-    @IBInspectable open var value: Float { get { _value } set { setValue(clampedValue(newValue), animated: false) } }
+    open var value: Float { get { _value } set { setValue(clampedValue(newValue), animated: false) } }
 
     /// How much travel is need to move 4x the width or height of the knob to go from minimumValue to maximumValue. By default this is 4x the knob size.
-    @IBInspectable open var touchSensitivity: Float = 4.0
+    open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
-    @IBInspectable open var trackLineWidth: CGFloat = 3 { didSet { trackLayer.lineWidth = trackLineWidth } }
+    open var trackLineWidth: CGFloat = 3 { didSet { trackLayer.lineWidth = trackLineWidth } }
 
     /// The color of the arc shown after the current value.
-    @IBInspectable open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
+    open var trackColor: UIColor = .darkGray { didSet { trackLayer.strokeColor = trackColor.cgColor } }
 
     /// The width of the arc from the start up to the current value.
-    @IBInspectable open var progressLineWidth: CGFloat = 5 { didSet { progressLayer.lineWidth = progressLineWidth } }
+    open var progressLineWidth: CGFloat = 5 { didSet { progressLayer.lineWidth = progressLineWidth } }
 
     /// The color of the arc from the start up to the current value.
-    @IBInspectable open var progressColor: UIColor = .systemTeal { didSet { progressLayer.strokeColor = progressColor.cgColor } }
+    open var progressColor: UIColor = .systemTeal { didSet { progressLayer.strokeColor = progressColor.cgColor } }
 
     /// The width of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorLineWidth: CGFloat = 5 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
+    open var indicatorLineWidth: CGFloat = 5 { didSet { indicatorLayer.lineWidth = indicatorLineWidth } }
 
     /// The color of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var indicatorColor: UIColor = .systemTeal { didSet { indicatorLayer.strokeColor = indicatorColor.cgColor } }
+    open var indicatorColor: UIColor = .systemTeal { didSet { indicatorLayer.strokeColor = indicatorColor.cgColor } }
 
     /// The proportion of the radial line drawn from the current value on the arc towards the arc center.
     /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
     /// starting from the arc.
-    @IBInspectable open var indicatorLineLength: CGFloat = 0.3 { didSet { createShapes() } }
+    open var indicatorLineLength: CGFloat = 0.3 { didSet { createShapes() } }
 
     /// The width of the radial line drawn from the current value on the arc to the arc center.
-    @IBInspectable open var radialLineWidth: CGFloat = 1 { didSet { radialLayer.lineWidth = radialLineWidth } }
+    open var radialLineWidth: CGFloat = 1 { didSet { radialLayer.lineWidth = radialLineWidth } }
 
     /// The color of the radial line drawn from the current value on the arc towards the arc center.
-    @IBInspectable open var radialLineColor: UIColor = .systemTeal { didSet { radialLayer.strokeColor = radialLineColor.cgColor } }
+    open var radialLineColor: UIColor = .systemTeal { didSet { radialLayer.strokeColor = radialLineColor.cgColor } }
 
     /// The proportion of the radial line drawn from the current value on the arc towards the arc center.
     /// Range is from 0.0 to 1.0, where 1.0 will draw a complete line, and anything less will draw that fraction of it
     /// starting from the arc.
-    @IBInspectable open var radialLineLength: CGFloat = 0.1 { didSet { createShapes() } }
+    open var radialLineLength: CGFloat = 0.1 { didSet { createShapes() } }
 
     /// Number of ticks to show inside the track, with the first indicating the `minimumValue` and the last indicating the `maximumValue`
-    @IBInspectable open var tickCount: Int = 0 { didSet { createShapes() } }
+    open var tickCount: Int = 0 { didSet { createShapes() } }
 
     /// Length of the tick. Range is from 0.0 to 1.0 where 1.0 will draw a line ending at the center of the knob.
-    @IBInspectable open var tickLineLength: CGFloat = 0.2 { didSet { createShapes() } }
+    open var tickLineLength: CGFloat = 0.2 { didSet { createShapes() } }
 
     /// The width of the tick line.
-    @IBInspectable open var tickLineWidth: CGFloat = 1.0 { didSet { ticksLayer.lineWidth = tickLineWidth } }
+    open var tickLineWidth: CGFloat = 1.0 { didSet { ticksLayer.lineWidth = tickLineWidth } }
 
     /// The color of the tick line.
-    @IBInspectable open var tickLineColor: UIColor = .systemTeal { didSet { ticksLayer.strokeColor = tickLineColor.cgColor } }
+    open var tickLineColor: UIColor = .systemTeal { didSet { ticksLayer.strokeColor = tickLineColor.cgColor } }
 
     /// The starting angle of the arc where a value of 0.0 is located. Arc angles are explained in the UIBezier documentation
     /// for init(arcCenter:radius:startAngle:endAngle:clockwise:). In short, a value of 0.0 will start on the positive X axis,
     /// a positive PI/2 will lie on the negative Y axis. The default values will leave a small gap at the bottom.
-    @IBInspectable open var startAngle: Float = -Float.pi * 2.0 * 11 / 16.0 { didSet { createShapes() } }
+    open var startAngle: Float = -Float.pi * 2.0 * 11 / 16.0 { didSet { createShapes() } }
 
     /// The ending angle of the arc where a value of 1.0 is located. See `startAngle` for additional info.
-    @IBInspectable open var endAngle: Float = Float.pi * 2.0 * 3.0 / 16.0 { didSet { createShapes() } }
+    open var endAngle: Float = Float.pi * 2.0 * 3.0 / 16.0 { didSet { createShapes() } }
 
     private let trackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()

@@ -74,21 +74,33 @@ public extension CoreDataTestHarness {
 
 public struct CoreDataTestData {
 
-    static let sf1: SoundFontInfo = SoundFontInfo("one", url: URL(fileURLWithPath: "SF1.sf2"), presets: [
+    static let sf1: SoundFontInfo = SoundFontInfo("one", url: URL(fileURLWithPath: "SF1.sf2"),
+                                                  author: "Author",
+                                                  comment: "Comment",
+                                                  copyright: "Copyright",
+                                                  presets: [
         SoundFontInfoPreset("One", bank: 1, preset: 1),
         SoundFontInfoPreset("Two", bank: 1, preset: 2),
         SoundFontInfoPreset("Three", bank: 1, preset: 3),
         SoundFontInfoPreset("Four", bank: 1, preset: 4),
     ])!
 
-    static let sf2: SoundFontInfo = SoundFontInfo("two", url: URL(fileURLWithPath: "SF2.sf2"), presets: [
+    static let sf2: SoundFontInfo = SoundFontInfo("two", url: URL(fileURLWithPath: "SF2.sf2"),
+                                                  author: "Author",
+                                                  comment: "Comment",
+                                                  copyright: "Copyright",
+                                                  presets: [
         SoundFontInfoPreset("A", bank: 1, preset: 1),
         SoundFontInfoPreset("B", bank: 1, preset: 2),
         SoundFontInfoPreset("C", bank: 1, preset: 3),
         SoundFontInfoPreset("D", bank: 1, preset: 4),
     ])!
 
-    static let sf3: SoundFontInfo = SoundFontInfo("three", url: URL(fileURLWithPath: "SF3.sf2"), presets: [
+    static let sf3: SoundFontInfo = SoundFontInfo("three", url: URL(fileURLWithPath: "SF3.sf2"),
+                                                  author: "Author",
+                                                  comment: "Comment",
+                                                  copyright: "Copyright",
+                                                  presets: [
         SoundFontInfoPreset("Arnold", bank: 1, preset: 1),
         SoundFontInfoPreset("Bach", bank: 1, preset: 2),
         SoundFontInfoPreset("Chris", bank: 1, preset: 3),

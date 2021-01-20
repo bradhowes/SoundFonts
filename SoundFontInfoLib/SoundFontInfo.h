@@ -18,6 +18,9 @@
 
 @property (nonatomic, retain) NSURL* url;
 @property (nonatomic, retain) NSString* embeddedName;
+@property (nonatomic, retain) NSString* embeddedAuthor;
+@property (nonatomic, retain) NSString* embeddedComment;
+@property (nonatomic, retain) NSString* embeddedCopyright;
 @property (nonatomic, retain) NSArray<SoundFontInfoPreset*>* presets;
 
 + (SoundFontInfo*)loadViaParser:(NSURL*)url;
@@ -26,7 +29,12 @@
 + (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 + (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
-- (id) init:(NSString*)name url:(NSURL*)url presets:(NSArray<SoundFontInfoPreset*>*)presets;
+- (id) init:(NSString*)name
+        url:(NSURL*)url
+     author:(NSString*)embeddedAuthor
+    comment:(NSString*)embeddedComment
+  copyright:(NSString*)embeddedCopyright
+    presets:(NSArray<SoundFontInfoPreset*>*)presets;
 
 - (void)dump:(NSString*)path;
 

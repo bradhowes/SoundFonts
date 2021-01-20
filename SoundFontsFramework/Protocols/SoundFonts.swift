@@ -113,6 +113,8 @@ public protocol SoundFonts: class {
      */
     func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig?, reverb: ReverbConfig?)
 
+    func reloadEmbeddedInfo(key: LegacySoundFont.Key)
+
     /// Determine if there are any bundled fonts in the collection
     var hasAnyBundled: Bool { get }
 

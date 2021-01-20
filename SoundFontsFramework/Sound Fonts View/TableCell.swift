@@ -16,10 +16,10 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private var activeIndicatorAnimator: UIViewPropertyAnimator?
 
-    @IBInspectable public var normalFontColor: UIColor = .lightGray
-    @IBInspectable public var selectedFontColor: UIColor = .white
-    @IBInspectable public var activeFontColor: UIColor = .systemTeal
-    @IBInspectable public var favoriteFontColor: UIColor = .systemOrange
+    public let normalFontColor: UIColor = .lightGray
+    public let selectedFontColor: UIColor = .white
+    public let activeFontColor: UIColor = .systemTeal
+    public let favoriteFontColor: UIColor = .systemOrange
 
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var activeIndicator: UIView!

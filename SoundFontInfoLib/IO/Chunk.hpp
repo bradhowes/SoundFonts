@@ -5,6 +5,7 @@
 #include "Format.hpp"
 #include "Pos.hpp"
 #include "Tag.hpp"
+#include "StringUtils.hpp"
 
 namespace SF2 {
 namespace IO {
@@ -18,6 +19,13 @@ public:
     Pos begin() const { return pos_; }
     Pos end() const { return pos_.advance(size_); }
     Pos advance() const { return pos_.advance(paddedSize()); }
+
+    std::string extract() const {
+        char buffer[256];
+        begin().readInto(buffer, size());
+        trim_property(buffer);
+        return std::string(buffer);
+    }
 
 private:
     uint32_t paddedSize() const { return size_ + ((size_ & 1) ? 1 : 0); }

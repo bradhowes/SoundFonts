@@ -3,7 +3,7 @@
 import UIKit
 import os
 
-@IBDesignable public class ActiveIndicatorView: UIView {
+public class ActiveIndicatorView: UIView {
 
     override public class var layerClass: AnyClass { CAGradientLayer.self }
 

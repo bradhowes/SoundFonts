@@ -3,16 +3,16 @@
 import UIKit
 import os
 
-@IBDesignable public class GradientView: UIView {
+public class GradientView: UIView {
 
-    @IBInspectable var startColor: UIColor = .black { didSet { updateColors() }}
-    @IBInspectable var endColor: UIColor = .white { didSet { updateColors() }}
+    var startColor: UIColor = .black { didSet { updateColors() }}
+    var endColor: UIColor = .white { didSet { updateColors() }}
 
-    @IBInspectable var startLocation: Double =   0.05 { didSet { updateLocations() }}
-    @IBInspectable var endLocation: Double =   0.95 { didSet { updateLocations() }}
+    var startLocation: Double =   0.05 { didSet { updateLocations() }}
+    var endLocation: Double =   0.95 { didSet { updateLocations() }}
 
-    @IBInspectable var horizontalMode: Bool =  false { didSet { updatePoints() }}
-    @IBInspectable var diagonalMode: Bool =  false { didSet { updatePoints() }}
+    var horizontalMode: Bool =  false { didSet { updatePoints() }}
+    var diagonalMode: Bool =  false { didSet { updatePoints() }}
 
     override public class var layerClass: AnyClass { CAGradientLayer.self }
 

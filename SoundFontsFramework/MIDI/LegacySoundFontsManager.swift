@@ -221,6 +221,19 @@ extension LegacySoundFontsManager: SoundFonts {
         markDirty()
     }
 
+    public func reloadEmbeddedInfo(key: LegacySoundFont.Key) {
+        guard let soundFont = getBy(key: key) else { return }
+        guard soundFont.embeddedAuthor.isEmpty &&
+                soundFont.embeddedComment.isEmpty &&
+                soundFont.embeddedCopyright.isEmpty else {
+            return
+        }
+
+        if soundFont.reloadEmbeddedInfo() {
+            markDirty()
+        }
+    }
+
     /**
      Copy one file to the local document directory.
      */

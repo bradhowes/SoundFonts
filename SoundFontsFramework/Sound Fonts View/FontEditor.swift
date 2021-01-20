@@ -42,6 +42,9 @@ final class FontEditor: UIViewController {
     @IBOutlet private weak var favoritesCountLabel: UILabel!
     @IBOutlet private weak var hiddenCountLabel: UILabel!
     @IBOutlet private weak var resetVisibilityButton: UIButton!
+    @IBOutlet private weak var embeddedComment: UILabel!
+    @IBOutlet private weak var embeddedCopyright: UILabel!
+    @IBOutlet private weak var embeddedAuthor: UILabel!
     @IBOutlet private weak var path: UILabel!
 
     func configure(_ config: Config) {
@@ -51,6 +54,8 @@ final class FontEditor: UIViewController {
         favoriteCount = config.favoriteCount
         tagsManager = config.tagsManager
         completionHandler = config.completionHandler
+
+        soundFonts.reloadEmbeddedInfo(key: soundFontKey)
 
         guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
         activeTags = soundFont.tags
@@ -63,6 +68,10 @@ final class FontEditor: UIViewController {
         name.delegate = self
         originalNameLabel.text = soundFont.originalDisplayName
         embeddedNameLabel.text = soundFont.embeddedName
+        embeddedComment.text = soundFont.embeddedComment
+        embeddedAuthor.text = soundFont.embeddedAuthor
+        embeddedCopyright.text = soundFont.embeddedCopyright
+
         kindLabel.text = {
             switch soundFont.kind {
             case .builtin: return "app resource"

@@ -24,6 +24,10 @@ public:
     explicit File(int fd, size_t size);
 
     std::string const& embeddedName() const { return embeddedName_; }
+    std::string const& embeddedAuthor() const { return embeddedAuthor_; }
+    std::string const& embeddedComment() const { return embeddedComment_; }
+    std::string const& embeddedCopyright() const { return embeddedCopyright_; }
+
     ::SF2::IO::ChunkItems<::SF2::Entity::Preset> const& presets() const { return presets_; };
     ::SF2::IO::ChunkItems<::SF2::Entity::Bag> const& presetZones() const { return presetZones_; };
     ::SF2::IO::ChunkItems<::SF2::Entity::Generator> const& presetZoneGenerators() const { return presetZoneGenerators_; };
@@ -40,6 +44,10 @@ private:
     size_t sampleDataBegin_;
     size_t sampleDataEnd_;
     std::string embeddedName_;
+    std::string embeddedAuthor_;
+    std::string embeddedComment_;
+    std::string embeddedCopyright_;
+
     ::SF2::IO::ChunkItems<::SF2::Entity::Preset> presets_;
     ::SF2::IO::ChunkItems<::SF2::Entity::Bag> presetZones_;
     ::SF2::IO::ChunkItems<::SF2::Entity::Generator> presetZoneGenerators_;
