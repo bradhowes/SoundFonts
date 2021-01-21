@@ -89,10 +89,6 @@ final class FontEditor: UIViewController {
         let value = tagsManager.names(of: activeTags).joined(separator: ", ")
         print(value)
         tags.text = value
-
-//        let minSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-//        preferredContentSize = CGSize(width: min(420, minSize.width), height: min(420, minSize.height))
-//        print(preferredContentSize)
     }
 
     private func updateHiddenCount() {
@@ -141,7 +137,6 @@ extension FontEditor: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        close(doneButton)
         return true
     }
 }

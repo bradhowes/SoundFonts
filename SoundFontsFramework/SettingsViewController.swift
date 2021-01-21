@@ -403,6 +403,7 @@ extension SettingsViewController: UITextFieldDelegate {
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         print("shouldReturn")
+        textField.resignFirstResponder()
         return true
     }
 
