@@ -8,6 +8,17 @@ import AudioToolbox
  */
 final public class LegacyPatch: Codable {
 
+    enum V1Keys: String, CodingKey {
+        case name
+        case bank
+        case program
+        case soundFontIndex
+        case isVisible
+        case reverbConfig
+        case delayConfig
+        case presetConfig
+    }
+
     /// Display name for the patch
     public var name: String
 
@@ -21,7 +32,7 @@ final public class LegacyPatch: Codable {
     public let soundFontIndex: Int
 
     /// Determines the visibility of a preset in a UI view.
-    @DecodableDefault.True var isVisible: Bool
+    var isVisible: Bool
 
     /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension)
     var reverbConfig: ReverbConfig?
@@ -30,9 +41,8 @@ final public class LegacyPatch: Codable {
     var delayConfig: DelayConfig?
 
     /// Configuration parameters that can be adjusted by the user.
-    var presetConfig: PresetConfig? {
+    var presetConfig: PresetConfig {
         didSet {
-            guard let presetConfig = presetConfig else { return }
             PresetConfig.changedNotification.post(value: presetConfig)
         }
     }
@@ -94,6 +104,20 @@ final public class LegacyPatch: Codable {
         self.bank = bank
         self.program = program
         self.soundFontIndex = index
+        self.isVisible = true
+        self.presetConfig = PresetConfig()
+    }
+
+    public required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: V1Keys.self)
+        self.name = try values.decode(String.self, forKey: .name)
+        self.bank = try values.decode(Int.self, forKey: .bank)
+        self.program = try values.decode(Int.self, forKey: .program)
+        self.soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
+        self.isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
+        self.reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
+        self.delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
+        self.presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ?? PresetConfig()
     }
 }
 

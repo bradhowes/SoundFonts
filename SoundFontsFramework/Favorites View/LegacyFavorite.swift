@@ -9,6 +9,22 @@ public class LegacyFavorite: Codable {
 
     public typealias Key = UUID
 
+    enum V1Keys: String, CodingKey {
+        case key
+        case soundFontAndPatch
+        case name
+        case keyboardLowestNote
+        case gain
+        case pan
+    }
+
+    enum V2Keys: String, CodingKey {
+        case key
+        case soundFontAndPatch
+        case name
+        case presetConfig
+    }
+
     public let key: Key
 
     /// The patch to load
@@ -17,23 +33,8 @@ public class LegacyFavorite: Codable {
     /// The name of the favorite configuration
     public var name: String
 
-    /// The starting note of the keyboard. Optional since the AUv3 app extension does not have a keyboard, but it can
-    /// still create a favorite.
-    @available(*, deprecated, message: "Use value found in presetConfig")
-    public var keyboardLowestNote: Note?
-
-    /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
-    @available(*, deprecated, message: "Use value found in presetConfig")
-    public var gain: Float = 0.0
-
-    /// Stereo panning applied to sampler output. Valid values [-1..+1] with default 0.0. See doc for
-    /// `AVAudioUnitSampler`
-    @available(*, deprecated, message: "Use value found in presetConfig")
-    public var pan: Float = 0.0
-
-    public var presetConfig: PresetConfig? {
+    public var presetConfig: PresetConfig {
         didSet {
-            guard let presetConfig = presetConfig else { return }
             PresetConfig.changedNotification.post(value: presetConfig)
         }
     }
@@ -51,6 +52,41 @@ public class LegacyFavorite: Codable {
         self.presetConfig = PresetConfig(keyboardLowestNote: keyboardLowestNote,
                                          keyboardLowestNoteEnabled: keyboardLowestNote != nil,
                                          gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
+    }
+
+    public required init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: V1Keys.self)
+            let key = try values.decode(Key.self, forKey: .key)
+            let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
+            let name = try values.decode(String.self, forKey: .name)
+            let lowestNote = try values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
+            let gain = try values.decode(Float.self, forKey: .gain)
+            let pan = try values.decode(Float.self, forKey: .pan)
+            self.key = key
+            self.soundFontAndPatch = soundFontAndPatch
+            self.name = name
+            self.presetConfig = PresetConfig(keyboardLowestNote: lowestNote,
+                                             keyboardLowestNoteEnabled: lowestNote != nil,
+                                             gain: gain, pan: pan,
+                                             presetTuning: 0.0, presetTuningEnabled: false)
+        }
+        catch {
+            let err = error
+            do {
+                let values = try decoder.container(keyedBy: V2Keys.self)
+                let key = try values.decode(Key.self, forKey: .key)
+                let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
+                let name = try values.decode(String.self, forKey: .name)
+                let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
+                self.key = key
+                self.soundFontAndPatch = soundFontAndPatch
+                self.name = name
+                self.presetConfig = presetConfig
+            } catch {
+                throw err
+            }
+        }
     }
 }
 

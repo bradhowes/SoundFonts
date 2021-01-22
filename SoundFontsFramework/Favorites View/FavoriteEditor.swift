@@ -125,12 +125,10 @@ final public class FavoriteEditor: UIViewController {
         name.text = config.favorite?.name ?? preset.name
         name.delegate = self
 
-        if let currentLowestNote = (presetConfig?.keyboardLowestNote ?? self.currentLowestNote) {
+        if let currentLowestNote = presetConfig.keyboardLowestNote ?? self.currentLowestNote {
             lowestNoteCollection.isHidden = false
-
-            self.presetConfig.keyboardLowestNoteEnabled = presetConfig?.keyboardLowestNoteEnabled ?? true
+            self.presetConfig.keyboardLowestNoteEnabled = presetConfig.keyboardLowestNoteEnabled
             self.presetConfig.keyboardLowestNote = currentLowestNote
-
             lowestNoteValue.text = currentLowestNote.label
             lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
             lowestNoteEnabled.isOn = self.presetConfig.keyboardLowestNoteEnabled
@@ -139,19 +137,18 @@ final public class FavoriteEditor: UIViewController {
             lowestNoteCollection.isHidden = true
         }
 
-        tuningComponent.updateState(enabled: presetConfig?.presetTuningEnabled ?? false,
-                                    cents: presetConfig?.presetTuning ?? 0.0)
+        tuningComponent.updateState(enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
         self.presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
         self.presetConfig.presetTuning = tuningComponent.tuning
 
-        let gain = presetConfig?.gain ?? config.favorite?.gain ?? 0.0
+        let gain = presetConfig.gain
         gainSlider.value = gain
         volumeChanged(gainSlider)
 
         self.presetConfig.gain = gainSlider.value
 
-        let pan = presetConfig?.pan ?? config.favorite?.pan ?? 0.0
+        let pan = presetConfig.pan
         panSlider.value = pan
         panChanged(panSlider)
 
@@ -194,7 +191,7 @@ extension FavoriteEditor {
     @IBAction private func donePressed(_ sender: UIBarButtonItem) {
         guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
         let preset = soundFont.patches[soundFontAndPatch.patchIndex]
-        var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig ?? PresetConfig()
+        var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
         let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
 

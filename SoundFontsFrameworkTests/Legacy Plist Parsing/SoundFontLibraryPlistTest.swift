@@ -39,8 +39,8 @@ class SoundFontLibraryPListTest: XCTestCase {
 
         let favorite = favorites.getBy(index: 0)
         XCTAssertEqual(favorite.name, "Synclavier")
-        XCTAssertEqual(favorite.gain, 0.0)
-        XCTAssertEqual(favorite.pan, -1.0)
+        XCTAssertEqual(favorite.presetConfig.gain, 0.0)
+        XCTAssertEqual(favorite.presetConfig.pan, -1.0)
         XCTAssertEqual(favorite.soundFontAndPatch.patchIndex, 0)
 
         let sf = soundFonts.getBy(key: favorite.soundFontAndPatch.soundFontKey)
