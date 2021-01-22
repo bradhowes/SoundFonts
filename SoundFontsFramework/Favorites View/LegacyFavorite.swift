@@ -19,14 +19,24 @@ public class LegacyFavorite: Codable {
 
     /// The starting note of the keyboard. Optional since the AUv3 app extension does not have a keyboard, but it can
     /// still create a favorite.
+    @available(*, deprecated, message: "Use value found in presetConfig")
     public var keyboardLowestNote: Note?
 
     /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
-    public var gain: Float
+    @available(*, deprecated, message: "Use value found in presetConfig")
+    public var gain: Float = 0.0
 
     /// Stereo panning applied to sampler output. Valid values [-1..+1] with default 0.0. See doc for
     /// `AVAudioUnitSampler`
-    public var pan: Float
+    @available(*, deprecated, message: "Use value found in presetConfig")
+    public var pan: Float = 0.0
+
+    public var presetConfig: PresetConfig? {
+        didSet {
+            guard let presetConfig = presetConfig else { return }
+            PresetConfig.changedNotification.post(value: presetConfig)
+        }
+    }
 
     /**
      Create a new instance. The name of the favorite will start with the name of the patch.
@@ -36,12 +46,11 @@ public class LegacyFavorite: Codable {
      */
     public init(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
         self.key = Key()
-        self.name = name
-        self.keyboardLowestNote = keyboardLowestNote
         self.soundFontAndPatch = soundFontAndPatch
-        self.keyboardLowestNote = keyboardLowestNote
-        self.gain = 0.0
-        self.pan = 0.0
+        self.name = name
+        self.presetConfig = PresetConfig(keyboardLowestNote: keyboardLowestNote,
+                                         keyboardLowestNoteEnabled: keyboardLowestNote != nil,
+                                         gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
     }
 }
 

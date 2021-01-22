@@ -9,7 +9,7 @@ import AudioToolbox
 final public class LegacyPatch: Codable {
 
     /// Display name for the patch
-    public let name: String
+    public var name: String
 
     /// Bank number where the patch resides in the sound font
     public let bank: Int
@@ -26,8 +26,16 @@ final public class LegacyPatch: Codable {
     /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension)
     var reverbConfig: ReverbConfig?
 
-    // The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
+    /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
     var delayConfig: DelayConfig?
+
+    /// Configuration parameters that can be adjusted by the user.
+    var presetConfig: PresetConfig? {
+        didSet {
+            guard let presetConfig = presetConfig else { return }
+            PresetConfig.changedNotification.post(value: presetConfig)
+        }
+    }
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion

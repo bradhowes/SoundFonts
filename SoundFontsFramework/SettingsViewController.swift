@@ -57,6 +57,7 @@ public final class SettingsViewController: UIViewController {
 
     @IBOutlet weak var divider5: UIView!
     @IBOutlet weak var globalTuningTitle: UILabel!
+    @IBOutlet weak var globalTuningEnabled: UISwitch!
     @IBOutlet weak var standardTuningLabel: UILabel!
     @IBOutlet weak var standardTuningButton: UIButton!
     @IBOutlet weak var scientificTuningLabel: UILabel!
@@ -79,17 +80,24 @@ public final class SettingsViewController: UIViewController {
     public var soundFonts: SoundFonts!
     public var isMainApp = true
 
-    private lazy var numberParserFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.minimumIntegerDigits = 1
-        formatter.maximumFractionDigits = 2
-        return formatter
-    }()
+    private var tuningComponent: TuningComponent!
+    private var tuningObserver: NSKeyValueObservation!
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        globalTuningCents.delegate = self
-        globalTuningFrequency.delegate = self
+
+        tuningComponent = TuningComponent(tuning: Settings.shared.globalTuning,
+                                          view: view, scrollView: scrollView,
+                                          tuningEnabledSwitch: globalTuningEnabled,
+                                          standardTuningButton: standardTuningButton,
+                                          scientificTuningButton: scientificTuningButton,
+                                          tuningCents: globalTuningCents,
+                                          tuningFrequency: globalTuningFrequency)
+        tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, info in
+            guard let newValue = info.newValue else { return }
+            Settings.shared.globalTuning = newValue
+        }
+
         review.isEnabled = isMainApp
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
@@ -103,13 +111,6 @@ public final class SettingsViewController: UIViewController {
 
         globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
         globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
-
-        preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        view.addGestureRecognizer(numberKeyboardDoneProxy)
-        numberKeyboardDoneProxy.addClosure { [weak self] _ in
-            self?.view.endEditing(true)
-        }
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -134,14 +135,7 @@ public final class SettingsViewController: UIViewController {
 
         slideKeyboard.isOn = Settings.shared.slideKeyboard
 
-        let useVerdiTuning = Settings.shared.useVerdiTuning
-        if useVerdiTuning {
-            setVerdiTuningState(useVerdiTuning)
-        }
-        else {
-            let globalTuning = Settings.shared.globalTuning
-            setGlobalTuningCents(globalTuning)
-        }
+        tuningComponent.updateState(enabled: globalTuningEnabled.isOn, cents: Settings.shared.globalTuning)
 
         copyFiles.isOn = Settings.shared.copyFilesWhenAdding
 
@@ -157,42 +151,12 @@ public final class SettingsViewController: UIViewController {
         midiChannelStackView.isHidden = isAUv3
         bluetoothMIDIConnectStackView.isHidden = isAUv3
         divider2.isHidden = isAUv3
-
-        preferredContentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
-                                       name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
-                                       name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 }
 
 extension SettingsViewController {
 
-    @IBAction func setStandardTuningState(_ state: Bool) { setGlobalTuningFrequency(440.0) }
-
-    @IBAction func setVerdiTuningState(_ state: Bool) { setGlobalTuningFrequency(432.0) }
-
-    private func centsToFrequency(_ cents: Float) -> Float { pow(2.0, (cents / 1200.0)) * 440.0 }
-
-    private func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
-
-    private func setGlobalTuningCents(_ cents: Float) {
-        let cents = min(max(cents, -2400.0), 2400.0)
-        let frequency = centsToFrequency(cents)
-        globalTuningCents.text = numberParserFormatter.string(from: NSNumber(value: cents))
-        globalTuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: frequency))
-        Settings.shared.globalTuning = cents
-    }
-
-    private func setGlobalTuningFrequency(_ frequency: Float) {
-        let cents = frequencyToCents(frequency)
-        setGlobalTuningCents(cents)
-    }
-
     private func beginShowKeyboard() {
-        print("beginShowKeyboard")
         copyFilesStackView.isHidden = true
         midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
@@ -396,78 +360,5 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     public func mailComposeController(_ controller: MFMailComposeViewController,
                                       didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
-    }
-}
-
-extension SettingsViewController: UITextFieldDelegate {
-
-    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("shouldReturn")
-        textField.resignFirstResponder()
-        return true
-    }
-
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("didBeginEditing")
-        DispatchQueue.main.async {
-            textField.selectedTextRange = textField.textRange(from: textField.endOfDocument,
-                                                              to: textField.endOfDocument)
-        }
-    }
-
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == globalTuningCents {
-            parseGlobalTuningCents()
-        }
-        else {
-            parseGlobalTuningFrequency()
-        }
-    }
-
-    @IBAction private func adjustForKeyboard(_ notification: Notification) {
-        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-            return
-        }
-
-        if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = .zero
-        } else {
-            let localFrame = view.convert(keyboardFrame.cgRectValue, from: view.window)
-            let shift = localFrame.height - view.safeAreaInsets.bottom
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: shift, right: 0)
-        }
-
-        scrollView.scrollIndicatorInsets = scrollView.contentInset
-    }
-}
-
-extension SettingsViewController {
-
-    private func parseGlobalTuningCents() {
-        guard let text = globalTuningCents.text else {
-            setGlobalTuningCents(Settings.shared.globalTuning)
-            return
-        }
-
-        guard let value = numberParserFormatter.number(from: text) else {
-            setGlobalTuningCents(Settings.shared.globalTuning)
-            return
-        }
-
-        setGlobalTuningCents(value.floatValue)
-    }
-
-    private func parseGlobalTuningFrequency() {
-        guard let text = globalTuningFrequency.text else {
-            setGlobalTuningCents(Settings.shared.globalTuning)
-            return
-        }
-
-        guard let value = numberParserFormatter.number(from: text) else {
-            setGlobalTuningCents(Settings.shared.globalTuning)
-            return
-        }
-
-        setGlobalTuningFrequency(value.floatValue)
     }
 }

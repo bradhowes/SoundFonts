@@ -33,4 +33,10 @@ extension Notification.Name {
 
     /// Notification that we cannot locate an SF2 file
     public static let soundFontFileNotAvailable = Notification.Name("soundFontFileNotAvailable")
+
+    /// A PresetConfig changed
+    public static let presetConfigChanged = Notification.Name("presetConfigChanged")
+
+    /// Set a tuning
+    public static let globalTuningChanged = Notification.Name("globalTuningChanged")
 }

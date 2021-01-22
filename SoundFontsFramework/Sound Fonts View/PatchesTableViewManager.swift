@@ -494,11 +494,12 @@ extension PatchesTableViewManager {
             var rect = self.view.rectForRow(at: indexPath)
             rect.size.width = 240.0
             let position = self.favorites.index(of: favorite)
-            let config = FavoriteEditor.Config(indexPath: IndexPath(item: position, section: 0), view: view, rect: view.bounds, favorite: favorite,
-                                               currentLowestNote: self.keyboard?.lowestNote, completionHandler: completionHandler,
-                                               soundFonts: self.soundFonts,
-                                               soundFontAndPatch: soundFontAndPatch)
-
+            let configState = FavoriteEditor.State(indexPath: IndexPath(item: position, section: 0),
+                                                   sourceView: view, sourceRect: view.bounds,
+                                                   currentLowestNote: self.keyboard?.lowestNote,
+                                                   completionHandler: completionHandler, soundFonts: self.soundFonts,
+                                                   soundFontAndPatch: soundFontAndPatch)
+            let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
             self.favorites.beginEdit(config: config)
         }
     }
