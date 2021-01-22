@@ -35,10 +35,10 @@ extension Favorite {
         self.init(context: context)
         self.uuid = legacyFavorite.key
         self.name = legacyFavorite.name
-        self.keyboardLowestNote = Int16(legacyFavorite.keyboardLowestNote?.midiNoteValue ?? 64)
+        self.keyboardLowestNote = Int16(legacyFavorite.presetConfig?.keyboardLowestNote?.midiNoteValue ?? 64)
         self.preset = preset
-        self.gain = legacyFavorite.gain
-        self.pan = legacyFavorite.pan
+        self.gain = legacyFavorite.presetConfig?.gain ?? 0
+        self.pan = legacyFavorite.presetConfig?.pan ?? 0
         context.saveChangesAsync()
     }
 

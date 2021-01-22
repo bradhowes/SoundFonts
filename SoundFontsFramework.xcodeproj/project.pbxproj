@@ -68,6 +68,7 @@
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
 		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
+		BD074CAD25BB159E006471C1 /* Codextended.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074CAC25BB159E006471C1 /* Codextended.swift */; };
 		BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20182555701B00D36607 /* TouchKeyMap.swift */; };
 		BD0E20612555D68900D36607 /* FourCharCode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */; };
 		BD0E206C2556B78900D36607 /* MIDIReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E206B2556B78900D36607 /* MIDIReceiver.swift */; };
@@ -263,6 +264,7 @@
 		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD074CAC25BB159E006471C1 /* Codextended.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Codextended.swift; sourceTree = "<group>"; };
 		BD0E20182555701B00D36607 /* TouchKeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMap.swift; sourceTree = "<group>"; };
 		BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FourCharCode+Extensions.swift"; sourceTree = "<group>"; };
 		BD0E206B2556B78900D36607 /* MIDIReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIReceiver.swift; sourceTree = "<group>"; };
@@ -537,6 +539,7 @@
 			isa = PBXGroup;
 			children = (
 				BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */,
+				BD074CAC25BB159E006471C1 /* Codextended.swift */,
 				BD2436AF2579356200162A49 /* ArrowView.swift */,
 				BD125B37241006200003DE99 /* AskForReview.swift */,
 				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
@@ -966,6 +969,7 @@
 				BDBF893E25B4C7AC00B58E23 /* TagsTableViewManager.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
+				BD074CAD25BB159E006471C1 /* Codextended.swift in Sources */,
 				BDBF896625B58AEF00B58E23 /* LegacyTagCollection.swift in Sources */,
 				BDBF895325B57A3A00B58E23 /* LegacyTag.swift in Sources */,
 				BD2436B02579356200162A49 /* ArrowView.swift in Sources */,
