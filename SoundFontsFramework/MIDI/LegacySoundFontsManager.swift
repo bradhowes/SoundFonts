@@ -149,7 +149,8 @@ extension LegacySoundFontsManager: SoundFonts {
         os_log(.debug, log: log, "setVisibility - %{public}s %d %d", key.uuidString, index, state)
         guard let soundFont = getBy(key: key) else { return }
         let patch = soundFont.patches[index]
-        os_log(.debug, log: log, "setVisibility %{public}s %{public}s - %d %d", String.pointer(patch), patch.name, patch.isVisible, state)
+        os_log(.debug, log: log, "setVisibility %{public}s %{public}s - %d %d", String.pointer(patch),
+               patch.presetConfig.name, patch.isVisible, state)
         patch.isVisible = state
         markDirty()
     }

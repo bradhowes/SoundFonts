@@ -233,8 +233,8 @@ extension FavoritesViewController: SegueHandler {
 extension FavoritesViewController: FavoriteEditorDelegate {
 
     public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
-        if case let .done(name, config) = reason {
-            favorites.update(index: indexPath.item, name: name, config: config)
+        if case let .done(config) = reason {
+            favorites.update(index: indexPath.item, config: config)
             favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
         }
@@ -307,7 +307,8 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.name, isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
+        cell.update(favoriteName: favorite.presetConfig.name,
+                    isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
         return cell
     }
 

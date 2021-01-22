@@ -21,7 +21,6 @@ public class LegacyFavorite: Codable {
     enum V2Keys: String, CodingKey {
         case key
         case soundFontAndPatch
-        case name
         case presetConfig
     }
 
@@ -29,9 +28,6 @@ public class LegacyFavorite: Codable {
 
     /// The patch to load
     public let soundFontAndPatch: SoundFontAndPatch
-
-    /// The name of the favorite configuration
-    public var name: String
 
     public var presetConfig: PresetConfig {
         didSet {
@@ -48,8 +44,7 @@ public class LegacyFavorite: Codable {
     public init(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
         self.key = Key()
         self.soundFontAndPatch = soundFontAndPatch
-        self.name = name
-        self.presetConfig = PresetConfig(keyboardLowestNote: keyboardLowestNote,
+        self.presetConfig = PresetConfig(name: name, keyboardLowestNote: keyboardLowestNote,
                                          keyboardLowestNoteEnabled: keyboardLowestNote != nil,
                                          gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
     }
@@ -65,8 +60,7 @@ public class LegacyFavorite: Codable {
             let pan = try values.decode(Float.self, forKey: .pan)
             self.key = key
             self.soundFontAndPatch = soundFontAndPatch
-            self.name = name
-            self.presetConfig = PresetConfig(keyboardLowestNote: lowestNote,
+            self.presetConfig = PresetConfig(name: name, keyboardLowestNote: lowestNote,
                                              keyboardLowestNoteEnabled: lowestNote != nil,
                                              gain: gain, pan: pan,
                                              presetTuning: 0.0, presetTuningEnabled: false)
@@ -77,11 +71,9 @@ public class LegacyFavorite: Codable {
                 let values = try decoder.container(keyedBy: V2Keys.self)
                 let key = try values.decode(Key.self, forKey: .key)
                 let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
-                let name = try values.decode(String.self, forKey: .name)
                 let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
                 self.key = key
                 self.soundFontAndPatch = soundFontAndPatch
-                self.name = name
                 self.presetConfig = presetConfig
             } catch {
                 throw err
@@ -95,5 +87,5 @@ extension LegacyFavorite: Equatable {
 }
 
 extension LegacyFavorite: CustomStringConvertible {
-    public var description: String { "['\(name)' - \(soundFontAndPatch)]" }
+    public var description: String { "['\(presetConfig.name)' - \(soundFontAndPatch)]" }
 }

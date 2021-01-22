@@ -33,8 +33,8 @@ extension Preset {
     @discardableResult
     public convenience init(in context: NSManagedObjectContext, import patch: LegacyPatch) {
         self.init(context: context)
-        self.name = patch.name
-        self.embeddedName = patch.name
+        self.name = patch.presetConfig.name
+        self.embeddedName = patch.originalName
         self.bank = Int16(patch.bank)
         self.preset = Int16(patch.program)
         self.visible = true

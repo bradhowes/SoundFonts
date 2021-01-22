@@ -9,7 +9,7 @@ import os
 final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
 
     public var description: String {
-        "[" + favorites.map { "\(String.pointer($0)) '\($0.name)'" }.joined(separator: ",") + "]"
+        "[" + favorites.map { "\(String.pointer($0)) '\($0.presetConfig.name)'" }.joined(separator: ",") + "]"
     }
 
     private var favorites: [LegacyFavorite]

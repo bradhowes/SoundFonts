@@ -19,8 +19,18 @@ final public class LegacyPatch: Codable {
         case presetConfig
     }
 
-    /// Display name for the patch
-    public var name: String
+    enum V2Keys: String, CodingKey {
+        case bank
+        case program
+        case soundFontIndex
+        case isVisible
+        case reverbConfig
+        case delayConfig
+        case presetConfig
+    }
+
+    /// Original name for the preset/patch
+    public let originalName: String
 
     /// Bank number where the patch resides in the sound font
     public let bank: Int
@@ -100,27 +110,29 @@ final public class LegacyPatch: Codable {
      - parameter patch: the program ID of the patch in the sound font
      */
     public init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
-        self.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.originalName = name
         self.bank = bank
         self.program = program
         self.soundFontIndex = index
         self.isVisible = true
-        self.presetConfig = PresetConfig()
+        self.presetConfig = PresetConfig(name: name.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     public required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: V1Keys.self)
-        self.name = try values.decode(String.self, forKey: .name)
+        let name = try values.decode(String.self, forKey: .name)
+        self.originalName = name
         self.bank = try values.decode(Int.self, forKey: .bank)
         self.program = try values.decode(Int.self, forKey: .program)
         self.soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
         self.isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
         self.reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
         self.delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
-        self.presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ?? PresetConfig()
+        self.presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ??
+            PresetConfig(name: name)
     }
 }
 
 extension LegacyPatch: CustomStringConvertible {
-    public var description: String { "[Patch '\(name)' \(bank):\(program)]" }
+    public var description: String { "[Patch '\(originalName)' \(bank):\(program)]" }
 }

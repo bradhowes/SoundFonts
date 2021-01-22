@@ -34,7 +34,7 @@ extension Favorite {
                               preset: Preset) {
         self.init(context: context)
         self.uuid = legacyFavorite.key
-        self.name = legacyFavorite.name
+        self.name = legacyFavorite.presetConfig.name
         self.keyboardLowestNote = Int16(legacyFavorite.presetConfig.keyboardLowestNote?.midiNoteValue ?? 64)
         self.preset = preset
         self.gain = legacyFavorite.presetConfig.gain
