@@ -31,7 +31,6 @@ class PlistTranslationTests: XCTestCase {
             for soundFont in oldSoundFonts.soundFonts {
                 let sf = SoundFont(in: context, import: soundFont)
                 XCTAssertEqual(soundFont.key, sf.uuid)
-                print(sf.uuid.uuidString)
                 lookup[sf.uuid] = sf
             }
 
@@ -59,7 +58,6 @@ class PlistTranslationTests: XCTestCase {
             for index in 0..<oldFavorites.count {
                 let oldFave = oldFavorites.getBy(index: index)
                 let soundFontKey = oldFave.soundFontAndPatch.soundFontKey
-                print(soundFontKey)
                 let patchIndex = oldFave.soundFontAndPatch.patchIndex
                 if let sf = lookup[soundFontKey] {
                     let fave = app.createFavorite(preset: sf.presets[patchIndex],

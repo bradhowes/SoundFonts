@@ -192,7 +192,6 @@ extension SettingsViewController {
     }
 
     private func beginShowKeyboard() {
-        print("beginShowKeyboard")
         copyFilesStackView.isHidden = true
         midiChannelStackView.isHidden = true
         slideKeyboardStackView.isHidden = true
@@ -402,12 +401,11 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
 extension SettingsViewController: UITextFieldDelegate {
 
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("shouldReturn")
+        textField.resignFirstResponder()
         return true
     }
 
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        print("didBeginEditing")
         DispatchQueue.main.async {
             textField.selectedTextRange = textField.textRange(from: textField.endOfDocument,
                                                               to: textField.endOfDocument)
