@@ -129,7 +129,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         if mode == .standalone {
             os_log(.debug, log: log, "connecting sampler")
-
             let engine = AVAudioEngine()
             self.engine = engine
 
@@ -174,11 +173,12 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         guard let patch = activePatchManager.patch else { return .success(sampler) }
         let favorite = activePatchManager.favorite
         self.loaded = false
+        let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 
         presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
-            if let fav = favorite {
-                self.setGain(fav.gain)
-                self.setPan(fav.pan)
+            if let presetConfig = presetConfig {
+                self.setGain(presetConfig.gain)
+                self.setPan(presetConfig.pan)
             }
 
             // - If global mode enabled, don't change anything

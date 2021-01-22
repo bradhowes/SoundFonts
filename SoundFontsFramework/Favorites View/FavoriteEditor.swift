@@ -66,8 +66,9 @@ final public class FavoriteEditor: UIViewController {
     @IBOutlet private weak var gainValue: UILabel!
     @IBOutlet private weak var gainSlider: UISlider!
 
-    @IBOutlet private weak var panValue: UILabel!
+    @IBOutlet private weak var panLeft: UILabel!
     @IBOutlet private weak var panSlider: UISlider!
+    @IBOutlet private weak var panRight: UILabel!
 
     @IBOutlet private weak var soundFontName: UILabel!
     @IBOutlet private weak var bankIndex: UILabel!
@@ -97,8 +98,8 @@ final public class FavoriteEditor: UIViewController {
         gainSlider.minimumValue = -90.0
         gainSlider.maximumValue = 12.0
 
-        panSlider.minimumValue = -1.0
-        panSlider.maximumValue = 1.0
+        panSlider.minimumValue = -100.0
+        panSlider.maximumValue = 100.0
 
         lowestNoteStepper.setDecrementImage(lowestNoteStepper.decrementImage(for: .normal), for: .normal)
         lowestNoteStepper.setIncrementImage(lowestNoteStepper.incrementImage(for: .normal), for: .normal)
@@ -243,7 +244,7 @@ extension FavoriteEditor {
      - parameter sender: UISlider
      */
     @IBAction private func volumeChanged(_ sender: UISlider) {
-        gainValue.text = "Gain \(formatFloat(sender.value)) dB"
+        gainValue.text = "\(formatFloat(sender.value)) dB"
         presetConfig.gain = sender.value
         PresetConfig.changedNotification.post(value: presetConfig)
     }
@@ -254,7 +255,10 @@ extension FavoriteEditor {
      - parameter sender: UISlider
      */
     @IBAction private func panChanged(_ sender: UISlider) {
-        panValue.text = "Pan \(formatFloat(sender.value))"
+        let right = Int(round((sender.value + 100.0) / 200.0 * 100.0))
+        let left = Int(100 - right)
+        panLeft.text = "\(left)"
+        panRight.text = "\(right)"
         presetConfig.pan = sender.value
         PresetConfig.changedNotification.post(value: presetConfig)
     }
@@ -272,16 +276,8 @@ extension FavoriteEditor {
      - returns: formatted value
      */
     private func formatFloat(_ value: Float) -> String {
-        String(format: "%+.2f", locale: Locale.current, arguments: [value])
+        String(format: "%+.1f", locale: Locale.current, arguments: [value])
     }
-
-    /**
-     Obtain a rounded value.
-
-     - parameter value: the value to round
-     - returns: the rounded result
-     */
-    private func roundFloat(_ value: Float) -> Float { (value * 100.0).rounded() / 100.0 }
 }
 
 extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {

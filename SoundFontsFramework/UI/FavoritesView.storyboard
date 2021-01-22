@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -33,6 +33,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Bt-nf-V49"/>
                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <accessibility key="accessibilityConfiguration" identifier="FavoritesView" label="FavoritesView"/>
                         <constraints>
@@ -41,15 +42,12 @@
                             <constraint firstAttribute="trailing" secondItem="IR7-rn-XMj" secondAttribute="trailing" constant="8" id="uHz-JW-Sju"/>
                             <constraint firstAttribute="bottom" secondItem="IR7-rn-XMj" secondAttribute="bottom" constant="8" id="wJw-fF-zhc"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="6Bt-nf-V49"/>
                     </view>
                     <connections>
                         <outlet property="doubleTapGestureRecognizer" destination="0DJ-wu-xH2" id="0xj-OV-gNK"/>
                         <outlet property="favoritesView" destination="IR7-rn-XMj" id="g9T-UH-W6C"/>
                         <outlet property="longPressGestureRecognizer" destination="Yb7-t8-5Oz" id="B2S-FU-S4i"/>
-                        <segue destination="xBA-JW-XDJ" kind="popoverPresentation" identifier="favoriteEditor" popoverAnchorView="IR7-rn-XMj" id="G0X-jG-RT4">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
+                        <segue destination="xBA-JW-XDJ" kind="presentation" identifier="favoriteEditor" id="G0X-jG-RT4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UlM-mq-v04" userLabel="First Responder" sceneMemberID="firstResponder"/>
