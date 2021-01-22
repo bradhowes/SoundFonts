@@ -17,11 +17,11 @@ public final class SoundFontsControlsController: UIViewController {
     @IBOutlet private weak var patchesView: UIView!
 
     @IBOutlet weak var effectsHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var blankBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var effectsBottomConstraint: NSLayoutConstraint!
 
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!
+    private var isMainApp: Bool = false
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +38,14 @@ public final class SoundFontsControlsController: UIViewController {
         upperViewManager.add(view: patchesView)
         upperViewManager.add(view: favoritesView)
     }
+
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let show = Settings.instance.showEffects
+        if isMainApp && show {
+            showEffects()
+        }
+    }
 }
 
 // MARK: - Controller Configuration
@@ -53,20 +61,15 @@ extension SoundFontsControlsController: ControllerConfiguration {
         components = router
 
         let patchesViewManager = router.patchesViewManager
-        patchesViewManager.addEventClosure(.swipeLeft, self.showNextConfigurationView)
+        patchesViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
 
         let favoritesViewManager = router.favoritesViewManager
-        favoritesViewManager.addEventClosure(.swipeLeft, self.showNextConfigurationView)
-        favoritesViewManager.addEventClosure(.swipeRight, self.showPreviousConfigurationView)
-        router.infoBar.addEventClosure(.doubleTap, self.toggleConfigurationViews)
+        favoritesViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
+        favoritesViewManager.addEventClosure(.swipeRight, showPreviousConfigurationView)
+        router.infoBar.addEventClosure(.doubleTap, toggleConfigurationViews)
 
-        router.infoBar.addEventClosure(.showEffects, self.toggleShowEffects)
-
-        if router.isMainApp && Settings.instance.showEffects {
-            let effectsViewHeight = effectsHeightConstraint.constant
-            self.blankBottomConstraint.constant = effectsViewHeight
-            self.effectsBottomConstraint.constant = 0.0
-        }
+        router.infoBar.addEventClosure(.showEffects, toggleShowEffects)
+        isMainApp = router.isMainApp
     }
 
     private func toggleConfigurationViews(_ action: AnyObject) {
@@ -100,6 +103,7 @@ extension SoundFontsControlsController {
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                        options: [.allowUserInteraction, .curveEaseIn],
                                                        animations: self.view.layoutIfNeeded)
+        Settings.instance.showEffects = true
     }
 
     private func hideEffects() {
@@ -107,6 +111,7 @@ extension SoundFontsControlsController {
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                        options: [.allowUserInteraction, .curveEaseOut],
                                                        animations: self.view.layoutIfNeeded)
+        Settings.instance.showEffects = false
     }
 }
 
