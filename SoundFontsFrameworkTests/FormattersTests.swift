@@ -16,14 +16,14 @@ class FormattersTests: XCTestCase {
             XCTAssertEqual("1 preset", Formatters.formatted(presetCount: 1))
             XCTAssertEqual("200 presets", Formatters.formatted(presetCount: 200))
         case "fr":
-            XCTAssertEqual("pas des préréglés", Formatters.formatted(presetCount: 0))
-            XCTAssertEqual("1 préréglé", Formatters.formatted(presetCount: 1))
-            XCTAssertEqual("200 préréglés", Formatters.formatted(presetCount: 200))
+            XCTAssertEqual("no presets", Formatters.formatted(presetCount: 0))
+            XCTAssertEqual("1 preset", Formatters.formatted(presetCount: 1))
+            XCTAssertEqual("200 presets", Formatters.formatted(presetCount: 200))
         case "de":
             XCTAssertEqual("keine Voreinstellungen", Formatters.formatted(presetCount: 0))
             XCTAssertEqual("1 Voreinstellung", Formatters.formatted(presetCount: 1))
             XCTAssertEqual("200 Voreinstellungen", Formatters.formatted(presetCount: 200))
-        default: XCTFail("unexpeted language code: \(Locale.current.languageCode ?? "?")")
+        default: XCTFail("unexpected language code: \(Locale.current.languageCode ?? "?")")
         }
     }
 
@@ -38,14 +38,14 @@ class FormattersTests: XCTestCase {
             XCTAssertEqual("1 favorite", Formatters.formatted(favoriteCount: 1))
             XCTAssertEqual("200 favorites", Formatters.formatted(favoriteCount: 200))
         case "fr":
-            XCTAssertEqual("pas des préférés", Formatters.formatted(favoriteCount: 0))
-            XCTAssertEqual("1 préféré", Formatters.formatted(favoriteCount: 1))
-            XCTAssertEqual("200 préférés", Formatters.formatted(favoriteCount: 200))
+            XCTAssertEqual("no favorites", Formatters.formatted(favoriteCount: 0))
+            XCTAssertEqual("1 favorite", Formatters.formatted(favoriteCount: 1))
+            XCTAssertEqual("200 favorites", Formatters.formatted(favoriteCount: 200))
         case "de":
             XCTAssertEqual("no favorites", Formatters.formatted(favoriteCount: 0))
             XCTAssertEqual("1 favorite", Formatters.formatted(favoriteCount: 1))
             XCTAssertEqual("200 favorites", Formatters.formatted(favoriteCount: 200))
-        default: XCTFail("unexpeted language code: \(Locale.current.languageCode ?? "?")")
+        default: XCTFail("unexpected language code: \(Locale.current.languageCode ?? "?")")
         }
     }
 
@@ -60,13 +60,13 @@ class FormattersTests: XCTestCase {
             XCTAssertEqual("1 empty file", Formatters.formatted(failedAddCount: 1, condition: "empty"))
             XCTAssertEqual("2 empty files", Formatters.formatted(failedAddCount: 2, condition: "empty"))
         case "fr":
-            XCTAssertEqual("1 fichier vide", Formatters.formatted(failedAddCount: 1, condition: "empty"))
-            XCTAssertEqual("2 ficiers vides", Formatters.formatted(failedAddCount: 2, condition: "empty"))
+            XCTAssertEqual("1 empty file", Formatters.formatted(failedAddCount: 1, condition: "empty"))
+            XCTAssertEqual("2 empty files", Formatters.formatted(failedAddCount: 2, condition: "empty"))
         case "de":
             XCTAssertEqual("no empty files", Formatters.formatted(failedAddCount: 0, condition: "empty"))
             XCTAssertEqual("1 empty file", Formatters.formatted(failedAddCount: 1, condition: "empty"))
             XCTAssertEqual("2 empty files", Formatters.formatted(failedAddCount: 2, condition: "empty"))
-        default: XCTFail("unexpeted language code: \(Locale.current.languageCode ?? "?")")
+        default: XCTFail("unexpected language code: \(Locale.current.languageCode ?? "?")")
         }
     }
 
