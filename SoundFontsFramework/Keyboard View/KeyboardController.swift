@@ -170,7 +170,6 @@ extension KeyboardController {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // New touches will always cause pressed keys
-        print("touchesBegan")
         pressKeys(touches)
     }
 
@@ -199,13 +198,11 @@ extension KeyboardController {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Touches no longer in view
-        print("touchesEnded")
         releaseKeys(touches)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Stop everything -- system has interrupted us.
-        print("touchesCancelled")
         releaseKeys(touches)
     }
 }

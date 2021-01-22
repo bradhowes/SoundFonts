@@ -87,12 +87,7 @@ final class FontEditor: UIViewController {
 
         path.text = "Path: " + soundFont.fileURL.path
         let value = tagsManager.names(of: activeTags).joined(separator: ", ")
-        print(value)
         tags.text = value
-
-//        let minSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-//        preferredContentSize = CGSize(width: min(420, minSize.width), height: min(420, minSize.height))
-//        print(preferredContentSize)
     }
 
     private func updateHiddenCount() {
@@ -174,8 +169,6 @@ extension FontEditor: SegueHandler {
         }
 
         let config = TagsTableViewController.Config(tagsManager: tagsManager, active: activeTags) { tags in
-            print("response from tags VC")
-            print(tags)
             self.activeTags = tags
         }
 

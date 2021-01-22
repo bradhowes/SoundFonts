@@ -61,7 +61,7 @@ open class Checkbox: UIControl {
 
     private let borderLayer = CAShapeLayer()
     private let checkLayer = CAShapeLayer()
-    private var _value: Bool = false { didSet { print("_value = \(_value)") } }
+    private var _value: Bool = false
     private let updateQueue = DispatchQueue(label: "Checkbox", qos: .userInteractive, attributes: [], autoreleaseFrequency: .inherit, target: .main)
 
     /**
@@ -107,7 +107,6 @@ open class Checkbox: UIControl {
      - parameter animated: if true animate the button to the new state
      */
     open func setChecked(_ checked: Bool, animated: Bool) {
-        print("setChecked - \(checked) \(animated)")
         _value = checked
         draw(animated: animated)
     }

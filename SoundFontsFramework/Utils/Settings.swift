@@ -140,10 +140,7 @@ public extension UserDefaults {
     }
     @objc dynamic var showEffects: Bool {
         get { self[.showEffects] }
-        set {
-            self[.showEffects] = newValue
-            print("*** showEffects \(newValue)")
-        }
+        set { self[.showEffects] = newValue }
     }
 
     // These are all per-instance settings
