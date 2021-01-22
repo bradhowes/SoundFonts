@@ -84,9 +84,7 @@
                         <outlet property="tagsBottomConstraint" destination="1To-12-Edz" id="hIi-Cp-XkC"/>
                         <outlet property="tagsView" destination="Sk2-uD-xKG" id="od0-Vb-z6v"/>
                         <outlet property="tagsViewHeightConstraint" destination="3lx-F9-yk6" id="GaN-wc-F9L"/>
-                        <segue destination="Fc4-Sm-RhE" kind="popoverPresentation" identifier="fontEditor" popoverAnchorView="fmV-bj-iZB" id="Oj6-XR-yF0">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
+                        <segue destination="Fc4-Sm-RhE" kind="presentation" identifier="fontEditor" id="Oj6-XR-yF0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
