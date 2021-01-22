@@ -66,8 +66,6 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet weak var globalTuningCents: UITextField!
     @IBOutlet weak var globalTuningFrequencyLabel: UILabel!
     @IBOutlet weak var globalTuningFrequency: UITextField!
-    @IBOutlet private weak var useStandardTuning: UIButton!
-    @IBOutlet private weak var useVerdiTuning: UIButton!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
@@ -82,6 +80,33 @@ public final class SettingsViewController: UIViewController {
 
     private var tuningComponent: TuningComponent!
     private var tuningObserver: NSKeyValueObservation!
+    private lazy var hideForKeyWidthChange: [UIView] = [
+        copyFilesStackView,
+        midiChannelStackView,
+        slideKeyboardStackView,
+        bluetoothMIDIConnectStackView,
+        removeSoundFontsStackView,
+        restoreSoundFontsStackView,
+        exportSoundFontsStackView,
+        importSoundFontsStackView,
+        versionReviewStackView,
+        contactDeveloperStackView,
+        globalTuningEnabled,
+        globalTuningTitle,
+        standardTuningLabel,
+        standardTuningButton,
+        scientificTuningLabel,
+        scientificTuningButton,
+        globalTuningCentsLabel,
+        globalTuningCents,
+        globalTuningFrequencyLabel,
+        globalTuningFrequency,
+        divider1,
+        divider2,
+        divider3,
+        divider4,
+        divider5
+    ]
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -150,59 +175,31 @@ public final class SettingsViewController: UIViewController {
         divider1.isHidden = isAUv3
         midiChannelStackView.isHidden = isAUv3
         bluetoothMIDIConnectStackView.isHidden = isAUv3
-        divider2.isHidden = isAUv3
+        divider5.isHidden = isAUv3
     }
 }
 
 extension SettingsViewController {
 
     private func beginShowKeyboard() {
-        copyFilesStackView.isHidden = true
-        midiChannelStackView.isHidden = true
-        slideKeyboardStackView.isHidden = true
-        bluetoothMIDIConnectStackView.isHidden = true
-        removeSoundFontsStackView.isHidden = true
-        restoreSoundFontsStackView.isHidden = true
-        exportSoundFontsStackView.isHidden = true
-        importSoundFontsStackView.isHidden = true
-        versionReviewStackView.isHidden = true
-        contactDeveloperStackView.isHidden = true
-        globalTuningTitle.isHidden = true
-        standardTuningLabel.isHidden = true
-        standardTuningButton.isHidden = true
-        scientificTuningLabel.isHidden = true
-        scientificTuningButton.isHidden = true
-        globalTuningCentsLabel.isHidden = true
-        globalTuningCents.isHidden = true
-        globalTuningFrequencyLabel.isHidden = true
-        globalTuningFrequency.isHidden = true
-        useStandardTuning.isHidden = true
-        useVerdiTuning.isHidden = true
-        divider1.isHidden = true
-        divider2.isHidden = true
-        divider3.isHidden = true
-        divider4.isHidden = true
-        divider5.isHidden = true
+        for view in hideForKeyWidthChange {
+            view.isHidden = true
+        }
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.2)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(0.0)
     }
 
     private func endShowKeyboard() {
         let isAUv3 = !isMainApp
-        copyFilesStackView.isHidden = false
+        for view in hideForKeyWidthChange {
+            view.isHidden = false
+        }
         midiChannelStackView.isHidden = isAUv3
         slideKeyboardStackView.isHidden = isAUv3
         bluetoothMIDIConnectStackView.isHidden = isAUv3
-        removeSoundFontsStackView.isHidden = false
-        restoreSoundFontsStackView.isHidden = false
-        exportSoundFontsStackView.isHidden = false
-        importSoundFontsStackView.isHidden = false
-        versionReviewStackView.isHidden = false
-        contactDeveloperStackView.isHidden = false
         divider1.isHidden = isAUv3
-        divider2.isHidden = isAUv3
-        divider3.isHidden = false
-        divider4.isHidden = false
+        divider5.isHidden = isAUv3
+
         view.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
         contentView.backgroundColor = contentView.backgroundColor?.withAlphaComponent(1.0)
     }
