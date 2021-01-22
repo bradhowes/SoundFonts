@@ -40,7 +40,6 @@ final class MuteDetector {
         guard AudioServicesCreateSystemSoundID(soundUrl as CFURL, &soundId) == kAudioServicesNoError,
               AudioServicesSetProperty(kAudioServicesPropertyIsUISound, UInt32(MemoryLayout.size(ofValue: soundId)),
                                        &soundId, UInt32(MemoryLayout.size(ofValue: yes)), &yes) == kAudioServicesNoError else {
-            print("Failed to setup sound player")
             return nil
         }
         self.soundId = soundId

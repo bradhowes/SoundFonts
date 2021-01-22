@@ -87,7 +87,6 @@ final class FontEditor: UIViewController {
 
         path.text = "Path: " + soundFont.fileURL.path
         let value = tagsManager.names(of: activeTags).joined(separator: ", ")
-        print(value)
         tags.text = value
     }
 
@@ -169,8 +168,6 @@ extension FontEditor: SegueHandler {
         }
 
         let config = TagsTableViewController.Config(tagsManager: tagsManager, active: activeTags) { tags in
-            print("response from tags VC")
-            print(tags)
             self.activeTags = tags
         }
 

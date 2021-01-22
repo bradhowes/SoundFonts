@@ -159,6 +159,8 @@
 		BDCC40112418336200D8D849 /* NoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC40102418336200D8D849 /* NoteTests.swift */; };
 		BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
+		BDD2836925BABD1D00B3A59A /* PresetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2836825BABD1D00B3A59A /* PresetConfig.swift */; };
+		BDD2836D25BAC48A00B3A59A /* TuningComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */; };
 		BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD29FDD258293A0007A5F0F /* PresetEntry.swift */; };
 		BDD5FA672504118100367F0B /* Favorites.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDD5FA662504118000367F0B /* Favorites.plist */; };
 		BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5FA682504220E00367F0B /* CoreDataStack.swift */; };
@@ -357,6 +359,8 @@
 		BDCC40102418336200D8D849 /* NoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTests.swift; sourceTree = "<group>"; };
 		BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timer+Extensions.swift"; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
+		BDD2836825BABD1D00B3A59A /* PresetConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetConfig.swift; sourceTree = "<group>"; };
+		BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TuningComponent.swift; sourceTree = "<group>"; };
 		BDD29FDD258293A0007A5F0F /* PresetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetEntry.swift; sourceTree = "<group>"; };
 		BDD5FA662504118000367F0B /* Favorites.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Favorites.plist; sourceTree = "<group>"; };
 		BDD5FA682504220E00367F0B /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -429,6 +433,7 @@
 				BD88BCB62419952700399DE5 /* Notifiication.swift */,
 				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
+				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
@@ -485,6 +490,7 @@
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
 				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
+				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDD29FDD258293A0007A5F0F /* PresetEntry.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
@@ -569,13 +575,13 @@
 				BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */,
 				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
 				BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */,
-				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
 				BDE03BB125706F2F00F904E3 /* UIButton.swift */,
+				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
 				BD074C2123CDAF51001987E9 /* UIColor+Extensions.swift */,
-				BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */,
-				BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */,
 				BD0FAC7F2523CAEC00EEF187 /* UIContextualAction+Extensions.swift */,
+				BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */,
 				BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */,
+				BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */,
 				BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */,
 				BD074C2623CDAF51001987E9 /* UISearchBar+Additions.swift */,
 				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
@@ -933,6 +939,7 @@
 				BD0FAC802523CAEC00EEF187 /* UIContextualAction+Extensions.swift in Sources */,
 				BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */,
 				BDD5FA7125043C3700367F0B /* NSManagedObjectContext+Extensions.swift in Sources */,
+				BDD2836925BABD1D00B3A59A /* PresetConfig.swift in Sources */,
 				BD074C3E23CDAF51001987E9 /* FavoritesViewController.swift in Sources */,
 				BD074C7423CDAF51001987E9 /* InfoBarController.swift in Sources */,
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
@@ -986,6 +993,7 @@
 				BD0F942F257302C50065C147 /* ElapsedTimer.swift in Sources */,
 				BDC385F625B6CB5B00A0446E /* ConfigFile.swift in Sources */,
 				BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */,
+				BDD2836D25BAC48A00B3A59A /* TuningComponent.swift in Sources */,
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,

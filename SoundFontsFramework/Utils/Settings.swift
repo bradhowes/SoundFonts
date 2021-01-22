@@ -48,7 +48,6 @@ public extension SettingKeys {
     static let showEffects = SettingKey("showEffects", defaultValue: false)
     static let activeTagIndex = SettingKey("activeTagIndex", defaultValue: 0)
     static let globalTuning = SettingKey("globalTuning", defaultValue: Float(0.0))
-    static let useVerdiTuning = SettingKey("useVerdiTuning", defaultValue: false)
 
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
@@ -240,9 +239,5 @@ public extension UserDefaults {
     @objc dynamic var globalTuning: Float {
         get { self[.globalTuning] }
         set { self[.globalTuning] = newValue }
-    }
-    @objc dynamic var useVerdiTuning: Bool {
-        get { self[.useVerdiTuning] }
-        set { self[.useVerdiTuning] = newValue }
     }
 }

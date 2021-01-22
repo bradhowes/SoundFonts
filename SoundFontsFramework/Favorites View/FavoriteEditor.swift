@@ -7,18 +7,37 @@ import UIKit
  */
 final public class FavoriteEditor: UIViewController {
 
-    public struct Config {
+    public struct State {
         let indexPath: IndexPath
-        let view: UIView
-        let rect: CGRect
-        let favorite: LegacyFavorite
+        let sourceView: UIView
+        let sourceRect: CGRect
         let currentLowestNote: Note?
         let completionHandler: ((Bool) -> Void)?
         let soundFonts: SoundFonts
         let soundFontAndPatch: SoundFontAndPatch
     }
 
-    private var favorite: LegacyFavorite! = nil
+    public enum Config {
+        case preset(state: State)
+        case favorite(state: State, favorite: LegacyFavorite)
+
+        var state: State {
+            switch self {
+            case .preset(let config): return config
+            case .favorite(let config, _): return config
+            }
+        }
+
+        var favorite: LegacyFavorite? {
+            switch self {
+            case .preset: return nil
+            case .favorite(_, let favorite): return favorite
+            }
+        }
+    }
+
+    private var config: Config!
+    private var presetConfig = PresetConfig()
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: ((Bool) -> Void)?
@@ -31,26 +50,44 @@ final public class FavoriteEditor: UIViewController {
 
     @IBOutlet private weak var cancelButton: UIBarButtonItem!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
+
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var name: UITextField!
+    @IBOutlet private weak var originalStack: UIStackView!
+    @IBOutlet private weak var originalName: UILabel!
+    @IBOutlet private weak var originalNameUse: UIButton!
+
     @IBOutlet private weak var lowestNoteCollection: UIStackView!
     @IBOutlet private weak var lowestNote: UIButton!
+    @IBOutlet private weak var lowestNoteEnabled: UISwitch!
+    @IBOutlet private weak var lowestNoteValue: UILabel!
     @IBOutlet private weak var lowestNoteStepper: UIStepper!
-    @IBOutlet private weak var soundFontName: UILabel!
-    @IBOutlet private weak var patchName: UILabel!
-    @IBOutlet private weak var bank: UILabel!
-    @IBOutlet private weak var index: UILabel!
+
     @IBOutlet private weak var gainValue: UILabel!
     @IBOutlet private weak var gainSlider: UISlider!
+
     @IBOutlet private weak var panValue: UILabel!
     @IBOutlet private weak var panSlider: UISlider!
 
+    @IBOutlet private weak var soundFontName: UILabel!
+    @IBOutlet private weak var bankIndex: UILabel!
+
+    @IBOutlet private weak var presetTuningEnabled: UISwitch!
+    @IBOutlet private weak var standardTuningButton: UIButton!
+    @IBOutlet private weak var scientificTuningButton: UIButton!
+    @IBOutlet private weak var presetTuningCents: UITextField!
+    @IBOutlet private weak var presetTuningFrequency: UITextField!
+
+    private var tuningComponent: TuningComponent!
+
     func configure(_ config: Config) {
-        self.favorite = config.favorite
-        self.position = config.indexPath
-        self.currentLowestNote = config.currentLowestNote
-        self.completionHandler = config.completionHandler
-        self.soundFonts = config.soundFonts
-        self.soundFontAndPatch = config.soundFontAndPatch
+        let state = config.state
+        self.config = config
+        self.position = state.indexPath
+        self.currentLowestNote = state.currentLowestNote
+        self.completionHandler = state.completionHandler
+        self.soundFonts = state.soundFonts
+        self.soundFontAndPatch = state.soundFontAndPatch
     }
 
     override public func viewDidLoad() {
@@ -62,40 +99,68 @@ final public class FavoriteEditor: UIViewController {
 
         panSlider.minimumValue = -1.0
         panSlider.maximumValue = 1.0
+
+        lowestNoteStepper.setDecrementImage(lowestNoteStepper.decrementImage(for: .normal), for: .normal)
+        lowestNoteStepper.setIncrementImage(lowestNoteStepper.incrementImage(for: .normal), for: .normal)
+
+        tuningComponent = TuningComponent(tuning: 0.0, view: view,
+                                          scrollView: scrollView,
+                                          tuningEnabledSwitch: presetTuningEnabled,
+                                          standardTuningButton: standardTuningButton,
+                                          scientificTuningButton: scientificTuningButton,
+                                          tuningCents: presetTuningCents,
+                                          tuningFrequency: presetTuningFrequency)
     }
 
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        precondition(config != nil && soundFonts != nil && soundFontAndPatch != nil)
 
-        precondition(favorite != nil && soundFonts != nil)
+        guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
+        let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+        let editingFavorite = config.favorite != nil
+        let presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
-        name.text = favorite.name
+        name.text = config.favorite?.name ?? preset.name
         name.delegate = self
 
-        if let currentLowestNote = self.currentLowestNote {
+        if let currentLowestNote = (presetConfig?.keyboardLowestNote ?? self.currentLowestNote) {
             lowestNoteCollection.isHidden = false
-            lowestNote.setTitle(currentLowestNote.label, for: .normal)
+
+            self.presetConfig.keyboardLowestNoteEnabled = presetConfig?.keyboardLowestNoteEnabled ?? true
+            self.presetConfig.keyboardLowestNote = currentLowestNote
+
+            lowestNoteValue.text = currentLowestNote.label
             lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
+            lowestNoteEnabled.isOn = self.presetConfig.keyboardLowestNoteEnabled
         }
         else {
             lowestNoteCollection.isHidden = true
         }
 
-        guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
-        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+        tuningComponent.updateState(enabled: presetConfig?.presetTuningEnabled ?? false,
+                                    cents: presetConfig?.presetTuning ?? 0.0)
+
+        self.presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
+        self.presetConfig.presetTuning = tuningComponent.tuning
+
+        let gain = presetConfig?.gain ?? config.favorite?.gain ?? 0.0
+        gainSlider.value = gain
+        volumeChanged(gainSlider)
+
+        self.presetConfig.gain = gainSlider.value
+
+        let pan = presetConfig?.pan ?? config.favorite?.pan ?? 0.0
+        panSlider.value = pan
+        panChanged(panSlider)
+
+        self.presetConfig.pan = panSlider.value
+
+        originalStack.isHidden = !editingFavorite
+        originalName.text = preset.name
 
         soundFontName.text = soundFont.displayName
-        patchName.text = patch.name
-        bank.text = "Bank: \(patch.bank)"
-        index.text = "Index: \(patch.program)"
-
-        gainValue.text = formatFloat(favorite.gain)
-        gainSlider.value = favorite.gain
-
-        panValue.text = formatFloat(favorite.pan)
-        panSlider.value = favorite.pan
-
-        preferredContentSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"
     }
 }
 
@@ -126,20 +191,25 @@ extension FavoriteEditor {
      - parameter sender: the `Done` button
      */
     @IBAction private func donePressed(_ sender: UIBarButtonItem) {
-        let newName = self.name.text ?? ""
-        if !newName.isEmpty {
-            favorite.name = newName
-        }
+        guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
+        let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+        var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig ?? PresetConfig()
+
+        let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
 
         let lowestNoteValue = Int(lowestNoteStepper.value)
         let lowestNote = Note(midiNoteValue: lowestNoteValue)
+        presetConfig.keyboardLowestNote = lowestNote
+        presetConfig.keyboardLowestNoteEnabled = lowestNoteEnabled.isOn
 
-        favorite.keyboardLowestNote = lowestNote
-        favorite.gain = roundFloat(gainSlider.value)
-        favorite.pan = roundFloat(panSlider.value)
+        presetConfig.gain = gainSlider.value
+        presetConfig.pan = panSlider.value
+
+        presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
+        presetConfig.presetTuning = tuningComponent.tuning
 
         AskForReview.maybe()
-        delegate?.dismissed(position, reason: .done(update: favorite))
+        delegate?.dismissed(position, reason: .done(name: newName, config: presetConfig))
         completionHandler?(true)
     }
 
@@ -149,10 +219,13 @@ extension FavoriteEditor {
      - parameter sender: the `Cancel` button.
      */
     @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
-        favorite = nil
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .cancel)
         completionHandler?(false)
+    }
+
+    @IBAction private func useOriginalName(_ sender: UIButton) {
+        name.text = originalName.text
     }
 
     /**
@@ -161,7 +234,7 @@ extension FavoriteEditor {
      - parameter sender: UIStepper control
      */
     @IBAction private func changeLowestKey(_ sender: UIStepper) {
-        lowestNote.setTitle(Note(midiNoteValue: Int(sender.value)).label, for: .normal)
+        lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
     }
 
     /**
@@ -170,7 +243,9 @@ extension FavoriteEditor {
      - parameter sender: UISlider
      */
     @IBAction private func volumeChanged(_ sender: UISlider) {
-        gainValue.text = formatFloat(sender.value)
+        gainValue.text = "Gain \(formatFloat(sender.value)) dB"
+        presetConfig.gain = sender.value
+        PresetConfig.changedNotification.post(value: presetConfig)
     }
 
     /**
@@ -179,12 +254,14 @@ extension FavoriteEditor {
      - parameter sender: UISlider
      */
     @IBAction private func panChanged(_ sender: UISlider) {
-        panValue.text = formatFloat(sender.value)
+        panValue.text = "Pan \(formatFloat(sender.value))"
+        presetConfig.pan = sender.value
+        PresetConfig.changedNotification.post(value: presetConfig)
     }
 
     @IBAction private func useCurrentLowestNote(_ sender: Any) {
         guard let currentLowestNote = self.currentLowestNote else { return }
-        lowestNote.setTitle(currentLowestNote.label, for: .normal)
+        lowestNoteValue.text = currentLowestNote.label
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
     }
 
@@ -195,7 +272,7 @@ extension FavoriteEditor {
      - returns: formatted value
      */
     private func formatFloat(_ value: Float) -> String {
-        String(format: "%.2f", locale: Locale.current, arguments: [value])
+        String(format: "%+.2f", locale: Locale.current, arguments: [value])
     }
 
     /**

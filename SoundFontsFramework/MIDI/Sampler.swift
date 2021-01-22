@@ -25,6 +25,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C8
 
+    public static let globalTuningNotification = TypedNotification<Float>(name: .globalTuningChanged)
+
     public enum Mode {
         case standalone
         case audioUnit
@@ -42,6 +44,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
     private var tuningObserver: NSKeyValueObservation?
+    private var presetConfigNotifier: NotificationObserver?
+    private var globalTuningNotifier: NotificationObserver?
 
     /**
      Create a new instance of a Sampler.
@@ -61,6 +65,26 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         tuningObserver = Settings.shared.observe(\.globalTuning, options: []) { _, _ in
             self.auSampler?.globalTuning = Settings.shared.globalTuning
+        }
+
+        let log = self.log
+        presetConfigNotifier = PresetConfig.changedNotification.registerOnAny { [weak self] presetConfig in
+            guard let auSampler = self?.auSampler else { return }
+            if presetConfig.presetTuningEnabled {
+                os_log(.info, log: log, "setting global tuning: %f", presetConfig.presetTuning)
+                auSampler.globalTuning = presetConfig.presetTuning
+            }
+
+            os_log(.info, log: log, "setting masterGain: %f", presetConfig.gain)
+            auSampler.masterGain = presetConfig.gain
+
+            os_log(.info, log: log, "setting stereoPan: %f", presetConfig.pan)
+            auSampler.stereoPan = presetConfig.pan
+        }
+
+        globalTuningNotifier = Self.globalTuningNotification.registerOnAny { [weak self] tuning in
+            guard let auSampler = self?.auSampler else { return }
+            auSampler.globalTuning = tuning
         }
     }
 

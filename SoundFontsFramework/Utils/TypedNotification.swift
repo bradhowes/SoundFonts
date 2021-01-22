@@ -12,12 +12,14 @@ open class TypedNotification<A> {
     /// The name of the notification
     public let name: Notification.Name
 
+    public required init(name: Notification.Name) { self.name = name }
+
     /**
      Construct a new notification definition.
 
      - parameter name: the unique name for the notification
      */
-    public required init(name: String) { self.name = Notification.Name(name) }
+    public convenience init(name: String) { self.init(name: Notification.Name(name)) }
 
     /**
      Post this notification to all observers of it

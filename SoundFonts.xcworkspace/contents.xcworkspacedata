@@ -11,7 +11,10 @@
          location = "group:Mac MIDI.playground">
       </FileRef>
       <FileRef
-         location = "group:iOS MIDI.playground">
+         location = "group:/Users/howes/src/Mine/SoundFonts/Playgrounds/Arrows.playground">
+      </FileRef>
+      <FileRef
+         location = "group:Defaults.playground">
       </FileRef>
    </Group>
    <FileRef

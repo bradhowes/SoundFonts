@@ -158,27 +158,27 @@ extension FavoritesViewController: SegueHandler {
     }
 
     private func prepareToEdit(_ segue: UIStoryboardSegue, config: FavoriteEditor.Config) {
-        guard let nc = segue.destination as? UINavigationController,
-            let vc = nc.topViewController as? FavoriteEditor else {
+        guard let navController = segue.destination as? UINavigationController,
+            let viewController = navController.topViewController as? FavoriteEditor else {
                 return
         }
 
-        vc.delegate = self
-        vc.configure(config)
+        viewController.delegate = self
+        viewController.configure(config)
 
         if keyboard == nil {
-            vc.modalPresentationStyle = .fullScreen
-            nc.modalPresentationStyle = .fullScreen
+            viewController.modalPresentationStyle = .fullScreen
+            viewController.modalPresentationStyle = .fullScreen
         }
 
-        if let ppc = nc.popoverPresentationController {
-            ppc.sourceView = config.view
-            ppc.sourceRect = config.rect
+        if let ppc = navController.popoverPresentationController {
+            ppc.sourceView = config.state.sourceView
+            ppc.sourceRect = config.state.sourceRect
             ppc.permittedArrowDirections = [.up, .down]
-            ppc.delegate = vc
+            ppc.delegate = viewController
         }
 
-        nc.presentationController?.delegate = vc
+        navController.presentationController?.delegate = viewController
     }
 
     /**
@@ -199,8 +199,12 @@ extension FavoritesViewController: SegueHandler {
             return
         }
 
-        let config = FavoriteEditor.Config(indexPath: indexPath, view: favoritesView, rect: view.frame, favorite: favorite, currentLowestNote: keyboard?.lowestNote,
-                                           completionHandler: nil, soundFonts: soundFonts, soundFontAndPatch: favorite.soundFontAndPatch)
+        let configState = FavoriteEditor.State(indexPath: indexPath,
+                                               sourceView: favoritesView, sourceRect: view.frame,
+                                               currentLowestNote: self.keyboard?.lowestNote,
+                                               completionHandler: nil, soundFonts: self.soundFonts,
+                                               soundFontAndPatch: favorite.soundFontAndPatch)
+        let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
         edit(config: config)
     }
 
@@ -229,11 +233,16 @@ extension FavoritesViewController: SegueHandler {
 extension FavoritesViewController: FavoriteEditorDelegate {
 
     public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
-        if case let .done(favorite) = reason {
-            favorites.update(index: indexPath.item, with: favorite)
+        if case let .done(name, config) = reason {
+            favorites.update(index: indexPath.item, name: name, config: config)
             favoritesView.reloadItems(at: [indexPath])
             favoritesView.collectionViewLayout.invalidateLayout()
         }
+
+        if let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig {
+            PresetConfig.changedNotification.post(value: presetConfig)
+        }
+
         self.dismiss(animated: true, completion: nil)
     }
 }
