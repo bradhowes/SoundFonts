@@ -15,7 +15,7 @@ public struct PresetConfig: Codable {
     /// Gain applied to sampler output. Valid values [-90..+12] with default 0.0 See doc for `AVAudioUnitSampler`
     public var gain: Float = 0.0
 
-    /// Stereo panning applied to sampler output. Valid values [-1..+1] with default 0.0. See doc for
+    /// Stereo panning applied to sampler output. Valid values [-100..+100] with default 0.0. See doc for
     /// `AVAudioUnitSampler`
     public var pan: Float = 0.0
 

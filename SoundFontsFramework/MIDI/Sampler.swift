@@ -176,10 +176,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 
         presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
-            if let presetConfig = presetConfig {
-                self.setGain(presetConfig.gain)
-                self.setPan(presetConfig.pan)
-            }
+            self.setGain(presetConfig.gain)
+            self.setPan(presetConfig.pan)
 
             // - If global mode enabled, don't change anything
             // - If preset has a config use it.

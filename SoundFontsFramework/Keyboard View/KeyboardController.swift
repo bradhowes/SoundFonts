@@ -122,7 +122,7 @@ extension KeyboardController: ControllerConfiguration {
     }
 
     private func updateWith(favorite: LegacyFavorite) {
-        if let lowest = favorite.presetConfig?.keyboardLowestNote ?? favorite.keyboardLowestNote {
+        if let lowest = favorite.presetConfig.keyboardLowestNote {
             lowestNote = lowest
         }
     }
