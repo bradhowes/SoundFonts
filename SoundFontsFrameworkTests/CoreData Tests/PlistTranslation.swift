@@ -47,7 +47,7 @@ class PlistTranslationTests: XCTestCase {
 
                 for (index, preset) in soundFont.presets.enumerated() {
                     let patch = source.patches[index]
-                    XCTAssertEqual(patch.name, preset.name)
+                    XCTAssertEqual(patch.originalName, preset.name)
                     XCTAssertEqual(patch.bank, Int(preset.bank))
                     XCTAssertEqual(patch.program, Int(preset.preset))
                     XCTAssertEqual(patch.soundFontIndex, index)
@@ -62,7 +62,7 @@ class PlistTranslationTests: XCTestCase {
                 if let sf = lookup[soundFontKey] {
                     let fave = app.createFavorite(preset: sf.presets[patchIndex],
                                                   keyboardLowestNote: oldFave.presetConfig.keyboardLowestNote?.midiNoteValue ?? 0)
-                    fave.setName(oldFave.name)
+                    fave.setName(oldFave.presetConfig.name)
                     fave.setPan(oldFave.presetConfig.pan)
                     fave.setGain(oldFave.presetConfig.gain)
                     favorites.append(fave)

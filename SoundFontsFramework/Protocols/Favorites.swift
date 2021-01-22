@@ -86,10 +86,9 @@ public protocol Favorites {
      Update the collection due to a change in the given Favorite
 
      - parameter index: the location where the Favorite should be
-     - parameter name: the new name to use
      - parameter config: the latest config settings
      */
-    func update(index: Int, name: String, config: PresetConfig)
+    func update(index: Int, config: PresetConfig)
 
     /**
      Move a Favorite from one place in the collection to another.

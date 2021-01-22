@@ -3,7 +3,7 @@
 import UIKit
 
 /**
- Provides an editing facility for Favorite instances.
+ Provides an editing facility for presets and favorites instances.
  */
 final public class FavoriteEditor: UIViewController {
 
@@ -37,7 +37,7 @@ final public class FavoriteEditor: UIViewController {
     }
 
     private var config: Config!
-    private var presetConfig = PresetConfig()
+    private var presetConfig = PresetConfig(name: "")
     private var position: IndexPath = IndexPath(row: -1, section: -1)
     private var currentLowestNote: Note?
     private var completionHandler: ((Bool) -> Void)?
@@ -122,8 +122,11 @@ final public class FavoriteEditor: UIViewController {
         let editingFavorite = config.favorite != nil
         let presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
-        name.text = config.favorite?.name ?? preset.name
+        navigationItem.title = editingFavorite ? "Favorite" : "Preset"
+
+        name.text = presetConfig.name
         name.delegate = self
+        originalName.text = editingFavorite ? preset.presetConfig.name : preset.originalName
 
         if let currentLowestNote = presetConfig.keyboardLowestNote ?? self.currentLowestNote {
             lowestNoteCollection.isHidden = false
@@ -153,9 +156,6 @@ final public class FavoriteEditor: UIViewController {
         panChanged(panSlider)
 
         self.presetConfig.pan = panSlider.value
-
-        originalStack.isHidden = !editingFavorite
-        originalName.text = preset.name
 
         soundFontName.text = soundFont.displayName
         bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"
@@ -193,7 +193,7 @@ extension FavoriteEditor {
         let preset = soundFont.patches[soundFontAndPatch.patchIndex]
         var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
-        let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
+        presetConfig.name = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
 
         let lowestNoteValue = Int(lowestNoteStepper.value)
         let lowestNote = Note(midiNoteValue: lowestNoteValue)
@@ -207,7 +207,7 @@ extension FavoriteEditor {
         presetConfig.presetTuning = tuningComponent.tuning
 
         AskForReview.maybe()
-        delegate?.dismissed(position, reason: .done(name: newName, config: presetConfig))
+        delegate?.dismissed(position, reason: .done(config: presetConfig))
         completionHandler?(true)
     }
 

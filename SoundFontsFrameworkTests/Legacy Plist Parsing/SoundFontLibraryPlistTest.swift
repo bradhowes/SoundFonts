@@ -23,7 +23,7 @@ class SoundFontLibraryPListTest: XCTestCase {
         XCTAssertEqual(soundFont.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
 
         let patch = soundFont.patches[0]
-        XCTAssertEqual(patch.name, "Dirty Elec Organ")
+        XCTAssertEqual(patch.originalName, "Dirty Elec Organ")
         XCTAssertEqual(patch.soundFontIndex, 0)
         XCTAssertEqual(patch.bank, 0)
         XCTAssertEqual(patch.program, 0)
@@ -38,7 +38,7 @@ class SoundFontLibraryPListTest: XCTestCase {
         XCTAssertEqual(favorites.count, 6)
 
         let favorite = favorites.getBy(index: 0)
-        XCTAssertEqual(favorite.name, "Synclavier")
+        XCTAssertEqual(favorite.presetConfig.name, "Synclavier")
         XCTAssertEqual(favorite.presetConfig.gain, 0.0)
         XCTAssertEqual(favorite.presetConfig.pan, -1.0)
         XCTAssertEqual(favorite.soundFontAndPatch.patchIndex, 0)
@@ -48,6 +48,6 @@ class SoundFontLibraryPListTest: XCTestCase {
         XCTAssertEqual(sf!.displayName, "Evil synclavier")
         let p = sf?.patches[favorite.soundFontAndPatch.patchIndex]
         XCTAssertNotNil(p)
-        XCTAssertEqual(p!.name, "Evil Synclavier")
+        XCTAssertEqual(p!.originalName, "Evil Synclavier")
     }
 }

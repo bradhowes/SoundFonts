@@ -54,10 +54,9 @@ extension LegacyFavoritesManager: Favorites {
         notify(.added(index: count - 1, favorite: favorite))
     }
 
-    public func update(index: Int, name: String, config: PresetConfig) {
+    public func update(index: Int, config: PresetConfig) {
         defer { collectionChanged() }
         let favorite = collection.getBy(index: index)
-        favorite.name = name
         favorite.presetConfig = config
         collection.replace(index: index, with: favorite)
         notify(.changed(index: index, favorite: favorite))

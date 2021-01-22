@@ -293,25 +293,25 @@ extension InfoBarController {
 
     private func updateInfoBar(with favorite: LegacyFavorite) {
         if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
-            setPatchInfo(name: favorite.name, isFavored: true)
+            setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
         }
     }
 
     private func updateInfoBar(with soundFontAndPatch: SoundFontAndPatch) {
         if soundFontAndPatch == activePatchManager.soundFontAndPatch {
             if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
-                setPatchInfo(name: patch.name, isFavored: false)
+                setPatchInfo(name: patch.presetConfig.name, isFavored: false)
             }
         }
     }
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
         if let favorite = activePatchKind.favorite {
-            setPatchInfo(name: favorite.name, isFavored: true)
+            setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
         }
         else if let soundFontAndPatch = activePatchKind.soundFontAndPatch {
             if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
-                setPatchInfo(name: patch.name, isFavored: false)
+                setPatchInfo(name: patch.presetConfig.name, isFavored: false)
             }
         }
         else {

@@ -3,8 +3,21 @@
 public struct PresetConfig: Codable {
     public typealias ChangedNotification = TypedNotification<PresetConfig>
 
+    enum V2Keys: String, CodingKey {
+        case name
+        case keyboardLowestNote
+        case keyboardLowestNoteEnabled
+        case gain
+        case pan
+        case presetTuning
+        case presetTuningEnabled
+    }
+
     /// Notification that will be emitted when the persistent container is available to use.
     public static let changedNotification: ChangedNotification = ChangedNotification(name: .presetConfigChanged)
+
+    /// The name for this preset configuration
+    public var name: String
 
     /// The starting note of the keyboard.
     public var keyboardLowestNote: Note?
@@ -21,5 +34,7 @@ public struct PresetConfig: Codable {
 
     /// Current preset tuning value (cents)
     public var presetTuning: Float = 0.0
+
+    /// True if preset tuning should be applied when preset is active
     public var presetTuningEnabled: Bool = false
 }
