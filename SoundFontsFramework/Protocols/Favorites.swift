@@ -98,6 +98,8 @@ public protocol Favorites {
      */
     func move(from: Int, to: Int)
 
+    func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?)
+
     /**
      The Favorite at the given index is selected by the user.
 

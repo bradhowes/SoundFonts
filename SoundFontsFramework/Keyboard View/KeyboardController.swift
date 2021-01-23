@@ -105,16 +105,26 @@ extension KeyboardController: ControllerConfiguration {
         infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
         sampler = router.sampler
         touchedKeys = TouchKeyMap(sampler: sampler)
+        router.activePatchManager.subscribe(self, notifier: presetChanged)
         router.favorites.subscribe(self, notifier: favoritesChange)
+    }
+
+    private func presetChanged(_ event: ActivePatchEvent) {
+        switch event {
+        case .active:
+            if let presetConfig = activePatchManager.patch?.presetConfig {
+                updateWith(presetConfig: presetConfig)
+            }
+        }
     }
 
     private func favoritesChange(_ event: FavoritesEvent) {
         switch event {
         case let .changed(index: _, favorite: favorite):
             if activePatchManager.favorite == favorite {
-                updateWith(favorite: favorite)
+                updateWith(presetConfig: favorite.presetConfig)
             }
-        case let .selected(index: _, favorite: favorite): updateWith(favorite: favorite)
+        case let .selected(index: _, favorite: favorite): updateWith(presetConfig: favorite.presetConfig)
         case .added: break
         case .beginEdit: break
         case .removed: break
@@ -123,8 +133,8 @@ extension KeyboardController: ControllerConfiguration {
         }
     }
 
-    private func updateWith(favorite: LegacyFavorite) {
-        if let lowest = favorite.presetConfig.keyboardLowestNote {
+    private func updateWith(presetConfig: PresetConfig) {
+        if presetConfig.keyboardLowestNoteEnabled, let lowest = presetConfig.keyboardLowestNote {
             lowestNote = lowest
         }
     }

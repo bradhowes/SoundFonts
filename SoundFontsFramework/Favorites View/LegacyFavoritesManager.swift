@@ -90,6 +90,14 @@ extension LegacyFavoritesManager: Favorites {
     public func count(associatedWith soundFont: LegacySoundFont) -> Int {
         collection.count(associatedWith: soundFont)
     }
+
+    public func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {
+        os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
+               delay?.description ?? "nil", reverb?.description ?? "nil")
+        defer { collectionChanged() }
+        favorite.presetConfig.delayConfig = delay
+        favorite.presetConfig.reverbConfig = reverb
+    }
 }
 
 extension LegacyFavoritesManager: ConfigFileManager {

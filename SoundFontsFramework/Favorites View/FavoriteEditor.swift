@@ -58,7 +58,7 @@ final public class FavoriteEditor: UIViewController {
 
     weak var delegate: FavoriteEditorDelegate?
 
-    override public var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    // override public var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
     @IBOutlet private weak var cancelButton: UIBarButtonItem!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
@@ -68,6 +68,9 @@ final public class FavoriteEditor: UIViewController {
     @IBOutlet private weak var originalStack: UIStackView!
     @IBOutlet private weak var originalName: UILabel!
     @IBOutlet private weak var originalNameUse: UIButton!
+
+    @IBOutlet private weak var forgetReverbSettingsButton: UIButton!
+    @IBOutlet private weak var forgetDelaySettingsButton: UIButton!
 
     @IBOutlet private weak var lowestNoteCollection: UIStackView!
     @IBOutlet private weak var lowestNote: UIButton!
@@ -132,7 +135,8 @@ final public class FavoriteEditor: UIViewController {
         guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
         let preset = soundFont.patches[soundFontAndPatch.patchIndex]
         let editingFavorite = config.favorite != nil
-        let presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
+
+        presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
         navigationItem.title = editingFavorite ? "Favorite" : "Preset"
 
@@ -142,8 +146,6 @@ final public class FavoriteEditor: UIViewController {
 
         if let currentLowestNote = presetConfig.keyboardLowestNote ?? self.currentLowestNote {
             lowestNoteCollection.isHidden = false
-            self.presetConfig.keyboardLowestNoteEnabled = presetConfig.keyboardLowestNoteEnabled
-            self.presetConfig.keyboardLowestNote = currentLowestNote
             lowestNoteValue.text = currentLowestNote.label
             lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
             lowestNoteEnabled.isOn = self.presetConfig.keyboardLowestNoteEnabled
@@ -154,20 +156,13 @@ final public class FavoriteEditor: UIViewController {
 
         tuningComponent.updateState(enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
-        self.presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
-        self.presetConfig.presetTuning = tuningComponent.tuning
-
         let gain = presetConfig.gain
         gainSlider.value = gain
         volumeChanged(gainSlider)
 
-        self.presetConfig.gain = gainSlider.value
-
         let pan = presetConfig.pan
         panSlider.value = pan
         panChanged(panSlider)
-
-        self.presetConfig.pan = panSlider.value
 
         soundFontName.text = soundFont.displayName
         bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"

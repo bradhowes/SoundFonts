@@ -183,7 +183,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             // - If preset has a config use it.
             // - Otherwise, if effect was enabled disable it
             if let delay = self.delay, !Settings.instance.delayGlobal {
-                if let config = patch.delayConfig {
+                if let config = presetConfig.delayConfig {
                     os_log(.debug, log: self.log, "reverb preset config")
                     delay.active = config
                 }
@@ -194,7 +194,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             }
 
             if let reverb = self.reverb, !Settings.instance.reverbGlobal {
-                if let config = patch.reverbConfig {
+                if let config = presetConfig.reverbConfig {
                     os_log(.debug, log: self.log, "delay preset config")
                     reverb.active = config
                 }

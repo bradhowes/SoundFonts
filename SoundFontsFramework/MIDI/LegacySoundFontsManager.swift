@@ -168,8 +168,8 @@ extension LegacySoundFontsManager: SoundFonts {
                delay?.description ?? "nil", reverb?.description ?? "nil")
         guard let soundFont = getBy(key: key) else { return }
         let patch = soundFont.patches[index]
-        patch.delayConfig = delay
-        patch.reverbConfig = reverb
+        patch.presetConfig.delayConfig = delay
+        patch.presetConfig.reverbConfig = reverb
         markDirty()
     }
 
@@ -177,8 +177,8 @@ extension LegacySoundFontsManager: SoundFonts {
         os_log(.debug, log: log, "dropEffects - %{public}s %d %{public}s %{public}s")
         guard let soundFont = getBy(key: key) else { return }
         let patch = soundFont.patches[index]
-        patch.delayConfig = nil
-        patch.reverbConfig = nil
+        patch.presetConfig.delayConfig = nil
+        patch.presetConfig.reverbConfig = nil
         markDirty()
     }
 

@@ -51,30 +51,32 @@ public class LegacyFavorite: Codable {
 
     public required init(from decoder: Decoder) throws {
         do {
-            let values = try decoder.container(keyedBy: V1Keys.self)
+            // Attempt to decode the latest version first
+            let values = try decoder.container(keyedBy: V2Keys.self)
             let key = try values.decode(Key.self, forKey: .key)
             let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
-            let name = try values.decode(String.self, forKey: .name)
-            let lowestNote = try values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
-            let gain = try values.decode(Float.self, forKey: .gain)
-            let pan = try values.decode(Float.self, forKey: .pan)
+            let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
             self.key = key
             self.soundFontAndPatch = soundFontAndPatch
-            self.presetConfig = PresetConfig(name: name, keyboardLowestNote: lowestNote,
-                                             keyboardLowestNoteEnabled: lowestNote != nil,
-                                             gain: gain, pan: pan,
-                                             presetTuning: 0.0, presetTuningEnabled: false)
+            self.presetConfig = presetConfig
         }
         catch {
             let err = error
             do {
-                let values = try decoder.container(keyedBy: V2Keys.self)
+                // Attempt to decode previous version
+                let values = try decoder.container(keyedBy: V1Keys.self)
                 let key = try values.decode(Key.self, forKey: .key)
                 let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
-                let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
+                let name = try values.decode(String.self, forKey: .name)
+                let lowestNote = try values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
+                let gain = try values.decode(Float.self, forKey: .gain)
+                let pan = try values.decode(Float.self, forKey: .pan)
                 self.key = key
                 self.soundFontAndPatch = soundFontAndPatch
-                self.presetConfig = presetConfig
+                self.presetConfig = PresetConfig(name: name, keyboardLowestNote: lowestNote,
+                                                 keyboardLowestNoteEnabled: lowestNote != nil,
+                                                 gain: gain, pan: pan,
+                                                 presetTuning: 0.0, presetTuningEnabled: false)
             } catch {
                 throw err
             }

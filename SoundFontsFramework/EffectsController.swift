@@ -34,6 +34,7 @@ public final class EffectsController: UIViewController {
     private var reverb: Reverb!
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
+    private var favorites: Favorites!
 
     public override func viewDidLoad() {
         reverbRoom.dataSource = self
@@ -133,6 +134,7 @@ public final class EffectsController: UIViewController {
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
         soundFonts = router.soundFonts
+        favorites = router.favorites
         activePatchManager = router.activePatchManager
         activePatchManager.subscribe(self, notifier: activePatchChange)
         delay = router.delay
@@ -177,20 +179,32 @@ extension EffectsController {
     private func updatePreset() {
         guard let soundFont = activePatchManager.soundFont else { return }
         guard let preset = activePatchManager.patch else { return }
+        let favorite = activePatchManager.favorite
+        let presetConfig = favorite?.presetConfig ?? preset.presetConfig
+
         let delayConfig = Settings.instance.delayGlobal ?
-            preset.delayConfig : (delay.active.enabled ? delay.active : nil)
-        let reverbConfig = Settings.instance.delayGlobal ?
-            preset.reverbConfig : (reverb.active.enabled ? reverb.active : nil)
-        soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig,
-                              reverb: reverbConfig)
+            presetConfig.delayConfig :
+            (delay.active.enabled ? delay.active : nil)
+        let reverbConfig = Settings.instance.reverbGlobal ?
+            presetConfig.reverbConfig :
+            (reverb.active.enabled ? reverb.active : nil)
+
+        if let favorite = favorite {
+            favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
+        }
+        else {
+            soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig,
+                                  reverb: reverbConfig)
+        }
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         guard case .active = event else { return }
         guard let patch = activePatchManager.patch else { return }
+        let presetConfig = activePatchManager.favorite?.presetConfig ?? patch.presetConfig
 
         if !Settings.instance.reverbGlobal {
-            if let reverbConfig = patch.reverbConfig {
+            if let reverbConfig = presetConfig.reverbConfig {
                 update(config: reverbConfig)
             }
             else {
@@ -199,7 +213,7 @@ extension EffectsController {
         }
 
         if !Settings.instance.delayGlobal {
-            if let delayConfig = patch.delayConfig {
+            if let delayConfig = presetConfig.delayConfig {
                 update(config: delayConfig)
             }
             else {

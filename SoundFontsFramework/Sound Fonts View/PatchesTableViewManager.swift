@@ -470,7 +470,7 @@ extension PatchesTableViewManager {
 
     private func createFaveSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Fave", color: .orange) { _, _, completionHandler in
+        return UIContextualAction(tag: "Fave", color: .systemOrange) { _, _, completionHandler in
             guard let soundFont = self.soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else {
                 completionHandler(false)
                 return
@@ -490,7 +490,7 @@ extension PatchesTableViewManager {
 
     private func createUnfaveSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                          soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Unfave", color: .systemOrange) { _, view, completionHandler in
+        return UIContextualAction(tag: "Unfave", color: .systemRed) { _, view, completionHandler in
             guard let favorite = self.favorites.getBy(soundFontAndPatch: soundFontAndPatch) else {
                 completionHandler(false)
                 return
@@ -529,7 +529,7 @@ extension PatchesTableViewManager {
 
     private func createFavoriteEditSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                                soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Edit", color: .orange) { _, view, completionHandler in
+        return UIContextualAction(tag: "Edit", color: .systemOrange) { _, view, completionHandler in
             guard let favorite = self.favorites.getBy(soundFontAndPatch: soundFontAndPatch) else {
                 completionHandler(false)
                 return
