@@ -167,7 +167,9 @@ extension InfoBarController: InfoBar {
             case .editVisibility: return editVisibility
             case .showEffects: return showEffects
             case .showTags: return showTags
-            default: return nil
+            case .shiftKeyboardUp: return nil
+            case .shiftKeyboardDown: return nil
+            case .doubleTap: return nil
             }
         }()
         button?.tintColor = .systemTeal
@@ -287,7 +289,10 @@ extension InfoBarController {
         case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
         case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
         case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontAndPatch)
-        default: break
+        case .selected: break
+        case .beginEdit: break
+        case .removedAll: break
+        case .restored: break
         }
     }
 

@@ -34,6 +34,18 @@ final public class FavoriteEditor: UIViewController {
             case .favorite(_, let favorite): return favorite
             }
         }
+
+        var isFavorite: Bool {
+            switch self {
+            case .preset: return false
+            case .favorite: return true
+            }
+        }
+    }
+
+    public enum Response {
+        case preset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig)
+        case favorite(config: PresetConfig)
     }
 
     private var config: Config!
@@ -193,7 +205,10 @@ extension FavoriteEditor {
         let preset = soundFont.patches[soundFontAndPatch.patchIndex]
         var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
-        presetConfig.name = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
+        let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
+        if !newName.isEmpty {
+            presetConfig.name = newName
+        }
 
         let lowestNoteValue = Int(lowestNoteStepper.value)
         let lowestNote = Note(midiNoteValue: lowestNoteValue)
@@ -206,8 +221,11 @@ extension FavoriteEditor {
         presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
         presetConfig.presetTuning = tuningComponent.tuning
 
+        let response: Response = self.config.isFavorite ?
+            .favorite(config: presetConfig) : .preset(soundFontAndPatch: soundFontAndPatch, config: presetConfig)
+
         AskForReview.maybe()
-        delegate?.dismissed(position, reason: .done(config: presetConfig))
+        delegate?.dismissed(position, reason: .done(response: response))
         completionHandler?(true)
     }
 

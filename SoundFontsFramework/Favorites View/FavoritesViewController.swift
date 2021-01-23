@@ -233,10 +233,17 @@ extension FavoritesViewController: SegueHandler {
 extension FavoritesViewController: FavoriteEditorDelegate {
 
     public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
-        if case let .done(config) = reason {
-            favorites.update(index: indexPath.item, config: config)
-            favoritesView.reloadItems(at: [indexPath])
-            favoritesView.collectionViewLayout.invalidateLayout()
+        if case let .done(response) = reason {
+            switch response {
+            case .favorite(let config):
+                favorites.update(index: indexPath.item, config: config)
+                favoritesView.reloadItems(at: [indexPath])
+                favoritesView.collectionViewLayout.invalidateLayout()
+
+            case .preset(let soundFontAndPatch, let config):
+                soundFonts.updatePreset(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex,
+                                        config: config)
+            }
         }
 
         if let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig {
