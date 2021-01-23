@@ -112,28 +112,46 @@ final public class LegacyPatch: Codable {
 
     public required init(from decoder: Decoder) throws {
         do {
-            let values = try decoder.container(keyedBy: V1Keys.self)
-            let name = try values.decode(String.self, forKey: .name)
+            let values = try decoder.container(keyedBy: V2Keys.self)
+            let originalName = try values.decode(String.self, forKey: .originalName)
             let bank = try values.decode(Int.self, forKey: .bank)
             let program = try values.decode(Int.self, forKey: .program)
             let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
-            let isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
-            let reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
-            let delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
-            let presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ??
-                PresetConfig(name: name)
+            let isVisible = try values.decode(Bool.self, forKey: .isVisible)
+            let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
+
+            self.originalName = originalName
+            self.bank = bank
+            self.program = program
+            self.soundFontIndex = soundFontIndex
+            self.isVisible = isVisible
+            self.presetConfig = presetConfig
         }
-        let values = try decoder.container(keyedBy: V1Keys.self)
-        let name = try values.decode(String.self, forKey: .name)
-        self.originalName = name
-        self.bank = try values.decode(Int.self, forKey: .bank)
-        self.program = try values.decode(Int.self, forKey: .program)
-        self.soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
-        self.isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
-        self.reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
-        self.delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
-        self.presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ??
-            PresetConfig(name: name)
+        catch {
+            let err = error
+            do {
+                let values = try decoder.container(keyedBy: V1Keys.self)
+                let name = try values.decode(String.self, forKey: .name)
+                let bank = try values.decode(Int.self, forKey: .bank)
+                let program = try values.decode(Int.self, forKey: .program)
+                let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
+                let isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
+                let reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
+                let delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
+
+                self.originalName = name
+                self.bank = bank
+                self.program = program
+                self.soundFontIndex = soundFontIndex
+                self.isVisible = isVisible
+
+                self.presetConfig = PresetConfig(name: name, keyboardLowestNote: nil, keyboardLowestNoteEnabled: false,
+                                                 reverbConfig: reverbConfig, delayConfig: delayConfig,
+                                                 gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
+            } catch {
+                throw err
+            }
+        }
     }
 }
 
