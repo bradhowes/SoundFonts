@@ -145,6 +145,14 @@ extension LegacySoundFontsManager: SoundFonts {
         markDirty()
     }
 
+    public func updatePreset(key: LegacySoundFont.Key, index: Int, config: PresetConfig) {
+        guard let soundFont = getBy(key: key) else { return }
+        let patch = soundFont.patches[index]
+        patch.presetConfig = config
+        notify(.presetChanged(font: soundFont, index: index))
+        markDirty()
+    }
+
     public func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool) {
         os_log(.debug, log: log, "setVisibility - %{public}s %d %d", key.uuidString, index, state)
         guard let soundFont = getBy(key: key) else { return }

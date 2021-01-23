@@ -19,16 +19,6 @@ final public class LegacyPatch: Codable {
         case presetConfig
     }
 
-    enum V2Keys: String, CodingKey {
-        case bank
-        case program
-        case soundFontIndex
-        case isVisible
-        case reverbConfig
-        case delayConfig
-        case presetConfig
-    }
-
     /// Original name for the preset/patch
     public let originalName: String
 

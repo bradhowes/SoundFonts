@@ -384,13 +384,19 @@ extension PatchesTableViewManager {
                 updateViewPresets()
             }
 
+        case let .presetChanged(soundFont, index):
+            if soundFont == selectedSoundFontManager.selected {
+                let soundFontAndPatch = soundFont.makeSoundFontAndPatch(at: index)
+                updateView(with: soundFontAndPatch)
+            }
+
         case .restored:
             if viewPresets.isEmpty {
                 soundFontsRestored()
             }
-
-        default:
-            break
+        case .added: break
+        case .moved: break
+        case .removed: break
         }
     }
 

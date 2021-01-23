@@ -237,9 +237,9 @@ extension FontsTableViewManager {
         case let .added(new, soundFont): addSoundFont(index: new, soundFont: soundFont)
         case let .moved(old, new, soundFont): movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont)
         case let .removed(old, deletedSoundFont): removeSoundFont(index: old, soundFont: deletedSoundFont)
+        case .presetChanged: break
         case .unhidPresets: break
-        case .restored:
-            updateViewSoundFonts()
+        case .restored: updateViewSoundFonts()
         }
     }
 
@@ -250,9 +250,10 @@ extension FontsTableViewManager {
             soundFonts.removeTag(tag.key)
             updateFilterTag(index: 0)
 
-        case .restored:
-            updateFilterTag(index: Settings.shared.activeTagIndex)
-        default: break
+        case .restored: updateFilterTag(index: Settings.shared.activeTagIndex)
+        case .added: break
+        case .moved: break
+        case .changed: break
         }
     }
 

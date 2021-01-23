@@ -80,6 +80,13 @@ public class LegacyFavorite: Codable {
             }
         }
     }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: V2Keys.self)
+        try container.encode(key, forKey: .key)
+        try container.encode(soundFontAndPatch, forKey: .soundFontAndPatch)
+        try container.encode(presetConfig, forKey: .presetConfig)
+    }
 }
 
 extension LegacyFavorite: Equatable {

@@ -18,6 +18,8 @@ public enum SoundFontsEvent {
 
     case unhidPresets(font: LegacySoundFont)
 
+    case presetChanged(font: LegacySoundFont, index: Int)
+
     case restored
 }
 
@@ -86,6 +88,8 @@ public protocol SoundFonts: class {
     func rename(key: LegacySoundFont.Key, name: String)
 
     func removeTag(_ tag: LegacyTag.Key)
+
+    func updatePreset(key: LegacySoundFont.Key, index: Int, config: PresetConfig)
 
     /**
      Set the visibility of a preset.

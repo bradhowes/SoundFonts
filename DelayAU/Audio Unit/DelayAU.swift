@@ -319,7 +319,7 @@ extension DelayAU {
                     default: break
                     }
                 case .parameterRamp: break
-                default: break
+                @unknown default: break
                 }
                 head = UnsafePointer<AURenderEvent>(event.head.next)
             }

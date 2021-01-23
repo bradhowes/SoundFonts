@@ -114,10 +114,12 @@ extension KeyboardController: ControllerConfiguration {
             if activePatchManager.favorite == favorite {
                 updateWith(favorite: favorite)
             }
-        case let .selected(index: _, favorite: favorite):
-            updateWith(favorite: favorite)
-        default:
-            break
+        case let .selected(index: _, favorite: favorite): updateWith(favorite: favorite)
+        case .added: break
+        case .beginEdit: break
+        case .removed: break
+        case .removedAll: break
+        case .restored: break
         }
     }
 
