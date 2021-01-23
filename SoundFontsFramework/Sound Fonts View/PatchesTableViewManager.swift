@@ -490,7 +490,7 @@ extension PatchesTableViewManager {
 
     private func createUnfaveSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                          soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Unfave", color: .red) { _, view, completionHandler in
+        return UIContextualAction(tag: "Unfave", color: .systemOrange) { _, view, completionHandler in
             guard let favorite = self.favorites.getBy(soundFontAndPatch: soundFontAndPatch) else {
                 completionHandler(false)
                 return

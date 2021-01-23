@@ -16,6 +16,14 @@ final public class LegacyPatch: Codable {
         case isVisible
         case reverbConfig
         case delayConfig
+    }
+
+    enum V2Keys: String, CodingKey {
+        case originalName
+        case bank
+        case program
+        case soundFontIndex
+        case isVisible
         case presetConfig
     }
 
@@ -33,12 +41,6 @@ final public class LegacyPatch: Codable {
 
     /// Determines the visibility of a preset in a UI view.
     var isVisible: Bool
-
-    /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension)
-    var reverbConfig: ReverbConfig?
-
-    /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
-    var delayConfig: DelayConfig?
 
     /// Configuration parameters that can be adjusted by the user.
     var presetConfig: PresetConfig {
@@ -109,6 +111,18 @@ final public class LegacyPatch: Codable {
     }
 
     public required init(from decoder: Decoder) throws {
+        do {
+            let values = try decoder.container(keyedBy: V1Keys.self)
+            let name = try values.decode(String.self, forKey: .name)
+            let bank = try values.decode(Int.self, forKey: .bank)
+            let program = try values.decode(Int.self, forKey: .program)
+            let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
+            let isVisible = try values.decodeIfPresent(Bool.self, forKey: .isVisible) ?? true
+            let reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
+            let delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
+            let presetConfig = try values.decodeIfPresent(PresetConfig.self, forKey: .presetConfig) ??
+                PresetConfig(name: name)
+        }
         let values = try decoder.container(keyedBy: V1Keys.self)
         let name = try values.decode(String.self, forKey: .name)
         self.originalName = name
