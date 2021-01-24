@@ -15,8 +15,8 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let favorites: Favorites
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
-    public let delay: Delay?
-    public let reverb: Reverb?
+    public let delayEffect: Delay?
+    public let reverbEffect: Reverb?
     public let sampler: Sampler
     public let inApp: Bool
 
@@ -57,9 +57,9 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
                                                      selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
 
         let reverb = inApp ? Reverb() : nil
-        self.reverb = reverb
+        self.reverbEffect = reverb
         let delay = inApp ? Delay() : nil
-        self.delay = delay
+        self.delayEffect = delay
 
         self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager,
                                reverb: reverb, delay: delay)

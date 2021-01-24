@@ -32,6 +32,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public private(set) var active: ActivePatchKind
 
     public var favorite: LegacyFavorite? { active.favorite }
+
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
 
     public var soundFont: LegacySoundFont? {
@@ -43,6 +44,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
         guard let index = soundFontAndPatch?.patchIndex else { return nil }
         return soundFont?.patches[index]
     }
+
+    public var presetConfig: PresetConfig? { favorite?.presetConfig ?? patch?.presetConfig }
 
     public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, inApp: Bool) {
         os_log(.info, log: log, "init")

@@ -30,8 +30,8 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayWetDryMix: Knob!
     @IBOutlet weak var delayWetDryMixLabel: UILabel!
 
-    private var delay: Delay!
-    private var reverb: Reverb!
+    private var reverbEffect: Reverb!
+    private var delayEffect: Delay!
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
     private var favorites: Favorites!
@@ -74,8 +74,8 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
-        reverb.active = reverb.active.setEnabled(!reverb.active.enabled)
-        updateReverbState(reverb.active.enabled)
+        reverbEffect.active = reverbEffect.active.setEnabled(!reverbEffect.active.enabled)
+        updateReverbState(reverbEffect.active.enabled)
         updatePreset()
     }
 
@@ -87,8 +87,8 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
-        delay.active = delay.active.setEnabled(!delay.active.enabled)
-        updateDelayState(delay.active.enabled)
+        delayEffect.active = delayEffect.active.setEnabled(!delayEffect.active.enabled)
+        updateDelayState(delayEffect.active.enabled)
         updatePreset()
     }
 
@@ -101,32 +101,32 @@ public final class EffectsController: UIViewController {
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
         showReverbMixValue()
-        reverb.active = reverb.active.setWetDryMix(reverbWetDryMix.value)
+        reverbEffect.active = reverbEffect.active.setWetDryMix(reverbWetDryMix.value)
         updatePreset()
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
         showDelayTime()
-        delay.active = delay.active.setTime(delayTime.value)
+        delayEffect.active = delayEffect.active.setTime(delayTime.value)
         updatePreset()
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
         showDelayFeedback()
-        delay.active = delay.active.setFeedback(delayFeedback.value)
+        delayEffect.active = delayEffect.active.setFeedback(delayFeedback.value)
         updatePreset()
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
         showDelayCutoff()
-        delay.active = delay.active.setCutoff(pow(10.0, delayCutoff.value))
+        delayEffect.active = delayEffect.active.setCutoff(pow(10.0, delayCutoff.value))
         updatePreset()
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
         let value = delayWetDryMix.value
         delayWetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        delay.active = delay.active.setWetDryMix(value)
+        delayEffect.active = delayEffect.active.setWetDryMix(value)
         updatePreset()
     }
 }
@@ -137,8 +137,8 @@ extension EffectsController: ControllerConfiguration {
         favorites = router.favorites
         activePatchManager = router.activePatchManager
         activePatchManager.subscribe(self, notifier: activePatchChange)
-        delay = router.delay
-        reverb = router.reverb
+        reverbEffect = router.reverbEffect
+        delayEffect = router.delayEffect
     }
 }
 
@@ -153,7 +153,7 @@ extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
-        reverb.active = reverb.active.setPreset(row)
+        reverbEffect.active = reverbEffect.active.setPreset(row)
         updatePreset()
     }
 
@@ -177,24 +177,18 @@ extension EffectsController: UIPickerViewDelegate {
 extension EffectsController {
 
     private func updatePreset() {
-        guard let soundFont = activePatchManager.soundFont else { return }
-        guard let preset = activePatchManager.patch else { return }
-        let favorite = activePatchManager.favorite
-        let presetConfig = favorite?.presetConfig ?? preset.presetConfig
+        guard let presetConfig = activePatchManager.presetConfig else { return }
 
-        let delayConfig = Settings.instance.delayGlobal ?
-            presetConfig.delayConfig :
-            (delay.active.enabled ? delay.active : nil)
+        let delayConfig = Settings.instance.delayGlobal ? presetConfig.delayConfig : (delayEffect.active.enabled ? delayEffect.active : nil)
         let reverbConfig = Settings.instance.reverbGlobal ?
             presetConfig.reverbConfig :
-            (reverb.active.enabled ? reverb.active : nil)
+            (reverbEffect.active.enabled ? reverbEffect.active : nil)
 
-        if let favorite = favorite {
+        if let favorite = activePatchManager.favorite {
             favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
         }
-        else {
-            soundFonts.setEffects(key: soundFont.key, index: preset.soundFontIndex, delay: delayConfig,
-                                  reverb: reverbConfig)
+        else if let soundFontAndPatch = activePatchManager.soundFontAndPatch {
+            soundFonts.setEffects(soundFontAndPatch: soundFontAndPatch, delay: delayConfig, reverb: reverbConfig)
         }
     }
 
