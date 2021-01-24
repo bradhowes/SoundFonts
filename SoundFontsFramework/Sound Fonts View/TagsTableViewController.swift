@@ -3,6 +3,9 @@
 import UIKit
 import os
 
+/**
+ Manages the table view that appears off of the preset editor. Allows full editing of the tags collection.
+ */
 public final class TagsTableViewController: UITableViewController {
     private lazy var log = Logging.logger("TagsTVC")
 

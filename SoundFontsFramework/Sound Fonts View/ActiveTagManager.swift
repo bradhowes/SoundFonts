@@ -1,9 +1,12 @@
-// Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2021 Brad Howes. All rights reserved.
 
 import UIKit
 import os
 
-final class TagsTableViewManager: NSObject {
+/**
+ <#Describe TagsTableViewManager#>
+ */
+final class ActiveTagManager: NSObject {
     private lazy var log = Logging.logger("TagsTVM")
 
     private let view: UITableView
@@ -32,7 +35,7 @@ final class TagsTableViewManager: NSObject {
     }
 }
 
-extension TagsTableViewManager: UITableViewDataSource {
+extension ActiveTagManager: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
@@ -45,9 +48,7 @@ extension TagsTableViewManager: UITableViewDataSource {
     }
 }
 
-// MARK: - UITableViewDelegate Protocol
-
-extension TagsTableViewManager: UITableViewDelegate {
+extension ActiveTagManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let oldIndexPath = IndexPath(row: activeIndex, section: 0)
@@ -62,7 +63,7 @@ extension TagsTableViewManager: UITableViewDelegate {
     }
 }
 
-extension TagsTableViewManager {
+extension ActiveTagManager {
 
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
         let row = indexPath.row
@@ -70,8 +71,5 @@ extension TagsTableViewManager {
         let name = tag.name
         cell.updateForTag(name: name, isActive: activeIndex == row)
         return cell
-    }
-
-    private func saveSelectedTag() {
     }
 }
