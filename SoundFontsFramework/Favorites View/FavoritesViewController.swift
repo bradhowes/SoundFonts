@@ -10,8 +10,6 @@ import os
 public final class FavoritesViewController: UIViewController, FavoritesViewManager {
     private lazy var log = Logging.logger("FavsVC")
 
-    private let favoriteCell: FavoriteCell! = FavoriteCell.nib.instantiate(withOwner: nil, options: nil)[0] as? FavoriteCell
-
     @IBOutlet private var favoritesView: UICollectionView!
     @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
     @IBOutlet public var doubleTapGestureRecognizer: UITapGestureRecognizer!
@@ -30,8 +28,6 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     private var favoritesSubscription: SubscriberToken?
 
     public override func viewDidLoad() {
-        favoriteCell.translatesAutoresizingMaskIntoConstraints = false
-
         favoritesView.register(FavoriteCell.self)
         favoritesView.dataSource = self
         favoritesView.delegate = self
@@ -219,7 +215,8 @@ extension FavoritesViewController: SegueHandler {
 
         if let popoverController = alertController.popoverPresentationController {
             popoverController.sourceView = self.view
-            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
             popoverController.permittedArrowDirections = []
         }
 
@@ -260,10 +257,14 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
     public func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { favorites.count }
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        favorites.count
+    }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorites.getBy(index: indexPath.row)))
+    public func collectionView(_ collectionView: UICollectionView,
+                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath),
+                                with: favorites.getBy(index: indexPath.row)))
     }
 }
 
@@ -279,7 +280,8 @@ extension FavoritesViewController: UICollectionViewDelegate {
         favorites.count > 1
     }
 
-    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
+                               to destinationIndexPath: IndexPath) {
         favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
         collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
     }
@@ -289,9 +291,10 @@ extension FavoritesViewController: UICollectionViewDelegate {
 
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                               sizeForItemAt indexPath: IndexPath) -> CGSize {
         let favorite = favorites.getBy(index: indexPath.item)
-        let cell = update(cell: favoriteCell, with: favorite)
+        let cell = update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorite)
         let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
         return constrainedSize
