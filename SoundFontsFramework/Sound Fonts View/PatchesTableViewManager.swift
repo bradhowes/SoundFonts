@@ -477,8 +477,9 @@ extension PatchesTableViewManager {
             }
 
             let patch = soundFont.patches[soundFontAndPatch.patchIndex]
-            self.favorites.add(name: patch.presetConfig.name, soundFontAndPatch: soundFontAndPatch,
+            self.favorites.add(soundFontAndPatch: soundFontAndPatch, presetConfig: patch.presetConfig,
                                keyboardLowestNote: self.keyboard?.lowestNote)
+
             DispatchQueue.main.async {
                 self.view.beginUpdates()
                 self.updateView(cell: cell, at: indexPath)
