@@ -238,8 +238,7 @@ extension FavoritesViewController: FavoriteEditorDelegate {
                 favoritesView.collectionViewLayout.invalidateLayout()
 
             case .preset(let soundFontAndPatch, let config):
-                soundFonts.updatePreset(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex,
-                                        config: config)
+                soundFonts.updatePreset(soundFontAndPatch: soundFontAndPatch, config: config)
             }
         }
 

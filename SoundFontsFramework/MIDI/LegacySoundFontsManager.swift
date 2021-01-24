@@ -145,40 +145,31 @@ extension LegacySoundFontsManager: SoundFonts {
         markDirty()
     }
 
-    public func updatePreset(key: LegacySoundFont.Key, index: Int, config: PresetConfig) {
-        guard let soundFont = getBy(key: key) else { return }
-        let patch = soundFont.patches[index]
+    public func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig) {
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         patch.presetConfig = config
-        notify(.presetChanged(font: soundFont, index: index))
+        notify(.presetChanged(font: soundFont, index: soundFontAndPatch.patchIndex))
         markDirty()
     }
 
-    public func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool) {
-        os_log(.debug, log: log, "setVisibility - %{public}s %d %d", key.uuidString, index, state)
-        guard let soundFont = getBy(key: key) else { return }
-        let patch = soundFont.patches[index]
-        os_log(.debug, log: log, "setVisibility %{public}s %{public}s - %d %d", String.pointer(patch),
-               patch.presetConfig.name, patch.isVisible, state)
+    public func setVisibility(soundFontAndPatch: SoundFontAndPatch, state: Bool) {
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+        os_log(.debug, log: log, "setVisibility - %{public}s %d - %d",
+               soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex, state)
         patch.isVisible = state
         markDirty()
     }
 
-    public func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig?, reverb: ReverbConfig?) {
-        os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s", key.uuidString, index,
+    public func setEffects(soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?) {
+        os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
+               soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex,
                delay?.description ?? "nil", reverb?.description ?? "nil")
-        guard let soundFont = getBy(key: key) else { return }
-        let patch = soundFont.patches[index]
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         patch.presetConfig.delayConfig = delay
         patch.presetConfig.reverbConfig = reverb
-        markDirty()
-    }
-
-    public func dropEffects(key: LegacySoundFont.Key, index: Int) {
-        os_log(.debug, log: log, "dropEffects - %{public}s %d %{public}s %{public}s")
-        guard let soundFont = getBy(key: key) else { return }
-        let patch = soundFont.patches[index]
-        patch.presetConfig.delayConfig = nil
-        patch.presetConfig.reverbConfig = nil
         markDirty()
     }
 

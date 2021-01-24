@@ -89,7 +89,7 @@ public protocol SoundFonts: class {
 
     func removeTag(_ tag: LegacyTag.Key)
 
-    func updatePreset(key: LegacySoundFont.Key, index: Int, config: PresetConfig)
+    func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig)
 
     /**
      Set the visibility of a preset.
@@ -98,7 +98,7 @@ public protocol SoundFonts: class {
      - parameter index: the index of the preset in the SoundFont to change
      - parameter state: the new visibility state for the preset
      */
-    func setVisibility(key: LegacySoundFont.Key, index: Int, state: Bool)
+    func setVisibility(soundFontAndPatch: SoundFontAndPatch, state: Bool)
 
     /**
      Make all presets of a given SoundFont visible.
@@ -115,7 +115,7 @@ public protocol SoundFonts: class {
      - parameter delay: the configuration for the delay
      - parameter reverb: the configuration for the reverb
      */
-    func setEffects(key: LegacySoundFont.Key, index: Int, delay: DelayConfig?, reverb: ReverbConfig?)
+    func setEffects(soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?)
 
     func reloadEmbeddedInfo(key: LegacySoundFont.Key)
 

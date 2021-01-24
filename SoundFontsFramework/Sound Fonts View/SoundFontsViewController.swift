@@ -151,8 +151,8 @@ extension SoundFontsViewController: ControllerConfiguration {
         patchesTableViewManager = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
-            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay,
-            reverb: router.reverb)
+            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delayEffect,
+            reverb: router.reverbEffect)
 
         tagsTableViewManager = ActiveTagManager(view: tagsView, tagsManager: router.tagsManager,
                                                     tagsHider: self.hideTags)

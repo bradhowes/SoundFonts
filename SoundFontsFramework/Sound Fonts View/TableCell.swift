@@ -4,7 +4,7 @@ import UIKit
 import os
 
 /**
- Specialization of UITableViewCell that will display a SoundFont entry or a Patch entry.
+ Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry.
  */
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     private lazy var log = Logging.logger("TableCell")
@@ -185,12 +185,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         }
 
         return nil
-    }
-
-    @IBAction func editingChanged(_ sender: Any) {
-    }
-
-    @IBAction func editingDidEnd(_ sender: Any) {
     }
 }
 

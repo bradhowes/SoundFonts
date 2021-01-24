@@ -246,7 +246,8 @@ extension PatchesTableViewManager {
         guard let soundFont = selectedSoundFontManager.selected else { return }
         guard let presetIndex = viewPresets[indexPath] else { return }
         let preset = soundFont.patches[presetIndex]
-        soundFonts.setVisibility(key: soundFont.key, index: preset.soundFontIndex, state: state)
+        let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: preset.soundFontIndex)
+        soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: state)
     }
 
     private func toggleVisibilityEditing(_ sender: AnyObject) {
@@ -302,7 +303,9 @@ extension PatchesTableViewManager {
             let preset = soundFont.patches[presetIndex]
             if preset.isVisible || isFavored(at: indexPath) {
                 if !preset.isVisible {
-                    soundFonts.setVisibility(key: soundFont.key, index: preset.soundFontIndex, state: true)
+                    let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key,
+                                                              patchIndex: preset.soundFontIndex)
+                    soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: true)
                 }
                 view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             }
@@ -552,8 +555,7 @@ extension PatchesTableViewManager {
     private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         return UIContextualAction(tag: "HideShield", color: .gray) { _, _, completionHandler in
-            self.soundFonts.setVisibility(key: soundFontAndPatch.soundFontKey, index: soundFontAndPatch.patchIndex,
-                                          state: false)
+            self.soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: false)
             self.viewPresets.remove(at: indexPath.presetIndex)
             self.view.performBatchUpdates({
                 self.view.deleteRows(at: [indexPath], with: .automatic)
