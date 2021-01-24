@@ -41,12 +41,12 @@ public class LegacyFavorite: Codable {
      - parameter patch: the Patch to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-    public init(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) {
+    public init(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig, keyboardLowestNote: Note?) {
         self.key = Key()
         self.soundFontAndPatch = soundFontAndPatch
-        self.presetConfig = PresetConfig(name: name, keyboardLowestNote: keyboardLowestNote,
-                                         keyboardLowestNoteEnabled: keyboardLowestNote != nil,
-                                         gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
+        self.presetConfig = presetConfig
+        self.presetConfig.keyboardLowestNote = keyboardLowestNote
+        self.presetConfig.keyboardLowestNoteEnabled = false
     }
 
     public required init(from decoder: Decoder) throws {

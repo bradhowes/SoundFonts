@@ -68,11 +68,12 @@ public protocol Favorites {
 
     /**
      Create a new Favorite instance with the given parameters
-    
-     - parameter soundFontAndPatch: the Patch to associate with
-     - parameter keyboardLowestNote: the lowest note of the keyboard
+
+     - parameter soundFontAndPatch: address of the preset to use
+     - parameter presetConfig: the PresetConfig to copy
+     - parameter keyboardLowestNote: the current lowest note of the keyboard
      */
-    func add(name: String, soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
+    func add(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig, keyboardLowestNote: Note?)
 
     /**
      Begin editing a Favorite
