@@ -27,7 +27,7 @@ public final class SoundFontsViewController: UIViewController {
 
     private var fontsTableViewManager: FontsTableViewManager!
     private var patchesTableViewManager: PatchesTableViewManager!
-    private var tagsTableViewManager: TagsTableViewManager!
+    private var tagsTableViewManager: ActiveTagManager!
     private var selectedSoundFontManager: SelectedSoundFontManager!
     private var keyboard: Keyboard?
 
@@ -154,7 +154,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delay,
             reverb: router.reverb)
 
-        tagsTableViewManager = TagsTableViewManager(view: tagsView, tagsManager: router.tagsManager,
+        tagsTableViewManager = ActiveTagManager(view: tagsView, tagsManager: router.tagsManager,
                                                     tagsHider: self.hideTags)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
