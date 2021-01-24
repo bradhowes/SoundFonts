@@ -38,5 +38,5 @@ extension Notification.Name {
     public static let presetConfigChanged = Notification.Name("presetConfigChanged")
 
     /// Set a tuning
-    public static let globalTuningChanged = Notification.Name("globalTuningChanged")
+    public static let setTuning = Notification.Name("setTuningChanged")
 }

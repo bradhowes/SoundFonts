@@ -69,8 +69,8 @@ final public class FavoriteEditor: UIViewController {
     @IBOutlet private weak var originalName: UILabel!
     @IBOutlet private weak var originalNameUse: UIButton!
 
-    @IBOutlet private weak var forgetReverbSettingsButton: UIButton!
-    @IBOutlet private weak var forgetDelaySettingsButton: UIButton!
+    @IBOutlet private weak var gainResetButton: UIButton!
+    @IBOutlet private weak var panResetButton: UIButton!
 
     @IBOutlet private weak var lowestNoteCollection: UIStackView!
     @IBOutlet private weak var lowestNote: UIButton!
@@ -110,8 +110,8 @@ final public class FavoriteEditor: UIViewController {
         lowestNoteStepper.minimumValue = 0
         lowestNoteStepper.maximumValue = Double(Sampler.maxMidiValue)
 
-        gainSlider.minimumValue = -90.0
-        gainSlider.maximumValue = 12.0
+        gainSlider.minimumValue = -90.0 // db
+        gainSlider.maximumValue = 12 // db
 
         panSlider.minimumValue = -100.0
         panSlider.maximumValue = 100.0
@@ -156,13 +156,8 @@ final public class FavoriteEditor: UIViewController {
 
         tuningComponent.updateState(enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
-        let gain = presetConfig.gain
-        gainSlider.value = gain
-        volumeChanged(gainSlider)
-
-        let pan = presetConfig.pan
-        panSlider.value = pan
-        panChanged(panSlider)
+        setGainValue(presetConfig.gain)
+        setPanValue(presetConfig.pan)
 
         soundFontName.text = soundFont.displayName
         bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"
@@ -249,14 +244,16 @@ extension FavoriteEditor {
     }
 
     /**
-     Event handler for the volume slider
+     Event handler for the gain slider
     
      - parameter sender: UISlider
      */
     @IBAction private func volumeChanged(_ sender: UISlider) {
-        gainValue.text = "\(formatFloat(sender.value)) dB"
-        presetConfig.gain = sender.value
-        PresetConfig.changedNotification.post(value: presetConfig)
+        setGainValue(sender.value)
+    }
+
+    @IBAction private func resetGain(_ sender: UIButton) {
+        setGainValue(0.0)
     }
 
     /**
@@ -265,18 +262,34 @@ extension FavoriteEditor {
      - parameter sender: UISlider
      */
     @IBAction private func panChanged(_ sender: UISlider) {
-        let right = Int(round((sender.value + 100.0) / 200.0 * 100.0))
-        let left = Int(100 - right)
-        panLeft.text = "\(left)"
-        panRight.text = "\(right)"
-        presetConfig.pan = sender.value
-        PresetConfig.changedNotification.post(value: presetConfig)
+        setPanValue(sender.value)
+    }
+
+    @IBAction private func resetPan(_ sender: UIButton) {
+        setPanValue(0.0)
     }
 
     @IBAction private func useCurrentLowestNote(_ sender: Any) {
         guard let currentLowestNote = self.currentLowestNote else { return }
         lowestNoteValue.text = currentLowestNote.label
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
+    }
+
+    private func setGainValue(_ value: Float) {
+        gainValue.text = "\(formatFloat(value)) dB"
+        gainSlider.value = value
+        presetConfig.gain = value
+        PresetConfig.changedNotification.post(value: presetConfig)
+    }
+
+    private func setPanValue(_ value: Float) {
+        let right = Int(round((value + 100.0) / 200.0 * 100.0))
+        let left = Int(100 - right)
+        panLeft.text = "\(left)"
+        panRight.text = "\(right)"
+        panSlider.value = value
+        presetConfig.pan = value
+        PresetConfig.changedNotification.post(value: presetConfig)
     }
 
     /**

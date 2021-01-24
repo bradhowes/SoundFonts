@@ -24,8 +24,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C8
+    public static let setTuningNotification = TypedNotification<Float>(name: .setTuning)
 
-    public static let globalTuningNotification = TypedNotification<Float>(name: .globalTuningChanged)
+    public typealias StartResult = Result<AVAudioUnitSampler?, SamplerStartFailure>
 
     public enum Mode {
         case standalone
@@ -34,8 +35,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     private let mode: Mode
     private let activePatchManager: ActivePatchManager
-    private let reverb: Reverb?
-    private let delay: Delay?
+    private let reverbEffect: Reverb?
+    private let delayEffect: Delay?
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
     public private(set) var auSampler: AVAudioUnitSampler?
@@ -43,9 +44,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
-    private var tuningObserver: NSKeyValueObservation?
     private var presetConfigNotifier: NotificationObserver?
-    private var globalTuningNotifier: NotificationObserver?
+    private var setGlobalTuningNotifier: NotificationObserver?
 
     /**
      Create a new instance of a Sampler.
@@ -59,32 +59,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     public init(mode: Mode, activePatchManager: ActivePatchManager, reverb: Reverb?, delay: Delay?) {
         self.mode = mode
         self.activePatchManager = activePatchManager
-        self.reverb = reverb
-        self.delay = delay
+        self.reverbEffect = reverb
+        self.delayEffect = delay
         super.init()
 
-        tuningObserver = Settings.shared.observe(\.globalTuning, options: []) { _, _ in
-            self.auSampler?.globalTuning = Settings.shared.globalTuning
-        }
-
-        let log = self.log
         presetConfigNotifier = PresetConfig.changedNotification.registerOnAny { [weak self] presetConfig in
-            guard let auSampler = self?.auSampler else { return }
-            if presetConfig.presetTuningEnabled {
-                os_log(.info, log: log, "setting global tuning: %f", presetConfig.presetTuning)
-                auSampler.globalTuning = presetConfig.presetTuning
-            }
-
-            os_log(.info, log: log, "setting masterGain: %f", presetConfig.gain)
-            auSampler.masterGain = presetConfig.gain
-
-            os_log(.info, log: log, "setting stereoPan: %f", presetConfig.pan)
-            auSampler.stereoPan = presetConfig.pan
+            guard let self = self else { return }
+            self.applyPresetConfig(presetConfig)
         }
 
-        globalTuningNotifier = Self.globalTuningNotification.registerOnAny { [weak self] tuning in
-            guard let auSampler = self?.auSampler else { return }
-            auSampler.globalTuning = tuning
+        setGlobalTuningNotifier = Self.setTuningNotification.registerOnAny { [weak self] tuning in
+            self?.setTuning(tuning)
         }
     }
 
@@ -93,10 +78,12 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result value indicating success or failure
      */
-    public func start() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
+    public func start() -> StartResult {
         os_log(.info, log: log, "start")
         auSampler = AVAudioUnitSampler()
-        auSampler?.globalTuning = Settings.shared.globalTuning
+        if Settings.shared.globalTuningEnabled {
+            auSampler?.globalTuning = Settings.shared.globalTuning
+        }
         presetChangeManager.start()
         return startEngine()
     }
@@ -124,39 +111,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         engine = nil
     }
 
-    private func startEngine() -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
-        guard let sampler = auSampler else { return .failure(.noSampler) }
-
-        if mode == .standalone {
-            os_log(.debug, log: log, "connecting sampler")
-            let engine = AVAudioEngine()
-            self.engine = engine
-
-            os_log(.debug, log: log, "attaching sampler")
-            engine.attach(sampler)
-
-            guard let reverb = self.reverb?.audioUnit else { fatalError("unexpected nil Reverb") }
-            engine.attach(reverb)
-            engine.connect(reverb, to: engine.mainMixerNode, format: nil)
-
-            guard let delay = self.delay?.audioUnit else { fatalError("unexpected nil Delay") }
-            engine.attach(delay)
-            engine.connect(delay, to: reverb, format: nil)
-            engine.connect(sampler, to: delay, format: nil)
-
-            engine.prepare()
-
-            do {
-                os_log(.debug, log: log, "starting engine")
-                try engine.start()
-            } catch let error as NSError {
-                return .failure(.engineStarting(error: error))
-            }
-        }
-
-        return loadActivePreset()
-    }
-
     /**
      Ask the sampler to use the active preset held by the ActivePatchManager.
 
@@ -164,7 +118,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - returns: Result instance indicating success or failure
      */
-    public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> Result<AVAudioUnitSampler?, SamplerStartFailure> {
+    public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
         os_log(.info, log: log, "loadActivePreset - %{public}s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
@@ -175,35 +129,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         self.loaded = false
         let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 
-        presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) {
-            self.setGain(presetConfig.gain)
-            self.setPan(presetConfig.pan)
-
-            // - If global mode enabled, don't change anything
-            // - If preset has a config use it.
-            // - Otherwise, if effect was enabled disable it
-            if let delay = self.delay, !Settings.instance.delayGlobal {
-                if let config = presetConfig.delayConfig {
-                    os_log(.debug, log: self.log, "reverb preset config")
-                    delay.active = config
-                }
-                else if delay.active.enabled {
-                    os_log(.debug, log: self.log, "reverb disabled")
-                    delay.active = delay.active.setEnabled(false)
-                }
-            }
-
-            if let reverb = self.reverb, !Settings.instance.reverbGlobal {
-                if let config = presetConfig.reverbConfig {
-                    os_log(.debug, log: self.log, "delay preset config")
-                    reverb.active = config
-                }
-                else if reverb.active.enabled {
-                    os_log(.debug, log: self.log, "delay disabled")
-                    reverb.active = reverb.active.setEnabled(false)
-                }
-            }
-
+        presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program),
+                                   bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) { [weak self] in
+            guard let self = self else { return }
+            self.applyPresetConfig(presetConfig)
             DispatchQueue.main.async {
                 self.loaded = true
                 afterLoadBlock?()
@@ -213,6 +142,19 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         return .success(sampler)
     }
+}
+
+extension Sampler {
+
+    /**
+     Set the AVAudioUnitSampler tuning value
+
+     - parameter value: the value to set in cents (+/- 2400)
+     */
+    public func setTuning(_ value: Float) {
+        os_log(.info, log: log, "setTuning: %f", value)
+        auSampler?.globalTuning = value
+    }
 
     /**
      Set the AVAudioUnitSampler masterGain value
@@ -220,6 +162,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - parameter value: the value to set
      */
     public func setGain(_ value: Float) {
+        os_log(.info, log: log, "setGain: %f", value)
         auSampler?.masterGain = value
     }
 
@@ -229,8 +172,12 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
      - parameter value: the value to set
      */
     public func setPan(_ value: Float) {
+        os_log(.info, log: log, "setPan: %f", value)
         auSampler?.stereoPan = value
     }
+}
+
+extension Sampler {
 
     /**
      Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
@@ -303,5 +250,78 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         os_log(.debug, log: log, "programChange - %d", program)
         guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendProgramChange(program, onChannel: 0)
+    }
+}
+
+extension Sampler {
+
+    private func startEngine() -> StartResult {
+        guard let sampler = auSampler else { return .failure(.noSampler) }
+        guard mode == .standalone else { return loadActivePreset() }
+
+        os_log(.debug, log: log, "connecting sampler")
+        let engine = AVAudioEngine()
+        self.engine = engine
+
+        os_log(.debug, log: log, "attaching sampler")
+        engine.attach(sampler)
+
+        guard let reverb = reverbEffect?.audioUnit else { fatalError("unexpected nil Reverb") }
+        engine.attach(reverb)
+        engine.connect(reverb, to: engine.mainMixerNode, format: nil)
+
+        guard let delay = delayEffect?.audioUnit else { fatalError("unexpected nil Delay") }
+        engine.attach(delay)
+        engine.connect(delay, to: reverb, format: nil)
+        engine.connect(sampler, to: delay, format: nil)
+
+        engine.prepare()
+
+        do {
+            os_log(.debug, log: log, "starting engine")
+            try engine.start()
+        } catch let error as NSError {
+            return .failure(.engineStarting(error: error))
+        }
+
+        return loadActivePreset()
+    }
+
+    private func applyPresetConfig(_ presetConfig: PresetConfig) {
+
+        if presetConfig.presetTuningEnabled {
+            setTuning(presetConfig.presetTuning)
+        }
+        else if Settings.shared.globalTuningEnabled {
+            setTuning(Settings.shared.globalTuning)
+        }
+
+        setGain(presetConfig.gain)
+        setPan(presetConfig.pan)
+
+        // - If global mode enabled, don't change anything
+        // - If preset has a config use it.
+        // - Otherwise, if effect was enabled disable it
+        if let delay = delayEffect, !Settings.instance.delayGlobal {
+            if let config = presetConfig.delayConfig {
+                os_log(.debug, log: log, "reverb preset config")
+                delay.active = config
+            }
+            else if delay.active.enabled {
+                os_log(.debug, log: log, "reverb disabled")
+                delay.active = delay.active.setEnabled(false)
+            }
+        }
+
+        if let reverb = reverbEffect, !Settings.instance.reverbGlobal {
+            if let config = presetConfig.reverbConfig {
+                os_log(.debug, log: log, "delay preset config")
+                reverb.active = config
+            }
+            else if reverb.active.enabled {
+                os_log(.debug, log: log, "delay disabled")
+                reverb.active = reverb.active.setEnabled(false)
+            }
+        }
     }
 }

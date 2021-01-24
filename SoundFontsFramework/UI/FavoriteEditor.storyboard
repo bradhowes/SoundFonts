@@ -273,16 +273,27 @@
                                                                     </label>
                                                                 </subviews>
                                                             </stackView>
-                                                            <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="14m-Hm-ehH" userLabel="gainSlider">
-                                                                <rect key="frame" x="-2" y="24.5" width="372" height="31"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="374" id="CMR-kj-B83"/>
-                                                                </constraints>
-                                                                <color key="minimumTrackTintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="volumeChanged:" destination="BKU-jd-QcQ" eventType="valueChanged" id="4un-HP-30B"/>
-                                                                </connections>
-                                                            </slider>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="16w-O7-b55">
+                                                                <rect key="frame" x="0.0" y="24.5" width="368" height="30"/>
+                                                                <subviews>
+                                                                    <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="14m-Hm-ehH" userLabel="gainSlider">
+                                                                        <rect key="frame" x="-2" y="0.0" width="325" height="31"/>
+                                                                        <color key="minimumTrackTintColor" systemColor="systemTealColor"/>
+                                                                        <connections>
+                                                                            <action selector="volumeChanged:" destination="BKU-jd-QcQ" eventType="valueChanged" id="4un-HP-30B"/>
+                                                                        </connections>
+                                                                    </slider>
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUv-Ff-tYK">
+                                                                        <rect key="frame" x="329" y="0.0" width="39" height="30"/>
+                                                                        <state key="normal" title="Reset">
+                                                                            <color key="titleColor" systemColor="systemTealColor"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="resetGain:" destination="BKU-jd-QcQ" eventType="touchUpInside" id="pw7-9x-2qA"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="cf0-Pi-ZHp" userLabel="Pan">
@@ -311,16 +322,27 @@
                                                                     </label>
                                                                 </subviews>
                                                             </stackView>
-                                                            <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-100" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="G0a-IZ-2Go" userLabel="panSlider">
-                                                                <rect key="frame" x="-2" y="24.5" width="372" height="31"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="999" constant="374" id="kFW-7I-kAh"/>
-                                                                </constraints>
-                                                                <color key="minimumTrackTintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="panChanged:" destination="BKU-jd-QcQ" eventType="valueChanged" id="MFg-Xe-S8b"/>
-                                                                </connections>
-                                                            </slider>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OfF-ek-AEU">
+                                                                <rect key="frame" x="0.0" y="24.5" width="368" height="30"/>
+                                                                <subviews>
+                                                                    <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-100" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="G0a-IZ-2Go" userLabel="panSlider">
+                                                                        <rect key="frame" x="-2" y="0.0" width="325" height="31"/>
+                                                                        <color key="minimumTrackTintColor" systemColor="systemTealColor"/>
+                                                                        <connections>
+                                                                            <action selector="panChanged:" destination="BKU-jd-QcQ" eventType="valueChanged" id="MFg-Xe-S8b"/>
+                                                                        </connections>
+                                                                    </slider>
+                                                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLv-hS-7kl">
+                                                                        <rect key="frame" x="329" y="0.0" width="39" height="30"/>
+                                                                        <state key="normal" title="Reset">
+                                                                            <color key="titleColor" systemColor="systemTealColor"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="resetPan:" destination="BKU-jd-QcQ" eventType="touchUpInside" id="pFG-zd-izT"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CP-Vq-WaW" userLabel="Divider 1">
@@ -418,6 +440,7 @@
                         <outlet property="bankIndex" destination="1XQ-iF-KQ5" id="cBa-FJ-Ho6"/>
                         <outlet property="cancelButton" destination="tAA-It-tjC" id="JmD-jt-lGl"/>
                         <outlet property="doneButton" destination="zZL-Yx-D2R" id="4sN-WO-sRz"/>
+                        <outlet property="gainResetButton" destination="XUv-Ff-tYK" id="Hnw-qJ-85v"/>
                         <outlet property="gainSlider" destination="14m-Hm-ehH" id="Ovr-cX-6Zo"/>
                         <outlet property="gainValue" destination="9bj-HL-S0c" id="yXS-dL-rhH"/>
                         <outlet property="lowestNote" destination="Eby-vf-Iqi" id="B2q-1j-GBd"/>
@@ -430,6 +453,7 @@
                         <outlet property="originalNameUse" destination="jnH-OA-4jV" id="PpO-18-Pbw"/>
                         <outlet property="originalStack" destination="Urh-uD-7kN" id="wR6-Yb-3v7"/>
                         <outlet property="panLeft" destination="UwJ-ID-HZg" id="HVB-tx-2ES"/>
+                        <outlet property="panResetButton" destination="KLv-hS-7kl" id="Iqc-rn-IN9"/>
                         <outlet property="panRight" destination="cF6-dZ-7Lb" id="Dk7-CI-dEH"/>
                         <outlet property="panSlider" destination="G0a-IZ-2Go" id="Nr6-td-dOK"/>
                         <outlet property="presetTuningCents" destination="qGW-cI-01n" id="YmN-kn-w0A"/>

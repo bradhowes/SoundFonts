@@ -43,6 +43,7 @@ public final class TuningComponent: NSObject {
 
         standardTuningButton.addClosure(useStandardTuning)
         scientificTuningButton.addClosure(useScientificTuning)
+        tuningEnabledSwitch.addClosure(toggledTuningEnabled)
 
         tuningCents.delegate = self
         tuningFrequency.delegate = self
@@ -71,13 +72,7 @@ extension TuningComponent {
 
 extension TuningComponent {
 
-    private func updateEnabledState(_ enabled: Bool) {
-        tuningEnabledSwitch.setOn(enabled, animated: false)
-        standardTuningButton.isEnabled = enabled
-        scientificTuningButton.isEnabled = enabled
-        tuningCents.isEnabled = enabled
-        tuningFrequency.isEnabled = enabled
-    }
+    private func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuning) }
 
     private func useStandardTuning(_ button: Any) { setTuningFrequency(440.0) }
 
@@ -87,19 +82,17 @@ extension TuningComponent {
 
     private func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
 
-    private func setTuningCents(_ cents: Float) {
-        let cents = min(max(cents, -2400.0), 2400.0)
-        let frequency = centsToFrequency(cents)
-        tuningCents.text = numberParserFormatter.string(from: NSNumber(value: cents))
-        tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: frequency))
-        tuning = cents
-        Sampler.globalTuningNotification.post(value: cents)
+    private func setTuningCents(_ value: Float) {
+        tuning = min(max(value, -2400.0), 2400.0)
+        tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuning))
+        tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuning)))
+        Sampler.setTuningNotification.post(value: tuningEnabledSwitch.isOn ?
+                                                tuning :
+                                                (Settings.shared.globalTuningEnabled ?
+                                                        Settings.shared.globalTuning : 0.0))
     }
 
-    private func setTuningFrequency(_ frequency: Float) {
-        let cents = frequencyToCents(frequency)
-        setTuningCents(cents)
-    }
+    private func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }
 }
 
 extension TuningComponent: UITextFieldDelegate {

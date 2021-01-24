@@ -177,6 +177,12 @@ public final class SettingsViewController: UIViewController {
         bluetoothMIDIConnectStackView.isHidden = isAUv3
         divider5.isHidden = isAUv3
     }
+
+    override public func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        Settings.shared.globalTuning = tuningComponent.tuning
+        Settings.shared.globalTuningEnabled = globalTuningEnabled.isOn
+    }
 }
 
 extension SettingsViewController {
@@ -223,7 +229,9 @@ extension SettingsViewController {
         removeDefaultSoundFonts.isEnabled = soundFonts.hasAnyBundled
     }
 
-    @IBAction private func close(_ sender: Any) { dismiss(animated: true) }
+    @IBAction private func close(_ sender: Any) {
+        dismiss(animated: true)
+    }
 
     @IBAction func visitAppStore(_ sender: Any) { NotificationCenter.default.post(Notification(name: .visitAppStore)) }
 
