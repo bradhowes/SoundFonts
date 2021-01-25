@@ -35,7 +35,8 @@ private final class PresetChangeOperation: Operation {
 
     override var isAsynchronous: Bool { true }
 
-    init(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8, afterLoadBlock: (() -> Void)? = nil) {
+    init(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
+         afterLoadBlock: (() -> Void)? = nil) {
         os_log(.info, log: log, "init")
         self.sampler = sampler
         self.url = url
@@ -91,10 +92,12 @@ final class PresetChangeManager {
         active = true
     }
 
-    func change(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8, afterLoadBlock: (() -> Void)? = nil) {
+    func change(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
+                afterLoadBlock: (() -> Void)? = nil) {
         os_log(.info, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB, bankLSB)
         guard active else { return }
-        queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
+        queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, program: program, bankMSB: bankMSB,
+                                                 bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
     }
 
     func stop() {

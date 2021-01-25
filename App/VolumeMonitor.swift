@@ -68,7 +68,9 @@ extension VolumeMonitor {
         muteDetector?.start()
 
         let session = AVAudioSession.sharedInstance()
-        sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in self.volume = session.outputVolume }
+        sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
+            self.volume = session.outputVolume
+        }
     }
 
     /**
@@ -106,7 +108,8 @@ extension VolumeMonitor {
             reason = .volumeLevel
         }
         else if muted {
-            if AVAudioSession.sharedInstance().isOtherAudioPlaying || AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+            if AVAudioSession.sharedInstance().isOtherAudioPlaying ||
+                AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
                 reason = .otherAudio
             }
             else {

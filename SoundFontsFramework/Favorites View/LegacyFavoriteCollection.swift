@@ -13,19 +13,12 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
     }
 
     private var favorites: [LegacyFavorite]
-    private var reverseLookup: [SoundFontAndPatch: LegacyFavorite]
 
     /// Number of favorites defined
     var count: Int { favorites.count }
 
     init() {
         self.favorites = []
-        self.reverseLookup = [:]
-    }
-
-    public func validate(_ legacyFavorite: LegacyFavorite) -> Bool {
-        guard let held = getBySFP(soundFontAndPatch: legacyFavorite.soundFontAndPatch) else { return false }
-        return held == legacyFavorite
     }
 
     /**
@@ -34,7 +27,9 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: true if so
      */
-    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool { reverseLookup[soundFontAndPatch] != nil }
+    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool {
+        getBy(soundFontAndPatch: soundFontAndPatch) != nil
+    }
 
     /**
      Obtain the index of the given favorite in the collection.
@@ -44,7 +39,6 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      */
     func index(of favorite: LegacyFavorite) -> Int {
         favorites.firstIndex(of: favorite)!
-
     }
 
     /**
@@ -56,14 +50,13 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
     func getBy(index: Int) -> LegacyFavorite { favorites[index] }
 
     /**
-     Obtain the favorite associated with the given soundFont/patch combination.
+     Obtain the first favorite associated with the given soundFont/patch combination.
 
      - parameter soundFontPatch: soundFont/patch to look for
      - returns: the favorite found or nil if no match
      */
-    func getBySFP(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
-        guard let soundFontAndPatch = soundFontAndPatch else { return nil }
-        return reverseLookup[soundFontAndPatch]
+    func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite? {
+        favorites.first { soundFontAndPatch == $0.soundFontAndPatch }
     }
 
     /**
@@ -72,7 +65,6 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter favorite: the new favorite to add
      */
     func add(favorite: LegacyFavorite) {
-        reverseLookup[favorite.soundFontAndPatch] = favorite
         AskForReview.maybe()
         favorites.append(favorite)
     }
@@ -84,9 +76,7 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter favorite: the new value to store
      */
     func replace(index: Int, with favorite: LegacyFavorite) {
-        reverseLookup.removeValue(forKey: favorites[index].soundFontAndPatch)
         favorites[index] = favorite
-        reverseLookup[favorite.soundFontAndPatch] = favorite
     }
 
     func move(from: Int, to: Int) {
@@ -96,17 +86,16 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
 
     func remove(index: Int) -> LegacyFavorite {
         let favorite = favorites.remove(at: index)
-        reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
         AskForReview.maybe()
         return favorite
     }
 
-    func removeAll(associatedWith soundFont: LegacySoundFont) {
-        findAll(associatedWith: soundFont).forEach { self.remove(favorite: $0) }
+    func removeAll(associatedWith soundFontKey: LegacySoundFont.Key) {
+        findAll(associatedWith: soundFontKey).forEach { self.remove(favorite: $0) }
     }
 
-    func count(associatedWith soundFont: LegacySoundFont) -> Int {
-        findAll(associatedWith: soundFont).count
+    func count(associatedWith soundFontKey: LegacySoundFont.Key) -> Int {
+        findAll(associatedWith: soundFontKey).count
     }
 }
 
@@ -115,10 +104,9 @@ extension LegacyFavoriteCollection {
     private func remove(favorite: LegacyFavorite) {
         guard let index = favorites.firstIndex(of: favorite) else { return }
         favorites.remove(at: index)
-        reverseLookup.removeValue(forKey: favorite.soundFontAndPatch)
     }
 
-    private func findAll(associatedWith soundFont: LegacySoundFont) -> [LegacyFavorite] {
-        favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFont.key }
+    private func findAll(associatedWith soundFontKey: LegacySoundFont.Key) -> [LegacyFavorite] {
+        favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFontKey }
     }
 }

@@ -20,7 +20,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         components.setMainViewController(mainViewController)
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
@@ -28,11 +29,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
 
-        observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in self.visitAppStore() }
+        observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
+            self.visitAppStore() }
         return true
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DispatchQueue.main.async { self.components.patchesViewManager.addSoundFonts(urls: [url]) }
         return true
     }

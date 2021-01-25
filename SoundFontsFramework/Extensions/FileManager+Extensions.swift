@@ -52,6 +52,10 @@ extension FileManager {
         sharedDocumentsDirectory.appendingPathComponent(component)
     }
 
+    public var sharedFileNames: [String] {
+        (try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path)) ?? [String]()
+    }
+
     /// True if the user has an iCloud container available to use
     public var hasCloudDirectory: Bool { return self.ubiquityIdentityToken != nil }
 

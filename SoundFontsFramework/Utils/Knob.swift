@@ -4,13 +4,18 @@ import UIKit
 import os
 
 /**
- Custom UIControl that depicts a value as a point on a circle. Changing the value is done by touching on the control and moving up to increase
- and down to decrease the current value. While touching, moving away from the control in either direction will increase the resolution of the
- touch changes, causing the value to change more slowly as vertical distance changes. Pretty much works like UISlider but with the travel path
+ Custom UIControl that depicts a value as a point on a circle. Changing the value is done by touching on the control
+ and moving up to increase
+ and down to decrease the current value. While touching, moving away from the control in either direction will increase
+ the resolution of the
+ touch changes, causing the value to change more slowly as vertical distance changes. Pretty much works like UISlider
+ but with the travel path
  as an arc.
 
- Visual representation of the knob is done via CoreAnimation components, namely CAShapeLayer and UIBezierPath. The diameter of the arc of the knob is
- defined by the min(width, height) of the view's frame. The start and end of the arc is controlled by the `startAngle` and `endAngle` settings.
+ Visual representation of the knob is done via CoreAnimation components, namely CAShapeLayer and UIBezierPath. The
+ diameter of the arc of the knob is
+ defined by the min(width, height) of the view's frame. The start and end of the arc is controlled by the `startAngle`
+ and `endAngle` settings.
  */
 open class Knob: UIControl {
 
@@ -23,7 +28,8 @@ open class Knob: UIControl {
     /// The current value of the control.
     open var value: Float { get { _value } set { setValue(clampedValue(newValue), animated: false) } }
 
-    /// How much travel is need to move 4x the width or height of the knob to go from minimumValue to maximumValue. By default this is 4x the knob size.
+    /// How much travel is need to move 4x the width or height of the knob to go from minimumValue to maximumValue. By
+    /// default this is 4x the knob size.
     open var touchSensitivity: Float = 4.0
 
     /// The width of the arc that is shown after the current value.
@@ -60,7 +66,8 @@ open class Knob: UIControl {
     /// starting from the arc.
     open var radialLineLength: CGFloat = 0.1 { didSet { createShapes() } }
 
-    /// Number of ticks to show inside the track, with the first indicating the `minimumValue` and the last indicating the `maximumValue`
+    /// Number of ticks to show inside the track, with the first indicating the `minimumValue` and the last indicating
+    /// the `maximumValue`
     open var tickCount: Int = 0 { didSet { createShapes() } }
 
     /// Length of the tick. Range is from 0.0 to 1.0 where 1.0 will draw a line ending at the center of the knob.
@@ -72,8 +79,10 @@ open class Knob: UIControl {
     /// The color of the tick line.
     open var tickLineColor: UIColor = .systemTeal { didSet { ticksLayer.strokeColor = tickLineColor.cgColor } }
 
-    /// The starting angle of the arc where a value of 0.0 is located. Arc angles are explained in the UIBezier documentation
-    /// for init(arcCenter:radius:startAngle:endAngle:clockwise:). In short, a value of 0.0 will start on the positive X axis,
+    /// The starting angle of the arc where a value of 0.0 is located. Arc angles are explained in the UIBezier
+    /// documentation
+    /// for init(arcCenter:radius:startAngle:endAngle:clockwise:). In short, a value of 0.0 will start on the positive
+    ///  X axis,
     /// a positive PI/2 will lie on the negative Y axis. The default values will leave a small gap at the bottom.
     open var startAngle: Float = -Float.pi * 2.0 * 11 / 16.0 { didSet { createShapes() } }
 
@@ -101,7 +110,8 @@ open class Knob: UIControl {
     }
 
     /**
-     Construct a new instance with the given location and size. A knob will take the size of the smaller of width and height dimensions
+     Construct a new instance with the given location and size. A knob will take the size of the smaller of width and
+     height dimensions
      given in the `frame` parameter.
 
      - parameter frame: geometry of the new knob
@@ -146,10 +156,12 @@ extension Knob {
     override open func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let point = touch.location(in: self)
 
-        // Scale touchSensitivity by how far away in the X direction the touch is -- farther away the larger the sensitivity, thus making for smaller value changes for the same
+        // Scale touchSensitivity by how far away in the X direction the touch is -- farther away the larger the
+        // sensitivity, thus making for smaller value changes for the same
         // distance traveled in the Y direction.
         let scaleT = log10(max(abs(Float(panOrigin.x - point.x)), 1.0)) + 1
-        let deltaT = Float(panOrigin.y - point.y) / (Float(min(bounds.height, bounds.width)) * touchSensitivity * scaleT)
+        let deltaT = Float(panOrigin.y - point.y) / (Float(min(bounds.height, bounds.width)) * touchSensitivity *
+                                                        scaleT)
         defer { panOrigin = CGPoint(x: panOrigin.x, y: point.y) }
         let change = deltaT * (maximumValue - minimumValue)
         self.value += change
@@ -223,7 +235,8 @@ extension Knob {
     }
 
     private func createTrack() {
-        let ring = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle), endAngle: CGFloat(endAngle), clockwise: true)
+        let ring = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle),
+                                endAngle: CGFloat(endAngle), clockwise: true)
         trackLayer.path = ring.cgPath
         trackLayer.shadowPath = ring.cgPath
     }
@@ -245,7 +258,8 @@ extension Knob {
     }
 
     private func createProgressTrack() {
-        let path = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle), endAngle: CGFloat(endAngle), clockwise: true)
+        let path = UIBezierPath(arcCenter: CGPoint.zero, radius: radius, startAngle: CGFloat(startAngle),
+                                endAngle: CGFloat(endAngle), clockwise: true)
         progressLayer.path = path.cgPath
         progressLayer.shadowPath = path.cgPath
    }

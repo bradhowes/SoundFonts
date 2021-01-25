@@ -40,11 +40,21 @@ public struct DelayConfig: Codable {
         self.init(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
     }
 
-    public func setEnabled(_ enabled: Bool) -> DelayConfig { DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)}
-    public func setTime(_ time: Float) -> DelayConfig { DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix) }
-    public func setFeedback(_ feedback: Float) -> DelayConfig { DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix) }
-    public func setCutoff(_ cutoff: Float) -> DelayConfig { DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix) }
-    public func setWetDryMix(_ wetDryMix: Float) -> DelayConfig { DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix) }
+    public func setEnabled(_ enabled: Bool) -> DelayConfig {
+        DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
+    }
+    public func setTime(_ time: Float) -> DelayConfig {
+        DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
+    }
+    public func setFeedback(_ feedback: Float) -> DelayConfig {
+        DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
+    }
+    public func setCutoff(_ cutoff: Float) -> DelayConfig {
+        DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
+    }
+    public func setWetDryMix(_ wetDryMix: Float) -> DelayConfig {
+        DelayConfig(enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)
+    }
 
     public subscript(_ key: Key) -> AUValue {
         switch key {

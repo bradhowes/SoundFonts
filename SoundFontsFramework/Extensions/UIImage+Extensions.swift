@@ -6,5 +6,7 @@ private class ThisBundleTag: NSObject {}
 
 public extension UIImage {
 
-    static func resourceImage(name: String) -> UIImage? { UIImage(named: name, in: Bundle(for: ThisBundleTag.self), compatibleWith: .none) }
+    static func resourceImage(name: String) -> UIImage? {
+        UIImage(named: name, in: Bundle(for: ThisBundleTag.self), compatibleWith: .none)
+    }
 }

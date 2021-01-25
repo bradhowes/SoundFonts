@@ -34,7 +34,9 @@ open class TypedNotification<A> {
      - parameter block: a closure to execute when this kind of notification arrives
      - returns: a NotificationObserver instance that records the registration.
      */
-    open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver { NotificationObserver(notification: self, block: block) }
+    open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
+        NotificationObserver(notification: self, block: block)
+    }
 
     /**
      Register for a notification that *only* takes place on the app's main (UI) thread.
@@ -42,7 +44,9 @@ open class TypedNotification<A> {
      - parameter block: a closure to execute when this kind of notification arrives
      - returns: a NotificationObserver instance that records the registration.
      */
-    open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver { NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } } }
+    open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
+        NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
+    }
 }
 
 /**

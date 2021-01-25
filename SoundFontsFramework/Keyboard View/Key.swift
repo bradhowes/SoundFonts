@@ -57,7 +57,8 @@ public final class Key: UIView {
     public override func draw(_ rect: CGRect) {
         let roundedCorner: CGFloat = (0.1875 * rect.width).rounded()
         if note.accented {
-            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed, isMuted: Self.isMuted)
+            KeyboardRender.drawBlackKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
+                                        isMuted: Self.isMuted)
         }
         else {
             let label: String = {
@@ -68,7 +69,8 @@ public final class Key: UIView {
                 }
             }()
 
-            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed, isMuted: Self.isMuted, note: label)
+            KeyboardRender.drawWhiteKey(keySize: frame.size, roundedCorner: roundedCorner, pressed: pressed,
+                                        isMuted: Self.isMuted, note: label)
         }
     }
 

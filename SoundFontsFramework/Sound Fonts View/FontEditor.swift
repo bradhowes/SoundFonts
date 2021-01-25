@@ -145,7 +145,8 @@ extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresent
         close(doneButton)
     }
 
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    func popoverPresentationControllerDidDismissPopover(
+        _ popoverPresentationController: UIPopoverPresentationController) {
         close(doneButton)
     }
 }

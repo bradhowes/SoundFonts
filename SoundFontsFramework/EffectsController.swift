@@ -179,7 +179,9 @@ extension EffectsController {
     private func updatePreset() {
         guard let presetConfig = activePatchManager.presetConfig else { return }
 
-        let delayConfig = Settings.instance.delayGlobal ? presetConfig.delayConfig : (delayEffect.active.enabled ? delayEffect.active : nil)
+        let delayConfig = Settings.instance.delayGlobal ?
+            presetConfig.delayConfig :
+            (delayEffect.active.enabled ? delayEffect.active : nil)
         let reverbConfig = Settings.instance.reverbGlobal ?
             presetConfig.reverbConfig :
             (reverbEffect.active.enabled ? reverbEffect.active : nil)

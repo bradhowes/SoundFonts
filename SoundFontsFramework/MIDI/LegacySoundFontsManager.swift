@@ -50,8 +50,8 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
 extension FileManager {
 
     fileprivate var installedSF2Files: [URL] {
-        let fileNames = (try? FileManager.default.contentsOfDirectory(atPath: FileManager.default.sharedDocumentsDirectory.path)) ?? [String]()
-        return fileNames.map { FileManager.default.sharedDocumentsDirectory.appendingPathComponent($0) }
+        let fileNames = FileManager.default.sharedFileNames
+        return fileNames.map { FileManager.default.sharedPath(for: $0) }
     }
 
     fileprivate func validateSF2Files(log: OSLog, collection: LegacySoundFontCollection) -> Int {
@@ -394,6 +394,7 @@ extension LegacySoundFontsManager {
     private static var defaultCollection: LegacySoundFontCollection {
         let bundleUrls: [URL] = SF2Files.allResources
         let fileUrls = FileManager.default.installedSF2Files
-        return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
+        return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) +
+                                                (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
     }
 }

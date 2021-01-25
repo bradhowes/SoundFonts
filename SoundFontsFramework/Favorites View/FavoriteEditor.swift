@@ -314,7 +314,8 @@ extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePre
 
      - parameter popoverPresentationController: the controller being monitored
      */
-    public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    public func popoverPresentationControllerDidDismissPopover(
+        _ popoverPresentationController: UIPopoverPresentationController) {
         donePressed(doneButton)
     }
 }

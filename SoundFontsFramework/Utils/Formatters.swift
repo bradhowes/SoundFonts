@@ -7,8 +7,12 @@ private class BundleTag {}
 // Rework this
 public enum Formatters {
 
-    public static func formatted(presetCount: Int) -> String { .localizedStringWithFormat(Self.presetsFormatString, presetCount) }
-    public static func formatted(favoriteCount: Int) -> String { .localizedStringWithFormat(Self.favoritesFormatString, favoriteCount) }
+    public static func formatted(presetCount: Int) -> String {
+        .localizedStringWithFormat(Self.presetsFormatString, presetCount)
+    }
+    public static func formatted(favoriteCount: Int) -> String {
+        .localizedStringWithFormat(Self.favoritesFormatString, favoriteCount)
+    }
 
     public static func formatted(failedAddCount: Int, condition: String) -> String {
         let value = String.localizedStringWithFormat(Self.failedAddCountString, failedAddCount)
@@ -27,9 +31,15 @@ public enum Formatters {
         let strings: [String] = counts.compactMap { (key: SoundFontFileLoadFailure, files: [String]) -> String in
             let statement: String = {
                 switch key {
-                case .emptyFile: return Formatters.formatted(failedAddCount: files.count, condition: "empty".localized(comment: "empty file"))
-                case .invalidSoundFont: return Formatters.formatted(failedAddCount: files.count, condition: "invalid".localized(comment: "invalid file"))
-                case .unableToCreateFile: return Formatters.formatted(failedAddCount: files.count, condition: "uncopyable".localized(comment: "no space for file"))
+                case .emptyFile:
+                    return Formatters.formatted(failedAddCount: files.count,
+                                                condition: "empty".localized(comment: "empty file"))
+                case .invalidSoundFont:
+                    return Formatters.formatted(failedAddCount: files.count,
+                                                condition: "invalid".localized(comment: "invalid file"))
+                case .unableToCreateFile:
+                    return Formatters.formatted(failedAddCount: files.count,
+                                                condition: "uncopyable".localized(comment: "no space for file"))
                 }
             }() + " (" + files.joined(separator: ", ") + ")"
             return statement
@@ -37,14 +47,21 @@ public enum Formatters {
         return strings.sorted().joined(separator: ", ")
     }
 
-    public static func addSoundFontDoneMessage(ok: [String], failures: [SoundFontFileLoadFailure], total: Int) -> String {
+    public static func addSoundFontDoneMessage(ok: [String], failures: [SoundFontFileLoadFailure],
+                                               total: Int) -> String {
         let message: String = {
             switch (ok.count, failures.count) {
-            case (0, 1): return "UnableToAddOneFile".localized(comment: "unable to add one file")
-            case (0, _): return "UnableToAddAnyFiles".localized(comment: "unable to add any files")
-            case (1, 0): return "AddedOneFile".localized(comment: "added one file")
-            case (_, 0): return "AddedAllFiles".localized(comment: "added all files")
-            case (_, _): return String.localizedStringWithFormat("AddedSomeFiles".localized(comment: "added some files"), ok.count, total)
+            case (0, 1):
+                return "UnableToAddOneFile".localized(comment: "unable to add one file")
+            case (0, _):
+                return "UnableToAddAnyFiles".localized(comment: "unable to add any files")
+            case (1, 0):
+                return "AddedOneFile".localized(comment: "added one file")
+            case (_, 0):
+                return "AddedAllFiles".localized(comment: "added all files")
+            case (_, _):
+                return String.localizedStringWithFormat("AddedSomeFiles".localized(comment: "added some files"),
+                                                        ok.count, total)
             }
         }()
         let reasons = addSoundFontFailureText(failures: failures)
@@ -69,7 +86,10 @@ public enum Formatters {
 
 private extension Formatters {
     static let bundle = Bundle(for: BundleTag.self)
-    static let presetsFormatString = "presets count".localized(comment: "presets count string format in Localized.stringsdict")
-    static let favoritesFormatString = "favorites count".localized(comment: "favorites count string format in Localized.stringsdict")
-    static let failedAddCountString = "failed add count".localized(comment: "failed add count string format in Localized.stringsdict")
+    static let presetsFormatString =
+        "presets count".localized(comment: "presets count string format in Localized.stringsdict")
+    static let favoritesFormatString =
+        "favorites count".localized(comment: "favorites count string format in Localized.stringsdict")
+    static let failedAddCountString =
+        "failed add count".localized(comment: "failed add count string format in Localized.stringsdict")
 }

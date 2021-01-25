@@ -34,7 +34,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         doubleTapGestureRecognizer.numberOfTouchesRequired = 1
-        doubleTapGestureRecognizer.addTarget(self, action: #selector(handleTap))
+        doubleTapGestureRecognizer.addTarget(self, action: #selector(editFavorite))
         doubleTapGestureRecognizer.delaysTouchesBegan = true
 
         favoriteMover = FavoriteMover(view: favoritesView, lpgr: longPressGestureRecognizer)
@@ -90,14 +90,13 @@ extension FavoritesViewController: ControllerConfiguration {
         guard favorites.restored else { return }
         switch event {
         case let .active(old: old, new: new, playSample: _):
-            if let favorite = favorites.getBy(soundFontAndPatch: old.soundFontAndPatch), favorite != new.favorite {
+            if case let .favorite(oldFave) = old {
                 os_log(.info, log: log, "updating previous favorite cell")
-                updateCell(with: favorite)
+                updateCell(with: oldFave)
             }
-
-            if let favorite = new.favorite {
+            if case let .favorite(newFave) = new {
                 os_log(.info, log: log, "updating new favorite cell")
-                updateCell(with: favorite)
+                updateCell(with: newFave)
             }
         }
     }
@@ -108,7 +107,7 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .added(index: index, favorite: favorite):
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-            if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
+            if favorite == activePatchManager.favorite {
                 favoritesView.selectItem(at: indexPath(of: favorite), animated: false,
                                          scrollPosition: .centeredVertically)
                 updateCell(with: favorite)
@@ -119,13 +118,11 @@ extension FavoritesViewController: ControllerConfiguration {
             activePatchManager.setActive(favorite: favorite, playSample: true)
 
         case let .beginEdit(config: config):
-            edit(config: config)
+            showEditor(config: config)
 
         case let .changed(index: index, favorite: favorite):
             os_log(.info, log: log, "changed %d", index)
-            if let favorite = favorites.getBy(soundFontAndPatch: favorite.soundFontAndPatch) {
-                updateCell(with: favorite)
-            }
+            updateCell(with: favorite)
 
         case let .removed(index: index, favorite: _, bySwiping: _):
             os_log(.info, log: log, "removed %d", index)
@@ -136,8 +133,6 @@ extension FavoritesViewController: ControllerConfiguration {
         }
     }
 }
-
-// MARK: - Editing
 
 extension FavoritesViewController: SegueHandler {
 
@@ -177,12 +172,7 @@ extension FavoritesViewController: SegueHandler {
         navController.presentationController?.delegate = viewController
     }
 
-    /**
-     Event handler for the double-tap gesture recognizer. We use this to begin editing a favorite.
-     
-     - parameter gr: the gesture recognizer that fired the event
-     */
-    @objc private func handleTap(_ gr: UITapGestureRecognizer) {
+    @objc private func editFavorite(_ gr: UITapGestureRecognizer) {
         let pos = gr.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
@@ -201,10 +191,10 @@ extension FavoritesViewController: SegueHandler {
                                                completionHandler: nil, soundFonts: self.soundFonts,
                                                soundFontAndPatch: favorite.soundFontAndPatch)
         let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
-        edit(config: config)
+        showEditor(config: config)
     }
 
-    func edit(config: FavoriteEditor.Config) {
+    func showEditor(config: FavoriteEditor.Config) {
         performSegue(withIdentifier: .favoriteEditor, sender: config)
     }
 
@@ -225,8 +215,6 @@ extension FavoritesViewController: SegueHandler {
 
 }
 
-// MARK: - FavoriteDetailControllerDelegate
-
 extension FavoritesViewController: FavoriteEditorDelegate {
 
     public func dismissed(_ indexPath: IndexPath, reason: FavoriteEditorDismissedReason) {
@@ -236,7 +224,6 @@ extension FavoritesViewController: FavoriteEditorDelegate {
                 favorites.update(index: indexPath.item, config: config)
                 favoritesView.reloadItems(at: [indexPath])
                 favoritesView.collectionViewLayout.invalidateLayout()
-
             case .preset(let soundFontAndPatch, let config):
                 soundFonts.updatePreset(soundFontAndPatch: soundFontAndPatch, config: config)
             }
@@ -249,8 +236,6 @@ extension FavoritesViewController: FavoriteEditorDelegate {
         self.dismiss(animated: true, completion: nil)
     }
 }
-
-// MARK: - UICollectionViewDataSource
 
 extension FavoritesViewController: UICollectionViewDataSource {
 
@@ -266,8 +251,6 @@ extension FavoritesViewController: UICollectionViewDataSource {
                                 with: favorites.getBy(index: indexPath.row)))
     }
 }
-
-// MARK: - UICollectionViewDelegate
 
 extension FavoritesViewController: UICollectionViewDelegate {
 
@@ -286,8 +269,6 @@ extension FavoritesViewController: UICollectionViewDelegate {
     }
 }
 
-// MARK: - UICollectionViewDelegateFlowLayout
-
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
@@ -295,12 +276,9 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
         let favorite = favorites.getBy(index: indexPath.item)
         let cell = update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorite)
         let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        let constrainedSize = CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
-        return constrainedSize
+        return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
     }
 }
-
-// MARK: - Private
 
 extension FavoritesViewController {
 
@@ -316,8 +294,7 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.presetConfig.name,
-                    isActive: favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch)
+        cell.update(favoriteName: favorite.presetConfig.name, isActive: favorite == activePatchManager.favorite)
         return cell
     }
 

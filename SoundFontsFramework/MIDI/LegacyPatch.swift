@@ -25,6 +25,7 @@ final public class LegacyPatch: Codable {
         case soundFontIndex
         case isVisible
         case presetConfig
+        case favorites
     }
 
     /// Original name for the preset/patch
@@ -48,6 +49,8 @@ final public class LegacyPatch: Codable {
             PresetConfig.changedNotification.post(value: presetConfig)
         }
     }
+
+    var favorites: [LegacyFavorite.Key] = []
 
     /**
      There are two types of MIDI banks in the General MIDI standard: melody and percussion
@@ -119,6 +122,7 @@ final public class LegacyPatch: Codable {
             let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
             let isVisible = try values.decode(Bool.self, forKey: .isVisible)
             let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
+            let favorites = try values.decodeIfPresent(Array<LegacyFavorite.Key>.self, forKey: .favorites) ?? []
 
             self.originalName = originalName
             self.bank = bank
@@ -126,6 +130,7 @@ final public class LegacyPatch: Codable {
             self.soundFontIndex = soundFontIndex
             self.isVisible = isVisible
             self.presetConfig = presetConfig
+            self.favorites = favorites
         }
         catch {
             let err = error
@@ -144,7 +149,6 @@ final public class LegacyPatch: Codable {
                 self.program = program
                 self.soundFontIndex = soundFontIndex
                 self.isVisible = isVisible
-
                 self.presetConfig = PresetConfig(name: name, keyboardLowestNote: nil, keyboardLowestNoteEnabled: false,
                                                  reverbConfig: reverbConfig, delayConfig: delayConfig,
                                                  gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
@@ -152,6 +156,15 @@ final public class LegacyPatch: Codable {
                 throw err
             }
         }
+    }
+
+    func makeFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) -> LegacyFavorite {
+        var newConfig = presetConfig
+        newConfig.name = presetConfig.name + " \(favorites.count + 1)"
+        let favorite = LegacyFavorite(soundFontAndPatch: soundFontAndPatch, presetConfig: newConfig,
+                                      keyboardLowestNote: keyboardLowestNote)
+        favorites.append(favorite.key)
+        return favorite
     }
 }
 

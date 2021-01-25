@@ -41,11 +41,13 @@ open class ArrowView: UIView {
     /// Length of the arrow
     open var arrowLength: CGFloat = 10.0 { didSet { createPaths() } }
 
-    /// Amount of bending given to a curve. This is multiplied with the dimension of the of the view and added to the dimenion mid point to obtain
+    /// Amount of bending given to a curve. This is multiplied with the dimension of the of the view and added to the
+    /// dimension mid point to obtain
     /// an X or Y coordinate for a control point.
     open var bendFactor: CGFloat = 0.20 { didSet { createLine() } }
 
-    /// Amount of waviness in horizontal/vertical lines. This is multiplied with the dimension of the of the view and added to the dimenion
+    /// Amount of waviness in horizontal/vertical lines. This is multiplied with the dimension of the of the view and
+    /// added to the dimension
     /// mid point to obtain an X or Y coordinate for a control point.
     open var wavyFactor: CGFloat = 0.10 { didSet { createLine() } }
 
@@ -141,20 +143,28 @@ extension ArrowView {
     private func controlPointParams() -> CGSize {
         let bounds = lineLayer.bounds
         switch (entry, exit) {
-        case (_, .top) where (entry == .left || entry == .right): return CGSize(width: 0.0, height: -bounds.height * bendFactor)
-        case (_, .bottom) where (entry == .left || entry == .right): return CGSize(width: 0.0, height: bounds.height * bendFactor)
-        case (_, .right) where (entry == .left || entry == .right): return CGSize(width: 0.0, height: bounds.height * wavyFactor)
-        case (_, .left) where (entry == .top || entry == .bottom): return CGSize(width: -bounds.width * bendFactor, height: 0.0)
-        case (_, .right) where (entry == .top || entry == .bottom): return CGSize(width: bounds.width * bendFactor, height: 0.0)
-        case (.top, .bottom): return CGSize(width: bounds.width * wavyFactor, height: 0.0)
-        case (.bottom, .top): return CGSize(width: bounds.width * wavyFactor, height: 0.0)
+        case (_, .top) where (entry == .left || entry == .right):
+            return CGSize(width: 0.0, height: -bounds.height * bendFactor)
+        case (_, .bottom) where (entry == .left || entry == .right):
+            return CGSize(width: 0.0, height: bounds.height * bendFactor)
+        case (_, .right) where (entry == .left || entry == .right):
+            return CGSize(width: 0.0, height: bounds.height * wavyFactor)
+        case (_, .left) where (entry == .top || entry == .bottom):
+            return CGSize(width: -bounds.width * bendFactor, height: 0.0)
+        case (_, .right) where (entry == .top || entry == .bottom):
+            return CGSize(width: bounds.width * bendFactor, height: 0.0)
+        case (.top, .bottom):
+            return CGSize(width: bounds.width * wavyFactor, height: 0.0)
+        case (.bottom, .top):
+            return CGSize(width: bounds.width * wavyFactor, height: 0.0)
         default: return CGSize.zero
         }
     }
 
     private func controlPoints(_ size: CGSize) -> (CGPoint, CGPoint) {
         let bounds = lineLayer.bounds
-        return (CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2), CGPoint(x: bounds.midX + size.width / 2, y: bounds.midY + size.height / 2))
+        return (CGPoint(x: bounds.midX - size.width / 2, y: bounds.midY - size.height / 2),
+                CGPoint(x: bounds.midX + size.width / 2, y: bounds.midY + size.height / 2))
     }
 
     private func arrowPoints() -> (CGPoint, CGPoint) {
