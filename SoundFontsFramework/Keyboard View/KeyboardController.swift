@@ -148,7 +148,11 @@ extension KeyboardController {
         os_log(.info, log: log, "shiftKeyBoardUp")
         precondition(!allKeys.isEmpty)
         if lastMidiNoteValue < Sampler.maxMidiValue {
-            let shift: Int = { (firstMidiNoteValue % 12 == 0) ? min(12, Sampler.maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12) }()
+            let shift: Int = {
+                (firstMidiNoteValue % 12 == 0) ?
+                    min(12, Sampler.maxMidiValue - lastMidiNoteValue) :
+                    (12 - firstMidiNoteValue % 12)
+            }()
             shiftKeys(by: shift)
         }
         AskForReview.maybe()
@@ -158,7 +162,11 @@ extension KeyboardController {
         os_log(.info, log: log, "shiftKeyBoardDown")
         precondition(!allKeys.isEmpty)
         if firstMidiNoteValue >= 12 {
-            let shift: Int = { (firstMidiNoteValue % 12) == 0 ? min(firstMidiNoteValue, 12) : (firstMidiNoteValue % 12) }()
+            let shift: Int = {
+                (firstMidiNoteValue % 12) == 0 ?
+                    min(firstMidiNoteValue, 12) :
+                    (firstMidiNoteValue % 12)
+            }()
             shiftKeys(by: -shift)
         }
         AskForReview.maybe()
@@ -196,7 +204,8 @@ extension KeyboardController {
                 if abs(panPending) > 10.0 {
                     let keyboardWidth = keyboard.frame.width
                     let viewWidth = view.frame.width
-                    let newConstraint = min(0, max(keyboardLeadingConstraint.constant + panPending, viewWidth - keyboardWidth))
+                    let newConstraint = min(0, max(keyboardLeadingConstraint.constant + panPending,
+                                                   viewWidth - keyboardWidth))
                     panPending = 0.0
                     offsetKeyboard(by: newConstraint)
                 }
@@ -249,7 +258,8 @@ extension KeyboardController {
 
     private func createKeys() {
         var blackKeys = [Key]()
-        for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue) {
+        for each in KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
+                                      lastMidiNote: Sampler.maxMidiValue) {
             let key = Key(frame: each.0, note: each.1)
             if key.note.accented {
                 blackKeys.append(key)
@@ -265,7 +275,8 @@ extension KeyboardController {
     }
 
     private func layoutKeys() {
-        for (key, def) in zip(allKeys, KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue)) {
+        for (key, def) in zip(allKeys, KeyParamsSequence(keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
+                                                         firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue)) {
             key.frame = def.0
         }
 

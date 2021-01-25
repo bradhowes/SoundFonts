@@ -32,6 +32,7 @@ internal struct KeyParamsSequence: Sequence, IteratorProtocol {
         let xWidth = note.accented ? keyWidth * blackKeyWidthScale : keyWidth
         let xPos = note.accented ? nextX - xWidth / 2 : nextX
         nextX += advance
-        return (CGRect(x: xPos, y: 0, width: xWidth, height: (note.accented ? blackKeyHeightScale : 1.0) * keyHeight), note)
+        return (CGRect(x: xPos, y: 0, width: xWidth, height: (note.accented ? blackKeyHeightScale : 1.0) * keyHeight),
+                note)
     }
 }

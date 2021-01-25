@@ -11,7 +11,9 @@ public final class AskForReview: NSObject {
 
     /// Obtain the version found in the main bundle.
     private lazy var currentVersion: String = {
-        guard let version = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else { fatalError() }
+        guard let version = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else {
+            fatalError()
+        }
         return version
     }()
 
@@ -36,11 +38,14 @@ public final class AskForReview: NSObject {
     }
 
     /// Get the date N days days since the first launch
-    private lazy var dateSinceFirstLaunch: Date = Calendar.current.date(byAdding: .day, value: Settings.shared.daysAfterFirstLaunchBeforeRequest, to: firstLaunchDate)!
+    private lazy var dateSinceFirstLaunch: Date =
+        Calendar.current.date(byAdding: .day, value: Settings.shared.daysAfterFirstLaunchBeforeRequest,
+                              to: firstLaunchDate)!
 
     /// Get the date N months since the last review request
-    private lazy var dateSinceLastReviewRequest: Date = Calendar.current.date(byAdding: .month, value: Settings.shared.monthsAfterLastReviewBeforeRequest,
-                                                                              to: lastReviewRequestDate)!
+    private lazy var dateSinceLastReviewRequest: Date =
+        Calendar.current.date(byAdding: .month, value: Settings.shared.monthsAfterLastReviewBeforeRequest,
+                              to: lastReviewRequestDate)!
 
     private var countDown = 3
     private var observer: NSObjectProtocol?
@@ -52,10 +57,12 @@ public final class AskForReview: NSObject {
      */
     public init(isMain: Bool) {
         super.init()
-        os_log(.info, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s", dateSinceFirstLaunch.description,
-               dateSinceLastReviewRequest.description)
+        os_log(.info, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
+               dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
         if isMain {
-            observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in self.ask() }
+            observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { _ in
+                self.ask()
+            }
         }
     }
 

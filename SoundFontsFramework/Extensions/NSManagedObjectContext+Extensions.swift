@@ -13,7 +13,9 @@ public extension NSManagedObjectContext {
      - returns: new managed object of type A
      */
     @discardableResult func insertObject<A>(_ config: ((A) -> A) = {$0}) -> A where A: Managed {
-        guard let obj = NSEntityDescription.insertNewObject(forEntityName: A.entityName, into: self) as? A else { fatalError("Wrong object type") }
+        guard let obj = NSEntityDescription.insertNewObject(forEntityName: A.entityName, into: self) as? A else {
+            fatalError("Wrong object type")
+        }
         return config(obj)
     }
 
@@ -66,7 +68,9 @@ public extension NSManagedObjectContext {
      - returns: reference to the observation
      */
     func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
-        return NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) { block(ContextNotification<T>(notification: $0)) }
+        return NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) {
+            block(ContextNotification<T>(notification: $0))
+        }
     }
 
     /**
@@ -77,7 +81,9 @@ public extension NSManagedObjectContext {
      - returns: reference to the observation
      */
     func notifyOnChanges<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
-        return NC.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil) { block(ContextNotification<T>(notification: $0)) }
+        return NC.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil) {
+            block(ContextNotification<T>(notification: $0))
+        }
     }
 }
 

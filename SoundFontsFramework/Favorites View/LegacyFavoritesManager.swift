@@ -43,16 +43,18 @@ extension LegacyFavoritesManager: Favorites {
 
     public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
-    public func getBy(soundFontAndPatch: SoundFontAndPatch?) -> LegacyFavorite? {
-        collection.getBySFP(soundFontAndPatch: soundFontAndPatch)
+    public func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite? {
+        collection.getBy(soundFontAndPatch: soundFontAndPatch)
     }
 
-    public func add(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig, keyboardLowestNote note: Note?) {
+    public func add(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig,
+                    keyboardLowestNote note: Note?) -> LegacyFavorite {
         defer { collectionChanged() }
         let favorite = LegacyFavorite(soundFontAndPatch: soundFontAndPatch, presetConfig: presetConfig,
                                       keyboardLowestNote: note)
         collection.add(favorite: favorite)
         notify(.added(index: count - 1, favorite: favorite))
+        return favorite
     }
 
     public func update(index: Int, config: PresetConfig) {
@@ -84,12 +86,12 @@ extension LegacyFavoritesManager: Favorites {
 
     public func removeAll(associatedWith soundFont: LegacySoundFont) {
         defer { collectionChanged() }
-        collection.removeAll(associatedWith: soundFont)
+        collection.removeAll(associatedWith: soundFont.key)
         notify(.removedAll(associatedWith: soundFont))
     }
 
     public func count(associatedWith soundFont: LegacySoundFont) -> Int {
-        collection.count(associatedWith: soundFont)
+        collection.count(associatedWith: soundFont.key)
     }
 
     public func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {

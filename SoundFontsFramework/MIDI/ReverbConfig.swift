@@ -31,9 +31,17 @@ public struct ReverbConfig: Codable {
         self.init(enabled: enabled, preset: Int(preset), wetDryMix: wetDryMix)
     }
 
-    public func setEnabled(_ enabled: Bool) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
-    public func setPreset(_ preset: Int) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
-    public func setWetDryMix(_ wetDryMix: Float) -> ReverbConfig { ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix) }
+    public func setEnabled(_ enabled: Bool) -> ReverbConfig {
+        ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix)
+    }
+
+    public func setPreset(_ preset: Int) -> ReverbConfig {
+        ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix)
+    }
+
+    public func setWetDryMix(_ wetDryMix: Float) -> ReverbConfig {
+        ReverbConfig(enabled: enabled, preset: preset, wetDryMix: wetDryMix)
+    }
 
     public subscript(_ key: Key) -> AUValue {
         switch key {

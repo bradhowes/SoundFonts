@@ -28,6 +28,7 @@ public final class InfoBarController: UIViewController {
     @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
 
     private let doubleTap = UITapGestureRecognizer()
+
     private var panOrigin: CGPoint = CGPoint.zero
     private var fader: UIViewPropertyAnimator?
     private var activePatchManager: ActivePatchManager!

@@ -56,13 +56,15 @@ open class Checkbox: UIControl {
     open var checkInsets: UIEdgeInsets = UIEdgeInsets(top: 7, left: 7, bottom: 7, right: 7) { didSet { createCheck() } }
     open var checkInset: Float {
         get { Float(checkInsets.top) }
-        set { checkInsets = UIEdgeInsets(top: CGFloat(newValue), left: CGFloat(newValue), bottom: CGFloat(newValue), right: CGFloat(newValue)) }
+        set { checkInsets = UIEdgeInsets(top: CGFloat(newValue), left: CGFloat(newValue), bottom: CGFloat(newValue),
+                                         right: CGFloat(newValue)) }
     }
 
     private let borderLayer = CAShapeLayer()
     private let checkLayer = CAShapeLayer()
     private var _value: Bool = false
-    private let updateQueue = DispatchQueue(label: "Checkbox", qos: .userInteractive, attributes: [], autoreleaseFrequency: .inherit, target: .main)
+    private let updateQueue = DispatchQueue(label: "Checkbox", qos: .userInteractive, attributes: [],
+                                            autoreleaseFrequency: .inherit, target: .main)
 
     /**
      Construction from an encoded representation.

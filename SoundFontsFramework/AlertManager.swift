@@ -68,7 +68,8 @@ public final class AlertManager {
         self.presenter = presenter
         queue.maxConcurrentOperationCount = 1
         // swiftlint:disable discarded_notification_center_observer
-        observers = notifications.map { NotificationCenter.default.addObserver(forName: $0, object: nil, queue: nil, using: self.notify) }
+        observers = notifications.map { NotificationCenter.default.addObserver(forName: $0, object: nil, queue: nil,
+                                                                               using: self.notify) }
     }
 
     private func notify(_ notification: Notification) {

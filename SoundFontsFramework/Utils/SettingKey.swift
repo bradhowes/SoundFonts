@@ -98,6 +98,11 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
         self._defaultValue = .generator(defaultValueGenerator)
     }
 
-    public func get(_ source: UserDefaults) -> ValueType { ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue }
-    public func set(_ source: UserDefaults, _ value: ValueType) { ValueType.set(key: userDefaultsKey, value: value, userDefaults: source) }
+    public func get(_ source: UserDefaults) -> ValueType {
+        ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue
+    }
+
+    public func set(_ source: UserDefaults, _ value: ValueType) {
+        ValueType.set(key: userDefaultsKey, value: value, userDefaults: source)
+    }
 }

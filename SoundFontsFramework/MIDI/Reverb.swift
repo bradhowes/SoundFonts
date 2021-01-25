@@ -10,14 +10,24 @@ public final class Reverb: NSObject {
     public let audioUnit = AVAudioUnitReverb()
 
     private let _factoryPresetDefs = [
-        PresetEntry(name: "Metallic Taste", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .plate)!, wetDryMix: 100)),
-        PresetEntry(name: "Shower", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!, wetDryMix: 60)),
-        PresetEntry(name: "Bedroom", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .mediumRoom)!, wetDryMix: 40)),
-        PresetEntry(name: "Church", config: ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .cathedral)!, wetDryMix: 30))
+        PresetEntry(name: "Metallic Taste", config: ReverbConfig(enabled: true,
+                                                                 preset: Reverb.roomPresets.firstIndex(of: .plate)!,
+                                                                 wetDryMix: 100)),
+        PresetEntry(name: "Shower", config: ReverbConfig(enabled: true,
+                                                         preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!,
+                                                         wetDryMix: 60)),
+        PresetEntry(name: "Bedroom", config: ReverbConfig(enabled: true,
+                                                          preset: Reverb.roomPresets.firstIndex(of: .mediumRoom)!,
+                                                          wetDryMix: 40)),
+        PresetEntry(name: "Church", config: ReverbConfig(enabled: true,
+                                                         preset: Reverb.roomPresets.firstIndex(of: .cathedral)!,
+                                                         wetDryMix: 30))
     ]
 
     public lazy var factoryPresetConfigs: [ReverbConfig] = _factoryPresetDefs.map { $0.config }
-    public lazy var factoryPresets: [AUAudioUnitPreset] = _factoryPresetDefs.enumerated().map { AUAudioUnitPreset(number: $0.offset, name: $0.element.name) }
+    public lazy var factoryPresets: [AUAudioUnitPreset] = _factoryPresetDefs.enumerated().map {
+        AUAudioUnitPreset(number: $0.offset, name: $0.element.name)
+    }
 
     public var active: ReverbConfig { didSet { applyActiveConfig(self.active) } }
 
@@ -54,7 +64,8 @@ public final class Reverb: NSObject {
     ]
 
     public override init() {
-        self.active = ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!, wetDryMix: 30.0)
+        self.active = ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!,
+                                   wetDryMix: 30.0)
         super.init()
         applyActiveConfig(self.active)
     }

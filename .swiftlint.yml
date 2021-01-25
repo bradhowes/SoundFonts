@@ -24,12 +24,12 @@ force_try:
 
 # rules that have both warning and error levels, can set just the warning level
 # implicitly
-line_length: 180
+line_length: 120
 
 # or they can set both explicitly
 file_length:
-  warning: 500
-  error: 600
+  warning: 1000
+  error: 2000
 
 # naming rules can set warnings/errors for min_length and max_length
 # additionally they can set excluded names

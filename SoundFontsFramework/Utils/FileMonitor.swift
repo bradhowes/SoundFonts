@@ -20,7 +20,8 @@ final public class FileMonitor {
     public init?(url: URL, _ block: @escaping (_ location: URL) -> Void) {
         let descriptor = open(url.path, O_EVTONLY)
         guard descriptor >= 0 else { return nil }
-        handle = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor, eventMask: .write, queue: .global(qos: .userInitiated))
+        handle = DispatchSource.makeFileSystemObjectSource(fileDescriptor: descriptor, eventMask: .write,
+                                                           queue: .global(qos: .userInitiated))
         handle.setEventHandler { block(url) }
         handle.setCancelHandler { close(descriptor) }
         handle.activate()

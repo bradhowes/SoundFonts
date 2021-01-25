@@ -1,5 +1,4 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
-// swiftlint:disable file_length
 import UIKit
 import os
 
@@ -25,6 +24,11 @@ final class PatchesTableViewManager: NSObject {
     private let delay: Delay?
     private let reverb: Reverb?
     private let infoBar: InfoBar
+
+    enum Slot {
+        case preset(index: Int)
+        case favorite(key: UUID)
+    }
 
     private var viewPresets = [Int]()
     private var searchPresets = [Int]()
@@ -193,27 +197,6 @@ extension PatchesTableViewManager: UISearchBarDelegate {
 
 extension PatchesTableViewManager {
 
-    public func selectPrevious() {
-        guard !view.isEditing else { return }
-        guard let index = view.indexPathForSelectedRow?.row else { return }
-        var nextIndex = index - 1
-        if nextIndex < 0 { nextIndex = viewPresets.count - 1 }
-        view.selectRow(at: IndexPath(presetIndex: nextIndex), animated: true, scrollPosition: .none)
-    }
-
-    public func selectNext() {
-        guard !view.isEditing else { return }
-        guard let index = view.indexPathForSelectedRow?.row else { return }
-        var nextIndex = index + 1
-        if nextIndex >= viewPresets.count - 1 { nextIndex = 0 }
-        view.selectRow(at: IndexPath(presetIndex: nextIndex), animated: true, scrollPosition: .none)
-    }
-}
-
-// MARK: - Private
-
-extension PatchesTableViewManager {
-
     private func dismissSearchKeyboard() {
         guard searchBar.isFirstResponder && searchBar.canResignFirstResponder else { return }
         searchBar.resignFirstResponder()
@@ -317,8 +300,8 @@ extension PatchesTableViewManager {
         case let .active(old: old, new: new, playSample: _):
             os_log(.debug, log: log, "activePatchChange")
             view.performBatchUpdates({
-                updateView(with: old.soundFontAndPatch)
-                updateView(with: new.soundFontAndPatch)
+                updateView(with: old)
+                updateView(with: new)
             }, completion: { finished in
                 guard finished else { return }
                 self.selectActive(animated: false)
@@ -480,14 +463,9 @@ extension PatchesTableViewManager {
             }
 
             let patch = soundFont.patches[soundFontAndPatch.patchIndex]
-            self.favorites.add(soundFontAndPatch: soundFontAndPatch, presetConfig: patch.presetConfig,
-                               keyboardLowestNote: self.keyboard?.lowestNote)
-
-            DispatchQueue.main.async {
-                self.view.beginUpdates()
-                self.updateView(cell: cell, at: indexPath)
-                self.view.endUpdates()
-            }
+            let favorite = patch.makeFavorite(soundFontAndPatch: soundFontAndPatch,
+                                              keyboardLowestNote: self.keyboard?.lowestNote)
+            self.activePatchManager.setActive(favorite: favorite, playSample: false)
             completionHandler(true)
         }
     }
@@ -572,25 +550,23 @@ extension PatchesTableViewManager {
     private func createLeadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
-        var actions = [UIContextualAction]()
-        actions.append(
+        let actions = [
             isFavored(soundFontAndPatch) ?
-                createFavoriteEditSwipeAction(at: indexPath, cell: cell,
-                                              soundFontAndPatch: soundFontAndPatch) :
-                createPresetEditSwipeAction(at: indexPath, cell: cell,
-                                            soundFontAndPatch: soundFontAndPatch))
-        actions.append(
-            isFavored(soundFontAndPatch) ?
-                createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
-                createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch))
+                createFavoriteEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+                createPresetEditSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch),
+            createFaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)
+        ]
         return makeSwipeActionConfiguration(actions: actions)
     }
 
     private func createTrailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
-        guard !isFavored(soundFontAndPatch) else { return nil }
-        let actions = [createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)]
+        let actions = [
+            isFavored(soundFontAndPatch) ?
+                createUnfaveSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch) :
+                createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)
+        ]
         return makeSwipeActionConfiguration(actions: actions)
     }
 
@@ -619,14 +595,23 @@ extension PatchesTableViewManager {
         favorites.isFavored(soundFontAndPatch: soundFontAndPatch)
     }
 
-    private func updateView(with soundFontAndPatch: SoundFontAndPatch?) {
-        guard let indexPath = getPresetIndexPath(for: soundFontAndPatch),
-              let cell: TableCell = view.cellForRow(at: indexPath) else { return }
-        updateView(cell: cell, at: indexPath)
+    private func updateView(with activeKind: ActivePatchKind?) {
+        guard let activeKind = activeKind else { return }
+        switch activeKind {
+        case .none: return
+        case .normal(let soundFontAndPatch): updateView(with: soundFontAndPatch)
+        case .favorite(let favorite): updateView(with: favorite)
+        }
     }
 
     private func updateView(with favorite: LegacyFavorite) {
         guard let indexPath = getPresetIndexPath(for: favorite.soundFontAndPatch),
+              let cell: TableCell = view.cellForRow(at: indexPath) else { return }
+        updateView(cell: cell, at: indexPath)
+    }
+
+    private func updateView(with soundFontAndPatch: SoundFontAndPatch?) {
+        guard let indexPath = getPresetIndexPath(for: soundFontAndPatch),
               let cell: TableCell = view.cellForRow(at: indexPath) else { return }
         updateView(cell: cell, at: indexPath)
     }

@@ -15,5 +15,7 @@ public final class CodePointInfo {
 }
 
 extension CodePointInfo: LocalizedError {
-    public var errorDescription: String? { "File: \(file) Line: \(line) Function: \(function) Info: \(String(describing: info))" }
+    public var errorDescription: String? {
+        "File: \(file) Line: \(line) Function: \(function) Info: \(String(describing: info))"
+    }
 }

@@ -14,7 +14,8 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
     public init() {
         super.init()
-        os_log(.info, log: log, "selected: %{public}s %{public}s", selected?.displayName ?? "nil", String.pointer(selected))
+        os_log(.info, log: log, "selected: %{public}s %{public}s", selected?.displayName ?? "nil",
+               String.pointer(selected))
     }
 
     public func setSelected(_ soundFont: LegacySoundFont) {
