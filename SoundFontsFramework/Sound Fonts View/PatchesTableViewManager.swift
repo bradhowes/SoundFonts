@@ -5,6 +5,18 @@ import os
 /// Number of sections we partition patches into
 private let sectionSize = 20
 
+private enum Slot {
+    case preset(index: Int)
+    case favorite(index: Int, key: UUID)
+
+    var index: Int {
+        switch self {
+        case .preset(let index): return index
+        case .favorite(let index, _): return index
+        }
+    }
+}
+
 /**
  Data source and delegate for the Patches UITableView.
  */
@@ -25,13 +37,8 @@ final class PatchesTableViewManager: NSObject {
     private let reverb: Reverb?
     private let infoBar: InfoBar
 
-    enum Slot {
-        case preset(index: Int)
-        case favorite(key: UUID)
-    }
-
-    private var viewPresets = [Int]()
-    private var searchPresets = [Int]()
+    private var viewPresets = [Slot]()
+    private var searchPresets = [Slot]()
     private var sectionRowCounts = [Int]()
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
@@ -64,26 +71,22 @@ final class PatchesTableViewManager: NSObject {
         view.sectionIndexColor = .darkGray
 
         let customFont = UIFont(name: "EurostileRegular", size: 20)!
-        let defaultTextAttribs = [NSAttributedString.Key.font: customFont,
-                                  NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
-        UITextField.appearance().defaultTextAttributes = defaultTextAttribs
+        let defaultTextAttributes = [NSAttributedString.Key.font: customFont,
+                                     NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
+        UITextField.appearance().defaultTextAttributes = defaultTextAttributes
 
         updateViewPresets()
     }
 }
 
-private extension Array where Element == Int {
-    subscript(indexPath: IndexPath) -> Element? {
-        let index = indexPath.presetIndex
-        return (index >= 0 && index < endIndex) ? self[index] : nil
-    }
+private extension Array where Element == Slot {
+    subscript(indexPath: IndexPath) -> Element { self[indexPath.presetIndex] }
 }
 
 private extension IndexPath {
     init(presetIndex: Int) {
         let section = presetIndex / sectionSize
-        let row = presetIndex - section * sectionSize
-        self.init(row: row, section: section)
+        self.init(row: presetIndex - section * sectionSize, section: section)
     }
 
     var presetIndex: Int { section * sectionSize + row }
@@ -204,7 +207,11 @@ extension PatchesTableViewManager {
 
     private func updateViewPresets() {
         let source = selectedSoundFontManager.selected?.patches ?? []
-        self.viewPresets = source.filter { $0.isVisible == true || view.isEditing } .map { $0.soundFontIndex }
+        self.viewPresets = source.filter {
+            $0.isVisible == true || view.isEditing
+        } .map {
+            .preset(index: $0.soundFontIndex)
+        }
         updateSectionRowCounts()
         view.reloadData()
     }
@@ -227,10 +234,12 @@ extension PatchesTableViewManager {
 
     private func setPresetVisibility(at indexPath: IndexPath, state: Bool) {
         guard let soundFont = selectedSoundFontManager.selected else { return }
-        guard let presetIndex = viewPresets[indexPath] else { return }
-        let preset = soundFont.patches[presetIndex]
-        let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: preset.soundFontIndex)
-        soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: state)
+        let slot = viewPresets[indexPath]
+        if case let .preset(presetIndex) = slot {
+            let preset = soundFont.patches[presetIndex]
+            let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: preset.soundFontIndex)
+            soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: state)
+        }
     }
 
     private func toggleVisibilityEditing(_ sender: AnyObject) {
@@ -246,9 +255,9 @@ extension PatchesTableViewManager {
     }
 
     private func beginVisibilityEditing(for soundFont: LegacySoundFont) {
-        viewPresets = soundFont.patches.map { $0.soundFontIndex }
+        viewPresets = soundFont.patches.map { .preset(index: $0.soundFontIndex) }
         let insertions = viewPresets.enumerated()
-            .filter { soundFont.patches[$0.1].isVisible == false }
+            .filter { soundFont.patches[$0.1.index].isVisible == false }
             .map { IndexPath(presetIndex: $0.0) }
         view.performBatchUpdates {
             self.view.insertRows(at: insertions, with: .automatic)
@@ -263,7 +272,7 @@ extension PatchesTableViewManager {
     private func endVisibilityEditing(for soundFont: LegacySoundFont) {
         infoBar.hideMoreButtons()
         let deletions = viewPresets.enumerated()
-            .filter { soundFont.patches[$0.1].isVisible == false }
+            .filter { soundFont.patches[$0.1.index].isVisible == false }
             .map { IndexPath(presetIndex: $0.0) }
         view.performBatchUpdates {
             self.view.deleteRows(at: deletions, with: .automatic)
@@ -271,7 +280,9 @@ extension PatchesTableViewManager {
         }
         completion: { _ in
             self.view.setEditing(false, animated: true)
-            self.viewPresets = soundFont.patches.filter { $0.isVisible == true } .map { $0.soundFontIndex }
+            self.viewPresets = soundFont.patches.filter { $0.isVisible == true } .map {
+                .preset(index: $0.soundFontIndex)
+            }
             self.updateSectionRowCounts()
             self.view.reloadSections(IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)),
                                      with: .automatic)
@@ -281,9 +292,9 @@ extension PatchesTableViewManager {
     private func updateVisibilitySelections(soundFont: LegacySoundFont) {
         precondition(view.isEditing)
         os_log(.debug, log: self.log, "updateVisibilitySelections")
-        for (index, presetIndex) in viewPresets.enumerated() {
+        for (index, slot) in viewPresets.enumerated() {
             let indexPath = IndexPath(presetIndex: index)
-            let preset = soundFont.patches[presetIndex]
+            let preset = soundFont.patches[slot.index]
             if preset.isVisible || isFavored(at: indexPath) {
                 if !preset.isVisible {
                     let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key,
@@ -391,13 +402,15 @@ extension PatchesTableViewManager {
         guard let soundFont = selectedSoundFontManager.selected,
               soundFont.key == soundFontAndPatch.soundFontKey else { return nil }
         if showingSearchResults {
-            guard let row: Int = searchPresets.firstIndex(where: { $0 == soundFontAndPatch.patchIndex }) else {
+            guard let row: Int = searchPresets.firstIndex(where: { $0.index == soundFontAndPatch.patchIndex }) else {
                 return nil
             }
             return IndexPath(row: row, section: 0)
         }
 
-        guard let index = viewPresets.firstIndex(of: soundFontAndPatch.patchIndex) else { return nil }
+        guard let index = viewPresets.firstIndex(where: { $0.index == soundFontAndPatch.patchIndex }) else {
+            return nil
+        }
         return IndexPath(presetIndex: index)
     }
 
@@ -417,7 +430,7 @@ extension PatchesTableViewManager {
         guard let soundFont = selectedSoundFontManager.selected else { return }
         lastSearchText = searchTerm
         searchPresets = viewPresets.filter {
-            soundFont.patches[$0].presetConfig.name.localizedCaseInsensitiveContains(searchTerm)
+            soundFont.patches[$0.index].presetConfig.name.localizedCaseInsensitiveContains(searchTerm)
         }
         os_log(.info, log: log, "found %d matches", searchPresets.count)
         view.reloadData()
@@ -457,17 +470,21 @@ extension PatchesTableViewManager {
     private func createFaveSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
         return UIContextualAction(tag: "Fave", color: .systemOrange) { _, _, completionHandler in
-            guard let soundFont = self.soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else {
-                completionHandler(false)
-                return
-            }
-
-            let patch = soundFont.patches[soundFontAndPatch.patchIndex]
-            let favorite = patch.makeFavorite(soundFontAndPatch: soundFontAndPatch,
-                                              keyboardLowestNote: self.keyboard?.lowestNote)
-            self.activePatchManager.setActive(favorite: favorite, playSample: false)
-            completionHandler(true)
+            completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPatch))
         }
+    }
+
+    private func createFavorite(at: IndexPath, with soundFontAndPatch: SoundFontAndPatch) -> Bool {
+        guard let soundFont = self.soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { return false }
+        let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+        let favorite = patch.makeFavorite(soundFontAndPatch: soundFontAndPatch,
+                                          keyboardLowestNote: self.keyboard?.lowestNote)
+        self.favorites.add(favorite: favorite)
+        self.activePatchManager.setActive(favorite: favorite, playSample: false)
+        return true
+    }
+
+    private func insertSlot(at indexPath: IndexPath, slot: Slot) {
     }
 
     private func createUnfaveSwipeAction(at indexPath: IndexPath, cell: TableCell,
@@ -577,7 +594,7 @@ extension PatchesTableViewManager {
     }
 
     private func getViewPresetIndex(at indexPath: IndexPath) -> Int? {
-        showingSearchResults ? searchPresets[indexPath] : viewPresets[indexPath]
+        (showingSearchResults ? searchPresets[indexPath] : viewPresets[indexPath]).index
     }
 
     private func makeSoundFontAndPatch(at indexPath: IndexPath) -> SoundFontAndPatch? {
