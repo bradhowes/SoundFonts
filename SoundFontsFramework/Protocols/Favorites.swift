@@ -67,14 +67,11 @@ public protocol Favorites {
     func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite?
 
     /**
-     Create a new Favorite instance with the given parameters
+     Add a Favorite to the collection
 
-     - parameter soundFontAndPatch: address of the preset to use
-     - parameter presetConfig: the PresetConfig to copy
-     - parameter keyboardLowestNote: the current lowest note of the keyboard
+     - parameter favorite: instance to add
      */
-    func add(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig,
-             keyboardLowestNote: Note?) -> LegacyFavorite
+    func add(favorite: LegacyFavorite)
 
     /**
      Begin editing a Favorite

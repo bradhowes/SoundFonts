@@ -8,7 +8,7 @@ import CoreData
 
 class PlistTranslationTests: XCTestCase {
 
-    func testSoundFontLibraryLoadiing() {
+    func testSoundFontLibraryLoading() {
 
         let oldSoundFonts: LegacySoundFontCollection = {
             let bundle = Bundle(for: type(of: self))

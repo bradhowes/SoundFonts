@@ -47,14 +47,10 @@ extension LegacyFavoritesManager: Favorites {
         collection.getBy(soundFontAndPatch: soundFontAndPatch)
     }
 
-    public func add(soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig,
-                    keyboardLowestNote note: Note?) -> LegacyFavorite {
+    public func add(favorite: LegacyFavorite) {
         defer { collectionChanged() }
-        let favorite = LegacyFavorite(soundFontAndPatch: soundFontAndPatch, presetConfig: presetConfig,
-                                      keyboardLowestNote: note)
         collection.add(favorite: favorite)
         notify(.added(index: count - 1, favorite: favorite))
-        return favorite
     }
 
     public func update(index: Int, config: PresetConfig) {
