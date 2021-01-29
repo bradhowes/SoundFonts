@@ -48,6 +48,8 @@ public protocol SoundFonts: class {
      */
     func getBy(key: LegacySoundFont.Key) -> LegacySoundFont?
 
+    func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch?
+
     /**
      Obtain the SoundFont in the collection by its ordering index.
 
@@ -88,6 +90,10 @@ public protocol SoundFonts: class {
     func rename(key: LegacySoundFont.Key, name: String)
 
     func removeTag(_ tag: LegacyTag.Key)
+
+    func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) -> LegacyFavorite?
+
+    func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: LegacyFavorite.Key)
 
     func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig)
 

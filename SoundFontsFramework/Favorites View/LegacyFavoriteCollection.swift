@@ -22,23 +22,18 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
     }
 
     /**
-     Determine if the given soundFont/patch combination is associated with a favorite.
-
-     - parameter soundFontPatch: soundFont/patch to look for
-     - returns: true if so
-     */
-    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool {
-        getBy(soundFontAndPatch: soundFontAndPatch) != nil
-    }
-
-    /**
      Obtain the index of the given favorite in the collection.
 
      - parameter favorite: the favorite to look for
      - returns: the index in the collection
      */
     func index(of favorite: LegacyFavorite) -> Int {
-        favorites.firstIndex(of: favorite)!
+        index(of: favorite.key)
+    }
+
+    func index(of key: LegacyFavorite.Key) -> Int {
+        guard let index = favorites.firstIndex(where: { $0.key == key }) else { fatalError("key not found") }
+        return index
     }
 
     /**
@@ -50,14 +45,12 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
     func getBy(index: Int) -> LegacyFavorite { favorites[index] }
 
     /**
-     Obtain the first favorite associated with the given soundFont/patch combination.
+     Obtain the favorite by its key.
 
-     - parameter soundFontPatch: soundFont/patch to look for
-     - returns: the favorite found or nil if no match
+     - parameter key: the key to look for
+     - returns: the optional favorite instance
      */
-    func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite? {
-        favorites.first { soundFontAndPatch == $0.soundFontAndPatch }
-    }
+    func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { favorites.first(where: { $0.key == key })! }
 
     /**
      Add a favorite to the end of the collection.
@@ -84,8 +77,9 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
         AskForReview.maybe()
     }
 
-    func remove(index: Int) -> LegacyFavorite {
-        let favorite = favorites.remove(at: index)
+    func remove(key: LegacyFavorite.Key) -> LegacyFavorite {
+        guard let index = favorites.firstIndex(where: { $0.key == key }) else { fatalError("missing Favorite") }
+        let favorite = favorites[index]
         AskForReview.maybe()
         return favorite
     }

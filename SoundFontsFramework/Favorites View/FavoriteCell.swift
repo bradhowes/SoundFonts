@@ -12,13 +12,6 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     /// The name of the favorite
     @IBOutlet private weak var name: UILabel!
 
-    /// Hack to properly manage the items width. Starts out disabled, but will be enabled when maxWidth is set.
-    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint? {
-        didSet {
-            maxWidthConstraint?.isActive = false
-        }
-    }
-
     /// The background color of an inactive favorite cell
     let normalBackgroundColor = UIColor(hex: "141414")
 
@@ -32,15 +25,6 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
     var activeForegroundColor = UIColor.systemTeal
 
     let normalBorderColor = UIColor.darkGray
-
-    /// Attribute set by the FavoritesViewController to limit the cell's width
-    var maxWidth: CGFloat? = nil {
-        didSet {
-            guard let maxWidth = maxWidth else { return }
-            maxWidthConstraint?.isActive = true
-            maxWidthConstraint?.constant = maxWidth
-        }
-    }
 
     /// Indicates if the cell is currently moving around. Update the border color when it is.
     var moving: Bool = false {

@@ -35,17 +35,11 @@ extension LegacyFavoritesManager: Favorites {
 
     public var count: Int { collection.count }
 
-    public func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool {
-        collection.isFavored(soundFontAndPatch: soundFontAndPatch)
-    }
-
     public func index(of favorite: LegacyFavorite) -> Int { collection.index(of: favorite) }
 
     public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
-    public func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite? {
-        collection.getBy(soundFontAndPatch: soundFontAndPatch)
-    }
+    public func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { collection.getBy(key: key) }
 
     public func add(favorite: LegacyFavorite) {
         defer { collectionChanged() }
@@ -74,10 +68,11 @@ extension LegacyFavoritesManager: Favorites {
         notify(.selected(index: index, favorite: collection.getBy(index: index)))
     }
 
-    public func remove(index: Int, bySwiping: Bool) {
+    public func remove(key: LegacyFavorite.Key) {
         defer { collectionChanged() }
-        let favorite = collection.remove(index: index)
-        notify(.removed(index: index, favorite: favorite, bySwiping: bySwiping))
+        let index = collection.index(of: key)
+        let favorite = collection.remove(key: key)
+        notify(.removed(index: index, favorite: favorite))
     }
 
     public func removeAll(associatedWith soundFont: LegacySoundFont) {

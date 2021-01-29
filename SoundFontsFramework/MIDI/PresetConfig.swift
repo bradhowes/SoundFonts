@@ -33,4 +33,6 @@ public struct PresetConfig: Codable {
 
     /// True if preset tuning should be applied when preset is active
     public var presetTuningEnabled: Bool = false
+
+    public var notes: String = ""
 }

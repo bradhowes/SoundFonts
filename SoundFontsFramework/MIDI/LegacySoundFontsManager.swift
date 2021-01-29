@@ -92,6 +92,11 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
+    public func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
+        let soundFont = collection.getBy(key: soundFontAndPatch.soundFontKey)
+        return soundFont?.patches[soundFontAndPatch.patchIndex]
+    }
+
     public func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key] {
         collection.soundFonts.filter { $0.tags.union(LegacyTag.allTagSet).contains(tag) }.map { $0.key }
     }
@@ -115,9 +120,9 @@ extension LegacySoundFontsManager: SoundFonts {
         switch LegacySoundFont.makeSoundFont(from: url) {
         case .failure(let failure): return .failure(failure)
         case.success(let soundFont):
+            defer { collectionChanged() }
             let index = collection.add(soundFont)
             notify(.added(new: index, font: soundFont))
-            markDirty()
             return .success((index, soundFont))
         }
     }
@@ -125,61 +130,75 @@ extension LegacySoundFontsManager: SoundFonts {
     public func remove(key: LegacySoundFont.Key) {
         guard let index = collection.firstIndex(of: key) else { return }
         guard let soundFont = collection.remove(index) else { return }
+        defer { collectionChanged() }
         notify(.removed(old: index, font: soundFont))
-        markDirty()
     }
 
     public func rename(key: LegacySoundFont.Key, name: String) {
         guard let index = collection.firstIndex(of: key) else { return }
+        defer { collectionChanged() }
         let (newIndex, soundFont) = collection.rename(index, name: name)
         notify(.moved(old: index, new: newIndex, font: soundFont))
-        markDirty()
     }
 
     public func removeTag(_ tag: LegacyTag.Key) {
+        defer { collectionChanged() }
         for soundFont in collection.soundFonts {
             var tags = soundFont.tags
             tags.remove(tag)
             soundFont.tags = tags
         }
-        markDirty()
+    }
+
+    public func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) -> LegacyFavorite? {
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return nil }
+        defer { collectionChanged() }
+        let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+        return preset.makeFavorite(soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: keyboardLowestNote)
+    }
+
+    public func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: LegacyFavorite.Key) {
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        defer { collectionChanged() }
+        let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+        preset.favorites.removeAll { $0 == key }
     }
 
     public func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig) {
         guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        defer { collectionChanged() }
         let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         patch.presetConfig = config
         notify(.presetChanged(font: soundFont, index: soundFontAndPatch.patchIndex))
-        markDirty()
     }
 
     public func setVisibility(soundFontAndPatch: SoundFontAndPatch, state: Bool) {
         guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        defer { collectionChanged() }
         let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         os_log(.debug, log: log, "setVisibility - %{public}s %d - %d",
                soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex, state)
         patch.isVisible = state
-        markDirty()
     }
 
     public func setEffects(soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?) {
+        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
         os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
                soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex,
                delay?.description ?? "nil", reverb?.description ?? "nil")
-        guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+        defer { collectionChanged() }
         let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         patch.presetConfig.delayConfig = delay
         patch.presetConfig.reverbConfig = reverb
-        markDirty()
     }
 
     public func makeAllVisible(key: LegacySoundFont.Key) {
         guard let soundFont = getBy(key: key) else { return }
+        defer { collectionChanged() }
         for preset in soundFont.patches.filter({ $0.isVisible == false}) {
             preset.isVisible = true
         }
         notify(.unhidPresets(font: soundFont))
-        markDirty()
     }
 
     public var hasAnyBundled: Bool {
@@ -196,19 +215,19 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func removeBundled() {
         os_log(.info, log: log, "removeBundled")
+        defer { collectionChanged() }
         for url in SF2Files.allResources {
             if let index = collection.index(of: url) {
                 os_log(.info, log: log, "removing %{public}s", url.absoluteString)
                 guard let soundFont = collection.remove(index) else { return }
                 notify(.removed(old: index, font: soundFont))
-                markDirty()
             }
         }
-        markDirty()
     }
 
     public func restoreBundled() {
         os_log(.info, log: log, "restoreBundled")
+        defer { collectionChanged() }
         for url in SF2Files.allResources {
             if collection.index(of: url) == nil {
                 os_log(.info, log: log, "restoring %{public}s", url.absoluteString)
@@ -218,7 +237,6 @@ extension LegacySoundFontsManager: SoundFonts {
                 }
             }
         }
-        markDirty()
     }
 
     public func reloadEmbeddedInfo(key: LegacySoundFont.Key) {
@@ -230,7 +248,7 @@ extension LegacySoundFontsManager: SoundFonts {
         }
 
         if soundFont.reloadEmbeddedInfo() {
-            markDirty()
+            collectionChanged()
         }
     }
 
@@ -337,7 +355,9 @@ extension LegacySoundFontsManager {
     /**
      Mark the current configuration as dirty so that it will get saved.
      */
-    private func markDirty() {
+    private func collectionChanged() {
+        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+        AskForReview.maybe()
         configFile?.updateChangeCount(.done)
     }
 }

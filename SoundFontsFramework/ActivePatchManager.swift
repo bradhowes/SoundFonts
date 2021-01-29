@@ -32,7 +32,6 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public private(set) var active: ActivePatchKind
 
     public var favorite: LegacyFavorite? { active.favorite }
-
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
 
     public var soundFont: LegacySoundFont? {
@@ -67,7 +66,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     }
 
     public func setActive(preset: SoundFontAndPatch, playSample: Bool) {
-        setActive(.normal(soundFontAndPatch: preset), playSample: playSample)
+        setActive(.preset(soundFontAndPatch: preset), playSample: playSample)
     }
 
     public func setActive(favorite: LegacyFavorite, playSample: Bool) {

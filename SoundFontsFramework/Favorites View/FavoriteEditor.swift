@@ -87,12 +87,15 @@ final public class FavoriteEditor: UIViewController {
 
     @IBOutlet private weak var soundFontName: UILabel!
     @IBOutlet private weak var bankIndex: UILabel!
+    @IBOutlet private weak var keyLabel: UILabel!
 
     @IBOutlet private weak var presetTuningEnabled: UISwitch!
     @IBOutlet private weak var standardTuningButton: UIButton!
     @IBOutlet private weak var scientificTuningButton: UIButton!
     @IBOutlet private weak var presetTuningCents: UITextField!
     @IBOutlet private weak var presetTuningFrequency: UITextField!
+
+    @IBOutlet private weak var notesTextView: UITextView!
 
     private var tuningComponent: TuningComponent!
 
@@ -161,6 +164,9 @@ final public class FavoriteEditor: UIViewController {
 
         soundFontName.text = soundFont.displayName
         bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"
+        keyLabel.text = config.favorite?.key.uuidString ?? config.state.soundFontAndPatch.soundFontKey.uuidString
+
+        notesTextView.text = presetConfig.notes
     }
 }
 
@@ -210,6 +216,7 @@ extension FavoriteEditor {
 
         presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
         presetConfig.presetTuning = tuningComponent.tuning
+        presetConfig.notes = notesTextView.text
 
         let response: Response = self.config.isFavorite ?
             .favorite(config: presetConfig) : .preset(soundFontAndPatch: soundFontAndPatch, config: presetConfig)
