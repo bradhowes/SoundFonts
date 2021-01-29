@@ -289,7 +289,7 @@ extension InfoBarController {
         switch event {
         case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
         case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-        case let .removed(index: _, favorite: favorite, bySwiping: _): updateInfoBar(with: favorite.soundFontAndPatch)
+        case let .removed(index: _, favorite: favorite): updateInfoBar(with: favorite.soundFontAndPatch)
         case .selected: break
         case .beginEdit: break
         case .removedAll: break

@@ -26,7 +26,6 @@ public class LegacyFavorite: Codable {
 
     public let key: Key
 
-    /// The patch to load
     public let soundFontAndPatch: SoundFontAndPatch
 
     public var presetConfig: PresetConfig {

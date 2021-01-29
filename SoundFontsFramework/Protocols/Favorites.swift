@@ -10,15 +10,16 @@ public enum FavoritesEvent {
     case selected(index: Int, favorite: LegacyFavorite)
     case beginEdit(config: FavoriteEditor.Config)
     case changed(index: Int, favorite: LegacyFavorite)
-    case removed(index: Int, favorite: LegacyFavorite, bySwiping: Bool)
+    case removed(index: Int, favorite: LegacyFavorite)
     case removedAll(associatedWith: LegacySoundFont)
     case restored
 
     var favorite: LegacyFavorite? {
         switch self {
         case let .added(index: _, favorite: favorite): return favorite
+        case let .selected(index: _, favorite: favorite): return favorite
         case let .changed(index: _, favorite: favorite): return favorite
-        case let .removed(index: _, favorite: favorite, bySwiping: _): return favorite
+        case let .removed(index: _, favorite: favorite): return favorite
         default: return nil
         }
     }
@@ -33,14 +34,6 @@ public protocol Favorites {
 
     /// Get number of favorites
     var count: Int {get}
-
-    /**
-     Determine if the given SoundFontPatch is associated with a Favorite
-
-     - parameter soundFontAndPatch: what to look for
-     - returns: true if so
-     */
-    func isFavored(soundFontAndPatch: SoundFontAndPatch) -> Bool
 
     /**
      Obtain the index of the given Favorite in the collection.
@@ -58,13 +51,7 @@ public protocol Favorites {
      */
     func getBy(index: Int) -> LegacyFavorite
 
-    /**
-     Get the Favorite associated with the given SoundFontPatch
-
-     - parameter soundFontAndPatch: what to look for
-     - returns: optional Favorite instance
-     */
-    func getBy(soundFontAndPatch: SoundFontAndPatch) -> LegacyFavorite?
+    func getBy(key: LegacyFavorite.Key) -> LegacyFavorite
 
     /**
      Add a Favorite to the collection
@@ -110,9 +97,8 @@ public protocol Favorites {
      Remove the Favorite at the given index.
 
      - parameter index: the index to remove
-     - parameter bySwiping: true if the removing was done via the user
      */
-    func remove(index: Int, bySwiping: Bool)
+    func remove(key: LegacyFavorite.Key)
 
     /**
      Remove all Favorite instances associated with the given SoundFont.

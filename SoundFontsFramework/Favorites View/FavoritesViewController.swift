@@ -124,9 +124,11 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "changed %d", index)
             updateCell(with: favorite)
 
-        case let .removed(index: index, favorite: _, bySwiping: _):
+        case let .removed(index: index, favorite: _):
             os_log(.info, log: log, "removed %d", index)
-            favoritesView.deleteItems(at: [IndexPath(item: index, section: 0)])
+            let indexPath = IndexPath(item: index, section: 0)
+            favoritesView.deleteItems(at: [indexPath])
+            favoritesView.reloadData()
 
         case .removedAll: favoritesView.reloadData()
         case .restored: favoritesView.reloadData()
@@ -179,8 +181,7 @@ extension FavoritesViewController: SegueHandler {
         guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
         if activePatchManager.resolveToSoundFont(favorite.soundFontAndPatch) == nil {
-            let item = indexPath.item
-            favorites.remove(index: item, bySwiping: false)
+            favorites.remove(key: favorite.key)
             postNotice(msg: "Removed favorite that was invalid.")
             return
         }
@@ -247,8 +248,8 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        limitWidth(cell: update(cell: collectionView.dequeueReusableCell(for: indexPath),
-                                with: favorites.getBy(index: indexPath.row)))
+        update(cell: collectionView.dequeueReusableCell(for: indexPath),
+               with: favorites.getBy(index: indexPath.row))
     }
 }
 
@@ -295,11 +296,6 @@ extension FavoritesViewController {
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
         cell.update(favoriteName: favorite.presetConfig.name, isActive: favorite == activePatchManager.favorite)
-        return cell
-    }
-
-    private func limitWidth(cell: FavoriteCell) -> FavoriteCell {
-        cell.maxWidth = cell.bounds.width - 15
         return cell
     }
 }

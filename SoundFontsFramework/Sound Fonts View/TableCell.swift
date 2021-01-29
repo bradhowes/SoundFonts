@@ -47,9 +47,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
     }
 
-    public func updateForPatch(name: String, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
-        update(name: Self.favoriteTag(isFavorite) + name, isSelected: isActive, isActive: isActive,
-               isFavorite: isFavorite, isEditing: isEditing)
+    public func updateForPreset(name: String, isActive: Bool, isEditing: Bool) {
+        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false, isEditing: isEditing)
+    }
+
+    public func updateForFavorite(name: String, isActive: Bool) {
+        update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true,
+               isEditing: isEditing)
     }
 
     public func updateForTag(name: String, isActive: Bool) {
@@ -64,7 +68,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
 
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
-
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
         if isEditing {
