@@ -97,7 +97,7 @@ final public class FavoriteEditor: UIViewController {
 
     @IBOutlet private weak var notesTextView: UITextView!
 
-    private var tuningComponent: TuningComponent!
+    private var tuningComponent: TuningComponent?
 
     func configure(_ config: Config) {
         let state = config.state
@@ -110,6 +110,9 @@ final public class FavoriteEditor: UIViewController {
     }
 
     override public func viewDidLoad() {
+        name.delegate = self
+        notesTextView.delegate = self
+
         lowestNoteStepper.minimumValue = 0
         lowestNoteStepper.maximumValue = Double(Sampler.maxMidiValue)
 
@@ -121,14 +124,6 @@ final public class FavoriteEditor: UIViewController {
 
         lowestNoteStepper.setDecrementImage(lowestNoteStepper.decrementImage(for: .normal), for: .normal)
         lowestNoteStepper.setIncrementImage(lowestNoteStepper.incrementImage(for: .normal), for: .normal)
-
-        tuningComponent = TuningComponent(tuning: 0.0, view: view,
-                                          scrollView: scrollView,
-                                          tuningEnabledSwitch: presetTuningEnabled,
-                                          standardTuningButton: standardTuningButton,
-                                          scientificTuningButton: scientificTuningButton,
-                                          tuningCents: presetTuningCents,
-                                          tuningFrequency: presetTuningFrequency)
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -157,6 +152,14 @@ final public class FavoriteEditor: UIViewController {
             lowestNoteCollection.isHidden = true
         }
 
+        let tuningComponent = TuningComponent(tuning: 0.0, view: view,
+                                              scrollView: scrollView,
+                                              tuningEnabledSwitch: presetTuningEnabled,
+                                              standardTuningButton: standardTuningButton,
+                                              scientificTuningButton: scientificTuningButton,
+                                              tuningCents: presetTuningCents,
+                                              tuningFrequency: presetTuningFrequency)
+        self.tuningComponent = tuningComponent
         tuningComponent.updateState(enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
         setGainValue(presetConfig.gain)
@@ -168,12 +171,21 @@ final public class FavoriteEditor: UIViewController {
 
         notesTextView.text = presetConfig.notes
     }
+
+    override public func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.tuningComponent = nil
+    }
 }
 
 // MARK: - UITextFieldDelegate
 
 extension FavoriteEditor: UITextFieldDelegate {
 
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        tuningComponent?.viewToKeepVisible = textField
+        return true
+    }
     /**
      Configure name field so that pressing RETURN will exit the editor.
 
@@ -184,6 +196,24 @@ extension FavoriteEditor: UITextFieldDelegate {
         textField.resignFirstResponder()
         donePressed(doneButton)
         return false
+    }
+
+    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        tuningComponent?.viewToKeepVisible = nil
+        return true
+    }
+}
+
+extension FavoriteEditor: UITextViewDelegate {
+
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        tuningComponent?.viewToKeepVisible = textView
+        return true
+    }
+
+    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        tuningComponent?.viewToKeepVisible = nil
+        return true
     }
 }
 
@@ -197,7 +227,13 @@ extension FavoriteEditor {
      - parameter sender: the `Done` button
      */
     @IBAction private func donePressed(_ sender: UIBarButtonItem) {
-        guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else { fatalError() }
+        guard
+            let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey),
+            let tuningComponent = self.tuningComponent
+        else {
+            fatalError()
+        }
+
         let preset = soundFont.patches[soundFontAndPatch.patchIndex]
         var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
@@ -224,6 +260,8 @@ extension FavoriteEditor {
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .done(response: response))
         completionHandler?(true)
+
+        self.tuningComponent = nil
     }
 
     /**
@@ -235,6 +273,7 @@ extension FavoriteEditor {
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .cancel)
         completionHandler?(false)
+        self.tuningComponent = nil
     }
 
     @IBAction private func useOriginalName(_ sender: UIButton) {
