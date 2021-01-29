@@ -23,6 +23,13 @@ public final class TuningComponent: NSObject {
         return formatter
     }()
 
+    private let textFieldKeyboardMonitor: TextFieldKeyboardMonitor
+
+    public var viewToKeepVisible: UIView? {
+        get { textFieldKeyboardMonitor.viewToKeepVisible }
+        set { textFieldKeyboardMonitor.viewToKeepVisible = newValue }
+    }
+
     public init(tuning: Float,
                 view: UIView,
                 scrollView: UIScrollView,
@@ -39,6 +46,8 @@ public final class TuningComponent: NSObject {
         self.scientificTuningButton = scientificTuningButton
         self.tuningCents = tuningCents
         self.tuningFrequency = tuningFrequency
+        self.textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
+
         super.init()
 
         standardTuningButton.addClosure(useStandardTuning)
@@ -58,7 +67,7 @@ public final class TuningComponent: NSObject {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
                                        name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
-                                       name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+                                       name: UIResponder.keyboardDidShowNotification, object: nil)
     }
 }
 
@@ -97,6 +106,11 @@ extension TuningComponent {
 
 extension TuningComponent: UITextFieldDelegate {
 
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textFieldKeyboardMonitor.viewToKeepVisible = textField
+        return true
+    }
+
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -123,6 +137,7 @@ extension TuningComponent: UITextFieldDelegate {
         else {
             parseGlobalTuningFrequency()
         }
+        textFieldKeyboardMonitor.viewToKeepVisible = nil
     }
 }
 
@@ -133,16 +148,11 @@ extension TuningComponent {
             return
         }
 
-        print(notification.name)
-        print(keyboardFrame)
-
         if notification.name == UIResponder.keyboardWillHideNotification {
             scrollView.contentInset = .zero
         } else {
             let localFrame = view.convert(keyboardFrame.cgRectValue, from: view.window)
-            print(localFrame)
             let shift = localFrame.height - view.safeAreaInsets.bottom
-            print(shift)
             scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: shift, right: 0)
         }
 

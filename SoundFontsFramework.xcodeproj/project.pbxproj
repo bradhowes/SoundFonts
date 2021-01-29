@@ -110,6 +110,7 @@
 		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD4CF9912561BEBD00CC5DB6 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* Delay.swift */; };
+		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
 		BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */; };
 		BD5A2E4525C29D5A00FFFA46 /* PresetSlotsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2E4425C29D5A00FFFA46 /* PresetSlotsCollection.swift */; };
@@ -309,6 +310,7 @@
 		BD498F9523EF1EB500755AB9 /* FileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitor.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD4CF9902561BEBD00CC5DB6 /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldKeyboardMonitor.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsFrameworkTests.swift; sourceTree = "<group>"; };
@@ -550,6 +552,7 @@
 				BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */,
 				BD0F942E257302C50065C147 /* ElapsedTimer.swift */,
 				BD498F9523EF1EB500755AB9 /* FileMonitor.swift */,
+				BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */,
 				BD130B182561755F00D1CDF6 /* Knob.swift */,
 				BD0F943425733F320065C147 /* Checkbox.swift */,
 				BD5B897A257A715E00654955 /* GradientView.swift */,
@@ -966,6 +969,7 @@
 				BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
+				BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */,
 				BDD913F42508DEEE0068E3CE /* DispatchQueue+Extensions.swift in Sources */,
 				BDD913F22508DECE0068E3CE /* DispatchTime+Extensions.swift in Sources */,
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,

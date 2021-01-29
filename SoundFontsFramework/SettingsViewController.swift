@@ -78,7 +78,7 @@ public final class SettingsViewController: UIViewController {
     public var soundFonts: SoundFonts!
     public var isMainApp = true
 
-    private var tuningComponent: TuningComponent!
+    private var tuningComponent: TuningComponent?
     private var tuningObserver: NSKeyValueObservation!
     private lazy var hideForKeyWidthChange: [UIView] = [
         copyFilesStackView,
@@ -111,18 +111,6 @@ public final class SettingsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
 
-        tuningComponent = TuningComponent(tuning: Settings.shared.globalTuning,
-                                          view: view, scrollView: scrollView,
-                                          tuningEnabledSwitch: globalTuningEnabled,
-                                          standardTuningButton: standardTuningButton,
-                                          scientificTuningButton: scientificTuningButton,
-                                          tuningCents: globalTuningCents,
-                                          tuningFrequency: globalTuningFrequency)
-        tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, info in
-            guard let newValue = info.newValue else { return }
-            Settings.shared.globalTuning = newValue
-        }
-
         review.isEnabled = isMainApp
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
         keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
@@ -141,6 +129,20 @@ public final class SettingsViewController: UIViewController {
     override public func viewWillAppear(_ animated: Bool) {
         precondition(soundFonts != nil, "nil soundFonts")
         super.viewWillAppear(animated)
+
+        let tuningComponent = TuningComponent(tuning: Settings.shared.globalTuning,
+                                              view: view, scrollView: scrollView,
+                                              tuningEnabledSwitch: globalTuningEnabled,
+                                              standardTuningButton: standardTuningButton,
+                                              scientificTuningButton: scientificTuningButton,
+                                              tuningCents: globalTuningCents,
+                                              tuningFrequency: globalTuningFrequency)
+        self.tuningComponent = tuningComponent
+
+        tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, info in
+            guard let newValue = info.newValue else { return }
+            Settings.shared.globalTuning = newValue
+        }
 
         revealKeyboardForKeyWidthChanges = true
         if let popoverPresentationVC = self.parent?.popoverPresentationController {
@@ -178,10 +180,13 @@ public final class SettingsViewController: UIViewController {
         divider5.isHidden = isAUv3
     }
 
-    override public func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override public func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        guard let tuningComponent = self.tuningComponent else { return }
         Settings.shared.globalTuning = tuningComponent.tuning
         Settings.shared.globalTuningEnabled = globalTuningEnabled.isOn
+        self.tuningObserver = nil
+        self.tuningComponent = nil
     }
 }
 
