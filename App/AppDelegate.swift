@@ -28,6 +28,18 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch let error as NSError {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
+        do {
+            try audioSession.setPreferredSampleRate(44100.0)
+        } catch let error as NSError {
+            os_log(.error, log: log, "Failed to set the preferred sample rate: %{public}s",
+                   error.localizedDescription)
+        }
+        do {
+            try audioSession.setPreferredIOBufferDuration(2e-3)
+        } catch let error as NSError {
+            os_log(.error, log: log, "Failed to set the preferred IO buffer duration: %{public}s",
+                   error.localizedDescription)
+        }
 
         observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
             self.visitAppStore() }
@@ -65,9 +77,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     @objc private func visitAppStore() {
-        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review")
-        // guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077")
-            else { fatalError("Expected a valid URL") }
+        guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") else {
+            fatalError("Expected a valid URL")
+        }
         UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
     }
 }
