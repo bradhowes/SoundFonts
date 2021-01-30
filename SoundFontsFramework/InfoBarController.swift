@@ -63,6 +63,7 @@ public final class InfoBarController: UIViewController {
         )
 
         updateSlidingKeyboardState()
+        showEffects.tintColor = Settings.instance.showEffects ? .systemOrange : .systemTeal
     }
 
     public override func willTransition(to newCollection: UITraitCollection,
