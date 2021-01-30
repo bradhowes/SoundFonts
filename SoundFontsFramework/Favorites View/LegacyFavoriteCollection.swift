@@ -21,20 +21,7 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
         self.favorites = []
     }
 
-    /**
-     Obtain the index of the given favorite in the collection.
-
-     - parameter favorite: the favorite to look for
-     - returns: the index in the collection
-     */
-    func index(of favorite: LegacyFavorite) -> Int {
-        index(of: favorite.key)
-    }
-
-    func index(of key: LegacyFavorite.Key) -> Int {
-        guard let index = favorites.firstIndex(where: { $0.key == key }) else { fatalError("key not found") }
-        return index
-    }
+    func index(of key: LegacyFavorite.Key) -> Int? { favorites.firstIndex { $0.key == key } }
 
     /**
      Obtain the favorite at the given index.
@@ -77,9 +64,8 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
         AskForReview.maybe()
     }
 
-    func remove(key: LegacyFavorite.Key) -> LegacyFavorite {
-        guard let index = favorites.firstIndex(where: { $0.key == key }) else { fatalError("missing Favorite") }
-        let favorite = favorites[index]
+    func remove(at index: Int) -> LegacyFavorite {
+        let favorite = favorites.remove(at: index)
         AskForReview.maybe()
         return favorite
     }

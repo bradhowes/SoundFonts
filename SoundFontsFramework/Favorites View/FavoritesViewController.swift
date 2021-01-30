@@ -283,12 +283,14 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController {
 
-    private func indexPath(of favorite: LegacyFavorite) -> IndexPath {
-        IndexPath(row: favorites.index(of: favorite), section: 0)
+    private func indexPath(of favorite: LegacyFavorite) -> IndexPath? {
+        guard let index = favorites.index(of: favorite.key) else { return nil }
+        return IndexPath(row: index, section: 0)
     }
 
     private func updateCell(with favorite: LegacyFavorite) {
-        if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath(of: favorite)) {
+        guard let indexPath = self.indexPath(of: favorite) else { return }
+        if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
             update(cell: cell, with: favorite)
         }
     }

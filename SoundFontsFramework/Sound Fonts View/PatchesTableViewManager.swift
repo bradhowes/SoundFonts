@@ -414,6 +414,7 @@ extension PatchesTableViewManager {
     }
 
     private func favoritesRestored() {
+        migrateFavorites()
         if let visibleRows = view.indexPathsForVisibleRows {
             view.reloadRows(at: visibleRows, with: .automatic)
         }
@@ -446,9 +447,15 @@ extension PatchesTableViewManager {
     }
 
     private func soundFontsRestored() {
+        migrateFavorites()
         updateViewPresets()
         selectActive(animated: false)
         hideSearchBar(animated: false)
+    }
+
+    private func migrateFavorites() {
+        guard favorites.restored && soundFonts.restored else { return }
+        soundFonts.migrateFavorites(favorites)
     }
 
     private func soundFontsChange(_ event: SoundFontsEvent) {
@@ -669,9 +676,9 @@ extension PatchesTableViewManager {
     private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
         guard case let .favorite(key) = viewSlots[indexPath] else { fatalError("unexpected nil") }
         let favorite = favorites.getBy(key: key)
+        guard let position = self.favorites.index(of: favorite.key) else { return }
         var rect = view.rectForRow(at: indexPath)
         rect.size.width = 240.0
-        let position = self.favorites.index(of: favorite)
         let configState = FavoriteEditor.State(indexPath: IndexPath(item: position, section: 0),
                                                sourceView: view, sourceRect: view.bounds,
                                                currentLowestNote: self.keyboard?.lowestNote,

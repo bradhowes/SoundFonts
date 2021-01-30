@@ -92,6 +92,18 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
+    public func migrateFavorites(_ favorites: Favorites) {
+        defer { collectionChanged() }
+        for index in 0..<favorites.count {
+            let favorite = favorites.getBy(index: index)
+            if let preset = resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
+                if !preset.favorites.contains(favorite.key) {
+                    preset.favorites.append(favorite.key)
+                }
+            }
+        }
+    }
+
     public func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
         let soundFont = collection.getBy(key: soundFontAndPatch.soundFontKey)
         return soundFont?.patches[soundFontAndPatch.patchIndex]

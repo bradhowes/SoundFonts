@@ -145,6 +145,8 @@ public protocol SoundFonts: class {
 
     func importFromLocalDocumentsDirectory() -> (good: Int, total: Int)
 
+    func migrateFavorites(_ favorites: Favorites)
+
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in SoundFontsEvent enum.
 

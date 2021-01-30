@@ -36,7 +36,8 @@ final public class TextFieldKeyboardMonitor {
         if notification.name == UIResponder.keyboardWillHideNotification {
             scrollView.contentInset = .zero
             adjustment = 0.0
-        } else {
+        }
+        else {
             adjustment = self.keyboardFrame.height - view.safeAreaInsets.bottom
             os_log(.info, log: log, "adjustment %f", adjustment)
             scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: adjustment, right: 0)
