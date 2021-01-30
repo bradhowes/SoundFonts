@@ -31,6 +31,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var playSamplesStackView: UIStackView!
     @IBOutlet private weak var keyWidthStackView: UIStackView!
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
+    @IBOutlet private weak var allowMultipleFavoritesStackView: UIStackView!
     @IBOutlet private weak var divider1: UIView!
     @IBOutlet private weak var midiChannelStackView: UIStackView!
     @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
@@ -50,6 +51,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var playSample: UISwitch!
     @IBOutlet private weak var keyWidthSlider: UISlider!
     @IBOutlet private weak var slideKeyboard: UISwitch!
+    @IBOutlet private weak var advancedFavorites: UISwitch!
     @IBOutlet private weak var midiChannel: UILabel!
     @IBOutlet private weak var midiChannelStepper: UIStepper!
     @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
@@ -84,6 +86,7 @@ public final class SettingsViewController: UIViewController {
         copyFilesStackView,
         midiChannelStackView,
         slideKeyboardStackView,
+        allowMultipleFavoritesStackView,
         bluetoothMIDIConnectStackView,
         removeSoundFontsStackView,
         restoreSoundFontsStackView,
@@ -156,6 +159,7 @@ public final class SettingsViewController: UIViewController {
 
         keyWidthSlider.value = Settings.shared.keyWidth
         slideKeyboard.isOn = Settings.shared.slideKeyboard
+        advancedFavorites.isOn = Settings.shared.advancedFavorites
 
         midiChannelStepper.value = Double(Settings.instance.midiChannel)
         updateMidiChannel()
