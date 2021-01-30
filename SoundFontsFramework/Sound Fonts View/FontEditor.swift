@@ -92,7 +92,7 @@ final class FontEditor: UIViewController {
 
     private func updateHiddenCount() {
         guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
-        let hiddenCount = soundFont.patches.filter { $0.isVisible == false}.count
+        let hiddenCount = soundFont.patches.filter { $0.presetConfig.isHidden ?? false }.count
         if hiddenCount > 0 {
             hiddenCountLabel.text = "\(hiddenCount) hidden"
             resetVisibilityButton.isHidden = false

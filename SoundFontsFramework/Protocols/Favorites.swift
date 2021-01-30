@@ -84,6 +84,8 @@ public protocol Favorites {
      */
     func move(from: Int, to: Int)
 
+    func setVisibility(key: LegacyFavorite.Key, state: Bool)
+
     func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?)
 
     /**
