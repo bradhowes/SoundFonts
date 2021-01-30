@@ -290,24 +290,22 @@ extension PatchesTableViewManager {
         }
     }
 
-    func performChanges(enteringEditingMode: Bool, soundFont: LegacySoundFont) -> (insertions: [IndexPath],
-                                                                                   deletions: [IndexPath]) {
-        var insertions = [IndexPath]()
-        var deletions = [IndexPath]()
+    func performChanges(soundFont: LegacySoundFont) -> [IndexPath] {
+        var changes = [IndexPath]()
 
         func processPresetConfig(_ slotIndex: Int, presetConfig: PresetConfig, slot: () -> Slot) {
             guard presetConfig.isVisible == false else { return }
             let indexPath = IndexPath(slotIndex: slotIndex)
-            if enteringEditingMode {
+            if view.isEditing {
                 os_log(.info, log: log, "slot %d showing - '%{public}s'", slotIndex, presetConfig.name)
                 viewSlots.insert(slot(), at: slotIndex)
-                insertions.append(indexPath)
+                changes.append(indexPath)
                 sectionRowCounts[indexPath.section] += 1
             }
             else {
                 os_log(.info, log: log, "slot %d hiding - '%{public}s'", slotIndex, presetConfig.name)
-                viewSlots.remove(at: slotIndex - deletions.count)
-                deletions.append(indexPath)
+                viewSlots.remove(at: slotIndex - changes.count)
+                changes.append(indexPath)
                 sectionRowCounts[indexPath.section] -= 1
             }
         }
@@ -323,7 +321,7 @@ extension PatchesTableViewManager {
             }
         }
 
-        return (insertions, deletions)
+        return changes
     }
 
     private func beginVisibilityEditing() {
@@ -336,16 +334,10 @@ extension PatchesTableViewManager {
             }
             view.setEditing(true, animated: true)
 
-            let (insertions, deletions) = performChanges(enteringEditingMode: true, soundFont: soundFont)
-            os_log(.info, log: log, "beginVisibilityEditing - %d insertions %d deletions", insertions.count,
-                   deletions.count)
+            let changes = performChanges(soundFont: soundFont)
+            os_log(.info, log: log, "beginVisibilityEditing - %d changes", changes.count)
 
-            view.performBatchUpdates {
-                view.deleteRows(at: deletions, with: .automatic)
-                view.insertRows(at: insertions, with: .automatic)
-            }
-            completion: { _ in
-            }
+            view.performBatchUpdates({ view.insertRows(at: changes, with: .automatic) }, completion: nil)
             CATransaction.commit()
         }
     }
@@ -358,17 +350,15 @@ extension PatchesTableViewManager {
             }
             view.setEditing(false, animated: true)
 
-            let (insertions, deletions) = performChanges(enteringEditingMode: false, soundFont: soundFont)
-            os_log(.info, log: log, "endVisibilityEditing - %d insertions %d deletions", insertions.count,
-                   deletions.count)
+            let changes = performChanges(soundFont: soundFont)
+            os_log(.info, log: log, "endVisibilityEditing - %d changes", changes.count)
 
             view.performBatchUpdates {
-                view.deleteRows(at: deletions, with: .automatic)
-                view.insertRows(at: insertions, with: .automatic)
-            }
-            completion: { _ in
+                view.deleteRows(at: changes, with: .automatic)
+            } completion: { _ in
                 self.infoBar.hideMoreButtons()
             }
+
             CATransaction.commit()
         }
     }
