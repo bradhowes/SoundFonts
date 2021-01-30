@@ -113,9 +113,7 @@ extension PatchesTableViewManager: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let value = showingSearchResults ? searchSlots.count : sectionRowCounts[section]
-        os_log(.debug, log: log, "section %d number of rows: %d", section, value)
-        return value
+        showingSearchResults ? searchSlots.count : sectionRowCounts[section]
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -175,14 +173,11 @@ extension PatchesTableViewManager: UITableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        guard case .favorite = viewSlots[indexPath], !view.isEditing else { return true }
-        return true
-    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if view.isEditing {
-            setPresetVisibility(at: indexPath, state: true)
+            setSlotVisibility(at: indexPath, state: true)
             return
         }
 
@@ -196,9 +191,9 @@ extension PatchesTableViewManager: UITableViewDelegate {
         }
     }
 
-    private func withSoundFont(_ closure: (LegacySoundFont) -> Void) {
-        guard let soundFont = selectedSoundFontManager.selected else { return }
-        closure(soundFont)
+    private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T) -> T? {
+        guard let soundFont = selectedSoundFontManager.selected else { return nil }
+        return closure(soundFont)
     }
 
     private func selectPreset(_ presetIndex: Int) {
@@ -209,9 +204,8 @@ extension PatchesTableViewManager: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if view.isEditing {
-            setPresetVisibility(at: indexPath, state: false)
-        }
+        guard view.isEditing else { return }
+        setSlotVisibility(at: indexPath, state: false)
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -224,13 +218,22 @@ extension PatchesTableViewManager: UITableViewDelegate {
 }
 
 extension PatchesTableViewManager: UISearchBarDelegate {
-
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         search(for: searchBar.searchTerm ?? "")
     }
 }
 
 extension PatchesTableViewManager {
+
+    private func showSearchBar() {
+        guard searchBar.isFirstResponder == false else { return }
+        DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
+        searchBar.becomeFirstResponder()
+        if let term = lastSearchText, !term.isEmpty {
+            self.searchBar.text = term
+            search(for: term)
+        }
+    }
 
     private func dismissSearchKeyboard() {
         guard searchBar.isFirstResponder && searchBar.canResignFirstResponder else { return }
@@ -241,12 +244,13 @@ extension PatchesTableViewManager {
         let source = selectedSoundFontManager.selected?.patches ?? []
         viewSlots.removeAll()
         for (index, preset) in source.enumerated() {
-            if preset.isVisible || view.isEditing {
+            if preset.presetConfig.isVisible || view.isEditing {
                 viewSlots.append(.preset(index: index))
-                if !view.isEditing && !preset.favorites.isEmpty {
-                    for favoriteKey in preset.favorites {
-                        viewSlots.append(.favorite(key: favoriteKey))
-                    }
+            }
+            for favoriteKey in preset.favorites {
+                let favorite = favorites.getBy(key: favoriteKey)
+                if favorite.presetConfig.isVisible || view.isEditing {
+                    viewSlots.append(.favorite(key: favoriteKey))
                 }
             }
         }
@@ -264,21 +268,15 @@ extension PatchesTableViewManager {
         }
     }
 
-    private func showSearchBar() {
-        guard searchBar.isFirstResponder == false else { return }
-        DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
-        searchBar.becomeFirstResponder()
-        if let term = lastSearchText, !term.isEmpty {
-            self.searchBar.text = term
-            search(for: term)
+    private func setSlotVisibility(at indexPath: IndexPath, state: Bool) {
+        guard let soundFont = selectedSoundFontManager.selected else { return }
+        switch viewSlots[indexPath.slotIndex] {
+        case .favorite(let key):
+            favorites.setVisibility(key: key, state: state)
+        case .preset(let index):
+            let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: index)
+            soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: state)
         }
-    }
-
-    private func setPresetVisibility(at indexPath: IndexPath, state: Bool) {
-        guard case let .preset(index) = viewSlots[indexPath],
-              let soundFont = selectedSoundFontManager.selected else { return }
-        let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: index)
-        soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: state)
     }
 
     private func toggleVisibilityEditing(_ sender: AnyObject) {
@@ -294,87 +292,105 @@ extension PatchesTableViewManager {
 
     func performChanges(enteringEditingMode: Bool, soundFont: LegacySoundFont) -> (insertions: [IndexPath],
                                                                                    deletions: [IndexPath]) {
-        let source = soundFont.patches.reversed().enumerated()
         var insertions = [IndexPath]()
         var deletions = [IndexPath]()
 
-        for (presetIndex, preset) in source {
-            if preset.isVisible == false {
-                if enteringEditingMode {
-                    viewSlots.insert(.preset(index: presetIndex), at: presetIndex)
-                    let indexPath = IndexPath(slotIndex: presetIndex)
-                    insertions.append(indexPath)
-                    sectionRowCounts[indexPath.section] += 1
-                }
-                else {
-                    viewSlots.remove(at: presetIndex)
-                    let indexPath = IndexPath(slotIndex: presetIndex)
-                    deletions.append(indexPath)
-                    sectionRowCounts[indexPath.section] -= 1
-                }
+        func processPresetConfig(_ slotIndex: Int, presetConfig: PresetConfig, slot: () -> Slot) {
+            guard presetConfig.isVisible == false else { return }
+            let indexPath = IndexPath(slotIndex: slotIndex)
+            if enteringEditingMode {
+                os_log(.info, log: log, "slot %d showing - '%{public}s'", slotIndex, presetConfig.name)
+                viewSlots.insert(slot(), at: slotIndex)
+                insertions.append(indexPath)
+                sectionRowCounts[indexPath.section] += 1
             }
             else {
-                for (favoriteIndex, favoriteKey) in preset.favorites.reversed().enumerated() {
-                    if enteringEditingMode {
-                        viewSlots.remove(at: presetIndex + favoriteIndex + 1)
-                        let indexPath = IndexPath(slotIndex: presetIndex + favoriteIndex + 1)
-                        deletions.append(indexPath)
-                        sectionRowCounts[indexPath.section] -= 1
-                    }
-                    else {
-                        viewSlots.insert(.favorite(key: favoriteKey), at: presetIndex + favoriteIndex + 1)
-                        let indexPath = IndexPath(slotIndex: presetIndex + favoriteIndex + 1)
-                        insertions.append(indexPath)
-                        sectionRowCounts[indexPath.section] += 1
-                    }
-                }
+                os_log(.info, log: log, "slot %d hiding - '%{public}s'", slotIndex, presetConfig.name)
+                viewSlots.remove(at: slotIndex - deletions.count)
+                deletions.append(indexPath)
+                sectionRowCounts[indexPath.section] -= 1
             }
         }
+
+        var slotIndex = 0
+        for (presetIndex, preset) in soundFont.patches.enumerated() {
+            processPresetConfig(slotIndex, presetConfig: preset.presetConfig) { .preset(index: presetIndex) }
+            slotIndex += 1
+            for favoriteKey in preset.favorites {
+                let favorite = favorites.getBy(key: favoriteKey)
+                processPresetConfig(slotIndex, presetConfig: favorite.presetConfig) { .favorite(key: favoriteKey) }
+                slotIndex += 1
+            }
+        }
+
         return (insertions, deletions)
     }
 
     private func beginVisibilityEditing() {
         withSoundFont { soundFont in
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                self.updateSectionRowCounts(reload: true)
+                self.initializeVisibilitySelections(soundFont: soundFont)
+                self.view.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+            view.setEditing(true, animated: true)
+
             let (insertions, deletions) = performChanges(enteringEditingMode: true, soundFont: soundFont)
+            os_log(.info, log: log, "beginVisibilityEditing - %d insertions %d deletions", insertions.count,
+                   deletions.count)
+
             view.performBatchUpdates {
                 view.deleteRows(at: deletions, with: .automatic)
                 view.insertRows(at: insertions, with: .automatic)
             }
             completion: { _ in
-                self.view.setEditing(true, animated: true)
-                self.initializeVisibilitySelections(soundFont: soundFont)
             }
+            CATransaction.commit()
         }
     }
 
     private func endVisibilityEditing() {
         withSoundFont { soundFont in
-            infoBar.hideMoreButtons()
+            CATransaction.begin()
+            CATransaction.setCompletionBlock {
+                self.updateSectionRowCounts(reload: true)
+            }
+            view.setEditing(false, animated: true)
+
             let (insertions, deletions) = performChanges(enteringEditingMode: false, soundFont: soundFont)
+            os_log(.info, log: log, "endVisibilityEditing - %d insertions %d deletions", insertions.count,
+                   deletions.count)
+
             view.performBatchUpdates {
                 view.deleteRows(at: deletions, with: .automatic)
                 view.insertRows(at: insertions, with: .automatic)
             }
             completion: { _ in
-                self.view.setEditing(false, animated: true)
-                self.updateSectionRowCounts(reload: true)
+                self.infoBar.hideMoreButtons()
+            }
+            CATransaction.commit()
+        }
+    }
+
+    private func presetConfigForSlot(_ slot: Slot) -> PresetConfig? {
+        return withSoundFont { soundFont in
+            switch slot {
+            case .favorite(let key): return favorites.getBy(key: key).presetConfig
+            case .preset(let presetIndex): return soundFont.patches[presetIndex].presetConfig
             }
         }
     }
 
     private func initializeVisibilitySelections(soundFont: LegacySoundFont) {
         precondition(view.isEditing)
-        os_log(.debug, log: self.log, "updateVisibilitySelections")
+        os_log(.debug, log: self.log, "initializeVisibilitySelections")
         for (slotIndex, slot) in viewSlots.enumerated() {
             let indexPath = IndexPath(slotIndex: slotIndex)
-            guard case let .preset(presetIndex) = slot else { fatalError("unexpected slot type") }
-            let preset = soundFont.patches[presetIndex]
-            if !preset.isVisible {
-                let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key,
-                                                          patchIndex: preset.soundFontIndex)
-                soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: true)
+            guard let presetConfig = presetConfigForSlot(slot) else { continue }
+            if presetConfig.isVisible {
+                view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
             }
-            view.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         }
     }
 

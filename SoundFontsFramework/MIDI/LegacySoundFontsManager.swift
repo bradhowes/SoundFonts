@@ -184,13 +184,13 @@ extension LegacySoundFontsManager: SoundFonts {
         notify(.presetChanged(font: soundFont, index: soundFontAndPatch.patchIndex))
     }
 
-    public func setVisibility(soundFontAndPatch: SoundFontAndPatch, state: Bool) {
+    public func setVisibility(soundFontAndPatch: SoundFontAndPatch, state isVisible: Bool) {
         guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
         defer { collectionChanged() }
         let patch = soundFont.patches[soundFontAndPatch.patchIndex]
         os_log(.debug, log: log, "setVisibility - %{public}s %d - %d",
-               soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex, state)
-        patch.isVisible = state
+               soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex, isVisible)
+        patch.presetConfig.isHidden = !isVisible
     }
 
     public func setEffects(soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?) {
@@ -207,8 +207,8 @@ extension LegacySoundFontsManager: SoundFonts {
     public func makeAllVisible(key: LegacySoundFont.Key) {
         guard let soundFont = getBy(key: key) else { return }
         defer { collectionChanged() }
-        for preset in soundFont.patches.filter({ $0.isVisible == false}) {
-            preset.isVisible = true
+        for preset in soundFont.patches where preset.presetConfig.isHidden == true {
+            preset.presetConfig.isHidden = false
         }
         notify(.unhidPresets(font: soundFont))
     }

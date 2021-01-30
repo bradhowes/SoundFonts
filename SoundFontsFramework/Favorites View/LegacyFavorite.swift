@@ -28,11 +28,7 @@ public class LegacyFavorite: Codable {
 
     public let soundFontAndPatch: SoundFontAndPatch
 
-    public var presetConfig: PresetConfig {
-        didSet {
-            PresetConfig.changedNotification.post(value: presetConfig)
-        }
-    }
+    public var presetConfig: PresetConfig { didSet { PresetConfig.changedNotification.post(value: presetConfig) } }
 
     /**
      Create a new instance. The name of the favorite will start with the name of the patch.

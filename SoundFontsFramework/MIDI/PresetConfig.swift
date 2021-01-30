@@ -35,4 +35,8 @@ public struct PresetConfig: Codable {
     public var presetTuningEnabled: Bool = false
 
     public var notes: String?
+
+    public var isHidden: Bool?
+
+    public var isVisible: Bool { (isHidden ?? false) == false }
 }

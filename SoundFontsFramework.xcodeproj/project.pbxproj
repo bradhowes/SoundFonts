@@ -111,9 +111,9 @@
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD4CF9912561BEBD00CC5DB6 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* Delay.swift */; };
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
+		BD4E2CB025C5759200A7E9D4 /* MIDIBankType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
 		BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */; };
-		BD5A2E4525C29D5A00FFFA46 /* PresetSlotsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5A2E4425C29D5A00FFFA46 /* PresetSlotsCollection.swift */; };
 		BD5B897B257A715E00654955 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5B897A257A715E00654955 /* GradientView.swift */; };
 		BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */; };
 		BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */; };
@@ -311,11 +311,11 @@
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD4CF9902561BEBD00CC5DB6 /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldKeyboardMonitor.swift; sourceTree = "<group>"; };
+		BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIBankType.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsFrameworkTests.swift; sourceTree = "<group>"; };
 		BD58251123CDABCE0034A31B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD5A2E4425C29D5A00FFFA46 /* PresetSlotsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetSlotsCollection.swift; sourceTree = "<group>"; };
 		BD5B897A257A715E00654955 /* GradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManager.swift; sourceTree = "<group>"; };
 		BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsView.storyboard; sourceTree = "<group>"; };
@@ -495,6 +495,7 @@
 				BD074BED23CDAF51001987E9 /* LegacyPatch.swift */,
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
+				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
 				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
@@ -521,7 +522,6 @@
 				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
-				BD5A2E4425C29D5A00FFFA46 /* PresetSlotsCollection.swift */,
 				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 			);
@@ -958,6 +958,7 @@
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
 				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
 				BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */,
+				BD4E2CB025C5759200A7E9D4 /* MIDIBankType.swift in Sources */,
 				BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */,
 				BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */,
 				BDC7EC52241B7AF900F789B2 /* LocalizedStrings.swift in Sources */,
@@ -1008,7 +1009,6 @@
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
-				BD5A2E4525C29D5A00FFFA46 /* PresetSlotsCollection.swift in Sources */,
 				BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */,
 				BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,

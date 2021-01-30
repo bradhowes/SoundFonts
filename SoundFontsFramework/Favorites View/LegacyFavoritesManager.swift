@@ -85,6 +85,12 @@ extension LegacyFavoritesManager: Favorites {
         collection.count(associatedWith: soundFont.key)
     }
 
+    public func setVisibility(key: LegacyFavorite.Key, state isVisible: Bool) {
+        defer { collectionChanged() }
+        let favorite = collection.getBy(key: key)
+        favorite.presetConfig.isHidden = !isVisible
+    }
+
     public func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {
         os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
                delay?.description ?? "nil", reverb?.description ?? "nil")
