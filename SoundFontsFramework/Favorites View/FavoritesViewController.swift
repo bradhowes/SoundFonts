@@ -108,7 +108,7 @@ extension FavoritesViewController: ControllerConfiguration {
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
             if favorite == activePatchManager.favorite {
-                favoritesView.selectItem(at: indexPath(of: favorite), animated: false,
+                favoritesView.selectItem(at: indexPath(of: favorite.key), animated: false,
                                          scrollPosition: .centeredVertically)
                 updateCell(with: favorite)
             }
@@ -283,13 +283,13 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController {
 
-    private func indexPath(of favorite: LegacyFavorite) -> IndexPath? {
-        guard let index = favorites.index(of: favorite.key) else { return nil }
-        return IndexPath(row: index, section: 0)
+    private func indexPath(of key: LegacyFavorite.Key) -> IndexPath {
+        let index = favorites.index(of: key)
+        return IndexPath(item: index, section: 0)
     }
 
     private func updateCell(with favorite: LegacyFavorite) {
-        guard let indexPath = self.indexPath(of: favorite) else { return }
+        let indexPath = self.indexPath(of: favorite.key)
         if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
             update(cell: cell, with: favorite)
         }

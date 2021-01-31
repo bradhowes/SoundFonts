@@ -185,13 +185,12 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
         switch viewSlots[indexPath.slotIndex] {
         case let .preset(presetIndex): selectPreset(presetIndex)
-        case let .favorite(key):
-            let favorite = favorites.getBy(key: key)
-            activePatchManager.setActive(favorite: favorite, playSample: Settings.shared.playSample)
+        case let .favorite(key): activePatchManager.setActive(favorite: favorites.getBy(key: key),
+                                                              playSample: Settings.shared.playSample)
         }
     }
 
-    private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T) -> T? {
+    private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T?) -> T? {
         guard let soundFont = selectedSoundFontManager.selected else { return nil }
         return closure(soundFont)
     }
@@ -654,11 +653,9 @@ extension PatchesTableViewManager {
 
     private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
         guard case let .favorite(key) = viewSlots[indexPath.slotIndex] else { fatalError("unexpected slot type") }
-
         let favorite = favorites.getBy(key: key)
         favorites.remove(key: key)
         soundFonts.deleteFavorite(soundFontAndPatch: favorite.soundFontAndPatch, key: favorite.key)
-
         view.performBatchUpdates {
             viewSlots.remove(at: indexPath.slotIndex)
             view.deleteRows(at: [indexPath], with: .automatic)
@@ -682,7 +679,7 @@ extension PatchesTableViewManager {
     private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
         guard case let .favorite(key) = viewSlots[indexPath] else { fatalError("unexpected nil") }
         let favorite = favorites.getBy(key: key)
-        guard let position = self.favorites.index(of: favorite.key) else { return }
+        let position = favorites.index(of: favorite.key)
         var rect = view.rectForRow(at: indexPath)
         rect.size.width = 240.0
         let configState = FavoriteEditor.State(indexPath: IndexPath(item: position, section: 0),

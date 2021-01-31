@@ -23,7 +23,6 @@ public extension SettingKeys {
     static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
     static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
     static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
-    static let advancedFavorites = SettingKey("advancedFavorites", defaultValue: false)
 
     static let midiChannel = SettingKey("midiChannel", defaultValue: -1) // omni channel by default
     static let midiVirtualDestinationId = SettingKey("midiVirtualDestinationId", defaultValue: Int32(0))
@@ -131,10 +130,6 @@ public extension UserDefaults {
     @objc dynamic var slideKeyboard: Bool {
         get { self[.slideKeyboard] }
         set { self[.slideKeyboard] = newValue }
-    }
-    @objc dynamic var advancedFavorites: Bool {
-        get { self[.advancedFavorites] }
-        set { self[.advancedFavorites] = newValue }
     }
     @objc dynamic var midiChannel: Int {
         get { self[.midiChannel] }

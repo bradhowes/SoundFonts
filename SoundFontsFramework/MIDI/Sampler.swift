@@ -288,12 +288,14 @@ extension Sampler {
     }
 
     private func applyPresetConfig(_ presetConfig: PresetConfig) {
-
         if presetConfig.presetTuningEnabled {
             setTuning(presetConfig.presetTuning)
         }
         else if Settings.shared.globalTuningEnabled {
             setTuning(Settings.shared.globalTuning)
+        }
+        else {
+            setTuning(0.0)
         }
 
         setGain(presetConfig.gain)
