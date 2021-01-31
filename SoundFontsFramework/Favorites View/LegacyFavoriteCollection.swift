@@ -6,12 +6,7 @@ import os
 /**
  Collection of Favorite instances created by the user.
  */
-final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
-
-    public var description: String {
-        "[" + favorites.map { "\(String.pointer($0)) '\($0.presetConfig.name)'" }.joined(separator: ",") + "]"
-    }
-
+final public class LegacyFavoriteCollection: Codable {
     private var favorites: [LegacyFavorite]
 
     /// Number of favorites defined
@@ -20,6 +15,8 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
     init() {
         self.favorites = []
     }
+
+    func contains(key: LegacyFavorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
 
     func index(of key: LegacyFavorite.Key) -> Int {
         guard let index = (favorites.firstIndex { $0.key == key }) else {
@@ -85,6 +82,12 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
 
     func count(associatedWith soundFontKey: LegacySoundFont.Key) -> Int {
         findAll(associatedWith: soundFontKey).count
+    }
+}
+
+extension LegacyFavoriteCollection: CustomStringConvertible {
+    public var description: String {
+        "[" + favorites.map { "\(String.pointer($0)) '\($0.presetConfig.name)'" }.joined(separator: ",") + "]"
     }
 }
 

@@ -35,6 +35,7 @@ public protocol Favorites {
     /// Get number of favorites
     var count: Int {get}
 
+    func contains(key: LegacyFavorite.Key) -> Bool
     /**
      Obtain the index of the given Favorite in the collection.
 

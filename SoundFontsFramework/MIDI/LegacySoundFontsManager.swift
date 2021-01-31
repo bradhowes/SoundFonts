@@ -92,13 +92,39 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
-    public func migrateFavorites(_ favorites: Favorites) {
-        defer { collectionChanged() }
+    public func validateCollections(_ favorites: Favorites) {
+        os_log(.info, log: log, "validateCollections")
+        var invalidFavoriteKeys = [LegacyFavorite.Key]()
         for index in 0..<favorites.count {
             let favorite = favorites.getBy(index: index)
             if let preset = resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
                 if !preset.favorites.contains(favorite.key) {
+                    os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
                     preset.favorites.append(favorite.key)
+                }
+            }
+            else {
+                invalidFavoriteKeys.append(favorite.key)
+            }
+        }
+
+        for key in invalidFavoriteKeys {
+            favorites.remove(key: key)
+        }
+
+        for soundFont in collection.soundFonts {
+            for preset in soundFont.patches {
+                var invalidFavoriteIndices = [Int]()
+                for (favoriteIndex, favoriteKey) in preset.favorites.enumerated().reversed() {
+                    if !favorites.contains(key: favoriteKey) {
+                        os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'",
+                               preset.presetConfig.name, favoriteKey.uuidString)
+                        invalidFavoriteIndices.append(favoriteIndex)
+                    }
+                }
+
+                for index in invalidFavoriteIndices {
+                    preset.favorites.remove(at: index)
                 }
             }
         }

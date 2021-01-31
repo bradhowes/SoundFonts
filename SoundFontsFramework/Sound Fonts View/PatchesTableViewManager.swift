@@ -419,7 +419,7 @@ extension PatchesTableViewManager {
     }
 
     private func favoritesRestored() {
-        migrateFavorites()
+        validateCollections()
         if let visibleRows = view.indexPathsForVisibleRows {
             view.reloadRows(at: visibleRows, with: .automatic)
         }
@@ -452,15 +452,15 @@ extension PatchesTableViewManager {
     }
 
     private func soundFontsRestored() {
-        migrateFavorites()
+        validateCollections()
         updateViewPresets()
         selectActive(animated: false)
         hideSearchBar(animated: false)
     }
 
-    private func migrateFavorites() {
+    private func validateCollections() {
         guard favorites.restored && soundFonts.restored else { return }
-        soundFonts.migrateFavorites(favorites)
+        soundFonts.validateCollections(favorites)
     }
 
     private func soundFontsChange(_ event: SoundFontsEvent) {
@@ -487,6 +487,7 @@ extension PatchesTableViewManager {
     }
 
     private func getPresetIndexPath(for key: LegacyFavorite.Key) -> IndexPath? {
+        guard favorites.contains(key: key) else { return nil }
         if showingSearchResults {
             guard let row = searchSlots.findFavoriteKey(key) else { return nil }
             return IndexPath(row: row, section: 0)
