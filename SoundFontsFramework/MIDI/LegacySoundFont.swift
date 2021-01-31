@@ -9,7 +9,7 @@ import SF2Files
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
 public final class LegacySoundFont: Codable {
-    private static let logger = Logging.logger("SFont")
+    private static let logger = Logging.logger("SoundFont")
 
     /// Presentation name of the sound font
     var displayName: String
@@ -160,5 +160,5 @@ extension LegacySoundFont: Hashable {
 
 extension LegacySoundFont: CustomStringConvertible {
 
-    public var description: String { "[SoundFont '\(displayName)']" }
+    public var description: String { "[SoundFont '\(displayName)' '\(key)]" }
 }

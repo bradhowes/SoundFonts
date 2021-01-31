@@ -87,7 +87,7 @@ final public class LegacyFavoriteCollection: Codable {
 
 extension LegacyFavoriteCollection: CustomStringConvertible {
     public var description: String {
-        "[" + favorites.map { "\(String.pointer($0)) '\($0.presetConfig.name)'" }.joined(separator: ",") + "]"
+        "[" + favorites.map { "\($0.soundFontAndPatch) '\($0.presetConfig.name)'" }.joined(separator: ",") + "]"
     }
 }
 

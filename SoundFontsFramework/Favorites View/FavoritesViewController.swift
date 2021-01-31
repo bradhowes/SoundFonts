@@ -26,11 +26,10 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 
     private var activePatchManagerSubscription: SubscriberToken?
     private var favoritesSubscription: SubscriberToken?
+    private var soundFontsSubscription: SubscriberToken?
 
     public override func viewDidLoad() {
         favoritesView.register(FavoriteCell.self)
-        favoritesView.dataSource = self
-        favoritesView.delegate = self
 
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         doubleTapGestureRecognizer.numberOfTouchesRequired = 1
@@ -63,14 +62,6 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
         os_log(.info, log: log, "viewWillAppear")
         super.viewWillAppear(animated)
 
-        if activePatchManagerSubscription == nil {
-            activePatchManagerSubscription = activePatchManager.subscribe(self, notifier: activePatchChange)
-        }
-
-        if favoritesSubscription == nil {
-            favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
-        }
-
         guard let favorite = activePatchManager.favorite else { return }
         updateCell(with: favorite)
     }
@@ -83,11 +74,15 @@ extension FavoritesViewController: ControllerConfiguration {
         favorites = router.favorites
         keyboard = router.keyboard
         soundFonts = router.soundFonts
+
+        activePatchManagerSubscription = activePatchManager.subscribe(self, notifier: activePatchChange)
+        favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
+        soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         os_log(.info, log: log, "activePatchChange")
-        guard favorites.restored else { return }
+        guard favorites.restored && soundFonts.restored else { return }
         switch event {
         case let .active(old: old, new: new, playSample: _):
             if case let .favorite(oldFave) = old {
@@ -126,13 +121,30 @@ extension FavoritesViewController: ControllerConfiguration {
 
         case let .removed(index: index, favorite: _):
             os_log(.info, log: log, "removed %d", index)
+            guard favoritesView.delegate != nil else { return }
             let indexPath = IndexPath(item: index, section: 0)
             favoritesView.deleteItems(at: [indexPath])
             favoritesView.reloadData()
 
         case .removedAll: favoritesView.reloadData()
-        case .restored: favoritesView.reloadData()
+
+        case .restored: restored()
         }
+    }
+
+    private func soundFontsChange(_ event: SoundFontsEvent) {
+        switch event {
+        case .restored: restored()
+        default: break
+        }
+    }
+
+    private func restored() {
+        guard favoritesView != nil && soundFonts.restored && favorites.restored else { return }
+        soundFonts.validateCollections(favorites)
+        favoritesView.dataSource = self
+        favoritesView.delegate = self
+        favoritesView.reloadData()
     }
 }
 
