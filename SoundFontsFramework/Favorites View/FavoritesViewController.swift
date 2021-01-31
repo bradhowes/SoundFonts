@@ -289,6 +289,7 @@ extension FavoritesViewController {
     }
 
     private func updateCell(with favorite: LegacyFavorite) {
+        guard favorites.contains(key: favorite.key) else { return }
         let indexPath = self.indexPath(of: favorite.key)
         if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
             update(cell: cell, with: favorite)

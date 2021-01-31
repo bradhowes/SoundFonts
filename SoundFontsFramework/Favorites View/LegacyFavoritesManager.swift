@@ -35,6 +35,8 @@ extension LegacyFavoritesManager: Favorites {
 
     public var count: Int { collection.count }
 
+    public func contains(key: LegacyFavorite.Key) -> Bool { collection.contains(key: key) }
+
     public func index(of key: LegacyFavorite.Key) -> Int { collection.index(of: key) }
 
     public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }

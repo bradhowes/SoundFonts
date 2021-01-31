@@ -32,6 +32,8 @@ public protocol SoundFonts: class {
     var soundFontNames: [String] { get }
     var defaultPreset: SoundFontAndPatch? { get }
 
+    func validateCollections(_ favorites: Favorites)
+
     /**
      Obtain the index in the collection of a SoundFont with the given Key.
 
@@ -144,8 +146,6 @@ public protocol SoundFonts: class {
     func exportToLocalDocumentsDirectory() -> (good: Int, total: Int)
 
     func importFromLocalDocumentsDirectory() -> (good: Int, total: Int)
-
-    func migrateFavorites(_ favorites: Favorites)
 
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in SoundFontsEvent enum.
