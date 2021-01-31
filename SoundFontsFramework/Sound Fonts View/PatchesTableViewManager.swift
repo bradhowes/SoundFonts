@@ -419,7 +419,6 @@ extension PatchesTableViewManager {
     }
 
     private func favoritesRestored() {
-        validateCollections()
         if let visibleRows = view.indexPathsForVisibleRows {
             view.reloadRows(at: visibleRows, with: .automatic)
         }
@@ -452,15 +451,9 @@ extension PatchesTableViewManager {
     }
 
     private func soundFontsRestored() {
-        validateCollections()
         updateViewPresets()
         selectActive(animated: false)
         hideSearchBar(animated: false)
-    }
-
-    private func validateCollections() {
-        guard favorites.restored && soundFonts.restored else { return }
-        soundFonts.validateCollections(favorites)
     }
 
     private func soundFontsChange(_ event: SoundFontsEvent) {

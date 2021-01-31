@@ -72,7 +72,6 @@ final public class LegacyPatch: Codable {
 
     public init(from decoder: Decoder) throws {
         do {
-            os_log(.info, log: Self.log, "decoding V2")
             let values = try decoder.container(keyedBy: V2Keys.self)
             let originalName = try values.decode(String.self, forKey: .originalName)
             let bank = try values.decode(Int.self, forKey: .bank)
@@ -80,23 +79,17 @@ final public class LegacyPatch: Codable {
             let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
             let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
             let favorites = try values.decodeIfPresent(Array<LegacyFavorite.Key>.self, forKey: .favorites) ?? []
-
-            os_log(.info, log: Self.log, "OK")
-
             self.originalName = originalName
             self.bank = bank
             self.program = program
             self.soundFontIndex = soundFontIndex
             self.presetConfig = presetConfig
             self.favorites = favorites
-
-            os_log(.debug, log: Self.log, "%{public}s", favorites.description)
         }
         catch {
             let err = error
             os_log(.error, log: Self.log, "failed to decode V2 - %{public}s", error.localizedDescription)
             do {
-                os_log(.info, log: Self.log, "decoding V1")
                 let values = try decoder.container(keyedBy: V1Keys.self)
                 let name = try values.decode(String.self, forKey: .name)
                 let bank = try values.decode(Int.self, forKey: .bank)
@@ -104,8 +97,6 @@ final public class LegacyPatch: Codable {
                 let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
                 let reverbConfig = try values.decodeIfPresent(ReverbConfig.self, forKey: .reverbConfig)
                 let delayConfig = try values.decodeIfPresent(DelayConfig.self, forKey: .delayConfig)
-
-                os_log(.info, log: Self.log, "OK")
 
                 self.originalName = name
                 self.bank = bank

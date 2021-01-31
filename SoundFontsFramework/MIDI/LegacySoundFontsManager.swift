@@ -99,11 +99,12 @@ extension LegacySoundFontsManager: SoundFonts {
             let favorite = favorites.getBy(index: index)
             if let preset = resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
                 if !preset.favorites.contains(favorite.key) {
-                    os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
+                    os_log(.error, log: log, "linking favorite - '%{public}s'", favorite.presetConfig.name)
                     preset.favorites.append(favorite.key)
                 }
             }
             else {
+                os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
                 invalidFavoriteKeys.append(favorite.key)
             }
         }

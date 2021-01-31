@@ -21,9 +21,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="80" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="750" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" text="Patch" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQg-Jw-Co5" userLabel="name">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" insetsLayoutMarginsFromSafeArea="NO" text="Patch" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQg-Jw-Co5" userLabel="name">
                         <rect key="frame" x="8" y="8" width="64" height="34"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="12" id="FKE-oD-77T"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -32,12 +35,13 @@
             </view>
             <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="xQg-Jw-Co5" secondAttribute="trailing" constant="8" id="2Nt-zL-bd5"/>
-                <constraint firstItem="xQg-Jw-Co5" firstAttribute="top" secondItem="meI-pE-flX" secondAttribute="top" constant="8" id="Fl2-5w-oK2"/>
-                <constraint firstItem="xQg-Jw-Co5" firstAttribute="leading" secondItem="meI-pE-flX" secondAttribute="leading" constant="8" id="hNs-nD-X8L"/>
-                <constraint firstAttribute="bottom" secondItem="xQg-Jw-Co5" secondAttribute="bottom" constant="8" id="yFK-wz-43d"/>
+                <constraint firstAttribute="trailing" secondItem="xQg-Jw-Co5" secondAttribute="trailing" priority="999" constant="8" id="2Nt-zL-bd5"/>
+                <constraint firstItem="xQg-Jw-Co5" firstAttribute="top" secondItem="meI-pE-flX" secondAttribute="top" priority="999" constant="8" id="Fl2-5w-oK2"/>
+                <constraint firstItem="xQg-Jw-Co5" firstAttribute="leading" secondItem="meI-pE-flX" secondAttribute="leading" priority="999" constant="8" id="hNs-nD-X8L"/>
+                <constraint firstAttribute="bottom" secondItem="xQg-Jw-Co5" secondAttribute="bottom" priority="999" constant="8" id="yFK-wz-43d"/>
             </constraints>
             <connections>
+                <outlet property="maxWidthConstraint" destination="FKE-oD-77T" id="Bgw-Fb-gA1"/>
                 <outlet property="name" destination="xQg-Jw-Co5" id="HB1-qq-ykN"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="153.82308845577214"/>
