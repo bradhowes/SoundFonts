@@ -21,7 +21,12 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
         self.favorites = []
     }
 
-    func index(of key: LegacyFavorite.Key) -> Int? { favorites.firstIndex { $0.key == key } }
+    func index(of key: LegacyFavorite.Key) -> Int {
+        guard let index = (favorites.firstIndex { $0.key == key }) else {
+            fatalError("internal inconsistency - missing favorite key '\(key.uuidString)'")
+        }
+        return index
+    }
 
     /**
      Obtain the favorite at the given index.
@@ -37,7 +42,7 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter key: the key to look for
      - returns: the optional favorite instance
      */
-    func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { favorites.first(where: { $0.key == key })! }
+    func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { getBy(index: index(of: key)) }
 
     /**
      Add a favorite to the end of the collection.
@@ -45,8 +50,8 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
      - parameter favorite: the new favorite to add
      */
     func add(favorite: LegacyFavorite) {
-        AskForReview.maybe()
         favorites.append(favorite)
+        AskForReview.maybe()
     }
 
     /**
@@ -64,14 +69,18 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
         AskForReview.maybe()
     }
 
+    func remove(key: LegacyFavorite.Key) -> LegacyFavorite {
+        defer { AskForReview.maybe() }
+        return favorites.remove(at: index(of: key))
+    }
+
     func remove(at index: Int) -> LegacyFavorite {
-        let favorite = favorites.remove(at: index)
-        AskForReview.maybe()
-        return favorite
+        defer { AskForReview.maybe() }
+        return favorites.remove(at: index)
     }
 
     func removeAll(associatedWith soundFontKey: LegacySoundFont.Key) {
-        findAll(associatedWith: soundFontKey).forEach { self.remove(favorite: $0) }
+        findAll(associatedWith: soundFontKey).forEach { _ = self.remove(key: $0.key) }
     }
 
     func count(associatedWith soundFontKey: LegacySoundFont.Key) -> Int {
@@ -80,11 +89,6 @@ final public class LegacyFavoriteCollection: Codable, CustomStringConvertible {
 }
 
 extension LegacyFavoriteCollection {
-
-    private func remove(favorite: LegacyFavorite) {
-        guard let index = favorites.firstIndex(of: favorite) else { return }
-        favorites.remove(at: index)
-    }
 
     private func findAll(associatedWith soundFontKey: LegacySoundFont.Key) -> [LegacyFavorite] {
         favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFontKey }

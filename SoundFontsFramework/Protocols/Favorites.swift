@@ -41,7 +41,7 @@ public protocol Favorites {
      - parameter favorite: what to look for
      - returns: the position of the Favorite
      */
-    func index(of favorite: LegacyFavorite.Key) -> Int?
+    func index(of favorite: LegacyFavorite.Key) -> Int
 
     /**
      Obtain the Favorite at the given index

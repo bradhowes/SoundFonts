@@ -35,7 +35,7 @@ extension LegacyFavoritesManager: Favorites {
 
     public var count: Int { collection.count }
 
-    public func index(of key: LegacyFavorite.Key) -> Int? { collection.index(of: key) }
+    public func index(of key: LegacyFavorite.Key) -> Int { collection.index(of: key) }
 
     public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
@@ -69,8 +69,8 @@ extension LegacyFavoritesManager: Favorites {
     }
 
     public func remove(key: LegacyFavorite.Key) {
-        guard let index = collection.index(of: key) else { return }
         defer { collectionChanged() }
+        let index = collection.index(of: key)
         let favorite = collection.remove(at: index)
         notify(.removed(index: index, favorite: favorite))
     }
