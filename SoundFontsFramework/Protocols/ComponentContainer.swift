@@ -12,6 +12,7 @@ public protocol ComponentContainer {
     var sampler: Sampler { get }
     var soundFonts: SoundFonts { get }
     var favorites: Favorites { get }
+    var tags: Tags { get }
     var activePatchManager: ActivePatchManager { get }
     var selectedSoundFontManager: SelectedSoundFontManager { get }
     var infoBar: InfoBar { get }
@@ -21,7 +22,6 @@ public protocol ComponentContainer {
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
     var reverbEffect: Reverb? { get }
     var delayEffect: Delay? { get }
-    var tagsManager: LegacyTagsManager { get }
 }
 
 public extension ComponentContainer {

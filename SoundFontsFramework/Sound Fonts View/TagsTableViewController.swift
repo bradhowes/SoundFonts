@@ -13,12 +13,12 @@ public final class TagsTableViewController: UITableViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
 
     public struct Config {
-        let tagsManager: LegacyTagsManager
+        let tags: Tags
         let active: Set<LegacyTag.Key>
         let completionHandler: (Set<LegacyTag.Key>) -> Void
     }
 
-    private var tagsManager: LegacyTagsManager!
+    private var tags: Tags!
     private var active = Set<LegacyTag.Key>()
     private var completionHandler: ((Set<LegacyTag.Key>) -> Void)!
     private var editingRow: Int?
@@ -31,7 +31,7 @@ public final class TagsTableViewController: UITableViewController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addButton.isEnabled = true
-        editButton.isEnabled = !tagsManager.isEmpty
+        editButton.isEnabled = !tags.isEmpty
     }
 
     override public func viewWillDisappear(_ animated: Bool) {
@@ -40,7 +40,7 @@ public final class TagsTableViewController: UITableViewController {
     }
 
     @IBAction public func addTag(_ sender: UIBarButtonItem) {
-        let editingRow = tagsManager.append(LegacyTag(name: "New Tag"))
+        let editingRow = tags.append(LegacyTag(name: "New Tag"))
         addButton.isEnabled = false
         editButton.isEnabled = false
         self.editingRow = editingRow
@@ -57,7 +57,7 @@ extension TagsTableViewController {
 
     func configure(_ config: Config) {
         active.removeAll()
-        tagsManager = config.tagsManager
+        tags = config.tags
         completionHandler = config.completionHandler
         for tag in config.active {
             guard tag != LegacyTag.allTag.key else { continue }
@@ -69,7 +69,7 @@ extension TagsTableViewController {
 extension TagsTableViewController {
 
     override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tagsManager.count
+        tags.count
     }
 
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -77,7 +77,7 @@ extension TagsTableViewController {
     }
 
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tag = tagsManager.getBy(index: indexPath.row)
+        let tag = tags.getBy(index: indexPath.row)
         if active.contains(tag.key) {
             active.remove(tag.key)
         }
@@ -88,7 +88,7 @@ extension TagsTableViewController {
     }
 
     override public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let tag = tagsManager.getBy(index: indexPath.row)
+        let tag = tags.getBy(index: indexPath.row)
         active.remove(tag.key)
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
@@ -103,22 +103,22 @@ extension TagsTableViewController {
 
     override public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,
                                    to destinationIndexPath: IndexPath) {
-        let tag = tagsManager.remove(at: sourceIndexPath.row)
-        tagsManager.insert(tag, at: destinationIndexPath.row)
+        let tag = tags.remove(at: sourceIndexPath.row)
+        tags.insert(tag, at: destinationIndexPath.row)
     }
 
     override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                                    forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let tag = tagsManager.remove(at: indexPath.row)
+            let tag = tags.remove(at: indexPath.row)
             active.remove(tag.key)
             tableView.deleteRows(at: [indexPath], with: .automatic)
-            editButton.isEnabled = !tagsManager.isEmpty
+            editButton.isEnabled = !tags.isEmpty
         }
     }
 
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
-        let tag = tagsManager.getBy(index: indexPath.row)
+        let tag = tags.getBy(index: indexPath.row)
 
         if editingRow == indexPath.row {
             cell.name.isHidden = true
@@ -153,15 +153,15 @@ extension TagsTableViewController: UITextFieldDelegate {
         addButton.isEnabled = true
         editingRow = nil
         if let text = textField.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
-            tagsManager.rename(row, name: text)
-            let tag = tagsManager.getBy(index: row)
+            tags.rename(row, name: text)
+            let tag = tags.getBy(index: row)
             active.insert(tag.key)
             tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
         }
         else {
-            _ = tagsManager.remove(at: row)
+            _ = tags.remove(at: row)
             tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .fade)
         }
-        editButton.isEnabled = !tagsManager.isEmpty
+        editButton.isEnabled = !tags.isEmpty
     }
 }

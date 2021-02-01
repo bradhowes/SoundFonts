@@ -14,7 +14,7 @@ final class FontEditor: UIViewController {
         let soundFonts: SoundFonts
         let soundFontKey: LegacySoundFont.Key
         let favoriteCount: Int
-        let tagsManager: LegacyTagsManager
+        let tags: Tags
         let completionHandler: ((Bool) -> Void)?
     }
 
@@ -22,7 +22,7 @@ final class FontEditor: UIViewController {
     private var soundFontKey: LegacySoundFont.Key!
     private var favoriteCount: Int = 0
     private var position: IndexPath = IndexPath()
-    private var tagsManager: LegacyTagsManager!
+    private var tags: Tags!
     private var activeTags = Set<LegacyTag.Key>()
 
     private var completionHandler: ((Bool) -> Void)?
@@ -33,7 +33,7 @@ final class FontEditor: UIViewController {
 
     @IBOutlet private weak var doneButton: UIBarButtonItem!
     @IBOutlet private weak var name: UITextField!
-    @IBOutlet private weak var tags: UILabel!
+    @IBOutlet private weak var tagsLabel: UILabel!
     @IBOutlet private weak var tagsEdit: UIButton!
     @IBOutlet private weak var originalNameLabel: UILabel!
     @IBOutlet private weak var embeddedNameLabel: UILabel!
@@ -52,7 +52,7 @@ final class FontEditor: UIViewController {
         soundFonts = config.soundFonts
         soundFontKey = config.soundFontKey
         favoriteCount = config.favoriteCount
-        tagsManager = config.tagsManager
+        tags = config.tags
         completionHandler = config.completionHandler
 
         soundFonts.reloadEmbeddedInfo(key: soundFontKey)
@@ -86,8 +86,8 @@ final class FontEditor: UIViewController {
         updateHiddenCount()
 
         path.text = "Path: " + soundFont.fileURL.path
-        let value = tagsManager.names(of: activeTags).joined(separator: ", ")
-        tags.text = value
+        let value = tags.names(of: activeTags).joined(separator: ", ")
+        tagsLabel.text = value
     }
 
     private func updateHiddenCount() {
@@ -168,7 +168,7 @@ extension FontEditor: SegueHandler {
             fatalError("unexpected view configuration")
         }
 
-        let config = TagsTableViewController.Config(tagsManager: tagsManager, active: activeTags) { tags in
+        let config = TagsTableViewController.Config(tags: tags, active: activeTags) { tags in
             self.activeTags = tags
         }
 

@@ -4,23 +4,23 @@ import UIKit
 import os
 import SoundFontInfoLib
 
-public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
+final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
     private let log = Logging.logger("TagsMgr")
 
     private let configFile: ConsolidatedConfigFile
 
-    public var collection: LegacyTagCollection {
+    var collection: LegacyTagCollection {
         precondition(configFile.restored)
         return configFile.config.tags
     }
 
-    public private(set) var restored = false {
+    private(set) var restored = false {
         didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
     }
 
     private var configFileObserver: NSKeyValueObservation?
 
-    public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+    init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
         self.configFile = consolidatedConfigFile
         super.init()
         configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
@@ -32,50 +32,52 @@ public final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
 
 extension LegacyTagsManager: Tags {
 
-    public var isEmpty: Bool { collection.isEmpty }
+    var isEmpty: Bool { collection.isEmpty }
 
-    public var count: Int { collection.count }
+    var count: Int { collection.count }
 
-    public func names(of keys: Set<LegacyTag.Key>) -> [String] { collection.names(of: keys) }
+    func names(of keys: Set<LegacyTag.Key>) -> [String] { collection.names(of: keys) }
 
-    public func index(of key: LegacyTag.Key) -> Int? { collection.index(of: key) }
+    func index(of key: LegacyTag.Key) -> Int? { collection.index(of: key) }
 
-    public func getBy(index: Int) -> LegacyTag { collection.getBy(index: index) }
+    func getBy(index: Int) -> LegacyTag { collection.getBy(index: index) }
 
-    public func getBy(key: LegacyTag.Key) -> LegacyTag? { collection.getBy(key: key) }
+    func getBy(key: LegacyTag.Key) -> LegacyTag? { collection.getBy(key: key) }
 
-    public func append(_ tag: LegacyTag) -> Int {
+    func append(_ tag: LegacyTag) -> Int {
         defer { collectionChanged() }
         let index = collection.append(tag)
         notify(.added(new: index, tag: tag))
         return index
     }
 
-    public func insert(_ tag: LegacyTag, at index: Int) {
+    func insert(_ tag: LegacyTag, at index: Int) {
         defer { collectionChanged() }
         collection.insert(tag, at: index)
         notify(.added(new: index, tag: tag))
     }
 
-    public func remove(at index: Int) -> LegacyTag {
+    func remove(at index: Int) -> LegacyTag {
         defer { collectionChanged() }
         let tag = collection.remove(at: index)
         notify(.removed(old: index, tag: tag))
         return tag
     }
 
-    public func rename(_ index: Int, name: String) {
+    func rename(_ index: Int, name: String) {
         defer { collectionChanged() }
         collection.rename(index, name: name)
         notify(.changed(index: index, tag: collection.getBy(index: index)))
     }
 
-    public func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key> {
+    func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key> {
         Set(indices.map { collection.getBy(index: $0).key })
     }
 }
 
 extension LegacyTagsManager {
+
+    static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag(name: "Built-in")]) }
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

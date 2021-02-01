@@ -23,7 +23,7 @@ public final class SoundFontsViewController: UIViewController {
     private var soundFonts: SoundFonts!
     private var favorites: Favorites!
     private var infoBar: InfoBar!
-    private var tagsManager: LegacyTagsManager!
+    private var tags: Tags!
 
     private var fontsTableViewManager: FontsTableViewManager!
     private var patchesTableViewManager: PatchesTableViewManager!
@@ -147,12 +147,12 @@ extension SoundFontsViewController: ControllerConfiguration {
         keyboard = router.keyboard
         selectedSoundFontManager = router.selectedSoundFontManager
         infoBar = router.infoBar
-        tagsManager = router.tagsManager
+        tags = router.tags
 
         fontsTableViewManager = FontsTableViewManager(
             view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
             activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
-            soundFonts: router.soundFonts, tags: tagsManager)
+            soundFonts: router.soundFonts, tags: tags)
 
         patchesTableViewManager = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
@@ -160,8 +160,7 @@ extension SoundFontsViewController: ControllerConfiguration {
             favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delayEffect,
             reverb: router.reverbEffect)
 
-        tagsTableViewManager = ActiveTagManager(view: tagsView, tagsManager: router.tagsManager,
-                                                    tagsHider: self.hideTags)
+        tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, tagsHider: self.hideTags)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
         router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
@@ -221,7 +220,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
                                            soundFontKey: soundFont.key,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
-                                           tagsManager: self.tagsManager,
+                                           tags: self.tags,
                                            completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)
         }

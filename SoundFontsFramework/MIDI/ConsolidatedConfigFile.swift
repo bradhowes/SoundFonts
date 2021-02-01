@@ -15,8 +15,8 @@ extension ConsolidatedConfig {
     public init() {
         os_log(.info, log: Self.log, "creating default collection")
         soundFonts = LegacySoundFontsManager.defaultCollection
-        favorites = LegacyFavoriteCollection()
-        tags = LegacyTagCollection()
+        favorites = LegacyFavoritesManager.defaultCollection
+        tags = LegacyTagsManager.defaultCollection
     }
 }
 
