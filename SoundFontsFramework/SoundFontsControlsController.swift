@@ -102,7 +102,9 @@ extension SoundFontsControlsController {
         if animated {
             UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                            options: [.allowUserInteraction, .curveEaseIn],
-                                                           animations: self.view.layoutIfNeeded)
+                                                           animations: self.view.layoutIfNeeded) { _ in
+                NotificationCenter.default.post(name: .showingEffects, object: nil)
+            }
         }
         Settings.instance.showEffects = true
     }
@@ -112,7 +114,9 @@ extension SoundFontsControlsController {
         if animated {
             UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                            options: [.allowUserInteraction, .curveEaseOut],
-                                                           animations: self.view.layoutIfNeeded)
+                                                           animations: self.view.layoutIfNeeded) { _ in
+                NotificationCenter.default.post(name: .hidingEffects, object: nil)
+            }
         }
         Settings.instance.showEffects = false
     }

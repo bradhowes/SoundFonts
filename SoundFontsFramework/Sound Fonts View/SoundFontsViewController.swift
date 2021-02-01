@@ -33,6 +33,9 @@ public final class SoundFontsViewController: UIViewController {
 
     public var swipeLeft = UISwipeGestureRecognizer()
     public var swipeRight = UISwipeGestureRecognizer()
+}
+
+extension SoundFontsViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +73,9 @@ public final class SoundFontsViewController: UIViewController {
             self.patchesTableViewManager.selectActive(animated: false)
         })
     }
+}
+
+extension SoundFontsViewController {
 
     private func addSoundFont(_ button: AnyObject) {
         let documentPicker = UIDocumentPickerViewController(
@@ -306,7 +312,7 @@ extension SoundFontsViewController: FontEditorDelegate {
             guard let soundFont = soundFonts.getBy(key: soundFontKey) else { return }
             soundFonts.rename(key: soundFontKey, name: soundFont.displayName)
         }
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -335,8 +341,8 @@ extension SoundFontsViewController {
         if bestHeight > maxHeight { bestHeight = maxHeight }
         if bestHeight < minHeight { bestHeight = maxHeight }
 
-        self.tagsViewHeightConstraint.constant = bestHeight
-        self.tagsBottomConstraint.constant = 0.0
+        tagsViewHeightConstraint.constant = bestHeight
+        tagsBottomConstraint.constant = 0.0
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                        options: [.allowUserInteraction, .curveEaseIn],
                                                        animations: self.view.layoutIfNeeded)
@@ -344,8 +350,8 @@ extension SoundFontsViewController {
 
     private func hideTags() {
         infoBar.resetButtonState(.showTags)
-        self.tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
-        self.tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
+        tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
+        tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                        options: [.allowUserInteraction, .curveEaseOut],
                                                        animations: self.view.layoutIfNeeded)

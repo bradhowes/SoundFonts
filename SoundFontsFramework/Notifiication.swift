@@ -33,4 +33,10 @@ extension Notification.Name {
 
     /// Failed to load the consolidated config file
     public static let configLoadFailure = Notification.Name("configLoadFailure")
+
+    /// Notification that the effects view is appearing.
+    public static let showingEffects = Notification.Name("showingEffects")
+
+    /// Notification that the effects view is going away.
+    public static let hidingEffects = Notification.Name("hidingEffects")
 }
