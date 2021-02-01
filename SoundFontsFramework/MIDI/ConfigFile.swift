@@ -14,8 +14,6 @@ internal protocol ConfigFileManager: class {
 }
 
 internal class ConfigFile<T>: UIDocument where T: ConfigFileManager {
-
-    private let log = Logging.logger("SFCfg")
     private weak var manager: ConfigFileManager?
 
     internal init(manager: ConfigFileManager) {
@@ -44,7 +42,6 @@ internal class ConfigFile<T>: UIDocument where T: ConfigFileManager {
     }
 
     override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
-        os_log(.info, log: log, "revert url: '%{public}s' - ignoring", url.path)
         completionHandler?(false)
     }
 }

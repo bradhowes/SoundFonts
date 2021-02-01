@@ -13,37 +13,30 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
     private static let log = Logging.logger("SFMan")
     private var log: OSLog { Self.log }
 
-    private var configFile: UIDocument?
+    private let configFile: ConsolidatedConfigFile
 
-    private var _collection: LegacySoundFontCollection! = nil {
-        didSet { os_log(.debug, log: log, "collection changed: %{public}s", _collection.description) }
-    }
-
-    private var collection: LegacySoundFontCollection {
-        get {
-            if self._collection == nil {
-                self._collection = Self.defaultCollection
-            }
-            return self._collection
-        }
-        set {
-            self._collection = newValue
-        }
+    public var collection: LegacySoundFontCollection {
+        precondition(configFile.restored)
+        return configFile.config.soundFonts
     }
 
     public private(set) var restored = false {
         didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
     }
 
+    private var configFileObserver: NSKeyValueObservation?
+
     /**
      Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
      fails then creates a new one containing SoundFont instances embedded in the app.
      */
-    public init() {
+    public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+        self.configFile = consolidatedConfigFile
         super.init()
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.configFile = ConfigFile<Self>(manager: self)
+        configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
+            self.checkCollectionRestored()
         }
+        checkCollectionRestored()
     }
 }
 
@@ -397,63 +390,28 @@ extension LegacySoundFontsManager {
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
         AskForReview.maybe()
-        configFile?.updateChangeCount(.done)
-    }
-}
-
-extension LegacySoundFontsManager: ConfigFileManager {
-
-    internal var filename: String { "SoundFontLibrary.plist" }
-
-    internal func configurationData() throws -> Any {
-        os_log(.info, log: log, "configurationData")
-        os_log(.info, log: log, "collection: %{public}@", collection.description)
-        let data = try PropertyListEncoder().encode(collection)
-        os_log(.info, log: log, "done - %d", data.count)
-        if !restored {
-            restored = true
-            DispatchQueue.main.async { self.notify(.restored) }
-        }
-        return data
-    }
-
-    internal func loadConfigurationData(contents: Any) throws {
-        os_log(.info, log: log, "loadConfigurationData")
-        guard let data = contents as? Data else {
-            restoreCollection(Self.defaultCollection)
-            NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
-            return
-        }
-
-        os_log(.info, log: log, "has data")
-        guard let collection = try? PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data) else {
-            restoreCollection(Self.defaultCollection)
-            NotificationCenter.default.post(Notification(name: .soundFontsCollectionLoadFailure, object: nil))
-            return
-        }
-
-        os_log(.info, log: log, "properly decoded")
-        restoreCollection(collection)
+        configFile.updateChangeCount(.done)
     }
 }
 
 extension LegacySoundFontsManager {
-
-    private func restoreCollection(_ collection: LegacySoundFontCollection) {
-        self.collection = collection
-        restored = true
-        DispatchQueue.main.async { self.notify(.restored) }
-    }
 
     /**
      Create a new collection using the embedded SoundFont files.
 
      - returns: new SoundFontCollection
      */
-    private static var defaultCollection: LegacySoundFontCollection {
+    static var defaultCollection: LegacySoundFontCollection {
         let bundleUrls: [URL] = SF2Files.allResources
         let fileUrls = FileManager.default.installedSF2Files
         return LegacySoundFontCollection(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) }) +
                                                 (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
+    }
+
+    private func checkCollectionRestored() {
+        guard configFile.restored == true else { return }
+        self.restored = true
+        os_log(.info, log: self.log, "restored")
+        DispatchQueue.main.async { self.notify(.restored) }
     }
 }

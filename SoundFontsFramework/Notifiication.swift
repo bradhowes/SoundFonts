@@ -16,17 +16,8 @@ extension Notification.Name {
     /// Notification that the key width changed
     public static let keyWidthChanged = Notification.Name(rawValue: "keyWidthChanged")
 
-    /// Notification that we failed to load the SoundFontCollection.plist file
-    public static let soundFontsCollectionLoadFailure = Notification.Name("soundFontsCollectionLoadFailure")
-
-    /// Notification that we failed to load the Tags.plist file
-    public static let tagsCollectionLoadFailure = Notification.Name("tagsCollectionLoadFailure")
-
     /// Notification that we found some orphan files
     public static let soundFontsCollectionOrphans = Notification.Name("soundFontsCollectionOrphans")
-
-    /// Notification that we failed to load the Favorites.plist file
-    public static let favoritesCollectionLoadFailure = Notification.Name("favoritesCollectionLoadFailure")
 
     /// Notification that we cannot read/use an SF2 file
     public static let soundFontFileAccessDenied = Notification.Name("soundFontFileAccessDenied")
@@ -39,4 +30,7 @@ extension Notification.Name {
 
     /// Set a tuning
     public static let setTuning = Notification.Name("setTuningChanged")
+
+    /// Failed to load the consolidated config file
+    public static let configLoadFailure = Notification.Name("configLoadFailure")
 }
