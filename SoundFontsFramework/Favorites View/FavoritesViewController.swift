@@ -18,6 +18,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     private var keyboard: Keyboard?
     private var favorites: Favorites!
     private var soundFonts: SoundFonts!
+    private var tags: Tags!
 
     private var favoriteMover: FavoriteMover!
 
@@ -27,6 +28,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     private var activePatchManagerSubscription: SubscriberToken?
     private var favoritesSubscription: SubscriberToken?
     private var soundFontsSubscription: SubscriberToken?
+    private var tagsSubscription: SubscriberToken?
 
     public override func viewDidLoad() {
         favoritesView.register(FavoriteCell.self)
@@ -74,10 +76,12 @@ extension FavoritesViewController: ControllerConfiguration {
         favorites = router.favorites
         keyboard = router.keyboard
         soundFonts = router.soundFonts
+        tags = router.tags
 
         activePatchManagerSubscription = activePatchManager.subscribe(self, notifier: activePatchChange)
         favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
         soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChange)
+        tagsSubscription = tags.subscribe(self, notifier: tagsChange)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
@@ -139,9 +143,16 @@ extension FavoritesViewController: ControllerConfiguration {
         }
     }
 
+    private func tagsChange(_ event: TagsEvent) {
+        switch event {
+        case .restored: restored()
+        default: break
+        }
+    }
+
     private func restored() {
-        guard favoritesView != nil && soundFonts.restored && favorites.restored else { return }
-        soundFonts.validateCollections(favorites)
+        guard favoritesView != nil && soundFonts.restored && favorites.restored && tags.restored else { return }
+        soundFonts.validateCollections(favorites: favorites, tags: tags)
         favoritesView.dataSource = self
         favoritesView.delegate = self
         favoritesView.reloadData()

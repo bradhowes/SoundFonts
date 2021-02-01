@@ -44,7 +44,7 @@ public final class LegacySoundFontCollection: Codable {
     public func firstIndex(of key: LegacySoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
 
     /**
-     Obtain the index of a SoundFont wiith the given URL.
+     Obtain the index of a SoundFont with the given URL.
 
      - parameter url: the URL to look for
      - returns: index value if found, else nil

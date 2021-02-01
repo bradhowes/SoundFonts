@@ -93,6 +93,7 @@ extension ConsolidatedConfigFile {
             let tags = LegacyConfigFileLoader<LegacyTagCollection>.load(filename: "Tags.plist")
         else {
             os_log(.info, log: log, "failed to load one or more legacy files")
+            initializeCollections()
             return
         }
 
@@ -105,5 +106,16 @@ extension ConsolidatedConfigFile {
     private func restoreConfig(_ config: ConsolidatedConfig) {
         self.config = config
         self.restored = true
+    }
+
+    private func initializeCollections() {
+        os_log(.info, log: log, "initializeCollections")
+
+        let tag = config.tags.getBy(index: 0)
+        for each in config.soundFonts.soundFonts {
+            each.tags.insert(tag.key)
+        }
+
+        restored = true
     }
 }

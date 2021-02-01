@@ -32,7 +32,7 @@ public protocol SoundFonts: class {
     var soundFontNames: [String] { get }
     var defaultPreset: SoundFontAndPatch? { get }
 
-    func validateCollections(_ favorites: Favorites)
+    func validateCollections(favorites: Favorites, tags: Tags)
 
     /**
      Obtain the index in the collection of a SoundFont with the given Key.
