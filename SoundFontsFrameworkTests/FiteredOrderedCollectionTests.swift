@@ -21,8 +21,12 @@ class FilteredOrderedCollectionTests: XCTestCase {
     }
 
     class Entry: Comparable {
-        static func < (lhs: FilteredOrderedCollectionTests.Entry, rhs: FilteredOrderedCollectionTests.Entry) -> Bool { lhs.value < rhs.value }
-        static func == (lhs: FilteredOrderedCollectionTests.Entry, rhs: FilteredOrderedCollectionTests.Entry) -> Bool { lhs === rhs }
+        static func < (lhs: FilteredOrderedCollectionTests.Entry, rhs: FilteredOrderedCollectionTests.Entry) -> Bool {
+            lhs.value < rhs.value
+        }
+        static func == (lhs: FilteredOrderedCollectionTests.Entry, rhs: FilteredOrderedCollectionTests.Entry) -> Bool {
+            lhs === rhs
+        }
         let value: Int
         init(_ value: Int) { self.value = value }
     }
