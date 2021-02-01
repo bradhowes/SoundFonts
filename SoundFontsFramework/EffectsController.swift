@@ -37,10 +37,6 @@ public final class EffectsController: UIViewController {
     private var favorites: Favorites!
 
     public override func viewDidLoad() {
-        reverbRoom.dataSource = self
-        reverbRoom.delegate = self
-        reverbRoom.selectRow(Settings.instance.reverbPreset, inComponent: 0, animated: false)
-
         reverbWetDryMix.minimumValue = 0
         reverbWetDryMix.maximumValue = 100
         reverbWetDryMix.value = 20
@@ -60,6 +56,16 @@ public final class EffectsController: UIViewController {
         delayWetDryMix.minimumValue = 0
         delayWetDryMix.maximumValue = 100
         delayWetDryMix.value = 20
+
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        reverbRoom.dataSource = self
+        reverbRoom.delegate = self
+        reverbRoom.reloadComponent(0)
+        reverbRoom.selectRow(Settings.instance.reverbPreset, inComponent: 0, animated: false)
 
         reverbWetDryMix.value = Settings.instance.reverbWetDryMix
         updateReverbState(Settings.instance.reverbEnabled)
@@ -124,9 +130,8 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
-        let value = delayWetDryMix.value
-        delayWetDryMixLabel.showStatus(String(format: "%.0f", value) + "%")
-        delayEffect.active = delayEffect.active.setWetDryMix(value)
+        showDelayMixValue()
+        delayEffect.active = delayEffect.active.setWetDryMix(delayWetDryMix.value)
         updatePreset()
     }
 }
