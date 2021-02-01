@@ -30,6 +30,7 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayWetDryMix: Knob!
     @IBOutlet weak var delayWetDryMixLabel: UILabel!
 
+    private var isMainApp: Bool = false
     private var reverbEffect: Reverb!
     private var delayEffect: Delay!
     private var activePatchManager: ActivePatchManager!
@@ -62,6 +63,7 @@ public final class EffectsController: UIViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        guard isMainApp else { return }
         reverbRoom.dataSource = self
         reverbRoom.delegate = self
         reverbRoom.reloadComponent(0)
@@ -127,12 +129,14 @@ public final class EffectsController: UIViewController {
 
 extension EffectsController: ControllerConfiguration {
     public func establishConnections(_ router: ComponentContainer) {
+        guard router.isMainApp else { return }
+        isMainApp = true
         soundFonts = router.soundFonts
         favorites = router.favorites
         activePatchManager = router.activePatchManager
-        activePatchManager.subscribe(self, notifier: activePatchChange)
         reverbEffect = router.reverbEffect
         delayEffect = router.delayEffect
+        activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 }
 
