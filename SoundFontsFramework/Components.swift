@@ -10,6 +10,7 @@ import UIKit
  */
 public final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
 
+    public let consolidatedConfigFile: ConsolidatedConfigFile
     public let askForReview: AskForReview
     public let soundFonts: SoundFonts
     public let favorites: Favorites
@@ -44,13 +45,17 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
     public init(inApp: Bool) {
         self.inApp = inApp
+        self.consolidatedConfigFile = ConsolidatedConfigFile()
+
         self.askForReview = AskForReview(isMain: inApp)
 
-        let soundFontsManager = LegacySoundFontsManager()
+        let soundFontsManager = LegacySoundFontsManager(consolidatedConfigFile)
         self.soundFonts = soundFontsManager
 
-        let favoritesManager = LegacyFavoritesManager()
+        let favoritesManager = LegacyFavoritesManager(consolidatedConfigFile)
         self.favorites = favoritesManager
+
+        self.tagsManager = LegacyTagsManager(consolidatedConfigFile)
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts,
@@ -63,14 +68,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 
         self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager,
                                reverb: reverb, delay: delay)
-
-        self.soundFonts.subscribe(favoritesManager) { event in
-            if case let .removed(_, soundFont) = event {
-                favoritesManager.removeAll(associatedWith: soundFont)
-            }
-        }
-
-        self.tagsManager = LegacyTagsManager()
     }
 
     // swiftlint:disable cyclomatic_complexity

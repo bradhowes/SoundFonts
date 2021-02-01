@@ -58,9 +58,8 @@ public final class AlertManager {
     private let presenter: UIViewController
     private var observers: [NSObjectProtocol] = []
     private let notifications: [Notification.Name] = [
-        .soundFontsCollectionLoadFailure,
+        .configLoadFailure,
         .soundFontsCollectionOrphans,
-        .favoritesCollectionLoadFailure,
         .soundFontFileAccessDenied
     ]
 
@@ -75,14 +74,11 @@ public final class AlertManager {
     private func notify(_ notification: Notification) {
         let (title, body): (String, String) = {
             switch notification.name {
-            case .soundFontsCollectionLoadFailure:
+            case .configLoadFailure:
                 return ("Startup Failure", """
 Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
 have been lost.
 """)
-
-            case .favoritesCollectionLoadFailure:
-                return ("Startup Failure", "Unable to load the last saved favorites information.")
 
             case .soundFontsCollectionOrphans:
                 guard let count = notification.object as? NSNumber else { fatalError() }

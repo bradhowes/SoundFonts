@@ -10,22 +10,26 @@ import os
 public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
     private let log = Logging.logger("FavMgr")
 
-    private var configFile: UIDocument?
-    private var collection: LegacyFavoriteCollection {
-        didSet { os_log(.debug, log: log, "collection changed: %{public}s", collection.description) }
+    private let configFile: ConsolidatedConfigFile
+
+    public var collection: LegacyFavoriteCollection {
+        precondition(configFile.restored)
+        return configFile.config.favorites
     }
 
     public private(set) var restored = false {
         didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
     }
 
-    public init() {
-        os_log(.info, log: log, "init")
-        self.collection = Self.defaultCollection
+    private var configFileObserver: NSKeyValueObservation?
+
+    public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+        self.configFile = consolidatedConfigFile
         super.init()
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.configFile = ConfigFile<Self>(manager: self)
+        configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
+            self.checkCollectionRestored()
         }
+        checkCollectionRestored()
     }
 }
 
@@ -102,55 +106,18 @@ extension LegacyFavoritesManager: Favorites {
     }
 }
 
-extension LegacyFavoritesManager: ConfigFileManager {
-
-    var filename: String { "Favorites.plist" }
-
-    internal func configurationData() throws -> Any {
-        os_log(.info, log: log, "configurationData")
-        os_log(.info, log: log, "favorites: %{public}@", collection.description)
-        let data = try PropertyListEncoder().encode(collection)
-        os_log(.info, log: log, "done - %d", data.count)
-        if !restored {
-            restored = true
-            DispatchQueue.main.async { self.notify(.restored) }
-        }
-        return data
-    }
-
-    internal func loadConfigurationData(contents: Any) throws {
-        os_log(.info, log: log, "loadConfigurationData")
-        guard let data = contents as? Data else {
-            NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
-            return
-        }
-
-        os_log(.info, log: log, "has data")
-        guard let value = try? PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data) else {
-            NotificationCenter.default.post(Notification(name: .favoritesCollectionLoadFailure, object: nil))
-            return
-        }
-
-        os_log(.info, log: log, "properly decoded")
-        restoreCollection(value)
-    }
-}
-
 extension LegacyFavoritesManager {
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
         AskForReview.maybe()
-        configFile?.updateChangeCount(.done)
+        configFile.updateChangeCount(.done)
     }
 
-    private func restoreCollection(_ value: LegacyFavoriteCollection) {
-        collection = value
-        restored = true
+    private func checkCollectionRestored() {
+        guard configFile.restored == true else { return }
+        self.restored = true
+        os_log(.info, log: self.log, "restored")
         DispatchQueue.main.async { self.notify(.restored) }
-    }
-
-    private static var defaultCollection: LegacyFavoriteCollection {
-        LegacyFavoriteCollection()
     }
 }
