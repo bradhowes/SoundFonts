@@ -17,18 +17,16 @@ public struct DelayConfig: Codable {
     public let feedback: AUValue
     public let cutoff: AUValue
     public let wetDryMix: AUValue
+}
 
-    public init(enabled: Bool, time: AUValue, feedback: AUValue, cutoff: AUValue, wetDryMix: AUValue) {
-        self.enabled = enabled
-        self.time = time
-        self.feedback = feedback
-        self.cutoff = cutoff
-        self.wetDryMix = wetDryMix
-    }
+extension DelayConfig {
 
     public init() {
-        self.init(enabled: true, time: Settings.instance.delayTime, feedback: Settings.instance.delayFeedback,
-                  cutoff: Settings.instance.delayCutoff, wetDryMix: Settings.instance.delayWetDryMix)
+        self.init(enabled: Settings.instance.delayEnabled,
+                  time: Settings.instance.delayTime,
+                  feedback: Settings.instance.delayFeedback,
+                  cutoff: Settings.instance.delayCutoff,
+                  wetDryMix: Settings.instance.delayWetDryMix)
     }
 
     public init?(state: [String: Any]) {

@@ -13,15 +13,13 @@ public struct ReverbConfig: Codable {
     public let enabled: Bool
     public let preset: Int
     public let wetDryMix: AUValue
+}
 
-    public init(enabled: Bool, preset: Int, wetDryMix: AUValue) {
-        self.enabled = enabled
-        self.preset = preset
-        self.wetDryMix = wetDryMix
-    }
-
+extension ReverbConfig {
     public init() {
-        self.init(enabled: true, preset: Settings.instance.reverbPreset, wetDryMix: Settings.instance.delayWetDryMix)
+        self.init(enabled: Settings.instance.reverbEnabled,
+                  preset: Settings.instance.reverbPreset,
+                  wetDryMix: Settings.instance.delayWetDryMix)
     }
 
     public init?(state: [String: Any]) {
