@@ -37,6 +37,7 @@ public final class EffectsController: UIViewController {
     private var favorites: Favorites!
 
     public override func viewDidLoad() {
+
         reverbWetDryMix.minimumValue = 0
         reverbWetDryMix.maximumValue = 100
         reverbWetDryMix.value = 20
@@ -61,78 +62,66 @@ public final class EffectsController: UIViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         reverbRoom.dataSource = self
         reverbRoom.delegate = self
         reverbRoom.reloadComponent(0)
-        reverbRoom.selectRow(Settings.instance.reverbPreset, inComponent: 0, animated: false)
-
-        reverbWetDryMix.value = Settings.instance.reverbWetDryMix
-        updateReverbState(Settings.instance.reverbEnabled)
-
-        delayTime.value = Settings.instance.delayTime
-        delayFeedback.value = Settings.instance.delayFeedback
-
-        delayCutoff.value = log10(Settings.instance.delayCutoff)
-
-        delayWetDryMix.value = Settings.instance.delayWetDryMix
-        updateDelayState(Settings.instance.delayEnabled)
+        updateState()
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
         reverbEffect.active = reverbEffect.active.setEnabled(!reverbEffect.active.enabled)
         updateReverbState(reverbEffect.active.enabled)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func toggleReverbGlobal(_ sender: UIButton) {
         let value = !Settings.instance.reverbGlobal
         Settings.instance.reverbGlobal = value
         reverbGlobal.showEnabled(value)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
         delayEffect.active = delayEffect.active.setEnabled(!delayEffect.active.enabled)
         updateDelayState(delayEffect.active.enabled)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func toggleDelayGlobal(_ sender: UIButton) {
         let value = !Settings.instance.delayGlobal
         Settings.instance.delayGlobal = value
         delayGlobal.showEnabled(value)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
         showReverbMixValue()
         reverbEffect.active = reverbEffect.active.setWetDryMix(reverbWetDryMix.value)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
-        showDelayTime()
+        showDelayTimeValue()
         delayEffect.active = delayEffect.active.setTime(delayTime.value)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
-        showDelayFeedback()
+        showDelayFeedbackValue()
         delayEffect.active = delayEffect.active.setFeedback(delayFeedback.value)
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
-        showDelayCutoff()
+        showDelayCutoffValue()
         delayEffect.active = delayEffect.active.setCutoff(pow(10.0, delayCutoff.value))
-        updatePreset()
+        updatePresetConfig()
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
         showDelayMixValue()
         delayEffect.active = delayEffect.active.setWetDryMix(delayWetDryMix.value)
-        updatePreset()
+        updatePresetConfig()
     }
 }
 
@@ -159,7 +148,7 @@ extension EffectsController: UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
         reverbEffect.active = reverbEffect.active.setPreset(row)
-        updatePreset()
+        updatePresetConfig()
     }
 
     public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
@@ -181,51 +170,106 @@ extension EffectsController: UIPickerViewDelegate {
 
 extension EffectsController {
 
-    private func updatePreset() {
-        guard let presetConfig = activePatchManager.presetConfig else { return }
+    private func updateGlobalConfig() {
+        if Settings.instance.reverbGlobal {
+            os_log(.info, log: log, "updating global reverb settings")
+            let config = reverbEffect.active
+            Settings.instance.reverbEnabled = config.enabled
+            Settings.instance.reverbPreset = config.preset
+            Settings.instance.reverbWetDryMix = config.wetDryMix
+        }
 
-        let delayConfig = Settings.instance.delayGlobal ?
-            presetConfig.delayConfig :
-            (delayEffect.active.enabled ? delayEffect.active : nil)
-        let reverbConfig = Settings.instance.reverbGlobal ?
-            presetConfig.reverbConfig :
-            (reverbEffect.active.enabled ? reverbEffect.active : nil)
+        if Settings.instance.delayGlobal {
+            os_log(.info, log: log, "updating global delay settings")
+            let config = delayEffect.active
+            Settings.instance.delayEnabled = config.enabled
+            Settings.instance.delayTime = config.time
+            Settings.instance.delayFeedback = config.feedback
+            Settings.instance.delayCutoff = config.cutoff
+            Settings.instance.delayWetDryMix = config.wetDryMix
+        }
+    }
+
+    private func updatePresetConfig() {
+        os_log(.info, log: log, "updatePresetConfig")
+
+        let reverbConfig: ReverbConfig? = {
+            if Settings.instance.reverbGlobal {
+                os_log(.info, log: log, "updating global reverb")
+                return activePatchManager.presetConfig?.reverbConfig
+            } else if reverbEffect.active.enabled {
+                os_log(.info, log: log, "updating preset reverb")
+                return reverbEffect.active
+            } else {
+                os_log(.info, log: log, "nil reverb preset")
+                return nil
+            }
+        }()
+
+        let delayConfig: DelayConfig? = {
+            if Settings.instance.delayGlobal {
+                os_log(.info, log: log, "updating global delay")
+                return activePatchManager.presetConfig?.delayConfig
+            } else if delayEffect.active.enabled {
+                os_log(.info, log: log, "updating preset delay")
+                return delayEffect.active
+            } else {
+                os_log(.info, log: log, "nil delay preset")
+                return nil
+            }
+        }()
 
         if let favorite = activePatchManager.favorite {
+            os_log(.info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
+                   delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
             favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
         }
         else if let soundFontAndPatch = activePatchManager.soundFontAndPatch {
+            os_log(.info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
+                   delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
             soundFonts.setEffects(soundFontAndPatch: soundFontAndPatch, delay: delayConfig, reverb: reverbConfig)
         }
+
+        updateGlobalConfig()
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {
         guard case .active = event else { return }
-        guard let patch = activePatchManager.patch else { return }
-        let presetConfig = activePatchManager.favorite?.presetConfig ?? patch.presetConfig
+        updateState()
+    }
 
-        if !Settings.instance.reverbGlobal {
-            if let reverbConfig = presetConfig.reverbConfig {
-                update(config: reverbConfig)
-            }
-            else {
-                updateReverbState(false)
-            }
+    private func updateState() {
+        os_log(.info, log: log, "updateState")
+        let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig
+
+        reverbGlobal.showEnabled(Settings.instance.reverbGlobal)
+        if Settings.instance.reverbGlobal {
+            os_log(.info, log: log, "showing global reverb state")
+            let config = ReverbConfig()
+            update(config: config)
+        }
+        else {
+            let config = presetConfig?.reverbConfig ?? reverbEffect.active.setEnabled(false)
+            os_log(.info, log: log, "showing preset reverb state - %{public}s", config.description)
+            update(config: config)
         }
 
-        if !Settings.instance.delayGlobal {
-            if let delayConfig = presetConfig.delayConfig {
-                update(config: delayConfig)
-            }
-            else {
-                updateDelayState(false)
-            }
+        delayGlobal.showEnabled(Settings.instance.delayGlobal)
+        if Settings.instance.delayGlobal {
+            os_log(.info, log: log, "showing global delay state")
+            update(config: DelayConfig())
+        }
+        else {
+            let config = presetConfig?.delayConfig ?? delayEffect.active.setEnabled(false)
+            os_log(.info, log: log, "showing preset delay state - %{public}s", config.description)
+            update(config: config)
         }
     }
 
     private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
     private func update(config: ReverbConfig) {
+        os_log(.info, log: log, "update ReverbConfig - %{public}s", config.description)
         reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
         reverbWetDryMix.setValue(config.wetDryMix, animated: true)
         showReverbMixValue()
@@ -233,6 +277,7 @@ extension EffectsController {
     }
 
     private func updateReverbState(_ enabled: Bool) {
+        os_log(.info, log: log, "updateReverbState - %d", enabled)
         let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
         animator.addAnimations {
             self.reverbEnabled.showEnabled(enabled)
@@ -240,7 +285,6 @@ extension EffectsController {
             self.reverbGlobal.isUserInteractionEnabled = true
             self.reverbWetDryMix.isEnabled = enabled
             self.reverbRoom.isUserInteractionEnabled = enabled
-
             self.reverbRoom.alpha = self.alpha(for: enabled)
             self.reverbWetDryMix.alpha = self.alpha(for: enabled)
             self.reverbWetDryMixLabel.alpha = self.alpha(for: enabled)
@@ -249,14 +293,20 @@ extension EffectsController {
     }
 
     private func update(config: DelayConfig) {
+        os_log(.info, log: log, "update DelayConfig - %{public}s", config.description)
         delayTime.setValue(config.time, animated: true)
+        showDelayTimeValue()
         delayFeedback.setValue(config.feedback, animated: true)
+        showDelayFeedbackValue()
         delayCutoff.setValue(log10(config.cutoff), animated: true)
+        showDelayCutoffValue()
         delayWetDryMix.setValue(config.wetDryMix, animated: true)
+        showDelayMixValue()
         updateDelayState(config.enabled)
     }
 
     private func updateDelayState(_ enabled: Bool) {
+        os_log(.info, log: log, "updateDelayState - %d", enabled)
         let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
         animator.addAnimations {
             self.delayEnabled.showEnabled(enabled)
@@ -266,7 +316,6 @@ extension EffectsController {
             self.delayTime.isEnabled = enabled
             self.delayFeedback.isEnabled = enabled
             self.delayCutoff.isEnabled = enabled
-
             self.delayWetDryMix.alpha = self.alpha(for: enabled)
             self.delayWetDryMixLabel.alpha = self.alpha(for: enabled)
             self.delayTime.alpha = self.alpha(for: enabled)
@@ -283,15 +332,15 @@ extension EffectsController {
         reverbWetDryMixLabel.showStatus(String(format: "%.0f", reverbWetDryMix.value) + "%")
     }
 
-    private func showDelayTime() {
+    private func showDelayTimeValue() {
         delayTimeLabel.showStatus(String(format: "%.2f", delayTime.value) + "s")
     }
 
-    private func showDelayFeedback() {
+    private func showDelayFeedbackValue() {
         delayFeedbackLabel.showStatus(String(format: "%.0f", delayFeedback.value) + "%")
     }
 
-    private func showDelayCutoff() {
+    private func showDelayCutoffValue() {
         let value = pow(10.0, delayCutoff.value)
         if value < 1000.0 {
             delayCutoffLabel.showStatus(String(format: "%.1f", value) + " Hz")
