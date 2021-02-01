@@ -39,11 +39,10 @@ public final class SoundFontsControlsController: UIViewController {
         upperViewManager.add(view: favoritesView)
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let show = Settings.instance.showEffects
-        if isMainApp && show {
-            showEffects()
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isMainApp && Settings.instance.showEffects {
+            showEffects(false)
         }
     }
 }
@@ -98,19 +97,23 @@ extension SoundFontsControlsController {
         button?.tintColor = showingEffects ? .systemOrange : .systemTeal
     }
 
-    private func showEffects() {
+    private func showEffects(_ animated: Bool = true) {
         effectsBottomConstraint.constant = 0.0
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
-                                                       options: [.allowUserInteraction, .curveEaseIn],
-                                                       animations: self.view.layoutIfNeeded)
+        if animated {
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                           options: [.allowUserInteraction, .curveEaseIn],
+                                                           animations: self.view.layoutIfNeeded)
+        }
         Settings.instance.showEffects = true
     }
 
-    private func hideEffects() {
+    private func hideEffects(_ animated: Bool = true) {
         effectsBottomConstraint.constant = effectsHeightConstraint.constant + 8
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
-                                                       options: [.allowUserInteraction, .curveEaseOut],
-                                                       animations: self.view.layoutIfNeeded)
+        if animated {
+            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                           options: [.allowUserInteraction, .curveEaseOut],
+                                                           animations: self.view.layoutIfNeeded)
+        }
         Settings.instance.showEffects = false
     }
 }
