@@ -74,7 +74,7 @@ public final class Reverb: NSObject {
 extension Reverb {
 
     private func applyActiveConfig(_ config: ReverbConfig) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             self.audioUnit.loadFactoryPreset(Reverb.roomPresets[config.preset])
             self.audioUnit.wetDryMix = config.enabled ? config.wetDryMix : 0.0
         }

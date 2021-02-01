@@ -35,7 +35,7 @@ public final class Delay: NSObject {
 extension Delay {
 
     private func applyActiveConfig(_ config: DelayConfig) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .userInitiated).async {
             self.audioUnit.bypass = !config.enabled
             self.audioUnit.wetDryMix = config.wetDryMix
             self.audioUnit.delayTime = Double(config.time)
