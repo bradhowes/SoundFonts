@@ -85,7 +85,7 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
 
-    public func validateCollections(_ favorites: Favorites) {
+    public func validateCollections(favorites: Favorites, tags: Tags) {
         os_log(.info, log: log, "validateCollections")
         var invalidFavoriteKeys = [LegacyFavorite.Key]()
         for index in 0..<favorites.count {
