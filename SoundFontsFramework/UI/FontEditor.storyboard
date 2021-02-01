@@ -368,8 +368,8 @@
                         <outlet property="path" destination="Yv9-Wx-Dcq" id="9zf-Oq-8WN"/>
                         <outlet property="presetsCountLabel" destination="pQ3-VJ-Ghy" id="SNZ-Af-Enf"/>
                         <outlet property="resetVisibilityButton" destination="BiZ-Mu-WKC" id="3aR-YC-PPs"/>
-                        <outlet property="tags" destination="1Zk-if-YP0" id="DGO-vF-qqU"/>
                         <outlet property="tagsEdit" destination="eiV-4n-wuL" id="1bF-2B-h7g"/>
+                        <outlet property="tagsLabel" destination="1Zk-if-YP0" id="XRI-2X-qj7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uXx-w9-DqU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

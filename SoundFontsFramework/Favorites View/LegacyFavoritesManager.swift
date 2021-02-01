@@ -7,23 +7,23 @@ import os
  Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
  restored when the app relaunches.
  */
-public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
+final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
     private let log = Logging.logger("FavMgr")
 
     private let configFile: ConsolidatedConfigFile
 
-    public var collection: LegacyFavoriteCollection {
+    var collection: LegacyFavoriteCollection {
         precondition(configFile.restored)
         return configFile.config.favorites
     }
 
-    public private(set) var restored = false {
+    private(set) var restored = false {
         didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
     }
 
     private var configFileObserver: NSKeyValueObservation?
 
-    public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+    init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
         self.configFile = consolidatedConfigFile
         super.init()
         configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
@@ -37,23 +37,23 @@ public final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
 extension LegacyFavoritesManager: Favorites {
 
-    public var count: Int { collection.count }
+    var count: Int { collection.count }
 
-    public func contains(key: LegacyFavorite.Key) -> Bool { collection.contains(key: key) }
+    func contains(key: LegacyFavorite.Key) -> Bool { collection.contains(key: key) }
 
-    public func index(of key: LegacyFavorite.Key) -> Int { collection.index(of: key) }
+    func index(of key: LegacyFavorite.Key) -> Int { collection.index(of: key) }
 
-    public func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
+    func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
 
-    public func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { collection.getBy(key: key) }
+    func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { collection.getBy(key: key) }
 
-    public func add(favorite: LegacyFavorite) {
+    func add(favorite: LegacyFavorite) {
         defer { collectionChanged() }
         collection.add(favorite: favorite)
         notify(.added(index: count - 1, favorite: favorite))
     }
 
-    public func update(index: Int, config: PresetConfig) {
+    func update(index: Int, config: PresetConfig) {
         defer { collectionChanged() }
         let favorite = collection.getBy(index: index)
         favorite.presetConfig = config
@@ -61,43 +61,43 @@ extension LegacyFavoritesManager: Favorites {
         notify(.changed(index: index, favorite: favorite))
     }
 
-    public func beginEdit(config: FavoriteEditor.Config) {
+    func beginEdit(config: FavoriteEditor.Config) {
         notify(.beginEdit(config: config))
     }
 
-    public func move(from: Int, to: Int) {
+    func move(from: Int, to: Int) {
         defer { collectionChanged() }
         collection.move(from: from, to: to)
     }
 
-    public func selected(index: Int) {
+    func selected(index: Int) {
         notify(.selected(index: index, favorite: collection.getBy(index: index)))
     }
 
-    public func remove(key: LegacyFavorite.Key) {
+    func remove(key: LegacyFavorite.Key) {
         defer { collectionChanged() }
         let index = collection.index(of: key)
         let favorite = collection.remove(at: index)
         notify(.removed(index: index, favorite: favorite))
     }
 
-    public func removeAll(associatedWith soundFont: LegacySoundFont) {
+    func removeAll(associatedWith soundFont: LegacySoundFont) {
         defer { collectionChanged() }
         collection.removeAll(associatedWith: soundFont.key)
         notify(.removedAll(associatedWith: soundFont))
     }
 
-    public func count(associatedWith soundFont: LegacySoundFont) -> Int {
+    func count(associatedWith soundFont: LegacySoundFont) -> Int {
         collection.count(associatedWith: soundFont.key)
     }
 
-    public func setVisibility(key: LegacyFavorite.Key, state isVisible: Bool) {
+    func setVisibility(key: LegacyFavorite.Key, state isVisible: Bool) {
         defer { collectionChanged() }
         let favorite = collection.getBy(key: key)
         favorite.presetConfig.isHidden = !isVisible
     }
 
-    public func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {
+    func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {
         os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
                delay?.description ?? "nil", reverb?.description ?? "nil")
         defer { collectionChanged() }
@@ -107,6 +107,8 @@ extension LegacyFavoritesManager: Favorites {
 }
 
 extension LegacyFavoritesManager {
+
+    static var defaultCollection: LegacyFavoriteCollection { LegacyFavoriteCollection() }
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

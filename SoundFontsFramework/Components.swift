@@ -9,19 +9,17 @@ import UIKit
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
 public final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
-
     public let consolidatedConfigFile: ConsolidatedConfigFile
     public let askForReview: AskForReview
     public let soundFonts: SoundFonts
     public let favorites: Favorites
+    public let tags: Tags
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
     public let delayEffect: Delay?
     public let reverbEffect: Reverb?
     public let sampler: Sampler
     public let inApp: Bool
-
-    public let tagsManager: LegacyTagsManager
 
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
@@ -55,7 +53,7 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         let favoritesManager = LegacyFavoritesManager(consolidatedConfigFile)
         self.favorites = favoritesManager
 
-        self.tagsManager = LegacyTagsManager(consolidatedConfigFile)
+        self.tags = LegacyTagsManager(consolidatedConfigFile)
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts,

@@ -167,7 +167,6 @@ extension PatchesTableViewManager: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate Protocol
-
 extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView,

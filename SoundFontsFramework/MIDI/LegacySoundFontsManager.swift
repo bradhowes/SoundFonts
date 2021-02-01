@@ -396,11 +396,6 @@ extension LegacySoundFontsManager {
 
 extension LegacySoundFontsManager {
 
-    /**
-     Create a new collection using the embedded SoundFont files.
-
-     - returns: new SoundFontCollection
-     */
     static var defaultCollection: LegacySoundFontCollection {
         let bundleUrls: [URL] = SF2Files.allResources
         let fileUrls = FileManager.default.installedSF2Files

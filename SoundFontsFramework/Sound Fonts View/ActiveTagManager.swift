@@ -4,24 +4,23 @@ import UIKit
 import os
 
 /**
- <#Describe TagsTableViewManager#>
+ Tracks and manages the active tag.
  */
 final class ActiveTagManager: NSObject {
-    private lazy var log = Logging.logger("TagsTVM")
-
+    private let log = Logging.logger("ActiveTagManager")
     private let view: UITableView
-    private let tagsManager: LegacyTagsManager
+    private let tags: Tags
     private var token: SubscriberToken?
     private var activeIndex = -1
     private var tagsHider: () -> Void
 
-    init(view: UITableView, tagsManager: LegacyTagsManager, tagsHider: @escaping () -> Void) {
+    init(view: UITableView, tags: Tags, tagsHider: @escaping () -> Void) {
         self.view = view
-        self.tagsManager = tagsManager
+        self.tags = tags
         self.tagsHider = tagsHider
         super.init()
 
-        token = tagsManager.subscribe(self) { _ in self.refresh() }
+        token = tags.subscribe(self) { _ in self.refresh() }
 
         view.register(TableCell.self)
         view.dataSource = self
@@ -29,7 +28,7 @@ final class ActiveTagManager: NSObject {
     }
 
     public func refresh() {
-        guard tagsManager.restored else { return }
+        guard tags.restored else { return }
         activeIndex = Settings.shared.activeTagIndex
         view.reloadData()
     }
@@ -40,7 +39,7 @@ extension ActiveTagManager: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        (tagsManager.restored ? tagsManager.count : 0) + 1
+        (tags.restored ? tags.count : 0) + 1
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -67,7 +66,7 @@ extension ActiveTagManager {
 
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
         let row = indexPath.row
-        let tag = row == 0 ? LegacyTag.allTag : tagsManager.getBy(index: row - 1)
+        let tag = row == 0 ? LegacyTag.allTag : tags.getBy(index: row - 1)
         let name = tag.name
         cell.updateForTag(name: name, isActive: activeIndex == row)
         return cell
