@@ -34,6 +34,9 @@ final class PatchesTableViewManager: NSObject {
     private var searchSlots = [Slot]()
     private var sectionRowCounts = [Int]()
 
+    private var notificationObserver: NSObjectProtocol?
+    private var contentSizeObserver: NSKeyValueObservation?
+
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
          keyboard: Keyboard?, infoBar: InfoBar, delay: Delay?, reverb: Reverb?) {
@@ -48,6 +51,20 @@ final class PatchesTableViewManager: NSObject {
         self.reverb = reverb
         self.infoBar = infoBar
         super.init()
+
+//        notificationObserver = NotificationCenter.default.addObserver(forName: .hidingEffects, object: nil,
+//                                                                      queue: nil) { [weak self] _ in
+//            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
+//                self?.hideSearchBar(animated: true)
+//            }
+//        }
+//
+        contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { tableView, change in
+            guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
+            if !self.searchBar.isFirstResponder && tableView.contentOffset.y < searchBar.frame.size.height {
+                tableView.contentOffset = CGPoint(x: 0, y: self.searchBar.frame.size.height)
+            }
+        }
 
         infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
 
@@ -124,13 +141,15 @@ extension PatchesTableViewManager: UITableViewDataSource {
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         if showingSearchResults { return nil }
-        return [UITableView.indexSearch, "•"] + stride(from: sectionSize, to: viewSlots.count - 1,
-                                                         by: sectionSize).map { "\($0)" }
+        return [view.isEditing ? "" : UITableView.indexSearch, "•"] + stride(from: sectionSize, to: viewSlots.count - 1,
+                                                                               by: sectionSize).map { "\($0)" }
     }
 
     func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if index == 0 {
-            showSearchBar()
+            if !view.isEditing {
+                DispatchQueue.main.async { self.showSearchBar() }
+            }
             return 0
         }
 
@@ -153,24 +172,17 @@ extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView,
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        leadingSwipeActions(at: indexPath)
+        showingSearchResults ? nil : leadingSwipeActions(at: indexPath)
     }
 
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        trailingSwipeActions(at: indexPath)
+        showingSearchResults ? nil : trailingSwipeActions(at: indexPath)
     }
 
     func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .none
-    }
-
-    func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
-        switch viewSlots[indexPath.slotIndex] {
-        case .favorite: return 1
-        case .preset: return 0
-        }
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
@@ -181,9 +193,10 @@ extension PatchesTableViewManager: UITableViewDelegate {
             return
         }
 
+        let slot = getSlot(at: indexPath)
         dismissSearchResults()
 
-        switch viewSlots[indexPath.slotIndex] {
+        switch slot {
         case let .preset(presetIndex): selectPreset(presetIndex)
         case let .favorite(key): activePatchManager.setActive(favorite: favorites.getBy(key: key),
                                                               playSample: Settings.shared.playSample)
@@ -226,11 +239,17 @@ extension PatchesTableViewManager {
 
     private func showSearchBar() {
         guard searchBar.isFirstResponder == false else { return }
-        DispatchQueue.main.async { UIView.animate(withDuration: 0.24) { self.view.contentOffset = CGPoint.zero } }
-        searchBar.becomeFirstResponder()
-        if let term = lastSearchText, !term.isEmpty {
-            self.searchBar.text = term
-            search(for: term)
+
+        searchBar.inputAssistantItem.leadingBarButtonGroups = []
+        searchBar.inputAssistantItem.trailingBarButtonGroups = []
+        UIView.animate(withDuration: 0.25) {
+            self.searchBar.becomeFirstResponder()
+            self.view.contentOffset = CGPoint.zero
+        } completion: { _ in
+            if let term = self.lastSearchText, !term.isEmpty {
+                self.searchBar.text = term
+                self.search(for: term)
+            }
         }
     }
 
@@ -282,6 +301,7 @@ extension PatchesTableViewManager {
         let button = sender as? UIButton
         button?.tintColor = view.isEditing ? .systemTeal : .systemOrange
         if view.isEditing == false {
+            dismissSearchResults()
             beginVisibilityEditing()
         }
         else {
@@ -580,7 +600,7 @@ extension PatchesTableViewManager {
 
     private func leadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
-        let slot = viewSlots[indexPath.slotIndex]
+        let slot = getSlot(at: indexPath)
         let actions: [UIContextualAction] = {
             switch slot {
             case .preset:
@@ -646,7 +666,7 @@ extension PatchesTableViewManager {
     }
 
     private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
-        guard case let .favorite(key) = viewSlots[indexPath.slotIndex] else { fatalError("unexpected slot type") }
+        guard case let .favorite(key) = getSlot(at: indexPath) else { fatalError("unexpected slot type") }
         let favorite = favorites.getBy(key: key)
         favorites.remove(key: key)
         soundFonts.deleteFavorite(soundFontAndPatch: favorite.soundFontAndPatch, key: favorite.key)
@@ -671,7 +691,7 @@ extension PatchesTableViewManager {
     }
 
     private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
-        guard case let .favorite(key) = viewSlots[indexPath] else { fatalError("unexpected nil") }
+        guard case let .favorite(key) = getSlot(at: indexPath) else { fatalError("unexpected nil") }
         let favorite = favorites.getBy(key: key)
         let position = favorites.index(of: favorite.key)
         var rect = view.rectForRow(at: indexPath)
@@ -688,7 +708,7 @@ extension PatchesTableViewManager {
     private func trailingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
         guard let soundFontAndPatch = makeSoundFontAndPatch(at: indexPath) else { return nil }
-        let slot = viewSlots[indexPath.slotIndex]
+        let slot = getSlot(at: indexPath)
         let actions: [UIContextualAction] = {
             switch slot {
             case .preset:
@@ -771,7 +791,7 @@ extension PatchesTableViewManager {
             return
         }
 
-        switch viewSlots[indexPath.slotIndex] {
+        switch getSlot(at: indexPath) {
         case let .preset(presetIndex):
             let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
             let preset = soundFont.patches[presetIndex]
