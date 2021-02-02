@@ -57,8 +57,8 @@ extension SoundFontsViewController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        fontsTableViewManager.selectActive()
-        patchesTableViewManager.selectActive(animated: false)
+        fontsTableViewManager?.selectActive()
+        patchesTableViewManager?.selectActive(animated: false)
     }
 
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -157,13 +157,15 @@ extension SoundFontsViewController: ControllerConfiguration {
         patchesTableViewManager = PatchesTableViewManager(
             view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
             selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
-            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar, delay: router.delayEffect,
-            reverb: router.reverbEffect)
+            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
 
         tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, tagsHider: self.hideTags)
 
         router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
         router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
+
+        fontsTableViewManager?.selectActive()
+        patchesTableViewManager?.selectActive(animated: false)
     }
 }
 

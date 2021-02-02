@@ -64,7 +64,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
         os_log(.info, log: log, "viewWillAppear")
         super.viewWillAppear(animated)
 
-        guard let favorite = activePatchManager.favorite else { return }
+        guard let favorite = activePatchManager?.favorite else { return }
         updateCell(with: favorite)
     }
 }

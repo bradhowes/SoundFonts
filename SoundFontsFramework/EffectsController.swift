@@ -31,11 +31,12 @@ public final class EffectsController: UIViewController {
     @IBOutlet weak var delayWetDryMixLabel: UILabel!
 
     private var isMainApp: Bool = false
-    private var reverbEffect: Reverb!
-    private var delayEffect: Delay!
     private var activePatchManager: ActivePatchManager!
     private var soundFonts: SoundFonts!
     private var favorites: Favorites!
+
+    private var reverbEffect: Reverb?
+    private var delayEffect: Delay?
 
     public override func viewDidLoad() {
 
@@ -71,6 +72,7 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
+        guard let reverbEffect = self.reverbEffect else { return }
         reverbEffect.active = reverbEffect.active.setEnabled(!reverbEffect.active.enabled)
         updateReverbState(reverbEffect.active.enabled)
         updatePresetConfig()
@@ -84,6 +86,7 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func toggleDelayEnabled(_ sender: UIButton) {
+        guard let delayEffect = self.delayEffect else { return }
         delayEffect.active = delayEffect.active.setEnabled(!delayEffect.active.enabled)
         updateDelayState(delayEffect.active.enabled)
         updatePresetConfig()
@@ -97,30 +100,35 @@ public final class EffectsController: UIViewController {
     }
 
     @IBAction func changeReverbWebDryMix(_ sender: Any) {
+        guard let reverbEffect = self.reverbEffect else { return }
         showReverbMixValue()
         reverbEffect.active = reverbEffect.active.setWetDryMix(reverbWetDryMix.value)
         updatePresetConfig()
     }
 
     @IBAction func changeDelayTime(_ sender: Any) {
+        guard let delayEffect = self.delayEffect else { return }
         showDelayTimeValue()
         delayEffect.active = delayEffect.active.setTime(delayTime.value)
         updatePresetConfig()
     }
 
     @IBAction func changeDelayFeedback(_ sender: Any) {
+        guard let delayEffect = self.delayEffect else { return }
         showDelayFeedbackValue()
         delayEffect.active = delayEffect.active.setFeedback(delayFeedback.value)
         updatePresetConfig()
     }
 
     @IBAction func changeDelayCutoff(_ sender: Any) {
+        guard let delayEffect = self.delayEffect else { return }
         showDelayCutoffValue()
         delayEffect.active = delayEffect.active.setCutoff(pow(10.0, delayCutoff.value))
         updatePresetConfig()
     }
 
     @IBAction func changeDelayWetDryMix(_ sender: Any) {
+        guard let delayEffect = self.delayEffect else { return }
         showDelayMixValue()
         delayEffect.active = delayEffect.active.setWetDryMix(delayWetDryMix.value)
         updatePresetConfig()
@@ -134,8 +142,7 @@ extension EffectsController: ControllerConfiguration {
         soundFonts = router.soundFonts
         favorites = router.favorites
         activePatchManager = router.activePatchManager
-        reverbEffect = router.reverbEffect
-        delayEffect = router.delayEffect
+        router.subscribe(self, notifier: routerChange)
         activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 }
@@ -150,6 +157,7 @@ extension EffectsController: UIPickerViewDataSource {
 extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let reverbEffect = self.reverbEffect else { return }
         os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
         reverbEffect.active = reverbEffect.active.setPreset(row)
         updatePresetConfig()
@@ -175,7 +183,7 @@ extension EffectsController: UIPickerViewDelegate {
 extension EffectsController {
 
     private func updateGlobalConfig() {
-        if Settings.instance.reverbGlobal {
+        if let reverbEffect = self.reverbEffect, Settings.instance.reverbGlobal {
             os_log(.info, log: log, "updating global reverb settings")
             let config = reverbEffect.active
             Settings.instance.reverbEnabled = config.enabled
@@ -183,7 +191,7 @@ extension EffectsController {
             Settings.instance.reverbWetDryMix = config.wetDryMix
         }
 
-        if Settings.instance.delayGlobal {
+        if let delayEffect = self.delayEffect, Settings.instance.delayGlobal {
             os_log(.info, log: log, "updating global delay settings")
             let config = delayEffect.active
             Settings.instance.delayEnabled = config.enabled
@@ -195,6 +203,12 @@ extension EffectsController {
     }
 
     private func updatePresetConfig() {
+        guard let reverbEffect = self.reverbEffect,
+              let delayEffect = self.delayEffect
+        else {
+            return
+        }
+
         os_log(.info, log: log, "updatePresetConfig")
 
         let reverbConfig: ReverbConfig? = {
@@ -237,6 +251,20 @@ extension EffectsController {
         updateGlobalConfig()
     }
 
+    private func routerChange(_ event: ComponentContainerEvent) {
+        switch event {
+        case .reverbAvailable(let reverb):
+            reverbEffect = reverb
+            updateState()
+
+        case .delayAvailable(let delay):
+            delayEffect = delay
+            updateState()
+
+        case .samplerAvailable: break
+        }
+    }
+
     private func activePatchChange(_ event: ActivePatchEvent) {
         guard case .active = event else { return }
         updateState()
@@ -253,6 +281,7 @@ extension EffectsController {
             update(config: config)
         }
         else {
+            guard let reverbEffect = self.reverbEffect else { return }
             let config = presetConfig?.reverbConfig ?? reverbEffect.active.setEnabled(false)
             os_log(.info, log: log, "showing preset reverb state - %{public}s", config.description)
             update(config: config)
@@ -264,6 +293,7 @@ extension EffectsController {
             update(config: DelayConfig())
         }
         else {
+            guard let delayEffect = self.delayEffect else { return }
             let config = presetConfig?.delayConfig ?? delayEffect.active.setEnabled(false)
             os_log(.info, log: log, "showing preset delay state - %{public}s", config.description)
             update(config: config)
