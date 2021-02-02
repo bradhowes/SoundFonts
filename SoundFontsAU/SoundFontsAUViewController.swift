@@ -22,7 +22,8 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         os_log(.info, log: log, "createAudioUnit")
-        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler, activePatchManager: components.activePatchManager)
+        let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler,
+                                         activePatchManager: components.activePatchManager)
         os_log(.info, log: log, "created SoundFontsAU")
         self.audioUnit = audioUnit
         return audioUnit
@@ -58,9 +59,12 @@ extension SoundFontsAUViewController: ControllerConfiguration {
         case .failure(let reason):
             switch reason {
             case .noSampler: os_log(.info, log: log, "no sampler")
-            case .sessionActivating(let err): os_log(.info, log: log, "failed to activate session: %{public}s", err.localizedDescription)
-            case .engineStarting(let err): os_log(.info, log: log, "failed to start engine: %{public}s", err.localizedDescription)
-            case .patchLoading(let err): os_log(.info, log: log, "failed to load patch: %{public}s", err.localizedDescription)
+            case .sessionActivating(let err): os_log(.info, log: log, "failed to activate session: %{public}s",
+                                                     err.localizedDescription)
+            case .engineStarting(let err): os_log(.info, log: log, "failed to start engine: %{public}s",
+                                                  err.localizedDescription)
+            case .patchLoading(let err): os_log(.info, log: log, "failed to load patch: %{public}s",
+                                                err.localizedDescription)
             }
         }
     }

@@ -8,7 +8,8 @@ import UIKit
  `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
  not between controllers themselves. This is enforced here through access restrictions to known controllers.
  */
-public final class Components<T: UIViewController>: ComponentContainer where T: ControllerConfiguration {
+public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>,
+                                                    ComponentContainer where T: ControllerConfiguration {
     public let consolidatedConfigFile: ConsolidatedConfigFile
     public let askForReview: AskForReview
     public let soundFonts: SoundFonts
@@ -16,9 +17,6 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public let tags: Tags
     public let activePatchManager: ActivePatchManager
     public let selectedSoundFontManager: SelectedSoundFontManager
-    public let delayEffect: Delay?
-    public let reverbEffect: Reverb?
-    public let sampler: Sampler
     public let inApp: Bool
 
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
@@ -39,7 +37,34 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
     public var alertManager: AlertManager { _alertManager! }
 
+    public var sampler: Sampler { _sampler! }
+    public var delayEffect: Delay? {
+        precondition(self.inApp == false || _delayEffect != nil)
+        return _delayEffect
+    }
+
+    public var reverbEffect: Reverb? {
+        precondition(self.inApp == false || _reverbEffect != nil)
+        return _reverbEffect
+    }
+
     private var _alertManager: AlertManager?
+
+    private var _sampler: Sampler? {
+        didSet {
+            if let sampler = _sampler { DispatchQueue.main.async { self.notify(.samplerAvailable(sampler)) } }
+        }
+    }
+    private var _reverbEffect: Reverb? {
+        didSet {
+            if let effect = _reverbEffect { DispatchQueue.main.async { self.notify(.reverbAvailable(effect)) } }
+        }
+    }
+    private var _delayEffect: Delay? {
+        didSet {
+            if let effect = _delayEffect { DispatchQueue.main.async { self.notify(.delayAvailable(effect)) } }
+        }
+    }
 
     public init(inApp: Bool) {
         self.inApp = inApp
@@ -58,39 +83,35 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts,
                                                      selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
+        super.init()
 
-        let reverb = inApp ? Reverb() : nil
-        self.reverbEffect = reverb
-        let delay = inApp ? Delay() : nil
-        self.delayEffect = delay
+        if inApp {
 
-        self.sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: activePatchManager,
-                               reverb: reverb, delay: delay)
+            // Create audio components in background to free up main thread in application
+            DispatchQueue.global(qos: .userInitiated).async {
+                let reverb = inApp ? Reverb() : nil
+                self._reverbEffect = reverb
+                let delay = inApp ? Delay() : nil
+                self._delayEffect = delay
+                self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit,
+                                        activePatchManager: self.activePatchManager,
+                                        reverb: reverb, delay: delay)
+            }
+        }
+        else {
+
+            // Do not create Sampler asynchronously when supporting AUv3 component.
+            self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePatchManager: self.activePatchManager,
+                                    reverb: nil, delay: nil)
+        }
     }
 
-    // swiftlint:disable cyclomatic_complexity
     public func setMainViewController(_ mvc: T) {
         mainViewController = mvc
         _alertManager = AlertManager(presenter: mvc)
         for obj in mvc.children {
-            switch obj {
-            case let vc as SoundFontsControlsController:
-                soundFontsControlsController = vc
-                for inner in vc.children {
-                    switch inner {
-                    case let vc as GuideViewController: guideController = vc
-                    case let vc as SoundFontsViewController: soundFontsController = vc
-                    case let vc as FavoritesViewController: favoritesController = vc
-                    case let vc as InfoBarController: infoBarController = vc
-                    case let vc as EffectsController: effectsController = vc
-                    default: assertionFailure("unknown child UIViewController")
-                    }
-                }
-            case let vc as KeyboardController: keyboardController = vc
-            default: assertionFailure("unknown child UIViewController")
-            }
+            processChildController(obj)
         }
-
         validate()
         establishConnections()
     }
@@ -111,6 +132,29 @@ public final class Components<T: UIViewController>: ComponentContainer where T: 
 }
 
 extension Components {
+
+    private func processChildController(_ obj: UIViewController) {
+        switch obj {
+        case let vc as SoundFontsControlsController:
+            soundFontsControlsController = vc
+            for inner in vc.children {
+                processGrandchildController(inner)
+            }
+        case let vc as KeyboardController: keyboardController = vc
+        default: assertionFailure("unknown child UIViewController")
+        }
+    }
+
+    private func processGrandchildController(_ obj: UIViewController) {
+        switch obj {
+        case let vc as GuideViewController: guideController = vc
+        case let vc as SoundFontsViewController: soundFontsController = vc
+        case let vc as FavoritesViewController: favoritesController = vc
+        case let vc as InfoBarController: infoBarController = vc
+        case let vc as EffectsController: effectsController = vc
+        default: assertionFailure("unknown child UIViewController")
+        }
+    }
 
     private func validate() {
         precondition(mainViewController != nil, "nil MainViewController")

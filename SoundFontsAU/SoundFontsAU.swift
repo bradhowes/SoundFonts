@@ -23,7 +23,8 @@ final class SoundFontsAU: AUAudioUnit {
 
     private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
-    public init(componentDescription: AudioComponentDescription, sampler: Sampler, activePatchManager: ActivePatchManager) throws {
+    public init(componentDescription: AudioComponentDescription, sampler: Sampler,
+                activePatchManager: ActivePatchManager) throws {
         let log = Logging.logger("SFAU")
         self.log = log
         self.activePatchManager = activePatchManager
@@ -74,7 +75,8 @@ extension SoundFontsAU: AUParameterHandler {
 
 extension SoundFontsAU {
 
-    override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
+    override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) ->
+    IndexSet {
         os_log(.info, log: log, "supportedViewConfiigurations")
         let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 270 ? $0.0 : nil }
         os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
@@ -114,7 +116,8 @@ extension SoundFontsAU {
         guard let sampler = sampler.auSampler else { return }
         guard let soundFont = activePatchManager.soundFont else { return }
         guard let patch = activePatchManager.patch else { return }
-        try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program), bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+        try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program),
+                                             bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
     }
 
     override public var inputBusses: AUAudioUnitBusArray {

@@ -26,8 +26,6 @@ final class PatchesTableViewManager: NSObject {
     private let soundFonts: SoundFonts
     private let favorites: Favorites
     private let keyboard: Keyboard?
-    private let delay: Delay?
-    private let reverb: Reverb?
     private let infoBar: InfoBar
 
     private var viewSlots = [Slot]()
@@ -39,7 +37,7 @@ final class PatchesTableViewManager: NSObject {
 
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
-         keyboard: Keyboard?, infoBar: InfoBar, delay: Delay?, reverb: Reverb?) {
+         keyboard: Keyboard?, infoBar: InfoBar) {
         self.view = view
         self.searchBar = searchBar
         self.selectedSoundFontManager = selectedSoundFontManager
@@ -47,8 +45,6 @@ final class PatchesTableViewManager: NSObject {
         self.soundFonts = soundFonts
         self.favorites = favorites
         self.keyboard = keyboard
-        self.delay = delay
-        self.reverb = reverb
         self.infoBar = infoBar
         super.init()
 

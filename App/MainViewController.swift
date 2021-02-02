@@ -13,11 +13,11 @@ import SoundFontsFramework
 final class MainViewController: UIViewController {
     private lazy var log = Logging.logger("MainVC")
 
-    private var midiController: MIDIController!
+    private var midiController: MIDIController?
     private var activePatchManager: ActivePatchManager!
-    private var sampler: Sampler!
+    private var sampler: Sampler?
     private var infoBar: InfoBar!
-
+    private var startRequested = false
     private var volumeMonitor: VolumeMonitor?
     private let midi = MIDI()
 
@@ -48,10 +48,12 @@ extension MainViewController {
      Start audio processing. This is done as the app is brought into the foreground.
      */
     func startAudio() {
-        DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground() }
+        startRequested = true
+        guard let sampler = self.sampler else { return }
+        DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
     }
 
-    private func startAudioBackground() {
+    private func startAudioBackground(_ sampler: Sampler) {
         let session = AVAudioSession.sharedInstance()
         do {
             os_log(.info, log: log, "setting active audio session")
@@ -81,9 +83,12 @@ extension MainViewController {
      Stop audio processing. This is done prior to the app moving into the background.
      */
     func stopAudio() {
+        startRequested = false
+        guard sampler != nil else { return }
+
         midi.receiver = nil
         volumeMonitor?.stop()
-        sampler.stop()
+        sampler?.stop()
 
         let session = AVAudioSession.sharedInstance()
         do {
@@ -105,15 +110,28 @@ extension MainViewController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
     func establishConnections(_ router: ComponentContainer) {
-        sampler = router.sampler
+        router.subscribe(self, notifier: routerChange)
+
         infoBar = router.infoBar
         activePatchManager = router.activePatchManager
-        midiController = MIDIController(sampler: sampler, keyboard: router.keyboard)
+        // midiController = MIDIController(sampler: sampler, keyboard: router.keyboard)
         midi.receiver = midiController
         volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 
+    private func routerChange(_ event: ComponentContainerEvent) {
+        switch event {
+        case .samplerAvailable(let sampler):
+            self.sampler = sampler
+            if startRequested {
+                DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
+
+            }
+        case .reverbAvailable: break
+        case .delayAvailable: break
+        }
+    }
     private func activePatchChange(_ event: ActivePatchEvent) {
         if case let .active(old: _, new: new, playSample: playSample) = event {
             useActivePatchKind(new, playSample: playSample)
@@ -122,10 +140,12 @@ extension MainViewController: ControllerConfiguration {
 
     private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
         volumeMonitor?.activePreset = activePatchKind != .none
-        midiController.releaseAllKeys()
+        midiController?.releaseAllKeys()
+        guard let sampler = self.sampler else { return }
+
         DispatchQueue.global(qos: .userInitiated).async {
-            let result = self.sampler.loadActivePreset {
-                if playSample { self.noteInjector.post(to: self.sampler) }
+            let result = sampler.loadActivePreset {
+                if playSample { self.noteInjector.post(to: sampler) }
             }
 
             if case let .failure(what) = result {

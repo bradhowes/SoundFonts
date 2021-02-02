@@ -31,8 +31,7 @@ final class KeyboardController: UIViewController {
     private var keyWidthObservation: NSKeyValueObservation?
 
     private var infoBar: InfoBar!
-    private var sampler: Sampler!
-    private var touchedKeys: TouchKeyMap!
+    private var touchedKeys: TouchKeyMap?
 
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
@@ -103,10 +102,15 @@ extension KeyboardController: ControllerConfiguration {
         infoBar = router.infoBar
         infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
         infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
-        sampler = router.sampler
-        touchedKeys = TouchKeyMap(sampler: sampler)
         router.activePatchManager.subscribe(self, notifier: presetChanged)
         router.favorites.subscribe(self, notifier: favoritesChange)
+        router.subscribe(self, notifier: routerChange)
+    }
+
+    private func routerChange(_ event: ComponentContainerEvent) {
+        if case let .samplerAvailable(sampler) = event {
+            touchedKeys = TouchKeyMap(sampler: sampler)
+        }
     }
 
     private func presetChanged(_ event: ActivePatchEvent) {
@@ -247,7 +251,7 @@ extension KeyboardController: Keyboard {
     var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
 
     func releaseAllKeys() {
-        touchedKeys.releaseAll()
+        touchedKeys?.releaseAll()
         DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
     }
 }
@@ -291,13 +295,13 @@ extension KeyboardController {
     private func pressKeys(_ touches: Set<UITouch>) {
         for touch in touches {
             if let key = visibleKeys.touched(by: touch.location(in: keyboard)) {
-                touchedKeys.assign(touch, key: key)
+                touchedKeys?.assign(touch, key: key)
             }
         }
     }
 
     private func releaseKeys(_ touches: Set<UITouch>) {
-        touches.forEach { touchedKeys.release($0) }
+        touches.forEach { touchedKeys?.release($0) }
         if let touch = trackedTouch, touches.contains(touch) {
             trackedTouch = nil
         }
