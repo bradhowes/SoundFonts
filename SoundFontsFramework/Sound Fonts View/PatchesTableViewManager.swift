@@ -48,13 +48,6 @@ final class PatchesTableViewManager: NSObject {
         self.infoBar = infoBar
         super.init()
 
-//        notificationObserver = NotificationCenter.default.addObserver(forName: .hidingEffects, object: nil,
-//                                                                      queue: nil) { [weak self] _ in
-//            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-//                self?.hideSearchBar(animated: true)
-//            }
-//        }
-//
         contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { tableView, change in
             guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
             if !self.searchBar.isFirstResponder && tableView.contentOffset.y < searchBar.frame.size.height {
@@ -340,19 +333,16 @@ extension PatchesTableViewManager {
 
     private func beginVisibilityEditing() {
         withSoundFont { soundFont in
-            CATransaction.begin()
-            CATransaction.setCompletionBlock {
-                self.updateSectionRowCounts(reload: true)
-                self.initializeVisibilitySelections(soundFont: soundFont)
-                self.view.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
+            self.updateSectionRowCounts(reload: true)
             view.setEditing(true, animated: true)
-
             let changes = performChanges(soundFont: soundFont)
             os_log(.info, log: log, "beginVisibilityEditing - %d changes", changes.count)
 
-            view.performBatchUpdates({ view.insertRows(at: changes, with: .automatic) }, completion: nil)
-            CATransaction.commit()
+            view.performBatchUpdates {
+                view.insertRows(at: changes, with: .automatic)
+            } completion: { _ in
+                self.initializeVisibilitySelections(soundFont: soundFont)
+            }
         }
     }
 
