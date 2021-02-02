@@ -10,26 +10,19 @@ import os
 final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
     private let log = Logging.logger("FavMgr")
 
-    private let configFile: ConsolidatedConfigFile
+    private var observer: ConfigFileObserver!
+    var restored: Bool { observer.restored }
 
     var collection: LegacyFavoriteCollection {
-        precondition(configFile.restored)
-        return configFile.config.favorites
-    }
-
-    private(set) var restored = false {
-        didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
+        precondition(observer.restored)
+        return observer.favorites
     }
 
     private var configFileObserver: NSKeyValueObservation?
 
     init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
-        self.configFile = consolidatedConfigFile
         super.init()
-        configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
-            self.checkCollectionRestored()
-        }
-        checkCollectionRestored()
+        observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
     }
 }
 
@@ -112,13 +105,10 @@ extension LegacyFavoritesManager {
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
-        AskForReview.maybe()
-        configFile.updateChangeCount(.done)
+        observer.markChanged()
     }
 
-    private func checkCollectionRestored() {
-        guard configFile.restored == true else { return }
-        self.restored = true
+    private func collectionRestored() {
         os_log(.info, log: self.log, "restored")
         DispatchQueue.main.async { self.notify(.restored) }
     }
