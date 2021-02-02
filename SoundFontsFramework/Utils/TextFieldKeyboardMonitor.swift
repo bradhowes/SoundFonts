@@ -14,6 +14,7 @@ final public class TextFieldKeyboardMonitor {
     private let scrollView: UIScrollView
     private var adjustment: CGFloat = 0.0
     private var keyboardFrame: CGRect = .zero
+    private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
     public var viewToKeepVisible: UIView? { didSet { self.makeViewVisible() } }
 
@@ -24,6 +25,9 @@ final public class TextFieldKeyboardMonitor {
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard),
                                                name: UIResponder.keyboardWillHideNotification, object: nil)
+        scrollView.addGestureRecognizer(numberKeyboardDoneProxy)
+
+        numberKeyboardDoneProxy.addClosure {_ in self.viewToKeepVisible?.endEditing(true) }
     }
 
     @objc private func adjustForKeyboard(_ notification: Notification) {

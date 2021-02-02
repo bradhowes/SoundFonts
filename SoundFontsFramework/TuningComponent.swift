@@ -14,7 +14,6 @@ public final class TuningComponent: NSObject {
     private let scientificTuningButton: UIButton
     private let tuningCents: UITextField
     private let tuningFrequency: UITextField
-    private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
     private lazy var numberParserFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -59,9 +58,6 @@ public final class TuningComponent: NSObject {
 
         tuningCents.inputAssistantItem.leadingBarButtonGroups = []
         tuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
-
-        view.addGestureRecognizer(numberKeyboardDoneProxy)
-        numberKeyboardDoneProxy.addClosure {_ in view.endEditing(true) }
 
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard),
