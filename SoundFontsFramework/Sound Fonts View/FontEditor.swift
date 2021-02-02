@@ -31,6 +31,7 @@ final class FontEditor: UIViewController {
 
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
 
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
     @IBOutlet private weak var name: UITextField!
     @IBOutlet private weak var tagsLabel: UILabel!
@@ -46,6 +47,8 @@ final class FontEditor: UIViewController {
     @IBOutlet private weak var embeddedCopyright: UILabel!
     @IBOutlet private weak var embeddedAuthor: UILabel!
     @IBOutlet private weak var path: UILabel!
+
+    private var textFieldKeyboardMonitor: TextFieldKeyboardMonitor!
 
     func configure(_ config: Config) {
         position = config.indexPath
@@ -88,6 +91,8 @@ final class FontEditor: UIViewController {
         path.text = "Path: " + soundFont.fileURL.path
         let value = tags.names(of: activeTags).joined(separator: ", ")
         tagsLabel.text = value
+
+        textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
     }
 
     private func updateHiddenCount() {
@@ -134,8 +139,18 @@ final class FontEditor: UIViewController {
 
 extension FontEditor: UITextFieldDelegate {
 
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textFieldKeyboardMonitor.viewToKeepVisible = textField
+        return true
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+
+    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textFieldKeyboardMonitor.viewToKeepVisible = nil
         return true
     }
 }
