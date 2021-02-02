@@ -13,30 +13,21 @@ public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent>
     private static let log = Logging.logger("SFMan")
     private var log: OSLog { Self.log }
 
-    private let configFile: ConsolidatedConfigFile
+    private var observer: ConfigFileObserver!
+    public var restored: Bool { observer.restored }
 
     public var collection: LegacySoundFontCollection {
-        precondition(configFile.restored)
-        return configFile.config.soundFonts
+        precondition(observer.restored)
+        return observer.soundFonts
     }
-
-    public private(set) var restored = false {
-        didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
-    }
-
-    private var configFileObserver: NSKeyValueObservation?
 
     /**
      Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
      fails then creates a new one containing SoundFont instances embedded in the app.
      */
     public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
-        self.configFile = consolidatedConfigFile
         super.init()
-        configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
-            self.checkCollectionRestored()
-        }
-        checkCollectionRestored()
+        observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
     }
 }
 
@@ -383,15 +374,6 @@ extension LegacySoundFontsManager {
         case .failure: return nil
         }
     }
-
-    /**
-     Mark the current configuration as dirty so that it will get saved.
-     */
-    private func collectionChanged() {
-        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
-        AskForReview.maybe()
-        configFile.updateChangeCount(.done)
-    }
 }
 
 extension LegacySoundFontsManager {
@@ -403,9 +385,15 @@ extension LegacySoundFontsManager {
                                                 (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
     }
 
-    private func checkCollectionRestored() {
-        guard configFile.restored == true else { return }
-        self.restored = true
+    /**
+     Mark the current configuration as dirty so that it will get saved.
+     */
+    private func collectionChanged() {
+        os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+        observer.markChanged()
+    }
+
+    private func collectionRestored() {
         os_log(.info, log: self.log, "restored")
         DispatchQueue.main.async { self.notify(.restored) }
     }

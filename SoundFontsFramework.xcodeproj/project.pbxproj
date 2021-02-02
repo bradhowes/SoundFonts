@@ -90,6 +90,7 @@
 		BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0A2561506B00D1CDF6 /* EffectsController.swift */; };
 		BD130B192561755F00D1CDF6 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B182561755F00D1CDF6 /* Knob.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
+		BD17E25D25C9FDAF003E75CF /* ConfigFileObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */; };
 		BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */; };
@@ -291,6 +292,7 @@
 		BD130B0A2561506B00D1CDF6 /* EffectsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsController.swift; sourceTree = "<group>"; };
 		BD130B182561755F00D1CDF6 /* Knob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
+		BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigFileObserver.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
 				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
+				BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDD29FDD258293A0007A5F0F /* PresetEntry.swift */,
@@ -1032,6 +1035,7 @@
 				BD074C7A23CDAF51001987E9 /* FileManager+Extensions.swift in Sources */,
 				BD27E98B2516113600591FD0 /* UIControl+Extensions.swift in Sources */,
 				BD1F11BC23FE690300AE9F3D /* UIViewController+Extensions.swift in Sources */,
+				BD17E25D25C9FDAF003E75CF /* ConfigFileObserver.swift in Sources */,
 				BD074C7923CDAF51001987E9 /* UIColor+Extensions.swift in Sources */,
 				BD074C5323CDAF51001987E9 /* Note.swift in Sources */,
 				BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */,

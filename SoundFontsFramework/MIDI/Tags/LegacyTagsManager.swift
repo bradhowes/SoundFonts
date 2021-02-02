@@ -7,26 +7,17 @@ import SoundFontInfoLib
 final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
     private let log = Logging.logger("TagsMgr")
 
-    private let configFile: ConsolidatedConfigFile
+    private var observer: ConfigFileObserver!
+    var restored: Bool { observer.restored }
 
     var collection: LegacyTagCollection {
-        precondition(configFile.restored)
-        return configFile.config.tags
+        precondition(observer.restored)
+        return observer.tags
     }
-
-    private(set) var restored = false {
-        didSet { os_log(.debug, log: log, "restored: %{public}@", collection.description) }
-    }
-
-    private var configFileObserver: NSKeyValueObservation?
 
     init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
-        self.configFile = consolidatedConfigFile
         super.init()
-        configFileObserver = consolidatedConfigFile.observe(\.restored) { _, _ in
-            self.checkCollectionRestored()
-        }
-        self.checkCollectionRestored()
+        observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
     }
 }
 
@@ -81,13 +72,10 @@ extension LegacyTagsManager {
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
-        AskForReview.maybe()
-        configFile.updateChangeCount(.done)
+        observer.markChanged()
     }
 
-    private func checkCollectionRestored() {
-        guard configFile.restored == true else { return }
-        self.restored = true
+    private func collectionRestored() {
         os_log(.info, log: self.log, "restored")
         DispatchQueue.main.async { self.notify(.restored) }
     }
