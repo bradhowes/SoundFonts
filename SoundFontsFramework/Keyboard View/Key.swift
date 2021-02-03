@@ -17,10 +17,10 @@ public final class Key: UIView {
     static var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
 
     /// The note to play when touched
-    let note: Note
+    public let note: Note
 
     /// State of the key -- true when touched/pressed
-    var pressed: Bool = false {
+    public var pressed: Bool = false {
         didSet {
             if oldValue != pressed {
                 self.setNeedsDisplay()
@@ -86,7 +86,7 @@ public final class Key: UIView {
 
 extension RandomAccessCollection where Element == Key {
 
-    func orderedInsertionIndex(for point: CGPoint) -> Index {
+    private func orderedInsertionIndex(for point: CGPoint) -> Index {
         var low = startIndex
         var high = endIndex
         while low != high {
@@ -124,12 +124,12 @@ extension RandomAccessCollection where Element == Key {
         return low
     }
 
-    func touched(by point: CGPoint) -> Key? {
+    public func touched(by point: CGPoint) -> Key? {
         let pos = orderedInsertionIndex(for: point)
         return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
     }
 
-    func keySpan(for rect: CGRect) -> Self.SubSequence {
+    public func keySpan(for rect: CGRect) -> Self.SubSequence {
         let first = orderedInsertionIndex(for: rect.origin)
         let last = orderedInsertionIndex(for: rect.offsetBy(dx: rect.width, dy: 0.0).origin)
         return last == endIndex ? self[first..<last] : self[first...last]
