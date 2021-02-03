@@ -20,12 +20,12 @@ extension MIDIController: MIDIReceiver {
 
     public func noteOff(note: UInt8) {
         sampler.noteOff(note)
-        keyboard?.noteOff(note: note)
+        keyboard?.noteIsOff(note: note)
     }
 
     public func noteOn(note: UInt8, velocity: UInt8) {
         sampler.noteOn(note, velocity: velocity)
-        keyboard?.noteOn(note: note, velocity: velocity)
+        keyboard?.noteIsOn(note: note)
     }
 
     public func releaseAllKeys() {
