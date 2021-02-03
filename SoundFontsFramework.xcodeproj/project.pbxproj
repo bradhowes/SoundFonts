@@ -474,8 +474,8 @@
 			isa = PBXGroup;
 			children = (
 				BD90AEF424192E7C00D29E18 /* README.md */,
-				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
 				BD130B0E25615A3300D1CDF6 /* Editors */,
+				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
 				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
 				BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */,
 				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
@@ -1261,6 +1261,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
