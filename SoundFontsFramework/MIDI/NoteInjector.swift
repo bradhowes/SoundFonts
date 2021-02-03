@@ -3,24 +3,20 @@
 import os
 import CoreAudioKit
 
-public final class NoteInjector {
+public struct NoteInjector {
     private let log = Logging.logger("NoInj")
+    private let note: UInt8 = 69 // A4
+    private let noteOnDuration = 1.0
     private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInteractive, attributes: [],
                                              autoreleaseFrequency: .never,
                                              target: DispatchQueue.global(qos: .userInteractive))
-
     private var workItems = [DispatchWorkItem]()
-
-    private let note: UInt8 = 69 // A4
-    private let noteOnDuration = 1.0
 
     public init() {}
 
-    public func post(to sampler: Sampler) {
+    public mutating func post(to sampler: Sampler) {
         guard Settings.shared.playSample == true else { return }
         let note = self.note
-        let noteOnDuration = self.noteOnDuration
-
         let noteOn = DispatchWorkItem { sampler.noteOn(note, velocity: 32) }
         playingQueue.asyncAfter(deadline: .now() + 0.1, execute: noteOn)
 
@@ -31,7 +27,7 @@ public final class NoteInjector {
         workItems = [noteOn, noteOff]
     }
 
-    public func post(to audioUnit: AUAudioUnit) {
+    public mutating func post(to audioUnit: AUAudioUnit) {
         guard Settings.shared.playSample == true else { return }
 
         guard let noteBlock = audioUnit.scheduleMIDIEventBlock else { return }
@@ -41,18 +37,17 @@ public final class NoteInjector {
         let channel1NoteOn: UInt8 = 0x90
 
         let note = UInt8(self.note)
-        let noteOnDuration = 1.0
         let velocity: UInt8 = 64
 
         let noteOn = DispatchWorkItem {
-            let cbytes: [UInt8] = [channel1NoteOn, note, velocity]
-            noteBlock(AUEventSampleTimeImmediate, channel, cbytes.count, cbytes)
+            let bytes: [UInt8] = [channel1NoteOn, note, velocity]
+            noteBlock(AUEventSampleTimeImmediate, channel, bytes.count, bytes)
         }
         playingQueue.async(execute: noteOn)
 
         let noteOff = DispatchWorkItem {
-            let cbytes: [UInt8] = [channel1NoteOn, note, 0]
-            noteBlock(AUEventSampleTimeImmediate, 0, cbytes.count, cbytes)
+            let bytes: [UInt8] = [channel1NoteOn, note, 0]
+            noteBlock(AUEventSampleTimeImmediate, 0, bytes.count, bytes)
         }
         playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOff)
 
