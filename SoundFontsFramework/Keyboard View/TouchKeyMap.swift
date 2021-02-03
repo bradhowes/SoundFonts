@@ -7,12 +7,8 @@ import UIKit
  */
 internal struct TouchKeyMap {
 
-    private let sampler: Sampler
+    var sampler: Sampler?
     private var touchedKeys = [UITouch: Key]()
-
-    init(sampler: Sampler) {
-        self.sampler = sampler
-    }
 
     /**
      Remove all assignments.
@@ -39,14 +35,15 @@ internal struct TouchKeyMap {
      - parameter touch: the touch to attach to
      - parameter key: the key to press
      */
-    mutating func assign(_ touch: UITouch, key: Key) {
+    mutating func assign(_ touch: UITouch, key: Key) -> Bool {
         if let previous = touchedKeys[touch] {
-            guard previous != key else { return }
+            guard previous != key else { return false }
             keyRelease(previous)
         }
 
         keyPress(key)
         touchedKeys[touch] = key
+        return true
     }
 }
 
@@ -54,11 +51,11 @@ extension TouchKeyMap {
 
     private func keyPress(_ key: Key) {
         key.pressed = true
-        sampler.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
+        sampler?.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
     }
 
     private func keyRelease(_ key: Key) {
         key.pressed = false
-        sampler.noteOff(UInt8(key.note.midiNoteValue))
+        sampler?.noteOff(UInt8(key.note.midiNoteValue))
     }
 }

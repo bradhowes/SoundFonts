@@ -21,7 +21,7 @@ public protocol Keyboard: class {
      */
     func releaseAllKeys()
 
-    func noteOff(note: UInt8)
+    func noteIsOff(note: UInt8)
 
-    func noteOn(note: UInt8, velocity: UInt8)
+    func noteIsOn(note: UInt8)
 }

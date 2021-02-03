@@ -5,7 +5,7 @@ import os
 
 /**
  Controller for the keyboard view. Creates the individual Key views and handles touch event detection within them.
- The controller creates an entire 108 keyboard which it then showns only a part of on the screen. The keyboard can
+ The controller creates an entire 108 keyboard which it then shows only a part of on the screen. The keyboard can
  be shifted up/down by octaves or by sliding via touch (if enabled).
  */
 final class KeyboardController: UIViewController {
@@ -31,7 +31,7 @@ final class KeyboardController: UIViewController {
     private var keyWidthObservation: NSKeyValueObservation?
 
     private var infoBar: InfoBar!
-    private var touchedKeys: TouchKeyMap?
+    private var touchedKeys = TouchKeyMap()
 
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
@@ -109,7 +109,7 @@ extension KeyboardController: ControllerConfiguration {
 
     private func routerChange(_ event: ComponentContainerEvent) {
         if case let .samplerAvailable(sampler) = event {
-            touchedKeys = TouchKeyMap(sampler: sampler)
+            touchedKeys.sampler = sampler
         }
     }
 
@@ -228,19 +228,29 @@ extension KeyboardController {
 
 extension KeyboardController: Keyboard {
 
-    func noteOff(note: UInt8) {
-        guard note < allKeys.count else { return }
-        let key = allKeys[Int(note)]
-        DispatchQueue.main.async { key.pressed = false }
-    }
+    /**
+     Notification that the given note is being played (eg by MIDI event)
 
-    func noteOn(note: UInt8, velocity: UInt8) {
+     - parameter note: the MIDI note value being played
+     */
+    func noteIsOn(note: UInt8) {
         guard note < allKeys.count else { return }
         let key = allKeys[Int(note)]
         DispatchQueue.main.async {
             key.pressed = true
             self.updateInfoBar(note: key.note)
         }
+    }
+
+    /**
+     Notification that the given note is not being played (eg by MIDI event)
+
+     - parameter note: the MIDI note value not being played
+     */
+    func noteIsOff(note: UInt8) {
+        guard note < allKeys.count else { return }
+        let key = allKeys[Int(note)]
+        DispatchQueue.main.async { key.pressed = false }
     }
 
     var lowestNote: Note {
@@ -251,7 +261,7 @@ extension KeyboardController: Keyboard {
     var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
 
     func releaseAllKeys() {
-        touchedKeys?.releaseAll()
+        touchedKeys.releaseAll()
         DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
     }
 }
@@ -293,15 +303,22 @@ extension KeyboardController {
     }
 
     private func pressKeys(_ touches: Set<UITouch>) {
+        var firstKey: Key?
         for touch in touches {
             if let key = visibleKeys.touched(by: touch.location(in: keyboard)) {
-                touchedKeys?.assign(touch, key: key)
+                if touchedKeys.assign(touch, key: key) && firstKey == nil {
+                    firstKey = key
+                }
             }
+        }
+
+        if let firstKey = firstKey, Settings.shared.showSolfegeLabel == true {
+            updateInfoBar(note: firstKey.note)
         }
     }
 
     private func releaseKeys(_ touches: Set<UITouch>) {
-        touches.forEach { touchedKeys?.release($0) }
+        touches.forEach { touchedKeys.release($0) }
         if let touch = trackedTouch, touches.contains(touch) {
             trackedTouch = nil
         }
