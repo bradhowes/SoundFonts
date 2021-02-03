@@ -3,8 +3,11 @@
 import os
 import CoreAudioKit
 
+/**
+ Submit a sequence of MIDI events to play a A4 note. Used when switching preset/patches.
+ */
 public struct NoteInjector {
-    private let log = Logging.logger("NoInj")
+    private let log = Logging.logger("NoteInjector")
     private let note: UInt8 = 69 // A4
     private let noteOnDuration = 1.0
     private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInteractive, attributes: [],

@@ -29,22 +29,24 @@ public enum Formatters {
         }
 
         let strings: [String] = counts.compactMap { (key: SoundFontFileLoadFailure, files: [String]) -> String in
-            let statement: String = {
-                switch key {
-                case .emptyFile:
-                    return Formatters.formatted(failedAddCount: files.count,
-                                                condition: "empty".localized(comment: "empty file"))
-                case .invalidSoundFont:
-                    return Formatters.formatted(failedAddCount: files.count,
-                                                condition: "invalid".localized(comment: "invalid file"))
-                case .unableToCreateFile:
-                    return Formatters.formatted(failedAddCount: files.count,
-                                                condition: "uncopyable".localized(comment: "no space for file"))
-                }
-            }() + " (" + files.joined(separator: ", ") + ")"
-            return statement
+            "\(getLocalizedReason(key: key, count: files.count)) (\(files.joined(separator: ", ")))"
         }
+
         return strings.sorted().joined(separator: ", ")
+    }
+
+    private static func getLocalizedReason(key: SoundFontFileLoadFailure, count: Int) -> String {
+        switch key {
+        case .emptyFile:
+            return Formatters.formatted(failedAddCount: count,
+                                        condition: "empty".localized(comment: "empty file"))
+        case .invalidSoundFont:
+            return Formatters.formatted(failedAddCount: count,
+                                        condition: "invalid".localized(comment: "invalid file"))
+        case .unableToCreateFile:
+            return Formatters.formatted(failedAddCount: count,
+                                        condition: "failed".localized(comment: "no space for file"))
+        }
     }
 
     public static func addSoundFontDoneMessage(ok: [String], failures: [SoundFontFileLoadFailure],
