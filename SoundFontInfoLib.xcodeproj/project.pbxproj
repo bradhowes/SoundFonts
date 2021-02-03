@@ -649,7 +649,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;

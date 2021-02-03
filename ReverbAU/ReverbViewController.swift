@@ -44,7 +44,9 @@ extension ReverbViewController: AUAudioUnitFactory {
 
 extension ReverbViewController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
-    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int { Reverb.roomNames.count }
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        Reverb.roomNames.count
+    }
 }
 
 extension ReverbViewController: UIPickerViewDelegate {
@@ -54,7 +56,8 @@ extension ReverbViewController: UIPickerViewDelegate {
         setParameter(.roomPreset, AUValue(row))
     }
 
-    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+                           reusing view: UIView?) -> UIView {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
@@ -62,7 +65,8 @@ extension ReverbViewController: UIPickerViewDelegate {
             pickerLabel?.textAlignment = .center
         }
 
-        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
+        let attributes = [NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
+        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: attributes)
 
         return pickerLabel!
     }
@@ -75,8 +79,12 @@ extension ReverbViewController {
         guard let audioUnit = audioUnit else { fatalError("nil audioUnit") }
         guard let parameterTree = audioUnit.parameterTree else { fatalError("nil parameterTree") }
 
-        guard let roomPreset = parameterTree.parameter(withAddress: .roomPreset) else { fatalError("Undefined roomPreset parameter") }
-        guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else { fatalError("Undefined wetDryMix parameter") }
+        guard let roomPreset = parameterTree.parameter(withAddress: .roomPreset) else {
+            fatalError("Undefined roomPreset parameter")
+        }
+        guard let wetDryMix = parameterTree.parameter(withAddress: .wetDryMix) else {
+            fatalError("Undefined wetDryMix parameter")
+        }
 
         setActiveRoom(value: roomPreset.value)
         setWetDryMix(value: wetDryMix.value)

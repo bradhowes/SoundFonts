@@ -3,7 +3,8 @@
 import Foundation
 
 /**
- Delay audio effect by way of Apple's AVAudioUnitDelay component.
+ Holds reference to ConsolidatedConfigFile and monitors it for changes to its `restored` attribute. When it changes to
+ true, calls the closure which was given during construction.
  */
 public final class ConfigFileObserver {
     public let configFile: ConsolidatedConfigFile
