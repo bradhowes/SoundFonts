@@ -36,6 +36,7 @@ final class MainViewController: UIViewController {
         if !Settings.instance.showedTutorial {
             if let viewController = TutorialViewController.instantiate() {
                 present(viewController, animated: true, completion: nil)
+                Settings.instance.showedTutorial = true
             }
         }
     }
