@@ -28,8 +28,8 @@
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="8" y="263" width="359" height="141"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
+                                <rect key="frame" x="8" y="271" width="359" height="125"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Enjoy!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWs-ae-Abs">
                                         <rect key="frame" x="135" y="0.0" width="89" height="41"/>
@@ -38,7 +38,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5T-EW-4dE">
-                                        <rect key="frame" x="64.5" y="73" width="230" height="36"/>
+                                        <rect key="frame" x="64.5" y="65" width="230" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="230" id="fTw-bz-S5B"/>
                                         </constraints>
@@ -51,7 +51,7 @@
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Ukd-Jl-Gwh">
-                                        <rect key="frame" x="179.5" y="141" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="179.5" y="125" width="0.0" height="0.0"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcl-9A-SSE">
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>

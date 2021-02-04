@@ -16,8 +16,8 @@
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="15" y="231" width="383" height="434"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
+                                <rect key="frame" x="15" y="239" width="383" height="418"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="…And More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghf-GS-UHe">
                                         <rect key="frame" x="110.5" y="0.0" width="162.5" height="41"/>
@@ -26,13 +26,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Here are some of the additional features available to you in the app:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-Xj-zgc">
-                                        <rect key="frame" x="0.0" y="73" width="383" height="53"/>
+                                        <rect key="frame" x="0.0" y="65" width="383" height="53"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="xPt-t3-RXB">
-                                        <rect key="frame" x="3.5" y="158" width="376.5" height="276"/>
+                                        <rect key="frame" x="3.5" y="142" width="376.5" height="276"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ioe-bN-1uI">
                                                 <rect key="frame" x="0.0" y="0.0" width="376.5" height="53"/>
@@ -77,7 +77,7 @@
                                                         <color key="textColor" systemColor="systemTealColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Show solfège notes in the status bar" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSW-x5-LRq" userLabel="Show solfège notes in the status bar">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Show solfège notes in the status bar" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSW-x5-LRq" userLabel="Show solfège notes in the status bar">
                                                         <rect key="frame" x="33.5" y="0.0" width="343" height="26.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                         <color key="textColor" systemColor="systemTealColor"/>
@@ -124,10 +124,21 @@
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="W3M-Yi-Yuz"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sm2-hV-zW1">
+                                <rect key="frame" x="364" y="68" width="30" height="30"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" systemColor="systemTealColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="a4F-HR-akG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mhc-A2-aSp"/>
                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="mhc-A2-aSp" firstAttribute="trailing" secondItem="Sm2-hV-zW1" secondAttribute="trailing" constant="20" id="Ag5-lB-fr7"/>
+                            <constraint firstItem="Sm2-hV-zW1" firstAttribute="top" secondItem="mhc-A2-aSp" secondAttribute="top" constant="24" id="SFO-68-yt5"/>
                             <constraint firstAttribute="trailing" secondItem="RYf-qw-rdL" secondAttribute="trailing" constant="16" id="h8L-yr-fxH"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" constant="15" id="n8P-m2-M7H"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="centerY" secondItem="FMp-S3-jxL" secondAttribute="centerY" id="tWh-kP-BzV"/>

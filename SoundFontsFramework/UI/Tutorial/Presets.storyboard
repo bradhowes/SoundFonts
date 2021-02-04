@@ -16,8 +16,8 @@
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="16" y="190.5" width="382" height="515"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
+                                <rect key="frame" x="16" y="202.5" width="382" height="491"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Preset List" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghf-GS-UHe">
                                         <rect key="frame" x="115" y="0.0" width="152.5" height="41"/>
@@ -26,19 +26,19 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Contains all of the presets found in the selected soundfont file, and the favorites you created." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-Xj-zgc">
-                                        <rect key="frame" x="7" y="73" width="368.5" height="79"/>
+                                        <rect key="frame" x="7" y="65" width="368.5" height="79"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="Presets" translatesAutoresizingMaskIntoConstraints="NO" id="m6M-zF-JmW">
-                                        <rect key="frame" x="0.0" y="184" width="382" height="220"/>
+                                        <rect key="frame" x="0.0" y="168" width="382" height="220"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="220" id="oQm-86-Pcr"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Swipe to create a favorite or to edit preset. Favorites are in gold. Swip down to search by name." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpt-GU-Mw1">
-                                        <rect key="frame" x="24.5" y="436" width="333" height="79"/>
+                                        <rect key="frame" x="24.5" y="412" width="333" height="79"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
@@ -46,10 +46,21 @@
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="W3M-Yi-Yuz"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pxc-yR-Pgs">
+                                <rect key="frame" x="364" y="68" width="30" height="30"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" systemColor="systemTealColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="fgd-bK-Lkd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mhc-A2-aSp"/>
                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Pxc-yR-Pgs" firstAttribute="top" secondItem="mhc-A2-aSp" secondAttribute="top" constant="24" id="NYY-rW-i3X"/>
+                            <constraint firstItem="mhc-A2-aSp" firstAttribute="trailing" secondItem="Pxc-yR-Pgs" secondAttribute="trailing" constant="20" id="eFR-hp-rGr"/>
                             <constraint firstAttribute="trailing" secondItem="RYf-qw-rdL" secondAttribute="trailing" constant="16" id="h8L-yr-fxH"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" constant="16" id="n8P-m2-M7H"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="centerY" secondItem="FMp-S3-jxL" secondAttribute="centerY" id="tWh-kP-BzV"/>

@@ -16,8 +16,8 @@
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="16" y="62" width="343" height="543"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
+                                <rect key="frame" x="16" y="74" width="343" height="519"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="SoundFont List" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWs-ae-Abs">
                                         <rect key="frame" x="61.5" y="0.0" width="220" height="41"/>
@@ -26,13 +26,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="This panel shows names of the available soundfont files." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1B-Ap-Tt4">
-                                        <rect key="frame" x="23" y="73" width="297.5" height="53"/>
+                                        <rect key="frame" x="23" y="65" width="297.5" height="53"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="WNP-9t-9RG">
-                                        <rect key="frame" x="0.0" y="158" width="343" height="300"/>
+                                        <rect key="frame" x="0.0" y="142" width="343" height="300"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" image="FontList" translatesAutoresizingMaskIntoConstraints="NO" id="m6M-zF-JmW">
                                                 <rect key="frame" x="0.0" y="0.0" width="163.5" height="300"/>
@@ -50,7 +50,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Ukd-Jl-Gwh">
-                                        <rect key="frame" x="0.0" y="490" width="343" height="53"/>
+                                        <rect key="frame" x="0.0" y="466" width="343" height="53"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" image="Add" translatesAutoresizingMaskIntoConstraints="NO" id="V2S-P9-wnC">
                                                 <rect key="frame" x="0.0" y="0.0" width="0.5" height="53"/>
@@ -67,10 +67,21 @@
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="W3M-Yi-Yuz"/>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BWg-PM-aZ1">
+                                <rect key="frame" x="321" y="20" width="30" height="30"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" systemColor="systemTealColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="n0j-y3-ozp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mhc-A2-aSp"/>
                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="BWg-PM-aZ1" firstAttribute="top" secondItem="mhc-A2-aSp" secondAttribute="top" constant="20" id="YZl-JO-zTg"/>
+                            <constraint firstItem="mhc-A2-aSp" firstAttribute="trailing" secondItem="BWg-PM-aZ1" secondAttribute="trailing" constant="24" id="Zjd-r8-xUG"/>
                             <constraint firstAttribute="trailing" secondItem="RYf-qw-rdL" secondAttribute="trailing" constant="16" id="h8L-yr-fxH"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" constant="16" id="n8P-m2-M7H"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="centerY" secondItem="FMp-S3-jxL" secondAttribute="centerY" id="tWh-kP-BzV"/>

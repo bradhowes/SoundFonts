@@ -24,6 +24,21 @@
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="X9P-dV-BpZ">
                                     <rect key="frame" x="0.0" y="0.0" width="359" height="667"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VsE-tu-SfR">
+                                            <rect key="frame" x="309" y="24" width="30" height="30"/>
+                                            <state key="normal" title="Skip">
+                                                <color key="titleColor" systemColor="systemTealColor"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="jaX-Sd-HID"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="VsE-tu-SfR" secondAttribute="trailing" constant="20" id="S7j-iw-F3X"/>
+                                        <constraint firstItem="VsE-tu-SfR" firstAttribute="top" secondItem="X9P-dV-BpZ" secondAttribute="top" constant="24" id="X3k-rN-Tua"/>
+                                    </constraints>
                                 </view>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
