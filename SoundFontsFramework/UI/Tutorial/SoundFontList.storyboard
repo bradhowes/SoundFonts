@@ -12,7 +12,7 @@
         <!--Soundfont List-->
         <scene sceneID="gfg-70-bSX">
             <objects>
-                <viewController title="Soundfont List" id="Ftf-OG-9zR" customClass="TutorialPageViewController" customModule="SoundFontsApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Soundfont List" id="Ftf-OG-9zR" customClass="TutorialPageViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <subviews>
