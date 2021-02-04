@@ -21,6 +21,8 @@ public final class SoundFontsControlsController: UIViewController {
 
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!
+    private var infoBar: InfoBar!
+
     private var isMainApp: Bool = false
 
     public override func viewDidLoad() {
@@ -44,6 +46,8 @@ public final class SoundFontsControlsController: UIViewController {
         if isMainApp && Settings.instance.showEffects {
             showEffects(false)
         }
+
+        updateInfoBarButtons()
     }
 }
 
@@ -65,9 +69,11 @@ extension SoundFontsControlsController: ControllerConfiguration {
         let favoritesViewManager = router.favoritesViewManager
         favoritesViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
         favoritesViewManager.addEventClosure(.swipeRight, showPreviousConfigurationView)
-        router.infoBar.addEventClosure(.doubleTap, toggleConfigurationViews)
 
-        router.infoBar.addEventClosure(.showEffects, toggleShowEffects)
+        infoBar = router.infoBar
+        infoBar.addEventClosure(.doubleTap, toggleConfigurationViews)
+        infoBar.addEventClosure(.showEffects, toggleShowEffects)
+
         isMainApp = router.isMainApp
     }
 
@@ -133,6 +139,7 @@ extension SoundFontsControlsController {
         }
         upperViewManager.slideNextHorizontally()
         Settings.instance.showingFavorites = upperViewManager.active == 1
+        updateInfoBarButtons()
     }
 
     /**
@@ -141,6 +148,11 @@ extension SoundFontsControlsController {
     private func showPreviousConfigurationView(_ action: AnyObject) {
         upperViewManager.slidePrevHorizontally()
         Settings.instance.showingFavorites = upperViewManager.active == 1
+        updateInfoBarButtons()
+    }
+
+    private func updateInfoBarButtons() {
+        infoBar.setVisibilityButtonEnabled(upperViewManager.active == 0)
     }
 }
 

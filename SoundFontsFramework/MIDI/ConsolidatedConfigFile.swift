@@ -31,7 +31,12 @@ public final class ConsolidatedConfigFile: UIDocument {
     static let filename = "Consolidated.plist"
 
     public lazy var config: ConsolidatedConfig = ConsolidatedConfig()
-    @objc dynamic public private(set) var restored: Bool = false
+    @objc dynamic public private(set) var restored: Bool = false {
+        didSet {
+            self.updateChangeCount(.done)
+            self.autosave(completionHandler: nil)
+        }
+    }
 
     public init() {
         os_log(.info, log: Self.log, "init")
@@ -55,7 +60,9 @@ public final class ConsolidatedConfigFile: UIDocument {
 
     override public func contents(forType typeName: String) throws -> Any {
         os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
-        return try PropertyListEncoder().encode(config)
+        let contents = try PropertyListEncoder().encode(config)
+        os_log(.info, log: log, "-- pending save of %d bytes", contents.count)
+        return contents
     }
 
     override public func load(fromContents contents: Any, ofType typeName: String?) throws {
@@ -99,11 +106,10 @@ extension ConsolidatedConfigFile {
 
         os_log(.info, log: log, "using legacy contents")
         restoreConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags))
-
-        self.save(to: sharedArchivePath, for: .forCreating)
     }
 
     private func restoreConfig(_ config: ConsolidatedConfig) {
+        os_log(.info, log: log, "restoreConfig")
         self.config = config
         self.restored = true
     }
@@ -116,6 +122,6 @@ extension ConsolidatedConfigFile {
             each.tags.insert(tag.key)
         }
 
-        restored = true
+        self.restored = true
     }
 }

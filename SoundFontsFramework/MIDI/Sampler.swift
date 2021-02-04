@@ -6,6 +6,7 @@ import AudioToolbox
 import os
 
 public enum SamplerEvent {
+    case running
     case loaded(patch: ActivePatchKind)
 }
 
@@ -122,24 +123,40 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         os_log(.info, log: log, "loadActivePreset - %{public}s", activePatchManager.active.description)
 
         // Ok if the sampler is not yet available. We will apply the patch when it is
-        guard let sampler = auSampler else { return .success(.none) }
-        guard let soundFont = activePatchManager.soundFont else { return .success(sampler) }
-        guard let patch = activePatchManager.patch else { return .success(sampler) }
+        guard let sampler = auSampler else {
+            os_log(.info, log: log, "no sampler yet")
+            return .success(.none)
+        }
+
+        guard let soundFont = activePatchManager.soundFont else {
+            os_log(.info, log: log, "activePatchManager.soundFont is nil")
+            return .success(sampler)
+        }
+
+        guard let patch = activePatchManager.patch else {
+            os_log(.info, log: log, "activePatchManager.patch is nil")
+            return .success(sampler)
+        }
+
         let favorite = activePatchManager.favorite
         self.loaded = false
         let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 
+        os_log(.info, log: log, "requesting preset change")
         presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(patch.program),
                                    bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB)) { [weak self] in
             guard let self = self else { return }
+            os_log(.info, log: self.log, "request complete")
             self.applyPresetConfig(presetConfig)
             DispatchQueue.main.async {
                 self.loaded = true
                 afterLoadBlock?()
+                os_log(.info, log: self.log, "notifing loaded")
                 self.notify(.loaded(patch: self.activePatchManager.active))
             }
         }
 
+        os_log(.info, log: log, "done")
         return .success(sampler)
     }
 }
