@@ -21,6 +21,7 @@ public final class TutorialViewController: UIPageViewController, UIPageViewContr
     }
 
     private let pages: [TutorialPageViewController] = [
+        custom("Intro"),
         custom("SoundFontList"),
         custom("TagsList"),
         custom("Presets"),
@@ -28,7 +29,9 @@ public final class TutorialViewController: UIPageViewController, UIPageViewContr
         custom("InfoBar2"),
         custom("Favorites"),
         custom("Reverb"),
-        custom("Delay")
+        custom("Delay"),
+        custom("Settings"),
+        custom("Done")
     ]
 
     override public func viewDidLoad() {

@@ -76,6 +76,9 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
         guard soundFonts.restored else {
+
+            // NOTE: this could be the case for AUv3 where the audio unit is up and running and has restored a
+            // configuration but we don't have everything else restored just yet.
             os_log(.info, log: log, "not yet restored - setting pending - current: %{public}s", kind.description)
             if pending == .none {
                 pending = kind
@@ -103,7 +106,8 @@ extension ActivePatchManager {
             os_log(.info, log: log, "using pending value")
             setActive(pending, playSample: false)
         }
-        else if let restored = Self.restore() {
+        else if let restored = Self.restore(),
+                isValid(restored) {
             os_log(.info, log: log, "using restored value from UserDefaults")
             setActive(restored, playSample: false)
         }
@@ -130,5 +134,11 @@ extension ActivePatchManager {
                 Settings.instance.lastActivePatch = data
             }
         }
+    }
+
+    private func isValid(_ active: ActivePatchKind) -> Bool {
+        guard soundFonts.restored else { return true }
+        guard let soundFontAndPatch = active.soundFontAndPatch else { return false }
+        return soundFonts.resolve(soundFontAndPatch: soundFontAndPatch) != nil
     }
 }

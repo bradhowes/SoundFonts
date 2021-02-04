@@ -129,6 +129,10 @@ extension InfoBarController: ControllerConfiguration {
 
 extension InfoBarController: InfoBar {
 
+    public func setVisibilityButtonEnabled(_ state: Bool) {
+        editVisibility.isEnabled = state
+    }
+
     public var moreButtonsVisible: Bool { showingMoreButtons }
 
     /**

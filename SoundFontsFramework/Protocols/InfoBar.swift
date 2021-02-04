@@ -53,4 +53,6 @@ public protocol InfoBar: class {
     func hideMoreButtons()
 
     func resetButtonState(_ event: InfoBarEvent)
+
+    func setVisibilityButtonEnabled(_ state: Bool)
 }
