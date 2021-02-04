@@ -139,6 +139,17 @@
 		BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */; };
 		BD9AC9AE2567A50400B47F12 /* AudioUnitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */; };
 		BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */; };
+		BDB7407225CC29400051B4E4 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7407125CC29400051B4E4 /* TutorialViewController.swift */; };
+		BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */; };
+		BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406225CC29120051B4E4 /* Presets.storyboard */; };
+		BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406525CC29120051B4E4 /* TagsList.storyboard */; };
+		BDB7408225CC29690051B4E4 /* Favorites.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7405F25CC29120051B4E4 /* Favorites.storyboard */; };
+		BDB7408325CC29690051B4E4 /* InfoBar1.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */; };
+		BDB7408425CC29690051B4E4 /* Reverb.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406325CC29120051B4E4 /* Reverb.storyboard */; };
+		BDB7408525CC29690051B4E4 /* SoundFontList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */; };
+		BDB7408625CC29690051B4E4 /* InfoBar2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7406125CC29120051B4E4 /* InfoBar2.storyboard */; };
+		BDB7408725CC29690051B4E4 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7405D25CC29120051B4E4 /* Tutorial.storyboard */; };
+		BDB7408825CC29690051B4E4 /* Delay.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDB7405E25CC29120051B4E4 /* Delay.storyboard */; };
 		BDBF893E25B4C7AC00B58E23 /* ActiveTagManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */; };
 		BDBF894D25B5784300B58E23 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */; };
 		BDBF895325B57A3A00B58E23 /* LegacyTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF895225B57A3A00B58E23 /* LegacyTag.swift */; };
@@ -344,6 +355,17 @@
 		BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUParameterHandler.swift; sourceTree = "<group>"; };
 		BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitManagerDelegate.swift; sourceTree = "<group>"; };
 		BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
+		BDB7405D25CC29120051B4E4 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
+		BDB7405E25CC29120051B4E4 /* Delay.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Delay.storyboard; sourceTree = "<group>"; };
+		BDB7405F25CC29120051B4E4 /* Favorites.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Favorites.storyboard; sourceTree = "<group>"; };
+		BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar1.storyboard; sourceTree = "<group>"; };
+		BDB7406125CC29120051B4E4 /* InfoBar2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar2.storyboard; sourceTree = "<group>"; };
+		BDB7406225CC29120051B4E4 /* Presets.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Presets.storyboard; sourceTree = "<group>"; };
+		BDB7406325CC29120051B4E4 /* Reverb.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Reverb.storyboard; sourceTree = "<group>"; };
+		BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontList.storyboard; sourceTree = "<group>"; };
+		BDB7406525CC29120051B4E4 /* TagsList.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TagsList.storyboard; sourceTree = "<group>"; };
+		BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		BDB7407125CC29400051B4E4 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveTagManager.swift; sourceTree = "<group>"; };
 		BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
 		BDBF895225B57A3A00B58E23 /* LegacyTag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyTag.swift; sourceTree = "<group>"; };
@@ -446,6 +468,8 @@
 				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
+				BDB7407125CC29400051B4E4 /* TutorialViewController.swift */,
+				BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
 				BD074BE823CDAF51001987E9 /* MIDI */,
 				BD074C1C23CDAF51001987E9 /* Extensions */,
@@ -473,6 +497,7 @@
 		BD074BD923CDAF51001987E9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				BDB7406625CC29120051B4E4 /* Tutorial */,
 				BD90AEF424192E7C00D29E18 /* README.md */,
 				BD130B0E25615A3300D1CDF6 /* Editors */,
 				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
@@ -731,6 +756,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BDB7406625CC29120051B4E4 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				BDB7405D25CC29120051B4E4 /* Tutorial.storyboard */,
+				BDB7405E25CC29120051B4E4 /* Delay.storyboard */,
+				BDB7405F25CC29120051B4E4 /* Favorites.storyboard */,
+				BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */,
+				BDB7406125CC29120051B4E4 /* InfoBar2.storyboard */,
+				BDB7406225CC29120051B4E4 /* Presets.storyboard */,
+				BDB7406325CC29120051B4E4 /* Reverb.storyboard */,
+				BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */,
+				BDB7406525CC29120051B4E4 /* TagsList.storyboard */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
 		BDBF897E25B5939400B58E23 /* Tags */ = {
 			isa = PBXGroup;
 			children = (
@@ -869,20 +910,29 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDB7408725CC29690051B4E4 /* Tutorial.storyboard in Resources */,
 				BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
+				BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */,
 				BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */,
 				BD62CF5B253DE22D00DBDC1B /* FavoriteEditor.storyboard in Resources */,
 				BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */,
+				BDB7408425CC29690051B4E4 /* Reverb.storyboard in Resources */,
 				BD62CF5D253DE22D00DBDC1B /* InfoBar.storyboard in Resources */,
 				BD62CF5E253DE22D00DBDC1B /* SoundFontsControls.storyboard in Resources */,
+				BDB7408325CC29690051B4E4 /* InfoBar1.storyboard in Resources */,
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
+				BDB7408525CC29690051B4E4 /* SoundFontList.storyboard in Resources */,
+				BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */,
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
+				BDB7408225CC29690051B4E4 /* Favorites.storyboard in Resources */,
 				BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
 				BD79915425795D2000943515 /* iPhone 12.png in Resources */,
+				BDB7408825CC29690051B4E4 /* Delay.storyboard in Resources */,
 				BD074C5E23CDAF51001987E9 /* (null) in Resources */,
 				BD62CF5C253DE22D00DBDC1B /* FavoritesView.storyboard in Resources */,
+				BDB7408625CC29690051B4E4 /* InfoBar2.storyboard in Resources */,
 				BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */,
 				BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
@@ -978,6 +1028,7 @@
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
 				BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */,
 				BDD913F42508DEEE0068E3CE /* DispatchQueue+Extensions.swift in Sources */,
+				BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */,
 				BDCAE70425C7E0B100202BAC /* ConsolidatedConfigFile.swift in Sources */,
 				BDD913F22508DECE0068E3CE /* DispatchTime+Extensions.swift in Sources */,
 				BD074C7C23CDAF51001987E9 /* UITableView+Extensions.swift in Sources */,
@@ -1038,6 +1089,7 @@
 				BD17E25D25C9FDAF003E75CF /* ConfigFileObserver.swift in Sources */,
 				BD074C7923CDAF51001987E9 /* UIColor+Extensions.swift in Sources */,
 				BD074C5323CDAF51001987E9 /* Note.swift in Sources */,
+				BDB7407225CC29400051B4E4 /* TutorialViewController.swift in Sources */,
 				BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */,
 				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
