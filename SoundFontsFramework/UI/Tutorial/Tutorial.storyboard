@@ -11,16 +11,17 @@
         <!--Tutorial-->
         <scene sceneID="MWy-iE-crj">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialViewController" customModule="SoundFontsApp" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="DDM-pW-Mec">
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="gIp-X7-Hpk" userLabel="Done">
+                <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Introduction" id="DDM-pW-Mec">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="3qT-NV-80A">
+                            <color key="tintColor" systemColor="systemTealColor"/>
                             <connections>
-                                <action selector="donePressed:" destination="8O6-xZ-TzT" id="eyv-Kc-eHb"/>
+                                <action selector="donePressed:" destination="8O6-xZ-TzT" id="uE5-dF-h6Q"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="doneButton" destination="gIp-X7-Hpk" id="jqQ-T2-txd"/>
+                        <outlet property="doneButton" destination="3qT-NV-80A" id="M2C-uH-LKT"/>
                     </connections>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2R-ws-FX3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

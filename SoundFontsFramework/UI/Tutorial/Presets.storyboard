@@ -12,7 +12,7 @@
         <!--Preset List-->
         <scene sceneID="gfg-70-bSX">
             <objects>
-                <viewController title="Preset List" id="Ftf-OG-9zR" customClass="TutorialPageViewController" customModule="SoundFontsApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Preset List" id="Ftf-OG-9zR" customClass="TutorialPageViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>

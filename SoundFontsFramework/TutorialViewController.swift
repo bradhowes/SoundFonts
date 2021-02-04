@@ -1,9 +1,9 @@
 import UIKit
 
-func custom(_ name: String) -> TutorialPageViewController {
-    guard let page = UIStoryboard(name: name, bundle: nil).instantiateInitialViewController()
-                as? TutorialPageViewController
-    else {
+private func custom(_ name: String) -> TutorialPageViewController {
+    let storyboard = UIStoryboard(name: name, bundle: Bundle(for: TutorialViewController.self))
+    guard let viewController = storyboard.instantiateInitialViewController(),
+          let page = viewController as? TutorialPageViewController else {
         fatalError("failed to load tutorial page \(name)")
     }
     return page

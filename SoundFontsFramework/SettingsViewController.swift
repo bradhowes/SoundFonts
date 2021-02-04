@@ -43,6 +43,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var importSoundFontsStackView: UIStackView!
     @IBOutlet private weak var divider4: UIView!
     @IBOutlet private weak var versionReviewStackView: UIStackView!
+    @IBOutlet private weak var showTutorialStackView: UIStackView!
     @IBOutlet private weak var contactDeveloperStackView: UIStackView!
 
     @IBOutlet private weak var keyLabelOption: UISegmentedControl!
@@ -70,6 +71,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
     @IBOutlet private weak var review: UIButton!
+    @IBOutlet private weak var showTutorialButton: UIButton!
     @IBOutlet private weak var contactButton: UIButton!
 
     private var revealKeyboardForKeyWidthChanges = false
@@ -90,6 +92,7 @@ public final class SettingsViewController: UIViewController {
         exportSoundFontsStackView,
         importSoundFontsStackView,
         versionReviewStackView,
+        showTutorialStackView,
         contactDeveloperStackView,
         globalTuningEnabled,
         globalTuningTitle,
@@ -370,5 +373,11 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     public func mailComposeController(_ controller: MFMailComposeViewController,
                                       didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
+    }
+
+    @IBAction private func showTutorial(_ sender: Any) {
+        if let tutorial = TutorialViewController.instantiate() {
+            self.present(tutorial, animated: true)
+        }
     }
 }
