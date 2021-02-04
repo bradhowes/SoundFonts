@@ -53,6 +53,8 @@ public extension SettingKeys {
 
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
+
+    static let showedTutorial = SettingKey("showedTutorial", defaultValue: false)
 }
 
 /// Global variable to keep things concise.
@@ -245,5 +247,9 @@ public extension UserDefaults {
     @objc dynamic var globalTuningEnabled: Bool {
         get { self[.globalTuningEnabled] }
         set { self[.globalTuningEnabled] = newValue }
+    }
+    @objc dynamic var showedTutorial: Bool {
+        get { self[.showedTutorial] }
+        set { self[.showedTutorial] = newValue }
     }
 }

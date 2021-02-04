@@ -31,6 +31,15 @@ final class MainViewController: UIViewController {
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !Settings.instance.showedTutorial {
+            if let viewController = TutorialViewController.instantiate() {
+                present(viewController, animated: true, completion: nil)
+            }
+        }
+    }
+
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)

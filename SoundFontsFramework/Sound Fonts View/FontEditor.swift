@@ -29,8 +29,6 @@ final class FontEditor: UIViewController {
 
     weak var delegate: FontEditorDelegate?
 
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
     @IBOutlet private weak var name: UITextField!
