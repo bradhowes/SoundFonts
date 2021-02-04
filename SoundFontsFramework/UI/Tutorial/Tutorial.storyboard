@@ -12,7 +12,7 @@
         <scene sceneID="MWy-iE-crj">
             <objects>
                 <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Introduction" id="DDM-pW-Mec">
+                    <navigationItem key="navigationItem" title="Overview" id="DDM-pW-Mec">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="3qT-NV-80A">
                             <color key="tintColor" systemColor="systemTealColor"/>
                             <connections>
