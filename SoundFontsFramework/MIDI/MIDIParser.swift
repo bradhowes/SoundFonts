@@ -32,7 +32,7 @@ public struct MIDIParser {
     public static func parse(packetList: MIDIPacketList, for controller: MIDIReceiver) {
         os_signpost(.begin, log: log, name: "parse")
         let numPackets = packetList.numPackets
-        os_log(.debug, log: log, "processPackets - %d", numPackets)
+        os_log(.info, log: log, "processPackets - %d channel: %d", numPackets, controller.channel)
         var packet: MIDIPacket = packetList.packet
         for index in 0..<numPackets {
             let when = packet.timeStamp
@@ -131,7 +131,6 @@ public struct MIDIParser {
                 consume(available)
                 return nil
             }
-
             defer { consume(needed) }
             return (channel == -1 || channel == (status & 0x0F)) ? makeMIDIMsg(command) : nil
         }

@@ -18,7 +18,7 @@ public final class ConfigFileObserver {
 
     public init(configFile: ConsolidatedConfigFile, closure: @escaping () -> Void) {
         self.configFile = configFile
-        self.configFileObserver = configFile.observe(\.restored) { _, _ in self.checkRestored(closure) }
+        self.configFileObserver = configFile.observe(\.restored) { [weak self]_, _ in self?.checkRestored(closure) }
         checkRestored(closure)
     }
 

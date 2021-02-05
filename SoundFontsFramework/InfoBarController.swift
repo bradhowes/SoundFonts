@@ -57,8 +57,8 @@ public final class InfoBarController: UIViewController {
         touchView.addGestureRecognizer(panner)
 
         observers.append(
-            Settings.shared.observe(\.slideKeyboard, options: [.new]) { _, _ in
-                self.updateSlidingKeyboardState()
+            Settings.shared.observe(\.slideKeyboard, options: [.new]) { [weak self] _, _ in
+                self?.updateSlidingKeyboardState()
             }
         )
 

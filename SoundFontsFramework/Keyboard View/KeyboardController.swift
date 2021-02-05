@@ -26,7 +26,6 @@ final class KeyboardController: UIViewController {
 
     private var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
     private var activePatchManager: ActivePatchManager!
-    private var midiChannelObservation: NSKeyValueObservation?
     private var keyLabelOptionObservation: NSKeyValueObservation?
     private var keyWidthObservation: NSKeyValueObservation?
 
@@ -35,8 +34,6 @@ final class KeyboardController: UIViewController {
 
     private var trackedTouch: UITouch?
     private var panPending: CGFloat = 0.0
-
-    public private(set) var channel: Int = Settings.shared.midiChannel
 
     private var keyLabelOption: KeyLabelOption {
         get { Key.keyLabelOption }
@@ -67,19 +64,14 @@ extension KeyboardController {
         firstMidiNoteValue = lowestKeyNote
         offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
 
-        midiChannelObservation = Settings.shared.observe(\.midiChannel, options: .new) { _, change in
-            guard let newValue = change.newValue else { return }
-            self.releaseAllKeys()
-            self.channel = newValue
-        }
-
-        keyLabelOptionObservation = Settings.shared.observe(\.keyLabelOption, options: [.new]) { _, change in
+        keyLabelOptionObservation = Settings.shared.observe(\.keyLabelOption,
+                                                            options: [.new]) { [weak self] _, change in
             guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else { return }
-            self.keyLabelOption = option
+            self?.keyLabelOption = option
         }
 
-        keyWidthObservation = Settings.shared.observe(\.keyWidth, options: [.new]) { _, change in
-            guard let keyWidth = change.newValue else { return }
+        keyWidthObservation = Settings.shared.observe(\.keyWidth, options: [.new]) { [weak self] _, change in
+            guard let self = self, let keyWidth = change.newValue else { return }
             precondition(!self.allKeys.isEmpty)
             self.keyWidth = CGFloat(keyWidth)
             Key.keyWidth = self.keyWidth

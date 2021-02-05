@@ -68,8 +68,8 @@ extension VolumeMonitor {
         muteDetector?.start()
 
         let session = AVAudioSession.sharedInstance()
-        sessionVolumeObserver = session.observe(\.outputVolume, options: [.initial, .new]) { session, _ in
-            self.volume = session.outputVolume
+        sessionVolumeObserver = session.observe(\.outputVolume) { [weak self] session, _ in
+            self?.volume = session.outputVolume
         }
     }
 
