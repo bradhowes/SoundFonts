@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "icons8-padlock-2.png",
+      "filename" : "icons8-hide-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icons8-padlock-1.png",
+      "filename" : "icons8-hide-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "icons8-padlock.png",
+      "filename" : "icons8-hide.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
