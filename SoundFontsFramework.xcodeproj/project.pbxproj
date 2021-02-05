@@ -92,6 +92,11 @@
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
 		BD17E25D25C9FDAF003E75CF /* ConfigFileObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */; };
 		BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22B025CC913C007C114F /* Settings.storyboard */; };
+		BD1C22E525CDC4A8007C114F /* Tutorial2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E425CDC4A8007C114F /* Tutorial2.storyboard */; };
+		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
+		BD1C22ED25CDC701007C114F /* TutorialContentPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */; };
+		BD1C22F125CDC781007C114F /* Tutorial2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C22F025CDC781007C114F /* Tutorial2ViewController.swift */; };
+		BD1C230225CDF167007C114F /* PresetsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C230125CDF167007C114F /* PresetsPageViewController.swift */; };
 		BD1F11B823FE61E300AE9F3D /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */; };
 		BD1F11BC23FE690300AE9F3D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */; };
 		BD21B8F02507EFCD00701277 /* CodeLocationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */; };
@@ -308,6 +313,11 @@
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
 		BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigFileObserver.swift; sourceTree = "<group>"; };
 		BD1C22B025CC913C007C114F /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
+		BD1C22E425CDC4A8007C114F /* Tutorial2.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial2.storyboard; sourceTree = "<group>"; };
+		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
+		BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentPagerViewController.swift; sourceTree = "<group>"; };
+		BD1C22F025CDC781007C114F /* Tutorial2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tutorial2ViewController.swift; sourceTree = "<group>"; };
+		BD1C230125CDF167007C114F /* PresetsPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsPageViewController.swift; sourceTree = "<group>"; };
 		BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
 		BD1F11BB23FE690300AE9F3D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BD21B8EF2507EFCD00701277 /* CodeLocationInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeLocationInfo.swift; sourceTree = "<group>"; };
@@ -764,8 +774,13 @@
 			isa = PBXGroup;
 			children = (
 				BDB7407125CC29400051B4E4 /* TutorialViewController.swift */,
+				BD1C22F025CDC781007C114F /* Tutorial2ViewController.swift */,
+				BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */,
 				BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */,
+				BD1C230125CDF167007C114F /* PresetsPageViewController.swift */,
 				BDB7405D25CC29120051B4E4 /* Tutorial.storyboard */,
+				BD1C22E425CDC4A8007C114F /* Tutorial2.storyboard */,
+				BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */,
 				BD6E057725CC6F6E004058D9 /* Intro.storyboard */,
 				BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */,
 				BDB7406525CC29120051B4E4 /* TagsList.storyboard */,
@@ -920,6 +935,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD6E057E25CC74B1004058D9 /* Done.storyboard in Resources */,
+				BD1C22E525CDC4A8007C114F /* Tutorial2.storyboard in Resources */,
 				BDB7408725CC29690051B4E4 /* Tutorial.storyboard in Resources */,
 				BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
@@ -938,6 +954,7 @@
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
 				BDB7408225CC29690051B4E4 /* Favorites.storyboard in Resources */,
 				BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */,
+				BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */,
 				BD074C4423CDAF51001987E9 /* TableCell.xib in Resources */,
 				BD79915425795D2000943515 /* iPhone 12.png in Resources */,
 				BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */,
@@ -1001,6 +1018,8 @@
 				BD074C7B23CDAF51001987E9 /* Foundation+Extensions.swift in Sources */,
 				BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */,
 				BD8A31502502E41E0077320F /* SoundFonts.xcdatamodeld in Sources */,
+				BD1C22F125CDC781007C114F /* Tutorial2ViewController.swift in Sources */,
+				BD1C230225CDF167007C114F /* PresetsPageViewController.swift in Sources */,
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
 				BD0F940F257294020065C147 /* SelectSoundFontControl.swift in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
@@ -1055,6 +1074,7 @@
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
 				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,
 				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
+				BD1C22ED25CDC701007C114F /* TutorialContentPagerViewController.swift in Sources */,
 				BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */,
 				BDBF897B25B5930100B58E23 /* Tags.swift in Sources */,
 				BD8A31632502E6920077320F /* Preset.swift in Sources */,

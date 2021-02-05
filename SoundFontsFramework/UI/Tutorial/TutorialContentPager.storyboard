@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="8O6-xZ-TzT">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+    </dependencies>
+    <scenes>
+        <!--Tutorial-->
+        <scene sceneID="MWy-iE-crj">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                </pageViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o2R-ws-FX3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1947.826086956522" y="917.41071428571422"/>
+        </scene>
+    </scenes>
+</document>
