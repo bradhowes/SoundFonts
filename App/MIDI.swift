@@ -18,7 +18,11 @@ final class MIDI {
     private var virtualEndpoint: MIDIEndpointRef = 0
 
     /// Delegate which will receive incoming MIDI messages
-    weak var receiver: MIDIReceiver?
+    weak var receiver: MIDIReceiver? {
+        didSet {
+            os_log(.info, log: log, "receiver set")
+        }
+    }
 
     private let errorTag: [OSStatus: String] = [
         noErr: "",
