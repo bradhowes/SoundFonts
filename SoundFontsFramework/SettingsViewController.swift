@@ -19,7 +19,7 @@ public enum KeyLabelOption: Int {
  Manages window showing various runtime settings and options.
  */
 public final class SettingsViewController: UIViewController {
-    private let log = Logging.logger("SetVC")
+    private let log = Logging.logger("SettingsViewController")
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet private weak var contentView: UIView!
@@ -142,8 +142,8 @@ public final class SettingsViewController: UIViewController {
                                               tuningFrequency: globalTuningFrequency)
         self.tuningComponent = tuningComponent
 
-        tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, info in
-            guard let newValue = info.newValue else { return }
+        tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, change in
+            guard let newValue = change.newValue else { return }
             Settings.shared.globalTuning = newValue
         }
 
@@ -261,7 +261,6 @@ extension SettingsViewController {
 
     @IBAction func midiChannelStep(_ sender: UIStepper) {
         updateMidiChannel()
-        Settings.instance.midiChannel = Int(sender.value)
     }
 
     @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
@@ -333,7 +332,9 @@ device. Are you sure you want to disable copying?
 
     private func updateMidiChannel() {
         let value = Int(midiChannelStepper.value)
+        os_log(.info, log: log, "new MIDI channel %d", value)
         midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
+        Settings.shared.midiChannel = value
     }
 
     private func postNotice(msg: String) {

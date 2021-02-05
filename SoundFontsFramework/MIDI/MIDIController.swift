@@ -5,14 +5,24 @@ import os
 public final class MIDIController {
     private lazy var log = Logging.logger("MIDIController")
 
-    public var channel: Int { Settings.shared.midiChannel }
+    public private(set) var channel: Int
 
     private let sampler: Sampler
     private let keyboard: Keyboard?
+    private var observer: NSKeyValueObservation?
 
     public init(sampler: Sampler, keyboard: Keyboard?) {
         self.sampler = sampler
         self.keyboard = keyboard
+        self.channel = Settings.shared.midiChannel
+        self.observer = Settings.shared.observe(\.midiChannel) { [weak self] _, _ in
+            guard let self = self else { return }
+            let value = Settings.shared.midiChannel
+            if value != self.channel {
+                os_log(.info, log: self.log, "new MIDI channel: %d", value)
+                self.channel = value
+            }
+        }
     }
 }
 

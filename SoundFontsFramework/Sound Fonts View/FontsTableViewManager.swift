@@ -45,10 +45,8 @@ final class FontsTableViewManager: NSObject {
         activePatchManager.subscribe(self, notifier: activePatchChange)
         tags.subscribe(self, notifier: tagsChange)
 
-        activeTagsObservation = Settings.shared.observe(\.activeTagIndex, options: [.new]) { _, change in
-            guard let new = change.newValue else { return }
-            guard change.kind == .setting else { return }
-            self.updateFilterTag(index: new)
+        activeTagsObservation = Settings.shared.observe(\.activeTagIndex) { [weak self] setting, _ in
+            self?.updateFilterTag(index: setting.activeTagIndex)
         }
     }
 
