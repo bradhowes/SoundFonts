@@ -5,13 +5,14 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Tutorial-->
         <scene sceneID="gfg-70-bSX">
             <objects>
-                <viewController title="Soundfont List" interfaceStyle="dark" id="Ftf-OG-9zR" userLabel="Tutorial" customClass="Tutorial2ViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Soundfont List" interfaceStyle="dark" id="Ftf-OG-9zR" userLabel="Tutorial" customClass="TutorialViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <subviews>
@@ -19,13 +20,13 @@
                                 <rect key="frame" x="0.0" y="-333.5" width="375" height="1334"/>
                             </imageView>
                             <visualEffectView opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wT-hT-w3G">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="716"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9P-dV-BpZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="716"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ux3-yt-7Mi">
-                                            <rect key="frame" x="8" y="8" width="359" height="651"/>
+                                            <rect key="frame" x="8" y="8" width="359" height="700"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <connections>
                                                 <segue destination="PxM-PU-L6d" kind="embed" id="GUP-fj-7mU"/>
@@ -59,15 +60,17 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="aCC-x0-9Nc">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="DK2-fO-Qjg">
+                            <color key="tintColor" systemColor="systemTealColor"/>
                             <connections>
-                                <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" id="jm3-Bs-AFh"/>
+                                <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" id="AUh-gN-LiR"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wcl-Vd-PiV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -104,5 +107,8 @@
     </scenes>
     <resources>
         <image name="App" width="750" height="1334"/>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

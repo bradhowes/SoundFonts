@@ -12,7 +12,7 @@
         <!--Soundfont List-->
         <scene sceneID="gfg-70-bSX">
             <objects>
-                <viewController title="Soundfont List" id="Ftf-OG-9zR" customClass="TutorialPageViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
+                <viewController title="Soundfont List" id="Ftf-OG-9zR" customClass="DonePageViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -36,7 +36,7 @@
                                             <color key="titleColor" systemColor="systemTealColor"/>
                                         </state>
                                         <connections>
-                                            <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="TC9-o7-yQw"/>
+                                            <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="jTc-jz-JBn"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Ukd-Jl-Gwh">
@@ -62,7 +62,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="doneButton" destination="k5T-EW-4dE" id="bAx-GT-yTj"/>
+                        <outlet property="doneButton" destination="k5T-EW-4dE" id="zyR-uq-PgK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wcl-Vd-PiV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
