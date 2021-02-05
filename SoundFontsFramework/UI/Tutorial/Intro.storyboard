@@ -16,34 +16,8 @@
                     <view key="view" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-S3-jxL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="App" translatesAutoresizingMaskIntoConstraints="NO" id="5gk-v4-jNR">
-                                <rect key="frame" x="8" y="-333.5" width="359" height="1334"/>
-                            </imageView>
-                            <visualEffectView opaque="NO" alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2wT-hT-w3G">
-                                <rect key="frame" x="8" y="0.0" width="359" height="667"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="X9P-dV-BpZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="359" height="667"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VsE-tu-SfR">
-                                            <rect key="frame" x="309" y="24" width="30" height="30"/>
-                                            <state key="normal" title="Skip">
-                                                <color key="titleColor" systemColor="systemTealColor"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="doneButtonPressed:" destination="Ftf-OG-9zR" eventType="touchUpInside" id="jaX-Sd-HID"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="VsE-tu-SfR" secondAttribute="trailing" constant="20" id="S7j-iw-F3X"/>
-                                        <constraint firstItem="VsE-tu-SfR" firstAttribute="top" secondItem="X9P-dV-BpZ" secondAttribute="top" constant="24" id="X3k-rN-Tua"/>
-                                    </constraints>
-                                </view>
-                                <blurEffect style="dark"/>
-                            </visualEffectView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="16" y="224" width="343" height="219.5"/>
+                                <rect key="frame" x="16" y="227" width="343" height="213"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Welcome to SoundFonts!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWs-ae-Abs">
                                         <rect key="frame" x="78.5" y="0.0" width="186.5" height="82"/>
@@ -51,41 +25,19 @@
                                         <color key="textColor" systemColor="systemOrangeColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Ukd-Jl-Gwh">
-                                        <rect key="frame" x="14" y="114" width="315.5" height="105.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Swipe left or touch near the right edge of this screen to learn more about the various features of the SoundFonts app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcl-9A-SSE">
-                                                <rect key="frame" x="0.0" y="0.0" width="315.5" height="105.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                                <color key="textColor" systemColor="systemTealColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Swipe left or touch near the right edge of this screen to learn more about the various features of the SoundFonts app." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcl-9A-SSE">
+                                        <rect key="frame" x="2" y="114" width="339.5" height="99"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                        <color key="textColor" systemColor="systemTealColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <viewLayoutGuide key="safeArea" id="W3M-Yi-Yuz"/>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="73Q-XL-No8">
-                                <rect key="frame" x="0.0" y="659" width="375" height="8"/>
-                                <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="8" id="bqo-Uk-9ea"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mhc-A2-aSp"/>
                         <color key="backgroundColor" red="0.12984204290000001" green="0.12984612579999999" blue="0.12984395030000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5gk-v4-jNR" firstAttribute="trailing" secondItem="2wT-hT-w3G" secondAttribute="trailing" id="B2k-na-SjG"/>
-                            <constraint firstItem="5gk-v4-jNR" firstAttribute="leading" secondItem="2wT-hT-w3G" secondAttribute="leading" id="BJL-MD-DRd"/>
-                            <constraint firstItem="73Q-XL-No8" firstAttribute="bottom" secondItem="mhc-A2-aSp" secondAttribute="bottom" id="BxL-s6-1DZ"/>
-                            <constraint firstItem="2wT-hT-w3G" firstAttribute="bottom" secondItem="mhc-A2-aSp" secondAttribute="bottom" id="D2p-6E-Ryw"/>
-                            <constraint firstItem="73Q-XL-No8" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" id="DWf-9K-gUd"/>
-                            <constraint firstItem="mhc-A2-aSp" firstAttribute="trailing" secondItem="5gk-v4-jNR" secondAttribute="trailing" constant="8" id="JyQ-OE-DOY"/>
-                            <constraint firstItem="5gk-v4-jNR" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" constant="8" id="KHW-Hi-0Nn"/>
-                            <constraint firstItem="5gk-v4-jNR" firstAttribute="centerY" secondItem="FMp-S3-jxL" secondAttribute="centerY" id="KOW-6z-TtS"/>
-                            <constraint firstItem="2wT-hT-w3G" firstAttribute="top" secondItem="FMp-S3-jxL" secondAttribute="top" id="Lso-MX-7t4"/>
-                            <constraint firstItem="73Q-XL-No8" firstAttribute="trailing" secondItem="mhc-A2-aSp" secondAttribute="trailing" id="fwU-rT-y0E"/>
                             <constraint firstAttribute="trailing" secondItem="RYf-qw-rdL" secondAttribute="trailing" constant="16" id="h8L-yr-fxH"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="leading" secondItem="mhc-A2-aSp" secondAttribute="leading" constant="16" id="n8P-m2-M7H"/>
                             <constraint firstItem="RYf-qw-rdL" firstAttribute="centerY" secondItem="FMp-S3-jxL" secondAttribute="centerY" id="tWh-kP-BzV"/>
@@ -98,7 +50,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="App" width="750" height="1334"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
