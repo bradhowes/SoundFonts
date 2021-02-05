@@ -34,7 +34,7 @@ final class MainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !Settings.instance.showedTutorial || true {
+        if !Settings.instance.showedTutorial {
             if let viewController = TutorialViewController.instantiate() {
                 present(viewController, animated: true, completion: nil)
                 Settings.instance.showedTutorial = true
