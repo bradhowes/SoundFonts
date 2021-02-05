@@ -9,7 +9,7 @@
         <!--Tutorial-->
         <scene sceneID="MWy-iE-crj">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialViewController" customModule="SoundFontsFramework" sceneMemberID="viewController">
+                <pageViewController autoresizesArchivedViewToFullSize="NO" title="Tutorial" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="8O6-xZ-TzT" customClass="TutorialContentPagerViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <extendedEdge key="edgesForExtendedLayout"/>
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2R-ws-FX3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

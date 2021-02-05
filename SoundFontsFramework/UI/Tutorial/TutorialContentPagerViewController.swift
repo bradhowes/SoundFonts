@@ -12,12 +12,6 @@ private func custom(_ name: String) -> TutorialPageViewController {
 public final class TutorialContentPagerViewController: UIPageViewController, UIPageViewControllerDataSource,
                                                        UIPageViewControllerDelegate {
 
-    public class func instantiate() -> UIViewController? {
-        let storyboard = UIStoryboard(name: "Tutorial", bundle: Bundle(for: TutorialViewController.self))
-        let viewController = storyboard.instantiateInitialViewController()
-        return viewController
-    }
-
     private let pages: [TutorialPageViewController] = [
         custom("Intro"),
         custom("SoundFontList"),
@@ -45,13 +39,11 @@ public final class TutorialContentPagerViewController: UIPageViewController, UIP
 
     public func nextPage() {
         guard let next = page(after: self.viewControllers?.first) else { return }
-        navigationController?.title = next.title
         setViewControllers([next], direction: .forward, animated: true, completion: nil)
     }
 
     public func previousPage() {
         guard let prev = page(before: self.viewControllers?.first) else { return }
-        navigationController?.title = prev.title
         setViewControllers([prev], direction: .reverse, animated: true, completion: nil)
     }
 
@@ -84,16 +76,18 @@ extension TutorialContentPagerViewController {
     private func page(before viewController: UIViewController?) -> UIViewController? {
         guard let pageViewController = viewController as? TutorialPageViewController,
               var index = pages.firstIndex(of: pageViewController) else { return nil }
+        if index == 0 { return nil }
         index -= 1
-        if index < 0 { index = pages.count - 1 }
+        // if index < 0 { index = pages.count - 1 }
         return pages[index]
     }
 
     private func page(after viewController: UIViewController?) -> UIViewController? {
         guard let pageViewController = viewController as? TutorialPageViewController,
               var index = pages.firstIndex(of: pageViewController) else { return nil }
+        if index == pages.count - 1 { return nil }
         index += 1
-        if index == pages.count { index = 0 }
+        // if index == pages.count { index = 0 }
         return pages[index]
     }
 }
