@@ -15,6 +15,7 @@ final class MainViewController: UIViewController {
 
     private var midiController: MIDIController?
     private var activePatchManager: ActivePatchManager!
+    private var keyboard: Keyboard!
     private var sampler: Sampler?
     private var infoBar: InfoBar!
     private var startRequested = false
@@ -123,9 +124,8 @@ extension MainViewController: ControllerConfiguration {
         router.subscribe(self, notifier: routerChange)
 
         infoBar = router.infoBar
+        keyboard = router.keyboard
         activePatchManager = router.activePatchManager
-        // midiController = MIDIController(sampler: sampler, keyboard: router.keyboard)
-        midi.receiver = midiController
         volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
@@ -134,6 +134,8 @@ extension MainViewController: ControllerConfiguration {
         switch event {
         case .samplerAvailable(let sampler):
             self.sampler = sampler
+            midiController = MIDIController(sampler: sampler, keyboard: keyboard)
+            midi.receiver = midiController
             if startRequested {
                 DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
 
