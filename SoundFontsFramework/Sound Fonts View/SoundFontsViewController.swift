@@ -18,6 +18,8 @@ public final class SoundFontsViewController: UIViewController {
     @IBOutlet private weak var searchBar: UISearchBar!
     @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var dividerControl: UIView!
+    @IBOutlet private weak var patchesWidthConstraint: NSLayoutConstraint!
 
     private var maxTagsViewHeightConstraint: CGFloat = 0.0
     private var soundFonts: SoundFonts!
@@ -33,6 +35,8 @@ public final class SoundFontsViewController: UIViewController {
 
     public var swipeLeft = UISwipeGestureRecognizer()
     public var swipeRight = UISwipeGestureRecognizer()
+    private var dividerDragGesture = UIPanGestureRecognizer()
+    private var lastDividerPos: CGPoint = .zero
 }
 
 extension SoundFontsViewController {
@@ -49,6 +53,40 @@ extension SoundFontsViewController {
         view.addGestureRecognizer(swipeRight)
 
         maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
+
+        let multiplier = Settings.instance.presetsWidthMultiplier
+        patchesWidthConstraint = patchesWidthConstraint.setMultiplier(CGFloat(multiplier))
+
+        dividerDragGesture.maximumNumberOfTouches = 1
+        dividerDragGesture.minimumNumberOfTouches = 1
+        dividerDragGesture.addTarget(self, action: #selector(moveDivider(_:)))
+        dividerControl.addGestureRecognizer(dividerDragGesture)
+    }
+
+    @objc func moveDivider(_ gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            os_log(.info, log: log, "moveDivider - BEGIN")
+            lastDividerPos = gesture.location(in: self.view)
+        case .changed:
+            os_log(.info, log: log, "moveDivider - CHANGED")
+            let pos = gesture.location(in: self.view)
+            let change = pos.x - lastDividerPos.x
+            os_log(.info, log: log, "moveDivider - CHANGE: %f", change)
+            lastDividerPos = pos
+            let patchesWidth = patchesView.frame.width - change
+            if patchesWidth < 80.0 { break }
+            let fontsWidth = soundFontsView.frame.width + change
+            if fontsWidth < 80.0 { break }
+            let multiplier = patchesWidth / fontsWidth
+            os_log(.info, log: log, "moveDivider - old: %f new: %f",
+                   patchesWidthConstraint.multiplier,
+                   multiplier)
+            patchesWidthConstraint = patchesWidthConstraint.setMultiplier(multiplier)
+            Settings.instance.presetsWidthMultiplier = Double(multiplier)
+
+        default: break
+        }
     }
 
     public override func viewWillAppear(_ animated: Bool) {
