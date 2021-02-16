@@ -1,13 +1,10 @@
-//
-//  ScreenShots.swift
-//  ScreenShots
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import XCTest
-import SoundFontsFramework
+//import SoundFontsFramework
 
 class ScreenShots: XCTestCase {
-
+    let timeout = 5.0
     var app: XCUIApplication!
     var suffix: String!
 
@@ -21,7 +18,7 @@ class ScreenShots: XCTestCase {
         setupSnapshot(app)
         app.launch()
         let mainView = app.otherElements["MainView"]
-        XCTAssert(mainView.waitForExistence(timeout: 5))
+        XCTAssert(mainView.waitForExistence(timeout: timeout))
     }
 
     func switchViews() {
@@ -31,58 +28,65 @@ class ScreenShots: XCTestCase {
 
     func showSoundFontsView() {
         let soundFontsView = app.otherElements["SoundFontsView"]
-        guard !soundFontsView.exists else { return }
+        guard soundFontsView.exists == false else { return }
         switchViews()
-        XCTAssert(soundFontsView.waitForExistence(timeout: 5))
+        XCTAssert(soundFontsView.waitForExistence(timeout: timeout))
     }
+
+    func testPatchesPortrait() { run(.portrait, "patches") { showSoundFontsView() } }
+    func testPatchesLandscape() { run(.landscapeLeft, "patches") { showSoundFontsView() } }
 
     func showFavoritesView() {
         let favoritesView = app.otherElements["FavoritesView"]
-        guard !favoritesView.exists else { return }
+        guard favoritesView.exists == false else { return }
         switchViews()
-        XCTAssert(favoritesView.waitForExistence(timeout: 5))
+        XCTAssert(favoritesView.waitForExistence(timeout: timeout))
     }
+
+    func testFavoritesPortrait() { run(.portrait, "favorites") { showFavoritesView() } }
+    func testFavoritesLandscape() { run(.landscapeLeft, "favorites") { showFavoritesView() } }
 
     func showSettingsView() {
         let settingsView = app.otherElements["SettingsView"]
-        if app.buttons["More"].exists {
-            app.buttons["More"].tap()
+        if app.buttons["More Right"].exists {
+            app.buttons["More Right"].tap()
         }
         app.buttons["Settings"].tap()
-        XCTAssert(settingsView.waitForExistence(timeout: 5))
+        XCTAssert(settingsView.waitForExistence(timeout: timeout))
     }
+
+    func testSettingsPortrait() { run(.portrait, "settings") { showSettingsView() } }
+    func testSettingsLandscape() { run(.landscapeLeft, "settings") { showSettingsView() } }
 
     func showFontEditView() {
-        let musescoreStaticText = app.tables.staticTexts["MuseScore"]
-        musescoreStaticText.tap()
-        musescoreStaticText.swipeRight()
-        app.tables.buttons["leading0"].tap()
+        showSoundFontsView()
+        let entry = app.tables.staticTexts["MuseScore"]
+        entry.swipeRight()
+        entry.swipeRight()
+        app.tables.buttons["FontEditButton"].tap()
     }
+
+    func testFontEditPortrait() { run(.portrait, "fontedit") { showFontEditView() } }
+    func testFontEditLandscape() { run(.landscapeLeft, "fontedit") { showFontEditView() } }
 
     func showFavoriteEditView() {
-        let musescoreStaticText = app.tables.staticTexts["MuseScore"]
-        musescoreStaticText.tap()
+        showSoundFontsView()
+        let entry = app.tables.staticTexts["MuseScore"]
+        entry.tap()
         app.scrollToTop()
 
-        let tineElectricPianoText = app.tables.staticTexts["Tine Electric Piano"]
-        XCTAssert(tineElectricPianoText.waitForExistence(timeout: 5))
-        tineElectricPianoText.tap()
+        let preset1 = app.tables.staticTexts["Tine Electric Piano"]
+        XCTAssert(preset1.waitForExistence(timeout: timeout))
+        preset1.tap()
 
-        let electricGrandStaticText = app.tables.staticTexts["Electric Grand"]
-        if electricGrandStaticText.exists {
-            electricGrandStaticText.swipeRight()
-            let action = app.tables.buttons["leading0"]
-            XCTAssert(action.waitForExistence(timeout: 5))
-            action.tap()
-        }
-
-        let faveElectricGrandStaticText = app.tables.staticTexts["✪ Electric Grand"]
-        faveElectricGrandStaticText.swipeRight()
-        app.tables.buttons["leading0"].tap()
-
-        let editView = app.otherElements["FavoriteEditor"]
-        XCTAssert(editView.waitForExistence(timeout: 5))
+        let preset2 = app.tables.staticTexts["Electric Grand"]
+        preset2.swipeRight()
+        preset2.swipeRight()
+        app.tables.buttons["EditSwipeAction"].tap()
     }
+
+    func testFavoriteEditPortrait() { run(.portrait, "favoriteedit") { showFavoriteEditView() } }
+    func testFavoriteEditLandscape() { run(.landscapeLeft, "favoriteedit") { showFavoriteEditView() } }
 
     func run(_ orientation: UIDeviceOrientation, _ title: String, setup: () -> Void) {
         initialize(orientation)
@@ -90,28 +94,16 @@ class ScreenShots: XCTestCase {
         snap(title)
     }
 
-    func testPatchesPortrait() { run(.portrait, "patches") { showSoundFontsView() } }
-    func testPatchesLandscape() { run(.landscapeLeft, "patches") { showSoundFontsView() } }
-
-    func testFavoritesPortrait() { run(.portrait, "favorites") { showFavoritesView() } }
-    func testFavoritesLandscape() { run(.landscapeLeft, "favorites") { showFavoritesView() } }
-
-    func testSettingsPortrait() { run(.portrait, "settings") { showSettingsView() } }
-    func testSettingsLandscape() { run(.landscapeLeft, "settings") { showSettingsView() } }
-
-    func testFontEditPortrait() { run(.portrait, "fontedit") { showFontEditView() } }
-    func testFontEditLandscape() { run(.landscapeLeft, "fontedit") { showFontEditView() } }
-
-    func testFavoriteEditPortrait() { run(.portrait, "favoriteedit") { showFavoriteEditView() } }
-    func testFavoriteEditLandscape() { run(.landscapeLeft, "favoriteedit") { showFavoriteEditView() } }
+    func testBlah() {
+    }
 }
 
 extension XCUIApplication {
     private struct Constants {
-        // Half way accross the screen and 10% from top
+        // Half way across the screen and 10% from top
         static let topOffset = CGVector(dx: 0.5, dy: 0.1)
 
-        // Half way accross the screen and 90% from top
+        // Half way across the screen and 90% from top
         static let bottomOffset = CGVector(dx: 0.5, dy: 0.9)
     }
 

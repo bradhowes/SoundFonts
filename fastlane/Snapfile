@@ -1,42 +1,16 @@
 # Uncomment the lines below you want to change by removing the # in the beginning
-workspace("/Users/howes/src/SoundFonts/SoundFonts.xcworkspace")
 
 # A list of devices you want to take the screenshots from
-# See https://help.apple.com/app-store-connect/#/devd274dd925
 devices([
-    "iPhone 11 Pro Max", # 6.5 in
-    "iPhone 11 Pro",     # 5.8 in
-    "iPhone 8 Plus",     # 5.5 in
-    "iPhone 8",          # 4.7 in
-    "iPhone SE",         # 4.0 in
-    "iPad Pro (12.9-inch) (3rd generation)", # 12.9 in
-    "iPad Pro (12.9-inch) (2nd generation)", # 12.9 in
-    "iPad Mini"                              #  9.7 in
+  "iPhone 12 Pro Max",
+  "iPhone 8 Plus",
+  "iPad Pro (12.9-inch) (2nd generation)",
+  "iPad Pro (12.9-inch) (4th generation)"
 ])
 
 languages([
   "en-US"
 ])
 
-ios_version("13.3")
-dark_mode(true)
-
+clear_previous_screenshots(true)
 concurrent_simulators(false)
-
-# The name of the scheme which contains the UI Tests
-scheme("ScreenShots")
-
-# Where should the resulting screenshots be stored?
-output_directory("./fastlane/screenshots")
-
-# remove the '#' to clear all previously generated screenshots before creating new ones
-clear_previous_screenshots(false)
-
-# Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
-launch_arguments(["--screenshots"])
-
-stop_after_first_error(true)
-number_of_retries(4)
-
-# For more information about all available options run
-# fastlane action snapshot
