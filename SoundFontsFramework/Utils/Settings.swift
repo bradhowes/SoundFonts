@@ -50,11 +50,10 @@ public extension SettingKeys {
     static let activeTagIndex = SettingKey("activeTagIndex", defaultValue: 0)
     static let globalTuning = SettingKey("globalTuning", defaultValue: Float(0.0))
     static let globalTuningEnabled = SettingKey("globalTuningEnabled", defaultValue: false)
-
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
-
     static let showedTutorial = SettingKey("showedTutorial", defaultValue: false)
+    static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", defaultValue: 1.4)
 }
 
 /// Global variable to keep things concise.
@@ -251,5 +250,9 @@ public extension UserDefaults {
     @objc dynamic var showedTutorial: Bool {
         get { self[.showedTutorial] }
         set { self[.showedTutorial] = newValue }
+    }
+    @objc dynamic var presetsWidthMultiplier: Double {
+        get { self[.presetsWidthMultiplier] }
+        set { self[.presetsWidthMultiplier] = newValue }
     }
 }

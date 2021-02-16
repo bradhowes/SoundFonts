@@ -209,6 +209,7 @@
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
 		BDEA0B54255B0AA80097F1CE /* MIDIParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */; };
 		BDEA0BAD255B65FF0097F1CE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */; };
+		BDEEDC7925DC102500FEA219 /* NSLayout+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEEDC7825DC102500FEA219 /* NSLayout+Extensions.swift */; };
 		BDF3B3D52566BB9C003F7BB3 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */; };
 		BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
@@ -432,6 +433,7 @@
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIParser.swift; sourceTree = "<group>"; };
 		BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		BDEEDC7825DC102500FEA219 /* NSLayout+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayout+Extensions.swift"; sourceTree = "<group>"; };
 		BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
@@ -626,6 +628,7 @@
 				BDD5FA7025043C3700367F0B /* NSManagedObjectContext+Extensions.swift */,
 				BD074C1E23CDAF51001987E9 /* RandomAccessCollection+Extensions.swift */,
 				BD074C1F23CDAF51001987E9 /* String+Extensions.swift */,
+				BDEEDC7825DC102500FEA219 /* NSLayout+Extensions.swift */,
 				BDCCFCB923F5A7D700DD518D /* Timer+Extensions.swift */,
 				BDE03BB125706F2F00F904E3 /* UIButton.swift */,
 				BD074C2723CDAF51001987E9 /* UICollectionView+Extensions.swift */,
@@ -1109,6 +1112,7 @@
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,
 				BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */,
 				BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */,
+				BDEEDC7925DC102500FEA219 /* NSLayout+Extensions.swift in Sources */,
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
 				BD074C5023CDAF51001987E9 /* SoundFontKind.swift in Sources */,
