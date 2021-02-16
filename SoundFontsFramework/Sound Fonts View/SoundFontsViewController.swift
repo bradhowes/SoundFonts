@@ -75,9 +75,15 @@ extension SoundFontsViewController {
             os_log(.info, log: log, "moveDivider - CHANGE: %f", change)
             lastDividerPos = pos
             let patchesWidth = patchesView.frame.width - change
-            if patchesWidth < 80.0 { break }
+
+            // Don't allow the preset view to shrink below 80 but do let it grow if it was below 80.
+            if patchesWidth < 80.0 && change > 0 { break }
+
             let fontsWidth = soundFontsView.frame.width + change
-            if fontsWidth < 80.0 { break }
+
+            // Likewise, don't allow the fonts view to shrink below 80 but do let it grow if it was below 80.
+            if fontsWidth < 80.0 && change < 0 { break }
+
             let multiplier = patchesWidth / fontsWidth
             os_log(.info, log: log, "moveDivider - old: %f new: %f",
                    patchesWidthConstraint.multiplier,
