@@ -28,14 +28,16 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch let error as NSError {
             fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
         }
+        let preferredSampleRate = 44100.0
         do {
-            try audioSession.setPreferredSampleRate(44100.0)
+            try audioSession.setPreferredSampleRate(preferredSampleRate)
         } catch let error as NSError {
             os_log(.error, log: log, "Failed to set the preferred sample rate: %{public}s",
                    error.localizedDescription)
         }
+        let preferredBufferSize = 512.0
         do {
-            try audioSession.setPreferredIOBufferDuration(2e-3)
+            try audioSession.setPreferredIOBufferDuration(preferredBufferSize / preferredSampleRate)
         } catch let error as NSError {
             os_log(.error, log: log, "Failed to set the preferred IO buffer duration: %{public}s",
                    error.localizedDescription)

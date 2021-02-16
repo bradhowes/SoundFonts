@@ -21,16 +21,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmV-bj-iZB" userLabel="SoundFonts">
-                                        <rect key="frame" x="0.0" y="0.0" width="167.5" height="896"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="169" height="896"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="il0-aC-ept" userLabel="Patches">
-                                        <rect key="frame" x="179.5" y="0.0" width="234.5" height="896"/>
+                                        <rect key="frame" x="177" y="0.0" width="237" height="896"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Name" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fl2-Sg-7ea" userLabel="Search">
-                                            <rect key="frame" x="0.0" y="0.0" width="234.5" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="237" height="56"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="56" id="GnP-gT-7qu"/>
                                             </constraints>
@@ -45,7 +45,7 @@
                                         </searchBar>
                                     </tableView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-uD-xKG" userLabel="Tags">
-                                        <rect key="frame" x="0.0" y="904" width="167.5" height="360"/>
+                                        <rect key="frame" x="0.0" y="904" width="169" height="360"/>
                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="360" id="3lx-F9-yk6"/>
@@ -53,22 +53,21 @@
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UU4-kD-PNI" userLabel="Divider Control">
-                                        <rect key="frame" x="167.5" y="428" width="12" height="40"/>
+                                        <rect key="frame" x="161" y="428" width="24" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UcI-Qm-Wp4">
-                                                <rect key="frame" x="0.0" y="4" width="12" height="26.5"/>
+                                                <rect key="frame" x="9.5" y="7" width="5.5" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.078431372549019607" green="0.078431372549019607" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="leading" secondItem="UU4-kD-PNI" secondAttribute="leading" id="42k-6o-dlT"/>
-                                            <constraint firstAttribute="trailing" secondItem="UcI-Qm-Wp4" secondAttribute="trailing" id="Ulu-yc-oW3"/>
-                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerY" secondItem="UU4-kD-PNI" secondAttribute="centerY" constant="-3" id="jwf-aV-E34"/>
+                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerY" secondItem="UU4-kD-PNI" secondAttribute="centerY" id="7c7-0N-knO"/>
+                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerX" secondItem="UU4-kD-PNI" secondAttribute="centerX" id="TjP-KC-f6Z"/>
                                             <constraint firstAttribute="height" constant="40" id="kGO-hn-aMV"/>
-                                            <constraint firstAttribute="width" constant="12" id="ypO-lL-S8h"/>
+                                            <constraint firstAttribute="width" constant="24" id="ypO-lL-S8h"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -77,16 +76,16 @@
                                 <constraints>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="1To-12-Edz"/>
-                                    <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="UU4-kD-PNI" secondAttribute="trailing" id="Aqb-hq-MeU"/>
+                                    <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="6Iw-H1-bIv"/>
+                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="centerY" secondItem="V3j-Cj-T3A" secondAttribute="centerY" id="IUy-3y-qQZ"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="Mvo-0D-YFt"/>
                                     <constraint firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="Pw5-9k-6te"/>
-                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" id="VZS-or-tA2"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="top" secondItem="fmV-bj-iZB" secondAttribute="bottom" constant="8" id="Zet-Sn-wdW"/>
                                     <constraint firstAttribute="trailing" secondItem="il0-aC-ept" secondAttribute="trailing" id="d3t-rg-LLR"/>
+                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="-8" id="dgq-Is-bSI"/>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
                                     <constraint firstItem="il0-aC-ept" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="j1h-Lp-Qhe"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="khq-jh-OFk"/>
-                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="centerY" secondItem="V3j-Cj-T3A" secondAttribute="centerY" id="uVy-tt-W39"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" id="wPI-ss-8PY"/>
                                 </constraints>
                             </view>
