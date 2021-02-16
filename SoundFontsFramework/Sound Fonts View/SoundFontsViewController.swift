@@ -36,7 +36,7 @@ public final class SoundFontsViewController: UIViewController {
     public var swipeLeft = UISwipeGestureRecognizer()
     public var swipeRight = UISwipeGestureRecognizer()
     private var dividerDragGesture = UIPanGestureRecognizer()
-    private var lastDividerPos: CGPoint = .zero
+    private var lastDividerPos: CGFloat = .zero
 }
 
 extension SoundFontsViewController {
@@ -67,26 +67,27 @@ extension SoundFontsViewController {
         switch gesture.state {
         case .began:
             os_log(.info, log: log, "moveDivider - BEGIN")
-            lastDividerPos = gesture.location(in: view)
+            lastDividerPos = gesture.location(in: view).x
 
         case .changed:
             os_log(.info, log: log, "moveDivider - CHANGED")
             let pos = gesture.location(in: self.view)
-            let change = pos.x - lastDividerPos.x
-            os_log(.info, log: log, "moveDivider - CHANGE: %f", change)
+            let change = CGFloat(Int(pos.x - lastDividerPos))
+            guard abs(change) > 0 else { return }
 
-            lastDividerPos = pos
+            os_log(.info, log: log, "moveDivider - CHANGE: %f", change)
+            lastDividerPos += change
             gesture.setTranslation(.zero, in: view)
 
             let patchesWidth = patchesView.frame.width - change
 
             // Don't allow the preset view to shrink below 80 but do let it grow if it was below 80.
-            if patchesWidth < 80.0 && change > 0 { break }
+            if patchesWidth < 80.0 && change > 0 { return }
 
             let fontsWidth = soundFontsView.frame.width + change
 
             // Likewise, don't allow the fonts view to shrink below 80 but do let it grow if it was below 80.
-            if fontsWidth < 80.0 && change < 0 { break }
+            if fontsWidth < 80.0 && change < 0 { return }
 
             let multiplier = patchesWidth / fontsWidth
             os_log(.info, log: log, "moveDivider - old: %f new: %f",

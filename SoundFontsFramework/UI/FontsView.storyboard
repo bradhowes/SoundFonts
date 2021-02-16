@@ -56,7 +56,7 @@
                                         <rect key="frame" x="161" y="428" width="24" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UcI-Qm-Wp4">
-                                                <rect key="frame" x="9.5" y="7" width="5.5" height="26.5"/>
+                                                <rect key="frame" x="9.5" y="4" width="5.5" height="26.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <color key="textColor" systemColor="systemTealColor"/>
                                                 <nil key="highlightedColor"/>
@@ -64,7 +64,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerY" secondItem="UU4-kD-PNI" secondAttribute="centerY" id="7c7-0N-knO"/>
+                                            <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerY" secondItem="UU4-kD-PNI" secondAttribute="centerY" constant="-3" id="7c7-0N-knO"/>
                                             <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerX" secondItem="UU4-kD-PNI" secondAttribute="centerX" id="TjP-KC-f6Z"/>
                                             <constraint firstAttribute="height" constant="40" id="kGO-hn-aMV"/>
                                             <constraint firstAttribute="width" constant="24" id="ypO-lL-S8h"/>
