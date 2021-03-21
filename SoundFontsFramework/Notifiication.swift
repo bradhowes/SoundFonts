@@ -31,6 +31,9 @@ extension Notification.Name {
     /// Set a tuning
     public static let setTuning = Notification.Name("setTuningChanged")
 
+    /// Set pitch-bend range
+    public static let setPitchBendRange = Notification.Name("setPitchBendRange")
+
     /// Failed to load the consolidated config file
     public static let configLoadFailure = Notification.Name("configLoadFailure")
 

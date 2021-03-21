@@ -18,7 +18,7 @@ class AppTests: XCTestCase {
         let mainView = app.otherElements["MainView"]
         XCTAssert(mainView.waitForExistence(timeout: 5))
 
-        if app.buttons["More"].exists { app.buttons["More"].tap() }
+        if app.buttons["More Right"].exists { app.buttons["More Right"].tap() }
         app.buttons["Settings"].tap()
 
         let settingsView = app.otherElements["SettingsView"]

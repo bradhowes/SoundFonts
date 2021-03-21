@@ -25,7 +25,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C8
+
     public static let setTuningNotification = TypedNotification<Float>(name: .setTuning)
+    public static let setPitchBendRangeNotification = TypedNotification<Int>(name: .setPitchBendRange)
 
     public typealias StartResult = Result<AVAudioUnitSampler?, SamplerStartFailure>
 
@@ -47,6 +49,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
     private var presetConfigNotifier: NotificationObserver?
     private var setGlobalTuningNotifier: NotificationObserver?
+    private var setGlobalPitchBendRangeNotifier: NotificationObserver?
 
     /**
      Create a new instance of a Sampler.
@@ -71,6 +74,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
         setGlobalTuningNotifier = Self.setTuningNotification.registerOnAny { [weak self] tuning in
             self?.setTuning(tuning)
+        }
+
+        setGlobalPitchBendRangeNotifier = Self.setPitchBendRangeNotification.registerOnAny { [weak self] range in
+            self?.setPitchBendRange(range)
         }
     }
 
@@ -267,6 +274,18 @@ extension Sampler {
         os_log(.debug, log: log, "programChange - %d", program)
         guard activePatchManager.active != .none, self.loaded else { return }
         auSampler?.sendProgramChange(program, onChannel: 0)
+    }
+
+    /// For the future -- AVAudioUnitSampler does not support this
+    public func setPitchBendRange(_ value: Int) {
+        guard value > 0 && value < 25 else {
+            os_log(.error, log: log, "invalid pitch bend range: %d", value)
+            return
+        }
+        auSampler?.sendMIDIEvent(101, data1: 0)
+        auSampler?.sendMIDIEvent(100, data1: 0)
+        auSampler?.sendMIDIEvent(6, data1: UInt8(value))
+        auSampler?.sendMIDIEvent(38, data1: 0)
     }
 }
 

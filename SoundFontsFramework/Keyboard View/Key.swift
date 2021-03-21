@@ -86,7 +86,7 @@ public final class Key: UIView {
 
 extension RandomAccessCollection where Element == Key {
 
-    private func orderedInsertionIndex(for point: CGPoint) -> Index {
+    public func orderedInsertionIndex(for point: CGPoint) -> Index {
         var low = startIndex
         var high = endIndex
         while low != high {

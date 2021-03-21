@@ -33,6 +33,7 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var slideKeyboardStackView: UIStackView!
     @IBOutlet private weak var divider1: UIView!
     @IBOutlet private weak var midiChannelStackView: UIStackView!
+    @IBOutlet private weak var pitchBendStackView: UIStackView!
     @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
     @IBOutlet private weak var divider2: UIView!
     @IBOutlet private weak var copyFilesStackView: UIStackView!
@@ -53,6 +54,8 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var slideKeyboard: UISwitch!
     @IBOutlet private weak var midiChannel: UILabel!
     @IBOutlet private weak var midiChannelStepper: UIStepper!
+    @IBOutlet private weak var pitchBendRange: UILabel!
+    @IBOutlet private weak var pitchBendStepper: UIStepper!
     @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var copyFiles: UISwitch!
 
@@ -125,6 +128,9 @@ public final class SettingsViewController: UIViewController {
         midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
         midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
 
+        pitchBendStepper.setDecrementImage(pitchBendStepper.decrementImage(for: .normal), for: .normal)
+        pitchBendStepper.setIncrementImage(pitchBendStepper.incrementImage(for: .normal), for: .normal)
+
         globalTuningCents.inputAssistantItem.leadingBarButtonGroups = []
         globalTuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
     }
@@ -160,8 +166,11 @@ public final class SettingsViewController: UIViewController {
         keyWidthSlider.value = Settings.shared.keyWidth
         slideKeyboard.isOn = Settings.shared.slideKeyboard
 
-        midiChannelStepper.value = Double(Settings.instance.midiChannel)
+        midiChannelStepper.value = Double(Settings.shared.midiChannel)
         updateMidiChannel()
+
+        pitchBendStepper.value = Double(Settings.shared.pitchBendRange)
+        updatePitchBendRange()
 
         slideKeyboard.isOn = Settings.shared.slideKeyboard
 
@@ -263,6 +272,10 @@ extension SettingsViewController {
         updateMidiChannel()
     }
 
+    @IBAction func pitchBendStep(_ sender: UIStepper) {
+        updatePitchBendRange()
+    }
+
     @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
         os_log(.info, log: log, "connectBluetoothMIDIDevices")
         let vc = CABTMIDICentralViewController()
@@ -335,6 +348,14 @@ device. Are you sure you want to disable copying?
         os_log(.info, log: log, "new MIDI channel %d", value)
         midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
         Settings.shared.midiChannel = value
+    }
+
+    private func updatePitchBendRange() {
+        let value = Int(pitchBendStepper.value)
+        os_log(.info, log: log, "new pitch-bend range %d", value)
+        pitchBendRange.text = "\(value)"
+        Settings.shared.pitchBendRange = value
+        Sampler.setPitchBendRangeNotification.post(value: value)
     }
 
     private func postNotice(msg: String) {

@@ -83,7 +83,7 @@ class FormattersTests: XCTestCase {
                            Formatters.addSoundFontFailureText(failures: [.emptyFile("one"),
                                                                          .invalidSoundFont("two"),
                                                                          .emptyFile("three")]))
-            XCTAssertEqual("1 invalid file (two), 2 uncopyable files (four, six), 3 empty files (one, three, five)",
+            XCTAssertEqual("1 invalid file (two), 2 failed files (four, six), 3 empty files (one, three, five)",
                            Formatters.addSoundFontFailureText(failures: [.emptyFile("one"),
                                                                          .invalidSoundFont("two"),
                                                                          .emptyFile("three"),

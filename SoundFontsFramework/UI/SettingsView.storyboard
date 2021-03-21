@@ -173,6 +173,30 @@
                                                             </stepper>
                                                         </subviews>
                                                     </stackView>
+                                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7h4-ob-UUq" userLabel="Pitchbend">
+                                                        <rect key="frame" x="0.0" y="300.5" width="374" height="0.0"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-vj-67t">
+                                                                <rect key="frame" x="0.0" y="0.0" width="254" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jit-2J-S2A">
+                                                                <rect key="frame" x="262" y="0.0" width="10" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-cD-mQb">
+                                                                <rect key="frame" x="280" y="0.0" width="94" height="0.0"/>
+                                                                <color key="tintColor" systemColor="systemTealColor"/>
+                                                                <connections>
+                                                                    <action selector="pitchBendStep:" destination="Eyw-X4-KFI" eventType="valueChanged" id="bbq-kC-pKD"/>
+                                                                </connections>
+                                                            </stepper>
+                                                        </subviews>
+                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="sht-w8-Ejz" userLabel="BT MIDI">
                                                         <rect key="frame" x="0.0" y="306.5" width="374" height="30"/>
                                                         <subviews>
@@ -434,7 +458,7 @@
                                                         <rect key="frame" x="0.0" y="863.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.20.4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="51" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="51.5" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -460,7 +484,6 @@
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show overview screens again" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-05-Mz7">
                                                                 <rect key="frame" x="0.0" y="6" width="201.5" height="18"/>
-                                                                <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -485,7 +508,6 @@
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact developer (bradhowes@mac.com)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9L-FZ-ynD">
                                                                 <rect key="frame" x="0.0" y="3.5" width="293" height="18"/>
-                                                                <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -579,6 +601,9 @@
                         <outlet property="midiChannel" destination="add-2o-lM1" id="XbS-wa-5hR"/>
                         <outlet property="midiChannelStackView" destination="DRN-Bw-x2Y" id="uNr-Bk-oHr"/>
                         <outlet property="midiChannelStepper" destination="5iQ-ck-lxN" id="f3f-18-xuQ"/>
+                        <outlet property="pitchBendRange" destination="jit-2J-S2A" id="87O-PR-ola"/>
+                        <outlet property="pitchBendStackView" destination="7h4-ob-UUq" id="Vb8-Qu-hY2"/>
+                        <outlet property="pitchBendStepper" destination="RY5-cD-mQb" id="mvR-Xp-0gp"/>
                         <outlet property="playSample" destination="JaD-vu-QJ2" id="N6G-zv-aub"/>
                         <outlet property="playSamplesStackView" destination="goE-tS-nbI" id="ot1-z5-tk6"/>
                         <outlet property="removeDefaultSoundFonts" destination="h7B-kV-khV" id="lW7-sM-p6q"/>

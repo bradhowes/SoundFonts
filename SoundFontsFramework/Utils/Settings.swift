@@ -54,6 +54,7 @@ public extension SettingKeys {
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
     static let showedTutorial = SettingKey("showedTutorial", defaultValue: false)
     static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", defaultValue: 1.4)
+    static let pitchBendRange = SettingKey("pitchBendRange", defaultValue: 2)
 }
 
 /// Global variable to keep things concise.
@@ -254,5 +255,9 @@ public extension UserDefaults {
     @objc dynamic var presetsWidthMultiplier: Double {
         get { self[.presetsWidthMultiplier] }
         set { self[.presetsWidthMultiplier] = newValue }
+    }
+    @objc dynamic var pitchBendRange: Int {
+        get { self[.pitchBendRange] }
+        set { self[.pitchBendRange] = newValue }
     }
 }
