@@ -23,7 +23,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setStateIfUITesting()
-        
+
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
@@ -89,7 +89,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setStateIfUITesting() {
         print(ProcessInfo.processInfo.arguments)
-        if ProcessInfo.processInfo.arguments.contains("ui-testing") {
+        if ProcessInfo.processInfo.arguments.contains("-ui_testing") {
             Settings.instance[.showedTutorial] = true
         }
     }

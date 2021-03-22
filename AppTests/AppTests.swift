@@ -16,7 +16,7 @@ class AppTests: XCTestCase {
     override func setUp() {
         XCUIDevice.shared.orientation = .portrait
         super.setUp()
-        app.launchArguments += ["ui-testing"]
+        app.launchArguments += ["-ui_testing"]
         app.launch()
     }
 
