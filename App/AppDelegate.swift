@@ -22,6 +22,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        setStateIfUITesting()
+        
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
@@ -83,5 +85,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Expected a valid URL")
         }
         UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
+    }
+
+    private func setStateIfUITesting() {
+        print(ProcessInfo.processInfo.arguments)
+        if ProcessInfo.processInfo.arguments.contains("ui-testing") {
+            Settings.instance[.showedTutorial] = true
+        }
     }
 }

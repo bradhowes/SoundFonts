@@ -11,10 +11,16 @@ import XCTest
 
 class AppTests: XCTestCase {
 
-    func testVersionMatchesBundle() {
+    private let app = XCUIApplication()
+
+    override func setUp() {
         XCUIDevice.shared.orientation = .portrait
-        let app = XCUIApplication()
+        super.setUp()
+        app.launchArguments += ["ui-testing"]
         app.launch()
+    }
+
+    func testVersionMatchesBundle() {
         let mainView = app.otherElements["MainView"]
         XCTAssert(mainView.waitForExistence(timeout: 5))
 
