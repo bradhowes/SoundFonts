@@ -3,10 +3,8 @@
 #pragma once
 
 #include <algorithm>
-#include <cassert>
 #include <cmath>
 #include <limits>
-#include <vector>
 
 #include "../Entity/Generator/Amount.hpp"
 #include "Utils.hpp"
@@ -15,7 +13,7 @@ namespace SF2 {
 namespace Render {
 
 /**
- Representation of a traditional synthesizer volume/filter envelope. This one provides for 6 stages:
+ Representation of the SF2 volume/filter envelope. It contains 6 stages:
 
  - Delay -- number of seconds to delay the beginning of the attack stage
  - Attack -- number of seconds to ramp up from 0.0 to 1.0. Also supports non-linear curvature.
@@ -49,9 +47,6 @@ public:
         release
     };
 
-    /**
-     Number of stages being used.
-     */
     inline static constexpr int numStages = static_cast<int>(Stage::release) + 1;
     inline static constexpr Float defaultCurvature = 0.01;
     inline static constexpr Float minimumCurvature = 0.000000001;
@@ -104,24 +99,24 @@ public:
     using StageConfigs = StageConfiguration[numStages];
 
     /**
-     Manager for an instance of an envelope. Uses a collection of StageConfigurations to set the parameters of the
-     envelope.
+     Generates values from an envelope over time.
      */
     struct Generator {
 
         /**
-         Construct a new envelope generator.
+         Construct a new generator.
+
+         @param configs the configuration for the envelope stages.
          */
         explicit Generator(const StageConfigs& configs) : configs_{configs} {}
 
-        /**
-         Obtain the currently active stage.
-         */
+        /// @returns the currently active stage.
         Stage stage() const { return stage_; }
 
-        /**
-         Obtain the current envelope value.
-         */
+        /// @returns true if the generator still has values to emit
+        bool isActive() const { return stage_ != Stage::idle; }
+
+        /// @returns the current envelope value.
         Float value() const { return value_; }
 
         /**
@@ -132,6 +127,8 @@ public:
 
         /**
          Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
+
+         @returns the new envelope value.
          */
         Float process();
 
@@ -149,10 +146,6 @@ public:
 
         void checkIfEndStage(Stage next) { if (--counter_ == 0) enterStage(next); }
 
-        /**
-         Enter the given stage, setting it up for processing. If the stage has no activity, move to the next one until
-         there is one with non-zero samples or the end of the stage sequence is reached.
-         */
         void enterStage(Stage next);
 
         const StageConfigs& configs_;
@@ -174,15 +167,25 @@ public:
         Float release_{0.0};
     };
 
+    /**
+     Create new envelope definition with a bare configuration.
+
+     @param sampleRate number of samples per second
+     */
     explicit Envelope(Float sampleRate) : Envelope(sampleRate, Config(0.0, 0.0, 0.0, 0.0, 1.0, 0.0)) {}
 
     /**
-     Create new envelope factory.
+     Create new envelope definition.
+
+     @param sampleRate number of samples per second
+     @param config configuration for the various stages of the envelope
      */
     Envelope(Float sampleRate, const Config& config);
 
     /**
      Create a new envelope generator using the configured envelope settings.
+
+     @returns new Generator using the current envelope configuration.
      */
     Generator generator() const { return Generator(configs_); }
 
