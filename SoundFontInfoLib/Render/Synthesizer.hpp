@@ -20,17 +20,6 @@ struct SampleRateBased {
     constexpr static double sampleRate = 44100.0;
 };
 
-struct Duration : SampleRateBased {
-    constexpr explicit Duration(double duration) : samples{duration * sampleRate} {}
-    double const samples;
-};
-
-struct Frequency : SampleRateBased {
-    constexpr explicit Frequency(double frequency) : samples{frequency * sampleRate} {}
-    double const samples;
-    double const value() const { return samples / sampleRate; }
-};
-
 class Synthesizer {
 public:
     constexpr static double PI = M_PI;            // 180°
@@ -40,7 +29,6 @@ public:
 
     // 440 * pow(2.0, (N - 69) / 12)
     constexpr static double LowestNoteFrequency = 8.175798915643707; // C-1
-
     constexpr static size_t SineLookupTableSize = 4096;
     constexpr static double SineLookupTableScale = (SineLookupTableSize - 1) / HalfPI;
 

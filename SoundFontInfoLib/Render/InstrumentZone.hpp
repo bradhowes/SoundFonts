@@ -14,7 +14,7 @@ class Configuration;
 
 class InstrumentZone : public Zone {
 public:
-    InstrumentZone(IO::File const& file, Entity::Bag const& bag);
+    InstrumentZone(const IO::File& file, const Entity::Bag& bag);
 
     void apply(Configuration& configuration) const { Zone::apply(configuration); }
 

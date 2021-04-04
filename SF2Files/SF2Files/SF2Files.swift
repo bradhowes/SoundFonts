@@ -16,7 +16,9 @@ private final class SF2FilesTag {}
      - returns: the URL of the resource in the bundle
      */
     @objc public class func resource(name: String) -> URL {
-        guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else { fatalError("missing SF2 resource \(name)") }
+        guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else {
+            fatalError("missing SF2 resource \(name)")
+        }
         return url
     }
 

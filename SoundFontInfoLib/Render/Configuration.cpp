@@ -6,23 +6,23 @@ using namespace SF2::Render;
 
 void Configuration::setDefaults()
 {
-    setAmount(Entity::GenIndex::initialFilterFc, 13500);
-    setAmount(Entity::GenIndex::delayModLFO, -12000);
-    setAmount(Entity::GenIndex::delayVibLFO, -12000);
-    setAmount(Entity::GenIndex::delayModEnv, -12000);
-    setAmount(Entity::GenIndex::attackModEnv, -12000);
-    setAmount(Entity::GenIndex::holdModEnv, -12000);
-    setAmount(Entity::GenIndex::decayModEnv, -12000);
-    setAmount(Entity::GenIndex::releaseModEnv, -12000);
-    setAmount(Entity::GenIndex::delayVolEnv, -12000);
-    setAmount(Entity::GenIndex::attackVolEnv, -12000);
-    setAmount(Entity::GenIndex::holdVolEnv, -12000);
-    setAmount(Entity::GenIndex::decayVolEnv, -12000);
-    setAmount(Entity::GenIndex::sustainVolEnv, -12000);
-    setAmount(Entity::GenIndex::releaseVolEnv, -12000);
-    setAmount(Entity::GenIndex::keynum, -1);
-    setAmount(Entity::GenIndex::velocity, -1);
-    setAmount(Entity::GenIndex::scaleTuning, 100);
-    setAmount(Entity::GenIndex::overridingRootKey, -1);
+    using namespace Entity::Generator;
+    setAmount(Index::initialFilterCutoff, 13500);
+    setAmount(Index::delayModulatorLFO, -12000);
+    setAmount(Index::delayVibratoLFO, -12000);
+    setAmount(Index::delayModulatorEnvelope, -12000);
+    setAmount(Index::attackModulatorEnvelope, -12000);
+    setAmount(Index::holdModulatorEnvelope, -12000);
+    setAmount(Index::decayModulatorEnvelope, -12000);
+    setAmount(Index::releaseModulatorEnvelope, -12000);
+    setAmount(Index::delayVolumeEnvelope, -12000);
+    setAmount(Index::attackVolumeEnvelope, -12000);
+    setAmount(Index::holdVolumeEnvelope, -12000);
+    setAmount(Index::decayVolumeEnvelope, -12000);
+    setAmount(Index::sustainVolumeEnvelope, -12000);
+    setAmount(Index::releaseVolumeEnvelope, -12000);
+    setAmount(Index::midiKey, -1);
+    setAmount(Index::velocity, -1);
+    setAmount(Index::scaleTuning, 100);
+    setAmount(Index::overridingRootKey, -1);
 }
-

@@ -10,7 +10,7 @@ namespace IO {
 
 /**
  Each RIFF chunk or blob has a 4-character tag that uniquely identifies the contents of the chunk. This is also a 4-byte
- integer.
+ unsigned integer.
  */
 class Tag {
 public:
@@ -18,8 +18,8 @@ public:
 
     uint32_t rawValue() const { return tag_; }
 
-    bool operator ==(Tag const& rhs) const { return tag_ == rhs.tag_; }
-    bool operator !=(Tag const& rhs) const { return tag_ != rhs.tag_; }
+    bool operator ==(const Tag& rhs) const { return tag_ == rhs.tag_; }
+    bool operator !=(const Tag& rhs) const { return tag_ != rhs.tag_; }
 
     std::string toString() const { return std::string(reinterpret_cast<char const*>(&tag_), 4); }
 
@@ -27,11 +27,14 @@ private:
     uint32_t tag_;
 };
 
-inline constexpr uint32_t Pack4Chars(char const* c)
+inline constexpr uint32_t Pack4Chars(const char* c)
 {
     return ((uint32_t)(c[3])) << 24 | ((uint32_t)(c[2])) << 16 | ((uint32_t)(c[1])) << 8 | ((uint32_t)(c[0]));
 }
 
+/**
+ Global list of all tags defined in the SF2 specification.
+ */
 enum Tags {
     riff = Pack4Chars("RIFF"),
     list = Pack4Chars("LIST"),

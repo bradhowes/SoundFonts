@@ -15,7 +15,7 @@ class Voice
 public:
     using Configuration = std::array<SFGeneratorAmount,static_cast<size_t>(SFGenIndex::numValues)>;
 
-    Voice(Zone const& instrument, Zone const* globalInstrument, Zone const&) : configuration_{}
+    Voice(const Zone& instrument, Zone const* globalInstrument, const Zone&) : configuration_{}
     {
         configuration_.fill(SFGeneratorAmount(0));
 

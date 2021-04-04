@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "../Entity/Bag.hpp"
-#include "../Entity/Generator.hpp"
-#include "../Entity/Modulator.hpp"
+#include "../Entity/Generator/Generator.hpp"
+#include "../Entity/Modulator/Modulator.hpp"
 
 #include "../IO/ChunkItems.hpp"
 #include "../IO/File.hpp"
@@ -20,15 +20,15 @@ namespace Render {
 class Zone
 {
 public:
-    using GeneratorCollection = IO::ChunkItems<Entity::Generator>::ItemRefCollection;
-    using ModulatorCollection = IO::ChunkItems<Entity::Modulator>::ItemRefCollection;
+    using GeneratorCollection = IO::ChunkItems<Entity::Generator::Generator>::ItemRefCollection;
+    using ModulatorCollection = IO::ChunkItems<Entity::Modulator::Modulator>::ItemRefCollection;
 
     class Range
     {
     public:
         Range(int low, int high) : low_{low}, high_{high} {}
 
-        explicit Range(Entity::GeneratorAmount const& range) : low_{range.low()}, high_{range.high()} {}
+        explicit Range(const Entity::Generator::Amount& range) : low_{range.low()}, high_{range.high()} {}
 
         bool contains(int value) const { return value >= low_ && value <= high_; }
 
@@ -40,49 +40,52 @@ public:
         int high_;
     };
 
-    Range const& keyRange() const { return keyRange_; }
-    Range const& velocityRange() const { return velocityRange_; }
+    const Range& keyRange() const { return keyRange_; }
+    const Range& velocityRange() const { return velocityRange_; }
 
-    GeneratorCollection const& generators() const { return generators_; }
-    ModulatorCollection const& modulators() const { return modulators_; }
+    const GeneratorCollection& generators() const { return generators_; }
+    const ModulatorCollection& modulators() const { return modulators_; }
 
 protected:
     static Range const all;
 
-    static Range KeyRange(GeneratorCollection const& gens)
+    static Range KeyRange(const GeneratorCollection& gens)
     {
-        if (gens.size() > 0 && gens[0].get().index() == Entity::GenIndex::keyRange) return Range(gens[0].get().value());
+        if (gens.size() > 0 && gens[0].get().index() == Entity::Generator::Index::keyRange)
+            return Range(gens[0].get().value());
         return all;
     }
 
-    static Range VelRange(GeneratorCollection const& gens)
+    static Range VelocityRange(const GeneratorCollection& gens)
     {
-        if (gens.size() > 0 && gens[0].get().index() == Entity::GenIndex::velRange) return Range(gens[0].get().value());
-        if (gens.size() > 1 && gens[0].get().index() == Entity::GenIndex::velRange) return Range(gens[1].get().value());
+        if (gens.size() > 0 && gens[0].get().index() == Entity::Generator::Index::velocityRange) return Range(gens[0].get().value());
+        if (gens.size() > 1 && gens[0].get().index() == Entity::Generator::Index::velocityRange) return Range(gens[1].get().value());
         return all;
     }
 
-    static bool IsGlobal(GeneratorCollection const& gens, Entity::GenIndex expected, ModulatorCollection const& mods)
+    static bool IsGlobal(const GeneratorCollection& gens, Entity::Generator::Index expected, const ModulatorCollection& mods)
     {
         return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
     }
 
-    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::GenIndex terminal) :
+    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::Generator::Index terminal) :
     generators_{gens},
     modulators_{mods},
     isGlobal_{IsGlobal(gens, terminal, mods)},
-    keyRange_{KeyRange(gens)}, velocityRange_{VelRange(gens)}
+    keyRange_{KeyRange(gens)}, velocityRange_{VelocityRange(gens)}
     {}
 
     void apply(Configuration& cfg) const
     {
-        std::for_each(generators_.begin(), generators_.end(), [&](Entity::Generator const& gen) { cfg[gen.index()] = gen.value(); });
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
+            cfg[gen.index()] = gen.value();
+        });
     }
 
     void refine(Configuration& cfg) const
     {
-        std::for_each(generators_.begin(), generators_.end(), [&](Entity::Generator const& gen) {
-            if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
+            // if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());
         });
     }
 
@@ -133,7 +136,7 @@ public:
         Matches matches;
 //        typename Super::const_iterator pos = this->begin();
 //        if (this->hasGlobal()) ++pos;
-//        std::copy_if(pos, this->end(), std::back_inserter(matches), [=](Zone const& zone) {
+//        std::copy_if(pos, this->end(), std::back_inserter(matches), [=](const Zone& zone) {
 //            return zone.appliesTo(key, velocity);
 //        });
         return matches;
@@ -142,7 +145,7 @@ public:
     bool hasGlobal() const {
         return false;
 //        if (this->empty()) return false;
-//        Element const& first = this->front();
+//        const Element& first = this->front();
 //        return first.isGlobal();
     }
 

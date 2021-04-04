@@ -1,0 +1,151 @@
+{
+ "metadata": {
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.2-final"
+  },
+  "orig_nbformat": 2,
+  "kernelspec": {
+   "name": "python382jvsc74a57bd0b6717e154b1e31277b06f49a8b8b131b968e8644d085bb0c377e0d8f434ca334",
+   "display_name": "Python 3.8.2 64-bit ('venv')"
+  },
+  "metadata": {
+   "interpreter": {
+    "hash": "b6717e154b1e31277b06f49a8b8b131b968e8644d085bb0c377e0d8f434ca334"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2,
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import math\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import plotly.graph_objects as go\n",
+    "import ipywidgets as widgets\n",
+    "from ipywidgets import interact"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "defaultCurvature = 0.01\n",
+    "minimumCurvature = 0.000000001\n",
+    "maximumCurvature = 10.0\n",
+    "steps = 100"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "class Curve:\n",
+    "    def __init__(self, alpha, beta, initial):\n",
+    "        self.alpha = alpha\n",
+    "        self.beta = beta\n",
+    "        self.last = initial\n",
+    "\n",
+    "    def value(self):\n",
+    "        self.last = self.last * self.alpha + self.beta\n",
+    "        return self.last"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def calculateAlpha(steps, curvature):\n",
+    "    return 0.0 if steps <= 0.0 else math.exp(-math.log((1.0 + curvature) / curvature) / steps)\n",
+    "\n",
+    "def makeAttackCurve(steps, curvature):\n",
+    "    initial = 0.0\n",
+    "    alpha = calculateAlpha(steps, curvature)\n",
+    "    beta = (1.0 + curvature) * (1.0 - alpha)\n",
+    "    return Curve(alpha, beta, initial)\n",
+    "\n",
+    "def makeDecayCurve(steps, curvature, sustainLevel):\n",
+    "    initial = 1.0\n",
+    "    alpha = calculateAlpha(steps, curvature)\n",
+    "    beta = (sustainLevel - curvature) * (1.0 - alpha);\n",
+    "    return Curve(alpha, beta, initial)\n",
+    "\n",
+    "def makeReleaseCurve(steps, curvature, sustainLevel):\n",
+    "    initial = sustainLevel\n",
+    "    alpha = calculateAlpha(steps, curvature)\n",
+    "    beta = (0.0 - curvature) * (1.0 - alpha);\n",
+    "    return Curve(alpha, beta, initial)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
+    {
+     "output_type": "display_data",
+     "data": {
+      "text/plain": "interactive(children=(IntSlider(value=100, description='attack'), IntSlider(value=100, description='decay'), I…",
+      "application/vnd.jupyter.widget-view+json": {
+       "version_major": 2,
+       "version_minor": 0,
+       "model_id": "926b52591b3d4c92ac7b70712ae3ce8d"
+      }
+     },
+     "metadata": {}
+    },
+    {
+     "output_type": "display_data",
+     "data": {
+      "text/plain": "FigureWidget({\n    'data': [{'type': 'scatter',\n              'uid': '0a9fc256-c7c6-403f-b295-18394514ce66',\n …",
+      "application/vnd.jupyter.widget-view+json": {
+       "version_major": 2,
+       "version_minor": 0,
+       "model_id": "b49a2a82b23c4d088e81bd594ce05af8"
+      }
+     },
+     "metadata": {}
+    }
+   ],
+   "source": [
+    "fig = go.FigureWidget()\n",
+    "fig.add_scatter()\n",
+    "@interact(attack=(0, 100, 1), decay=(0, 100, 1), release=(0,100, 1))\n",
+    "def update(attack=100, decay=100, release=100):\n",
+    "    with fig.batch_update():\n",
+    "        scatt = fig.data[0]\n",
+    "        total = attack + decay + release\n",
+    "        scatt.x = np.linspace(0, total, total)\n",
+    "        attackCurve = makeAttackCurve(attack, defaultCurvature)\n",
+    "        decayCurve = makeDecayCurve(decay, defaultCurvature, 0.5)\n",
+    "        releaseCurve = makeReleaseCurve(release, defaultCurvature, 0.5)\n",
+    "        scatt.y = (\n",
+    "            [attackCurve.value() for i in range(attack)] + \n",
+    "            [decayCurve.value() for i in range(decay)] + \n",
+    "            [releaseCurve.value() for i in range(release)]\n",
+    "        )\n",
+    "fig"
+   ]
+  }
+ ]
+}

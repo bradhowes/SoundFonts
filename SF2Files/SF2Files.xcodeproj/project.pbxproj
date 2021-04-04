@@ -13,6 +13,7 @@
 		BD0FAC26251F68CA00EEF187 /* SF2Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC25251F68CA00EEF187 /* SF2Files.swift */; };
 		BD0FAC3E251F927C00EEF187 /* SF2FilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC3D251F927C00EEF187 /* SF2FilesTests.swift */; };
 		BD0FAC40251F927C00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC00251F676900EEF187 /* SF2Files.framework */; };
+		BD250BA52615A42A00D1C1E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD250BA42615A42A00D1C1E0 /* README.md */; };
 		BDE634A2256C7664006D8C56 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDE634A1256C7664006D8C56 /* FreeFont.sf2 */; };
 /* End PBXBuildFile section */
 
@@ -36,6 +37,7 @@
 		BD0FAC3B251F927C00EEF187 /* SF2FilesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SF2FilesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC3D251F927C00EEF187 /* SF2FilesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SF2FilesTests.swift; sourceTree = "<group>"; };
 		BD0FAC3F251F927C00EEF187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD250BA42615A42A00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BDE6348A256C756F006D8C56 /* FluidR3_GM.sf2.2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.2; sourceTree = "<group>"; };
 		BDE6348B256C756F006D8C56 /* FluidR3_GM.sf2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = FluidR3_GM.sf2.1; sourceTree = "<group>"; };
 		BDE6348C256C756F006D8C56 /* FluidR3_GM.sf2.3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.3; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 		BD0FABF6251F676900EEF187 = {
 			isa = PBXGroup;
 			children = (
+				BD250BA42615A42A00D1C1E0 /* README.md */,
 				BD0FAC02251F676900EEF187 /* SF2Files */,
 				BD0FAC0C251F680B00EEF187 /* Resources */,
 				BD0FAC3C251F927C00EEF187 /* SF2FilesTests */,
@@ -212,6 +215,7 @@
 			files = (
 				BD0FAC19251F680B00EEF187 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
 				BDE634A2256C7664006D8C56 /* FreeFont.sf2 in Resources */,
+				BD250BA52615A42A00D1C1E0 /* README.md in Resources */,
 				BD0FAC1E251F680B00EEF187 /* RolandNicePiano.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

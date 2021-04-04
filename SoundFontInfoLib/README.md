@@ -1,8 +1,7 @@
 # Notes
 
-A 'PHDR' sub-chunk defines a preset. Each should have unique (wPreset, wBank) values. If the same, the first one
-wins. if wPreset > 127 or wBank > 128 then it cannot be accessed but it is still valid.
-
+A 'PHDR' sub-chunk defines a preset. Each one should have unique (wPreset, wBank) values. If the same, the first one
+wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI but it is still considered valid.
 
 A 'PBAG' sub-chunk defines the zones of the presets. A preset can have more than one. The first zone can be a
 *global* zone if the last generator in the wGenNdx is *not* an Instrument generator. There cannot be a global
@@ -23,7 +22,7 @@ A 'PGEN' value adjusts an instrument's generator; it never sets it directly exce
 zero.
 
 If a key range generator is present it must be the first generator. If a velocity range generator is present, it
-must be preceded by a key range generator.
+must be preceded by a key range generator (thus it must be the second generator).
 
 An 'IBAG' sub-chunk defines the zones of an instrument. An instrument can have more than one. The first zone can
 be a *global* zone if the last generator in the wGenNdx is *not* a `sampleID` generator. There cannot be a

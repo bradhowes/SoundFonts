@@ -52,7 +52,7 @@ private:
     double unipolarValue(int controllerValue) const { return active_[controllerValue]; }
     double bipolarValue(int controllerValue) const { return 2.0 * active_[controllerValue] - 1.0; }
 
-    static TransformArrayType const& selectActive(Kind kind, Direction direction);
+    static const TransformArrayType& selectActive(Kind kind, Direction direction);
 
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;
@@ -63,7 +63,7 @@ private:
     static TransformArrayType const positiveSwitched_;
     static TransformArrayType const negativeSwitched_;
 
-    TransformArrayType const& active_;
+    const TransformArrayType& active_;
     Polarity polarity_;
 };
 

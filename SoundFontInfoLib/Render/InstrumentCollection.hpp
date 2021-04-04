@@ -13,9 +13,9 @@ namespace Render {
 class InstrumentCollection
 {
 public:
-    InstrumentCollection(IO::File const& file);
+    InstrumentCollection(const IO::File& file);
 
-    Instrument const& at(size_t index) const { return instruments_.at(index); }
+    const Instrument& at(size_t index) const { return instruments_.at(index); }
 
 private:
     std::vector<Instrument> instruments_;

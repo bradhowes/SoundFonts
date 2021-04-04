@@ -8,7 +8,7 @@ using namespace SF2::Render;
 
 int const Transform::MaxMIDIControllerValue;
 
-Transform::TransformArrayType const& Transform::selectActive(Kind kind, Direction direction)
+const Transform::TransformArrayType& Transform::selectActive(Kind kind, Direction direction)
 {
     switch (kind) {
         case Kind::linear: return direction == Direction::ascending ? positiveLinear_ : negativeLinear_; break;

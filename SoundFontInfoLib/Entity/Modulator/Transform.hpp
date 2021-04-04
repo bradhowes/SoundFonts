@@ -8,6 +8,7 @@
 
 namespace SF2 {
 namespace Entity {
+namespace Modulator {
 
 class Transform {
 public:
@@ -17,13 +18,15 @@ public:
         absolute = 2
     };
 
-    Transform() : bits_{0} {}
+    explicit Transform(uint16_t bits) : bits_{bits} {}
+
+    Transform() : Transform(0) {}
 
     Kind kind() const { return bits_ == 0 ? Kind::linear : Kind::absolute; }
 
     float transform(float value) const;
 
-    friend std::ostream& operator<<(std::ostream& os, Transform const& value) {
+    friend std::ostream& operator<<(std::ostream& os, const Transform& value) {
         return os << (value.kind() == Kind::linear ? "linear" : "absolute");
     }
 
@@ -40,5 +43,6 @@ inline float Transform::transform(float value) const
     }
 }
 
+}
 }
 }

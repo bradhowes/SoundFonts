@@ -40,8 +40,8 @@ public:
     };
 
     /**
-     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this really just parses any RIFF
-     format. We postpone the SF2 evaluation until the initial loading is done.
+     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this
+     really just parses any RIFF format. We postpone the SF2 evaluation until the initial loading is done.
 
      - parameter fd: file descriptor of the SF2 file to read from for data
      - parameter size: the number of bytes available for processing

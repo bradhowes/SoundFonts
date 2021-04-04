@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Entity/Generator.hpp"
+#include "../Entity/Generator/Generator.hpp"
 #include "../IO/ChunkItems.hpp"
 
 namespace SF2 {
@@ -19,7 +19,7 @@ struct ZoneGenerators : IO::ChunkItems<SFGenerator>
 
     ZoneGenerators() : Super() {}
     
-    ZoneGenerators(IO::Chunk const& chunk) : Super(chunk) {}
+    ZoneGenerators(const IO::Chunk& chunk) : Super(chunk) {}
 };
 
 }

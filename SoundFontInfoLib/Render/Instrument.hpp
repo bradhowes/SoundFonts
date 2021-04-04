@@ -15,16 +15,16 @@ class Instrument
 public:
     using InstrumentZoneCollection = ZoneCollection<InstrumentZone>;
 
-    Instrument(IO::File const& file, Entity::Instrument const& cfg);
+    Instrument(const IO::File& file, const Entity::Instrument& cfg);
 
     InstrumentZoneCollection::Matches find(int key, int velocity) const { return zones_.find(key, velocity); }
 
     bool hasGlobalZone() const { return zones_.hasGlobal(); }
     InstrumentZone const* globalZone() const { return zones_.global(); }
-    Entity::Instrument const& configuration() const { return cfg_; }
+    const Entity::Instrument& configuration() const { return cfg_; }
 
 private:
-    Entity::Instrument const& cfg_;
+    const Entity::Instrument& cfg_;
     InstrumentZoneCollection zones_;
 };
 

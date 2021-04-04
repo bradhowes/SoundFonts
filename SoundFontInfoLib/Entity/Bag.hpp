@@ -13,7 +13,7 @@ namespace Entity {
 
 /**
  Memory layout of a 'ibag/pbag' entry in a sound font resource. Used to access packed values from a
- resource. The size of this must be 4. The wGenNdx and wModNdx properties contain the first index
+ resource. Per spec, the size of this must be 4. The wGenNdx and wModNdx properties contain the first index
  of the generator/modulator that belongs to the instrument/preset zone. The number of generator or
  modulator settings is found by subtracting index value of this instance from the index value of the
  subsequent instance. This is guaranteed to be safe in a well-formed SF2 file, as all collections that
@@ -24,31 +24,52 @@ class Bag {
 public:
     constexpr static size_t size = 4;
 
+    /**
+     Constructor that reads from file.
+
+     @param pos location to read from
+     */
     explicit Bag(IO::Pos& pos) { pos = pos.readInto(*this); }
 
-    uint16_t generatorIndex() const { return wGenNdx; }
-    uint16_t generatorCount() const;
+    /// @returns first generator index in this collection
+    uint16_t firstGeneratorIndex() const { return wGenNdx; }
 
-    uint16_t modulatorIndex() const { return wModNdx; }
-    uint16_t modulatorCount() const;
+    /// @returns number of generators in this collection
+    uint16_t generatorCount() const { return validateDiff(next().firstGeneratorIndex(), firstGeneratorIndex()); }
 
-    void dump(const std::string& indent, int index) const;
+    /// @returns first modulator index in this collection
+    uint16_t firstModulatorIndex() const { return wModNdx; }
+
+    /// @returns number of modulators in this collection
+    uint16_t modulatorCount() const { return validateDiff(next().firstModulatorIndex(), firstModulatorIndex()); }
+
+    /**
+     Utility for displaying bag contents on `std::cout`
+
+     @param indent the prefix to write out before each line
+     @param index a prefix index value to write out before each lines
+     */
+    void dump(const std::string& indent, int index) const
+    {
+        std::cout << indent << index << ": genIndex: " << firstGeneratorIndex() << " count: " << generatorCount()
+        << " modIndex: " << firstModulatorIndex() << " count: " << modulatorCount() << std::endl;
+    }
 
 private:
-    Bag const& next() const { return *(this + 1); }
+
+    // For a *valid* SF2 file, this is OK because all bags hold an extra sentinel value to mark the end and to
+    // make this kind of operation safe to perform.
+    const Bag& next() const { return *(this + 1); }
+
+    // Verify that the next index is not less than the previous one.
+    static uint16_t validateDiff(uint16_t next, uint16_t prev) {
+        assert(next >= prev);
+        return next - prev;
+    }
 
     uint16_t wGenNdx;
     uint16_t wModNdx;
 };
-
-inline uint16_t Bag::generatorCount() const { return next().generatorIndex() - generatorIndex(); }
-inline uint16_t Bag::modulatorCount() const { return next().modulatorIndex() - modulatorIndex(); }
-
-inline void Bag::dump(const std::string& indent, int index) const
-{
-    std::cout << indent << index << ": genIndex: " << generatorIndex() << " count: " << generatorCount()
-    << " modIndex: " << modulatorIndex() << " count: " << modulatorCount() << std::endl;
-}
 
 }
 }

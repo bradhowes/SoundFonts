@@ -2,19 +2,19 @@
 
 #include <iostream>
 
+#include "Amount.hpp"
 #include "Generator.hpp"
-#include "GeneratorDefinition.hpp"
+#include "Definition.hpp"
 
-using namespace SF2::Entity;
+using namespace SF2::Entity::Generator;
 
 struct Dumper {
-    GeneratorDefinition const& genDef_;
-    GeneratorAmount const& amount_;
+    const Definition& genDef_;
+    const Amount& amount_;
 
-    explicit Dumper(GeneratorDefinition const& genDef, GeneratorAmount const& amount)
-    : genDef_{genDef}, amount_{amount} {}
+    explicit Dumper(const Definition& genDef, const Amount& amount) : genDef_{genDef}, amount_{amount} {}
 
-    friend std::ostream& operator <<(std::ostream& os, Dumper const& dumper)
+    friend std::ostream& operator <<(std::ostream& os, const Dumper& dumper)
     {
         dumper.genDef_.dump(dumper.amount_);
         return os;

@@ -4,16 +4,20 @@
 
 #include <array>
 
-#include "GeneratorAmount.hpp"
-#include "GeneratorIndex.hpp"
+#include "Amount.hpp"
+#include "Index.hpp"
 
 namespace SF2 {
 namespace Entity {
+namespace Generator {
 
-class GeneratorDefinition {
+/**
+ Meta data of an SF2 generator. These are attributes associated with a generator but not found in an SF2 file. Rather
+ these are attributes called out in the SF2 specification.
+ */
+class Definition {
 public:
-
-    static constexpr size_t NumDefinitions = 59;
+    static constexpr size_t NumDefs = static_cast<size_t>(Index::numValues);
 
     enum struct ValueKind {
         unsignedShort = 1,
@@ -38,28 +42,21 @@ public:
         additiveInPreset = 3
     };
 
-    static GeneratorDefinition const& definition(GeneratorIndex index) {
-        return definitions_.at(index.raw());
-    }
+    static const Definition& definition(Index index) { return definitions_.at(static_cast<uint16_t>(index)); }
 
-    static GeneratorDefinition const& definition(GenIndex index) {
-        return definitions_.at(static_cast<uint16_t>(index));
-    }
-
-    std::string const& name() const { return name_; }
+    const std::string& name() const { return name_; }
     ValueKind valueKind() const { return valueKind_; }
     uint16_t flags() const { return flags_; }
 
     bool isAvailableInPreset() const { return (flags_ & availableInPreset) == availableInPreset; }
     bool isAdditiveInPreset() const { return (flags_ & additiveInPreset) == additiveInPreset; }
 
-    void dump(GeneratorAmount const& amount) const;
+    void dump(const Amount& amount) const;
 
 private:
-    static std::array<GeneratorDefinition, NumDefinitions> const definitions_;
+    static std::array<Definition, NumDefs> const definitions_;
 
-    GeneratorDefinition(char const* name, ValueKind valueKind, uint16_t flags)
-    : name_{name}, valueKind_{valueKind}, flags_{flags} {}
+    Definition(const char* name, ValueKind valueKind, uint16_t flags) : name_{name}, valueKind_{valueKind}, flags_{flags} {}
 
     std::string name_;
     ValueKind valueKind_;
@@ -67,5 +64,6 @@ private:
     uint16_t flags_;
 };
 
+}
 }
 }

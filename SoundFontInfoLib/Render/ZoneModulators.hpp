@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "../Entity/Modulator.hpp"
+#include "../Entity/Modulator/Modulator.hpp"
 #include "../IO/ChunkItems.hpp"
 
 namespace SF2 {
@@ -17,7 +17,7 @@ struct ZoneModulators : IO::ChunkItems<SFModulator>
 
     ZoneModulators() : Super() {}
     
-    ZoneModulators(IO::Chunk const& chunk) : Super(chunk) {}
+    ZoneModulators(const IO::Chunk& chunk) : Super(chunk) {}
 };
 
 }
