@@ -6,8 +6,8 @@
 #include <cmath>
 #include <limits>
 
-#include "../Entity/Generator/Amount.hpp"
-#include "Utils.hpp"
+#include "Entity/Generator/Amount.hpp"
+#include "Render/Utils.hpp"
 
 namespace SF2 {
 namespace Render {

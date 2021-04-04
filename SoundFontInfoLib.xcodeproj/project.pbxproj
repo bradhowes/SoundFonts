@@ -13,6 +13,7 @@
 		BD250BE326163F7D00D1C1E0 /* Utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250BE226163F7D00D1C1E0 /* Utils.hpp */; };
 		BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */; };
 		BD250C782617255B00D1C1E0 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C772617255B00D1C1E0 /* Utils.cpp */; };
+		BD250C82261A126000D1C1E0 /* Types.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C81261A126000D1C1E0 /* Types.hpp */; };
 		BD2AEE4324F692C5009EAABE /* Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4224F692C5009EAABE /* Generator.cpp */; };
 		BD2AEE4724F6B8D7009EAABE /* Instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */; };
 		BD2AEE4924F6BF94009EAABE /* Zone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4824F6BF94009EAABE /* Zone.cpp */; };
@@ -59,6 +60,7 @@
 		BD250BE226163F7D00D1C1E0 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
 		BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderUtilsTests.mm; sourceTree = "<group>"; };
 		BD250C772617255B00D1C1E0 /* Utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utils.cpp; sourceTree = "<group>"; };
+		BD250C81261A126000D1C1E0 /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
 		BD2AEE4224F692C5009EAABE /* Generator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Generator.cpp; sourceTree = "<group>"; };
 		BD2AEE4424F69E21009EAABE /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
 		BD2AEE4624F6B8D7009EAABE /* Instrument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Instrument.cpp; sourceTree = "<group>"; };
@@ -150,11 +152,11 @@
 		BD250BB12615CCAA00D1C1E0 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
-				BD2AEE4224F692C5009EAABE /* Generator.cpp */,
-				BDEC00462497E7BF00A52507 /* Generator.hpp */,
 				BDEC0022249768E200A52507 /* Amount.hpp */,
 				BD827FFF24EA8E6800533D80 /* Definition.cpp */,
 				BD827FFD24EA8E1B00533D80 /* Definition.hpp */,
+				BD2AEE4224F692C5009EAABE /* Generator.cpp */,
+				BDEC00462497E7BF00A52507 /* Generator.hpp */,
 				BDEC001A2497669300A52507 /* Index.hpp */,
 			);
 			path = Generator;
@@ -227,12 +229,13 @@
 		BDB265F4252FB2CB005BEAD1 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				BD250BC42615CFF900D1C1E0 /* Modulator */,
-				BD250BB12615CCAA00D1C1E0 /* Generator */,
 				BD64EB6924E5341900EA8473 /* Bag.hpp */,
 				BD64EB6724E5328100EA8473 /* Instrument.hpp */,
 				BD64EB6B24E534B700EA8473 /* Preset.hpp */,
 				BD64EB6F24E536A200EA8473 /* Sample.hpp */,
+				BD250C81261A126000D1C1E0 /* Types.hpp */,
+				BD250BB12615CCAA00D1C1E0 /* Generator */,
+				BD250BC42615CFF900D1C1E0 /* Modulator */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -259,8 +262,8 @@
 		BDB26651253269F9005BEAD1 /* Render */ = {
 			isa = PBXGroup;
 			children = (
-				BD250BE226163F7D00D1C1E0 /* Utils.hpp */,
 				BD250C772617255B00D1C1E0 /* Utils.cpp */,
+				BD250BE226163F7D00D1C1E0 /* Utils.hpp */,
 				BDB265FE25303E38005BEAD1 /* Configuration.cpp */,
 				BD2AEE5224F9C689009EAABE /* Configuration.hpp */,
 				BD82800524EC16F200533D80 /* Envelope.cpp */,
@@ -434,6 +437,7 @@
 				BD74D18823CDB36200204ED4 /* Parser.cpp in Sources */,
 				BDABC42D24F46A2000F8C874 /* File.cpp in Sources */,
 				BDB2660B25304037005BEAD1 /* InstrumentZone.cpp in Sources */,
+				BD250C82261A126000D1C1E0 /* Types.hpp in Sources */,
 				BDB2660525303FE0005BEAD1 /* InstrumentCollection.cpp in Sources */,
 				BD97190F24EF18530009ED6E /* Synthesizer.cpp in Sources */,
 			);
@@ -610,7 +614,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_WARN_PEDANTIC = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -648,7 +654,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = c11;
 				GCC_WARN_PEDANTIC = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

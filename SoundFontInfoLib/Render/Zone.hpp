@@ -5,14 +5,14 @@
 #include <functional>
 #include <vector>
 
-#include "../Entity/Bag.hpp"
-#include "../Entity/Generator/Generator.hpp"
-#include "../Entity/Modulator/Modulator.hpp"
+#include "Entity/Bag.hpp"
+#include "Entity/Generator/Generator.hpp"
+#include "Entity/Modulator/Modulator.hpp"
 
-#include "../IO/ChunkItems.hpp"
-#include "../IO/File.hpp"
+#include "IO/ChunkItems.hpp"
+#include "IO/File.hpp"
 
-#include "Configuration.hpp"
+#include "Render/Configuration.hpp"
 
 namespace SF2 {
 namespace Render {

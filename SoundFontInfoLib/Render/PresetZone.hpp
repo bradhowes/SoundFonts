@@ -2,12 +2,12 @@
 
 #pragma once
 
-#include "../Entity/Bag.hpp"
-#include "../IO/File.hpp"
+#include "Entity/Bag.hpp"
+#include "IO/File.hpp"
 
-#include "Configuration.hpp"
-#include "InstrumentCollection.hpp"
-#include "Zone.hpp"
+#include "Render/Configuration.hpp"
+#include "Render/InstrumentCollection.hpp"
+#include "Render/Zone.hpp"
 
 namespace SF2 {
 namespace Remder {

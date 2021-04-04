@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../Entity/Generator/Generator.hpp"
-#include "../IO/ChunkItems.hpp"
+#include "Entity/Generator/Generator.hpp"
+#include "IO/ChunkItems.hpp"
 
 namespace SF2 {
 namespace Render {

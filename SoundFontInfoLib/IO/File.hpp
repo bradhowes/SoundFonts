@@ -4,14 +4,14 @@
 
 #include <fstream>
 
-#include "../Entity/Bag.hpp"
-#include "../Entity/Generator/Generator.hpp"
-#include "../Entity/Instrument.hpp"
-#include "../Entity/Modulator/Modulator.hpp"
-#include "../Entity/Preset.hpp"
-#include "../Entity/Sample.hpp"
+#include "Entity/Bag.hpp"
+#include "Entity/Generator/Generator.hpp"
+#include "Entity/Instrument.hpp"
+#include "Entity/Modulator/Modulator.hpp"
+#include "Entity/Preset.hpp"
+#include "Entity/Sample.hpp"
 
-#include "ChunkItems.hpp"
+#include "IO/ChunkItems.hpp"
 
 namespace SF2 {
 namespace IO {

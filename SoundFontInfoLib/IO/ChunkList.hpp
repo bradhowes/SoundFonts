@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Chunk.hpp"
+#include "IO/Chunk.hpp"
 
 namespace SF2 {
 namespace IO {

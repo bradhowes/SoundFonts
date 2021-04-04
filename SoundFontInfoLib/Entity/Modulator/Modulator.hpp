@@ -4,11 +4,12 @@
 
 #include <array>
 
-#include "../../IO/Pos.hpp"
-#include "../Generator/Definition.hpp"
-#include "../Generator/Index.hpp"
-#include "Source.hpp"
-#include "Transform.hpp"
+#include "IO/Pos.hpp"
+#include "Entity/Generator/Definition.hpp"
+#include "Entity/Generator/Index.hpp"
+#include "Entity/Modulator/Source.hpp"
+#include "Entity/Modulator/Transform.hpp"
+#include "Entity/Types.hpp"
 
 namespace SF2 {
 namespace Entity {
@@ -37,7 +38,7 @@ public:
 private:
     Source sfModSrcOper;
     Generator::Index sfModDestOper;
-    int16_t modAmount;
+    Int modAmount;
     Source sfModAmtSrcOper;
     Transform sfModTransOper;
 };

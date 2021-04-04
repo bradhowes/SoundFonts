@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 
-#include "../IO/Pos.hpp"
+#include "IO/Pos.hpp"
 
 namespace SF2 {
 namespace Entity {

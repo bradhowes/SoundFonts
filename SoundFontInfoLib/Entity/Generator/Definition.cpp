@@ -3,7 +3,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "Generator.hpp"
+#include "Entity/Generator/Generator.hpp"
 
 using namespace SF2::Entity::Generator;
 

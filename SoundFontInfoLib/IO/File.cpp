@@ -4,8 +4,8 @@
 #include "../Entity/Instrument.hpp"
 #include "../Entity/Preset.hpp"
 
-#include "ChunkList.hpp"
-#include "File.hpp"
+#include "IO/ChunkList.hpp"
+#include "IO/File.hpp"
 
 using namespace SF2::IO;
 

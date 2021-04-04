@@ -2,9 +2,8 @@
 
 #pragma once
 
-#include "../IO/File.hpp"
-
-#include "PresetZone.hpp"
+#include "IO/File.hpp"
+#include "Render/PresetZone.hpp"
 
 namespace SF2 {
 namespace Render {

@@ -5,8 +5,8 @@
 #include <array>
 #include <cassert>
 
-#include "../Entity/Generator/Amount.hpp"
-#include "../Entity/Generator/Index.hpp"
+#include "Entity/Generator/Amount.hpp"
+#include "Entity/Generator/Index.hpp"
 
 namespace SF2 {
 namespace Render {

@@ -4,8 +4,8 @@
 
 #include <array>
 
-#include "Amount.hpp"
-#include "Index.hpp"
+#include "Entity/Generator/Amount.hpp"
+#include "Entity/Generator/Index.hpp"
 
 namespace SF2 {
 namespace Entity {

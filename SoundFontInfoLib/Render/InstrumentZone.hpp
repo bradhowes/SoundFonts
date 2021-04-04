@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "../Entity/Bag.hpp"
-#include "../IO/File.hpp"
+#include "Entity/Bag.hpp"
+#include "IO/File.hpp"
 
-#include "Zone.hpp"
+#include "Render/Zone.hpp"
 
 namespace SF2 {
 namespace Render {

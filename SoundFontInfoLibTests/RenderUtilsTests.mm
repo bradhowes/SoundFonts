@@ -85,4 +85,10 @@
     XCTAssertEqualWithAccuracy(0.9238795325112867, pair.second, 0.00001);
 }
 
+- (void)testTenthPercentage {
+    XCTAssertEqualWithAccuracy(0.0, SF2::Render::Utils::tenthPercentage(0), 0.0001);
+    XCTAssertEqualWithAccuracy(0.123, SF2::Render::Utils::tenthPercentage(123), 0.0001);
+    XCTAssertEqualWithAccuracy(1.0, SF2::Render::Utils::tenthPercentage(1000), 0.0001);
+}
+
 @end

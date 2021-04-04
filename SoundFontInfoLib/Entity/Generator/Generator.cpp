@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include "Amount.hpp"
-#include "Generator.hpp"
-#include "Definition.hpp"
+#include "Entity/Generator/Amount.hpp"
+#include "Entity/Generator/Definition.hpp"
+#include "Entity/Generator/Generator.hpp"
 
 using namespace SF2::Entity::Generator;
 

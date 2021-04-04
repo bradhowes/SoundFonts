@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "../Entity/Modulator/Modulator.hpp"
-#include "../IO/ChunkItems.hpp"
+#include "Entity/Modulator/Modulator.hpp"
+#include "IO/ChunkItems.hpp"
 
 namespace SF2 {
 namespace Render {

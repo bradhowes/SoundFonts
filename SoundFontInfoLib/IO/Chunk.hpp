@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "Format.hpp"
-#include "Pos.hpp"
-#include "Tag.hpp"
-#include "StringUtils.hpp"
+#include "IO/Format.hpp"
+#include "IO/Pos.hpp"
+#include "IO/Tag.hpp"
+#include "IO/StringUtils.hpp"
 
 namespace SF2 {
 namespace IO {

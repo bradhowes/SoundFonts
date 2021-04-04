@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "../IO/Pos.hpp"
-#include "../IO/StringUtils.hpp"
+#include "IO/Pos.hpp"
+#include "IO/StringUtils.hpp"
 
 namespace SF2 {
 namespace Entity {

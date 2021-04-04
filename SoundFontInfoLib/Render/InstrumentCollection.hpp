@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "Instrument.hpp"
+#include "Render/Instrument.hpp"
 
 namespace SF2 {
 namespace IO { class File; }

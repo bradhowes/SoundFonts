@@ -1,4 +1,4 @@
-// Copyright © 2019 Brad Howes. All rights reserved.
+// Copyright © 2021 Brad Howes. All rights reserved.
 
 import XCTest
 import SoundFontInfoLib

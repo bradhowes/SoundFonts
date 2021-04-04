@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Chunk.hpp"
+#include "IO/Chunk.hpp"
 
 namespace SF2 {
 namespace IO {

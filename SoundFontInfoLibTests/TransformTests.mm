@@ -1,10 +1,4 @@
-//
-//  EnvelopeTests.m
-//  SoundFontInfoLibTests
-//
-//  Created by Brad Howes on 8/19/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #import <XCTest/XCTest.h>
 

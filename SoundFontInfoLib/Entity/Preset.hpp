@@ -4,9 +4,9 @@
 
 #include <iostream>
 
-#include "../IO/Chunk.hpp"
-#include "../IO/Pos.hpp"
-#include "../IO/StringUtils.hpp"
+#include "IO/Chunk.hpp"
+#include "IO/Pos.hpp"
+#include "IO/StringUtils.hpp"
 
 namespace SF2 {
 namespace Entity {

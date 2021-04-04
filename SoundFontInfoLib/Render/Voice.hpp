@@ -4,8 +4,8 @@
 
 #include <array>
 
-#include "SFGenerator.hpp"
-#include "Zone.hpp"
+#include "Entity/Generator/Amount.hpp"
+#include "Render/Zone.hpp"
 
 namespace SF2 {
 namespace Render {

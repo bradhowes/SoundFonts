@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include "../IO/File.hpp"
+#include "IO/File.hpp"
 
-#include "InstrumentZone.hpp"
-#include "Zone.hpp"
+#include "Render/InstrumentZone.hpp"
+#include "Render/Zone.hpp"
 
 namespace SF2 {
 namespace Render {
