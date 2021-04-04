@@ -22,13 +22,14 @@ public:
 
     explicit Sample(IO::Pos& pos)
     {
+        assert(sizeof(*this) == size + 2);
         // Account for the extra padding by reading twice.
         pos = pos.readInto(&achSampleName, 40);
         pos = pos.readInto(&originalKey, 6);
         IO::trim_property(achSampleName);
     }
 
-    enum LinkType {
+    enum Type {
         monoSample = 1,
         rightSample = 2,
         leftSample = 4,
@@ -77,7 +78,6 @@ inline void Sample::dump(const std::string& indent, int index) const
     << " type: " << sampleType << ' ' << sampleTypeDescription()
     << std::endl;
 }
-
 
 }
 }

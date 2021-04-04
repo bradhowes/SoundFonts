@@ -29,7 +29,10 @@ public:
 
      @param pos location to read from
      */
-    explicit Bag(IO::Pos& pos) { pos = pos.readInto(*this); }
+    explicit Bag(IO::Pos& pos) {
+        assert(sizeof(*this) == 4);
+        pos = pos.readInto(*this);
+    }
 
     /// @returns first generator index in this collection
     uint16_t firstGeneratorIndex() const { return wGenNdx; }

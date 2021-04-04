@@ -14,7 +14,7 @@ namespace Entity {
  Memory layout of a 'inst' entry. The size of this is defined to be 22 bytes.
 
  An `instrument` is ultimately defined by its samples, but there can be multiple instruments defined that use the same
- sample source with different gen/mod settings (the sample source is indeed a generator setting).
+ sample source with different gen/mod settings (the sample source is indeed itself a generator setting).
  */
 class Instrument {
 public:

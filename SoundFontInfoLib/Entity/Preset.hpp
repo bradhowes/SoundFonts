@@ -21,9 +21,10 @@ public:
 
     explicit Preset(IO::Pos& pos)
     {
+        assert(sizeof(*this) == size + 2);
         // Account for the extra padding by reading twice.
-        pos = pos.readInto(&achPresetName, 26);
-        pos = pos.readInto(&dwLibrary, 12);
+        pos = pos.readInto(&achPresetName, 20 + sizeof(uint16_t) * 3);
+        pos = pos.readInto(&dwLibrary, sizeof(uint32_t) * 3);
         IO::trim_property(achPresetName);
     }
     

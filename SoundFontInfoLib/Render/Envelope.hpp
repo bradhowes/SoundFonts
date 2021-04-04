@@ -36,6 +36,14 @@ public:
 
     /**
      The stages that are supported by this envelope system.
+
+     - idle -- the envelope is not active
+     - delay -- initial delay before envelope attack phase
+     - attack -- transition from 0.0 - 1.0
+     - hold -- duration while at 1.0
+     - decay -- transition from 1.0 to sustainLevel
+     - sustain -- last stage while key is held down
+     - release -- transition from sustainLevel to 0.0 after key is released
      */
     enum struct Stage {
         idle = -1,
@@ -68,27 +76,51 @@ public:
         /**
          Generate a configuration for the attack stage.
          */
-        void configureAttack(int sampleCount, Float curvature);
+        void configureAttack(int sampleCount, Float curvature) {
+            curvature = clampCurvature(curvature);
+            initial_ = 0.0;
+            alpha_ = calculateCoefficient(sampleCount, curvature);
+            beta_ = (1.0 + curvature) * (1.0 - alpha_);
+            durationInSamples_ = sampleCount;
+        }
 
         /**
          Generate a configuration that will emit a constant value for a fixed or indefinite time.
          */
-        void setConstant(int sampleCount, Float value);
+        void setConstant(int sampleCount, Float value) {
+            initial_ = value;
+            alpha_ = 1.0;
+            beta_ = 0.0;
+            durationInSamples_ = sampleCount;
+        }
 
         /**
          Generate a configuration for the decay stage.
          */
-        void configureDecay(int sampleCount, Float curvature, Float sustainLevel);
+        void configureDecay(int sampleCount, Float curvature, Float sustainLevel) {
+            curvature = clampCurvature(curvature);
+            initial_ = 1.0;
+            alpha_ = calculateCoefficient(sampleCount, curvature);
+            beta_ = (sustainLevel - curvature) * (1.0 - alpha_);
+            durationInSamples_ = sampleCount;
+        }
 
         /**
          Generate a configuration for the sustain stage.
          */
-        void configureSustain(Float level);
+        void configureSustain(Float level) {
+            setConstant(std::numeric_limits<uint16_t>::max(), level);
+        }
 
         /**
          Generate a configuration for the release stage.
          */
-        void configureRelease(int sampleCount, Float curvature, Float sustainLevel);
+        void configureRelease(int sampleCount, Float curvature, Float sustainLevel) {
+            initial_ = sustainLevel;
+            alpha_ = calculateCoefficient(sampleCount, curvature);
+            beta_ = (0.0 - curvature) * (1.0 - alpha_);
+            durationInSamples_ = sampleCount;
+        }
 
         Float initial_{0.0};
         Float alpha_{0.0};
@@ -123,16 +155,42 @@ public:
          Set the status of a note playing. When true, the envelope begins proper. When set to false, the envelope will
          jump to the release stage.
          */
-        void gate(bool noteOn);
+        void gate(bool noteOn) {
+            if (noteOn) {
+                value_ = 0.0;
+                enterStage(Stage::delay);
+            }
+            else if (stage_ != Stage::idle) {
+                enterStage(Stage::release);
+            }
+        }
 
         /**
          Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
 
          @returns the new envelope value.
          */
-        Float process();
+        Float process() {
+            switch (stage_) {
+                case Stage::delay: checkIfEndStage(Stage::attack); break;
+                case Stage::hold: checkIfEndStage(Stage::decay); break;
+                case Stage::attack: updateValue(); checkIfEndStage(Stage::hold); break;
+                case Stage::decay: updateAndCompare(sustainLevel(), Stage::sustain); break;
+                case Stage::release: updateAndCompare(0.0, Stage::idle); break;
+                default: break;
+            }
+
+            return value_;
+        }
 
     private:
+        void updateAndCompare(Float floor, Stage next) {
+            updateValue();
+            if (value_ < floor)
+                enterStage(next);
+            else
+                checkIfEndStage(next);
+        }
 
         int stageAsIndex() const { return static_cast<int>(stage_); }
 
@@ -146,7 +204,42 @@ public:
 
         void checkIfEndStage(Stage next) { if (--counter_ == 0) enterStage(next); }
 
-        void enterStage(Stage next);
+        void enterStage(Stage next) {
+            stage_ = next;
+            switch (stage_) {
+                case Stage::delay:
+                    if (activeDurationInSamples()) break;
+                    stage_ = Stage::attack;
+
+                case Stage::attack:
+                    if (activeDurationInSamples()) break;
+                    stage_ = Stage::hold;
+
+                case Stage::hold:
+                    value_ = 1.0;
+                    if (activeDurationInSamples()) break;
+                    stage_ = Stage::decay;
+
+                case Stage::decay:
+                    if (activeDurationInSamples()) break;
+                    stage_ = Stage::sustain;
+
+                case Stage::sustain:
+                    value_ = active().initial_;
+                    break;
+
+                case Stage::release:
+                    if (activeDurationInSamples()) break;
+                    stage_ = Stage::idle;
+                    value_ = 0.0;
+
+                case Stage::idle: return;
+            }
+
+            counter_ = activeDurationInSamples();
+        }
+
+        int activeDurationInSamples() const { return active().durationInSamples_; }
 
         const StageConfigs& configs_;
         Stage stage_{Stage::idle};
@@ -180,7 +273,15 @@ public:
      @param sampleRate number of samples per second
      @param config configuration for the various stages of the envelope
      */
-    Envelope(Float sampleRate, const Config& config);
+    Envelope(double sampleRate, const Config& config) : sampleRate_{sampleRate}
+    {
+        stage(Stage::delay).setConstant(samplesFor(config.delay_), 0.0);
+        stage(Stage::attack).configureAttack(samplesFor(config.attack_), defaultCurvature);
+        stage(Stage::hold).setConstant(samplesFor(config.hold_), 1.0);
+        stage(Stage::decay).configureDecay(samplesFor(config.decay_), defaultCurvature, config.sustain_);
+        stage(Stage::sustain).configureSustain(config.sustain_);
+        stage(Stage::release).configureRelease(samplesFor(config.release_), defaultCurvature, config.sustain_);
+    }
 
     /**
      Create a new envelope generator using the configured envelope settings.

@@ -16,9 +16,9 @@ public:
     /**
      Kind specifies the curvature of the transformation function.
      - linear -- straight line from min to 1.0
-     - concave -- curved line that slowly inreases in value and then rapidly increases to 1.
-     - convex -- curved line that rapidly incxreases in value and then slowly increases until 1.
-     - switched -- emits 0 for conrol values <= 64, and 1 for those > 64.
+     - concave -- curved line that slowly increases in value and then accelerates in change until reaching 1.
+     - convex -- curved line that rapidly increases in value and then decelerates in change until reaching 1.
+     - switched -- emits 0 for control values <= 64, and 1 for those > 64.
      */
     enum struct Kind {
         linear,
