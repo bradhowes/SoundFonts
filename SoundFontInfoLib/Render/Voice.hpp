@@ -18,7 +18,6 @@ public:
     Voice(const Zone& instrument, Zone const* globalInstrument, const Zone&) : configuration_{}
     {
         configuration_.fill(SFGeneratorAmount(0));
-
     }
 
 private:

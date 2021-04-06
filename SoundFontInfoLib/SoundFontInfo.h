@@ -36,6 +36,4 @@
   copyright:(NSString*)embeddedCopyright
     presets:(NSArray<SoundFontInfoPreset*>*)presets;
 
-- (void)dump:(NSString*)path;
-
 @end

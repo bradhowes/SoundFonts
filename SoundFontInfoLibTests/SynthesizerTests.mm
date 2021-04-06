@@ -1,15 +1,7 @@
-//
-//  EnvelopeTests.m
-//  SoundFontInfoLibTests
-//
-//  Created by Brad Howes on 8/19/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 #import <iostream>
-
 #import <XCTest/XCTest.h>
-
 #include "Render/Synthesizer.hpp"
 
 using namespace SF2::Render;

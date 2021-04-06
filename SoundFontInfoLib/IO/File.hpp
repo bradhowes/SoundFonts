@@ -3,15 +3,18 @@
 #pragma once
 
 #include <fstream>
+#include <vector>
 
 #include "Entity/Bag.hpp"
 #include "Entity/Generator/Generator.hpp"
 #include "Entity/Instrument.hpp"
 #include "Entity/Modulator/Modulator.hpp"
 #include "Entity/Preset.hpp"
-#include "Entity/Sample.hpp"
+#include "Entity/SampleHeader.hpp"
+#include "Entity/Version.hpp"
 
 #include "IO/ChunkItems.hpp"
+#include "Render/SampleBuffer.hpp"
 
 namespace SF2 {
 namespace IO {
@@ -69,17 +72,29 @@ public:
     const ChunkItems<Entity::Modulator::Modulator>& instrumentZoneModulators() const { return instrumentZoneModulators_; };
 
     /// @returns reference to samples definitions
-    const ChunkItems<Entity::Sample>& samples() const { return samples_; };
+    const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
+
+    const Int* sampleData() const { return sampleData_; }
+
+    const Render::SampleBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
 private:
     int fd_;
     size_t size_;
     size_t sampleDataBegin_;
     size_t sampleDataEnd_;
+    Entity::Version soundFontVersion_;
+    Entity::Version fileVersion_;
+
+    std::string soundEngine_;
+    std::string rom_;
     std::string embeddedName_;
+    std::string embeddedCreationDate_;
     std::string embeddedAuthor_;
-    std::string embeddedComment_;
+    std::string embeddedProduct_;
     std::string embeddedCopyright_;
+    std::string embeddedComment_;
+    std::string embeddedTools_;
 
     ChunkItems<Entity::Preset> presets_;
     ChunkItems<Entity::Bag> presetZones_;
@@ -89,7 +104,10 @@ private:
     ChunkItems<Entity::Bag> instrumentZones_;
     ChunkItems<Entity::Generator::Generator> instrumentZoneGenerators_;
     ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
-    ChunkItems<Entity::Sample> samples_;
+    ChunkItems<Entity::SampleHeader> sampleHeaders_;
+    std::vector<Render::SampleBuffer> sampleBuffers_;
+
+    const Int* sampleData_;
 };
 
 }

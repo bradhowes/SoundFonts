@@ -4,7 +4,6 @@
 
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
-
 #include "Render/Configuration.hpp"
 #include "Render/InstrumentCollection.hpp"
 #include "Render/Zone.hpp"

@@ -68,14 +68,6 @@ class SoundFontInfoLibTests: XCTestCase {
         XCTAssertEqual(sfi.presets[0].preset, 1)
     }
 
-    func testDumps() {
-        for sf in urls {
-            let sfi = SoundFontInfo.load(viaParser: sf)!
-            let name = sfi.embeddedName.replacingOccurrences(of: " ", with: "_")
-            sfi.dump("/tmp/\(name)_dump.txt")
-        }
-    }
-
     var newTempFileURL: URL {
         URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true).appendingPathComponent(UUID().uuidString)
     }

@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#ifndef Tag_hpp
-#define Tag_hpp
+#pragma once
 
 #include <string>
 
@@ -55,7 +54,7 @@ enum Tags {
     icop = Pack4Chars("ICOP"),
 
     icmt = Pack4Chars("ICMT"),
-    isft = Pack4Chars("ISFT"),  // and yet more info ids
+    istf = Pack4Chars("ISTF"),  // and yet more info ids
     snam = Pack4Chars("snam"),
     smpl = Pack4Chars("smpl"),  // sample IDs
     phdr = Pack4Chars("phdr"),
@@ -75,5 +74,3 @@ enum Tags {
 
 }
 }
-
-#endif /* Tag_hpp */

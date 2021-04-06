@@ -4,12 +4,12 @@
 
 #include <array>
 
+#include "Types.hpp"
 #include "IO/Pos.hpp"
 #include "Entity/Generator/Definition.hpp"
 #include "Entity/Generator/Index.hpp"
 #include "Entity/Modulator/Source.hpp"
 #include "Entity/Modulator/Transform.hpp"
-#include "Entity/Types.hpp"
 
 namespace SF2 {
 namespace Entity {

@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "IO/Pos.hpp"
 #include "Entity/Generator/Definition.hpp"
 #include "Entity/Generator/Index.hpp"
+#include "IO/Pos.hpp"
 
 namespace SF2 {
 namespace Entity {

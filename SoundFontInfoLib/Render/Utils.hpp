@@ -6,7 +6,7 @@
 #include <limits>
 #include <algorithm>
 
-#include "Entity/Types.hpp"
+#include "Types.hpp"
 
 namespace SF2 {
 
@@ -87,9 +87,18 @@ inline Float centiBelToAttenuation(Int value) {
 
 /**
  Convert integer into value from 0 - 1.
+
+ @param value percentage value expressed as tenths
+ @returns normalized value between 0 and 1.
  */
 inline Float tenthPercentage(Int value) { return std::min(std::max(value / 1000.0, 0.0), 1.0); }
 
+/**
+ Restrict lowpass filter cutoff value to be between 1500 and 13500, inclusive.
+
+ @param value cutoff value
+ @returns clamped cutoff value
+ */
 inline Int clampFilterCutoff(Int value) { return value < 1500 ? 1500 : (value > 13500 ? 13500 : value); }
 
 /**

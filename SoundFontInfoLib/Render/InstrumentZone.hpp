@@ -19,7 +19,7 @@ public:
     void apply(Configuration& configuration) const { Zone::apply(configuration); }
 
 private:
-    Entity::Sample const* sample_;
+    const Entity::SampleHeader* sampleHeader_;
     IO::Pos sampleDataBegin_;
 };
 

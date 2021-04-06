@@ -8,10 +8,8 @@
 #include "Entity/Bag.hpp"
 #include "Entity/Generator/Generator.hpp"
 #include "Entity/Modulator/Modulator.hpp"
-
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
-
 #include "Render/Configuration.hpp"
 
 namespace SF2 {

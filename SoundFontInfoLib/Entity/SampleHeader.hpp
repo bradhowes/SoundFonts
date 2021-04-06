@@ -16,14 +16,13 @@ namespace Entity {
  Memory layout of a 'shdr' entry. The size of this is defined to be 46 bytes, but due
  to alignment/padding the struct below is 48 bytes.
  */
-class Sample {
+class SampleHeader {
 public:
     constexpr static size_t size = 46;
 
-    explicit Sample(IO::Pos& pos)
+    explicit SampleHeader(IO::Pos& pos)
     {
         assert(sizeof(*this) == size + 2);
-        // Account for the extra padding by reading twice.
         pos = pos.readInto(&achSampleName, 40);
         pos = pos.readInto(&originalKey, 6);
         IO::trim_property(achSampleName);
@@ -44,6 +43,15 @@ public:
 
     void dump(const std::string& indent, int index) const;
 
+    size_t begin() const { return dwStart; }
+    size_t end() const { return dwEnd; }
+    size_t loopBegin() const { return dwStartLoop; }
+    size_t loopEnd() const { return dwEndLoop; }
+    size_t sampleRate() const { return dwSampleRate; }
+
+    Int originalMIDIKey() const { return originalKey; }
+    Int pitchCorrection() const { return correction; }
+
 private:
     std::string sampleTypeDescription() const;
 
@@ -60,7 +68,7 @@ private:
     uint16_t sampleType;
 };
 
-inline std::string Sample::sampleTypeDescription() const
+inline std::string SampleHeader::sampleTypeDescription() const
 {
     std::string tag("");
     if (sampleType & monoSample) tag += "M";
@@ -70,12 +78,13 @@ inline std::string Sample::sampleTypeDescription() const
     return tag;
 }
 
-inline void Sample::dump(const std::string& indent, int index) const
+inline void SampleHeader::dump(const std::string& indent, int index) const
 {
     std::cout << indent << index << ": '" << achSampleName
     << "' sampleRate: " << dwSampleRate
     << " s: " << dwStart << " e: " << dwEnd << " link: " << sampleLink
     << " type: " << sampleType << ' ' << sampleTypeDescription()
+    << " originalKey: " << int(originalKey) << " correction: " << int(correction)
     << std::endl;
 }
 

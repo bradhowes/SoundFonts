@@ -1,12 +1,5 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <vector>
-#include <string>
-
-#include "IO/Format.hpp"
 #include "IO/Parser.hpp"
 #include "IO/File.hpp"
 
@@ -173,31 +166,6 @@ using namespace SF2;
     }
 
     return result;
-}
-
-struct Redirector {
-    std::ofstream* file = nullptr;
-    std::streambuf* original = nullptr;
-
-    explicit Redirector(char const* fileName)
-    {
-        if (fileName != nullptr) {
-            file = new std::ofstream(fileName);
-            original = std::cout.rdbuf(file->rdbuf());
-        }
-    }
-
-    ~Redirector() {
-        if (original != nullptr) std::cout.rdbuf(original);
-        if (file != nullptr) file->close();
-    }
-};
-
-- (void) dump:(NSString*)fileName {
-//    if (self.contents == nil) return;
-//    Redirector redirector(fileName.UTF8String);
-//    auto top = SF2::Parser::parse(self.contents.bytes, self.contents.length);
-//    top.dump("");
 }
 
 @end

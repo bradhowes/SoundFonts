@@ -35,6 +35,7 @@ public:
     };
 
     enum Flags : uint16_t {
+        /// The generator may be present at the instrument level only
         unavailableInPreset = 0,
         /// The generator may be present in at the preset level as well as the instrument level
         availableInPreset = 1,

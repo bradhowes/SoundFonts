@@ -1,7 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#include "../IO/File.hpp"
-
+#include "IO/File.hpp"
 #include "InstrumentCollection.hpp"
 
 using namespace SF2::Render;

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Types.hpp"
 #include "IO/Format.hpp"
 #include "IO/Pos.hpp"
 #include "IO/Tag.hpp"
@@ -74,6 +75,12 @@ public:
         begin().readInto(buffer, size());
         trim_property(buffer);
         return std::string(buffer);
+    }
+
+    const Int* extractSamples() const {
+        auto buffer = new Int[size() / sizeof(Int)];
+        begin().readInto((void*)buffer, size());
+        return buffer;
     }
 
 private:

@@ -29,7 +29,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     XCTAssertEqual(1498, file.instrumentZones().size());
     XCTAssertEqual(26537, file.instrumentZoneGenerators().size());
     XCTAssertEqual(0, file.instrumentZoneModulators().size());
-    XCTAssertEqual(495, file.samples().size());
+    XCTAssertEqual(495, file.sampleHeaders().size());
 }
 
 - (void)testParsing2 {
@@ -46,7 +46,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     XCTAssertEqual(2165, file.instrumentZones().size());
     XCTAssertEqual(18942, file.instrumentZoneGenerators().size());
     XCTAssertEqual(2151, file.instrumentZoneModulators().size());
-    XCTAssertEqual(864, file.samples().size());
+    XCTAssertEqual(864, file.sampleHeaders().size());
 }
 
 - (void)testParsing3 {
@@ -63,7 +63,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     XCTAssertEqual(2818, file.instrumentZones().size());
     XCTAssertEqual(22463, file.instrumentZoneGenerators().size());
     XCTAssertEqual(746, file.instrumentZoneModulators().size());
-    XCTAssertEqual(1418, file.samples().size());
+    XCTAssertEqual(1418, file.sampleHeaders().size());
 }
 
 - (void)testParsing4 {
@@ -80,7 +80,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     XCTAssertEqual(150, file.instrumentZones().size());
     XCTAssertEqual(443, file.instrumentZoneGenerators().size());
     XCTAssertEqual(0, file.instrumentZoneModulators().size());
-    XCTAssertEqual(24, file.samples().size());
+    XCTAssertEqual(24, file.sampleHeaders().size());
 }
 
 @end
