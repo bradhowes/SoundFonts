@@ -5,6 +5,9 @@
 #include <cmath>
 #include <vector>
 
+namespace SF2 {
+namespace Render {
+
 template <typename T>
 class DelayBuffer {
 public:
@@ -51,3 +54,6 @@ private:
     std::vector<T> buffer_;
     size_t writePos_;
 };
+
+} // namespace Render
+} // namespace SF2

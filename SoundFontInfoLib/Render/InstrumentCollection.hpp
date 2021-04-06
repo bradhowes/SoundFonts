@@ -21,5 +21,5 @@ private:
     std::vector<Instrument> instruments_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
+namespace SF2 {
 namespace DSP {
 
 /**
@@ -66,3 +67,4 @@ template <typename T> auto parabolicSine(T angle) {
 }
 
 } // DSP namespace
+} // SF2 namespace

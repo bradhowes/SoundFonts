@@ -90,5 +90,5 @@ private:
     static std::array<double, CentibelsTableSize> centibelsToGain_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

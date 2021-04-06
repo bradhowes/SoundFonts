@@ -3,8 +3,10 @@
 #pragma once
 
 #include <cmath>
+#include "Render/DSP.hpp"
 
-#include "DSP.hpp"
+namespace SF2 {
+namespace Render {
 
 enum class LFOWaveform { sinusoid, triangle, sawtooth };
 
@@ -76,6 +78,7 @@ public:
      Restart from a known zero state.
      */
     void reset() {
+        phaseIncrement_ = frequency_ / sampleRate_;
         moduloCounter_ = phaseIncrement_ > 0 ? 0.0 : 1.0;
     }
 
@@ -114,6 +117,13 @@ public:
         quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
         moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
         return valueGenerator_(counter);
+    }
+
+    T quadPhaseValueAndIncrement() {
+        auto counter = moduloCounter_;
+        quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
+        moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
+        return valueGenerator_(quadPhaseCounter_);
     }
 
     /**
@@ -159,3 +169,6 @@ private:
     T quadPhaseCounter_ = {0.0};
     T phaseIncrement_;
 };
+
+} // namespace Render
+} // namespace SF2

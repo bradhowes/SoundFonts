@@ -9,6 +9,9 @@
 
 #import "BufferFacet.h"
 
+namespace SF2 {
+namespace Render {
+
 /**
  Maintains a buffer of PCM samples which is used to save samples from an upstream node. Note that despite its name,
  there are multiple sample buffers held within, one for each channel of input.
@@ -107,3 +110,6 @@ private:
     AudioBufferList* mutableAudioBufferList_ = nullptr;
     BufferFacet bufferFacet_;
 };
+
+} // namespace Render
+} // namespace SF2

@@ -66,5 +66,5 @@ private:
     PresetZoneCollection zones_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

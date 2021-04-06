@@ -13,5 +13,5 @@ class MIDI {
 public:
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

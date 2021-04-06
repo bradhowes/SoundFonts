@@ -23,5 +23,5 @@ private:
     IO::Pos sampleDataBegin_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

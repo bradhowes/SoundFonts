@@ -67,5 +67,5 @@ private:
     Polarity polarity_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

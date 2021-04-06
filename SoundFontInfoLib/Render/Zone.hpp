@@ -150,5 +150,5 @@ public:
     Kind const* global() const { return hasGlobal() ? &this->front() : nullptr; }
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

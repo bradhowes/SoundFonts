@@ -26,5 +26,5 @@ private:
     
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

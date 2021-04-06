@@ -28,5 +28,5 @@ private:
     InstrumentZoneCollection zones_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

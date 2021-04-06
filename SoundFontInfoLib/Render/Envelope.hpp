@@ -312,5 +312,5 @@ private:
     Float sampleRate_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

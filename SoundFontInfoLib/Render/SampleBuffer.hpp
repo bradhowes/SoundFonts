@@ -53,5 +53,5 @@ private:
     const Entity::SampleHeader& header_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

@@ -29,5 +29,5 @@ private:
     Render::Instrument const* instrument_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

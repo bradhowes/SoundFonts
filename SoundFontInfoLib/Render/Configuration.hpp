@@ -34,5 +34,5 @@ private:
     std::array<Entity::Generator::Amount, static_cast<size_t>(Entity::Generator::Index::numValues)> values_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

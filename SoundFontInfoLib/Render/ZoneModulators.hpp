@@ -20,5 +20,5 @@ struct ZoneModulators : IO::ChunkItems<SFModulator>
     ZoneModulators(const IO::Chunk& chunk) : Super(chunk) {}
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

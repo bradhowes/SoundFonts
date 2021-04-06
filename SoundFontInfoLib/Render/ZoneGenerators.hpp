@@ -22,5 +22,5 @@ struct ZoneGenerators : IO::ChunkItems<SFGenerator>
     ZoneGenerators(const IO::Chunk& chunk) : Super(chunk) {}
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2

@@ -24,5 +24,5 @@ private:
     SampleBuffer samples_;
 };
 
-}
-}
+} // namespace Render
+} // namespace SF2
