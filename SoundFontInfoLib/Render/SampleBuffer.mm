@@ -1,19 +1,23 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 #include <os/log.h>
+#include <os/signpost.h>
 
 #include "SampleBuffer.hpp"
 
 using namespace SF2::Render;
 
-SampleBuffer::SampleBuffer(const int16_t* begin, size_t size, size_t loopStart, size_t loopEnd)
-: samples_{}, loopStart_{loopStart}, loopEnd_{loopEnd}, log_(os_log_create("SF2", "SampleBuffer"))
+void
+SampleBuffer::loadNormalizedSamples(const int16_t* samples)
 {
-    // auto signpost = os_signpost_id_generate(log_);
-    // os_signpost_interval_begin(log_, signpost, "SampleBuffer", "%ld", size);
+    os_log_t log = os_log_create("SF2", "loadSamples");
+    auto signpost = os_signpost_id_generate(log);
+    size_t size = header_.end() - header_.begin();
+    os_signpost_interval_begin(log, signpost, "SampleBuffer", "begin - size: %ld", size);
     samples_.reserve(size);
-    while (size-- > 0) {
-        samples_.emplace_back(*begin++ / 32767.0);
-    }
-    // os_signpost_interval_end(log_, signpost, "SampleBuffer");
+    samples_.clear();
+    AUValue scale = 1.0 / 32768.0;
+    auto pos = samples + header_.begin();
+    while (size-- > 0) samples_.emplace_back(*pos++ * scale);
+    os_signpost_interval_end(log, signpost, "SampleBuffer", "end");
 }

@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Types.hpp"
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
 
@@ -20,6 +21,14 @@ class SampleHeader {
 public:
     constexpr static size_t size = 46;
 
+    enum Type {
+        monoSample = 1,
+        rightSample = 2,
+        leftSample = 4,
+        linkedSample = 8,
+        rom = 0x8000
+    };
+
     explicit SampleHeader(IO::Pos& pos)
     {
         assert(sizeof(*this) == size + 2);
@@ -28,13 +37,10 @@ public:
         IO::trim_property(achSampleName);
     }
 
-    enum Type {
-        monoSample = 1,
-        rightSample = 2,
-        leftSample = 4,
-        linkedSample = 8,
-        rom = 0x8000
-    };
+    SampleHeader(uint32_t start, uint32_t end, uint32_t loopBegin, uint32_t loopEnd,
+                 uint32_t sampleRate, uint8_t key, int8_t adjustment)
+    : dwStart{start}, dwEnd{end}, dwStartLoop{loopBegin}, dwEndLoop{loopEnd}, dwSampleRate{sampleRate},
+    originalKey{key}, correction{adjustment} {}
 
     bool isMono() const { return (sampleType & monoSample) == monoSample; }
     bool isRight() const { return (sampleType & rightSample) == rightSample; }

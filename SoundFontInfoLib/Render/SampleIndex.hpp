@@ -4,56 +4,32 @@
 
 #include <limits>
 
+#include "Entity/SampleHeader.hpp"
+
 namespace SF2 {
 namespace Render {
 
 struct SampleIndex {
 
-    explicit SampleIndex(uint32_t value)
-    : value_(uint64_t(value) << 32)
-    {}
+    SampleIndex(const Entity::SampleHeader& header, double increment)
+    : pos_{0.0}, increment_{increment}, header_{header} {}
 
-    explicit SampleIndex(double value)
-    : value_(fromDouble(value))
-    {}
+    double pos() const { return pos_; }
 
-    uint32_t whole() const { return value_ >> 32; }
-    uint32_t partial() const { return value_ & partialMask; }
-
-    double value() const { return whole() + double(partial()) / double(std::numeric_limits<uint32_t>::max()); }
-
-    SampleIndex& operator +=(SampleIndex rhs) {
-        value_ += rhs.value_;
-        return *this;
+    void increment(bool canLoop) {
+        if (finished()) return;
+        pos_ += increment_;
+        if (pos_ >= header_.loopEnd() && canLoop) {
+            pos_ -= (header_.loopEnd() - header_.loopBegin());
+        }
     }
 
-    SampleIndex& operator -=(SampleIndex rhs) {
-        value_ -= rhs.value_;
-        return *this;
-    }
-
-    SampleIndex& operator ++() {
-        value_ += one;
-        return *this;
-    }
-
-    SampleIndex& operator --() {
-        value_ -= one;
-        return *this;
-    }
+    bool finished() const { return pos_ >= header_.end(); }
 
 private:
-    static constexpr uint64_t partialMask = 0x00000000FFFFFFFFul;
-
-    static constexpr uint64_t one = uint64_t(1) << 32;
-
-    static uint64_t fromDouble(double value) {
-        uint64_t whole = uint32_t(value);
-        uint64_t partial = (value - whole) * double(std::numeric_limits<uint32_t>::max());
-        return whole << 32 | partial;
-    }
-
-    uint64_t value_;
+    double pos_;
+    double increment_;
+    const Entity::SampleHeader& header_;
 };
 
 }

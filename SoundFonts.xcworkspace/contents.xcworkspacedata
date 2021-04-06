@@ -8,6 +8,9 @@
       location = "container:Playgrounds"
       name = "Playgrounds">
       <FileRef
+         location = "group:Rendering.playground">
+      </FileRef>
+      <FileRef
          location = "group:Mac MIDI.playground">
       </FileRef>
       <FileRef

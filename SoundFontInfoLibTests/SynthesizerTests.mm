@@ -44,12 +44,11 @@ using namespace SF2::Render;
 }
 
 - (void)testSin {
-    // self.epsilon = 0.001;
     for (int degrees = -720; degrees <= 720; degrees += 10) {
         double radians = degrees * Synthesizer::PI / 180.0;
         double value = Synthesizer::sin(radians);
-        std::cout << degrees << " " << value << std::endl;
-        XCTAssertEqualWithAccuracy(::std::sin(radians), Synthesizer::sin(radians), self.epsilon);
+        // std::cout << degrees << " " << value << std::endl;
+        XCTAssertEqualWithAccuracy(::std::sin(radians), value, self.epsilon);
     }
 }
 

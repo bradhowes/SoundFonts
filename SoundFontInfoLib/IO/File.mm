@@ -70,7 +70,6 @@ File::File(int fd, size_t fileSize) : fd_{fd}, size_{fileSize}, sampleDataBegin_
     sampleBuffers_.reserve(sampleHeaders_.size());
     for (auto index = 0; index < sampleHeaders_.size(); ++index) {
         auto const& header = sampleHeaders_[index];
-        sampleBuffers_.emplace_back(sampleData_ + header.begin(), header.end() - header.begin(), header.loopBegin(),
-                                    header.loopEnd());
+        sampleBuffers_.emplace_back(sampleData_, header);
     }
 }

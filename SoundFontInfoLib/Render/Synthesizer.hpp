@@ -13,9 +13,6 @@ namespace Render {
 
 inline double clamp(double value, double min, double max) { return std::min(std::max(value, min), max); }
 
-// cb = -200 * log10(amp)
-// amp = pow(10, cb/-200)
-
 struct SampleRateBased {
     constexpr static double sampleRate = 44100.0;
 };
@@ -61,24 +58,12 @@ public:
     }
 
     constexpr static double sin(double radians) {
-        if (radians < 0.0) {                // < 0°
-            return -sin(-radians);
-        }
-        else if (radians <= HalfPI) {       // 90°
-            return sineLookup(radians);
-        }
-        else if (radians <= PI) {           // 180°
-            return sin(PI - radians);
-        }
-        else if (radians <= 3 * HalfPI) {   // 270°
-            return -sin(radians - PI);
-        }
-        else if (radians <= TwoPI) {        // 360°
-            return -sin(TwoPI - radians);
-        }
-        else {                              // > 360°
-            return sin(radians - TwoPI);
-        }
+        if (radians < 0.0) return -sin(-radians);
+        while (radians > TwoPI) radians -= TwoPI;
+        if (radians <= HalfPI) return sineLookup(radians);
+        if (radians <= PI) return sineLookup(PI - radians);
+        if (radians <= 3 * HalfPI) return -sineLookup(radians - PI);
+        return -sineLookup(TwoPI - radians);
     }
 
     constexpr static int CentibelsTableSize = 1441;

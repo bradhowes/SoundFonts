@@ -21,7 +21,7 @@ public:
     }
 
 private:
-    Configuration configuration_;
+    SampleBuffer samples_;
 };
 
 }
