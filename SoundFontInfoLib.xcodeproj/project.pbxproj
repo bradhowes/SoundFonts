@@ -14,7 +14,6 @@
 		BD250C782617255B00D1C1E0 /* Utils.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250C772617255B00D1C1E0 /* Utils.mm */; };
 		BD250C82261A126000D1C1E0 /* Types.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C81261A126000D1C1E0 /* Types.hpp */; };
 		BD250CA4261C571E00D1C1E0 /* SampleIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */; };
-		BD250CFE261C729200D1C1E0 /* SampleBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250CFD261C729200D1C1E0 /* SampleBuffer.mm */; };
 		BD250D14261C74ED00D1C1E0 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */; };
 		BD2AEE4324F692C5009EAABE /* Generator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4224F692C5009EAABE /* Generator.mm */; };
 		BD2AEE4724F6B8D7009EAABE /* Instrument.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2AEE4624F6B8D7009EAABE /* Instrument.mm */; };
@@ -29,6 +28,7 @@
 		BD62BA53261CB8270052FB7A /* DelayBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */; };
 		BD62BA5B261D18790052FB7A /* DelayBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */; };
 		BD62BA6A261D89A20052FB7A /* DSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD62BA69261D89A20052FB7A /* DSP.mm */; };
+		BD62BA70261DC5F20052FB7A /* SampleBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18223CDB36200204ED4 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -76,7 +76,6 @@
 		BD250C9F261C3AA600D1C1E0 /* SampleIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SampleIndex.hpp; sourceTree = "<group>"; };
 		BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleIndexTests.mm; sourceTree = "<group>"; };
 		BD250CAB261C61D000D1C1E0 /* SampleBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SampleBuffer.hpp; sourceTree = "<group>"; };
-		BD250CFD261C729200D1C1E0 /* SampleBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleBuffer.mm; sourceTree = "<group>"; };
 		BD2AEE4224F692C5009EAABE /* Generator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Generator.mm; sourceTree = "<group>"; };
 		BD2AEE4424F69E21009EAABE /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
 		BD2AEE4624F6B8D7009EAABE /* Instrument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Instrument.mm; sourceTree = "<group>"; };
@@ -96,6 +95,7 @@
 		BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DelayBuffer.hpp; sourceTree = "<group>"; };
 		BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DelayBufferTests.mm; sourceTree = "<group>"; };
 		BD62BA69261D89A20052FB7A /* DSP.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSP.mm; sourceTree = "<group>"; };
+		BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleBufferTests.mm; sourceTree = "<group>"; };
 		BD64EB6724E5328100EA8473 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Instrument.hpp; sourceTree = "<group>"; };
 		BD64EB6924E5341900EA8473 /* Bag.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bag.hpp; sourceTree = "<group>"; };
 		BD64EB6B24E534B700EA8473 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
@@ -242,6 +242,7 @@
 				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
 				BD62BA4A261CB7890052FB7A /* LFOTests.mm */,
 				BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */,
+				BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */,
 				BD62BA4E261CB7D20052FB7A /* DSPTests.mm */,
 				BDABC42A24F1AD8800F8C874 /* TransformTests.mm */,
 				BDB2662C25324780005BEAD1 /* SFFileTests.mm */,
@@ -294,16 +295,15 @@
 		BDB26651253269F9005BEAD1 /* Render */ = {
 			isa = PBXGroup;
 			children = (
+				BD62BA42261CB09E0052FB7A /* BufferFacet.hpp */,
+				BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */,
 				BD62BA3A261CAE070052FB7A /* DSP.hpp */,
 				BD62BA69261D89A20052FB7A /* DSP.mm */,
-				BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */,
 				BD62BA3E261CAE630052FB7A /* LFO.hpp */,
-				BD62BA42261CB09E0052FB7A /* BufferFacet.hpp */,
 				BD62BA46261CB5F40052FB7A /* InputBuffer.hpp */,
-				BD250C97261B14A700D1C1E0 /* SampleOscillator.hpp */,
-				BD250C9F261C3AA600D1C1E0 /* SampleIndex.hpp */,
 				BD250CAB261C61D000D1C1E0 /* SampleBuffer.hpp */,
-				BD250CFD261C729200D1C1E0 /* SampleBuffer.mm */,
+				BD250C9F261C3AA600D1C1E0 /* SampleIndex.hpp */,
+				BD250C97261B14A700D1C1E0 /* SampleOscillator.hpp */,
 				BD250C772617255B00D1C1E0 /* Utils.mm */,
 				BD250BE226163F7D00D1C1E0 /* Utils.hpp */,
 				BDB265FE25303E38005BEAD1 /* Configuration.mm */,
@@ -470,7 +470,6 @@
 			files = (
 				BDB266192531AE2E005BEAD1 /* Pos.mm in Sources */,
 				BDB265FF25303E38005BEAD1 /* Configuration.mm in Sources */,
-				BD250CFE261C729200D1C1E0 /* SampleBuffer.mm in Sources */,
 				BD97191524EF21ED0009ED6E /* MIDI.mm in Sources */,
 				BD250C782617255B00D1C1E0 /* Utils.mm in Sources */,
 				BD62BA6A261D89A20052FB7A /* DSP.mm in Sources */,
@@ -498,6 +497,7 @@
 				BDB2662725323FE7005BEAD1 /* SFFileTests.swift in Sources */,
 				BD62BA4B261CB78A0052FB7A /* LFOTests.mm in Sources */,
 				BD2AEE4F24F7E2AA009EAABE /* GeneratorAmountTests.mm in Sources */,
+				BD62BA70261DC5F20052FB7A /* SampleBufferTests.mm in Sources */,
 				BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */,
 				BD250BD72615E5E900D1C1E0 /* ModulatorSourceTests.mm in Sources */,
 				BD62BA4F261CB7D20052FB7A /* DSPTests.mm in Sources */,

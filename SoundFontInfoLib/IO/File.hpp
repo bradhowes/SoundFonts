@@ -76,7 +76,7 @@ public:
 
     const Int* sampleData() const { return sampleData_; }
 
-    const Render::SampleBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
+    const Render::SampleBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
 private:
     int fd_;
@@ -105,7 +105,7 @@ private:
     ChunkItems<Entity::Generator::Generator> instrumentZoneGenerators_;
     ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
     ChunkItems<Entity::SampleHeader> sampleHeaders_;
-    std::vector<Render::SampleBuffer> sampleBuffers_;
+    std::vector<Render::SampleBuffer<AUValue>> sampleBuffers_;
 
     const Int* sampleData_;
 };

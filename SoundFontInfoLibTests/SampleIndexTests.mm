@@ -24,75 +24,74 @@ static SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 }
 
 - (void)testConstruction {
-    XCTAssertEqual(0.0, SampleIndex(header, 1.1).pos());
+    auto index = SampleIndex(header, 1.1);
+    XCTAssertEqual(0, index.index());
+    XCTAssertEqual(0, index.partial());
 }
 
 - (void)testIncrement {
-    auto index = SampleIndex(header, 1.1);
+    auto index = SampleIndex(header, 1.3);
     index.increment(true);
-    XCTAssertEqual(1.1, index.pos());
+    XCTAssertEqual(1, index.index());
     index.increment(true);
-    XCTAssertEqual(2.2, index.pos());
+    XCTAssertEqual(2, index.index());
+    XCTAssertEqualWithAccuracy(0.6, index.partial(), 0.000001);
 }
 
 - (void)testLooping {
-    auto epsilon = 0.0000001;
-    auto index = SampleIndex(header, 1.1);
+    auto index = SampleIndex(header, 1.3);
     index.increment(true);
-    XCTAssertEqualWithAccuracy(1.1, index.pos(), epsilon);
+    XCTAssertEqual(1, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(2.2, index.pos(), epsilon);
+    XCTAssertEqual(2, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(3.3, index.pos(), epsilon);
+    XCTAssertEqual(3, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(4.4, index.pos(), epsilon);
+    XCTAssertEqual(2, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(2.5, index.pos(), epsilon);
+    XCTAssertEqual(3, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(3.6, index.pos(), epsilon);
+    XCTAssertEqual(4, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(4.7, index.pos(), epsilon);
+    XCTAssertEqual(3, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(2.8, index.pos(), epsilon);
+    XCTAssertEqual(4, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(3.9, index.pos(), epsilon);
+    XCTAssertEqual(2, index.index());
 }
 
 - (void)testEndLooping {
-    auto epsilon = 0.0000001;
-    auto index = SampleIndex(header, 1.1);
+    auto index = SampleIndex(header, 1.3);
     index.increment(true);
     index.increment(true);
     index.increment(true);
     index.increment(true);
     index.increment(true);
+    XCTAssertEqual(3, index.index());
     index.increment(true);
-    XCTAssertEqualWithAccuracy(3.6, index.pos(), epsilon);
-    index.increment(true);
-    XCTAssertEqualWithAccuracy(4.7, index.pos(), epsilon);
+    XCTAssertEqual(4, index.index());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(5.8, index.pos(), epsilon);
+    XCTAssertEqual(6, index.index());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(6.9, index.pos(), epsilon);
+    XCTAssertEqual(6, index.index());
 }
 
 - (void)testFinished {
-    auto epsilon = 0.0000001;
-    auto index = SampleIndex(header, 1.1);
+    auto index = SampleIndex(header, 1.3);
     index.increment(false);
-    XCTAssertEqualWithAccuracy(1.1, index.pos(), epsilon);
+    XCTAssertEqual(1, index.index());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(2.2, index.pos(), epsilon);
+    XCTAssertEqual(2, index.index());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(3.3, index.pos(), epsilon);
+    XCTAssertEqual(3, index.index());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(4.4, index.pos(), epsilon);
-    index.increment(false);
-    XCTAssertEqualWithAccuracy(5.5, index.pos(), epsilon);
+    XCTAssertEqual(5, index.index());
     XCTAssertFalse(index.finished());
     index.increment(false);
-    XCTAssertEqualWithAccuracy(6.6, index.pos(), epsilon);
+    XCTAssertEqual(6, index.index());
     XCTAssertTrue(index.finished());
+    index.increment(false);
+    XCTAssertEqual(6, index.index());
 }
 
 @end
