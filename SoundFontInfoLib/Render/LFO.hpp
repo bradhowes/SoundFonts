@@ -31,8 +31,8 @@ public:
      @param waveform the waveform to emit
      */
     LFO(T sampleRate, T frequency, LFOWaveform waveform)
-    : sampleRate_{sampleRate}, frequency_{frequency}, valueGenerator_{WaveformGenerator(waveform)} {
-        reset();
+    : valueGenerator_{WaveformGenerator(waveform)} {
+        initialize(sampleRate, frequency);
     }
 
     /**
@@ -54,6 +54,7 @@ public:
     void initialize(T sampleRate, T frequency) {
         sampleRate_ = sampleRate;
         frequency_ = frequency;
+        setPhaseIncrement();
         reset();
     }
 
@@ -65,20 +66,19 @@ public:
     void setWaveform(LFOWaveform waveform) { valueGenerator_ = WaveformGenerator(waveform); }
 
     /**
-     Set the frequency of the oscillator.
+     Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
 
      @param frequency the frequency to operate at
      */
     void setFrequency(T frequency) {
         frequency_ = frequency;
-        phaseIncrement_ = frequency_ / sampleRate_;
+        setPhaseIncrement();
     }
 
     /**
      Restart from a known zero state.
      */
     void reset() {
-        phaseIncrement_ = frequency_ / sampleRate_;
         moduloCounter_ = phaseIncrement_ > 0 ? 0.0 : 1.0;
     }
 
@@ -119,6 +119,11 @@ public:
         return valueGenerator_(counter);
     }
 
+    /**
+     Obtain the next value of the quad-phase oscillator. Advances counter before returning, so this is not idempotent.
+
+     @returns current waveform value
+     */
     T quadPhaseValueAndIncrement() {
         auto counter = moduloCounter_;
         quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
@@ -141,6 +146,8 @@ public:
     T quadPhaseValue() const { return valueGenerator_(quadPhaseCounter_); }
 
 private:
+    void setPhaseIncrement() { phaseIncrement_ = frequency_ / sampleRate_; }
+
     using ValueGenerator = std::function<T(T)>;
 
     static ValueGenerator WaveformGenerator(LFOWaveform waveform) {

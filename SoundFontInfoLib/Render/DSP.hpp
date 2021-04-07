@@ -3,6 +3,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 namespace SF2 {
@@ -14,7 +15,7 @@ namespace DSP {
  @param modulator the value to translate
  @returns value in range [-1, +1]
  */
-template <typename T> auto unipolarToBipolar(T modulator) { return 2.0 * modulator - 1.0; }
+template <typename T> T unipolarToBipolar(T modulator) { return 2.0 * modulator - 1.0; }
 
 /**
  Translate value in range [-1, +1] into one in range [0, +1]
@@ -22,7 +23,7 @@ template <typename T> auto unipolarToBipolar(T modulator) { return 2.0 * modulat
  @param modulator the value to translate
  @returns value in range [0, +1]
  */
-template <typename T> auto bipolarToUnipolar(T modulator) { return 0.5 * modulator + 0.5; }
+template <typename T> T bipolarToUnipolar(T modulator) { return 0.5 * modulator + 0.5; }
 
 /**
  Perform linear translation from a value in range [0.0, 1.0] into one in [minValue, maxValue].
@@ -32,7 +33,7 @@ template <typename T> auto bipolarToUnipolar(T modulator) { return 0.5 * modulat
  @param maxValue the highest value to return when modulator is +1
  @returns value in range [minValue, maxValue]
  */
-template <typename T> auto unipolarModulation(T modulator, T minValue, T maxValue) {
+template <typename T> T unipolarModulation(T modulator, T minValue, T maxValue) {
     return std::clamp<T>(modulator, 0.0, 1.0) * (maxValue - minValue) + minValue;
 }
 
@@ -44,7 +45,7 @@ template <typename T> auto unipolarModulation(T modulator, T minValue, T maxValu
  @param maxValue the highest value to return when modulator is +1
  @returns value in range [minValue, maxValue]
  */
-template <typename T> auto bipolarModulation(T modulator, T minValue, T maxValue) {
+template <typename T> T bipolarModulation(T modulator, T minValue, T maxValue) {
     auto mid = (maxValue - minValue) * 0.5;
     return std::clamp<T>(modulator, -1.0, 1.0) * mid + mid + minValue;
 }
@@ -58,7 +59,7 @@ template <typename T> auto bipolarModulation(T modulator, T minValue, T maxValue
  @param angle value between -PI and PI
  @returns approximate sin value
  */
-template <typename T> auto parabolicSine(T angle) {
+template <typename T> T parabolicSine(T angle) {
     constexpr T B = 4.0 / M_PI;
     constexpr T C = -4.0 / (M_PI * M_PI);
     constexpr T P = 0.225;
@@ -66,5 +67,30 @@ template <typename T> auto parabolicSine(T angle) {
     return P * y * (std::abs(y) - 1.0) + y;
 }
 
+namespace Interpolation {
+
+struct Linear {
+    inline static double interpolate(double partial, double x0, double x1) {
+        auto w1 = partial;
+        auto w0 = 1.0 - partial;
+        return x0 * w0 + x1 * w1;
+    }
+};
+
+struct Cubic4thOrder {
+    constexpr static size_t weightsCount = 256;
+    using WeightsArray = std::array<std::array<double, 4>, weightsCount>;
+    static WeightsArray weights;
+    static WeightsArray generateWeights();
+
+    inline static double interpolate(double partial, double x0, double x1, double x2, double x3) {
+        auto index = size_t(partial * weightsCount);
+        if (index == weightsCount) --index;
+        auto w = weights[index];
+        return x0 * w[0] + x1 * w[1] + x2 * w[2] + x3 * w[3];
+    }
+};
+
+} // Interpolation namespace
 } // DSP namespace
 } // SF2 namespace

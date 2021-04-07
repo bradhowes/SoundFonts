@@ -35,7 +35,8 @@ public:
 
     using Matches = std::vector<ZonePair>;
 
-    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& cfg) : cfg_{cfg}, zones_{size_t(cfg_.zoneCount())}
+    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& cfg)
+    : cfg_{cfg}, zones_{size_t(cfg_.zoneCount())}
     {
         for (const Entity::Bag& bag : file.presetZones().slice(cfg_.zoneIndex(), cfg_.zoneCount())) {
             if (bag.generatorCount() != 0 || bag.modulatorCount() != 0) {

@@ -26,6 +26,9 @@ struct SampleIndex {
 
     bool finished() const { return pos_ >= header_.end(); }
 
+    size_t index() const { return size_t(pos_); }
+    double partial() const { return pos_ - index(); }
+
 private:
     double pos_;
     double increment_;
