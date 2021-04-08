@@ -148,6 +148,9 @@ public:
         /// @returns true if the generator still has values to emit
         bool isActive() const { return stage_ != Stage::idle; }
 
+        /// @returns true if the generator is active and has not yet reached the release state
+        bool isGated() const { return isActive() && stage_ != Stage::release; }
+
         /// @returns the current envelope value.
         Float value() const { return value_; }
 

@@ -16,7 +16,7 @@ class AudioRender {
         let sourceSignalFrequency = 440.0
 
         let destinationSampleRate: Double = 44100.0
-        let destinationSignalMIDI: Int = 81
+        let destinationSignalMIDI: Int = 69
 
         let sourceFrameCount = AVAudioFrameCount(sourceSampleRate)
         let destinationFrameCount = AVAudioFrameCount(destinationSampleRate)
@@ -26,7 +26,7 @@ class AudioRender {
         renderBuffer.frameLength = destinationFrameCount
 
         sourceBuffer = .init(repeating: 0.0, count: Int(sourceFrameCount))
-        let step = 2 * Double.pi / sourceSampleRate
+        let step = 2 * Double.pi / Double(sourceFrameCount)
         for index in 0..<Int(sourceFrameCount) {
             sourceBuffer[index] = sinf(Float(sourceSignalFrequency * Double(index) * step))
         }

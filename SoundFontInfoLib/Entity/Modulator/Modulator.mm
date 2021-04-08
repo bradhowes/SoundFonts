@@ -7,7 +7,7 @@
 
 using namespace SF2::Entity::Modulator;
 
-std::array<Modulator, 10> const Modulator::defaults_ {
+std::array<Modulator, 10> const Modulator::defaults {
     Modulator(Source(0x0502), Generator::Index::initialAttenuation, 960, Source(0), Transform(0)),
     Modulator(Source(0x0102), Generator::Index::initialFilterCutoff, -2400, Source(0), Transform(0)),
     Modulator(Source(0x000D), Generator::Index::vibratoLFOToPitch, 50, Source(0), Transform(0)),

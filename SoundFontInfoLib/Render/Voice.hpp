@@ -2,10 +2,9 @@
 
 #pragma once
 
-#include <array>
-
-#include "Entity/Generator/Amount.hpp"
-#include "Render/Zone.hpp"
+#include "Render/Envelope.hpp"
+#include "Render/Note.hpp"
+#include "Render/SampleBuffer.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -13,15 +12,22 @@ namespace Render {
 class Voice
 {
 public:
-    using Configuration = std::array<SFGeneratorAmount,static_cast<size_t>(SFGenIndex::numValues)>;
+    Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const Note& note, const Envelope& amp);
 
-    Voice(const Zone& instrument, Zone const* globalInstrument, const Zone&) : configuration_{}
-    {
-        configuration_.fill(SFGeneratorAmount(0));
+    void keyReleased() { amp_.gate(false); }
+
+    AUValue render() {
+        auto gain = amp_.process();
+        auto sample = sampleBuffer_.read(sampleIndex_, amp_.isGated());
+        return sample * gain;
     }
 
 private:
-    SampleBuffer samples_;
+    double sampleRate_;
+    SampleBuffer<AUValue> sampleBuffer_;
+    SampleIndex sampleIndex_;
+    Note note_;
+    Envelope::Generator amp_;
 };
 
 } // namespace Render

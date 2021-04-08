@@ -8,7 +8,7 @@ Instrument::Instrument(const IO::File& file, const Entity::Instrument& cfg) : cf
 {
     for (const Entity::Bag& bag : file.instrumentZones().slice(cfg_.firstZoneIndex(), cfg_.zoneCount())) {
         if (bag.generatorCount() != 0 || bag.modulatorCount() != 0) {
-            zones_.emplace_back(file, bag);
+            zones_.add(file, bag);
         }
     }
 }

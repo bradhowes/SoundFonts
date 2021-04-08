@@ -8,6 +8,13 @@
 namespace SF2 {
 namespace Render {
 
+/**
+ Represents a preset that knows how to emit sounds for MIDI events when it is active.
+
+ A preset is made up of a collection of zones, where each zone defines a MIDI key and velocity range that it applies to
+ and an instrument that determines the sound to produce. Note that zones can overlap, so one MIDI event can cause
+ multiple instruments to play.
+ */
 class Preset {
 public:
     using PresetZoneCollection = ZoneCollection<Render::PresetZone>;
@@ -35,28 +42,9 @@ public:
 
     using Matches = std::vector<ZonePair>;
 
-    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& cfg)
-    : cfg_{cfg}, zones_{size_t(cfg_.zoneCount())}
-    {
-        for (const Entity::Bag& bag : file.presetZones().slice(cfg_.zoneIndex(), cfg_.zoneCount())) {
-            if (bag.generatorCount() != 0 || bag.modulatorCount() != 0) {
-                zones_.emplace_back(file, instruments, bag);
-            }
-        }
-    }
+    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& cfg);
 
-    Matches find(int key, int velocity) const {
-        Matches zonePairs;
-        for (const PresetZone& presetZone : zones_.find(key, velocity)) {
-            const Instrument& instrument = presetZone.instrument();
-            InstrumentZone const* instrumentGlobal = instrument.globalZone();
-            for (const InstrumentZone& instrumentZone : instrument.find(key, velocity)) {
-                zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal);
-            }
-        }
-
-        return zonePairs;
-    }
+    Matches find(int key, int velocity) const;
 
     bool hasGlobalZone() const { return zones_.hasGlobal(); }
     PresetZone const* globalZone() const { return zones_.global(); }

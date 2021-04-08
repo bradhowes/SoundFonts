@@ -12,10 +12,18 @@ namespace Entity {
 namespace Modulator {
 
 /**
- The source of a modulator.
+ The source of an SF2 modulator. There are two types:
+
+ - general controller
+ - MIDI continuous controller (CC)
+
+ The type is defined by the CC flag (bit 7). There are currently four kinds of 
+
  */
 class Source {
 public:
+
+    /// Valid sources for a general controller
     enum struct GeneralIndex : uint16_t {
         none = 0,
         noteOnVelocity = 2,
@@ -27,6 +35,7 @@ public:
         link = 127
     };
 
+    /// Transformations applied to source values
     enum struct ContinuityType : uint16_t {
         linear = 0,
         concave,
@@ -34,10 +43,16 @@ public:
         switched
     };
 
+    /**
+     Constructor
+
+     @param bits value that defines a source
+     */
     explicit Source(uint16_t bits) : bits_{bits} {}
 
-    Source() : Source(0) {}
+    Source() = default;
 
+    /// @returns true if the source is valid
     bool isValid() const {
         if (rawType() >= 4) return false;
         auto idx = rawIndex();
@@ -50,28 +65,42 @@ public:
         }
     }
 
+    /// @returns true if the source is a continuous controller (CC)
     bool isContinuousController() const { return (bits_ & (1 << 7)) ? true : false; }
+
+    /// @returns true if the source acts in a unipolar manner
     bool isUnipolar() const { return polarity() == 0; }
+
+    /// @returns true if the source acts in a bipolar manner
     bool isBipolar() const { return !isUnipolar(); }
+
+    /// @returns true if the source values go from small to large as the controller goes from min to max
     bool isMinToMax() const { return direction() == 0; }
+
+    /// @returns true if the source values go from large to small as the controller goes from min to max
     bool isMaxToMin() const { return !isMinToMax(); }
 
+    /// @returns the index of the general controller (raises exception if not configured to be a general controller)
     GeneralIndex generalIndex() const {
         assert(isValid() && !isContinuousController());
         return GeneralIndex(rawIndex());
     }
 
+    /// @returns the index of the continuous controller (raises exception if not configured to be a continuous
+    /// controller)
     int continuousIndex() const {
         assert(isValid() && isContinuousController());
         return rawIndex();
     }
 
+    /// @returns the continuity type for the controller values
     ContinuityType type() {
         assert(isValid());
         return ContinuityType(rawType());
     }
 
-    std::string typeName() const { return isValid() ? std::string(typeNames[rawType()]) : "N/A"; }
+    /// @returns the name of the continuity type
+    std::string continuityTypeName() const { return isValid() ? std::string(typeNames[rawType()]) : "N/A"; }
 
     friend std::ostream& operator<<(std::ostream& os, const Source& mod);
 
@@ -88,7 +117,7 @@ private:
 
 inline std::ostream& operator<<(std::ostream& os, const Source& mod)
 {
-    return os << "[type: " << mod.typeName()
+    return os << "[type: " << mod.continuityTypeName()
     << " P: " << mod.polarity()
     << " D: " << mod.direction()
     << " CC: " << mod.isContinuousController()

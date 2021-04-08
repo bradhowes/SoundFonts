@@ -5,7 +5,7 @@
 #import <XCTest/XCTest.h>
 
 #include "Entity/Generator/Amount.hpp"
-#include "Render/Zone.hpp"
+#include "Render/Range.hpp"
 
 using namespace SF2::Entity::Generator;
 using namespace SF2::Render;
@@ -15,34 +15,36 @@ using namespace SF2::Render;
 
 @implementation GeneratorAmountTests
 
-- (void)setUp {
-}
-
-- (void)tearDown {
-}
-
 - (void)testRange {
-    {
-        Amount amt(0);
-        XCTAssertEqual(0, amt.low());
-        XCTAssertEqual(0, amt.high());
-    }
-    {
-        Amount amt(0x7F7F);
-        XCTAssertEqual(127, amt.low());
-        XCTAssertEqual(127, amt.high());
-    }
-    {
-        Amount amt(0x7F00);
-        XCTAssertEqual(0, amt.low());
-        XCTAssertEqual(127, amt.high());
-    }
+    Amount amount(0);
+    XCTAssertEqual(0, amount.low());
+    XCTAssertEqual(0, amount.high());
+
+    amount = Amount(0x7F7F);
+    XCTAssertEqual(127, amount.low());
+    XCTAssertEqual(127, amount.high());
+
+    amount = Amount(0x7F00);
+    XCTAssertEqual(0, amount.low());
+    XCTAssertEqual(127, amount.high());
+
+    amount = Amount(0xFF80);
+    XCTAssertEqual(128, amount.low());
+    XCTAssertEqual(255, amount.high());
 }
 
 - (void)testRangeConversion {
-    Zone::Range range(Amount(0x3200));
+    Range range(Amount(0x3200));
     XCTAssertEqual(0, range.low());
     XCTAssertEqual(50, range.high());
+
+    range = Range(Amount(0x7F7F));
+    XCTAssertEqual(127, range.low());
+    XCTAssertEqual(127, range.high());
+
+    range = Range(Amount(0x00FF));
+    XCTAssertEqual(255, range.low());
+    XCTAssertEqual(0, range.high());
 }
 
 @end

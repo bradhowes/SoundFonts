@@ -66,10 +66,12 @@ public:
         }
     }
 
+    const Entity::SampleHeader& header() const { return header_; }
+
 private:
 
     /**
-     Obtain an linearly interpolated sample for a given index value.
+     Obtain a linearly interpolated sample for a given index value.
 
      @param index the index of the first sample to use
      @param partial the non-integral part of the index

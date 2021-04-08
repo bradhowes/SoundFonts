@@ -23,11 +23,28 @@ struct SampleIndex {
      Construct new instance.
 
      @param header description of the samples being indexed
-     @param increment the increment used to advance the index
      */
-    SampleIndex(const Entity::SampleHeader& header, double increment)
-    : index_{0}, partial_{0.0}, header_{header}
-    {
+    SampleIndex(const Entity::SampleHeader& header) : index_{0}, partial_{0.0}, header_{header} {
+        setIncrement(0.0);
+    }
+
+    /**
+     Construct new instance.
+
+     @param header description of the samples being indexed
+     @param increment the value to apply when advancing the index
+     */
+    SampleIndex(const Entity::SampleHeader& header, double increment) : index_{0}, partial_{0.0}, header_{header} {
+        setIncrement(increment);
+    }
+
+    /**
+     Set the increment to use when advancing the index. This can change with each sample depending on what modulators
+     are doing with the pitch value (eg vibrato).
+
+     @param increment the value to apply when advancing the index
+     */
+    void setIncrement(double increment) {
         indexIncrement_ = size_t(increment);
         partialIncrement_ = increment - double(indexIncrement_);
     }

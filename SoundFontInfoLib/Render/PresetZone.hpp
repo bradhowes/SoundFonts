@@ -9,18 +9,13 @@
 #include "Render/Zone.hpp"
 
 namespace SF2 {
-namespace Remder {
+namespace Render {
 
 class PresetZone : public Render::Zone {
 public:
-    PresetZone(const IO::File& file, const Render::InstrumentCollection& instruments, const Entity::Bag& bag) :
-    Zone(file.presetZoneGenerators().slice(bag.generatorIndex(), bag.generatorCount()),
-         file.presetZoneModulators().slice(bag.modulatorIndex(), bag.modulatorCount()),
-         Entity::GenIndex::instrument),
-    instrument_{isGlobal() ? nullptr : &instruments.at(resourceLink())}
-    {}
+    PresetZone(const IO::File& file, const Render::InstrumentCollection& instruments, const Entity::Bag& bag);
 
-    // Preset values only refine those from instrument
+    /// Preset values only refine those from instrument
     void refine(Render::Configuration& configuration) const { Zone::refine(configuration); }
 
     const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }

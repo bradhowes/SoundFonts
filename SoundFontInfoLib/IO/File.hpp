@@ -74,8 +74,12 @@ public:
     /// @returns reference to samples definitions
     const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
-    const Int* sampleData() const { return sampleData_; }
+    /**
+     Obtain a SampleBuffer at the given sample header index
 
+     @param index the index of the buffer to obtain
+     @returns SampleBuffer reference
+     */
     const Render::SampleBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
 private:

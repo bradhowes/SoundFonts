@@ -81,7 +81,9 @@ enum struct Index : uint16_t {
     exclusiveClass,
     overridingRootKey,
 
-    initialPitch, // NOTE: added to support modulator 8.4.10.
+    // NOTE: following do not exist in the spec, but are defined here to keep things simple and support the defined
+    // modulator presets.
+    initialPitch,
 
     numValues
 };

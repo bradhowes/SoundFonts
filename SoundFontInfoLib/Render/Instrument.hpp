@@ -6,6 +6,7 @@
 
 #include "Render/InstrumentZone.hpp"
 #include "Render/Zone.hpp"
+#include "Render/ZoneCollection.hpp"
 
 namespace SF2 {
 namespace Render {

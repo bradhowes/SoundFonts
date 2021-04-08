@@ -3,6 +3,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "Entity/Generator/Amount.hpp"
 #include "Entity/Generator/Index.hpp"
@@ -12,7 +13,7 @@ namespace Entity {
 namespace Generator {
 
 /**
- Meta data of an SF2 generator. These are attributes associated with a generator but not found in an SF2 file. Rather
+ Meta data for SF2 generators. These are attributes associated with a generator but not found in an SF2 file. Rather
  these are attributes called out in the SF2 specification.
  */
 class Definition {
