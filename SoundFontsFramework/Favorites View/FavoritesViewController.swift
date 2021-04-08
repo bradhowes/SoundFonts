@@ -253,6 +253,8 @@ extension FavoritesViewController: FavoriteEditorDelegate {
             }
         }
 
+        // Reapply the active PresetConfig just to make sure we are in sync. This should only be necessary for the
+        // `cancel` case above, but just to be safe...
         if let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig {
             PresetConfig.changedNotification.post(value: presetConfig)
         }

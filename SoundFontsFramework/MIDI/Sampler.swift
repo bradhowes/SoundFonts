@@ -334,7 +334,13 @@ extension Sampler {
             setTuning(0.0)
         }
 
-        setPitchBendRange(Settings.shared.pitchBendRange)
+        if let pitchBendRange = presetConfig.pitchBendRange {
+            setPitchBendRange(pitchBendRange)
+        }
+        else {
+            setPitchBendRange(Settings.shared.pitchBendRange)
+        }
+
         setGain(presetConfig.gain)
         setPan(presetConfig.pan)
 

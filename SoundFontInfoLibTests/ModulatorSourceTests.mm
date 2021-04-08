@@ -25,7 +25,7 @@ using namespace SF2::Entity::Modulator;
     XCTAssertTrue(s.isUnipolar());
     XCTAssertTrue(s.isMinToMax());
     XCTAssertEqual(Source::ContinuityType::linear, s.type());
-    XCTAssertEqual("linear", s.typeName());
+    XCTAssertEqual("linear", s.continuityTypeName());
 
     XCTAssertFalse(s.isContinuousController());
     XCTAssertFalse(s.isBipolar());
@@ -38,7 +38,7 @@ using namespace SF2::Entity::Modulator;
     XCTAssertTrue(s.isUnipolar());
     XCTAssertTrue(s.isMinToMax());
     XCTAssertEqual(Source::ContinuityType::linear, s.type());
-    XCTAssertEqual("linear", s.typeName());
+    XCTAssertEqual("linear", s.continuityTypeName());
 }
 
 - (void)testConcave {
@@ -47,7 +47,7 @@ using namespace SF2::Entity::Modulator;
     XCTAssertTrue(s.isUnipolar());
     XCTAssertTrue(s.isMinToMax());
     XCTAssertEqual(Source::ContinuityType::concave, s.type());
-    XCTAssertEqual("concave", s.typeName());
+    XCTAssertEqual("concave", s.continuityTypeName());
 }
 
 - (void)testConvex {
@@ -56,7 +56,7 @@ using namespace SF2::Entity::Modulator;
     XCTAssertTrue(s.isUnipolar());
     XCTAssertTrue(s.isMinToMax());
     XCTAssertEqual(Source::ContinuityType::convex, s.type());
-    XCTAssertEqual("convex", s.typeName());
+    XCTAssertEqual("convex", s.continuityTypeName());
 }
 
 - (void)testSwitched {
@@ -65,7 +65,7 @@ using namespace SF2::Entity::Modulator;
     XCTAssertTrue(s.isUnipolar());
     XCTAssertTrue(s.isMinToMax());
     XCTAssertEqual(Source::ContinuityType::switched, s.type());
-    XCTAssertEqual("switched", s.typeName());
+    XCTAssertEqual("switched", s.continuityTypeName());
 }
 
 - (void)testGeneralIndices {

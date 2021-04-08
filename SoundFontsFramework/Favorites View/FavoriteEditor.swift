@@ -78,6 +78,8 @@ final public class FavoriteEditor: UIViewController {
     @IBOutlet private weak var lowestNoteValue: UILabel!
     @IBOutlet private weak var lowestNoteStepper: UIStepper!
 
+    @IBOutlet private weak var pitchBendRange: UILabel!
+    @IBOutlet private weak var pitchBendStepper: UIStepper!
     @IBOutlet private weak var gainValue: UILabel!
     @IBOutlet private weak var gainSlider: UISlider!
 
@@ -124,6 +126,11 @@ final public class FavoriteEditor: UIViewController {
 
         lowestNoteStepper.setDecrementImage(lowestNoteStepper.decrementImage(for: .normal), for: .normal)
         lowestNoteStepper.setIncrementImage(lowestNoteStepper.incrementImage(for: .normal), for: .normal)
+
+        pitchBendStepper.minimumValue = 1
+        pitchBendStepper.maximumValue = 24
+        pitchBendStepper.setDecrementImage(pitchBendStepper.decrementImage(for: .normal), for: .normal)
+        pitchBendStepper.setIncrementImage(pitchBendStepper.incrementImage(for: .normal), for: .normal)
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -162,6 +169,7 @@ final public class FavoriteEditor: UIViewController {
         self.tuningComponent = tuningComponent
         tuningComponent.updateState(enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
+        setPitchBendRange(presetConfig.pitchBendRange ?? Settings.shared.pitchBendRange)
         setGainValue(presetConfig.gain)
         setPanValue(presetConfig.pan)
 
@@ -247,15 +255,17 @@ extension FavoriteEditor {
         presetConfig.keyboardLowestNote = lowestNote
         presetConfig.keyboardLowestNoteEnabled = lowestNoteEnabled.isOn
 
-        presetConfig.gain = gainSlider.value
-        presetConfig.pan = panSlider.value
+        presetConfig.pitchBendRange = self.presetConfig.pitchBendRange
+        presetConfig.gain = self.presetConfig.gain
+        presetConfig.pan = self.presetConfig.pan
 
         presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
         presetConfig.presetTuning = tuningComponent.tuning
         presetConfig.notes = notesTextView.text
 
         let response: Response = self.config.isFavorite ?
-            .favorite(config: presetConfig) : .preset(soundFontAndPatch: soundFontAndPatch, config: presetConfig)
+            .favorite(config: presetConfig) :
+            .preset(soundFontAndPatch: soundFontAndPatch, config: presetConfig)
 
         AskForReview.maybe()
         delegate?.dismissed(position, reason: .done(response: response))
@@ -289,6 +299,15 @@ extension FavoriteEditor {
         lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
     }
 
+    @IBAction func pitchBendStep(_ sender: UIStepper) {
+        updatePitchBendRange()
+    }
+
+    @IBAction func resetPitchBend(_ sender: UIButton) {
+        presetConfig.pitchBendRange = nil
+        setPitchBendRange(Settings.shared.pitchBendRange)
+    }
+
     /**
      Event handler for the gain slider
     
@@ -319,6 +338,18 @@ extension FavoriteEditor {
         guard let currentLowestNote = self.currentLowestNote else { return }
         lowestNoteValue.text = currentLowestNote.label
         lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
+    }
+
+    private func updatePitchBendRange() {
+        let value = Int(pitchBendStepper.value)
+        pitchBendRange.text = "\(value)"
+        presetConfig.pitchBendRange = value
+        PresetConfig.changedNotification.post(value: presetConfig)
+    }
+
+    private func setPitchBendRange(_ value: Int) {
+        pitchBendRange.text = "\(value)"
+        pitchBendStepper.value = Double(value)
     }
 
     private func setGainValue(_ value: Float) {
