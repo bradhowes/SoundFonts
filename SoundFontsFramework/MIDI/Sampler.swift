@@ -282,10 +282,10 @@ extension Sampler {
             os_log(.error, log: log, "invalid pitch bend range: %d", value)
             return
         }
-        auSampler?.sendMIDIEvent(101, data1: 0)
-        auSampler?.sendMIDIEvent(100, data1: 0)
-        auSampler?.sendMIDIEvent(6, data1: UInt8(value))
-        auSampler?.sendMIDIEvent(38, data1: 0)
+        auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
+        auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
+        auSampler?.sendMIDIEvent(0xB0, data1: 0x06, data2: UInt8(value))
+        auSampler?.sendMIDIEvent(0xB0, data1: 0x26, data2: 0)
     }
 }
 
@@ -334,6 +334,7 @@ extension Sampler {
             setTuning(0.0)
         }
 
+        setPitchBendRange(Settings.shared.pitchBendRange)
         setGain(presetConfig.gain)
         setPan(presetConfig.pan)
 
