@@ -4,7 +4,7 @@
 
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
-#include "Render/Configuration.hpp"
+#include "Render/VoiceState.hpp"
 #include "Render/InstrumentCollection.hpp"
 #include "Render/Zone.hpp"
 
@@ -16,7 +16,7 @@ public:
     PresetZone(const IO::File& file, const Render::InstrumentCollection& instruments, const Entity::Bag& bag);
 
     /// Preset values only refine those from instrument
-    void refine(Render::Configuration& configuration) const { Zone::refine(configuration); }
+    void refine(Render::VoiceState& state) const { Zone::refine(state); }
 
     const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
 

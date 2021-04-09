@@ -6,11 +6,13 @@
 
 using namespace SF2::Render;
 
-Voice::Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const Note& note, const Envelope& amp)
+Voice::Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const Note& note, const Envelope& amp,
+             const Envelope& filter)
 : sampleRate_{sampleRate}, sampleBuffer_{sampleBuffer}, sampleIndex_{sampleBuffer.header()}, note_{note},
-  amp_{amp.generator()}
+  amp_{amp.generator()}, filter_{filter.generator()}
 {
     amp_.gate(true);
+    filter_.gate(true);
 
     const auto& header = sampleBuffer_.header();
     auto sampleRateRatio = double(header.sampleRate()) / sampleRate_;

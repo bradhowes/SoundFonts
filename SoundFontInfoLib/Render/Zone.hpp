@@ -10,8 +10,8 @@
 #include "Entity/Modulator/Modulator.hpp"
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
-#include "Render/Configuration.hpp"
 #include "Render/Range.hpp"
+#include "Render/VoiceState.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -64,14 +64,14 @@ protected:
     keyRange_{KeyRange(gens)}, velocityRange_{VelocityRange(gens)}
     {}
 
-    void apply(Configuration& cfg) const
+    void apply(VoiceState& cfg) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
             cfg[gen.index()] = gen.value();
         });
     }
 
-    void refine(Configuration& cfg) const
+    void refine(VoiceState& cfg) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
             // if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());

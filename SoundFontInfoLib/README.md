@@ -1,5 +1,11 @@
 # Notes
 
+This library parses valid SF2 files, extracting preset information and file metadata. The SoundFonts app and AUv3 app extension use it to
+obtain the set of presets in the SF2 file. However, at present they rely on Apple's AVAudioUnitSampler to deal with rendering audio from
+the presets. The ultimate goal is to do everything ourselves, and there are some `render` classes to do just this.
+
+## SF2 Format
+
 A 'PHDR' sub-chunk defines a preset. Each one should have unique (wPreset, wBank) values. If the same, the first one
 wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI but it is still considered valid.
 

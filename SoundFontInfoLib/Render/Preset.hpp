@@ -4,6 +4,7 @@
 
 #include "IO/File.hpp"
 #include "Render/PresetZone.hpp"
+#include "Render/VoiceState.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -28,15 +29,15 @@ public:
         ZonePair(const Render::PresetZone& pz, PresetZone const* pg, const InstrumentZone& iz, InstrumentZone const* ig)
         : presetZone{pz}, presetGlobal{pg}, instrumentZone{iz}, instrumentGlobal{ig} {}
 
-        void apply(Configuration& configuration) {
+        void apply(VoiceState& state) {
 
             // Instrument first for override absolute values
-            if (instrumentGlobal != nullptr) instrumentGlobal->apply(configuration);
-            instrumentZone.apply(configuration);
+            if (instrumentGlobal != nullptr) instrumentGlobal->apply(state);
+            instrumentZone.apply(state);
 
             // Preset values only refine those from instrument
-            if (presetGlobal != nullptr) presetGlobal->refine(configuration);
-            presetZone.refine(configuration);
+            if (presetGlobal != nullptr) presetGlobal->refine(state);
+            presetZone.refine(state);
         }
     };
 

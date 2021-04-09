@@ -11,11 +11,11 @@
 namespace SF2 {
 namespace Render {
 
-class Configuration
+class VoiceState
 {
 public:
 
-    Configuration() : values_{} { setDefaults(); }
+    VoiceState() : values_{} { setDefaults(); }
 
     const Entity::Generator::Amount& operator[](Entity::Generator::Index index) const {
         return values_[static_cast<size_t>(index)];

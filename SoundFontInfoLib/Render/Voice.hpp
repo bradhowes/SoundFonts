@@ -12,7 +12,8 @@ namespace Render {
 class Voice
 {
 public:
-    Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const Note& note, const Envelope& amp);
+    Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const Note& note,
+          const Envelope& amp, const Envelope& filter);
 
     void keyReleased() { amp_.gate(false); }
 
@@ -28,6 +29,7 @@ private:
     SampleIndex sampleIndex_;
     Note note_;
     Envelope::Generator amp_;
+    Envelope::Generator filter_;
 };
 
 } // namespace Render

@@ -10,7 +10,6 @@
 #include "Entity/Modulator/Modulator.hpp"
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
-#include "Render/Configuration.hpp"
 
 namespace SF2 {
 namespace Render {

@@ -1,10 +1,10 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#include "Instrument.hpp"
+#include "VoiceState.hpp"
 
-using namespace SF2::Render;
+using namespace SF2;
 
-void Configuration::setDefaults()
+void Render::VoiceState::setDefaults()
 {
     using namespace Entity::Generator;
     setAmount(Index::initialFilterCutoff, 13500);

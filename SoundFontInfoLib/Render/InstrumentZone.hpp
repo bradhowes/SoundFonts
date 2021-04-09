@@ -16,7 +16,7 @@ class InstrumentZone : public Zone {
 public:
     InstrumentZone(const IO::File& file, const Entity::Bag& bag);
 
-    void apply(Configuration& configuration) const { Zone::apply(configuration); }
+    void apply(VoiceState& state) const { Zone::apply(state); }
 
 private:
     const Entity::SampleHeader* sampleHeader_;
