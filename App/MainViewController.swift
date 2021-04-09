@@ -26,6 +26,8 @@ final class MainViewController: UIViewController {
 
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
+    var skipTutorial = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         UIApplication.shared.appDelegate.setMainViewController(self)
@@ -34,10 +36,24 @@ final class MainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        guard !skipTutorial else { return }
+
+        let currentVersion = Bundle.main.releaseVersionNumber
         if !Settings.instance.showedTutorial {
+            Settings.instance.showedTutorial = true
+            Settings.instance.showedChanges = currentVersion
             if let viewController = TutorialViewController.instantiate() {
                 present(viewController, animated: true, completion: nil)
-                Settings.instance.showedTutorial = true
+            }
+        }
+        else if Settings.instance.showedChanges != currentVersion {
+            let changes = ChangesCompiler.compile(since: Settings.instance.showedChanges)
+            if let viewController = TutorialViewController.instantiate(changes) {
+                present(viewController, animated: true, completion: nil)
+            }
+            else {
+                Settings.instance.showedChanges = currentVersion
             }
         }
     }

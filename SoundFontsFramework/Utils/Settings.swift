@@ -53,6 +53,7 @@ public extension SettingKeys {
     static let delayUserPresets = SettingKey("delayUserPresets", defaultValue: Data())
     static let reverbUserPresets = SettingKey("reverbUserPresets", defaultValue: Data())
     static let showedTutorial = SettingKey("showedTutorial", defaultValue: false)
+    static let showedChanges = SettingKey("showedChanges", defaultValue: "")
     static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", defaultValue: 1.4)
     static let pitchBendRange = SettingKey("pitchBendRange", defaultValue: 2)
 }
@@ -251,6 +252,10 @@ public extension UserDefaults {
     @objc dynamic var showedTutorial: Bool {
         get { self[.showedTutorial] }
         set { self[.showedTutorial] = newValue }
+    }
+    @objc dynamic var showedChanges: String {
+        get { self[.showedChanges] }
+        set { self[.showedChanges] = newValue }
     }
     @objc dynamic var presetsWidthMultiplier: Double {
         get { self[.presetsWidthMultiplier] }

@@ -209,6 +209,12 @@
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
 		BDEA0B54255B0AA80097F1CE /* MIDIParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */; };
 		BDEA0BAD255B65FF0097F1CE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */; };
+		BDEB124B262059CF003CE8EE /* Changes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDEB124A262059CF003CE8EE /* Changes.storyboard */; };
+		BDEB12552620728B003CE8EE /* Changes.md in Resources */ = {isa = PBXBuildFile; fileRef = BDEB12542620728B003CE8EE /* Changes.md */; };
+		BDEB125926207446003CE8EE /* ChangesCompiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB125826207446003CE8EE /* ChangesCompiler.swift */; };
+		BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */; };
+		BDEB1260262084FF003CE8EE /* Changes.md in Resources */ = {isa = PBXBuildFile; fileRef = BDEB12542620728B003CE8EE /* Changes.md */; };
+		BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */; };
 		BDEEDC7925DC102500FEA219 /* NSLayout+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEEDC7825DC102500FEA219 /* NSLayout+Extensions.swift */; };
 		BDF3B3D52566BB9C003F7BB3 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */; };
 		BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */; };
@@ -433,6 +439,11 @@
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		BDEA0B53255B0AA80097F1CE /* MIDIParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIParser.swift; sourceTree = "<group>"; };
 		BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		BDEB124A262059CF003CE8EE /* Changes.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Changes.storyboard; sourceTree = "<group>"; };
+		BDEB12542620728B003CE8EE /* Changes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Changes.md; sourceTree = "<group>"; };
+		BDEB125826207446003CE8EE /* ChangesCompiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesCompiler.swift; sourceTree = "<group>"; };
+		BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesCompilerTests.swift; sourceTree = "<group>"; };
+		BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesPageViewController.swift; sourceTree = "<group>"; };
 		BDEEDC7825DC102500FEA219 /* NSLayout+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayout+Extensions.swift"; sourceTree = "<group>"; };
 		BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
@@ -582,6 +593,7 @@
 				BDC7EC3A241AE97000F789B2 /* Localizable.stringsdict */,
 				BDD979212417006D006121A1 /* Eurostile.ttc */,
 				BD074C0223CDAF51001987E9 /* Assets.xcassets */,
+				BDEB12542620728B003CE8EE /* Changes.md */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -704,6 +716,7 @@
 			isa = PBXGroup;
 			children = (
 				BD6E057725CC6F6E004058D9 /* Intro.storyboard */,
+				BDEB124A262059CF003CE8EE /* Changes.storyboard */,
 				BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */,
 				BDB7406525CC29120051B4E4 /* TagsList.storyboard */,
 				BDB7406225CC29120051B4E4 /* Presets.storyboard */,
@@ -764,6 +777,7 @@
 				BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */,
 				BDD9140F25097E610068E3CE /* CoreData Tests */,
 				BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */,
+				BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */,
 				BDC961A624FFA745003D9BEF /* StringTests.swift */,
 				BDC347E72403B93F00A848BA /* FileMonitorTests.swift */,
 				BD0FAC582520B65700EEF187 /* FiteredOrderedCollectionTests.swift */,
@@ -796,9 +810,11 @@
 			children = (
 				BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */,
 				BD1C22F025CDC781007C114F /* TutorialViewController.swift */,
+				BDEB125826207446003CE8EE /* ChangesCompiler.swift */,
 				BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */,
 				BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */,
 				BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */,
+				BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */,
 				BD1C230B25CDF781007C114F /* Pages */,
 			);
 			path = Tutorial;
@@ -944,6 +960,7 @@
 			files = (
 				BD6E057E25CC74B1004058D9 /* Done.storyboard in Resources */,
 				BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */,
+				BDEB124B262059CF003CE8EE /* Changes.storyboard in Resources */,
 				BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
 				BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */,
@@ -971,6 +988,7 @@
 				BDB7408625CC29690051B4E4 /* InfoBar2.storyboard in Resources */,
 				BD074C5F23CDAF51001987E9 /* Assets.xcassets in Resources */,
 				BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */,
+				BDEB12552620728B003CE8EE /* Changes.md in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
 			);
@@ -980,6 +998,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDEB1260262084FF003CE8EE /* Changes.md in Resources */,
 				BDD5FA672504118100367F0B /* Favorites.plist in Resources */,
 				BDC961AC24FFC6EA003D9BEF /* SoundFontLibrary.plist in Resources */,
 			);
@@ -1031,6 +1050,7 @@
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
 				BD0F940F257294020065C147 /* SelectSoundFontControl.swift in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
+				BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */,
 				BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
 				BD074C7623CDAF51001987E9 /* RandomAccessCollection+Extensions.swift in Sources */,
@@ -1066,6 +1086,7 @@
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
 				BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */,
+				BDEB125926207446003CE8EE /* ChangesCompiler.swift in Sources */,
 				BDD913F42508DEEE0068E3CE /* DispatchQueue+Extensions.swift in Sources */,
 				BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */,
 				BDCAE70425C7E0B100202BAC /* ConsolidatedConfigFile.swift in Sources */,
@@ -1161,6 +1182,7 @@
 				BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
+				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
 				BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,

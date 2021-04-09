@@ -16,13 +16,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func setMainViewController(_ mainViewController: MainViewController) {
+        if ProcessInfo.processInfo.arguments.contains("-ui_testing") {
+            mainViewController.skipTutorial = true
+        }
         window?.tintColor = UIColor.systemTeal
         components.setMainViewController(mainViewController)
     }
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        setStateIfUITesting()
 
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -85,12 +87,5 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             fatalError("Expected a valid URL")
         }
         UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)
-    }
-
-    private func setStateIfUITesting() {
-        print(ProcessInfo.processInfo.arguments)
-        if ProcessInfo.processInfo.arguments.contains("-ui_testing") {
-            Settings.instance[.showedTutorial] = true
-        }
     }
 }
