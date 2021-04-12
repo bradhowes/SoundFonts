@@ -2,5 +2,5 @@
 
 #include "Render/DSP.hpp"
 
-using namespace SF2::DSP::Interpolation;
+using namespace SF2::DSP;
 

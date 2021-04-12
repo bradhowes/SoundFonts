@@ -2,8 +2,8 @@
 
 #import <XCTest/XCTest.h>
 
+#include "Render/DSP.hpp"
 #include "Render/Envelope.hpp"
-#include "Render/Synthesizer.hpp"
 
 using namespace SF2::Render;
 

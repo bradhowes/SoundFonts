@@ -9,6 +9,20 @@
 namespace SF2 {
 namespace DSP {
 
+inline constexpr static double PI = M_PI;            // 180°
+inline constexpr static double TwoPI = 2.0 * PI;     // 360°
+inline constexpr static double HalfPI = PI / 2.0;    // 90°
+inline constexpr static double QuarterPI = PI / 4.0; // 45°
+
+// 440 * pow(2.0, (N - 69) / 12)
+constexpr static double LowestNoteFrequency = 8.175798915643707; // C-1
+
+// sqrt(2) / 2.0
+constexpr static double HalfSquareRoot2 = 1.4142135623730951L / 2.0;
+
+// The value to multiply one note frequency to get the next note's frequency
+constexpr static double InterNoteMultiplier = 1.0594630943592953;
+
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
 
@@ -66,6 +80,122 @@ template <typename T> T parabolicSine(T angle) {
     const T y = B * angle + C * angle * std::abs(angle);
     return P * y * (std::abs(y) - 1.0) + y;
 }
+
+/**
+ Estimate sin() value using a table of pre-calculated sin values and linear interpolation.
+ */
+template <typename T>
+struct SineLookup {
+    inline constexpr static size_t TableSize = 4096;
+    inline constexpr static T TableScale = (TableSize - 1) / HalfPI;
+
+    static T lookup(T radians) {
+        if (radians < 0.0) return -sin(-radians);
+        while (radians > TwoPI) radians -= TwoPI;
+        if (radians <= HalfPI) return interpolate(radians);
+        if (radians <= PI) return interpolate(PI - radians);
+        if (radians <= 3 * HalfPI) return -interpolate(radians - PI);
+        return -interpolate(TwoPI - radians);
+    }
+
+private:
+
+    static T interpolate(T radians) {
+        T phase = std::clamp(radians, 0.0, HalfPI) * TableScale;
+        int index = int(phase);
+        double partial = phase - index;
+        double value = lookup_[index] * (1.0 - partial);
+        if (partial > 0.0) value += lookup_[index + 1] * partial;
+        return value;
+    }
+
+    inline static const std::array<T, TableSize> lookup_ = [] {
+        auto init = decltype(SineLookup::lookup_){};
+        auto scale = 1.0 / SineLookup::TableScale;
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = ::std::sin(scale * index);
+        }
+        return init;
+    }();
+};
+
+template <typename T> T sineLookup(T radians) { return SineLookup<T>::lookup(radians); }
+
+/**
+ Convert cent into frequency multiplier using a table lookup.
+ */
+template <typename T>
+struct CentFrequencyLookup {
+    inline constexpr static int MaxCentValue = 1200;
+
+    static T convert(int cent) {
+        return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
+    }
+
+private:
+    inline static const std::array<T, MaxCentValue * 2 + 1> lookup_ = [] {
+        auto init = decltype(lookup_){};
+        auto span = T((init.size() - 1) / 2);
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = std::pow(2.0, (index - span) / span);
+        }
+        return init;
+    }();
+};
+
+template <typename T> T centToFrequencyMultiplier(int cent) { return CentFrequencyLookup<T>::convert(cent); }
+
+template <typename T> T centibelsToNorm(int centibels) { return std::pow(10.0, centibels / -200.0); }
+
+/**
+ Convert centibels into attenuation via table lookup.
+ */
+template <typename T>
+struct AttenuationLookup {
+    inline constexpr static int TableSize = 1441;
+
+    static T convert(int centibels) {
+        if (centibels <= 0) return 1.0;
+        if (centibels >= TableSize) return 0.0;
+        return lookup_[centibels];
+    }
+
+private:
+    inline static const std::array<T, TableSize> lookup_ = [] {
+        auto init = decltype(lookup_){};
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = centibelsToNorm<T>(index);
+        }
+        return init;
+    }();
+};
+
+template <typename T> T centibelToAttenuation(int centibels) { return AttenuationLookup<T>::convert(centibels); }
+
+/**
+ Convert centibels into gain value (same as 1.0 / attenuation)
+ */
+template <typename T>
+struct GainLookup {
+    inline constexpr static int TableSize = 1441;
+
+    static T lookup(int centibels) {
+        if (centibels <= 0.0) return 1.0;
+        if (centibels >= TableSize) centibels = TableSize - 1;
+        return lookup_[centibels];
+    }
+
+private:
+    inline static const std::array<T, TableSize> lookup_ = [] {
+        auto init = decltype(lookup_){};
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = 1.0 / centibelsToNorm<T>(index);
+        }
+        return init;
+    }();
+};
+
+template <typename T> T centibelToGain(int centibels) { return GainLookup<T>::lookup(centibels); }
 
 namespace Interpolation {
 

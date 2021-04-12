@@ -5,14 +5,16 @@
 
 #import "DSP.hpp"
 
-@interface DSPTests : XCTestCase
+using namespace SF2::DSP;
 
+@interface DSPTests : XCTestCase
+@property (nonatomic, assign) double epsilon;
 @end
 
 @implementation DSPTests
 
 - (void)setUp {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.epsilon = 0.0000001;
 }
 
 - (void)tearDown {
@@ -20,34 +22,34 @@
 }
 
 - (void)testUnipolarModulation {
-    XCTAssertEqual(SF2::DSP::unipolarModulation(-3.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(SF2::DSP::unipolarModulation(0.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(SF2::DSP::unipolarModulation(0.5, 10.0, 20.0), 15.0);
-    XCTAssertEqual(SF2::DSP::unipolarModulation(1.0, 10.0, 20.0), 20.0);
-    XCTAssertEqual(SF2::DSP::unipolarModulation(11.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(unipolarModulation(-3.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(unipolarModulation(0.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(unipolarModulation(0.5, 10.0, 20.0), 15.0);
+    XCTAssertEqual(unipolarModulation(1.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(unipolarModulation(11.0, 10.0, 20.0), 20.0);
 }
 
 - (void)testBipolarModulation {
-    XCTAssertEqual(SF2::DSP::bipolarModulation(-3.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(SF2::DSP::bipolarModulation(-1.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(SF2::DSP::bipolarModulation(0.0, 10.0, 20.0), 15.0);
-    XCTAssertEqual(SF2::DSP::bipolarModulation(1.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(bipolarModulation(-3.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(bipolarModulation(-1.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(bipolarModulation(0.0, 10.0, 20.0), 15.0);
+    XCTAssertEqual(bipolarModulation(1.0, 10.0, 20.0), 20.0);
 
-    XCTAssertEqual(SF2::DSP::bipolarModulation(-1.0, -20.0, 13.0), -20.0);
-    XCTAssertEqual(SF2::DSP::bipolarModulation(0.0,  -20.0, 13.0), -3.5);
-    XCTAssertEqual(SF2::DSP::bipolarModulation(1.0,  -20.0, 13.0), 13.0);
+    XCTAssertEqual(bipolarModulation(-1.0, -20.0, 13.0), -20.0);
+    XCTAssertEqual(bipolarModulation(0.0,  -20.0, 13.0), -3.5);
+    XCTAssertEqual(bipolarModulation(1.0,  -20.0, 13.0), 13.0);
 }
 
 - (void)testUnipolarToBipolar {
-    XCTAssertEqual(SF2::DSP::unipolarToBipolar(0.0), -1.0);
-    XCTAssertEqual(SF2::DSP::unipolarToBipolar(0.5), 0.0);
-    XCTAssertEqual(SF2::DSP::unipolarToBipolar(1.0), 1.0);
+    XCTAssertEqual(unipolarToBipolar(0.0), -1.0);
+    XCTAssertEqual(unipolarToBipolar(0.5), 0.0);
+    XCTAssertEqual(unipolarToBipolar(1.0), 1.0);
 }
 
 - (void)testBipolarToUnipolar {
-    XCTAssertEqual(SF2::DSP::bipolarToUnipolar(-1.0), 0.0);
-    XCTAssertEqual(SF2::DSP::bipolarToUnipolar(0.0), 0.5);
-    XCTAssertEqual(SF2::DSP::bipolarToUnipolar(1.0), 1.0);
+    XCTAssertEqual(bipolarToUnipolar(-1.0), 0.0);
+    XCTAssertEqual(bipolarToUnipolar(0.0), 0.5);
+    XCTAssertEqual(bipolarToUnipolar(1.0), 1.0);
 }
 
 - (void)testParabolicSineAccuracy {
@@ -56,6 +58,45 @@
         auto real = std::sin(theta);
         XCTAssertEqualWithAccuracy(SF2::DSP::parabolicSine(theta), real, 0.0011);
     }
+}
+
+- (void)testSinLookup {
+    XCTAssertEqualWithAccuracy(0.0, sineLookup<double>(0.0), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.707106768181, sineLookup<double>(QuarterPI), self.epsilon); // 45°
+    XCTAssertEqualWithAccuracy(1.0, sineLookup<double>(HalfPI - 0.0000001), self.epsilon); // 90°
+}
+
+- (void)testSin {
+    for (int degrees = -720; degrees <= 720; degrees += 10) {
+        double radians = degrees * PI / 180.0;
+        double value = sineLookup<double>(radians);
+        // std::cout << degrees << " " << value << std::endl;
+        XCTAssertEqualWithAccuracy(::std::sin(radians), value, self.epsilon);
+    }
+}
+
+- (void)testCentFrequencyMultiplier {
+    XCTAssertEqualWithAccuracy(0.5, centToFrequencyMultiplier<double>(-1200), self.epsilon); // -1200 = 1/2x
+    XCTAssertEqualWithAccuracy(1.0, centToFrequencyMultiplier<double>(0), self.epsilon); // 0 = 1x
+    XCTAssertEqualWithAccuracy(2.0, centToFrequencyMultiplier<double>(1200), self.epsilon); // +1200 = 2x
+}
+
+- (void)testCentibelsToAttenuation {
+    XCTAssertEqualWithAccuracy(1.0, centibelToAttenuation<double>(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.891250938134, centibelToAttenuation<double>(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.316227766017, centibelToAttenuation<double>(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-05, centibelToAttenuation<double>(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(6.3095734448e-08, centibelToAttenuation<double>(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-07, centibelToAttenuation<double>(1441), self.epsilon);
+}
+
+- (void)testCentibelsToGain {
+    XCTAssertEqualWithAccuracy(1.0, centibelToGain<double>(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.1220184543, centibelToGain<double>(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(3.16227766017, centibelToGain<double>(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(100000, centibelToGain<double>(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, centibelToGain<double>(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, centibelToGain<double>(1441), self.epsilon);
 }
 
 - (void)testInterpolationCubic4thOrderWeights {
