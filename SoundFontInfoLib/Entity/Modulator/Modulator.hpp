@@ -81,6 +81,6 @@ inline void Modulator::dump(const std::string& indent, int index) const
     << std::endl;
 }
 
-}
-}
-}
+} // end namespace Modulator
+} // end namespace Entity
+} // end namespace SF2

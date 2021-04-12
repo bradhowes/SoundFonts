@@ -8,6 +8,7 @@
 #include "Render/Range.hpp"
 
 using namespace SF2::Render;
+using namespace SF2::Entity::Generator;
 
 @interface RangeTests : XCTestCase
 @end
@@ -15,7 +16,7 @@ using namespace SF2::Render;
 @implementation RangeTests
 
 - (void)testRange {
-    Range range(0, 50);
+    Range<int> range(0, 50);
     XCTAssertEqual(0, range.low());
     XCTAssertEqual(50, range.high());
 
@@ -25,6 +26,20 @@ using namespace SF2::Render;
 
     XCTAssertFalse(range.contains(-1));
     XCTAssertFalse(range.contains(51));
+}
+
+- (void)testRangeConversion {
+    Range<uint8_t> range(Amount(0x3200));
+    XCTAssertEqual(0, range.low());
+    XCTAssertEqual(50, range.high());
+
+    range = Range<uint8_t>(Amount(0x7F7F));
+    XCTAssertEqual(127, range.low());
+    XCTAssertEqual(127, range.high());
+
+    range = Range<uint8_t>(Amount(0x00FF));
+    XCTAssertEqual(255, range.low());
+    XCTAssertEqual(0, range.high());
 }
 
 @end

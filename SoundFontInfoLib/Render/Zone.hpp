@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <os/log.h>
 #include <functional>
 #include <vector>
 
@@ -16,6 +17,8 @@
 namespace SF2 {
 namespace Render {
 
+using MIDIRange = Range<UByte>;
+
 /**
  A zone represents a collection of generator and modulator settings that apply to a range of MIDI key and velocity
  values. There are two types: instrument zones and preset zones. Generator settings for the former specify actual values
@@ -28,77 +31,143 @@ public:
     using ModulatorCollection = IO::ChunkItems<Entity::Modulator::Modulator>::ItemRefCollection;
 
     /// A range that always returns true for any MIDI value.
-    static Range const all;
+    static MIDIRange const all;
 
-    const Range& keyRange() const { return keyRange_; }
-    const Range& velocityRange() const { return velocityRange_; }
+    /// @returns range of MID key values that this Zone handles
+    const MIDIRange& keyRange() const { return keyRange_; }
 
+    /// @returns range of MIDI velocity values that this Zone handles
+    const MIDIRange& velocityRange() const { return velocityRange_; }
+
+    /// @returns collection of generators defined for this zone
     const GeneratorCollection& generators() const { return generators_; }
+
+    /// @returns collection of modulators defined for this zone
     const ModulatorCollection& modulators() const { return modulators_; }
 
-protected:
+    /// @returns true if this is a global zone
+    bool isGlobal() const { return isGlobal_; }
 
-    static Range KeyRange(const GeneratorCollection& gens)
-    {
-        if (gens.size() > 0 && gens[0].get().index() == Entity::Generator::Index::keyRange)
-            return Range(gens[0].get().value());
-        return all;
-    }
+    /**
+     Determines if this zone applies to a given MIDI key/velocity pair. NOTE: this should not be called for a global
+     zone, though technically doing so is OK since both key/velocity ranges will be set to `all`.
 
-    static Range VelocityRange(const GeneratorCollection& gens)
-    {
-        if (gens.size() > 0 && gens[0].get().index() == Entity::Generator::Index::velocityRange) return Range(gens[0].get().value());
-        if (gens.size() > 1 && gens[0].get().index() == Entity::Generator::Index::velocityRange) return Range(gens[1].get().value());
-        return all;
-    }
-
-    static bool IsGlobal(const GeneratorCollection& gens, Entity::Generator::Index expected, const ModulatorCollection& mods)
-    {
-        return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
-    }
-
-    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::Generator::Index terminal) :
-    generators_{gens},
-    modulators_{mods},
-    isGlobal_{IsGlobal(gens, terminal, mods)},
-    keyRange_{KeyRange(gens)}, velocityRange_{VelocityRange(gens)}
-    {}
-
-    void apply(VoiceState& cfg) const
-    {
-        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
-            cfg[gen.index()] = gen.value();
-        });
-    }
-
-    void refine(VoiceState& cfg) const
-    {
-        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& gen) {
-            // if (gen.definition().isAdditiveInPreset()) cfg[gen.index()].refine(gen.value().amount());
-        });
-    }
-
-public:
-
-    bool appliesTo(int key, int velocity) const {
-        assert(!isGlobal_);
+     @param key MIDI key value
+     @param velocity MIDI velocity value
+     @returns true if so
+     */
+    bool appliesTo(UByte key, UByte velocity) const {
+        assert(!isGlobal_); // Global zones do not have ranges
         return keyRange_.contains(key) && velocityRange_.contains(velocity);
     }
 
-    bool isGlobal() const { return isGlobal_; }
+protected:
 
+    /**
+     Constructor.
+
+     @param gens collection of generator for the zone
+     @param mods collection of modulators for the zone
+     @param terminal the index type of a generator that signals the zone is NOT global
+     */
+    Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::Generator::Index terminal) :
+    generators_{gens},
+    modulators_{mods},
+    keyRange_{GetKeyRange(generators_)}, velocityRange_{GetVelocityRange(generators_)},
+    isGlobal_{IsGlobal(generators_, terminal, modulators_)}
+    {}
+
+    /**
+     Obtain the link to the resource used by this zone. For an instrument zone, this points to the sample buffer to
+     use to render sounds. For a preset zone, this points to an instrument.
+
+     @returns index of the resource that this zone uses
+     */
     uint16_t resourceLink() const {
-        assert(!isGlobal_);
-        return generators_.back().get().value().index();
+        assert(!isGlobal_); // Global zones do not have resource links
+        const Entity::Generator::Generator& generator{generators_.back().get()};
+        assert(generator.index() == Entity::Generator::Index::instrument ||
+               generator.index() == Entity::Generator::Index::sampleID);
+        return generator.value().index();
+    }
+
+    /**
+     Obtain a key range from a generator collection. Per spec, if it exists it must be the first generator.
+
+     @param generators collection of generators for the zone
+     @returns key range if found or `all` if not
+     */
+    static MIDIRange GetKeyRange(const GeneratorCollection& generators) {
+        if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::keyRange)
+            return MIDIRange(generators[0].get().value());
+        return all;
+    }
+
+    /**
+     Obtain a velocity range from a generator collection. Per spec, if it exists it must be the first OR second
+     generator, and it can only be the second if the first is a key range generator.
+
+     @param generators collection of generators for the zone
+     @returns velocity range if found or `all` if not
+     */
+    static MIDIRange GetVelocityRange(const GeneratorCollection& generators) {
+        if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::velocityRange)
+            return MIDIRange(generators[0].get().value());
+        if (generators.size() > 1 && generators[0].get().index() == Entity::Generator::Index::keyRange &&
+            generators[1].get().index() == Entity::Generator::Index::velocityRange)
+            return MIDIRange(generators[1].get().value());
+        return all;
+    }
+
+    /**
+     Determine if the generator collection and modulator collection combination refer to a global zone. This is the
+     case iff the generator collection is empty and the modulator collection is not, or the generator collection does
+     not end with a generator of an expected type.
+
+     @param gens collection of generator for the zone
+     @param expected the index type of a generator that signals the zone is NOT global
+     @param mods collection of modulators for the zone
+     */
+    static bool IsGlobal(const GeneratorCollection& gens, Entity::Generator::Index expected,
+                         const ModulatorCollection& mods) {
+        return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
+    }
+
+    /**
+     Apply the zone to the given voice state by using the value from the generator in the zone.
+
+     @param state the voice state to update
+     */
+    void apply(VoiceState& state) const
+    {
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
+            os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(), generator.value().amount());
+            state[generator.index()] = generator.value();
+        });
+    }
+
+    /**
+     Apply the zone to the given voice state by tweaking the value using the generator in the zone.
+
+     @param state the voice state to update
+     */
+    void refine(VoiceState& state) const
+    {
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
+            if (generator.definition().isAvailableInPreset()) {
+                os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(), generator.value().amount());
+                state[generator.index()].refine(generator.value().amount());
+            }
+        });
     }
 
 private:
     GeneratorCollection generators_;
     ModulatorCollection modulators_;
-
-    Range keyRange_;
-    Range velocityRange_;
+    MIDIRange keyRange_;
+    MIDIRange velocityRange_;
     bool isGlobal_;
+    os_log_t logger_ = os_log_create("SF2::Render", "Zone");
 };
 
 } // namespace Render

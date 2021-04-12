@@ -44,5 +44,5 @@ private:
     uint16_t wMinor;
 };
 
-}
-}
+} // end namespace Entity
+} // end namespace SF2

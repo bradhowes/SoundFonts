@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 
+#include "Entity/Entity.hpp"
 #include "IO/Pos.hpp"
 
 namespace SF2 {
@@ -20,7 +21,7 @@ namespace Entity {
  operate in this way have a terminating instance whose index value is the total number of generators or
  modulators in the preset or instrument zones.
  */
-class Bag {
+class Bag : Entity {
 public:
     constexpr static size_t size = 4;
 
@@ -38,13 +39,13 @@ public:
     uint16_t firstGeneratorIndex() const { return wGenNdx; }
 
     /// @returns number of generators in this collection
-    uint16_t generatorCount() const { return validateDiff(next().firstGeneratorIndex(), firstGeneratorIndex()); }
+    uint16_t generatorCount() const { return calculateSize(next(this).firstGeneratorIndex(), firstGeneratorIndex()); }
 
     /// @returns first modulator index in this collection
     uint16_t firstModulatorIndex() const { return wModNdx; }
 
     /// @returns number of modulators in this collection
-    uint16_t modulatorCount() const { return validateDiff(next().firstModulatorIndex(), firstModulatorIndex()); }
+    uint16_t modulatorCount() const { return calculateSize(next(this).firstModulatorIndex(), firstModulatorIndex()); }
 
     /**
      Utility for displaying bag contents on `std::cout`
@@ -59,20 +60,9 @@ public:
     }
 
 private:
-
-    // For a *valid* SF2 file, this is OK because all bags hold an extra sentinel value to mark the end and to
-    // make this kind of operation safe to perform.
-    const Bag& next() const { return *(this + 1); }
-
-    // Verify that the next index is not less than the previous one.
-    static uint16_t validateDiff(uint16_t next, uint16_t prev) {
-        assert(next >= prev);
-        return next - prev;
-    }
-
     uint16_t wGenNdx;
     uint16_t wModNdx;
 };
 
-}
-}
+} // end namespace Entity
+} // end namespace SF2

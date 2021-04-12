@@ -28,5 +28,5 @@ static inline void trim_property(char* property, size_t size)
 
 template <typename T> static inline void trim_property(T& property) { trim_property(property, sizeof(property)); }
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

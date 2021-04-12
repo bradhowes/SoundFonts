@@ -94,5 +94,5 @@ inline void SampleHeader::dump(const std::string& indent, int index) const
     << std::endl;
 }
 
-}
-}
+} // end namespace Entity
+} // end namespace SF2

@@ -20,6 +20,7 @@ class Definition {
 public:
     static constexpr size_t NumDefs = static_cast<size_t>(Index::numValues);
 
+    /// The kind of value held by the generator
     enum struct ValueKind {
         unsignedShort = 1,
         signedShort,
@@ -30,42 +31,41 @@ public:
         signedCentsBel,
         unsignedPercent,
         signedPercent,
-        signedFreqCents,
+        signedFrequencyCents,
         signedTimeCents,
         signedSemitones
     };
 
-    enum Flags : uint16_t {
-        /// The generator may be present at the instrument level only
-        unavailableInPreset = 0,
-        /// The generator may be present in at the preset level as well as the instrument level
-        availableInPreset = 1,
-        /// The generator is additive when at the preset level (implies that it is available at the preset level). Otherwise, overrides value.
-        additiveInPreset = 3
-    };
+    /**
+     Obtain the Definition entry for a given Index value
 
-    static const Definition& definition(Index index) { return definitions_.at(static_cast<uint16_t>(index)); }
+     @param index value to lookup
+     @returns Definition entry
+     */
+    static const Definition& definition(Index index) { return definitions_.at(static_cast<size_t>(index)); }
 
+    /// @returns name of the definition
     const std::string& name() const { return name_; }
-    ValueKind valueKind() const { return valueKind_; }
-    uint16_t flags() const { return flags_; }
 
-    bool isAvailableInPreset() const { return (flags_ & availableInPreset) == availableInPreset; }
-    bool isAdditiveInPreset() const { return (flags_ & additiveInPreset) == additiveInPreset; }
+    /// @returns value type of the generator
+    ValueKind valueKind() const { return valueKind_; }
+
+    /// @returns true if the generator can be used in a preset zone
+    bool isAvailableInPreset() const { return availableInPreset_; }
 
     void dump(const Amount& amount) const;
 
 private:
     static std::array<Definition, NumDefs> const definitions_;
 
-    Definition(const char* name, ValueKind valueKind, uint16_t flags) : name_{name}, valueKind_{valueKind}, flags_{flags} {}
+    Definition(const char* name, ValueKind valueKind, bool availableInPreset) :
+    name_{name}, valueKind_{valueKind}, availableInPreset_{availableInPreset} {}
 
     std::string name_;
     ValueKind valueKind_;
-    int16_t default_;
-    uint16_t flags_;
+    bool availableInPreset_;
 };
 
-}
-}
-}
+} // end namespace Generator
+} // end namespace Entity
+} // end namespace SF2

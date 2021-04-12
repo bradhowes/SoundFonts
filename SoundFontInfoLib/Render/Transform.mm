@@ -35,7 +35,7 @@ static double negativeConcaveCurve(int index)
 }
 
 Transform::TransformArrayType const Transform::positiveLinear_ = [] {
-    auto init = decltype(Transform::positiveLinear_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = double(index) / MaxMIDIControllerValue;
     }
@@ -43,7 +43,7 @@ Transform::TransformArrayType const Transform::positiveLinear_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::negativeLinear_ = [] {
-    auto init = decltype(Transform::negativeLinear_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = double(MaxMIDIControllerValue - index) / MaxMIDIControllerValue;
     }
@@ -51,7 +51,7 @@ Transform::TransformArrayType const Transform::negativeLinear_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::positiveConcave_ = [] {
-    auto init = decltype(Transform::positiveConcave_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = positiveConcaveCurve(index);
     }
@@ -59,7 +59,7 @@ Transform::TransformArrayType const Transform::positiveConcave_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::negativeConcave_ = [] {
-    auto init = decltype(Transform::negativeConcave_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = negativeConcaveCurve(index);
     }
@@ -67,7 +67,7 @@ Transform::TransformArrayType const Transform::negativeConcave_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::positiveConvex_ = [] {
-    auto init = decltype(Transform::positiveConvex_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = 1.0 - negativeConcaveCurve(index);
     }
@@ -75,7 +75,7 @@ Transform::TransformArrayType const Transform::positiveConvex_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::negativeConvex_ = [] {
-    auto init = decltype(Transform::negativeConvex_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = 1.0 - positiveConcaveCurve(index);
     }
@@ -83,7 +83,7 @@ Transform::TransformArrayType const Transform::negativeConvex_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::positiveSwitched_ = [] {
-    auto init = decltype(Transform::positiveSwitched_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 0.0 : 1.0;
     }
@@ -91,7 +91,7 @@ Transform::TransformArrayType const Transform::positiveSwitched_ = [] {
 }();
 
 Transform::TransformArrayType const Transform::negativeSwitched_ = [] {
-    auto init = decltype(Transform::negativeSwitched_){};
+    TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 1.0 : 0.0;
     }

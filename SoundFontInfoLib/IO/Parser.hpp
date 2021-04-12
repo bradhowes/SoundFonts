@@ -50,5 +50,5 @@ public:
     static Info parse(int fd, size_t size);
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

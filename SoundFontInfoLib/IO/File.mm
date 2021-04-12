@@ -20,13 +20,13 @@ File::File(int fd, size_t fileSize)
     auto p0 = riff.begin();
     while (p0 < riff.end()) {
         auto chunkList = p0.makeChunkList();
-        // std::cout << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString() << std::endl;
+        std::cout << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString() << std::endl;
         auto p1 = chunkList.begin();
         p0 = chunkList.advance();
         while (p1 < chunkList.end()) {
             auto chunk = p1.makeChunk();
             p1 = chunk.advance();
-            // std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
+            std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
             switch (chunk.tag().rawValue()) {
 
                 // Meta data chunks
@@ -57,7 +57,7 @@ File::File(int fd, size_t fileSize)
                 // Audio sample chunks
                 case Tags::shdr:
                     sampleHeaders_.load(chunk);
-                    // sampleHeaders_.dump("shdr: ");
+                    sampleHeaders_.dump("shdr: ");
                     break;
                 case Tags::smpl:
                     sampleDataBegin_ = chunk.begin().offset();
@@ -74,4 +74,17 @@ File::File(int fd, size_t fileSize)
         auto const& header = sampleHeaders_[index];
         sampleBuffers_.emplace_back(sampleData_, header);
     }
+}
+
+void
+File::dump() const {
+    instruments().dump("inst: ");
+    instrumentZones().dump("instZones: ");
+    instrumentZoneGenerators().dump("igen: ");
+    instrumentZoneModulators().dump("imod: ");
+
+    presets().dump("presets: ");
+    presetZones().dump("presetZones: ");
+    presetZoneGenerators().dump("pgen: ");
+    presetZoneModulators().dump("pmod: ");
 }

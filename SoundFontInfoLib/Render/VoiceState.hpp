@@ -11,6 +11,9 @@
 namespace SF2 {
 namespace Render {
 
+/**
+ Generator state values for a rendering voice.
+ */
 class VoiceState
 {
 public:

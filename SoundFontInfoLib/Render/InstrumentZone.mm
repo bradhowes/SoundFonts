@@ -3,11 +3,3 @@
 #include "InstrumentZone.hpp"
 
 using namespace SF2::Render;
-
-InstrumentZone::InstrumentZone(const IO::File& file, const Entity::Bag& bag)
-:
-Zone(file.instrumentZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
-     file.instrumentZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
-     Entity::Generator::Index::sampleID),
-sampleHeader_{isGlobal() ? nullptr : &file.sampleHeaders()[resourceLink()]}, sampleDataBegin_{IO::Pos(-1, 0, 0)}
-{}

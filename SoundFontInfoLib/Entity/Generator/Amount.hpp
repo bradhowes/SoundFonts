@@ -54,6 +54,6 @@ private:
     } raw_;
 };
 
-}
-}
-}
+} // end namespace Generator
+} // end namespace Entity
+} // end namespace SF2

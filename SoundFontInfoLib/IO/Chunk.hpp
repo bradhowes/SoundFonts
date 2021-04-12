@@ -91,5 +91,5 @@ private:
     Pos const pos_;
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

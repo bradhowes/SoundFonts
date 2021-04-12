@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Entity/Entity.hpp"
 #include "IO/Chunk.hpp"
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
@@ -15,10 +16,15 @@ namespace Entity {
  Memory layout of 'phdr' entry in sound font. The size of this is defined to be 38 bytes, but due
  to alignment/padding the struct below is 40 bytes.
  */
-class Preset {
+class Preset : Entity {
 public:
     constexpr static size_t size = 38;
 
+    /**
+     Construct from contents of file.
+
+     @param pos location to read from
+     */
     explicit Preset(IO::Pos& pos)
     {
         assert(sizeof(*this) == size + 2);
@@ -26,18 +32,28 @@ public:
         pos = pos.readInto(&achPresetName, 20 + sizeof(uint16_t) * 3);
         pos = pos.readInto(&dwLibrary, sizeof(uint32_t) * 3);
         IO::trim_property(achPresetName);
+        std::cout << "preset: " << achPresetName << ' ' << wPresetBagNdx << std::endl;
     }
-    
+
+    /// @returns name of the preset
     char const* name() const { return achPresetName; }
+
+    /// @returns preset number for this patch
     uint16_t preset() const { return wPreset; }
+
+    /// @returns bank number for the patch
     uint16_t bank() const { return wBank; }
 
-    uint16_t zoneIndex() const { return wPresetBagNdx; }
-    uint16_t zoneCount() const { return (this + 1)->zoneIndex() - zoneIndex(); }
+    /// @returns the index of the first zone of the preset
+    uint16_t firstZoneIndex() const { return wPresetBagNdx; }
+
+    /// @returns the number of preset zones
+    uint16_t zoneCount() const { return calculateSize(next(this).firstZoneIndex(), firstZoneIndex()); }
 
     void dump(const std::string& indent, int index) const;
 
 private:
+
     char achPresetName[20];
     uint16_t wPreset;
     uint16_t wBank;
@@ -52,8 +68,8 @@ inline void Preset::dump(const std::string& indent, int index) const
 {
     std::cout << indent << index << ": '" << name() << "' preset: " << preset()
     << " bank: " << bank()
-    << " zoneIndex: " << zoneIndex() << " count: " << zoneCount() << std::endl;
+    << " zoneIndex: " << firstZoneIndex() << " count: " << zoneCount() << std::endl;
 }
 
-}
-}
+} // end namespace Entity
+} // end namespace SF2

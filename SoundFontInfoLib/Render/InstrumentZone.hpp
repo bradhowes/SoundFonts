@@ -12,15 +12,37 @@ namespace Render {
 
 class Configuration;
 
+/**
+ A specialization of a Zone for an Instrument. Instrument zones have a sample buffer.
+ */
 class InstrumentZone : public Zone {
 public:
-    InstrumentZone(const IO::File& file, const Entity::Bag& bag);
 
+    /**
+     Construct new zone from entity in file.
+
+     @param file the file to work with
+     @param bag the zone definition
+     */
+    InstrumentZone(const IO::File& file, const Entity::Bag& bag) :
+    Zone(file.instrumentZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
+         file.instrumentZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
+         Entity::Generator::Index::sampleID),
+    sampleBuffer_{isGlobal() ? nullptr : &file.sampleBuffer(resourceLink())}
+    {}
+
+    /**
+     Apply the zone generator values to the given voice state.
+
+     @param state the state to update
+     */
     void apply(VoiceState& state) const { Zone::apply(state); }
 
+    /// @returns the sample buffer registered to this zone, or nullptr if this is a global zone.
+    const Render::SampleBuffer<AUValue>* sampleBuffer() const { return sampleBuffer_; }
+
 private:
-    const Entity::SampleHeader* sampleHeader_;
-    IO::Pos sampleDataBegin_;
+    const Render::SampleBuffer<AUValue>* sampleBuffer_;
 };
 
 } // namespace Render

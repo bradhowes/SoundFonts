@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "Entity/Entity.hpp"
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
 
@@ -16,7 +17,7 @@ namespace Entity {
  An `instrument` is ultimately defined by its samples, but there can be multiple instruments defined that use the same
  sample source with different gen/mod settings (the sample source is indeed itself a generator setting).
  */
-class Instrument {
+class Instrument : Entity {
 public:
     constexpr static size_t size = 22;
 
@@ -33,18 +34,11 @@ public:
     uint16_t firstZoneIndex() const { return wInstBagNdx; }
 
     /// @returns the number of instrument zones
-    uint16_t zoneCount() const { return validateDiff((this + 1)->firstZoneIndex(), firstZoneIndex()); }
+    uint16_t zoneCount() const { return calculateSize(next(this).firstZoneIndex(), firstZoneIndex()); }
 
     void dump(const std::string& indent, int index) const;
 
 private:
-
-    // Verify that the next index is not less than the previous one.
-    static uint16_t validateDiff(uint16_t next, uint16_t prev) {
-        assert(next >= prev);
-        return next - prev;
-    }
-
     char achInstName[20];
     uint16_t wInstBagNdx;
 };
@@ -55,5 +49,5 @@ inline void Instrument::dump(const std::string& indent, int index) const
     << std::endl;
 }
 
-}
-}
+} // end namespace Entity
+} // end namespace SF2

@@ -104,7 +104,6 @@ struct InputBuffer {
     AUValue* operator[](size_t index) const { return bufferFacet_[index]; }
 
 private:
-    os_log_t logger_ = os_log_create("SimplyFlange", "BufferedInputBus");
     AUAudioFrameCount maxFramesToRender_ = 0;
     AVAudioPCMBuffer* buffer_ = nullptr;
     AudioBufferList* mutableAudioBufferList_ = nullptr;

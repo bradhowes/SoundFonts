@@ -13,5 +13,5 @@ enum struct Format {
     error
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

@@ -125,6 +125,6 @@ inline std::ostream& operator<<(std::ostream& os, const Source& mod)
     << "]";
 }
 
-}
-}
-}
+} // end namespace Modulator
+} // end namespace Entity
+} // end namespace SF2

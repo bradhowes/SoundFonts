@@ -31,8 +31,10 @@ public:
     /// @returns value configured for the generator
     Amount value() const { return amount_; }
 
+    /// @returns meta-data for the generator
     const Definition& definition() const { return Definition::definition(index_.index()); }
 
+    /// @returns the name of the generator
     const std::string& name() const { return definition().name(); }
 
     void dump(const std::string& indent, int index) const;
@@ -42,6 +44,6 @@ private:
     Amount amount_;
 };
 
-}
-}
-}
+} // end namespace Generator
+} // end namespace Entity
+} // end namespace SF2

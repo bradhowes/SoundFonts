@@ -11,6 +11,7 @@
 
 namespace SF2 {
 namespace IO {
+
 /**
  Container of SF2 entities. All SF2 containers are homogenous (all entities in the container have the same type).
  Compared to the `ChunkType` type, this class holds actual values from an SF2 file while the former just knows
@@ -50,14 +51,14 @@ public:
 
      @returns collection count
      */
-    size_t size() const { return items_.size(); }
+    size_t size() const { return items_.size() - 1; }
 
     /**
      Determine if collection is empty
 
      @returns true if so
      */
-    bool empty() const { return items_.empty(); }
+    bool empty() const { return items_.size() < 2; }
     
     /**
      Obtain a (read-only) reference to an entity in the collection.
@@ -76,8 +77,9 @@ public:
      */
     ItemRefCollection slice(size_t first, size_t count) const
     {
-        assert(first < size() && first + count <= size());
-        return ItemRefCollection(items_.begin() + first, items_.begin() + first + count);
+        if (first < size() && first + count <= size())
+            return ItemRefCollection(items_.begin() + first, items_.begin() + first + count);
+        return ItemRefCollection();
     }
 
     /**
@@ -92,20 +94,20 @@ public:
 
      @returns iterator at the end of the collection
      */
-    const_iterator end() const { return items_.end(); }
+    const_iterator end() const { return items_.end() - 1; }
 
     /**
      Utility to dump the contents of the collection to `std::cout`
 
      @param indent the prefix to use for all output
      */
-    void dump(const std::string& indent ) const {
-        auto index = 0;
+    void dump(const std::string& indent) const {
         // All collections in SF2 end with a sentinel entry that is *not* a member of the collection.
-        std::cout << " count: " << (size() - 1) << std::endl;
-        std::for_each(begin(), end() - 1, [&](const ItemType& item) { item.dump(indent, index++); });
+        if (size() <= 1) return;
+        std::cout << " count: " << size() << std::endl;
+        auto index = 0;
+        std::for_each(begin(), end(), [&](const ItemType& item) { item.dump(indent, index++); });
     }
-
 
 private:
 
@@ -116,7 +118,7 @@ private:
      */
     void load(const Chunk& source)
     {
-        size_t count = source.size() / itemSize - 1;
+        size_t count = source.size() / itemSize;
         items_.reserve(count);
         Pos pos = source.begin();
         Pos end = pos.advance(count * itemSize);
@@ -128,5 +130,5 @@ private:
     friend class File;
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

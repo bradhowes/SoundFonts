@@ -72,5 +72,5 @@ enum Tags {
     unkn = Pack4Chars("????"),
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

@@ -11,17 +11,34 @@
 namespace SF2 {
 namespace Render {
 
-class PresetZone : public Render::Zone {
+/**
+ A specialization of a Zone for a Preset. Non-global Preset zones refer to an Instrument.
+ */
+class PresetZone : public Zone {
 public:
-    PresetZone(const IO::File& file, const Render::InstrumentCollection& instruments, const Entity::Bag& bag);
 
-    /// Preset values only refine those from instrument
+    /**
+     Construct new zone from entity in file.
+
+     @param file the file to work with
+     @param instruments to collection of instruments found in the file
+     @param bag the zone definition
+     */
+    PresetZone(const IO::File& file, const Entity::Bag& bag, const Render::InstrumentCollection& instruments);
+
+    /**
+     Apply the zone generator values to the given voice state. Unlike instrument zones, those of a Preset only refine
+     existing values.
+
+     @param state the state to update
+     */
     void refine(Render::VoiceState& state) const { Zone::refine(state); }
 
+    /// @returns the Instrument configured for this zone
     const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
 
 private:
-    Render::Instrument const* instrument_;
+    const Render::Instrument* instrument_;
 };
 
 } // namespace Render

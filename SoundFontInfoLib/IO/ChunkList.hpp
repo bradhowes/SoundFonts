@@ -35,5 +35,5 @@ private:
     Tag kind_;
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

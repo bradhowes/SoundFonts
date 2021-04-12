@@ -7,23 +7,49 @@
 namespace SF2 {
 namespace Render {
 
+/**
+ Representation of a range of values between low and high values inclusive. It can answer if a given value is within
+ the range.
+ */
+template <typename T>
 class Range
 {
 public:
-    Range(int low, int high) : low_{low}, high_{high} {}
+    using ValueType = T;
 
+    /**
+     Construct new range between two values.
+
+     @param low the first value in the range
+     @param high the last value in the range
+     */
+    Range(ValueType low, ValueType high) : low_{low}, high_{high} {}
+
+    /**
+     Conversion constructor from Entity::Generator::Amount
+
+     @param range the union value to use for range bounds
+     */
     explicit Range(const Entity::Generator::Amount& range) : Range(range.low(), range.high()) {}
 
-    bool contains(int value) const { return value >= low_ && value <= high_; }
+    /**
+     Determine if a given value is within the defined range.
 
-    int low() const { return low_; }
-    int high() const { return high_; }
+     @param value the value to test
+     @returns true if so
+     */
+    bool contains(ValueType value) const { return value >= low_ && value <= high_; }
+
+    /// @returns lowest value in range
+    ValueType low() const { return low_; }
+
+    /// @returns highest value in range
+    ValueType high() const { return high_; }
 
 private:
-    int low_;
-    int high_;
+    ValueType low_;
+    ValueType high_;
 };
-
 
 } // namespace Render
 } // namespace SF2

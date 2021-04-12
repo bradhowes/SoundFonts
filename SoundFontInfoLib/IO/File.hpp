@@ -82,6 +82,8 @@ public:
      */
     const Render::SampleBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
+    void dump() const;
+
 private:
     int fd_;
     size_t size_;
@@ -114,5 +116,5 @@ private:
     const Int* sampleData_;
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

@@ -5,28 +5,47 @@
 #include "IO/File.hpp"
 
 #include "Render/InstrumentZone.hpp"
-#include "Render/Zone.hpp"
-#include "Render/ZoneCollection.hpp"
+#include "Render/WithZones.hpp"
 
 namespace SF2 {
 namespace Render {
 
-class Instrument
+/**
+ Representation of an `instrument` in an SF2 file. An instrument is made up of one or more zones, where a zone is
+ defined as a collection of generators and modulators that apply for a particular MIDI key value and/or velocity.
+ All instrument zone generators except the very first must end with generator index #53 `sampleID` which indicates
+ which `SampleBuffer` to use to render audio. If the first zone of an instrument does not end with a `sampleID`
+ generator, then it is considered to be the one and only `global` zone, with its generators/modulators applied to all
+ other zones unless a zone has its own definition.
+ */
+class Instrument : public WithZones<InstrumentZone, Entity::Instrument>
 {
 public:
-    using InstrumentZoneCollection = ZoneCollection<InstrumentZone>;
+    using InstrumentZoneCollection = WithZoneCollection;
 
-    Instrument(const IO::File& file, const Entity::Instrument& cfg);
+    /**
+     Construct instrument for rendering
 
-    InstrumentZoneCollection::Matches find(int key, int velocity) const { return zones_.find(key, velocity); }
+     @param file the SF2 file that was loaded
+     @param configuration the SF2 file entity that defines the instrument
+     */
+    Instrument(const IO::File& file, const Entity::Instrument& configuration) :
+    WithZones<InstrumentZone, Entity::Instrument>(configuration.zoneCount(), configuration)
+    {
+        for (const Entity::Bag& bag : file.instrumentZones().slice(configuration.firstZoneIndex(),
+                                                                   configuration.zoneCount())) {
+            zones_.add(file, bag);
+        }
+    }
 
-    bool hasGlobalZone() const { return zones_.hasGlobal(); }
-    InstrumentZone const* globalZone() const { return zones_.global(); }
-    const Entity::Instrument& configuration() const { return cfg_; }
+    /**
+     Locate the instrument zones that apply to the given key/velocity values.
 
-private:
-    const Entity::Instrument& cfg_;
-    InstrumentZoneCollection zones_;
+     @param key the MIDI key number
+     @param velocity the MIDI velocity value
+     @returns vector of matching zones
+     */
+    InstrumentZoneCollection::Matches filter(UByte key, UByte velocity) const { return zones_.filter(key, velocity); }
 };
 
 } // namespace Render

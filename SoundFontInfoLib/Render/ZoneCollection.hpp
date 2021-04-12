@@ -16,7 +16,8 @@ namespace Render {
 
 /**
  Templated collection of zones. A non-global zone defines a range of MIDI keys and/or velocities over which it operates.
- The first zone can be a `global` zone. The global zone defines the configuration settings that apply to all other zones.
+ The first zone can be a `global` zone. The global zone defines the configuration settings that apply to all other
+ zones.
  */
 template <typename Kind>
 class ZoneCollection
@@ -26,28 +27,54 @@ public:
 
     /**
      Construct a new collection that expects to hold the given number of elements.
+
+     @param zoneCount the number of zones that the collection will hold
      */
-    explicit ZoneCollection(size_t size) : zones_{} { zones_.reserve(size); }
+    explicit ZoneCollection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
+
+    /// @returns number of zones in the collection (include the optional global one)
+    size_t size() const { return zones_.size(); }
 
     /**
      Locate the zone(s) that match the given key/velocity pair.
+
+     @param key the MIDI key to filter on
+     @param velocity the MIDI velocity to filter on
+     @returns a vector of matching zones
      */
-    Matches find(int key, int velocity) const {
+    Matches filter(UByte key, UByte velocity) const {
         Matches matches;
-//        typename Super::const_iterator pos = this->begin();
-//        if (this->hasGlobal()) ++pos;
-//        std::copy_if(pos, this->end(), std::back_inserter(matches), [=](const Zone& zone) {
-//            return zone.appliesTo(key, velocity);
-//        });
+        auto pos = zones_.begin();
+        if (hasGlobal()) ++pos;
+        std::copy_if(pos, zones_.end(), std::back_inserter(matches),
+                     [key, velocity](const Zone& zone) { return zone.appliesTo(key, velocity); });
         return matches;
     }
 
+    /// @returns true if first zone in collection is a global zone
     bool hasGlobal() const { return zones_.empty() ? false : zones_.front().isGlobal(); }
 
-    Kind const* global() const { return hasGlobal() ? &zones_.front() : nullptr; }
+    /// @returns get pointer to global zone or nullptr if there is not one
+    const Kind* global() const { return hasGlobal() ? &zones_.front() : nullptr; }
 
+    /**
+     Add a zone with the given args. Note that empty zones (no generators and no modulators) are dropped, as are any
+     global zones that are not the first zone.
+
+     @param file the SF2 file with the entities to use
+     @param bag the definition for the Zone
+     @param values additional arguments for the Zone construction
+     */
     template<class... Args>
-    void add(Args&&... values) { zones_.emplace_back(std::forward<Args>(values)...); }
+    void add(const IO::File& file, const Entity::Bag& bag, Args&&... values) {
+        // Per spec, skip empty zone definitions
+        if (bag.generatorCount() == 0 && bag.modulatorCount() == 0) return;
+        zones_.emplace_back(file, bag, std::forward<Args>(values)...);
+        // Per spec, only allow one global zone and it must be the first one
+        if (zones_.size() > 1 && zones_.back().isGlobal()) {
+            zones_.pop_back();
+        }
+    }
 
 private:
     std::vector<Kind> zones_;

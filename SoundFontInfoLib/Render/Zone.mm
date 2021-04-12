@@ -6,4 +6,4 @@
 
 using namespace SF2::Render;
 
-Range const Zone::all = Range(0, 255);
+MIDIRange const Zone::all = MIDIRange(0, 255);

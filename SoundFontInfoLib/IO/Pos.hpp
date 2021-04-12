@@ -111,5 +111,5 @@ private:
     size_t end_;
 };
 
-}
-}
+} // end namespace IO
+} // end namespace SF2

@@ -9,6 +9,10 @@
 namespace SF2 {
 namespace Render {
 
+/**
+ Transforms MIDI controller domain values (between 0 and 127) into various ranges. This currently only works with the
+ `coarse` controller values. 
+ */
 class Transform {
 public:
     constexpr static int const MaxMIDIControllerValue = 127;
@@ -27,7 +31,7 @@ public:
         switched
     };
 
-    /// Polarity determins the lower bound: unipolar == 0, bipolar == -1.
+    /// Polarity determines the lower bound: unipolar = 0, bipolar = -1.
     enum struct Polarity {
         unipolar,
         bipolar
@@ -39,8 +43,21 @@ public:
         descending
     };
 
+    /**
+     Create new transform
+
+     @param kind mapping operation from controller domain to value range
+     @param direction ordering from min to max
+     @param polarity lower bound of range
+     */
     Transform(Kind kind, Direction direction, Polarity polarity);
 
+    /**
+     Convert a controller value.
+
+     @param controllerValue value to convert between 0 and 127
+     @returns transformed value
+     */
     double value(int controllerValue) const {
         controllerValue = ::std::max(::std::min(controllerValue, MaxMIDIControllerValue), 0);
         return (polarity_ == Polarity::unipolar) ? unipolarValue(controllerValue) : bipolarValue(controllerValue);
