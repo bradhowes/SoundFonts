@@ -13,7 +13,6 @@ Voice::Voice(double sampleRate, const SampleBuffer<AUValue>& sampleBuffer, const
 {
     amp_.gate(true);
     filter_.gate(true);
-
     const auto& header = sampleBuffer_.header();
     auto sampleRateRatio = double(header.sampleRate()) / sampleRate_;
     auto frequencyRatio = double(std::pow(2.0, double(note_.value() - header.originalMIDIKey()) / 12.0));

@@ -67,6 +67,7 @@
 		BDEB127C26234100003CE8EE /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB127B26234100003CE8EE /* PresetTests.mm */; };
 		BDEB12802623792F003CE8EE /* Entity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB127F2623792F003CE8EE /* Entity.hpp */; };
 		BDEB128A26243B9B003CE8EE /* WithZones.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB128926243B9B003CE8EE /* WithZones.hpp */; };
+		BDEB129026244A79003CE8EE /* ChunkTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB128F26244A79003CE8EE /* ChunkTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,6 +173,7 @@
 		BDEB127B26234100003CE8EE /* PresetTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetTests.mm; sourceTree = "<group>"; };
 		BDEB127F2623792F003CE8EE /* Entity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Entity.hpp; sourceTree = "<group>"; };
 		BDEB128926243B9B003CE8EE /* WithZones.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WithZones.hpp; sourceTree = "<group>"; };
+		BDEB128F26244A79003CE8EE /* ChunkTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChunkTests.mm; sourceTree = "<group>"; };
 		BDEC00162497665D00A52507 /* Source.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Source.hpp; sourceTree = "<group>"; };
 		BDEC001A2497669300A52507 /* Index.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Index.hpp; sourceTree = "<group>"; };
 		BDEC001E2497672000A52507 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */ = {
 			isa = PBXGroup;
 			children = (
+				BDEB128F26244A79003CE8EE /* ChunkTests.mm */,
 				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
 				BD62BA4A261CB7890052FB7A /* LFOTests.mm */,
 				BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */,
@@ -556,6 +559,7 @@
 				BD5E1715261F17A0007BAA38 /* RangeTests.mm in Sources */,
 				BD250BD72615E5E900D1C1E0 /* ModulatorSourceTests.mm in Sources */,
 				BDEB127C26234100003CE8EE /* PresetTests.mm in Sources */,
+				BDEB129026244A79003CE8EE /* ChunkTests.mm in Sources */,
 				BD62BA4F261CB7D20052FB7A /* DSPTests.mm in Sources */,
 				BD250CA4261C571E00D1C1E0 /* SampleIndexTests.mm in Sources */,
 				BDABC42B24F1AD8800F8C874 /* TransformTests.mm in Sources */,

@@ -105,10 +105,10 @@ public:
     size_t channelCount() const { return pointers_.size(); }
 
     /// @returns writable pointer to a channel's buffer
-    AUValue* operator[](size_t index) const { return pointers_[index]; }
+    AUValue* channel(size_t index) const { return pointers_[index]; }
 
     /// @returns read-only reference to the collection of channel buffer pointers.
-    const std::vector<AUValue*>& V() const { return pointers_; }
+    const std::vector<AUValue*>& channels() const { return pointers_; }
 
 private:
     AudioBufferList* bufferList_;

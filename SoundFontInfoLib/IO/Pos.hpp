@@ -75,8 +75,8 @@ struct Pos {
      @returns new Pos instance for the next bytes in the file
      */
     Pos readInto(void* buffer, size_t count) const {
-        if (::lseek(fd_, pos_, SEEK_SET) != pos_) throw Format::error;
-        auto result = ::read(fd_, buffer, count);
+        if (Pos::seek(fd_, pos_, SEEK_SET) != pos_) throw Format::error;
+        auto result = Pos::read(fd_, buffer, count);
         if (result != count) throw Format::error;
         return advance(result);
     }
@@ -105,7 +105,40 @@ struct Pos {
     /// @returns true if first Pos value is less than the second one
     friend bool operator <(const Pos& lhs, const Pos& rhs) { return lhs.pos_ < rhs.pos_; }
 
+    /// Type of function to call to seek to a position in a file
+    using SeekProcType = off_t (*)(int fd, off_t offset, int whence);
+
+    /// Function to call to seek to a position in a file
+    static SeekProcType SeekProc;
+
+    /// Type of function to call to read from current position in a file
+    using ReadProcType = ssize_t (*)(int fd, void* buffer, size_t size);
+
+    /// Function to call to read from current position in a file
+    static ReadProcType ReadProc;
+
+    /// RAII struct for handling mocking of the Pos file IO methods
+    struct Mockery {
+        Mockery(SeekProcType seeker, ReadProcType reader) : seeker_{Pos::SeekProc}, reader_{Pos::ReadProc} {
+            Pos::SeekProc = seeker;
+            Pos::ReadProc = reader;
+        }
+
+        ~Mockery() {
+            Pos::SeekProc = seeker_;
+            Pos::ReadProc = reader_;
+        }
+
+    private:
+        Pos::SeekProcType seeker_;
+        Pos::ReadProcType reader_;
+    };
+
 private:
+
+    static off_t seek(int fd, off_t offset, int whence) { return (*SeekProc)(fd, offset, whence); }
+    static ssize_t read(int fd, void* buffer, size_t size) { return (*ReadProc)(fd, buffer, size); }
+
     int fd_;
     size_t pos_;
     size_t end_;

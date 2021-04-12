@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <algorithm>
+
 #include "Types.hpp"
 #include "IO/Format.hpp"
 #include "IO/Pos.hpp"
@@ -72,7 +74,9 @@ public:
      */
     std::string extract() const {
         char buffer[256];
-        begin().readInto(buffer, size());
+        size_t count = std::min(size(), sizeof(buffer));
+        begin().readInto(buffer, count);
+        buffer[count - 1] = 0;
         trim_property(buffer);
         return std::string(buffer);
     }
