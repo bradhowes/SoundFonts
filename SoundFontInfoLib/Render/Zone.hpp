@@ -92,6 +92,36 @@ protected:
     }
 
     /**
+     Apply the zone to the given voice state by using the value from the generator in the zone.
+
+     @param state the voice state to update
+     */
+    void apply(VoiceState& state) const
+    {
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
+            os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(), generator.value().amount());
+            state[generator.index()] = generator.value();
+        });
+    }
+
+    /**
+     Apply the zone to the given voice state by tweaking the value using the generator in the zone.
+
+     @param state the voice state to update
+     */
+    void refine(VoiceState& state) const
+    {
+        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
+            if (generator.definition().isAvailableInPreset()) {
+                os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(), generator.value().amount());
+                state[generator.index()].refine(generator.value().amount());
+            }
+        });
+    }
+
+private:
+
+    /**
      Obtain a key range from a generator collection. Per spec, if it exists it must be the first generator.
 
      @param generators collection of generators for the zone
@@ -133,35 +163,7 @@ protected:
         return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
     }
 
-    /**
-     Apply the zone to the given voice state by using the value from the generator in the zone.
 
-     @param state the voice state to update
-     */
-    void apply(VoiceState& state) const
-    {
-        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(), generator.value().amount());
-            state[generator.index()] = generator.value();
-        });
-    }
-
-    /**
-     Apply the zone to the given voice state by tweaking the value using the generator in the zone.
-
-     @param state the voice state to update
-     */
-    void refine(VoiceState& state) const
-    {
-        std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            if (generator.definition().isAvailableInPreset()) {
-                os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(), generator.value().amount());
-                state[generator.index()].refine(generator.value().amount());
-            }
-        });
-    }
-
-private:
     GeneratorCollection generators_;
     ModulatorCollection modulators_;
     MIDIRange keyRange_;
