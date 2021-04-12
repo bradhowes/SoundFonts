@@ -14,7 +14,7 @@ using namespace SF2::Render;
 @implementation EnvelopeTests
 
 - (void)testGateOnOff {
-    auto env = Envelope(1);
+    auto env = Envelope::Config<float>(1);
     auto gen = env.generator();
     XCTAssertEqual(0.0, gen.value());
     XCTAssertEqual(Envelope::Stage::idle, gen.stage());
@@ -29,9 +29,7 @@ using namespace SF2::Render;
 }
 
 - (void)testDelay {
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(3, 0, 0, 0, 1, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 3, 0, 0, 0, 1, 0);
     auto gen = env.generator();
     XCTAssertEqual(0.0, gen.value());
     XCTAssertEqual(Envelope::Stage::idle, gen.stage());
@@ -45,9 +43,7 @@ using namespace SF2::Render;
 }
 
 - (void)testNoDelayNoAttack {
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 1, 0, 1, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 1, 0, 1, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(Envelope::Stage::hold, gen.stage());
@@ -57,9 +53,7 @@ using namespace SF2::Render;
 
 - (void)testAttackCurvature {
     auto epsilon = 0.001;
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 10, 0, 0, 1, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 10, 0, 0, 1, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(0.0, gen.value());
@@ -77,9 +71,7 @@ using namespace SF2::Render;
 }
 
 - (void)testHold {
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 3, 0, 0.75, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 3, 0, 0.75, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(1.0, gen.value());
@@ -92,9 +84,7 @@ using namespace SF2::Render;
 
 - (void)testDecay {
     auto epsilon = 0.001;
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 0, 5, 0.5, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 5, 0.5, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(Envelope::Stage::decay, gen.stage());
@@ -110,9 +100,7 @@ using namespace SF2::Render;
 
 - (void)testDecayAborted {
     auto epsilon = 0.001;
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 0, 5, 0.5, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 5, 0.5, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(Envelope::Stage::decay, gen.stage());
@@ -124,9 +112,7 @@ using namespace SF2::Render;
 }
 
 - (void)testSustain {
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 0, 0, 0.25, 0);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 0, 0.25, 0);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(0.25, gen.value());
@@ -139,9 +125,7 @@ using namespace SF2::Render;
 
 - (void)testRelease {
     auto epsilon = 0.001;
-    auto sampleRate = 1.0;
-    auto config = Envelope::Config(0, 0, 0, 0, 0.5, 5);
-    auto env = Envelope(sampleRate, config);
+    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 0, 0.5, 5);
     auto gen = env.generator();
     gen.gate(true);
     XCTAssertEqual(0.5, gen.value());
