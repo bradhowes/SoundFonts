@@ -24,16 +24,14 @@ public:
     using InstrumentZoneCollection = WithZoneCollection;
 
     /**
-     Construct instrument for rendering
+     Construct new Instrument from SF2 entities
 
      @param file the SF2 file that was loaded
-     @param configuration the SF2 file entity that defines the instrument
+     @param config the SF2 file entity that defines the instrument
      */
-    Instrument(const IO::File& file, const Entity::Instrument& configuration) :
-    WithZones<InstrumentZone, Entity::Instrument>(configuration.zoneCount(), configuration)
-    {
-        for (const Entity::Bag& bag : file.instrumentZones().slice(configuration.firstZoneIndex(),
-                                                                   configuration.zoneCount())) {
+    Instrument(const IO::File& file, const Entity::Instrument& config) :
+    WithZones<InstrumentZone, Entity::Instrument>(config.zoneCount(), config) {
+        for (const Entity::Bag& bag : file.instrumentZones().slice(config.firstZoneIndex(), config.zoneCount())) {
             zones_.add(file, bag);
         }
     }

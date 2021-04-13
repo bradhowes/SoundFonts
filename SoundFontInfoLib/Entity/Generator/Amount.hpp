@@ -9,14 +9,17 @@ namespace Entity {
 namespace Generator {
 
 /**
- Holds the amount to apply to a generator. Note that this is an immutable value.
+ Holds the amount to apply to a generator. Note that this is an immutable value that comes straight from an SF2 file.
+ It exists as a C union of three value types: unsigned 16-bit int, signed 16-bit int, and pair of 2 unsigned 8-bit
+ values used for MIDI key/velocity ranges. As such, it is important to pull out the right value with the right
+ method. The associated `Definition` metadata class has methods that can be used to do this correctly and safely.
  */
 class Amount {
 public:
     static constexpr size_t size = 2;
 
     /**
-     Constructor with specific value
+     Constructor with specific value. Only used for testing. All values for generators should come from SF2 file.
 
      @param raw the value to hold
      */
@@ -28,10 +31,10 @@ public:
     Amount() : Amount(0) {}
 
     /// @returns unsigned integer value
-    uint16_t index() const { return raw_.wAmount; }
+    uint16_t unsignedAmount() const { return raw_.wAmount; }
 
     /// @returns signed integer value
-    int16_t amount() const { return raw_.shAmount; }
+    int16_t signedAmount() const { return raw_.shAmount; }
 
     /// @returns low value of a range (0-255)
     int low() const { return int(raw_.ranges[0]); }
@@ -39,19 +42,13 @@ public:
     /// @returns high value of a range (0-255)
     int high() const { return int(raw_.ranges[1]); }
 
-    void setIndex(uint16_t value) { raw_.wAmount = value; }
-    void setAmount(int16_t value) { raw_.shAmount = value; }
-
-    void refine(uint16_t value) { raw_.wAmount += value; }
-    void refine(int16_t value) { raw_.shAmount += value; }
-
 private:
 
     union {
         uint16_t wAmount;
         int16_t shAmount;
         uint8_t ranges[2];
-    } raw_;
+    } raw_{0};
 };
 
 } // end namespace Generator

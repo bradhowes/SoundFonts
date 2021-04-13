@@ -7,6 +7,7 @@
 
 #include "Entity/Generator/Amount.hpp"
 #include "Entity/Generator/Index.hpp"
+#include "Render/DSP.hpp"
 
 namespace SF2 {
 namespace Entity {
@@ -22,18 +23,23 @@ public:
 
     /// The kind of value held by the generator
     enum struct ValueKind {
+
+        // These have isUnsignedValue() == true
         unsignedShort = 1,
-        signedShort,
-        range,
         offset,
         coarseOffset,
+
+        // These have isUnsignedValue() == false
+        signedShort,
         signedCents,
         signedCentsBel,
         unsignedPercent,
         signedPercent,
         signedFrequencyCents,
         signedTimeCents,
-        signedSemitones
+        signedSemitones,
+
+        range
     };
 
     /**
@@ -53,7 +59,35 @@ public:
     /// @returns true if the generator can be used in a preset zone
     bool isAvailableInPreset() const { return availableInPreset_; }
 
+    bool isUnsignedValue() const { return valueKind_ < ValueKind::signedShort; }
+
     void dump(const Amount& amount) const;
+
+    /**
+     Obtain the value from a generator Amount instance.
+     */
+    double valueOf(const Amount& amount) const {
+        return isUnsignedValue() ? amount.unsignedAmount() : amount.signedAmount();
+    }
+
+    double convertedValueOf(const Amount& amount) const {
+        switch (valueKind_) {
+            case ValueKind::unsignedShort: return amount.unsignedAmount();
+            case ValueKind::offset: return amount.unsignedAmount();
+            case ValueKind::coarseOffset: return amount.unsignedAmount() * 32768;
+            case ValueKind::signedShort: return amount.signedAmount();
+            case ValueKind::signedCents: return amount.signedAmount() / 1200.0;
+            case ValueKind::signedCentsBel: return amount.signedAmount() / 10.0;
+            case ValueKind::unsignedPercent: return amount.signedAmount() / 10.0;
+            case ValueKind::signedPercent: return amount.signedAmount() / 10.0;
+            case ValueKind::signedFrequencyCents: return DSP::centsToFrequency(amount.signedAmount());
+            case ValueKind::signedTimeCents: return DSP::centsToSeconds(amount.signedAmount());
+            case ValueKind::signedSemitones: return amount.signedAmount();
+            default: return amount.signedAmount();
+        }
+    }
+
+
 
 private:
     static std::array<Definition, NumDefs> const definitions_;

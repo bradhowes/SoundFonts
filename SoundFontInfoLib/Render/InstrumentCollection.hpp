@@ -10,12 +10,26 @@ namespace SF2 {
 namespace IO { class File; }
 namespace Render {
 
+/**
+ Collection of all of the Entity::Instrument instances in an SF2 file, each of which is wrapped in a
+ Render::Instrument instance for use during audio rendering.
+ */
 class InstrumentCollection
 {
 public:
-    InstrumentCollection(const IO::File& file);
+    InstrumentCollection(const IO::File& file) : instruments_{} {
+        auto count = file.instruments().size();
+        instruments_.reserve(count);
+        for (const Entity::Instrument& configuration : file.instruments().slice(0, count)) {
+            instruments_.emplace_back(file, configuration);
+        }
+    }
 
-    const Instrument& at(size_t index) const { return instruments_.at(index); }
+#ifdef DEBUG
+    const Instrument& operator[](size_t index) const { return instruments_.at(index); }
+#else
+    const Instrument& operator[](size_t index) const { return instruments_[index]; }
+#endif
 
 private:
     std::vector<Instrument> instruments_;

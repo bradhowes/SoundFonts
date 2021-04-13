@@ -12,6 +12,9 @@ namespace Render {
 
 /**
  Base class for entities that contain a collection of zones.
+
+ - T is an SF2::Zone class (PresetZone or InstrumentZone) to hold in the collection
+ - E is the SF2::Entity class that defines the zone configuration in the SF2 file.
  */
 template <typename T, typename E>
 class WithZones
@@ -27,6 +30,7 @@ public:
     /// @returns the instrument's global zone or nullptr if there is none
     const ZoneType* globalZone() const { return zones_.global(); }
 
+    /// @returns the collection of zones
     const WithZoneCollection& zones() const { return zones_; }
 
     /// @returns the instrument's entity from the SF2 file

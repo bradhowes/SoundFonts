@@ -23,6 +23,10 @@ constexpr static double HalfSquareRoot2 = 1.4142135623730951L / 2.0;
 // The value to multiply one note frequency to get the next note's frequency
 constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
+inline double centsToSeconds(int16_t v) { return pow(2.0, v / 1200.0); }
+
+inline double centsToFrequency(int16_t v) { return pow(2.0, v / 1200.0) * LowestNoteFrequency; }
+
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
 

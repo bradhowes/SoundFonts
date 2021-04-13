@@ -16,25 +16,25 @@ using namespace SF2::Render;
 
 - (void)testInit {
     VoiceState state;
-    XCTAssertEqual(0, state[SF2::Entity::Generator::Index::startAddressOffset].index());
-    XCTAssertEqual(0, state[SF2::Entity::Generator::Index::endAddressOffset].index());
-    XCTAssertEqual(13500, state[SF2::Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayModulatorLFO].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayVibratoLFO].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::attackModulatorEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::holdModulatorEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::decayModulatorEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::releaseModulatorEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayVolumeEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::attackVolumeEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::holdVolumeEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::decayVolumeEnvelope].amount());
-    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::releaseVolumeEnvelope].amount());
+    XCTAssertEqual(0, state[SF2::Entity::Generator::Index::startAddressOffset]);
+    XCTAssertEqual(0, state[SF2::Entity::Generator::Index::endAddressOffset]);
+    XCTAssertEqual(13500, state[SF2::Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayModulatorLFO]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayVibratoLFO]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::attackModulatorEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::holdModulatorEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::decayModulatorEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::releaseModulatorEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::delayVolumeEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::attackVolumeEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::holdVolumeEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::decayVolumeEnvelope]);
+    XCTAssertEqual(-12000, state[SF2::Entity::Generator::Index::releaseVolumeEnvelope]);
 
-    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::midiKey].amount());
-    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::midiVelocity].amount());
-    XCTAssertEqual(100, state[SF2::Entity::Generator::Index::scaleTuning].amount());
-    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::overridingRootKey].amount());
+    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::midiKey]);
+    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::midiVelocity]);
+    XCTAssertEqual(100, state[SF2::Entity::Generator::Index::scaleTuning]);
+    XCTAssertEqual(-1, state[SF2::Entity::Generator::Index::overridingRootKey]);
 
 //    setAmount(Index::delayVibratoLFO, -12000);
 //    setAmount(Index::delayModulatorEnvelope, -12000);

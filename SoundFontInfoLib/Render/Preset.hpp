@@ -73,12 +73,11 @@ public:
 
      @param file the SF2 file that is loaded
      @param instruments the collection of instruments that apply to the preset
-     @param configuration the SF2 preset definition
+     @param config the SF2 preset definition
      */
-    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& configuration) :
-    WithZones<PresetZone, Entity::Preset>(configuration.zoneCount(), configuration) {
-        for (const Entity::Bag& bag : file.presetZones().slice(configuration.firstZoneIndex(),
-                                                               configuration.zoneCount())) {
+    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config) :
+    WithZones<PresetZone, Entity::Preset>(config.zoneCount(), config) {
+        for (const Entity::Bag& bag : file.presetZones().slice(config.firstZoneIndex(), config.zoneCount())) {
             zones_.add(file, bag, instruments);
         }
     }

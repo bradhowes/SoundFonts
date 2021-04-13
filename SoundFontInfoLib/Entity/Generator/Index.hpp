@@ -422,12 +422,21 @@ enum struct Index : uint16_t {
      */
     overridingRootKey,
 
-    // NOTE: following do not exist in the spec, but are defined here to keep things simple and support the defined
+    // # END OF SF2 DEFINITIONS
+    //
+    // The following do not exist in the spec, but are defined here to keep things simple and support the defined
     // modulator presets.
+    //
+
+    /**
+     This parameter represents the initial pitch of a voice.
+     */
     initialPitch,
 
     numValues
 };
+
+inline size_t indexValue(Index index) { return static_cast<size_t>(index); }
 
 /**
  Representation of the 2-byte generator index found in SF2 files. Provides conversion from raw value to the nicer

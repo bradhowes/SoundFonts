@@ -16,7 +16,7 @@ public:
     Modulator(const Entity::Modulator::Modulator& mod, Voice& voice)
     : mod_{mod}, voice_{voice} {}
 
-    double value() const;
+    double value() const { return 0.0; }
 
 private:
     const Entity::Modulator::Modulator& mod_;

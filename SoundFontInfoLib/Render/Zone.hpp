@@ -88,7 +88,7 @@ protected:
         const Entity::Generator::Generator& generator{generators_.back().get()};
         assert(generator.index() == Entity::Generator::Index::instrument ||
                generator.index() == Entity::Generator::Index::sampleID);
-        return generator.value().index();
+        return generator.value().unsignedAmount();
     }
 
     /**
@@ -99,8 +99,16 @@ protected:
     void apply(VoiceState& state) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(), generator.value().amount());
-            state[generator.index()] = generator.value();
+            if (generator.definition().isUnsignedValue()) {
+                os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(),
+                             generator.value().unsignedAmount());
+                state[generator.index()] = generator.value().unsignedAmount();
+            }
+            else {
+                os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(),
+                             generator.value().signedAmount());
+                state[generator.index()] = generator.value().signedAmount();
+            }
         });
     }
 
@@ -112,9 +120,18 @@ protected:
     void refine(VoiceState& state) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
+            // Only refine with generators that are allowed in presets.
             if (generator.definition().isAvailableInPreset()) {
-                os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(), generator.value().amount());
-                state[generator.index()].refine(generator.value().amount());
+                if (generator.definition().isUnsignedValue()) {
+                    os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(),
+                                 generator.value().unsignedAmount());
+                    state[generator.index()] += generator.value().unsignedAmount();
+                }
+                else {
+                    os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(),
+                                 generator.value().signedAmount());
+                    state[generator.index()] += generator.value().signedAmount();
+                }
             }
         });
     }

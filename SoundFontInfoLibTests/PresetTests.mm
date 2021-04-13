@@ -39,17 +39,25 @@ using namespace SF2::Render;
 
     VoiceState left;
     found[0].apply(left);
-    XCTAssertEqual(-500, left[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(23, left[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(-500, left[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(23, left[Entity::Generator::Index::sampleID]);
+    XCTAssertEqual(0, left[Entity::Generator::Index::startAddressOffset]);
+    XCTAssertEqual(0, left[Entity::Generator::Index::startAddressCoarseOffset]);
+    XCTAssertEqual(0, left[Entity::Generator::Index::endAddressOffset]);
+    XCTAssertEqual(0, left[Entity::Generator::Index::endAddressCoarseOffset]);
 
     VoiceState right;
     found[1].apply(right);
-    XCTAssertEqual(500, right[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(22, right[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(500, right[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(22, right[Entity::Generator::Index::sampleID]);
+    XCTAssertEqual(0, right[Entity::Generator::Index::startAddressOffset]);
+    XCTAssertEqual(0, right[Entity::Generator::Index::startAddressCoarseOffset]);
+    XCTAssertEqual(0, right[Entity::Generator::Index::endAddressOffset]);
+    XCTAssertEqual(0, right[Entity::Generator::Index::endAddressCoarseOffset]);
 }
 
 @end

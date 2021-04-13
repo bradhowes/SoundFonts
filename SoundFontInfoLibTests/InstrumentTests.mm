@@ -35,36 +35,36 @@ using namespace SF2::Render;
 
     VoiceState left;
     globalZone->apply(left);
-    XCTAssertEqual(0, left[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(0, left[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(0, left[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(0, left[Entity::Generator::Index::sampleID]);
 
     found[0].get().apply(left);
     XCTAssertNotEqual(nullptr, found[0].get().sampleBuffer());
 
     // The Roland Piano SF2 file seems to have swapped left/right
     // XCTAssertTrue(found[0].get().sampleBuffer()->header().isLeft());
-    XCTAssertEqual(-500, left[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(23, left[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(-500, left[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, left[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, left[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(23, left[Entity::Generator::Index::sampleID]);
 
     VoiceState right;
     globalZone->apply(right);
-    XCTAssertEqual(0, right[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(0, right[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(0, right[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(0, right[Entity::Generator::Index::sampleID]);
 
     found[1].get().apply(right);
     XCTAssertNotEqual(nullptr, found[1].get().sampleBuffer());
     // The Roland Piano SF2 file seems to have swapped left/right
     // XCTAssertTrue(found[1].get().sampleBuffer()->header().isRight());
-    XCTAssertEqual(500, right[Entity::Generator::Index::pan].amount());
-    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope].amount());
-    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff].amount());
-    XCTAssertEqual(22, right[Entity::Generator::Index::sampleID].amount());
+    XCTAssertEqual(500, right[Entity::Generator::Index::pan]);
+    XCTAssertEqual(1902, right[Entity::Generator::Index::releaseVolumeEnvelope]);
+    XCTAssertEqual(7437, right[Entity::Generator::Index::initialFilterCutoff]);
+    XCTAssertEqual(22, right[Entity::Generator::Index::sampleID]);
 }
 
 @end

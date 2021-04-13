@@ -7,28 +7,27 @@
 
 using namespace SF2::Entity::Generator;
 
-static float toFrequencyCents(float value) { return pow(2.0, value / 1200.0) * 8.176; }
-static float toTimeCents(float value) { return pow(2.0, value / 1200.0); }
-
 void
 Definition::dump(const Amount& amount) const
 {
+    double value = convertedValueOf(amount);
     switch (valueKind_) {
-        case ValueKind::unsignedShort: std::cout << amount.index(); break;
-        case ValueKind::signedShort: std::cout << amount.amount(); break;
+        case ValueKind::unsignedShort: std::cout << value; break;
+        case ValueKind::offset: std::cout << value << " bytes"; break;
+        case ValueKind::coarseOffset: std::cout << value << " bytes"; break;
+        case ValueKind::signedShort: std::cout << value; break;
+        case ValueKind::signedCents: std::cout << value << " oct"; break;
+        case ValueKind::signedCentsBel: std::cout << value << " dB"; break;
+        case ValueKind::unsignedPercent: std::cout << value << "%"; break;
+        case ValueKind::signedPercent: std::cout << value << "%"; break;
+        case ValueKind::signedFrequencyCents: std::cout << value << " Hz"; break;
+        case ValueKind::signedTimeCents: std::cout << value << " seconds"; break;
+        case ValueKind::signedSemitones: std::cout << value << " notes"; break;
+
         case ValueKind::range: std::cout << '[' << amount.low() << '-' << amount.high() << ']'; break;
-        case ValueKind::offset: std::cout << amount.index() << " bytes"; break;
-        case ValueKind::coarseOffset: std::cout << (amount.index() * 32768) << " bytes"; break;
-        case ValueKind::signedCents: std::cout << (amount.amount() / 1200.0) << " oct"; break;
-        case ValueKind::signedCentsBel: std::cout << (amount.amount() / 10.0) << " dB"; break;
-        case ValueKind::unsignedPercent: std::cout << (amount.amount() / 10.0) << "%"; break;
-        case ValueKind::signedPercent: std::cout << (amount.amount() / 10.0) << "%"; break;
-        case ValueKind::signedFrequencyCents: std::cout << toFrequencyCents(amount.amount()) << " Hz"; break;
-        case ValueKind::signedTimeCents: std::cout << toTimeCents(amount.amount()) << " seconds"; break;
-        case ValueKind::signedSemitones: std::cout << amount.amount() << " notes"; break;
-        default: std::cout << amount.amount(); return;
     }
-    std::cout << " (" << amount.amount() << ')';
+
+    std::cout << " (" << (isUnsignedValue() ? amount.unsignedAmount() : amount.signedAmount()) << ')';
 }
 
 

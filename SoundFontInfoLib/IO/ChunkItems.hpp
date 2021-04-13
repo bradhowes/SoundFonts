@@ -73,13 +73,12 @@ public:
 
      @param first the index of the first item to include in the collection
      @param count the number of items to have in the slice
-     @returns the sliced reference
+     @returns the sliced references
      */
-    ItemRefCollection slice(size_t first, size_t count) const
-    {
-        if (first < size() && first + count <= size())
-            return ItemRefCollection(items_.begin() + first, items_.begin() + first + count);
-        return ItemRefCollection();
+    ItemRefCollection slice(size_t first, size_t count) const {
+        return (first < size() && first + count <= size())
+        ? ItemRefCollection(items_.begin() + first, items_.begin() + first + count)
+        : ItemRefCollection();
     }
 
     /**
