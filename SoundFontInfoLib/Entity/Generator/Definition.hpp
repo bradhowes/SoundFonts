@@ -14,8 +14,9 @@ namespace Entity {
 namespace Generator {
 
 /**
- Meta data for SF2 generators. These are attributes associated with a generator but not found in an SF2 file. Rather
- these are attributes called out in the SF2 specification.
+ Meta data for SF2 generators. These are attributes associated with a generator but that are not found in an SF2 file.
+ Rather these are attributes called out in the SF2 specification or to make the rendering implementation easier to
+ understand.
  */
 class Definition {
 public:
@@ -39,6 +40,7 @@ public:
         signedTimeCents,
         signedSemitones,
 
+        // Two 8-int bytes
         range
     };
 
@@ -59,35 +61,43 @@ public:
     /// @returns true if the generator can be used in a preset zone
     bool isAvailableInPreset() const { return availableInPreset_; }
 
+    /// @returns true if the generator amount value is unsigned or signed
     bool isUnsignedValue() const { return valueKind_ < ValueKind::signedShort; }
 
     void dump(const Amount& amount) const;
 
     /**
-     Obtain the value from a generator Amount instance.
+     Obtain the value from a generator Amount instance. Properly handles unsigned integer values.
+
+     @param amount the container holding the value to extract
+     @returns extracted value
      */
     double valueOf(const Amount& amount) const {
         return isUnsignedValue() ? amount.unsignedAmount() : amount.signedAmount();
     }
 
+    /**
+     Obtain the value from a generator Amount instance (from an SF2 file) after converting it to its natural or desired
+     form.
+
+     @param amount the container holding the value to extract
+     @returns the converted value
+     */
     double convertedValueOf(const Amount& amount) const {
         switch (valueKind_) {
-            case ValueKind::unsignedShort: return amount.unsignedAmount();
-            case ValueKind::offset: return amount.unsignedAmount();
-            case ValueKind::coarseOffset: return amount.unsignedAmount() * 32768;
-            case ValueKind::signedShort: return amount.signedAmount();
-            case ValueKind::signedCents: return amount.signedAmount() / 1200.0;
-            case ValueKind::signedCentsBel: return amount.signedAmount() / 10.0;
-            case ValueKind::unsignedPercent: return amount.signedAmount() / 10.0;
-            case ValueKind::signedPercent: return amount.signedAmount() / 10.0;
-            case ValueKind::signedFrequencyCents: return DSP::centsToFrequency(amount.signedAmount());
-            case ValueKind::signedTimeCents: return DSP::centsToSeconds(amount.signedAmount());
-            case ValueKind::signedSemitones: return amount.signedAmount();
-            default: return amount.signedAmount();
+            case ValueKind::coarseOffset: return valueOf(amount) * 32768;
+            case ValueKind::signedCents: return valueOf(amount) / 1200.0;
+
+            case ValueKind::signedCentsBel:
+            case ValueKind::unsignedPercent:
+            case ValueKind::signedPercent: return valueOf(amount) / 10.0;
+
+            case ValueKind::signedFrequencyCents: return DSP::centsToFrequency(valueOf(amount));
+            case ValueKind::signedTimeCents: return DSP::centsToSeconds(valueOf(amount));
+
+            default: return valueOf(amount);
         }
     }
-
-
 
 private:
     static std::array<Definition, NumDefs> const definitions_;

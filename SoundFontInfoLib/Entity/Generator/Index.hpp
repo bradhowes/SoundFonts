@@ -394,7 +394,7 @@ enum struct Index : uint16_t {
      and 3 indicates a sound which loops for the duration of key depression then proceeds to play the remainder of the
      sample.
      */
-    sampleMode,
+    sampleModes,
     // 55
     reserved3,
     /**

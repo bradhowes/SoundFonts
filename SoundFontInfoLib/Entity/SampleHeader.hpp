@@ -16,6 +16,8 @@ namespace Entity {
 
  Memory layout of a 'shdr' entry. The size of this is defined to be 46 bytes, but due
  to alignment/padding the struct below is 48 bytes.
+
+ The offsets (begin, end, loopBegin, and loopEnd) are indices into a big array of 16-bit integer sample values.
  */
 class SampleHeader {
 public:
@@ -49,14 +51,27 @@ public:
 
     void dump(const std::string& indent, int index) const;
 
+    /// @returns the index of the first sample
     size_t begin() const { return dwStart; }
+    /// @returns index + 1 of the last sample. According to spec, this is first of 46 0.0 values after the last sample
     size_t end() const { return dwEnd; }
+    /// @returns index of the first sample in a loop.
     size_t loopBegin() const { return dwStartLoop; }
+    /// @returns index of the last + 1 of a sample in a loop.
     size_t loopEnd() const { return dwEndLoop; }
+    /// @returns the sample rate used to record the samples in the SF2 file
     size_t sampleRate() const { return dwSampleRate; }
-
+    /// @returns the MIDI key (frequency) for the source samples
     Int originalMIDIKey() const { return originalKey; }
+    /// @returns the pitch correction to apply when playing back the samples
     Int pitchCorrection() const { return correction; }
+
+    /// @returns number of samples used by this definition (Note that there are 46 extra 0.0 values)
+    size_t sampleCount() const { return end() - begin(); }
+    /// @returns relative number of samples before loop begin
+    size_t relativeLoopBegin() const { return loopBegin() - begin(); }
+    /// @returns relative number of samples before loop end
+    size_t relativeLoopEnd() const { return loopEnd() - begin(); }
 
 private:
     std::string sampleTypeDescription() const;
@@ -88,7 +103,8 @@ inline void SampleHeader::dump(const std::string& indent, int index) const
 {
     std::cout << indent << index << ": '" << achSampleName
     << "' sampleRate: " << dwSampleRate
-    << " s: " << dwStart << " e: " << dwEnd << " link: " << sampleLink
+    << " S: " << dwStart << " E: " << dwEnd << " link: " << sampleLink
+    << " SL: " << dwStartLoop << " EL: " << dwEndLoop
     << " type: " << sampleType << ' ' << sampleTypeDescription()
     << " originalKey: " << int(originalKey) << " correction: " << int(correction)
     << std::endl;

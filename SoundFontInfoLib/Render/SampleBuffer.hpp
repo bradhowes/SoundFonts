@@ -39,7 +39,7 @@ public:
      @param kind the kind of interpolation to use when returning values from `read`
      */
     SampleBuffer(const int16_t* samples, const Entity::SampleHeader& header,
-                 Interpolator kind = Interpolator::cubic4thOrder)
+                 Interpolator kind = Interpolator::linear)
     : allSamples_{samples}, samples_{}, header_{header}, interpolator_{kind} {}
 
     /**
@@ -57,7 +57,7 @@ public:
      */
     inline T read(SampleIndex& sampleIndex, bool canLoop) const {
         auto index = sampleIndex.index();
-        if (index >= header_.end()) return 0.0;
+        if (index >= samples_.size()) return 0.0;
         auto partial = sampleIndex.partial();
         sampleIndex.increment(canLoop);
         switch (interpolator_) {
@@ -101,13 +101,13 @@ private:
     }
 
     inline AUValue sample(size_t index, bool canLoop) const {
-        if (index == header_.loopEnd() && canLoop) index = header_.loopBegin();
-        return index < header_.end() ? samples_[index] : 0.0;
+        if (index == header_.relativeLoopEnd() && canLoop) index = header_.relativeLoopBegin();
+        return index < samples_.size() ? samples_[index] : 0.0;
     }
 
     inline AUValue before(size_t index, bool canLoop) const {
-        if (index == header_.begin()) return 0.0;
-        if (index == header_.loopBegin() && canLoop) index = header_.loopEnd();
+        if (index == 0) return 0.0;
+        if (index == header_.relativeLoopBegin() && canLoop) index = header_.relativeLoopEnd();
         return samples_[index - 1];
     }
 
@@ -116,7 +116,7 @@ private:
 
         os_log_t log = os_log_create("SF2", "loadSamples");
         auto signpost = os_signpost_id_generate(log);
-        size_t size = header_.end() - header_.begin();
+        size_t size = header_.sampleCount();
         os_signpost_interval_begin(log, signpost, "SampleBuffer", "begin - size: %ld", size);
         samples_.reserve(size);
         samples_.clear();
@@ -127,6 +127,8 @@ private:
 
     const int16_t* allSamples_;
     mutable std::vector<T> samples_;
+    size_t loopStart_;
+    size_t loopEnd_;
     const Entity::SampleHeader& header_;
     Interpolator interpolator_;
 };

@@ -99,7 +99,7 @@ std::array<Definition, Definition::NumDefs> const Definition::definitions_{
     Definition(N(coarseTune), ValueKind::signedSemitones, true),
     Definition(N(fineTune), ValueKind::signedCents, true),
     Definition(N(sampleID), ValueKind::unsignedShort, false),
-    Definition(N(sampleMode), ValueKind::unsignedShort, false),
+    Definition(N(sampleModes), ValueKind::unsignedShort, false),
     // 55
     Definition(N(reserved3), ValueKind::signedShort, false),
     Definition(N(scaleTuning), ValueKind::unsignedShort, true),

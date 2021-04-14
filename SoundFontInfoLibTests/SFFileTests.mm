@@ -81,8 +81,6 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     XCTAssertEqual(443, file.instrumentZoneGenerators().size());
     XCTAssertEqual(0, file.instrumentZoneModulators().size());
     XCTAssertEqual(24, file.sampleHeaders().size());
-
-    file.dump();
 }
 
 @end

@@ -10,7 +10,7 @@
 namespace SF2 {
 namespace Render {
 
-class Configuration;
+class VoiceState;
 
 /**
  A specialization of a Zone for an Instrument. Instrument zones have a sample buffer.

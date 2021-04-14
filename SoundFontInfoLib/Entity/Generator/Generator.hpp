@@ -29,7 +29,7 @@ public:
     Index index() const { return index_.index(); }
 
     /// @returns value configured for the generator
-    Amount value() const { return amount_; }
+    Amount amount() const { return amount_; }
 
     /// @returns meta-data for the generator
     const Definition& definition() const { return Definition::definition(index_.index()); }
@@ -38,6 +38,10 @@ public:
     const std::string& name() const { return definition().name(); }
 
     void dump(const std::string& indent, int index) const;
+
+    double value() const { return definition().valueOf(amount_); }
+
+    double convertedValue() const { return definition().convertedValueOf(amount_); }
 
 private:
     RawIndex index_;

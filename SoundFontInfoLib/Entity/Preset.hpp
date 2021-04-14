@@ -32,7 +32,6 @@ public:
         pos = pos.readInto(&achPresetName, 20 + sizeof(uint16_t) * 3);
         pos = pos.readInto(&dwLibrary, sizeof(uint32_t) * 3);
         IO::trim_property(achPresetName);
-        std::cout << "preset: " << achPresetName << ' ' << wPresetBagNdx << std::endl;
     }
 
     /// @returns name of the preset

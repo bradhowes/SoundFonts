@@ -96,13 +96,11 @@ public:
     const_iterator end() const { return items_.end() - 1; }
 
     /**
-     Utility to dump the contents of the collection to `std::cout`
+     Utility to dump out the contents of the collection
 
      @param indent the prefix to use for all output
      */
     void dump(const std::string& indent) const {
-        // All collections in SF2 end with a sentinel entry that is *not* a member of the collection.
-        if (size() <= 1) return;
         std::cout << " count: " << size() << std::endl;
         auto index = 0;
         std::for_each(begin(), end(), [&](const ItemType& item) { item.dump(indent, index++); });

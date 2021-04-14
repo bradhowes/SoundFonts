@@ -4,9 +4,9 @@
 
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
-#include "Render/VoiceState.hpp"
 #include "Render/InstrumentCollection.hpp"
 #include "Render/Zone.hpp"
+#include "Render/Voice/VoiceState.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -28,7 +28,7 @@ public:
     Zone(file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
          file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
          Entity::Generator::Index::instrument),
-    instrument_{isGlobal() ? nullptr : &instruments.at(resourceLink())}
+    instrument_{isGlobal() ? nullptr : &instruments[resourceLink()]}
     {}
 
     /**
@@ -37,7 +37,7 @@ public:
 
      @param state the state to update
      */
-    void refine(Render::VoiceState& state) const { Zone::refine(state); }
+    void refine(VoiceState& state) const { Zone::refine(state); }
 
     /// @returns the Instrument configured for this zone
     const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }

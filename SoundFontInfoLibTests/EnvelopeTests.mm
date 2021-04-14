@@ -3,9 +3,10 @@
 #import <XCTest/XCTest.h>
 
 #include "Render/DSP.hpp"
-#include "Render/Envelope.hpp"
+#include "Render/Envelope/Generator.hpp"
+#include "Render/Envelope/Stage.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::Render::Envelope;
 
 @interface EnvelopeTests : XCTestCase
 
@@ -14,50 +15,46 @@ using namespace SF2::Render;
 @implementation EnvelopeTests
 
 - (void)testGateOnOff {
-    auto env = Envelope::Config<float>(1);
-    auto gen = env.generator();
+    auto gen = Generator(1);
     XCTAssertEqual(0.0, gen.value());
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
     XCTAssertEqual(0.0, gen.process());
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
     gen.gate(true);
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
     XCTAssertEqual(1.0, gen.process());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
     gen.gate(false);
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
 }
 
 - (void)testDelay {
-    auto env = Envelope::Config<float>(1.0, 3, 0, 0, 0, 1, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 3, 0, 0, 0, 1, 0);
     XCTAssertEqual(0.0, gen.value());
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
     XCTAssertEqual(0.0, gen.process());
     gen.gate(true);
-    XCTAssertEqual(Envelope::Stage::delay, gen.stage());
+    XCTAssertEqual(StageIndex::delay, gen.stage());
     XCTAssertEqual(0.0, gen.process());
     XCTAssertEqual(0.0, gen.process());
     XCTAssertEqual(1.0, gen.process());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
 }
 
 - (void)testNoDelayNoAttack {
-    auto env = Envelope::Config<float>(1.0, 0, 0, 1, 0, 1, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 1, 0, 1, 0);
     gen.gate(true);
-    XCTAssertEqual(Envelope::Stage::hold, gen.stage());
+    XCTAssertEqual(StageIndex::hold, gen.stage());
     XCTAssertEqual(1.0, gen.process());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
 }
 
 - (void)testAttackCurvature {
     auto epsilon = 0.001;
-    auto env = Envelope::Config<float>(1.0, 0, 10, 0, 0, 1, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 10, 0, 0, 1, 0);
     gen.gate(true);
     XCTAssertEqual(0.0, gen.value());
-    XCTAssertEqual(Envelope::Stage::attack, gen.stage());
+    XCTAssertEqual(StageIndex::attack, gen.stage());
     XCTAssertEqualWithAccuracy(0.373366868371, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.60871114427, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.757055662464, gen.process(), epsilon);
@@ -71,74 +68,69 @@ using namespace SF2::Render;
 }
 
 - (void)testHold {
-    auto env = Envelope::Config<float>(1.0, 0, 0, 3, 0, 0.75, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 3, 0, 0.75, 0);
     gen.gate(true);
     XCTAssertEqual(1.0, gen.value());
-    XCTAssertEqual(Envelope::Stage::hold, gen.stage());
+    XCTAssertEqual(StageIndex::hold, gen.stage());
     XCTAssertEqual(1.0, gen.process());
     XCTAssertEqual(1.0, gen.process());
     XCTAssertEqual(0.75, gen.process());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
 }
 
 - (void)testDecay {
     auto epsilon = 0.001;
-    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 5, 0.5, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 0, 5, 0.5, 0);
     gen.gate(true);
-    XCTAssertEqual(Envelope::Stage::decay, gen.stage());
+    XCTAssertEqual(StageIndex::decay, gen.stage());
     XCTAssertEqualWithAccuracy(0.692631006359, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.570508479878, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.521987282938, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.502709049671, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.500, gen.process(), epsilon);
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
     gen.gate(false);
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
 }
 
 - (void)testDecayAborted {
     auto epsilon = 0.001;
-    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 5, 0.5, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 0, 5, 0.5, 0);
     gen.gate(true);
-    XCTAssertEqual(Envelope::Stage::decay, gen.stage());
+    XCTAssertEqual(StageIndex::decay, gen.stage());
     XCTAssertEqualWithAccuracy(0.692631006359, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.570508479878, gen.process(), epsilon);
     gen.gate(false);
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
     XCTAssertEqualWithAccuracy(0.0, gen.process(), epsilon);
 }
 
 - (void)testSustain {
-    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 0, 0.25, 0);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 0, 0, 0.25, 0);
     gen.gate(true);
     XCTAssertEqual(0.25, gen.value());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
     XCTAssertEqual(0.25, gen.process());
     XCTAssertEqual(0.25, gen.process());
     gen.gate(false);
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
 }
 
 - (void)testRelease {
     auto epsilon = 0.001;
-    auto env = Envelope::Config<float>(1.0, 0, 0, 0, 0, 0.5, 5);
-    auto gen = env.generator();
+    auto gen = Generator(1.0, 0, 0, 0, 0, 0.5, 5);
     gen.gate(true);
     XCTAssertEqual(0.5, gen.value());
-    XCTAssertEqual(Envelope::Stage::sustain, gen.stage());
+    XCTAssertEqual(StageIndex::sustain, gen.stage());
     gen.gate(false);
-    XCTAssertEqual(Envelope::Stage::release, gen.stage());
+    XCTAssertEqual(StageIndex::release, gen.stage());
     XCTAssertEqualWithAccuracy(0.192631006359, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.0705084798785, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.0219872829376, gen.process(), epsilon);
     XCTAssertEqualWithAccuracy(0.00270904967126, gen.process(), epsilon);
-    XCTAssertEqual(Envelope::Stage::release, gen.stage());
+    XCTAssertEqual(StageIndex::release, gen.stage());
     XCTAssertEqualWithAccuracy(0.000, gen.process(), epsilon);
-    XCTAssertEqual(Envelope::Stage::idle, gen.stage());
+    XCTAssertEqual(StageIndex::idle, gen.stage());
 }
 
 @end

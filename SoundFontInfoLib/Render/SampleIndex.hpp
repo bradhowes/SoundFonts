@@ -24,9 +24,7 @@ struct SampleIndex {
 
      @param header description of the samples being indexed
      */
-    SampleIndex(const Entity::SampleHeader& header) : index_{0}, partial_{0.0}, header_{header} {
-        setIncrement(0.0);
-    }
+    SampleIndex(const Entity::SampleHeader& header) : SampleIndex(header, 0.0) {}
 
     /**
      Construct new instance.
@@ -34,7 +32,8 @@ struct SampleIndex {
      @param header description of the samples being indexed
      @param increment the value to apply when advancing the index
      */
-    SampleIndex(const Entity::SampleHeader& header, double increment) : index_{0}, partial_{0.0}, header_{header} {
+    SampleIndex(const Entity::SampleHeader& header, double increment) :
+    index_{0}, partial_{0.0}, header_{header} {
         setIncrement(increment);
     }
 
@@ -65,13 +64,13 @@ struct SampleIndex {
             partial_ -= carry;
         }
 
-        if (index_ >= header_.loopEnd() && canLoop) {
-            index_ -= (header_.loopEnd() - header_.loopBegin());
+        if (index_ >= header_.relativeLoopEnd() && canLoop) {
+            index_ -= (header_.relativeLoopEnd() - header_.relativeLoopBegin());
         }
     }
 
     /// @returns true if there a no more samples to index
-    bool finished() const { return index_ >= header_.end(); }
+    bool finished() const { return index_ >= header_.sampleCount(); }
 
     /// @returns index to first sample to use for rendering
     size_t index() const { return index_; }

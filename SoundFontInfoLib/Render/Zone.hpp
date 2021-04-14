@@ -12,7 +12,7 @@
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
 #include "Render/Range.hpp"
-#include "Render/VoiceState.hpp"
+#include "Render/Voice/VoiceState.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -88,7 +88,7 @@ protected:
         const Entity::Generator::Generator& generator{generators_.back().get()};
         assert(generator.index() == Entity::Generator::Index::instrument ||
                generator.index() == Entity::Generator::Index::sampleID);
-        return generator.value().unsignedAmount();
+        return generator.amount().unsignedAmount();
     }
 
     /**
@@ -99,16 +99,8 @@ protected:
     void apply(VoiceState& state) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            if (generator.definition().isUnsignedValue()) {
-                os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(),
-                             generator.value().unsignedAmount());
-                state[generator.index()] = generator.value().unsignedAmount();
-            }
-            else {
-                os_log_debug(logger_, "applying %{public}s - %d", generator.name().c_str(),
-                             generator.value().signedAmount());
-                state[generator.index()] = generator.value().signedAmount();
-            }
+            os_log_debug(logger_, "applying %{public}s - %f", generator.name().c_str(), generator.convertedValue());
+            state[generator.index()] = generator.convertedValue();
         });
     }
 
@@ -122,16 +114,8 @@ protected:
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
             // Only refine with generators that are allowed in presets.
             if (generator.definition().isAvailableInPreset()) {
-                if (generator.definition().isUnsignedValue()) {
-                    os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(),
-                                 generator.value().unsignedAmount());
-                    state[generator.index()] += generator.value().unsignedAmount();
-                }
-                else {
-                    os_log_debug(logger_, "refining %{public}s - %d", generator.name().c_str(),
-                                 generator.value().signedAmount());
-                    state[generator.index()] += generator.value().signedAmount();
-                }
+                os_log_debug(logger_, "refining %{public}s - %f", generator.name().c_str(), generator.convertedValue());
+                state[generator.index()] += generator.convertedValue();
             }
         });
     }
@@ -146,7 +130,7 @@ private:
      */
     static MIDIRange GetKeyRange(const GeneratorCollection& generators) {
         if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::keyRange)
-            return MIDIRange(generators[0].get().value());
+            return MIDIRange(generators[0].get().amount());
         return all;
     }
 
@@ -159,10 +143,10 @@ private:
      */
     static MIDIRange GetVelocityRange(const GeneratorCollection& generators) {
         if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::velocityRange)
-            return MIDIRange(generators[0].get().value());
+            return MIDIRange(generators[0].get().amount());
         if (generators.size() > 1 && generators[0].get().index() == Entity::Generator::Index::keyRange &&
             generators[1].get().index() == Entity::Generator::Index::velocityRange)
-            return MIDIRange(generators[1].get().value());
+            return MIDIRange(generators[0].get().amount());
         return all;
     }
 
