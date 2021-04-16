@@ -1,5 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+#include <iostream>
 #include <map>
 
 #include "Entity/Instrument.hpp"
@@ -21,13 +22,17 @@ File::File(int fd, size_t fileSize)
     auto p0 = riff.begin();
     while (p0 < riff.end()) {
         auto chunkList = p0.makeChunkList();
-        // std::cout << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString() << std::endl;
+
+        log_.debug() << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString()
+        << std::endl;
+
         auto p1 = chunkList.begin();
         p0 = chunkList.advance();
         while (p1 < chunkList.end()) {
             auto chunk = p1.makeChunk();
             p1 = chunk.advance();
-            // std::cout << "  chunk: tag: " << chunk.tag().toString() << std::endl;
+            log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
+
             switch (chunk.tag().rawValue()) {
 
                 // Meta data chunks

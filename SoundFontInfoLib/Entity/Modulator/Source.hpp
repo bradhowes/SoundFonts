@@ -4,7 +4,7 @@
 
 #include <array>
 #include <cstdlib>
-#include <iostream>
+#include <iosfwd>
 #include <string>
 
 namespace SF2 {
@@ -114,16 +114,6 @@ private:
 
     uint16_t bits_;
 };
-
-inline std::ostream& operator<<(std::ostream& os, const Source& mod)
-{
-    return os << "[type: " << mod.continuityTypeName()
-    << " P: " << mod.polarity()
-    << " D: " << mod.direction()
-    << " CC: " << mod.isContinuousController()
-    << " index: " << mod.rawIndex()
-    << "]";
-}
 
 } // end namespace Modulator
 } // end namespace Entity

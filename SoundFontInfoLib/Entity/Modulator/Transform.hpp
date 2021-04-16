@@ -4,7 +4,6 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <iostream>
 
 namespace SF2 {
 namespace Entity {

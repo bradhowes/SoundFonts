@@ -4,13 +4,16 @@
 
 #include <algorithm>
 #include <functional>
-#include <iostream>
 #include <vector>
 
 #include "IO/Chunk.hpp"
 
 namespace SF2 {
 namespace IO {
+
+struct ChunkItemsSupport {
+    static void beginDump(size_t size);
+};
 
 /**
  Container of SF2 entities. All SF2 containers are homogenous (all entities in the container have the same type).
@@ -22,7 +25,7 @@ namespace IO {
  @arg T is the entity type to hold in this container
  */
 template <typename T>
-class ChunkItems
+class ChunkItems : private ChunkItemsSupport
 {
 public:
     using ItemType = T;
@@ -107,7 +110,7 @@ public:
      @param indent the prefix to use for all output
      */
     void dump(const std::string& indent) const {
-        std::cout << " count: " << size() << std::endl;
+        beginDump(size());
         auto index = 0;
         std::for_each(begin(), end(), [&](const ItemType& item) { item.dump(indent, index++); });
     }

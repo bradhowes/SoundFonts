@@ -3,7 +3,6 @@
 #pragma once
 
 #include <cstdint>
-#include <iostream>
 #include <string>
 
 #include "Entity/Entity.hpp"
@@ -48,16 +47,12 @@ public:
     uint16_t modulatorCount() const { return calculateSize(next(this).firstModulatorIndex(), firstModulatorIndex()); }
 
     /**
-     Utility for displaying bag contents on `std::cout`
+     Utility for displaying bag contents on output stream.
 
      @param indent the prefix to write out before each line
      @param index a prefix index value to write out before each lines
      */
-    void dump(const std::string& indent, int index) const
-    {
-        std::cout << indent << '[' << index << "] genIndex: " << firstGeneratorIndex() << " count: " << generatorCount()
-        << " modIndex: " << firstModulatorIndex() << " count: " << modulatorCount() << std::endl;
-    }
+    void dump(const std::string& indent, int index) const;
 
 private:
     uint16_t wGenNdx;

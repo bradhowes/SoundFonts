@@ -19,3 +19,15 @@ std::array<Modulator, 10> const Modulator::defaults {
     Modulator(Source(0x00DD), Generator::Index::chorusEffectSend, 200, Source(0), Transform(0)),
     Modulator(Source(0x020E), Generator::Index::initialPitch, 12700, Source(0x0010), Transform(0))
 };
+
+void
+Modulator::dump(const std::string& indent, int index) const
+{
+    std::cout << indent << '[' << index
+    << "] src: " << sfModSrcOper
+    << " dest: " << Generator::Definition::definition(sfModDestOper).name()
+    << " amount: " << modAmount
+    << " op: " << sfModAmtSrcOper
+    << " xform: " << sfModTransOper
+    << std::endl;
+}

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <iostream>
-
 #include "Entity/Entity.hpp"
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
@@ -42,12 +40,6 @@ private:
     char achInstName[20];
     uint16_t wInstBagNdx;
 };
-
-inline void Instrument::dump(const std::string& indent, int index) const
-{
-    std::cout << indent << '[' << index << "] '" << name() << "' zoneIndex: " << firstZoneIndex() << " count: " << zoneCount()
-    << std::endl;
-}
 
 } // end namespace Entity
 } // end namespace SF2

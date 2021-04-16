@@ -67,6 +67,13 @@
 		BDEB13032629C5B0003CE8EE /* State.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB13022629C5B0003CE8EE /* State.mm */; };
 		BDEB130B2629CA5C003CE8EE /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130A2629CA5C003CE8EE /* Engine.hpp */; };
 		BDEB130F2629EB4F003CE8EE /* Logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130E2629EB4F003CE8EE /* Logger.hpp */; };
+		BDEB1315262A49B5003CE8EE /* Bag.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB1314262A49B5003CE8EE /* Bag.mm */; };
+		BDEB1319262A4A2B003CE8EE /* Instrument.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB1318262A4A2B003CE8EE /* Instrument.mm */; };
+		BDEB131F262A4A6E003CE8EE /* Preset.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB131E262A4A6E003CE8EE /* Preset.mm */; };
+		BDEB1323262A4ABD003CE8EE /* SampleHeader.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB1322262A4ABD003CE8EE /* SampleHeader.mm */; };
+		BDEB1329262A4B00003CE8EE /* Version.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB1328262A4B00003CE8EE /* Version.mm */; };
+		BDEB132F262A4BA3003CE8EE /* Source.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB132E262A4BA3003CE8EE /* Source.mm */; };
+		BDEB1335262A4DDF003CE8EE /* ChunkItems.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB1334262A4DDF003CE8EE /* ChunkItems.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -170,6 +177,13 @@
 		BDEB13022629C5B0003CE8EE /* State.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = State.mm; sourceTree = "<group>"; };
 		BDEB130A2629CA5C003CE8EE /* Engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Engine.hpp; sourceTree = "<group>"; };
 		BDEB130E2629EB4F003CE8EE /* Logger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Logger.hpp; sourceTree = "<group>"; };
+		BDEB1314262A49B5003CE8EE /* Bag.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Bag.mm; sourceTree = "<group>"; };
+		BDEB1318262A4A2B003CE8EE /* Instrument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Instrument.mm; sourceTree = "<group>"; };
+		BDEB131E262A4A6E003CE8EE /* Preset.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Preset.mm; sourceTree = "<group>"; };
+		BDEB1322262A4ABD003CE8EE /* SampleHeader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleHeader.mm; sourceTree = "<group>"; };
+		BDEB1328262A4B00003CE8EE /* Version.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Version.mm; sourceTree = "<group>"; };
+		BDEB132E262A4BA3003CE8EE /* Source.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Source.mm; sourceTree = "<group>"; };
+		BDEB1334262A4DDF003CE8EE /* ChunkItems.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ChunkItems.mm; sourceTree = "<group>"; };
 		BDEC00162497665D00A52507 /* Source.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Source.hpp; sourceTree = "<group>"; };
 		BDEC001A2497669300A52507 /* Index.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Index.hpp; sourceTree = "<group>"; };
 		BDEC001E2497672000A52507 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
@@ -222,6 +236,7 @@
 			children = (
 				BD250BDA2615FD7400D1C1E0 /* Modulator.mm */,
 				BDEC004A2497F0A700A52507 /* Modulator.hpp */,
+				BDEB132E262A4BA3003CE8EE /* Source.mm */,
 				BDEC00162497665D00A52507 /* Source.hpp */,
 				BDEC001E2497672000A52507 /* Transform.hpp */,
 			);
@@ -299,10 +314,15 @@
 			isa = PBXGroup;
 			children = (
 				BD64EB6924E5341900EA8473 /* Bag.hpp */,
+				BDEB1314262A49B5003CE8EE /* Bag.mm */,
 				BDEB127F2623792F003CE8EE /* Entity.hpp */,
+				BDEB1318262A4A2B003CE8EE /* Instrument.mm */,
 				BD64EB6724E5328100EA8473 /* Instrument.hpp */,
+				BDEB131E262A4A6E003CE8EE /* Preset.mm */,
 				BD64EB6B24E534B700EA8473 /* Preset.hpp */,
+				BDEB1322262A4ABD003CE8EE /* SampleHeader.mm */,
 				BD64EB6F24E536A200EA8473 /* SampleHeader.hpp */,
+				BDEB1328262A4B00003CE8EE /* Version.mm */,
 				BD250C91261A727100D1C1E0 /* Version.hpp */,
 				BD250BB12615CCAA00D1C1E0 /* Generator */,
 				BD250BC42615CFF900D1C1E0 /* Modulator */,
@@ -314,6 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB1B4692491829000F3F361 /* Chunk.hpp */,
+				BDEB1334262A4DDF003CE8EE /* ChunkItems.mm */,
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
 				BDABC42C24F46A2000F8C874 /* File.mm */,
@@ -549,14 +570,21 @@
 				BD97191524EF21ED0009ED6E /* MIDI.mm in Sources */,
 				BD2AEE4324F692C5009EAABE /* Generator.mm in Sources */,
 				BD250BDB2615FD7400D1C1E0 /* Modulator.mm in Sources */,
+				BDEB1315262A49B5003CE8EE /* Bag.mm in Sources */,
 				BD82800024EA8E6800533D80 /* Definition.mm in Sources */,
 				BDABC42924F172CD00F8C874 /* Transform.mm in Sources */,
+				BDEB1329262A4B00003CE8EE /* Version.mm in Sources */,
+				BDEB131F262A4A6E003CE8EE /* Preset.mm in Sources */,
 				BD2AEE4924F6BF94009EAABE /* Zone.mm in Sources */,
 				BD250D14261C74ED00D1C1E0 /* SoundFontInfo.mm in Sources */,
 				BD74D18823CDB36200204ED4 /* Parser.mm in Sources */,
+				BDEB1335262A4DDF003CE8EE /* ChunkItems.mm in Sources */,
 				BD5E16FF261EFFB9007BAA38 /* Voice.mm in Sources */,
 				BDABC42D24F46A2000F8C874 /* File.mm in Sources */,
 				BD250C82261A126000D1C1E0 /* Types.hpp in Sources */,
+				BDEB1319262A4A2B003CE8EE /* Instrument.mm in Sources */,
+				BDEB1323262A4ABD003CE8EE /* SampleHeader.mm in Sources */,
+				BDEB132F262A4BA3003CE8EE /* Source.mm in Sources */,
 				BDEB13032629C5B0003CE8EE /* State.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <iostream>
-
 #include "Entity/Entity.hpp"
 #include "IO/Chunk.hpp"
 #include "IO/Pos.hpp"
@@ -62,13 +60,6 @@ private:
     uint32_t dwGenre;
     uint32_t dwMorphology;
 };
-
-inline void Preset::dump(const std::string& indent, int index) const
-{
-    std::cout << indent << '[' << index << "] '" << name() << "' preset: " << preset()
-    << " bank: " << bank()
-    << " zoneIndex: " << firstZoneIndex() << " count: " << zoneCount() << std::endl;
-}
 
 } // end namespace Entity
 } // end namespace SF2

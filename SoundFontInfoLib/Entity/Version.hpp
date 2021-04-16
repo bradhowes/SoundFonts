@@ -2,9 +2,6 @@
 
 #pragma once
 
-#include <cstdint>
-#include <iostream>
-
 #include "IO/Pos.hpp"
 
 namespace SF2 {
@@ -30,14 +27,11 @@ public:
     }
 
     /**
-     Utility for displaying bag contents on `std::cout`
+     Utility for displaying bag contents on output stream.
 
      @param indent the prefix to write out before each line
      */
-    void dump(const std::string& indent) const
-    {
-        std::cout << indent << "major: " << wMajor << " minor: " << wMinor << std::endl;
-    }
+    void dump(const std::string& indent) const;
 
 private:
     uint16_t wMajor;

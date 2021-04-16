@@ -5,6 +5,8 @@
 #include <fstream>
 #include <vector>
 
+#include "Logger.hpp"
+
 #include "Entity/Bag.hpp"
 #include "Entity/Generator/Generator.hpp"
 #include "Entity/Instrument.hpp"
@@ -116,6 +118,8 @@ private:
     std::vector<Render::Sample::CanonicalBuffer<AUValue>> sampleBuffers_;
 
     const Int* sampleData_;
+
+    inline static Logger log_{Logger::Make("IO", "File")};
 };
 
 } // end namespace IO
