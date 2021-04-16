@@ -33,7 +33,7 @@ struct BufferIndex {
     }
 
     /**
-     Increment the index to the next location.
+     Increment the index to the next location. Properly handles looping and buffer end.
 
      @param bounds current boundaries and loop point for the sample being indexed
      @param canLoop true if looping is allowed
@@ -51,9 +51,11 @@ struct BufferIndex {
         }
 
         if (canLoop && index_ >= bounds.endLoopIndex()) {
+            // std::cout << "-- looping" << std::endl;
             index_ -= (bounds.endLoopIndex() - bounds.startLoopIndex());
         }
         else if (index_ >= bounds.endIndex()) {
+            // std::cout << "-- stopping" << std::endl;
             partialIncrement_ = -1.0;
         }
     }

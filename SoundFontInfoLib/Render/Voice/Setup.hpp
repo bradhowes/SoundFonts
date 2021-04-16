@@ -11,8 +11,8 @@ namespace Voice {
 class State;
 
 /**
- A combination of preset zone and instrument zone (plus optional global zones for each). One zone pair represents
- the configuration that should apply to the state of one voice.
+ A combination of preset zone and instrument zone (plus optional global zones for each) that pertain to a MIDI
+ key/velocity combination. One zone pair represents the configuration that should apply to the state of one voice.
  */
 class Setup {
 public:

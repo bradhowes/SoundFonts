@@ -12,15 +12,13 @@
 #include "Render/Voice/Voice.hpp"
 
 using namespace SF2;
+using namespace SF2::Render;
 
 static NSArray<NSURL*>* urls = SF2Files.allResources;
-
-using namespace SF2::Render;
 
 @interface VoiceTests : XCTestCase <AVAudioPlayerDelegate>
 @property (nonatomic, retain) AVAudioPlayer* player;
 @property (nonatomic, retain) XCTestExpectation* expectation;
-
 @end
 
 @implementation VoiceTests
@@ -30,6 +28,7 @@ using namespace SF2::Render;
 }
 
 - (void)testRolandPianoRender {
+    double epsilon = 0.000001;
 
     NSURL* url = [urls objectAtIndex:3];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
@@ -60,12 +59,18 @@ using namespace SF2::Render;
     float* samplesLeft = (float*)(bufferList->mBuffers[0].mData);
     float* samplesRight = (float*)(bufferList->mBuffers[1].mData);
 
+    std::vector<AUValue> samples;
     for (auto index = 0; index < sampleCount / 3; ++index) {
         AUValue sample = voice1.render();
         *samplesLeft++ = sample;
         *samplesRight++ = sample;
         if (index == int(sampleCount / 4)) {
+            samples.push_back(sample);
+            samples.push_back(sample);
             voice1.keyReleased();
+        }
+        else if (samples.size() > 0) {
+            samples.back() = sample;
         }
     }
 
@@ -74,7 +79,12 @@ using namespace SF2::Render;
         *samplesLeft++ = sample;
         *samplesRight++ = sample;
         if (index == int(sampleCount / 4)) {
+            samples.push_back(sample);
+            samples.push_back(sample);
             voice2.keyReleased();
+        }
+        else if (samples.size() > 2) {
+            samples.back() = sample;
         }
     }
 
@@ -83,9 +93,24 @@ using namespace SF2::Render;
         *samplesLeft++ = sample;
         *samplesRight++ = sample;
         if (index == int(sampleCount / 4)) {
+            samples.push_back(sample);
+            samples.push_back(sample);
             voice3.keyReleased();
         }
+        else if (samples.size() > 4) {
+            samples.back() = sample;
+        }
     }
+
+    XCTAssertEqual(6, samples.size());
+    XCTAssertEqualWithAccuracy(0.293332, samples[0], epsilon);
+    XCTAssertEqualWithAccuracy(-0.259781, samples[1], epsilon);
+    XCTAssertEqualWithAccuracy(0.128983, samples[2], epsilon);
+    XCTAssertEqualWithAccuracy(-0.146351, samples[3], epsilon);
+    XCTAssertEqualWithAccuracy(-0.218109, samples[4], epsilon);
+    XCTAssertEqualWithAccuracy(-0.063845, samples[5], epsilon);
+
+    return; // REMOVE to hear the audio
 
     buffer.frameLength = sampleCount;
 
@@ -126,6 +151,8 @@ using namespace SF2::Render;
 }
 
 - (void)testBrass2Render {
+    double epsilon = 0.000001;
+
     NSURL* url = [urls objectAtIndex:2];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
@@ -147,7 +174,7 @@ using namespace SF2::Render;
     double sampleRate = 44100.0;
     AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
 
-    int seconds = 1;
+    int seconds = 10;
     int sampleCount = sampleRate * seconds;
     AVAudioPCMBuffer* buffer = [[AVAudioPCMBuffer alloc] initWithPCMFormat:format frameCapacity:sampleCount];
     AudioBufferList* bufferList = buffer.mutableAudioBufferList;
@@ -156,16 +183,41 @@ using namespace SF2::Render;
     float* samplesLeft = (float*)(bufferList->mBuffers[0].mData);
     float* samplesRight = (float*)(bufferList->mBuffers[1].mData);
 
+    std::vector<AUValue> samples;
     for (auto index = 0; index < sampleCount; ++index) {
-        AUValue sample = (voice1.render() + voice2.render() + voice3.render()) / 3.0;
+        auto s1 = voice1.render();
+        auto s2 = voice2.render();
+        auto s3 = voice3.render();
+        AUValue sample = (s1 + s2 + s3) / 3.0;
         *samplesLeft++ = sample;
         *samplesRight++ = sample;
-        if (index == int(sampleRate * 0.7)) {
+        if (index == int(sampleCount * 0.7)) {
+            samples.push_back(s1);
+            samples.push_back(s2);
+            samples.push_back(s3);
+            samples.push_back(s1);
+            samples.push_back(s2);
+            samples.push_back(s3);
             voice1.keyReleased();
             voice2.keyReleased();
             voice3.keyReleased();
         }
+        else if (!samples.empty()) {
+            samples.back() = s1;
+            samples.back() = s2;
+            samples.back() = s3;
+        }
     }
+
+    XCTAssertEqual(6, samples.size());
+    XCTAssertEqualWithAccuracy(-0.109344, samples[0], epsilon);
+    XCTAssertEqualWithAccuracy(-0.041013, samples[1], epsilon);
+    XCTAssertEqualWithAccuracy(0.001127, samples[2], epsilon);
+    XCTAssertEqualWithAccuracy(-0.109344, samples[3], epsilon);
+    XCTAssertEqualWithAccuracy(-0.041013, samples[4], epsilon);
+    XCTAssertEqualWithAccuracy(0.000000, samples[5], epsilon);
+
+    return; // REMOVE to hear the audio
 
     buffer.frameLength = sampleCount;
 

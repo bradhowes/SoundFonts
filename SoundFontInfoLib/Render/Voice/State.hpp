@@ -36,7 +36,7 @@ public:
     };
 
     LoopingMode loopingMode() const {
-        switch (int((*this)[Index::sampleModes])) {
+        switch (int(get(Index::sampleModes))) {
             case 1: return LoopingMode::continuously;
             case 3: return LoopingMode::duringKeyPress;
             default: return LoopingMode::none;
@@ -44,20 +44,23 @@ public:
     }
 
     /**
-     Create new state vector with a default 44100.0 sample rate.
+     Default constructor -- only used in unit tests.
      */
-    State() : State(44100.0, 0, 0) {}
+    State() : State(44100, 0, 0) {}
+
+    /**
+     Mock constructor -- only used in unit tests.
+     */
+    State(double sampleRate, UByte key, UByte velocity) : sampleRate_{sampleRate}, key_{key}, velocity_{velocity} {
+        values_.fill(0.0);
+    }
 
     /**
      Create new state vector with a given sample rate.
 
      @param sampleRate the sample rate of audio being rendered
      */
-    explicit State(double sampleRate, UByte key, UByte velocity) :
-    values_{}, sampleRate_{sampleRate}, key_{key}, velocity_{velocity}
-    {
-        setDefaults();
-    }
+    State(double sampleRate, const Setup& setup);
 
     /**
      Obtain a specific generator value.

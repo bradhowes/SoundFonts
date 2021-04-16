@@ -18,6 +18,12 @@ namespace SF2 {
 namespace Render {
 namespace Sample {
 
+/**
+ Generator of new samples from a stream of original samples, properly scaled to sound correct for the output sample
+ rate and the desired output frequency. We know the original samples' sample rate and root frequency, so we can do some
+ simple math to calculate a proper increment to use when iterating through the original samples, and with some proper
+ interpolation we should end up with something that does not sound too harsh.
+ */
 template <typename T>
 class Generator {
 public:
@@ -38,10 +44,7 @@ public:
     samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},
     bufferIndex_{} {
         samples.load();
-        auto sampleRateRatio = double(samples.header().sampleRate()) / state.sampleRate();
-        auto frequencyRatio = double(std::pow(2.0, double(state.pitch() - samples.header().originalMIDIKey()) / 12.0));
-        auto increment = sampleRateRatio * frequencyRatio;
-        bufferIndex_.setIncrement(increment);
+        calculateIndexIncrement();
     }
 
     /**
@@ -51,7 +54,7 @@ public:
      */
     inline T generate(bool canLoop) {
         auto index = bufferIndex_.index();
-        if (index >= samples_.size()) return 0.0;
+        if (index >= bounds_.endIndex()) return 0.0;
         auto partial = bufferIndex_.partial();
         bufferIndex_.increment(bounds_, canLoop);
         switch (interpolator_) {
@@ -61,6 +64,13 @@ public:
     }
 
 private:
+
+    void calculateIndexIncrement() {
+        double sampleRateRatio = samples_.header().sampleRate() / state_.sampleRate();
+        double frequencyRatio = double(std::pow(2.0, (state_.pitch() - samples_.header().originalMIDIKey()) / 12.0));
+        double increment = sampleRateRatio * frequencyRatio;
+        bufferIndex_.setIncrement(increment);
+    }
 
     /**
      Obtain a linearly interpolated sample for a given index value.

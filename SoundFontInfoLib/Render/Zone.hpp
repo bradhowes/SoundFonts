@@ -151,7 +151,7 @@ private:
     }
 
     /**
-     Determine if the generator collection and modulator collection combination refer to a global zone. This is the
+     Determine if the generator collection and modulator collection combo refers to a global zone. This is the
      case iff the generator collection is empty and the modulator collection is not, or the generator collection does
      not end with a generator of an expected type.
 
@@ -163,7 +163,6 @@ private:
                          const ModulatorCollection& mods) {
         return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
     }
-
 
     GeneratorCollection generators_;
     ModulatorCollection modulators_;

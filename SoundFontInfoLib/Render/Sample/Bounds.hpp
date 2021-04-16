@@ -19,6 +19,13 @@ namespace Sample {
 struct Bounds {
     using Index = Entity::Generator::Index;
 
+    /**
+     Construct new instance using information from 'shdr' and current voice state values from generators related to
+     sample indices.
+
+     @param header the 'shdr' header to use
+     @param state the generator values to use
+     */
     Bounds(const Entity::SampleHeader& header, const Voice::State& state) {
         constexpr size_t coarse = 1 << 15;
 

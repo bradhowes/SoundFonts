@@ -6,7 +6,9 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #include "IO/File.hpp"
-#include "Render/Instrument.hpp"
+#include "Render/Preset.hpp"
+#include "Render/Voice/Setup.hpp"
+#include "Render/Voice/State.hpp"
 
 using namespace SF2;
 
@@ -29,42 +31,28 @@ using namespace SF2::Render;
     Instrument instrument(file, file.instruments()[0]);
     XCTAssertTrue(instrument.hasGlobalZone());
     const InstrumentZone* globalZone = instrument.globalZone();
+    XCTAssertTrue(globalZone != nullptr);
     XCTAssertEqual(nullptr, globalZone->sampleBuffer());
 
-    auto found = instrument.filter(64, 0);
-    XCTAssertEqual(2, found.size());
+    auto zones = instrument.filter(64, 10);
+    XCTAssertEqual(2, zones.size());
+    XCTAssertFalse(zones[0].get().isGlobal());
+    XCTAssertNotEqual(nullptr, zones[0].get().sampleBuffer());
 
-    Voice::State left;
-    globalZone->apply(left);
-    XCTAssertEqual(0, left[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.00007797857, left[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(600.017061241, left[Entity::Generator::Index::initialFilterCutoff], epsilon);
-    XCTAssertEqual(0, left[Entity::Generator::Index::sampleID]);
+    InstrumentCollection instruments(file);
+    Preset preset(file, instruments, file.presets()[0]);
+    auto found = preset.find(64, 64);
 
-    found[0].get().apply(left);
-    XCTAssertNotEqual(nullptr, found[0].get().sampleBuffer());
-
-    // The Roland Piano SF2 file seems to have swapped left/right
-    // XCTAssertTrue(found[0].get().sampleBuffer()->header().isLeft());
+    Voice::State left{44100.0, found[0]};
     XCTAssertEqual(-50, left[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.00007797857, left[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(600.017061241, left[Entity::Generator::Index::initialFilterCutoff], epsilon);
+    XCTAssertEqualWithAccuracy(3.25088682907, left[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
+    XCTAssertEqualWithAccuracy(1499.77085765, left[Entity::Generator::Index::initialFilterCutoff], epsilon);
     XCTAssertEqual(23, left[Entity::Generator::Index::sampleID]);
 
-    Voice::State right;
-    globalZone->apply(right);
-    XCTAssertEqual(0, right[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.00007797857, right[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(600.017061241, right[Entity::Generator::Index::initialFilterCutoff], epsilon);
-    XCTAssertEqual(0, right[Entity::Generator::Index::sampleID]);
-
-    found[1].get().apply(right);
-    XCTAssertNotEqual(nullptr, found[1].get().sampleBuffer());
-    // The Roland Piano SF2 file seems to have swapped left/right
-    // XCTAssertTrue(found[1].get().sampleBuffer()->header().isRight());
+    Voice::State right{44100.0, found[1]};
     XCTAssertEqual(50, right[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.00007797857, right[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(600.017061241, right[Entity::Generator::Index::initialFilterCutoff], epsilon);
+    XCTAssertEqualWithAccuracy(3.25088682907, right[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
+    XCTAssertEqualWithAccuracy(1499.77085765, right[Entity::Generator::Index::initialFilterCutoff], epsilon);
     XCTAssertEqual(22, right[Entity::Generator::Index::sampleID]);
 }
 
