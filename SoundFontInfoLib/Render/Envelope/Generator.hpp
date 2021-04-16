@@ -2,12 +2,11 @@
 
 #pragma once
 
-#include <os/log.h>
-
 #include <algorithm>
 #include <cmath>
 #include <limits>
 
+#include "Logger.hpp"
 #include "Entity/Generator/Index.hpp"
 #include "Render/Utils.hpp"
 #include "Render/Envelope/Stage.hpp"
@@ -166,7 +165,7 @@ private:
 
     void checkIfEndStage(StageIndex next) {
         if (--counter_ == 0) {
-            os_log_info(log_, "end stage: %{public}s", StageName(stageIndex_));
+            log_.info() << "end stage: " << StageName(stageIndex_) << std::endl;
             enterStage(next);
         }
     }
@@ -174,7 +173,7 @@ private:
     int activeDurationInSamples() const { return active().durationInSamples_; }
 
     void enterStage(StageIndex next) {
-        os_log_info(log_, "new stage: %{public}s", StageName(next));
+        log_.info() << "new stage: " << StageName(next) << std::endl;
         stageIndex_ = next;
         switch (stageIndex_) {
             case StageIndex::delay:
@@ -218,7 +217,7 @@ private:
     StageIndex stageIndex_{StageIndex::idle};
     int counter_{0};
     double value_{0.0};
-    os_log_t log_{os_log_create("SF2", "Generator")};
+    inline static Logger log_{Logger::Make("Render.Envelope", "Generator")};
 };
 
 } // namespace Envelope

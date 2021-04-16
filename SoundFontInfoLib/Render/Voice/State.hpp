@@ -15,11 +15,11 @@ namespace Voice {
 class Setup;
 
 /**
- Generator state values for a rendering voice. These are values from generators. There is the initial state which is
- the default values (see `setDefaults`). Next, there are instrument generators from the zones that match the MIDI
- key/velocity values of a MIDI event. These can override any default values. Finally, there are the preset generators
- which refine any values by adding to them. Note that not all generators are available for refining. Those that are
- return true from `Generator::Definition::isAvailableInPreset`.
+ Generator state values for a rendering voice. These are the values from generators. There is the initial state which is
+ the default values. Next, there are instrument generators from the zones that match the MIDI key/velocity values of a
+ MIDI event. These can override any default values. Finally, there are the preset generators which refine any values by
+ adding to them. Note that not all generators are available for refining. Those that are return true from
+ `Generator::Definition::isAvailableInPreset`.
  */
 class State
 {
@@ -94,26 +94,6 @@ public:
 private:
 
     double get(Index index) const { return (*this)[index]; }
-
-    void setDefaults() {
-        setRaw(Index::initialFilterCutoff, 13500);
-        setRaw(Index::delayModulatorLFO, -12000);
-        setRaw(Index::delayVibratoLFO, -12000);
-        setRaw(Index::delayModulatorEnvelope, -12000);
-        setRaw(Index::attackModulatorEnvelope, -12000);
-        setRaw(Index::holdModulatorEnvelope, -12000);
-        setRaw(Index::decayModulatorEnvelope, -12000);
-        setRaw(Index::releaseModulatorEnvelope, -12000);
-        setRaw(Index::delayVolumeEnvelope, -12000);
-        setRaw(Index::attackVolumeEnvelope, -12000);
-        setRaw(Index::holdVolumeEnvelope, -12000);
-        setRaw(Index::decayVolumeEnvelope, -12000);
-        setRaw(Index::releaseVolumeEnvelope, -12000);
-        setRaw(Index::forcedMIDIKey, -1);
-        setRaw(Index::forcedMIDIVelocity, -1);
-        setRaw(Index::scaleTuning, 100);
-        setRaw(Index::overridingRootKey, -1);
-    }
 
     std::array<double, static_cast<size_t>(Index::numValues)> values_;
     double sampleRate_;

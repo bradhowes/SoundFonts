@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Logger.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
@@ -60,6 +61,8 @@ private:
 
     LFO<AUValue> modulator_;
     LFO<AUValue> vibrator_;
+
+    inline static Logger log_{Logger::Make("Render", "Voice")};
 };
 
 } // namespace Voice

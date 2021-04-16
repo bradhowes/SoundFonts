@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include <os/log.h>
-
 #include <cmath>
 #include <limits>
+
+#include "Logger.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -108,8 +108,8 @@ private:
 
     Stage(StageIndex stageIndex, double initial, double alpha, double beta, int durationInSamples) :
     initial_{initial}, alpha_{alpha}, beta_{beta}, durationInSamples_{durationInSamples} {
-        os_log_debug(log_, "%s init: %f alpha: %f beta: %f duration: %d", StageName(stageIndex), initial, alpha, beta,
-                     durationInSamples);
+        log_.info() << "Stage " << StageName(stageIndex) << " init: " << initial << " alpha: " << alpha
+        << " beta: " << beta << std::endl;
     }
 
     static double clampCurvature(double curvature) {
@@ -127,7 +127,7 @@ private:
     const double alpha_{0.0};
     const double beta_{0.0};
     const int durationInSamples_{0};
-    os_log_t log_{os_log_create("SF2", "Stage")};
+    inline static Logger log_{Logger::Make("Render.Envelope", "Stage")};
 };
 
 } // namespace Envelope

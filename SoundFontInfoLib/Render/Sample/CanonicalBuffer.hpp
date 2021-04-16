@@ -69,20 +69,21 @@ private:
 
     void loadNormalizedSamples() const {
         static constexpr T scale = T(1.0) / T(1 << 15);
-        os_log_t log = os_log_create("SF2", "loadSamples");
-        auto signpost = os_signpost_id_generate(log);
+        os_signpost_id_t signpost = os_signpost_id_generate(log_);
         size_t size = header_.endIndex() - header_.startIndex();
-        os_signpost_interval_begin(log, signpost, "SampleBuffer", "begin - size: %ld", size);
+
+        os_signpost_interval_begin(log_, signpost, "loadNormalizedSamples", "begin - size: %ld", size);
         samples_.reserve(size);
         samples_.clear();
         auto pos = allSamples_ + header_.startIndex();
         while (size-- > 0) samples_.emplace_back(*pos++ * scale);
-        os_signpost_interval_end(log, signpost, "SampleBuffer", "end");
+        os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
     }
 
     mutable std::vector<T> samples_;
     const Entity::SampleHeader& header_;
     const int16_t* allSamples_;
+    inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};
 };
 
 } // namespace Sample

@@ -16,7 +16,5 @@ sampleGenerator_{setup.sampleBuffer(), state_},
 amp_{Envelope::Generator::Volume(state_)},
 filter_{Envelope::Generator::Modulator(state_)}
 {
-//    std::cout << "-- loopingMode: " << loopingMode_ << " state_.loopingMode: " << state_.loopingMode()
-//    << " state: " << state_[Entity::Generator::Index::sampleModes]
-//    << std::endl;
+    os_log_debug(log_, "loopingMode: %d", loopingMode_);
 }

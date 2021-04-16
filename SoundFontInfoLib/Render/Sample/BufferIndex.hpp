@@ -4,6 +4,7 @@
 
 #include <limits>
 
+#include "Logger.hpp"
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/Bounds.hpp"
 
@@ -51,11 +52,11 @@ struct BufferIndex {
         }
 
         if (canLoop && index_ >= bounds.endLoopIndex()) {
-            // std::cout << "-- looping" << std::endl;
+            log_.debug() << "looping" << std::endl;
             index_ -= (bounds.endLoopIndex() - bounds.startLoopIndex());
         }
         else if (index_ >= bounds.endIndex()) {
-            // std::cout << "-- stopping" << std::endl;
+            log_.debug() << "stopping" << std::endl;
             partialIncrement_ = -1.0;
         }
     }
@@ -74,6 +75,7 @@ private:
     size_t indexIncrement_{0};
     double partial_{0.0};
     double partialIncrement_{0.0};
+    inline static Logger log_{Logger::Make("Render.Sample", "BufferIndex")};
 };
 
 } // namespace Sample

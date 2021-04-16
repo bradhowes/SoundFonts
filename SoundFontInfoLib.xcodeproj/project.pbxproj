@@ -66,6 +66,7 @@
 		BDEB12F52628906E003CE8EE /* Bounds.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12F42628906E003CE8EE /* Bounds.hpp */; };
 		BDEB13032629C5B0003CE8EE /* State.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDEB13022629C5B0003CE8EE /* State.mm */; };
 		BDEB130B2629CA5C003CE8EE /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130A2629CA5C003CE8EE /* Engine.hpp */; };
+		BDEB130F2629EB4F003CE8EE /* Logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130E2629EB4F003CE8EE /* Logger.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +169,7 @@
 		BDEB12F42628906E003CE8EE /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Bounds.hpp; sourceTree = "<group>"; };
 		BDEB13022629C5B0003CE8EE /* State.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = State.mm; sourceTree = "<group>"; };
 		BDEB130A2629CA5C003CE8EE /* Engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Engine.hpp; sourceTree = "<group>"; };
+		BDEB130E2629EB4F003CE8EE /* Logger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Logger.hpp; sourceTree = "<group>"; };
 		BDEC00162497665D00A52507 /* Source.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Source.hpp; sourceTree = "<group>"; };
 		BDEC001A2497669300A52507 /* Index.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Index.hpp; sourceTree = "<group>"; };
 		BDEC001E2497672000A52507 /* Transform.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Transform.hpp; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				BD250C81261A126000D1C1E0 /* Types.hpp */,
+				BDEB130E2629EB4F003CE8EE /* Logger.hpp */,
 				BDB265F4252FB2CB005BEAD1 /* Entity */,
 				BDB265F7252FB31F005BEAD1 /* IO */,
 				BDB26651253269F9005BEAD1 /* Render */,
@@ -426,6 +429,7 @@
 				BD62BA3B261CAE080052FB7A /* DSP.hpp in Headers */,
 				BD62BA47261CB5F40052FB7A /* InputBuffer.hpp in Headers */,
 				BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */,
+				BDEB130F2629EB4F003CE8EE /* Logger.hpp in Headers */,
 				BDEB130B2629CA5C003CE8EE /* Engine.hpp in Headers */,
 				BDEB12CB2626CB13003CE8EE /* Setup.hpp in Headers */,
 				BDEB12802623792F003CE8EE /* Entity.hpp in Headers */,

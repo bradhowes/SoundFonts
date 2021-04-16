@@ -2,10 +2,10 @@
 
 #pragma once
 
-#include <os/log.h>
 #include <functional>
 #include <vector>
 
+#include "Logger.hpp"
 #include "Entity/Bag.hpp"
 #include "Entity/Generator/Generator.hpp"
 #include "Entity/Modulator/Modulator.hpp"
@@ -99,7 +99,7 @@ protected:
     void apply(Voice::State& state) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            os_log_debug(logger_, "applying %{public}s - %f", generator.name().c_str(), generator.convertedValue());
+            log_.debug() << "setting " << generator.name() << " = " << generator.convertedValue() << std::endl;
             state[generator.index()] = generator.convertedValue();
         });
     }
@@ -112,9 +112,8 @@ protected:
     void refine(Voice::State& state) const
     {
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-            // Only refine with generators that are allowed in presets.
             if (generator.definition().isAvailableInPreset()) {
-                os_log_debug(logger_, "refining %{public}s - %f", generator.name().c_str(), generator.convertedValue());
+                log_.debug() << "adding " << generator.name() << " + " << generator.convertedValue() << std::endl;
                 state[generator.index()] += generator.convertedValue();
             }
         });
@@ -169,7 +168,7 @@ private:
     MIDIRange keyRange_;
     MIDIRange velocityRange_;
     bool isGlobal_;
-    os_log_t logger_ = os_log_create("SF2::Render", "Zone");
+    inline static Logger log_{Logger::Make("Render", "Zone")};
 };
 
 } // namespace Render
