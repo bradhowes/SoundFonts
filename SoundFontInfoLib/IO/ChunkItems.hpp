@@ -66,7 +66,13 @@ public:
      @param index the entity to fetch
      @returns entity reference
      */
-    const ItemType& operator[](size_t index) const { return items_.at(index); }
+    const ItemType& operator[](size_t index) const {
+#ifdef DEBUG
+        return items_.at(index);
+#else
+        return items_[index];
+#endif
+    }
 
     /**
      Obtain a read-only slice of the original collection.

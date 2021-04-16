@@ -72,8 +72,8 @@ private:
 
 inline void Modulator::dump(const std::string& indent, int index) const
 {
-    std::cout << indent << index
-    << ": src: " << sfModSrcOper
+    std::cout << indent << '[' << index
+    << "] src: " << sfModSrcOper
     << " dest: " << Generator::Definition::definition(sfModDestOper).name()
     << " amount: " << modAmount
     << " op: " << sfModAmtSrcOper

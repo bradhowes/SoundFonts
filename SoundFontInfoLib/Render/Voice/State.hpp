@@ -5,12 +5,14 @@
 #include <array>
 #include <cassert>
 
+#include "Types.hpp"
 #include "Entity/Generator/Generator.hpp"
 
 namespace SF2 {
 namespace Render {
+namespace Voice {
 
-class VoiceStateInitializer;
+class Setup;
 
 /**
  Generator state values for a rendering voice. These are values from generators. There is the initial state which is
@@ -19,7 +21,7 @@ class VoiceStateInitializer;
  which refine any values by adding to them. Note that not all generators are available for refining. Those that are
  return true from `Generator::Definition::isAvailableInPreset`.
  */
-class VoiceState
+class State
 {
 public:
     using Amount = Entity::Generator::Amount;
@@ -44,17 +46,18 @@ public:
     /**
      Create new state vector with a default 44100.0 sample rate.
      */
-    VoiceState() : sampleRate_{44100.0}, values_{}
-    {
-        setDefaults();
-    }
+    State() : State(44100.0, 0, 0) {}
 
     /**
      Create new state vector with a given sample rate.
 
      @param sampleRate the sample rate of audio being rendered
      */
-    explicit VoiceState(double sampleRate, const VoiceStateInitializer& initializer);
+    explicit State(double sampleRate, UByte key, UByte velocity) :
+    values_{}, sampleRate_{sampleRate}, key_{key}, velocity_{velocity}
+    {
+        setDefaults();
+    }
 
     /**
      Obtain a specific generator value.
@@ -72,7 +75,22 @@ public:
         (*this)[index] = Definition::definition(index).convertedValueOf(Amount(raw));
     }
 
+    double pitch() const {
+        auto forced = get(Index::forcedMIDIKey);
+        auto value = (forced >= 0) ? forced : key_;
+        auto coarseTune = get(Index::coarseTune);
+        auto fineTune = get(Index::fineTune);
+        return value + coarseTune + fineTune / 100.0;
+    }
+
+    double velocity() const {
+        auto value = get(Index::forcedMIDIVelocity);
+        return (value >= 0) ? value : velocity_;
+    }
+
 private:
+
+    double get(Index index) const { return (*this)[index]; }
 
     void setDefaults() {
         setRaw(Index::initialFilterCutoff, 13500);
@@ -88,15 +106,18 @@ private:
         setRaw(Index::holdVolumeEnvelope, -12000);
         setRaw(Index::decayVolumeEnvelope, -12000);
         setRaw(Index::releaseVolumeEnvelope, -12000);
-        setRaw(Index::midiKey, -1);
-        setRaw(Index::midiVelocity, -1);
+        setRaw(Index::forcedMIDIKey, -1);
+        setRaw(Index::forcedMIDIVelocity, -1);
         setRaw(Index::scaleTuning, 100);
         setRaw(Index::overridingRootKey, -1);
     }
 
-    double sampleRate_;
     std::array<double, static_cast<size_t>(Index::numValues)> values_;
+    double sampleRate_;
+    UByte key_;
+    UByte velocity_;
 };
 
+} // namespace Voice
 } // namespace Render
 } // namespace SF2

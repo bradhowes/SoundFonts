@@ -5,37 +5,21 @@
 #include <limits>
 
 #include "Entity/SampleHeader.hpp"
+#include "Render/Sample/Bounds.hpp"
 
 namespace SF2 {
 namespace Render {
+namespace Sample {
 
 /**
- Interpolatable index into a SampleBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)
+ Interpolatable index into a CanonicalBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)
  that indicates how close the index is to a sample index. These two values are then used by SampleBuffer routines
  to fetch the correct samples and interpolate over them.
 
  Updates to the index honor loops in the sample stream if allowed. The index can also signal when it has reached the
  end of the sample stream via its `finished` method.
  */
-struct SampleIndex {
-
-    /**
-     Construct new instance.
-
-     @param header description of the samples being indexed
-     */
-    SampleIndex(const Entity::SampleHeader& header) : SampleIndex(header, 0.0) {}
-
-    /**
-     Construct new instance.
-
-     @param header description of the samples being indexed
-     @param increment the value to apply when advancing the index
-     */
-    SampleIndex(const Entity::SampleHeader& header, double increment) :
-    index_{0}, partial_{0.0}, header_{header} {
-        setIncrement(increment);
-    }
+struct BufferIndex {
 
     /**
      Set the increment to use when advancing the index. This can change with each sample depending on what modulators
@@ -51,11 +35,13 @@ struct SampleIndex {
     /**
      Increment the index to the next location.
 
-     @param canLoop if true allow wrapping to loop start
+     @param bounds current boundaries and loop point for the sample being indexed
+     @param canLoop true if looping is allowed
      */
-    void increment(bool canLoop) {
+    void increment(const Bounds& bounds, bool canLoop) {
         if (finished()) return;
-        index_ += indexIncrement_;
+
+        if (indexIncrement_) index_ += indexIncrement_;
         partial_ += partialIncrement_;
 
         if (partial_ >= 1.0) {
@@ -64,13 +50,13 @@ struct SampleIndex {
             partial_ -= carry;
         }
 
-        if (index_ >= header_.relativeLoopEnd() && canLoop) {
-            index_ -= (header_.relativeLoopEnd() - header_.relativeLoopBegin());
+        if (canLoop && index_ >= bounds.endLoopIndex()) {
+            index_ -= (bounds.endLoopIndex() - bounds.startLoopIndex());
+        }
+        else if (index_ >= bounds.endIndex()) {
+            partialIncrement_ = -1.0;
         }
     }
-
-    /// @returns true if there a no more samples to index
-    bool finished() const { return index_ >= header_.sampleCount(); }
 
     /// @returns index to first sample to use for rendering
     size_t index() const { return index_; }
@@ -78,13 +64,16 @@ struct SampleIndex {
     /// @returns normalized position between 2 samples. For instance, 0.5 indicates half-way between two samples.
     double partial() const { return partial_; }
 
+    /// @returns true if the index is no longer moving
+    bool finished() const { return partialIncrement_ < 0.0; }
+
 private:
-    size_t indexIncrement_;
-    double partialIncrement_;
-    size_t index_;
-    double partial_;
-    const Entity::SampleHeader& header_;
+    size_t index_{0};
+    size_t indexIncrement_{0};
+    double partial_{0.0};
+    double partialIncrement_{0.0};
 };
 
+} // namespace Sample
 } // namespace Render
 } // namespace SF2

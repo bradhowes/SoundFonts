@@ -4,7 +4,7 @@
 
 #include "IO/File.hpp"
 #include "Render/PresetZone.hpp"
-#include "Render/Voice/VoiceStateInitializer.hpp"
+#include "Render/Voice/Setup.hpp"
 #include "Render/WithZones.hpp"
 
 namespace SF2 {
@@ -21,7 +21,7 @@ class Preset : public WithZones<PresetZone, Entity::Preset> {
 public:
     using PresetZoneCollection = WithZoneCollection;
 
-    using Matches = std::vector<VoiceStateInitializer>;
+    using Matches = std::vector<Voice::Setup>;
 
     /**
      Construct new Preset from SF2 entities

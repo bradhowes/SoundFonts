@@ -40,13 +40,13 @@ using namespace SF2::Render;
     Preset preset(file, instruments, file.presets()[0]);
 
     auto found = preset.find(69, 127);
-    Voice voice1{44100, found[0]};
+    Voice::Voice voice1{44100, found[0]};
 
     found = preset.find(73, 127);
-    Voice voice2{44100, found[0]};
+    Voice::Voice voice2{44100, found[0]};
 
     found = preset.find(76, 127);
-    Voice voice3{44100, found[0]};
+    Voice::Voice voice3{44100, found[0]};
 
     double sampleRate = 44100.0;
     AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
@@ -130,19 +130,19 @@ using namespace SF2::Render;
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
     auto file = IO::File(fd, fileSize);
-    // file.dump();
+    // file.dumpThreaded();
 
     InstrumentCollection instruments(file);
     Preset preset(file, instruments, file.presets()[19]);
 
     auto found = preset.find(52, 127);
-    Voice voice1{44100, found[0]};
+    Voice::Voice voice1{44100, found[0]};
 
     found = preset.find(56, 127);
-    Voice voice2{44100, found[0]};
+    Voice::Voice voice2{44100, found[0]};
 
     found = preset.find(59, 127);
-    Voice voice3{44100, found[0]};
+    Voice::Voice voice3{44100, found[0]};
 
     double sampleRate = 44100.0;
     AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];

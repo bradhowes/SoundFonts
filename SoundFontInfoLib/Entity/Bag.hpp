@@ -55,7 +55,7 @@ public:
      */
     void dump(const std::string& indent, int index) const
     {
-        std::cout << indent << index << ": genIndex: " << firstGeneratorIndex() << " count: " << generatorCount()
+        std::cout << indent << '[' << index << "] genIndex: " << firstGeneratorIndex() << " count: " << generatorCount()
         << " modIndex: " << firstModulatorIndex() << " count: " << modulatorCount() << std::endl;
     }
 

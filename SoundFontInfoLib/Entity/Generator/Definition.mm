@@ -90,8 +90,8 @@ std::array<Definition, Definition::NumDefs> const Definition::definitions_{
     Definition(N(velocityRange), ValueKind::range, true),
     // 45
     Definition(N(startLoopAddressCoarseOffset), ValueKind::coarseOffset, false),
-    Definition(N(midiKey), ValueKind::unsignedShort, false),
-    Definition(N(midiVelocity), ValueKind::unsignedShort, false),
+    Definition(N(forcedMIDIKey), ValueKind::signedShort, false),
+    Definition(N(forcedMIDIVelocity), ValueKind::signedShort, false),
     Definition(N(initialAttenuation), ValueKind::signedCentsBel, true),
     Definition(N(reserved2), ValueKind::unsignedShort, false),
     // 50

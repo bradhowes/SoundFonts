@@ -11,7 +11,7 @@
 #include "Entity/Generator/Index.hpp"
 #include "Render/Utils.hpp"
 #include "Render/Envelope/Stage.hpp"
-#include "Render/Voice/VoiceState.hpp"
+#include "Render/Voice/State.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -53,7 +53,7 @@ public:
      */
     explicit Generator(double sampleRate) : Generator(sampleRate, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0) {}
 
-    static Generator Volume(const VoiceState& state) {
+    static Generator Volume(const Voice::State& state) {
         return Generator(state.sampleRate(),
                          state[Index::delayVolumeEnvelope],
                          state[Index::attackVolumeEnvelope],
@@ -64,7 +64,7 @@ public:
                          true);
     }
 
-    static Generator Modulator(const VoiceState& state) {
+    static Generator Modulator(const Voice::State& state) {
         return Generator(state.sampleRate(),
                          state[Index::delayModulatorEnvelope],
                          state[Index::attackModulatorEnvelope],

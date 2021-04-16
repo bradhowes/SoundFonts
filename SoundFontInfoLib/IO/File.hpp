@@ -14,7 +14,7 @@
 #include "Entity/Version.hpp"
 
 #include "IO/ChunkItems.hpp"
-#include "Render/SampleBuffer.hpp"
+#include "Render/Sample/CanonicalBuffer.hpp"
 
 namespace SF2 {
 namespace IO {
@@ -80,9 +80,10 @@ public:
      @param index the index of the buffer to obtain
      @returns SampleBuffer reference
      */
-    const Render::SampleBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
+    const Render::Sample::CanonicalBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
     void dump() const;
+    void dumpThreaded() const;
 
 private:
     int fd_;
@@ -112,7 +113,7 @@ private:
     ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
     ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-    std::vector<Render::SampleBuffer<AUValue>> sampleBuffers_;
+    std::vector<Render::Sample::CanonicalBuffer<AUValue>> sampleBuffers_;
 
     const Int* sampleData_;
 };

@@ -2,16 +2,19 @@
 
 #include "Render/PresetZone.hpp"
 #include "Render/InstrumentZone.hpp"
-#include "Render/SampleBuffer.hpp"
+#include "Render/Sample/CanonicalBuffer.hpp"
 
 namespace SF2 {
 namespace Render {
+namespace Voice {
+
+class State;
 
 /**
  A combination of preset zone and instrument zone (plus optional global zones for each). One zone pair represents
  the configuration that should apply to the state of one voice.
  */
-class VoiceStateInitializer {
+class Setup {
 public:
 
     /**
@@ -22,9 +25,9 @@ public:
      @param instrumentZone the InstrumentZone that matched a key/velocity search
      @param instrumentGlobal the global InstrumentZone to apply (optional -- nullptr if no global)
      */
-    VoiceStateInitializer(const PresetZone& presetZone, const PresetZone* presetGlobal,
-                          const InstrumentZone& instrumentZone, const InstrumentZone* instrumentGlobal,
-                          UByte key, UByte velocity) :
+    Setup(const PresetZone& presetZone, const PresetZone* presetGlobal,
+          const InstrumentZone& instrumentZone, const InstrumentZone* instrumentGlobal,
+          UByte key, UByte velocity) :
     presetZone_{presetZone}, presetGlobal_{presetGlobal}, instrumentZone_{instrumentZone},
     instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
 
@@ -33,7 +36,7 @@ public:
 
      @param state the VoiceState to update
      */
-    void apply(VoiceState& state) const {
+    void apply(State& state) const {
 
         // Instrument zones first to set absolute values
         if (instrumentGlobal_ != nullptr) instrumentGlobal_->apply(state);
@@ -44,12 +47,15 @@ public:
         presetZone_.refine(state);
     }
 
-    const Render::SampleBuffer<AUValue>& sampleBuffer() const {
+    const Sample::CanonicalBuffer<AUValue>& sampleBuffer() const {
         assert(instrumentZone_.sampleBuffer() != nullptr);
         return *(instrumentZone_.sampleBuffer());
     }
 
+    /// @returns original MIDI key that triggered the voice
     UByte key() const { return key_; }
+
+    /// @returns original MIDI velocity that triggered the voice
     UByte velocity() const { return velocity_; }
 
 private:
@@ -61,6 +67,7 @@ private:
     UByte velocity_;
 };
 
+} // namespace Voice
 } // namespace Render
 } // namespace SF2
 

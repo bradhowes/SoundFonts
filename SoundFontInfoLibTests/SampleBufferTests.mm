@@ -3,7 +3,10 @@
 #import <XCTest/XCTest.h>
 #import <vector>
 
-#import "Render/SampleBuffer.hpp"
+#import "Render/Sample/Generator.hpp"
+
+using namespace SF2::Render::Sample;
+using namespace SF2::Render::Voice;
 
 @interface SampleBufferTests : XCTestCase
 
@@ -12,6 +15,8 @@
 @implementation SampleBufferTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
+static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
+static CanonicalBuffer<float> buffer{values, header};
 
 - (void)setUp {
 }
@@ -20,37 +25,22 @@ static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 }
 
 - (void)testLinearInterpolation {
-    int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
-    auto buffer = SF2::Render::SampleBuffer<float>(values, header,
-                                                   SF2::Render::SampleBuffer<float>::Interpolator::linear);
+    Generator gen{buffer, State(76.9230769231, 69, 64)};
     buffer.load();
-    auto index = SF2::Render::SampleIndex(header, 1.3);
-    XCTAssertEqualWithAccuracy(0.305176, buffer.read(index, true), 0.00001);
-    XCTAssertEqual(1, index.index());
-    XCTAssertEqualWithAccuracy(0.701904, buffer.read(index, true), 0.00001);
-    XCTAssertEqual(2, index.index());
-    XCTAssertEqualWithAccuracy(0.732422, buffer.read(index, true), 0.00001);
-    XCTAssertEqual(3, index.index());
-    XCTAssertEqualWithAccuracy(0.335693, buffer.read(index, true), 0.00001);
-    XCTAssertEqual(2, index.index());
+    XCTAssertEqualWithAccuracy(0.305176, gen.generate(true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.701904, gen.generate(true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.732422, gen.generate(true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.335693, gen.generate(true), 0.00001);
 }
 
 - (void)testCubicInterpolation {
-    int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
-    auto buffer = SF2::Render::SampleBuffer<float>(values, header,
-                                                   SF2::Render::SampleBuffer<float>::Interpolator::cubic4thOrder);
+    Generator gen{buffer, State(76.9230769231, 69, 64), Generator<float>::Interpolator::cubic4thOrder};
     buffer.load();
-    auto index = SF2::Render::SampleIndex(header, 1.3);
-    XCTAssertEqualWithAccuracy(0.305176, buffer.read(index, false), 0.00001);
-    XCTAssertEqual(1, index.index());
-    XCTAssertEqualWithAccuracy(0.719862, buffer.read(index, false), 0.00001);
-    XCTAssertEqual(2, index.index());
-    XCTAssertEqualWithAccuracy(0.762662, buffer.read(index, false), 0.00001);
-    XCTAssertEqual(3, index.index());
-    XCTAssertEqualWithAccuracy(0.348679, buffer.read(index, false), 0.00001);
-    XCTAssertEqual(5, index.index());
+    XCTAssertEqualWithAccuracy(0.305176, gen.generate(false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.719862, gen.generate(false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.762662, gen.generate(false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.348679, gen.generate(false), 0.00001);
 }
-
 
 @end
 

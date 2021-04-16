@@ -4,13 +4,15 @@
 
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
-#include "Render/SampleBuffer.hpp"
-#include "Render/Voice/VoiceState.hpp"
+#include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/Sample/Generator.hpp"
+#include "Render/Voice/State.hpp"
 
 namespace SF2 {
 namespace Render {
+namespace Voice {
 
-class VoiceStateInitializer;
+class Setup;
 
 /**
  A voice renders audio samples for a given note / pitch.
@@ -18,7 +20,8 @@ class VoiceStateInitializer;
 class Voice
 {
 public:
-    Voice(double sampleRate, const VoiceStateInitializer& initializer);
+
+    Voice(double sampleRate, const Setup& setup);
 
     void keyReleased() {
         amp_.gate(false);
@@ -28,12 +31,11 @@ public:
     bool isActive() const { return amp_.isActive(); }
 
     bool canLoop() const {
-        return (loopingMode_ == VoiceState::continuously ||
-                (loopingMode_ == VoiceState::duringKeyPress && amp_.isGated()));
+        return (loopingMode_ == State::continuously || (loopingMode_ == State::duringKeyPress && amp_.isGated()));
     }
 
     AUValue render() {
-        // if (!isActive()) return 0.0;
+        if (!isActive()) return 0.0;
 
         //
         // Steps:
@@ -45,15 +47,13 @@ public:
         // 6. Filter samples
         //
         auto gain = amp_.process();
-        return sampleBuffer_.read(sampleIndex_, canLoop()) * gain;
+        return sampleGenerator_.generate(canLoop()) * gain;
     }
 
 private:
-    VoiceState state_;
-    VoiceState::LoopingMode loopingMode_;
-    SampleBuffer<AUValue> sampleBuffer_;
-    SampleIndex sampleIndex_;
-    UByte key_;
+    State state_;
+    State::LoopingMode loopingMode_;
+    Sample::Generator<AUValue> sampleGenerator_;
 
     Envelope::Generator amp_;
     Envelope::Generator filter_;
@@ -62,5 +62,6 @@ private:
     LFO<AUValue> vibrator_;
 };
 
+} // namespace Voice
 } // namespace Render
 } // namespace SF2

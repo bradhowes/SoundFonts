@@ -6,7 +6,7 @@
 #include "IO/File.hpp"
 #include "Render/InstrumentCollection.hpp"
 #include "Render/Zone.hpp"
-#include "Render/Voice/VoiceState.hpp"
+#include "Render/Voice/State.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -37,7 +37,7 @@ public:
 
      @param state the state to update
      */
-    void refine(VoiceState& state) const { Zone::refine(state); }
+    void refine(Voice::State& state) const { Zone::refine(state); }
 
     /// @returns the Instrument configured for this zone
     const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }

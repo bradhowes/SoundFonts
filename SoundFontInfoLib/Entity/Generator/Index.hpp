@@ -343,14 +343,14 @@ enum struct Index : uint16_t {
     startLoopAddressCoarseOffset,
     /**
      This enumerator forces the MIDI key number to effectively be interpreted as the value given. This generator can
-     only appear at the instrument level. Valid values are from 0 to 127.
+     only appear at the instrument level. Valid values are from -1 to 127 (-1 means unset).
      */
-    midiKey,
+    forcedMIDIKey,
     /**
      This enumerator forces the MIDI velocity to effectively be interpreted as the value given. This generator can only
-     appear at the instrument level. Valid values are from 0 to 127.
+     appear at the instrument level. Valid values are from -1 to 127 (-1 means unset).
      */
-    midiVelocity,
+    forcedMIDIVelocity,
     /**
      This is the attenuation, in centibels, by which a note is attenuated below full scale. A value of zero indicates
      no attenuation; the note will be played at full scale. For example, a value of 60 indicates the note will be played

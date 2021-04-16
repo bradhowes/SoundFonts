@@ -34,7 +34,7 @@ using namespace SF2::Render;
     auto found = instrument.filter(64, 0);
     XCTAssertEqual(2, found.size());
 
-    VoiceState left;
+    Voice::State left;
     globalZone->apply(left);
     XCTAssertEqual(0, left[Entity::Generator::Index::pan]);
     XCTAssertEqualWithAccuracy(3.00007797857, left[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
@@ -51,7 +51,7 @@ using namespace SF2::Render;
     XCTAssertEqualWithAccuracy(600.017061241, left[Entity::Generator::Index::initialFilterCutoff], epsilon);
     XCTAssertEqual(23, left[Entity::Generator::Index::sampleID]);
 
-    VoiceState right;
+    Voice::State right;
     globalZone->apply(right);
     XCTAssertEqual(0, right[Entity::Generator::Index::pan]);
     XCTAssertEqualWithAccuracy(3.00007797857, right[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);

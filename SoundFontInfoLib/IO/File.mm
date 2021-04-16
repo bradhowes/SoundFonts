@@ -1,5 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+#include <map>
 
 #include "Entity/Instrument.hpp"
 #include "Entity/Preset.hpp"
@@ -75,12 +76,100 @@ File::File(int fd, size_t fileSize)
 
 void
 File::dump() const {
-    instruments().dump("|-inst: ");
-    instrumentZones().dump("|-instZones: ");
-    instrumentZoneGenerators().dump("|-igen: ");
-    instrumentZoneModulators().dump("|-imod: ");
-    presets().dump("|-presets: ");
-    presetZones().dump("|-presetZones: ");
-    presetZoneGenerators().dump("|-pgen: ");
-    presetZoneModulators().dump("|-pmod: ");
+    std::cout << "|-phdr"; presets().dump("|-phdr: ");
+    std::cout << "|-pbag"; presetZones().dump("|-pbag: ");
+    std::cout << "|-pgen"; presetZoneGenerators().dump("|-pgen: ");
+    std::cout << "|-pmod"; presetZoneModulators().dump("|-pmod: ");
+    std::cout << "|-inst"; instruments().dump("|-inst: ");
+    std::cout << "|-ibag"; instrumentZones().dump("|-ibag: ");
+    std::cout << "|-igen"; instrumentZoneGenerators().dump("|-igen: ");
+    std::cout << "|-imod"; instrumentZoneModulators().dump("|-imod: ");
+    std::cout << "|-shdr"; sampleHeaders().dump("|-shdr: ");
+}
+
+void
+File::dumpThreaded() const {
+    std::map<int, int> instrumentLines;
+    int lineCounter = 1;
+    for (auto phdrIndex = 0; phdrIndex < presets_.size(); ++phdrIndex) {
+        const auto& preset{presets_[phdrIndex]};
+
+        // Dump preset header
+        preset.dump("phdr", phdrIndex); ++lineCounter;
+        for (auto pbagIndex = 0; pbagIndex < preset.zoneCount(); ++pbagIndex) {
+
+            // Dump preset zone. If the zone's generator set is empty or does not end with a link to an instrument, it
+            // is global.
+            const auto& pbag{presetZones_[pbagIndex + preset.firstZoneIndex()]};
+            if (pbag.generatorCount() == 0 ||
+                presetZoneGenerators_[pbag.firstGeneratorIndex() + pbag.generatorCount() - 1].index() !=
+                Entity::Generator::Index::instrument) {
+                pbag.dump(" PBAG", pbagIndex + preset.firstZoneIndex()); ++lineCounter;
+            }
+            else {
+                pbag.dump(" pbag", pbagIndex + preset.firstZoneIndex()); ++lineCounter;
+            }
+
+            // Dump the modulators for the zone. Per spec, this should be empty
+            for (auto pmodIndex = 0; pmodIndex < pbag.modulatorCount(); ++pmodIndex) {
+                const auto& pmod{presetZoneModulators_[pmodIndex + pbag.firstModulatorIndex()]};
+                pmod.dump("  pmod", pmodIndex + pbag.firstModulatorIndex()); ++lineCounter;
+            }
+
+            // Dump the generators for the zone.
+            for (auto pgenIndex = 0; pgenIndex < pbag.generatorCount(); ++pgenIndex) {
+                const auto& pgen{presetZoneGenerators_[pgenIndex + pbag.firstGeneratorIndex()]};
+                pgen.dump("  pgen", pgenIndex + pbag.firstGeneratorIndex()); ++lineCounter;
+
+                // If the (last) generator is for an instrument, dump out the instrument.
+                if (pgen.index() == Entity::Generator::Index::instrument) {
+                    auto instrumentIndex = pgen.amount().unsignedAmount();
+                    const auto& inst{instruments_[instrumentIndex]};
+                    inst.dump("   inst", instrumentIndex); ++lineCounter;
+
+                    // See if we have already dumped out the contents of the instrument's zones
+                    auto found = instrumentLines.find(instrumentIndex);
+                    if (found != instrumentLines.end()) {
+                        std::cout << "   inst *** see line " << found->second << std::endl; ++lineCounter;
+                        continue;
+                    }
+
+                    instrumentLines.insert(std::pair(instrumentIndex, lineCounter - 1));
+                    for (auto ibagIndex = 0; ibagIndex < inst.zoneCount(); ++ibagIndex) {
+
+                        // Dump instrument zone. If the zone's generator set is empty or does not end with a link to a
+                        // sample header, it is global.
+                        const auto& ibag{instrumentZones_[ibagIndex + inst.firstZoneIndex()]};
+                        if (ibag.generatorCount() == 0 ||
+                            instrumentZoneGenerators_[ibag.firstGeneratorIndex() + ibag.generatorCount() - 1].index() !=
+                            Entity::Generator::Index::sampleID) {
+                            ibag.dump("    IBAG", ibagIndex + inst.firstZoneIndex()); ++lineCounter;
+                        }
+                        else {
+                            ibag.dump("    ibag", ibagIndex + inst.firstZoneIndex()); ++lineCounter;
+                        }
+
+                        // Dump the modulator definitions for the zone
+                        for (auto imodIndex = 0; imodIndex < ibag.modulatorCount(); ++imodIndex) {
+                            const auto& imod{instrumentZoneModulators_[imodIndex + ibag.firstModulatorIndex()]};
+                            imod.dump("     imod", imodIndex + ibag.firstModulatorIndex()); ++lineCounter;
+                        }
+
+                        // Dump the generators for the zone
+                        for (auto igenIndex = 0; igenIndex < ibag.generatorCount(); ++igenIndex) {
+                            const auto& igen{instrumentZoneGenerators_[igenIndex + ibag.firstGeneratorIndex()]};
+                            igen.dump("     igen", igenIndex + ibag.firstGeneratorIndex()); ++lineCounter;
+
+                            // If the (last) generator is for a sample, dump the sample header.
+                            if (igen.index() == Entity::Generator::Index::sampleID) {
+                                auto sampleIndex = igen.amount().unsignedAmount();
+                                const auto& shdr{sampleHeaders_[sampleIndex]};
+                                shdr.dump("      shdr", sampleIndex); ++lineCounter;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

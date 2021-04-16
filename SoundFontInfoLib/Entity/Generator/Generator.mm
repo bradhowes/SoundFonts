@@ -24,5 +24,5 @@ struct Dumper {
 void
 Generator::dump(const std::string& indent, int index) const
 {
-    std::cout << indent << index << ": " << name() << " setting: " << Dumper(definition(), amount_) << std::endl;
+    std::cout << indent << '[' << index << "] " << name() << ' ' << Dumper(definition(), amount_) << std::endl;
 }

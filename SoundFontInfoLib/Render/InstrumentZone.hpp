@@ -36,13 +36,13 @@ public:
 
      @param state the state to update
      */
-    void apply(VoiceState& state) const { Zone::apply(state); }
+    void apply(Voice::State& state) const { Zone::apply(state); }
 
     /// @returns the sample buffer registered to this zone, or nullptr if this is a global zone.
-    const Render::SampleBuffer<AUValue>* sampleBuffer() const { return sampleBuffer_; }
+    const Render::Sample::CanonicalBuffer<AUValue>* sampleBuffer() const { return sampleBuffer_; }
 
 private:
-    const Render::SampleBuffer<AUValue>* sampleBuffer_;
+    const Render::Sample::CanonicalBuffer<AUValue>* sampleBuffer_;
 };
 
 } // namespace Render
