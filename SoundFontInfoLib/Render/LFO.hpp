@@ -30,20 +30,20 @@ public:
      @param frequency the frequency of the oscillator
      @param waveform the waveform to emit
      */
-    LFO(T sampleRate, T frequency, LFOWaveform waveform)
+    LFO(T sampleRate, T frequency, T delay, LFOWaveform waveform)
     : valueGenerator_{WaveformGenerator(waveform)} {
-        initialize(sampleRate, frequency);
+        initialize(sampleRate, frequency, delay);
     }
 
     /**
      Create a new instance.
      */
-    LFO(T sampleRate, T frequency) : LFO(sampleRate, frequency, LFOWaveform::sinusoid) {}
+    LFO(T sampleRate, T frequency, T delay) : LFO(sampleRate, frequency, delay, LFOWaveform::triangle) {}
 
     /**
      Create a new instance.
      */
-    LFO() : LFO(44100.0, 1.0, LFOWaveform::sinusoid) {}
+    LFO() : LFO(44100.0, 1.0, 0.0, LFOWaveform::sinusoid) {}
 
     /**
      Initialize the LFO with the given parameters.
@@ -51,9 +51,10 @@ public:
      @param sampleRate number of samples per second
      @param frequency the frequency of the oscillator
      */
-    void initialize(T sampleRate, T frequency) {
+    void initialize(T sampleRate, T frequency, T delay) {
         sampleRate_ = sampleRate;
         frequency_ = frequency;
+        delaySampleCount_ = size_t(sampleRate * delay);
         setPhaseIncrement();
         reset();
     }
@@ -76,35 +77,58 @@ public:
     }
 
     /**
+     Set the delay of the oscillator in seconds. NOTE: resets the counter.
+
+     @param delay the duration before the LFO begins
+     */
+    void setDelay(T delay) {
+        delaySampleCount_ = size_t(delay * sampleRate_);
+        reset();
+    }
+
+    /**
      Restart from a known zero state.
      */
     void reset() {
         moduloCounter_ = phaseIncrement_ > 0 ? 0.0 : 1.0;
     }
 
+    struct State {
+        T moduloCounter_;
+        size_t delaySampleCount_;
+        State(T moduloCounter, size_t delaySampleCount) :
+        moduloCounter_{moduloCounter}, delaySampleCount_{delaySampleCount} {}
+    };
+
     /**
      Save the state of the oscillator.
 
      @returns current internal state
      */
-    T saveState() const { return moduloCounter_; }
+    State saveState() const { return State(moduloCounter_, delaySampleCount_); }
 
     /**
      Restore the oscillator to a previously-saved state.
 
-     @param value the state to restore to
+     @param state the state to restore to
      */
-    void restoreState(T value) {
-        moduloCounter_ = value;
-        quadPhaseCounter_ = incrementModuloCounter(value, 0.25);
+    void restoreState(const State& state) {
+        moduloCounter_ = state.moduloCounter_;
+        delaySampleCount_ = state.delaySampleCount_;
+        quadPhaseCounter_ = incrementModuloCounter(state.moduloCounter_, 0.25);
     }
 
     /**
      Increment the oscillator to the next value.
      */
     void increment() {
-        moduloCounter_ = incrementModuloCounter(moduloCounter_, phaseIncrement_);
-        quadPhaseCounter_ = incrementModuloCounter(moduloCounter_, 0.25);
+        if (delaySampleCount_ > 0) {
+            --delaySampleCount_;
+        }
+        else {
+            moduloCounter_ = incrementModuloCounter(moduloCounter_, phaseIncrement_);
+            quadPhaseCounter_ = incrementModuloCounter(moduloCounter_, 0.25);
+        }
     }
 
     /**
@@ -113,6 +137,11 @@ public:
      @returns current waveform value
      */
     T valueAndIncrement() {
+        if (delaySampleCount_ > 0) {
+            --delaySampleCount_;
+            return 0.0;
+        }
+
         auto counter = moduloCounter_;
         quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
         moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
@@ -125,6 +154,10 @@ public:
      @returns current waveform value
      */
     T quadPhaseValueAndIncrement() {
+        if (delaySampleCount_ > 0) {
+            --delaySampleCount_;
+            return 0.0;
+        }
         auto counter = moduloCounter_;
         quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
         moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
@@ -175,6 +208,7 @@ private:
     T moduloCounter_ = {0.0};
     T quadPhaseCounter_ = {0.0};
     T phaseIncrement_;
+    size_t delaySampleCount_;
 };
 
 } // namespace Render

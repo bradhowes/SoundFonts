@@ -11,8 +11,9 @@ namespace Voice {
 class State;
 
 /**
- A combination of preset zone and instrument zone (plus optional global zones for each) that pertain to a MIDI
- key/velocity combination. One zone pair represents the configuration that should apply to the state of one voice.
+ A combination of preset zone and instrument zone (plus optional global zones for each) that pertains to a MIDI
+ key/velocity pair. One instance represents the configuration that should apply to the state of one voice for rendering
+ samples.
  */
 class Setup {
 public:
@@ -47,6 +48,7 @@ public:
         presetZone_.refine(state);
     }
 
+    /// @returns the buffer of audio samples to use for rendering
     const Sample::CanonicalBuffer<AUValue>& sampleBuffer() const {
         assert(instrumentZone_.sampleBuffer() != nullptr);
         return *(instrumentZone_.sampleBuffer());

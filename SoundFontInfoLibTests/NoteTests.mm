@@ -13,11 +13,6 @@ using namespace SF2::Render;
 
 @implementation NoteTests
 
-- (void)testStatics {
-    XCTAssertEqual(std::string("♯"), Note::sharpTag);
-    XCTAssertEqual(std::string("C"), Note::noteLabels[0]);
-}
-
 - (void)testNoteLabels {
     XCTAssertEqual(std::string("C-1"), Note(0).label());
     XCTAssertEqual(std::string("A4"), Note(69).label());

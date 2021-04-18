@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cmath>
 
+#include "DSP.hpp"
 #include "Types.hpp"
 
 namespace SF2 {
@@ -21,8 +22,6 @@ struct MIDI {
     static T keyToFrequency(UByte key) {
         return standardNoteFrequencies_[std::clamp(key, MinNote, MaxNote)];
     }
-
-    // #define MAX_NUMBER_OF_TRACKS 128
 
     enum struct CoreEvent {
         noteOff = 0x80,
@@ -130,7 +129,18 @@ struct MIDI {
         modulationDepthRange = 0x05
     };
 
-    static std::array<double, MaxNote + 1> standardNoteFrequencies_;
+private:
+
+    inline static std::array<double, MaxNote + 1> standardNoteFrequencies_ = [] {
+        auto init = decltype(MIDI::standardNoteFrequencies_){};
+        auto frequency = DSP::LowestNoteFrequency;
+        auto scale = ::std::pow(2.0, 1.0 / 12.0);
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = frequency;
+            frequency *= scale;
+        }
+        return init;
+    }();
 };
 
 } // namespace Render

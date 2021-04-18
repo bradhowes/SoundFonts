@@ -22,7 +22,7 @@
 }
 
 - (void)testSinusoidSamples {
-    SF2::Render::LFO<float> osc(4.0, 1.0, SF2::Render::LFOWaveform::sinusoid);
+    SF2::Render::LFO<float> osc(4.0, 1.0, 0.0, SF2::Render::LFOWaveform::sinusoid);
     SamplesEqual(osc.valueAndIncrement(),  0.0);
     SamplesEqual(osc.valueAndIncrement(),  1.0);
     SamplesEqual(osc.valueAndIncrement(),  0.0);
@@ -34,7 +34,7 @@
 }
 
 - (void)testSawtoothSamples {
-    SF2::Render::LFO<float> osc(8.0, 1.0, SF2::Render::LFOWaveform::sawtooth);
+    SF2::Render::LFO<float> osc(8.0, 1.0, 0.0, SF2::Render::LFOWaveform::sawtooth);
     SamplesEqual(osc.valueAndIncrement(), -1.00);
     SamplesEqual(osc.valueAndIncrement(), -0.75);
     SamplesEqual(osc.valueAndIncrement(), -0.50);
@@ -47,7 +47,7 @@
 }
 
 - (void)testTriangleSamples {
-    SF2::Render::LFO<float> osc(8.0, 1.0, SF2::Render::LFOWaveform::triangle);
+    SF2::Render::LFO<float> osc(8.0, 1.0, 0.0, SF2::Render::LFOWaveform::triangle);
     SamplesEqual(osc.valueAndIncrement(),  1.0);
     SamplesEqual(osc.valueAndIncrement(),  0.5);
     SamplesEqual(osc.valueAndIncrement(),  0.0);
@@ -60,7 +60,7 @@
 }
 
 - (void)testQuadPhaseSamples {
-    SF2::Render::LFO<float> osc(8.0, 1.0, SF2::Render::LFOWaveform::sawtooth);
+    SF2::Render::LFO<float> osc(8.0, 1.0, 0.0, SF2::Render::LFOWaveform::sawtooth);
     SamplesEqual(osc.valueAndIncrement(), -1.00);
     SamplesEqual(osc.quadPhaseValue(), -0.50);
     SamplesEqual(osc.quadPhaseValue(), -0.50);
@@ -83,12 +83,12 @@
 }
 
 - (void)testSaveRestore {
-    SF2::Render::LFO<float> osc(8.0, 1.0, SF2::Render::LFOWaveform::sawtooth);
+    SF2::Render::LFO<float> osc(8.0, 1.0, 0.0, SF2::Render::LFOWaveform::sawtooth);
     SamplesEqual(osc.valueAndIncrement(), -1.00);
     SamplesEqual(osc.quadPhaseValue(), -0.50);
     SamplesEqual(osc.valueAndIncrement(), -0.75);
     SamplesEqual(osc.quadPhaseValue(), -0.25);
-    float state = osc.saveState();
+    auto state = osc.saveState();
     SamplesEqual(osc.valueAndIncrement(), -0.50);
     SamplesEqual(osc.quadPhaseValue(),  0.00);
     SamplesEqual(osc.valueAndIncrement(), -0.25);
@@ -98,6 +98,18 @@
     SamplesEqual(osc.quadPhaseValue(),  0.00);
     SamplesEqual(osc.valueAndIncrement(), -0.25);
     SamplesEqual(osc.quadPhaseValue(),  0.25);
+}
+
+- (void)testDelay {
+    SF2::Render::LFO<float> osc(8.0, 1.0, 0.125, SF2::Render::LFOWaveform::sawtooth);
+    SamplesEqual(osc.valueAndIncrement(), 0.00);
+    SamplesEqual(osc.valueAndIncrement(), -1.00);
+    SamplesEqual(osc.valueAndIncrement(), -0.75);
+    osc.setDelay(0.25);
+    SamplesEqual(osc.valueAndIncrement(), 0.00);
+    SamplesEqual(osc.valueAndIncrement(), 0.00);
+    SamplesEqual(osc.valueAndIncrement(), -1.00);
+    SamplesEqual(osc.valueAndIncrement(), -0.75);
 }
 
 @end
