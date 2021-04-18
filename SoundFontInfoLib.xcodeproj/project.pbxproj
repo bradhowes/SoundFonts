@@ -222,10 +222,10 @@
 			isa = PBXGroup;
 			children = (
 				BDEC0022249768E200A52507 /* Amount.hpp */,
-				BD827FFF24EA8E6800533D80 /* Definition.mm */,
 				BD827FFD24EA8E1B00533D80 /* Definition.hpp */,
-				BD2AEE4224F692C5009EAABE /* Generator.mm */,
+				BD827FFF24EA8E6800533D80 /* Definition.mm */,
 				BDEC00462497E7BF00A52507 /* Generator.hpp */,
+				BD2AEE4224F692C5009EAABE /* Generator.mm */,
 				BDEC001A2497669300A52507 /* Index.hpp */,
 			);
 			path = Generator;
@@ -234,10 +234,10 @@
 		BD250BC42615CFF900D1C1E0 /* Modulator */ = {
 			isa = PBXGroup;
 			children = (
-				BD250BDA2615FD7400D1C1E0 /* Modulator.mm */,
 				BDEC004A2497F0A700A52507 /* Modulator.hpp */,
-				BDEB132E262A4BA3003CE8EE /* Source.mm */,
+				BD250BDA2615FD7400D1C1E0 /* Modulator.mm */,
 				BDEC00162497665D00A52507 /* Source.hpp */,
+				BDEB132E262A4BA3003CE8EE /* Source.mm */,
 				BDEC001E2497672000A52507 /* Transform.hpp */,
 			);
 			path = Modulator;
@@ -284,27 +284,27 @@
 			isa = PBXGroup;
 			children = (
 				BDEB128F26244A79003CE8EE /* ChunkTests.mm */,
-				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
-				BD62BA4A261CB7890052FB7A /* LFOTests.mm */,
 				BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */,
-				BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */,
 				BD62BA4E261CB7D20052FB7A /* DSPTests.mm */,
-				BDABC42A24F1AD8800F8C874 /* TransformTests.mm */,
+				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
+				BD2AEE4E24F7E2AA009EAABE /* GeneratorAmountTests.mm */,
+				BDEB127326232C3C003CE8EE /* InstrumentTests.mm */,
+				BD62BA4A261CB7890052FB7A /* LFOTests.mm */,
+				BDEB129B26249AC8003CE8EE /* MIDITests.mm */,
+				BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */,
+				BD5E16FA261EEDA4007BAA38 /* NoteTests.mm */,
+				BDEB127B26234100003CE8EE /* PresetTests.mm */,
+				BD5E1714261F17A0007BAA38 /* RangeTests.mm */,
+				BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */,
+				BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */,
+				BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */,
 				BDB2662C25324780005BEAD1 /* SFFileTests.mm */,
 				BDB2662625323FE7005BEAD1 /* SFFileTests.swift */,
-				BD2AEE4E24F7E2AA009EAABE /* GeneratorAmountTests.mm */,
-				BD5E1714261F17A0007BAA38 /* RangeTests.mm */,
-				BDEB129B26249AC8003CE8EE /* MIDITests.mm */,
-				BDEB127326232C3C003CE8EE /* InstrumentTests.mm */,
-				BDEB127B26234100003CE8EE /* PresetTests.mm */,
+				BDABC42A24F1AD8800F8C874 /* TransformTests.mm */,
 				BDEB1277262333B2003CE8EE /* VoiceStateTests.mm */,
 				BDEB12C02625EAB2003CE8EE /* VoiceTests.mm */,
-				BD5E16FA261EEDA4007BAA38 /* NoteTests.mm */,
-				BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */,
-				BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */,
 				BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */,
 				BD82800924EC91A500533D80 /* SoundFontInfoLibTests-Bridging-Header.h */,
-				BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */,
 				BD74D17723CDB1D200204ED4 /* Info.plist */,
 			);
 			path = SoundFontInfoLibTests;
@@ -316,14 +316,14 @@
 				BD64EB6924E5341900EA8473 /* Bag.hpp */,
 				BDEB1314262A49B5003CE8EE /* Bag.mm */,
 				BDEB127F2623792F003CE8EE /* Entity.hpp */,
-				BDEB1318262A4A2B003CE8EE /* Instrument.mm */,
 				BD64EB6724E5328100EA8473 /* Instrument.hpp */,
-				BDEB131E262A4A6E003CE8EE /* Preset.mm */,
+				BDEB1318262A4A2B003CE8EE /* Instrument.mm */,
 				BD64EB6B24E534B700EA8473 /* Preset.hpp */,
-				BDEB1322262A4ABD003CE8EE /* SampleHeader.mm */,
+				BDEB131E262A4A6E003CE8EE /* Preset.mm */,
 				BD64EB6F24E536A200EA8473 /* SampleHeader.hpp */,
-				BDEB1328262A4B00003CE8EE /* Version.mm */,
+				BDEB1322262A4ABD003CE8EE /* SampleHeader.mm */,
 				BD250C91261A727100D1C1E0 /* Version.hpp */,
+				BDEB1328262A4B00003CE8EE /* Version.mm */,
 				BD250BB12615CCAA00D1C1E0 /* Generator */,
 				BD250BC42615CFF900D1C1E0 /* Modulator */,
 			);
@@ -334,16 +334,16 @@
 			isa = PBXGroup;
 			children = (
 				BDB1B4692491829000F3F361 /* Chunk.hpp */,
-				BDEB1334262A4DDF003CE8EE /* ChunkItems.mm */,
 				BDEC00422497DD5700A52507 /* ChunkItems.hpp */,
+				BDEB1334262A4DDF003CE8EE /* ChunkItems.mm */,
 				BDB1B4652491823400F3F361 /* ChunkList.hpp */,
-				BDABC42C24F46A2000F8C874 /* File.mm */,
 				BD64EB7124E5A5DC00EA8473 /* File.hpp */,
+				BDABC42C24F46A2000F8C874 /* File.mm */,
 				BD2AEE5024F81867009EAABE /* Format.hpp */,
-				BD74D18423CDB36200204ED4 /* Parser.mm */,
 				BD74D18123CDB36200204ED4 /* Parser.hpp */,
-				BDB266182531AE2E005BEAD1 /* Pos.mm */,
+				BD74D18423CDB36200204ED4 /* Parser.mm */,
 				BDB266142531AA16005BEAD1 /* Pos.hpp */,
+				BDB266182531AE2E005BEAD1 /* Pos.mm */,
 				BDEC002A2497790A00A52507 /* StringUtils.hpp */,
 				BDB1B4612491805800F3F361 /* Tag.hpp */,
 			);
@@ -364,21 +364,21 @@
 				BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */,
 				BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */,
 				BD62BA3E261CAE630052FB7A /* LFO.hpp */,
-				BD97191424EF21ED0009ED6E /* MIDI.mm */,
 				BD97191224EF21E40009ED6E /* MIDI.hpp */,
+				BD97191424EF21ED0009ED6E /* MIDI.mm */,
 				BD5E1718261F3907007BAA38 /* Modulator.hpp */,
-				BD5E16F6261EECD5007BAA38 /* Note.mm */,
 				BD5E16F2261EEA85007BAA38 /* Note.hpp */,
+				BD5E16F6261EECD5007BAA38 /* Note.mm */,
 				BDABC42E24F46CF000F8C874 /* Preset.hpp */,
 				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
 				BD5E170E261F121E007BAA38 /* Range.hpp */,
 				BDEB12E826288DA4003CE8EE /* Sample */,
-				BDABC42824F172CD00F8C874 /* Transform.mm */,
 				BDABC42624F1727A00F8C874 /* Transform.hpp */,
+				BDABC42824F172CD00F8C874 /* Transform.mm */,
 				BD250BE226163F7D00D1C1E0 /* Utils.hpp */,
 				BDEB12D22626E35A003CE8EE /* Voice */,
-				BD2AEE4824F6BF94009EAABE /* Zone.mm */,
 				BDABC43224F46EFA00F8C874 /* Zone.hpp */,
+				BD2AEE4824F6BF94009EAABE /* Zone.mm */,
 				BD5E1706261F111A007BAA38 /* ZoneCollection.hpp */,
 			);
 			path = Render;
@@ -387,10 +387,10 @@
 		BDEB12D22626E35A003CE8EE /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BD5E16FE261EFFB9007BAA38 /* Voice.mm */,
 				BDEC0026249775FE00A52507 /* Voice.hpp */,
-				BDEB13022629C5B0003CE8EE /* State.mm */,
+				BD5E16FE261EFFB9007BAA38 /* Voice.mm */,
 				BD2AEE5224F9C689009EAABE /* State.hpp */,
+				BDEB13022629C5B0003CE8EE /* State.mm */,
 				BDEB12CA2626CB13003CE8EE /* Setup.hpp */,
 			);
 			path = Voice;
@@ -773,7 +773,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -813,7 +816,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

@@ -99,28 +99,6 @@ using namespace SF2::DSP;
     XCTAssertEqualWithAccuracy(15848931.924611142, centibelToGain<double>(1441), self.epsilon);
 }
 
-- (void)testInterpolationCubic4thOrderWeights {
-    double epsilon = 0.0000001;
-    auto v = SF2::DSP::Interpolation::Cubic4thOrder<double>::weights[0];
-    XCTAssertEqualWithAccuracy(v[0], 0.0, epsilon);
-    XCTAssertEqualWithAccuracy(v[1], 1.0, epsilon);
-    XCTAssertEqualWithAccuracy(v[2], 0.0, epsilon);
-    XCTAssertEqualWithAccuracy(v[3], 0.0, epsilon);
-
-    v = SF2::DSP::Interpolation::Cubic4thOrder<double>::weights[128];
-    XCTAssertEqualWithAccuracy(v[0], -0.0625, epsilon);
-    XCTAssertEqualWithAccuracy(v[1],  0.5625, epsilon);
-    XCTAssertEqualWithAccuracy(v[2],  0.5625, epsilon);
-    XCTAssertEqualWithAccuracy(v[3], -0.0625, epsilon);
-
-    v = SF2::DSP::Interpolation::Cubic4thOrder<double>::weights[SF2::DSP::Interpolation::Cubic4thOrder<double>::weightsCount - 1];
-    XCTAssertEqualWithAccuracy(v[0], -7.599592208862305e-06, epsilon);
-    XCTAssertEqualWithAccuracy(v[1], 0.001983553171157837, epsilon);
-    XCTAssertEqualWithAccuracy(v[2], 0.9999619424343109, epsilon);
-    XCTAssertEqualWithAccuracy(v[3], -0.0019378960132598877, epsilon);
-
-}
-
 - (void)testInterpolationCubic4thOrderInterpolate {
     double epsilon = 0.0000001;
 

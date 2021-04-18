@@ -132,11 +132,10 @@ template <typename T>
 struct CentFrequencyLookup {
     inline constexpr static int MaxCentValue = 1200;
 
-    static T convert(int cent) {
-        return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue];
-    }
+    static T convert(int cent) { return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue]; }
 
 private:
+
     inline static const std::array<T, MaxCentValue * 2 + 1> lookup_ = [] {
         auto init = decltype(lookup_){};
         auto span = T((init.size() - 1) / 2);
@@ -159,12 +158,11 @@ struct AttenuationLookup {
     inline constexpr static int TableSize = 1441;
 
     static T convert(int centibels) {
-        if (centibels <= 0) return 1.0;
-        if (centibels >= TableSize) return 0.0;
-        return lookup_[centibels];
+        return centibels <= 0 ? 1.0 : (centibels >= TableSize ? 0.0 : lookup_[centibels]);
     }
 
 private:
+
     inline static const std::array<T, TableSize> lookup_ = [] {
         auto init = decltype(lookup_){};
         for (auto index = 0; index < init.size(); ++index) {
@@ -190,6 +188,7 @@ struct GainLookup {
     }
 
 private:
+
     inline static const std::array<T, TableSize> lookup_ = [] {
         auto init = decltype(lookup_){};
         for (auto index = 0; index < init.size(); ++index) {
@@ -235,16 +234,6 @@ struct Cubic4thOrder {
     using WeightsArray = std::array<std::array<T, 4>, weightsCount>;
 
     /**
-     Array of weights used during interpolation. Initialized at startup.
-     */
-    static WeightsArray weights;
-
-    /**
-     Method that generates the weight values at runtimes.
-     */
-    static WeightsArray generateWeights();
-
-    /**
      Interpolate a value from four values.
 
      @param partial location between the second value and the third
@@ -259,36 +248,37 @@ struct Cubic4thOrder {
         auto w = weights[index];
         return x0 * w[0] + x1 * w[1] + x2 * w[2] + x3 * w[3];
     }
+
+private:
+
+    /**
+     Array of weights used during interpolation. Initialized at startup.
+     */
+    inline static WeightsArray weights = []() {
+
+        // Comment from FluidSynth - see https://github.com/FluidSynth/fluidsynth/blob/master/src/gentables/gen_rvoice_dsp.c
+        // Initialize the coefficients for the interpolation. The math comes from a mail, posted by Olli Niemitalo to the
+        // music-dsp mailing list (I found it in the music-dsp archives http://www.smartelectronix.com/musicdsp/).
+        //
+        // Reordered and normalized to better understand coefficients.
+        WeightsArray weights;
+        for (int index = 0; index < weightsCount; ++index) {
+            auto x = double(index) / double(weightsCount);
+            auto x_05 = 0.5 * x;
+            auto x2 = x * x;
+            auto x3 = x2 * x;
+            auto x3_05 = 0.5 * x3;
+            auto x3_15 = 1.5 * x3;
+            weights[index][0] = -x3_05 +       x2 - x_05;
+            weights[index][1] =  x3_15 - 2.5 * x2         + 1.0;
+            weights[index][2] = -x3_15 + 2.0 * x2 + x_05;
+            weights[index][3] =  x3_05 - 0.5 * x2;
+        }
+
+        return weights;
+    }();
+
 };
-
-template <typename T>
-typename Cubic4thOrder<T>::WeightsArray
-Cubic4thOrder<T>::generateWeights() {
-
-    // Comment from FluidSynth - see https://github.com/FluidSynth/fluidsynth/blob/master/src/gentables/gen_rvoice_dsp.c
-    // Initialize the coefficients for the interpolation. The math comes from a mail, posted by Olli Niemitalo to the
-    // music-dsp mailing list (I found it in the music-dsp archives http://www.smartelectronix.com/musicdsp/).
-    //
-    // Reordered and normalized to better understand coefficients.
-    WeightsArray weights;
-    for (int index = 0; index < weightsCount; ++index) {
-        auto x = double(index) / double(weightsCount);
-        auto x_05 = 0.5 * x;
-        auto x2 = x * x;
-        auto x3 = x2 * x;
-        auto x3_05 = 0.5 * x3;
-        auto x3_15 = 1.5 * x3;
-        weights[index][0] = -x3_05 +       x2 - x_05;
-        weights[index][1] =  x3_15 - 2.5 * x2         + 1.0;
-        weights[index][2] = -x3_15 + 2.0 * x2 + x_05;
-        weights[index][3] =  x3_05 - 0.5 * x2;
-    }
-
-    return weights;
-}
-
-template <typename T>
-typename Cubic4thOrder<T>::WeightsArray Cubic4thOrder<T>::weights = Cubic4thOrder::generateWeights();
 
 } // Interpolation namespace
 } // DSP namespace

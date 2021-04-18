@@ -74,10 +74,6 @@ public:
 
     double sampleRate() const { return sampleRate_; }
 
-    void setRaw(Index  index, int raw) {
-        (*this)[index] = Definition::definition(index).convertedValueOf(Amount(raw));
-    }
-
     double pitch() const {
         auto forced = get(Index::forcedMIDIKey);
         auto value = (forced >= 0) ? forced : key_;
@@ -92,6 +88,10 @@ public:
     }
 
 private:
+
+    void setRaw(Index  index, int raw) {
+        (*this)[index] = Definition::definition(index).convertedValueOf(Amount(raw));
+    }
 
     double get(Index index) const { return (*this)[index]; }
 
