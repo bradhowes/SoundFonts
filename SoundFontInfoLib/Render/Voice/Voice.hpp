@@ -59,8 +59,8 @@ private:
     Envelope::Generator amp_;
     Envelope::Generator filter_;
 
-    LFO<AUValue> modulator_;
-    LFO<AUValue> vibrator_;
+    LFO<double> modulator_;
+    LFO<double> vibrator_;
 
     inline static Logger log_{Logger::Make("Render", "Voice")};
 };

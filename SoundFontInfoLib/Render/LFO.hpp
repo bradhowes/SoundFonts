@@ -30,20 +30,15 @@ public:
      @param frequency the frequency of the oscillator
      @param waveform the waveform to emit
      */
-    LFO(T sampleRate, T frequency, T delay, LFOWaveform waveform)
-    : valueGenerator_{WaveformGenerator(waveform)} {
+    LFO(T sampleRate, T frequency, T delay, LFOWaveform waveform) :
+    valueGenerator_{WaveformGenerator(waveform)}, init_{WaveformInit(waveform)} {
         initialize(sampleRate, frequency, delay);
     }
 
     /**
-     Create a new instance.
+     Create a new instance that generates triangular waveforms. Per spec, SF2 LFOs only generate triangular waveforms.
      */
     LFO(T sampleRate, T frequency, T delay) : LFO(sampleRate, frequency, delay, LFOWaveform::triangle) {}
-
-    /**
-     Create a new instance.
-     */
-    LFO() : LFO(44100.0, 1.0, 0.0, LFOWaveform::sinusoid) {}
 
     /**
      Initialize the LFO with the given parameters.
@@ -90,7 +85,7 @@ public:
      Restart from a known zero state.
      */
     void reset() {
-        moduloCounter_ = phaseIncrement_ > 0 ? 0.0 : 1.0;
+        moduloCounter_ = init_;
     }
 
     struct State {
@@ -191,6 +186,21 @@ private:
         }
     }
 
+    /**
+     For a given waveform type obtain the starting value for moduloCounter_ so that the first value from the generator
+     is 0.0 and the subsequent value is a positive value (derivative > 0).
+
+     @param waveform the waveform being generated
+     @returns the initial value for moduloCounter_
+     */
+    static T WaveformInit(LFOWaveform waveform) {
+        switch (waveform) {
+            case LFOWaveform::sinusoid: return 0.0;
+            case LFOWaveform::sawtooth: return 0.5;
+            case LFOWaveform::triangle: return 0.75;
+        }
+    }
+
     static T wrappedModuloCounter(T counter, T inc) {
         if (inc > 0 && counter >= 1.0) return counter - 1.0;
         if (inc < 0 && counter <= 0.0) return counter + 1.0;
@@ -205,8 +215,9 @@ private:
     T sampleRate_;
     T frequency_;
     std::function<T(T)> valueGenerator_;
-    T moduloCounter_ = {0.0};
-    T quadPhaseCounter_ = {0.0};
+    T init_{0.0};
+    T moduloCounter_{0.0};
+    T quadPhaseCounter_{0.0};
     T phaseIncrement_;
     size_t delaySampleCount_;
 };
