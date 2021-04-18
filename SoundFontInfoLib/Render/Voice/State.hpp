@@ -70,10 +70,18 @@ public:
      */
     double operator[](Index index) const { return values_[Entity::Generator::indexValue(index)]; }
 
+    /**
+     Writeable reference to generator value.
+
+     @param index the index of the generator
+     @returns reference to current value of the generator
+     */
     double& operator[](Index index) { return values_[Entity::Generator::indexValue(index)]; }
 
+    /// @returns sample rate defined at construction
     double sampleRate() const { return sampleRate_; }
 
+    /// @returns baae pitch to generate when rendering (unmodulated)
     double pitch() const {
         auto forced = get(Index::forcedMIDIKey);
         auto value = (forced >= 0) ? forced : key_;
@@ -82,6 +90,7 @@ public:
         return value + coarseTune + fineTune / 100.0;
     }
 
+    /// @returns key velocity to use when calculating attenuation
     double velocity() const {
         auto value = get(Index::forcedMIDIVelocity);
         return (value >= 0) ? value : velocity_;
