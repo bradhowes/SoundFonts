@@ -236,7 +236,7 @@ struct Cubic4thOrder {
     /**
      Interpolate a value from four values.
 
-     @param partial location between the second value and the third
+     @param partial location between the second value and the third. By definition it should always be < 1.0
      @param x0 first value to use
      @param x1 second value to use
      @param x2 third value to use
@@ -244,7 +244,7 @@ struct Cubic4thOrder {
      */
     inline static T interpolate(double partial, T x0, T x1, T x2, T x3) {
         auto index = size_t(partial * weightsCount);
-        if (index == weightsCount) --index;
+        assert(index < weightsCount); // should always be true based on definition of `partial`
         auto w = weights[index];
         return x0 * w[0] + x1 * w[1] + x2 * w[2] + x3 * w[3];
     }
