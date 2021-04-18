@@ -11,17 +11,78 @@ namespace Render {
 enum class LFOWaveform { sinusoid, triangle, sawtooth };
 
 /**
- Implementation of a low-frequency oscillator. Can generate:
+ Implementation of a low-frequency oscillator. Can generate the following waveforms:
 
  - sinusoid
  - triangle
  - sawtooth
 
- Loosely based on code found in "Designing Audio Effect Plugins in C++" by Will C. Pirkle (2019)
+ By design, this LFO emits unipolar values from 0.0 to 1.0 in order to be useful in SF2 processing. One can obtain
+ bipolar values via the DSP::unipolarToBipolar method. An LFO will start emitting with value 0.0, again by design, in
+ order to smoothly transition from a paused LFO to a running one.
  */
 template <typename T>
 class LFO {
 public:
+
+    /**
+     Configures an LFO via a "fluent" interface.
+     */
+    struct Config {
+
+        /**
+         Begin configuration with the sample rate
+
+         @param sampleRate the sample rate to use
+         */
+        explicit Config(T sampleRate) :
+        sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0}, waveform_{LFOWaveform::triangle} {}
+
+        /**
+         Set the frequency for the LFO.
+
+         @param frequency the frequency to run the LFO at
+         */
+        Config& frequency(T frequency) {
+            frequency_ = frequency;
+            return *this;
+        }
+
+        /**
+         Set the delay for the LFO. Until the delay duration passes, the LFO will emit 0.0 values.
+
+         @param delay the number of seconds to wait before starting the LFO.
+         */
+        Config& delay(T delay) {
+            delay_ = delay;
+            return *this;
+        }
+
+        /**
+         Set the waveform type for the LFO to emit.
+
+         @param waveform the waveform to use. Per SF2 spec, LFOs emit triangular waveforms.
+         */
+        Config& waveform(LFOWaveform waveform) {
+            waveform_ = waveform;
+            return *this;
+        }
+
+        /**
+         Create an LFO instance with the configured properties.
+
+         @returns LFO instance
+         */
+        LFO make() const {
+            return LFO(sampleRate_, frequency_, delay_, waveform_);
+        }
+
+    private:
+        T sampleRate_;
+        T frequency_;
+        T delay_;
+        LFOWaveform waveform_;
+    };
 
     /**
      Create a new instance.
@@ -196,8 +257,8 @@ private:
     static T WaveformInit(LFOWaveform waveform) {
         switch (waveform) {
             case LFOWaveform::sinusoid: return 0.0;
-            case LFOWaveform::sawtooth: return 0.5;
-            case LFOWaveform::triangle: return 0.75;
+            case LFOWaveform::sawtooth: return 0.0;
+            case LFOWaveform::triangle: return 0.5;
         }
     }
 
@@ -208,9 +269,9 @@ private:
     }
 
     static T incrementModuloCounter(T counter, T inc) { return wrappedModuloCounter(counter + inc, inc); }
-    static T sineValue(T counter) { return DSP::parabolicSine(M_PI - counter * 2.0 * M_PI); }
-    static T sawtoothValue(T counter) { return DSP::unipolarToBipolar(counter); }
-    static T triangleValue(T counter) { return DSP::unipolarToBipolar(std::abs(DSP::unipolarToBipolar(counter))); }
+    static T sineValue(T counter) { return DSP::bipolarToUnipolar(DSP::sineLookup(counter * 2.0 * M_PI - M_PI / 2.0)); }
+    static T sawtoothValue(T counter) { return counter; }
+    static T triangleValue(T counter) { return std::abs(DSP::unipolarToBipolar(counter)); }
 
     T sampleRate_;
     T frequency_;

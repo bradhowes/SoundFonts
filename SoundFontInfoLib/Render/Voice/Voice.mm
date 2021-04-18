@@ -14,10 +14,20 @@ Voice::Voice(double sampleRate, const Setup& setup) :
 state_{sampleRate, setup},
 loopingMode_{state_.loopingMode()},
 sampleGenerator_{setup.sampleBuffer(), state_},
-amp_{Envelope::Generator::Volume(state_)},
-filter_{Envelope::Generator::Modulator(state_)},
-modulator_{sampleRate, state_[Index::frequencyModulatorLFO], state_[Index::delayModulatorLFO]},
-vibrator_{sampleRate, state_[Index::frequencyVibratoLFO], state_[Index::delayVibratoLFO]}
+gainEnvelope_{Envelope::Generator::Volume(state_)},
+modulatorEnvelope_{Envelope::Generator::Modulator(state_)},
+modulatorLFO_{
+    LFO<double>::Config(sampleRate)
+    .frequency(state_[Index::frequencyModulatorLFO])
+    .delay(state_[Index::delayModulatorLFO])
+    .make()
+},
+vibratoLFO_{
+    LFO<double>::Config(sampleRate)
+    .frequency(state_[Index::frequencyVibratoLFO])
+    .delay(state_[Index::delayVibratoLFO])
+    .make()
+}
 {
     os_log_debug(log_, "loopingMode: %d", loopingMode_);
 }

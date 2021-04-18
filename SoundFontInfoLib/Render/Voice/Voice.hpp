@@ -25,14 +25,15 @@ public:
     Voice(double sampleRate, const Setup& setup);
 
     void keyReleased() {
-        amp_.gate(false);
-        filter_.gate(false);
+        gainEnvelope_.gate(false);
+        modulatorEnvelope_.gate(false);
     }
 
-    bool isActive() const { return amp_.isActive(); }
+    bool isActive() const { return gainEnvelope_.isActive(); }
 
     bool canLoop() const {
-        return (loopingMode_ == State::continuously || (loopingMode_ == State::duringKeyPress && amp_.isGated()));
+        return (loopingMode_ == State::continuously ||
+                (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated()));
     }
 
     AUValue render() {
@@ -47,8 +48,12 @@ public:
         // 5. Generate samples
         // 6. Filter samples
         //
-        auto gain = amp_.process();
-        return sampleGenerator_.generate(canLoop()) * gain;
+        auto amplitudeGain = gainEnvelope_.process();
+        auto modulatorGain = modulatorEnvelope_.process();
+        auto modulatorValue = modulatorLFO_.valueAndIncrement();
+        auto vibratoValue = vibratoLFO_.valueAndIncrement();
+
+        return sampleGenerator_.generate(canLoop()) * amplitudeGain;
     }
 
 private:
@@ -56,11 +61,11 @@ private:
     State::LoopingMode loopingMode_;
     Sample::Generator<AUValue> sampleGenerator_;
 
-    Envelope::Generator amp_;
-    Envelope::Generator filter_;
+    Envelope::Generator gainEnvelope_;
+    Envelope::Generator modulatorEnvelope_;
 
-    LFO<double> modulator_;
-    LFO<double> vibrator_;
+    LFO<double> modulatorLFO_;
+    LFO<double> vibratoLFO_;
 
     inline static Logger log_{Logger::Make("Render", "Voice")};
 };
