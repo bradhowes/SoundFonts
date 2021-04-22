@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+// #include <iostream>
 
 namespace SF2 {
 namespace DSP {
@@ -23,9 +24,8 @@ constexpr static double HalfSquareRoot2 = 1.4142135623730951L / 2.0;
 // The value to multiply one note frequency to get the next note's frequency
 constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
-inline double centsToSeconds(int16_t v) { return pow(2.0, v / 1200.0); }
-
-inline double centsToFrequency(int16_t v) { return pow(2.0, v / 1200.0) * LowestNoteFrequency; }
+inline double centsToSeconds(double v) { return pow(2.0, v / 1200.0); }
+inline double centsToFrequency(double v) { return pow(2.0, v / 1200.0) * LowestNoteFrequency; }
 
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
@@ -85,13 +85,36 @@ template <typename T> T parabolicSine(T angle) {
     return P * y * (std::abs(y) - 1.0) + y;
 }
 
+template <typename T>
+struct PanLookup {
+    inline constexpr static size_t TableSize = 500 + 500 + 1;
+
+    static void lookup(int pan, T& left, T& right) {
+        pan = std::clamp(pan, -500, 500);
+        left = lookup_[-pan + 500];
+        right = lookup_[pan + 500];
+    }
+
+private:
+
+    inline static const std::array<T, TableSize> lookup_ = [] {
+        auto init = decltype(PanLookup::lookup_){};
+        auto scale = HalfPI / (TableSize - 1);
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = ::std::sin(scale * index);
+        }
+        return init;
+    }();
+};
+
+template <typename T> void panLookup(int pan, T& left, T& right) { PanLookup<T>::lookup(pan, left, right); }
+
 /**
  Estimate sin() value using a table of pre-calculated sin values and linear interpolation.
  */
 template <typename T>
 struct SineLookup {
     inline constexpr static size_t TableSize = 4096;
-    inline constexpr static T TableScale = (TableSize - 1) / HalfPI;
 
     static T lookup(T radians) {
         if (radians < 0.0) return -sin(-radians);
@@ -104,6 +127,8 @@ struct SineLookup {
 
 private:
 
+    inline constexpr static T TableScale = (TableSize - 1) / HalfPI;
+
     static T interpolate(T radians) {
         T phase = std::clamp(radians, 0.0, HalfPI) * TableScale;
         int index = int(phase);
@@ -115,7 +140,7 @@ private:
 
     inline static const std::array<T, TableSize> lookup_ = [] {
         auto init = decltype(SineLookup::lookup_){};
-        auto scale = 1.0 / SineLookup::TableScale;
+        auto scale = HalfPI / (init.size() - 1);
         for (auto index = 0; index < init.size(); ++index) {
             init[index] = ::std::sin(scale * index);
         }
@@ -126,12 +151,20 @@ private:
 template <typename T> T sineLookup(T radians) { return SineLookup<T>::lookup(radians); }
 
 /**
- Convert cent into frequency multiplier using a table lookup.
+ Convert cent into frequency multiplier using a table lookup. For instance, to reduce a frequency by -1200 cents means
+ to drop 1 octave which is the same as multiplying the source frequency by 0.5. In the other direction an increase of
+ 1200 cents should result in a multiplier of 2.0 to double the source frequency.
  */
 template <typename T>
 struct CentFrequencyLookup {
     inline constexpr static int MaxCentValue = 1200;
 
+    /**
+     Convert given cents value into a frequency multiplier.
+
+     @param cent the value to convert
+     @returns multiplier for a frequency that will change the frequency by the given cent value
+     */
     static T convert(int cent) { return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue]; }
 
 private:
@@ -146,7 +179,43 @@ private:
     }();
 };
 
-template <typename T> T centToFrequencyMultiplier(int cent) { return CentFrequencyLookup<T>::convert(cent); }
+template <typename T> T centToFrequencyMultiplier(int cent) {
+    return CentFrequencyLookup<T>::convert(cent);
+}
+
+/**
+ Table lookup for the centToFrequency method below.
+ */
+template <typename T>
+struct CentPartialLookup {
+    inline constexpr static int MaxCentValue = 1200;
+
+    static T find(int partial) { return lookup_[partial]; }
+
+private:
+
+    inline static const std::array<T, MaxCentValue> lookup_ = [] {
+        auto init = decltype(lookup_){};
+        for (auto index = 0; index < init.size(); ++index) {
+            init[index] = 6.875 * std::pow(2.0, double(index) / 1200.0);
+        }
+        return init;
+    }();
+};
+
+/**
+ Quickly convert cent value into a frequency using a table lookup. These calculations are taken from the Fluid Synth
+ fluid_conv.c file, in particular the fluid_ct2hz_real function. Uses CentPartialLookup above to convert values from
+ 0 - 1199 into the proper multiplier.
+ */
+template <typename T>
+T centToFrequency(double value) {
+    if (value < 0.0) return 1.0;
+    unsigned int cents = (unsigned int)(value) + 300;
+    unsigned int whole = cents / 1200;
+    unsigned int partial = cents - whole * 1200;
+    return (1u << whole) * CentPartialLookup<T>::find(partial);
+}
 
 template <typename T> T centibelsToNorm(int centibels) { return std::pow(10.0, centibels / -200.0); }
 

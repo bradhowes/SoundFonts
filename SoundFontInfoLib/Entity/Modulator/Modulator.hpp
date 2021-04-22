@@ -3,6 +3,7 @@
 #pragma once
 
 #include <array>
+#include <string>
 
 #include "Types.hpp"
 #include "IO/Pos.hpp"
@@ -42,29 +43,53 @@ public:
      Construct instance from values. Used to define default mods.
      */
     Modulator(Source modSrcOper, Generator::Index dest, int16_t amount, Source modAmtSrcOper, Transform xform) :
-    sfModSrcOper{modSrcOper}, sfModDestOper{dest}, modAmount{amount}, sfModAmtSrcOper{modAmtSrcOper},
+    sfModSrcOper{modSrcOper}, sfModDestOper{static_cast<UInt>(dest)}, modAmount{amount}, sfModAmtSrcOper{modAmtSrcOper},
     sfModTransOper{xform} {}
 
     void dump(const std::string& indent, int index) const;
 
     /// @returns the source of data for the modulator
-    Source modulatorSource() const { return sfModSrcOper; }
+    const Source& source() const { return sfModSrcOper; }
+
+    /// @returns true if this modulator is the source of a value for another modulator
+    bool hasModulatorDestination() const { return (sfModDestOper & (1 << 15)) != 0; }
+
+    /// @returns true if this modulator directly affects a generator value
+    bool hasGeneratorDestination() const { return !hasModulatorDestination(); }
 
     /// @returns the destination (generator) for the modulator
-    Generator::Index destination() const { return sfModDestOper; }
+    Generator::Index generatorDestination() const {
+        assert(hasGeneratorDestination());
+        return Generator::Index(sfModDestOper);
+    }
+
+    /// @returns the destination modulator
+    size_t linkDestination() const {
+        assert(hasModulatorDestination());
+        return size_t(sfModDestOper ^ (1 << 15));
+    }
 
     /// @returns the maximum deviation that a modulator can apply to a generator
     Int amount() const { return modAmount; }
 
     /// @returns the second source of data for the modulator
-    Source modulationAmountSource() const { return sfModAmtSrcOper; }
+    const Source& amountSource() const { return sfModAmtSrcOper; }
 
     /// @returns the transform to apply to values created by the modulator
     Transform transform() const { return sfModTransOper; }
 
+    std::string description() const;
+
+    bool operator ==(const Modulator& rhs) const {
+        return (sfModSrcOper == rhs.sfModSrcOper && sfModDestOper == rhs.sfModDestOper &&
+                sfModAmtSrcOper == rhs.sfModAmtSrcOper);
+    }
+
+    bool operator !=(const Modulator& rhs) const {  return !operator==(rhs); }
+
 private:
     Source sfModSrcOper;
-    Generator::Index sfModDestOper;
+    UInt sfModDestOper;
     Int modAmount;
     Source sfModAmtSrcOper;
     Transform sfModTransOper;

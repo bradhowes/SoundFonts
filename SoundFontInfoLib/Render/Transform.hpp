@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <array>
 
+#include "Entity/Modulator/Source.hpp"
+
 namespace SF2 {
 namespace Render {
 
@@ -23,9 +25,11 @@ public:
      - concave -- curved line that slowly increases in value and then accelerates in change until reaching 1.
      - convex -- curved line that rapidly increases in value and then decelerates in change until reaching 1.
      - switched -- emits 0 for control values <= 64, and 1 for those > 64.
+
+     NOTE: keep raw values aligned with Entity::Modulator::Source::ContinuityType.
      */
     enum struct Kind {
-        linear,
+        linear = 0,
         concave,
         convex,
         switched
@@ -51,6 +55,14 @@ public:
      @param polarity lower bound of range
      */
     Transform(Kind kind, Direction direction, Polarity polarity);
+
+    Transform(const Entity::Modulator::Source& source) :
+    Transform(Kind(source.type()),
+              source.isMinToMax() ? Direction::ascending : Direction::descending,
+              source.isUnipolar() ? Polarity::unipolar : Polarity::bipolar)
+    {
+        ;
+    }
 
     /**
      Convert a controller value.

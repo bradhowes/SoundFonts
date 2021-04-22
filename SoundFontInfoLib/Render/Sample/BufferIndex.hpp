@@ -33,6 +33,8 @@ struct BufferIndex {
         partialIncrement_ = increment - double(indexIncrement_);
     }
 
+    bool hasIncrement() const { return indexIncrement_ != 0 || partialIncrement_ != 0.0; }
+
     /**
      Increment the index to the next location. Properly handles looping and buffer end.
 

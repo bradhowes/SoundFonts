@@ -4,9 +4,16 @@
 
 #include <array>
 #include <cassert>
+#include <forward_list>
+#include <iostream>
+#include <vector>
 
+#include "Logger.hpp"
 #include "Types.hpp"
 #include "Entity/Generator/Generator.hpp"
+#include "Render/MIDI/Channel.hpp"
+#include "Render/Modulator.hpp"
+#include "Render/Voice/Values.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -36,7 +43,7 @@ public:
     };
 
     LoopingMode loopingMode() const {
-        switch (int(get(Index::sampleModes))) {
+        switch (unmodulated(Index::sampleModes)) {
             case 1: return LoopingMode::continuously;
             case 3: return LoopingMode::duringKeyPress;
             default: return LoopingMode::none;
@@ -44,14 +51,10 @@ public:
     }
 
     /**
-     Default constructor -- only used in unit tests.
-     */
-    State() : State(44100, 0, 0) {}
-
-    /**
      Mock constructor -- only used in unit tests.
      */
-    State(double sampleRate, UByte key, UByte velocity) : sampleRate_{sampleRate}, key_{key}, velocity_{velocity} {
+    State(double sampleRate, const MIDI::Channel& channel, UByte key, UByte velocity) :
+    sampleRate_{sampleRate}, channel_{channel}, key_{key}, velocity_{velocity} {
         values_.fill(0.0);
     }
 
@@ -60,54 +63,99 @@ public:
 
      @param sampleRate the sample rate of audio being rendered
      */
-    State(double sampleRate, const Setup& setup);
+    State(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
+
+    void setValue(Index index, int value) {
+        size_t pos{Entity::Generator::indexValue(index)};
+        if (values_[pos] != value) {
+            log_.debug() << "setting " <<  Entity::Generator::Definition::definition(index).name() << " = "
+            << value << std::endl;
+            values_[pos] = value;
+        }
+    }
+
+    void adjustValue(Index index, int value) {
+        log_.debug() << "adjusting " <<  Entity::Generator::Definition::definition(index).name() << " by "
+        << value << std::endl;
+        values_[Entity::Generator::indexValue(index)] += value;
+    }
 
     /**
-     Obtain a specific generator value.
+     Obtain a generator value after applying any registered modulators to it.
 
      @param index the index of the generator
      @returns current value of the generator
      */
-    double operator[](Index index) const { return values_[Entity::Generator::indexValue(index)]; }
+    double modulated(Index index) const {
+        double value = values_[Entity::Generator::indexValue(index)];
+        for (const auto& mod : valueModulators_[indexValue(index)]) {
+            value += mod.get().value();
+        }
+        return value;
+    }
 
     /**
-     Writeable reference to generator value.
+     Obtain a generator value without any modulation applied to it. This is the original result from the zone generator
+     definitions. Most of the time, the `modulated` method is what is desired in order to account for any MIDI
+     controller values.
 
      @param index the index of the generator
-     @returns reference to current value of the generator
+     @returns current value of the generator
      */
-    double& operator[](Index index) { return values_[Entity::Generator::indexValue(index)]; }
+    int unmodulated(Index index) const { return values_[indexValue(index)]; }
 
     /// @returns sample rate defined at construction
     double sampleRate() const { return sampleRate_; }
 
-    /// @returns baae pitch to generate when rendering (unmodulated)
+    /// @returns fundamental pitch to generate when rendering
     double pitch() const {
-        auto forced = get(Index::forcedMIDIKey);
-        auto value = (forced >= 0) ? forced : key_;
-        auto coarseTune = get(Index::coarseTune);
-        auto fineTune = get(Index::fineTune);
+        auto forced = unmodulated(Index::forcedMIDIKey);
+        auto value = (forced >= 0) ? forced : key_;     // MIDI key is in semitones
+        auto coarseTune = modulated(Index::coarseTune); // semitones
+        auto fineTune = modulated(Index::fineTune);     // cents (1/100th of a semitone)
         return value + coarseTune + fineTune / 100.0;
     }
 
     /// @returns key velocity to use when calculating attenuation
-    double velocity() const {
-        auto value = get(Index::forcedMIDIVelocity);
+    int velocity() const {
+        auto value = unmodulated(Index::forcedMIDIVelocity);
         return (value >= 0) ? value : velocity_;
     }
 
-private:
-
-    void setRaw(Index  index, int raw) {
-        (*this)[index] = Definition::definition(index).convertedValueOf(Amount(raw));
+    /// @returns key value to use
+    int key() const {
+        auto value = unmodulated(Index::forcedMIDIKey);
+        return (value >= 0) ? value : key_;
     }
 
-    double get(Index index) const { return (*this)[index]; }
+    void addModulator(const Entity::Modulator::Modulator& modulator);
 
-    std::array<double, static_cast<size_t>(Index::numValues)> values_;
+    const MIDI::Channel& channel() const { return channel_; }
+
+private:
+
+    static size_t indexValue(Index index) { return static_cast<size_t>(index); }
+
+    const MIDI::Channel& channel_;
+
+    using ValueArray = std::array<int, static_cast<size_t>(Index::numValues)>;
+
+    /// Collection of generator values that were set by zones.
+    ValueArray values_;
+
+    using ModulatorLinkedList = std::forward_list<std::reference_wrapper<Render::Modulator const>>;
+    using ValueModulatorArray = std::array<ModulatorLinkedList, static_cast<size_t>(Index::numValues)>;
+
+    /// Collection of modulator lists that affect a given generator value during runtime.
+    ValueModulatorArray valueModulators_;
+
     double sampleRate_;
     UByte key_;
     UByte velocity_;
+
+    std::vector<Modulator> modulators_;
+
+    inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };
 
 } // namespace Voice

@@ -5,12 +5,16 @@
 #include "Logger.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
+#include "Render/Modulator.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
 #include "Render/Sample/Generator.hpp"
 #include "Render/Voice/State.hpp"
 
 namespace SF2 {
 namespace Render {
+
+namespace MIDI { class Channel; }
+
 namespace Voice {
 
 class Setup;
@@ -22,7 +26,7 @@ class Voice
 {
 public:
 
-    Voice(double sampleRate, const Setup& setup);
+    Voice(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
 
     void keyReleased() {
         gainEnvelope_.gate(false);
@@ -50,10 +54,15 @@ public:
         //
         auto amplitudeGain = gainEnvelope_.process();
         auto modulatorGain = modulatorEnvelope_.process();
-        auto modulatorValue = modulatorLFO_.valueAndIncrement();
+
+        auto lfoValue = modulatorLFO_.valueAndIncrement();
         auto vibratoValue = vibratoLFO_.valueAndIncrement();
 
-        return sampleGenerator_.generate(canLoop()) * amplitudeGain;
+        auto pitchAdjustment = (modulatorGain * state_.modulated(Entity::Generator::Index::modulatorEnvelopeToPitch) +
+                                lfoValue * state_.modulated(Entity::Generator::Index::modulatorLFOToPitch) +
+                                vibratoValue * state_.modulated(Entity::Generator::Index::vibratoLFOToPitch));
+
+        return sampleGenerator_.generate(pitchAdjustment, canLoop()) * amplitudeGain;
     }
 
 private:

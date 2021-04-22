@@ -8,16 +8,6 @@ using namespace SF2::Render;
 
 int const Transform::MaxMIDIControllerValue;
 
-const Transform::TransformArrayType& Transform::selectActive(Kind kind, Direction direction)
-{
-    switch (kind) {
-        case Kind::linear: return direction == Direction::ascending ? positiveLinear_ : negativeLinear_; break;
-        case Kind::concave: return direction == Direction::ascending ? positiveConcave_ : negativeConcave_; break;
-        case Kind::convex: return direction == Direction::ascending ? positiveConvex_ : negativeConvex_; break;
-        case Kind::switched: return direction == Direction::ascending ? positiveSwitched_ : negativeSwitched_; break;
-    }
-}
-
 Transform::Transform(Kind kind, Direction direction, Polarity polarity)
 : active_{selectActive(kind, direction)}, polarity_{polarity}
 {}
@@ -97,3 +87,13 @@ Transform::TransformArrayType const Transform::negativeSwitched_ = [] {
     }
     return init;
 }();
+
+const Transform::TransformArrayType& Transform::selectActive(Kind kind, Direction direction)
+{
+    switch (kind) {
+        case Kind::linear: return direction == Direction::ascending ? positiveLinear_ : negativeLinear_; break;
+        case Kind::concave: return direction == Direction::ascending ? positiveConcave_ : negativeConcave_; break;
+        case Kind::convex: return direction == Direction::ascending ? positiveConvex_ : negativeConvex_; break;
+        case Kind::switched: return direction == Direction::ascending ? positiveSwitched_ : negativeSwitched_; break;
+    }
+}

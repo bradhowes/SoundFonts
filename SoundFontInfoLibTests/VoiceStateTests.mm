@@ -5,9 +5,10 @@
 #import <XCTest/XCTest.h>
 #import <SF2Files/SF2Files-Swift.h>
 
-#include "Entity/Generator/Index.hpp"
-#include "Render/Preset.hpp"
-#include "Render/Voice/State.hpp"
+#import "Entity/Generator/Index.hpp"
+#import "Render/MIDI/Channel.hpp"
+#import "Render/Preset.hpp"
+#import "Render/Voice/State.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;
@@ -26,32 +27,32 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
     int fd = ::open(url.path.UTF8String, O_RDONLY);
     auto file = IO::File(fd, fileSize);
 
+    MIDI::Channel channel;
     InstrumentCollection instruments(file);
     Preset preset(file, instruments, file.presets()[0]);
     auto found = preset.find(69, 64);
 
-    double epsilon = 0.000001;
-    Voice::State state{44100, found[0]};
+    Voice::State state{44100, channel, found[0]};
 
-    XCTAssertEqual(0, state[Index::startAddressOffset]);
-    XCTAssertEqual(0, state[Index::endAddressOffset]);
-    XCTAssertEqualWithAccuracy(1499.77085765, state[Index::initialFilterCutoff], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::delayModulatorLFO], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::delayVibratoLFO], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::attackModulatorEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::holdModulatorEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::decayModulatorEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::releaseModulatorEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::delayVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::attackVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::holdVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(0.0009765625, state[Index::decayVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(3.25088682907, state[Index::releaseVolumeEnvelope], epsilon);
+    XCTAssertEqual(0, state.unmodulated(Index::startAddressOffset));
+    XCTAssertEqual(0, state.unmodulated(Index::endAddressOffset));
+    XCTAssertEqual(9023, state.unmodulated(Index::initialFilterCutoff));
+    XCTAssertEqual(-12000, state.unmodulated(Index::delayModulatorLFO));
+    XCTAssertEqual(-12000, state.unmodulated(Index::delayVibratoLFO));
+    XCTAssertEqual(-12000, state.unmodulated(Index::attackModulatorEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::holdModulatorEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::decayModulatorEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::releaseModulatorEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::delayVolumeEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::attackVolumeEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::holdVolumeEnvelope));
+    XCTAssertEqual(-12000, state.unmodulated(Index::decayVolumeEnvelope));
+    XCTAssertEqual(2041, state.unmodulated(Index::releaseVolumeEnvelope));
 
-    XCTAssertEqual(-1, state[Index::forcedMIDIKey]);
-    XCTAssertEqual(-1, state[Index::forcedMIDIVelocity]);
-    XCTAssertEqual(100, state[Index::scaleTuning]);
-    XCTAssertEqual(-1, state[Index::overridingRootKey]);
+    XCTAssertEqual(-1, state.unmodulated(Index::forcedMIDIKey));
+    XCTAssertEqual(-1, state.unmodulated(Index::forcedMIDIVelocity));
+    XCTAssertEqual(100, state.unmodulated(Index::scaleTuning));
+    XCTAssertEqual(-1, state.unmodulated(Index::overridingRootKey));
 }
 
 @end

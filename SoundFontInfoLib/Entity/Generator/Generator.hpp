@@ -41,7 +41,7 @@ public:
 
     double value() const { return definition().valueOf(amount_); }
 
-    double convertedValue() const { return definition().convertedValueOf(amount_); }
+    // double convertedValue() const { return definition().convertedValueOf(amount_); }
 
 private:
     RawIndex index_;

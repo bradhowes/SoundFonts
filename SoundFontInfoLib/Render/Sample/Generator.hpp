@@ -11,6 +11,7 @@
 #include "Render/DSP.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/Sample/PitchControl.hpp"
 #include "Render/Sample/Bounds.hpp"
 #include "Render/Voice/State.hpp"
 
@@ -44,7 +45,6 @@ public:
     samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},
     sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{} {
         samples.load();
-        calculateIndexIncrement();
     }
 
     /**
@@ -52,11 +52,15 @@ public:
 
      @returns new sample value
      */
-    T generate(bool canLoop) {
+    T generate(double pitchAdjustment, bool canLoop) {
+        PitchControl pitchControl{state_};
         auto index = bufferIndex_.index();
         if (index >= bounds_.endIndex()) return 0.0;
         auto partial = bufferIndex_.partial();
+
+        calculateIndexIncrement(pitchAdjustment);
         bufferIndex_.increment(bounds_, canLoop);
+
         switch (interpolator_) {
             case Interpolator::linear: return linearInterpolate(index, partial, canLoop);
             case Interpolator::cubic4thOrder: return cubic4thOrderInterpolate(index, partial, canLoop);
@@ -65,7 +69,9 @@ public:
 
 private:
 
-    void calculateIndexIncrement() {
+    void calculateIndexIncrement(double pitchAdjustment) {
+        if (pitchAdjustment == lastPitchAdjustment_ && bufferIndex_.hasIncrement()) return;
+        lastPitchAdjustment_ = pitchAdjustment;
         double frequencyRatio = double(std::pow(2.0, (state_.pitch() - samples_.header().originalMIDIKey()) / 12.0));
         double increment = sampleRateRatio_ * frequencyRatio;
         bufferIndex_.setIncrement(increment);
@@ -118,6 +124,7 @@ private:
     Bounds bounds_;
     BufferIndex bufferIndex_;
     double sampleRateRatio_;
+    double lastPitchAdjustment_{0.0};
 };
 
 } // namespace Sample

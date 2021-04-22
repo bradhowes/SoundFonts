@@ -6,6 +6,7 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #include "IO/File.hpp"
+#include "Render/MIDI/Channel.hpp"
 #include "Render/Preset.hpp"
 #include "Render/Voice/Setup.hpp"
 #include "Render/Voice/State.hpp"
@@ -22,7 +23,6 @@ using namespace SF2::Render;
 @implementation InstrumentTests
 
 - (void)testRolandPianoInstrument {
-    double epsilon = 0.000001;
     NSURL* url = [urls objectAtIndex:3];
     uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
@@ -43,17 +43,18 @@ using namespace SF2::Render;
     Preset preset(file, instruments, file.presets()[0]);
     auto found = preset.find(64, 64);
 
-    Voice::State left{44100.0, found[0]};
-    XCTAssertEqual(-50, left[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.25088682907, left[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(1499.77085765, left[Entity::Generator::Index::initialFilterCutoff], epsilon);
-    XCTAssertEqual(23, left[Entity::Generator::Index::sampleID]);
+    MIDI::Channel channel;
+    Voice::State left{44100.0, channel, found[0]};
+    XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
+    XCTAssertEqual(2041, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
+    XCTAssertEqual(9023, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
+    XCTAssertEqual(23, left.unmodulated(Entity::Generator::Index::sampleID));
 
-    Voice::State right{44100.0, found[1]};
-    XCTAssertEqual(50, right[Entity::Generator::Index::pan]);
-    XCTAssertEqualWithAccuracy(3.25088682907, right[Entity::Generator::Index::releaseVolumeEnvelope], epsilon);
-    XCTAssertEqualWithAccuracy(1499.77085765, right[Entity::Generator::Index::initialFilterCutoff], epsilon);
-    XCTAssertEqual(22, right[Entity::Generator::Index::sampleID]);
+    Voice::State right{44100.0, channel, found[1]};
+    XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
+    XCTAssertEqual(2041, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
+    XCTAssertEqual(9023, right.unmodulated(Entity::Generator::Index::initialFilterCutoff));
+    XCTAssertEqual(22, right.unmodulated(Entity::Generator::Index::sampleID));
 }
 
 @end

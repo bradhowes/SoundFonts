@@ -3,7 +3,7 @@
 #pragma once
 
 #include <cmath>
-#include <cstdlib>
+#include <iosfwd>
 
 namespace SF2 {
 namespace Entity {
@@ -15,7 +15,7 @@ namespace Modulator {
  - linear: value is used as-is
  - absolute: negative values are made positive before being used
 
- Currently, the 10 default modulators only use `linear`.
+ Currently, the default modulators all use `linear`.
  */
 class Transform {
 public:
@@ -55,9 +55,7 @@ public:
         }
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const Transform& value) {
-        return os << (value.kind() == Kind::linear ? "linear" : "absolute");
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Transform& value);
 
 private:
     const uint16_t bits_;

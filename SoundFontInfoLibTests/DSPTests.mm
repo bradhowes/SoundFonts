@@ -52,6 +52,37 @@ using namespace SF2::DSP;
     XCTAssertEqual(bipolarToUnipolar(1.0), 1.0);
 }
 
+- (void)testPanLookup {
+    double left, right;
+
+    SF2::DSP::panLookup<double>(-501, left, right);
+    XCTAssertEqualWithAccuracy(1.0, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.0, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(-500, left, right);
+    XCTAssertEqualWithAccuracy(1.0, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.0, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(-100, left, right);
+    XCTAssertEqualWithAccuracy(0.809016994375, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.587785252292, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(0, left, right);
+    XCTAssertEqualWithAccuracy(left, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(100, left, right);
+    XCTAssertEqualWithAccuracy(0.587785252292, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.809016994375, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(500, left, right);
+    XCTAssertEqualWithAccuracy(0.0, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, right, self.epsilon);
+
+    SF2::DSP::panLookup<double>(501, left, right);
+    XCTAssertEqualWithAccuracy(0.0, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, right, self.epsilon);
+}
+
 - (void)testParabolicSineAccuracy {
     for (int index = 0; index < 360.0; ++index) {
         auto theta = 2.0 * M_PI * index / 360.0 - M_PI;
@@ -79,6 +110,19 @@ using namespace SF2::DSP;
     XCTAssertEqualWithAccuracy(0.5, centToFrequencyMultiplier<double>(-1200), self.epsilon); // -1200 = 1/2x
     XCTAssertEqualWithAccuracy(1.0, centToFrequencyMultiplier<double>(0), self.epsilon); // 0 = 1x
     XCTAssertEqualWithAccuracy(2.0, centToFrequencyMultiplier<double>(1200), self.epsilon); // +1200 = 2x
+}
+
+- (void)testCentToFrequency {
+    XCTAssertEqualWithAccuracy(27.5, centToFrequency<double>(2100), self.epsilon); // A0
+    XCTAssertEqualWithAccuracy(55.0, centToFrequency<double>(3300), self.epsilon); // A1
+    XCTAssertEqualWithAccuracy(110.0, centToFrequency<double>(4500), self.epsilon); // A2
+    XCTAssertEqualWithAccuracy(220.0, centToFrequency<double>(5700), self.epsilon); // A3
+    XCTAssertEqualWithAccuracy(329.627556913, centToFrequency<double>(6400), self.epsilon); // C4
+    XCTAssertEqualWithAccuracy(440.0, centToFrequency<double>(6900), self.epsilon); // A4
+    XCTAssertEqualWithAccuracy(880.0, centToFrequency<double>(8100), self.epsilon); // A5
+    XCTAssertEqualWithAccuracy(1760.0, centToFrequency<double>(9300), self.epsilon); // A6
+    XCTAssertEqualWithAccuracy(3520.0, centToFrequency<double>(10500), self.epsilon); // A7
+    XCTAssertEqualWithAccuracy(4186.00904481, centToFrequency<double>(10800), self.epsilon); // C8
 }
 
 - (void)testCentibelsToAttenuation {
