@@ -37,11 +37,10 @@ public:
     /// @returns the name of the generator
     const std::string& name() const { return definition().name(); }
 
+    /// @returns the configured value of a generator
+    int value() const { return definition().valueOf(amount_); }
+
     void dump(const std::string& indent, int index) const;
-
-    double value() const { return definition().valueOf(amount_); }
-
-    // double convertedValue() const { return definition().convertedValueOf(amount_); }
 
 private:
     RawIndex index_;

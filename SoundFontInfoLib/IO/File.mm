@@ -75,7 +75,7 @@ File::File(int fd, size_t fileSize)
     sampleBuffers_.reserve(sampleHeaders_.size());
     for (auto index = 0; index < sampleHeaders_.size(); ++index) {
         auto const& header = sampleHeaders_[index];
-        sampleBuffers_.emplace_back(sampleData_, header);
+        sampleBuffers_.emplace_back(sampleData_.get(), header);
     }
 }
 

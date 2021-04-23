@@ -3,6 +3,7 @@
 #pragma once
 
 #include <fstream>
+#include <memory>
 #include <vector>
 
 #include "Logger.hpp"
@@ -84,8 +85,9 @@ public:
      */
     const Render::Sample::CanonicalBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
-    void dump() const;
     void dumpThreaded() const;
+
+    void dump() const;
 
 private:
     int fd_;
@@ -117,7 +119,7 @@ private:
 
     std::vector<Render::Sample::CanonicalBuffer<AUValue>> sampleBuffers_;
 
-    const Int* sampleData_;
+    std::shared_ptr<Int> sampleData_;
 
     inline static Logger log_{Logger::Make("IO", "File")};
 };

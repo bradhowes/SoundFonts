@@ -12,4 +12,3 @@ Instrument::dump(const std::string& indent, int index) const
     std::cout << indent << '[' << index << "] '" << name() << "' zoneIndex: " << firstZoneIndex()
     << " count: " << zoneCount() << std::endl;
 }
-

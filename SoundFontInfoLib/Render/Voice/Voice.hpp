@@ -26,20 +26,33 @@ class Voice
 {
 public:
 
+    /**
+     Construct a new voice renderer.
+
+     @param sampleRate the sample rate to use for generating audio
+     @param channel the MIDI state associated with the renderer
+     @param setup the zones to apply to build the generator state
+     */
     Voice(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
 
+    /**
+     Signal the envelopes that the key is no longer pressed, transitioning to release phase.
+     */
     void keyReleased() {
         gainEnvelope_.gate(false);
         modulatorEnvelope_.gate(false);
     }
 
+    /// @returns true if this voice is still rendering interesting samples
     bool isActive() const { return gainEnvelope_.isActive(); }
 
+    /// @returns true if the voice can enter a loop if it is available
     bool canLoop() const {
         return (loopingMode_ == State::continuously ||
                 (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated()));
     }
 
+    /// @returns renders a sample
     AUValue render() {
         if (!isActive()) return 0.0;
 

@@ -30,7 +30,7 @@ public:
      @param samples pointer to the first 16-bit sample in the SF2 file
      @param header defines the range of samples to use for a sound
      */
-    CanonicalBuffer(const int16_t* samples, const Entity::SampleHeader& header) :
+    CanonicalBuffer(const Int* samples, const Entity::SampleHeader& header) :
     samples_{}, header_{header}, allSamples_{samples} {}
 
     /**
@@ -82,7 +82,7 @@ private:
 
     mutable std::vector<T> samples_;
     const Entity::SampleHeader& header_;
-    const int16_t* allSamples_;
+    const Int* allSamples_;
     inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};
 };
 

@@ -64,15 +64,13 @@ public:
     /// @returns true if the generator amount value is unsigned or signed
     bool isUnsignedValue() const { return valueKind_ < ValueKind::signedShort; }
 
-    void dump(const Amount& amount) const;
-
     /**
      Obtain the value from a generator Amount instance. Properly handles unsigned integer values.
 
      @param amount the container holding the value to extract
      @returns extracted value
      */
-    double valueOf(const Amount& amount) const {
+    int valueOf(const Amount& amount) const {
         return isUnsignedValue() ? amount.unsignedAmount() : amount.signedAmount();
     }
 
@@ -98,6 +96,8 @@ public:
             default: return valueOf(amount);
         }
     }
+
+    void dump(const Amount& amount) const;
 
 private:
     static std::array<Definition, NumDefs> const definitions_;

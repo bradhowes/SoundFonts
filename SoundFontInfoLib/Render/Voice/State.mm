@@ -12,8 +12,8 @@ using namespace SF2::Render::Voice;
 State::State(double sampleRate, const MIDI::Channel& channel, const Setup& setup) :
 values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, velocity_{setup.velocity()}
 {
-    values_.fill(0.0);
-
+    // (1) Initialize to default values
+    values_.fill(0);
     setValue(Index::initialFilterCutoff, 13500);
     setValue(Index::delayModulatorLFO, -12000);
     setValue(Index::delayVibratoLFO, -12000);
@@ -32,10 +32,10 @@ values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, veloci
     setValue(Index::scaleTuning, 100);
     setValue(Index::overridingRootKey, -1);
 
-    // Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
+    // (2) Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
     setup.apply(*this);
 
-    // Now finish configuring the modulators by resolving any links between them.
+    // (3) Now finish configuring the modulators by resolving any links between them.
     for (const auto& modulator : modulators_) {
         if (modulator.configuration().hasModulatorDestination()) {
             for (auto& destination : modulators_) {

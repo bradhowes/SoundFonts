@@ -25,6 +25,8 @@ public:
      @param presetGlobal the global PresetZone to apply (optional -- nullptr if no global)
      @param instrumentZone the InstrumentZone that matched a key/velocity search
      @param instrumentGlobal the global InstrumentZone to apply (optional -- nullptr if no global)
+     @param key the MIDI key that triggered the rendering
+     @param velocity the MIDI velocity that triggered the rendering
      */
     Setup(const PresetZone& presetZone, const PresetZone* presetGlobal,
           const InstrumentZone& instrumentZone, const InstrumentZone* instrumentGlobal,

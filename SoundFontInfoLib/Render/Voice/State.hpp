@@ -35,20 +35,18 @@ public:
     using Index = Entity::Generator::Index;
     using Definition = Entity::Generator::Definition;
 
-    // These are values for the sampleModes (#54) generator.
+    /**
+     These are values for the sampleModes (#54) generator.
+
+     - none -- rendering does not loop
+     - continuously -- loop as long as the envelope allows
+     - duringKeyPress -- loop only while they key is down
+     */
     enum LoopingMode {
         none = 0,
         continuously = 1,
         duringKeyPress = 3
     };
-
-    LoopingMode loopingMode() const {
-        switch (unmodulated(Index::sampleModes)) {
-            case 1: return LoopingMode::continuously;
-            case 3: return LoopingMode::duringKeyPress;
-            default: return LoopingMode::none;
-        }
-    }
 
     /**
      Mock constructor -- only used in unit tests.
@@ -65,6 +63,12 @@ public:
      */
     State(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
 
+    /**
+     Set a generator value.
+
+     @param index the generator to set
+     @param value the value to use
+     */
     void setValue(Index index, int value) {
         size_t pos{Entity::Generator::indexValue(index)};
         if (values_[pos] != value) {
@@ -74,6 +78,21 @@ public:
         }
     }
 
+    /// @returns looping mode of the sample being rendered
+    LoopingMode loopingMode() const {
+        switch (unmodulated(Index::sampleModes)) {
+            case 1: return LoopingMode::continuously;
+            case 3: return LoopingMode::duringKeyPress;
+            default: return LoopingMode::none;
+        }
+    }
+
+    /**
+     Modify a generator value. Adds the given value to the current generator value.
+
+     @param index the generator to modify
+     @param value the value to use
+     */
     void adjustValue(Index index, int value) {
         log_.debug() << "adjusting " <<  Entity::Generator::Definition::definition(index).name() << " by "
         << value << std::endl;
@@ -128,8 +147,14 @@ public:
         return (value >= 0) ? value : key_;
     }
 
+    /**
+     Install a modulator.
+
+     @param modulator the modulator to install
+     */
     void addModulator(const Entity::Modulator::Modulator& modulator);
 
+    /// @returns the MIDI channel state associated with the rendering
     const MIDI::Channel& channel() const { return channel_; }
 
 private:

@@ -55,7 +55,6 @@ struct Logger {
     std::ostream& fault() { return getStream(OS_LOG_TYPE_FAULT); }
 
 private:
-private:
 
     Logger(os_log_t log) :
     log_{log},

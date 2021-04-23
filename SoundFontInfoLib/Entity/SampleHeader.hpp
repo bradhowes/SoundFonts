@@ -42,27 +42,40 @@ public:
     : dwStart{start}, dwEnd{end}, dwStartLoop{loopBegin}, dwEndLoop{loopEnd}, dwSampleRate{sampleRate},
     originalKey{key}, correction{adjustment} {}
 
+    /// @returns true if this sample only has one channel
     bool isMono() const { return (sampleType & monoSample) == monoSample; }
-    bool isRight() const { return (sampleType & rightSample) == rightSample; }
-    bool isLeft() const { return (sampleType & leftSample) == leftSample; }
-    bool isROM() const { return (sampleType & rom) == rom; }
 
-    void dump(const std::string& indent, int index) const;
+    /// @returns true if these samples generate for the right channel
+    bool isRight() const { return (sampleType & rightSample) == rightSample; }
+
+    /// @returns true if these samples generate for the left channel
+    bool isLeft() const { return (sampleType & leftSample) == leftSample; }
+
+    /// @returns true if samples come from a ROM
+    bool isROM() const { return (sampleType & rom) == rom; }
 
     /// @returns the index of the first sample
     size_t startIndex() const { return dwStart; }
+
     /// @returns index + 1 of the last sample. According to spec, this is first of 46 0.0 values after the last sample
     size_t endIndex() const { return dwEnd; }
+
     /// @returns index of the first sample in a loop.
     size_t startLoopIndex() const { return dwStartLoop; }
+
     /// @returns index of the last + 1 of a sample in a loop.
     size_t endLoopIndex() const { return dwEndLoop; }
+
     /// @returns the sample rate used to record the samples in the SF2 file
     size_t sampleRate() const { return dwSampleRate; }
+
     /// @returns the MIDI key (frequency) for the source samples
     Int originalMIDIKey() const { return originalKey; }
+
     /// @returns the pitch correction to apply when playing back the samples
     Int pitchCorrection() const { return correction; }
+
+    void dump(const std::string& indent, int index) const;
 
 private:
     std::string sampleTypeDescription() const;

@@ -46,8 +46,6 @@ public:
     sfModSrcOper{modSrcOper}, sfModDestOper{static_cast<UInt>(dest)}, modAmount{amount}, sfModAmtSrcOper{modAmtSrcOper},
     sfModTransOper{xform} {}
 
-    void dump(const std::string& indent, int index) const;
-
     /// @returns the source of data for the modulator
     const Source& source() const { return sfModSrcOper; }
 
@@ -86,6 +84,8 @@ public:
     }
 
     bool operator !=(const Modulator& rhs) const {  return !operator==(rhs); }
+
+    void dump(const std::string& indent, int index) const;
 
 private:
     Source sfModSrcOper;

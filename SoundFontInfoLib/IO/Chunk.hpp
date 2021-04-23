@@ -3,6 +3,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 
 #include "Types.hpp"
 #include "IO/Format.hpp"
@@ -81,9 +82,14 @@ public:
         return std::string(buffer);
     }
 
-    const Int* extractSamples() const {
-        auto buffer = new Int[size() / sizeof(Int)];
-        begin().readInto((void*)buffer, size());
+    /**
+     Read samples into a new buffer.
+
+     @returns new buffer containing the 16-bit audio samples
+     */
+    std::shared_ptr<Int> extractSamples() const {
+        auto buffer = std::shared_ptr<Int>(new Int[size() / sizeof(Int)]);
+        begin().readInto((void*)buffer.get(), size());
         return buffer;
     }
 
