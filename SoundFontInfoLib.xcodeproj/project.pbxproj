@@ -11,8 +11,9 @@
 		BD1AA068262EE91100AD3823 /* Values.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD1AA067262EE91100AD3823 /* Values.hpp */; };
 		BD1AA06C262EEE2900AD3823 /* ValuesTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA06B262EEE2900AD3823 /* ValuesTests.mm */; };
 		BD1AA07226317EBA00AD3823 /* Modulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA07126317EBA00AD3823 /* Modulator.mm */; };
+		BD1AA0782632C4EB00AD3823 /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA0772632C4EB00AD3823 /* ModulatorTests.mm */; };
 		BD250BA92615A45E00D1C1E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD250BA82615A45E00D1C1E0 /* README.md */; };
-		BD250BD72615E5E900D1C1E0 /* ModulatorSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */; };
+		BD250BD72615E5E900D1C1E0 /* EntityModulatorSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BD62615E5E900D1C1E0 /* EntityModulatorSourceTests.mm */; };
 		BD250BDB2615FD7400D1C1E0 /* Modulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BDA2615FD7400D1C1E0 /* Modulator.mm */; };
 		BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */; };
 		BD250C82261A126000D1C1E0 /* Types.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C81261A126000D1C1E0 /* Types.hpp */; };
@@ -98,8 +99,9 @@
 		BD1AA067262EE91100AD3823 /* Values.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Values.hpp; sourceTree = "<group>"; };
 		BD1AA06B262EEE2900AD3823 /* ValuesTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValuesTests.mm; sourceTree = "<group>"; };
 		BD1AA07126317EBA00AD3823 /* Modulator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Modulator.mm; sourceTree = "<group>"; };
+		BD1AA0772632C4EB00AD3823 /* ModulatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorTests.mm; sourceTree = "<group>"; };
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/README.md; sourceTree = "<group>"; };
-		BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorSourceTests.mm; sourceTree = "<group>"; };
+		BD250BD62615E5E900D1C1E0 /* EntityModulatorSourceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EntityModulatorSourceTests.mm; sourceTree = "<group>"; };
 		BD250BDA2615FD7400D1C1E0 /* Modulator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Modulator.mm; path = SoundFontInfoLib/Entity/Modulator/Modulator.mm; sourceTree = SOURCE_ROOT; };
 		BD250BE226163F7D00D1C1E0 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
 		BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderUtilsTests.mm; sourceTree = "<group>"; };
@@ -318,7 +320,8 @@
 				BD62BA4A261CB7890052FB7A /* LFOTests.mm */,
 				BDEB129B26249AC8003CE8EE /* MIDITests.mm */,
 				BD1AA063262DA20600AD3823 /* MIDIChannel.mm */,
-				BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */,
+				BD250BD62615E5E900D1C1E0 /* EntityModulatorSourceTests.mm */,
+				BD1AA0772632C4EB00AD3823 /* ModulatorTests.mm */,
 				BD5E16FA261EEDA4007BAA38 /* NoteTests.mm */,
 				BDEB127B26234100003CE8EE /* PresetTests.mm */,
 				BD5E1714261F17A0007BAA38 /* RangeTests.mm */,
@@ -630,11 +633,12 @@
 				BDB2662725323FE7005BEAD1 /* SFFileTests.swift in Sources */,
 				BDEB127426232C3C003CE8EE /* InstrumentTests.mm in Sources */,
 				BD62BA4B261CB78A0052FB7A /* LFOTests.mm in Sources */,
+				BD1AA0782632C4EB00AD3823 /* ModulatorTests.mm in Sources */,
 				BD2AEE4F24F7E2AA009EAABE /* GeneratorAmountTests.mm in Sources */,
 				BD62BA70261DC5F20052FB7A /* SampleBufferTests.mm in Sources */,
 				BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */,
 				BD5E1715261F17A0007BAA38 /* RangeTests.mm in Sources */,
-				BD250BD72615E5E900D1C1E0 /* ModulatorSourceTests.mm in Sources */,
+				BD250BD72615E5E900D1C1E0 /* EntityModulatorSourceTests.mm in Sources */,
 				BDEB129C26249AC8003CE8EE /* MIDITests.mm in Sources */,
 				BDEB127C26234100003CE8EE /* PresetTests.mm in Sources */,
 				BDEB129026244A79003CE8EE /* ChunkTests.mm in Sources */,

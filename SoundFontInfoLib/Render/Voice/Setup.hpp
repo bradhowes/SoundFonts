@@ -41,11 +41,12 @@ public:
      */
     void apply(State& state) const {
 
-        // Instrument zones first to set absolute values
+        // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
+        // their settings.
         if (instrumentGlobal_ != nullptr) instrumentGlobal_->apply(state);
         instrumentZone_.apply(state);
 
-        // Preset values to refine those from instrument
+        // According to spec, a preset global should only be applied iff there is NOT a preset generator.
         if (presetGlobal_ != nullptr) presetGlobal_->refine(state);
         presetZone_.refine(state);
     }

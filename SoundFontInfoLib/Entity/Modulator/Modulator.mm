@@ -8,7 +8,7 @@
 
 using namespace SF2::Entity::Modulator;
 
-std::array<Modulator, 10> const Modulator::defaults {
+std::array<Modulator, Modulator::size> const Modulator::defaults {
     // MIDI key velocity to initial attenuation
     Modulator(Source(0x0502), Generator::Index::initialAttenuation, 960, Source(0), Transform(0)),
     // MIDI key velocity to initial filter cutoff
@@ -17,8 +17,8 @@ std::array<Modulator, 10> const Modulator::defaults {
     Modulator(Source(0x000D), Generator::Index::vibratoLFOToPitch, 50, Source(0), Transform(0)),
     // MIDI CC 1 to vibrato LFO pitch depth
     Modulator(Source(0x0081), Generator::Index::vibratoLFOToPitch, 50, Source(0), Transform(0)),
-    // MIDI CC 7 to initial attenuation
-    Modulator(Source(0x0582), Generator::Index::initialAttenuation, 960, Source(0), Transform(0)),
+    // MIDI CC 7 to initial attenuation (NOTE spec uses 0x0582 which gives CC 2)
+    Modulator(Source(0x0587), Generator::Index::initialAttenuation, 960, Source(0), Transform(0)),
     // MIDI CC 10 to pan position
     Modulator(Source(0x028A), Generator::Index::pan, 1000, Source(0), Transform(0)),
     // MIDI CC 11 to initial attenuation
@@ -41,8 +41,7 @@ std::string
 Modulator::description() const
 {
     std::ostringstream os;
-    os << "src: " << sfModSrcOper
-    << " dest: ";
+    os << "Sv: " << sfModSrcOper << " Av: " << sfModAmtSrcOper << " dest: ";
     if (hasModulatorDestination()) {
         os << "mod[" << linkDestination() << "]";
     }
@@ -50,6 +49,7 @@ Modulator::description() const
         os << Generator::Definition::definition(generatorDestination()).name();
     }
 
-    os << " amount: " << modAmount << " op: " << sfModAmtSrcOper << " xform: " << sfModTransOper;
+    os << " amount: " << modAmount << " trans: " << transform();
+
     return os.str();
 }

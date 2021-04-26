@@ -92,18 +92,19 @@ protected:
     }
 
     /**
-     Apply the zone to the given voice state by using the value from the generator in the zone. This should only be used
-     for instrument zones.
+     Apply the instrument zone to the given voice state.
 
      @param state the voice state to update
      */
     void apply(Voice::State& state) const
     {
+        // Generator state settings
         std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
             log_.debug() << "setting " << generator.name() << " = " << generator.value() << std::endl;
             state.setValue(generator.index(), generator.value());
         });
 
+        // Modulator definitions
         std::for_each(modulators_.begin(), modulators_.end(), [&](const Entity::Modulator::Modulator& modulator) {
             log_.debug() << "adding mod " << modulator.description() << std::endl;
             state.addModulator(modulator);

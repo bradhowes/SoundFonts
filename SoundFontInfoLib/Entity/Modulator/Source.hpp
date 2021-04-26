@@ -18,7 +18,6 @@ namespace Modulator {
  - MIDI continuous controller (CC)
 
  The type is defined by the CC flag (bit 7).
-
  */
 class Source {
 public:
@@ -54,7 +53,7 @@ public:
 
     /// @returns true if the source is valid
     bool isValid() const {
-        if (rawType() >= 4) return false;
+        if (rawType() > static_cast<uint16_t>(ContinuityType::switched)) return false;
         auto idx = rawIndex();
         if (isContinuousController()) {
             return !(idx == 0 || idx == 6 || (idx >=32 && idx <= 63) || idx == 98 || idx == 101 ||
@@ -68,6 +67,9 @@ public:
     /// @returns true if the source is a continuous controller (CC)
     bool isContinuousController() const { return (bits_ & (1 << 7)) ? true : false; }
 
+    /// @returns true if the source is a general controller
+    bool isGeneralController() const { return !isContinuousController(); }
+
     /// @returns true if the source acts in a unipolar manner
     bool isUnipolar() const { return polarity() == 0; }
 
@@ -80,15 +82,19 @@ public:
     /// @returns true if the source values go from large to small as the controller goes from min to max
     bool isMaxToMin() const { return !isMinToMax(); }
 
+    /// @returns true if this modulator relies on another for a source value
     bool isLinked() const {
-        return isValid() && !isContinuousController() && GeneralIndex(rawIndex()) == GeneralIndex::link;
+        return isValid() && isGeneralController() && generalIndex() == GeneralIndex::link;
     }
 
     /// @returns the index of the general controller (raises exception if not configured to be a general controller)
     GeneralIndex generalIndex() const {
-        assert(isValid() && !isContinuousController());
+        assert(isValid() && isGeneralController());
         return GeneralIndex(rawIndex());
     }
+
+    /// @returns true if this source is not connected to anything
+    bool isNone() const { return !isValid() || (isGeneralController() && generalIndex() == GeneralIndex::none); }
 
     /// @returns the index of the continuous controller (raises exception if not configured to be a continuous
     /// controller)

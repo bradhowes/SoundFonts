@@ -51,7 +51,7 @@ public:
         switch (kind()) {
             case Kind::linear: return value;
             case Kind::absolute: return std::abs(value);
-            default: throw "unexpected tranform kind";
+            default: throw "unexpected transform kind";
         }
     }
 

@@ -52,30 +52,38 @@ public:
      */
     explicit Generator(double sampleRate) : Generator(sampleRate, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0) {}
 
-    static double keyedVolumeEnvelopeHold(const Voice::State& state) {
-        auto scale = state.modulated(Index::midiKeyToVolumeEnvelopeHold);
-        if (scale <= -32768.0) return 0.0;
-        return 0.0;
-    }
+    /**
+     Create new envelope for gain amp.
 
+     @param state the state holding the generator values for the envelope definition
+     */
     static Generator Volume(const Voice::State& state) {
         return Generator(state.sampleRate(),
                          DSP::centsToSeconds(state.modulated(Index::delayVolumeEnvelope)),
                          DSP::centsToSeconds(state.modulated(Index::attackVolumeEnvelope)),
-                         DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) + keyedVolumeEnvelopeHold(state)),
-                         DSP::centsToSeconds(state.modulated(Index::decayVolumeEnvelope)),
-                         1.0 - state.modulated(Index::sustainVolumeEnvelope) / 1000.0,
+                         DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) +
+                                             state.keyedVolumeEnvelopeHold()),
+                         DSP::centsToSeconds(state.modulated(Index::decayVolumeEnvelope) +
+                                             state.keyedVolumeEnvelopeDecay()),
+                         state.sustainLevelVolumeEnvelope(),
                          DSP::centsToSeconds(state.modulated(Index::releaseVolumeEnvelope)),
                          true);
     }
 
+    /**
+     Create new envelope for modulation.
+
+     @param state the state holding the generator values for the envelope definition
+     */
     static Generator Modulator(const Voice::State& state) {
         return Generator(state.sampleRate(),
                          DSP::centsToSeconds(state.modulated(Index::delayModulatorEnvelope)),
                          DSP::centsToSeconds(state.modulated(Index::attackModulatorEnvelope)),
-                         DSP::centsToSeconds(state.modulated(Index::holdModulatorEnvelope)),
-                         DSP::centsToSeconds(state.modulated(Index::decayModulatorEnvelope)),
-                         1.0 - state.modulated(Index::sustainModulatorEnvelope) / 1000.0,
+                         DSP::centsToSeconds(state.modulated(Index::holdModulatorEnvelope) +
+                                             state.keyedModulatorEnvelopeHold()),
+                         DSP::centsToSeconds(state.modulated(Index::decayModulatorEnvelope) +
+                                             state.keyedModulatorEnvelopeDecay()),
+                         state.sustainLevelModulatorEnvelope(),
                          DSP::centsToSeconds(state.modulated(Index::releaseModulatorEnvelope)),
                          true);
     }

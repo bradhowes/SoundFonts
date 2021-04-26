@@ -72,8 +72,8 @@ std::array<Definition, Definition::NumDefs> const Definition::definitions_{
     Definition(N(sustainModulatorEnvelope), ValueKind::unsignedPercent, true),
     // 30
     Definition(N(releaseModulatorEnvelope), ValueKind::signedTimeCents, true),
-    Definition(N(midiKeyModulatorToEnvelopeHold), ValueKind::signedShort, true),
-    Definition(N(midiKeyModulatorToEnvelopeDecay), ValueKind::signedShort, true),
+    Definition(N(midiKeyToModulatorEnvelopeHold), ValueKind::signedShort, true),
+    Definition(N(midiKeyToModulatorEnvelopeDecay), ValueKind::signedShort, true),
     Definition(N(delayVolumeEnvelope), ValueKind::signedTimeCents, true),
     Definition(N(attackVolumeEnvelope), ValueKind::signedTimeCents, true),
     // 35

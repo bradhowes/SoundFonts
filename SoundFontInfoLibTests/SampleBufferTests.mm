@@ -30,18 +30,18 @@ static CanonicalBuffer<float> buffer{values, header};
     Generator gen{buffer, State(76.9230769231, channel, 69, 64)};
     buffer.load();
     XCTAssertEqualWithAccuracy(0.305176, gen.generate(0.0, true), 0.00001);
-    XCTAssertEqualWithAccuracy(0.312548, gen.generate(0.0, true), 0.00001);
-    XCTAssertEqualWithAccuracy(0.319919, gen.generate(0.0, true), 0.00001);
-    XCTAssertEqualWithAccuracy(0.327291, gen.generate(0.0, true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.701904, gen.generate(0.0, true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.732422, gen.generate(0.0, true), 0.00001);
+    XCTAssertEqualWithAccuracy(0.335693, gen.generate(0.0, true), 0.00001);
 }
 
 - (void)testCubicInterpolation {
     Generator gen{buffer, State(76.9230769231, channel, 69, 64), Generator<float>::Interpolator::cubic4thOrder};
     buffer.load();
     XCTAssertEqualWithAccuracy(0.305176, gen.generate(0.0, false), 0.00001);
-    XCTAssertEqualWithAccuracy(0.312328, gen.generate(0.0, false), 0.00001);
-    XCTAssertEqualWithAccuracy(0.319481, gen.generate(0.0, false), 0.00001);
-    XCTAssertEqualWithAccuracy(0.326633, gen.generate(0.0, false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.719862, gen.generate(0.0, false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.762662, gen.generate(0.0, false), 0.00001);
+    XCTAssertEqualWithAccuracy(0.348679, gen.generate(0.0, false), 0.00001);
 }
 
 @end

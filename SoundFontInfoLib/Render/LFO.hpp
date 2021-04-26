@@ -8,18 +8,11 @@
 namespace SF2 {
 namespace Render {
 
-enum class LFOWaveform { sinusoid, triangle, sawtooth };
-
 /**
- Implementation of a low-frequency oscillator. Can generate the following waveforms:
-
- - sinusoid
- - triangle
- - sawtooth
-
- By design, this LFO emits unipolar values from 0.0 to 1.0 in order to be useful in SF2 processing. One can obtain
- bipolar values via the DSP::unipolarToBipolar method. An LFO will start emitting with value 0.0, again by design, in
- order to smoothly transition from a paused LFO to a running one.
+ Implementation of a low-frequency triangular oscillator. By design, this LFO emits bipolar values from -1.0 to 1.0 in
+ order to be useful in SF2 processing. One can obtain unipolar values via the DSP::bipolarToUnipolar method. An LFO
+ will start emitting with value 0.0, again by design, in order to smoothly transition from a paused LFO into a running
+ one.
  */
 template <typename T>
 class LFO {
@@ -35,8 +28,7 @@ public:
 
          @param sampleRate the sample rate to use
          */
-        explicit Config(T sampleRate) :
-        sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0}, waveform_{LFOWaveform::triangle} {}
+        explicit Config(T sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
 
         /**
          Set the frequency for the LFO.
@@ -59,29 +51,18 @@ public:
         }
 
         /**
-         Set the waveform type for the LFO to emit.
-
-         @param waveform the waveform to use. Per SF2 spec, LFOs emit triangular waveforms.
-         */
-        Config& waveform(LFOWaveform waveform) {
-            waveform_ = waveform;
-            return *this;
-        }
-
-        /**
          Create an LFO instance with the configured properties.
 
          @returns LFO instance
          */
         LFO make() const {
-            return LFO(sampleRate_, frequency_, delay_, waveform_);
+            return LFO(sampleRate_, frequency_, delay_);
         }
 
     private:
         T sampleRate_;
         T frequency_;
         T delay_;
-        LFOWaveform waveform_;
     };
 
     /**
@@ -89,17 +70,8 @@ public:
 
      @param sampleRate number of samples per second
      @param frequency the frequency of the oscillator
-     @param waveform the waveform to emit
      */
-    LFO(T sampleRate, T frequency, T delay, LFOWaveform waveform) :
-    valueGenerator_{WaveformGenerator(waveform)}, init_{WaveformInit(waveform)} {
-        initialize(sampleRate, frequency, delay);
-    }
-
-    /**
-     Create a new instance that generates triangular waveforms. Per spec, SF2 LFOs only generate triangular waveforms.
-     */
-    LFO(T sampleRate, T frequency, T delay) : LFO(sampleRate, frequency, delay, LFOWaveform::triangle) {}
+    LFO(T sampleRate, T frequency, T delay) { initialize(sampleRate, frequency, delay); }
 
     /**
      Initialize the LFO with the given parameters.
@@ -114,13 +86,6 @@ public:
         setPhaseIncrement();
         reset();
     }
-
-    /**
-     Set the waveform to use
-
-     @param waveform the waveform to emit
-     */
-    void setWaveform(LFOWaveform waveform) { valueGenerator_ = WaveformGenerator(waveform); }
 
     /**
      Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
@@ -146,14 +111,14 @@ public:
      Restart from a known zero state.
      */
     void reset() {
-        moduloCounter_ = init_;
+        counter_ = 0.0;
+        if (increment_ < 0) increment_ = -increment_;
     }
 
     struct State {
-        T moduloCounter_;
+        T counter_;
         size_t delaySampleCount_;
-        State(T moduloCounter, size_t delaySampleCount) :
-        moduloCounter_{moduloCounter}, delaySampleCount_{delaySampleCount} {}
+        State(T counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
     };
 
     /**
@@ -161,7 +126,7 @@ public:
 
      @returns current internal state
      */
-    State saveState() const { return State(moduloCounter_, delaySampleCount_); }
+    State saveState() const { return State(counter_, delaySampleCount_); }
 
     /**
      Restore the oscillator to a previously-saved state.
@@ -169,9 +134,8 @@ public:
      @param state the state to restore to
      */
     void restoreState(const State& state) {
-        moduloCounter_ = state.moduloCounter_;
+        counter_ = state.counter_;
         delaySampleCount_ = state.delaySampleCount_;
-        quadPhaseCounter_ = incrementModuloCounter(state.moduloCounter_, 0.25);
     }
 
     /**
@@ -182,8 +146,15 @@ public:
             --delaySampleCount_;
         }
         else {
-            moduloCounter_ = incrementModuloCounter(moduloCounter_, phaseIncrement_);
-            quadPhaseCounter_ = incrementModuloCounter(moduloCounter_, 0.25);
+            counter_ += increment_;
+            if (counter_ >= 1.0) {
+                increment_ = -increment_;
+                counter_ = 2.0 - counter_;
+            }
+            else if (counter_ <= -1.0) {
+                increment_ = -increment_;
+                counter_ = -2.0 - counter_;
+            }
         }
     }
 
@@ -198,26 +169,9 @@ public:
             return 0.0;
         }
 
-        auto counter = moduloCounter_;
-        quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
-        moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
-        return valueGenerator_(counter);
-    }
-
-    /**
-     Obtain the next value of the quad-phase oscillator. Advances counter before returning, so this is not idempotent.
-
-     @returns current waveform value
-     */
-    T quadPhaseValueAndIncrement() {
-        if (delaySampleCount_ > 0) {
-            --delaySampleCount_;
-            return 0.0;
-        }
-        auto counter = moduloCounter_;
-        quadPhaseCounter_ = incrementModuloCounter(counter, 0.25);
-        moduloCounter_ = incrementModuloCounter(counter, phaseIncrement_);
-        return valueGenerator_(quadPhaseCounter_);
+        auto counter = counter_;
+        increment();
+        return counter;
     }
 
     /**
@@ -225,61 +179,16 @@ public:
 
      @returns current waveform value
      */
-    T value() { return valueGenerator_(moduloCounter_); }
-
-    /**
-     Obtain the current value of the oscillator that is 90° advanced from what `value()` would return.
-
-     @returns current 90° advanced waveform value
-     */
-    T quadPhaseValue() const { return valueGenerator_(quadPhaseCounter_); }
+    T value() { return counter_; }
 
 private:
-    void setPhaseIncrement() { phaseIncrement_ = frequency_ / sampleRate_; }
 
-    using ValueGenerator = std::function<T(T)>;
-
-    static ValueGenerator WaveformGenerator(LFOWaveform waveform) {
-        switch (waveform) {
-            case LFOWaveform::sinusoid: return sineValue;
-            case LFOWaveform::sawtooth: return sawtoothValue;
-            case LFOWaveform::triangle: return triangleValue;
-        }
-    }
-
-    /**
-     For a given waveform type obtain the starting value for moduloCounter_ so that the first value from the generator
-     is 0.0 and the subsequent value is a positive value (derivative > 0).
-
-     @param waveform the waveform being generated
-     @returns the initial value for moduloCounter_
-     */
-    static T WaveformInit(LFOWaveform waveform) {
-        switch (waveform) {
-            case LFOWaveform::sinusoid: return 0.0;
-            case LFOWaveform::sawtooth: return 0.0;
-            case LFOWaveform::triangle: return 0.5;
-        }
-    }
-
-    static T wrappedModuloCounter(T counter, T inc) {
-        if (inc > 0 && counter >= 1.0) return counter - 1.0;
-        if (inc < 0 && counter <= 0.0) return counter + 1.0;
-        return counter;
-    }
-
-    static T incrementModuloCounter(T counter, T inc) { return wrappedModuloCounter(counter + inc, inc); }
-    static T sineValue(T counter) { return DSP::bipolarToUnipolar(DSP::sineLookup(counter * 2.0 * M_PI - M_PI / 2.0)); }
-    static T sawtoothValue(T counter) { return counter; }
-    static T triangleValue(T counter) { return std::abs(DSP::unipolarToBipolar(counter)); }
+    void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
 
     T sampleRate_;
     T frequency_;
-    std::function<T(T)> valueGenerator_;
-    T init_{0.0};
-    T moduloCounter_{0.0};
-    T quadPhaseCounter_{0.0};
-    T phaseIncrement_;
+    T counter_{0.0};
+    T increment_;
     size_t delaySampleCount_;
 };
 

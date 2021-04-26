@@ -20,12 +20,12 @@ public:
 
      @param value the MIDI value to represent
      */
-    explicit Note(int value) : value_{uint8_t(value)}, note_{uint8_t(value % 12)} {
+    explicit Note(short value) : value_{value}, note_{short(value % 12)} {
         assert(value >= 0 && value <= 255);
     }
 
     /// @returns the octave that the note resides in
-    int octave() const { return value_ / 12 - 1; }
+    short octave() const { return value_ / 12 - 1; }
 
     /// @returns true if the note is accented (sharp / flat)
     bool accented() const { return (note_ < 5 && (note_ & 1) == 1) || (note_ > 5 && (note_ & 1) == 0); }
@@ -33,7 +33,7 @@ public:
     /// @returns textual representation of the note (shows a sharp for accented notes)
     std::string label() const { return labels_[note_] + std::to_string(octave()) + (accented() ? sharpTag_ : ""); }
 
-    int value() const { return value_; }
+    short value() const { return value_; }
 
     bool operator ==(const Note& rhs) const { return value_ == rhs.value_; }
     bool operator !=(const Note& rhs) const { return value_ != rhs.value_; }
@@ -50,8 +50,8 @@ private:
         "C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"
     };
 
-    uint8_t value_;
-    uint8_t note_;
+    short value_;
+    short note_;
 };
 
 } // namespace Render

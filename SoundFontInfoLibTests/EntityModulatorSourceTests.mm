@@ -8,10 +8,10 @@
 
 using namespace SF2::Entity::Modulator;
 
-@interface ModulatorSourceTests : XCTestCase
+@interface EntityModulatorSourceTests : XCTestCase
 @end
 
-@implementation ModulatorSourceTests
+@implementation EntityModulatorSourceTests
 
 - (void)setUp {
 }

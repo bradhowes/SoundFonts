@@ -7,11 +7,12 @@
 #include <functional>
 #include <limits>
 
+#include "Logger.hpp"
 #include "Render/Transform.hpp"
 
 namespace SF2 {
 
-namespace Entity::Modulator { class Modulator; }
+namespace Entity::Modulator { class Modulator; class Source; }
 
 namespace Render {
 
@@ -37,14 +38,29 @@ public:
     /**
      Construct new modulator
 
-     @param index the index of the entity in the instrument zone (presets do not have or define modulators)
+     @param index the index of the entity in the zone
      @param configuration the entity configuration that defines the modulator
      @param state the voice state that can be used as a source for modulators
      */
     Modulator(size_t index, const Entity::Modulator::Modulator& configuration, const Voice::State& state);
 
     /// @returns current value of the modulator
-    double value() const;
+    double value() const {
+        assert(isValid());
+        // log_.debug() << "evaluating " << description() << std::endl;
+
+        // If there is no source for the modulator, it always returns 0.0 (no modulation).
+        if (sourceValue_ == nullptr) return 0.0;
+
+        // Obtain transformed value from source.
+        double value = sourceTransform_.value(sourceValue_());
+        if (value == 0.0) return 0.0;
+
+        // If there is a source for the scaling factor, apply its transformed value.
+        if (amountScale_ != nullptr) value *= amountTransform_.value(amountScale_());
+
+        return value * amount_;
+    }
 
     /// @returns configuration of the modulator from the SF2 file
     const Entity::Modulator::Modulator& configuration() const { return configuration_; }
@@ -57,24 +73,41 @@ public:
     bool isValid() const { return index_ != std::numeric_limits<size_t>::max(); }
 
     /**
-     Resolve the linking between two modulators. Configures this modulator to invoke the `value()` method of another.
+     Resolve the linking between two modulators. Configures this modulator to invoke the `value()` method of another to
+     obtain an Sv value. Per spec, linking is NOT allowed for Av values. Also per spec, source values fall in range
+     0-127 and are transformed into unipolar or bipolar ranges depending on their definition. This makes linking a bit
+     strange: the 'source' modulator generates a unipolar or bipolar value per its definition, but unipolar is only
+     useful in the linked case, and its `amount` must be 127 or 128 in order to get back a value that is reasonable to
+     use as a source value for another modulator.
+
+     @param modulator provider for an Sv to use for this modulator
      */
-    void setSource(const Modulator& modulator) {
-        sourceValue_ = [&]() { return int(std::round(modulator.value())); };
-    }
+    void setSource(const Modulator& modulator) { sourceValue_ = [&]() { return int(std::round(modulator.value())); }; }
+
+    std::string description() const;
 
 private:
-    static std::function<int()> SourceValue(const Entity::Modulator::Modulator& configuration,
-                                            const Voice::State& state, int noneValue);
+    using ValueProc = std::function<int()>;
+
+    /**
+     Obtain a generic callable entity that returns a integral value. This is used to obtain both the Sv and Av values,
+     regardless of their sources.
+
+     @param source the modulator source definition from the SF2 file
+     @param state the voice state that will be modulated
+     */
+    static ValueProc SourceValue(const Entity::Modulator::Source& source, const Voice::State& state);
 
     const Entity::Modulator::Modulator& configuration_;
     size_t index_;
-
+    Int amount_;
     Transform sourceTransform_;
     Transform amountTransform_;
 
-    std::function<int()> sourceValue_;
-    std::function<int()> amountValue_;
+    ValueProc sourceValue_;
+    ValueProc amountScale_;
+
+    inline static Logger log_{Logger::Make("Render.Voice", "Modulator")};
 };
 
 } // namespace Render

@@ -5,4 +5,3 @@
 #include "Render/MIDI/MIDI.hpp"
 
 using namespace SF2::Render;
-

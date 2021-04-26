@@ -27,8 +27,7 @@ namespace Modulator {
 class Modulator {
 public:
     static constexpr size_t size = 10;
-
-    static std::array<Modulator, 10> const defaults;
+    static std::array<Modulator, size> const defaults;
 
     /**
      Construct instance from contents of SF2 file.
@@ -40,7 +39,7 @@ public:
     }
 
     /**
-     Construct instance from values. Used to define default mods.
+     Construct instance from values. Used to define default mods and support unit tests.
      */
     Modulator(Source modSrcOper, Generator::Index dest, int16_t amount, Source modAmtSrcOper, Transform xform) :
     sfModSrcOper{modSrcOper}, sfModDestOper{static_cast<UInt>(dest)}, modAmount{amount}, sfModAmtSrcOper{modAmtSrcOper},
@@ -48,6 +47,10 @@ public:
 
     /// @returns the source of data for the modulator
     const Source& source() const { return sfModSrcOper; }
+
+    bool hasSource() const { return !sfModSrcOper.isNone(); }
+
+    bool hasAmountSource() const { return !sfModAmtSrcOper.isNone(); }
 
     /// @returns true if this modulator is the source of a value for another modulator
     bool hasModulatorDestination() const { return (sfModDestOper & (1 << 15)) != 0; }

@@ -8,10 +8,6 @@ using namespace SF2::Render;
 
 int const Transform::MaxMIDIControllerValue;
 
-Transform::Transform(Kind kind, Direction direction, Polarity polarity)
-: active_{selectActive(kind, direction)}, polarity_{polarity}
-{}
-
 static double positiveConcaveCurve(int index)
 {
     return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Transform::MaxMIDIControllerValue - index) /
@@ -20,14 +16,17 @@ static double positiveConcaveCurve(int index)
 
 static double negativeConcaveCurve(int index)
 {
-    // From SF2 spec - output = -20/96 * log((value^2)/(range^2)) == -40/96 * log(value / range)
-    return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Transform::MaxMIDIControllerValue);
+    return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / (Transform::MaxMIDIControllerValue));
 }
+
+Transform::Transform(Kind kind, Direction direction, Polarity polarity)
+: active_{selectActive(kind, direction)}, polarity_{polarity}
+{}
 
 Transform::TransformArrayType const Transform::positiveLinear_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = double(index) / MaxMIDIControllerValue;
+        init[index] = double(index) / init.size();
     }
     return init;
 }();
@@ -35,7 +34,7 @@ Transform::TransformArrayType const Transform::positiveLinear_ = [] {
 Transform::TransformArrayType const Transform::negativeLinear_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = double(MaxMIDIControllerValue - index) / MaxMIDIControllerValue;
+        init[index] = 1.0 - double(index) / init.size();
     }
     return init;
 }();
