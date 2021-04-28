@@ -22,7 +22,7 @@ public:
     inline constexpr static short CCMin = 0;
     inline constexpr static short CCMax = 127;
 
-    using ContinuousControllerValues = std::array<short, CCMax + 1>;
+    using ContinuousControllerValues = std::array<short, CCMax - CCMin + 1>;
     using KeyPressureValues = std::array<short, Note::Max + 1>;
 
     /**
@@ -92,8 +92,8 @@ public:
      @param value the value to set for the controller
      */
     void setContinuousControllerValue(short id, short value) {
-        assert(id >= 0 && id <= CCMax);
-        continuousControllerValues_[id] = value;
+        assert(id >= CCMin && id <= CCMax);
+        continuousControllerValues_[id - CCMin] = value;
     }
 
     /**
@@ -103,8 +103,8 @@ public:
      @returns the controller value
      */
     int continuousControllerValue(short id) const {
-        assert(id >= 0 && id <= CCMax);
-        return continuousControllerValues_[id];
+        assert(id >= CCMin && id <= CCMax);
+        return continuousControllerValues_[id - CCMin];
     }
 
 private:

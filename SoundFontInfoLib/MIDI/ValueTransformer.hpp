@@ -13,7 +13,7 @@ namespace MIDI {
 
 /**
  Transforms MIDI controller domain values (between 0 and 127) into various ranges. This currently only works with the
- `coarse` controller values. 
+ `coarse` controller values.
  */
 class ValueTransformer {
 public:
@@ -48,15 +48,26 @@ public:
         descending
     };
 
+    /// Domain controls how many values there are in the domain. Some domains start at 1 while others start at 0.
+    enum struct Domain {
+        zeroBased,
+        oneBased
+    };
+
     /**
      Create new value transformer
 
      @param kind mapping operation from controller domain to value range
      @param direction ordering from min to max
-     @param polarity lower bound of range
+     @param polarity range lower and upper bounds
      */
     ValueTransformer(Kind kind, Direction direction, Polarity polarity);
 
+    /**
+     Create new value transformer for an SF2 modulator source definition
+
+     @param source the source definition to use
+     */
     ValueTransformer(const Entity::Modulator::Source& source) :
     ValueTransformer(Kind(source.type()),
                      source.isMinToMax() ? Direction::ascending : Direction::descending,
@@ -71,29 +82,29 @@ public:
      @param controllerValue value to convert between 0 and 127
      @returns transformed value
      */
-    double value(short controllerValue) const {
-        controllerValue = std::clamp<short>(controllerValue, 0, Max);
-        return (polarity_ == Polarity::unipolar) ? unipolarValue(controllerValue) : bipolarValue(controllerValue);
-    }
+    double value(short controllerValue) const { return active_[std::clamp<short>(controllerValue, 0, Max)]; }
 
 private:
 
-    inline static double positiveConcaveCurveGenerator(int index)
-    {
+    inline static double positiveConcaveCurveGenerator(short index) {
         return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Max - index) / Max);
     }
 
-    inline static double negativeConcaveCurveGenerator(int index)
-    {
+    inline static double negativeConcaveCurveGenerator(short index) {
         return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Max);
     }
 
+    /// Since we have only 128 values to handle, use lookup tables.
     using TransformArrayType = std::array<double, Max + 1>;
 
-    double unipolarValue(int controllerValue) const { return active_[controllerValue]; }
-    double bipolarValue(int controllerValue) const { return 2.0 * active_[controllerValue] - 1.0; }
+    /**
+     Locate the right table to use based on the transformation, direction, and polarity.
 
-    static const TransformArrayType& selectActive(Kind kind, Direction direction);
+     @param kind the transformation function to apply
+     @param direction the min/max ordering to use
+     @param polarity the lower bound of the transformed result
+     */
+    static const TransformArrayType& selectActive(Kind kind, Direction direction, Polarity polarity);
 
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;
@@ -104,8 +115,16 @@ private:
     static TransformArrayType const positiveSwitched_;
     static TransformArrayType const negativeSwitched_;
 
+    static TransformArrayType const positiveLinearBipolar_;
+    static TransformArrayType const negativeLinearBipolar_;
+    static TransformArrayType const positiveConcaveBipolar_;
+    static TransformArrayType const negativeConcaveBipolar_;
+    static TransformArrayType const positiveConvexBipolar_;
+    static TransformArrayType const negativeConvexBipolar_;
+    static TransformArrayType const positiveSwitchedBipolar_;
+    static TransformArrayType const negativeSwitchedBipolar_;
+
     const TransformArrayType& active_;
-    Polarity polarity_;
 };
 
 } // namespace MIDI
