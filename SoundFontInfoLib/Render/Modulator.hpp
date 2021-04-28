@@ -8,15 +8,15 @@
 #include <limits>
 
 #include "Logger.hpp"
-#include "Render/Transform.hpp"
+#include "MIDI/ValueTransformer.hpp"
 
 namespace SF2 {
 
 namespace Entity::Modulator { class Modulator; class Source; }
+namespace MIDI { class Channel; }
 
 namespace Render {
 
-namespace MIDI { class Channel; }
 namespace Voice { class State; }
 
 /**
@@ -101,8 +101,8 @@ private:
     const Entity::Modulator::Modulator& configuration_;
     size_t index_;
     Int amount_;
-    Transform sourceTransform_;
-    Transform amountTransform_;
+    MIDI::ValueTransformer sourceTransform_;
+    MIDI::ValueTransformer amountTransform_;
 
     ValueProc sourceValue_;
     ValueProc amountScale_;

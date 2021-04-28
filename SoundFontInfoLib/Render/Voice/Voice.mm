@@ -2,15 +2,16 @@
 
 #include <cmath>
 
+#include "MIDI/Channel.hpp"
 #include "Render/Envelope/Generator.hpp"
-#include "Render/MIDI/Channel.hpp"
 #include "Render/Voice/Setup.hpp"
 #include "Render/Voice/Voice.hpp"
 
+using namespace SF2::MIDI;
 using namespace SF2::Render::Voice;
 using namespace SF2::Entity::Generator;
 
-Voice::Voice(double sampleRate, const MIDI::Channel& channel, const Setup& setup) :
+Voice::Voice(double sampleRate, const Channel& channel, const Setup& setup) :
 state_{sampleRate, channel, setup},
 loopingMode_{state_.loopingMode()},
 sampleGenerator_{setup.sampleBuffer(), state_},

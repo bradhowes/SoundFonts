@@ -3,7 +3,7 @@
 #import <XCTest/XCTest.h>
 #import <vector>
 
-#import "Render/MIDI/Channel.hpp"
+#import "MIDI/Channel.hpp"
 #import "Render/Sample/Generator.hpp"
 
 using namespace SF2::Render::Sample;
@@ -16,7 +16,7 @@ using namespace SF2::Render::Voice;
 @implementation SampleBufferTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
-static SF2::Render::MIDI::Channel channel;
+static SF2::MIDI::Channel channel;
 static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
 static CanonicalBuffer<float> buffer{values, header};
 

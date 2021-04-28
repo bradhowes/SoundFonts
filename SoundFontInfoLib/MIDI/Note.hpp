@@ -7,13 +7,15 @@
 #include <array>
 
 namespace SF2 {
-namespace Render {
+namespace MIDI {
 
 /**
  A MIDI note representation. MIDI note values range from 0 to 255, and so does this.
  */
 class Note {
 public:
+    inline constexpr static short Min = 0;
+    inline constexpr static short Max = 127;
 
     /**
      Construct new note.
@@ -21,7 +23,7 @@ public:
      @param value the MIDI value to represent
      */
     explicit Note(short value) : value_{value}, note_{short(value % 12)} {
-        assert(value >= 0 && value <= 255);
+        assert(value >= 0 && value <= 127);
     }
 
     /// @returns the octave that the note resides in
@@ -42,7 +44,7 @@ public:
     bool operator  <(const Note& rhs) const { return value_  < rhs.value_; }
     bool operator  >(const Note& rhs) const { return value_  > rhs.value_; }
 
-    operator int() const { return value_; }
+    operator int() const { return value(); }
 
 private:
     inline static std::string const sharpTag_ = "♯";
@@ -54,5 +56,5 @@ private:
     short note_;
 };
 
-} // namespace Render
+} // namespace MIDI
 } // namespace SF2

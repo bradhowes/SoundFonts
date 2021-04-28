@@ -29,10 +29,14 @@ struct Bounds {
     Bounds(const Entity::SampleHeader& header, const Voice::State& state) {
         constexpr size_t coarse = 1 << 15;
 
-        size_t startOffset = state.unmodulated(Index::startAddressOffset) + state.unmodulated(Index::startAddressCoarseOffset) * coarse;
-        size_t startLoopOffset = state.unmodulated(Index::startLoopAddressOffset) + state.unmodulated(Index::startLoopAddressCoarseOffset) * coarse;
-        size_t endLoopOffset = state.unmodulated(Index::endLoopAddressOffset) + state.unmodulated(Index::endLoopAddressCoarseOffset) * coarse;
-        size_t endOffset = state.unmodulated(Index::endAddressOffset) + state.unmodulated(Index::endAddressCoarseOffset) * coarse;
+        size_t startOffset = (state.unmodulated(Index::startAddressOffset) +
+                              state.unmodulated(Index::startAddressCoarseOffset) * coarse);
+        size_t startLoopOffset = (state.unmodulated(Index::startLoopAddressOffset) +
+                                  state.unmodulated(Index::startLoopAddressCoarseOffset) * coarse);
+        size_t endLoopOffset = (state.unmodulated(Index::endLoopAddressOffset) +
+                                state.unmodulated(Index::endLoopAddressCoarseOffset) * coarse);
+        size_t endOffset = (state.unmodulated(Index::endAddressOffset) +
+                            state.unmodulated(Index::endAddressCoarseOffset) * coarse);
 
         size_t shift = header.startIndex();
         startIndex_ = std::clamp<size_t>(header.startIndex() + startOffset,

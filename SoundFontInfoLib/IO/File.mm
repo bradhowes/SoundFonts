@@ -34,8 +34,6 @@ File::File(int fd, size_t fileSize)
             log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
 
             switch (chunk.tag().rawValue()) {
-
-                // Meta data chunks
                 case Tags::ifil: soundFontVersion_.load(chunk.begin()); break;
                 case Tags::isng: soundEngine_ = chunk.extract(); break;
                 case Tags::irom: rom_ = chunk.extract(); break;
@@ -47,20 +45,14 @@ File::File(int fd, size_t fileSize)
                 case Tags::icop: embeddedCopyright_ = chunk.extract(); break;
                 case Tags::icmt: embeddedComment_ = chunk.extract(); break;
                 case Tags::istf: embeddedTools_ = chunk.extract(); break;
-
-                // Preset-related chunks
                 case Tags::phdr: presets_.load(chunk); break;
                 case Tags::pbag: presetZones_.load(chunk); break;
                 case Tags::pgen: presetZoneGenerators_.load(chunk); break;
                 case Tags::pmod: presetZoneModulators_.load(chunk); break;
-
-                // Instrument-related chunks
                 case Tags::inst: instruments_.load(chunk); break;
                 case Tags::ibag: instrumentZones_.load(chunk); break;
                 case Tags::igen: instrumentZoneGenerators_.load(chunk); break;
                 case Tags::imod: instrumentZoneModulators_.load(chunk); break;
-
-                // Audio sample chunks
                 case Tags::shdr: sampleHeaders_.load(chunk); break;
                 case Tags::smpl:
                     sampleDataBegin_ = chunk.begin().offset();

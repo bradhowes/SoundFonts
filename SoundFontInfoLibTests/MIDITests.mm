@@ -4,9 +4,10 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Render/MIDI/MIDI.hpp"
+#include "MIDI/MIDI.hpp"
 
-using namespace SF2::Render;
+using namespace SF2;
+using namespace SF2::MIDI;
 
 @interface MIDITests : XCTestCase
 @property (nonatomic, assign) double epsilon;

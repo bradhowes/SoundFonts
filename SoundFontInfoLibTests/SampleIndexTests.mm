@@ -3,7 +3,7 @@
 #import <iostream>
 #import <XCTest/XCTest.h>
 #import "Entity/SampleHeader.hpp"
-#import "Render/MIDI/Channel.hpp"
+#import "MIDI/Channel.hpp"
 #import "Render/Sample/BufferIndex.hpp"
 #import "Render/Voice/State.hpp"
 
@@ -17,7 +17,7 @@ using namespace SF2::Render::Voice;
 @implementation SampleIndexTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
-static SF2::Render::MIDI::Channel channel;
+static SF2::MIDI::Channel channel;
 static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 
 - (void)setUp {

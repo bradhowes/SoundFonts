@@ -9,18 +9,19 @@
 #include "Entity/Modulator/Source.hpp"
 
 namespace SF2 {
-namespace Render {
+namespace MIDI {
 
 /**
  Transforms MIDI controller domain values (between 0 and 127) into various ranges. This currently only works with the
  `coarse` controller values. 
  */
-class Transform {
+class ValueTransformer {
 public:
-    constexpr static int const MaxMIDIControllerValue = 127;
+    inline constexpr static short Min = 0;
+    inline constexpr static short Max = 127;
 
     /**
-     Kind specifies the curvature of the transformation function.
+     Kind specifies the curvature of the MIDI value transformation function.
      - linear -- straight line from min to 1.0
      - concave -- curved line that slowly increases in value and then accelerates in change until reaching 1.
      - convex -- curved line that rapidly increases in value and then decelerates in change until reaching 1.
@@ -48,18 +49,18 @@ public:
     };
 
     /**
-     Create new transform
+     Create new value transformer
 
      @param kind mapping operation from controller domain to value range
      @param direction ordering from min to max
      @param polarity lower bound of range
      */
-    Transform(Kind kind, Direction direction, Polarity polarity);
+    ValueTransformer(Kind kind, Direction direction, Polarity polarity);
 
-    Transform(const Entity::Modulator::Source& source) :
-    Transform(Kind(source.type()),
-              source.isMinToMax() ? Direction::ascending : Direction::descending,
-              source.isUnipolar() ? Polarity::unipolar : Polarity::bipolar)
+    ValueTransformer(const Entity::Modulator::Source& source) :
+    ValueTransformer(Kind(source.type()),
+                     source.isMinToMax() ? Direction::ascending : Direction::descending,
+                     source.isUnipolar() ? Polarity::unipolar : Polarity::bipolar)
     {
         ;
     }
@@ -70,13 +71,24 @@ public:
      @param controllerValue value to convert between 0 and 127
      @returns transformed value
      */
-    double value(int controllerValue) const {
-        controllerValue = ::std::max(::std::min(controllerValue, MaxMIDIControllerValue), 0);
+    double value(short controllerValue) const {
+        controllerValue = std::clamp<short>(controllerValue, 0, Max);
         return (polarity_ == Polarity::unipolar) ? unipolarValue(controllerValue) : bipolarValue(controllerValue);
     }
 
 private:
-    using TransformArrayType = std::array<double, MaxMIDIControllerValue + 1>;
+
+    inline static double positiveConcaveCurveGenerator(int index)
+    {
+        return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Max - index) / Max);
+    }
+
+    inline static double negativeConcaveCurveGenerator(int index)
+    {
+        return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Max);
+    }
+
+    using TransformArrayType = std::array<double, Max + 1>;
 
     double unipolarValue(int controllerValue) const { return active_[controllerValue]; }
     double bipolarValue(int controllerValue) const { return 2.0 * active_[controllerValue] - 1.0; }
@@ -96,5 +108,5 @@ private:
     Polarity polarity_;
 };
 
-} // namespace Render
+} // namespace MIDI
 } // namespace SF2

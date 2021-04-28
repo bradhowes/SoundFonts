@@ -8,7 +8,7 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #import "IO/File.hpp"
-#import "Render/MIDI/Channel.hpp"
+#import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
 #import "Render/Voice/Voice.hpp"
 

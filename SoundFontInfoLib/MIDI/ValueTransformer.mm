@@ -2,28 +2,15 @@
 
 #include <cmath>
 
-#include "Transform.hpp"
+#include "ValueTransformer.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::MIDI;
 
-int const Transform::MaxMIDIControllerValue;
-
-static double positiveConcaveCurve(int index)
-{
-    return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Transform::MaxMIDIControllerValue - index) /
-                                                     Transform::MaxMIDIControllerValue);
-}
-
-static double negativeConcaveCurve(int index)
-{
-    return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / (Transform::MaxMIDIControllerValue));
-}
-
-Transform::Transform(Kind kind, Direction direction, Polarity polarity)
+ValueTransformer::ValueTransformer(Kind kind, Direction direction, Polarity polarity)
 : active_{selectActive(kind, direction)}, polarity_{polarity}
 {}
 
-Transform::TransformArrayType const Transform::positiveLinear_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::positiveLinear_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = double(index) / init.size();
@@ -31,7 +18,7 @@ Transform::TransformArrayType const Transform::positiveLinear_ = [] {
     return init;
 }();
 
-Transform::TransformArrayType const Transform::negativeLinear_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::negativeLinear_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = 1.0 - double(index) / init.size();
@@ -39,39 +26,39 @@ Transform::TransformArrayType const Transform::negativeLinear_ = [] {
     return init;
 }();
 
-Transform::TransformArrayType const Transform::positiveConcave_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::positiveConcave_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = positiveConcaveCurve(index);
+        init[index] = positiveConcaveCurveGenerator(index);
     }
     return init;
 }();
 
-Transform::TransformArrayType const Transform::negativeConcave_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::negativeConcave_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = negativeConcaveCurve(index);
+        init[index] = negativeConcaveCurveGenerator(index);
     }
     return init;
 }();
 
-Transform::TransformArrayType const Transform::positiveConvex_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::positiveConvex_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = 1.0 - negativeConcaveCurve(index);
+        init[index] = 1.0 - negativeConcaveCurveGenerator(index);
     }
     return init;
 }();
 
-Transform::TransformArrayType const Transform::negativeConvex_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::negativeConvex_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = 1.0 - positiveConcaveCurve(index);
+        init[index] = 1.0 - positiveConcaveCurveGenerator(index);
     }
     return init;
 }();
 
-Transform::TransformArrayType const Transform::positiveSwitched_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::positiveSwitched_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 0.0 : 1.0;
@@ -79,7 +66,7 @@ Transform::TransformArrayType const Transform::positiveSwitched_ = [] {
     return init;
 }();
 
-Transform::TransformArrayType const Transform::negativeSwitched_ = [] {
+ValueTransformer::TransformArrayType const ValueTransformer::negativeSwitched_ = [] {
     TransformArrayType init{};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = index < init.size() / 2.0 ? 1.0 : 0.0;
@@ -87,7 +74,7 @@ Transform::TransformArrayType const Transform::negativeSwitched_ = [] {
     return init;
 }();
 
-const Transform::TransformArrayType& Transform::selectActive(Kind kind, Direction direction)
+const ValueTransformer::TransformArrayType& ValueTransformer::selectActive(Kind kind, Direction direction)
 {
     switch (kind) {
         case Kind::linear: return direction == Direction::ascending ? positiveLinear_ : negativeLinear_; break;

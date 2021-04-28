@@ -4,9 +4,9 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Render/Note.hpp"
+#include "MIDI/Note.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::MIDI;
 
 @interface NoteTests : XCTestCase
 @end
@@ -20,20 +20,27 @@ using namespace SF2::Render;
 }
 
 - (void)testNoteValues {
-    XCTAssertEqual(0, Note(0));
-    XCTAssertEqual(69, Note(69));
+    XCTAssertEqual(Note(0), Note(0));
+    XCTAssertEqual(Note(69), Note(69));
 }
 
 - (void)testNoteEquality {
     XCTAssertTrue(Note(69) == Note(69));
-    XCTAssertTrue(Note(69) == 69);
     XCTAssertTrue(69 == Note(69));
 }
 
 - (void)testNoteInequality {
     XCTAssertTrue(Note(69) != Note(70));
-    XCTAssertTrue(Note(69) != 70);
     XCTAssertTrue(69 != Note(70));
+}
+
+- (void)testNoteOrdering {
+    XCTAssertTrue(Note(69) < Note(70));
+    XCTAssertTrue(Note(69) <= Note(70));
+    XCTAssertTrue(Note(70) <= Note(70));
+    XCTAssertTrue(Note(79) > Note(70));
+    XCTAssertTrue(Note(78) >= Note(70));
+    XCTAssertTrue(Note(70) >= Note(70));
 }
 
 @end

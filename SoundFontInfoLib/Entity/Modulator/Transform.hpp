@@ -15,7 +15,7 @@ namespace Modulator {
  - linear: value is used as-is
  - absolute: negative values are made positive before being used
 
- Currently, the default modulators all use `linear`.
+ Currently, all modulators seem to use `linear`.
  */
 class Transform {
 public:

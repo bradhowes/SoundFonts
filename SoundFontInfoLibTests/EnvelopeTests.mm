@@ -20,11 +20,15 @@ using namespace SF2::Render::Envelope;
     XCTAssertEqual(StageIndex::idle, gen.stage());
     XCTAssertEqual(0.0, gen.process());
     XCTAssertEqual(StageIndex::idle, gen.stage());
+    XCTAssertTrue(!gen.isGated());
     gen.gate(true);
+    XCTAssertTrue(gen.isGated());
     XCTAssertEqual(StageIndex::sustain, gen.stage());
     XCTAssertEqual(1.0, gen.process());
     XCTAssertEqual(StageIndex::sustain, gen.stage());
+    XCTAssertTrue(gen.isGated());
     gen.gate(false);
+    XCTAssertTrue(!gen.isGated());
     XCTAssertEqual(StageIndex::idle, gen.stage());
 }
 

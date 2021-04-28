@@ -4,7 +4,7 @@
 
 #include "Entity/Modulator/Modulator.hpp"
 #include "Entity/Modulator/Source.hpp"
-#include "Render/MIDI/Channel.hpp"
+#include "MIDI/Channel.hpp"
 #include "Render/Voice/State.hpp"
 
 #include "Render/Modulator.hpp"

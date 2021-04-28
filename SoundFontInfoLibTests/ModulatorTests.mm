@@ -6,7 +6,7 @@
 
 #import "Entity/Generator/Index.hpp"
 #import "Entity/Modulator/Modulator.hpp"
-#import "Render/MIDI/Channel.hpp"
+#import "MIDI/Channel.hpp"
 #import "Render/Modulator.hpp"
 #import "Render/Voice/State.hpp"
 

@@ -164,11 +164,6 @@ public:
      @returns current waveform value
      */
     T valueAndIncrement() {
-        if (delaySampleCount_ > 0) {
-            --delaySampleCount_;
-            return 0.0;
-        }
-
         auto counter = counter_;
         increment();
         return counter;

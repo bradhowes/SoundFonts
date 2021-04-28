@@ -6,7 +6,7 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #include "IO/File.hpp"
-#include "Render/MIDI/Channel.hpp"
+#include "MIDI/Channel.hpp"
 #include "Render/Preset.hpp"
 #include "Render/Voice/Setup.hpp"
 #include "Render/Voice/State.hpp"
@@ -29,6 +29,8 @@ using namespace SF2::Render;
     auto file = IO::File(fd, fileSize);
 
     Instrument instrument(file, file.instruments()[0]);
+    XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());
+
     XCTAssertTrue(instrument.hasGlobalZone());
     const InstrumentZone* globalZone = instrument.globalZone();
     XCTAssertTrue(globalZone != nullptr);

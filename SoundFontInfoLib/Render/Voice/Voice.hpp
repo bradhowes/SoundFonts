@@ -11,9 +11,10 @@
 #include "Render/Voice/State.hpp"
 
 namespace SF2 {
-namespace Render {
 
 namespace MIDI { class Channel; }
+
+namespace Render {
 
 namespace Voice {
 

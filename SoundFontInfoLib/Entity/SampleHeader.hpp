@@ -29,6 +29,9 @@ public:
         rom = 0x8000
     };
 
+    /**
+     Construct new instance from SF2 file
+     */
     explicit SampleHeader(IO::Pos& pos)
     {
         assert(sizeof(*this) == size + 2);
@@ -37,6 +40,9 @@ public:
         IO::trim_property(achSampleName);
     }
 
+    /**
+     Construct instance for unit tests.
+     */
     SampleHeader(uint32_t start, uint32_t end, uint32_t loopBegin, uint32_t loopEnd,
                  uint32_t sampleRate, uint8_t key, int8_t adjustment)
     : dwStart{start}, dwEnd{end}, dwStartLoop{loopBegin}, dwEndLoop{loopEnd}, dwSampleRate{sampleRate},

@@ -6,7 +6,7 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #import "Entity/Generator/Index.hpp"
-#import "Render/MIDI/Channel.hpp"
+#import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
 #import "Render/Voice/State.hpp"
 

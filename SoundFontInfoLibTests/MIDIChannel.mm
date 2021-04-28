@@ -4,9 +4,9 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Render/MIDI/Channel.hpp"
+#include "MIDI/Channel.hpp"
 
-using namespace SF2::Render::MIDI;
+using namespace SF2::MIDI;
 
 @interface MIDIChannelTests : XCTestCase
 @property (nonatomic, assign) double epsilon;
@@ -16,7 +16,7 @@ using namespace SF2::Render::MIDI;
 
 - (void)testChannelKeyPressureValues {
     Channel channel;
-    for (int key = 0; key < 128; ++key) XCTAssertEqual(0, channel.keyPressure(key));
+    for (int key = 0; key < 128; ++key) XCTAssertEqual(0, channel.keyPressure(Note(key)));
 
     channel.setKeyPressure(64, 3);
     XCTAssertEqual(3, channel.keyPressure(64));

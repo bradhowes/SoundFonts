@@ -2,6 +2,6 @@
 
 #include <cmath>
 
-#include "Render/MIDI/MIDI.hpp"
+#include "MIDI/MIDI.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::MIDI;

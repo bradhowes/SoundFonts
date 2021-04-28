@@ -17,7 +17,8 @@ namespace Modulator {
  - general controller
  - MIDI continuous controller (CC)
 
- The type is defined by the CC flag (bit 7).
+ The type is defined by the CC flag (bit 7). The general type points to various common MIDI values as a source of
+ modulation, while the CC type allows for a broader collection of controllers.
  */
 class Source {
 public:
@@ -93,7 +94,7 @@ public:
         return GeneralIndex(rawIndex());
     }
 
-    /// @returns true if this source is not connected to anything
+    /// @returns true if this source is not connected to anything (or it is invalid)
     bool isNone() const { return !isValid() || (isGeneralController() && generalIndex() == GeneralIndex::none); }
 
     /// @returns the index of the continuous controller (raises exception if not configured to be a continuous

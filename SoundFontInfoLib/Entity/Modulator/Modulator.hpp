@@ -20,9 +20,12 @@ namespace Modulator {
  Memory layout of a 'pmod'/'imod' entry. The size of this is defined to be 10.
  
  Defines a mapping of a modulator to a generator so that a modulator can affect the value given by a generator. Per the
- spec a modulator can have two sources. If the first one is not set, then the modulator will always return 0.0. The
+ spec a modulator can have two sources. If the first one is 'none', then the modulator will always return 0.0. The
  second one is optional -- if it exists then it will scale the result of the previous source value. Otherwise, it just
  acts as if the source returned 1.0.
+
+ Per the spec, modulators are unique if they do not share the same sfModSrcOper, sfModDestOper, sfModAmtSrcOper values.
+ If there are duplicates, the second occurrence wins.
  */
 class Modulator {
 public:
@@ -34,7 +37,8 @@ public:
 
      @param pos location to read from
      */
-    explicit Modulator(IO::Pos& pos) { assert(sizeof(*this) == size);
+    explicit Modulator(IO::Pos& pos) {
+        assert(sizeof(*this) == size);
         pos = pos.readInto(*this);
     }
 
@@ -47,10 +51,6 @@ public:
 
     /// @returns the source of data for the modulator
     const Source& source() const { return sfModSrcOper; }
-
-    bool hasSource() const { return !sfModSrcOper.isNone(); }
-
-    bool hasAmountSource() const { return !sfModAmtSrcOper.isNone(); }
 
     /// @returns true if this modulator is the source of a value for another modulator
     bool hasModulatorDestination() const { return (sfModDestOper & (1 << 15)) != 0; }

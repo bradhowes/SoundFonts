@@ -11,7 +11,7 @@
 #include "Logger.hpp"
 #include "Types.hpp"
 #include "Entity/Generator/Generator.hpp"
-#include "Render/MIDI/Channel.hpp"
+#include "MIDI/Channel.hpp"
 #include "Render/Modulator.hpp"
 #include "Render/Voice/Values.hpp"
 

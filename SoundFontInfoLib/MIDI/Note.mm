@@ -1,5 +1,5 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#include "Render/Note.hpp"
+#include "MIDI/Note.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::MIDI;

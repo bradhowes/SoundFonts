@@ -9,10 +9,10 @@
 #include <map>
 
 #include "Types.hpp"
+#include "MIDI/Note.hpp"
 #include "Render/DSP.hpp"
 
 namespace SF2 {
-namespace Render {
 namespace MIDI {
 
 enum struct CoreEvent {
@@ -121,17 +121,13 @@ enum struct RPNEvent
     modulationDepthRange = 0x05
 };
 
-inline constexpr static UByte MinNote = 0;
-inline constexpr static UByte MaxNote = 127;
-
 struct MIDIFrequencyLookup {
-
-    static double lookup(UByte key) { return standardNoteFrequencies_[std::clamp(key, MinNote, MaxNote)]; }
+    static double lookup(short key) { return standardNoteFrequencies_[std::clamp<short>(key, Note::Min, Note::Max)]; }
 
 private:
     MIDIFrequencyLookup() = delete;
 
-    inline static std::array<double, MaxNote + 1> standardNoteFrequencies_ = [] {
+    inline static std::array<double, Note::Max + 1> standardNoteFrequencies_ = [] {
         auto init = decltype(MIDIFrequencyLookup::standardNoteFrequencies_){};
         auto frequency = DSP::LowestNoteFrequency;
         auto scaleFactor = ::std::pow(2.0, 1.0 / 12.0);
@@ -146,5 +142,4 @@ private:
 inline double keyToFrequency(UByte key) { return MIDIFrequencyLookup::lookup(key); }
 
 } // namespace MIDI
-} // namespace Render
 } // namespace SF2
