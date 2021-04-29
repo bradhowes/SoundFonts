@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BD1AA064262DA20600AD3823 /* MIDIChannel.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA063262DA20600AD3823 /* MIDIChannel.mm */; };
-		BD1AA068262EE91100AD3823 /* Values.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD1AA067262EE91100AD3823 /* Values.hpp */; };
-		BD1AA06C262EEE2900AD3823 /* ValuesTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA06B262EEE2900AD3823 /* ValuesTests.mm */; };
 		BD1AA07226317EBA00AD3823 /* Modulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA07126317EBA00AD3823 /* Modulator.mm */; };
 		BD1AA0782632C4EB00AD3823 /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD1AA0772632C4EB00AD3823 /* ModulatorTests.mm */; };
 		BD250BA92615A45E00D1C1E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD250BA82615A45E00D1C1E0 /* README.md */; };
@@ -128,8 +126,6 @@
 
 /* Begin PBXFileReference section */
 		BD1AA063262DA20600AD3823 /* MIDIChannel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIChannel.mm; sourceTree = "<group>"; };
-		BD1AA067262EE91100AD3823 /* Values.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Values.hpp; sourceTree = "<group>"; };
-		BD1AA06B262EEE2900AD3823 /* ValuesTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValuesTests.mm; sourceTree = "<group>"; };
 		BD1AA07126317EBA00AD3823 /* Modulator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Modulator.mm; sourceTree = "<group>"; };
 		BD1AA0772632C4EB00AD3823 /* ModulatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorTests.mm; sourceTree = "<group>"; };
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/README.md; sourceTree = "<group>"; };
@@ -345,7 +341,6 @@
 			children = (
 				BDEB128F26244A79003CE8EE /* ChunkTests.mm */,
 				BDB5DE5A263827AF00E63DE1 /* TagsTests.mm */,
-				BD1AA06B262EEE2900AD3823 /* ValuesTests.mm */,
 				BD62BA5A261D18790052FB7A /* DelayBufferTests.mm */,
 				BD62BA4E261CB7D20052FB7A /* DSPTests.mm */,
 				BD82800A24EC91A600533D80 /* EnvelopeTests.mm */,
@@ -445,7 +440,6 @@
 		BDEB12D22626E35A003CE8EE /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BD1AA067262EE91100AD3823 /* Values.hpp */,
 				BDEC0026249775FE00A52507 /* Voice.hpp */,
 				BD5E16FE261EFFB9007BAA38 /* Voice.mm */,
 				BD2AEE5224F9C689009EAABE /* State.hpp */,
@@ -507,7 +501,6 @@
 				BDB5DE5E26382A0500E63DE1 /* InstrumentZone.hpp in Headers */,
 				BDEB12F52628906E003CE8EE /* Bounds.hpp in Headers */,
 				BDB5DE45263824AE00E63DE1 /* BufferIndex.hpp in Headers */,
-				BD1AA068262EE91100AD3823 /* Values.hpp in Headers */,
 				BD5E1719261F3907007BAA38 /* Modulator.hpp in Headers */,
 				BDEB12D72626E6DA003CE8EE /* Stage.hpp in Headers */,
 				BDB5DE062638218100E63DE1 /* Preset.hpp in Headers */,
@@ -707,7 +700,6 @@
 				BD250CA4261C571E00D1C1E0 /* SampleIndexTests.mm in Sources */,
 				BDABC42B24F1AD8800F8C874 /* ValueTransformerTests.mm in Sources */,
 				BD62BA5B261D18790052FB7A /* DelayBufferTests.mm in Sources */,
-				BD1AA06C262EEE2900AD3823 /* ValuesTests.mm in Sources */,
 				BD5E16FB261EEDA4007BAA38 /* NoteTests.mm in Sources */,
 				BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */,
 				BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */,

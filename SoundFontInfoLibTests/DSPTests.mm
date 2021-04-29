@@ -107,42 +107,42 @@ using namespace SF2::DSP;
 }
 
 - (void)testCentFrequencyMultiplier {
-    XCTAssertEqualWithAccuracy(0.5, centToFrequencyMultiplier(-1200), self.epsilon); // -1200 = 1/2x
-    XCTAssertEqualWithAccuracy(1.0, centToFrequencyMultiplier(0), self.epsilon); // 0 = 1x
-    XCTAssertEqualWithAccuracy(2.0, centToFrequencyMultiplier(1200), self.epsilon); // +1200 = 2x
+    XCTAssertEqualWithAccuracy(0.5, centsToFrequencyMultiplier(-1200), self.epsilon); // -1200 = 1/2x
+    XCTAssertEqualWithAccuracy(1.0, centsToFrequencyMultiplier(0), self.epsilon); // 0 = 1x
+    XCTAssertEqualWithAccuracy(2.0, centsToFrequencyMultiplier(1200), self.epsilon); // +1200 = 2x
 }
 
 - (void)testCentToFrequency {
-    XCTAssertEqualWithAccuracy(1.0, centToFrequency(-1), self.epsilon); // A0
-    XCTAssertEqualWithAccuracy(8.17579891564, centToFrequency(0), self.epsilon); // A0
-    XCTAssertEqualWithAccuracy(55.0, centToFrequency(3300), self.epsilon); // A1
-    XCTAssertEqualWithAccuracy(110.0, centToFrequency(4500), self.epsilon); // A2
-    XCTAssertEqualWithAccuracy(220.0, centToFrequency(5700), self.epsilon); // A3
-    XCTAssertEqualWithAccuracy(329.627556913, centToFrequency(6400), self.epsilon); // C4
-    XCTAssertEqualWithAccuracy(440.0, centToFrequency(6900), self.epsilon); // A4
-    XCTAssertEqualWithAccuracy(880.0, centToFrequency(8100), self.epsilon); // A5
-    XCTAssertEqualWithAccuracy(1760.0, centToFrequency(9300), self.epsilon); // A6
-    XCTAssertEqualWithAccuracy(3520.0, centToFrequency(10500), self.epsilon); // A7
-    XCTAssertEqualWithAccuracy(4186.00904481, centToFrequency(10800), self.epsilon); // C8
+    XCTAssertEqualWithAccuracy(1.0, centsToFrequency(-1), self.epsilon); // A0
+    XCTAssertEqualWithAccuracy(8.17579891564, centsToFrequency(0), self.epsilon); // A0
+    XCTAssertEqualWithAccuracy(55.0, centsToFrequency(3300), self.epsilon); // A1
+    XCTAssertEqualWithAccuracy(110.0, centsToFrequency(4500), self.epsilon); // A2
+    XCTAssertEqualWithAccuracy(220.0, centsToFrequency(5700), self.epsilon); // A3
+    XCTAssertEqualWithAccuracy(329.627556913, centsToFrequency(6400), self.epsilon); // C4
+    XCTAssertEqualWithAccuracy(440.0, centsToFrequency(6900), self.epsilon); // A4
+    XCTAssertEqualWithAccuracy(880.0, centsToFrequency(8100), self.epsilon); // A5
+    XCTAssertEqualWithAccuracy(1760.0, centsToFrequency(9300), self.epsilon); // A6
+    XCTAssertEqualWithAccuracy(3520.0, centsToFrequency(10500), self.epsilon); // A7
+    XCTAssertEqualWithAccuracy(4186.00904481, centsToFrequency(10800), self.epsilon); // C8
 }
 
 - (void)testCentibelsToAttenuation {
-    XCTAssertEqualWithAccuracy(1.0, centibelToAttenuation(-1), self.epsilon);
-    XCTAssertEqualWithAccuracy(1.0, centibelToAttenuation(0), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.891250938134, centibelToAttenuation(10), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.316227766017, centibelToAttenuation(100), self.epsilon);
-    XCTAssertEqualWithAccuracy(1e-05, centibelToAttenuation(1000), self.epsilon);
-    XCTAssertEqualWithAccuracy(6.3095734448e-08, centibelToAttenuation(1440), self.epsilon);
-    XCTAssertEqualWithAccuracy(1e-07, centibelToAttenuation(1441), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, centibelsToAttenuation(-1), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, centibelsToAttenuation(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.891250938134, centibelsToAttenuation(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.316227766017, centibelsToAttenuation(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-05, centibelsToAttenuation(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(6.3095734448e-08, centibelsToAttenuation(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(1e-07, centibelsToAttenuation(1441), self.epsilon);
 }
 
 - (void)testCentibelsToGain {
-    XCTAssertEqualWithAccuracy(1.0, centibelToGain(0), self.epsilon);
-    XCTAssertEqualWithAccuracy(1.1220184543, centibelToGain(10), self.epsilon);
-    XCTAssertEqualWithAccuracy(3.16227766017, centibelToGain(100), self.epsilon);
-    XCTAssertEqualWithAccuracy(100000, centibelToGain(1000), self.epsilon);
-    XCTAssertEqualWithAccuracy(15848931.924611142, centibelToGain(1440), self.epsilon);
-    XCTAssertEqualWithAccuracy(15848931.924611142, centibelToGain(1441), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.0, centibelsToGain(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(1.1220184543, centibelsToGain(10), self.epsilon);
+    XCTAssertEqualWithAccuracy(3.16227766017, centibelsToGain(100), self.epsilon);
+    XCTAssertEqualWithAccuracy(100000, centibelsToGain(1000), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1440), self.epsilon);
+    XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1441), self.epsilon);
 }
 
 - (void)testInterpolationCubic4thOrderInterpolate {
@@ -177,27 +177,6 @@ using namespace SF2::DSP;
     XCTAssertEqualWithAccuracy(0.123, SF2::DSP::tenthPercentage(123), 0.0001);
     XCTAssertEqualWithAccuracy(1.0, SF2::DSP::tenthPercentage(1000), 0.0001);
     XCTAssertEqualWithAccuracy(1.0, SF2::DSP::tenthPercentage(1001), 0.0001);
-}
-
-- (void)testCentsToDurationDelay {
-    XCTAssertEqual(0.0, SF2::DSP::centsToDurationDelay(-32768));
-    XCTAssertEqualWithAccuracy(0.000173, SF2::DSP::centsToDurationDelay(-20000), 0.000001);
-    XCTAssertEqualWithAccuracy(0.009998, SF2::DSP::centsToDurationDelay(-7973), 0.000001);
-    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::centsToDurationDelay(0), 0.000001);
-    XCTAssertEqualWithAccuracy(10.0, SF2::DSP::centsToDurationDelay(3986), 0.005);
-    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationDelay(5186), 0.005);
-    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationDelay(9000), 0.005);
-}
-
-- (void)testCentsToDurationAttack {
-    XCTAssertEqual(0.0, SF2::DSP::centsToDurationAttack(-32768));
-    XCTAssertEqualWithAccuracy(0.000173, SF2::DSP::centsToDurationAttack(-20000), 0.000001);
-    XCTAssertEqualWithAccuracy(0.009998, SF2::DSP::centsToDurationAttack(-7973), 0.000001);
-    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::centsToDurationAttack(0), 0.000001);
-    XCTAssertEqualWithAccuracy(10.0, SF2::DSP::centsToDurationAttack(3986), 0.005);
-    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationAttack(5186), 0.005);
-    XCTAssertEqualWithAccuracy(101.593658, SF2::DSP::centsToDurationAttack(8000), 0.005);
-    XCTAssertEqualWithAccuracy(101.593658, SF2::DSP::centsToDurationAttack(9000), 0.005);
 }
 
 - (void)testCentsToFrequency {

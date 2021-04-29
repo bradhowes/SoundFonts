@@ -21,13 +21,6 @@ inline constexpr double ReferenceNoteMIDI = 69.0;
 inline constexpr double ReferenceNoteSemi = ReferenceNoteMIDI * 100;
 inline constexpr double CentsPerOctave = 1200.0;
 
-inline constexpr Int CentsToDurationMin = -15000;
-inline constexpr Int CentsToDurationDelayMax = 5186;
-inline constexpr Int CentsToDurationAttackMax = 8000;
-inline constexpr Int CentsToDurationHoldMax = 5186;
-inline constexpr Int CentsToDurationDecayMax = 8000;
-inline constexpr Int CentsToDurationReleaseMax = 8000;
-
 inline constexpr Int CentsToFrequencyMin = -16000;
 inline constexpr Int CentsToFrequencyMax = 4500;
 
@@ -44,7 +37,6 @@ inline constexpr static double HalfSquareRoot2 = M_SQRT2 / 2.0;
 inline constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
 inline double centsToSeconds(double v) { return std::pow(2.0, v / 1200.0); }
-inline double centsToFrequency(double v) { return std::pow(2.0, v / 1200.0) * LowestNoteFrequency; }
 
 /**
  Convert cents value into a power of 2. There are 1200 cents per power of 2.
@@ -53,26 +45,6 @@ inline double centsToFrequency(double v) { return std::pow(2.0, v / 1200.0) * Lo
  @returns power of 2 value
  */
 inline double centsToPower2(Int value) { return std::pow(2.0, value / CentsPerOctave); }
-
-/**
- Convert cents value into a duration of seconds. Range is limited by spec. Input values are clamped to
- [-15000, 5186], with special-casing of -32768 which returns 0.0.
-
- @param value value to convert
- @returns duration in seconds
- */
-inline double centsToDuration(Int value, Int maximum) {
-    if (value == std::numeric_limits<Int>::min()) return 0.0; // special case for 0.0 (silly)
-    else if (value < CentsToDurationMin) value = CentsToDurationMin; // min ~0.01s (per spec)
-    else if (value > maximum) value = maximum;
-    return centsToPower2(value);
-}
-
-inline double centsToDurationDelay(Int value) { return centsToDuration(value, CentsToDurationDelayMax); }
-inline double centsToDurationAttack(Int value) { return centsToDuration(value, CentsToDurationAttackMax); }
-inline double centsToDurationHold(Int value) { return centsToDuration(value, CentsToDurationHoldMax); }
-inline double centsToDurationDecay(Int value) { return centsToDuration(value, CentsToDurationDecayMax); }
-inline double centsToDurationRelease(Int value) { return centsToDuration(value, CentsToDurationReleaseMax); }
 
 /**
  Convert cents to frequency, with 0 being 8.175798 Hz. Input values are clamped to [-16000, 4500].
@@ -213,8 +185,8 @@ inline double sineLookup(double radians) { return SineLookup::lookup(radians); }
  to drop 1 octave which is the same as multiplying the source frequency by 0.5. In the other direction an increase of
  1200 cents should result in a multiplier of 2.0 to double the source frequency.
  */
-struct CentFrequencyLookup {
-    inline constexpr static int MaxCentValue = 1200;
+struct CentsFrequencyLookup {
+    inline constexpr static int MaxCentsValue = 1200;
 
     /**
      Convert given cents value into a frequency multiplier.
@@ -222,22 +194,22 @@ struct CentFrequencyLookup {
      @param cent the value to convert
      @returns multiplier for a frequency that will change the frequency by the given cent value
      */
-    static double convert(int cent) { return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue]; }
+    static double convert(int cent) { return lookup_[std::clamp(cent, -MaxCentsValue, MaxCentsValue) + MaxCentsValue]; }
 
 private:
-    static const std::array<double, MaxCentValue * 2 + 1> lookup_;
+    static const std::array<double, MaxCentsValue * 2 + 1> lookup_;
 };
 
-inline double centToFrequencyMultiplier(int cent) { return CentFrequencyLookup::convert(cent); }
+inline double centsToFrequencyMultiplier(int cent) { return CentsFrequencyLookup::convert(cent); }
 
 /**
  Table lookup for the centToFrequency method below.
  */
-struct CentPartialLookup {
-    inline constexpr static int MaxCentValue = 1200;
-    static double find(int partial) { return lookup_[partial]; }
+struct CentsPartialLookup {
+    inline constexpr static int MaxCentsValue = 1200;
+    static double find(int partial) { return lookup_[std::clamp(partial, 0, MaxCentsValue - 1)]; }
 private:
-    static const std::array<double, MaxCentValue> lookup_;
+    static const std::array<double, MaxCentsValue> lookup_;
 };
 
 /**
@@ -245,12 +217,12 @@ private:
  fluid_conv.c file, in particular the fluid_ct2hz_real function. Uses CentPartialLookup above to convert values from
  0 - 1199 into the proper multiplier.
  */
-inline double centToFrequency(double value) {
+inline double centsToFrequency(double value) {
     if (value < 0.0) return 1.0;
     unsigned int cents = (unsigned int)(value) + 300;
     unsigned int whole = cents / 1200;
     unsigned int partial = cents - whole * 1200;
-    return (1u << whole) * CentPartialLookup::find(partial);
+    return (1u << whole) * CentsPartialLookup::find(partial);
 }
 
 inline double centibelsToNorm(int centibels) { return std::pow(10.0, centibels / -200.0); }
@@ -275,9 +247,9 @@ private:
     static const std::array<double, TableSize> lookup_;
 };
 
-inline double centibelToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
+inline double centibelsToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
 
-inline double centibelToGain(int centibels) { return GainLookup::lookup(centibels); }
+inline double centibelsToGain(int centibels) { return GainLookup::lookup(centibels); }
 
 namespace Interpolation {
 

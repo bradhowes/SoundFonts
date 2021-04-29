@@ -13,7 +13,6 @@
 #include "Entity/Generator/Generator.hpp"
 #include "MIDI/Channel.hpp"
 #include "Render/Modulator.hpp"
-#include "Render/Voice/Values.hpp"
 
 namespace SF2 {
 namespace Render {
@@ -132,11 +131,10 @@ public:
 
     /// @returns fundamental pitch to generate when rendering
     double pitch() const {
-        auto forced = unmodulated(Index::forcedMIDIKey);
-        auto value = (forced >= 0) ? forced : key_;     // MIDI key is in semitones
+        auto pitch = key();
         auto coarseTune = modulated(Index::coarseTune); // semitones
         auto fineTune = modulated(Index::fineTune);     // cents (1/100th of a semitone)
-        return value + coarseTune + fineTune / 100.0;
+        return pitch + coarseTune + fineTune / 100.0;
     }
 
     /// @returns key value to use

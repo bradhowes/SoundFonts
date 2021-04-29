@@ -57,6 +57,9 @@ static MIDI::Channel channel;
 
 - (void)testKey {
     Voice::State state(44100.0, channel, 64, 32);
+    XCTAssertEqual(64, state.eventKey());
+    XCTAssertEqual(64, state.key());
+
     state.setValue(Index::forcedMIDIKey, 128);
     XCTAssertEqual(64, state.eventKey());
     XCTAssertEqual(128, state.key());
@@ -64,6 +67,9 @@ static MIDI::Channel channel;
 
 - (void)testVelocity {
     Voice::State state(44100.0, channel, 64, 32);
+    XCTAssertEqual(32, state.eventVelocity());
+    XCTAssertEqual(32, state.velocity());
+
     state.setValue(Index::forcedMIDIVelocity, 128);
     XCTAssertEqual(32, state.eventVelocity());
     XCTAssertEqual(128, state.velocity());
@@ -115,6 +121,21 @@ static MIDI::Channel channel;
     XCTAssertEqualWithAccuracy(1200.0, state.keyedVolumeEnvelopeHold(), 0.000001);
     XCTAssertEqualWithAccuracy(0.02, DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) +
                                                          state.keyedVolumeEnvelopeHold()), 0.001);
+}
+
+- (void)testLoopingModes {
+    Voice::State state(44100.0, channel, 60, 32);
+    XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
+    state.setValue(Index::sampleModes, -1);
+    XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
+    state.setValue(Index::sampleModes, 1);
+    XCTAssertEqual(Voice::State::LoopingMode::continuously, state.loopingMode());
+    state.setValue(Index::sampleModes, 2);
+    XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
+    state.setValue(Index::sampleModes, 3);
+    XCTAssertEqual(Voice::State::LoopingMode::duringKeyPress, state.loopingMode());
+    state.setValue(Index::sampleModes, 4);
+    XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
 }
 
 @end

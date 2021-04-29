@@ -27,7 +27,7 @@ const std::array<double, SineLookup::TableSize> SineLookup::lookup_ = [] {
 
 
 // Due to reliance on std::pow() this table will be built at initialization time.
-const std::array<double, CentFrequencyLookup::MaxCentValue * 2 + 1> CentFrequencyLookup::lookup_ = [] {
+const std::array<double, CentsFrequencyLookup::MaxCentsValue * 2 + 1> CentsFrequencyLookup::lookup_ = [] {
     auto init = decltype(lookup_){};
     auto span = double((init.size() - 1) / 2);
     for (auto index = 0; index < init.size(); ++index) {
@@ -37,7 +37,7 @@ const std::array<double, CentFrequencyLookup::MaxCentValue * 2 + 1> CentFrequenc
 }();
 
 // Due to reliance on std::pow() this table will be built at initialization time.
-const std::array<double, CentPartialLookup::MaxCentValue> CentPartialLookup::lookup_ = [] {
+const std::array<double, CentsPartialLookup::MaxCentsValue> CentsPartialLookup::lookup_ = [] {
     auto init = decltype(lookup_){};
     for (auto index = 0; index < init.size(); ++index) {
         init[index] = 6.875 * std::pow(2.0, double(index) / 1200.0);
