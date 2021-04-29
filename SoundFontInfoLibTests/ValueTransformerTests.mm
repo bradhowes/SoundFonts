@@ -2,10 +2,12 @@
 
 #import <XCTest/XCTest.h>
 
+#include "Entity/Modulator/Source.hpp"
 #include "MIDI/ValueTransformer.hpp"
 
 using namespace SF2::MIDI;
 using VT = SF2::MIDI::ValueTransformer;
+using ES = SF2::Entity::Modulator::Source;
 
 @interface ValueTransformerTests : XCTestCase
 @property (nonatomic, assign) double epsilon;
@@ -20,8 +22,14 @@ using VT = SF2::MIDI::ValueTransformer;
 - (void)tearDown {
 }
 
+static VT makeVT(VT::Kind kind, VT::Polarity polarity, VT::Direction direction) {
+    return VT(ES((static_cast<int>(kind) << 10) +
+                 (static_cast<int>(polarity) << 9) +
+                 (static_cast<int>(direction) << 8)));
+}
+
 - (void)testLinearAscendingUnipolar {
-    auto z = VT(VT::Kind::linear, VT::Direction::ascending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::linear, VT::Polarity::unipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.25, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.5, z.value(64), self.epsilon);
@@ -30,7 +38,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testLinearDescendingUnipolar {
-    auto z = VT(VT::Kind::linear, VT::Direction::descending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::linear, VT::Polarity::unipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.75, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.5, z.value(64), self.epsilon);
@@ -39,7 +47,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testLinearAscendingBipolar {
-    auto z = VT(VT::Kind::linear, VT::Direction::ascending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::linear, VT::Polarity::bipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(-1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.5, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.0, z.value(64), self.epsilon);
@@ -48,7 +56,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testLinearDescendingBipolar {
-    auto z = VT(VT::Kind::linear, VT::Direction::descending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::linear, VT::Polarity::bipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.5, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.0, z.value(64), self.epsilon);
@@ -57,16 +65,17 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConcaveAscendingUnipolar {
-    auto z = VT(VT::Kind::concave, VT::Direction::ascending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::concave, VT::Polarity::unipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.052533381528, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.126859654793, z.value(64), self.epsilon);
     XCTAssertEqualWithAccuracy(0.255184177967, z.value(96), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.876584883732, z.value(126), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(127), self.epsilon);
 }
 
 - (void)testConcaveDescendingUnipolar {
-    auto z = VT(VT::Kind::concave, VT::Direction::descending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::concave, VT::Polarity::unipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.249439059432, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.124009894572, z.value(64), self.epsilon);
@@ -75,7 +84,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConcaveAscendingBipolar {
-    auto z = VT(VT::Kind::concave, VT::Direction::ascending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::concave, VT::Polarity::bipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(-1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.894933236944, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.746280690415, z.value(64), self.epsilon);
@@ -84,7 +93,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConcaveDescendingBipolar {
-    auto z = VT(VT::Kind::concave, VT::Direction::descending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::concave, VT::Polarity::bipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.501121881137, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(-0.751980210857, z.value(64), self.epsilon);
@@ -93,7 +102,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConvexAscendingUnipolar {
-    auto z = VT(VT::Kind::convex, VT::Direction::ascending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.750560940568, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.875990105428, z.value(64), self.epsilon);
@@ -102,7 +111,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConvexDescendingUnipolar {
-    auto z = VT(VT::Kind::convex, VT::Direction::descending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.947466618472, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.873140345207, z.value(64), self.epsilon);
@@ -111,7 +120,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConvexAscendingBipolar {
-    auto z = VT(VT::Kind::convex, VT::Direction::ascending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.750560940568, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.875990105428, z.value(64), self.epsilon);
@@ -120,7 +129,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testConvexDescendingBipolar {
-    auto z = VT(VT::Kind::convex, VT::Direction::descending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.947466618472, z.value(32), self.epsilon);
     XCTAssertEqualWithAccuracy(0.873140345207, z.value(64), self.epsilon);
@@ -129,7 +138,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testSwitchedAscendingUnipolar {
-    auto z = VT(VT::Kind::switched, VT::Direction::ascending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::switched, VT::Polarity::unipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.0, z.value(63), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(64), self.epsilon);
@@ -137,7 +146,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testSwitchedDescendingUnipolar {
-    auto z = VT(VT::Kind::switched, VT::Direction::descending, VT::Polarity::unipolar);
+    auto z = makeVT(VT::Kind::switched, VT::Polarity::unipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(63), self.epsilon);
     XCTAssertEqualWithAccuracy(0.0, z.value(64), self.epsilon);
@@ -145,7 +154,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testSwitchedAscendingBipolar {
-    auto z = VT(VT::Kind::switched, VT::Direction::ascending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::switched, VT::Polarity::bipolar, VT::Direction::ascending);
     XCTAssertEqualWithAccuracy(-1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(-1.0, z.value(63), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(64), self.epsilon);
@@ -153,7 +162,7 @@ using VT = SF2::MIDI::ValueTransformer;
 }
 
 - (void)testSwitchedDescendingBipolar {
-    auto z = VT(VT::Kind::switched, VT::Direction::descending, VT::Polarity::bipolar);
+    auto z = makeVT(VT::Kind::switched, VT::Polarity::bipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(63), self.epsilon);
     XCTAssertEqualWithAccuracy(-1.0, z.value(64), self.epsilon);

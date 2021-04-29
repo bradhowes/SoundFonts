@@ -52,7 +52,7 @@ public:
     }
 
     /// @returns the buffer of audio samples to use for rendering
-    const Sample::CanonicalBuffer<AUValue>& sampleBuffer() const {
+    const Sample::CanonicalBuffer& sampleBuffer() const {
         assert(instrumentZone_.sampleBuffer() != nullptr);
         return *(instrumentZone_.sampleBuffer());
     }

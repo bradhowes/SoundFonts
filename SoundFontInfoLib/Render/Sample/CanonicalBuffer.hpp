@@ -20,7 +20,6 @@ namespace Sample {
  16-bit values found in the SF2 file. Note that this conversion is done on-demand via the first call to
  `load`.
  */
-template <typename T>
 class CanonicalBuffer {
 public:
 
@@ -51,7 +50,7 @@ public:
      @param index the index to use
      @returns sample at the index
      */
-    T operator[](size_t index) const { return samples_.at(index); }
+    double operator[](size_t index) const { return samples_.at(index); }
 #else
     /**
      Obtain the sample at the given index
@@ -59,7 +58,7 @@ public:
      @param index the index to use
      @returns sample at the index
      */
-    T operator[](size_t index) const { return samples_[index]; }
+    double operator[](size_t index) const { return samples_[index]; }
 #endif
 
     /// @returns the sample header ('shdr') of the sample stream being rendered
@@ -68,7 +67,7 @@ public:
 private:
 
     void loadNormalizedSamples() const {
-        static constexpr T scale = T(1.0) / T(1 << 15);
+        static constexpr double scale = double(1.0) / double(1 << 15);
         os_signpost_id_t signpost = os_signpost_id_generate(log_);
         size_t size = header_.endIndex() - header_.startIndex();
 
@@ -80,7 +79,7 @@ private:
         os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
     }
 
-    mutable std::vector<T> samples_;
+    mutable std::vector<double> samples_;
     const Entity::SampleHeader& header_;
     const Int* allSamples_;
     inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};

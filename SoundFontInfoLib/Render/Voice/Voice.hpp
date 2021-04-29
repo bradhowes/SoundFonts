@@ -82,7 +82,7 @@ public:
 private:
     State state_;
     State::LoopingMode loopingMode_;
-    Sample::Generator<AUValue> sampleGenerator_;
+    Sample::Generator sampleGenerator_;
 
     Envelope::Generator gainEnvelope_;
     Envelope::Generator modulatorEnvelope_;

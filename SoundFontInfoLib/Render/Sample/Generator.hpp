@@ -25,7 +25,6 @@ namespace Sample {
  simple math to calculate a proper increment to use when iterating through the original samples, and with some proper
  interpolation we should end up with something that does not sound too harsh.
  */
-template <typename T>
 class Generator {
 public:
 
@@ -41,7 +40,7 @@ public:
      @param state the generator state to use for rendering
      @param kind the kind of interpolation to perform when generating the render samples
      */
-    Generator(const CanonicalBuffer<T>& samples, const Voice::State& state, Interpolator kind = Interpolator::linear) :
+    Generator(const CanonicalBuffer& samples, const Voice::State& state, Interpolator kind = Interpolator::linear) :
     samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},
     sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{} {
         samples.load();
@@ -52,7 +51,7 @@ public:
 
      @returns new sample value
      */
-    T generate(double pitchAdjustment, bool canLoop) {
+    double generate(double pitchAdjustment, bool canLoop) {
         PitchControl pitchControl{state_};
         auto index = bufferIndex_.index();
         if (index >= bounds_.endIndex()) return 0.0;
@@ -85,10 +84,10 @@ private:
      @param canLoop true if wrapping around in loop is allowed
      @returns interpolated sample result
      */
-    T linearInterpolate(size_t index, double partial, bool canLoop) const {
+    double linearInterpolate(size_t index, double partial, bool canLoop) const {
         auto x0 = samples_[index++];
         auto x1 = sample(index, canLoop);
-        return DSP::Interpolation::Linear<T>::interpolate(partial, x0, x1);
+        return DSP::Interpolation::Linear::interpolate(partial, x0, x1);
     }
 
     /**
@@ -99,26 +98,26 @@ private:
      @param canLoop true if wrapping around in loop is allowed
      @returns interpolated sample result
      */
-    T cubic4thOrderInterpolate(size_t index, double partial, bool canLoop) const {
+    double cubic4thOrderInterpolate(size_t index, double partial, bool canLoop) const {
         auto x0 = before(index, canLoop);
         auto x1 = sample(index++, canLoop);
         auto x2 = sample(index++, canLoop);
         auto x3 = sample(index++, canLoop);
-        return DSP::Interpolation::Cubic4thOrder<T>::interpolate(partial, x0, x1, x2, x3);
+        return DSP::Interpolation::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3);
     }
 
-    T sample(size_t index, bool canLoop) const {
+    double sample(size_t index, bool canLoop) const {
         if (index == bounds_.endLoopIndex() && canLoop) index = bounds_.startLoopIndex();
         return index < samples_.size() ? samples_[index] : 0.0;
     }
 
-    T before(size_t index, bool canLoop) const {
+    double before(size_t index, bool canLoop) const {
         if (index == 0) return 0.0;
         if (index == bounds_.startLoopIndex() && canLoop) index = bounds_.endLoopIndex();
         return samples_[index - 1];
     }
 
-    const CanonicalBuffer<T>& samples_;
+    const CanonicalBuffer& samples_;
     const Voice::State& state_;
     Interpolator interpolator_;
     Bounds bounds_;

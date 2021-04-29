@@ -14,11 +14,17 @@ namespace MIDI {
 /**
  Transforms MIDI controller domain values (between 0 and 127) into various ranges. This currently only works with the
  `coarse` controller values.
+
+ The conversion is done via a collection of lookup tables that map between [0, 127] and [0, 1] or [-1, 1]. Verified in
+ Xcode 12.5 that the tables are built using precomputed values in a TEXT segment, and not via any initialization code.
  */
 class ValueTransformer {
 public:
     inline constexpr static short Min = 0;
     inline constexpr static short Max = 127;
+
+    /// Since we have only 128 values to handle, use lookup tables for quick conversion
+    using TransformArrayType = std::array<double, Max + 1>;
 
     /**
      Kind specifies the curvature of the MIDI value transformation function.
@@ -38,43 +44,32 @@ public:
 
     /// Polarity determines the lower bound: unipolar = 0, bipolar = -1.
     enum struct Polarity {
-        unipolar,
-        bipolar
+        unipolar = 0,
+        bipolar = 1
     };
 
     /// Direction controls the ordering of the min/max values.
     enum struct Direction {
-        ascending,
-        descending
+        ascending = 0,
+        descending = 1
     };
 
     /// Domain controls how many values there are in the domain. Some domains start at 1 while others start at 0.
     enum struct Domain {
-        zeroBased,
-        oneBased
+        zeroBased = 0,
+        oneBased = 1
     };
 
     /**
-     Create new value transformer
-
-     @param kind mapping operation from controller domain to value range
-     @param direction ordering from min to max
-     @param polarity range lower and upper bounds
-     */
-    ValueTransformer(Kind kind, Direction direction, Polarity polarity);
-
-    /**
-     Create new value transformer for an SF2 modulator source definition
+     Create new value transformer from an SF2 modulator source definition
 
      @param source the source definition to use
      */
-    ValueTransformer(const Entity::Modulator::Source& source) :
+    explicit ValueTransformer(const Entity::Modulator::Source& source) :
     ValueTransformer(Kind(source.type()),
                      source.isMinToMax() ? Direction::ascending : Direction::descending,
                      source.isUnipolar() ? Polarity::unipolar : Polarity::bipolar)
-    {
-        ;
-    }
+    {}
 
     /**
      Convert a controller value.
@@ -86,16 +81,14 @@ public:
 
 private:
 
-    inline static double positiveConcaveCurveGenerator(short index) {
-        return index == 127 ? 1.0 : -40.0 / 96.0 * log10(double(Max - index) / Max);
-    }
+    /**
+     Create new value transformer.
 
-    inline static double negativeConcaveCurveGenerator(short index) {
-        return index == 0 ? 1.0 : -40.0 / 96.0 * log10(double(index) / Max);
-    }
-
-    /// Since we have only 128 values to handle, use lookup tables.
-    using TransformArrayType = std::array<double, Max + 1>;
+     @param kind mapping operation from controller domain to value range
+     @param direction ordering from min to max
+     @param polarity range lower and upper bounds
+     */
+    ValueTransformer(Kind kind, Direction direction, Polarity polarity);
 
     /**
      Locate the right table to use based on the transformation, direction, and polarity.
@@ -105,7 +98,7 @@ private:
      @param polarity the lower bound of the transformed result
      */
     static const TransformArrayType& selectActive(Kind kind, Direction direction, Polarity polarity);
-
+    
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;
     static TransformArrayType const positiveConcave_;

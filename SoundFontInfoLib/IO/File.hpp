@@ -83,7 +83,7 @@ public:
      @param index the index of the buffer to obtain
      @returns SampleBuffer reference
      */
-    const Render::Sample::CanonicalBuffer<AUValue>& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
+    const Render::Sample::CanonicalBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
     void dumpThreaded() const;
 
@@ -117,7 +117,7 @@ private:
     ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
     ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-    std::vector<Render::Sample::CanonicalBuffer<AUValue>> sampleBuffers_;
+    std::vector<Render::Sample::CanonicalBuffer> sampleBuffers_;
 
     std::shared_ptr<Int> sampleData_;
 
