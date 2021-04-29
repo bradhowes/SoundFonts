@@ -36,6 +36,7 @@ const std::array<double, CentFrequencyLookup::MaxCentValue * 2 + 1> CentFrequenc
     return init;
 }();
 
+// Due to reliance on std::pow() this table will be built at initialization time.
 const std::array<double, CentPartialLookup::MaxCentValue> CentPartialLookup::lookup_ = [] {
     auto init = decltype(lookup_){};
     for (auto index = 0; index < init.size(); ++index) {
@@ -55,7 +56,7 @@ const std::array<double, AttenuationLookup::TableSize> AttenuationLookup::lookup
 const std::array<double, GainLookup::TableSize> GainLookup::lookup_ = [] {
     auto init = decltype(lookup_){};
     for (auto index = 0; index < init.size(); ++index) {
-        init[index] = 1.0 / centibelsToNorm(index);
+        init[index] = 1.0 / AttenuationLookup::convert(index);
     }
     return init;
 }();

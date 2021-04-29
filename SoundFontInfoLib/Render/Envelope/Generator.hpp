@@ -8,7 +8,6 @@
 
 #include "Logger.hpp"
 #include "Entity/Generator/Index.hpp"
-#include "Render/Utils.hpp"
 #include "Render/Envelope/Stage.hpp"
 #include "Render/Voice/State.hpp"
 

@@ -6,25 +6,101 @@
 #include <array>
 #include <cmath>
 
+#include "Types.hpp"
+
 namespace SF2 {
 namespace DSP {
 
-inline constexpr static double PI = M_PI;            // 180°
-inline constexpr static double TwoPI = 2.0 * PI;     // 360°
-inline constexpr static double HalfPI = PI / 2.0;    // 90°
-inline constexpr static double QuarterPI = PI / 4.0; // 45°
+inline constexpr double PI = M_PI;            // 180°
+inline constexpr double TwoPI = 2.0 * PI;     // 360°
+inline constexpr double HalfPI = PI / 2.0;    // 90°
+inline constexpr double QuarterPI = PI / 4.0; // 45°
+
+inline constexpr double ReferenceNoteFrequency = 440.0;
+inline constexpr double ReferenceNoteMIDI = 69.0;
+inline constexpr double ReferenceNoteSemi = ReferenceNoteMIDI * 100;
+inline constexpr double CentsPerOctave = 1200.0;
+
+inline constexpr Int CentsToDurationMin = -15000;
+inline constexpr Int CentsToDurationDelayMax = 5186;
+inline constexpr Int CentsToDurationAttackMax = 8000;
+inline constexpr Int CentsToDurationHoldMax = 5186;
+inline constexpr Int CentsToDurationDecayMax = 8000;
+inline constexpr Int CentsToDurationReleaseMax = 8000;
+
+inline constexpr Int CentsToFrequencyMin = -16000;
+inline constexpr Int CentsToFrequencyMax = 4500;
+
+inline constexpr double CentiBelsPerDecade = 200.0;
+inline constexpr Int CentiBelToAttenuationMax = 1440;
 
 // 440 * pow(2.0, (N - 69) / 12)
-inline constexpr static double LowestNoteFrequency = 8.175798915643707; // C-1
+inline constexpr static double LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
 
 // sqrt(2) / 2.0
-inline constexpr static double HalfSquareRoot2 = 1.4142135623730951L / 2.0;
+inline constexpr static double HalfSquareRoot2 = M_SQRT2 / 2.0;
 
 // The value to multiply one note frequency to get the next note's frequency
 inline constexpr static double InterNoteMultiplier = 1.0594630943592953;
 
 inline double centsToSeconds(double v) { return std::pow(2.0, v / 1200.0); }
 inline double centsToFrequency(double v) { return std::pow(2.0, v / 1200.0) * LowestNoteFrequency; }
+
+/**
+ Convert cents value into a power of 2. There are 1200 cents per power of 2.
+
+ @param value the value to convert
+ @returns power of 2 value
+ */
+inline double centsToPower2(Int value) { return std::pow(2.0, value / CentsPerOctave); }
+
+/**
+ Convert cents value into a duration of seconds. Range is limited by spec. Input values are clamped to
+ [-15000, 5186], with special-casing of -32768 which returns 0.0.
+
+ @param value value to convert
+ @returns duration in seconds
+ */
+inline double centsToDuration(Int value, Int maximum) {
+    if (value == std::numeric_limits<Int>::min()) return 0.0; // special case for 0.0 (silly)
+    else if (value < CentsToDurationMin) value = CentsToDurationMin; // min ~0.01s (per spec)
+    else if (value > maximum) value = maximum;
+    return centsToPower2(value);
+}
+
+inline double centsToDurationDelay(Int value) { return centsToDuration(value, CentsToDurationDelayMax); }
+inline double centsToDurationAttack(Int value) { return centsToDuration(value, CentsToDurationAttackMax); }
+inline double centsToDurationHold(Int value) { return centsToDuration(value, CentsToDurationHoldMax); }
+inline double centsToDurationDecay(Int value) { return centsToDuration(value, CentsToDurationDecayMax); }
+inline double centsToDurationRelease(Int value) { return centsToDuration(value, CentsToDurationReleaseMax); }
+
+/**
+ Convert cents to frequency, with 0 being 8.175798 Hz. Input values are clamped to [-16000, 4500].
+
+ @param value value to convert
+ @returns frequency in Hz
+ */
+inline double absoluteCentsToFrequency(Int value) {
+    if (value < CentsToFrequencyMin) value = CentsToFrequencyMin; // min ~0.000792 Hz
+    else if (value > CentsToFrequencyMax) value = CentsToFrequencyMax; // max ~110 Hz (spec says 100 Hz)
+    return ReferenceNoteFrequency * centsToPower2(value - ReferenceNoteSemi);
+}
+
+/**
+ Restrict lowpass filter cutoff value to be between 1500 and 13500, inclusive.
+
+ @param value cutoff value
+ @returns clamped cutoff value
+ */
+inline Int clampFilterCutoff(Int value) { return std::clamp<Int>(value, 1500, 13500); }
+
+/**
+ Convert integer from integer [0-1000] into [0.0-1.0]
+
+ @param value percentage value expressed as tenths
+ @returns normalized value between 0 and 1.
+ */
+inline double tenthPercentage(Int value) { return std::clamp(value / 1000.0, 0.0, 1.0); }
 
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
@@ -149,7 +225,6 @@ struct CentFrequencyLookup {
     static double convert(int cent) { return lookup_[std::clamp(cent, -MaxCentValue, MaxCentValue) + MaxCentValue]; }
 
 private:
-
     static const std::array<double, MaxCentValue * 2 + 1> lookup_;
 };
 
@@ -160,9 +235,7 @@ inline double centToFrequencyMultiplier(int cent) { return CentFrequencyLookup::
  */
 struct CentPartialLookup {
     inline constexpr static int MaxCentValue = 1200;
-
     static double find(int partial) { return lookup_[partial]; }
-
 private:
     static const std::array<double, MaxCentValue> lookup_;
 };
@@ -187,32 +260,22 @@ inline double centibelsToNorm(int centibels) { return std::pow(10.0, centibels /
  */
 struct AttenuationLookup {
     inline constexpr static int TableSize = 1441;
-
-    static double convert(int centibels) {
-        return centibels <= 0 ? 1.0 : (centibels >= TableSize ? 0.0 : lookup_[centibels]);
-    }
-
+    static double convert(int centibels) { return lookup_[std::clamp(centibels, 0, TableSize - 1)]; }
 private:
     static const std::array<double, TableSize> lookup_;
 };
-
-inline double centibelToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
 
 /**
  Convert centibels into gain value (same as 1.0 / attenuation)
  */
 struct GainLookup {
     inline constexpr static int TableSize = 1441;
-
-    static double lookup(int centibels) {
-        if (centibels <= 0.0) return 1.0;
-        if (centibels >= TableSize) centibels = TableSize - 1;
-        return lookup_[centibels];
-    }
-
+    static double lookup(int centibels) { return lookup_[std::clamp(centibels, 0, TableSize - 1)]; }
 private:
     static const std::array<double, TableSize> lookup_;
 };
+
+inline double centibelToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
 
 inline double centibelToGain(int centibels) { return GainLookup::lookup(centibels); }
 

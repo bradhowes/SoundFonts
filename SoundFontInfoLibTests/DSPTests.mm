@@ -127,6 +127,7 @@ using namespace SF2::DSP;
 }
 
 - (void)testCentibelsToAttenuation {
+    XCTAssertEqualWithAccuracy(1.0, centibelToAttenuation(-1), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, centibelToAttenuation(0), self.epsilon);
     XCTAssertEqualWithAccuracy(0.891250938134, centibelToAttenuation(10), self.epsilon);
     XCTAssertEqualWithAccuracy(0.316227766017, centibelToAttenuation(100), self.epsilon);
@@ -168,6 +169,43 @@ using namespace SF2::DSP;
 
     v = SF2::DSP::Interpolation::Linear::interpolate(0.9, 1, 2);
     XCTAssertEqualWithAccuracy(0.1 * 1.0 + 0.9 * 2.0, v, epsilon);
+}
+
+- (void)testTenthPercentage {
+    XCTAssertEqualWithAccuracy(0.0, SF2::DSP::tenthPercentage(-1), 0.0001);
+    XCTAssertEqualWithAccuracy(0.0, SF2::DSP::tenthPercentage(0), 0.0001);
+    XCTAssertEqualWithAccuracy(0.123, SF2::DSP::tenthPercentage(123), 0.0001);
+    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::tenthPercentage(1000), 0.0001);
+    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::tenthPercentage(1001), 0.0001);
+}
+
+- (void)testCentsToDurationDelay {
+    XCTAssertEqual(0.0, SF2::DSP::centsToDurationDelay(-32768));
+    XCTAssertEqualWithAccuracy(0.000173, SF2::DSP::centsToDurationDelay(-20000), 0.000001);
+    XCTAssertEqualWithAccuracy(0.009998, SF2::DSP::centsToDurationDelay(-7973), 0.000001);
+    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::centsToDurationDelay(0), 0.000001);
+    XCTAssertEqualWithAccuracy(10.0, SF2::DSP::centsToDurationDelay(3986), 0.005);
+    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationDelay(5186), 0.005);
+    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationDelay(9000), 0.005);
+}
+
+- (void)testCentsToDurationAttack {
+    XCTAssertEqual(0.0, SF2::DSP::centsToDurationAttack(-32768));
+    XCTAssertEqualWithAccuracy(0.000173, SF2::DSP::centsToDurationAttack(-20000), 0.000001);
+    XCTAssertEqualWithAccuracy(0.009998, SF2::DSP::centsToDurationAttack(-7973), 0.000001);
+    XCTAssertEqualWithAccuracy(1.0, SF2::DSP::centsToDurationAttack(0), 0.000001);
+    XCTAssertEqualWithAccuracy(10.0, SF2::DSP::centsToDurationAttack(3986), 0.005);
+    XCTAssertEqualWithAccuracy(20.0, SF2::DSP::centsToDurationAttack(5186), 0.005);
+    XCTAssertEqualWithAccuracy(101.593658, SF2::DSP::centsToDurationAttack(8000), 0.005);
+    XCTAssertEqualWithAccuracy(101.593658, SF2::DSP::centsToDurationAttack(9000), 0.005);
+}
+
+- (void)testCentsToFrequency {
+    XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::absoluteCentsToFrequency(-32768), 0.000001);
+    XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::absoluteCentsToFrequency(-20000), 0.000001);
+    XCTAssertEqualWithAccuracy(8.175799, SF2::DSP::absoluteCentsToFrequency(0), 0.00001);
+    XCTAssertEqualWithAccuracy(110.0, SF2::DSP::absoluteCentsToFrequency(4500), 0.00001);
+    XCTAssertEqualWithAccuracy(110.0, SF2::DSP::absoluteCentsToFrequency(9000), 0.00001);
 }
 
 @end

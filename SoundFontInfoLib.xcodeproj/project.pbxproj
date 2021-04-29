@@ -15,7 +15,6 @@
 		BD250BA92615A45E00D1C1E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD250BA82615A45E00D1C1E0 /* README.md */; };
 		BD250BD72615E5E900D1C1E0 /* EntityModulatorSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BD62615E5E900D1C1E0 /* EntityModulatorSourceTests.mm */; };
 		BD250BDB2615FD7400D1C1E0 /* Modulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BDA2615FD7400D1C1E0 /* Modulator.mm */; };
-		BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */; };
 		BD250C82261A126000D1C1E0 /* Types.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C81261A126000D1C1E0 /* Types.hpp */; };
 		BD250CA4261C571E00D1C1E0 /* SampleIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */; };
 		BD250D14261C74ED00D1C1E0 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */; };
@@ -84,7 +83,6 @@
 		BDB5DE42263824A000E63DE1 /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */; };
 		BDB5DE45263824AE00E63DE1 /* BufferIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250C9F261C3AA600D1C1E0 /* BufferIndex.hpp */; };
 		BDB5DE48263824B100E63DE1 /* CanonicalBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250CAB261C61D000D1C1E0 /* CanonicalBuffer.hpp */; };
-		BDB5DE4B263824BC00E63DE1 /* Utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250BE226163F7D00D1C1E0 /* Utils.hpp */; };
 		BDB5DE4E263824CA00E63DE1 /* Voice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0026249775FE00A52507 /* Voice.hpp */; };
 		BDB5DE51263824CD00E63DE1 /* State.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* State.hpp */; };
 		BDB5DE54263824D800E63DE1 /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC43224F46EFA00F8C874 /* Zone.hpp */; };
@@ -137,8 +135,6 @@
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/README.md; sourceTree = "<group>"; };
 		BD250BD62615E5E900D1C1E0 /* EntityModulatorSourceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EntityModulatorSourceTests.mm; sourceTree = "<group>"; };
 		BD250BDA2615FD7400D1C1E0 /* Modulator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Modulator.mm; path = SoundFontInfoLib/Entity/Modulator/Modulator.mm; sourceTree = SOURCE_ROOT; };
-		BD250BE226163F7D00D1C1E0 /* Utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Utils.hpp; sourceTree = "<group>"; };
-		BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderUtilsTests.mm; sourceTree = "<group>"; };
 		BD250C81261A126000D1C1E0 /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
 		BD250C91261A727100D1C1E0 /* Version.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Version.hpp; sourceTree = "<group>"; };
 		BD250C9F261C3AA600D1C1E0 /* BufferIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BufferIndex.hpp; sourceTree = "<group>"; };
@@ -363,7 +359,6 @@
 				BD5E16FA261EEDA4007BAA38 /* NoteTests.mm */,
 				BDEB127B26234100003CE8EE /* PresetTests.mm */,
 				BD5E1714261F17A0007BAA38 /* RangeTests.mm */,
-				BD250BE82616406100D1C1E0 /* RenderUtilsTests.mm */,
 				BD62BA6F261DC5F20052FB7A /* SampleBufferTests.mm */,
 				BD250CA3261C571E00D1C1E0 /* SampleIndexTests.mm */,
 				BDB2662C25324780005BEAD1 /* SFFileTests.mm */,
@@ -439,7 +434,6 @@
 				BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */,
 				BD5E170E261F121E007BAA38 /* Range.hpp */,
 				BDEB12E826288DA4003CE8EE /* Sample */,
-				BD250BE226163F7D00D1C1E0 /* Utils.hpp */,
 				BDEB12D22626E35A003CE8EE /* Voice */,
 				BDABC43224F46EFA00F8C874 /* Zone.hpp */,
 				BD2AEE4824F6BF94009EAABE /* Zone.mm */,
@@ -544,7 +538,6 @@
 				BD62BA53261CB8270052FB7A /* DelayBuffer.hpp in Headers */,
 				BDEB12E3262880BC003CE8EE /* Generator.hpp in Headers */,
 				BDB5DE1B2638233E00E63DE1 /* Amount.hpp in Headers */,
-				BDB5DE4B263824BC00E63DE1 /* Utils.hpp in Headers */,
 				BDB5DE212638234B00E63DE1 /* Generator.hpp in Headers */,
 				BD3441B2262D90660051DC7F /* PitchControl.hpp in Headers */,
 				BDEB12DB2626E764003CE8EE /* Generator.hpp in Headers */,
@@ -703,7 +696,6 @@
 				BD1AA0782632C4EB00AD3823 /* ModulatorTests.mm in Sources */,
 				BD2AEE4F24F7E2AA009EAABE /* GeneratorAmountTests.mm in Sources */,
 				BD62BA70261DC5F20052FB7A /* SampleBufferTests.mm in Sources */,
-				BD250BE92616406100D1C1E0 /* RenderUtilsTests.mm in Sources */,
 				BD5E1715261F17A0007BAA38 /* RangeTests.mm in Sources */,
 				BD250BD72615E5E900D1C1E0 /* EntityModulatorSourceTests.mm in Sources */,
 				BDEB129C26249AC8003CE8EE /* MIDITests.mm in Sources */,
