@@ -28,13 +28,13 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 }
 
 - (void)testConstruction {
-    auto index = BufferIndex();
+    auto index = BufferIndex(bounds);
     XCTAssertEqual(0, index.index());
     XCTAssertEqual(0, index.partial());
 }
 
 - (void)testIncrement {
-    auto index = BufferIndex();
+    auto index = BufferIndex(bounds);
     index.setIncrement(1.3);
     index.increment(bounds, true);
     XCTAssertEqual(1, index.index());
@@ -44,7 +44,7 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 }
 
 - (void)testLooping {
-    auto index = BufferIndex();
+    auto index = BufferIndex(bounds);
     index.setIncrement(1.3);
     index.increment(bounds, true);
     XCTAssertEqual(1, index.index());
@@ -67,7 +67,7 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 }
 
 - (void)testEndLooping {
-    auto index = BufferIndex();
+    auto index = BufferIndex(bounds);
     index.setIncrement(1.3);
     index.increment(bounds, true);
     index.increment(bounds, true);
@@ -84,7 +84,7 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 }
 
 - (void)testFinished {
-    auto index = BufferIndex();
+    auto index = BufferIndex(bounds);
     index.setIncrement(1.3);
     index.increment(bounds, false);
     XCTAssertEqual(1, index.index());

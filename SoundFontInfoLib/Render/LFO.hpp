@@ -3,7 +3,8 @@
 #pragma once
 
 #include <cmath>
-#include "Render/DSP.hpp"
+
+#include "DSP.hpp"
 
 namespace SF2 {
 namespace Render {

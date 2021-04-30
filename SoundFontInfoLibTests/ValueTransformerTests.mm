@@ -120,21 +120,21 @@ static VT makeVT(VT::Kind kind, VT::Polarity polarity, VT::Direction direction) 
 }
 
 - (void)testConvexAscendingBipolar {
-    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::ascending);
-    XCTAssertEqualWithAccuracy(0.0, z.value(0), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.750560940568, z.value(32), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.875990105428, z.value(64), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.949361463368, z.value(96), self.epsilon);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::bipolar, VT::Direction::ascending);
+    XCTAssertEqualWithAccuracy(-1.0, z.value(0), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.501121881137, z.value(32), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.751980210857, z.value(64), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.898722926736, z.value(96), self.epsilon);
     XCTAssertEqualWithAccuracy(1.0, z.value(127), self.epsilon);
 }
 
 - (void)testConvexDescendingBipolar {
-    auto z = makeVT(VT::Kind::convex, VT::Polarity::unipolar, VT::Direction::descending);
+    auto z = makeVT(VT::Kind::convex, VT::Polarity::bipolar, VT::Direction::descending);
     XCTAssertEqualWithAccuracy(1.0, z.value(0), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.947466618472, z.value(32), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.873140345207, z.value(64), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.744815822033, z.value(96), self.epsilon);
-    XCTAssertEqualWithAccuracy(0.0, z.value(127), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.894933236944, z.value(32), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.746280690415, z.value(64), self.epsilon);
+    XCTAssertEqualWithAccuracy(0.489631644065, z.value(96), self.epsilon);
+    XCTAssertEqualWithAccuracy(-1.0, z.value(127), self.epsilon);
 }
 
 - (void)testSwitchedAscendingUnipolar {

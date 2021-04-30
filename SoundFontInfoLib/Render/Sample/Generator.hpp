@@ -7,8 +7,8 @@
 #include <AudioToolbox/AUParameters.h>
 #include <vector>
 
+#include "DSP.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/DSP.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
 #include "Render/Sample/PitchControl.hpp"
@@ -42,7 +42,7 @@ public:
      */
     Generator(const CanonicalBuffer& samples, const Voice::State& state, Interpolator kind = Interpolator::linear) :
     samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},
-    sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{} {
+    sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{bounds_} {
         samples.load();
     }
 

@@ -22,6 +22,8 @@ namespace Sample {
  */
 struct BufferIndex {
 
+    BufferIndex(const Bounds& bounds) : index_{bounds.startIndex()} {}
+
     /**
      Set the increment to use when advancing the index. This can change with each sample depending on what modulators
      are doing with the pitch value (eg vibrato).
@@ -73,7 +75,7 @@ struct BufferIndex {
     bool finished() const { return partialIncrement_ < 0.0; }
 
 private:
-    size_t index_{0};
+    size_t index_;
     size_t indexIncrement_{0};
     double partial_{0.0};
     double partialIncrement_{0.0};

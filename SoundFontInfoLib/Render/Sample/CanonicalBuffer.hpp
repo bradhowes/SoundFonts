@@ -7,8 +7,8 @@
 #include <AudioToolbox/AUParameters.h>
 #include <vector>
 
+#include "DSP.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/DSP.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 
 namespace SF2 {

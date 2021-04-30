@@ -5,10 +5,12 @@
 #include <cassert>
 #include <algorithm>
 #include <array>
+#include <iosfwd>
 
 #include "Entity/Modulator/Source.hpp"
 
 namespace SF2 {
+namespace Generators { void Generate(std::ostream&); }
 namespace MIDI {
 
 /**
@@ -24,7 +26,8 @@ public:
     inline constexpr static short Max = 127;
 
     /// Since we have only 128 values to handle, use lookup tables for quick conversion
-    using TransformArrayType = std::array<double, Max + 1>;
+    inline constexpr static size_t TableSize = Max + 1;
+    using TransformArrayType = std::array<double, TableSize>;
 
     /**
      Kind specifies the curvature of the MIDI value transformation function.
@@ -98,7 +101,7 @@ private:
      @param polarity the lower bound of the transformed result
      */
     static const TransformArrayType& selectActive(Kind kind, Direction direction, Polarity polarity);
-    
+
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;
     static TransformArrayType const positiveConcave_;
@@ -118,6 +121,8 @@ private:
     static TransformArrayType const negativeSwitchedBipolar_;
 
     const TransformArrayType& active_;
+
+    friend void Generators::Generate(std::ostream&);
 };
 
 } // namespace MIDI

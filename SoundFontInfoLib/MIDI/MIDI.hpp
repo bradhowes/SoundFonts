@@ -8,9 +8,9 @@
 #include <cmath>
 #include <map>
 
+#include "DSP.hpp"
 #include "Types.hpp"
 #include "MIDI/Note.hpp"
-#include "Render/DSP.hpp"
 
 namespace SF2 {
 namespace MIDI {

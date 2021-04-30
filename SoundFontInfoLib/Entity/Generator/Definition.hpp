@@ -5,9 +5,9 @@
 #include <array>
 #include <string>
 
+#include "DSP.hpp"
 #include "Entity/Generator/Amount.hpp"
 #include "Entity/Generator/Index.hpp"
-#include "Render/DSP.hpp"
 
 namespace SF2 {
 namespace Entity {

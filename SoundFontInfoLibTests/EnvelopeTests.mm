@@ -2,7 +2,7 @@
 
 #import <XCTest/XCTest.h>
 
-#include "Render/DSP.hpp"
+#include "DSP.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/Envelope/Stage.hpp"
 

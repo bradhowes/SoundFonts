@@ -47,8 +47,6 @@
 		BD976C8B263B029C003AED73 /* DSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD976C8A263B029C003AED73 /* DSP.mm */; };
 		BD976C95263BF01A003AED73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD976C94263BF01A003AED73 /* main.cpp */; };
 		BD976C99263BF07D003AED73 /* DSPGenerators.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD976C8C263BEF78003AED73 /* DSPGenerators.cc */; };
-		BD976C9E263BFE51003AED73 /* DSP.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA3A261CAE070052FB7A /* DSP.hpp */; };
-		BD976C9F263BFE51003AED73 /* DSPGenerators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD976C9A263BF128003AED73 /* DSPGenerators.hpp */; };
 		BD976CA8263C1277003AED73 /* DSPGenerated.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD976CA7263C1277003AED73 /* DSPGenerated.mm */; };
 		BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
 		BDABC42924F172CD00F8C874 /* ValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42824F172CD00F8C874 /* ValueTransformer.mm */; };
@@ -361,6 +359,9 @@
 		BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */ = {
 			isa = PBXGroup;
 			children = (
+				BD62BA3A261CAE070052FB7A /* DSP.hpp */,
+				BD976C8A263B029C003AED73 /* DSP.mm */,
+				BD976C9A263BF128003AED73 /* DSPGenerators.hpp */,
 				BD250C81261A126000D1C1E0 /* Types.hpp */,
 				BDEB130E2629EB4F003CE8EE /* Logger.hpp */,
 				BDB265F4252FB2CB005BEAD1 /* Entity */,
@@ -470,9 +471,6 @@
 				BD62BA42261CB09E0052FB7A /* BufferFacet.hpp */,
 				BDEB130A2629CA5C003CE8EE /* Engine.hpp */,
 				BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */,
-				BD62BA3A261CAE070052FB7A /* DSP.hpp */,
-				BD976C8A263B029C003AED73 /* DSP.mm */,
-				BD976C9A263BF128003AED73 /* DSPGenerators.hpp */,
 				BDEB12D52626E6CE003CE8EE /* Envelope */,
 				BD62BA46261CB5F40052FB7A /* InputBuffer.hpp */,
 				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
@@ -615,8 +613,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD976C9E263BFE51003AED73 /* DSP.hpp in Headers */,
-				BD976C9F263BFE51003AED73 /* DSPGenerators.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,7 +899,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -965,7 +961,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1001,8 +997,6 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1015,7 +1009,6 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1046,8 +1039,6 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1060,7 +1051,6 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1084,7 +1074,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1108,7 +1097,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1125,8 +1113,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = ../SoundFontInfoLib;
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				GCC_UNROLL_LOOPS = NO;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SoundFontInfoLib";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
@@ -1141,8 +1129,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = ../SoundFontInfoLib;
-				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				GCC_UNROLL_LOOPS = NO;
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SoundFontInfoLib";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = macosx;
