@@ -213,7 +213,7 @@
 		BD976C92263BF01A003AED73 /* DSPGenerators */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPGenerators; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD976C94263BF01A003AED73 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BD976C9A263BF128003AED73 /* DSPGenerators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPGenerators.hpp; sourceTree = "<group>"; };
-		BD976CA7263C1277003AED73 /* DSPGenerated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DSPGenerated.mm; path = "../../Intermediates.noindex/SoundFontInfoLib.build/Debug-maccatalyst/SoundFontInfoLib.build/DerivedSources/DSPGenerated.mm"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD976CA7263C1277003AED73 /* DSPGenerated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DSPGenerated.mm; path = DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources/DSPGenerated.mm; sourceTree = SOURCE_ROOT; };
 		BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueTransformer.hpp; sourceTree = "<group>"; };
 		BDABC42824F172CD00F8C874 /* ValueTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformer.mm; sourceTree = "<group>"; };
 		BDABC42A24F1AD8800F8C874 /* ValueTransformerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformerTests.mm; sourceTree = "<group>"; };
@@ -755,11 +755,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILES_DIR)/DSPGenerated.mm",
+				"$(PROJECT_DERIVED_FILE_DIR)/DSPGenerated.mm",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nDerivedData/SoundFonts/Build/Products/Debug/DSPGenerators ${DERIVED_FILES_DIR}/DSPGenerated.mm\n";
+			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${PROJECT_DERIVED_FILE_DIR}/DSPGenerated.mm\"\n$(find . -name DSPGenerators | head -1) \"${OUTPUT}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
