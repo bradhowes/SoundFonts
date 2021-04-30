@@ -211,7 +211,7 @@
 		BD976C92263BF01A003AED73 /* DSPGenerators */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPGenerators; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD976C94263BF01A003AED73 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		BD976C9A263BF128003AED73 /* DSPGenerators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPGenerators.hpp; sourceTree = "<group>"; };
-		BD976CA7263C1277003AED73 /* DSPGenerated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DSPGenerated.mm; path = DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources/DSPGenerated.mm; sourceTree = SOURCE_ROOT; };
+		BD976CA7263C1277003AED73 /* DSPGenerated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DSPGenerated.mm; path = ../../Intermediates.noindex/SoundFontInfoLib.build/DerivedSources/DSPGenerated.mm; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueTransformer.hpp; sourceTree = "<group>"; };
 		BDABC42824F172CD00F8C874 /* ValueTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformer.mm; sourceTree = "<group>"; };
 		BDABC42A24F1AD8800F8C874 /* ValueTransformerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformerTests.mm; sourceTree = "<group>"; };
