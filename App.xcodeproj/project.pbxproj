@@ -34,7 +34,7 @@
 		BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* Controls.storyboard */; };
 		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
-		BD75433023803994004C6A4C /* Mute.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* Mute.swift */; };
+		BD75433023803994004C6A4C /* MuteDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75432E23803994004C6A4C /* MuteDetector.swift */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
@@ -157,7 +157,7 @@
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
-		BD75432E23803994004C6A4C /* Mute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mute.swift; sourceTree = "<group>"; };
+		BD75432E23803994004C6A4C /* MuteDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuteDetector.swift; sourceTree = "<group>"; };
 		BD75B260218B8CFD00C7EBD7 /* SoundFontsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundFontsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -168,6 +168,8 @@
 		BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BD88BCC02419A9D400399DE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD88BCC62419A9FB00399DE5 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
+		BD976CA9263C19A1003AED73 /* ReverbAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReverbAU.entitlements; sourceTree = "<group>"; };
+		BD976CAA263C19A1003AED73 /* DelayAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DelayAU.entitlements; sourceTree = "<group>"; };
 		BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 		BD59074B2565CD4C004DE941 /* ReverbAU */ = {
 			isa = PBXGroup;
 			children = (
+				BD976CA9263C19A1003AED73 /* ReverbAU.entitlements */,
 				BD5907682565CD4C004DE941 /* Info.plist */,
 				BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */,
 				BD5907602565CD4C004DE941 /* ReverbAU.swift */,
@@ -303,6 +306,7 @@
 		BD59077F2565CDDC004DE941 /* DelayAU */ = {
 			isa = PBXGroup;
 			children = (
+				BD976CAA263C19A1003AED73 /* DelayAU.entitlements */,
 				BD59079C2565CDDC004DE941 /* Info.plist */,
 				BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */,
 				BD5907942565CDDC004DE941 /* DelayAU.swift */,
@@ -356,7 +360,7 @@
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */,
-				BD75432E23803994004C6A4C /* Mute.swift */,
+				BD75432E23803994004C6A4C /* MuteDetector.swift */,
 				BD0E9EE724FAC0C6009316F2 /* MIDI.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
@@ -705,7 +709,7 @@
 				BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */,
 				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
-				BD75433023803994004C6A4C /* Mute.swift in Sources */,
+				BD75433023803994004C6A4C /* MuteDetector.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD498FA423F07AFC00755AB9 /* VolumeMonitor.swift in Sources */,
 				BDC5D87F24E0763E00D0B840 /* InfoHUD.swift in Sources */,
@@ -774,6 +778,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -799,6 +804,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -853,6 +859,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -867,6 +874,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -878,6 +886,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -892,6 +901,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -903,6 +913,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DelayAU/DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -917,6 +928,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -928,6 +940,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DelayAU/DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -942,6 +955,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -1096,6 +1110,7 @@
 				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1122,6 +1137,7 @@
 				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

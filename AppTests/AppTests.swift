@@ -14,13 +14,20 @@ class AppTests: XCTestCase {
     private let app = XCUIApplication()
 
     override func setUp() {
+        guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
+
+        #if !targetEnvironment(macCatalyst)
         XCUIDevice.shared.orientation = .portrait
+        #endif
+
         super.setUp()
         app.launchArguments += ["-ui_testing"]
         app.launch()
     }
 
     func testVersionMatchesBundle() {
+        guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
+
         let mainView = app.otherElements["MainView"]
         XCTAssert(mainView.waitForExistence(timeout: 5))
 

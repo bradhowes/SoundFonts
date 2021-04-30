@@ -38,12 +38,12 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
     public var alertManager: AlertManager { _alertManager! }
 
     public var sampler: Sampler { _sampler! }
-    public var delayEffect: Delay? {
+    public var delayEffect: DelayEffect? {
         precondition(self.inApp == false || _delayEffect != nil)
         return _delayEffect
     }
 
-    public var reverbEffect: Reverb? {
+    public var reverbEffect: ReverbEffect? {
         precondition(self.inApp == false || _reverbEffect != nil)
         return _reverbEffect
     }
@@ -55,12 +55,12 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
             if let sampler = _sampler { DispatchQueue.main.async { self.notify(.samplerAvailable(sampler)) } }
         }
     }
-    private var _reverbEffect: Reverb? {
+    private var _reverbEffect: ReverbEffect? {
         didSet {
             if let effect = _reverbEffect { DispatchQueue.main.async { self.notify(.reverbAvailable(effect)) } }
         }
     }
-    private var _delayEffect: Delay? {
+    private var _delayEffect: DelayEffect? {
         didSet {
             if let effect = _delayEffect { DispatchQueue.main.async { self.notify(.delayAvailable(effect)) } }
         }
@@ -89,9 +89,9 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
 
             // Create audio components in background to free up main thread in application
             DispatchQueue.global(qos: .userInitiated).async {
-                let reverb = inApp ? Reverb() : nil
+                let reverb = inApp ? ReverbEffect() : nil
                 self._reverbEffect = reverb
-                let delay = inApp ? Delay() : nil
+                let delay = inApp ? DelayEffect() : nil
                 self._delayEffect = delay
                 self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit,
                                         activePatchManager: self.activePatchManager,

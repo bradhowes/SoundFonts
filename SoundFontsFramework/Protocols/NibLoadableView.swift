@@ -5,7 +5,7 @@ import UIKit
 /**
  Protocol for UIView classes that can load from a NIB file
  */
-public protocol NibLoadableView: class {
+public protocol NibLoadableView: AnyObject {
 
     /// Obtain the name of the NIB to load
     static var nibName: String { get }

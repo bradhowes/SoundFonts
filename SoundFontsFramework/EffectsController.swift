@@ -35,8 +35,8 @@ public final class EffectsController: UIViewController {
     private var soundFonts: SoundFonts!
     private var favorites: Favorites!
 
-    private var reverbEffect: Reverb?
-    private var delayEffect: Delay?
+    private var reverbEffect: ReverbEffect?
+    private var delayEffect: DelayEffect?
 
     public override func viewDidLoad() {
 
@@ -150,7 +150,7 @@ extension EffectsController: ControllerConfiguration {
 extension EffectsController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        Reverb.roomNames.count
+        ReverbEffect.roomNames.count
     }
 }
 
@@ -158,7 +158,7 @@ extension EffectsController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         guard let reverbEffect = self.reverbEffect else { return }
-        os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
+        os_log(.info, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
         reverbEffect.active = reverbEffect.active.setPreset(row)
         updatePresetConfig()
     }
@@ -173,7 +173,7 @@ extension EffectsController: UIPickerViewDelegate {
         }
 
         pickerLabel?.attributedText =
-            NSAttributedString(string: Reverb.roomNames[row],
+            NSAttributedString(string: ReverbEffect.roomNames[row],
                                attributes: [NSAttributedString.Key.foregroundColor: UIColor.systemTeal])
 
         return pickerLabel!

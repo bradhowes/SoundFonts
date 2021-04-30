@@ -3,7 +3,7 @@
 /**
  Delegation protocol for AudioUnitManager class.
  */
-public protocol AudioUnitManagerDelegate: class {
+public protocol AudioUnitManagerDelegate: AnyObject {
 
     /**
      Notification that a ViewController for the audio unit has been instantiated.

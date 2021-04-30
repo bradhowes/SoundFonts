@@ -11,7 +11,7 @@ public enum TagsEvent {
     case restored
 }
 
-public protocol Tags: class {
+public protocol Tags: AnyObject {
 
     var restored: Bool { get }
 

@@ -45,7 +45,7 @@ extension ActivePatchKind: Codable {
         static func key(for kind: ActivePatchKind) -> InternalKey {
             switch kind {
             case .preset(soundFontAndPatch: _): return .preset
-            case .favorite(favorite:_): return .favorite
+            case .favorite(favorite: _): return .favorite
             case .none: return .none
             }
         }

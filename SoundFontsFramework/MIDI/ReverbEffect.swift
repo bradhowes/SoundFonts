@@ -5,23 +5,23 @@ import AVFoundation
 /**
  Reverberation audio effect by way of Apple's AVAudioUnitReverb component.
  */
-public final class Reverb: NSObject {
+public final class ReverbEffect: NSObject {
 
     public let audioUnit = AVAudioUnitReverb()
 
     private let _factoryPresetDefs = [
-        PresetEntry(name: "Metallic Taste", config: ReverbConfig(enabled: true,
-                                                                 preset: Reverb.roomPresets.firstIndex(of: .plate)!,
-                                                                 wetDryMix: 100)),
-        PresetEntry(name: "Shower", config: ReverbConfig(enabled: true,
-                                                         preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!,
-                                                         wetDryMix: 60)),
-        PresetEntry(name: "Bedroom", config: ReverbConfig(enabled: true,
-                                                          preset: Reverb.roomPresets.firstIndex(of: .mediumRoom)!,
-                                                          wetDryMix: 40)),
-        PresetEntry(name: "Church", config: ReverbConfig(enabled: true,
-                                                         preset: Reverb.roomPresets.firstIndex(of: .cathedral)!,
-                                                         wetDryMix: 30))
+        PresetEntry(name: "Metallic Taste",
+                    config: ReverbConfig(enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .plate)!,
+                                         wetDryMix: 100)),
+        PresetEntry(name: "Shower",
+                    config: ReverbConfig(enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
+                                         wetDryMix: 60)),
+        PresetEntry(name: "Bedroom",
+                    config: ReverbConfig(enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .mediumRoom)!,
+                                         wetDryMix: 40)),
+        PresetEntry(name: "Church",
+                    config: ReverbConfig(enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .cathedral)!,
+                                         wetDryMix: 30))
     ]
 
     public lazy var factoryPresetConfigs: [ReverbConfig] = _factoryPresetDefs.map { $0.config }
@@ -64,18 +64,18 @@ public final class Reverb: NSObject {
     ]
 
     public override init() {
-        self.active = ReverbConfig(enabled: true, preset: Reverb.roomPresets.firstIndex(of: .smallRoom)!,
+        self.active = ReverbConfig(enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
                                    wetDryMix: 30.0)
         super.init()
         applyActiveConfig(self.active)
     }
 }
 
-extension Reverb {
+extension ReverbEffect {
 
     private func applyActiveConfig(_ config: ReverbConfig) {
         DispatchQueue.global(qos: .userInitiated).async {
-            self.audioUnit.loadFactoryPreset(Reverb.roomPresets[config.preset])
+            self.audioUnit.loadFactoryPreset(ReverbEffect.roomPresets[config.preset])
             self.audioUnit.wetDryMix = config.enabled ? config.wetDryMix : 0.0
         }
     }

@@ -8,7 +8,7 @@ import SoundFontsFramework
 
 final class DelayAU: AUAudioUnit {
     private let log: OSLog
-    private let delay = Delay()
+    private let delay = DelayEffect()
     private lazy var audioUnit = delay.audioUnit
     private lazy var wrapped = audioUnit.auAudioUnit
 

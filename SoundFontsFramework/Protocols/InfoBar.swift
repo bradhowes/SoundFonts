@@ -21,7 +21,7 @@ public enum InfoBarEvent {
 /**
  Handles the actions and display of items in a hypothetical info bar above the keyboard
  */
-public protocol InfoBar: class {
+public protocol InfoBar: AnyObject {
 
     /**
      Link a button / gesture event to a target/selector combination

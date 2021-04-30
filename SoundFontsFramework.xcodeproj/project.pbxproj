@@ -85,7 +85,7 @@
 		BD125B40241010810003DE99 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3A24100C940003DE99 /* Key.swift */; };
 		BD125B41241010840003DE99 /* KeyboardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3B24100C940003DE99 /* KeyboardController.swift */; };
 		BD125B42241010880003DE99 /* KeyboardRender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD125B3C24100C940003DE99 /* KeyboardRender.swift */; };
-		BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0025613E2C00D1CDF6 /* Reverb.swift */; };
+		BD130B0125613E2C00D1CDF6 /* ReverbEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0025613E2C00D1CDF6 /* ReverbEffect.swift */; };
 		BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD130B0425614A6D00D1CDF6 /* Effects.storyboard */; };
 		BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0A2561506B00D1CDF6 /* EffectsController.swift */; };
 		BD130B192561755F00D1CDF6 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B182561755F00D1CDF6 /* Knob.swift */; };
@@ -116,7 +116,7 @@
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9623EF1EB500755AB9 /* FileMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9523EF1EB500755AB9 /* FileMonitor.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
-		BD4CF9912561BEBD00CC5DB6 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* Delay.swift */; };
+		BD4CF9912561BEBD00CC5DB6 /* DelayEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* DelayEffect.swift */; };
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
 		BD4E2CB025C5759200A7E9D4 /* MIDIBankType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
@@ -202,8 +202,8 @@
 		BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B99256E405E00F904E3 /* DelayConfig.swift */; };
 		BDE03B9E256E40DC00F904E3 /* ReverbConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */; };
 		BDE03BA6256F8DB500F904E3 /* EffectsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */; };
-		BDE03BAA256F8F2200F904E3 /* DelayEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */; };
-		BDE03BAE256F8F9600F904E3 /* ReverbEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */; };
+		BDE03BAA256F8F2200F904E3 /* DelayEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BA9256F8F2200F904E3 /* DelayEffectManager.swift */; };
+		BDE03BAE256F8F9600F904E3 /* ReverbEffectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BAD256F8F9600F904E3 /* ReverbEffectManager.swift */; };
 		BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BB125706F2F00F904E3 /* UIButton.swift */; };
 		BDE150B1250B460200728402 /* ContextNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B0250B460200728402 /* ContextNotification.swift */; };
 		BDE150B4250CC43A00728402 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* AppState.swift */; };
@@ -312,7 +312,7 @@
 		BD125B3B24100C940003DE99 /* KeyboardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardController.swift; sourceTree = "<group>"; };
 		BD125B3C24100C940003DE99 /* KeyboardRender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardRender.swift; sourceTree = "<group>"; };
 		BD125B3E241010430003DE99 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
-		BD130B0025613E2C00D1CDF6 /* Reverb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reverb.swift; sourceTree = "<group>"; };
+		BD130B0025613E2C00D1CDF6 /* ReverbEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbEffect.swift; sourceTree = "<group>"; };
 		BD130B0425614A6D00D1CDF6 /* Effects.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Effects.storyboard; sourceTree = "<group>"; };
 		BD130B0A2561506B00D1CDF6 /* EffectsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsController.swift; sourceTree = "<group>"; };
 		BD130B182561755F00D1CDF6 /* Knob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
@@ -343,7 +343,7 @@
 		BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingKey.swift; sourceTree = "<group>"; };
 		BD498F9523EF1EB500755AB9 /* FileMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileMonitor.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
-		BD4CF9902561BEBD00CC5DB6 /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		BD4CF9902561BEBD00CC5DB6 /* DelayEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayEffect.swift; sourceTree = "<group>"; };
 		BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldKeyboardMonitor.swift; sourceTree = "<group>"; };
 		BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIBankType.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,8 +432,8 @@
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
 		BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsManager.swift; sourceTree = "<group>"; };
-		BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayEffect.swift; sourceTree = "<group>"; };
-		BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbEffect.swift; sourceTree = "<group>"; };
+		BDE03BA9256F8F2200F904E3 /* DelayEffectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayEffectManager.swift; sourceTree = "<group>"; };
+		BDE03BAD256F8F9600F904E3 /* ReverbEffectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbEffectManager.swift; sourceTree = "<group>"; };
 		BDE03BB125706F2F00F904E3 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		BDE150B0250B460200728402 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		BDE150B3250CC43A00728402 /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -553,12 +553,12 @@
 				BD074BEF23CDAF51001987E9 /* Sampler.swift */,
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
-				BD4CF9902561BEBD00CC5DB6 /* Delay.swift */,
+				BD4CF9902561BEBD00CC5DB6 /* DelayEffect.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDD29FDD258293A0007A5F0F /* PresetEntry.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
-				BD130B0025613E2C00D1CDF6 /* Reverb.swift */,
+				BD130B0025613E2C00D1CDF6 /* ReverbEffect.swift */,
 				BD074BEC23CDAF51001987E9 /* LegacySoundFont.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */,
@@ -666,7 +666,7 @@
 				BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */,
 				BD074C2F23CDAF51001987E9 /* ComponentContainer.swift */,
 				BD074C3723CDAF51001987E9 /* ControllerConfiguration.swift */,
-				BDE03BA9256F8F2200F904E3 /* DelayEffect.swift */,
+				BDE03BA9256F8F2200F904E3 /* DelayEffectManager.swift */,
 				BDE03BA5256F8DB500F904E3 /* EffectsManager.swift */,
 				BD074C2E23CDAF51001987E9 /* Favorites.swift */,
 				BD074C3523CDAF51001987E9 /* FavoriteEditorDelegate.swift */,
@@ -678,7 +678,7 @@
 				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
 				BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */,
 				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
-				BDE03BAD256F8F9600F904E3 /* ReverbEffect.swift */,
+				BDE03BAD256F8F9600F904E3 /* ReverbEffectManager.swift */,
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
 				BD074C3223CDAF51001987E9 /* SoundFontEditor.swift */,
 				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
@@ -1033,7 +1033,7 @@
 				BD074C8423CDAF51001987E9 /* ComponentContainer.swift in Sources */,
 				BD074C5223CDAF51001987E9 /* LegacyPatch.swift in Sources */,
 				BD074C4323CDAF51001987E9 /* LegacyFavoriteCollection.swift in Sources */,
-				BDE03BAE256F8F9600F904E3 /* ReverbEffect.swift in Sources */,
+				BDE03BAE256F8F9600F904E3 /* ReverbEffectManager.swift in Sources */,
 				BD125B40241010810003DE99 /* Key.swift in Sources */,
 				BD074C8823CDAF51001987E9 /* InfoBar.swift in Sources */,
 				BD074C8723CDAF51001987E9 /* SoundFontEditor.swift in Sources */,
@@ -1068,7 +1068,7 @@
 				BD074C7423CDAF51001987E9 /* InfoBarController.swift in Sources */,
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
 				BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */,
-				BD4CF9912561BEBD00CC5DB6 /* Delay.swift in Sources */,
+				BD4CF9912561BEBD00CC5DB6 /* DelayEffect.swift in Sources */,
 				BDD5FA6F25043C2500367F0B /* Managed.swift in Sources */,
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
 				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
@@ -1132,7 +1132,7 @@
 				BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,
 				BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */,
-				BD130B0125613E2C00D1CDF6 /* Reverb.swift in Sources */,
+				BD130B0125613E2C00D1CDF6 /* ReverbEffect.swift in Sources */,
 				BDEEDC7925DC102500FEA219 /* NSLayout+Extensions.swift in Sources */,
 				BD074C4923CDAF51001987E9 /* SoundFontsControlsController.swift in Sources */,
 				BD074C7323CDAF51001987E9 /* SlidingViewManager.swift in Sources */,
@@ -1155,7 +1155,7 @@
 				BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */,
 				BD074C4123CDAF51001987E9 /* FavoriteEditor.swift in Sources */,
 				BDE150B4250CC43A00728402 /* AppState.swift in Sources */,
-				BDE03BAA256F8F2200F904E3 /* DelayEffect.swift in Sources */,
+				BDE03BAA256F8F2200F904E3 /* DelayEffectManager.swift in Sources */,
 				BD074C4023CDAF51001987E9 /* LegacyFavoritesManager.swift in Sources */,
 				BD074C5123CDAF51001987E9 /* LegacySoundFont.swift in Sources */,
 				BD074C8223CDAF51001987E9 /* ActivePatchManager.swift in Sources */,
@@ -1374,7 +1374,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1403,7 +1404,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

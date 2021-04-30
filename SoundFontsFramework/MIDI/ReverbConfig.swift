@@ -55,7 +55,7 @@ extension ReverbConfig {
 }
 
 extension ReverbConfig: CustomStringConvertible {
-    public var description: String { "<Reverb \(enabled) \(Reverb.roomNames[preset]) \(wetDryMix)>" }
+    public var description: String { "<Reverb \(enabled) \(ReverbEffect.roomNames[preset]) \(wetDryMix)>" }
 }
 
 extension Dictionary where Key == String, Value == Any {

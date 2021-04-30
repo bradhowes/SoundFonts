@@ -38,8 +38,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     private let mode: Mode
     private let activePatchManager: ActivePatchManager
-    private let reverbEffect: Reverb?
-    private let delayEffect: Delay?
+    private let reverbEffect: ReverbEffect?
+    private let delayEffect: DelayEffect?
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
     public private(set) var auSampler: AVAudioUnitSampler?
@@ -60,7 +60,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter mode: determines how the sampler is hosted.
      */
-    public init(mode: Mode, activePatchManager: ActivePatchManager, reverb: Reverb?, delay: Delay?) {
+    public init(mode: Mode, activePatchManager: ActivePatchManager, reverb: ReverbEffect?, delay: DelayEffect?) {
         self.mode = mode
         self.activePatchManager = activePatchManager
         self.reverbEffect = reverb

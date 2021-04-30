@@ -45,14 +45,14 @@ extension ReverbViewController: AUAudioUnitFactory {
 extension ReverbViewController: UIPickerViewDataSource {
     public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        Reverb.roomNames.count
+        ReverbEffect.roomNames.count
     }
 }
 
 extension ReverbViewController: UIPickerViewDelegate {
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        os_log(.info, log: log, "new reverb room: %d", Reverb.roomPresets[row].rawValue)
+        os_log(.info, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
         setParameter(.roomPreset, AUValue(row))
     }
 
@@ -66,7 +66,7 @@ extension ReverbViewController: UIPickerViewDelegate {
         }
 
         let attributes = [NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
-        pickerLabel?.attributedText = NSAttributedString(string: Reverb.roomNames[row], attributes: attributes)
+        pickerLabel?.attributedText = NSAttributedString(string: ReverbEffect.roomNames[row], attributes: attributes)
 
         return pickerLabel!
     }
@@ -107,7 +107,7 @@ extension ReverbViewController {
     }
 
     private func setActiveRoom(value: AUValue) {
-        let index = min(max(Int(value), 0), Reverb.roomPresets.count - 1)
+        let index = min(max(Int(value), 0), ReverbEffect.roomPresets.count - 1)
         room.selectRow(index, inComponent: 0, animated: true)
         setParameter(.roomPreset, AUValue(index))
     }

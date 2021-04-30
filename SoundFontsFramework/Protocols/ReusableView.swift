@@ -6,7 +6,7 @@ import UIKit
  Protocol for UIView "cell" classes that will be recycled and used over and over again to render content in a
  container such as UICollectionView.
  */
-public protocol ReusableView: class {
+public protocol ReusableView: AnyObject {
 
     /// Obtain the name of the identifier for this class
     static var reuseIdentifier: String { get }

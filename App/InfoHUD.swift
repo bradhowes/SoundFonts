@@ -9,7 +9,7 @@ import UIKit
 final class InfoHUD: NSObject {
 
     static private var windows = [UIWindow]()
-    static private var rootView: UIView? { UIApplication.shared.keyWindow?.subviews.first }
+    static private var rootView: UIView? { UIApplication.shared.windows.filter {$0.isKeyWindow}.first }
     static private var windowCenter: CGPoint? { rootView?.center }
 
     /**

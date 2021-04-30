@@ -2,7 +2,7 @@
 
 import Foundation
 
-public protocol DelayEffect: NSObject {
+public protocol DelayEffectManager: NSObject {
     var active: DelayConfig { get set }
     var presets: [String: DelayConfig] { get }
 

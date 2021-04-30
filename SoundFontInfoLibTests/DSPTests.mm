@@ -22,22 +22,21 @@ using namespace SF2::DSP;
 }
 
 - (void)testUnipolarModulation {
-    XCTAssertEqual(unipolarModulation(-3.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(unipolarModulation(0.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(unipolarModulation(0.5, 10.0, 20.0), 15.0);
-    XCTAssertEqual(unipolarModulation(1.0, 10.0, 20.0), 20.0);
-    XCTAssertEqual(unipolarModulation(11.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(unipolarModulate(-3.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(unipolarModulate(0.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(unipolarModulate(0.5, 10.0, 20.0), 15.0);
+    XCTAssertEqual(unipolarModulate(1.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(unipolarModulate(11.0, 10.0, 20.0), 20.0);
 }
 
 - (void)testBipolarModulation {
-    XCTAssertEqual(bipolarModulation(-3.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(bipolarModulation(-1.0, 10.0, 20.0), 10.0);
-    XCTAssertEqual(bipolarModulation(0.0, 10.0, 20.0), 15.0);
-    XCTAssertEqual(bipolarModulation(1.0, 10.0, 20.0), 20.0);
-
-    XCTAssertEqual(bipolarModulation(-1.0, -20.0, 13.0), -20.0);
-    XCTAssertEqual(bipolarModulation(0.0,  -20.0, 13.0), -3.5);
-    XCTAssertEqual(bipolarModulation(1.0,  -20.0, 13.0), 13.0);
+    XCTAssertEqual(bipolarModulate(-3.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(bipolarModulate(-1.0, 10.0, 20.0), 10.0);
+    XCTAssertEqual(bipolarModulate(0.0, 10.0, 20.0), 15.0);
+    XCTAssertEqual(bipolarModulate(1.0, 10.0, 20.0), 20.0);
+    XCTAssertEqual(bipolarModulate(-1.0, -20.0, 13.0), -20.0);
+    XCTAssertEqual(bipolarModulate(0.0,  -20.0, 13.0), -3.5);
+    XCTAssertEqual(bipolarModulate(1.0,  -20.0, 13.0), 13.0);
 }
 
 - (void)testUnipolarToBipolar {

@@ -5,11 +5,13 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <iosfwd>
 
 #include "Types.hpp"
 
 namespace SF2 {
 namespace DSP {
+namespace Generators { void Generate(std::ostream&); }
 
 inline constexpr double PI = M_PI;            // 180°
 inline constexpr double TwoPI = 2.0 * PI;     // 360°
@@ -28,15 +30,21 @@ inline constexpr double CentiBelsPerDecade = 200.0;
 inline constexpr Int CentiBelToAttenuationMax = 1440;
 
 // 440 * pow(2.0, (N - 69) / 12)
-inline constexpr static double LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
+inline constexpr double LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
 
 // sqrt(2) / 2.0
 inline constexpr static double HalfSquareRoot2 = M_SQRT2 / 2.0;
 
 // The value to multiply one note frequency to get the next note's frequency
-inline constexpr static double InterNoteMultiplier = 1.0594630943592953;
+inline constexpr static double InterNoteMultiplier = 1.05946309435929530984310531493975;
 
-inline double centsToSeconds(double v) { return std::pow(2.0, v / 1200.0); }
+/**
+ Convert cents value into seconds, where There are 1200 cents per power of 2.
+
+ @param value the number to convert
+ */
+template <typename T>
+inline double centsToSeconds(T value) { return std::pow(2.0, double(value) / 1200.0); }
 
 /**
  Convert cents value into a power of 2. There are 1200 cents per power of 2.
@@ -44,7 +52,8 @@ inline double centsToSeconds(double v) { return std::pow(2.0, v / 1200.0); }
  @param value the value to convert
  @returns power of 2 value
  */
-inline double centsToPower2(Int value) { return std::pow(2.0, value / CentsPerOctave); }
+template <typename T>
+inline double centsToPower2(T value) { return std::pow(2.0, double(value) / CentsPerOctave); }
 
 /**
  Convert cents to frequency, with 0 being 8.175798 Hz. Input values are clamped to [-16000, 4500].
@@ -53,9 +62,8 @@ inline double centsToPower2(Int value) { return std::pow(2.0, value / CentsPerOc
  @returns frequency in Hz
  */
 inline double absoluteCentsToFrequency(Int value) {
-    if (value < CentsToFrequencyMin) value = CentsToFrequencyMin; // min ~0.000792 Hz
-    else if (value > CentsToFrequencyMax) value = CentsToFrequencyMax; // max ~110 Hz (spec says 100 Hz)
-    return ReferenceNoteFrequency * centsToPower2(value - ReferenceNoteSemi);
+    return ReferenceNoteFrequency * centsToPower2(std::clamp(value, CentsToFrequencyMin, CentsToFrequencyMax) -
+                                                  ReferenceNoteSemi);
 }
 
 /**
@@ -98,7 +106,7 @@ inline double bipolarToUnipolar(double modulator) { return 0.5 * modulator + 0.5
  @param maxValue the highest value to return when modulator is +1
  @returns value in range [minValue, maxValue]
  */
-inline double unipolarModulation(double modulator, double minValue, double maxValue) {
+inline double unipolarModulate(double modulator, double minValue, double maxValue) {
     return std::clamp(modulator, 0.0, 1.0) * (maxValue - minValue) + minValue;
 }
 
@@ -110,7 +118,7 @@ inline double unipolarModulation(double modulator, double minValue, double maxVa
  @param maxValue the highest value to return when modulator is +1
  @returns value in range [minValue, maxValue]
  */
-inline double bipolarModulation(double modulator, double minValue, double maxValue) {
+inline double bipolarModulate(double modulator, double minValue, double maxValue) {
     auto mid = (maxValue - minValue) * 0.5;
     return std::clamp(modulator, -1.0, 1.0) * mid + mid + minValue;
 }
@@ -143,8 +151,17 @@ struct PanLookup {
 
 private:
     static const std::array<double, PanLookup::TableSize> lookup_;
+    PanLookup() = delete;
 };
 
+/**
+ Calculate the amount of left and right signal gain in [0.0-1.0] for the given `pan` value which is in range
+ [-500-+500]. A `pan` of -500 is only left, and +500 is only right. A `pan` of 0 should result in ~0.7078 for both.
+
+ @param pan the value to convert
+ @param left reference to storage for the left gain
+ @param right reference to storage for the right gain
+ */
 inline void panLookup(int pan, double& left, double& right) { PanLookup::lookup(pan, left, right); }
 
 /**
@@ -152,8 +169,7 @@ inline void panLookup(int pan, double& left, double& right) { PanLookup::lookup(
  */
 struct SineLookup {
     inline constexpr static size_t TableSize = 4096;
-
-    static double lookup(double radians) {
+    inline static double lookup(double radians) {
         if (radians < 0.0) return -sin(-radians);
         while (radians > TwoPI) radians -= TwoPI;
         if (radians <= HalfPI) return interpolate(radians);
@@ -163,10 +179,9 @@ struct SineLookup {
     }
 
 private:
-
     inline constexpr static double TableScale = (TableSize - 1) / HalfPI;
 
-    static double interpolate(double radians) {
+    inline static double interpolate(double radians) {
         double phase = std::clamp(radians, 0.0, HalfPI) * TableScale;
         int index = int(phase);
         double partial = phase - index;
@@ -175,9 +190,17 @@ private:
         return value;
     }
 
+    friend void Generators::Generate(std::ostream&);
     static const std::array<double, TableSize> lookup_;
+    SineLookup() = delete;
 };
 
+/**
+ Obtain approximate sine value from table.
+
+ @param radians the value to use for theta
+ @returns the sine approximation
+ */
 inline double sineLookup(double radians) { return SineLookup::lookup(radians); }
 
 /**
@@ -187,6 +210,7 @@ inline double sineLookup(double radians) { return SineLookup::lookup(radians); }
  */
 struct CentsFrequencyLookup {
     inline constexpr static int MaxCentsValue = 1200;
+    inline constexpr static size_t TableSize = MaxCentsValue * 2 + 1;
 
     /**
      Convert given cents value into a frequency multiplier.
@@ -197,7 +221,8 @@ struct CentsFrequencyLookup {
     static double convert(int cent) { return lookup_[std::clamp(cent, -MaxCentsValue, MaxCentsValue) + MaxCentsValue]; }
 
 private:
-    static const std::array<double, MaxCentsValue * 2 + 1> lookup_;
+    static const std::array<double, TableSize> lookup_;
+    CentsFrequencyLookup() = delete;
 };
 
 inline double centsToFrequencyMultiplier(int cent) { return CentsFrequencyLookup::convert(cent); }
@@ -207,9 +232,11 @@ inline double centsToFrequencyMultiplier(int cent) { return CentsFrequencyLookup
  */
 struct CentsPartialLookup {
     inline constexpr static int MaxCentsValue = 1200;
+    inline constexpr static size_t TableSize = MaxCentsValue;
     static double find(int partial) { return lookup_[std::clamp(partial, 0, MaxCentsValue - 1)]; }
 private:
-    static const std::array<double, MaxCentsValue> lookup_;
+    static const std::array<double, TableSize> lookup_;
+    CentsPartialLookup() = delete;
 };
 
 /**
@@ -231,24 +258,39 @@ inline double centibelsToNorm(int centibels) { return std::pow(10.0, centibels /
  Convert centibels into attenuation via table lookup.
  */
 struct AttenuationLookup {
-    inline constexpr static int TableSize = 1441;
-    static double convert(int centibels) { return lookup_[std::clamp(centibels, 0, TableSize - 1)]; }
+    inline constexpr static size_t TableSize = 1441;
+    static double convert(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
 private:
     static const std::array<double, TableSize> lookup_;
+    AttenuationLookup() = delete;
 };
+
+/**
+ Convert centibels [0-1441] into an attenuation value from [1.0-0.0]. Zero indicates no attenuation (1.0), 60 is ~0.5,
+ and every 200 is a reduction by 10 (0.1, 0.001, etc.)
+
+ @param centibels value to convert
+ @returns gain value
+ */
+inline double centibelsToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
 
 /**
  Convert centibels into gain value (same as 1.0 / attenuation)
  */
 struct GainLookup {
-    inline constexpr static int TableSize = 1441;
-    static double lookup(int centibels) { return lookup_[std::clamp(centibels, 0, TableSize - 1)]; }
+    inline constexpr static size_t TableSize = 1441;
+    static double lookup(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
 private:
     static const std::array<double, TableSize> lookup_;
+    GainLookup() = delete;
 };
 
-inline double centibelsToAttenuation(int centibels) { return AttenuationLookup::convert(centibels); }
+/**
+ Convert centibels [0-1441] into a gain value [0.0-1.0].
 
+ @param centibels value to convert
+ @returns gain value
+ */
 inline double centibelsToGain(int centibels) { return GainLookup::lookup(centibels); }
 
 namespace Interpolation {
@@ -268,6 +310,8 @@ struct Linear {
         double w0 = 1.0 - partial;
         return x0 * w0 + x1 * w1;
     }
+private:
+    Linear() = delete;
 };
 
 /**
@@ -304,6 +348,7 @@ private:
      Array of weights used during interpolation. Initialized at startup.
      */
     static const WeightsArray weights_;
+    Cubic4thOrder() = delete;
 };
 
 } // Interpolation namespace

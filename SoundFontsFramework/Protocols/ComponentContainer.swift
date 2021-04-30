@@ -4,8 +4,8 @@ import UIKit
 
 public enum ComponentContainerEvent {
     case samplerAvailable(Sampler)
-    case reverbAvailable(Reverb)
-    case delayAvailable(Delay)
+    case reverbAvailable(ReverbEffect)
+    case delayAvailable(DelayEffect)
 }
 
 /**
@@ -26,8 +26,8 @@ public protocol ComponentContainer {
     var patchesViewManager: PatchesViewManager { get }
     var favoritesViewManager: FavoritesViewManager { get }
     var fontEditorActionGenerator: FontEditorActionGenerator { get }
-    var reverbEffect: Reverb? { get }
-    var delayEffect: Delay? { get }
+    var reverbEffect: ReverbEffect? { get }
+    var delayEffect: DelayEffect? { get }
 
     /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

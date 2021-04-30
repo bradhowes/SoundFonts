@@ -5,7 +5,7 @@ import AVFoundation
 /**
  Delay audio effect by way of Apple's AVAudioUnitDelay component.
  */
-public final class Delay: NSObject {
+public final class DelayEffect: NSObject {
 
     public let audioUnit = AVAudioUnitDelay()
 
@@ -32,7 +32,7 @@ public final class Delay: NSObject {
     }
 }
 
-extension Delay {
+extension DelayEffect {
 
     private func applyActiveConfig(_ config: DelayConfig) {
         DispatchQueue.global(qos: .userInitiated).async {

@@ -7,7 +7,7 @@ import os
 /**
  Functionality we expect for entities that can receive MIDI messages.
  */
-public protocol MIDIReceiver: class {
+public protocol MIDIReceiver: AnyObject {
 
     /// The channel the controller listens on. If -1, then it wants msgs from ALL channels
     var channel: Int { get }

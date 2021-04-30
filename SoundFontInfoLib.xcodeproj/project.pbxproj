@@ -45,6 +45,11 @@
 		BD82800024EA8E6800533D80 /* Definition.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD827FFF24EA8E6800533D80 /* Definition.mm */; };
 		BD82800B24EC91A600533D80 /* EnvelopeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD82800A24EC91A600533D80 /* EnvelopeTests.mm */; };
 		BD976C8B263B029C003AED73 /* DSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD976C8A263B029C003AED73 /* DSP.mm */; };
+		BD976C95263BF01A003AED73 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD976C94263BF01A003AED73 /* main.cpp */; };
+		BD976C99263BF07D003AED73 /* DSPGenerators.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD976C8C263BEF78003AED73 /* DSPGenerators.cc */; };
+		BD976C9E263BFE51003AED73 /* DSP.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA3A261CAE070052FB7A /* DSP.hpp */; };
+		BD976C9F263BFE51003AED73 /* DSPGenerators.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD976C9A263BF128003AED73 /* DSPGenerators.hpp */; };
+		BD976CA8263C1277003AED73 /* DSPGenerated.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD976CA7263C1277003AED73 /* DSPGenerated.mm */; };
 		BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; };
 		BDABC42924F172CD00F8C874 /* ValueTransformer.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42824F172CD00F8C874 /* ValueTransformer.mm */; };
 		BDABC42B24F1AD8800F8C874 /* ValueTransformerTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDABC42A24F1AD8800F8C874 /* ValueTransformerTests.mm */; };
@@ -122,7 +127,26 @@
 			remoteGlobalIDString = BD74D16623CDB1D200204ED4;
 			remoteInfo = SoundFontInfoLib;
 		};
+		BD976CA0263C01E1003AED73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD74D15E23CDB1D200204ED4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD976C91263BF01A003AED73;
+			remoteInfo = DSPGenerators;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BD976C90263BF01A003AED73 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		BD1AA063262DA20600AD3823 /* MIDIChannel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIChannel.mm; sourceTree = "<group>"; };
@@ -185,6 +209,11 @@
 		BD82800A24EC91A600533D80 /* EnvelopeTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EnvelopeTests.mm; sourceTree = "<group>"; };
 		BD97191224EF21E40009ED6E /* MIDI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MIDI.hpp; sourceTree = "<group>"; };
 		BD976C8A263B029C003AED73 /* DSP.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DSP.mm; sourceTree = "<group>"; };
+		BD976C8C263BEF78003AED73 /* DSPGenerators.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSPGenerators.cc; sourceTree = "<group>"; };
+		BD976C92263BF01A003AED73 /* DSPGenerators */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPGenerators; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD976C94263BF01A003AED73 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		BD976C9A263BF128003AED73 /* DSPGenerators.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPGenerators.hpp; sourceTree = "<group>"; };
+		BD976CA7263C1277003AED73 /* DSPGenerated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DSPGenerated.mm; path = "../../Intermediates.noindex/SoundFontInfoLib.build/Debug-maccatalyst/SoundFontInfoLib.build/DerivedSources/DSPGenerated.mm"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueTransformer.hpp; sourceTree = "<group>"; };
 		BDABC42824F172CD00F8C874 /* ValueTransformer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformer.mm; sourceTree = "<group>"; };
 		BDABC42A24F1AD8800F8C874 /* ValueTransformerTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ValueTransformerTests.mm; sourceTree = "<group>"; };
@@ -257,6 +286,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD976C8F263BF01A003AED73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -301,10 +337,12 @@
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
+				BD976CA6263C11F0003AED73 /* Generated */,
 				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */,
 				BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */,
 				BDECFFE72496BA6600A52507 /* sf2dump */,
+				BD976C93263BF01A003AED73 /* DSPGenerators */,
 				BD74D16823CDB1D200204ED4 /* Products */,
 				BDECFFED2496BEFB00A52507 /* Frameworks */,
 			);
@@ -315,6 +353,7 @@
 			children = (
 				BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */,
 				BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */,
+				BD976C92263BF01A003AED73 /* DSPGenerators */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -368,6 +407,23 @@
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
 		};
+		BD976C93263BF01A003AED73 /* DSPGenerators */ = {
+			isa = PBXGroup;
+			children = (
+				BD976C8C263BEF78003AED73 /* DSPGenerators.cc */,
+				BD976C94263BF01A003AED73 /* main.cpp */,
+			);
+			path = DSPGenerators;
+			sourceTree = "<group>";
+		};
+		BD976CA6263C11F0003AED73 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				BD976CA7263C1277003AED73 /* DSPGenerated.mm */,
+			);
+			path = Generated;
+			sourceTree = SOURCE_ROOT;
+		};
 		BDB265F4252FB2CB005BEAD1 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +472,7 @@
 				BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */,
 				BD62BA3A261CAE070052FB7A /* DSP.hpp */,
 				BD976C8A263B029C003AED73 /* DSP.mm */,
+				BD976C9A263BF128003AED73 /* DSPGenerators.hpp */,
 				BDEB12D52626E6CE003CE8EE /* Envelope */,
 				BD62BA46261CB5F40052FB7A /* InputBuffer.hpp */,
 				BD2AEE4424F69E21009EAABE /* Instrument.hpp */,
@@ -554,6 +611,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD976C9D263BFE30003AED73 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD976C9E263BFE51003AED73 /* DSP.hpp in Headers */,
+				BD976C9F263BFE51003AED73 /* DSPGenerators.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -561,6 +627,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD74D17B23CDB1D200204ED4 /* Build configuration list for PBXNativeTarget "SoundFontInfoLib" */;
 			buildPhases = (
+				BD976CA3263C035F003AED73 /* Create DSPGenerated.mm File */,
 				BD74D16223CDB1D200204ED4 /* Headers */,
 				BD74D16323CDB1D200204ED4 /* Sources */,
 				BD74D16423CDB1D200204ED4 /* Frameworks */,
@@ -569,6 +636,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BD976CA1263C01E1003AED73 /* PBXTargetDependency */,
 			);
 			name = SoundFontInfoLib;
 			productName = SoundFontInfoLib;
@@ -593,6 +661,24 @@
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BD976C91263BF01A003AED73 /* DSPGenerators */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD976C96263BF01A003AED73 /* Build configuration list for PBXNativeTarget "DSPGenerators" */;
+			buildPhases = (
+				BD976C9D263BFE30003AED73 /* Headers */,
+				BD976C8E263BF01A003AED73 /* Sources */,
+				BD976C8F263BF01A003AED73 /* Frameworks */,
+				BD976C90263BF01A003AED73 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DSPGenerators;
+			productName = DSPGenerators;
+			productReference = BD976C92263BF01A003AED73 /* DSPGenerators */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -609,6 +695,9 @@
 					BD74D16F23CDB1D200204ED4 = {
 						CreatedOnToolsVersion = 11.3;
 						LastSwiftMigration = 1160;
+					};
+					BD976C91263BF01A003AED73 = {
+						CreatedOnToolsVersion = 12.5;
 					};
 				};
 			};
@@ -627,6 +716,7 @@
 			targets = (
 				BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */,
 				BD74D16F23CDB1D200204ED4 /* SoundFontInfoLibTests */,
+				BD976C91263BF01A003AED73 /* DSPGenerators */,
 			);
 		};
 /* End PBXProject section */
@@ -649,6 +739,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BD976CA3263C035F003AED73 /* Create DSPGenerated.mm File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Render/DSP.hpp",
+				"$(SRCROOT)/Render/DSPGenerators.hpp",
+			);
+			name = "Create DSPGenerated.mm File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILES_DIR)/DSPGenerated.mm",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nDerivedData/SoundFonts/Build/Products/Debug/DSPGenerators ${DERIVED_FILES_DIR}/DSPGenerated.mm\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BD74D16323CDB1D200204ED4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -660,6 +774,7 @@
 				BDEB1315262A49B5003CE8EE /* Bag.mm in Sources */,
 				BD82800024EA8E6800533D80 /* Definition.mm in Sources */,
 				BD1AA07226317EBA00AD3823 /* Modulator.mm in Sources */,
+				BD976CA8263C1277003AED73 /* DSPGenerated.mm in Sources */,
 				BDABC42924F172CD00F8C874 /* ValueTransformer.mm in Sources */,
 				BDEB1329262A4B00003CE8EE /* Version.mm in Sources */,
 				BDEB131F262A4A6E003CE8EE /* Preset.mm in Sources */,
@@ -709,6 +824,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD976C8E263BF01A003AED73 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD976C99263BF07D003AED73 /* DSPGenerators.cc in Sources */,
+				BD976C95263BF01A003AED73 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -716,6 +840,11 @@
 			isa = PBXTargetDependency;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
+		};
+		BD976CA1263C01E1003AED73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD976C91263BF01A003AED73 /* DSPGenerators */;
+			targetProxy = BD976CA0263C01E1003AED73 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -873,6 +1002,7 @@
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -885,6 +1015,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -916,6 +1047,7 @@
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 13.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -928,6 +1060,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -951,6 +1084,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -974,10 +1108,44 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = macosx;
 				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontInfoLibTests/SoundFontInfoLibTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/SoundFontInfoLib";
+			};
+			name = Release;
+		};
+		BD976C97263BF01A003AED73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = ../SoundFontInfoLib;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Debug;
+		};
+		BD976C98263BF01A003AED73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				ENABLE_HARDENED_RUNTIME = YES;
+				HEADER_SEARCH_PATHS = ../SoundFontInfoLib;
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Release;
 		};
@@ -1007,6 +1175,15 @@
 			buildConfigurations = (
 				BD74D17F23CDB1D200204ED4 /* Debug */,
 				BD74D18023CDB1D200204ED4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BD976C96263BF01A003AED73 /* Build configuration list for PBXNativeTarget "DSPGenerators" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD976C97263BF01A003AED73 /* Debug */,
+				BD976C98263BF01A003AED73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -2,7 +2,7 @@
 
 import Foundation
 
-public protocol ReverbEffect {
+public protocol ReverbEffectManager {
     var active: ReverbConfig { get set }
     var presets: [String: ReverbConfig] { get }
 

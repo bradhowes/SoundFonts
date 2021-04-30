@@ -5,7 +5,7 @@ import CoreData
 /**
  A protocol for objects that are managed by a CoreData NSManagedObjectContext
  */
-public protocol Managed: class, NSFetchRequestResult {
+public protocol Managed: NSFetchRequestResult {
 
     /// The name of the model that defines instances of the managed type
     static var entityName: String { get }

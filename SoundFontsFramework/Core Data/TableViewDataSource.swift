@@ -8,7 +8,7 @@ import CoreData
  Delegate protocol for a TableViewSource instance. Combines a NSFetchedResults object (`Object`) with a UITableViewCell
  instance (`Cell`).
  */
-public protocol TableViewDataSourceDelegate: class {
+public protocol TableViewDataSourceDelegate: AnyObject {
     associatedtype Entity: NSFetchRequestResult
     associatedtype Cell: UITableViewCell
 

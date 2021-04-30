@@ -142,7 +142,11 @@ extension MainViewController: ControllerConfiguration {
         infoBar = router.infoBar
         keyboard = router.keyboard
         activePatchManager = router.activePatchManager
+
+        #if !targetEnvironment(macCatalyst)
         volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
+        #endif
+
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
     }
 

@@ -7,7 +7,7 @@ enum ConfigFileError: Error {
     case nilManager
 }
 
-internal protocol ConfigFileManager: class {
+internal protocol ConfigFileManager: AnyObject {
     var filename: String { get }
     func configurationData() throws -> Any
     func loadConfigurationData(contents: Any) throws

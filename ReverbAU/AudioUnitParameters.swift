@@ -19,7 +19,7 @@ public struct AudioUnitParameters {
 
     public let roomPreset: AUParameter = {
         let param = AUParameterTree.createParameter(withIdentifier: "room", name: "Room", address: Address.roomPreset.rawValue, min: 0.0,
-                                                    max: Float(Reverb.roomNames.count - 1), unit: .indexed, unitName: nil,
+                                                    max: Float(ReverbEffect.roomNames.count - 1), unit: .indexed, unitName: nil,
                                                     flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
         param.value = 0.0
         return param
@@ -54,7 +54,7 @@ public struct AudioUnitParameters {
         parameterTree.implementorStringFromValueCallback = { param, value in
             let formatted: String = {
                 switch Address(rawValue: param.address) {
-                case .roomPreset: return Reverb.roomNames[Int(param.value)]
+                case .roomPreset: return ReverbEffect.roomNames[Int(param.value)]
                 case .wetDryMix: return String(format: "%.2f", param.value) + "%"
                 default: return "?"
                 }

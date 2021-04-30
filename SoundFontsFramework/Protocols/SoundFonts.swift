@@ -26,7 +26,7 @@ public enum SoundFontsEvent {
 /**
  Actions available on a collection of SoundFont instances. Supports subscribing to changes.
  */
-public protocol SoundFonts: class {
+public protocol SoundFonts: AnyObject {
 
     var restored: Bool { get }
     var soundFontNames: [String] { get }

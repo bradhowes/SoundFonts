@@ -7,7 +7,7 @@ import SoundFontsFramework
 
 final class ReverbAU: AUAudioUnit {
     private let log: OSLog
-    private let reverb = Reverb()
+    private let reverb = ReverbEffect()
     private lazy var audioUnit = reverb.audioUnit
     private lazy var wrapped = audioUnit.auAudioUnit
 
@@ -41,8 +41,8 @@ extension ReverbAU: AUParameterHandler {
     public func set(_ parameter: AUParameter, value: AUValue) {
         switch AudioUnitParameters.Address(rawValue: parameter.address) {
         case .roomPreset:
-            let index = min(max(Int(value), 0), Reverb.roomPresets.count - 1)
-            let preset = Reverb.roomPresets[index]
+            let index = min(max(Int(value), 0), ReverbEffect.roomPresets.count - 1)
+            let preset = ReverbEffect.roomPresets[index]
             audioUnit.loadFactoryPreset(preset)
             reverb.active = reverb.active.setPreset(index)
 
