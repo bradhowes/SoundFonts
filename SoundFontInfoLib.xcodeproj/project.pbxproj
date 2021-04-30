@@ -755,7 +755,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${PROJECT_DERIVED_FILE_DIR}/DSPGenerated.mm\"\n$(find . -name DSPGenerators | head -1) \"${OUTPUT}\"\n";
+			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${PROJECT_DERIVED_FILE_DIR}/DSPGenerated.mm\"\nset -- `find . -name DSPGenerators`\necho ${1} \"${OUTPUT}\"\n${1} \"${OUTPUT}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
