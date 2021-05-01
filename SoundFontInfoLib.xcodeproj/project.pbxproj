@@ -296,6 +296,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD1CD530263D5DC30035528B /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				BD976CA7263C1277003AED73 /* DSPGenerated.mm */,
+			);
+			name = Generated;
+			path = DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources;
+			sourceTree = SOURCE_ROOT;
+		};
 		BD250BB12615CCAA00D1C1E0 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,7 +346,7 @@
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
-				BD976CA6263C11F0003AED73 /* Generated */,
+				BD1CD530263D5DC30035528B /* Generated */,
 				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */,
 				BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */,
@@ -418,14 +427,6 @@
 			);
 			path = DSPGenerators;
 			sourceTree = "<group>";
-		};
-		BD976CA6263C11F0003AED73 /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				BD976CA7263C1277003AED73 /* DSPGenerated.mm */,
-			);
-			path = Generated;
-			sourceTree = SOURCE_ROOT;
 		};
 		BDB265F4252FB2CB005BEAD1 /* Entity */ = {
 			isa = PBXGroup;
