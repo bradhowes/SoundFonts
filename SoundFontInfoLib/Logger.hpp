@@ -2,12 +2,12 @@
 
 #pragma once
 
-#import <os/log.h>
-#import <os/signpost.h>
+#include <os/log.h>
+#include <os/signpost.h>
 
-#import <memory>
-#import <sstream>
-#import <string>
+#include <memory>
+#include <sstream>
+#include <string>
 
 namespace SF2 {
 

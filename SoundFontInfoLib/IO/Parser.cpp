@@ -9,7 +9,6 @@
 #include "IO/Parser.hpp"
 #include "IO/StringUtils.hpp"
 
-
 using namespace SF2::IO;
 
 Parser::Info

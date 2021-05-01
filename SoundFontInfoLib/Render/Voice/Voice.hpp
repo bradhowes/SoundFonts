@@ -54,18 +54,9 @@ public:
     }
 
     /// @returns renders a sample
-    AUValue render() {
+    double render() {
         if (!isActive()) return 0.0;
 
-        //
-        // Steps:
-        // 1. Check for voice completion
-        // 2. Update amp/mod envelopes
-        // 3. Update modulation/vibrato LFOs
-        // 4. Calculate phase
-        // 5. Generate samples
-        // 6. Filter samples
-        //
         auto amplitudeGain = gainEnvelope_.process();
         auto modulatorGain = modulatorEnvelope_.process();
 

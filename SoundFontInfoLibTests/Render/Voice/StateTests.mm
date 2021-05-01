@@ -17,10 +17,10 @@ using namespace SF2::Entity::Generator;
 static NSArray<NSURL*>* urls = SF2Files.allResources;
 static MIDI::Channel channel;
 
-@interface VoiceStateTests : XCTestCase
+@interface StateTests : XCTestCase
 @end
 
-@implementation VoiceStateTests
+@implementation StateTests
 
 - (void)testInit {
     NSURL* url = [urls objectAtIndex:3];

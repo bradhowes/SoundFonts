@@ -8,11 +8,11 @@
 
 using namespace SF2::MIDI;
 
-@interface MIDIChannelTests : XCTestCase
+@interface ChannelTests : XCTestCase
 @property (nonatomic, assign) double epsilon;
 @end
 
-@implementation MIDIChannelTests
+@implementation ChannelTests
 
 - (void)testChannelKeyPressureValues {
     Channel channel;

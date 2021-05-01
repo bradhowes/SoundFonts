@@ -8,8 +8,8 @@
 #include "Types.hpp"
 #include "IO/Format.hpp"
 #include "IO/Pos.hpp"
-#include "IO/Tag.hpp"
 #include "IO/StringUtils.hpp"
+#include "IO/Tag.hpp"
 
 namespace SF2 {
 namespace IO {
