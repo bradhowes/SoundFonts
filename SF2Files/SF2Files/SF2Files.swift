@@ -2,9 +2,15 @@
 
 private final class SF2FilesTag {}
 
+/**
+ Public interface for the SF2Files framework. It provides URLs to SF2 files that are bundled with the framework.
+ */
 @objc @objcMembers public class SF2Files: NSObject {
 
+    /// The extension for an SF2 file
     @objc public static let sf2Extension = "sf2"
+
+    /// The extension for an SF2 file that begins with a period ('.')
     @objc public static let sf2DottedExtension = "." + sf2Extension
 
     private static let bundle = Bundle(for: SF2FilesTag.self)
@@ -22,10 +28,9 @@ private final class SF2FilesTag {}
         return url
     }
 
-    private static let allResourcesCount = 4;
-
     /// Obtain collection of all of the SF2 resources in the bundle.
     @objc public class var allResources: [URL] {
+        let allResourcesCount = 4;
         guard let urls = bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil),
               urls.count == allResourcesCount else {
             fatalError("missing SF2 resources")
