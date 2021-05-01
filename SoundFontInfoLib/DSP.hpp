@@ -72,7 +72,7 @@ inline double absoluteCentsToFrequency(Int value) {
  @param value cutoff value
  @returns clamped cutoff value
  */
-inline Int clampFilterCutoff(Int value) { return std::clamp<Int>(value, 1500, 13500); }
+inline double clampFilterCutoff(double value) { return std::clamp<double>(value, 1500, 20000); }
 
 /**
  Convert integer from integer [0-1000] into [0.0-1.0]

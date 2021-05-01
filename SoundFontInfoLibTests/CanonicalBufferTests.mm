@@ -9,16 +9,15 @@
 using namespace SF2::Render::Sample;
 using namespace SF2::Render::Voice;
 
-@interface SampleBufferTests : XCTestCase
+@interface CanonicalBufferTests : XCTestCase
 
 @end
 
-@implementation SampleBufferTests
+@implementation CanonicalBufferTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;
 static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
-static CanonicalBuffer buffer{values, header};
 
 - (void)setUp {
 }
@@ -26,7 +25,15 @@ static CanonicalBuffer buffer{values, header};
 - (void)tearDown {
 }
 
+- (void)testLoading {
+    CanonicalBuffer buffer{values, header};
+    XCTAssertFalse(buffer.isLoaded());
+    buffer.load();
+    XCTAssertTrue(buffer.isLoaded());
+}
+
 - (void)testLinearInterpolation {
+    CanonicalBuffer buffer{values, header};
     Generator gen{buffer, State(76.9230769231, channel, 69, 64)};
     buffer.load();
     XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
@@ -36,6 +43,7 @@ static CanonicalBuffer buffer{values, header};
 }
 
 - (void)testCubicInterpolation {
+    CanonicalBuffer buffer{values, header};
     Generator gen{buffer, State(76.9230769231, channel, 69, 64), Generator::Interpolator::cubic4thOrder};
     buffer.load();
     XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, false), 0.0000001);

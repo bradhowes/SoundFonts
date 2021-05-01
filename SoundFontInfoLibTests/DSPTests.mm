@@ -21,6 +21,13 @@ using namespace SF2::DSP;
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+- (void)testClampFilterCutoff {
+    XCTAssertEqual(1500, clampFilterCutoff(0));
+    XCTAssertEqual(20000, clampFilterCutoff(22000));
+    XCTAssertEqual(3000, clampFilterCutoff(3000));
+    XCTAssertEqual(14000, clampFilterCutoff(14000));
+}
+
 - (void)testUnipolarModulation {
     XCTAssertEqual(unipolarModulate(-3.0, 10.0, 20.0), 10.0);
     XCTAssertEqual(unipolarModulate(0.0, 10.0, 20.0), 10.0);

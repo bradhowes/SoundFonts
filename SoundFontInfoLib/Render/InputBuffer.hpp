@@ -33,7 +33,7 @@ struct InputBuffer {
     }
 
     /**
-     Forget any allocated buffer.
+     Forget any allocated buffers.
      */
     void releaseBuffers()
     {
