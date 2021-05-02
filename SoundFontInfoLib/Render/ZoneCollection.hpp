@@ -42,7 +42,7 @@ public:
      @param velocity the MIDI velocity to filter on
      @returns a vector of matching zones
      */
-    Matches filter(UByte key, UByte velocity) const {
+    Matches filter(int key, int velocity) const {
         Matches matches;
         auto pos = zones_.begin();
         if (hasGlobal()) ++pos;

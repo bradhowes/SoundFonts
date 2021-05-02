@@ -37,10 +37,10 @@ public:
     int16_t signedAmount() const { return raw_.shAmount; }
 
     /// @returns low value of a range (0-255)
-    int low() const { return int(raw_.ranges[0]); }
+    short low() const { return int(raw_.ranges[0]); }
 
     /// @returns high value of a range (0-255)
-    int high() const { return int(raw_.ranges[1]); }
+    short high() const { return int(raw_.ranges[1]); }
 
 private:
 

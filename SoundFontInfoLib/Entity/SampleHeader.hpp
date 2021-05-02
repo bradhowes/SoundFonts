@@ -76,10 +76,10 @@ public:
     size_t sampleRate() const { return dwSampleRate; }
 
     /// @returns the MIDI key (frequency) for the source samples
-    Int originalMIDIKey() const { return originalKey; }
+    short originalMIDIKey() const { return originalKey; }
 
     /// @returns the pitch correction to apply when playing back the samples
-    Int pitchCorrection() const { return correction; }
+    short pitchCorrection() const { return correction; }
 
     void dump(const std::string& indent, int index) const;
 

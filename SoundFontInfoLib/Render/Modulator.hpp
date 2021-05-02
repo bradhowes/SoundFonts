@@ -100,7 +100,7 @@ private:
 
     const Entity::Modulator::Modulator& configuration_;
     size_t index_;
-    Int amount_;
+    int amount_;
     MIDI::ValueTransformer sourceTransform_;
     MIDI::ValueTransformer amountTransform_;
 

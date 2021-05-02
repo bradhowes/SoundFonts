@@ -87,8 +87,8 @@ public:
 
      @returns new buffer containing the 16-bit audio samples
      */
-    std::shared_ptr<Int> extractSamples() const {
-        auto buffer = std::shared_ptr<Int>(new Int[size() / sizeof(Int)]);
+    std::shared_ptr<int16_t> extractSamples() const {
+        auto buffer = std::shared_ptr<int16_t>(new int16_t[size() / sizeof(int16_t)]);
         begin().readInto((void*)buffer.get(), size());
         return buffer;
     }

@@ -44,7 +44,7 @@ public:
      @param velocity the MIDI velocity to filter with
      @returns vector of matching preset/instrument pairs
      */
-    Matches find(UByte key, UByte velocity) const {
+    Matches find(int key, int velocity) const {
         Matches zonePairs;
         for (const PresetZone& presetZone : zones_.filter(key, velocity)) {
             const Instrument& instrument = presetZone.instrument();

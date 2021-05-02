@@ -17,7 +17,7 @@
 namespace SF2 {
 namespace Render {
 
-using MIDIRange = Range<UByte>;
+using MIDIRange = Range<int>;
 
 /**
  A zone represents a collection of generator and modulator settings that apply to a range of MIDI key and velocity
@@ -56,7 +56,7 @@ public:
      @param velocity MIDI velocity value
      @returns true if so
      */
-    bool appliesTo(UByte key, UByte velocity) const {
+    bool appliesTo(int key, int velocity) const {
         assert(!isGlobal_); // Global zones do not have ranges
         return keyRange_.contains(key) && velocityRange_.contains(velocity);
     }

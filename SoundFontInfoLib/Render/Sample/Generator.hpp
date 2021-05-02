@@ -52,7 +52,6 @@ public:
      @returns new sample value
      */
     double generate(double pitchAdjustment, bool canLoop) {
-        PitchControl pitchControl{state_};
         auto index = bufferIndex_.index();
         if (index >= bounds_.endIndex()) return 0.0;
         auto partial = bufferIndex_.partial();
@@ -71,7 +70,8 @@ private:
     void calculateIndexIncrement(double pitchAdjustment) {
         if (pitchAdjustment == lastPitchAdjustment_ && bufferIndex_.hasIncrement()) return;
         lastPitchAdjustment_ = pitchAdjustment;
-        double frequencyRatio = double(std::pow(2.0, (state_.pitch() - samples_.header().originalMIDIKey()) / 12.0));
+        double frequencyRatio = std::pow(2.0, (state_.pitch() + pitchAdjustment -
+                                               samples_.header().originalMIDIKey()) / 12.0);
         double increment = sampleRateRatio_ * frequencyRatio;
         bufferIndex_.setIncrement(increment);
     }

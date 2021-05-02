@@ -121,25 +121,5 @@ enum struct RPNEvent
     modulationDepthRange = 0x05
 };
 
-struct MIDIFrequencyLookup {
-    static double lookup(short key) { return standardNoteFrequencies_[std::clamp<short>(key, Note::Min, Note::Max)]; }
-
-private:
-    MIDIFrequencyLookup() = delete;
-
-    inline static std::array<double, Note::Max + 1> standardNoteFrequencies_ = [] {
-        auto init = decltype(MIDIFrequencyLookup::standardNoteFrequencies_){};
-        auto frequency = DSP::LowestNoteFrequency;
-        auto scaleFactor = ::std::pow(2.0, 1.0 / 12.0);
-        for (auto index = 0; index < init.size(); ++index) {
-            init[index] = frequency;
-            frequency *= scaleFactor;
-        }
-        return init;
-    }();
-};
-
-inline double keyToFrequency(UByte key) { return MIDIFrequencyLookup::lookup(key); }
-
 } // namespace MIDI
 } // namespace SF2

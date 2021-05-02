@@ -45,9 +45,9 @@ public:
     /**
      Construct instance from values. Used to define default mods and support unit tests.
      */
-    Modulator(Source modSrcOper, Generator::Index dest, int16_t amount, Source modAmtSrcOper, Transform xform) :
-    sfModSrcOper{modSrcOper}, sfModDestOper{static_cast<UInt>(dest)}, modAmount{amount}, sfModAmtSrcOper{modAmtSrcOper},
-    sfModTransOper{xform} {}
+    Modulator(Source modSrcOper, Generator::Index dest, int16_t amount, Source modAmtSrcOper, Transform transform) :
+    sfModSrcOper{modSrcOper}, sfModDestOper{static_cast<uint16_t>(dest)}, modAmount{amount},
+    sfModAmtSrcOper{modAmtSrcOper}, sfModTransOper{transform} {}
 
     /// @returns the source of data for the modulator
     const Source& source() const { return sfModSrcOper; }
@@ -71,7 +71,7 @@ public:
     }
 
     /// @returns the maximum deviation that a modulator can apply to a generator
-    Int amount() const { return modAmount; }
+    int16_t amount() const { return modAmount; }
 
     /// @returns the second source of data for the modulator
     const Source& amountSource() const { return sfModAmtSrcOper; }
@@ -92,8 +92,8 @@ public:
 
 private:
     Source sfModSrcOper;
-    UInt sfModDestOper;
-    Int modAmount;
+    uint16_t sfModDestOper;
+    int16_t modAmount;
     Source sfModAmtSrcOper;
     Transform sfModTransOper;
 };

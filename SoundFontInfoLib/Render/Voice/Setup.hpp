@@ -28,9 +28,8 @@ public:
      @param key the MIDI key that triggered the rendering
      @param velocity the MIDI velocity that triggered the rendering
      */
-    Setup(const PresetZone& presetZone, const PresetZone* presetGlobal,
-          const InstrumentZone& instrumentZone, const InstrumentZone* instrumentGlobal,
-          UByte key, UByte velocity) :
+    Setup(const PresetZone& presetZone, const PresetZone* presetGlobal, const InstrumentZone& instrumentZone,
+          const InstrumentZone* instrumentGlobal, int key, int velocity) :
     presetZone_{presetZone}, presetGlobal_{presetGlobal}, instrumentZone_{instrumentZone},
     instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
 
@@ -58,18 +57,18 @@ public:
     }
 
     /// @returns original MIDI key that triggered the voice
-    UByte key() const { return key_; }
+    int key() const { return key_; }
 
     /// @returns original MIDI velocity that triggered the voice
-    UByte velocity() const { return velocity_; }
+    int velocity() const { return velocity_; }
 
 private:
     const PresetZone& presetZone_;
     const PresetZone* presetGlobal_;
     const InstrumentZone& instrumentZone_;
     const InstrumentZone* instrumentGlobal_;
-    UByte key_;
-    UByte velocity_;
+    int key_;
+    int velocity_;
 };
 
 } // namespace Voice

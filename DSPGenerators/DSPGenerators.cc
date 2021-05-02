@@ -1,4 +1,5 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
+
 #include <iostream>
 #include <iomanip>
 
@@ -7,6 +8,7 @@
 #include "MIDI/ValueTransformer.hpp"
 
 using namespace SF2::DSP;
+using namespace SF2::DSP::Tables;
 using namespace SF2::MIDI;
 
 void
@@ -19,38 +21,58 @@ Generators::Generate(std::ostream& os) {
     os << "// See the DSPGenerators/DSPGenerators.cc file\n\n";
     os << "#include \"DSP.hpp\"\n";
     os << "#include \"MIDI/ValueTransformer.hpp\"\n\n";
-    os << "using namespace SF2::DSP;\n\n";
+    os << "using namespace SF2::DSP;\n";
+    os << "using namespace SF2::DSP::Tables;\n";
     os << "using namespace SF2::MIDI;\n\n";
 
-    auto scale = HalfPI / (SineLookup::TableSize - 1);
+    os << "const std::array<double, PanLookup::TableSize> PanLookup::lookup_ = {\n";
+    for (auto index = 0; index < PanLookup::TableSize; ++index) {
+        os << PanLookup::value(index) << ",\n";
+    }
+    os << "};\n\n";
+
     os << "const std::array<double, SineLookup::TableSize> SineLookup::lookup_ = {\n";
     for (auto index = 0; index < SineLookup::TableSize; ++index) {
-        os << std::sin(scale * index) << ",\n";
+        os << SineLookup::value(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const std::array<double, CentsFrequencyLookup::TableSize> CentsFrequencyLookup::lookup_ = {\n";
-    auto span = double((CentsFrequencyLookup::TableSize - 1) / 2);
     for (auto index = 0; index < CentsFrequencyLookup::TableSize; ++index) {
-        os << std::pow(2.0, (index - span) / span) << ",\n";
+        os << CentsFrequencyLookup::value(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const std::array<double, CentsPartialLookup::MaxCentsValue> CentsPartialLookup::lookup_ = {\n";
     for (auto index = 0; index < CentsPartialLookup::TableSize; ++index) {
-        os << (6.875 * std::pow(2.0, double(index) / 1200.0)) << ",\n";
+        os << CentsPartialLookup::value(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const std::array<double, AttenuationLookup::TableSize> AttenuationLookup::lookup_ = {\n";
     for (auto index = 0; index < AttenuationLookup::TableSize; ++index) {
-        os << centibelsToNorm(index) << ",\n";
+        os << AttenuationLookup::value(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const std::array<double, GainLookup::TableSize> GainLookup::lookup_ = {\n";
     for (auto index = 0; index < GainLookup::TableSize; ++index) {
-        os << 1.0 / centibelsToNorm(index) << ",\n";
+        os << GainLookup::value(index) << ",\n";
+    }
+    os << "};\n\n";
+
+    os << "const Tables::Cubic4thOrder::WeightsArray Tables::Cubic4thOrder::weights_ = {\n";
+    for (auto index = 0; index < Tables::Cubic4thOrder::TableSize; ++index) {
+        auto x = double(index) / double(Tables::Cubic4thOrder::TableSize);
+        auto x_05 = 0.5 * x;
+        auto x2 = x * x;
+        auto x3 = x2 * x;
+        auto x3_05 = 0.5 * x3;
+        auto x3_15 = 1.5 * x3;
+        os << -x3_05 +       x2 - x_05        << ", ";
+        os <<  x3_15 - 2.5 * x2         + 1.0 << ", ";
+        os << -x3_15 + 2.0 * x2 + x_05        << ", ";
+        os <<  x3_05 - 0.5 * x2               << ",\n";
     }
     os << "};\n\n";
 
@@ -59,52 +81,51 @@ Generators::Generate(std::ostream& os) {
     // unipolar ranges
 
     size_t size = ValueTransformer::TableSize;
-    size_t last = ValueTransformer::TableSize - 1;
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveLinear_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << double(index) / ValueTransformer::TableSize << ",\n";
+        os << ValueTransformer::positiveLinear(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeLinear_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << 1.0 - double(index) / ValueTransformer::TableSize << ",\n";
+        os << ValueTransformer::negativeLinear(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveConcave_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == last ? 1.0 : -40.0 / 96.0 * std::log10((127.0 - index) / 127.0)) << ",\n";
+        os << ValueTransformer::positiveConcave(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeConcave_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == 0 ? 1.0 : -40.0 / 96.0 * std::log10(index / 127.0)) << ",\n";
+        os << ValueTransformer::negativeConcave(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveConvex_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == 0 ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(index / 127.0)) << ",\n";
+        os << ValueTransformer::positiveConvex(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeConvex_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == last ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10((127.0 - index) / 127.0)) << ",\n";
+        os << ValueTransformer::negativeConvex(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveSwitched_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index < size / 2 ? 0.0 : 1.0) << ",\n";
+        os << ValueTransformer::positiveSwitched(index) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeSwitched_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index < size / 2 ? 1.0 : 0.0) << ",\n";
+        os << ValueTransformer::negativeSwitched(index) << ",\n";
     }
     os << "};\n\n";
 
@@ -112,50 +133,49 @@ Generators::Generate(std::ostream& os) {
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveLinearBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (2.0 * (double(index) / ValueTransformer::TableSize) - 1.0) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::positiveLinear(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeLinearBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (2.0 * (1.0 - double(index) / ValueTransformer::TableSize) - 1.0) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::negativeLinear(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveConcaveBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == last ? 1.0 : (2.0 * (-40.0 / 96.0 * std::log10((127.0 - index) / 127.0)) - 1.0)) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::positiveConcave(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeConcaveBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == 0 ? 1.0 : (2.0 * (-40.0 / 96.0 * std::log10(index / 127.0)) - 1.0)) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::negativeConcave(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveConvexBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == 0 ? -1.0 : (2.0 * (1.0 - -40.0 / 96.0 * std::log10(index / 127.0)) - 1.0)) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::positiveConvex(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeConvexBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index == last ? -1.0 : (2.0 * (1.0 - -40.0 / 96.0 * std::log10((127.0 - index) / 127.0)) - 1.0))
-        << ",\n";
+        os << unipolarToBipolar(ValueTransformer::negativeConvex(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::positiveSwitchedBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index < size / 2 ? -1.0 : 1.0) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::positiveSwitched(index)) << ",\n";
     }
     os << "};\n\n";
 
     os << "const ValueTransformer::TransformArrayType ValueTransformer::negativeSwitchedBipolar_ = {\n";
     for (auto index = 0; index < size; ++index) {
-        os << (index < size / 2 ? 1.0 : -1.0) << ",\n";
+        os << unipolarToBipolar(ValueTransformer::negativeSwitched(index)) << ",\n";
     }
     os << "};\n\n";
 }

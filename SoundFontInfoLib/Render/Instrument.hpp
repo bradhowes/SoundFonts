@@ -43,7 +43,7 @@ public:
      @param velocity the MIDI velocity value
      @returns vector of matching zones
      */
-    InstrumentZoneCollection::Matches filter(UByte key, UByte velocity) const { return zones_.filter(key, velocity); }
+    InstrumentZoneCollection::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
 };
 
 } // namespace Render

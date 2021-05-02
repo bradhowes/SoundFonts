@@ -50,7 +50,7 @@ public:
     /**
      Mock constructor -- only used in unit tests.
      */
-    State(double sampleRate, const MIDI::Channel& channel, UByte key, UByte velocity) :
+    State(double sampleRate, const MIDI::Channel& channel, int key, int velocity) :
     sampleRate_{sampleRate}, channel_{channel}, key_{key}, velocity_{velocity} {
         setDefaults();
     }
@@ -129,7 +129,7 @@ public:
         return values_[pos] + adjustments_[pos];
     }
 
-    /// @returns fundamental pitch to generate when rendering
+    /// @returns fundamental pitch to generate when rendering (semitones)
     double pitch() const {
         auto pitch = key();
         auto coarseTune = modulated(Index::coarseTune); // semitones
@@ -242,8 +242,8 @@ private:
     ValueModulatorArray valueModulators_{};
 
     double sampleRate_;
-    UByte key_;
-    UByte velocity_;
+    int key_;
+    int velocity_;
 
     inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };

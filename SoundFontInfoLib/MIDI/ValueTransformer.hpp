@@ -2,15 +2,16 @@
 
 #pragma once
 
-#include <cassert>
 #include <algorithm>
+#include <cassert>
+#include <cmath>
 #include <array>
 #include <iosfwd>
 
 #include "Entity/Modulator/Source.hpp"
 
 namespace SF2 {
-namespace Generators { void Generate(std::ostream&); }
+namespace DSP::Generators { void Generate(std::ostream&); }
 namespace MIDI {
 
 /**
@@ -102,6 +103,41 @@ private:
      */
     static const TransformArrayType& selectActive(Kind kind, Direction direction, Polarity polarity);
 
+    /**
+     Generator function for the positive linear curve
+
+     @param index the table index to generate the value for
+     @returns transform value
+     */
+    static double positiveLinear(size_t index) { return double(index) / TableSize; }
+
+    /**
+     Generator function for the negative linear curve
+
+     @param index the table index to generate the value for
+     @returns transform value
+     */
+    static double negativeLinear(size_t index) { return 1.0 - positiveLinear(index); }
+
+    static double positiveConcave(size_t index) {
+        return index == (TableSize - 1) ? 1.0 : -40.0 / 96.0 * std::log10((127.0 - double(index)) / 127.0);
+    }
+    static double negativeConcave(size_t index) {
+        return index == 0 ? 1.0 : -40.0 / 96.0 * std::log10(double(index) / 127.0);
+    }
+
+    static double positiveConvex(size_t index) {
+        return index == 0 ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(double(index) / 127.0);
+    }
+
+    static double negativeConvex(size_t index) {
+        return index == (TableSize - 1) ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(double(127.0 - index) / 127.0);
+    }
+
+    static double positiveSwitched(size_t index) { return index < TableSize / 2 ? 0.0 : 1.0; }
+
+    static double negativeSwitched(size_t index) { return index < TableSize / 2 ? 1.0 : 0.0; }
+
     static TransformArrayType const positiveLinear_;
     static TransformArrayType const negativeLinear_;
     static TransformArrayType const positiveConcave_;
@@ -122,7 +158,7 @@ private:
 
     const TransformArrayType& active_;
 
-    friend void Generators::Generate(std::ostream&);
+    friend void DSP::Generators::Generate(std::ostream&);
 };
 
 } // namespace MIDI

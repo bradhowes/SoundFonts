@@ -119,7 +119,7 @@ private:
 
     std::vector<Render::Sample::CanonicalBuffer> sampleBuffers_;
 
-    std::shared_ptr<Int> sampleData_;
+    std::shared_ptr<int16_t> sampleData_;
 
     inline static Logger log_{Logger::Make("IO", "File")};
 };

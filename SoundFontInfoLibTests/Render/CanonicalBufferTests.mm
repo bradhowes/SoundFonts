@@ -3,6 +3,7 @@
 #import <XCTest/XCTest.h>
 #import <vector>
 
+#import "Types.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Sample/Generator.hpp"
 
