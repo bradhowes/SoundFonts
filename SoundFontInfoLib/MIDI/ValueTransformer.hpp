@@ -11,7 +11,7 @@
 #include "Entity/Modulator/Source.hpp"
 
 namespace SF2 {
-namespace DSP::Generators { void Generate(std::ostream&); }
+namespace DSP { namespace Tables { struct Generator; } }
 namespace MIDI {
 
 /**
@@ -158,7 +158,7 @@ private:
 
     const TransformArrayType& active_;
 
-    friend void DSP::Generators::Generate(std::ostream&);
+    friend struct DSP::Tables::Generator;
 };
 
 } // namespace MIDI

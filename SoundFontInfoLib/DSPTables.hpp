@@ -2,8 +2,9 @@
 
 #pragma once
 
-namespace Generators { void Generate(std::ostream&); }
 namespace Tables {
+
+struct Generator;
 
 struct PanLookup {
     inline constexpr static size_t TableSize = 500 + 500 + 1;
@@ -21,7 +22,7 @@ private:
 
     static const std::array<Float, PanLookup::TableSize> lookup_;
     PanLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 /**
@@ -56,7 +57,7 @@ private:
 
     static const std::array<Float, TableSize> lookup_;
     SineLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 /**
@@ -85,7 +86,7 @@ private:
 
     static const std::array<Float, TableSize> lookup_;
     CentsFrequencyLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 /**
@@ -101,7 +102,7 @@ private:
     static Float value(size_t index) { return 6.875 * std::pow(2.0, Float(index) / 1200.0); }
     static const std::array<Float, TableSize> lookup_;
     CentsPartialLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 /**
@@ -120,7 +121,7 @@ private:
     static Float value(size_t index) { return centibelsToAttenuation(index); }
 
     AttenuationLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 /**
@@ -137,7 +138,7 @@ private:
     static Float value(size_t index) { return 1.0 / centibelsToAttenuation(index); }
     static const std::array<Float, TableSize> lookup_;
     GainLookup() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 struct Cubic4thOrder {
@@ -170,7 +171,7 @@ private:
      */
     static const WeightsArray weights_;
     Cubic4thOrder() = delete;
-    friend void Generators::Generate(std::ostream&);
+    friend struct Generator;
 };
 
 } // Tables namespace
