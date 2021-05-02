@@ -540,11 +540,11 @@
 		BDEB12D22626E35A003CE8EE /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BDEC0026249775FE00A52507 /* Voice.hpp */,
-				BD5E16FE261EFFB9007BAA38 /* Voice.cpp */,
+				BDEB12CA2626CB13003CE8EE /* Setup.hpp */,
 				BD2AEE5224F9C689009EAABE /* State.hpp */,
 				BDEB13022629C5B0003CE8EE /* State.cpp */,
-				BDEB12CA2626CB13003CE8EE /* Setup.hpp */,
+				BDEC0026249775FE00A52507 /* Voice.hpp */,
+				BD5E16FE261EFFB9007BAA38 /* Voice.cpp */,
 			);
 			path = Voice;
 			sourceTree = "<group>";
