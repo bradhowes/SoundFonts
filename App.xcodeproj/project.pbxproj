@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BD078FFB2642F6360029B8F9 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD078FFA2642F6360029B8F9 /* Media.xcassets */; };
+		BD078FFD2642F7A80029B8F9 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD078FFC2642F7A80029B8F9 /* Media.xcassets */; };
 		BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E9EE724FAC0C6009316F2 /* MIDI.swift */; };
 		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
 		BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -128,6 +130,8 @@
 /* Begin PBXFileReference section */
 		BD05836223E4C52800E094E0 /* SoundFonts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFonts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BD078FFA2642F6360029B8F9 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BD078FFC2642F7A80029B8F9 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
 		BD0F9356257164DE0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
@@ -250,6 +254,7 @@
 				BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */,
 				BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */,
 				BD05837123E4C52800E094E0 /* UI */,
+				BD078FFA2642F6360029B8F9 /* Media.xcassets */,
 			);
 			path = SoundFontsAU;
 			sourceTree = "<group>";
@@ -291,6 +296,7 @@
 				BD5907602565CD4C004DE941 /* ReverbAU.swift */,
 				BD59075E2565CD4C004DE941 /* ReverbViewController.swift */,
 				BD59075D2565CD4C004DE941 /* UI */,
+				BD078FFC2642F7A80029B8F9 /* Media.xcassets */,
 			);
 			path = ReverbAU;
 			sourceTree = "<group>";
@@ -591,6 +597,7 @@
 			files = (
 				BD58B0902567F29900181F2B /* Assets.xcassets in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
+				BD078FFB2642F6360029B8F9 /* Media.xcassets in Resources */,
 				BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,6 +614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD9AC9B12567B86100B47F12 /* Eurostile.ttc in Resources */,
+				BD078FFD2642F7A80029B8F9 /* Media.xcassets in Resources */,
 				BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -762,6 +770,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AU;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -787,6 +796,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AU;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -855,6 +865,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ReverbAU;
 				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
@@ -881,6 +892,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = ReverbAU;
 				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210408194618;
