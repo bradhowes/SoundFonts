@@ -8,4 +8,4 @@ FOUNDATION_EXPORT double SoundFontInfoLibVersionNumber;
 //! Project version string for SoundFontInfoLib.
 FOUNDATION_EXPORT const unsigned char SoundFontInfoLibVersionString[];
 
-#import <SoundFontInfoLib/SoundFontInfo.h>
+#import "SoundFontInfoLib/SoundFontInfo.h"
