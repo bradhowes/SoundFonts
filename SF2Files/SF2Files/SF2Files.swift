@@ -28,7 +28,7 @@ private final class SF2FilesTag {}
         return url
     }
 
-    /// Obtain collection of all of the SF2 resources in the bundle.
+    /// Collection of URLs for the SF2 resources in the bundle.
     @objc public class var allResources: [URL] {
         let allResourcesCount = 4;
         guard let urls = bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil),
