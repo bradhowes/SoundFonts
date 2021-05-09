@@ -7,7 +7,7 @@
 #include <AudioToolbox/AUParameters.h>
 #include <vector>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
@@ -87,7 +87,7 @@ private:
     double linearInterpolate(size_t index, double partial, bool canLoop) const {
         auto x0 = samples_[index++];
         auto x1 = sample(index, canLoop);
-        return DSP::Interpolation::Linear::interpolate(partial, x0, x1);
+        return DSP::Interpolation::linear(partial, x0, x1);
     }
 
     /**
@@ -103,7 +103,7 @@ private:
         auto x1 = sample(index++, canLoop);
         auto x2 = sample(index++, canLoop);
         auto x3 = sample(index++, canLoop);
-        return DSP::Interpolation::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3);
+        return DSP::Interpolation::cubic4thOrder(partial, x0, x1, x2, x3);
     }
 
     double sample(size_t index, bool canLoop) const {

@@ -7,7 +7,7 @@
 #include <AudioToolbox/AUParameters.h>
 #include <vector>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 

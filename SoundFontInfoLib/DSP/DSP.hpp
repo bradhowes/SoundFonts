@@ -29,7 +29,6 @@ inline constexpr Float CentibelsPerDecade = 200.0;
 inline constexpr Float CentsToFrequencyMin = -16000;
 inline constexpr Float CentsToFrequencyMax = 4500;
 
-
 // 440 * pow(2.0, (N - 69) / 12)
 inline constexpr Float LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
 
@@ -166,7 +165,7 @@ inline void panLookup(Float pan, Float& left, Float& right) { Tables::PanLookup:
  @param radians the value to use for theta
  @returns the sine approximation
  */
-inline Float sineLookup(Float radians) { return Tables::SineLookup::convert(radians); }
+inline Float sineLookup(Float radians) { return Tables::SineLookup::sine(radians); }
 
 /**
  Convert given cents value into a frequency multiplier.
@@ -208,46 +207,32 @@ inline Float centibelsToGain(Float centibels) { return Tables::GainLookup::conve
 
 namespace Interpolation {
 
-struct Linear {
+/**
+ Interpolate a value from two values.
 
-    /**
-     Interpolate a value from two values.
-
-     @param partial indication of affinity for one of the two values. Low values give greater weight to x0 while higher
-     values give greater weight to x1.
-     @param x0 first value to use
-     @param x1 second value to use
-     */
-    inline static Float interpolate(Float partial, Float x0, Float x1) {
-        Float w1 = partial;
-        Float w0 = 1.0 - partial;
-        return x0 * w0 + x1 * w1;
-    }
-private:
-    Linear() = delete;
-};
+ @param partial indication of affinity for one of the two values. Low values give greater weight to x0 while higher
+ values give greater weight to x1.
+ @param x0 first value to use
+ @param x1 second value to use
+ */
+inline Float linear(Float partial, Float x0, Float x1) {
+    Float w1 = partial;
+    Float w0 = 1.0 - partial;
+    return x0 * w0 + x1 * w1;
+}
 
 /**
- Collection of objects and methods for performing fast cubic 4th-order interpolation.
+ Interpolate a value from four values.
+
+ @param partial location between the second value and the third. By definition it should always be < 1.0
+ @param x0 first value to use
+ @param x1 second value to use
+ @param x2 third value to use
+ @param x3 fourth value to use
  */
-struct Cubic4thOrder {
-
-    /**
-     Interpolate a value from four values.
-
-     @param partial location between the second value and the third. By definition it should always be < 1.0
-     @param x0 first value to use
-     @param x1 second value to use
-     @param x2 third value to use
-     @param x3 fourth value to use
-     */
-    inline static Float interpolate(Float partial, Float x0, Float x1, Float x2, Float x3) {
-        return Tables::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3);
-    }
-
-private:
-    Cubic4thOrder() = delete;
-};
+inline static Float cubic4thOrder(Float partial, Float x0, Float x1, Float x2, Float x3) {
+    return Tables::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3);
+}
 
 } // Interpolation namespace
 } // DSP namespace

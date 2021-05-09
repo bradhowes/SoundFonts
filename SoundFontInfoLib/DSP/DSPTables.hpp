@@ -2,13 +2,35 @@
 
 #pragma once
 
+/**
+ Namespace for compile-time generated tables. Each table is encapsulated in a `struct` that has three components:
+
+ - a `TableSize` definition that states how many entries are in the table (all tables hold `Float` values).
+ - a `lookup_` class attribute that declares the lookup table
+ - a `value` class method that returns the `Float` value to store at a given table index
+
+ All structs also include a class method that performs a lookup for a given value. However, this is not used by the
+ table generating infrastructure.
+ */
 namespace Tables {
 
 struct Generator;
 
+/**
+ Lookup tables for SF2 pan values, where -500 means only left-channel, and +500 means only right channel. Other values
+ give attenuation values for the left and right channels between 0.0 and 1.0. These values come from the sine function
+ for a pleasing audio experience when panning.
+ */
 struct PanLookup {
     inline constexpr static size_t TableSize = 500 + 500 + 1;
 
+    /**
+     Obtain the attenuation values for the left and right channels.
+
+     @param pan the pan setting
+     @param left reference to left channel attenuation storage
+     @param right reference to right channel attenuation storage
+     */
     static void lookup(Float pan, Float& left, Float& right) {
         int index = std::clamp(int(std::round(pan)), -500, 500);
         left = lookup_[-index + 500];
@@ -18,7 +40,7 @@ struct PanLookup {
 private:
     inline constexpr static Float Scaling = HalfPI / (TableSize - 1);
 
-    static Float value(size_t index) { return parabolicSine(index * Scaling); }
+    static Float value(size_t index) { return std::sin(index * Scaling); }
 
     static const std::array<Float, PanLookup::TableSize> lookup_;
     PanLookup() = delete;
@@ -26,12 +48,17 @@ private:
 };
 
 /**
- Estimate sin() value using a table of pre-calculated sin values and linear interpolation.
+ Estimate std::sin() value using a table of pre-calculated sin values and linear interpolation.
  */
 struct SineLookup {
     inline constexpr static size_t TableSize = 4096;
 
-    inline static Float convert(Float radians) {
+    /**
+     Obtain sine value.
+
+     @param radians the angle in radians to use
+     */
+    inline static Float sine(Float radians) {
         if (radians < 0.0) return -sin(-radians);
         while (radians > TwoPI) radians -= TwoPI;
         if (radians <= HalfPI) return interpolate(radians);
@@ -111,8 +138,18 @@ private:
 struct AttenuationLookup {
     inline constexpr static size_t TableSize = 1441;
 
+    /**
+     Convert from integer (generator) value to attenuation.
+
+     @param centibels value to convert
+     */
     static Float convert(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
 
+    /**
+     Convert from floating-point value to attenuation. Rounds to nearest integer to obtain index.
+
+     @param centibels value to convert
+     */
     static Float convert(Float centibels) { return convert(int(std::round(centibels))); }
 
 private:
@@ -130,8 +167,18 @@ private:
 struct GainLookup {
     inline constexpr static size_t TableSize = 1441;
 
+    /**
+     Convert from integer (generator) value to gain
+
+     @param centibels value to convert
+     */
     static Float convert(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
 
+    /**
+     Convert from floating-point value to gain. Rounds to nearest integer to obtain index.
+
+     @param centibels value to convert
+     */
     static Float convert(Float centibels) { return convert(int(std::round(centibels))); }
 
 private:
@@ -141,6 +188,10 @@ private:
     friend struct Generator;
 };
 
+/**
+ Interpolation using a cubic 4th-order polynomial. The coefficients of the polynomial are stored in a lookup table that
+ is generated at compile time.
+ */
 struct Cubic4thOrder {
 
     /// Number of weights (x4) to generate.

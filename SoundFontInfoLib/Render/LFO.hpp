@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 
 namespace SF2 {
 namespace Render {

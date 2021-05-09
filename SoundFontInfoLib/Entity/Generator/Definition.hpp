@@ -5,7 +5,7 @@
 #include <array>
 #include <string>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 #include "Entity/Generator/Amount.hpp"
 #include "Entity/Generator/Index.hpp"
 

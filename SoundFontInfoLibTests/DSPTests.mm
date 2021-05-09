@@ -3,7 +3,7 @@
 #import <XCTest/XCTest.h>
 #import <cmath>
 
-#import "DSP.hpp"
+#include "DSP/DSP.hpp"
 
 using namespace SF2::DSP;
 
@@ -70,15 +70,15 @@ using namespace SF2::DSP;
     XCTAssertEqualWithAccuracy(0.0, right, self.epsilon);
 
     SF2::DSP::panLookup(-100, left, right);
-    XCTAssertEqualWithAccuracy(0.80976, left, self.epsilon);
-    XCTAssertEqualWithAccuracy(0.58816, right, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.809016994375, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.587785252292, right, self.epsilon);
 
     SF2::DSP::panLookup(0, left, right);
     XCTAssertEqualWithAccuracy(left, right, self.epsilon);
 
     SF2::DSP::panLookup(100, left, right);
-    XCTAssertEqualWithAccuracy(0.58816, left, self.epsilon);
-    XCTAssertEqualWithAccuracy(0.80976, right, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.587785252292, left, self.epsilon);
+    XCTAssertEqualWithAccuracy(0.809016994375, right, self.epsilon);
 
     SF2::DSP::panLookup(500, left, right);
     XCTAssertEqualWithAccuracy(0.0, left, self.epsilon);
@@ -154,26 +154,26 @@ using namespace SF2::DSP;
 - (void)testInterpolationCubic4thOrderInterpolate {
     double epsilon = 0.0000001;
 
-    auto v = SF2::DSP::Interpolation::Cubic4thOrder::interpolate(0.0, 1, 2, 3, 4);
+    auto v = SF2::DSP::Interpolation::cubic4thOrder(0.0, 1, 2, 3, 4);
     XCTAssertEqualWithAccuracy(2.0, v, epsilon);
 
-    v = SF2::DSP::Interpolation::Cubic4thOrder::interpolate(0.5, 1, 2, 3, 4);
+    v = SF2::DSP::Interpolation::cubic4thOrder(0.5, 1, 2, 3, 4);
     XCTAssertEqualWithAccuracy(1 * -0.0625 + 2 * 0.5625 + 3 * 0.5625 + 4 * -0.0625, v, epsilon);
 
-    v = SF2::DSP::Interpolation::Cubic4thOrder::interpolate(0.99999, 1, 2, 3, 4);
+    v = SF2::DSP::Interpolation::cubic4thOrder(0.99999, 1, 2, 3, 4);
     XCTAssertEqualWithAccuracy(2.9990234375, v, epsilon);
 }
 
 - (void)testInterpolationLinearInterpolate {
     double epsilon = 0.0000001;
 
-    auto v = SF2::DSP::Interpolation::Linear::interpolate(0.0, 1, 2);
+    auto v = SF2::DSP::Interpolation::linear(0.0, 1, 2);
     XCTAssertEqualWithAccuracy(1.0, v, epsilon);
 
-    v = SF2::DSP::Interpolation::Linear::interpolate(0.5, 1, 2);
+    v = SF2::DSP::Interpolation::linear(0.5, 1, 2);
     XCTAssertEqualWithAccuracy(0.5 * 1.0 + 0.5 * 2.0, v, epsilon);
 
-    v = SF2::DSP::Interpolation::Linear::interpolate(0.9, 1, 2);
+    v = SF2::DSP::Interpolation::linear(0.9, 1, 2);
     XCTAssertEqualWithAccuracy(0.1 * 1.0 + 0.9 * 2.0, v, epsilon);
 }
 

@@ -1,13 +1,25 @@
+# Generated Tables
+
+There are some lookup tables that are generated at compile time in order to speed up startup time. These tables are defined in
+`DSPTables.hpp` and `MIDI/ValueTransformer.hpp`. There is a custom build phase for `SoundFontInfoLib` called
+`Create DSPGenerated.cpp File` that generates this file. This works ok as long as a full rebuild is done.
+
+The `Generated` folder points to
+`DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources`. This is where the
+`DSPGenerated.cpp` file will be found.
+
 # Notes
 
-This library parses valid SF2 files, extracting preset information and file metadata. The SoundFonts app and AUv3 app extension use it to
-obtain the set of presets in the SF2 file. However, at present they rely on Apple's AVAudioUnitSampler to deal with rendering audio from
-the presets. The ultimate goal is to do everything ourselves, and there are some `render` classes to do just this.
+This library parses valid SF2 files, extracting preset information and file metadata. The SoundFonts app and
+AUv3 app extension use it to obtain the set of presets in the SF2 file. However, at present they rely on Apple's
+AVAudioUnitSampler to deal with rendering audio from the presets. The ultimate goal is to do everything
+ourselves, and there are some `render` classes to do just this.
 
 ## SF2 Format
 
-A 'PHDR' sub-chunk defines a preset. Each one should have unique (wPreset, wBank) values. If the same, the first one
-wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI but it is still considered valid.
+A 'PHDR' sub-chunk defines a preset. Each one should have unique (wPreset, wBank) values. If the same, the first
+one wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI but it is still
+considered valid.
 
 A 'PBAG' sub-chunk defines the zones of the presets. A preset can have more than one. The first zone can be a
 *global* zone if the last generator in the wGenNdx is *not* an Instrument generator. There cannot be a global
@@ -32,9 +44,9 @@ must be preceded by a key range generator (thus it must be the second generator)
 
 An 'IBAG' sub-chunk defines the zones of an instrument. An instrument can have more than one. The first zone can
 be a *global* zone if the last generator in the wGenNdx is *not* a `sampleID` generator. There cannot be a
-global zone if there is only one zone for an instrument. All zones but the first (global) zone must have at least one
-generator (the sample ID generator). If a zone other than the first lacks a sample ID generator it should be
-ignored. A global zone with no generators and no modulators should also be ignored.
+global zone if there is only one zone for an instrument. All zones but the first (global) zone must have at
+least one generator (the sample ID generator). If a zone other than the first lacks a sample ID generator it
+should be ignored. A global zone with no generators and no modulators should also be ignored.
 
 Modulates in 'IMOD' sub-chunk are absolute -- their values set a modulator instead of adjust it. But they always
 adjust a generator.

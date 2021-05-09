@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 #include "ValueTransformer.hpp"
 
 using namespace SF2::MIDI;

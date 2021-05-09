@@ -8,7 +8,7 @@
 #include <cmath>
 #include <map>
 
-#include "DSP.hpp"
+#include "DSP/DSP.hpp"
 #include "Types.hpp"
 #include "MIDI/Note.hpp"
 
