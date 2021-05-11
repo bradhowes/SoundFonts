@@ -1,5 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+import Foundation
+
 private final class SF2FilesTag {}
 
 /**

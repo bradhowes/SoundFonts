@@ -13,7 +13,7 @@
 		BD0FAC26251F68CA00EEF187 /* SF2Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC25251F68CA00EEF187 /* SF2Files.swift */; };
 		BD0FAC3E251F927C00EEF187 /* SF2FilesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0FAC3D251F927C00EEF187 /* SF2FilesTests.swift */; };
 		BD0FAC40251F927C00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC00251F676900EEF187 /* SF2Files.framework */; };
-		BD250BA52615A42A00D1C1E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BD250BA42615A42A00D1C1E0 /* README.md */; };
+		BD74460E264B1503001F1FAA /* FluidR3_GM.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BD74460D264B1503001F1FAA /* FluidR3_GM.sf2 */; };
 		BDE634A2256C7664006D8C56 /* FreeFont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = BDE634A1256C7664006D8C56 /* FreeFont.sf2 */; };
 /* End PBXBuildFile section */
 
@@ -38,11 +38,11 @@
 		BD0FAC3D251F927C00EEF187 /* SF2FilesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SF2FilesTests.swift; sourceTree = "<group>"; };
 		BD0FAC3F251F927C00EEF187 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD250BA42615A42A00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BD74460D264B1503001F1FAA /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FluidR3_GM.sf2; path = ../../DerivedData/SoundFonts/Build/Intermediates.noindex/SF2Files.build/DerivedSources/FluidR3_GM.sf2; sourceTree = "<group>"; };
 		BDE6348A256C756F006D8C56 /* FluidR3_GM.sf2.2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.2; sourceTree = "<group>"; };
 		BDE6348B256C756F006D8C56 /* FluidR3_GM.sf2.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = FluidR3_GM.sf2.1; sourceTree = "<group>"; };
 		BDE6348C256C756F006D8C56 /* FluidR3_GM.sf2.3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2.3; sourceTree = "<group>"; };
 		BDE634A1256C7664006D8C56 /* FreeFont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeFont.sf2; path = Resources/FreeFont.sf2; sourceTree = SOURCE_ROOT; };
-		BDE634AD256C779F006D8C56 /* FluidR3_GM.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FluidR3_GM.sf2; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,10 +97,10 @@
 		BD0FAC0C251F680B00EEF187 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BDE634AD256C779F006D8C56 /* FluidR3_GM.sf2 */,
 				BDE6348B256C756F006D8C56 /* FluidR3_GM.sf2.1 */,
 				BDE6348A256C756F006D8C56 /* FluidR3_GM.sf2.2 */,
 				BDE6348C256C756F006D8C56 /* FluidR3_GM.sf2.3 */,
+				BD74460D264B1503001F1FAA /* FluidR3_GM.sf2 */,
 				BDE634A1256C7664006D8C56 /* FreeFont.sf2 */,
 				BD0FAC10251F680B00EEF187 /* GeneralUser GS MuseScore v1.442.sf2 */,
 				BD0FAC15251F680B00EEF187 /* RolandNicePiano.sf2 */,
@@ -137,7 +137,7 @@
 			buildPhases = (
 				BD0FABFB251F676900EEF187 /* Headers */,
 				BD0FABFC251F676900EEF187 /* Sources */,
-				BDE63489256C74C9006D8C56 /* ShellScript */,
+				BDE63489256C74C9006D8C56 /* Generate FluidR3_GM */,
 				BD0FABFD251F676900EEF187 /* Frameworks */,
 				BD0FABFE251F676900EEF187 /* Resources */,
 			);
@@ -215,8 +215,8 @@
 			files = (
 				BD0FAC19251F680B00EEF187 /* GeneralUser GS MuseScore v1.442.sf2 in Resources */,
 				BDE634A2256C7664006D8C56 /* FreeFont.sf2 in Resources */,
-				BD250BA52615A42A00D1C1E0 /* README.md in Resources */,
 				BD0FAC1E251F680B00EEF187 /* RolandNicePiano.sf2 in Resources */,
+				BD74460E264B1503001F1FAA /* FluidR3_GM.sf2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,7 +230,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BDE63489256C74C9006D8C56 /* ShellScript */ = {
+		BDE63489256C74C9006D8C56 /* Generate FluidR3_GM */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -238,14 +238,19 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Resources/FluidR3_GM.sf2.1",
+				"$(SRCROOT)/Resources/FluidR3_GM.sf2.2",
+				"$(SRCROOT)/Resources/FluidR3_GM.sf2.3",
 			);
+			name = "Generate FluidR3_GM";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(PROJECT_DERIVED_FILE_DIR)/FluidR3_GM.sf2",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "FILE=\"FluidR3_GM.sf2\"\nSRC=\"${SRCROOT}/Resources/${FILE}\"\nDST=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${FILE}\"\ncat ${SRC}.1 ${SRC}.2 ${SRC}.3 > \"${DST}\"\n";
+			shellScript = "FILE=\"FluidR3_GM.sf2\"\nSRC=\"${SRCROOT}/Resources/${FILE}\"\nDST=\"${PROJECT_DERIVED_FILE_DIR}/${FILE}\"\ncat ${SRC}.1 ${SRC}.2 ${SRC}.3 > \"${DST}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
