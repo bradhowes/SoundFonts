@@ -9,11 +9,11 @@
 
 ![](images/image.gif)
 
-This is a very simple iOS application that acts as a polyphonic synthesizer. It uses an `AVAudioUnitSampler`
+This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
 as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free (and of variable
-quaility). This app only supports sound font files that are bundled with the application, though it would be
-nice to remotely fetch one to try it out.
+quaility). There are four sound font files that are bundled with the application, and more can be added via the iCloud
+integration.
 
 > NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
 > to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
@@ -96,26 +96,9 @@ of the build process and PaintCode is not necessary to build.
 
 The repository comes with four SoundFont files, though the largest one -- `FluidR3_GM` -- is too large to store
 natively on Github so it has been broken into three files: `FluidR3_GM.sf2.1`, `FluidR3_GM.sf2.2`, and
-`FluidR3_GM.sf2.3`. To make the`FluidR3\_GM` file, you will need to run a simple Bash script -- `FluidR3\_GM.sh`
--- like so:
-
-```
-% ./FluidR3_GM.sh
-```
-
-There is also a simple Python script called `catalog.py` which will generate a SoundFont catalog in Swift. Each
-`*.sf2` that is in the
-[./SoundFonts](https://github.com/bradhowes/SoundFonts/tree/master/SoundFonts/MIDI/SoundFonts) directory
-will get its own `*.swift` file with its own `SoundFont` instance that describes all of the patches or presets
-that were found in the `*.sf2` file. If you add a new SoundFont file to this directory, you will also need to
-add it to the Xcode project so that it gets installed in the iOS application bundle. You will also need to add
-the generated `*.swift` file as well so that the application knows what presets are available in the SoundFont
-file.
-
-The `catalog.py` script uses the [sf2utils](https://pypi.org/project/sf2utils/) package to perform the Soundfont
-parsing.
-
-As mentioned above, additional sound fonts can be added to the running application when installed on a device.
+`FluidR3_GM.sf2.3`. I could move it to LFS but I do not want to mess with that. Instead, I have an Xcode build
+phaase that should concatenate the individual files into one big one before packaging them all up into a 
+resource in the SF2Files target.
 
 # API Documentation
 
