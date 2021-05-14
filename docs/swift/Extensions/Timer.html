@@ -17,7 +17,7 @@
     <a title="Timer Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (50% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -372,9 +372,6 @@
                 <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/Formatters.html">Formatters</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
               </li>
               <li class="nav-group-task">
@@ -654,6 +651,9 @@
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Formatters.html">Formatters</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
               </li>
               <li class="nav-group-task">
@@ -736,7 +736,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a timer that will fire just once after some interval has elapsed.</p>
 
                       </div>
                       <div class="declaration">
@@ -747,6 +747,41 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">once</span><span class="p">(</span><span class="nv">after</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Timer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Timer</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>after</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the duration to wait before firing</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the closure to call when the timer fires</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>new Timer instance</p>
                       </div>
                     </section>
                   </div>
@@ -764,7 +799,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a timer that will fire just once at a given time.</p>
 
                       </div>
                       <div class="declaration">
@@ -775,6 +810,41 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">once</span><span class="p">(</span><span class="nv">when</span><span class="p">:</span> <span class="kt">Date</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Timer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Timer</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>when</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the to fire</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the closure to call when the timer fires</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>new Timer instance</p>
                       </div>
                     </section>
                   </div>
@@ -792,7 +862,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a timer that will fire repeatedly every N seconds.</p>
 
                       </div>
                       <div class="declaration">
@@ -803,6 +873,41 @@
 <span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">every</span><span class="p">(</span><span class="n">_</span> <span class="nv">interval</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span> <span class="n">_</span> <span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Timer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Timer</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>interval</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the number of seconds between firings</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the closure to call when the timer fires</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>new Timer instance</p>
                       </div>
                     </section>
                   </div>

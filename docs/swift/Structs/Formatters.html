@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Logging Structure Reference</title>
+    <title>Formatters Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/Logging" class="dashAnchor"></a>
-    <a title="Logging Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/Formatters" class="dashAnchor"></a>
+    <a title="Formatters Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> 2.21.0 Docs</a> (50% documented)</p>
@@ -30,7 +30,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Logging Structure Reference
+        Formatters Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -710,15 +710,16 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Logging</h1>
+            <h1>Formatters</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Logging</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Formatters</span></code></pre>
 
                 </div>
               </div>
-            <p>Builder of OSLog values for categorization / classification of log statements.</p>
+            <p>Collection of value formatters. Original intent was to make consolidate string formatting here, but this is a mess and
+needs to be reworked.</p>
 
           </section>
           <section class="section task-group-section">
@@ -727,9 +728,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:19SoundFontsFramework7LoggingV9subsystemSSvpZ"></a>
-                    <a name="//apple_ref/swift/Variable/subsystem" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework7LoggingV9subsystemSSvpZ">subsystem</a>
+                    <a name="/s:19SoundFontsFramework10FormattersV9emptyFileSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/emptyFile" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV9emptyFileSSvpZ">emptyFile</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -737,14 +738,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The top-level identifier for the app.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">subsystem</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">emptyFile</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -754,9 +755,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:19SoundFontsFramework7LoggingV6loggerySo9OS_os_logCSSFZ"></a>
-                    <a name="//apple_ref/swift/Method/logger(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework7LoggingV6loggerySo9OS_os_logCSSFZ">logger(_:<wbr>)</a>
+                    <a name="/s:19SoundFontsFramework10FormattersV11invalidFileSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/invalidFile" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV11invalidFileSSvpZ">invalidFile</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -764,14 +765,311 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a new logger for a subsystem</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">logger</span><span class="p">(</span><span class="n">_</span> <span class="nv">category</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">OSLog</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">invalidFile</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV10failedFileSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/failedFile" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV10failedFileSSvpZ">failedFile</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">failedFile</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV18unableToAddOneFileSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/unableToAddOneFile" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV18unableToAddOneFileSSvpZ">unableToAddOneFile</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unableToAddOneFile</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV19unableToAddAnyFilesSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/unableToAddAnyFiles" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV19unableToAddAnyFilesSSvpZ">unableToAddAnyFiles</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unableToAddAnyFiles</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV12addedOneFileSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/addedOneFile" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV12addedOneFileSSvpZ">addedOneFile</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">addedOneFile</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV13addedAllFilesSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/addedAllFiles" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV13addedAllFilesSSvpZ">addedAllFiles</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">addedAllFiles</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV14addedSomeFilesSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/addedSomeFiles" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV14addedSomeFilesSSvpZ">addedSomeFiles</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">addedSomeFiles</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV15deleteFontTitleSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/deleteFontTitle" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV15deleteFontTitleSSvpZ">deleteFontTitle</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">deleteFontTitle</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV17deleteFontMessageSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/deleteFontMessage" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV17deleteFontMessageSSvpZ">deleteFontMessage</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">deleteFontMessage</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV12deleteActionSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/deleteAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV12deleteActionSSvpZ">deleteAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">deleteAction</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV12cancelActionSSvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/cancelAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV12cancelActionSSvpZ">cancelAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">cancelAction</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV9formatted11presetCountSSSi_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/formatted(presetCount:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV9formatted11presetCountSSSi_tFZ">formatted(presetCount:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a formatted representation of a preset count value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">formatted</span><span class="p">(</span><span class="nv">presetCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -782,12 +1080,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>category</em>
+                                <em>presetCount</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>the subsystem to log under</p>
+                                  <p>value to format</p>
                                 </div>
                               </td>
                             </tr>
@@ -796,7 +1094,271 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>OSLog instance to use for subsystem logging</p>
+                        <p>string value</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV9formatted13favoriteCountSSSi_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/formatted(favoriteCount:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV9formatted13favoriteCountSSSi_tFZ">formatted(favoriteCount:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a formatted representation of a favorites count value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">formatted</span><span class="p">(</span><span class="nv">favoriteCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>favoriteCount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>value to format</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>string value</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV9formatted14failedAddCount9conditionSSSi_SStFZ"></a>
+                    <a name="//apple_ref/swift/Method/formatted(failedAddCount:condition:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV9formatted14failedAddCount9conditionSSSi_SStFZ">formatted(failedAddCount:<wbr>condition:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a formatted representation of a failed sound font add counter</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">formatted</span><span class="p">(</span><span class="nv">failedAddCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">condition</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failedAddCount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>value to format</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>condition</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>what failure took place</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>string value</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV03addA15FontFailureText8failuresSSSayAA0af8FileLoadG0OG_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/addSoundFontFailureText(failures:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV03addA15FontFailureText8failuresSSSayAA0af8FileLoadG0OG_tFZ">addSoundFontFailureText(failures:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generate a string that shows what failed when attempting to add one or more sound fonts to the app.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">addSoundFontFailureText</span><span class="p">(</span><span class="nv">failures</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/SoundFontFileLoadFailure.html">SoundFontFileLoadFailure</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failures</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the list of failures</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>string value</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV03addA15FontDoneMessage2ok8failures5totalSSSaySSG_SayAA0aF15FileLoadFailureOGSitFZ"></a>
+                    <a name="//apple_ref/swift/Method/addSoundFontDoneMessage(ok:failures:total:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV03addA15FontDoneMessage2ok8failures5totalSSSaySSG_SayAA0aF15FileLoadFailureOGSitFZ">addSoundFontDoneMessage(ok:<wbr>failures:<wbr>total:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generate a string that shows the success and failures when adding one or more sound fonts to the app.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">addSoundFontDoneMessage</span><span class="p">(</span><span class="nv">ok</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">],</span> <span class="nv">failures</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Enums/SoundFontFileLoadFailure.html">SoundFontFileLoadFailure</a></span><span class="p">],</span>
+                                           <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>ok</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the names of the sound fonts that succeeded</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>failures</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the collection of failures and their reasons</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>total</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>total number of sound fonts attempted</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>string value</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework10FormattersV9formatted11sliderValueSSSf_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/formatted(sliderValue:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework10FormattersV9formatted11sliderValueSSSf_tFZ">formatted(sliderValue:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain a formatted slider value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">formatted</span><span class="p">(</span><span class="nv">sliderValue</span><span class="p">:</span> <span class="kt">Float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

@@ -17,7 +17,7 @@
     <a title="String Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (50% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -372,9 +372,6 @@
                 <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/Formatters.html">Formatters</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
               </li>
               <li class="nav-group-task">
@@ -654,6 +651,9 @@
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Formatters.html">Formatters</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
               </li>
               <li class="nav-group-task">
@@ -788,7 +788,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the width of the string if rendered in the system font</p>
 
                       </div>
                       <div class="declaration">
@@ -796,33 +796,6 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">systemFontWidth</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:SS19SoundFontsFrameworkE9localized7commentS2S_tF"></a>
-                    <a name="//apple_ref/swift/Method/localized(comment:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SS19SoundFontsFrameworkE9localized7commentS2S_tF">localized(comment:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">localized</span><span class="p">(</span><span class="nv">comment</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -842,7 +815,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Remove any embedded UUID value from the string.</p>
 
                       </div>
                       <div class="declaration">
@@ -852,6 +825,10 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">stripEmbeddedUUID</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">stripped</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">uuid</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">?)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>named tuple with the stripped result and an option UUID value</p>
                       </div>
                     </section>
                   </div>
@@ -869,7 +846,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Convert an object pointer into a string representation.</p>
 
                       </div>
                       <div class="declaration">
@@ -879,6 +856,29 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">pointer</span><span class="p">(</span><span class="n">_</span> <span class="nv">object</span><span class="p">:</span> <span class="kt">AnyObject</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>object</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>value to convert</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>string representation of the pointer</p>
                       </div>
                     </section>
                   </div>

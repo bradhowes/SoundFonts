@@ -17,7 +17,7 @@
     <a title="UIControl Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (50% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -372,9 +372,6 @@
                 <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Enums/Formatters.html">Formatters</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
               </li>
               <li class="nav-group-task">
@@ -654,6 +651,9 @@
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Formatters.html">Formatters</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
               </li>
               <li class="nav-group-task">
@@ -718,7 +718,8 @@
 
                 </div>
               </div>
-            
+            <p>Extend UIControl to accept closures for events.</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -736,7 +737,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Type of closure to invoke when control fires.</p>
 
                       </div>
                       <div class="declaration">
@@ -763,7 +764,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Add a closure to the control.</p>
 
                       </div>
                       <div class="declaration">
@@ -774,6 +775,41 @@
 <span class="kd">func</span> <span class="nf">addClosure</span><span class="p">(</span><span class="k">for</span> <span class="nv">controlEvents</span><span class="p">:</span> <span class="kt">UIControl</span><span class="o">.</span><span class="kt">Event</span> <span class="o">=</span> <span class="o">.</span><span class="n">touchUpInside</span><span class="p">,</span> <span class="n">_</span> <span class="nv">closure</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Extensions/UIControl.html#/s:So9UIControlC19SoundFontsFrameworkE7Closurea">Closure</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UUID</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>controlEvents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event to register for</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>closure</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the closure to call when the event happens</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>token to be used when removing a registration</p>
                       </div>
                     </section>
                   </div>
@@ -791,7 +827,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Remove a closure registration.</p>
 
                       </div>
                       <div class="declaration">
@@ -801,6 +837,37 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeClosure</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">UUID</span><span class="p">,</span> <span class="k">for</span> <span class="nv">controlEvents</span><span class="p">:</span> <span class="kt">UIControl</span><span class="o">.</span><span class="kt">Event</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the token that was obtained from addClosure call</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>controlEvents</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event that was registered for in the addClosure call</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
