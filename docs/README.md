@@ -19,4 +19,4 @@ Due to the current tool chain being used, the documentation is divided into two 
 and one for Objective-C/C++.
 
 * [Swift Code](swift/index.html)
-* [SoundFontInfoLib](cpp/index.html)
+* [SoundFontInfoLib (C++)](SoundFontInfoLib/index.html)
