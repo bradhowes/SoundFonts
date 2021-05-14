@@ -13,6 +13,10 @@
 #include "MIDI/Note.hpp"
 
 namespace SF2 {
+
+/**
+ Collection of enums and types used to represent MIDI values and state.
+ */
 namespace MIDI {
 
 enum struct CoreEvent {

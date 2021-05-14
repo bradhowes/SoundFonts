@@ -10,6 +10,10 @@
 #import "Render/Preset.hpp"
 
 namespace SF2 {
+
+/**
+ Classes that allow for audio sample rendering of SF2 sample data.
+ */
 namespace Render {
 
 class Engine : public T {

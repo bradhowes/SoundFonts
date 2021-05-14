@@ -13,6 +13,10 @@
 
 namespace SF2 {
 namespace Render {
+
+/**
+ Representation of an envelope with various states that have timing characteristics and levels.
+ */
 namespace Envelope {
 
 /**
@@ -97,6 +101,7 @@ public:
      @param decay duration of the decay stage where the envelope ramps down from 1.0 to the sustain level
      @param sustain the sustain level (between 0.0 and 1.0)
      @param release duration of the release stage where the envelope ramps down from the sustain level to 0.0
+     @param noteOn if true, start the envelope
      */
     Generator(double sampleRate, double delay, double attack, double hold, double decay, double sustain,
               double release, bool noteOn = false) :

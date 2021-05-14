@@ -8,6 +8,10 @@
 
 namespace SF2 {
 namespace Render {
+
+/**
+ Classes used to generate new samples from SF2 sample data for a given pitch and sample rate.
+ */
 namespace Sample {
 
 /**

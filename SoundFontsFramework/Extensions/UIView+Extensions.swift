@@ -2,7 +2,7 @@
 
 import UIKit
 
-//public extension UIView {
+// public extension UIView {
 //
 //    var cornerRadius: CGFloat {
 //        get { layer.cornerRadius }
@@ -21,4 +21,4 @@ import UIKit
 //        get { layer.borderColor != nil ? UIColor(cgColor: layer.borderColor!) : nil }
 //        set { layer.borderColor =  newValue?.cgColor }
 //    }
-//}
+// }

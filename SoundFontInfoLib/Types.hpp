@@ -6,6 +6,9 @@
 
 namespace SF2 {
 
+/**
+ Type to use for all floating-point operations in SF2.
+ */
 using Float = double;
 
 }

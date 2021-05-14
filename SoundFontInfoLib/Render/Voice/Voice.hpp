@@ -16,6 +16,10 @@ namespace MIDI { class Channel; }
 
 namespace Render {
 
+/**
+ Collection of types involved in generating audio samples for note that is being played. For a polyphonic instrument,
+ there can be more than one voice playing at the same time.
+ */
 namespace Voice {
 
 class Setup;
@@ -78,8 +82,8 @@ private:
     Envelope::Generator gainEnvelope_;
     Envelope::Generator modulatorEnvelope_;
 
-    LFO<double> modulatorLFO_;
-    LFO<double> vibratoLFO_;
+    LFO modulatorLFO_;
+    LFO vibratoLFO_;
 
     inline static Logger log_{Logger::Make("Render", "Voice")};
 };

@@ -24,7 +24,7 @@ using namespace SF2::Render;
 }
 
 - (void)testSamples {
-    LFO<float> osc(8.0, 1.0, 0.0);
+    LFO osc(8.0, 1.0, 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
     SamplesEqual(osc.valueAndIncrement(), 1.0);
@@ -37,7 +37,7 @@ using namespace SF2::Render;
 }
 
 - (void)testSaveRestore {
-    LFO<float> osc(8.0, 1.0, 0.0);
+    LFO osc(8.0, 1.0, 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
     auto state = osc.saveState();
@@ -49,7 +49,7 @@ using namespace SF2::Render;
 }
 
 - (void)testDelay {
-    LFO<float> osc(8.0, 1.0, 0.125);
+    LFO osc(8.0, 1.0, 0.125);
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
@@ -61,21 +61,21 @@ using namespace SF2::Render;
 }
 
 - (void)testConfig {
-    auto osc = LFO<double>::Config(8.0).frequency(1.0).delay(0.125).make();
+    auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc = LFO<double>::Config(8.0).frequency(1.0).delay(0.0).make();
+    osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc = LFO<double>::Config(8.0).frequency(2.0).make();
+    osc = LFO::Config(8.0).frequency(2.0).make();
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 1.0);
-    osc = LFO<double>::Config(8.0).frequency(1.0).make();
+    osc = LFO::Config(8.0).frequency(1.0).make();
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
     SamplesEqual(osc.valueAndIncrement(), 1.0);
-    osc = LFO<double>::Config(8.0).frequency(1.0).make();
+    osc = LFO::Config(8.0).frequency(1.0).make();
     SamplesEqual(osc.valueAndIncrement(), 0.0);
     SamplesEqual(osc.valueAndIncrement(), 0.5);
     SamplesEqual(osc.valueAndIncrement(), 1.0);

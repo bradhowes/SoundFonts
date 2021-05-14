@@ -24,7 +24,7 @@ struct ElapsedTimer {
     mutating func stop() { stopTime = mach_absolute_time() }
 }
 
-//#define NSEC_PER_SEC 1_000_000_000ull
-//#define NSEC_PER_MSEC 1_000_000ull
-//#define USEC_PER_SEC 1000000ull
-//#define NSEC_PER_USEC 1000ull
+// #define NSEC_PER_SEC 1_000_000_000ull
+// #define NSEC_PER_MSEC 1_000_000ull
+// #define USEC_PER_SEC 1000000ull
+// #define NSEC_PER_USEC 1000ull

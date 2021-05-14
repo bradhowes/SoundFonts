@@ -59,6 +59,8 @@ public:
      Create new state vector with a given sample rate.
 
      @param sampleRate the sample rate of audio being rendered
+     @param channel the MIDI channel that is in control
+     @param setup the voice configuration to use
      */
     State(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
 

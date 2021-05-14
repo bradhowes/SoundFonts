@@ -8,6 +8,10 @@
 
 namespace SF2 {
 namespace Entity {
+
+/**
+ Classes involved in describing an SF2 generator that provides or "generates" a value that is used to render audio.
+ */
 namespace Generator {
 
 /**

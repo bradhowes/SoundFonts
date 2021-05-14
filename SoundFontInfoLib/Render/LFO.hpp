@@ -4,6 +4,7 @@
 
 #include <cmath>
 
+#include "Types.hpp"
 #include "DSP/DSP.hpp"
 
 namespace SF2 {
@@ -15,7 +16,6 @@ namespace Render {
  will start emitting with value 0.0, again by design, in order to smoothly transition from a paused LFO into a running
  one.
  */
-template <typename T>
 class LFO {
 public:
 
@@ -29,14 +29,14 @@ public:
 
          @param sampleRate the sample rate to use
          */
-        explicit Config(T sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
+        explicit Config(Float sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
 
         /**
          Set the frequency for the LFO.
 
          @param frequency the frequency to run the LFO at
          */
-        Config& frequency(T frequency) {
+        Config& frequency(Float frequency) {
             frequency_ = frequency;
             return *this;
         }
@@ -46,7 +46,7 @@ public:
 
          @param delay the number of seconds to wait before starting the LFO.
          */
-        Config& delay(T delay) {
+        Config& delay(Float delay) {
             delay_ = delay;
             return *this;
         }
@@ -61,9 +61,9 @@ public:
         }
 
     private:
-        T sampleRate_;
-        T frequency_;
-        T delay_;
+        Float sampleRate_;
+        Float frequency_;
+        Float delay_;
     };
 
     /**
@@ -71,16 +71,18 @@ public:
 
      @param sampleRate number of samples per second
      @param frequency the frequency of the oscillator
+     @param delay the number of seconds to wait before starting the LFO.
      */
-    LFO(T sampleRate, T frequency, T delay) { initialize(sampleRate, frequency, delay); }
+    LFO(Float sampleRate, Float frequency, Float delay) { initialize(sampleRate, frequency, delay); }
 
     /**
      Initialize the LFO with the given parameters.
 
      @param sampleRate number of samples per second
      @param frequency the frequency of the oscillator
+     @param delay the number of seconds to wait before starting the LFO.
      */
-    void initialize(T sampleRate, T frequency, T delay) {
+    void initialize(Float sampleRate, Float frequency, Float delay) {
         sampleRate_ = sampleRate;
         frequency_ = frequency;
         delaySampleCount_ = size_t(sampleRate * delay);
@@ -93,7 +95,7 @@ public:
 
      @param frequency the frequency to operate at
      */
-    void setFrequency(T frequency) {
+    void setFrequency(Float frequency) {
         frequency_ = frequency;
         setPhaseIncrement();
     }
@@ -101,9 +103,9 @@ public:
     /**
      Set the delay of the oscillator in seconds. NOTE: resets the counter.
 
-     @param delay the duration before the LFO begins
+     @param delay the number of seconds to wait before starting the LFO.
      */
-    void setDelay(T delay) {
+    void setDelay(Float delay) {
         delaySampleCount_ = size_t(delay * sampleRate_);
         reset();
     }
@@ -117,9 +119,9 @@ public:
     }
 
     struct State {
-        T counter_;
+        Float counter_;
         size_t delaySampleCount_;
-        State(T counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
+        State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
     };
 
     /**
@@ -164,7 +166,7 @@ public:
 
      @returns current waveform value
      */
-    T valueAndIncrement() {
+    Float valueAndIncrement() {
         auto counter = counter_;
         increment();
         return counter;
@@ -175,16 +177,16 @@ public:
 
      @returns current waveform value
      */
-    T value() { return counter_; }
+    Float value() { return counter_; }
 
 private:
 
     void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
 
-    T sampleRate_;
-    T frequency_;
-    T counter_{0.0};
-    T increment_;
+    Float sampleRate_;
+    Float frequency_;
+    Float counter_{0.0};
+    Float increment_;
     size_t delaySampleCount_;
 };
 

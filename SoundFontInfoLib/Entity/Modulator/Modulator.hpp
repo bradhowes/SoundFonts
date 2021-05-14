@@ -14,6 +14,11 @@
 
 namespace SF2 {
 namespace Entity {
+
+/**
+ Classes involved in describing an SF2 modulator. A modulator uses a value from a source to modulate a specific
+ generator's value.
+ */
 namespace Modulator {
 
 /**

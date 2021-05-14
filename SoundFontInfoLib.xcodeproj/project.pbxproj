@@ -153,7 +153,7 @@
 		BD1CD52E263CA1F20035528B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD1CD52F263CA3040035528B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD1CD536263DC5BF0035528B /* DSPTables.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DSPTables.hpp; sourceTree = "<group>"; };
-		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/README.md; sourceTree = "<group>"; };
+		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD250BD62615E5E900D1C1E0 /* ModulatorSourceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorSourceTests.mm; sourceTree = "<group>"; };
 		BD250BDA2615FD7400D1C1E0 /* Modulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Modulator.cpp; path = SoundFontInfoLib/Entity/Modulator/Modulator.cpp; sourceTree = SOURCE_ROOT; };
 		BD250C81261A126000D1C1E0 /* Types.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Types.hpp; sourceTree = "<group>"; };
@@ -197,6 +197,9 @@
 		BD744608264827FF001F1FAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD744609264828B6001F1FAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD74460A26482A29001F1FAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BD74461A264DAB63001F1FAA /* doxygen-awesome-sidebar-only.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "doxygen-awesome-sidebar-only.css"; sourceTree = "<group>"; };
+		BD74461B264DAB63001F1FAA /* Doxygen.config */ = {isa = PBXFileReference; lastKnownFileType = text; path = Doxygen.config; sourceTree = "<group>"; };
+		BD74461C264DAB63001F1FAA /* doxygen-awesome.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = "doxygen-awesome.css"; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundFontInfoLib.h; sourceTree = "<group>"; };
 		BD74D16B23CDB1D200204ED4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -418,7 +421,6 @@
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
-				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BD1CD530263D5DC30035528B /* Generated */,
 				BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */,
 				BD74D17423CDB1D200204ED4 /* SoundFontInfoLibTests */,
@@ -442,6 +444,10 @@
 		BD74D16923CDB1D200204ED4 /* SoundFontInfoLib */ = {
 			isa = PBXGroup;
 			children = (
+				BD74461B264DAB63001F1FAA /* Doxygen.config */,
+				BD74461A264DAB63001F1FAA /* doxygen-awesome-sidebar-only.css */,
+				BD74461C264DAB63001F1FAA /* doxygen-awesome.css */,
+				BD250BA82615A45E00D1C1E0 /* README.md */,
 				BDEB130E2629EB4F003CE8EE /* Logger.hpp */,
 				BD250C81261A126000D1C1E0 /* Types.hpp */,
 				BD74460726482703001F1FAA /* DSP */,

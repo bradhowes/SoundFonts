@@ -20,6 +20,10 @@
 #include "Render/Sample/CanonicalBuffer.hpp"
 
 namespace SF2 {
+
+/**
+ Collection of classes and types involved in parsing an SF2 file or data stream.
+ */
 namespace IO {
 
 /**

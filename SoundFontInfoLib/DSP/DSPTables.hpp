@@ -2,6 +2,9 @@
 
 #pragma once
 
+namespace SF2 {
+namespace DSP {
+
 /**
  Namespace for compile-time generated tables. Each table is encapsulated in a `struct` that has three components:
 
@@ -226,3 +229,5 @@ private:
 };
 
 } // Tables namespace
+} // DSP namespace
+} // SF2 namespace

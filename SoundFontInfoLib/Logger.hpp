@@ -9,6 +9,9 @@
 #include <sstream>
 #include <string>
 
+/**
+ This is the top-level namespace for the SoundFontInfoLib library.
+ */
 namespace SF2 {
 
 /**
