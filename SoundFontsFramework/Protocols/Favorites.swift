@@ -6,14 +6,22 @@ import UIKit
  The different events which are emitted by a Favorites collection when the collection changes.
 */
 public enum FavoritesEvent {
+    /// A new favorite has been added
     case added(index: Int, favorite: LegacyFavorite)
+    /// A favorite has been selected
     case selected(index: Int, favorite: LegacyFavorite)
+    /// A favorite will be edited
     case beginEdit(config: FavoriteEditor.Config)
+    /// A favorite has changed
     case changed(index: Int, favorite: LegacyFavorite)
+    /// A favorite has been removed
     case removed(index: Int, favorite: LegacyFavorite)
+    /// All favorites that were associated with a sound font have been removed
     case removedAll(associatedWith: LegacySoundFont)
+    /// The collection of favorites has been restored from disk
     case restored
 
+    /// Obtain the favorite instance that is associated with an event, if there is one.
     var favorite: LegacyFavorite? {
         switch self {
         case let .added(index: _, favorite: favorite): return favorite
@@ -30,12 +38,20 @@ public enum FavoritesEvent {
  */
 public protocol Favorites {
 
+    /// True if the collection of favorites has been restored from disk
     var restored: Bool { get }
 
     /// Get number of favorites
     var count: Int {get}
 
+    /**
+     Determine if the given favorite key is in the collection.
+
+     - parameter key: the key to look for
+     - returns: true if it exists
+     */
     func contains(key: LegacyFavorite.Key) -> Bool
+
     /**
      Obtain the index of the given Favorite in the collection.
 
@@ -52,6 +68,12 @@ public protocol Favorites {
      */
     func getBy(index: Int) -> LegacyFavorite
 
+    /**
+     Obtain the Favorite by its key.
+
+     - parameter key the key to look for
+     - returns: Favorite with the given key
+     */
     func getBy(key: LegacyFavorite.Key) -> LegacyFavorite
 
     /**
@@ -85,8 +107,21 @@ public protocol Favorites {
      */
     func move(from: Int, to: Int)
 
+    /**
+     Update the visibility of a favorite.
+
+     - parameter key: the key of the favorite to change
+     - parameter state: the visibility state to use
+     */
     func setVisibility(key: LegacyFavorite.Key, state: Bool)
 
+    /**
+     Set the effects configurations for a given favorite.
+
+     - parameter favorite: the favorite to update
+     - delay: the delay configuration to save
+     - reverb: the reverb configuration to save
+     */
     func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?)
 
     /**

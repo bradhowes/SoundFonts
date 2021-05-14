@@ -13,6 +13,11 @@ private extension String {
     }
 }
 
+/**
+ AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does not
+ contain reverb or delay effects. Most of the methods and getters forward to another AUAudioUnit, the one that is
+ associated with the sampler.
+ */
 final class SoundFontsAU: AUAudioUnit {
     private let log: OSLog
     private let activePatchManager: ActivePatchManager
@@ -23,6 +28,13 @@ final class SoundFontsAU: AUAudioUnit {
 
     private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
+    /**
+     Construct a new AUv3 component.
+
+     - parameter componentDescription: the definition used when locating the component to create
+     - parameter sampler: the Sampler instance to use for actually rendering audio
+     - parameter activePatchManager: the manager of the active preset/patch
+     */
     public init(componentDescription: AudioComponentDescription, sampler: Sampler,
                 activePatchManager: ActivePatchManager) throws {
         let log = Logging.logger("SFAU")

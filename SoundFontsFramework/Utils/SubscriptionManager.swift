@@ -7,7 +7,9 @@ import Foundation
  */
 public class SubscriptionManager<Event> {
 
+    /// The type of function / closure that is used to subscribe to a subscription manager
     public typealias NotifierProc = (Event) -> Void
+    /// The type of function / closure that is used to unsubscribe to a subscription manager
     public typealias UnsubscribeProc = () -> Void
 
     private var subscriptions = [UUID: NotifierProc]()
@@ -21,6 +23,11 @@ public class SubscriptionManager<Event> {
     private var lastEvent: Event?
     private let cacheEvent: Bool
 
+    /**
+     Construct a new subscription manager
+
+     - parameter cacheEvent: when true, hold onto the last event and use it when there are new subscriptions
+     */
     public init(_ cacheEvent: Bool = false) { self.cacheEvent = cacheEvent }
 
     /**
@@ -52,6 +59,11 @@ public class SubscriptionManager<Event> {
         return token
     }
 
+    /**
+     Notify all subscribers of a new event.
+
+     - parameter event: the event that just took place
+     */
     public func notify(_ event: Event) {
         if cacheEvent { lastEvent = event }
         subscriptions.values.forEach { $0(event) }

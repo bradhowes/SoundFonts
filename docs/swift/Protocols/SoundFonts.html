@@ -17,7 +17,7 @@
     <a title="SoundFonts Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (36% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,9 +39,6 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -89,18 +86,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/ChangesPageViewController.html">ChangesPageViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox.html">Checkbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/BorderShape.html">– BorderShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/CheckShape.html">– CheckShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodePointInfo.html">CodePointInfo</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Components.html">Components</a>
@@ -154,9 +139,6 @@
                 <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/FileMonitor.html">FileMonitor</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/FontEditor.html">FontEditor</a>
               </li>
               <li class="nav-group-task">
@@ -170,9 +152,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Foo.html">Foo</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/GradientView.html">GradientView</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/GuideViewController.html">GuideViewController</a>
@@ -583,12 +562,6 @@
                 <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/DelayEffectManager.html">DelayEffectManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/EffectsManager.html">EffectsManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -625,13 +598,7 @@
                 <a href="../Protocols/ReusableView.html">ReusableView</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ReverbEffectManager.html">ReverbEffectManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/SegueHandler.html">SegueHandler</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/SelectSoundFontControl.html">SelectSoundFontControl</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/SettingGettable.html">SettingGettable</a>
@@ -684,13 +651,7 @@
                 <a href="../Structs/DelayConfig/Key.html">– Key</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ElapsedTimer.html">ElapsedTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/FilteredOrderedCollection.html">FilteredOrderedCollection</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
@@ -776,7 +737,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>True if the collection of sound fonts has been restored</p>
 
                       </div>
                       <div class="declaration">
@@ -803,7 +764,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Collection of all of the sound fount names</p>
 
                       </div>
                       <div class="declaration">
@@ -830,7 +791,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The default preset to use if there is not one</p>
 
                       </div>
                       <div class="declaration">
@@ -857,7 +818,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Validate the sound font collection, making sure that everything is in order. Removes any stray tags or favorites.</p>
 
                       </div>
                       <div class="declaration">
@@ -867,6 +828,37 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">validateCollections</span><span class="p">(</span><span class="nv">favorites</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Favorites.html">Favorites</a></span><span class="p">,</span> <span class="nv">tags</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Tags.html">Tags</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>favorites</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>collection of favorites</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tags</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>collection of tags</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -984,7 +976,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain an actual preset object from the given SoundFontAndPatch value.</p>
 
                       </div>
                       <div class="declaration">
@@ -994,6 +986,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">resolve</span><span class="p">(</span><span class="nv">soundFontAndPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LegacyPatch.html">LegacyPatch</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>soundFontAndPatch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>reference to a preset in a sound font</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>LegacyPatch object that corresponds to the given value</p>
                       </div>
                     </section>
                   </div>
@@ -1011,7 +1026,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the collection of sound fonts that contains the given tag.</p>
 
                       </div>
                       <div class="declaration">
@@ -1021,6 +1036,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">filtered</span><span class="p">(</span><span class="n">by</span> <span class="nv">tag</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt"><a href="../Classes/LegacySoundFont.html">LegacySoundFont</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">]</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tag</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the tag to filter on</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>collection of sound font instances that have the given tag</p>
                       </div>
                     </section>
                   </div>
@@ -1065,7 +1103,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Get the names of the given sound fonts.</p>
 
                       </div>
                       <div class="declaration">
@@ -1075,6 +1113,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">names</span><span class="p">(</span><span class="n">of</span> <span class="nv">keys</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/LegacySoundFont.html">LegacySoundFont</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keys</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the sound font keys to look for</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>list of sound font names</p>
                       </div>
                     </section>
                   </div>

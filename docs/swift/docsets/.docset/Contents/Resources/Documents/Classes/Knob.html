@@ -17,7 +17,7 @@
     <a title="Knob Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (36% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,9 +39,6 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -89,18 +86,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/ChangesPageViewController.html">ChangesPageViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox.html">Checkbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/BorderShape.html">– BorderShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/CheckShape.html">– CheckShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodePointInfo.html">CodePointInfo</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Components.html">Components</a>
@@ -154,9 +139,6 @@
                 <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/FileMonitor.html">FileMonitor</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/FontEditor.html">FontEditor</a>
               </li>
               <li class="nav-group-task">
@@ -170,9 +152,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Foo.html">Foo</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/GradientView.html">GradientView</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/GuideViewController.html">GuideViewController</a>
@@ -583,12 +562,6 @@
                 <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/DelayEffectManager.html">DelayEffectManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/EffectsManager.html">EffectsManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -625,13 +598,7 @@
                 <a href="../Protocols/ReusableView.html">ReusableView</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ReverbEffectManager.html">ReverbEffectManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/SegueHandler.html">SegueHandler</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/SelectSoundFontControl.html">SelectSoundFontControl</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/SettingGettable.html">SettingGettable</a>
@@ -684,13 +651,7 @@
                 <a href="../Structs/DelayConfig/Key.html">– Key</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ElapsedTimer.html">ElapsedTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/FilteredOrderedCollection.html">FilteredOrderedCollection</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
@@ -1458,7 +1419,7 @@ given in the <code>frame</code> parameter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Set the knob value.</p>
 
                       </div>
                       <div class="declaration">
@@ -1468,6 +1429,37 @@ given in the <code>frame</code> parameter.</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">setValue</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Float</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the new value to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>animated</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>if true, animate the view as it shows the new value</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1485,7 +1477,7 @@ given in the <code>frame</code> parameter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Begin tracking a touch event in the knob.</p>
 
                       </div>
                       <div class="declaration">
@@ -1495,6 +1487,37 @@ given in the <code>frame</code> parameter.</p>
                           <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">func</span> <span class="nf">beginTracking</span><span class="p">(</span><span class="n">_</span> <span class="nv">touch</span><span class="p">:</span> <span class="kt">UITouch</span><span class="p">,</span> <span class="n">with</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">UIEvent</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>touch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the touch event that took place</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event that generated the touch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1512,7 +1535,7 @@ given in the <code>frame</code> parameter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Continue tracking a touch event in the knob.</p>
 
                       </div>
                       <div class="declaration">
@@ -1522,6 +1545,37 @@ given in the <code>frame</code> parameter.</p>
                           <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">func</span> <span class="nf">continueTracking</span><span class="p">(</span><span class="n">_</span> <span class="nv">touch</span><span class="p">:</span> <span class="kt">UITouch</span><span class="p">,</span> <span class="n">with</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">UIEvent</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>touch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the updated touch event</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event that generated the touch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1539,7 +1593,7 @@ given in the <code>frame</code> parameter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Cancel a touch event. NOTE: this does not reset the knob to the original value.</p>
 
                       </div>
                       <div class="declaration">
@@ -1549,6 +1603,25 @@ given in the <code>frame</code> parameter.</p>
                           <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">func</span> <span class="nf">cancelTracking</span><span class="p">(</span><span class="n">with</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">UIEvent</span><span class="p">?)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event that generated the touch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1566,7 +1639,7 @@ given in the <code>frame</code> parameter.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>End tracking a touch event in the knob.</p>
 
                       </div>
                       <div class="declaration">
@@ -1576,6 +1649,37 @@ given in the <code>frame</code> parameter.</p>
                           <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">func</span> <span class="nf">endTracking</span><span class="p">(</span><span class="n">_</span> <span class="nv">touch</span><span class="p">:</span> <span class="kt">UITouch</span><span class="p">?,</span> <span class="n">with</span> <span class="nv">event</span><span class="p">:</span> <span class="kt">UIEvent</span><span class="p">?)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>touch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the updated touch event</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>event</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the event that generated the touch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

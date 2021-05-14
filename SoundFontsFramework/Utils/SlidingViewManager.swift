@@ -8,10 +8,22 @@ import UIKit
 public struct SlidingViewManager {
 
     private var views = [ViewSlider]()
+
+    /// The index of the currently active view
     public private(set) var active: Int = 0
 
+    /**
+     Create a new manager for a sliding view
+
+     - parameter active: the view that is currently visible
+     */
     init(active: Int) { self.active = active }
 
+    /**
+     Add a view to the manager
+
+     - parameter view: the UIView to add
+     */
     public mutating func add(view: UIView) { views.append(ViewSlider(view: view)) }
 
     /**

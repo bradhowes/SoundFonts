@@ -33,6 +33,7 @@ public protocol SettingGettable {
     static func get(key: String, userDefaults: UserDefaults) -> Self?
 }
 
+/// Type of a setting that has a setter and a getter
 public typealias SettingSerializable = SettingSettable & SettingGettable
 
 /**
@@ -54,7 +55,9 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
      determined at runtime.
      */
     enum DefaultValue {
+        /// Constant default value
         case constant(ValueType)
+        /// Constant value that is provided at runtime (delayed)
         case generator(() -> ValueType)
 
         /// Obtain an actual default value. NOTE: for a generator type, this may not be idempotent.
@@ -98,10 +101,22 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
         self._defaultValue = .generator(defaultValueGenerator)
     }
 
+    /**
+     Obtain a setting value.
+
+     - parameter source: the setting container to query
+     - returns: the current setting value
+     */
     public func get(_ source: UserDefaults) -> ValueType {
         ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue
     }
 
+    /**
+     Set a setting value.
+
+     - parameter source: the setting container to modify
+     - parameter value: the new setting value
+     */
     public func set(_ source: UserDefaults, _ value: ValueType) {
         ValueType.set(key: userDefaultsKey, value: value, userDefaults: source)
     }

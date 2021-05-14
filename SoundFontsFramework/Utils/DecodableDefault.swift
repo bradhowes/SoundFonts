@@ -1,11 +1,17 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 // Based on code from https://www.swiftbysundell.com/tips/default-decoding-values/
 
+/**
+ A type that can provide a default value.
+ */
 protocol DecodableDefaultSource {
     associatedtype ValueType: Decodable
     static var defaultValue: ValueType { get }
 }
 
+/**
+ A container for a wrapper around a DecodableDefaultSource
+ */
 enum DecodableDefault {
     @propertyWrapper
     struct Wrapper<Source: DecodableDefaultSource> {
@@ -16,6 +22,12 @@ enum DecodableDefault {
 }
 
 extension DecodableDefault.Wrapper: Decodable {
+
+    /**
+     Constructor for a new DecodableDefaultSource wrapper that takes a value from the given decoder.
+
+     - parameter decoder: provider of values
+     */
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         wrappedValue = try container.decode(ValueType.self)
@@ -23,6 +35,12 @@ extension DecodableDefault.Wrapper: Decodable {
 }
 
 extension DecodableDefault.Wrapper: Encodable where ValueType: Encodable {
+
+    /**
+     Encode the wrapped value in the given encoder.
+
+     - parameter encoder: the container for the wrapped value
+     */
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(wrappedValue)
@@ -33,12 +51,20 @@ extension DecodableDefault.Wrapper: Equatable where ValueType: Equatable {}
 extension DecodableDefault.Wrapper: Hashable where ValueType: Hashable {}
 
 extension KeyedDecodingContainer {
+
+    /**
+     Attempt to extract a value from a container. If it fails, just return a wrapped default value of the right type.
+
+     - parameter type: the type to decode
+     - parameter key: the key to use in the container
+     */
     func decode<T>(_ type: DecodableDefault.Wrapper<T>.Type, forKey key: Key) throws -> DecodableDefault.Wrapper<T> {
         try decodeIfPresent(type, forKey: key) ?? .init()
     }
 }
 
 extension DecodableDefault {
+
     typealias Source = DecodableDefaultSource
     typealias List = Decodable & ExpressibleByArrayLiteral
     typealias Map = Decodable & ExpressibleByDictionaryLiteral

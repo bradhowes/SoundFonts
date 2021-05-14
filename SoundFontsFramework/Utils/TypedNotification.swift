@@ -12,6 +12,11 @@ open class TypedNotification<A> {
     /// The name of the notification
     public let name: Notification.Name
 
+    /**
+     Construct a new notification definition.
+
+     - parameter name: the unique name for the notification
+     */
     public required init(name: Notification.Name) { self.name = name }
 
     /**

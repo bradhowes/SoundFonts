@@ -4,21 +4,69 @@ import UIKit
 
 private class BundleTag {}
 
-// Rework this
-public enum Formatters {
+/**
+ Collection of value formatters. Original intent was to make consolidate string formatting here, but this is a mess and
+ needs to be reworked.
+ */
+public struct Formatters {
+    private static var bundle: Bundle { Bundle(for: BundleTag.self) }
 
+    public static let emptyFile = NSLocalizedString("empty", bundle: bundle, comment: "empty file")
+    public static let invalidFile = NSLocalizedString("invalid", bundle: bundle, comment: "invalid file")
+    public static let failedFile = NSLocalizedString("failed", bundle: bundle, comment: "no space for file")
+    public static let unableToAddOneFile = NSLocalizedString("UnableToAddOneFile", bundle: bundle,
+                                                             comment: "unable to add one file")
+    public static let unableToAddAnyFiles = NSLocalizedString("UnableToAddAnyFiles", bundle: bundle,
+                                                              comment: "unable to add any files")
+    public static let addedOneFile = NSLocalizedString("AddedOneFile", bundle: bundle, comment: "added one file")
+    public static let addedAllFiles = NSLocalizedString("AddedAllFiles", bundle: bundle, comment: "added all files")
+    public static let addedSomeFiles = NSLocalizedString("AddedSomeFiles", bundle: bundle, comment: "added some files")
+
+    public static let deleteFontTitle = NSLocalizedString("DeleteFontTitle", bundle: bundle,
+                                                          comment: "Title of confirmation prompt")
+    public static let deleteFontMessage = NSLocalizedString("DeleteFontMessage", bundle: bundle,
+                                                            comment: "Body of confirmation prompt")
+    public static let deleteAction = NSLocalizedString("Delete", bundle: bundle, comment: "The delete action")
+    public static let cancelAction = NSLocalizedString("Cancel", bundle: bundle, comment: "The cancel action")
+
+    /**
+     Obtain a formatted representation of a preset count value.
+
+     - parameter presetCount: value to format
+     - returns: string value
+     */
     public static func formatted(presetCount: Int) -> String {
         .localizedStringWithFormat(Self.presetsFormatString, presetCount)
     }
+
+    /**
+     Obtain a formatted representation of a favorites count value.
+
+     - parameter favoriteCount: value to format
+     - returns: string value
+     */
     public static func formatted(favoriteCount: Int) -> String {
         .localizedStringWithFormat(Self.favoritesFormatString, favoriteCount)
     }
 
+    /**
+     Obtain a formatted representation of a failed sound font add counter
+
+     - parameter failedAddCount: value to format
+     - parameter condition: what failure took place
+     - returns: string value
+     */
     public static func formatted(failedAddCount: Int, condition: String) -> String {
         let value = String.localizedStringWithFormat(Self.failedAddCountString, failedAddCount)
-        return String(format: value, condition.localized(comment: "add soundfont failure condition"))
+        return String(format: value, condition)
     }
 
+    /**
+     Generate a string that shows what failed when attempting to add one or more sound fonts to the app.
+
+     - parameter failures: the list of failures
+     - returns: string value
+     */
     public static func addSoundFontFailureText(failures: [SoundFontFileLoadFailure]) -> String {
         guard !failures.isEmpty else { return "" }
         var counts = [SoundFontFileLoadFailure: [String]]()
@@ -37,33 +85,29 @@ public enum Formatters {
 
     private static func getLocalizedReason(key: SoundFontFileLoadFailure, count: Int) -> String {
         switch key {
-        case .emptyFile:
-            return Formatters.formatted(failedAddCount: count,
-                                        condition: "empty".localized(comment: "empty file"))
-        case .invalidSoundFont:
-            return Formatters.formatted(failedAddCount: count,
-                                        condition: "invalid".localized(comment: "invalid file"))
-        case .unableToCreateFile:
-            return Formatters.formatted(failedAddCount: count,
-                                        condition: "failed".localized(comment: "no space for file"))
+        case .emptyFile: return formatted(failedAddCount: count, condition: emptyFile)
+        case .invalidSoundFont: return formatted(failedAddCount: count, condition: invalidFile)
+        case .unableToCreateFile: return formatted(failedAddCount: count, condition: failedFile)
         }
     }
 
+    /**
+     Generate a string that shows the success and failures when adding one or more sound fonts to the app.
+
+     - parameter ok: the names of the sound fonts that succeeded
+     - parameter failures: the collection of failures and their reasons
+     - parameter total: total number of sound fonts attempted
+     - returns: string value
+     */
     public static func addSoundFontDoneMessage(ok: [String], failures: [SoundFontFileLoadFailure],
                                                total: Int) -> String {
         let message: String = {
             switch (ok.count, failures.count) {
-            case (0, 1):
-                return "UnableToAddOneFile".localized(comment: "unable to add one file")
-            case (0, _):
-                return "UnableToAddAnyFiles".localized(comment: "unable to add any files")
-            case (1, 0):
-                return "AddedOneFile".localized(comment: "added one file")
-            case (_, 0):
-                return "AddedAllFiles".localized(comment: "added all files")
-            case (_, _):
-                return String.localizedStringWithFormat("AddedSomeFiles".localized(comment: "added some files"),
-                                                        ok.count, total)
+            case (0, 1): return unableToAddOneFile
+            case (0, _): return unableToAddAnyFiles
+            case (1, 0): return addedOneFile
+            case (_, 0): return addedAllFiles
+            case (_, _): return String.localizedStringWithFormat(addedSomeFiles, ok.count, total)
             }
         }()
         let reasons = addSoundFontFailureText(failures: failures)
@@ -83,15 +127,23 @@ public enum Formatters {
         return formatter
     }()
 
+    /**
+     Obtain a formatted slider value.
+
+     - parameter sliderValue the value to format
+     - returns string value
+     */
     public static func formatted(sliderValue: Float) -> String { sliderFormatter.string(for: sliderValue) ?? "???" }
 }
 
 private extension Formatters {
-    static let bundle = Bundle(for: BundleTag.self)
     static let presetsFormatString =
-        "presets count".localized(comment: "presets count string format in Localized.stringsdict")
+        NSLocalizedString("presets count", bundle: bundle,
+                          comment: "presets count string format in Localized.stringsdict")
     static let favoritesFormatString =
-        "favorites count".localized(comment: "favorites count string format in Localized.stringsdict")
+        NSLocalizedString("favorites count", bundle: bundle,
+                          comment: "favorites count string format in Localized.stringsdict")
     static let failedAddCountString =
-        "failed add count".localized(comment: "failed add count string format in Localized.stringsdict")
+        NSLocalizedString("failed add count", bundle: bundle,
+                          comment: "failed add count string format in Localized.stringsdict")
 }

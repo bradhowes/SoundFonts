@@ -54,16 +54,29 @@ open class ArrowView: UIView {
     private let lineLayer = CAShapeLayer()
     private let arrowLayer = CAShapeLayer()
 
+    /**
+     Construct new view with the given frame
+
+     - parameter frame: geometry of the new view
+     */
     public override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
     }
 
+    /**
+     Construct new view from data in the given coder
+
+     - parameter coder: source to read from
+     */
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
         initialize()
     }
 
+    /**
+     Update the view due to layout changes.
+     */
     override open func layoutSubviews() {
         super.layoutSubviews()
         let layerBounds = bounds.offsetBy(dx: -bounds.midX, dy: -bounds.midY)

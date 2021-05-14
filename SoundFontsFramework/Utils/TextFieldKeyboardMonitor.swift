@@ -16,8 +16,15 @@ final public class TextFieldKeyboardMonitor {
     private var keyboardFrame: CGRect = .zero
     private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
+    /// The view to keep visible in the scroll view
     public var viewToKeepVisible: UIView? { didSet { self.makeViewVisible() } }
 
+    /**
+     Construct monitor for the given view and scroll view.
+
+     - parameter view: the view to track and monitor
+     - parameter scrollView: the view to adjust
+     */
     public init(view: UIView, scrollView: UIScrollView) {
         self.view = view
         self.scrollView = scrollView
@@ -30,6 +37,12 @@ final public class TextFieldKeyboardMonitor {
         numberKeyboardDoneProxy.addClosure {_ in self.viewToKeepVisible?.endEditing(true) }
     }
 
+    /**
+     Notification handler called when there is a keyboard notification event. Adjust the scroll view if necessary to
+     keep the monitored view visible.
+
+     - parameter notification: the notification that fired
+     */
     @objc private func adjustForKeyboard(_ notification: Notification) {
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return

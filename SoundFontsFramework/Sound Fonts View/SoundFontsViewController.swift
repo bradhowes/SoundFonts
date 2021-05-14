@@ -141,12 +141,11 @@ extension SoundFontsViewController {
     }
 
     private func remove(soundFont: LegacySoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
-        let promptTitle = "DeleteFontTitle".localized(comment: "Title of confirmation prompt")
-        let promptMessage = "DeleteFontMessage".localized(comment: "Body of confirmation prompt")
+        let promptTitle = Formatters.deleteFontTitle
+        let promptMessage = Formatters.deleteFontMessage
         let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-        let deleteTitle = "Delete".localized(comment: "The delete action")
 
-        let delete = UIAlertAction(title: deleteTitle, style: .destructive) { _ in
+        let delete = UIAlertAction(title: Formatters.deleteAction, style: .destructive) { _ in
             self.soundFonts.remove(key: soundFont.key)
             self.favorites.removeAll(associatedWith: soundFont)
             let url = soundFont.fileURL
@@ -156,8 +155,7 @@ extension SoundFontsViewController {
             completionHandler?(true)
         }
 
-        let cancelTitle = "Cancel".localized(comment: "The cancel action")
-        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in completionHandler?(false) }
+        let cancel = UIAlertAction(title: Formatters.cancelAction, style: .cancel) { _ in completionHandler?(false) }
 
         alertController.addAction(delete)
         alertController.addAction(cancel)

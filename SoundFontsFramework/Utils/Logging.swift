@@ -4,9 +4,12 @@ import os
 
 private class BundleTag {}
 
+/**
+ Builder of OSLog values for categorization / classification of log statements.
+ */
 public struct Logging {
 
-    /// The top-level identifier for this app
+    /// The top-level identifier for the app.
     public static let subsystem = Bundle(for: BundleTag.self).bundleID
 
     /**

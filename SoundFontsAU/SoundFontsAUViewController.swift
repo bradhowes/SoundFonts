@@ -4,6 +4,10 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
+/**
+ The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
+ keyboard component.
+ */
 public final class SoundFontsAUViewController: AUViewController {
     private let log = Logging.logger("SFAUVC")
     private let noteInjector = NoteInjector()
@@ -20,6 +24,12 @@ public final class SoundFontsAUViewController: AUViewController {
 
 extension SoundFontsAUViewController: AUAudioUnitFactory {
 
+    /**
+     Create an audio unit to go with the view.
+
+     - parameter componentDescription: the definition used when locating the component to create
+     - returns: new SoundFontsAU instance
+     */
     public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
         os_log(.info, log: log, "createAudioUnit")
         let audioUnit = try SoundFontsAU(componentDescription: componentDescription, sampler: components.sampler,
@@ -41,7 +51,6 @@ extension SoundFontsAUViewController: ControllerConfiguration {
      */
     public func establishConnections(_ router: ComponentContainer) {
         router.activePatchManager.subscribe(self, notifier: activePatchChange)
-        // useActivePatchKind(playSample: false)
     }
 
     private func activePatchChange(_ event: ActivePatchEvent) {

@@ -11,10 +11,14 @@ import os
 final class VolumeMonitor {
     private let log = Logging.logger("VolMon")
 
-    enum Reason {
+    private enum Reason {
+        /// Volume level is at zero
         case volumeLevel
+        /// Mute switch is enabled
         case muteSwitch
+        /// There is no preset active in the sampler
         case noPreset
+        /// Another app is playing audio
         case otherAudio
     }
 

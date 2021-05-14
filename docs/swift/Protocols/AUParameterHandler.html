@@ -17,7 +17,7 @@
     <a title="AUParameterHandler Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (36% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,9 +39,6 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -89,18 +86,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/ChangesPageViewController.html">ChangesPageViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox.html">Checkbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/BorderShape.html">– BorderShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/CheckShape.html">– CheckShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodePointInfo.html">CodePointInfo</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Components.html">Components</a>
@@ -154,9 +139,6 @@
                 <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/FileMonitor.html">FileMonitor</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/FontEditor.html">FontEditor</a>
               </li>
               <li class="nav-group-task">
@@ -170,9 +152,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Foo.html">Foo</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/GradientView.html">GradientView</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/GuideViewController.html">GuideViewController</a>
@@ -583,12 +562,6 @@
                 <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/DelayEffectManager.html">DelayEffectManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/EffectsManager.html">EffectsManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -625,13 +598,7 @@
                 <a href="../Protocols/ReusableView.html">ReusableView</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ReverbEffectManager.html">ReverbEffectManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/SegueHandler.html">SegueHandler</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/SelectSoundFontControl.html">SelectSoundFontControl</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/SettingGettable.html">SettingGettable</a>
@@ -684,13 +651,7 @@
                 <a href="../Structs/DelayConfig/Key.html">– Key</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ElapsedTimer.html">ElapsedTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/FilteredOrderedCollection.html">FilteredOrderedCollection</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
@@ -776,7 +737,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Set a parameter with a new value.</p>
 
                       </div>
                       <div class="declaration">
@@ -786,6 +747,37 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">set</span><span class="p">(</span><span class="n">_</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt">AUParameter</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">AUValue</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>parameter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the configuration parameter to set</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>value</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the value to set it to</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -803,7 +795,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Get a parameter&rsquo;s current value.</p>
 
                       </div>
                       <div class="declaration">
@@ -813,6 +805,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="n">_</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt">AUParameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AUValue</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>parameter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the configuration parameter to get</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>the current value</p>
                       </div>
                     </section>
                   </div>

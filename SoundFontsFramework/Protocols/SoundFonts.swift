@@ -16,10 +16,13 @@ public enum SoundFontsEvent {
     /// Existing SoundFont instance removed from the collection
     case removed(old: Int, font: LegacySoundFont)
 
+    /// Hidden presets were restored and made visible in a given sound font
     case unhidPresets(font: LegacySoundFont)
 
+    /// A preset in a sound font changed
     case presetChanged(font: LegacySoundFont, index: Int)
 
+    /// Sound font collection was restored from disk and is now safe to use
     case restored
 }
 
@@ -28,10 +31,19 @@ public enum SoundFontsEvent {
  */
 public protocol SoundFonts: AnyObject {
 
+    /// True if the collection of sound fonts has been restored
     var restored: Bool { get }
+    /// Collection of all of the sound fount names
     var soundFontNames: [String] { get }
+    /// The default preset to use if there is not one
     var defaultPreset: SoundFontAndPatch? { get }
 
+    /**
+     Validate the sound font collection, making sure that everything is in order. Removes any stray tags or favorites.
+
+     - parameter favorites: collection of favorites
+     - parameter tags: collection of tags
+     */
     func validateCollections(favorites: Favorites, tags: Tags)
 
     /**
@@ -50,20 +62,30 @@ public protocol SoundFonts: AnyObject {
      */
     func getBy(key: LegacySoundFont.Key) -> LegacySoundFont?
 
+    /**
+     Obtain an actual preset object from the given SoundFontAndPatch value.
+
+     - parameter soundFontAndPatch: reference to a preset in a sound font
+     - returns: LegacyPatch object that corresponds to the given value
+     */
     func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch?
 
     /**
-     Obtain the SoundFont in the collection by its ordering index.
+     Obtain the collection of sound fonts that contains the given tag.
 
-     - parameter index: the index to fetch
-     - returns: the SoundFont found at the index
+     - parameter tag: the tag to filter on
+     - returns: collection of sound font instances that have the given tag
      */
-    // func getBy(index: Int) -> LegacySoundFont
-
     func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key]
 
     func filteredIndex(index: Int, tag: LegacyTag.Key) -> Int
 
+    /**
+     Get the names of the given sound fonts.
+
+     - parameter keys: the sound font keys to look for
+     - returns: list of sound font names
+     */
     func names(of keys: [LegacySoundFont.Key]) -> [String]
 
     /**

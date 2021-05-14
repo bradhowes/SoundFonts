@@ -62,6 +62,18 @@ final class MIDI {
         DispatchQueue.global(qos: .background).async { self.initialize() }
     }
 
+    /**
+     Tear down MIDI plumbing.
+     */
+    deinit {
+        if inputPort != 0 { MIDIPortDispose(inputPort) }
+        if virtualEndpoint != 0 { MIDIEndpointDispose(virtualEndpoint) }
+        if client != 0 { MIDIClientDispose(client) }
+    }
+}
+
+extension MIDI {
+
     private func initialize() {
         enableNetwork()
 
@@ -106,15 +118,6 @@ final class MIDI {
 
         connectSourcesToInputPort()
     }
-
-    deinit {
-        if inputPort != 0 { MIDIPortDispose(inputPort) }
-        if virtualEndpoint != 0 { MIDIEndpointDispose(virtualEndpoint) }
-        if client != 0 { MIDIClientDispose(client) }
-    }
-}
-
-extension MIDI {
 
     private func connectSourcesToInputPort() {
         let sourceCount = MIDIGetNumberOfSources()

@@ -3,10 +3,18 @@
 import StoreKit
 import os
 
+/**
+ Manages when to ask the user for an app review. Relies on SKStoreReviewController.requestReview to do the actual
+ review prompt, but makes sure that the interval between asks is reasonable and within App Store policy.
+ */
 public final class AskForReview: NSObject {
 
     private let log = Logging.logger("AskR")
 
+    /**
+     Class method that fires a notification to ask for a review check. If properly initialized, there should be an
+     instance of AskForReview around that is listening for the notification and will perform the actual review request.
+     */
     static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
     /// Obtain the version found in the main bundle.

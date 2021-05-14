@@ -137,6 +137,12 @@ open class Knob: UIControl {
         createShapes()
     }
 
+    /**
+     Set the knob value.
+
+     - parameter value: the new value to use
+     - parameter animated: if true, animate the view as it shows the new value
+     */
     public func setValue(_ value: Float, animated: Bool = false) {
         let lastValue = _value
         _value = clampedValue(value)
@@ -146,6 +152,12 @@ open class Knob: UIControl {
 
 extension Knob {
 
+    /**
+     Begin tracking a touch event in the knob.
+
+     - parameter touch: the touch event that took place
+     - parameter event: the event that generated the touch
+     */
     override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         panOrigin = touch.location(in: self)
         activeTouch = true
@@ -153,6 +165,12 @@ extension Knob {
         return true
     }
 
+    /**
+     Continue tracking a touch event in the knob.
+
+     - parameter touch: the updated touch event
+     - parameter event: the event that generated the touch
+     */
     override open func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let point = touch.location(in: self)
 
@@ -169,12 +187,23 @@ extension Knob {
         return true
     }
 
+    /**
+     Cancel a touch event. NOTE: this does not reset the knob to the original value.
+
+     - parameter event: the event that generated the touch
+     */
     override open func cancelTracking(with event: UIEvent?) {
         activeTouch = false
         super.cancelTracking(with: event)
         self.sendActions(for: .valueChanged)
     }
 
+    /**
+     End tracking a touch event in the knob.
+
+     - parameter touch: the updated touch event
+     - parameter event: the event that generated the touch
+     */
     override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         activeTouch = false
         super.endTracking(touch, with: event)

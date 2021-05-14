@@ -4,6 +4,12 @@ import UIKit
 
 extension UIColor {
 
+    /**
+     Initialize a color using a string containing hex values.
+
+     - parameter hex: string of 6 hexadecimal digits 0-9 and A-F. May start with a '#' which will be ignored.
+     - parameter alpha: optional alpha component for the color. By default it is 1.0 (opaque)
+     */
     public convenience init(hex: String, alpha: CGFloat = 1.0) {
         var hexFormatted = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
         if hexFormatted.hasPrefix("#") {

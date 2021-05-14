@@ -2,10 +2,21 @@
 
 import UIKit
 
+/**
+ Extend UIControl to accept closures for events.
+ */
 public extension UIControl {
 
+    /// Type of closure to invoke when control fires.
     typealias Closure = (AnyObject) -> Void
 
+    /**
+     Add a closure to the control.
+
+     - parameter controlEvents: the event to register for
+     - parameter closure: the closure to call when the event happens
+     - returns: token to be used when removing a registration
+     */
     @discardableResult
     func addClosure(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping Closure) -> UUID {
         let sleeve = BoxedClosure(closure)
@@ -15,6 +26,12 @@ public extension UIControl {
         return key
     }
 
+    /**
+     Remove a closure registration.
+
+     - parameter key: the token that was obtained from addClosure call
+     - parameter controlEvents: the event that was registered for in the addClosure call
+     */
     func removeClosure(key: UUID, for controlEvents: UIControl.Event) {
         guard let sleeve = objc_getAssociatedObject(self, "[\(key)]") else { return }
         removeTarget(sleeve, action: nil, for: controlEvents)

@@ -15,7 +15,9 @@ public enum UpperViewSwipingEvent {
  */
 public protocol UpperViewSwipingActivity {
 
+    /// The gesture recognizer used to handle swiping to the left
     var swipeLeft: UISwipeGestureRecognizer {get}
+    /// The gesture recognizer used to handle swiping to the right
     var swipeRight: UISwipeGestureRecognizer {get}
 
     /**

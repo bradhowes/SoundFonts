@@ -7,8 +7,11 @@ import UIKit
  */
 public final class ViewSlider: CustomStringConvertible {
 
+    /// The view that is being slid
     public let view: UIView
+    /// Custom description for instance
     public var description: String { "UpperViewSlider(\(view.restorationIdentifier ?? "NA")" }
+    /// The known constraints for the view
     public let constraints: [NSLayoutConstraint]
 
     /**

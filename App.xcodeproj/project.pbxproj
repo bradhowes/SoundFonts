@@ -162,6 +162,7 @@
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		BD74461D264E8662001F1FAA /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
+		BD74461F264EBB82001F1FAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75432E23803994004C6A4C /* MuteDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MuteDetector.swift; sourceTree = "<group>"; };
 		BD75B260218B8CFD00C7EBD7 /* SoundFontsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundFontsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -292,6 +293,7 @@
 		BD59074B2565CD4C004DE941 /* ReverbAU */ = {
 			isa = PBXGroup;
 			children = (
+				BD74461F264EBB82001F1FAA /* README.md */,
 				BD976CA9263C19A1003AED73 /* ReverbAU.entitlements */,
 				BD5907682565CD4C004DE941 /* Info.plist */,
 				BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */,

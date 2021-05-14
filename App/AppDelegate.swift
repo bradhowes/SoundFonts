@@ -13,6 +13,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let log = Logging.logger("AppDel")
     private lazy var components = Components<MainViewController>(inApp: true)
     private var observer: NSObjectProtocol?
+
+    /// The window used to present the app’s visual content on the device’s main screen.
     var window: UIWindow?
 
     /**

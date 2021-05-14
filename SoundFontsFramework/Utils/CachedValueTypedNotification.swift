@@ -21,6 +21,7 @@ open class CachedValueTypedNotification<A>: TypedNotification<A> {
         super.post(value: value)
     }
 
+    /// Forget any cached value.
     public func clear() { cachedValue = nil }
 
     /**

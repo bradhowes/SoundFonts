@@ -4,6 +4,10 @@ import AudioToolbox
 import SoundFontsFramework
 import os
 
+/**
+ Periodically play a sound and see how long it takes to do so -- if it is too quick, assume that the system is not
+ playing audio due to some configuration.
+ */
 final class MuteDetector {
     private let log = Logging.logger("MuteD")
 
@@ -48,6 +52,9 @@ final class MuteDetector {
         self.checkInterval = checkInterval
     }
 
+    /**
+     Release resources created during construction.
+     */
     deinit {
         guard soundId != 0 else { return }
         AudioServicesRemoveSystemSoundCompletion(soundId)

@@ -17,7 +17,7 @@
     <a title="Tags Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (36% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (49% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,9 +39,6 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -89,18 +86,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/ChangesPageViewController.html">ChangesPageViewController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox.html">Checkbox</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/BorderShape.html">– BorderShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/Checkbox/CheckShape.html">– CheckShape</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/CodePointInfo.html">CodePointInfo</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Components.html">Components</a>
@@ -154,9 +139,6 @@
                 <a href="../Classes/FavoritesViewController/SegueIdentifier.html">– SegueIdentifier</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/FileMonitor.html">FileMonitor</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/FontEditor.html">FontEditor</a>
               </li>
               <li class="nav-group-task">
@@ -170,9 +152,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/Foo.html">Foo</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Classes/GradientView.html">GradientView</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/GuideViewController.html">GuideViewController</a>
@@ -583,12 +562,6 @@
                 <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/DelayEffectManager.html">DelayEffectManager</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/EffectsManager.html">EffectsManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
               </li>
               <li class="nav-group-task">
@@ -625,13 +598,7 @@
                 <a href="../Protocols/ReusableView.html">ReusableView</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/ReverbEffectManager.html">ReverbEffectManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/SegueHandler.html">SegueHandler</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/SelectSoundFontControl.html">SelectSoundFontControl</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/SettingGettable.html">SettingGettable</a>
@@ -684,13 +651,7 @@
                 <a href="../Structs/DelayConfig/Key.html">– Key</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Structs/ElapsedTimer.html">ElapsedTimer</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/EntityCollection.html">EntityCollection</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/FilteredOrderedCollection.html">FilteredOrderedCollection</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
@@ -757,7 +718,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Protocol for activity involving sound font tags.</p>
 
           </section>
           <section class="section task-group-section">
@@ -776,7 +737,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>True if the tags collection has been restored</p>
 
                       </div>
                       <div class="declaration">
@@ -803,7 +764,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>True if there are no tags in the collection</p>
 
                       </div>
                       <div class="declaration">
@@ -830,7 +791,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The number of tags in the collection</p>
 
                       </div>
                       <div class="declaration">
@@ -857,7 +818,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the names of tags in the given collection.</p>
 
                       </div>
                       <div class="declaration">
@@ -867,6 +828,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">names</span><span class="p">(</span><span class="n">of</span> <span class="nv">keys</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keys</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the collection to work with</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>list of strings</p>
                       </div>
                     </section>
                   </div>
@@ -884,7 +868,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Get the index of the given tag.</p>
 
                       </div>
                       <div class="declaration">
@@ -894,6 +878,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">index</span><span class="p">(</span><span class="nv">of</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>of</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the tag to search for</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>the option index of the tag</p>
                       </div>
                     </section>
                   </div>
@@ -911,7 +918,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Get the tag at a given index.</p>
 
                       </div>
                       <div class="declaration">
@@ -921,6 +928,25 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getBy</span><span class="p">(</span><span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index to fetch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -938,7 +964,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Get the tag by its key.</p>
 
                       </div>
                       <div class="declaration">
@@ -948,6 +974,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getBy</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the key of the tag to get</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>tag with the given key</p>
                       </div>
                     </section>
                   </div>
@@ -965,7 +1014,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Add a tag to the collection.</p>
 
                       </div>
                       <div class="declaration">
@@ -975,6 +1024,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">append</span><span class="p">(</span><span class="n">_</span> <span class="nv">tag</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tag</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the tag to add</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>index of the new tag</p>
                       </div>
                     </section>
                   </div>
@@ -992,7 +1064,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Remove the tag at the given index.</p>
 
                       </div>
                       <div class="declaration">
@@ -1002,6 +1074,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">remove</span><span class="p">(</span><span class="n">at</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index to remove</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>tag that was removed</p>
                       </div>
                     </section>
                   </div>
@@ -1019,7 +1114,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Rename a tag.</p>
 
                       </div>
                       <div class="declaration">
@@ -1029,6 +1124,37 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">rename</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the index of the tag to rename</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the new name to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1046,7 +1172,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Insert a tag at the given index</p>
 
                       </div>
                       <div class="declaration">
@@ -1056,6 +1182,37 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">insert</span><span class="p">(</span><span class="n">_</span> <span class="nv">tag</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="p">,</span> <span class="n">at</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tag</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the tag to insert</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the location to insert it</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1073,7 +1230,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the set of tags that correspond to a set of indices.</p>
 
                       </div>
                       <div class="declaration">
@@ -1083,6 +1240,29 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">keySet</span><span class="p">(</span><span class="n">of</span> <span class="nv">indices</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="o">&gt;</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>indices</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the indices to fetch</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>set of tags</p>
                       </div>
                     </section>
                   </div>
@@ -1100,7 +1280,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Allow subscriptions for tag collection changes.</p>
 
                       </div>
                       <div class="declaration">
@@ -1111,6 +1291,41 @@
 <span class="kd">func</span> <span class="n">subscribe</span><span class="o">&lt;</span><span class="kt">O</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">subscriber</span><span class="p">:</span> <span class="kt">O</span><span class="p">,</span> <span class="nv">notifier</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Enums/TagsEvent.html">TagsEvent</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/SubscriberToken.html">SubscriberToken</a></span> <span class="k">where</span> <span class="kt">O</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>subscriber</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the object that is subscribing</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>notifier</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the function or closure to invoke when an even takes place</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>token that identifies the subscription and can be used to unsubscribe</p>
                       </div>
                     </section>
                   </div>
