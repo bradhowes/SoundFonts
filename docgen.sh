@@ -2,6 +2,8 @@
 
 set -x
 
+VERSION=$(bumpVersions -v)
+
 OUTPUT="./docs/swift"
 rm -rf "${OUTPUT}"
 mkdir -p "${OUTPUT}"
@@ -32,8 +34,8 @@ jazzy --output "${OUTPUT}" \
       -g https://github.com/bradhowes/SoundFonts \
       -a "Brad Howes" \
       -u https://linkedin.com/in/bradhowes \
-      --module-version $(bumpVersions -v)
+      --module-version ${VERSION}
 
-# Generate C++ documentation
-rm -rf docs/cpp
-doxygen SoundFontInfoLib/Doxygen.config
+# Generate SoundFontInfoLib (C++) documentation
+rm -rf docs/SoundFontInfoLib
+VERSION=${VERSION} doxygen SoundFontInfoLib/Doxygen.config
