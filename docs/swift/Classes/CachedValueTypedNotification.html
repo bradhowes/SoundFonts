@@ -663,6 +663,9 @@
                 <a href="../Structs/AlertConfig.html">AlertConfig</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/AudioSession.html">AudioSession</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/ChangesCompiler.html">ChangesCompiler</a>
               </li>
               <li class="nav-group-task">
@@ -935,6 +938,29 @@ closure will be called immediately.</p>
                           <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">open</span> <span class="kd">func</span> <span class="nf">registerOnMain</span><span class="p">(</span><span class="nv">block</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/NotificationObserver.html">NotificationObserver</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>block</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the closure to invoke on the main thread</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>value that will unregister the block if it is no longer held</p>
                       </div>
                     </section>
                   </div>

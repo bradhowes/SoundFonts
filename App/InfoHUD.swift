@@ -81,6 +81,12 @@ fileprivate extension Selector {
 }
 
 @objc extension InfoHUD {
+
+    /**
+     Hide the HUD view.
+
+     - parameter sender: the object that is requesting the visibility change.
+     */
     static func hide(_ sender: UIWindow) {
         if let view = sender.subviews.first {
             UIView.animate(withDuration: 0.2, animations: {

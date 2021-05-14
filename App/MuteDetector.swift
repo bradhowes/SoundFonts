@@ -57,6 +57,9 @@ final class MuteDetector {
 
 extension MuteDetector {
 
+    /**
+     Begin the detector.
+     */
     func start() {
         guard !running else { return }
         os_log(.info, log: log, "start")
@@ -64,6 +67,9 @@ extension MuteDetector {
         schedulePlaySound()
     }
 
+    /**
+     Stop the detector.
+     */
     func stop() {
         guard running else { return }
         os_log(.info, log: log, "stop")

@@ -38,7 +38,10 @@ open class CachedValueTypedNotification<A>: TypedNotification<A> {
     }
 
     /**
-     Register a closure to invoke when `post` is called. 
+     Register a closure to invoke when `post` is called.
+
+     - parameter block: the closure to invoke on the main thread
+     - returns: value that will unregister the block if it is no longer held
      */
     override open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
         if let cachedValue = self.cachedValue {

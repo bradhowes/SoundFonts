@@ -1,0 +1,13 @@
+#!/bin/bash
+
+VERSION=$(bumpVersions -v)
+OUTPUT="./docs/swift"
+
+# Generate HTML from documentation content
+jazzy --output "${OUTPUT}" \
+      --min-acl internal \
+      --sourcekitten-sourcefile /tmp/docs_SoundFontsFramework.json,/tmp/docs_app.json \
+      -g https://github.com/bradhowes/SoundFonts \
+      -a "Brad Howes" \
+      -u https://linkedin.com/in/bradhowes \
+      --module-version ${VERSION}

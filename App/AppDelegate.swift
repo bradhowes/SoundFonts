@@ -15,6 +15,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private var observer: NSObjectProtocol?
     var window: UIWindow?
 
+    /**
+     Set the main view controller for the application. Initiates the configuration process for all of the components
+     in the application.
+
+     - parameter mainViewController: the view controller to use
+     */
     func setMainViewController(_ mainViewController: MainViewController) {
         if ProcessInfo.processInfo.arguments.contains("-ui_testing") {
             mainViewController.skipTutorial = true
@@ -23,60 +29,78 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         components.setMainViewController(mainViewController)
     }
 
+    /**
+     Notification handler for when the application starts.
+
+     - parameter application: the application that is running
+     - parameter launchOptions: the options used to start the application
+     */
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
-        } catch let error as NSError {
-            fatalError("Failed to set the audio session category and mode: \(error.localizedDescription)")
-        }
-        let preferredSampleRate = 44100.0
-        do {
-            try audioSession.setPreferredSampleRate(preferredSampleRate)
-        } catch let error as NSError {
-            os_log(.error, log: log, "Failed to set the preferred sample rate: %{public}s",
-                   error.localizedDescription)
-        }
-        let preferredBufferSize = 512.0
-        do {
-            try audioSession.setPreferredIOBufferDuration(preferredBufferSize / preferredSampleRate)
-        } catch let error as NSError {
-            os_log(.error, log: log, "Failed to set the preferred IO buffer duration: %{public}s",
-                   error.localizedDescription)
-        }
-
+        AudioSession.configure()
         observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
             self.visitAppStore() }
         return true
     }
 
+    /**
+     Notification handler for when the application is given an SF2 URL to open.
+
+     - parameter app: the app that is running
+     - parameter url: the URL of the file to open
+     - parameter options: dictionary of options that may affect the opening (unused)
+     */
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         DispatchQueue.main.async { self.components.patchesViewManager.addSoundFonts(urls: [url]) }
         return true
     }
 
+    /**
+     Notification handler for when the application is no longer the active foreground application. Stops audio output.
+
+     - parameter app: the app that is running
+     */
     func applicationWillResignActive(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillResignActive")
         components.mainViewController.stopAudio()
     }
 
+    /**
+     Notification handler for when the application is running in the background.
+
+     - parameter app: the app that is running
+     */
     func applicationDidEnterBackground(_ application: UIApplication) {
         os_log(.info, log: log, "applicationDidEnterBackground")
     }
 
+    /**
+     Notification handler for when the application is running in the foreground.
+
+     - parameter app: the app that is running
+     */
     func applicationWillEnterForeground(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillEnterForeground")
     }
 
+    /**
+     Notification handler for when the application becomes the active foreground application. Starts audio output.
+
+     - parameter app: the app that is running
+     */
     func applicationDidBecomeActive(_ application: UIApplication) {
         os_log(.info, log: log, "applicationDidBecomeActive")
         UIApplication.shared.isIdleTimerDisabled = true
         components.mainViewController.startAudio()
     }
 
+    /**
+     Notification handler for when the application is being terminated. Stops audio output.
+
+     - parameter app: the app that is running
+     */
     func applicationWillTerminate(_ application: UIApplication) {
         os_log(.info, log: log, "applicationWillTerminate")
         components.mainViewController.stopAudio()

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# SoundFontsFramework documentation
+sourcekitten doc \
+             --module-name SoundFontsFramework \
+             -- \
+             -workspace SoundFonts.xcworkspace \
+             -scheme App \
+             -destination name='iPhone 11' \
+             > /tmp/docs_SoundFontsFramework.json

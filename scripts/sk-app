@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# App documentation
+sourcekitten doc \
+             -- \
+             -workspace SoundFonts.xcworkspace \
+             -scheme App \
+             -destination name='iPhone 11' \
+             > /tmp/docs_app.json

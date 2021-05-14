@@ -24,8 +24,10 @@ final class MainViewController: UIViewController {
 
     fileprivate var noteInjector = NoteInjector()
 
+    /// Disable system gestures near screen edges so that touches on the keyboard are always seen by the application.
     override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge { return [.left, .right, .bottom] }
 
+    /// If true, do not show the tutorial pages for the first time the application starts. This is used by the UI tests.
     var skipTutorial = false
 
     override func viewDidLoad() {
@@ -134,7 +136,7 @@ extension MainViewController: ControllerConfiguration {
     /**
      Establish connections with other managers / controllers.
 
-     - parameter context: the RunContext that holds all of the registered managers / controllers
+     - parameter router: the ComponentContainer that holds all of the registered managers / controllers
      */
     func establishConnections(_ router: ComponentContainer) {
         router.subscribe(self, notifier: routerChange)
