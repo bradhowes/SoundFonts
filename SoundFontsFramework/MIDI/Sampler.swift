@@ -5,16 +5,33 @@ import AVFoundation
 import AudioToolbox
 import os
 
+/// Events from a Sampler that can be monitored
 public enum SamplerEvent {
+    /// Notification that the sampler is up and running
     case running
+    /// Notification that the sampler has loaded a new preset
     case loaded(patch: ActivePatchKind)
 }
 
+/// Failure modes for a sampler
 public enum SamplerStartFailure: Error {
+    /// No sampler is available
     case noSampler
+    /// Failed to active a session
     case sessionActivating(error: NSError)
+    /// Failed to start audio engine
     case engineStarting(error: NSError)
+    /// Failed to load a preset
     case patchLoading(error: NSError)
+
+    var error: NSError {
+        switch self {
+        case .noSampler: return NSError()
+        case .sessionActivating(let err): return err
+        case .engineStarting(let err): return err
+        case .patchLoading(let err): return err
+        }
+    }
 }
 
 /**

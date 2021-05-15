@@ -9,7 +9,7 @@ public struct AlertConfig {
     /// Title of the alert
     let title: String
     /// Message body of the alert
-    let message: String
+    let body: String
 }
 
 private final class AlertOperation: Operation {
@@ -43,7 +43,7 @@ private final class AlertOperation: Operation {
         }
 
         DispatchQueue.main.async {
-            let ac = UIAlertController(title: self.alert.title, message: self.alert.message, preferredStyle: .alert)
+            let ac = UIAlertController(title: self.alert.title, message: self.alert.body, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                 self.operationCompleted()
             }))
@@ -67,7 +67,7 @@ public final class AlertManager {
         .configLoadFailure,
         .soundFontsCollectionOrphans,
         .soundFontFileAccessDenied,
-        .soundFontAddResults
+        .samplerStartFailure
     ]
 
     /**
@@ -85,41 +85,75 @@ public final class AlertManager {
     }
 
     private func notify(_ notification: Notification) {
-        let (title, body): (String, String) = {
+        let alertConfig: AlertConfig = {
             switch notification.name {
-            case .configLoadFailure:
-                return (NSLocalizedString("AlertManager_configLoadFailure_title",
-                                          comment: "Title of configuration load failure alert"),
-                        NSLocalizedString("AlertManager_configLoadFailure_body",
-                                          comment: "Body of configuration load failure alert"))
-
-            case .soundFontsCollectionOrphans:
-                guard let count = notification.object as? NSNumber else { fatalError() }
-                let countLabel = String.localizedStringWithFormat(
-                    NSLocalizedString("SF2_file_count", comment: "SF2 file count"), count)
-                return (NSLocalizedString("AlertManager_soundFontsCollectionOrphans_title",
-                                          comment: "Title of orphaned fonts collection alert"),
-                        String(format: NSLocalizedString("AlertManager_soundFontsCollectionOrphans_body",
-                                                         comment: "Body of orphaned fonts collection alert"),
-                               countLabel))
-
-            case .soundFontFileAccessDenied:
-                guard let name = notification.object as? String else { fatalError() }
-                return (NSLocalizedString("AlertManager_soundFontFileAccessDenied_title",
-                                          comment: "Title of SF2 file access denied alert"),
-                        String.localizedStringWithFormat(
-                                NSLocalizedString("AlertManager_soundFontFileAccessDenied_body",
-                                                  comment: "Body of SF2 file access denied alert"),
-                                name))
-
-            default:
-                fatalError("unexpected notification - \(notification.name)")
+            case .configLoadFailure: return configLoadFailureAlert()
+            case .soundFontsCollectionOrphans: return soundFontsCollectionOrphansAlert(count: notification.intObject)
+            case .soundFontFileAccessDenied: return soundFontFileAccessDeniedAlert(name: notification.stringObject)
+            case .samplerStartFailure: return samplerStartFailureAlert(failure: notification.samplerStartFailureObject)
+            default: fatalError("unexpected notification - \(notification.name)")
             }
         }()
-        post(alert: AlertConfig(title: title, message: body))
+        post(alert: alertConfig)
     }
 
     public func post(alert: AlertConfig) {
         queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
+    }
+}
+
+private extension Notification {
+    var intObject: Int {
+        guard let tmp = object as? NSNumber else { fatalError() }
+        return tmp.intValue
+    }
+
+    var stringObject: String {
+        guard let tmp = object as? String else { fatalError() }
+        return tmp
+    }
+
+    var samplerStartFailureObject: SamplerStartFailure {
+        guard let tmp = object as? SamplerStartFailure else { fatalError() }
+        return tmp
+    }
+}
+
+extension AlertManager {
+
+    private func configLoadFailureAlert() -> AlertConfig {
+        let (title, body) = Formatters.strings.configLoadFailureAlert
+        return AlertConfig(title: title, body: body)
+    }
+
+    private func soundFontsCollectionOrphansAlert(count: Int) -> AlertConfig {
+        let countLabel = Formatters.format(fileCount: count)
+        let strings = Formatters.strings.soundFontFileAccessDeniedAlert
+        return AlertConfig(title: strings.0, body: String(format: strings.1, countLabel))
+    }
+
+    private func soundFontFileAccessDeniedAlert(name: String) -> AlertConfig {
+        let strings = Formatters.strings.soundFontFileAccessDeniedAlert
+        return AlertConfig(title: strings.0, body: String(format: strings.1, name))
+    }
+
+    private func samplerStartFailureAlert(failure: SamplerStartFailure) -> AlertConfig {
+        let title = Formatters.strings.samplerStartFailureTitle
+        switch failure {
+        case .noSampler:
+            return AlertConfig(title: title, body: Formatters.strings.noSamplerFailureBody)
+        case .engineStarting(let error):
+            return AlertConfig(title: title,
+                               body: String(format: Formatters.strings.engineStartingFailureBody,
+                                            error.localizedDescription))
+        case .patchLoading(let error):
+            return AlertConfig(title: title,
+                               body: String(format: Formatters.strings.patchLoadingFailureBody,
+                                            error.localizedDescription))
+        case .sessionActivating(let error):
+            return AlertConfig(title: title,
+                               body: String(format: Formatters.strings.sessionActivatingFailureBody,
+                                            error.localizedDescription))
+        }
     }
 }

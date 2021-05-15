@@ -245,7 +245,7 @@ extension SoundFontsViewController: PatchesViewManager {
         if urls.count > 1 || !failures.isEmpty {
             let message = Formatters.makeAddSoundFontBody(ok: ok, failures: failures, total: urls.count)
             let alert = UIAlertController(
-                title: "Add SoundFont",
+                title: Formatters.strings.addSoundFontsStatusTitle,
                 message: message,
                 preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))

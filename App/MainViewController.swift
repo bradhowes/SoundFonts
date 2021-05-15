@@ -189,19 +189,6 @@ extension MainViewController: ControllerConfiguration {
     }
 
     private func postAlert(for what: SamplerStartFailure) {
-        let alertController = UIAlertController(title: "Sampler Issue",
-                                                message: "Unexpected problem with the audio sampler.",
-                                                preferredStyle: .alert)
-        let cancel = UIAlertAction(title: "OK", style: .cancel) { _ in }
-        alertController.addAction(cancel)
-
-        if let popoverController = alertController.popoverPresentationController {
-            popoverController.sourceView = self.view
-            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
-                                                  width: 0, height: 0)
-            popoverController.permittedArrowDirections = []
-        }
-
-        self.present(alertController, animated: true, completion: nil)
+        NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what))
     }
 }

@@ -1,5 +1,7 @@
 /* Copyright © 2019 Brad Howes. All rights reserved. */
 
+"allTagName" = "All";
+
 "favorite" = "favorite";
 "patch" = "patch";
 "preset" = "preset";
@@ -20,36 +22,25 @@
 "deleteFont_title" = "Delete the soundfont file?";
 "deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
 
-/* AlertManager alerts */
+"addSoundFontsStatusTitle" = "Add Sound Fonts";
+"unableToAddOneFile" = "Unable to add the sound font";
+"unableToAddAnyFiles" = "Unable to add any sound fonts";
+"addedOneFile" = "Added the sound font";
+"addedAllFiles" = "Added all of the sound fonts";
+"addedSomeFiles" = "Added %d out of %d sound fonts";
 
-/* Title of configuration load failure alert */
-"AlertManager_configLoadFailure_title" = "Startup Failure";
-/* Body of configuration load failure alert */
-"AlertManager_configLoadFailure_body" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
+"configLoadFailureAlert" = "Startup Failure";
+"configLoadFailureBody" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
 have been lost.";
 
-/* Title of orphaned fonts collection alert */
-"AlertManager_soundFontsCollectionOrphans_title" = "Orphaned SF2 Files";
-/* Body of orphaned fonts collection alert */
-"AlertManager_soundFontsCollectionOrphans_body" = "Found %s that are not being used and moved them to local SoundFonts folder.";
+"soundFontsCollectionOrphansAlert" = "Orphaned SF2 Files";
+"soundFontsCollectionOrphansBody" = "Found %s that are not being used and moved them to local SoundFonts folder.";
 
-/* Title of SF2 file access denied alert */
-"AlertManager_soundFontsCollectionOrphans_title" = "Access Failure";
-/* Body of SF2 file access denied alert */
-"AlertManager_soundFontsCollectionOrphans_body" = "Unable to access and use the sound font file '%s'";
+"soundFontFileAccessDeniedTitle" = "File Access Failure";
+"soundFontFileAccessDeniedBody" = "Unable to access and use the sound font file '%s'";
 
-/* Title of add sound fonts alert */
-"AlertManager_addSoundFonts_title" = "Add Sound Fonts";
-
-/* Message when unable to add one SF2 file */
-"unableToAddOneFile" = "Unable to add the sound font";
-
-/* Message when unable to add any SF2 files */
-"unableToAddAnyFiles" = "Unable to add any sound fonts";
-
-/* Message when added single SF2 file */
-"addedOneFile" = "Added the sound font";
-/* Message when added all SF2 files */
-"addedAllFiles" = "Added all of the sound fonts";
-/* Message when added some SF2 files */
-"addedSomeFiles" = "Added %d out of %d sound fonts";
+"samplerStartFailureTitle" = "Audio Engine Failure";
+"noSamplerFailureBody" = "No sampler instance available to start";
+"engineStartingFailureBody" = "Failed to start the audio engine";
+"patchLoadingFailureBody" = "Unable to load the preset";
+"sessionActivatingFailureBody" = "Unable to activate the audio session";

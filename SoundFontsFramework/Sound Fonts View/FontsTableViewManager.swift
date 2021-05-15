@@ -50,10 +50,6 @@ final class FontsTableViewManager: NSObject {
         }
     }
 
-    private func showAllSoundFonts() {
-        // Settings.shared.activeTags = LegacyTag.allTagSet
-    }
-
     private func updateFilterTag(index: Int) {
         let newTagKey = index == 0 ? LegacyTag.allTag.key : tags.getBy(index: index - 1).key
         if newTagKey != filterTagKey || viewSoundFonts.isEmpty {

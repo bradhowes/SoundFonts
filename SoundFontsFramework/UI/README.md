@@ -8,6 +8,7 @@
 * `GuidView` -- descriptions that appear when the user selects the '?' button
 * `FontEditor` -- modal view that allows for editing of SF2 data
 * `FavoriteEditor` -- modal view that allows for editing of favorite info
+* `Tutorial` -- views and content for the tutorial pages that appear when first running the application
 
 # NIB / XIB Files
 

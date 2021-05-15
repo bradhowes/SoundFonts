@@ -1,29 +1,46 @@
-"favorite" = "marcador";
-"patch" = "preajuste";
-"preset" = "preajuste";
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"allTagName" = "All";
+
+"favorite" = "favorite";
+"patch" = "patch";
+"preset" = "preset";
 "font" = "font";
 
-"Cancel" = "Cancelar";
-"Save" = "Guardar";
-"Delete" = "Eliminar";
+"cancelAction" = "Cancel";
+"Save" = "Save";
+"deleteAction" = "Delete";
 
-"Name" = "Título";
-"Lowest-Key" = "Primera tecla";
+"Name" = "Name";
+"Lowest-Key" = "Lowest Key";
 "Gain" = "Gain";
 "Pan" = "Pan";
 
 "Bank" = "Bank";
 "Index" = "Index";
 
-"DeleteFontTitle" = "¿Eliminar el archivo soundfont?";
-"DeleteFontMessage" = "El archivo soundfont y todos los marcadores asociados se eliminarán de este dispositivo.";
+"deleteFont_title" = "Delete the soundfont file?";
+"deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
 
-"UnableToAddOneFile" = "No se puede agregar el archivo soundfont.";
-"UnableToAddAnyFiles" = "No se pueden agregar archivos.";
-"AddedOneFile" = "Se agregó el archivo soundfont.";
-"AddedAllFiles" = "Se agregaron todos los archivos sounddfonts.";
-"AddedSomeFiles" = "Se agregó %d de cada %d archivos soundfonts.";
+"addSoundFontsStatusTitle" = "Add Sound Fonts";
+"unableToAddOneFile" = "Unable to add the sound font";
+"unableToAddAnyFiles" = "Unable to add any sound fonts";
+"addedOneFile" = "Added the sound font";
+"addedAllFiles" = "Added all of the sound fonts";
+"addedSomeFiles" = "Added %d out of %d sound fonts";
 
-"empty" = "vacío";
-"invalid" = "inválido";
-"uncopyable" = "imposible de copiar";
+"configLoadFailureAlert" = "Startup Failure";
+"configLoadFailureBody" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
+have been lost.";
+
+"soundFontsCollectionOrphansAlert" = "Orphaned SF2 Files";
+"soundFontsCollectionOrphansBody" = "Found %s that are not being used and moved them to local SoundFonts folder.";
+
+"soundFontFileAccessDeniedTitle" = "File Access Failure";
+"soundFontFileAccessDeniedBody" = "Unable to access and use the sound font file '%s'";
+
+"samplerStartFailureTitle" = "Audio Engine Failure";
+"noSamplerFailureBody" = "No sampler instance available to start";
+"engineStartingFailureBody" = "Failed to start the audio engine";
+"patchLoadingFailureBody" = "Unable to load the preset";
+"sessionActivatingFailureBody" = "Unable to activate the audio session";

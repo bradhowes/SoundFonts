@@ -136,10 +136,10 @@ extension VolumeMonitor {
 
     private func showReason() {
         switch reason {
-        case .volumeLevel: InfoHUD.show(text: "Volume set to 0")
-        case .muteSwitch: InfoHUD.show(text: "Silent Mode is active")
-        case .noPreset: InfoHUD.show(text: "No preset is currently selected.")
-        case .otherAudio: InfoHUD.show(text: "Another app is controlling audio.")
+        case .volumeLevel: InfoHUD.show(text: Formatters.strings.volumeIsZero)
+        case .muteSwitch: InfoHUD.show(text: Formatters.strings.silentModeActive)
+        case .noPreset: InfoHUD.show(text: Formatters.strings.noPresetLoaded)
+        case .otherAudio: InfoHUD.show(text: Formatters.strings.otherAppAudio)
         case .none: InfoHUD.clear()
         }
     }

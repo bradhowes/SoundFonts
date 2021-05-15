@@ -1,11 +1,15 @@
-"favorite" = "signet";
-"patch" = "préréglé";
-"preset" = "préréglé";
+/* Copyright © 2019 Brad Howes. All rights reserved. */
+
+"allTagName" = "All";
+
+"favorite" = "favorite";
+"patch" = "patch";
+"preset" = "preset";
 "font" = "font";
 
-"Cancel" = "Annuler";
-"Save" = "Enregistrer";
-"Delete" = "Supprimer";
+"cancelAction" = "Cancel";
+"Save" = "Save";
+"deleteAction" = "Delete";
 
 "Name" = "Name";
 "Lowest-Key" = "Lowest Key";
@@ -15,15 +19,28 @@
 "Bank" = "Bank";
 "Index" = "Index";
 
-"DeleteFontTitle" = "Supprimer le fichier soundfont?";
-"DeleteFontMessage" = "La suppression supprime le fichier et tous les signets qui lui sont associés.";
+"deleteFont_title" = "Delete the soundfont file?";
+"deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
 
-"UnableToAddOneFile" = "Impossible d'ajouter le fichier.";
-"UnableToAddAnyFiles" = "Impossible d'ajouter des fichiers.";
-"AddedOneFile" = "Ajout d'un fichier.";
-"AddedAllFiles" = "Ajout de tous les fichiers.";
-"AddedSomeFiles" = "Ajout de quelques fichiers.";
+"addSoundFontsStatusTitle" = "Add Sound Fonts";
+"unableToAddOneFile" = "Unable to add the sound font";
+"unableToAddAnyFiles" = "Unable to add any sound fonts";
+"addedOneFile" = "Added the sound font";
+"addedAllFiles" = "Added all of the sound fonts";
+"addedSomeFiles" = "Added %d out of %d sound fonts";
 
-"empty" = "vide";
-"invalid" = "non valide";
-"uncopyable" = "non copiable";
+"configLoadFailureAlert" = "Startup Failure";
+"configLoadFailureBody" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
+have been lost.";
+
+"soundFontsCollectionOrphansAlert" = "Orphaned SF2 Files";
+"soundFontsCollectionOrphansBody" = "Found %s that are not being used and moved them to local SoundFonts folder.";
+
+"soundFontFileAccessDeniedTitle" = "File Access Failure";
+"soundFontFileAccessDeniedBody" = "Unable to access and use the sound font file '%s'";
+
+"samplerStartFailureTitle" = "Audio Engine Failure";
+"noSamplerFailureBody" = "No sampler instance available to start";
+"engineStartingFailureBody" = "Failed to start the audio engine";
+"patchLoadingFailureBody" = "Unable to load the preset";
+"sessionActivatingFailureBody" = "Unable to activate the audio session";

@@ -9,8 +9,77 @@ private class BundleTag {}
  */
 public struct Formatters {
 
-    struct Strings {
+    public struct Strings {
         private var bundle: Bundle { Bundle(for: BundleTag.self) }
+
+        public var allTagName: String {
+            NSLocalizedString("allTagName", bundle: bundle, comment: "The name of the 'all' tag.")
+        }
+
+        public var volumeIsZero: String {
+            NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
+        }
+
+        public var silentModeActive: String {
+            NSLocalizedString("silentModeActive", bundle: bundle, comment: "HUD message when mute switch is ON")
+        }
+
+        public var noPresetLoaded: String {
+            NSLocalizedString("noPresetLoaded", bundle: bundle, comment: "HUD message when no preset is loaded")
+        }
+
+        public var otherAppAudio: String {
+            NSLocalizedString("otherAppAudio", bundle: bundle, comment: "HUD message when another app controls audio")
+        }
+
+        var configLoadFailureAlert: (String, String) {
+            (NSLocalizedString("configLoadFailureTitle", bundle: bundle,
+                               comment: "Alert title when config file fails to load"),
+             NSLocalizedString("configLoadFailureBody", bundle: bundle,
+                               comment: "Alert message when config file fails to load")
+            )
+        }
+
+        var soundFontsCollectionOrphansAlert: (String, String) {
+            (NSLocalizedString("soundFontsCollectionOrphansAlert", bundle: bundle,
+                               comment: "Alert title when there are SF2 orphan files"),
+             NSLocalizedString("soundFontsCollectionOrphansBody", bundle: bundle,
+                               comment: "Alert message when there are SF2 orphan files")
+            )
+        }
+
+        var soundFontFileAccessDeniedAlert: (String, String) {
+            (NSLocalizedString("soundFontFileAccessDeniedTitle", bundle: bundle,
+                               comment: "Alert title when denied access to SF2 file"),
+             NSLocalizedString("soundFontFileAccessDeniedBody", bundle: bundle,
+                               comment: "Alert message when denied access to SF2 file")
+            )
+        }
+
+        var samplerStartFailureTitle: String {
+            NSLocalizedString("samplerStartFailureTitle", bundle: bundle,
+                               comment: "Alert title when there is a sampler start failure")
+        }
+
+        var noSamplerFailureBody: String {
+            NSLocalizedString("noSamplerFailureBody", bundle: bundle,
+                              comment: "Alert message when there is no sampler available to start")
+        }
+
+        var engineStartingFailureBody: String {
+            NSLocalizedString("engineStartingFailureBody", bundle: bundle,
+                              comment: "Alert message when there is starting audio engine fails")
+        }
+
+        var patchLoadingFailureBody: String {
+            NSLocalizedString("patchLoadingFailureBody", bundle: bundle,
+                              comment: "Alert message when loading a preset fails")
+        }
+
+        var sessionActivatingFailureBody: String {
+            NSLocalizedString("sessionActivatingFailureBody", bundle: bundle,
+                              comment: "Alert message when audio session activating fails")
+        }
 
         var fileCount: String {
             NSLocalizedString("fileCount", bundle: bundle,
@@ -46,7 +115,12 @@ public struct Formatters {
         var deleteFontMessage: String { NSLocalizedString("deleteFont_body", bundle: bundle,
                                                           comment: "Body of confirmation prompt") }
         var deleteAction: String { NSLocalizedString("deleteAction", bundle: bundle, comment: "The delete action") }
+
         var cancelAction: String { NSLocalizedString("cancelAction", bundle: bundle, comment: "The cancel action") }
+
+        var addSoundFontsStatusTitle: String {
+            NSLocalizedString("addSoundFontsStatusTitle", bundle: bundle,
+                              comment: "Title of alert showing results when adding sound fonts") }
 
         var unableToAddOneFile: String { NSLocalizedString("unableToAddOneFile", bundle: bundle,
                                                            comment: "Unable to add the sound font.")}
@@ -60,7 +134,7 @@ public struct Formatters {
                                                        comment: "Added %d out of %d sound fonts.")}
     }
 
-    static let strings: Strings = Strings()
+    public static let strings: Strings = Strings()
 
     /**
      Obtain a formatted slider value.
