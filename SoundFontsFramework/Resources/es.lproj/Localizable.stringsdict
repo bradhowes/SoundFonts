@@ -2,58 +2,112 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
     <dict>
-        <key>failed add count</key>
+        <key>emptyFileCount</key>
         <dict>
             <key>NSStringLocalizedFormatKey</key>
-            <string>%#@failed_add_count@</string>
-            <key>failed_add_count</key>
+            <string>%#@count@</string>
+            <key>count</key>
             <dict>
                 <key>NSStringFormatSpecTypeKey</key>
                 <string>NSStringPluralRuleType</string>
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no %%@ archivos</string>
+                <string>no empty files</string>
                 <key>one</key>
-                <string>%u %%@ archivo</string>
+                <string>%u empty file</string>
                 <key>other</key>
-                <string>%u %%@ archivos</string>
+                <string>%u empty files</string>
             </dict>
         </dict>
-        <key>presets count</key>
+        <key>invalidFileCount</key>
         <dict>
             <key>NSStringLocalizedFormatKey</key>
-            <string>%#@presets_count@</string>
-            <key>presets_count</key>
+            <string>%#@count@</string>
+            <key>count</key>
             <dict>
                 <key>NSStringFormatSpecTypeKey</key>
                 <string>NSStringPluralRuleType</string>
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no preajustes</string>
+                <string>no invalid files</string>
                 <key>one</key>
-                <string>1 preajuste</string>
+                <string>%u invalid file</string>
                 <key>other</key>
-                <string>%u preajustes</string>
+                <string>%u invalid files</string>
             </dict>
         </dict>
-        <key>favorites count</key>
+        <key>failedToAddFileCount</key>
         <dict>
             <key>NSStringLocalizedFormatKey</key>
-            <string>%#@favorites_count@</string>
-            <key>favorites_count</key>
+            <string>%#@count@</string>
+            <key>count</key>
             <dict>
                 <key>NSStringFormatSpecTypeKey</key>
                 <string>NSStringPluralRuleType</string>
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no favoritos</string>
+                <string>no failed to install</string>
                 <key>one</key>
-                <string>1 favorito</string>
+                <string>%u failed to install</string>
                 <key>other</key>
-                <string>%u favoritos</string>
+                <string>%u failed to install</string>
+            </dict>
+        </dict>
+        <key>fileCount</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@count@</string>
+            <key>count</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>u</string>
+                <key>zero</key>
+                <string>no files</string>
+                <key>one</key>
+                <string>%u file</string>
+                <key>other</key>
+                <string>%u files</string>
+            </dict>
+        </dict>
+        <key>presetCount</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@count@</string>
+            <key>count</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>u</string>
+                <key>zero</key>
+                <string>no presets</string>
+                <key>one</key>
+                <string>%u preset</string>
+                <key>other</key>
+                <string>%u presets</string>
+            </dict>
+        </dict>
+        <key>favoriteCount</key>
+        <dict>
+            <key>NSStringLocalizedFormatKey</key>
+            <string>%#@count@</string>
+            <key>count</key>
+            <dict>
+                <key>NSStringFormatSpecTypeKey</key>
+                <string>NSStringPluralRuleType</string>
+                <key>NSStringFormatValueTypeKey</key>
+                <string>u</string>
+                <key>zero</key>
+                <string>no favorites</string>
+                <key>one</key>
+                <string>%u favorite</string>
+                <key>other</key>
+                <string>%u favorites</string>
             </dict>
         </dict>
     </dict>
