@@ -14,6 +14,7 @@ public final class Key: UIView {
     /// How to label the key
     static var keyLabelOption = KeyLabelOption.savedSetting
 
+    /// Current user-adjustable key width from settings
     static var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
 
     /// The note to play when touched
@@ -74,6 +75,7 @@ public final class Key: UIView {
         }
     }
 
+    /// Description of Key instance for logging
     public override var description: String { "Key(\(note),\(pressed))" }
 
     private func configure() {
@@ -86,7 +88,37 @@ public final class Key: UIView {
 
 extension RandomAccessCollection where Element == Key {
 
-    public func orderedInsertionIndex(for point: CGPoint) -> Index {
+    /**
+     Obtain the key that is touched by the given point.
+
+     - parameter point: the location to consider
+     - returns: Key instance that contains the point, or nil if none.
+     */
+    func touched(by point: CGPoint) -> Key? {
+        let pos = orderedInsertionIndex(for: point)
+        return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
+    }
+
+    /**
+     Obtain the sequence of keys that fill the given rect. Only considers the horizontal span for inclusion.
+
+     - parameter rect: the region to consider
+     - returns: sequence of Key instances that are in the given region
+     */
+    func keySpan(for rect: CGRect) -> Self.SubSequence {
+        let first = orderedInsertionIndex(for: rect.origin)
+        let last = orderedInsertionIndex(for: rect.offsetBy(dx: rect.width, dy: 0.0).origin)
+        return last == endIndex ? self[first..<last] : self[first...last]
+    }
+
+    /**
+     Obtain the index of the key in the collection that corresponds to the given position. Performs a binary search to
+     locate the right key.
+
+     - parameter point: the location to consider
+     - returns: index where to insert
+     */
+    func orderedInsertionIndex(for point: CGPoint) -> Index {
         var low = startIndex
         var high = endIndex
         while low != high {
@@ -122,16 +154,5 @@ extension RandomAccessCollection where Element == Key {
         if prev >= startIndex && self[prev].frame.contains(point) { return prev }
 
         return low
-    }
-
-    public func touched(by point: CGPoint) -> Key? {
-        let pos = orderedInsertionIndex(for: point)
-        return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
-    }
-
-    public func keySpan(for rect: CGRect) -> Self.SubSequence {
-        let first = orderedInsertionIndex(for: rect.origin)
-        let last = orderedInsertionIndex(for: rect.offsetBy(dx: rect.width, dy: 0.0).origin)
-        return last == endIndex ? self[first..<last] : self[first...last]
     }
 }

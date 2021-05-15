@@ -82,7 +82,7 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
 
         self.selectedSoundFontManager = SelectedSoundFontManager()
         self.activePatchManager = ActivePatchManager(soundFonts: soundFonts,
-                                                     selectedSoundFontManager: selectedSoundFontManager, inApp: inApp)
+                                                     selectedSoundFontManager: selectedSoundFontManager)
         super.init()
 
         if inApp {

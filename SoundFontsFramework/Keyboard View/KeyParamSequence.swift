@@ -14,6 +14,14 @@ internal struct KeyParamsSequence: Sequence, IteratorProtocol {
     private let blackKeyHeightScale: CGFloat = 0.6
     private let blackKeyWidthScale: CGFloat = 13.0 / 16.0
 
+    /**
+     Construct a new sequence generator for the given settings
+
+     - parameter width: the key width to use
+     - parameter keyHeight: the key height to use
+     - parameter firstMidiNote: the MIDI note of the first key to generate
+     - parameter lastMidiNote: the MIDI note of the last key to generate
+     */
     init(keyWidth: CGFloat, keyHeight: CGFloat, firstMidiNote: Int, lastMidiNote: Int) {
         self.nextMidiNote = firstMidiNote
         self.lastMidiNote = lastMidiNote
@@ -22,8 +30,16 @@ internal struct KeyParamsSequence: Sequence, IteratorProtocol {
         self.keyHeight = keyHeight
     }
 
+    /**
+     Create a new iterator for the sequence.
+     */
     func makeIterator() -> KeyParamsSequence { self }
 
+    /**
+     Obtain the next element from the sequence.
+
+     - returns: 2-tuple containing the frame to use for the key and the note that the key will play
+     */
     mutating func next() -> (CGRect, Note)? {
         guard nextMidiNote <= lastMidiNote else { return nil }
         let note = Note(midiNoteValue: nextMidiNote)

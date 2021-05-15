@@ -2,13 +2,14 @@
 
 import UIKit
 
+/**
+ Configuration for an alert to be shown to the user.
+ */
 public struct AlertConfig {
+    /// Title of the alert
     let title: String
+    /// Message body of the alert
     let message: String
-    public init(title: String, message: String) {
-        self.title = title
-        self.message = message
-    }
 }
 
 private final class AlertOperation: Operation {
@@ -53,6 +54,11 @@ private final class AlertOperation: Operation {
     func operationCompleted() { isFinished = true }
 }
 
+/**
+ Manager for posting alerts to the user. The plumbing guarantees that only one alert will happen at a time -- others
+ will queue until it is their turn to be shown. Although this works, there is the risk of annoying the user with a
+ crapload of alerts because of some catastrophic failure.
+ */
 public final class AlertManager {
     private let queue: OperationQueue = OperationQueue()
     private let presenter: UIViewController
@@ -60,35 +66,51 @@ public final class AlertManager {
     private let notifications: [Notification.Name] = [
         .configLoadFailure,
         .soundFontsCollectionOrphans,
-        .soundFontFileAccessDenied
+        .soundFontFileAccessDenied,
+        .soundFontAddResults
     ]
 
+    /**
+     Construct a new manager that uses the given view controller for presenting new alerts. Watch for certain
+     notifications to fire, and post an alert when they do.
+
+     - parameter presenter: the view controller to use for presenting
+     */
     public init(presenter: UIViewController) {
         self.presenter = presenter
         queue.maxConcurrentOperationCount = 1
-        // swiftlint:disable discarded_notification_center_observer
-        observers = notifications.map { NotificationCenter.default.addObserver(forName: $0, object: nil, queue: nil,
-                                                                               using: self.notify) }
+        observers = notifications.map {
+            NotificationCenter.default.addObserver(forName: $0, object: nil, queue: nil, using: self.notify)
+        }
     }
 
     private func notify(_ notification: Notification) {
         let (title, body): (String, String) = {
             switch notification.name {
             case .configLoadFailure:
-                return ("Startup Failure", """
-Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
-have been lost.
-""")
+                return (NSLocalizedString("AlertManager_configLoadFailure_title",
+                                          comment: "Title of configuration load failure alert"),
+                        NSLocalizedString("AlertManager_configLoadFailure_body",
+                                          comment: "Body of configuration load failure alert"))
 
             case .soundFontsCollectionOrphans:
                 guard let count = notification.object as? NSNumber else { fatalError() }
-                return ("Orphaned SF2 Files", """
-Found \(count.intValue) SF2 files that are not being used and moved them to local SoundFonts folder.
-""")
+                let countLabel = String.localizedStringWithFormat(
+                    NSLocalizedString("SF2_file_count", comment: "SF2 file count"), count)
+                return (NSLocalizedString("AlertManager_soundFontsCollectionOrphans_title",
+                                          comment: "Title of orphaned fonts collection alert"),
+                        String(format: NSLocalizedString("AlertManager_soundFontsCollectionOrphans_body",
+                                                         comment: "Body of orphaned fonts collection alert"),
+                               countLabel))
 
             case .soundFontFileAccessDenied:
                 guard let name = notification.object as? String else { fatalError() }
-                return ("Access Failure", "Unable to access and use the sound font file '\(name)'.")
+                return (NSLocalizedString("AlertManager_soundFontFileAccessDenied_title",
+                                          comment: "Title of SF2 file access denied alert"),
+                        String.localizedStringWithFormat(
+                                NSLocalizedString("AlertManager_soundFontFileAccessDenied_body",
+                                                  comment: "Body of SF2 file access denied alert"),
+                                name))
 
             default:
                 fatalError("unexpected notification - \(notification.name)")

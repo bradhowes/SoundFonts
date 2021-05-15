@@ -7,14 +7,23 @@ import UIKit
  The collection of event types that can be targeted in the `InfoBarManager.addTarget` method
  */
 public enum InfoBarEvent {
+    /// Move the keyboard up in scale so that the new first key value is the key after the current highest key
     case shiftKeyboardUp
+    /// Move the keyboard down in scale so that the new last key value is the key before the current lowest key
     case shiftKeyboardDown
+    /// Add a new sound font file to the collection of known files
     case addSoundFont
+    /// User performed a double-tap action on the info bar. Switch between favorites view and file/preset view
     case doubleTap
+    /// Show the guide overlay
     case showGuide
+    /// Show/hide the settings panel
     case showSettings
+    /// Enter edit mode to change individual preset visibility settings
     case editVisibility
+    /// Show/hide the effects panel
     case showEffects
+    /// Show/hide the tags list
     case showTags
 }
 
@@ -46,13 +55,27 @@ public protocol InfoBar: AnyObject {
      */
     func setVisibleKeyLabels(from: String, to: String)
 
+    /// True if there are more buttons to be seen
     var moreButtonsVisible: Bool { get }
 
+    /// Show the remaining buttons
     func showMoreButtons()
 
+    /// Hide the remaining buttons
     func hideMoreButtons()
 
+    /**
+     Reset a button state for a given event. Some buttons show an 'active' state while another piece of UI is visible.
+     This provides a programatic way to reset the button to the 'inactive' state.
+
+     - parameter event: the event associated with the button to reset
+     */
     func resetButtonState(_ event: InfoBarEvent)
 
-    func setVisibilityButtonEnabled(_ state: Bool)
+    /**
+     Update the enabled state of the button that begins preset visibility editing.
+
+     - parameter state: state to set the button to, true if currently editing preset visibility or false if not
+     */
+    func setEditVisibilityButtonEnabled(_ state: Bool)
 }

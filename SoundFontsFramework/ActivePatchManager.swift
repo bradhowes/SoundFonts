@@ -19,60 +19,108 @@ public enum ActivePatchEvent {
 }
 
 /**
- Maintains the active SoundFont patch being used for sound generation.
+ Maintains the active SoundFont patch being used for sound generation. There should only ever be one instance of this
+ class, but this is not enforced.
  */
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     private let log = Logging.logger("ActPatMan")
     private let soundFonts: SoundFonts
     private let selectedSoundFontManager: SelectedSoundFontManager
-    private let inApp: Bool
 
     private var pending: ActivePatchKind = .none
 
+    /// The currently active patch (if any)
     public private(set) var active: ActivePatchKind
 
+    /// The currently active favorite (if any)
     public var favorite: LegacyFavorite? { active.favorite }
+
+    /// The currently active preset key (if any)
     public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
 
+    /// The currently active sound font (if any)
     public var soundFont: LegacySoundFont? {
         guard let key = soundFontAndPatch?.soundFontKey else { return nil }
         return soundFonts.getBy(key: key)
     }
 
+    /// The currently active preset instance (if any)
     public var patch: LegacyPatch? {
         guard let index = soundFontAndPatch?.patchIndex else { return nil }
         return soundFont?.patches[index]
     }
 
+    /// The preset configuration for the currently active preset or favorite
     public var presetConfig: PresetConfig? { favorite?.presetConfig ?? patch?.presetConfig }
 
-    public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, inApp: Bool) {
+    /// Obtain the last-saved active patch value
+    static var restoredActivePatchKind: ActivePatchKind? {
+        ActivePatchKind.decodeFromData(Settings.instance.lastActivePatch)
+    }
+
+    /**
+     Construct new manager
+
+     - parameter soundFont: the sound font manager
+     - parameter selectedSoundFontManager: the manager of the selected sound font
+     - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
+     */
+    public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
         os_log(.info, log: log, "init")
         self.active = .none
         self.soundFonts = soundFonts
         self.selectedSoundFontManager = selectedSoundFontManager
-        self.inApp = inApp
         super.init()
         soundFonts.subscribe(self, notifier: soundFontsChange)
         os_log(.info, log: log, "active: %{public}s", active.description)
     }
 
+    /**
+     Obtain the sound font instance that corresponds to the given preset key.
+
+     - parameter soundFontAndPatch: the preset key to resolve
+     - returns: optional sound font instance that corresponds to the given key
+     */
     public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> LegacySoundFont? {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
     }
 
+    /**
+     Obtain the preset instance that corresponds to the given preset key.
+
+     - parameter soundFontAndPatch: the preset key to resolve
+     - returns: optional patch instance that corresponds to the given key
+     */
     public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
         return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[soundFontAndPatch.patchIndex]
     }
 
+    /**
+     Set a new active preset.
+
+     - parameter preset: the preset to make active
+     - parameter playSample: if true, play a note using the new preset
+     */
     public func setActive(preset: SoundFontAndPatch, playSample: Bool) {
         setActive(.preset(soundFontAndPatch: preset), playSample: playSample)
     }
 
+    /**
+     Make a favorite the active preset.
+
+     - parameter favorite: the favorite to make active
+     - parameter playSample: if true, play a note using the new preset
+     */
     public func setActive(favorite: LegacyFavorite, playSample: Bool) {
         setActive(.favorite(favorite: favorite), playSample: playSample)
     }
 
+    /**
+     Set a new active value.
+
+     - parameter kind: wrapped value to set
+     - parameter playSample: if true, play a note using the new preset
+     */
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
         os_log(.info, log: log, "setActive: %{public}s", kind.description)
         guard soundFonts.restored else {
@@ -86,7 +134,6 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             return
         }
 
-        // guard kind != active else { return }
         let prev = active
         active = kind
         save(kind)
@@ -106,7 +153,7 @@ extension ActivePatchManager {
             os_log(.info, log: log, "using pending value")
             setActive(pending, playSample: false)
         }
-        else if let restored = Self.restore(),
+        else if let restored = Self.restoredActivePatchKind,
                 isValid(restored) {
             os_log(.info, log: log, "using restored value from UserDefaults")
             setActive(restored, playSample: false)
@@ -117,20 +164,10 @@ extension ActivePatchManager {
         }
     }
 
-    static func restore() -> ActivePatchKind? { decode(Settings.instance.lastActivePatch) }
-
-    public static func decode(_ data: Data) -> ActivePatchKind? {
-        try? JSONDecoder().decode(ActivePatchKind.self, from: data)
-    }
-
-    public static func encode(_ kind: ActivePatchKind) -> Data? {
-        try? JSONEncoder().encode(kind)
-    }
-
     private func save(_ kind: ActivePatchKind) {
         os_log(.info, log: log, "save - %{public}s", kind.description)
         DispatchQueue.global(qos: .background).async {
-            if let data = Self.encode(kind) {
+            if let data = kind.encodeToData() {
                 Settings.instance.lastActivePatch = data
             }
         }

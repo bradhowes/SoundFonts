@@ -42,4 +42,7 @@ extension Notification.Name {
 
     /// Notification that the effects view is going away.
     public static let hidingEffects = Notification.Name("hidingEffects")
+
+    /// Notification about adding a collection of sound fonts.
+    public static let soundFontAddResults = Notification.Name("soundFontAddResults")
 }

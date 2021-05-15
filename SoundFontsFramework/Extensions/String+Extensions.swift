@@ -12,10 +12,6 @@ extension String {
      Obtain the width of the string if rendered in the system font
      */
     public var systemFontWidth: CGFloat { (self as NSString).size(withAttributes: systemFontAttributes).width }
-
-//    public func localized(comment: String) -> String {
-//        NSLocalizedString(self, bundle: Bundle(for: BundleTag.self), comment: comment)
-//    }
 }
 
 extension String {

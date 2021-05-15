@@ -141,11 +141,11 @@ extension SoundFontsViewController {
     }
 
     private func remove(soundFont: LegacySoundFont, completionHandler: ((_ completed: Bool) -> Void)?) {
-        let promptTitle = Formatters.deleteFontTitle
-        let promptMessage = Formatters.deleteFontMessage
+        let promptTitle = Formatters.strings.deleteFontTitle
+        let promptMessage = Formatters.strings.deleteFontMessage
         let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-        let delete = UIAlertAction(title: Formatters.deleteAction, style: .destructive) { _ in
+        let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { _ in
             self.soundFonts.remove(key: soundFont.key)
             self.favorites.removeAll(associatedWith: soundFont)
             let url = soundFont.fileURL
@@ -155,7 +155,9 @@ extension SoundFontsViewController {
             completionHandler?(true)
         }
 
-        let cancel = UIAlertAction(title: Formatters.cancelAction, style: .cancel) { _ in completionHandler?(false) }
+        let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
+            completionHandler?(false)
+        }
 
         alertController.addAction(delete)
         alertController.addAction(cancel)
@@ -241,7 +243,7 @@ extension SoundFontsViewController: PatchesViewManager {
         }
 
         if urls.count > 1 || !failures.isEmpty {
-            let message = Formatters.addSoundFontDoneMessage(ok: ok, failures: failures, total: urls.count)
+            let message = Formatters.makeAddSoundFontBody(ok: ok, failures: failures, total: urls.count)
             let alert = UIAlertController(
                 title: "Add SoundFont",
                 message: message,

@@ -152,7 +152,7 @@ extension SoundFontsControlsController {
     }
 
     private func updateInfoBarButtons() {
-        infoBar.setVisibilityButtonEnabled(upperViewManager.active == 0)
+        infoBar.setEditVisibilityButtonEnabled(upperViewManager.active == 0)
     }
 }
 

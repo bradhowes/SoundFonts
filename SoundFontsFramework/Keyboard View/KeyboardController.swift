@@ -17,9 +17,9 @@ final class KeyboardController: UIViewController {
     /// MIDI value of the last note in the keyboard
     private var lastMidiNoteValue = -1
 
-    @IBOutlet weak var keyboard: UIView!
-    @IBOutlet weak var keyboardWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var keyboardLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var keyboard: UIView!
+    @IBOutlet private weak var keyboardWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var keyboardLeadingConstraint: NSLayoutConstraint!
 
     private var allKeys = [Key]()
     private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
@@ -58,6 +58,7 @@ final class KeyboardController: UIViewController {
 
 extension KeyboardController {
 
+    /// Initialize controller with view loaded
     override func viewDidLoad() {
         createKeys()
         let lowestKeyNote = Settings.shared.lowestKeyNote
@@ -80,6 +81,7 @@ extension KeyboardController {
         }
     }
 
+    /// Redraw keyboard after layout change.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         layoutKeys()
@@ -89,6 +91,11 @@ extension KeyboardController {
 // MARK: - Configuration
 extension KeyboardController: ControllerConfiguration {
 
+    /**
+     Establish connections with other components
+
+     - parameter router: the container holding the other components
+     */
     func establishConnections(_ router: ComponentContainer) {
         activePatchManager = router.activePatchManager
         infoBar = router.infoBar
@@ -136,58 +143,26 @@ extension KeyboardController: ControllerConfiguration {
     }
 }
 
-// MARK: - Keyboard Shifting
-
-extension KeyboardController {
-
-    private func shiftKeyboardUp(_ sender: AnyObject) {
-        os_log(.info, log: log, "shiftKeyBoardUp")
-        precondition(!allKeys.isEmpty)
-        if lastMidiNoteValue < Sampler.maxMidiValue {
-            let shift: Int = {
-                (firstMidiNoteValue % 12 == 0) ?
-                    min(12, Sampler.maxMidiValue - lastMidiNoteValue) :
-                    (12 - firstMidiNoteValue % 12)
-            }()
-            shiftKeys(by: shift)
-        }
-        AskForReview.maybe()
-    }
-
-    private func shiftKeyboardDown(_ sender: AnyObject) {
-        os_log(.info, log: log, "shiftKeyBoardDown")
-        precondition(!allKeys.isEmpty)
-        if firstMidiNoteValue >= 12 {
-            let shift: Int = {
-                (firstMidiNoteValue % 12) == 0 ?
-                    min(firstMidiNoteValue, 12) :
-                    (firstMidiNoteValue % 12)
-            }()
-            shiftKeys(by: -shift)
-        }
-        AskForReview.maybe()
-    }
-
-    private func shiftKeys(by: Int) {
-        assert(!allKeys.isEmpty)
-        if by != 0 {
-            releaseAllKeys()
-            firstMidiNoteValue += by
-            lastMidiNoteValue += by
-            if lowestNote.accented { firstMidiNoteValue += 1 }
-            offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
-        }
-    }
-}
-
 // MARK: - Touch Processing
 
 extension KeyboardController {
 
+    /**
+     Begin processing a touch event for the keyboard
+
+     - parameter touches: the touch events that started
+     - parameter event: the event that spawned the touches
+     */
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         pressKeys(touches)
     }
 
+    /**
+     Update touch events for the keyboard
+
+     - parameter touches: the touch events that moved
+     - parameter event: the event that spawned the touches
+     */
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if Settings.shared.slideKeyboard {
             if trackedTouch == nil {
@@ -212,7 +187,20 @@ extension KeyboardController {
         pressKeys(touches)
     }
 
+    /**
+     Complete touch events for the keyboard
+
+     - parameter touches: the touch events that stopped
+     - parameter event: the event that spawned the touches
+     */
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { releaseKeys(touches) }
+
+    /**
+     Cancel touch events for the keyboard
+
+     - parameter touches: the touch events that stopped
+     - parameter event: the event that spawned the touches
+     */
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { releaseKeys(touches) }
 }
 
@@ -245,13 +233,18 @@ extension KeyboardController: Keyboard {
         DispatchQueue.main.async { key.pressed = false }
     }
 
+    /// The current lowest MIDI note of the keyboard (mutable)
     var lowestNote: Note {
         get { Note(midiNoteValue: firstMidiNoteValue) }
         set { shiftKeys(by: newValue.midiNoteValue - firstMidiNoteValue) }
     }
 
+    /// The current highest MIDI note of the keyboard (read-only)
     var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
 
+    /**
+     Demand that all keys stop playing audio.
+     */
     func releaseAllKeys() {
         touchedKeys.releaseAll()
         DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
@@ -335,6 +328,50 @@ extension KeyboardController {
             else {
                 infoBar.setStatus(note.label)
             }
+        }
+    }
+}
+
+// MARK: - Keyboard Shifting
+
+extension KeyboardController {
+
+    private func shiftKeyboardUp(_ sender: AnyObject) {
+        os_log(.info, log: log, "shiftKeyBoardUp")
+        precondition(!allKeys.isEmpty)
+        if lastMidiNoteValue < Sampler.maxMidiValue {
+            let shift: Int = {
+                (firstMidiNoteValue % 12 == 0) ?
+                    min(12, Sampler.maxMidiValue - lastMidiNoteValue) :
+                    (12 - firstMidiNoteValue % 12)
+            }()
+            shiftKeys(by: shift)
+        }
+        AskForReview.maybe()
+    }
+
+    private func shiftKeyboardDown(_ sender: AnyObject) {
+        os_log(.info, log: log, "shiftKeyBoardDown")
+        precondition(!allKeys.isEmpty)
+        if firstMidiNoteValue >= 12 {
+            let shift: Int = {
+                (firstMidiNoteValue % 12) == 0 ?
+                    min(firstMidiNoteValue, 12) :
+                    (firstMidiNoteValue % 12)
+            }()
+            shiftKeys(by: -shift)
+        }
+        AskForReview.maybe()
+    }
+
+    private func shiftKeys(by: Int) {
+        assert(!allKeys.isEmpty)
+        if by != 0 {
+            releaseAllKeys()
+            firstMidiNoteValue += by
+            lastMidiNoteValue += by
+            if lowestNote.accented { firstMidiNoteValue += 1 }
+            offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
         }
     }
 }

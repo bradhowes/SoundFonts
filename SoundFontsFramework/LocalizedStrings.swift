@@ -22,8 +22,8 @@ public enum LocalizedStrings {
     static let originalFontNameFormatter = "Original: %s"
     static let embeddedFontNameFormatter = "Embedded: %s"
 
-    static func presetCount(_ count: Int) -> String { Formatters.formatted(presetCount: count) }
-    static func favoriteCount(_ count: Int) -> String { Formatters.formatted(favoriteCount: count) }
+    static func presetCount(_ count: Int) -> String { Formatters.format(presetCount: count) }
+    static func favoriteCount(_ count: Int) -> String { Formatters.format(favoriteCount: count) }
 
     // Settings Editor
     static let done = "Done"

@@ -86,12 +86,12 @@ extension LegacySoundFont {
 
         guard let info = SoundFontInfo.load(viaParser: url) else {
             os_log(.error, log: Self.logger, "failed to process SF2 file")
-            return .failure(.invalidSoundFont(url.lastPathComponent))
+            return .failure(.invalidFile(url.lastPathComponent))
         }
 
         guard !info.presets.isEmpty else {
             os_log(.error, log: Self.logger, "failed to locate any presets")
-            return .failure(.invalidSoundFont(url.lastPathComponent))
+            return .failure(.invalidFile(url.lastPathComponent))
         }
 
         let (fileName, uuid) = url.lastPathComponent.stripEmbeddedUUID()

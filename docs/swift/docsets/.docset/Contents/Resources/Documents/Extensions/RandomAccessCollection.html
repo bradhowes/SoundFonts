@@ -17,7 +17,7 @@
     <a title="RandomAccessCollection Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (50% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (53% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -654,6 +654,9 @@
                 <a href="../Structs/Formatters.html">Formatters</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/Formatters/Strings.html">– Strings</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/KeyParamsSequence.html">KeyParamsSequence</a>
               </li>
               <li class="nav-group-task">
@@ -1082,33 +1085,6 @@ the ordering of the existing elements.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE21orderedInsertionIndex3for0H0QzSo7CGPointV_tF"></a>
-                    <a name="//apple_ref/swift/Method/orderedInsertionIndex(for:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE21orderedInsertionIndex3for0H0QzSo7CGPointV_tF">orderedInsertionIndex(for:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">orderedInsertionIndex</span><span class="p">(</span><span class="k">for</span> <span class="nv">point</span><span class="p">:</span> <span class="kt">CGPoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Index</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE7touched2byACSgSo7CGPointV_tF"></a>
                     <a name="//apple_ref/swift/Method/touched(by:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE7touched2byACSgSo7CGPointV_tF">touched(by:<wbr>)</a>
@@ -1119,16 +1095,39 @@ the ordering of the existing elements.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the key that is touched by the given point.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">touched</span><span class="p">(</span><span class="n">by</span> <span class="nv">point</span><span class="p">:</span> <span class="kt">CGPoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">touched</span><span class="p">(</span><span class="n">by</span> <span class="nv">point</span><span class="p">:</span> <span class="kt">CGPoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>point</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the location to consider</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Key instance that contains the point, or nil if none.</p>
                       </div>
                     </section>
                   </div>
@@ -1146,16 +1145,90 @@ the ordering of the existing elements.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Obtain the sequence of keys that fill the given rect. Only considers the horizontal span for inclusion.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">keySpan</span><span class="p">(</span><span class="k">for</span> <span class="nv">rect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">SubSequence</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">keySpan</span><span class="p">(</span><span class="k">for</span> <span class="nv">rect</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">SubSequence</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rect</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the region to consider</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>sequence of Key instances that are in the given region</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE21orderedInsertionIndex3for0H0QzSo7CGPointV_tF"></a>
+                    <a name="//apple_ref/swift/Method/orderedInsertionIndex(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sk19SoundFontsFrameworkAA3KeyC7ElementRtzrlE21orderedInsertionIndex3for0H0QzSo7CGPointV_tF">orderedInsertionIndex(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Obtain the index of the key in the collection that corresponds to the given position. Performs a binary search to
+locate the right key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">orderedInsertionIndex</span><span class="p">(</span><span class="k">for</span> <span class="nv">point</span><span class="p">:</span> <span class="kt">CGPoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Index</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>point</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the location to consider</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>index where to insert</p>
                       </div>
                     </section>
                   </div>
@@ -1165,7 +1238,7 @@ the ordering of the existing elements.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-14)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

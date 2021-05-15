@@ -81,8 +81,8 @@ final class FontEditor: UIViewController {
             }
         }()
 
-        presetsCountLabel.text = Formatters.formatted(presetCount: soundFont.patches.count)
-        favoritesCountLabel.text = Formatters.formatted(favoriteCount: favoriteCount)
+        presetsCountLabel.text = Formatters.format(presetCount: soundFont.patches.count)
+        favoritesCountLabel.text = Formatters.format(favoriteCount: favoriteCount)
 
         updateHiddenCount()
 

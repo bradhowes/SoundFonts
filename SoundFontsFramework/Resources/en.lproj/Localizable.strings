@@ -5,9 +5,9 @@
 "preset" = "preset";
 "font" = "font";
 
-"Cancel" = "Cancel";
+"cancelAction" = "Cancel";
 "Save" = "Save";
-"Delete" = "Delete";
+"deleteAction" = "Delete";
 
 "Name" = "Name";
 "Lowest-Key" = "Lowest Key";
@@ -17,15 +17,39 @@
 "Bank" = "Bank";
 "Index" = "Index";
 
-"DeleteFontTitle" = "Delete the soundfont file?";
-"DeleteFontMessage" = "Deleting will remove the file and also any favorites linked to it.";
+"deleteFont_title" = "Delete the soundfont file?";
+"deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
 
-"UnableToAddOneFile" = "Unable to add the sound font";
-"UnableToAddAnyFiles" = "Unable to add any sound fonts";
-"AddedOneFile" = "Added the sound font";
-"AddedAllFiles" = "Added all of the sound fonts";
-"AddedSomeFiles" = "Added %d out of %d sound fonts";
+/* AlertManager alerts */
 
-"empty" = "empty";
-"invalid" = "invalid";
-"uncopyable" = "uncopyable";
+/* Title of configuration load failure alert */
+"AlertManager_configLoadFailure_title" = "Startup Failure";
+/* Body of configuration load failure alert */
+"AlertManager_configLoadFailure_body" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations
+have been lost.";
+
+/* Title of orphaned fonts collection alert */
+"AlertManager_soundFontsCollectionOrphans_title" = "Orphaned SF2 Files";
+/* Body of orphaned fonts collection alert */
+"AlertManager_soundFontsCollectionOrphans_body" = "Found %s that are not being used and moved them to local SoundFonts folder.";
+
+/* Title of SF2 file access denied alert */
+"AlertManager_soundFontsCollectionOrphans_title" = "Access Failure";
+/* Body of SF2 file access denied alert */
+"AlertManager_soundFontsCollectionOrphans_body" = "Unable to access and use the sound font file '%s'";
+
+/* Title of add sound fonts alert */
+"AlertManager_addSoundFonts_title" = "Add Sound Fonts";
+
+/* Message when unable to add one SF2 file */
+"unableToAddOneFile" = "Unable to add the sound font";
+
+/* Message when unable to add any SF2 files */
+"unableToAddAnyFiles" = "Unable to add any sound fonts";
+
+/* Message when added single SF2 file */
+"addedOneFile" = "Added the sound font";
+/* Message when added all SF2 files */
+"addedAllFiles" = "Added all of the sound fonts";
+/* Message when added some SF2 files */
+"addedSomeFiles" = "Added %d out of %d sound fonts";

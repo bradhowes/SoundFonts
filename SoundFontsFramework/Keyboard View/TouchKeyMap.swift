@@ -7,7 +7,9 @@ import UIKit
  */
 internal struct TouchKeyMap {
 
+    /// The sampler that is generating sound
     var sampler: Sampler?
+
     private var touchedKeys = [UITouch: Key]()
 
     /**

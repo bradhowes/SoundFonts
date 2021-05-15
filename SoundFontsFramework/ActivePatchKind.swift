@@ -51,6 +51,28 @@ extension ActivePatchKind: Codable {
         }
     }
 
+    /**
+     Attempt to obtain an active patch from data
+
+     - parameter data: container to extract from
+     - returns: optional ActivePatchKind
+     */
+    public static func decodeFromData(_ data: Data) -> ActivePatchKind? {
+        try? JSONDecoder().decode(ActivePatchKind.self, from: data)
+    }
+
+    /**
+     Attempt to encode an ActivePatchKind value to Data
+
+     - returns: optional Data containing the encoded value
+     */
+    public func encodeToData() -> Data? { try? JSONEncoder().encode(self) }
+
+    /**
+     Construct from an encoded state.
+
+     - parameter decode: state to read from
+     */
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
@@ -61,6 +83,11 @@ extension ActivePatchKind: Codable {
         }
     }
 
+    /**
+     Save to an encoded state.
+
+     - parameter encoder: container to write to
+     */
     public func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
         try container.encode(InternalKey.key(for: self).rawValue)
