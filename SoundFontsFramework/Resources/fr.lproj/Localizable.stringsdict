@@ -67,11 +67,11 @@
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no files</string>
+                <string>pas des fichier</string>
                 <key>one</key>
-                <string>%u file</string>
+                <string>1 fichier</string>
                 <key>other</key>
-                <string>%u files</string>
+                <string>%u fichiers</string>
             </dict>
         </dict>
         <key>presetCount</key>
@@ -85,11 +85,11 @@
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no presets</string>
+                <string>pas des préréglés</string>
                 <key>one</key>
-                <string>%u preset</string>
+                <string>1 préréglé</string>
                 <key>other</key>
-                <string>%u presets</string>
+                <string>%u préréglés</string>
             </dict>
         </dict>
         <key>favoriteCount</key>
@@ -103,11 +103,11 @@
                 <key>NSStringFormatValueTypeKey</key>
                 <string>u</string>
                 <key>zero</key>
-                <string>no favorites</string>
+                <string>pas des préférés</string>
                 <key>one</key>
-                <string>%u favorite</string>
+                <string>1 préféré</string>
                 <key>other</key>
-                <string>%u favorites</string>
+                <string>%u préférés</string>
             </dict>
         </dict>
     </dict>

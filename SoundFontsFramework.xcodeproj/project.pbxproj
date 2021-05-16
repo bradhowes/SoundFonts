@@ -686,7 +686,6 @@
 				BDB7406425CC29120051B4E4 /* SoundFontList.storyboard */,
 				BDB7406525CC29120051B4E4 /* TagsList.storyboard */,
 				BDB7406225CC29120051B4E4 /* Presets.storyboard */,
-				BD1C230125CDF167007C114F /* PresetsPageViewController.swift */,
 				BDB7406025CC29120051B4E4 /* InfoBar1.storyboard */,
 				BDB7406125CC29120051B4E4 /* InfoBar2.storyboard */,
 				BDB7405F25CC29120051B4E4 /* Favorites.storyboard */,
@@ -694,7 +693,6 @@
 				BDB7405E25CC29120051B4E4 /* Delay.storyboard */,
 				BD1C22B025CC913C007C114F /* Settings.storyboard */,
 				BD6E057D25CC74B1004058D9 /* Done.storyboard */,
-				BD1C230E25CDF89A007C114F /* DonePageViewController.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -775,6 +773,8 @@
 				BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */,
 				BD1C22F025CDC781007C114F /* TutorialViewController.swift */,
 				BDEB125826207446003CE8EE /* ChangesCompiler.swift */,
+				BD1C230E25CDF89A007C114F /* DonePageViewController.swift */,
+				BD1C230125CDF167007C114F /* PresetsPageViewController.swift */,
 				BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */,
 				BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */,
 				BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */,

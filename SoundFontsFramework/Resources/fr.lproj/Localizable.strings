@@ -2,14 +2,14 @@
 
 "allTagName" = "All";
 
-"favorite" = "favorite";
-"patch" = "patch";
-"preset" = "preset";
+"favorite" = "signet";
+"patch" = "préréglé";
+"preset" = "préréglé";
 "font" = "font";
 
-"cancelAction" = "Cancel";
-"Save" = "Save";
-"deleteAction" = "Delete";
+"cancelAction" = "Annuler";
+"saveAction" = "Enregistrer";
+"deleteAction" = "Supprimer";
 
 "Name" = "Name";
 "Lowest-Key" = "Lowest Key";
@@ -19,15 +19,15 @@
 "Bank" = "Bank";
 "Index" = "Index";
 
-"deleteFont_title" = "Delete the soundfont file?";
-"deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
+"deleteFont_title" = "Supprimer le fichier soundfont?";
+"deleteFont_body" = "La suppression supprime le fichier et tous les signets qui lui sont associés.";
 
 "addSoundFontsStatusTitle" = "Add Sound Fonts";
-"unableToAddOneFile" = "Unable to add the sound font";
-"unableToAddAnyFiles" = "Unable to add any sound fonts";
-"addedOneFile" = "Added the sound font";
-"addedAllFiles" = "Added all of the sound fonts";
-"addedSomeFiles" = "Added %d out of %d sound fonts";
+"unableToAddOneFile" = "Impossible d'ajouter le fichier.";
+"unableToAddAnyFiles" = "Impossible d'ajouter des fichiers.";
+"addedOneFile" = "Ajout d'un fichier.";
+"addedAllFiles" = "Ajout de tous les fichiers.";
+"addedSomeFiles" = "Ajout de quelques fichiers.";
 
 "configLoadFailureAlert" = "Startup Failure";
 "configLoadFailureBody" = "Unable to load the last saved sound font collection information. Recreating using found SF2 files, but customizations

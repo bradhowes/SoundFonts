@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ftf-OG-9zR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ftf-OG-9zR">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,38 +18,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="RYf-qw-rdL">
-                                <rect key="frame" x="16" y="246" width="382" height="404"/>
+                                <rect key="frame" x="16" y="278.5" width="382" height="339.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Reverb Controls" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ghf-GS-UHe">
-                                        <rect key="frame" x="75" y="0.0" width="232.5" height="41"/>
+                                        <rect key="frame" x="85" y="0.0" width="212.5" height="37"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                         <color key="textColor" systemColor="systemOrangeColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Select from predefined reverb room configurations. Swipe up/down on knob to control mix." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-Xj-zgc">
-                                        <rect key="frame" x="5" y="57" width="372" height="74"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Select from predefined reverb room definitions. Swipe up/down on knob to control mix." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-Xj-zgc">
+                                        <rect key="frame" x="9" y="53" width="364" height="42.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="Reverb" translatesAutoresizingMaskIntoConstraints="NO" id="m6M-zF-JmW">
-                                        <rect key="frame" x="0.0" y="147" width="382" height="170"/>
+                                        <rect key="frame" x="0.0" y="111.5" width="382" height="170"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="170" id="oQm-86-Pcr"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xPt-t3-RXB">
-                                        <rect key="frame" x="52" y="333" width="278" height="71"/>
+                                        <rect key="frame" x="21.5" y="297.5" width="339.5" height="42"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jFd-pk-0Gl">
-                                                <rect key="frame" x="0.0" y="0.0" width="278" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="339.5" height="17"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOffOld" translatesAutoresizingMaskIntoConstraints="NO" id="Yfj-EZ-rfj">
-                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="17"/>
                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Enable / disable effect" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sHY-0Q-msO">
-                                                        <rect key="frame" x="24" y="0.0" width="254" height="20.5"/>
+                                                        <rect key="frame" x="24" y="0.0" width="315.5" height="17"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <color key="textColor" systemColor="systemTealColor"/>
                                                         <nil key="highlightedColor"/>
@@ -57,14 +57,14 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DfX-Wh-Ctz">
-                                                <rect key="frame" x="0.0" y="28.5" width="278" height="42.5"/>
+                                                <rect key="frame" x="0.0" y="25" width="339.5" height="17"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOffOld" translatesAutoresizingMaskIntoConstraints="NO" id="ARR-YQ-PGq">
-                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="42.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="16" height="17"/>
                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Keep current settings even when preset changes" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bh-cI-aha">
-                                                        <rect key="frame" x="24" y="0.0" width="254" height="42.5"/>
+                                                        <rect key="frame" x="24" y="0.0" width="315.5" height="17"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <color key="textColor" systemColor="systemTealColor"/>
                                                         <nil key="highlightedColor"/>
