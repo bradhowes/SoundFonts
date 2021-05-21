@@ -11,7 +11,8 @@ private enum Slot: Equatable {
 }
 
 /**
- Data source and delegate for the Patches UITableView.
+ Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
+ broken up into smaller components.
  */
 final class PatchesTableViewManager: NSObject {
 
@@ -35,6 +36,18 @@ final class PatchesTableViewManager: NSObject {
     private var notificationObserver: NSObjectProtocol?
     private var contentSizeObserver: NSKeyValueObservation?
 
+    /**
+     Construct a new patches table view manager.
+
+     - parameter view: the view to manage
+     - parameter searchBar: the search bar that filters on preset name
+     - parameter activePatchManager: the active preset manager
+     - parameter selectedSoundFontManager: the selected sound font manager
+     - parameter soundFonts: the sound fonts collection manager
+     - parameter favorites: the favorites collection manager
+     - parameter keyboard: the optional keyboard view manager
+     - parameter infoBar: the info bar manager
+     */
     init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
          selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
          keyboard: Keyboard?, infoBar: InfoBar) {
@@ -48,6 +61,7 @@ final class PatchesTableViewManager: NSObject {
         self.infoBar = infoBar
         super.init()
 
+        // When there is a change in size, hide the search bar if it is not in use.
         contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { tableView, change in
             guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
             if !self.searchBar.isFirstResponder && tableView.contentOffset.y < searchBar.frame.size.height {
