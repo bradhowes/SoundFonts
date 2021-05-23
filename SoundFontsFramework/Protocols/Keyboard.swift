@@ -21,7 +21,17 @@ public protocol Keyboard: AnyObject {
      */
     func releaseAllKeys()
 
+    /**
+     Notify the keyboard that a given note is not playing.
+
+     - parameter note: the note that is not playing
+     */
     func noteIsOff(note: UInt8)
 
+    /**
+     Notify the keyboard that a given note is currently playing.
+
+     - parameter note: the note that is playing
+     */
     func noteIsOn(note: UInt8)
 }

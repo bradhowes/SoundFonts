@@ -134,10 +134,12 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             return
         }
 
-        let prev = active
+        guard active != kind else { return }
+
+        let old = active
         active = kind
         save(kind)
-        DispatchQueue.main.async { self.notify(.active(old: prev, new: kind, playSample: playSample)) }
+        DispatchQueue.main.async { self.notify(.active(old: old, new: kind, playSample: playSample)) }
     }
 }
 

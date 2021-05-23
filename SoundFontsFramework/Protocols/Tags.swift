@@ -40,7 +40,7 @@ public protocol Tags: AnyObject {
     func names(of keys: Set<LegacyTag.Key>) -> [String]
 
     /**
-     Get the index of the given tag.
+     Get the index for the given tag.
 
      - parameter of: the tag to search for
      - returns: the option index of the tag

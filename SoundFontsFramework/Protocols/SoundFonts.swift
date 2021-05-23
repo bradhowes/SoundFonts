@@ -113,19 +113,42 @@ public protocol SoundFonts: AnyObject {
      */
     func rename(key: LegacySoundFont.Key, name: String)
 
+    /**
+     Remove an association between a sound font and a tag
+
+     - parameter tag: the tag to remove
+     */
     func removeTag(_ tag: LegacyTag.Key)
 
+    /**
+     Create a new favorite for a sound font preset.
+
+     - parameter soundFontAndPatch: the preset to make a favorite
+     - parameter keyboardLowestNote: the lowest note to use for the preset
+     - returns: new Favorite
+     */
     func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) -> LegacyFavorite?
 
+    /**
+     Remove an existing favorite.
+
+     - parameter soundFontAndPatch: the preset that was used to create the favorite
+     - parameter key: the unique key of the favorite to remove
+     */
     func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: LegacyFavorite.Key)
 
+    /**
+     Update the configuration of a preset.
+
+     - parameter soundFontAndPatch: the preset to update
+     - parameter config: the configuration to use
+     */
     func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig)
 
     /**
-     Set the visibility of a preset.
+     Set the preset visibility.
 
-     - parameter key: the unique key of the SoundFont to change
-     - parameter index: the index of the preset in the SoundFont to change
+     - parameter soundFontAndPatch: the preset to change
      - parameter state: the new visibility state for the preset
      */
     func setVisibility(soundFontAndPatch: SoundFontAndPatch, state: Bool)
@@ -140,13 +163,17 @@ public protocol SoundFonts: AnyObject {
     /**
      Attach effect configurations to a preset.
 
-     - parameter key: the unique key of the SoundFont to change
-     - parameter index: the index of the preset in the SoundFont to change
+     - parameter soundFontAndPatch: the preset to change
      - parameter delay: the configuration for the delay
      - parameter reverb: the configuration for the reverb
      */
     func setEffects(soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?)
 
+    /**
+     Reload the embedded contents of the sound font
+
+     - parameter key: the sound font to reload
+     */
     func reloadEmbeddedInfo(key: LegacySoundFont.Key)
 
     /// Determine if there are any bundled fonts in the collection
@@ -165,8 +192,20 @@ public protocol SoundFonts: AnyObject {
      */
     func restoreBundled()
 
+    /**
+     Export all sound fonts in the collection to a local documents directory that the user can access.
+
+     - returns: 2-tuple containing a counter of the number of successful exports and the total number that was
+     attempted
+     */
     func exportToLocalDocumentsDirectory() -> (good: Int, total: Int)
 
+    /**
+     Import sound fonts found in the local documents directory for the app.
+
+     - returns: 2-tuple containing a counter of the number of successful exports and the total number that was
+     attempted
+     */
     func importFromLocalDocumentsDirectory() -> (good: Int, total: Int)
 
     /**

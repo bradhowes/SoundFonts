@@ -4,17 +4,24 @@ import UIKit
 import os
 import SoundFontInfoLib
 
+/**
+ Manager for the tag collection.
+ */
 final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
     private let log = Logging.logger("TagsMgr")
 
     private var observer: ConfigFileObserver!
-    var restored: Bool { observer.restored }
 
-    var collection: LegacyTagCollection {
+    private var collection: LegacyTagCollection {
         precondition(observer.restored)
         return observer.tags
     }
 
+    /**
+     Construct new manager
+
+     - parameter consolidatedConfigFile: the configuration file that holds the tags to manage
+     */
     init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
         super.init()
         observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
@@ -23,8 +30,13 @@ final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
 
 extension LegacyTagsManager: Tags {
 
+    /// Indicator that the collection of tags has been restored
+    var restored: Bool { observer.restored }
+
+    /// True if the collection is empty
     var isEmpty: Bool { collection.isEmpty }
 
+    /// The number of tags in the collection
     var count: Int { collection.count }
 
     func names(of keys: Set<LegacyTag.Key>) -> [String] { collection.names(of: keys) }
@@ -68,7 +80,8 @@ extension LegacyTagsManager: Tags {
 
 extension LegacyTagsManager {
 
-    static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag(name: "Built-in")]) }
+    /// Default collection that is used when first running the app
+    static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.builtInTag]) }
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

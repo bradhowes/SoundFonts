@@ -17,7 +17,7 @@
     <a title="FontEditor Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (53% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (60% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,6 +39,9 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -333,9 +336,6 @@
               <li class="nav-group-task">
                 <a href="../Classes/VolumeMonitor.html">VolumeMonitor</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Classes/VolumeMonitor/Reason.html">– Reason</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -346,6 +346,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BuildScheme.html">BuildScheme</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ComponentContainerEvent.html">ComponentContainerEvent</a>
@@ -376,9 +379,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/KeyLabelOption.html">KeyLabelOption</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Enums/LocalizedStrings.html">LocalizedStrings</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/MIDIBankType.html">MIDIBankType</a>
@@ -724,7 +724,7 @@
 
                 </div>
               </div>
-            <p>Provides an editing facility for SoundFont names.</p>
+            <p>Provides an editing facility for SoundFont meta-data and tags.</p>
 
           </section>
           <section class="section task-group-section">
@@ -743,7 +743,8 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A Config instance communicates values for the editor to use to do its job. It is setup during the segue that will
+show the editor.</p>
 
                         <a href="../Classes/FontEditor/Config.html" class="slightly-smaller">See more</a>
                       </div>
@@ -826,7 +827,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Set the configuration for the editor.</p>
 
                       </div>
                       <div class="declaration">
@@ -843,9 +844,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)viewWillAppear:"></a>
+                    <a name="/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)viewWillAppear:"></a>
                     <a name="//apple_ref/swift/Method/viewWillAppear(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)viewWillAppear:">viewWillAppear(_:<wbr>)</a>
+                    <a class="token" href="#/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)viewWillAppear:">viewWillAppear(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -870,9 +871,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)copyOriginalName:"></a>
+                    <a name="/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)copyOriginalName:"></a>
                     <a name="//apple_ref/swift/Method/copyOriginalName(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)copyOriginalName:">copyOriginalName(_:<wbr>)</a>
+                    <a class="token" href="#/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)copyOriginalName:">copyOriginalName(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -898,9 +899,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)copyEmbeddedName:"></a>
+                    <a name="/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)copyEmbeddedName:"></a>
                     <a name="//apple_ref/swift/Method/copyEmbeddedName(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)FontEditor(im)copyEmbeddedName:">copyEmbeddedName(_:<wbr>)</a>
+                    <a class="token" href="#/c:@CM@SoundFontsFramework@objc(cs)FontEditor(im)copyEmbeddedName:">copyEmbeddedName(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -936,7 +937,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Notification that user wishes to interact with a text field. Keep it visible.</p>
 
                       </div>
                       <div class="declaration">
@@ -963,7 +964,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Notification that the user has hit a &ldquo;return&rdquo; key. Stop editing in the field.</p>
 
                       </div>
                       <div class="declaration">
@@ -990,7 +991,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Notification that editing in a text field is coming to an end</p>
 
                       </div>
                       <div class="declaration">
@@ -1017,7 +1018,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Notification that the font editor is being dismissed. Treat as a close.</p>
 
                       </div>
                       <div class="declaration">
@@ -1044,7 +1045,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Notification that the font editor is being dismissed. Treat as a close.</p>
 
                       </div>
                       <div class="declaration">
@@ -1072,7 +1073,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Segues available from this view controller. A SegueHandler protocol requirement.</p>
 
                         <a href="../Classes/FontEditor/SegueIdentifier.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1100,7 +1101,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>User wishes to edit the collection of tags assigned to the sound font.</p>
 
                       </div>
                       <div class="declaration">
@@ -1111,6 +1112,37 @@
 
                         </div>
                       </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>segue</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the segue to be performed</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>sender</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the origin of the segue request</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </section>
                   </div>
                 </li>
@@ -1119,7 +1151,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-23)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

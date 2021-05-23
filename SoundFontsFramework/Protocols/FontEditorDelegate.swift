@@ -18,7 +18,7 @@ public protocol FontEditorDelegate: NSObjectProtocol {
      Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
      is over.
     
-     - parameter reason: the reason for the dismisal
+     - parameter reason: the reason for the dismissal
      */
     func dismissed(reason: FontEditorDismissedReason)
 }

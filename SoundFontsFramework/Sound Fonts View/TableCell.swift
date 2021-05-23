@@ -4,7 +4,8 @@ import UIKit
 import os
 
 /**
- Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry.
+ Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry. Better would be to separate
+ these two into distinct classes.
  */
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     private lazy var log = Logging.logger("TableCell")
@@ -16,10 +17,10 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private var activeIndicatorAnimator: UIViewPropertyAnimator?
 
-    public let normalFontColor: UIColor = .lightGray
-    public let selectedFontColor: UIColor = .white
-    public let activeFontColor: UIColor = .systemTeal
-    public let favoriteFontColor: UIColor = .systemOrange
+    private let normalFontColor: UIColor = .lightGray
+    private let selectedFontColor: UIColor = .white
+    private let activeFontColor: UIColor = .systemTeal
+    private let favoriteFontColor: UIColor = .systemOrange
 
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var activeIndicator: UIView!
@@ -27,6 +28,9 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private var bookmark: Bookmark?
     private var timer: Timer?
+    private var isActive: Bool = false
+
+    /// Set if there is a problem accessing a file associated with this cell.
     var activeAlert: UIAlertController?
 
     override public func awakeFromNib() {
@@ -36,6 +40,14 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         multipleSelectionBackgroundView = UIView()
     }
 
+    /**
+     Update cell contents for a sound font.
+
+     - parameter name: the name of the sound font to show
+     - parameter kind: the type of sound font the cell represents
+     - parameter isSelected: true if the cell holds the selected sound font
+     - parameter isActive: true if the cell holds the sound font of the active preset
+     */
     public func updateForFont(name: String, kind: SoundFontKind, isSelected: Bool, isActive: Bool) {
         var name = name
         if case let .reference(bookmark) = kind {
@@ -44,44 +56,56 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
             updateButton()
             startMonitor()
         }
-        update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false, isEditing: false)
+        update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false)
     }
 
+    /**
+     Update cell contents for a sound font preset.
+
+     - parameter name: the name of the preset
+     - parameter isActive: true if the cell holds the active preset
+     - parameter isEditing: true if the table view is in edit mode
+     */
     public func updateForPreset(name: String, isActive: Bool, isEditing: Bool) {
-        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false, isEditing: isEditing)
+        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
     }
 
+    /**
+     Update cell contents for a favorite.
+
+     - parameter name: the name of the favorite
+     - parameter isActive: true if the favorite is the active preset
+     */
     public func updateForFavorite(name: String, isActive: Bool) {
-        update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true,
-               isEditing: isEditing)
+        update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true)
     }
 
+    /**
+     Update cell contents for a tag.
+
+     - parameter name: the tag name
+     - parameter isActive: true if cell holds the active tag
+     */
     public func updateForTag(name: String, isActive: Bool) {
-        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false, isEditing: false)
+        update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
     }
 
+    /**
+     Make sure that the 'reorder' button can be seen when the table view is in edit mode
+     */
     override public func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
-        if let view = reorderControlImageView {
-            view.tint(color: .white)
+        if editing {
+            reorderControlImageView?.tint(color: .white)
+            showActiveIndicator()
         }
     }
 
-    private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool, isEditing: Bool) {
+    private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool) {
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
-        if isEditing {
-            activeIndicator.isHidden = true
-        }
-        else if isActive == activeIndicator.isHidden {
-            showActiveIndicator(isActive)
-        }
-    }
-
-    private func stopAnimation() {
-        activeIndicatorAnimator?.stopAnimation(false)
-        activeIndicatorAnimator?.finishAnimation(at: .end)
-        activeIndicatorAnimator = nil
+        self.isActive = isActive
+        showActiveIndicator()
     }
 
     override public func prepareForReuse() {
@@ -95,6 +119,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         name.isHidden = false
         tagEditor.isHidden = true
         tagEditor.isEnabled = false
+        isActive = false
     }
 
     private func stopMonitor() {
@@ -106,10 +131,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in self.updateButton() }
     }
 
-    private func showActiveIndicator(_ isActive: Bool) {
-        stopAnimation()
-        guard isActive else {
-            activeIndicator.isHidden = true
+    private func showActiveIndicator() {
+        guard isActive && !isEditing else {
+            if !activeIndicator.isHidden {
+                activeIndicator.isHidden = true
+                os_log(.debug, log: log, "showActiveIndicator - '%{public}s' hidden")
+            }
+            return
+        }
+
+        guard activeIndicatorAnimator == nil else {
             return
         }
 
@@ -121,6 +152,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         activeIndicatorAnimator.addCompletion { _ in self.activeIndicator.alpha = 1.0 }
         activeIndicatorAnimator.startAnimation()
         self.activeIndicatorAnimator = activeIndicatorAnimator
+        os_log(.debug, log: log, "showActiveIndicator - '%{public}s' done", name.text ?? "?")
+    }
+
+    private func stopAnimation() {
+        activeIndicatorAnimator?.stopAnimation(false)
+        activeIndicatorAnimator?.finishAnimation(at: .end)
+        activeIndicatorAnimator = nil
     }
 
     private func fontColorWhen(isSelected: Bool, isActive: Bool, isFavorite: Bool) -> UIColor? {

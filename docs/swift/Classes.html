@@ -17,7 +17,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> 2.21.0 Docs</a> (53% documented)</p>
+        <p><a href="index.html"> 2.21.0 Docs</a> (60% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="search.json">
@@ -39,6 +39,9 @@
           <li class="nav-group-name">
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -333,9 +336,6 @@
               <li class="nav-group-task">
                 <a href="Classes/VolumeMonitor.html">VolumeMonitor</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Classes/VolumeMonitor/Reason.html">– Reason</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -346,6 +346,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/BuildScheme.html">BuildScheme</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ComponentContainerEvent.html">ComponentContainerEvent</a>
@@ -376,9 +379,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/KeyLabelOption.html">KeyLabelOption</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Enums/LocalizedStrings.html">LocalizedStrings</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/MIDIBankType.html">MIDIBankType</a>
@@ -1144,7 +1144,8 @@ left/right swipes to switch the upper view, and two-finger left/right pan to adj
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>A tag is just a unique name that can be associated with zero or more sound fonts. By default there is an &lsquo;all&rsquo; tag
+which matches all sound fonts.</p>
 
                         <a href="Classes/LegacyTag.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1936,7 +1937,7 @@ instance. It also maintains an array of SoundFont.Key values that are ordered by
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Collection of Tag instances.</p>
 
                         <a href="Classes/LegacyTagCollection.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1965,7 +1966,7 @@ instance. It also maintains an array of SoundFont.Key values that are ordered by
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Manager for the tag collection.</p>
 
                         <a href="Classes/LegacyTagsManager.html" class="slightly-smaller">See more</a>
                       </div>
@@ -2081,7 +2082,7 @@ instance. It also maintains an array of SoundFont.Key values that are ordered by
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Provides an editing facility for SoundFont names.</p>
+                        <p>Provides an editing facility for SoundFont meta-data and tags.</p>
 
                         <a href="Classes/FontEditor.html" class="slightly-smaller">See more</a>
                       </div>
@@ -2143,7 +2144,8 @@ are available in the app.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Data source and delegate for the Patches UITableView.</p>
+                        <p>Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
+broken up into smaller components.</p>
 
                         <a href="Classes/PatchesTableViewManager.html" class="slightly-smaller">See more</a>
                       </div>
@@ -2211,7 +2213,8 @@ API for this class.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry.</p>
+                        <p>Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry. Better would be to separate
+these two into distinct classes.</p>
 
                         <a href="Classes/TableCell.html" class="slightly-smaller">See more</a>
                       </div>
@@ -2480,6 +2483,34 @@ to the background or stops being active.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">TutorialViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ActiveIndicatorView"></a>
+                    <a name="//apple_ref/swift/Class/ActiveIndicatorView" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ActiveIndicatorView">ActiveIndicatorView</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Show a vertical blue gradient band to indicate the active item in a list.</p>
+
+                        <a href="Classes/ActiveIndicatorView.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActiveIndicatorView</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
 
                         </div>
                       </div>
@@ -2998,7 +3029,8 @@ to the background or stops being active.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Periodically play a sound and see how long it takes to do so &ndash; if it is too quick, assume that the system is not
+playing audio due to some configuration.</p>
 
                         <a href="Classes/MuteDetector.html" class="slightly-smaller">See more</a>
                       </div>
@@ -3047,7 +3079,7 @@ output, update the Keyboard and NotePlayer instances so that they can show an in
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-23)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

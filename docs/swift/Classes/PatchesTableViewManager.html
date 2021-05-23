@@ -17,7 +17,7 @@
     <a title="PatchesTableViewManager Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (53% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (60% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,6 +39,9 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -333,9 +336,6 @@
               <li class="nav-group-task">
                 <a href="../Classes/VolumeMonitor.html">VolumeMonitor</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Classes/VolumeMonitor/Reason.html">– Reason</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -346,6 +346,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BuildScheme.html">BuildScheme</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ComponentContainerEvent.html">ComponentContainerEvent</a>
@@ -376,9 +379,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/KeyLabelOption.html">KeyLabelOption</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Enums/LocalizedStrings.html">LocalizedStrings</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/MIDIBankType.html">MIDIBankType</a>
@@ -724,7 +724,8 @@
 
                 </div>
               </div>
-            <p>Data source and delegate for the Patches UITableView.</p>
+            <p>Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
+broken up into smaller components.</p>
 
           </section>
           <section class="section task-group-section">
@@ -743,7 +744,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Construct a new patches table view manager.</p>
 
                       </div>
                       <div class="declaration">
@@ -755,6 +756,109 @@
      <span class="nv">keyboard</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Keyboard.html">Keyboard</a></span><span class="p">?,</span> <span class="nv">infoBar</span><span class="p">:</span> <span class="kt"><a href="../Protocols/InfoBar.html">InfoBar</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>view</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the view to manage</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>searchBar</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the search bar that filters on preset name</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>activePatchManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the active preset manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>selectedSoundFontManager</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the selected sound font manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>soundFonts</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the sound fonts collection manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>favorites</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the favorites collection manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keyboard</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the optional keyboard view manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>infoBar</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the info bar manager</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1252,7 +1356,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-23)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

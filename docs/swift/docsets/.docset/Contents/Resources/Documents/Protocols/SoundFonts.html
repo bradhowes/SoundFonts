@@ -17,7 +17,7 @@
     <a title="SoundFonts Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (53% documented)</p>
+        <p><a href="../index.html"> 2.21.0 Docs</a> (60% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -39,6 +39,9 @@
           <li class="nav-group-name">
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -333,9 +336,6 @@
               <li class="nav-group-task">
                 <a href="../Classes/VolumeMonitor.html">VolumeMonitor</a>
               </li>
-              <li class="nav-group-task">
-                <a href="../Classes/VolumeMonitor/Reason.html">– Reason</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -346,6 +346,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/BuildScheme.html">BuildScheme</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/ComponentContainerEvent.html">ComponentContainerEvent</a>
@@ -376,9 +379,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/KeyLabelOption.html">KeyLabelOption</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Enums/LocalizedStrings.html">LocalizedStrings</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/MIDIBankType.html">MIDIBankType</a>
@@ -1311,7 +1311,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Remove an association between a sound font and a tag</p>
 
                       </div>
                       <div class="declaration">
@@ -1321,6 +1321,25 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeTag</span><span class="p">(</span><span class="n">_</span> <span class="nv">tag</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyTag.html">LegacyTag</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tag</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the tag to remove</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1338,7 +1357,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Create a new favorite for a sound font preset.</p>
 
                       </div>
                       <div class="declaration">
@@ -1348,6 +1367,41 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">createFavorite</span><span class="p">(</span><span class="nv">soundFontAndPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a></span><span class="p">,</span> <span class="nv">keyboardLowestNote</span><span class="p">:</span> <span class="kt"><a href="../Structs/Note.html">Note</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/LegacyFavorite.html">LegacyFavorite</a></span><span class="p">?</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>soundFontAndPatch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the preset to make a favorite</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keyboardLowestNote</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the lowest note to use for the preset</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>new Favorite</p>
                       </div>
                     </section>
                   </div>
@@ -1365,7 +1419,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Remove an existing favorite.</p>
 
                       </div>
                       <div class="declaration">
@@ -1375,6 +1429,37 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">deleteFavorite</span><span class="p">(</span><span class="nv">soundFontAndPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a></span><span class="p">,</span> <span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyFavorite.html">LegacyFavorite</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>soundFontAndPatch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the preset that was used to create the favorite</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the unique key of the favorite to remove</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1392,7 +1477,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Update the configuration of a preset.</p>
 
                       </div>
                       <div class="declaration">
@@ -1402,6 +1487,37 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">updatePreset</span><span class="p">(</span><span class="nv">soundFontAndPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a></span><span class="p">,</span> <span class="nv">config</span><span class="p">:</span> <span class="kt"><a href="../Structs/PresetConfig.html">PresetConfig</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>soundFontAndPatch</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the preset to update</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>config</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the configuration to use</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1419,7 +1535,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Set the visibility of a preset.</p>
+                        <p>Set the preset visibility.</p>
 
                       </div>
                       <div class="declaration">
@@ -1437,24 +1553,12 @@ instance created from the raw data</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>key</em>
+                                <em>soundFontAndPatch</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>the unique key of the SoundFont to change</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>index</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>the index of the preset in the SoundFont to change</p>
+                                  <p>the preset to change</p>
                                 </div>
                               </td>
                             </tr>
@@ -1553,24 +1657,12 @@ instance created from the raw data</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>key</em>
+                                <em>soundFontAndPatch</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>the unique key of the SoundFont to change</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>index</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>the index of the preset in the SoundFont to change</p>
+                                  <p>the preset to change</p>
                                 </div>
                               </td>
                             </tr>
@@ -1617,7 +1709,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Reload the embedded contents of the sound font</p>
 
                       </div>
                       <div class="declaration">
@@ -1627,6 +1719,25 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">reloadEmbeddedInfo</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacySoundFont.html">LegacySoundFont</a></span><span class="o">.</span><span class="kt"><a href="../Classes/Key.html">Key</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>key</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the sound font to reload</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -1752,7 +1863,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Export all sound fonts in the collection to a local documents directory that the user can access.</p>
 
                       </div>
                       <div class="declaration">
@@ -1762,6 +1873,11 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">exportToLocalDocumentsDirectory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">good</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>2-tuple containing a counter of the number of successful exports and the total number that was
+attempted</p>
                       </div>
                     </section>
                   </div>
@@ -1779,7 +1895,7 @@ instance created from the raw data</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Import sound fonts found in the local documents directory for the app.</p>
 
                       </div>
                       <div class="declaration">
@@ -1789,6 +1905,11 @@ instance created from the raw data</p>
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">importFromLocalDocumentsDirectory</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nv">good</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">total</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>2-tuple containing a counter of the number of successful exports and the total number that was
+attempted</p>
                       </div>
                     </section>
                   </div>
@@ -1861,7 +1982,7 @@ instance created from the raw data</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-23)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

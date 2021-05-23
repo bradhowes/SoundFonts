@@ -4,6 +4,7 @@ import Foundation
 import os
 import SF2Files
 
+/// Various error conditions for loading or working with a sound font (SF2) file
 public enum SoundFontKindError: Error {
     case invalidKind
     case failedToRead
@@ -17,8 +18,12 @@ public enum SoundFontKindError: Error {
 public enum SoundFontKind {
     static let log = Logging.logger("SFKind")
 
+    /// Built-in sound font file that is comes with the app. Holds a URL to a bundle resource
     case builtin(resource: URL)
+    /// Sound font file that was installed by the user. Holds the name of the SF2 file
     case installed(fileName: String)
+    /// Alternative sound font file that was installed by the user but that was not copied into the app's working
+    /// directory.
     case reference(bookmark: Bookmark)
 
     /// The URL that points to the data file that defines the SoundFont.

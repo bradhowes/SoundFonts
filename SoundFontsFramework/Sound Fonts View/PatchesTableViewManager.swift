@@ -409,9 +409,6 @@ extension PatchesTableViewManager {
             view.performBatchUpdates({
                 updateView(with: old)
                 updateView(with: new)
-            }, completion: { finished in
-                guard finished else { return }
-                self.selectActive(animated: false)
             })
         }
     }

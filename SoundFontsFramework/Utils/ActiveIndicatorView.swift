@@ -3,15 +3,27 @@
 import UIKit
 import os
 
+/**
+ Show a vertical blue gradient band to indicate the active item in a list.
+ */
 public class ActiveIndicatorView: UIView {
 
+    /// The class of the layer to create for the background of the view
     override public class var layerClass: AnyClass { CAGradientLayer.self }
 
+    /**
+     Layout changed, update the gradient of the background layer.
+     */
     override public func layoutSubviews() {
         super.layoutSubviews()
         update()
     }
 
+    /**
+     Traits changed, update the gradient of the background layer.
+
+     - parameter previousTraitCollection: previous traits
+     */
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         update()

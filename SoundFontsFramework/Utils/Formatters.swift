@@ -16,6 +16,10 @@ public struct Formatters {
             NSLocalizedString("allTagName", bundle: bundle, comment: "The name of the 'all' tag.")
         }
 
+        public var builtInTagName: String {
+            NSLocalizedString("builtInTagName", bundle: bundle, comment: "The name of the 'Built-in' tag.")
+        }
+
         public var volumeIsZero: String {
             NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
         }

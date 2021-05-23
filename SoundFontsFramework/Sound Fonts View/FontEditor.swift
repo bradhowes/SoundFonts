@@ -3,29 +3,35 @@
 import UIKit
 
 /**
- Provides an editing facility for SoundFont names.
+ Provides an editing facility for SoundFont meta-data and tags.
  */
 final class FontEditor: UIViewController {
 
+    /**
+     A Config instance communicates values for the editor to use to do its job. It is setup during the segue that will
+     show the editor.
+     */
     public struct Config {
+        /// The index of the sound font entry being edited
         let indexPath: IndexPath
+        /// The cell view that holds the sound font entry
         let view: UIView
+        /// The rect to use for presenting
         let rect: CGRect
+        /// The collection of all sound fonts
         let soundFonts: SoundFonts
+        /// The unique key for the sound font being edited
         let soundFontKey: LegacySoundFont.Key
+        /// The number of favorites associated with the sound font being edited
         let favoriteCount: Int
+        /// The tags assigned to this sound font
         let tags: Tags
+        /// The function to call when dismissing the editor. Sole parameter indicates if an activity was completed.
         let completionHandler: ((Bool) -> Void)?
     }
 
-    private var soundFonts: SoundFonts!
-    private var soundFontKey: LegacySoundFont.Key!
-    private var favoriteCount: Int = 0
-    private var position: IndexPath = IndexPath()
-    private var tags: Tags!
+    private var config: Config!
     private var activeTags = Set<LegacyTag.Key>()
-
-    private var completionHandler: ((Bool) -> Void)?
 
     weak var delegate: FontEditorDelegate?
 
@@ -48,23 +54,27 @@ final class FontEditor: UIViewController {
 
     private var textFieldKeyboardMonitor: TextFieldKeyboardMonitor!
 
+    private var soundFont: LegacySoundFont {
+        guard let soundFont = config.soundFonts.getBy(key: config.soundFontKey) else { fatalError() }
+        return soundFont
+    }
+}
+
+extension FontEditor {
+
+    /**
+     Set the configuration for the editor.
+     */
     func configure(_ config: Config) {
-        position = config.indexPath
-        soundFonts = config.soundFonts
-        soundFontKey = config.soundFontKey
-        favoriteCount = config.favoriteCount
-        tags = config.tags
-        completionHandler = config.completionHandler
-
-        soundFonts.reloadEmbeddedInfo(key: soundFontKey)
-
-        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
+        self.config = config
+        config.soundFonts.reloadEmbeddedInfo(key: config.soundFontKey)
         activeTags = soundFont.tags
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
+
+        let soundFont = soundFont
         name.text = soundFont.displayName
         name.delegate = self
         originalNameLabel.text = soundFont.originalDisplayName
@@ -82,19 +92,114 @@ final class FontEditor: UIViewController {
         }()
 
         presetsCountLabel.text = Formatters.format(presetCount: soundFont.patches.count)
-        favoritesCountLabel.text = Formatters.format(favoriteCount: favoriteCount)
+        favoritesCountLabel.text = Formatters.format(favoriteCount: config.favoriteCount)
 
         updateHiddenCount()
 
         path.text = "Path: " + soundFont.fileURL.path
-        let value = tags.names(of: activeTags).joined(separator: ", ")
+        let value = config.tags.names(of: activeTags).joined(separator: ", ")
         tagsLabel.text = value
 
         textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
     }
+}
+
+extension FontEditor {
+
+    @IBAction private func close(_ sender: UIBarButtonItem) {
+        if let soundFont = config.soundFonts.getBy(key: config.soundFontKey) {
+            let newName = name.text ?? ""
+            if !newName.isEmpty {
+                soundFont.displayName = newName
+            }
+            soundFont.tags = activeTags
+            delegate?.dismissed(reason: .done(soundFontKey: config.soundFontKey))
+        }
+
+        self.dismiss(animated: true)
+        config.completionHandler?(true)
+        AskForReview.maybe()
+    }
+
+    @IBAction private func makeAllVisible(_ sender: UIButton) {
+        config.soundFonts.makeAllVisible(key: config.soundFontKey)
+        updateHiddenCount()
+    }
+
+    @IBAction func copyOriginalName(_ sender: Any) { name.text = originalNameLabel.text }
+
+    @IBAction func copyEmbeddedName(_ sender: Any) { name.text = embeddedNameLabel.text }
+}
+
+extension FontEditor: UITextFieldDelegate {
+
+    /**
+     Notification that user wishes to interact with a text field. Keep it visible.
+     */
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textFieldKeyboardMonitor.viewToKeepVisible = textField
+        return true
+    }
+
+    /**
+     Notification that the user has hit a "return" key. Stop editing in the field.
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    /**
+     Notification that editing in a text field is coming to an end
+     */
+    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textFieldKeyboardMonitor.viewToKeepVisible = nil
+        return true
+    }
+}
+
+extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
+
+    /**
+     Notification that the font editor is being dismissed. Treat as a close.
+     */
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        close(doneButton)
+    }
+
+    /**
+     Notification that the font editor is being dismissed. Treat as a close.
+     */
+    func popoverPresentationControllerDidDismissPopover(
+        _ popoverPresentationController: UIPopoverPresentationController) {
+        close(doneButton)
+    }
+}
+
+extension FontEditor: SegueHandler {
+
+    /// Segues available from this view controller. A SegueHandler protocol requirement.
+    public enum SegueIdentifier: String {
+        /// Tag editor
+        case tagsEdit
+    }
+
+    /**
+     User wishes to edit the collection of tags assigned to the sound font.
+
+     - parameter segue: the segue to be performed
+     - parameter sender: the origin of the segue request
+     */
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .tagsEdit: prepareToEdit(segue)
+        }
+    }
+}
+
+extension FontEditor {
 
     private func updateHiddenCount() {
-        guard let soundFont = soundFonts.getBy(key: soundFontKey) else { fatalError() }
         let hiddenCount = soundFont.patches.filter { $0.presetConfig.isHidden ?? false }.count
         if hiddenCount > 0 {
             hiddenCountLabel.text = "\(hiddenCount) hidden"
@@ -106,82 +211,12 @@ final class FontEditor: UIViewController {
         }
     }
 
-    @IBAction private func close(_ sender: UIBarButtonItem) {
-        if let soundFont = soundFonts.getBy(key: soundFontKey) {
-            let newName = name.text ?? ""
-            if !newName.isEmpty {
-                soundFont.displayName = newName
-            }
-            soundFont.tags = activeTags
-            delegate?.dismissed(reason: .done(soundFontKey: soundFontKey))
-        }
-
-        self.dismiss(animated: true)
-        completionHandler?(true)
-        AskForReview.maybe()
-    }
-
-    @IBAction private func makeAllVisible(_ sender: UIButton) {
-        soundFonts.makeAllVisible(key: soundFontKey)
-        updateHiddenCount()
-    }
-
-    @IBAction func copyOriginalName(_ sender: Any) {
-        name.text = originalNameLabel.text
-    }
-
-    @IBAction func copyEmbeddedName(_ sender: Any) {
-        name.text = embeddedNameLabel.text
-    }
-}
-
-extension FontEditor: UITextFieldDelegate {
-
-    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textFieldKeyboardMonitor.viewToKeepVisible = textField
-        return true
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-
-    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textFieldKeyboardMonitor.viewToKeepVisible = nil
-        return true
-    }
-}
-
-extension FontEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate {
-    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        close(doneButton)
-    }
-
-    func popoverPresentationControllerDidDismissPopover(
-        _ popoverPresentationController: UIPopoverPresentationController) {
-        close(doneButton)
-    }
-}
-
-extension FontEditor: SegueHandler {
-
-    public enum SegueIdentifier: String {
-        case tagsEdit
-    }
-
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .tagsEdit: prepareToEdit(segue)
-        }
-    }
-
     private func prepareToEdit(_ segue: UIStoryboardSegue) {
         guard let viewController = segue.destination as? TagsTableViewController else {
             fatalError("unexpected view configuration")
         }
 
-        let config = TagsTableViewController.Config(tags: tags, active: activeTags) { tags in
+        let config = TagsTableViewController.Config(tags: config.tags, active: activeTags) { tags in
             self.activeTags = tags
         }
 

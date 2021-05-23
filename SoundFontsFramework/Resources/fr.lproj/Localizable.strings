@@ -1,6 +1,7 @@
 /* Copyright © 2019 Brad Howes. All rights reserved. */
 
 "allTagName" = "All";
+"builtInTagName" = "Built-in";
 
 "favorite" = "signet";
 "patch" = "préréglé";

@@ -17,7 +17,7 @@
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> 2.21.0 Docs</a> (53% documented)</p>
+        <p><a href="index.html"> 2.21.0 Docs</a> (60% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="search.json">
@@ -39,6 +39,9 @@
           <li class="nav-group-name">
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ActiveIndicatorView.html">ActiveIndicatorView</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Classes/ActivePatchManager.html">ActivePatchManager</a>
               </li>
@@ -333,9 +336,6 @@
               <li class="nav-group-task">
                 <a href="Classes/VolumeMonitor.html">VolumeMonitor</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Classes/VolumeMonitor/Reason.html">– Reason</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -346,6 +346,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ActivePatchKind.html">ActivePatchKind</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Enums/BuildScheme.html">BuildScheme</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/ComponentContainerEvent.html">ComponentContainerEvent</a>
@@ -376,9 +379,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Enums/KeyLabelOption.html">KeyLabelOption</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Enums/LocalizedStrings.html">LocalizedStrings</a>
               </li>
               <li class="nav-group-task">
                 <a href="Enums/MIDIBankType.html">MIDIBankType</a>
@@ -989,7 +989,7 @@ not between controllers themselves. This is enforced here through access restric
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Protocol for a favorites view manager.</p>
 
                       </div>
                       <div class="declaration">
@@ -997,6 +997,34 @@ not between controllers themselves. This is enforced here through access restric
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">FavoritesViewManager</span> <span class="p">:</span> <span class="kt"><a href="Protocols/UpperViewSwipingActivity.html">UpperViewSwipingActivity</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework25FontEditorActionGeneratorP"></a>
+                    <a name="//apple_ref/swift/Protocol/FontEditorActionGenerator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework25FontEditorActionGeneratorP">FontEditorActionGenerator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generates swipe actions that act on SoundFont instances.</p>
+
+                        <a href="Protocols/FontEditorActionGenerator.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">FontEditorActionGenerator</span></code></pre>
 
                         </div>
                       </div>
@@ -1128,7 +1156,8 @@ not between controllers themselves. This is enforced here through access restric
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Protocol for UIView classes that can load from a NIB file</p>
+                        <p>Protocol for UIView classes that can load themselves from a NIB file. To do so they must define the name of the NIB
+to be loaded and a way to obtain the UINib object where it resides.</p>
 
                         <a href="Protocols/NibLoadableView.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1156,7 +1185,8 @@ not between controllers themselves. This is enforced here through access restric
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Defines the available actions of a PatchesViewManager.</p>
+                        <p>Defines the available actions of a PatchesViewManager which contains both the list of installed sound fonts on the
+left and on the right the list of presets found in the selected sound font.</p>
 
                         <a href="Protocols/PatchesViewManager.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1214,7 +1244,7 @@ container such as UICollectionView.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Protocol definition for objects that know about segues between UIView controllers. The protocol basically defines
-a type-safe way to translate from a UIStoryboardSeque.identifier value into a type-specific value (probably an enum)</p>
+a type-safe way to translate from a UIStoryboardSegue.identifier value into a type-specific value (probably an enum)</p>
 
                         <a href="Protocols/SegueHandler.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1223,34 +1253,6 @@ a type-safe way to translate from a UIStoryboardSeque.identifier value into a ty
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">SegueHandler</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:19SoundFontsFramework25FontEditorActionGeneratorP"></a>
-                    <a name="//apple_ref/swift/Protocol/FontEditorActionGenerator" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework25FontEditorActionGeneratorP">FontEditorActionGenerator</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Generates swipe actions that act on SoundFont instances.</p>
-
-                        <a href="Protocols/FontEditorActionGenerator.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">FontEditorActionGenerator</span></code></pre>
 
                         </div>
                       </div>
@@ -1458,7 +1460,7 @@ a type-safe way to translate from a UIStoryboardSeque.identifier value into a ty
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-15)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-23)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

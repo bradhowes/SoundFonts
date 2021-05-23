@@ -6,7 +6,9 @@ import UIKit
  The collection of event types that can be targeted in the `UpperViewSwipingActivity.addTarget` method
  */
 public enum UpperViewSwipingEvent {
+    /// Swiping to the left
     case swipeLeft
+    /// Swiping to the right
     case swipeRight
 }
 
@@ -24,8 +26,7 @@ public protocol UpperViewSwipingActivity {
      Link a button / gesture event to a target/selector combination
 
      - parameter event: the event to link to
-     - parameter target: the object to call when the event takes place
-     - parameter action: the function to call when the event takes place
+     - parameter closure: the closure to invokes when the event takes place
      */
     func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void)
 }
@@ -33,11 +34,10 @@ public protocol UpperViewSwipingActivity {
 extension UpperViewSwipingActivity {
 
     /**
-     Attach an event notification to the given object/selector pair so that future events will invoke the selector.
+     Link a button / gesture event to a target/selector combination
 
-     - parameter event: the event to attach to
-     - parameter target: the object to notify
-     - parameter action: the selector to invoke
+     - parameter event: the event to link to
+     - parameter closure: the closure to invokes when the event takes place
      */
     public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void) {
         switch event {
