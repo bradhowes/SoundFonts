@@ -74,7 +74,7 @@ extension FontEditor {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let soundFont = soundFont
+        let soundFont = self.soundFont
         name.text = soundFont.displayName
         name.delegate = self
         originalNameLabel.text = soundFont.originalDisplayName
@@ -216,7 +216,7 @@ extension FontEditor {
             fatalError("unexpected view configuration")
         }
 
-        let config = TagsTableViewController.Config(tags: config.tags, active: activeTags) { tags in
+        let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags) { tags in
             self.activeTags = tags
         }
 

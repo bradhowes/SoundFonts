@@ -3,21 +3,35 @@
 import Foundation
 import os
 
+/**
+ A bookmark represents a file located outside of the app's own storage space. It is used to reference sound font files
+ without making a copy of them. However there are risks involved, namely that the bookmark may not resolve to a real
+ file.
+ */
 public final class Bookmark: Codable {
     private static let log = Logging.logger("Bookmark")
     private var log: OSLog { Self.log }
 
+    /// The custom coding keys for a bookmark encoding
     enum CodingKeys: String, CodingKey {
         case name
         case bookmark
         case original
     }
 
+    /// The name of the sound font represented by the bookmark
     public let name: String
+
     private var bookmark: Data?
     private let original: URL
     private var _resolved: URL?
 
+    /**
+     Construct a new bookmark
+
+     - parameter url: the file to bookmark
+     - parameter name: the name to associate with the bookmark
+     */
     public init(url: URL, name: String) {
         self.name = name
         original = url
@@ -25,6 +39,12 @@ public final class Bookmark: Codable {
         os_log(.info, log: log, "name: %{public}s data.count: %d url: %{public}s", name, bookmark?.count ?? 0, url.path)
     }
 
+    /**
+     Attempt to reconstitute a bookmark from an encoded container
+
+     - parameter decoder: the container to read from
+     - throws exception if unable to decode from container
+     */
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         name = try values.decode(String.self, forKey: .name)
@@ -37,25 +57,37 @@ public final class Bookmark: Codable {
 
 extension Bookmark {
 
+    /// The resolved URL of the bookmark. Note well that this may not point to a valid file if the file has moved or is
+    /// not available.
     public var url: URL { _resolved ?? self.resolve() }
 
+    /// Determine the availability state for a bookmarked URL
     public var isAvailable: Bool {
         let secured = url.startAccessingSecurityScopedResource()
         defer { if secured { url.stopAccessingSecurityScopedResource() } }
         return (try? url.checkResourceIsReachable()) ?? false
     }
 
+    /// Determine if the file is located in an iCloud container
     public var isUbiquitous: Bool { FileManager.default.isUbiquitousItem(at: url) }
 
+    /// The various iCloud states a bookmark item may be in.
     public enum CloudState {
+        /// Item is on iCloud but not available locally.
         case inCloud
+        /// Item is queue to be downloaded to the device
         case downloadRequested
+        /// Item is currently being downloaded to the device
         case downloading
+        /// Item has been downloaded and is available locally
         case downloaded
+        /// Problem downloading the file from iCloud
         case downloadError
+        /// Unknown state
         case unknown
     }
 
+    /// Obtain the current iCloud state of the bookmark item
     public var cloudState: CloudState {
         guard let values = try? url.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey,
                                                              .ubiquitousItemIsDownloadingKey,
@@ -94,6 +126,20 @@ extension Bookmark {
 }
 
 extension Bookmark: Hashable {
+
+    /**
+     Provide a hash for a bookmark. Relies on the bookmark hash value.
+
+     - parameter hasher: the object to hash into
+     */
     public func hash(into hasher: inout Hasher) { hasher.combine(bookmark) }
+
+    /**
+     Allow comparison operator for bookmarks
+
+     - parameter lhs: first argument to compare
+     - parameter rhs: second argument to compare
+     - returns: true if they are the same
+     */
     public static func == (lhs: Bookmark, rhs: Bookmark) -> Bool { lhs.bookmark == rhs.bookmark }
 }
