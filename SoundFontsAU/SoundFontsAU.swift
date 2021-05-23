@@ -89,7 +89,7 @@ extension SoundFontsAU {
 
     override public func supportedViewConfigurations(_ availableViewConfigurations: [AUAudioUnitViewConfiguration]) ->
     IndexSet {
-        os_log(.info, log: log, "supportedViewConfiigurations")
+        os_log(.info, log: log, "supportedViewConfigurations")
         let indices = availableViewConfigurations.enumerated().compactMap { $0.1.height > 270 ? $0.0 : nil }
         os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
         return IndexSet(indices)

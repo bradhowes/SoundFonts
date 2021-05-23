@@ -387,7 +387,7 @@ extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePre
     }
 
     /**
-     Treat touches outside of the popover as a signal to dismiss via Dones button
+     Treat touches outside of the popover as a signal to dismiss via Done button
 
      - parameter popoverPresentationController: the controller being monitored
      */

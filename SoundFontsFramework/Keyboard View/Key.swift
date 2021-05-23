@@ -33,7 +33,7 @@ public final class Key: UIView {
      Create new Key instance
 
      - parameter frame: location of the key
-     - parameter note: the note that the key playes
+     - parameter note: the note that the key plays
      */
     public init(frame: CGRect, note: Note) {
         self.note = note

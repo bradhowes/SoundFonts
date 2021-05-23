@@ -9,7 +9,7 @@ import os
  output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
  */
 final class VolumeMonitor {
-    private let log = Logging.logger("VolMon")
+    private let log = Logging.logger("VolumeMonitor")
 
     private enum Reason {
         /// Volume level is at zero

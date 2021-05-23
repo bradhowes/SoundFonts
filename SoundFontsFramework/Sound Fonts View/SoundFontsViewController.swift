@@ -33,10 +33,11 @@ public final class SoundFontsViewController: UIViewController {
     private var selectedSoundFontManager: SelectedSoundFontManager!
     private var keyboard: Keyboard?
 
-    public var swipeLeft = UISwipeGestureRecognizer()
-    public var swipeRight = UISwipeGestureRecognizer()
     private var dividerDragGesture = UIPanGestureRecognizer()
     private var lastDividerPos: CGFloat = .zero
+
+    public let swipeLeft = UISwipeGestureRecognizer()
+    public let swipeRight = UISwipeGestureRecognizer()
 }
 
 extension SoundFontsViewController {
@@ -180,7 +181,7 @@ extension SoundFontsViewController {
 
 extension SoundFontsViewController: UIDocumentPickerDelegate {
 
-    public func documentPicker(_ dpvc: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         os_log(.info, log: log, "documentPicker didPickDocumentAt")
         addSoundFonts(urls: urls)
     }

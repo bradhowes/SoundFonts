@@ -31,7 +31,7 @@ public final class AudioUnitParameters: NSObject {
      */
     init(parameterHandler: AUParameterHandler) {
 
-        // Define a new parameter tree with the parameter defintions
+        // Define a new parameter tree with the parameter definitions
         parameterTree = AUParameterTree.createTree(withChildren: [])
         super.init()
 

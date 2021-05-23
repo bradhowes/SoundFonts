@@ -83,7 +83,7 @@ final class PatchesTableViewManager: NSObject {
 
         view.sectionIndexColor = .darkGray
 
-        let customFont = UIFont(name: "EurostileRegular", size: 20)!
+        let customFont = UIFont(name: "Eurostile", size: 20)!
         let defaultTextAttributes = [NSAttributedString.Key.font: customFont,
                                      NSAttributedString.Key.foregroundColor: UIColor.systemTeal]
         UITextField.appearance().defaultTextAttributes = defaultTextAttributes

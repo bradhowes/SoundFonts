@@ -61,7 +61,7 @@ extension ReverbViewController: UIPickerViewDelegate {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel?.font = UIFont.init(name: "Eurostile", size: 17.0)
+            pickerLabel?.font = UIFont(name: "Eurostile", size: 17.0)
             pickerLabel?.textAlignment = .center
         }
 

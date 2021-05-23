@@ -5,30 +5,29 @@ import AVFoundation
 import os
 
 /**
- Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
- left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
+ View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects components.
  */
 public final class EffectsController: UIViewController {
     private let log = Logging.logger("Effects")
 
-    @IBOutlet weak var reverbEnabled: UIButton!
-    @IBOutlet weak var reverbGlobal: UIButton!
-    @IBOutlet weak var reverbControls: UIStackView!
-    @IBOutlet weak var reverbWetDryMix: Knob!
-    @IBOutlet weak var reverbWetDryMixLabel: UILabel!
-    @IBOutlet weak var reverbRoom: UIPickerView!
+    @IBOutlet private weak var reverbEnabled: UIButton!
+    @IBOutlet private weak var reverbGlobal: UIButton!
+    @IBOutlet private weak var reverbControls: UIStackView!
+    @IBOutlet private weak var reverbWetDryMix: Knob!
+    @IBOutlet private weak var reverbWetDryMixLabel: UILabel!
+    @IBOutlet private weak var reverbRoom: UIPickerView!
 
-    @IBOutlet weak var delayEnabled: UIButton!
-    @IBOutlet weak var delayGlobal: UIButton!
-    @IBOutlet weak var delayControls: UIStackView!
-    @IBOutlet weak var delayTime: Knob!
-    @IBOutlet weak var delayTimeLabel: UILabel!
-    @IBOutlet weak var delayFeedback: Knob!
-    @IBOutlet weak var delayFeedbackLabel: UILabel!
-    @IBOutlet weak var delayCutoff: Knob!
-    @IBOutlet weak var delayCutoffLabel: UILabel!
-    @IBOutlet weak var delayWetDryMix: Knob!
-    @IBOutlet weak var delayWetDryMixLabel: UILabel!
+    @IBOutlet private weak var delayEnabled: UIButton!
+    @IBOutlet private weak var delayGlobal: UIButton!
+    @IBOutlet private weak var delayControls: UIStackView!
+    @IBOutlet private weak var delayTime: Knob!
+    @IBOutlet private weak var delayTimeLabel: UILabel!
+    @IBOutlet private weak var delayFeedback: Knob!
+    @IBOutlet private weak var delayFeedbackLabel: UILabel!
+    @IBOutlet private weak var delayCutoff: Knob!
+    @IBOutlet private weak var delayCutoffLabel: UILabel!
+    @IBOutlet private weak var delayWetDryMix: Knob!
+    @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
     private var isMainApp: Bool = false
     private var activePatchManager: ActivePatchManager!
@@ -61,6 +60,9 @@ public final class EffectsController: UIViewController {
         delayWetDryMix.value = 20
 
     }
+}
+
+extension EffectsController {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -70,6 +72,9 @@ public final class EffectsController: UIViewController {
         reverbRoom.reloadComponent(0)
         updateState()
     }
+}
+
+extension EffectsController {
 
     @IBAction func toggleReverbEnabled(_ sender: UIButton) {
         guard let reverbEffect = self.reverbEffect else { return }
@@ -168,7 +173,7 @@ extension EffectsController: UIPickerViewDelegate {
         var pickerLabel: UILabel? = (view as? UILabel)
         if pickerLabel == nil {
             pickerLabel = UILabel()
-            pickerLabel?.font = UIFont.init(name: "Eurostile", size: 17.0)
+            pickerLabel?.font = UIFont(name: "Eurostile", size: 17.0)
             pickerLabel?.textAlignment = .center
         }
 

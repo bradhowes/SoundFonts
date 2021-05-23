@@ -38,7 +38,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
         doubleTapGestureRecognizer.addTarget(self, action: #selector(editFavorite))
         doubleTapGestureRecognizer.delaysTouchesBegan = true
 
-        favoriteMover = FavoriteMover(view: favoritesView, lpgr: longPressGestureRecognizer)
+        favoriteMover = FavoriteMover(view: favoritesView, recognizer: longPressGestureRecognizer)
 
         swipeLeft.direction = .left
         swipeLeft.numberOfTouchesRequired = 2
@@ -197,8 +197,8 @@ extension FavoritesViewController: SegueHandler {
         navController.presentationController?.delegate = viewController
     }
 
-    @objc private func editFavorite(_ gr: UITapGestureRecognizer) {
-        let pos = gr.location(in: view)
+    @objc private func editFavorite(_ recognizer: UITapGestureRecognizer) {
+        let pos = recognizer.location(in: view)
         guard let indexPath = favoritesView.indexPathForItem(at: pos) else { return }
         let favorite = favorites.getBy(index: indexPath.item)
         guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }

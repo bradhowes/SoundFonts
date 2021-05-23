@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
-	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>When allowed, SoundFonts can scan for and connect to Blutetooth LE MIDI devices in order to receive MIDI commands from the device.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,7 +16,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
-			<string>Alternate</string>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.braysoftware.sf2</string>
@@ -49,6 +45,8 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>When allowed, SoundFonts can scan for and connect to Blutetooth LE MIDI devices in order to receive MIDI commands from the device.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_audiobus._udp</string>
@@ -85,6 +83,8 @@
 	</array>
 	<key>UISupportsDocumentBrowser</key>
 	<true/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UTImportedTypeDeclarations</key>
@@ -96,6 +96,8 @@
 			</array>
 			<key>UTTypeDescription</key>
 			<string>SoundFont file</string>
+			<key>UTTypeIconFiles</key>
+			<array/>
 			<key>UTTypeIdentifier</key>
 			<string>com.braysoftware.sf2</string>
 			<key>UTTypeTagSpecification</key>

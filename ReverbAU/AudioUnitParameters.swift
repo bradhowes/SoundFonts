@@ -43,7 +43,7 @@ public struct AudioUnitParameters {
         return param
     }()
 
-    /// AUParameterTree created with the parameter defintions for the audio unit
+    /// AUParameterTree created with the parameter definitions for the audio unit
     public let parameterTree: AUParameterTree
 
     /**
