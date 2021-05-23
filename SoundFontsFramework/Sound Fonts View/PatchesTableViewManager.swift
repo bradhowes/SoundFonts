@@ -16,7 +16,7 @@ private enum Slot: Equatable {
  */
 final class PatchesTableViewManager: NSObject {
 
-    private lazy var log = Logging.logger("PatTVM")
+    private lazy var log = Logging.logger("PatchesTableViewManager")
 
     private let view: UITableView
 
@@ -53,6 +53,7 @@ final class PatchesTableViewManager: NSObject {
          keyboard: Keyboard?, infoBar: InfoBar) {
         self.view = view
         self.searchBar = searchBar
+        searchBar.text = nil
         self.selectedSoundFontManager = selectedSoundFontManager
         self.activePatchManager = activePatchManager
         self.soundFonts = soundFonts
@@ -137,9 +138,7 @@ extension PatchesTableViewManager: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: TableCell = tableView.dequeueReusableCell(at: indexPath)
-        updateView(cell: cell, at: indexPath)
-        return cell
+        updateCell(cell: tableView.dequeueReusableCell(at: indexPath), at: indexPath)
     }
 
     func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -173,21 +172,11 @@ extension PatchesTableViewManager: UITableViewDataSource {
 extension PatchesTableViewManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView,
-                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        showingSearchResults ? nil : leadingSwipeActions(at: indexPath)
-    }
-
-    func tableView(_ tableView: UITableView,
-                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        showingSearchResults ? nil : trailingSwipeActions(at: indexPath)
-    }
-
-    func tableView(_ tableView: UITableView,
                    editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         .none
     }
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
+    // func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if view.isEditing {
@@ -205,21 +194,19 @@ extension PatchesTableViewManager: UITableViewDelegate {
         }
     }
 
-    private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T?) -> T? {
-        guard let soundFont = selectedSoundFontManager.selected else { return nil }
-        return closure(soundFont)
-    }
-
-    private func selectPreset(_ presetIndex: Int) {
-        withSoundFont { soundFont in
-            let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
-            activePatchManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample)
-        }
-    }
-
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         guard view.isEditing else { return }
         setSlotVisibility(at: indexPath, state: false)
+    }
+
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        showingSearchResults ? nil : leadingSwipeActions(at: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        showingSearchResults ? nil : trailingSwipeActions(at: indexPath)
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -238,6 +225,18 @@ extension PatchesTableViewManager: UISearchBarDelegate {
 }
 
 extension PatchesTableViewManager {
+
+    private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T?) -> T? {
+        guard let soundFont = selectedSoundFontManager.selected else { return nil }
+        return closure(soundFont)
+    }
+
+    private func selectPreset(_ presetIndex: Int) {
+        withSoundFont { soundFont in
+            let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
+            activePatchManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample)
+        }
+    }
 
     private func showSearchBar() {
         guard searchBar.isFirstResponder == false else { return }
@@ -406,16 +405,29 @@ extension PatchesTableViewManager {
         switch event {
         case let .active(old: old, new: new, playSample: _):
             os_log(.debug, log: log, "activePatchChange")
+
+            // Update the two rows involved in the change in active preset
             view.performBatchUpdates({
-                updateView(with: old)
-                updateView(with: new)
+                updateRow(with: old)
+                updateRow(with: new)
+            },
+            completion: {_ in
+
+                // Now that row cells have updated, make sure that the new one is visible.
+                guard let indexPath = self.getPresetIndexPath(for: new) else { return }
+                self.view.scrollToRow(at: indexPath, at: .none, animated: false)
+
+                // Finally, on the next view update, make sure that the search bar is no longer visible.
+                DispatchQueue.main.async {
+                    self.hideSearchBar(animated: true)
+                }
             })
         }
     }
 
     private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
         guard case let .changed(old: old, new: new) = event else { return }
-        os_log(.info, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
+        os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
                old?.displayName ?? "N/A", new?.displayName ?? "N/A")
         updateViewPresets()
         if view.isEditing {
@@ -444,7 +456,7 @@ extension PatchesTableViewManager {
     }
 
     private func favoritesChange(_ event: FavoritesEvent) {
-        os_log(.info, log: log, "favoritesChange")
+        os_log(.debug, log: log, "favoritesChange")
         switch event {
         case .restored:
             os_log(.info, log: log, "favoritesChange - restored")
@@ -458,7 +470,7 @@ extension PatchesTableViewManager {
 
         case let .changed(_, favorite):
             os_log(.info, log: log, "favoritesChange - changed - %{public}s", favorite.key.uuidString)
-            updateView(with: favorite)
+            updateRow(with: favorite)
 
         case .selected: break
         case .beginEdit: break
@@ -482,7 +494,7 @@ extension PatchesTableViewManager {
         case let .presetChanged(soundFont, index):
             if soundFont == selectedSoundFontManager.selected {
                 let soundFontAndPatch = soundFont.makeSoundFontAndPatch(at: index)
-                updateView(with: soundFontAndPatch)
+                updateRow(with: soundFontAndPatch)
             }
 
         case .restored:
@@ -523,8 +535,8 @@ extension PatchesTableViewManager {
     private var showingSearchResults: Bool { searchBar.searchTerm != nil }
 
     private func dismissSearchResults() {
-        os_log(.info, log: log, "dismissSearchResults")
-        guard searchBar.text != nil else { return }
+        guard searchBar.searchTerm != nil else { return }
+        os_log(.debug, log: log, "dismissSearchResults")
         searchBar.text = nil
         searchSlots.removeAll()
         view.reloadData()
@@ -532,7 +544,7 @@ extension PatchesTableViewManager {
     }
 
     private func search(for searchTerm: String) {
-        os_log(.info, log: log, "search - '%{public}s'", searchTerm)
+        os_log(.debug, log: log, "search - '%{public}s'", searchTerm)
         lastSearchText = searchTerm
         withSoundFont { soundFont in
             searchSlots = viewSlots.filter { slot in
@@ -545,7 +557,7 @@ extension PatchesTableViewManager {
                 return name.localizedCaseInsensitiveContains(searchTerm)
             }
         }
-        os_log(.info, log: log, "found %d matches", searchSlots.count)
+        os_log(.debug, log: log, "found %d matches", searchSlots.count)
         view.reloadData()
     }
 
@@ -757,52 +769,61 @@ extension PatchesTableViewManager {
         return SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
     }
 
-    private func updateView(with activeKind: ActivePatchKind?) {
-        os_log(.info, log: log, "updateView - with activeKind")
+    private func updateRow(with activeKind: ActivePatchKind?) {
+        os_log(.debug, log: log, "updateView - with activeKind")
         guard let activeKind = activeKind else { return }
         switch activeKind {
         case .none: return
-        case .preset(let soundFontAndPatch): updateView(with: soundFontAndPatch)
-        case .favorite(let favorite): updateView(with: favorite)
+        case .preset(let soundFontAndPatch): updateRow(with: soundFontAndPatch)
+        case .favorite(let favorite): updateRow(with: favorite)
         }
     }
 
-    private func updateView(with favorite: LegacyFavorite) {
-        os_log(.info, log: log, "updateView - with favorite")
+    private func updateRow(with favorite: LegacyFavorite) {
+        os_log(.debug, log: log, "updateRow - with favorite")
         guard let indexPath = getPresetIndexPath(for: favorite.key),
               let cell: TableCell = view.cellForRow(at: indexPath) else { return }
-        updateView(cell: cell, at: indexPath)
+        updateCell(cell: cell, at: indexPath)
     }
 
-    private func updateView(with soundFontAndPatch: SoundFontAndPatch?) {
-        os_log(.info, log: log, "updateView - with soundFontAndPatch")
+    private func updateRow(with soundFontAndPatch: SoundFontAndPatch?) {
+        os_log(.debug, log: log, "updateRow - with soundFontAndPatch")
         guard let indexPath = getPresetIndexPath(for: soundFontAndPatch),
               let cell: TableCell = view.cellForRow(at: indexPath) else { return }
-        updateView(cell: cell, at: indexPath)
+        updateCell(cell: cell, at: indexPath)
     }
 
-    private func updateView(cell: TableCell, at indexPath: IndexPath) {
+    private func getPresetIndexPath(for activeKind: ActivePatchKind) -> IndexPath? {
+        switch activeKind {
+        case .none: return nil
+        case .preset(let soundFontAndPatch): return getPresetIndexPath(for: soundFontAndPatch)
+        case .favorite(let favorite): return getPresetIndexPath(for: favorite.key)
+        }
+    }
+
+    @discardableResult
+    private func updateCell(cell: TableCell, at indexPath: IndexPath) -> TableCell {
         guard let soundFont = selectedSoundFontManager.selected else {
             os_log(.error, log: log, "unexpected nil soundFont")
-            return
+            return cell
         }
 
         switch getSlot(at: indexPath) {
         case let .preset(presetIndex):
             let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
             let preset = soundFont.patches[presetIndex]
-            os_log(.info, log: log, "updateView - preset '%{public}s' %d in row %d section %d",
+            os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
                    preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
             cell.updateForPreset(name: preset.presetConfig.name,
                                  isActive: soundFontAndPatch == activePatchManager.soundFontAndPatch &&
-                                        activePatchManager.favorite == nil,
-                                 isEditing: view.isEditing)
+                                        activePatchManager.favorite == nil)
         case let .favorite(key):
             let favorite = favorites.getBy(key: key)
-            os_log(.info, log: log, "updateView - favorite '%{public}s' in row %d section %d",
+            os_log(.debug, log: log, "updateCell - favorite '%{public}s' in row %d section %d",
                    favorite.presetConfig.name, indexPath.row, indexPath.section)
             cell.updateForFavorite(name: favorite.presetConfig.name,
                                    isActive: activePatchManager.favorite == favorite)
         }
+        return cell
     }
 }

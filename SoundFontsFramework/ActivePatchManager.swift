@@ -122,7 +122,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter playSample: if true, play a note using the new preset
      */
     public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
-        os_log(.info, log: log, "setActive: %{public}s", kind.description)
+        os_log(.debug, log: log, "setActive: %{public}s", kind.description)
         guard soundFonts.restored else {
 
             // NOTE: this could be the case for AUv3 where the audio unit is up and running and has restored a
@@ -134,7 +134,10 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
             return
         }
 
-        guard active != kind else { return }
+        guard active != kind else {
+            os_log(.debug, log: log, "already active")
+            return
+        }
 
         let old = active
         active = kind

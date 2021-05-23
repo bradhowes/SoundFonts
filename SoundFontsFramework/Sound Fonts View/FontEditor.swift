@@ -35,7 +35,7 @@ final class FontEditor: UIViewController {
 
     weak var delegate: FontEditorDelegate?
 
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var doneButton: UIBarButtonItem!
     @IBOutlet private weak var name: UITextField!
     @IBOutlet private weak var tagsLabel: UILabel!

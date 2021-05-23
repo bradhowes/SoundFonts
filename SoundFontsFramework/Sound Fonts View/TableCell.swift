@@ -28,7 +28,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     private var bookmark: Bookmark?
     private var timer: Timer?
-    private var isActive: Bool = false
 
     /// Set if there is a problem accessing a file associated with this cell.
     var activeAlert: UIAlertController?
@@ -56,6 +55,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
             updateButton()
             startMonitor()
         }
+        os_log(.debug, log: log, "updateForFont - '%{public}s' A: %d S: %d", name, isActive, isSelected)
         update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false)
     }
 
@@ -66,7 +66,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      - parameter isActive: true if the cell holds the active preset
      - parameter isEditing: true if the table view is in edit mode
      */
-    public func updateForPreset(name: String, isActive: Bool, isEditing: Bool) {
+    public func updateForPreset(name: String, isActive: Bool) {
+        os_log(.debug, log: log, "updateForPreset - '%{public}s' A: %d", name, isActive)
         update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
     }
 
@@ -77,6 +78,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      - parameter isActive: true if the favorite is the active preset
      */
     public func updateForFavorite(name: String, isActive: Bool) {
+        os_log(.debug, log: log, "updateForFavorite - '%{public}s' A: %d", name, isActive)
         update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true)
     }
 
@@ -87,6 +89,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      - parameter isActive: true if cell holds the active tag
      */
     public func updateForTag(name: String, isActive: Bool) {
+        os_log(.debug, log: log, "updateForTag - '%{public}s' A: %d", name, isActive)
         update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
     }
 
@@ -97,18 +100,18 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         super.setEditing(editing, animated: animated)
         if editing {
             reorderControlImageView?.tint(color: .white)
-            showActiveIndicator()
+            showActiveIndicator(activeIndicatorAnimator != nil)
         }
     }
 
     private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool) {
         self.name.text = name
         self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
-        self.isActive = isActive
-        showActiveIndicator()
+        showActiveIndicator(isActive)
     }
 
     override public func prepareForReuse() {
+        os_log(.debug, log: log, "prepareForReuse")
         super.prepareForReuse()
 
         stopAnimation()
@@ -119,7 +122,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         name.isHidden = false
         tagEditor.isHidden = true
         tagEditor.isEnabled = false
-        isActive = false
     }
 
     private func stopMonitor() {
@@ -131,16 +133,18 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in self.updateButton() }
     }
 
-    private func showActiveIndicator() {
+    private func showActiveIndicator(_ isActive: Bool) {
         guard isActive && !isEditing else {
+            stopAnimation()
             if !activeIndicator.isHidden {
                 activeIndicator.isHidden = true
-                os_log(.debug, log: log, "showActiveIndicator - '%{public}s' hidden")
+                os_log(.debug, log: log, "showActiveIndicator - '%{public}s' hidden", name.text ?? "?")
             }
             return
         }
 
         guard activeIndicatorAnimator == nil else {
+            os_log(.debug, log: log, "showActiveIndicator - '%{public}s' already done", name.text ?? "?")
             return
         }
 

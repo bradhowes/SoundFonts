@@ -10,7 +10,7 @@ import os
  API for this class.
  */
 public final class SoundFontsViewController: UIViewController {
-    private lazy var log = Logging.logger("SFVC")
+    private lazy var log = Logging.logger("SoundFontsViewController")
 
     @IBOutlet private weak var soundFontsView: UITableView!
     @IBOutlet private weak var tagsView: UITableView!

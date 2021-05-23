@@ -23,7 +23,7 @@ public enum SamplerStartFailure: Error {
     case engineStarting(error: NSError)
     /// Failed to load a preset
     case patchLoading(error: NSError)
-
+    /// The system error associated with a failure.
     var error: NSError {
         switch self {
         case .noSampler: return NSError()
@@ -42,7 +42,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
     /// Largest MIDI value available for the last key
     public static let maxMidiValue = 12 * 9 // C8
-
+    /// The notification that
     public static let setTuningNotification = TypedNotification<Float>(name: .setTuning)
     public static let setPitchBendRangeNotification = TypedNotification<Int>(name: .setPitchBendRange)
 
@@ -53,13 +53,14 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         case audioUnit
     }
 
+    public private(set) var auSampler: AVAudioUnitSampler?
+
     private let mode: Mode
     private let activePatchManager: ActivePatchManager
     private let reverbEffect: ReverbEffect?
     private let delayEffect: DelayEffect?
     private let presetChangeManager = PresetChangeManager()
     private var engine: AVAudioEngine?
-    public private(set) var auSampler: AVAudioUnitSampler?
     private var loaded: Bool = false
 
     /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
