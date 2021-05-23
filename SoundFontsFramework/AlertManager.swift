@@ -97,6 +97,11 @@ public final class AlertManager {
         post(alert: alertConfig)
     }
 
+    /**
+     Post an alert to the user
+
+     - parameter alert: the contents of the alert to show
+     */
     public func post(alert: AlertConfig) {
         queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
     }

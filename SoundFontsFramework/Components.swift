@@ -10,16 +10,25 @@ import UIKit
  */
 public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>,
                                                     ComponentContainer where T: ControllerConfiguration {
+    /// The configuration file that defines what fonts are installed and customizations
     public let consolidatedConfigFile: ConsolidatedConfigFile
+    /// Manager that controls when to ask for a review from the customer
     public let askForReview: AskForReview
+    /// The manager for the collection of sound fonts
     public let soundFonts: SoundFonts
+    /// The manager for the collection of favorites
     public let favorites: Favorites
+    /// The manager for the collection of sound font tags
     public let tags: Tags
+    /// The manager of the active preset
     public let activePatchManager: ActivePatchManager
+    /// The manager of the selected sound font
     public let selectedSoundFontManager: SelectedSoundFontManager
+    /// True if running in the app; false when running in the AUv3 app extension
     public let inApp: Bool
-
+    /// The main view controller of the app
     public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
+
     private var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
     private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
     private var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
@@ -30,19 +39,26 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
     private var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
     private var tagsController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
+    /// The controller for the info bar
     public var infoBar: InfoBar { infoBarController }
+    /// The controller for the keyboard (nil when running in the AUv3 app extension)
     public var keyboard: Keyboard? { keyboardController }
+    /// The manager of the presets view
     public var patchesViewManager: PatchesViewManager { soundFontsController }
+    /// The manager of the favorites view
     public var favoritesViewManager: FavoritesViewManager { favoritesController }
+    /// Swipe actions generator for sound font rows
     public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+    /// The manager for posting alerts
     public var alertManager: AlertManager { _alertManager! }
-
+    /// The sampler engine that generates audio from sound font files
     public var sampler: Sampler { _sampler! }
+    /// The delay effect available for audio processing (app only)
     public var delayEffect: DelayEffect? {
         precondition(self.inApp == false || _delayEffect != nil)
         return _delayEffect
     }
-
+    /// The reverb effect available for audio processing (app only)
     public var reverbEffect: ReverbEffect? {
         precondition(self.inApp == false || _reverbEffect != nil)
         return _reverbEffect
@@ -55,17 +71,24 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
             if let sampler = _sampler { DispatchQueue.main.async { self.notify(.samplerAvailable(sampler)) } }
         }
     }
+
     private var _reverbEffect: ReverbEffect? {
         didSet {
             if let effect = _reverbEffect { DispatchQueue.main.async { self.notify(.reverbAvailable(effect)) } }
         }
     }
+
     private var _delayEffect: DelayEffect? {
         didSet {
             if let effect = _delayEffect { DispatchQueue.main.async { self.notify(.delayAvailable(effect)) } }
         }
     }
 
+    /**
+     Create a new instance
+
+     - parameter inApp: true if running in the app
+     */
     public init(inApp: Bool) {
         self.inApp = inApp
         self.consolidatedConfigFile = ConsolidatedConfigFile()
@@ -106,6 +129,11 @@ public final class Components<T: UIViewController>: SubscriptionManager<Componen
         }
     }
 
+    /**
+     Install the main view controller
+
+     - parameter mvc: the main view controller to use
+     */
     public func setMainViewController(_ mvc: T) {
         mainViewController = mvc
         _alertManager = AlertManager(presenter: mvc)

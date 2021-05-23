@@ -15,9 +15,8 @@ public final class SoundFontsControlsController: UIViewController {
 
     @IBOutlet private weak var favoritesView: UIView!
     @IBOutlet private weak var patchesView: UIView!
-
-    @IBOutlet weak var effectsHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var effectsBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var effectsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var effectsBottomConstraint: NSLayoutConstraint!
 
     private var components: ComponentContainer!
     private var upperViewManager: SlidingViewManager!

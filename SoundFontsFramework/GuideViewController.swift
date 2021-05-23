@@ -7,15 +7,15 @@ public final class GuideViewController: UIViewController {
     private var savedParent: UIViewController!
     private var infoBar: InfoBar!
 
-    @IBOutlet weak var fontPresetPanel: UIView!
-    @IBOutlet weak var infoBarPanel: UIView!
-    @IBOutlet weak var favoritesPanel: UIView!
+    @IBOutlet private weak var fontPresetPanel: UIView!
+    @IBOutlet private weak var infoBarPanel: UIView!
+    @IBOutlet private weak var favoritesPanel: UIView!
 
-    @IBOutlet weak var effectsLabel: UILabel!
-    @IBOutlet weak var effectsArrow: ArrowView!
-    @IBOutlet weak var keySlideLabel: UILabel!
-    @IBOutlet weak var keyRangeLabel: UILabel!
-    @IBOutlet weak var keyRangeArrow: ArrowView!
+    @IBOutlet private weak var effectsLabel: UILabel!
+    @IBOutlet private weak var effectsArrow: ArrowView!
+    @IBOutlet private weak var keySlideLabel: UILabel!
+    @IBOutlet private weak var keyRangeLabel: UILabel!
+    @IBOutlet private weak var keyRangeArrow: ArrowView!
 
     private var isMainApp = true
 

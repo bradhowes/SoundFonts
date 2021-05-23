@@ -59,17 +59,17 @@ public final class SettingsViewController: UIViewController {
     @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
     @IBOutlet private weak var copyFiles: UISwitch!
 
-    @IBOutlet weak var divider5: UIView!
-    @IBOutlet weak var globalTuningTitle: UILabel!
-    @IBOutlet weak var globalTuningEnabled: UISwitch!
-    @IBOutlet weak var standardTuningLabel: UILabel!
-    @IBOutlet weak var standardTuningButton: UIButton!
-    @IBOutlet weak var scientificTuningLabel: UILabel!
-    @IBOutlet weak var scientificTuningButton: UIButton!
-    @IBOutlet weak var globalTuningCentsLabel: UILabel!
-    @IBOutlet weak var globalTuningCents: UITextField!
-    @IBOutlet weak var globalTuningFrequencyLabel: UILabel!
-    @IBOutlet weak var globalTuningFrequency: UITextField!
+    @IBOutlet private weak var divider5: UIView!
+    @IBOutlet private weak var globalTuningTitle: UILabel!
+    @IBOutlet private weak var globalTuningEnabled: UISwitch!
+    @IBOutlet private weak var standardTuningLabel: UILabel!
+    @IBOutlet private weak var standardTuningButton: UIButton!
+    @IBOutlet private weak var scientificTuningLabel: UILabel!
+    @IBOutlet private weak var scientificTuningButton: UIButton!
+    @IBOutlet private weak var globalTuningCentsLabel: UILabel!
+    @IBOutlet private weak var globalTuningCents: UITextField!
+    @IBOutlet private weak var globalTuningFrequencyLabel: UILabel!
+    @IBOutlet private weak var globalTuningFrequency: UITextField!
 
     @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
     @IBOutlet private weak var restoreDefaultSoundFonts: UIButton!
