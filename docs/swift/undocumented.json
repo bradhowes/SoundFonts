@@ -821,224 +821,105 @@
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 14,
-      "symbol": "EffectsController.reverbEnabled",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 15,
-      "symbol": "EffectsController.reverbGlobal",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 16,
-      "symbol": "EffectsController.reverbControls",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 17,
-      "symbol": "EffectsController.reverbWetDryMix",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 18,
-      "symbol": "EffectsController.reverbWetDryMixLabel",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 19,
-      "symbol": "EffectsController.reverbRoom",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 21,
-      "symbol": "EffectsController.delayEnabled",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 22,
-      "symbol": "EffectsController.delayGlobal",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 23,
-      "symbol": "EffectsController.delayControls",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 24,
-      "symbol": "EffectsController.delayTime",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 25,
-      "symbol": "EffectsController.delayTimeLabel",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 26,
-      "symbol": "EffectsController.delayFeedback",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 27,
-      "symbol": "EffectsController.delayFeedbackLabel",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 28,
-      "symbol": "EffectsController.delayCutoff",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 29,
-      "symbol": "EffectsController.delayCutoffLabel",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 30,
-      "symbol": "EffectsController.delayWetDryMix",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 31,
-      "symbol": "EffectsController.delayWetDryMixLabel",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 41,
+      "line": 40,
       "symbol": "EffectsController.viewDidLoad()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 65,
+      "line": 67,
       "symbol": "EffectsController.viewDidAppear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 74,
+      "line": 79,
       "symbol": "EffectsController.toggleReverbEnabled(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 81,
+      "line": 86,
       "symbol": "EffectsController.toggleReverbGlobal(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 88,
+      "line": 93,
       "symbol": "EffectsController.toggleDelayEnabled(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 95,
+      "line": 100,
       "symbol": "EffectsController.toggleDelayGlobal(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 102,
+      "line": 107,
       "symbol": "EffectsController.changeReverbWebDryMix(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 109,
+      "line": 114,
       "symbol": "EffectsController.changeDelayTime(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 116,
+      "line": 121,
       "symbol": "EffectsController.changeDelayFeedback(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 123,
+      "line": 128,
       "symbol": "EffectsController.changeDelayCutoff(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 130,
+      "line": 135,
       "symbol": "EffectsController.changeDelayWetDryMix(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 151,
+      "line": 156,
       "symbol": "EffectsController.numberOfComponents(in:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 152,
+      "line": 157,
       "symbol": "EffectsController.pickerView(_:numberOfRowsInComponent:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 159,
+      "line": 164,
       "symbol": "EffectsController.pickerView(_:didSelectRow:inComponent:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/EffectsController.swift",
-      "line": 166,
+      "line": 171,
       "symbol": "EffectsController.pickerView(_:viewForRow:forComponent:reusing:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -2578,7 +2459,7 @@
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/MIDI/Note.swift",
-      "line": 47,
+      "line": 48,
       "symbol": "Note.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -2587,20 +2468,6 @@
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/MIDI/NoteInjector.swift",
       "line": 18,
       "symbol": "NoteInjector.init()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/MIDI/NoteInjector.swift",
-      "line": 20,
-      "symbol": "NoteInjector.post(to:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/MIDI/NoteInjector.swift",
-      "line": 33,
-      "symbol": "NoteInjector.post(to:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -3558,70 +3425,70 @@
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 44,
+      "line": 45,
       "symbol": "SoundFontsViewController.viewDidLoad()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 66,
+      "line": 67,
       "symbol": "SoundFontsViewController.moveDivider(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 103,
+      "line": 104,
       "symbol": "SoundFontsViewController.viewWillAppear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 107,
+      "line": 108,
       "symbol": "SoundFontsViewController.viewDidAppear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 113,
+      "line": 114,
       "symbol": "SoundFontsViewController.viewWillTransition(to:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 175,
+      "line": 176,
       "symbol": "SoundFontsViewController.reload()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 183,
+      "line": 184,
       "symbol": "SoundFontsViewController.documentPicker(_:didPickDocumentsAt:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 315,
+      "line": 316,
       "symbol": "SoundFontsViewController.SegueIdentifier.fontEditor",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 316,
+      "line": 317,
       "symbol": "SoundFontsViewController.SegueIdentifier.fontBrowser",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/howes/src/Mine/SoundFonts/SoundFontsFramework/Sound Fonts View/SoundFontsViewController.swift",
-      "line": 319,
+      "line": 320,
       "symbol": "SoundFontsViewController.prepare(for:sender:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

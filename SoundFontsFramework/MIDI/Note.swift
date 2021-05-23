@@ -31,6 +31,7 @@ public struct Note: CustomStringConvertible, Codable {
     /// Obtain the octave this note is a part of
     public var octave: Int { midiNoteValue / 12 - 1 }
 
+    /// Custom string representation for a Note instance
     public var description: String { label }
 
     /**
@@ -57,10 +58,22 @@ public struct Note: CustomStringConvertible, Codable {
     }
 }
 
-extension Note: Equatable {
-    public static func == (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
-}
-
 extension Note: Comparable {
+    /**
+     Allow for ordering of Note instances
+
+     - parameter lhs: first argument to compare
+     - parameter rhs: second argument to compare
+     - returns: true if first comes before the second
+     */
     public static func < (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue < rhs.midiNoteValue }
+
+    /**
+     Allow for equality comparisons between Note instances
+
+     - parameter lhs: first argument to compare
+     - parameter rhs: second argument to compare
+     - returns: true if the same
+     */
+    public static func == (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
 }
