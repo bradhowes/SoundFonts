@@ -7,8 +7,10 @@ import Foundation
  */
 public class LegacyFavorite: Codable {
 
+    /// The type for the unique Key for a favorite
     public typealias Key = UUID
 
+    /// Legacy encoding keys before consolidation into PresetConfig
     enum V1Keys: String, CodingKey {
         case key
         case soundFontAndPatch
@@ -18,16 +20,18 @@ public class LegacyFavorite: Codable {
         case pan
     }
 
+    /// Encoding keys with PresetConfig
     enum V2Keys: String, CodingKey {
         case key
         case soundFontAndPatch
         case presetConfig
     }
 
+    /// The unique key of the favorite
     public let key: Key
-
+    /// The key for the preset
     public let soundFontAndPatch: SoundFontAndPatch
-
+    /// The custom configuration for the preset
     public var presetConfig: PresetConfig { didSet { PresetConfig.changedNotification.post(value: presetConfig) } }
 
     /**
@@ -44,6 +48,12 @@ public class LegacyFavorite: Codable {
         self.presetConfig.keyboardLowestNoteEnabled = false
     }
 
+    /**
+     Instantiate a Favorite using saved encoding.
+
+     - parameter decoder: the container to decode from
+     - throws exception if unable to decode
+     */
     public required init(from decoder: Decoder) throws {
         do {
             // Attempt to decode the latest version first
@@ -58,7 +68,7 @@ public class LegacyFavorite: Codable {
         catch {
             let err = error
             do {
-                // Attempt to decode previous version
+                // Attempt to decode previous version, building a PresetConfig from the values at hand
                 let values = try decoder.container(keyedBy: V1Keys.self)
                 let key = try values.decode(Key.self, forKey: .key)
                 let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
@@ -78,6 +88,12 @@ public class LegacyFavorite: Codable {
         }
     }
 
+    /**
+     Custom encoder for the class because of the custom decoding.
+
+     - parameter encoder: the container to encode into
+     - throws exception if unable to encode
+     */
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: V2Keys.self)
         try container.encode(key, forKey: .key)
@@ -87,9 +103,17 @@ public class LegacyFavorite: Codable {
 }
 
 extension LegacyFavorite: Equatable {
+    /**
+     Support equality operator
+
+     - parameter lhs: first argument to compare
+     - parameter rhs: second argument to compare
+     - returns: true if same
+     */
     public static func == (lhs: LegacyFavorite, rhs: LegacyFavorite) -> Bool { lhs.key == rhs.key }
 }
 
 extension LegacyFavorite: CustomStringConvertible {
+    /// Custom string representation for a favorite
     public var description: String { "['\(presetConfig.name)' - \(soundFontAndPatch)]" }
 }
