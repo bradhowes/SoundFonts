@@ -24,10 +24,6 @@ public struct Formatters {
             NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
         }
 
-        public var silentModeActive: String {
-            NSLocalizedString("silentModeActive", bundle: bundle, comment: "HUD message when mute switch is ON")
-        }
-
         public var noPresetLoaded: String {
             NSLocalizedString("noPresetLoaded", bundle: bundle, comment: "HUD message when no preset is loaded")
         }

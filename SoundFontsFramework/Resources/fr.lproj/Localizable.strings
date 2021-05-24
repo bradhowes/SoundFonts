@@ -45,3 +45,10 @@ have been lost.";
 "engineStartingFailureBody" = "Failed to start the audio engine";
 "patchLoadingFailureBody" = "Unable to load the preset";
 "sessionActivatingFailureBody" = "Unable to activate the audio session";
+
+/* The volume setting for the device is zero (no output) */
+"volumeIsZero" = "Volume setting is 0";
+/* There is no active preset to use for rendering audio */
+"noPresetLoaded" = "No active preset";
+/* Another app on the device is controlling audio */
+"otherAppAudio" = "Another app is controlling audio";

@@ -5,8 +5,7 @@ import AVKit
 import os
 
 /**
- Monitor volume setting on device and the "silence" or "mute" switch. When there is no apparent audio
- output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
+ Configures the AVAudioSession for the app.
  */
 struct AudioSession {
     private static let log = Logging.logger("AudioSession")

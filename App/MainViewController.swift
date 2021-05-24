@@ -83,8 +83,31 @@ extension MainViewController {
     }
 
     private func startAudioBackground(_ sampler: Sampler) {
+        let sampleRate: Double = 44100.0
+        let bufferSize: Int = 512
         let session = AVAudioSession.sharedInstance()
         do {
+            do {
+                try session.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
+            } catch let error as NSError {
+                os_log(.error, log: log, "Failed to set the audio session category and mode: %{public}s",
+                       error.localizedDescription)
+            }
+
+            do {
+                try session.setPreferredSampleRate(sampleRate)
+            } catch let error as NSError {
+                os_log(.error, log: log, "Failed to set the preferred sample rate to %f: %{public}s",
+                       sampleRate, error.localizedDescription)
+            }
+
+            do {
+                try session.setPreferredIOBufferDuration(Double(bufferSize) / sampleRate)
+            } catch let error as NSError {
+                os_log(.error, log: log, "Failed to set the preferred buffer size to %d: %{public}s",
+                       bufferSize, error.localizedDescription)
+            }
+
             os_log(.info, log: log, "setting active audio session")
             try session.setActive(true, options: [])
             os_log(.info, log: log, "starting sampler")
@@ -146,7 +169,7 @@ extension MainViewController: ControllerConfiguration {
         activePatchManager = router.activePatchManager
 
         #if !targetEnvironment(macCatalyst)
-        volumeMonitor = VolumeMonitor(muteDetector: MuteDetector(checkInterval: 1), keyboard: router.keyboard)
+        volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
         #endif
 
         router.activePatchManager.subscribe(self, notifier: activePatchChange)

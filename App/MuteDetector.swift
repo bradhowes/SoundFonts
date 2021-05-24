@@ -9,7 +9,7 @@ import os
  playing audio due to some configuration.
  */
 final class MuteDetector {
-    private let log = Logging.logger("MuteD")
+    private let log = Logging.logger("MuteDetector")
 
     /// Type of the closure to invoke on mute state change
     public typealias MutedStateChangeClosure = (_ mute: Bool) -> Void
