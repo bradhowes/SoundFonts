@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SoundFontsFramework
+import SoundFontsFramework
 
 class AppTests: XCTestCase {
 
