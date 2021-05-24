@@ -32,9 +32,12 @@ internal struct KeyParamsSequence: Sequence, IteratorProtocol {
 
     /**
      Create a new iterator for the sequence.
-     */
-    func makeIterator() -> KeyParamsSequence { self }
 
+     - returns: self
+     */
+    @inlinable func makeIterator() -> KeyParamsSequence { self }
+
+    @inlinable var underestimatedCount: Int { lastMidiNote - nextMidiNote + 1 }
     /**
      Obtain the next element from the sequence.
 

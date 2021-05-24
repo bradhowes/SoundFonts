@@ -64,7 +64,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
         os_log(.info, log: log, "viewWillAppear")
         super.viewWillAppear(animated)
 
-        guard let favorite = activePatchManager?.favorite else { return }
+        guard let favorite = activePatchManager?.activeFavorite else { return }
         updateCell(with: favorite)
     }
 }
@@ -106,7 +106,7 @@ extension FavoritesViewController: ControllerConfiguration {
         case let .added(index: index, favorite: favorite):
             os_log(.info, log: log, "added item %d", index)
             favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-            if favorite == activePatchManager.favorite {
+            if favorite == activePatchManager.activeFavorite {
                 favoritesView.selectItem(at: indexPath(of: favorite.key), animated: false,
                                          scrollPosition: .centeredVertically)
                 updateCell(with: favorite)
@@ -255,7 +255,7 @@ extension FavoritesViewController: FavoriteEditorDelegate {
 
         // Reapply the active PresetConfig just to make sure we are in sync. This should only be necessary for the
         // `cancel` case above, but just to be safe...
-        if let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig {
+        if let presetConfig = activePatchManager.activePresetConfig {
             PresetConfig.changedNotification.post(value: presetConfig)
         }
 
@@ -323,7 +323,7 @@ extension FavoritesViewController {
 
     @discardableResult
     private func update(cell: FavoriteCell, with favorite: LegacyFavorite) -> FavoriteCell {
-        cell.update(favoriteName: favorite.presetConfig.name, isActive: favorite == activePatchManager.favorite)
+        cell.update(favoriteName: favorite.presetConfig.name, isActive: favorite == activePatchManager.activeFavorite)
         return cell
     }
 }

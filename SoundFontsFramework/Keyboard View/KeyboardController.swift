@@ -115,7 +115,7 @@ extension KeyboardController: ControllerConfiguration {
     private func presetChanged(_ event: ActivePatchEvent) {
         switch event {
         case .active:
-            if let presetConfig = activePatchManager.patch?.presetConfig {
+            if let presetConfig = activePatchManager.activePatch?.presetConfig {
                 updateWith(presetConfig: presetConfig)
             }
         }
@@ -124,7 +124,7 @@ extension KeyboardController: ControllerConfiguration {
     private func favoritesChange(_ event: FavoritesEvent) {
         switch event {
         case let .changed(index: _, favorite: favorite):
-            if activePatchManager.favorite == favorite {
+            if activePatchManager.activeFavorite == favorite {
                 updateWith(presetConfig: favorite.presetConfig)
             }
         case let .selected(index: _, favorite: favorite): updateWith(presetConfig: favorite.presetConfig)

@@ -28,7 +28,7 @@ public extension NSManagedObjectContext {
     }
 
     /**
-     Attempt to save the context to storage, rollingback if the save fails.
+     Attempt to save the context to storage, rolling back if the save fails.
 
      - returns: true if saved
      */
@@ -61,7 +61,7 @@ public extension NSManagedObjectContext {
     private var NC: NotificationCenter { NotificationCenter.default }
 
     /**
-     Regiser to receive notifications when this context has been saved.
+     Register to receive notifications when this context has been saved.
 
      - parameter block: the block to execute after a save. It will receive a ContextNotification that
        identifies the objects that were added, updated, and/or deleted since the last save event.
@@ -74,7 +74,7 @@ public extension NSManagedObjectContext {
     }
 
     /**
-     Regiser to receive notifications when this context is processing changes but before they have been saved.
+     Register to receive notifications when this context is processing changes but before they have been saved.
 
      - parameter block: the block to execute after a save. It will receive a ContextNotification that
      identifies the objects that were added, updated, and/or deleted since the last save event.

@@ -51,7 +51,7 @@ final class FontsTableViewManager: NSObject {
     }
 
     func selectActive() {
-        guard let key = activePatchManager.soundFont?.key else { return }
+        guard let key = activePatchManager.activeSoundFont?.key else { return }
         guard let row = viewSoundFonts.firstIndex(of: key) else { return }
         selectAndShow(row: row)
     }
@@ -212,7 +212,7 @@ extension FontsTableViewManager {
             }
 
             guard let newSoundFont = self.soundFonts.getBy(key: self.viewSoundFonts[newRow]) else { return }
-            if self.activePatchManager.soundFont == soundFont {
+            if self.activePatchManager.activeSoundFont == soundFont {
                 self.activePatchManager.setActive(preset: SoundFontAndPatch(soundFontKey: newSoundFont.key,
                                                                             patchIndex: 0), playSample: false)
                 self.selectedSoundFontManager.setSelected(newSoundFont)
@@ -273,7 +273,7 @@ extension FontsTableViewManager {
         guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
         os_log(.debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
         let isSelected = selectedSoundFontManager.selected == soundFont
-        let isActive = activePatchManager.soundFont == soundFont
+        let isActive = activePatchManager.activeSoundFont == soundFont
         cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected,
                            isActive: isActive)
         return cell

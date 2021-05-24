@@ -303,13 +303,13 @@ extension InfoBarController {
     }
 
     private func updateInfoBar(with favorite: LegacyFavorite) {
-        if favorite.soundFontAndPatch == activePatchManager.soundFontAndPatch {
+        if favorite.soundFontAndPatch == activePatchManager.active.soundFontAndPatch {
             setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
         }
     }
 
     private func updateInfoBar(with soundFontAndPatch: SoundFontAndPatch) {
-        if soundFontAndPatch == activePatchManager.soundFontAndPatch {
+        if soundFontAndPatch == activePatchManager.active.soundFontAndPatch {
             if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
                 setPatchInfo(name: patch.presetConfig.name, isFavored: false)
             }

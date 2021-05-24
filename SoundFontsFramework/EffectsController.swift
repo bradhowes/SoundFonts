@@ -219,7 +219,7 @@ extension EffectsController {
         let reverbConfig: ReverbConfig? = {
             if Settings.instance.reverbGlobal {
                 os_log(.info, log: log, "updating global reverb")
-                return activePatchManager.presetConfig?.reverbConfig
+                return activePatchManager.activePresetConfig?.reverbConfig
             } else if reverbEffect.active.enabled {
                 os_log(.info, log: log, "updating preset reverb")
                 return reverbEffect.active
@@ -232,7 +232,7 @@ extension EffectsController {
         let delayConfig: DelayConfig? = {
             if Settings.instance.delayGlobal {
                 os_log(.info, log: log, "updating global delay")
-                return activePatchManager.presetConfig?.delayConfig
+                return activePatchManager.activePresetConfig?.delayConfig
             } else if delayEffect.active.enabled {
                 os_log(.info, log: log, "updating preset delay")
                 return delayEffect.active
@@ -242,12 +242,12 @@ extension EffectsController {
             }
         }()
 
-        if let favorite = activePatchManager.favorite {
+        if let favorite = activePatchManager.activeFavorite {
             os_log(.info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
                    delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
             favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
         }
-        else if let soundFontAndPatch = activePatchManager.soundFontAndPatch {
+        else if let soundFontAndPatch = activePatchManager.active.soundFontAndPatch {
             os_log(.info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
                    delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
             soundFonts.setEffects(soundFontAndPatch: soundFontAndPatch, delay: delayConfig, reverb: reverbConfig)
@@ -277,7 +277,7 @@ extension EffectsController {
 
     private func updateState() {
         os_log(.info, log: log, "updateState")
-        let presetConfig = activePatchManager.favorite?.presetConfig ?? activePatchManager.patch?.presetConfig
+        let presetConfig = activePatchManager.activePresetConfig
 
         reverbGlobal.showEnabled(Settings.instance.reverbGlobal)
         if Settings.instance.reverbGlobal {

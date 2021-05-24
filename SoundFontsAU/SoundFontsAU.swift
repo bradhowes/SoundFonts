@@ -126,8 +126,8 @@ extension SoundFontsAU {
         os_log(.info, log: log, "reset")
         wrapped.reset()
         guard let sampler = sampler.auSampler else { return }
-        guard let soundFont = activePatchManager.soundFont else { return }
-        guard let patch = activePatchManager.patch else { return }
+        guard let soundFont = activePatchManager.activeSoundFont else { return }
+        guard let patch = activePatchManager.activePatch else { return }
         try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program),
                                              bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
     }

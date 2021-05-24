@@ -32,26 +32,23 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
     /// The currently active patch (if any)
     public private(set) var active: ActivePatchKind
 
-    /// The currently active favorite (if any)
-    public var favorite: LegacyFavorite? { active.favorite }
-
-    /// The currently active preset key (if any)
-    public var soundFontAndPatch: SoundFontAndPatch? { active.soundFontAndPatch }
-
     /// The currently active sound font (if any)
-    public var soundFont: LegacySoundFont? {
-        guard let key = soundFontAndPatch?.soundFontKey else { return nil }
+    public var activeSoundFont: LegacySoundFont? {
+        guard let key = active.soundFontAndPatch?.soundFontKey else { return nil }
         return soundFonts.getBy(key: key)
     }
 
     /// The currently active preset instance (if any)
-    public var patch: LegacyPatch? {
-        guard let index = soundFontAndPatch?.patchIndex else { return nil }
-        return soundFont?.patches[index]
+    public var activePatch: LegacyPatch? {
+        guard let index = active.soundFontAndPatch?.patchIndex else { return nil }
+        return activeSoundFont?.patches[index]
     }
 
+    /// The currently active preset instance (if any)
+    public var activeFavorite: LegacyFavorite? { active.favorite }
+
     /// The preset configuration for the currently active preset or favorite
-    public var presetConfig: PresetConfig? { favorite?.presetConfig ?? patch?.presetConfig }
+    public var activePresetConfig: PresetConfig? { activeFavorite?.presetConfig ?? activePatch?.presetConfig }
 
     /// Obtain the last-saved active patch value
     static var restoredActivePatchKind: ActivePatchKind? {

@@ -153,17 +153,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
             return .success(.none)
         }
 
-        guard let soundFont = activePatchManager.soundFont else {
+        guard let soundFont = activePatchManager.activeSoundFont else {
             os_log(.info, log: log, "activePatchManager.soundFont is nil")
             return .success(sampler)
         }
 
-        guard let patch = activePatchManager.patch else {
+        guard let patch = activePatchManager.activePatch else {
             os_log(.info, log: log, "activePatchManager.patch is nil")
             return .success(sampler)
         }
 
-        let favorite = activePatchManager.favorite
+        let favorite = activePatchManager.active.favorite
         self.loaded = false
         let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 

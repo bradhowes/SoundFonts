@@ -437,7 +437,7 @@ extension PatchesTableViewManager {
             return
         }
 
-        if activePatchManager.soundFont == new {
+        if activePatchManager.activeSoundFont == new {
             selectActive(animated: false)
         }
         else if !showingSearchResults {
@@ -684,7 +684,7 @@ extension PatchesTableViewManager {
             sectionRowCounts[indexPath.section] -= 1
         } completion: { _ in
             self.updateSectionRowCounts(reload: true)
-            if favorite == self.activePatchManager.favorite {
+            if favorite == self.activePatchManager.activeFavorite {
                 self.activePatchManager.setActive(preset: favorite.soundFontAndPatch, playSample: false)
             }
         }
@@ -815,14 +815,14 @@ extension PatchesTableViewManager {
             os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
                    preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
             cell.updateForPreset(name: preset.presetConfig.name,
-                                 isActive: soundFontAndPatch == activePatchManager.soundFontAndPatch &&
-                                        activePatchManager.favorite == nil)
+                                 isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch &&
+                                        activePatchManager.activeFavorite == nil)
         case let .favorite(key):
             let favorite = favorites.getBy(key: key)
             os_log(.debug, log: log, "updateCell - favorite '%{public}s' in row %d section %d",
                    favorite.presetConfig.name, indexPath.row, indexPath.section)
             cell.updateForFavorite(name: favorite.presetConfig.name,
-                                   isActive: activePatchManager.favorite == favorite)
+                                   isActive: activePatchManager.activeFavorite == favorite)
         }
         return cell
     }
