@@ -94,16 +94,6 @@
                ReferencedContainer = "container:App.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD6C6F8D265C4C9700EB98B2"
-               BuildableName = "AppPerfTests.xctest"
-               BlueprintName = "AppPerfTests"
-               ReferencedContainer = "container:App.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
