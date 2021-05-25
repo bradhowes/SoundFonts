@@ -33,7 +33,7 @@
       location = "group:SoundFontsFramework.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SoundFontInfoLib.xcodeproj">
+      location = "container:SoundFontInfoLib/SoundFontInfoLib.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SF2Files/SF2Files.xcodeproj">

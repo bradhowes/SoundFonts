@@ -52,6 +52,20 @@
                ReferencedContainer = "container:SF2Files/SF2Files.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
+               BuildableName = "SoundFontInfoLibTests.xctest"
+               BlueprintName = "SoundFontInfoLibTests"
+               ReferencedContainer = "container:SoundFontInfoLib/SoundFontInfoLib.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -74,16 +88,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
-               BuildableName = "SoundFontInfoLibTests.xctest"
-               BlueprintName = "SoundFontInfoLibTests"
-               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "BD58250923CDABCD0034A31B"
                BuildableName = "SoundFontsFrameworkTests.xctest"
                BlueprintName = "SoundFontsFrameworkTests"
@@ -98,6 +102,16 @@
                BuildableName = "SF2FilesTests.xctest"
                BlueprintName = "SF2FilesTests"
                ReferencedContainer = "container:SF2Files/SF2Files.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
+               BuildableName = "SoundFontInfoLibTests.xctest"
+               BlueprintName = "SoundFontInfoLibTests"
+               ReferencedContainer = "container:SoundFontInfoLib/SoundFontInfoLib.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
