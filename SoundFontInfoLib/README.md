@@ -1,13 +1,3 @@
-# Generated Tables
-
-There are some lookup tables that are generated at compile time in order to speed up startup time. These tables are defined in
-`DSPTables.hpp` and `MIDI/ValueTransformer.hpp`. There is a custom build phase for `SoundFontInfoLib` called
-`Create DSPGenerated.cpp File` that generates this file. This works ok as long as a full rebuild is done.
-
-The `Generated` folder points to
-`DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources`. This is where the
-`DSPGenerated.cpp` file will be found.
-
 # Notes
 
 This library parses valid SF2 files, extracting preset information and file metadata. The SoundFonts app and

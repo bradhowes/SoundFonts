@@ -9,20 +9,20 @@
 /* Begin PBXBuildFile section */
 		BD250C82261A126000D1C1E0 /* Types.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BD250C81261A126000D1C1E0 /* Types.hpp */; platformFilter = ios; };
 		BD250D14261C74ED00D1C1E0 /* SoundFontInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD74D18323CDB36200204ED4 /* SoundFontInfo.mm */; platformFilter = ios; };
-		BD3441B2262D90660051DC7F /* PitchControl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD3441B1262D90660051DC7F /* PitchControl.hpp */; };
-		BD3441C1262D9C0C0051DC7F /* Channel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD3441C0262D9C0C0051DC7F /* Channel.hpp */; };
-		BD5E16F3261EEA85007BAA38 /* Note.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E16F2261EEA85007BAA38 /* Note.hpp */; };
-		BD5E1707261F111A007BAA38 /* ZoneCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E1706261F111A007BAA38 /* ZoneCollection.hpp */; };
-		BD5E170F261F121E007BAA38 /* Range.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E170E261F121E007BAA38 /* Range.hpp */; };
-		BD5E1719261F3907007BAA38 /* Modulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E1718261F3907007BAA38 /* Modulator.hpp */; };
-		BD62BA3F261CAE630052FB7A /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA3E261CAE630052FB7A /* LFO.hpp */; };
-		BD62BA43261CB09E0052FB7A /* BufferFacet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA42261CB09E0052FB7A /* BufferFacet.hpp */; };
-		BD62BA47261CB5F40052FB7A /* InputBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA46261CB5F40052FB7A /* InputBuffer.hpp */; };
+		BD3441B2262D90660051DC7F /* PitchControl.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD3441B1262D90660051DC7F /* PitchControl.hpp */; platformFilter = ios; };
+		BD3441C1262D9C0C0051DC7F /* Channel.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD3441C0262D9C0C0051DC7F /* Channel.hpp */; platformFilter = ios; };
+		BD5E16F3261EEA85007BAA38 /* Note.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E16F2261EEA85007BAA38 /* Note.hpp */; platformFilter = ios; };
+		BD5E1707261F111A007BAA38 /* ZoneCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E1706261F111A007BAA38 /* ZoneCollection.hpp */; platformFilter = ios; };
+		BD5E170F261F121E007BAA38 /* Range.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E170E261F121E007BAA38 /* Range.hpp */; platformFilter = ios; };
+		BD5E1719261F3907007BAA38 /* Modulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD5E1718261F3907007BAA38 /* Modulator.hpp */; platformFilter = ios; };
+		BD62BA3F261CAE630052FB7A /* LFO.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA3E261CAE630052FB7A /* LFO.hpp */; platformFilter = ios; };
+		BD62BA43261CB09E0052FB7A /* BufferFacet.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA42261CB09E0052FB7A /* BufferFacet.hpp */; platformFilter = ios; };
+		BD62BA47261CB5F40052FB7A /* InputBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA46261CB5F40052FB7A /* InputBuffer.hpp */; platformFilter = ios; };
 		BD62BA4F261CB7D20052FB7A /* DSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD62BA4E261CB7D20052FB7A /* DSPTests.mm */; platformFilter = maccatalyst; };
-		BD62BA53261CB8270052FB7A /* DelayBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */; };
+		BD62BA53261CB8270052FB7A /* DelayBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD62BA52261CB8270052FB7A /* DelayBuffer.hpp */; platformFilter = ios; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; platformFilter = maccatalyst; };
-		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18223CDB36200204ED4 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BD74D17823CDB1D200204ED4 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
+		BD74D18623CDB36200204ED4 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18223CDB36200204ED4 /* SoundFontInfo.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
 		BD9781FC2505304800CEFB59 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74D17523CDB1D200204ED4 /* SoundFontInfoLibTests.swift */; platformFilter = maccatalyst; };
 		BDA5AC7F265D35BA000AE48E /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AC7B265D35BA000AE48E /* File.cpp */; platformFilter = ios; };
 		BDA5AC80265D35BA000AE48E /* ChunkItems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AC7C265D35BA000AE48E /* ChunkItems.cpp */; platformFilter = ios; };
@@ -45,9 +45,9 @@
 		BDA5ACA0265D36A7000AE48E /* ValueTransformer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AC9F265D36A7000AE48E /* ValueTransformer.cpp */; platformFilter = ios; };
 		BDA5ACA8265D379F000AE48E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACA7265D379F000AE48E /* main.cpp */; };
 		BDA5ACAD265D3834000AE48E /* DSPGenerator.cc in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACAC265D3834000AE48E /* DSPGenerator.cc */; };
-		BDA5ACB3265D3876000AE48E /* DSPGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACAF265D3876000AE48E /* DSPGenerator.hpp */; };
-		BDA5ACB4265D3876000AE48E /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACB0265D3876000AE48E /* DSPTables.hpp */; };
-		BDA5ACB6265D3876000AE48E /* DSP.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACB2265D3876000AE48E /* DSP.hpp */; };
+		BDA5ACB3265D3876000AE48E /* DSPGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACAF265D3876000AE48E /* DSPGenerator.hpp */; platformFilter = ios; };
+		BDA5ACB4265D3876000AE48E /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACB0265D3876000AE48E /* DSPTables.hpp */; platformFilter = ios; };
+		BDA5ACB6265D3876000AE48E /* DSP.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDA5ACB2265D3876000AE48E /* DSP.hpp */; platformFilter = ios; };
 		BDA5ACD6265D3F1A000AE48E /* ChunkTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACBD265D3F1A000AE48E /* ChunkTests.mm */; };
 		BDA5ACD7265D3F1A000AE48E /* TagTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACBE265D3F1A000AE48E /* TagTests.mm */; };
 		BDA5ACD8265D3F1A000AE48E /* SFFileTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACBF265D3F1A000AE48E /* SFFileTests.mm */; };
@@ -69,52 +69,52 @@
 		BDA5ACE8265D3F1B000AE48E /* CanonicalBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD3265D3F1A000AE48E /* CanonicalBufferTests.mm */; };
 		BDA5ACE9265D3F1B000AE48E /* RangeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD4265D3F1A000AE48E /* RangeTests.mm */; };
 		BDA5ACEA265D3F1B000AE48E /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD5265D3F1A000AE48E /* ModulatorTests.mm */; };
-		BDA5ACFC265D4699000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACFB265D4699000AE48E /* DSPGenerated.cpp */; };
+		BDA5AD01265D6B83000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */; platformFilter = ios; };
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		BDB5DDF726381FEA00E63DE1 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; };
-		BDB5DDFA2638201B00E63DE1 /* ValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */; };
-		BDB5DDFD2638203800E63DE1 /* Bag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6924E5341900EA8473 /* Bag.hpp */; };
-		BDB5DE002638205200E63DE1 /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6724E5328100EA8473 /* Instrument.hpp */; };
-		BDB5DE032638213900E63DE1 /* Modulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* Modulator.hpp */; };
-		BDB5DE062638218100E63DE1 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6B24E534B700EA8473 /* Preset.hpp */; };
-		BDB5DE09263821AA00E63DE1 /* SampleHeader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6F24E536A200EA8473 /* SampleHeader.hpp */; };
-		BDB5DE0C2638226800E63DE1 /* File.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB7124E5A5DC00EA8473 /* File.hpp */; };
-		BDB5DE0F2638227000E63DE1 /* ChunkList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4652491823400F3F361 /* ChunkList.hpp */; };
-		BDB5DE122638231700E63DE1 /* Source.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00162497665D00A52507 /* Source.hpp */; };
-		BDB5DE152638231A00E63DE1 /* Transform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001E2497672000A52507 /* Transform.hpp */; };
-		BDB5DE182638231F00E63DE1 /* Version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250C91261A727100D1C1E0 /* Version.hpp */; };
-		BDB5DE1B2638233E00E63DE1 /* Amount.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0022249768E200A52507 /* Amount.hpp */; };
-		BDB5DE1E2638234200E63DE1 /* Definition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD827FFD24EA8E1B00533D80 /* Definition.hpp */; };
-		BDB5DE212638234B00E63DE1 /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* Generator.hpp */; };
-		BDB5DE242638235800E63DE1 /* Index.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001A2497669300A52507 /* Index.hpp */; };
-		BDB5DE272638236C00E63DE1 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; };
-		BDB5DE2A2638239900E63DE1 /* StringUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002A2497790A00A52507 /* StringUtils.hpp */; };
-		BDB5DE2D2638239C00E63DE1 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; };
-		BDB5DE302638239F00E63DE1 /* Pos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB266142531AA16005BEAD1 /* Pos.hpp */; };
-		BDB5DE33263823A200E63DE1 /* Parser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18123CDB36200204ED4 /* Parser.hpp */; };
-		BDB5DE362638241C00E63DE1 /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4424F69E21009EAABE /* Instrument.hpp */; };
-		BDB5DE392638242200E63DE1 /* InstrumentCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */; };
-		BDB5DE3C2638248C00E63DE1 /* MIDI.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD97191224EF21E40009ED6E /* MIDI.hpp */; };
-		BDB5DE3F2638249C00E63DE1 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42E24F46CF000F8C874 /* Preset.hpp */; };
-		BDB5DE42263824A000E63DE1 /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */; };
-		BDB5DE45263824AE00E63DE1 /* BufferIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250C9F261C3AA600D1C1E0 /* BufferIndex.hpp */; };
-		BDB5DE48263824B100E63DE1 /* CanonicalBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250CAB261C61D000D1C1E0 /* CanonicalBuffer.hpp */; };
-		BDB5DE4E263824CA00E63DE1 /* Voice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0026249775FE00A52507 /* Voice.hpp */; };
-		BDB5DE51263824CD00E63DE1 /* State.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* State.hpp */; };
-		BDB5DE54263824D800E63DE1 /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC43224F46EFA00F8C874 /* Zone.hpp */; };
-		BDB5DE572638254500E63DE1 /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; };
-		BDB5DE5E26382A0500E63DE1 /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */; };
+		BDB5DDF726381FEA00E63DE1 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; platformFilter = ios; };
+		BDB5DDFA2638201B00E63DE1 /* ValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */; platformFilter = ios; };
+		BDB5DDFD2638203800E63DE1 /* Bag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6924E5341900EA8473 /* Bag.hpp */; platformFilter = ios; };
+		BDB5DE002638205200E63DE1 /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6724E5328100EA8473 /* Instrument.hpp */; platformFilter = ios; };
+		BDB5DE032638213900E63DE1 /* Modulator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC004A2497F0A700A52507 /* Modulator.hpp */; platformFilter = ios; };
+		BDB5DE062638218100E63DE1 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6B24E534B700EA8473 /* Preset.hpp */; platformFilter = ios; };
+		BDB5DE09263821AA00E63DE1 /* SampleHeader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB6F24E536A200EA8473 /* SampleHeader.hpp */; platformFilter = ios; };
+		BDB5DE0C2638226800E63DE1 /* File.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD64EB7124E5A5DC00EA8473 /* File.hpp */; platformFilter = ios; };
+		BDB5DE0F2638227000E63DE1 /* ChunkList.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4652491823400F3F361 /* ChunkList.hpp */; platformFilter = ios; };
+		BDB5DE122638231700E63DE1 /* Source.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00162497665D00A52507 /* Source.hpp */; platformFilter = ios; };
+		BDB5DE152638231A00E63DE1 /* Transform.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001E2497672000A52507 /* Transform.hpp */; platformFilter = ios; };
+		BDB5DE182638231F00E63DE1 /* Version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250C91261A727100D1C1E0 /* Version.hpp */; platformFilter = ios; };
+		BDB5DE1B2638233E00E63DE1 /* Amount.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0022249768E200A52507 /* Amount.hpp */; platformFilter = ios; };
+		BDB5DE1E2638234200E63DE1 /* Definition.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD827FFD24EA8E1B00533D80 /* Definition.hpp */; platformFilter = ios; };
+		BDB5DE212638234B00E63DE1 /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00462497E7BF00A52507 /* Generator.hpp */; platformFilter = ios; };
+		BDB5DE242638235800E63DE1 /* Index.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC001A2497669300A52507 /* Index.hpp */; platformFilter = ios; };
+		BDB5DE272638236C00E63DE1 /* Chunk.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4692491829000F3F361 /* Chunk.hpp */; platformFilter = ios; };
+		BDB5DE2A2638239900E63DE1 /* StringUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC002A2497790A00A52507 /* StringUtils.hpp */; platformFilter = ios; };
+		BDB5DE2D2638239C00E63DE1 /* Tag.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1B4612491805800F3F361 /* Tag.hpp */; platformFilter = ios; };
+		BDB5DE302638239F00E63DE1 /* Pos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB266142531AA16005BEAD1 /* Pos.hpp */; platformFilter = ios; };
+		BDB5DE33263823A200E63DE1 /* Parser.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD74D18123CDB36200204ED4 /* Parser.hpp */; platformFilter = ios; };
+		BDB5DE362638241C00E63DE1 /* Instrument.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE4424F69E21009EAABE /* Instrument.hpp */; platformFilter = ios; };
+		BDB5DE392638242200E63DE1 /* InstrumentCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5824F9DF6B009EAABE /* InstrumentCollection.hpp */; platformFilter = ios; };
+		BDB5DE3C2638248C00E63DE1 /* MIDI.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD97191224EF21E40009ED6E /* MIDI.hpp */; platformFilter = ios; };
+		BDB5DE3F2638249C00E63DE1 /* Preset.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42E24F46CF000F8C874 /* Preset.hpp */; platformFilter = ios; };
+		BDB5DE42263824A000E63DE1 /* PresetZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5424F9DEB9009EAABE /* PresetZone.hpp */; platformFilter = ios; };
+		BDB5DE45263824AE00E63DE1 /* BufferIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250C9F261C3AA600D1C1E0 /* BufferIndex.hpp */; platformFilter = ios; };
+		BDB5DE48263824B100E63DE1 /* CanonicalBuffer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD250CAB261C61D000D1C1E0 /* CanonicalBuffer.hpp */; platformFilter = ios; };
+		BDB5DE4E263824CA00E63DE1 /* Voice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC0026249775FE00A52507 /* Voice.hpp */; platformFilter = ios; };
+		BDB5DE51263824CD00E63DE1 /* State.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5224F9C689009EAABE /* State.hpp */; platformFilter = ios; };
+		BDB5DE54263824D800E63DE1 /* Zone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC43224F46EFA00F8C874 /* Zone.hpp */; platformFilter = ios; };
+		BDB5DE572638254500E63DE1 /* Format.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5024F81867009EAABE /* Format.hpp */; platformFilter = ios; };
+		BDB5DE5E26382A0500E63DE1 /* InstrumentZone.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD2AEE5624F9DF1E009EAABE /* InstrumentZone.hpp */; platformFilter = ios; };
 		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; platformFilter = ios; };
-		BDEB12802623792F003CE8EE /* Entity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB127F2623792F003CE8EE /* Entity.hpp */; };
-		BDEB128A26243B9B003CE8EE /* WithZones.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB128926243B9B003CE8EE /* WithZones.hpp */; };
+		BDEB12802623792F003CE8EE /* Entity.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB127F2623792F003CE8EE /* Entity.hpp */; platformFilter = ios; };
+		BDEB128A26243B9B003CE8EE /* WithZones.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB128926243B9B003CE8EE /* WithZones.hpp */; platformFilter = ios; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
-		BDEB12CB2626CB13003CE8EE /* Setup.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12CA2626CB13003CE8EE /* Setup.hpp */; };
-		BDEB12D72626E6DA003CE8EE /* Stage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12D62626E6DA003CE8EE /* Stage.hpp */; };
-		BDEB12DB2626E764003CE8EE /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12DA2626E764003CE8EE /* Generator.hpp */; };
-		BDEB12E3262880BC003CE8EE /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12E2262880BB003CE8EE /* Generator.hpp */; };
-		BDEB12F52628906E003CE8EE /* Bounds.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12F42628906E003CE8EE /* Bounds.hpp */; };
-		BDEB130B2629CA5C003CE8EE /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130A2629CA5C003CE8EE /* Engine.hpp */; };
-		BDEB130F2629EB4F003CE8EE /* Logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130E2629EB4F003CE8EE /* Logger.hpp */; };
+		BDEB12CB2626CB13003CE8EE /* Setup.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12CA2626CB13003CE8EE /* Setup.hpp */; platformFilter = ios; };
+		BDEB12D72626E6DA003CE8EE /* Stage.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12D62626E6DA003CE8EE /* Stage.hpp */; platformFilter = ios; };
+		BDEB12DB2626E764003CE8EE /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12DA2626E764003CE8EE /* Generator.hpp */; platformFilter = ios; };
+		BDEB12E3262880BC003CE8EE /* Generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12E2262880BB003CE8EE /* Generator.hpp */; platformFilter = ios; };
+		BDEB12F52628906E003CE8EE /* Bounds.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB12F42628906E003CE8EE /* Bounds.hpp */; platformFilter = ios; };
+		BDEB130B2629CA5C003CE8EE /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130A2629CA5C003CE8EE /* Engine.hpp */; platformFilter = ios; };
+		BDEB130F2629EB4F003CE8EE /* Logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEB130E2629EB4F003CE8EE /* Logger.hpp */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +124,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BD74D16623CDB1D200204ED4;
 			remoteInfo = SoundFontInfoLib;
+		};
+		BDA5ACFD265D4ED7000AE48E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD74D15E23CDB1D200204ED4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDA5ACA4265D379F000AE48E;
+			remoteInfo = DSPGenerator;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -226,7 +233,7 @@
 		BDA5ACD3265D3F1A000AE48E /* CanonicalBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CanonicalBufferTests.mm; sourceTree = "<group>"; };
 		BDA5ACD4265D3F1A000AE48E /* RangeTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RangeTests.mm; sourceTree = "<group>"; };
 		BDA5ACD5265D3F1A000AE48E /* ModulatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorTests.mm; sourceTree = "<group>"; };
-		BDA5ACFB265D4699000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSPGenerated.cpp; sourceTree = "<group>"; };
+		BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DSPGenerated.cpp; path = DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources/DSPGenerated.cpp; sourceTree = SOURCE_ROOT; };
 		BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueTransformer.hpp; sourceTree = "<group>"; };
 		BDABC42E24F46CF000F8C874 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
 		BDABC43224F46EFA00F8C874 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Zone.hpp; sourceTree = "<group>"; };
@@ -388,14 +395,15 @@
 				BDA5ACAC265D3834000AE48E /* DSPGenerator.cc */,
 				BDA5ACA7265D379F000AE48E /* main.cpp */,
 			);
-			path = DSPGenerator;
+			name = DSPGenerator;
+			path = SoundFontInfoLib/DSPGenerator;
 			sourceTree = "<group>";
 		};
 		BDA5ACAE265D3876000AE48E /* DSP */ = {
 			isa = PBXGroup;
 			children = (
-				BDA5ACFB265D4699000AE48E /* DSPGenerated.cpp */,
 				BDA5ACB1265D3876000AE48E /* README.md */,
+				BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */,
 				BDA5ACAF265D3876000AE48E /* DSPGenerator.hpp */,
 				BDA5ACB0265D3876000AE48E /* DSPTables.hpp */,
 				BDA5ACB2265D3876000AE48E /* DSP.hpp */,
@@ -565,7 +573,8 @@
 			children = (
 				BDECFFE82496BA6600A52507 /* main.swift */,
 			);
-			path = sf2dump;
+			name = sf2dump;
+			path = SoundFontInfoLib/sf2dump;
 			sourceTree = "<group>";
 		};
 		BDECFFED2496BEFB00A52507 /* Frameworks */ = {
@@ -653,6 +662,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD74D17B23CDB1D200204ED4 /* Build configuration list for PBXNativeTarget "SoundFontInfoLib" */;
 			buildPhases = (
+				BDA5ACFF265D6AB4000AE48E /* Create DSPGenerated.cpp File */,
 				BD74D16223CDB1D200204ED4 /* Headers */,
 				BD74D16323CDB1D200204ED4 /* Sources */,
 				BD74D16423CDB1D200204ED4 /* Frameworks */,
@@ -661,6 +671,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BDA5ACFE265D4ED7000AE48E /* PBXTargetDependency */,
 			);
 			name = SoundFontInfoLib;
 			productName = SoundFontInfoLib;
@@ -764,6 +775,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BDA5ACFF265D6AB4000AE48E /* Create DSPGenerated.cpp File */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Render/DSP.hpp",
+				"$(SRCROOT)/Render/DSPGenerators.hpp",
+			);
+			name = "Create DSPGenerated.cpp File";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(PROJECT_DERIVED_FILE_DIR)/DSPGenerated.cpp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${PROJECT_DERIVED_FILE_DIR}/DSPGenerated.cpp\"\nset -- `find . -name DSPGenerator`\necho ${1} \"${OUTPUT}\"\n${1} \"${OUTPUT}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BD74D16323CDB1D200204ED4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -786,7 +821,7 @@
 				BDA5AC88265D361E000AE48E /* Preset.cpp in Sources */,
 				BDA5AC96265D3640000AE48E /* Transform.cpp in Sources */,
 				BDA5AC8F265D362D000AE48E /* Generator.cpp in Sources */,
-				BDA5ACFC265D4699000AE48E /* DSPGenerated.cpp in Sources */,
+				BDA5AD01265D6B83000AE48E /* DSPGenerated.cpp in Sources */,
 				BDA5AC94265D3640000AE48E /* Modulator.cpp in Sources */,
 				BDA5AC82265D35BA000AE48E /* Parser.cpp in Sources */,
 				BDA5AC95265D3640000AE48E /* Source.cpp in Sources */,
@@ -841,6 +876,11 @@
 			platformFilter = maccatalyst;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
+		};
+		BDA5ACFE265D4ED7000AE48E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDA5ACA4265D379F000AE48E /* DSPGenerator */;
+			targetProxy = BDA5ACFD265D4ED7000AE48E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1123,6 +1163,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Debug;
@@ -1141,6 +1182,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = macosx;
 			};
 			name = Release;
