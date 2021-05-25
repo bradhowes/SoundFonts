@@ -30,7 +30,7 @@
       location = "group:App.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SoundFontsFramework.xcodeproj">
+      location = "group:SoundFontsFramework/SoundFontsFramework.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:SoundFontInfoLib/SoundFontInfoLib.xcodeproj">

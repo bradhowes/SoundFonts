@@ -1,20 +1,21 @@
-disabled_rules: # rule identifiers to exclude from running
+disabled_rules:
   - statement_position
   - todo
   - nesting
 
-opt_in_rules: # some rules are only opt-in
+opt_in_rules:
   - empty_count
 
 included: # paths to include during linting. `--path` is ignored if present.
-  - App
+  - SoundFonts
   - SoundFontsFramework
   - SoundFontInfoLib
+  - SF2Files
 
-excluded: # paths to ignore during linting. Takes precedence over `included`.
-  - Carthage
-  - Pods
-  - SoundFontsFramework/Keyboard View/KeyboardRender.swift
+excluded:
+#  - SoundFontsApp/AppTests
+  - SoundFontsFramework/SoundFontsFrameworkTests
+  - SoundFontsFramework/SoundFontsFramework/Keyboard View/KeyboardRender.swift
 
 # binary rules can set their severity level
 force_cast: warning # implicitly
