@@ -106,7 +106,6 @@
 		BD3F44D62501958000653ABD /* PersistentContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44CF2501958000653ABD /* PersistentContainer.swift */; };
 		BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */; };
 		BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */; };
-		BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */; };
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD4CF9912561BEBD00CC5DB6 /* DelayEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4CF9902561BEBD00CC5DB6 /* DelayEffect.swift */; };
@@ -122,6 +121,8 @@
 		BD62CF5D253DE22D00DBDC1B /* InfoBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */; };
 		BD62CF5E253DE22D00DBDC1B /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */; };
 		BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */; };
+		BD6C6F99265CCAE200EB98B2 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6C6F98265CCAE200EB98B2 /* Icon.swift */; };
+		BD6C6F9B265CCD0E00EB98B2 /* IconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6C6F9A265CCD0E00EB98B2 /* IconTests.swift */; };
 		BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057725CC6F6E004058D9 /* Intro.storyboard */; };
 		BD6E057E25CC74B1004058D9 /* Done.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057D25CC74B1004058D9 /* Done.storyboard */; };
 		BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */; };
@@ -320,7 +321,6 @@
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44CF2501958000653ABD /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUAudioUnitTests.swift; sourceTree = "<group>"; };
-		BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingKey.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD4CF9902561BEBD00CC5DB6 /* DelayEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayEffect.swift; sourceTree = "<group>"; };
@@ -338,6 +338,8 @@
 		BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar.storyboard; sourceTree = "<group>"; };
 		BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GuideView.storyboard; sourceTree = "<group>"; };
+		BD6C6F98265CCAE200EB98B2 /* Icon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		BD6C6F9A265CCD0E00EB98B2 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		BD6E057725CC6F6E004058D9 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
 		BD6E057D25CC74B1004058D9 /* Done.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Done.storyboard; sourceTree = "<group>"; };
 		BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattersTests.swift; sourceTree = "<group>"; };
@@ -587,6 +589,7 @@
 				BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */,
 				BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
+				BD6C6F98265CCAE200EB98B2 /* Icon.swift */,
 				BD130B182561755F00D1CDF6 /* Knob.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
 				BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */,
@@ -621,7 +624,6 @@
 				BD0FAC7F2523CAEC00EEF187 /* UIContextualAction+Extensions.swift */,
 				BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */,
 				BD9FDEEB251616A200EA0029 /* UIGestureRecognizer+Extensions.swift */,
-				BD4569AB25178F4600C2A7B2 /* UIImage+Extensions.swift */,
 				BDF3B3D42566BB9C003F7BB3 /* UILabel+Extensions.swift */,
 				BD074C2623CDAF51001987E9 /* UISearchBar+Additions.swift */,
 				BD074C2423CDAF51001987E9 /* UITableView+Extensions.swift */,
@@ -745,6 +747,7 @@
 				BDD9140F25097E610068E3CE /* CoreData Tests */,
 				BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */,
 				BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */,
+				BD6C6F9A265CCD0E00EB98B2 /* IconTests.swift */,
 				BDC961A624FFA745003D9BEF /* StringTests.swift */,
 				BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */,
 				BD23948925540855004E5E0D /* KeyTests.swift */,
@@ -1015,7 +1018,6 @@
 				BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */,
 				BDD913FE2508FCC50068E3CE /* EntityCollection.swift in Sources */,
 				BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */,
-				BD4569AC25178F4600C2A7B2 /* UIImage+Extensions.swift in Sources */,
 				BD074C8923CDAF51001987E9 /* UpperViewSwipingActivity.swift in Sources */,
 				BD074C7623CDAF51001987E9 /* RandomAccessCollection+Extensions.swift in Sources */,
 				BD074C7523CDAF51001987E9 /* UIView+Extensions.swift in Sources */,
@@ -1086,6 +1088,7 @@
 				BDD2836D25BAC48A00B3A59A /* TuningComponent.swift in Sources */,
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
+				BD6C6F99265CCAE200EB98B2 /* Icon.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
 				BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* LegacyFavorite.swift in Sources */,
@@ -1138,6 +1141,7 @@
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
 				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
+				BD6C6F9B265CCD0E00EB98B2 /* IconTests.swift in Sources */,
 				BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
@@ -1220,7 +1224,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210408194618;
+				CURRENT_PROJECT_VERSION = 20210525085824;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1288,7 +1292,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210408194618;
+				CURRENT_PROJECT_VERSION = 20210525085824;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1318,7 +1322,7 @@
 			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210408194618;
+				CURRENT_PROJECT_VERSION = 20210525085824;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1331,7 +1335,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.0;
+				MARKETING_VERSION = 2.21.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1346,7 +1350,7 @@
 			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210408194618;
+				CURRENT_PROJECT_VERSION = 20210525085824;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1359,7 +1363,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.0;
+				MARKETING_VERSION = 2.21.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

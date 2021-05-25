@@ -109,10 +109,10 @@ public struct Formatters {
         }
 
         var deleteFontTitle: String {
-            NSLocalizedString("deleteFont_title", bundle: bundle, comment: "Title of confirmation prompt")
+            NSLocalizedString("deleteFontTitle", bundle: bundle, comment: "Title of confirmation prompt")
         }
 
-        var deleteFontMessage: String { NSLocalizedString("deleteFont_body", bundle: bundle,
+        var deleteFontMessage: String { NSLocalizedString("deleteFontBody", bundle: bundle,
                                                           comment: "Body of confirmation prompt") }
         var deleteAction: String { NSLocalizedString("deleteAction", bundle: bundle, comment: "The delete action") }
 
@@ -132,6 +132,15 @@ public struct Formatters {
                                                       comment: "Added all of the sound fonts.")}
         var addedSomeFiles: String { NSLocalizedString("addedSomeFiles", bundle: bundle,
                                                        comment: "Added %d out of %d sound fonts.")}
+
+        var hidePresetTitle: String {
+            NSLocalizedString("hidePresetTitle", bundle: bundle, comment: "Title of hide preset confirmation prompt")
+        }
+
+        var hidePresetMessage: String { NSLocalizedString("hidePresetBody", bundle: bundle,
+                                                          comment: "Body of hide preset confirmation prompt") }
+        var hidePresetAction: String { NSLocalizedString("hidePresetAction", bundle: bundle,
+                                                         comment: "The hide preset confirmation action") }
     }
 
     public static let strings: Strings = Strings()

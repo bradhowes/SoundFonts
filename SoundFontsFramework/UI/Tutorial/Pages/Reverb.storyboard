@@ -44,7 +44,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="jFd-pk-0Gl">
                                                 <rect key="frame" x="0.0" y="0.0" width="339.5" height="17"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOffOld" translatesAutoresizingMaskIntoConstraints="NO" id="Yfj-EZ-rfj">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOff" translatesAutoresizingMaskIntoConstraints="NO" id="Yfj-EZ-rfj">
                                                         <rect key="frame" x="0.0" y="0.0" width="16" height="17"/>
                                                         <color key="tintColor" systemColor="systemTealColor"/>
                                                     </imageView>
@@ -59,7 +59,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="DfX-Wh-Ctz">
                                                 <rect key="frame" x="0.0" y="25" width="339.5" height="17"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOffOld" translatesAutoresizingMaskIntoConstraints="NO" id="ARR-YQ-PGq">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="EffectOff" translatesAutoresizingMaskIntoConstraints="NO" id="ARR-YQ-PGq">
                                                         <rect key="frame" x="0.0" y="0.0" width="16" height="17"/>
                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
                                                     </imageView>
@@ -92,7 +92,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EffectOffOld" width="16" height="16"/>
+        <image name="EffectOff" width="16" height="16"/>
         <image name="Reverb" width="571" height="248"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

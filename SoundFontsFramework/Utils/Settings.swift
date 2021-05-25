@@ -83,6 +83,8 @@ public extension SettingKeys {
     static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", defaultValue: 1.4)
     /// The number of semitones a max pitch bend will cause in a playing note
     static let pitchBendRange = SettingKey("pitchBendRange", defaultValue: 2)
+    /// When true, the user has seen the prompt on how to restore hidden presets
+    static let showedHidePresetPrompt = SettingKey("showedHidePresetPrompt", defaultValue: false)
 }
 
 /**
@@ -291,5 +293,10 @@ public extension UserDefaults {
     @objc dynamic var pitchBendRange: Int {
         get { self[.pitchBendRange] }
         set { self[.pitchBendRange] = newValue }
+    }
+    /// When true, the user has seen the prompt on how to restore hidden presets
+    @objc dynamic var showedHidePresetPrompt: Bool {
+        get { self[.showedHidePresetPrompt] }
+        set { self[.showedHidePresetPrompt] = newValue }
     }
 }

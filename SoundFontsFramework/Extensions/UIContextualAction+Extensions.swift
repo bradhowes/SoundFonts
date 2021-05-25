@@ -5,18 +5,18 @@ import UIKit
 public extension UIContextualAction {
 
     /**
-     Convenience constructor. The given tag is used to obtain the UIImage to use in the action representation.
+     Convenience constructor.
 
-     - parameter tag: the name of the action
+     - parameter icon: the icon of the action
      - parameter color: the background color of the action
      - parameter handler: the closure to invoke when the action fires
      */
-    convenience init(tag: String, color: UIColor, handler: @escaping Handler) {
+    convenience init(icon: Icon, color: UIColor, handler: @escaping Handler) {
         self.init(style: .normal, title: nil, handler: handler)
-        self.image = UIImage.resourceImage(name: tag)
+        self.image = icon.image
         self.backgroundColor = color
-        self.accessibilityLabel = tag + "SwipeAction"
-        self.accessibilityHint = tag + "SwipeAction"
+        self.accessibilityLabel = icon.accessibilityLabel
+        self.accessibilityHint = icon.accessibilityHint
         self.isAccessibilityElement = true
     }
 }

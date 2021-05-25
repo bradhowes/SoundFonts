@@ -51,7 +51,7 @@ extension Bundle {
      - returns: UIImage instance for the button state
      */
     public static func effectEnabledButtonImage(enabled: Bool, compatibleWith: UITraitCollection? = nil) -> UIImage {
-        let name = enabled ? "EffectOnOld" : "EffectOffOld"
+        let name = enabled ? "EffectOn" : "EffectOff"
         guard let image = UIImage(named: name, in: Bundle(for: BundleTag.self), compatibleWith: compatibleWith) else {
             fatalError("missing image '\(name)'")
         }

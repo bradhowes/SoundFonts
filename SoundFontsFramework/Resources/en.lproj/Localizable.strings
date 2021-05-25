@@ -20,8 +20,8 @@
 "Bank" = "Bank";
 "Index" = "Index";
 
-"deleteFont_title" = "Delete the soundfont file?";
-"deleteFont_body" = "Deleting will remove the file and also any favorites linked to it.";
+"deleteFontTitle" = "Delete the soundfont file?";
+"deleteFontBody" = "Deleting will remove the file and also any favorites linked to it.";
 
 "addSoundFontsStatusTitle" = "Add Sound Fonts";
 "unableToAddOneFile" = "Unable to add the sound font";
@@ -52,3 +52,8 @@ have been lost.";
 "noPresetLoaded" = "No active preset";
 /* Another app on the device is controlling audio */
 "otherAppAudio" = "Another app is controlling audio";
+
+"hidePresetTitle" = "Hide Preset";
+"hidePresetBody" = "You will no longer see this preset.
+Restore preset visibility using the Change Visibility button in the info bar.";
+"hidePresetAction" = "Hide";

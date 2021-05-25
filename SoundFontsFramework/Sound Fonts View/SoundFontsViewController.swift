@@ -205,9 +205,9 @@ extension SoundFontsViewController: ControllerConfiguration {
             soundFonts: router.soundFonts, tags: tags)
 
         patchesTableViewManager = PatchesTableViewManager(
-            view: patchesView, searchBar: searchBar, activePatchManager: router.activePatchManager,
-            selectedSoundFontManager: selectedSoundFontManager, soundFonts: soundFonts,
-            favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
+            viewController: self, view: patchesView, searchBar: searchBar,
+            activePatchManager: router.activePatchManager, selectedSoundFontManager: selectedSoundFontManager,
+            soundFonts: soundFonts, favorites: favorites, keyboard: router.keyboard, infoBar: router.infoBar)
 
         tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, tagsHider: self.hideTags)
 
@@ -268,7 +268,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
     public func createEditSwipeAction(at: IndexPath, cell: TableCell,
                                       soundFont: LegacySoundFont) -> UIContextualAction {
-        let action = UIContextualAction(tag: "Edit", color: .systemTeal) { _, view, completionHandler in
+        UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
             let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
                                            soundFontKey: soundFont.key,
                                            favoriteCount: self.favorites.count(associatedWith: soundFont),
@@ -276,12 +276,6 @@ extension SoundFontsViewController: FontEditorActionGenerator {
                                            completionHandler: completionHandler)
             self.performSegue(withIdentifier: .fontEditor, sender: config)
         }
-
-        action.image = getActionImage("Edit")
-        action.backgroundColor = UIColor.systemTeal
-        action.accessibilityLabel = "FontEditButton"
-        action.isAccessibilityElement = true
-        return action
     }
 
     /**
@@ -295,17 +289,9 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
     public func createDeleteSwipeAction(at: IndexPath, cell: TableCell,
                                         soundFont: LegacySoundFont) -> UIContextualAction {
-        let action = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
+        UIContextualAction(icon: .remove, color: .red) { _, _, completionHandler in
             self.remove(soundFont: soundFont, completionHandler: completionHandler)
         }
-
-        action.image = getActionImage("Trash")
-        action.backgroundColor = UIColor.red
-        return action
-    }
-
-    private func getActionImage(_ name: String) -> UIImage? {
-        return UIImage(named: name, in: Bundle(for: Self.self), compatibleWith: .none)
     }
 }
 

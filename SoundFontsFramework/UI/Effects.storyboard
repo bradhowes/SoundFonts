@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erm-79-XXa">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -49,7 +49,7 @@
                                                                                         </constraints>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                         <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                        <state key="normal" title=" Reverb" image="EffectOffOld">
+                                                                                        <state key="normal" title=" Reverb" image="EffectOff">
                                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                                         </state>
                                                                                         <connections>
@@ -63,7 +63,7 @@
                                                                                         </constraints>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
-                                                                                        <state key="normal" title=" Lock" image="EffectOffOld">
+                                                                                        <state key="normal" title=" Lock" image="EffectOff">
                                                                                             <color key="titleColor" systemColor="systemOrangeColor"/>
                                                                                         </state>
                                                                                         <state key="disabled">
@@ -131,7 +131,7 @@
                                                                                         </constraints>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                         <color key="tintColor" systemColor="systemTealColor"/>
-                                                                                        <state key="normal" title=" Delay" image="EffectOffOld">
+                                                                                        <state key="normal" title=" Delay" image="EffectOff">
                                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                                         </state>
                                                                                         <connections>
@@ -145,7 +145,7 @@
                                                                                         </constraints>
                                                                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                                                         <color key="tintColor" systemColor="systemOrangeColor"/>
-                                                                                        <state key="normal" title=" Lock" image="EffectOffOld">
+                                                                                        <state key="normal" title=" Lock" image="EffectOff">
                                                                                             <color key="titleColor" systemColor="systemOrangeColor"/>
                                                                                         </state>
                                                                                         <state key="disabled">
@@ -319,7 +319,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EffectOffOld" width="16" height="16"/>
+        <image name="EffectOff" width="16" height="16"/>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

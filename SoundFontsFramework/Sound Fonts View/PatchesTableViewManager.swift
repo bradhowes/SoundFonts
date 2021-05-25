@@ -18,6 +18,7 @@ final class PatchesTableViewManager: NSObject {
 
     private lazy var log = Logging.logger("PatchesTableViewManager")
 
+    private weak var viewController: UIViewController?
     private let view: UITableView
 
     private let searchBar: UISearchBar
@@ -48,9 +49,10 @@ final class PatchesTableViewManager: NSObject {
      - parameter keyboard: the optional keyboard view manager
      - parameter infoBar: the info bar manager
      */
-    init(view: UITableView, searchBar: UISearchBar, activePatchManager: ActivePatchManager,
-         selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
-         keyboard: Keyboard?, infoBar: InfoBar) {
+    init(viewController: UIViewController, view: UITableView, searchBar: UISearchBar,
+         activePatchManager: ActivePatchManager, selectedSoundFontManager: SelectedSoundFontManager,
+         soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?, infoBar: InfoBar) {
+        self.viewController = viewController
         self.view = view
         self.searchBar = searchBar
         searchBar.text = nil
@@ -628,7 +630,7 @@ extension PatchesTableViewManager {
 
     private func editPresetSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Edit", color: .systemTeal) { _, view, completionHandler in
+        UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
             var rect = self.view.rectForRow(at: indexPath)
             rect.size.width = 240.0
             self.favorites.beginEdit(
@@ -643,7 +645,7 @@ extension PatchesTableViewManager {
 
     private func createFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                            soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "Fave", color: .systemOrange) { _, _, completionHandler in
+        UIContextualAction(icon: .favorite, color: .systemOrange) { _, _, completionHandler in
             completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPatch))
         }
     }
@@ -668,7 +670,7 @@ extension PatchesTableViewManager {
     }
 
     private func deleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
-        return UIContextualAction(tag: "Unfave", color: .systemRed) { _, _, completionHandler in
+        UIContextualAction(icon: .unfavorite, color: .systemRed) { _, _, completionHandler in
             completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
         }
     }
@@ -693,7 +695,7 @@ extension PatchesTableViewManager {
     }
 
     private func editFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
-        return UIContextualAction(tag: "Edit", color: .systemOrange) { _, _, completionHandler in
+        UIContextualAction(icon: .edit, color: .systemOrange) { _, _, completionHandler in
             self.editFavorite(at: indexPath, completionHandler: completionHandler)
         }
     }
@@ -730,16 +732,15 @@ extension PatchesTableViewManager {
 
     private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                        soundFontAndPatch: SoundFontAndPatch) -> UIContextualAction {
-        return UIContextualAction(tag: "HideShield", color: .gray) { _, _, completionHandler in
-            self.soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: false)
-            self.viewSlots.remove(at: indexPath.slotIndex)
-            self.view.performBatchUpdates({
-                self.view.deleteRows(at: [indexPath], with: .automatic)
-                self.sectionRowCounts[indexPath.section] -= 1
-            }, completion: { _ in
-                self.updateSectionRowCounts(reload: true)
-            })
-            completionHandler(true)
+        UIContextualAction(icon: .hide, color: .gray) { _, _, completionHandler in
+            if Settings.shared.showedHidePresetPrompt {
+                self.hidePreset(soundFontAndPatch: soundFontAndPatch, indexPath: indexPath,
+                                completionHandler: completionHandler)
+            }
+            else {
+                self.promptToHidePreset(soundFontAndPatch: soundFontAndPatch, indexPath: indexPath,
+                                        completionHandler: completionHandler)
+            }
         }
     }
 
@@ -747,6 +748,48 @@ extension PatchesTableViewManager {
         let actions = UISwipeActionsConfiguration(actions: actions)
         actions.performsFirstActionWithFullSwipe = false
         return actions
+    }
+
+    private func hidePreset(soundFontAndPatch: SoundFontAndPatch, indexPath: IndexPath,
+                            completionHandler: (Bool) -> Void) {
+        self.soundFonts.setVisibility(soundFontAndPatch: soundFontAndPatch, state: false)
+        self.viewSlots.remove(at: indexPath.slotIndex)
+        self.view.performBatchUpdates({
+            self.view.deleteRows(at: [indexPath], with: .automatic)
+            self.sectionRowCounts[indexPath.section] -= 1
+        }, completion: { _ in
+            self.updateSectionRowCounts(reload: true)
+        })
+        completionHandler(true)
+    }
+
+    private func promptToHidePreset(soundFontAndPatch: SoundFontAndPatch, indexPath: IndexPath,
+                                    completionHandler: @escaping (Bool) -> Void) {
+        let promptTitle = Formatters.strings.hidePresetTitle
+        let promptMessage = Formatters.strings.hidePresetMessage
+        let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
+
+        let hide = UIAlertAction(title: Formatters.strings.hidePresetAction, style: .default) { _ in
+            Settings.shared.showedHidePresetPrompt = true
+            self.hidePreset(soundFontAndPatch: soundFontAndPatch, indexPath: indexPath,
+                            completionHandler: completionHandler)
+        }
+
+        let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
+            completionHandler(false)
+        }
+
+        alertController.addAction(hide)
+        alertController.addAction(cancel)
+
+        if let popoverController = alertController.popoverPresentationController {
+            popoverController.sourceView = self.view
+            popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY,
+                                                  width: 0, height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+
+        viewController?.present(alertController, animated: true, completion: nil)
     }
 }
 
