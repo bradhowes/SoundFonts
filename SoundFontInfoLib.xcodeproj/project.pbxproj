@@ -69,7 +69,7 @@
 		BDA5ACE8265D3F1B000AE48E /* CanonicalBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD3265D3F1A000AE48E /* CanonicalBufferTests.mm */; };
 		BDA5ACE9265D3F1B000AE48E /* RangeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD4265D3F1A000AE48E /* RangeTests.mm */; };
 		BDA5ACEA265D3F1B000AE48E /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACD5265D3F1A000AE48E /* ModulatorTests.mm */; };
-		BDA5AD01265D6B83000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */; platformFilter = ios; };
+		BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */; };
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BDB5DDF726381FEA00E63DE1 /* ChunkItems.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDEC00422497DD5700A52507 /* ChunkItems.hpp */; platformFilter = ios; };
 		BDB5DDFA2638201B00E63DE1 /* ValueTransformer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */; platformFilter = ios; };
@@ -233,7 +233,7 @@
 		BDA5ACD3265D3F1A000AE48E /* CanonicalBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CanonicalBufferTests.mm; sourceTree = "<group>"; };
 		BDA5ACD4265D3F1A000AE48E /* RangeTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RangeTests.mm; sourceTree = "<group>"; };
 		BDA5ACD5265D3F1A000AE48E /* ModulatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorTests.mm; sourceTree = "<group>"; };
-		BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DSPGenerated.cpp; path = DerivedData/SoundFonts/Build/Intermediates.noindex/SoundFontInfoLib.build/DerivedSources/DSPGenerated.cpp; sourceTree = SOURCE_ROOT; };
+		BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSPGenerated.cpp; sourceTree = "<group>"; };
 		BDABC42624F1727A00F8C874 /* ValueTransformer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ValueTransformer.hpp; sourceTree = "<group>"; };
 		BDABC42E24F46CF000F8C874 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Preset.hpp; sourceTree = "<group>"; };
 		BDABC43224F46EFA00F8C874 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Zone.hpp; sourceTree = "<group>"; };
@@ -370,6 +370,7 @@
 				BD74D18223CDB36200204ED4 /* SoundFontInfo.h */,
 				BD74D16B23CDB1D200204ED4 /* Info.plist */,
 				BD74D16A23CDB1D200204ED4 /* SoundFontInfoLib.h */,
+				BDA5AD09265D9B20000AE48E /* DerivedSources */,
 			);
 			path = SoundFontInfoLib;
 			sourceTree = "<group>";
@@ -403,7 +404,6 @@
 			isa = PBXGroup;
 			children = (
 				BDA5ACB1265D3876000AE48E /* README.md */,
-				BDA5AD00265D6B83000AE48E /* DSPGenerated.cpp */,
 				BDA5ACAF265D3876000AE48E /* DSPGenerator.hpp */,
 				BDA5ACB0265D3876000AE48E /* DSPTables.hpp */,
 				BDA5ACB2265D3876000AE48E /* DSP.hpp */,
@@ -467,6 +467,14 @@
 			);
 			path = Voice;
 			sourceTree = "<group>";
+		};
+		BDA5AD09265D9B20000AE48E /* DerivedSources */ = {
+			isa = PBXGroup;
+			children = (
+				BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */,
+			);
+			name = DerivedSources;
+			sourceTree = DERIVED_FILE_DIR;
 		};
 		BDB265F4252FB2CB005BEAD1 /* Entity */ = {
 			isa = PBXGroup;
@@ -791,11 +799,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(PROJECT_DERIVED_FILE_DIR)/DSPGenerated.cpp",
+				"$(DERIVED_FILE_DIR)/DSPGenerated.cpp",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${PROJECT_DERIVED_FILE_DIR}/DSPGenerated.cpp\"\nset -- `find . -name DSPGenerator`\necho ${1} \"${OUTPUT}\"\n${1} \"${OUTPUT}\"\n";
+			shellScript = "# We don't know exactly where the DSPGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${DERIVED_FILE_DIR}/DSPGenerated.cpp\"\nset -- `find . -name DSPGenerator`\necho ${1} \"${OUTPUT}\"\n${1} \"${OUTPUT}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -821,7 +829,7 @@
 				BDA5AC88265D361E000AE48E /* Preset.cpp in Sources */,
 				BDA5AC96265D3640000AE48E /* Transform.cpp in Sources */,
 				BDA5AC8F265D362D000AE48E /* Generator.cpp in Sources */,
-				BDA5AD01265D6B83000AE48E /* DSPGenerated.cpp in Sources */,
+				BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */,
 				BDA5AC94265D3640000AE48E /* Modulator.cpp in Sources */,
 				BDA5AC82265D35BA000AE48E /* Parser.cpp in Sources */,
 				BDA5AC95265D3640000AE48E /* Source.cpp in Sources */,

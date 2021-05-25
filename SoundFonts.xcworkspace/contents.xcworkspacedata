@@ -24,6 +24,9 @@
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
+      location = "container:Full.xcconfig">
+   </FileRef>
+   <FileRef
       location = "group:App.xcodeproj">
    </FileRef>
    <FileRef

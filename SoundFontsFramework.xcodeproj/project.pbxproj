@@ -107,7 +107,6 @@
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
 		BD4E2CB025C5759200A7E9D4 /* MIDIBankType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */; };
 		BD58250B23CDABCE0034A31B /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */; };
-		BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */; };
 		BD62CF3E253DB4CE00DBDC1B /* PresetChangeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */; };
 		BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */; };
 		BD62CF5A253DE22D00DBDC1B /* SettingsView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */; };
@@ -283,7 +282,6 @@
 		BD0E20182555701B00D36607 /* TouchKeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMap.swift; sourceTree = "<group>"; };
 		BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FourCharCode+Extensions.swift"; sourceTree = "<group>"; };
 		BD0E206B2556B78900D36607 /* MIDIReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIReceiver.swift; sourceTree = "<group>"; };
-		BD0F93C22571736C0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
 		BD0F940A25728E610065C147 /* MIDIController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIController.swift; sourceTree = "<group>"; };
 		BD0FAC29251F692000EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0FAC7F2523CAEC00EEF187 /* UIContextualAction+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIContextualAction+Extensions.swift"; sourceTree = "<group>"; };
@@ -323,7 +321,6 @@
 		BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDIBankType.swift; sourceTree = "<group>"; };
 		BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD58250A23CDABCD0034A31B /* SoundFontsFrameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontsFrameworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsFrameworkTests.swift; sourceTree = "<group>"; };
 		BD58251123CDABCE0034A31B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetChangeManager.swift; sourceTree = "<group>"; };
 		BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FontsView.storyboard; sourceTree = "<group>"; };
@@ -406,7 +403,7 @@
 		BDD913FD2508FCC50068E3CE /* EntityCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntityCollection.swift; sourceTree = "<group>"; };
 		BDD91411250983F60068E3CE /* PlistTranslation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlistTranslation.swift; sourceTree = "<group>"; };
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../../App/Resources/Eurostile.ttc; sourceTree = "<group>"; };
+		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = SoundFontsApp/App/Resources/Eurostile.ttc; sourceTree = SOURCE_ROOT; };
 		BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIndicatorView.swift; sourceTree = "<group>"; };
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
@@ -717,7 +714,6 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
-				BD0F93C22571736C0065C147 /* Full.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,
 				BD58250E23CDABCE0034A31B /* SoundFontsFrameworkTests */,
 				BD58250223CDABCD0034A31B /* Products */,
@@ -747,7 +743,6 @@
 				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
-				BD58250F23CDABCE0034A31B /* SoundFontsFrameworkTests.swift */,
 				BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */,
 				BDCCFCBB23F84C5300DD518D /* TimerTests.swift */,
 				BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */,
@@ -1124,7 +1119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD58251023CDABCE0034A31B /* SoundFontsFrameworkTests.swift in Sources */,
 				BDC961A724FFA745003D9BEF /* StringTests.swift in Sources */,
 				BD23948A25540855004E5E0D /* KeyTests.swift in Sources */,
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
@@ -1177,7 +1171,6 @@
 /* Begin XCBuildConfiguration section */
 		BD58251323CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1244,7 +1237,6 @@
 		};
 		BD58251423CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1305,7 +1297,6 @@
 		};
 		BD58251623CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
@@ -1334,7 +1325,6 @@
 		};
 		BD58251723CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
@@ -1363,12 +1353,12 @@
 		};
 		BD58251923CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsFrameworkTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1383,12 +1373,12 @@
 		};
 		BD58251A23CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F93C22571736C0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsFrameworkTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

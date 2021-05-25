@@ -56,7 +56,7 @@ func run() {
         return
     }
 
-    SoundFontDump(sfi);
+    SoundFontDump(sfi)
 }
 
 run()

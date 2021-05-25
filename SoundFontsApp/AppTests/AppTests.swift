@@ -1,10 +1,4 @@
-//
-//  AppTests.swift
-//  AppTests
-//
-//  Created by Brad Howes on 3/16/20.
-//  Copyright © 2020 Brad Howes. All rights reserved.
-//
+// Copyright © 2020 Brad Howes. All rights reserved.
 
 import XCTest
 import SoundFontsFramework
@@ -25,6 +19,11 @@ class AppTests: XCTestCase {
         app.launch()
     }
 
+    /**
+     - Launch the app
+     - Bring up the setting panel
+     - Make sure that the version shown in the Version label matches the value found in the bundle
+     */
     func testVersionMatchesBundle() {
         guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
 
@@ -46,3 +45,13 @@ class AppTests: XCTestCase {
         XCTAssertEqual("v\(releaseVersionNumber)", version.label)
     }
 }
+
+//class AppPerfTest: XCTestCase {
+//    func testApplicationLaunchTimeOnlyOnce() {
+//        if #available(iOS 14.0, *) {
+//            measure(metrics: [XCTApplicationLaunchMetric(waitUntilResponsive: true)]) {
+//                XCUIApplication(bundleIdentifier: "com.braysoftware.SoundFonts").launch()
+//            }
+//        }
+//    }
+//}

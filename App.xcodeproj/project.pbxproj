@@ -129,7 +129,7 @@
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
-		BD0F9356257164DE0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
+		BD0F9356257164DE0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Full.xcconfig; path = ../Full.xcconfig; sourceTree = "<group>"; };
 		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsAUViewController.swift; sourceTree = "<group>"; };
 		BD3CF702241FA779004A13D1 /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,7 +138,7 @@
 		BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFontsAU.swift; sourceTree = "<group>"; };
 		BD430FA92410E57F009DB9B3 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD430FAB2410E57F009DB9B3 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD498F9423EEF34100755AB9 /* SoundFontsAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFontsAU.entitlements; sourceTree = "<group>"; };
+		BD498F9423EEF34100755AB9 /* SoundFontsAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SoundFontsAU.entitlements; path = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements; sourceTree = SOURCE_ROOT; };
 		BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMonitor.swift; sourceTree = "<group>"; };
 		BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,7 +161,7 @@
 		BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		BD75B26F218B8CFE00C7EBD7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SoundFonts.entitlements; sourceTree = "<group>"; };
+		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SoundFonts.entitlements; path = SoundFontsApp/App/Resources/SoundFonts.entitlements; sourceTree = SOURCE_ROOT; };
 		BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenShots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BD88BCC02419A9D400399DE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 		BDC4A9282419B2B8006D9F4D /* SoundFontsFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontsFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoHUD.swift; sourceTree = "<group>"; };
 		BDD9792824171DDE006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Eurostile.ttc; sourceTree = "<group>"; };
-		BDE634182569D496006D8C56 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioUnitParameters.swift; path = SoundFontsAU/AudioUnitParameters.swift; sourceTree = SOURCE_ROOT; };
+		BDE634182569D496006D8C56 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioUnitParameters.swift; path = SoundFontsApp/SoundFontsAU/AudioUnitParameters.swift; sourceTree = SOURCE_ROOT; };
 		BDFAC20F2565DDD10013844F /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -241,8 +241,8 @@
 			isa = PBXGroup;
 			children = (
 				BD05837D23E4C52800E094E0 /* Info.plist */,
-				BDE634182569D496006D8C56 /* AudioUnitParameters.swift */,
 				BD498F9423EEF34100755AB9 /* SoundFontsAU.entitlements */,
+				BDE634182569D496006D8C56 /* AudioUnitParameters.swift */,
 				BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */,
 				BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */,
 				BD05837123E4C52800E094E0 /* UI */,
@@ -321,13 +321,8 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
-				BD0F9356257164DE0065C147 /* Full.xcconfig */,
-				BD75B262218B8CFD00C7EBD7 /* App */,
-				BD05836323E4C52800E094E0 /* SoundFontsAU */,
-				BD59074B2565CD4C004DE941 /* ReverbAU */,
-				BD59077F2565CDDC004DE941 /* DelayAU */,
+				BDB1BE4C265DA502002AD159 /* SoundFontsApp */,
 				BD88BCBD2419A9D400399DE5 /* ScreenShots */,
-				BD3CF703241FA77A004A13D1 /* AppTests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -397,6 +392,19 @@
 				BDA0FC9D23C78E34005BEFD5 /* Main.storyboard */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		BDB1BE4C265DA502002AD159 /* SoundFontsApp */ = {
+			isa = PBXGroup;
+			children = (
+				BD75B262218B8CFD00C7EBD7 /* App */,
+				BD05836323E4C52800E094E0 /* SoundFontsAU */,
+				BD59074B2565CD4C004DE941 /* ReverbAU */,
+				BD59077F2565CDDC004DE941 /* DelayAU */,
+				BD3CF703241FA77A004A13D1 /* AppTests */,
+				BD0F9356257164DE0065C147 /* Full.xcconfig */,
+			);
+			path = SoundFontsApp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -755,11 +763,11 @@
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = SoundFontsAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -780,11 +788,11 @@
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = SoundFontsAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -807,7 +815,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = AppTests/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/AppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -829,7 +837,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = AppTests/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/AppTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -852,7 +860,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = ReverbAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -877,7 +885,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = ReverbAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -902,7 +910,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = DelayAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -927,7 +935,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = DelayAU/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1079,12 +1087,12 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1106,12 +1114,12 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
+				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20210525170941;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
