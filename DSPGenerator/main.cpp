@@ -9,7 +9,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "DSPGenerators.hpp"
+#include "DSPGenerator.hpp"
 
 int main(int argc, const char * argv[]) {
     auto os = std::ofstream(argv[1]);

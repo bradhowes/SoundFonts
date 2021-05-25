@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BD078FFB2642F6360029B8F9 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD078FFA2642F6360029B8F9 /* Media.xcassets */; };
-		BD078FFD2642F7A80029B8F9 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD078FFC2642F7A80029B8F9 /* Media.xcassets */; };
 		BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E9EE724FAC0C6009316F2 /* MIDI.swift */; };
 		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
 		BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -35,8 +33,6 @@
 		BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD59077E2565CDDC004DE941 /* DelayAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* Controls.storyboard */; };
 		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
-		BD6C6F91265C4C9700EB98B2 /* AppPerfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6C6F90265C4C9700EB98B2 /* AppPerfTests.swift */; };
-		BD74461E264E8662001F1FAA /* AudioSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74461D264E8662001F1FAA /* AudioSession.swift */; };
 		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
@@ -90,13 +86,6 @@
 			remoteGlobalIDString = BD59077D2565CDDC004DE941;
 			remoteInfo = Delay;
 		};
-		BD6C6F93265C4C9700EB98B2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BD75B25F218B8CFD00C7EBD7;
-			remoteInfo = SoundFontsApp;
-		};
 		BD88BCC12419A9D400399DE5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
@@ -138,8 +127,6 @@
 /* Begin PBXFileReference section */
 		BD05836223E4C52800E094E0 /* SoundFonts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFonts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BD078FFA2642F6360029B8F9 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		BD078FFC2642F7A80029B8F9 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
 		BD0F9356257164DE0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Full.xcconfig; sourceTree = "<group>"; };
@@ -167,12 +154,7 @@
 		BD59079C2565CDDC004DE941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD5907D02565D28A004DE941 /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
-		BD6C6F8E265C4C9700EB98B2 /* AppPerfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppPerfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD6C6F90265C4C9700EB98B2 /* AppPerfTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPerfTests.swift; sourceTree = "<group>"; };
-		BD6C6F92265C4C9700EB98B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
-		BD74461D264E8662001F1FAA /* AudioSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioSession.swift; sourceTree = "<group>"; };
-		BD74461F264EBB82001F1FAA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75B260218B8CFD00C7EBD7 /* SoundFontsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundFontsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -184,8 +166,6 @@
 		BD88BCBE2419A9D400399DE5 /* ScreenShots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BD88BCC02419A9D400399DE5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD88BCC62419A9FB00399DE5 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
-		BD976CA9263C19A1003AED73 /* ReverbAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReverbAU.entitlements; sourceTree = "<group>"; };
-		BD976CAA263C19A1003AED73 /* DelayAU.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DelayAU.entitlements; sourceTree = "<group>"; };
 		BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -234,13 +214,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD6C6F8B265C4C9700EB98B2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BD75B25D218B8CFD00C7EBD7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -273,7 +246,6 @@
 				BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */,
 				BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */,
 				BD05837123E4C52800E094E0 /* UI */,
-				BD078FFA2642F6360029B8F9 /* Media.xcassets */,
 			);
 			path = SoundFontsAU;
 			sourceTree = "<group>";
@@ -309,14 +281,11 @@
 		BD59074B2565CD4C004DE941 /* ReverbAU */ = {
 			isa = PBXGroup;
 			children = (
-				BD74461F264EBB82001F1FAA /* README.md */,
-				BD976CA9263C19A1003AED73 /* ReverbAU.entitlements */,
 				BD5907682565CD4C004DE941 /* Info.plist */,
 				BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */,
 				BD5907602565CD4C004DE941 /* ReverbAU.swift */,
 				BD59075E2565CD4C004DE941 /* ReverbViewController.swift */,
 				BD59075D2565CD4C004DE941 /* UI */,
-				BD078FFC2642F7A80029B8F9 /* Media.xcassets */,
 			);
 			path = ReverbAU;
 			sourceTree = "<group>";
@@ -332,7 +301,6 @@
 		BD59077F2565CDDC004DE941 /* DelayAU */ = {
 			isa = PBXGroup;
 			children = (
-				BD976CAA263C19A1003AED73 /* DelayAU.entitlements */,
 				BD59079C2565CDDC004DE941 /* Info.plist */,
 				BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */,
 				BD5907942565CDDC004DE941 /* DelayAU.swift */,
@@ -350,15 +318,6 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		BD6C6F8F265C4C9700EB98B2 /* AppPerfTests */ = {
-			isa = PBXGroup;
-			children = (
-				BD6C6F90265C4C9700EB98B2 /* AppPerfTests.swift */,
-				BD6C6F92265C4C9700EB98B2 /* Info.plist */,
-			);
-			path = AppPerfTests;
-			sourceTree = "<group>";
-		};
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
@@ -369,7 +328,6 @@
 				BD59077F2565CDDC004DE941 /* DelayAU */,
 				BD88BCBD2419A9D400399DE5 /* ScreenShots */,
 				BD3CF703241FA77A004A13D1 /* AppTests */,
-				BD6C6F8F265C4C9700EB98B2 /* AppPerfTests */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -384,7 +342,6 @@
 				BD3CF702241FA779004A13D1 /* AppTests.xctest */,
 				BD59074A2565CD4C004DE941 /* ReverbAU.appex */,
 				BD59077E2565CDDC004DE941 /* DelayAU.appex */,
-				BD6C6F8E265C4C9700EB98B2 /* AppPerfTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -395,7 +352,6 @@
 				BD75B26F218B8CFE00C7EBD7 /* Info.plist */,
 				BDAE7C982219540A0003A353 /* UI */,
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
-				BD74461D264E8662001F1FAA /* AudioSession.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */,
 				BD0E9EE724FAC0C6009316F2 /* MIDI.swift */,
@@ -515,24 +471,6 @@
 			productReference = BD59077E2565CDDC004DE941 /* DelayAU.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		BD6C6F8D265C4C9700EB98B2 /* AppPerfTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BD6C6F95265C4C9700EB98B2 /* Build configuration list for PBXNativeTarget "AppPerfTests" */;
-			buildPhases = (
-				BD6C6F8A265C4C9700EB98B2 /* Sources */,
-				BD6C6F8B265C4C9700EB98B2 /* Frameworks */,
-				BD6C6F8C265C4C9700EB98B2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				BD6C6F94265C4C9700EB98B2 /* PBXTargetDependency */,
-			);
-			name = AppPerfTests;
-			productName = AppPerfTests;
-			productReference = BD6C6F8E265C4C9700EB98B2 /* AppPerfTests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		BD75B25F218B8CFD00C7EBD7 /* SoundFontsApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BD75B288218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "SoundFontsApp" */;
@@ -580,7 +518,7 @@
 		BD75B258218B8CFD00C7EBD7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
@@ -597,10 +535,6 @@
 					};
 					BD59077D2565CDDC004DE941 = {
 						CreatedOnToolsVersion = 12.2;
-					};
-					BD6C6F8D265C4C9700EB98B2 = {
-						CreatedOnToolsVersion = 12.5;
-						TestTargetID = BD75B25F218B8CFD00C7EBD7;
 					};
 					BD75B25F218B8CFD00C7EBD7 = {
 						CreatedOnToolsVersion = 10.1;
@@ -639,7 +573,6 @@
 				BD59077D2565CDDC004DE941 /* DelayAU */,
 				BD88BCBB2419A9D400399DE5 /* ScreenShots */,
 				BD3CF701241FA779004A13D1 /* AppTests */,
-				BD6C6F8D265C4C9700EB98B2 /* AppPerfTests */,
 			);
 		};
 /* End PBXProject section */
@@ -651,7 +584,6 @@
 			files = (
 				BD58B0902567F29900181F2B /* Assets.xcassets in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
-				BD078FFB2642F6360029B8F9 /* Media.xcassets in Resources */,
 				BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,7 +600,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD9AC9B12567B86100B47F12 /* Eurostile.ttc in Resources */,
-				BD078FFD2642F7A80029B8F9 /* Media.xcassets in Resources */,
 				BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -679,13 +610,6 @@
 			files = (
 				BD9AC9B72567B86200B47F12 /* Eurostile.ttc in Resources */,
 				BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BD6C6F8C265C4C9700EB98B2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -771,14 +695,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BD6C6F8A265C4C9700EB98B2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BD6C6F91265C4C9700EB98B2 /* AppPerfTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BD75B25C218B8CFD00C7EBD7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -786,7 +702,6 @@
 				BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */,
 				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
-				BD74461E264E8662001F1FAA /* AudioSession.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
 				BD498FA423F07AFC00755AB9 /* VolumeMonitor.swift in Sources */,
 				BDC5D87F24E0763E00D0B840 /* InfoHUD.swift in Sources */,
@@ -826,11 +741,6 @@
 			target = BD59077D2565CDDC004DE941 /* DelayAU */;
 			targetProxy = BD59079D2565CDDC004DE941 /* PBXContainerItemProxy */;
 		};
-		BD6C6F94265C4C9700EB98B2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BD75B25F218B8CFD00C7EBD7 /* SoundFontsApp */;
-			targetProxy = BD6C6F93265C4C9700EB98B2 /* PBXContainerItemProxy */;
-		};
 		BD88BCC22419A9D400399DE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
@@ -844,23 +754,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AU;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -870,23 +779,22 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AU;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -900,6 +808,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = AppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -921,6 +830,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = AppTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -939,22 +849,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = ReverbAU;
-				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ReverbAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -966,22 +874,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = ReverbAU;
-				CODE_SIGN_ENTITLEMENTS = ReverbAU/ReverbAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ReverbAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -993,21 +899,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = DelayAU/DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = DelayAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
@@ -1019,66 +924,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = DelayAU/DelayAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = DelayAU/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		BD6C6F96265C4C9700EB98B2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = AppPerfTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.AppPerfTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SoundFontsApp;
-			};
-			name = Debug;
-		};
-		BD6C6F97265C4C9700EB98B2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = UP6SS5ES7E;
-				INFOPLIST_FILE = AppPerfTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.AppPerfTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SoundFontsApp;
 			};
 			name = Release;
 		};
@@ -1119,7 +982,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1137,8 +1000,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1186,7 +1048,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1198,8 +1060,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1220,18 +1081,18 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1247,18 +1108,18 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525085824;
+				CURRENT_PROJECT_VERSION = 20210408194618;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.1;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1272,6 +1133,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ScreenShots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1293,6 +1155,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = ScreenShots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1342,15 +1205,6 @@
 			buildConfigurations = (
 				BD5907A12565CDDC004DE941 /* Debug */,
 				BD5907A22565CDDC004DE941 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		BD6C6F95265C4C9700EB98B2 /* Build configuration list for PBXNativeTarget "AppPerfTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BD6C6F96265C4C9700EB98B2 /* Debug */,
-				BD6C6F97265C4C9700EB98B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

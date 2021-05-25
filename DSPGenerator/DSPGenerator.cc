@@ -5,7 +5,7 @@
 
 #include "DSP/DSP.hpp"
 #include "MIDI/ValueTransformer.hpp"
-#include "DSPGenerators.hpp"
+#include "DSPGenerator.hpp"
 
 using namespace SF2::DSP;
 using namespace SF2::DSP::Tables;
