@@ -7,11 +7,11 @@ class ChangesCompilerTests: XCTestCase {
 
     func testRecent() {
         let found = ChangesCompiler.compile(since: "2.20.4")
-        XCTAssertTrue(found.count == 1)
+        XCTAssertEqual(found.count, 0)
     }
 
     func testPast() {
         let found = ChangesCompiler.compile(since: "2.18.3")
-        XCTAssertTrue(found.count == 4)
+        XCTAssertEqual(found.count, 4)
     }
 }
