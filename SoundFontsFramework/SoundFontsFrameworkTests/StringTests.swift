@@ -25,4 +25,26 @@ class StringTests: XCTestCase {
         XCTAssertEqual(a, path)
         XCTAssertNil(b)
     }
+
+    func testVersionComponents() {
+        XCTAssertEqual(VersionComponents(major: 1, minor: 2, patch: 3), "1.2.3".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 0, minor: 0, patch: 0), "".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 1, minor: 0, patch: 0), "1.a.b.c.d".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 1, minor: 2, patch: 0), "1.2".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 1, minor: 2, patch: 3), "1.2.3".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 1, minor: 2, patch: 3), "1.2.3.4".versionComponents)
+        XCTAssertEqual(VersionComponents(major: 1, minor: 2, patch: 3), "1.2.3 (1234)".versionComponents)
+
+        XCTAssertTrue("1.2.2".versionComponents < "1.2.3".versionComponents)
+        XCTAssertTrue("1.2.2".versionComponents <= "1.2.3".versionComponents)
+        XCTAssertTrue("1.2.3".versionComponents == "1.2.3".versionComponents)
+        XCTAssertTrue("1.2.3".versionComponents >= "1.2.3".versionComponents)
+        XCTAssertTrue("1.2.4".versionComponents >= "1.2.3".versionComponents)
+        XCTAssertTrue("1.2.4".versionComponents > "1.2.3".versionComponents)
+
+        XCTAssertTrue("1".versionComponents < "1.1".versionComponents)
+        XCTAssertTrue("1.2".versionComponents > "1.1.99".versionComponents)
+        XCTAssertTrue("2".versionComponents > "1.999.999".versionComponents)
+        XCTAssertTrue("2.1.9".versionComponents < "2.2".versionComponents)
+    }
 }

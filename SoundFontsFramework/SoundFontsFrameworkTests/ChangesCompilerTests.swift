@@ -6,7 +6,7 @@ import XCTest
 class ChangesCompilerTests: XCTestCase {
 
     func testRecent() {
-        let found = ChangesCompiler.compile(since: "2.20.4")
+        let found = ChangesCompiler.compile(since: "999999.4.5")
         XCTAssertEqual(found.count, 0)
     }
 
