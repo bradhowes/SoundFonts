@@ -13,9 +13,9 @@ var searchData=
   ['allnotesoff_10',['allNotesOff',['../namespace_s_f2_1_1_m_i_d_i.html#a47f11b442d50cd97d17c6beb6d7b83cda57bef3371c2dd7bed26c32a5e18f5a17',1,'SF2::MIDI']]],
   ['allocatebuffers_11',['allocateBuffers',['../struct_s_f2_1_1_render_1_1_input_buffer.html#a57d57189da4d95464086cbd1e49c7579',1,'SF2::Render::InputBuffer']]],
   ['allsoundoff_12',['allSoundOff',['../namespace_s_f2_1_1_m_i_d_i.html#a47f11b442d50cd97d17c6beb6d7b83cdab835f66e26451da9f10e7614f67e0f16',1,'SF2::MIDI']]],
-  ['amount_13',['Amount',['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html#af000f87679f839354ccebe7cecb8b29d',1,'SF2::Entity::Generator::Amount']]],
+  ['amount_13',['Amount',['../class_s_f2_1_1_render_1_1_voice_1_1_state.html#a3b14adb2232c625b4a23537ca09589ea',1,'SF2::Render::Voice::State::Amount()'],['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html#a14022a9cc0c69f59626d1266e9efee7e',1,'SF2::Entity::Generator::Amount::Amount(uint16_t raw)'],['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html#af000f87679f839354ccebe7cecb8b29d',1,'SF2::Entity::Generator::Amount::Amount()']]],
   ['amount_14',['amount',['../class_s_f2_1_1_entity_1_1_generator_1_1_generator.html#a64c2fc1aae825da93e42e0a507bbef71',1,'SF2::Entity::Generator::Generator::amount()'],['../class_s_f2_1_1_entity_1_1_modulator_1_1_modulator.html#a8f34f300f1b526e069ca0680f4252fa7',1,'SF2::Entity::Modulator::Modulator::amount()']]],
-  ['amount_15',['Amount',['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html#a14022a9cc0c69f59626d1266e9efee7e',1,'SF2::Entity::Generator::Amount::Amount()'],['../class_s_f2_1_1_render_1_1_voice_1_1_state.html#a3b14adb2232c625b4a23537ca09589ea',1,'SF2::Render::Voice::State::Amount()'],['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html',1,'SF2::Entity::Generator::Amount']]],
+  ['amount_15',['Amount',['../class_s_f2_1_1_entity_1_1_generator_1_1_amount.html',1,'SF2::Entity::Generator']]],
   ['amount_2ehpp_16',['Amount.hpp',['../_amount_8hpp.html',1,'']]],
   ['amount_5f_17',['amount_',['../struct_dumper.html#a4ea9d4d1184bc4c2d2dc96e8b82b77bb',1,'Dumper']]],
   ['amountsource_18',['amountSource',['../class_s_f2_1_1_entity_1_1_modulator_1_1_modulator.html#a79baeeddf9e854f192ec4d499c558a61',1,'SF2::Entity::Modulator::Modulator']]],
@@ -26,5 +26,6 @@ var searchData=
   ['attackmodulatorenvelope_23',['attackModulatorEnvelope',['../namespace_s_f2_1_1_entity_1_1_generator.html#a716addf5b03da3b6d70e69e493e192c6a4e84440306c5cf516757936ac219637b',1,'SF2::Entity::Generator']]],
   ['attackvolumeenvelope_24',['attackVolumeEnvelope',['../namespace_s_f2_1_1_entity_1_1_generator.html#a716addf5b03da3b6d70e69e493e192c6a53e5bc2f774d60e8ef6e2a86df717b49',1,'SF2::Entity::Generator']]],
   ['attenuationlookup_25',['AttenuationLookup',['../struct_s_f2_1_1_d_s_p_1_1_tables_1_1_attenuation_lookup.html',1,'SF2::DSP::Tables']]],
-  ['available_26',['available',['../struct_s_f2_1_1_i_o_1_1_pos.html#ae21ba93e42a3e6088e612a146e78845a',1,'SF2::IO::Pos']]]
+  ['audioplayerdidfinishplaying_3asuccessfully_3a_26',['audioPlayerDidFinishPlaying:successfully:',['../interface_voice_tests.html#a0ebafcf42ff08b178b2e20e57c54c4b4',1,'VoiceTests']]],
+  ['available_27',['available',['../struct_s_f2_1_1_i_o_1_1_pos.html#ae21ba93e42a3e6088e612a146e78845a',1,'SF2::IO::Pos']]]
 ];

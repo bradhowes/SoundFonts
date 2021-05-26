@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoundFontInfoLib: SoundFontInfoLib/Render/InputBuffer.hpp Source File</title>
+<title>SoundFontInfoLib: SoundFontInfoLib/SoundFontInfoLib/Render/InputBuffer.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -133,8 +133,8 @@ $(document).ready(function(){initNavTree('_input_buffer_8hpp_source.html',''); i
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        assert(mutableAudioBufferList_ != <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        UInt32 byteSize = frameCount * <span class="keyword">sizeof</span>(AUValue);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> channel = 0; channel &lt; mutableAudioBufferList_-&gt;mNumberBuffers; ++channel) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mutableAudioBufferList_-&gt;mBuffers[channel].mDataByteSize = byteSize;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code" href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a> = 0; <a class="code" href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a> &lt; mutableAudioBufferList_-&gt;mNumberBuffers; ++<a class="code" href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a>) {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            mutableAudioBufferList_-&gt;mBuffers[<a class="code" href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a>].mDataByteSize = byteSize;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
@@ -158,6 +158,7 @@ $(document).ready(function(){initNavTree('_input_buffer_8hpp_source.html',''); i
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;} <span class="comment">// namespace Render</span></div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;} <span class="comment">// namespace SF2</span></div>
+<div class="ttc" id="a_buffer_index_tests_8mm_html_ab01fe5bc7874a4795c72f4945134f3f0"><div class="ttname"><a href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a></div><div class="ttdeci">static SF2::MIDI::Channel channel</div><div class="ttdef"><b>Definition:</b> BufferIndexTests.mm:20</div></div>
 <div class="ttc" id="aclass_s_f2_1_1_render_1_1_buffer_facet_html"><div class="ttname"><a href="class_s_f2_1_1_render_1_1_buffer_facet.html">SF2::Render::BufferFacet</a></div><div class="ttdoc">Provides a simple std::vector view of an AudioBufferList.</div><div class="ttdef"><b>Definition:</b> BufferFacet.hpp:16</div></div>
 <div class="ttc" id="aclass_s_f2_1_1_render_1_1_buffer_facet_html_a7ddc63e938f48509e559ace89ef022a6"><div class="ttname"><a href="class_s_f2_1_1_render_1_1_buffer_facet.html#a7ddc63e938f48509e559ace89ef022a6">SF2::Render::BufferFacet::release</a></div><div class="ttdeci">void release()</div><div class="ttdoc">Forget the buffer list and its buffer pointers.</div><div class="ttdef"><b>Definition:</b> BufferFacet.hpp:77</div></div>
 <div class="ttc" id="aclass_s_f2_1_1_render_1_1_buffer_facet_html_aa21740492371813c6977a1e56b50582c"><div class="ttname"><a href="class_s_f2_1_1_render_1_1_buffer_facet.html#aa21740492371813c6977a1e56b50582c">SF2::Render::BufferFacet::setBufferList</a></div><div class="ttdeci">void setBufferList(AudioBufferList *bufferList, AudioBufferList *inPlaceSource)</div><div class="ttdoc">Install an AudioBufferList to work with.</div><div class="ttdef"><b>Definition:</b> BufferFacet.hpp:33</div></div>
@@ -177,7 +178,7 @@ $(document).ready(function(){initNavTree('_input_buffer_8hpp_source.html',''); i
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_dbb466af1b59c8d40da12178e762c98f.html">Render</a></li><li class="navelem"><a class="el" href="_input_buffer_8hpp.html">InputBuffer.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_a5ce18c6e96f37e93f96285f0ca87617.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_d894237ab45675c58520b8ec082ac74c.html">Render</a></li><li class="navelem"><a class="el" href="_input_buffer_8hpp.html">InputBuffer.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

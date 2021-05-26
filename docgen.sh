@@ -26,7 +26,6 @@ sourcekitten doc \
              -destination name='iPhone 11' \
              > /tmp/docs_app.json
 
-
 # Generate HTML from documentation content
 jazzy --output "${OUTPUT}" \
       --min-acl internal \

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoundFontInfoLib: SoundFontInfoLib/Render/Sample/Generator.hpp Source File</title>
+<title>SoundFontInfoLib: SoundFontInfoLib/SoundFontInfoLib/Render/Sample/Generator.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -119,8 +119,8 @@ $(document).ready(function(){initNavTree('_render_2_sample_2_generator_8hpp_sour
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    };</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a6b354ab61e4738e8e9499ca24acfabe5">   43</a></span>&#160;    <a class="code" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a6b354ab61e4738e8e9499ca24acfabe5">Generator</a>(<span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_render_1_1_sample_1_1_canonical_buffer.html">CanonicalBuffer</a>&amp; samples, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_state.html">Voice::State</a>&amp; state, <a class="code" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a2b54cf653e6ef9c73dd99b662e401eb2">Interpolator</a> kind = <a class="code" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a2b54cf653e6ef9c73dd99b662e401eb2a9a932b3cb396238423eb2f33ec17d6aa">Interpolator::linear</a>) :</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{bounds_} {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.<a class="code" href="_buffer_index_tests_8mm.html#a0991514b2be0b8bed074a4d7f85e3abb">header</a>(), state},</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    sampleRateRatio_{samples_.<a class="code" href="_buffer_index_tests_8mm.html#a0991514b2be0b8bed074a4d7f85e3abb">header</a>().sampleRate() / state_.sampleRate()}, bufferIndex_{bounds_} {</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        samples.<a class="code" href="class_s_f2_1_1_render_1_1_sample_1_1_canonical_buffer.html#af59bd700511c9fefa6aa74b8867491c7">load</a>();</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
@@ -188,6 +188,7 @@ $(document).ready(function(){initNavTree('_render_2_sample_2_generator_8hpp_sour
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;} <span class="comment">// namespace SF2</span></div>
 <div class="ttc" id="a_bounds_8hpp_html"><div class="ttname"><a href="_bounds_8hpp.html">Bounds.hpp</a></div></div>
 <div class="ttc" id="a_buffer_index_8hpp_html"><div class="ttname"><a href="_buffer_index_8hpp.html">BufferIndex.hpp</a></div></div>
+<div class="ttc" id="a_buffer_index_tests_8mm_html_a0991514b2be0b8bed074a4d7f85e3abb"><div class="ttname"><a href="_buffer_index_tests_8mm.html#a0991514b2be0b8bed074a4d7f85e3abb">header</a></div><div class="ttdeci">static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0)</div></div>
 <div class="ttc" id="a_canonical_buffer_8hpp_html"><div class="ttname"><a href="_canonical_buffer_8hpp.html">CanonicalBuffer.hpp</a></div></div>
 <div class="ttc" id="a_d_s_p_8hpp_html"><div class="ttname"><a href="_d_s_p_8hpp.html">DSP.hpp</a></div></div>
 <div class="ttc" id="a_pitch_control_8hpp_html"><div class="ttname"><a href="_pitch_control_8hpp.html">PitchControl.hpp</a></div></div>
@@ -222,7 +223,7 @@ $(document).ready(function(){initNavTree('_render_2_sample_2_generator_8hpp_sour
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_dbb466af1b59c8d40da12178e762c98f.html">Render</a></li><li class="navelem"><a class="el" href="dir_52f63ba8c812182e19b400a6e9e4d708.html">Sample</a></li><li class="navelem"><a class="el" href="_render_2_sample_2_generator_8hpp.html">Generator.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_a5ce18c6e96f37e93f96285f0ca87617.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_d894237ab45675c58520b8ec082ac74c.html">Render</a></li><li class="navelem"><a class="el" href="dir_eb40e2c9cc6669e59e4e1afbce516141.html">Sample</a></li><li class="navelem"><a class="el" href="_render_2_sample_2_generator_8hpp.html">Generator.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

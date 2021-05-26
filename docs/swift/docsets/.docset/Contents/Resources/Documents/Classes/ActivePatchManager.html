@@ -17,7 +17,7 @@
     <a title="ActivePatchManager Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> 2.21.0 Docs</a> (63% documented)</p>
+        <p><a href="../index.html"> 2.21.2 Docs</a> (63% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="../img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="../search.json">
@@ -229,9 +229,6 @@
                 <a href="../Classes/MainViewController.html">MainViewController</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/MuteDetector.html">MuteDetector</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Classes/NotificationObserver.html">NotificationObserver</a>
               </li>
               <li class="nav-group-task">
@@ -373,6 +370,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/FontEditorDismissedReason.html">FontEditorDismissedReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Icon.html">Icon</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Enums/InfoBarEvent.html">InfoBarEvent</a>
@@ -518,9 +518,6 @@
                 <a href="../Extensions/UIGestureRecognizer.html">UIGestureRecognizer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Extensions/UIImage.html">UIImage</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/UILabel.html">UILabel</a>
               </li>
               <li class="nav-group-task">
@@ -557,6 +554,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/DecodableDefaultSource.html">DecodableDefaultSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/EventClosureManagement.html">EventClosureManagement</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/FavoriteEditorDelegate.html">FavoriteEditorDelegate</a>
@@ -625,9 +625,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Structs/AlertConfig.html">AlertConfig</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/AudioSession.html">AudioSession</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/ChangesCompiler.html">ChangesCompiler</a>
@@ -758,63 +755,9 @@ class, but this is not enforced.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC8favoriteAA14LegacyFavoriteCSgvp"></a>
-                    <a name="//apple_ref/swift/Property/favorite" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC8favoriteAA14LegacyFavoriteCSgvp">favorite</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The currently active favorite (if any)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">favorite</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyFavorite.html">LegacyFavorite</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC012soundFontAndE0AA0ahiE0VSgvp"></a>
-                    <a name="//apple_ref/swift/Property/soundFontAndPatch" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC012soundFontAndE0AA0ahiE0VSgvp">soundFontAndPatch</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The currently active preset key (if any)</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">soundFontAndPatch</span><span class="p">:</span> <span class="kt"><a href="../Structs/SoundFontAndPatch.html">SoundFontAndPatch</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC9soundFontAA06LegacyaH0CSgvp"></a>
-                    <a name="//apple_ref/swift/Property/soundFont" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC9soundFontAA06LegacyaH0CSgvp">soundFont</a>
+                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC06activeA4FontAA06LegacyaH0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/activeSoundFont" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC06activeA4FontAA06LegacyaH0CSgvp">activeSoundFont</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -829,7 +772,7 @@ class, but this is not enforced.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">soundFont</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacySoundFont.html">LegacySoundFont</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">activeSoundFont</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacySoundFont.html">LegacySoundFont</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -839,9 +782,9 @@ class, but this is not enforced.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC5patchAA06LegacyE0CSgvp"></a>
-                    <a name="//apple_ref/swift/Property/patch" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC5patchAA06LegacyE0CSgvp">patch</a>
+                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC06activeE0AA06LegacyE0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/activePatch" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC06activeE0AA06LegacyE0CSgvp">activePatch</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -856,7 +799,7 @@ class, but this is not enforced.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">patch</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyPatch.html">LegacyPatch</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">activePatch</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyPatch.html">LegacyPatch</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -866,9 +809,36 @@ class, but this is not enforced.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC12presetConfigAA06PresetH0VSgvp"></a>
-                    <a name="//apple_ref/swift/Property/presetConfig" class="dashAnchor"></a>
-                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC12presetConfigAA06PresetH0VSgvp">presetConfig</a>
+                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC14activeFavoriteAA06LegacyH0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/activeFavorite" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC14activeFavoriteAA06LegacyH0CSgvp">activeFavorite</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The currently active preset instance (if any)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">activeFavorite</span><span class="p">:</span> <span class="kt"><a href="../Classes/LegacyFavorite.html">LegacyFavorite</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:19SoundFontsFramework18ActivePatchManagerC18activePresetConfigAA0hI0VSgvp"></a>
+                    <a name="//apple_ref/swift/Property/activePresetConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/s:19SoundFontsFramework18ActivePatchManagerC18activePresetConfigAA0hI0VSgvp">activePresetConfig</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -883,7 +853,7 @@ class, but this is not enforced.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">presetConfig</span><span class="p">:</span> <span class="kt"><a href="../Structs/PresetConfig.html">PresetConfig</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">activePresetConfig</span><span class="p">:</span> <span class="kt"><a href="../Structs/PresetConfig.html">PresetConfig</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -1266,7 +1236,7 @@ class, but this is not enforced.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-24)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-26)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

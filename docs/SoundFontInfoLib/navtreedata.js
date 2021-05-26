@@ -59,7 +59,9 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
         [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -69,11 +71,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_amount_8hpp.html",
-"_m_i_d_i_8hpp.html#a5749a955303768dd78d9ebed37823b44a3139362e23bc9949cec6a4c629c2ef1d",
-"class_s_f2_1_1_entity_1_1_preset.html#a381c3395fd062c4159d36d1eba923740",
-"class_s_f2_1_1_render_1_1_voice_1_1_setup.html#a25903f5618d6d1236dbcacaed6b9d6fa",
-"namespace_s_f2_1_1_entity_1_1_generator.html#a716addf5b03da3b6d70e69e493e192c6a96ac0342a3ccf9553e3d4c9da9b821b0",
-"struct_s_f2_1_1_i_o_1_1_pos.html#ad920d1ce32e47a2ec599d8766ec4f45c"
+"_m_i_d_i_8hpp.html#a47f11b442d50cd97d17c6beb6d7b83cdabf9cda51b3e5955c35fffa493f2c3ab6",
+"class_s_f2_1_1_entity_1_1_modulator_1_1_source.html#a231c8bdb4fb3de1c39d078773eac2e33a0f75f7e41a8cf704d81f5744b3ed2746",
+"class_s_f2_1_1_render_1_1_modulator.html",
+"interface_entity_modulator_source_tests.html#a7c0ebe70ae2ad59a65042b795a457c47",
+"namespace_s_f2_1_1_i_o.html#a86cfd15edb23ca0c523d72b3974aa097a51706b3036ad12809295874fce382f0a",
+"struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#af2d35a0e0f8fefa842c6cef7d14396c6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('struct_s_f2_1_1_d_s_p_1_1_tables_1_1_g
 <p>Table value generators and initializers.  
  <a href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="_d_s_p_generators_8hpp_source.html">DSPGenerators.hpp</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="_d_s_p_generator_8hpp_source.html">DSPGenerator.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -111,8 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6859199637411791cfcddbe219c487cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a6859199637411791cfcddbe219c487cf">generateCubic4thOrderWeights</a> ()</td></tr>
 <tr class="memdesc:a6859199637411791cfcddbe219c487cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the weights used for the cubic 4th-order interpolation calculations Based on code found in FluidSynth.  <a href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a6859199637411791cfcddbe219c487cf">More...</a><br /></td></tr>
 <tr class="separator:a6859199637411791cfcddbe219c487cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a703c03bc1f96491eed1c484dd1749ad7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a703c03bc1f96491eed1c484dd1749ad7">Generator</a> (std::ostream &amp;os)</td></tr>
-<tr class="separator:a703c03bc1f96491eed1c484dd1749ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28efb1004a6a78f811a4d7b74f568169"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a28efb1004a6a78f811a4d7b74f568169">Generator</a> (std::ostream &amp;os)</td></tr>
+<tr class="separator:a28efb1004a6a78f811a4d7b74f568169"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -123,14 +123,14 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Table value generators and initializers. </p>
 <p>This is only used by the DSPGenerators program which creates the DSP tables at compile time for quick loading at runtime. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a703c03bc1f96491eed1c484dd1749ad7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a703c03bc1f96491eed1c484dd1749ad7">&#9670;&nbsp;</a></span>Generator()</h2>
+<a id="a28efb1004a6a78f811a4d7b74f568169"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28efb1004a6a78f811a4d7b74f568169">&#9670;&nbsp;</a></span>Generator()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">SF2::DSP::Tables::Generator::Generator </td>
+          <td class="memname">Generator::Generator </td>
           <td>(</td>
           <td class="paramtype">std::ostream &amp;&#160;</td>
           <td class="paramname"><em>os</em></td><td>)</td>
@@ -138,6 +138,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p class="reference">References <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a6859199637411791cfcddbe219c487cf">generateCubic4thOrderWeights()</a>, <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adbea730a517cf0f98c2a62a2373663b5">generateTransform()</a>, and <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adab1fe86bbe74cecf538582e252789ce">os_</a>.</p>
 
 </div>
 </div>
@@ -211,6 +213,8 @@ template&lt;typename T &gt; </div>
 
 <p class="reference">References <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adab1fe86bbe74cecf538582e252789ce">os_</a>, and <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_cubic4th_order.html#a6d65dd4e88873e1dc7986fe41e9ff338">SF2::DSP::Tables::Cubic4thOrder::TableSize</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a28efb1004a6a78f811a4d7b74f568169">Generator()</a>.</p>
+
 </div>
 </div>
 <a id="adbea730a517cf0f98c2a62a2373663b5"></a>
@@ -265,6 +269,8 @@ template&lt;typename T &gt; </div>
 
 <p class="reference">References <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adab1fe86bbe74cecf538582e252789ce">os_</a>, <a class="el" href="class_s_f2_1_1_m_i_d_i_1_1_value_transformer.html#a4c663e26ae6e88fbf18fda1c28d21e54">SF2::MIDI::ValueTransformer::TableSize</a>, and <a class="el" href="namespace_s_f2_1_1_d_s_p.html#a9d093be3c92bf8e2177f4021f6c5e485">SF2::DSP::unipolarToBipolar()</a>.</p>
 
+<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a28efb1004a6a78f811a4d7b74f568169">Generator()</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -280,12 +286,13 @@ template&lt;typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#af3a6957b179fe81cc7fc315bb21a8a8c">generate()</a>, <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a6859199637411791cfcddbe219c487cf">generateCubic4thOrderWeights()</a>, and <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adbea730a517cf0f98c2a62a2373663b5">generateTransform()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#af3a6957b179fe81cc7fc315bb21a8a8c">generate()</a>, <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a6859199637411791cfcddbe219c487cf">generateCubic4thOrderWeights()</a>, <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#adbea730a517cf0f98c2a62a2373663b5">generateTransform()</a>, and <a class="el" href="struct_s_f2_1_1_d_s_p_1_1_tables_1_1_generator.html#a28efb1004a6a78f811a4d7b74f568169">Generator()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this struct was generated from the following file:<ul>
-<li>SoundFontInfoLib/DSP/<a class="el" href="_d_s_p_generators_8hpp_source.html">DSPGenerators.hpp</a></li>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>SoundFontInfoLib/SoundFontInfoLib/DSP/<a class="el" href="_d_s_p_generator_8hpp_source.html">DSPGenerator.hpp</a></li>
+<li>SoundFontInfoLib/DSPGenerator/<a class="el" href="_d_s_p_generator_8cc.html">DSPGenerator.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

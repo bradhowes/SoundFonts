@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoundFontInfoLib: SoundFontInfoLib/Render/ZoneCollection.hpp Source File</title>
+<title>SoundFontInfoLib: SoundFontInfoLib/SoundFontInfoLib/Render/ZoneCollection.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -129,10 +129,10 @@ $(document).ready(function(){initNavTree('_zone_collection_8hpp_source.html','')
 <div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="class_s_f2_1_1_render_1_1_zone_collection.html#ad28d77f941fb52ae829eccea013c342a">   58</a></span>&#160;    <span class="keyword">const</span> Kind* <a class="code" href="class_s_f2_1_1_render_1_1_zone_collection.html#ad28d77f941fb52ae829eccea013c342a">global</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code" href="class_s_f2_1_1_render_1_1_zone_collection.html#a829af7818a05c52f16b239dea289bd49">hasGlobal</a>() ? &amp;zones_.front() : <span class="keyword">nullptr</span>; }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">class</span>... Args&gt;</div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_s_f2_1_1_render_1_1_zone_collection.html#a9ce8f9571d92b157a3f1e359ca5280ad">   69</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_f2_1_1_render_1_1_zone_collection.html#a9ce8f9571d92b157a3f1e359ca5280ad">add</a>(<span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_i_o_1_1_file.html">IO::File</a>&amp; file, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_entity_1_1_bag.html">Entity::Bag</a>&amp; bag, Args&amp;&amp;... values) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_s_f2_1_1_render_1_1_zone_collection.html#a9ce8f9571d92b157a3f1e359ca5280ad">   69</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_f2_1_1_render_1_1_zone_collection.html#a9ce8f9571d92b157a3f1e359ca5280ad">add</a>(<span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_i_o_1_1_file.html">IO::File</a>&amp; file, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_entity_1_1_bag.html">Entity::Bag</a>&amp; bag, Args&amp;&amp;... <a class="code" href="_canonical_buffer_tests_8mm.html#a626b1ba699935c986abcbaad134b2dcf">values</a>) {</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// Per spec, skip empty zone definitions</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">if</span> (bag.<a class="code" href="class_s_f2_1_1_entity_1_1_bag.html#abbe62b4501644b8bd9e761b5c24d11f7">generatorCount</a>() == 0 &amp;&amp; bag.<a class="code" href="class_s_f2_1_1_entity_1_1_bag.html#adbfd16755f08a047049177fbfece5257">modulatorCount</a>() == 0) <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        zones_.emplace_back(file, bag, std::forward&lt;Args&gt;(values)...);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        zones_.emplace_back(file, bag, std::forward&lt;Args&gt;(<a class="code" href="_canonical_buffer_tests_8mm.html#a626b1ba699935c986abcbaad134b2dcf">values</a>)...);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="comment">// Per spec, only allow one global zone and it must be the first one</span></div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">if</span> (zones_.size() &gt; 1 &amp;&amp; zones_.back().isGlobal()) {</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            zones_.pop_back();</div>
@@ -146,6 +146,7 @@ $(document).ready(function(){initNavTree('_zone_collection_8hpp_source.html','')
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;} <span class="comment">// namespace Render</span></div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;} <span class="comment">// namespace SF2</span></div>
 <div class="ttc" id="a_bag_8hpp_html"><div class="ttname"><a href="_bag_8hpp.html">Bag.hpp</a></div></div>
+<div class="ttc" id="a_canonical_buffer_tests_8mm_html_a626b1ba699935c986abcbaad134b2dcf"><div class="ttname"><a href="_canonical_buffer_tests_8mm.html#a626b1ba699935c986abcbaad134b2dcf">values</a></div><div class="ttdeci">static int16_t values[8]</div><div class="ttdef"><b>Definition:</b> CanonicalBufferTests.mm:21</div></div>
 <div class="ttc" id="a_chunk_items_8hpp_html"><div class="ttname"><a href="_chunk_items_8hpp.html">ChunkItems.hpp</a></div></div>
 <div class="ttc" id="a_entity_2_generator_2_generator_8hpp_html"><div class="ttname"><a href="_entity_2_generator_2_generator_8hpp.html">Generator.hpp</a></div></div>
 <div class="ttc" id="a_entity_2_modulator_2_modulator_8hpp_html"><div class="ttname"><a href="_entity_2_modulator_2_modulator_8hpp.html">Modulator.hpp</a></div></div>
@@ -169,7 +170,7 @@ $(document).ready(function(){initNavTree('_zone_collection_8hpp_source.html','')
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_dbb466af1b59c8d40da12178e762c98f.html">Render</a></li><li class="navelem"><a class="el" href="_zone_collection_8hpp.html">ZoneCollection.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_a5ce18c6e96f37e93f96285f0ca87617.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_d894237ab45675c58520b8ec082ac74c.html">Render</a></li><li class="navelem"><a class="el" href="_zone_collection_8hpp.html">ZoneCollection.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

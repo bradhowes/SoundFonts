@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -106,7 +106,7 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae0e7af71d4e809095d2a84c8bca31276"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#ae0e7af71d4e809095d2a84c8bca31276">Bounds</a> (const <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html">Entity::SampleHeader</a> &amp;header, const <a class="el" href="class_s_f2_1_1_render_1_1_voice_1_1_state.html">Voice::State</a> &amp;state)</td></tr>
+<tr class="memitem:ae0e7af71d4e809095d2a84c8bca31276"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#ae0e7af71d4e809095d2a84c8bca31276">Bounds</a> (const <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html">Entity::SampleHeader</a> &amp;<a class="el" href="_canonical_buffer_tests_8mm.html#a0991514b2be0b8bed074a4d7f85e3abb">header</a>, const <a class="el" href="class_s_f2_1_1_render_1_1_voice_1_1_state.html">Voice::State</a> &amp;state)</td></tr>
 <tr class="memdesc:ae0e7af71d4e809095d2a84c8bca31276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct new instance using information from 'shdr' and current voice state values from generators related to sample indices.  <a href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#ae0e7af71d4e809095d2a84c8bca31276">More...</a><br /></td></tr>
 <tr class="separator:ae0e7af71d4e809095d2a84c8bca31276"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2d35a0e0f8fefa842c6cef7d14396c6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#af2d35a0e0f8fefa842c6cef7d14396c6">startIndex</a> () const</td></tr>
@@ -180,7 +180,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#aceaafd36ec50d38e45ab8e9360302cac">SF2::Entity::SampleHeader::endIndex()</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#a1203fbabb99a60137bf76d9c86958429">SF2::Entity::SampleHeader::endLoopIndex()</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#ab84a12a5784e11526f229bad9197174d">SF2::Entity::SampleHeader::startIndex()</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#a7aa99157100195f8e200d30a4ac37b44">SF2::Entity::SampleHeader::startLoopIndex()</a>, and <a class="el" href="class_s_f2_1_1_render_1_1_voice_1_1_state.html#a3d2d43e111f2a84f87d26284602a9881">SF2::Render::Voice::State::unmodulated()</a>.</p>
+<p class="reference">References <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#aceaafd36ec50d38e45ab8e9360302cac">SF2::Entity::SampleHeader::endIndex()</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#a1203fbabb99a60137bf76d9c86958429">SF2::Entity::SampleHeader::endLoopIndex()</a>, <a class="el" href="_buffer_index_tests_8mm.html#a0991514b2be0b8bed074a4d7f85e3abb">header</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#ab84a12a5784e11526f229bad9197174d">SF2::Entity::SampleHeader::startIndex()</a>, <a class="el" href="class_s_f2_1_1_entity_1_1_sample_header.html#a7aa99157100195f8e200d30a4ac37b44">SF2::Entity::SampleHeader::startLoopIndex()</a>, and <a class="el" href="class_s_f2_1_1_render_1_1_voice_1_1_state.html#a3d2d43e111f2a84f87d26284602a9881">SF2::Render::Voice::State::unmodulated()</a>.</p>
 
 </div>
 </div>
@@ -209,7 +209,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the index after the last valid sample to use for rendering </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a77aeb02c3dfff8e88870f4cfcfe49f9a">SF2::Render::Sample::Generator::generate()</a>, and <a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">SF2::Render::Sample::BufferIndex::increment()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="class_s_f2_1_1_render_1_1_sample_1_1_generator.html#a77aeb02c3dfff8e88870f4cfcfe49f9a">SF2::Render::Sample::Generator::generate()</a>.</p>
 
 </div>
 </div>
@@ -236,8 +236,6 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the index of the first sample AFTER a loop </dd></dl>
-
-<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">SF2::Render::Sample::BufferIndex::increment()</a>.</p>
 
 </div>
 </div>
@@ -291,12 +289,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>the index of the first sample of a loop </dd></dl>
 
-<p class="reference">Referenced by <a class="el" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">SF2::Render::Sample::BufferIndex::increment()</a>.</p>
-
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>SoundFontInfoLib/Render/Sample/<a class="el" href="_bounds_8hpp_source.html">Bounds.hpp</a></li>
+<li>SoundFontInfoLib/SoundFontInfoLib/Render/Sample/<a class="el" href="_bounds_8hpp_source.html">Bounds.hpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

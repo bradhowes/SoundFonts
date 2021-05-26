@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoundFontInfoLib: SoundFontInfoLib/Render/Voice/Voice.hpp Source File</title>
+<title>SoundFontInfoLib: SoundFontInfoLib/SoundFontInfoLib/Render/Voice/Voice.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('_voice_8hpp_source.html',''); initResi
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_voice.html#a5ae79ea67d1d6e4e10caf34a6a28b597">Voice</a>(<span class="keywordtype">double</span> sampleRate, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_m_i_d_i_1_1_channel.html">MIDI::Channel</a>&amp; channel, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_setup.html">Setup</a>&amp; setup);</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_voice.html#a5ae79ea67d1d6e4e10caf34a6a28b597">Voice</a>(<span class="keywordtype">double</span> sampleRate, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_m_i_d_i_1_1_channel.html">MIDI::Channel</a>&amp; <a class="code" href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a>, <span class="keyword">const</span> <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_setup.html">Setup</a>&amp; setup);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
 <div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_s_f2_1_1_render_1_1_voice_1_1_voice.html#aaa82a250273261a0da2565cb5a6fb22d">   46</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_f2_1_1_render_1_1_voice_1_1_voice.html#aaa82a250273261a0da2565cb5a6fb22d">keyReleased</a>() {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        gainEnvelope_.<a class="code" href="class_s_f2_1_1_render_1_1_envelope_1_1_generator.html#a4c7e932dd7ac84cb9dab60cda38d1c8b">gate</a>(<span class="keyword">false</span>);</div>
@@ -162,6 +162,7 @@ $(document).ready(function(){initNavTree('_voice_8hpp_source.html',''); initResi
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;} <span class="comment">// namespace Voice</span></div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;} <span class="comment">// namespace Render</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;} <span class="comment">// namespace SF2</span></div>
+<div class="ttc" id="a_buffer_index_tests_8mm_html_ab01fe5bc7874a4795c72f4945134f3f0"><div class="ttname"><a href="_buffer_index_tests_8mm.html#ab01fe5bc7874a4795c72f4945134f3f0">channel</a></div><div class="ttdeci">static SF2::MIDI::Channel channel</div><div class="ttdef"><b>Definition:</b> BufferIndexTests.mm:20</div></div>
 <div class="ttc" id="a_canonical_buffer_8hpp_html"><div class="ttname"><a href="_canonical_buffer_8hpp.html">CanonicalBuffer.hpp</a></div></div>
 <div class="ttc" id="a_l_f_o_8hpp_html"><div class="ttname"><a href="_l_f_o_8hpp.html">LFO.hpp</a></div></div>
 <div class="ttc" id="a_logger_8hpp_html"><div class="ttname"><a href="_logger_8hpp.html">Logger.hpp</a></div></div>
@@ -202,7 +203,7 @@ $(document).ready(function(){initNavTree('_voice_8hpp_source.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_dbb466af1b59c8d40da12178e762c98f.html">Render</a></li><li class="navelem"><a class="el" href="dir_54751f24dfced83563262f3bba9425d6.html">Voice</a></li><li class="navelem"><a class="el" href="_voice_8hpp.html">Voice.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_a5ce18c6e96f37e93f96285f0ca87617.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_d894237ab45675c58520b8ec082ac74c.html">Render</a></li><li class="navelem"><a class="el" href="dir_01e826f30ce377e47fb726472d14dea0.html">Voice</a></li><li class="navelem"><a class="el" href="_voice_8hpp.html">Voice.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

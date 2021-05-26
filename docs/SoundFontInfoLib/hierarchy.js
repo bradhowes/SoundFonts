@@ -2,6 +2,9 @@ var hierarchy =
 [
     [ "SF2::Entity::Generator::Amount", "class_s_f2_1_1_entity_1_1_generator_1_1_amount.html", null ],
     [ "SF2::DSP::Tables::AttenuationLookup", "struct_s_f2_1_1_d_s_p_1_1_tables_1_1_attenuation_lookup.html", null ],
+    [ "<AVAudioPlayerDelegate>", null, [
+      [ "VoiceTests", "interface_voice_tests.html", null ]
+    ] ],
     [ "SF2::Render::Sample::Bounds", "struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html", null ],
     [ "SF2::Render::BufferFacet", "class_s_f2_1_1_render_1_1_buffer_facet.html", null ],
     [ "SF2::Render::Sample::BufferIndex", "struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html", null ],
@@ -81,6 +84,29 @@ var hierarchy =
     ] ],
     [ "SF2::Render::WithZones< PresetZone, Entity::Preset >", "class_s_f2_1_1_render_1_1_with_zones.html", [
       [ "SF2::Render::Preset", "class_s_f2_1_1_render_1_1_preset.html", null ]
+    ] ],
+    [ "XCTestCase", null, [
+      [ "CanonicalBufferTests", "interface_canonical_buffer_tests.html", null ],
+      [ "ChannelTests", "interface_channel_tests.html", null ],
+      [ "ChunkTests", "interface_chunk_tests.html", null ],
+      [ "DSPTests", "interface_d_s_p_tests.html", null ],
+      [ "DelayBufferTests", "interface_delay_buffer_tests.html", null ],
+      [ "EntityModulatorSourceTests", "interface_entity_modulator_source_tests.html", null ],
+      [ "EnvelopeTests", "interface_envelope_tests.html", null ],
+      [ "FileTests", "interface_file_tests.html", null ],
+      [ "GeneratorAmountTests", "interface_generator_amount_tests.html", null ],
+      [ "InstrumentTests", "interface_instrument_tests.html", null ],
+      [ "LFOTests", "interface_l_f_o_tests.html", null ],
+      [ "MIDITests", "interface_m_i_d_i_tests.html", null ],
+      [ "ModulatorTests", "interface_modulator_tests.html", null ],
+      [ "NoteTests", "interface_note_tests.html", null ],
+      [ "PresetTests", "interface_preset_tests.html", null ],
+      [ "RangeTests", "interface_range_tests.html", null ],
+      [ "SampleIndexTests", "interface_sample_index_tests.html", null ],
+      [ "StateTests", "interface_state_tests.html", null ],
+      [ "TagsTests", "interface_tags_tests.html", null ],
+      [ "ValueTransformerTests", "interface_value_transformer_tests.html", null ],
+      [ "VoiceTests", "interface_voice_tests.html", null ]
     ] ],
     [ "SF2::Render::Zone", "class_s_f2_1_1_render_1_1_zone.html", [
       [ "SF2::Render::InstrumentZone", "class_s_f2_1_1_render_1_1_instrument_zone.html", null ],

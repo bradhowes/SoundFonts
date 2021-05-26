@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <FileRef
-      location = "group:README.md">
-   </FileRef>
    <Group
       location = "container:Playgrounds"
       name = "Playgrounds">
@@ -21,13 +18,16 @@
       </FileRef>
    </Group>
    <FileRef
+      location = "group:README.md">
+   </FileRef>
+   <FileRef
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
       location = "container:Full.xcconfig">
    </FileRef>
    <FileRef
-      location = "group:App.xcodeproj">
+      location = "group:SoundFontsApp/SoundFontsApp.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:SoundFontsFramework/SoundFontsFramework.xcodeproj">

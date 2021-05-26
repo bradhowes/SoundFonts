@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SoundFontInfoLib: SoundFontInfoLib/Render/Sample/BufferIndex.hpp Source File</title>
+<title>SoundFontInfoLib: SoundFontInfoLib/SoundFontInfoLib/Render/Sample/BufferIndex.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -28,7 +28,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">SoundFontInfoLib
-   &#160;<span id="projectnumber">2.21.0</span>
+   &#160;<span id="projectnumber">2.21.2</span>
    </div>
    <div id="projectbrief">Library for parsing and rendering SF2 files</div>
   </td>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('_buffer_index_8hpp_source.html',''); i
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html">   23</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html">BufferIndex</a> {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a35c1fe49439a1205b14377f158e70d61">   25</a></span>&#160;    <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a35c1fe49439a1205b14377f158e70d61">BufferIndex</a>(<span class="keyword">const</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html">Bounds</a>&amp; bounds) : index_{bounds.startIndex()} {}</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a35c1fe49439a1205b14377f158e70d61">   25</a></span>&#160;    <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a35c1fe49439a1205b14377f158e70d61">BufferIndex</a>(<span class="keyword">const</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html">Bounds</a>&amp; <a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>) : index_{<a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>.startIndex()} {}</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a925e838c0139c54eae4cb1c579c36b51">   33</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a925e838c0139c54eae4cb1c579c36b51">setIncrement</a>(<span class="keywordtype">double</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">increment</a>) {</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        indexIncrement_ = size_t(<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">increment</a>);</div>
@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('_buffer_index_8hpp_source.html',''); i
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a60505b05f9c09195de526bb098c07c9b">   38</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a60505b05f9c09195de526bb098c07c9b">hasIncrement</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> indexIncrement_ != 0 || partialIncrement_ != 0.0; }</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">   46</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">increment</a>(<span class="keyword">const</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html">Bounds</a>&amp; bounds, <span class="keywordtype">bool</span> canLoop) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">   46</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a3744ac33a56164918f68276e635efed3">increment</a>(<span class="keyword">const</span> <a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html">Bounds</a>&amp; <a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>, <span class="keywordtype">bool</span> canLoop) {</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a8f0e37682a9c7d39709674d8f7fe16e1">finished</a>()) <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <span class="keywordflow">if</span> (indexIncrement_) index_ += indexIncrement_;</div>
@@ -126,11 +126,11 @@ $(document).ready(function(){initNavTree('_buffer_index_8hpp_source.html',''); i
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            partial_ -= carry;</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        }</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> (canLoop &amp;&amp; index_ &gt;= bounds.<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#a2f1b496e6418457196b0da67db4fa301">endLoopIndex</a>()) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">if</span> (canLoop &amp;&amp; index_ &gt;= <a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>.endLoopIndex()) {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            log_.<a class="code" href="struct_s_f2_1_1_logger.html#a1e2042a28b6d70d7475c81ea7853313e">debug</a>() &lt;&lt; <span class="stringliteral">&quot;looping&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            index_ -= (bounds.<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#a2f1b496e6418457196b0da67db4fa301">endLoopIndex</a>() - bounds.<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#a5bff9936a18099d2aa0559f2e4aaaf80">startLoopIndex</a>());</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            index_ -= (<a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>.endLoopIndex() - <a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>.startLoopIndex());</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (index_ &gt;= bounds.<a class="code" href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#aeec7975b9b662797d266861ff04afcbb">endIndex</a>()) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (index_ &gt;= <a class="code" href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a>.endIndex()) {</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            log_.<a class="code" href="struct_s_f2_1_1_logger.html#a1e2042a28b6d70d7475c81ea7853313e">debug</a>() &lt;&lt; <span class="stringliteral">&quot;stopping&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            partialIncrement_ = -1.0;</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
@@ -154,15 +154,13 @@ $(document).ready(function(){initNavTree('_buffer_index_8hpp_source.html',''); i
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;} <span class="comment">// namespace Render</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;} <span class="comment">// namespace SF2</span></div>
 <div class="ttc" id="a_bounds_8hpp_html"><div class="ttname"><a href="_bounds_8hpp.html">Bounds.hpp</a></div></div>
+<div class="ttc" id="a_buffer_index_tests_8mm_html_a024318f4225ee6bedb20b7f865205d34"><div class="ttname"><a href="_buffer_index_tests_8mm.html#a024318f4225ee6bedb20b7f865205d34">bounds</a></div><div class="ttdeci">static Bounds bounds</div><div class="ttdef"><b>Definition:</b> BufferIndexTests.mm:21</div></div>
 <div class="ttc" id="a_logger_8hpp_html"><div class="ttname"><a href="_logger_8hpp.html">Logger.hpp</a></div></div>
 <div class="ttc" id="a_sample_header_8hpp_html"><div class="ttname"><a href="_sample_header_8hpp.html">SampleHeader.hpp</a></div></div>
 <div class="ttc" id="anamespace_s_f2_html"><div class="ttname"><a href="namespace_s_f2.html">SF2</a></div><div class="ttdoc">This is the top-level namespace for the SoundFontInfoLib library.</div><div class="ttdef"><b>Definition:</b> DSP.hpp:12</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_logger_html_a1e2042a28b6d70d7475c81ea7853313e"><div class="ttname"><a href="struct_s_f2_1_1_logger.html#a1e2042a28b6d70d7475c81ea7853313e">SF2::Logger::debug</a></div><div class="ttdeci">std::ostream &amp; debug()</div><div class="ttdef"><b>Definition:</b> Logger.hpp:49</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_logger_html_a9af8ae24684702953796f276e42bd298"><div class="ttname"><a href="struct_s_f2_1_1_logger.html#a9af8ae24684702953796f276e42bd298">SF2::Logger::Make</a></div><div class="ttdeci">static Logger Make(const std::string &amp;subsystem, const std::string &amp;category)</div><div class="ttdoc">Create a new os_log_t instance.</div><div class="ttdef"><b>Definition:</b> Logger.hpp:38</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_bounds_html"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html">SF2::Render::Sample::Bounds</a></div><div class="ttdoc">Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity...</div><div class="ttdef"><b>Definition:</b> Bounds.hpp:23</div></div>
-<div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_bounds_html_a2f1b496e6418457196b0da67db4fa301"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#a2f1b496e6418457196b0da67db4fa301">SF2::Render::Sample::Bounds::endLoopIndex</a></div><div class="ttdeci">size_t endLoopIndex() const</div><div class="ttdef"><b>Definition:</b> Bounds.hpp:65</div></div>
-<div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_bounds_html_a5bff9936a18099d2aa0559f2e4aaaf80"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#a5bff9936a18099d2aa0559f2e4aaaf80">SF2::Render::Sample::Bounds::startLoopIndex</a></div><div class="ttdeci">size_t startLoopIndex() const</div><div class="ttdef"><b>Definition:</b> Bounds.hpp:63</div></div>
-<div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_bounds_html_aeec7975b9b662797d266861ff04afcbb"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_bounds.html#aeec7975b9b662797d266861ff04afcbb">SF2::Render::Sample::Bounds::endIndex</a></div><div class="ttdeci">size_t endIndex() const</div><div class="ttdef"><b>Definition:</b> Bounds.hpp:67</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_buffer_index_html"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html">SF2::Render::Sample::BufferIndex</a></div><div class="ttdoc">Interpolatable index into a CanonicalBuffer.</div><div class="ttdef"><b>Definition:</b> BufferIndex.hpp:23</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_buffer_index_html_a1a3185c93a3ece042724b7470b687058"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a1a3185c93a3ece042724b7470b687058">SF2::Render::Sample::BufferIndex::index</a></div><div class="ttdeci">size_t index() const</div><div class="ttdef"><b>Definition:</b> BufferIndex.hpp:69</div></div>
 <div class="ttc" id="astruct_s_f2_1_1_render_1_1_sample_1_1_buffer_index_html_a35c1fe49439a1205b14377f158e70d61"><div class="ttname"><a href="struct_s_f2_1_1_render_1_1_sample_1_1_buffer_index.html#a35c1fe49439a1205b14377f158e70d61">SF2::Render::Sample::BufferIndex::BufferIndex</a></div><div class="ttdeci">BufferIndex(const Bounds &amp;bounds)</div><div class="ttdef"><b>Definition:</b> BufferIndex.hpp:25</div></div>
@@ -176,7 +174,7 @@ $(document).ready(function(){initNavTree('_buffer_index_8hpp_source.html',''); i
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_dbb466af1b59c8d40da12178e762c98f.html">Render</a></li><li class="navelem"><a class="el" href="dir_52f63ba8c812182e19b400a6e9e4d708.html">Sample</a></li><li class="navelem"><a class="el" href="_buffer_index_8hpp.html">BufferIndex.hpp</a></li>
+    <li class="navelem"><a class="el" href="dir_cbb3e3e756a1a13b2f48e538bc2f0f3d.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_a5ce18c6e96f37e93f96285f0ca87617.html">SoundFontInfoLib</a></li><li class="navelem"><a class="el" href="dir_d894237ab45675c58520b8ec082ac74c.html">Render</a></li><li class="navelem"><a class="el" href="dir_eb40e2c9cc6669e59e4e1afbce516141.html">Sample</a></li><li class="navelem"><a class="el" href="_buffer_index_8hpp.html">BufferIndex.hpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
