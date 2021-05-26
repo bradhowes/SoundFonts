@@ -1,37 +1,50 @@
 import UIKit
+import os
 
 public struct ChangesCompiler {
+    private static let log = Logging.logger("ChangesCompiler")
 
-    public static func compile(since: String) -> [String] {
+    public static func compile(since: String, maxItems: Int = 6) -> [String] {
+        os_log(.info, log: log, "compile changes since: %{public}s", since)
+
         var entries = [String]()
         let bundle = Bundle(for: TutorialViewController.self)
         guard let changeLogUrl = bundle.url(forResource: "Changes", withExtension: "md", subdirectory: nil) else {
+            os_log(.error, log: log, "no Changes.md resource found")
             return entries
         }
 
         guard let data = try? String(contentsOfFile: changeLogUrl.path, encoding: .utf8) else {
+            os_log(.error, log: log, "failed to read from Changes.md")
             return entries
         }
 
-        var version = ""
         for line in data.components(separatedBy: .newlines) {
             if line.hasPrefix("# ") {
-                version = String(line[line.index(line.startIndex, offsetBy: 2)...])
+                let version = String(line[line.index(line.startIndex, offsetBy: 2)...])
                     .trimmingCharacters(in: .whitespaces)
+                os_log(.debug, log: log, "found version line - '%{public}s'", version)
                 if version <= since {
+                    os_log(.debug, log: log, "version <= since")
                     break
                 }
             }
             else if line.hasPrefix("* ") {
                 let entry = String(line[line.index(line.startIndex, offsetBy: 2)...])
                     .trimmingCharacters(in: .whitespaces)
+                os_log(.debug, log: log, "entry: '%{public}s'", entry)
                 entries.append(entry)
+                if entries.count >= maxItems {
+                    os_log(.debug, log: log, "max items reached")
+                    break
+                }
             }
             else {
-                print("*** skipping line \(line)")
+                os_log(.debug, log: log, "skipping: '%{public}s'", line)
             }
         }
 
+        os_log(.info, log: log, "done - %d", entries.count)
         return entries
     }
 
@@ -58,6 +71,8 @@ public struct ChangesCompiler {
         bulletView.textAlignment = .natural
         bulletView.setContentHuggingPriority(.required, for: .horizontal)
         bulletView.translatesAutoresizingMaskIntoConstraints = false
+        bulletView.setContentHuggingPriority(.required, for: .horizontal)
+        bulletView.setContentCompressionResistancePriority(.required, for: .horizontal)
         return bulletView
     }
 
@@ -68,7 +83,7 @@ public struct ChangesCompiler {
         entryView.font = font
         entryView.numberOfLines = 0
         entryView.textAlignment = .left
-        entryView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        // entryView.setContentCompressionResistancePriority(.required, for: .horizontal)
         entryView.translatesAutoresizingMaskIntoConstraints = false
         return entryView
     }

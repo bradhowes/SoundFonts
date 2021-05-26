@@ -10,7 +10,6 @@ final class ChangesPageViewController: TutorialPageViewController {
         super.viewDidLoad()
         guard let changes = changes, !changes.isEmpty else { fatalError("unexpected nil/empty changes") }
         setChanges(ChangesCompiler.views(changes))
-        Settings.instance.showedChanges = Bundle.main.releaseVersionNumber
         self.changes = nil
     }
 
@@ -19,6 +18,7 @@ final class ChangesPageViewController: TutorialPageViewController {
             changesView.addArrangedSubview(entry)
         }
 
+        // NOTE: the storyboard has a placeholder item in it for layout purposes.
         changesView.arrangedSubviews.first?.isHidden = true
     }
 }

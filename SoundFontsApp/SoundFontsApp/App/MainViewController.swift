@@ -11,7 +11,7 @@ import SoundFontsFramework
  to the background or stops being active.
  */
 final class MainViewController: UIViewController {
-    private lazy var log = Logging.logger("MainVC")
+    private lazy var log = Logging.logger("MainViewController")
 
     private var midiController: MIDIController?
     private var activePatchManager: ActivePatchManager!
@@ -41,6 +41,9 @@ final class MainViewController: UIViewController {
 
         guard !skipTutorial else { return }
 
+        // Settings.instance.showedChanges = ""
+        // Settings.instance.showedTutorial = false
+        
         let currentVersion = Bundle.main.releaseVersionNumber
         if !Settings.instance.showedTutorial {
             Settings.instance.showedTutorial = true
@@ -48,12 +51,15 @@ final class MainViewController: UIViewController {
             if let viewController = TutorialViewController.instantiate() {
                 present(viewController, animated: true, completion: nil)
             }
-        } else if Settings.instance.showedChanges != currentVersion {
+        }
+        else if Settings.instance.showedChanges != currentVersion {
+
+            // For speed of launch this should be done on separate thread
             let changes = ChangesCompiler.compile(since: Settings.instance.showedChanges)
-            if let viewController = TutorialViewController.instantiate(changes) {
+
+            Settings.instance.showedChanges = currentVersion
+            if let viewController = TutorialViewController.instantiateChanges(changes) {
                 present(viewController, animated: true, completion: nil)
-            } else {
-                Settings.instance.showedChanges = currentVersion
             }
         }
     }

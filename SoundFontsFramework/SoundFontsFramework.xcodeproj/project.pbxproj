@@ -765,15 +765,15 @@
 		BDB7406625CC29120051B4E4 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				BDEB125826207446003CE8EE /* ChangesCompiler.swift */,
+				BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */,
 				BDA5ACEC265D422C000AE48E /* DonePageViewController.swift */,
 				BDA5ACEB265D422C000AE48E /* PresetsPageViewController.swift */,
 				BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */,
 				BD1C22F025CDC781007C114F /* TutorialViewController.swift */,
-				BDEB125826207446003CE8EE /* ChangesCompiler.swift */,
 				BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */,
 				BD1C22EC25CDC701007C114F /* TutorialContentPagerViewController.swift */,
 				BDB7407025CC29400051B4E4 /* TutorialPageViewController.swift */,
-				BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */,
 				BD1C230B25CDF781007C114F /* Pages */,
 			);
 			path = Tutorial;
@@ -1205,7 +1205,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210525170941;
+				CURRENT_PROJECT_VERSION = 20210526093053;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1271,7 +1271,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20210525170941;
+				CURRENT_PROJECT_VERSION = 20210526093053;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1299,7 +1299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525170941;
+				CURRENT_PROJECT_VERSION = 20210526093053;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1313,7 +1313,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.2;
+				MARKETING_VERSION = 2.21.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1327,7 +1327,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20210525170941;
+				CURRENT_PROJECT_VERSION = 20210526093053;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1341,7 +1341,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.2;
+				MARKETING_VERSION = 2.21.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontsFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
