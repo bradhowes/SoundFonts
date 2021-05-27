@@ -10,10 +10,10 @@ public extension XCTestCase {
     typealias TestBlock = (CoreDataTestHarness, NSManagedObjectContext) -> Void
 
     func doWhenCoreDataReady(_ name: String, block: @escaping TestBlock) {
-        let cdth = CoreDataTestHarness()
+        let testHarness = CoreDataTestHarness()
         let executed = XCTestExpectation(description: name)
-        _ = cdth.stack.availableNotification.registerOnMain { _ in
-            block(cdth, cdth.context)
+        _ = testHarness.stack.availableNotification.registerOnMain { _ in
+            block(testHarness, testHarness.context)
             executed.fulfill()
         }
         wait(for: [executed], timeout: 1.0)

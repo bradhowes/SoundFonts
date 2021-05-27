@@ -5,7 +5,15 @@ import CoreData
 import SoundFontInfoLib
 
 @objc(SoundFont)
-public final class SoundFont: NSManagedObject, Managed {
+public final class ManagedSoundFont: NSManagedObject, Managed {
+    @NSManaged public private(set) var name: String
+    @NSManaged public private(set) var path: URL
+    @NSManaged public private(set) var bookmark: Data?
+    @NSManaged public private(set) var embeddedName: String
+    @NSManaged public private(set) var resource: Bool
+    @NSManaged public private(set) var visible: Bool
+    @NSManaged private var children: NSOrderedSet
+    @NSManaged private var tags: NSOrderedSet
 
     public static var defaultSortDescriptors: [NSSortDescriptor] = {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true,
@@ -23,25 +31,15 @@ public final class SoundFont: NSManagedObject, Managed {
         return count(in: context, request: fetchRequestForRows)
     }
 
-    public static func fetchRows(in context: NSManagedObjectContext) -> [SoundFont] {
+    public static func fetchRows(in context: NSManagedObjectContext) -> [ManagedSoundFont] {
         let request = fetchRequestForRows
         request.fetchBatchSize = 50
         request.resultType = .managedObjectResultType
         return fetch(in: context, request: request)
     }
-
-    @NSManaged public private(set) var uuid: UUID
-    @NSManaged public private(set) var name: String
-    @NSManaged public private(set) var path: URL
-    @NSManaged public private(set) var bookmark: Data?
-    @NSManaged public private(set) var embeddedName: String
-    @NSManaged public private(set) var resource: Bool
-    @NSManaged public private(set) var visible: Bool
-    @NSManaged private var children: NSOrderedSet
-    @NSManaged private var tags: NSOrderedSet
 }
 
-extension SoundFont {
+extension ManagedSoundFont {
 
     public enum Kind {
         case builtin(path: URL)
@@ -54,7 +52,6 @@ extension SoundFont {
     @discardableResult
     public convenience init(in context: NSManagedObjectContext, config: SoundFontInfo, isResource: Bool = false) {
         self.init(context: context)
-        self.uuid = UUID()
         self.name = config.embeddedName
         self.embeddedName = config.embeddedName
         self.path = config.url
@@ -62,37 +59,23 @@ extension SoundFont {
                                                      relativeTo: nil)
         self.resource = isResource
         self.visible = true
-        config.presets.forEach { self.addToChildren(Preset(in: context, config: $0)) }
-        context.saveChangesAsync()
-    }
-
-    @discardableResult
-    public convenience init(in context: NSManagedObjectContext, import soundFont: LegacySoundFont) {
-        self.init(context: context)
-        self.uuid = soundFont.key
-        self.name = soundFont.displayName
-        self.embeddedName = soundFont.embeddedName
-        self.path = soundFont.fileURL
-        self.resource = soundFont.kind.resource
-        self.visible = true
-
-        soundFont.patches.forEach { self.addToChildren(Preset(in: context, import: $0)) }
-
+        config.presets.enumerated().forEach {
+            self.addToChildren(ManagedPreset(in: context, owner: self, index: $0.offset, config: $0.element))
+        }
         context.saveChangesAsync()
     }
 
     public func setName(_ value: String) { name = value }
     public func setVisible(_ value: Bool) { visible = value }
-
-    public var presets: EntityCollection<Preset> { EntityCollection(children) }
+    public var presets: EntityCollection<ManagedPreset> { EntityCollection(children) }
 }
 
-extension SoundFont {
+extension ManagedSoundFont {
     @objc(addChildrenObject:)
-    @NSManaged private func addToChildren(_ value: Preset)
+    @NSManaged private func addToChildren(_ value: ManagedPreset)
 }
 
-extension SoundFont {
+extension ManagedSoundFont {
     @objc(addTagsObject:)
-    @NSManaged private func addToTags(_ value: Tag)
+    @NSManaged private func addToTags(_ value: ManagedTag)
 }

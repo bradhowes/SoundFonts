@@ -33,7 +33,6 @@
 		BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD59077E2565CDDC004DE941 /* DelayAU.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD5907D02565D28A004DE941 /* Controls.storyboard */; };
 		BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */; };
-		BD75432F23803994004C6A4C /* mute.aiff in Resources */ = {isa = PBXBuildFile; fileRef = BD75432D23803994004C6A4C /* mute.aiff */; };
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
@@ -155,7 +154,6 @@
 		BD5907D02565D28A004DE941 /* Controls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Controls.storyboard; sourceTree = "<group>"; };
 		BD62CF4B253DE18900DBDC1B /* MainInterface.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
-		BD75432D23803994004C6A4C /* mute.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = mute.aiff; sourceTree = "<group>"; };
 		BD75B260218B8CFD00C7EBD7 /* SoundFontsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundFontsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -273,7 +271,6 @@
 				BDD9792824171DDE006121A1 /* Eurostile.ttc */,
 				BDA0FC3123C73578005BEFD5 /* Assets.xcassets */,
 				BD874C95221A228E00BBD00B /* SoundFonts.entitlements */,
-				BD75432D23803994004C6A4C /* mute.aiff */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -629,7 +626,6 @@
 				BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */,
 				BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */,
 				BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */,
-				BD75432F23803994004C6A4C /* mute.aiff in Resources */,
 				BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
