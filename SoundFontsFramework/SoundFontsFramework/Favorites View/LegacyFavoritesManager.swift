@@ -97,6 +97,27 @@ extension LegacyFavoritesManager: Favorites {
         favorite.presetConfig.delayConfig = delay
         favorite.presetConfig.reverbConfig = reverb
     }
+
+    func validate(_ soundFonts: SoundFonts) {
+        var invalidFavoriteKeys = [LegacyFavorite.Key]()
+        for index in 0..<self.count {
+            let favorite = self.getBy(index: index)
+            if let preset = soundFonts.resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
+                if !preset.favorites.contains(favorite.key) {
+                    os_log(.error, log: log, "linking favorite - '%{public}s'", favorite.presetConfig.name)
+                    preset.favorites.append(favorite.key)
+                }
+            }
+            else {
+                os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
+                invalidFavoriteKeys.append(favorite.key)
+            }
+        }
+
+        for key in invalidFavoriteKeys {
+            self.remove(key: key)
+        }
+    }
 }
 
 extension LegacyFavoritesManager {

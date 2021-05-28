@@ -405,7 +405,7 @@
                         <rightBarButtonItems>
                             <barButtonItem title="Edit" style="done" id="DkP-nW-5rx">
                                 <connections>
-                                    <action selector="editTags:" destination="Kr6-Nm-Npn" id="F1I-wi-6KW"/>
+                                    <action selector="toggleTagEditing:" destination="Kr6-Nm-Npn" id="7Rn-4E-HOX"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="add" id="ZJW-eu-kBN">
@@ -418,6 +418,7 @@
                     <connections>
                         <outlet property="addButton" destination="ZJW-eu-kBN" id="BTS-w2-xoh"/>
                         <outlet property="editButton" destination="DkP-nW-5rx" id="Vnp-2r-tE9"/>
+                        <outlet property="navigationItem" destination="s0q-jo-4cq" id="5IP-nd-Z4g"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dda-8v-ayi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

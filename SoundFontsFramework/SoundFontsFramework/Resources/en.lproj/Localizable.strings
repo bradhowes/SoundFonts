@@ -2,6 +2,11 @@
 
 "allTagName" = "All";
 "builtInTagName" = "Built-in";
+"newTagName" = "New tag";
+
+"editButton" = "Edit";
+"doneButton" = "Done";
+"saveButton" = "Save";
 
 "favorite" = "favorite";
 "patch" = "patch";

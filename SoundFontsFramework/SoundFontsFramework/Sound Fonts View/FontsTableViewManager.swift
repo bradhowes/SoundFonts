@@ -45,8 +45,8 @@ final class FontsTableViewManager: NSObject {
         activePatchManager.subscribe(self, notifier: activePatchChange)
         tags.subscribe(self, notifier: tagsChange)
 
-        activeTagsObservation = Settings.shared.observe(\.activeTagIndex) { [weak self] setting, _ in
-            self?.updateFilterTag(index: setting.activeTagIndex)
+        activeTagsObservation = Settings.shared.observe(\.activeTagKey) { [weak self] setting, _ in
+            self?.updateFilterTag(tagKey: setting.activeTagKey)
         }
     }
 
@@ -109,12 +109,9 @@ extension FontsTableViewManager: UITableViewDelegate {
 
 extension FontsTableViewManager {
 
-    private func updateFilterTag(index: Int) {
-        let newTagKey = index == 0 ? LegacyTag.allTag.key : tags.getBy(index: index - 1).key
-        if newTagKey != filterTagKey || viewSoundFonts.isEmpty {
-            filterTagKey = newTagKey
-            updateViewSoundFonts()
-        }
+    private func updateFilterTag(tagKey: LegacyTag.Key) {
+        filterTagKey = tagKey
+        updateViewSoundFonts()
     }
 
     private func updateViewSoundFonts() {
@@ -242,9 +239,9 @@ extension FontsTableViewManager {
         case let .removed(_, tag):
             os_log(.info, log: log, "removing tag from fonts - %{public}@", tag.name)
             soundFonts.removeTag(tag.key)
-            updateFilterTag(index: 0)
+            updateFilterTag(tagKey: LegacyTag.allTag.key)
 
-        case .restored: updateFilterTag(index: Settings.shared.activeTagIndex)
+        case .restored: updateFilterTag(tagKey: Settings.shared.activeTagKey)
         case .added: break
         case .moved: break
         case .changed: break

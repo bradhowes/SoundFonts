@@ -8,7 +8,8 @@ import os
  Representation of a patch in a sound font.
  */
 final public class LegacyPatch: Codable {
-    static let log = Logging.logger("LegacyPatch")
+    private static let log = Logging.logger("LegacyPatch")
+    private var log: OSLog { Self.log }
 
     private enum V1Keys: String, CodingKey {
         case name
@@ -79,6 +80,7 @@ final public class LegacyPatch: Codable {
             let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
             let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
             let favorites = try values.decodeIfPresent(Array<LegacyFavorite.Key>.self, forKey: .favorites) ?? []
+
             self.originalName = originalName
             self.bank = bank
             self.program = program
@@ -114,14 +116,29 @@ final public class LegacyPatch: Codable {
 
 extension LegacyPatch {
     func makeFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?) -> LegacyFavorite {
-        os_log(.info, log: Self.log, "makeFavorite")
+        os_log(.info, log: log, "makeFavorite")
         var newConfig = presetConfig
         newConfig.name = presetConfig.name + " \(favorites.count + 1)"
-        os_log(.info, log: Self.log, "makeFavorite - '%{public}s'", newConfig.name)
+        os_log(.info, log: log, "makeFavorite - '%{public}s'", newConfig.name)
         let favorite = LegacyFavorite(soundFontAndPatch: soundFontAndPatch, presetConfig: newConfig,
                                       keyboardLowestNote: keyboardLowestNote)
         favorites.append(favorite.key)
         return favorite
+    }
+
+    func validate(_ favorites: Favorites) {
+        var invalidFavoriteIndices = [Int]()
+        for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() {
+            if !favorites.contains(key: favoriteKey) {
+                os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'",
+                       self.presetConfig.name, favoriteKey.uuidString)
+                invalidFavoriteIndices.append(favoriteIndex)
+            }
+        }
+
+        for index in invalidFavoriteIndices {
+            self.favorites.remove(at: index)
+        }
     }
 }
 

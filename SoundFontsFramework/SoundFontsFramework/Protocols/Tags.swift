@@ -77,6 +77,7 @@ public protocol Tags: AnyObject {
      - parameter index: the index to remove
      - returns: tag that was removed
      */
+    @discardableResult
     func remove(at index: Int) -> LegacyTag
 
     /**
@@ -112,4 +113,6 @@ public protocol Tags: AnyObject {
      */
     @discardableResult
     func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void) -> SubscriberToken
+
+    func validate()
 }

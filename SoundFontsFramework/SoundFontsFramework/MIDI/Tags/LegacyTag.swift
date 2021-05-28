@@ -4,11 +4,12 @@ import Foundation
 
 /**
  A tag is just a unique name that can be associated with zero or more sound fonts. By default there is an 'all' tag
- which matches all sound fonts.
+ which matches all sound fonts, and a 'built-in' tag that shows just those that come with the app.
  */
 public final class LegacyTag: Codable {
-     private typealias UByte16 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
-                                  UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
+
+    private typealias UByte16 = (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
+                                 UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8)
 
     /// Type of the unique key associated with a tag
     public typealias Key = UUID
@@ -21,8 +22,11 @@ public final class LegacyTag: Codable {
     public static let builtInTag = LegacyTag(nameProc: { Formatters.strings.builtInTagName },
                                              uuid: (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 
-    /// A set containing the 'all' tag. This is a convenience for combining another tag with the 'all' tag.
-    public static let allTagSet = Set([allTag.key, builtInTag.key])
+    /// A set containing the two tags above.
+    public static let stockTagSet = Set([allTag.key, builtInTag.key])
+
+    /// A set containing just the 'all' tag above. This is a convenience for generating the set of tags for a sound font.
+    public static let allTagSet = Set([allTag.key])
 
     /// The unique key for the tag.
     public let key: Key
@@ -30,7 +34,15 @@ public final class LegacyTag: Codable {
     /// The name of the tag. Unlike the key, the name can be changed.
     public var name: String
 
-    /// Constructor for the 'all' tag.
+    /// True if the tag is a user-created tag, with a name that they can edit.
+    public var isUserTag: Bool { !Self.stockTagSet.contains(self.key) }
+
+    /**
+     Constructor for the built-in tags.
+
+     - parameter nameProc: method/closure to invoke to get the names in a locale-dependent manner.
+     - parameter uuid: the unique UUID for the tag
+     */
     private init(nameProc: @escaping () -> String, uuid: UByte16) {
         self.key = UUID(uuid: uuid)
         self.name = nameProc()
@@ -45,7 +57,7 @@ public final class LegacyTag: Codable {
      */
     public init(name: String) {
         var key = Key()
-        while key == Self.allTag.key || key == Self.builtInTag.key { key = Key() }
+        while Self.stockTagSet.contains(key) { key = Key() }
         self.key = key
         self.name = name
     }

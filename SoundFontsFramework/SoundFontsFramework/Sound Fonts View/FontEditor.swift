@@ -24,7 +24,7 @@ final class FontEditor: UIViewController {
         let soundFontKey: LegacySoundFont.Key
         /// The number of favorites associated with the sound font being edited
         let favoriteCount: Int
-        /// The tags assigned to this sound font
+        /// The collection of known tags
         let tags: Tags
         /// The function to call when dismissing the editor. Sole parameter indicates if an activity was completed.
         let completionHandler: ((Bool) -> Void)?
@@ -68,7 +68,8 @@ extension FontEditor {
     func configure(_ config: Config) {
         self.config = config
         config.soundFonts.reloadEmbeddedInfo(key: config.soundFontKey)
-        activeTags = soundFont.tags
+        // Don't show the stock tags that don't make sense for the user to change
+        activeTags = soundFont.tags.subtracting(LegacyTag.stockTagSet)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,7 +98,7 @@ extension FontEditor {
         updateHiddenCount()
 
         path.text = "Path: " + soundFont.fileURL.path
-        let value = config.tags.names(of: activeTags).joined(separator: ", ")
+        let value = config.tags.names(of: activeTags).sorted().joined(separator: ", ")
         tagsLabel.text = value
 
         textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
@@ -216,7 +217,8 @@ extension FontEditor {
             fatalError("unexpected view configuration")
         }
 
-        let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags) { tags in
+        let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,
+                                                    builtIn: soundFont.kind.resource) { tags in
             self.activeTags = tags
         }
 

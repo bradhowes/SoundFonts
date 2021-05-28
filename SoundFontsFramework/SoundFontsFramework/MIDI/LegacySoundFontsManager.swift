@@ -10,7 +10,7 @@ import SF2Files
  */
 public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
 
-    private static let log = Logging.logger("SFMan")
+    private static let log = Logging.logger("SoundFontsManager")
     private var log: OSLog { Self.log }
 
     private var observer: ConfigFileObserver!
@@ -42,21 +42,21 @@ extension FileManager {
         guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else { return -1 }
         var found = 0
         for path in contents {
-            let src = sharedDocumentsDirectory.appendingPathComponent(path)
-            guard src.pathExtension == SF2Files.sf2Extension else { continue }
+            let source = sharedDocumentsDirectory.appendingPathComponent(path)
+            guard source.pathExtension == SF2Files.sf2Extension else { continue }
             let (stripped, uuid) = path.stripEmbeddedUUID()
             if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
-            let dst = localDocumentsDirectory.appendingPathComponent(stripped)
-            os_log(.info, log: log, "removing '%{public}s' if it exists", dst.path)
-            try? removeItem(at: dst)
-            os_log(.info, log: log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
+            let destination = localDocumentsDirectory.appendingPathComponent(stripped)
+            os_log(.info, log: log, "removing '%{public}s' if it exists", destination.path)
+            try? removeItem(at: destination)
+            os_log(.info, log: log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
             do {
-                try copyItem(at: src, to: dst)
+                try copyItem(at: source, to: destination)
             } catch let error as NSError {
                 os_log(.error, log: log, "%{public}s", error.localizedDescription)
             }
-            os_log(.info, log: log, "removing '%{public}s'", src.path)
-            try? removeItem(at: src)
+            os_log(.info, log: log, "removing '%{public}s'", source.path)
+            try? removeItem(at: source)
             found += 1
         }
 
@@ -78,40 +78,13 @@ extension LegacySoundFontsManager: SoundFonts {
 
     public func validateCollections(favorites: Favorites, tags: Tags) {
         os_log(.info, log: log, "validateCollections")
-        var invalidFavoriteKeys = [LegacyFavorite.Key]()
-        for index in 0..<favorites.count {
-            let favorite = favorites.getBy(index: index)
-            if let preset = resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
-                if !preset.favorites.contains(favorite.key) {
-                    os_log(.error, log: log, "linking favorite - '%{public}s'", favorite.presetConfig.name)
-                    preset.favorites.append(favorite.key)
-                }
-            }
-            else {
-                os_log(.error, log: log, "found orphan favorite - '%{public}s'", favorite.presetConfig.name)
-                invalidFavoriteKeys.append(favorite.key)
-            }
-        }
-
-        for key in invalidFavoriteKeys {
-            favorites.remove(key: key)
-        }
-
+        favorites.validate(self)
+        tags.validate()
         for soundFont in collection.soundFonts {
             for preset in soundFont.patches {
-                var invalidFavoriteIndices = [Int]()
-                for (favoriteIndex, favoriteKey) in preset.favorites.enumerated().reversed() {
-                    if !favorites.contains(key: favoriteKey) {
-                        os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'",
-                               preset.presetConfig.name, favoriteKey.uuidString)
-                        invalidFavoriteIndices.append(favoriteIndex)
-                    }
-                }
-
-                for index in invalidFavoriteIndices {
-                    preset.favorites.remove(at: index)
-                }
+                preset.validate(favorites)
             }
+            soundFont.validate(tags)
         }
     }
 
@@ -121,7 +94,9 @@ extension LegacySoundFontsManager: SoundFonts {
     }
 
     public func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key] {
-        collection.soundFonts.filter { $0.tags.union(LegacyTag.allTagSet).contains(tag) }.map { $0.key }
+        collection.soundFonts.filter { soundFont in
+            soundFont.tags.union(soundFont.kind.resource ? LegacyTag.stockTagSet : LegacyTag.allTagSet).contains(tag)
+        }.map { $0.key }
     }
 
     public func filteredIndex(index: Int, tag: LegacyTag.Key) -> Int {
@@ -280,13 +255,13 @@ extension LegacySoundFontsManager: SoundFonts {
      */
     public func copyToLocalDocumentsDirectory(name: String) -> Bool {
         let fm = FileManager.default
-        let src = fm.sharedDocumentsDirectory.appendingPathComponent(name)
-        let dst = fm.localDocumentsDirectory.appendingPathComponent(name)
+        let source = fm.sharedDocumentsDirectory.appendingPathComponent(name)
+        let destination = fm.localDocumentsDirectory.appendingPathComponent(name)
         do {
-            os_log(.info, log: Self.log, "removing '%{public}s' if it exists", dst.path)
-            try? fm.removeItem(at: dst)
-            os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
-            try fm.copyItem(at: src, to: dst)
+            os_log(.info, log: Self.log, "removing '%{public}s' if it exists", destination.path)
+            try? fm.removeItem(at: destination)
+            os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+            try fm.copyItem(at: source, to: destination)
             return true
         } catch let error as NSError {
             os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)
@@ -306,19 +281,19 @@ extension LegacySoundFontsManager: SoundFonts {
         var good = 0
         var bad = 0
         for path in contents {
-            let src = fm.sharedDocumentsDirectory.appendingPathComponent(path)
-            guard let attrs = try? fm.attributesOfItem(atPath: src.path) else { continue }
-            guard let fileType = attrs[.type] as? String else { continue }
+            let source = fm.sharedDocumentsDirectory.appendingPathComponent(path)
+            guard let attributes = try? fm.attributesOfItem(atPath: source.path) else { continue }
+            guard let fileType = attributes[.type] as? String else { continue }
             guard fileType == "NSFileTypeRegular" else { continue }
             let (stripped, _) = path.stripEmbeddedUUID()
             guard stripped.first != "." else { continue }
 
-            let dst = fm.localDocumentsDirectory.appendingPathComponent(stripped)
+            let destination = fm.localDocumentsDirectory.appendingPathComponent(stripped)
             do {
-                os_log(.info, log: Self.log, "removing '%{public}s' if it exists", dst.path)
-                try? fm.removeItem(at: dst)
-                os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", src.path, dst.path)
-                try fm.copyItem(at: src, to: dst)
+                os_log(.info, log: Self.log, "removing '%{public}s' if it exists", destination.path)
+                try? fm.removeItem(at: destination)
+                os_log(.info, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+                try fm.copyItem(at: source, to: destination)
                 good += 1
             } catch let error as NSError {
                 os_log(.error, log: Self.log, "%{public}s", error.localizedDescription)

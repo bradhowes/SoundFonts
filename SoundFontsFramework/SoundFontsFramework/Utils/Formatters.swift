@@ -20,6 +20,22 @@ public struct Formatters {
             NSLocalizedString("builtInTagName", bundle: bundle, comment: "The name of the 'Built-in' tag.")
         }
 
+        public var newTagName: String {
+            NSLocalizedString("newTagName", bundle: bundle, comment: "The initial name to use for a new tag")
+        }
+
+        public var editButton: String {
+            NSLocalizedString("editButton", bundle: bundle, comment: "Begin editing")
+        }
+
+        public var doneButton: String {
+            NSLocalizedString("doneButton", bundle: bundle, comment: "End editing")
+        }
+
+        public var saveButton: String {
+            NSLocalizedString("saveButton", bundle: bundle, comment: "Save current values")
+        }
+
         public var volumeIsZero: String {
             NSLocalizedString("volumeIsZero", bundle: bundle, comment: "HUD message when volume is 0")
         }

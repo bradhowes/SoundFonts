@@ -9,7 +9,8 @@ import SF2Files
  Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
  */
 public final class LegacySoundFont: Codable {
-    private static let logger = Logging.logger("SoundFont")
+    private static let log = Logging.logger("SoundFont")
+    private var log: OSLog { Self.log }
 
     /// Presentation name of the sound font
     var displayName: String
@@ -43,6 +44,7 @@ public final class LegacySoundFont: Codable {
 
      - parameter displayName: the display name of the resource
      - parameter soundFontInfo: patch info from the sound font
+     - parameter url: the resource URL for this sound font
      - parameter key: UUID for this font
      */
     public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
@@ -82,15 +84,15 @@ public final class LegacySoundFont: Codable {
 extension LegacySoundFont {
 
     public static func makeSoundFont(from url: URL) -> Result<LegacySoundFont, SoundFontFileLoadFailure> {
-        os_log(.info, log: Self.logger, "makeSoundFont - '%{public}s'", url.lastPathComponent)
+        os_log(.info, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
         guard let info = SoundFontInfo.load(viaParser: url) else {
-            os_log(.error, log: Self.logger, "failed to process SF2 file")
+            os_log(.error, log: log, "failed to process SF2 file")
             return .failure(.invalidFile(url.lastPathComponent))
         }
 
         guard !info.presets.isEmpty else {
-            os_log(.error, log: Self.logger, "failed to locate any presets")
+            os_log(.error, log: log, "failed to locate any presets")
             return .failure(.invalidFile(url.lastPathComponent))
         }
 
@@ -108,7 +110,7 @@ extension LegacySoundFont {
             do {
                 try copyToAppFolder(source: url, destination: soundFont.fileURL)
             } catch {
-                os_log(.error, log: Self.logger, "failed to create file")
+                os_log(.error, log: log, "failed to create file")
                 return .failure(.unableToCreateFile(url.lastPathComponent))
             }
         }
@@ -117,8 +119,8 @@ extension LegacySoundFont {
     }
 
     private static func copyToAppFolder(source: URL, destination: URL) throws {
-        os_log(.info, log: Self.logger, "SF2 source: '%{public}s'", source.absoluteString)
-        os_log(.info, log: Self.logger, "SF2 destination: '%{public}s'", destination.absoluteString)
+        os_log(.info, log: log, "SF2 source: '%{public}s'", source.absoluteString)
+        os_log(.info, log: log, "SF2 destination: '%{public}s'", destination.absoluteString)
         let secured = source.startAccessingSecurityScopedResource()
         defer { if secured { source.stopAccessingSecurityScopedResource() } }
         try FileManager.default.copyItem(at: source, to: destination)
@@ -148,6 +150,25 @@ extension LegacySoundFont {
         embeddedAuthor = info.embeddedAuthor.isEmpty ? "Unknown" : info.embeddedAuthor
         embeddedCopyright = info.embeddedCopyright.isEmpty ? "Unknown" : info.embeddedCopyright
         return true
+    }
+
+    public func validate(_ tags: Tags) {
+        var invalidTags = [LegacyTag.Key]()
+        for tagKey in self.tags {
+            if let tag = tags.getBy(key: tagKey) {
+                if tag.name == "All" || tag.name == "Built-in" {
+                    invalidTags.append(tagKey)
+                    os_log(.error, log: log, "removing stock tag %{public}s", tag.name)
+                }
+            } else {
+                invalidTags.append(tagKey)
+                os_log(.error, log: log, "tag %{public}s does not exist", tagKey.uuidString)
+            }
+        }
+
+        if !invalidTags.isEmpty {
+            self.tags = self.tags.subtracting(invalidTags)
+        }
     }
 }
 

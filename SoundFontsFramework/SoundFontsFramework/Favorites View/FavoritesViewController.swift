@@ -151,7 +151,15 @@ extension FavoritesViewController: ControllerConfiguration {
     }
 
     private func restored() {
-        guard favoritesView != nil && soundFonts.restored && favorites.restored && tags.restored else { return }
+        guard favoritesView != nil,
+              soundFonts.restored,
+              favorites.restored,
+              tags.restored,
+              favoritesView.delegate == nil
+        else {
+            return
+        }
+
         soundFonts.validateCollections(favorites: favorites, tags: tags)
         favoritesView.dataSource = self
         favoritesView.delegate = self

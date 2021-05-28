@@ -9,7 +9,7 @@ import os
  */
 public final class AskForReview: NSObject {
 
-    private let log = Logging.logger("AskR")
+    private lazy var log = Logging.logger("AskForReview")
 
     /**
      Class method that fires a notification to ask for a review check. If properly initialized, there should be an

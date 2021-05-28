@@ -29,7 +29,8 @@ final class ActiveTagManager: NSObject {
 
     public func refresh() {
         guard tags.restored else { return }
-        activeIndex = Settings.shared.activeTagIndex
+        let tagKey = Settings.shared.activeTagKey
+        activeIndex = tags.index(of: tagKey) ?? 0
         view.reloadData()
     }
 }
@@ -39,7 +40,7 @@ extension ActiveTagManager: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        (tags.restored ? tags.count : 0) + 1
+        tags.restored ? tags.count : 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -50,10 +51,11 @@ extension ActiveTagManager: UITableViewDataSource {
 extension ActiveTagManager: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard activeIndex != indexPath.row else { return }
         let oldIndexPath = IndexPath(row: activeIndex, section: 0)
         activeIndex = indexPath.row
         tableView.reloadRows(at: [oldIndexPath, indexPath], with: .automatic)
-        Settings.shared.activeTagIndex = activeIndex
+        Settings.shared.activeTagKey = tags.getBy(index: activeIndex).key
     }
 
     func tableView(_ tableView: UITableView,
@@ -66,7 +68,7 @@ extension ActiveTagManager {
 
     private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
         let row = indexPath.row
-        let tag = row == 0 ? LegacyTag.allTag : tags.getBy(index: row - 1)
+        let tag = tags.getBy(index: row)
         let name = tag.name
         cell.updateForTag(name: name, isActive: activeIndex == row)
         return cell

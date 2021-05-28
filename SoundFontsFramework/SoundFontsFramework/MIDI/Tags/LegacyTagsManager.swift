@@ -76,12 +76,37 @@ extension LegacyTagsManager: Tags {
     func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key> {
         Set(indices.map { collection.getBy(index: $0).key })
     }
+
+    func validate() {
+        var invalidTags = [LegacyTag.Key]()
+        for index in 0..<self.count {
+            let tag = self.getBy(index: index)
+            if (tag.name == "All" && tag.key != LegacyTag.allTag.key) ||
+                (tag.name == "Built-in" && tag.key != LegacyTag.builtInTag.key) {
+                invalidTags.append(tag.key)
+            }
+        }
+
+        for key in invalidTags {
+            if let index = self.index(of: key) {
+                _ = self.remove(at: index)
+            }
+        }
+
+        if self.getBy(key: LegacyTag.builtInTag.key) == nil {
+            insert(LegacyTag.builtInTag, at: 0)
+        }
+
+        if self.getBy(key: LegacyTag.allTag.key) == nil {
+            insert(LegacyTag.allTag, at: 0)
+        }
+    }
 }
 
 extension LegacyTagsManager {
 
     /// Default collection that is used when first running the app
-    static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: [LegacyTag.builtInTag]) }
+    static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: []) }
 
     private func collectionChanged() {
         os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

@@ -4,8 +4,8 @@ import UIKit
 import os
 
 /**
- Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry. Better would be to separate
- these two into distinct classes.
+ Specialization of UITableViewCell that will display a SoundFont name, a Preset name, or a Tag name.
+ Probably better would be to separate these into distinct classes, but this works for now.
  */
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     private lazy var log = Logging.logger("TableCell")
@@ -24,6 +24,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var activeIndicator: UIView!
+    /// Text field used to edit tag names (not used for SoundFont or Preset names)
     @IBOutlet weak var tagEditor: UITextField!
 
     private var bookmark: Bookmark?

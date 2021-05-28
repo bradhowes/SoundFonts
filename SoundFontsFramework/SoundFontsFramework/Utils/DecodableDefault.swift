@@ -76,7 +76,7 @@ extension DecodableDefault {
         enum EmptyString: Source { public static var defaultValue: String { "" } }
         enum EmptyList<T: List>: Source { public static var defaultValue: T { [] } }
         enum EmptyMap<T: Map>: Source { public static var defaultValue: T { [:] } }
-        enum EmptyTagSet: Source { public static var defaultValue: Set<LegacyTag.Key> { Set([LegacyTag.allTag.key]) } }
+        enum EmptyTagSet: Source { public static var defaultValue: Set<LegacyTag.Key> { Set() } }
         enum Value<T: Source>: Source { public static var defaultValue: T.ValueType { T.defaultValue } }
     }
 }

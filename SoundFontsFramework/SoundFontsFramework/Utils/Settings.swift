@@ -70,7 +70,7 @@ public extension SettingKeys {
     /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
     static let showEffects = SettingKey("showEffects", defaultValue: false)
     /// The currently active font tag
-    static let activeTagIndex = SettingKey("activeTagIndex", defaultValue: 0)
+    static let activeTagKey = SettingKey("activeTagKey", defaultValue: LegacyTag.allTag.key)
     /// The global tuning setting that is in effect
     static let globalTuning = SettingKey("globalTuning", defaultValue: Float(0.0))
     /// When true, global tuning is active
@@ -260,9 +260,9 @@ public extension UserDefaults {
         set { self[.delayWetDryMix] = newValue }
     }
     /// The currently active font tag
-    @objc dynamic var activeTagIndex: Int {
-        get { self[.activeTagIndex] }
-        set { self[.activeTagIndex] = newValue }
+    @objc dynamic var activeTagKey: LegacyTag.Key {
+        get { self[.activeTagKey] }
+        set { self[.activeTagKey] = newValue }
     }
     /// The global tuning setting that is in effect
     @objc dynamic var globalTuning: Float {

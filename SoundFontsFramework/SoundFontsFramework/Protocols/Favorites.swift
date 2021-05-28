@@ -162,4 +162,6 @@ public protocol Favorites {
      */
     @discardableResult
     func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
+
+    func validate(_ soundFonts: SoundFonts)
 }
