@@ -116,12 +116,6 @@ extension ConsolidatedConfigFile {
 
     private func initializeCollections() {
         os_log(.info, log: log, "initializeCollections")
-
-        let tag = config.tags.getBy(index: 0)
-        for each in config.soundFonts.soundFonts {
-            each.tags.insert(tag.key)
-        }
-
         self.restored = true
     }
 }
