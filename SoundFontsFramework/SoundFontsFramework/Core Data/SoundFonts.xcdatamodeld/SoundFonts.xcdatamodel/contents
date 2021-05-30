@@ -24,17 +24,10 @@
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="displayName" attributeType="String"/>
         <attribute name="embeddedName" attributeType="String"/>
-        <attribute name="index" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="patch" attributeType="Integer 16" usesScalarValueType="YES"/>
         <relationship name="aliases" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedFavorite" inverseName="preset" inverseEntity="ManagedFavorite"/>
         <relationship name="configuration" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedPresetConfig" inverseName="ownedByPreset" inverseEntity="ManagedPresetConfig"/>
         <relationship name="parent" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedSoundFont" inverseName="presets" inverseEntity="ManagedSoundFont"/>
-        <fetchIndex name="byName">
-            <fetchIndexElement property="displayName" type="Binary" order="ascending"/>
-        </fetchIndex>
-        <fetchIndex name="byIndex">
-            <fetchIndexElement property="index" type="Binary" order="ascending"/>
-        </fetchIndex>
     </entity>
     <entity name="ManagedPresetConfig" representedClassName="ManagedPresetConfig" syncable="YES">
         <attribute name="gain" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -79,15 +72,12 @@
         <attribute name="name" attributeType="String" minValueString="1"/>
         <relationship name="orderedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedAppState" inverseName="tags" inverseEntity="ManagedAppState"/>
         <relationship name="tagged" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedSoundFont" inverseName="tags" inverseEntity="ManagedSoundFont"/>
-        <fetchIndex name="byName">
-            <fetchIndexElement property="name" type="Binary" order="ascending"/>
-        </fetchIndex>
     </entity>
     <elements>
         <element name="ManagedAppState" positionX="-378" positionY="-126" width="128" height="89"/>
         <element name="ManagedDelayConfig" positionX="-360" positionY="-99" width="128" height="119"/>
         <element name="ManagedFavorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="89"/>
-        <element name="ManagedPreset" positionX="-211.8515625" positionY="92.87890625" width="128" height="149"/>
+        <element name="ManagedPreset" positionX="-211.8515625" positionY="92.87890625" width="128" height="134"/>
         <element name="ManagedPresetConfig" positionX="-378" positionY="-117" width="128" height="224"/>
         <element name="ManagedReverbConfig" positionX="-369" positionY="-108" width="128" height="89"/>
         <element name="ManagedSoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="224"/>

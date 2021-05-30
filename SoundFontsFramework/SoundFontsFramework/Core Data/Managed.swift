@@ -61,10 +61,8 @@ extension Managed where Self: NSManagedObject {
      - parameter block: code to run to initialize an object
      - returns: found/created managed object
      */
-  public static func findOrCreate(
-    in context: NSManagedObjectContext, request: FetchRequest,
-    initializer: Initializer
-  ) -> Self {
+  public static func findOrCreate(in context: NSManagedObjectContext, request: FetchRequest,
+                                  initializer: Initializer) -> Self {
     guard let object = findOrFetch(in: context, request: request) else {
       let newObject: Self = context.insertObject()
       initializer(newObject)
@@ -80,8 +78,7 @@ extension Managed where Self: NSManagedObject {
      - parameter predicate: the match definition
      - returns: optional found object
      */
-  public static func findOrFetch(in context: NSManagedObjectContext, request: FetchRequest) -> Self?
-  {
+  public static func findOrFetch(in context: NSManagedObjectContext, request: FetchRequest) -> Self? {
     guard let object = materializedObject(in: context, matching: request.predicate) else {
       request.returnsObjectsAsFaults = false
       request.fetchLimit = 1
@@ -97,9 +94,7 @@ extension Managed where Self: NSManagedObject {
      - parameter predicate: the match definition
      - returns: optional found object
      */
-  public static func materializedObject(
-    in context: NSManagedObjectContext, matching predicate: NSPredicate?
-  ) -> Self? {
+  public static func materializedObject(in context: NSManagedObjectContext, matching predicate: NSPredicate?) -> Self? {
     for object in context.registeredObjects where !object.isFault {
       guard let result = object as? Self, predicate?.evaluate(with: result) ?? true else {
         continue

@@ -13,7 +13,6 @@ public final class ManagedPreset: NSManagedObject, Managed {
 
   @NSManaged public var displayName: String
   @NSManaged public private(set) var embeddedName: String
-  @NSManaged public private(set) var index: Int16
   @NSManaged public private(set) var bank: Int16
   @NSManaged public private(set) var patch: Int16
   @NSManaged public private(set) var aliases: NSSet
@@ -22,15 +21,13 @@ public final class ManagedPreset: NSManagedObject, Managed {
 
   @discardableResult
   public convenience init(
-    in context: NSManagedObjectContext, owner: ManagedSoundFont, index: Int,
-    config: SoundFontInfoPreset
+    in context: NSManagedObjectContext, owner: ManagedSoundFont, config: SoundFontInfoPreset
   ) {
     self.init(context: context)
     self.displayName = config.name
     self.embeddedName = config.name
     self.bank = Int16(config.bank)
     self.patch = Int16(config.preset)
-    self.index = Int16(index)
     self.configuration = ManagedPresetConfig(context: context)
     self.configuration.ownedByPreset = self
     self.aliases = NSSet()

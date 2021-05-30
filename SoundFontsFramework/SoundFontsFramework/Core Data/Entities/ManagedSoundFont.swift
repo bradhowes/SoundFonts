@@ -134,10 +134,7 @@ extension ManagedSoundFont {
 
     self.visible = true
 
-    config.presets.enumerated().forEach {
-      self.addToPresets(
-        ManagedPreset(in: context, owner: self, index: $0.offset, config: $0.element))
-    }
+    config.presets.forEach { self.addToPresets(ManagedPreset(in: context, owner: self, config: $0)) }
 
     self.addToTags(appState.allTag)
 
