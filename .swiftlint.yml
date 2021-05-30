@@ -2,7 +2,9 @@ disabled_rules:
   - statement_position
   - todo
   - nesting
-
+  - opening_brace
+  - function_body_length
+  
 opt_in_rules:
   - empty_count
 

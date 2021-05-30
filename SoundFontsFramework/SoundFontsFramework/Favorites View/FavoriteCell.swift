@@ -3,98 +3,95 @@
 import UIKit
 import os
 
-/**
- Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
- */
+/// Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
-    private lazy var log = Logging.logger("FavCell")
+  private lazy var log = Logging.logger("FavCell")
 
-    /// The name of the favorite
-    @IBOutlet private weak var name: UILabel!
+  /// The name of the favorite
+  @IBOutlet private weak var name: UILabel!
 
-    /// Hack to properly manage the items width. Starts out disabled, but will be enabled when maxWidth is set.
-    @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint? {
-        didSet {
-            maxWidthConstraint?.isActive = false
-        }
+  /// Hack to properly manage the items width. Starts out disabled, but will be enabled when maxWidth is set.
+  @IBOutlet private weak var maxWidthConstraint: NSLayoutConstraint? {
+    didSet {
+      maxWidthConstraint?.isActive = false
     }
+  }
 
-    /// The background color of an inactive favorite cell
-    let normalBackgroundColor = UIColor(hex: "141414")
+  /// The background color of an inactive favorite cell
+  let normalBackgroundColor = UIColor(hex: "141414")
 
-    /// Foreground color of an inactive favorite cell
-    var normalForegroundColor = UIColor.lightGray
+  /// Foreground color of an inactive favorite cell
+  var normalForegroundColor = UIColor.lightGray
 
-    /// Background color of the active favorite cell
-    var activeBackgroundColor = UIColor(hex: "141414")
+  /// Background color of the active favorite cell
+  var activeBackgroundColor = UIColor(hex: "141414")
 
-    /// Foreground color of the active favorite cell
-    var activeForegroundColor = UIColor.systemTeal
+  /// Foreground color of the active favorite cell
+  var activeForegroundColor = UIColor.systemTeal
 
-    let normalBorderColor = UIColor.darkGray
+  let normalBorderColor = UIColor.darkGray
 
-    /// Attribute set by the FavoritesViewController to limit the cell's width
-    var maxWidth: CGFloat? = nil {
-        didSet {
-            guard let maxWidth = maxWidth else { return }
-            maxWidthConstraint?.isActive = true
-            maxWidthConstraint?.constant = maxWidth
-        }
+  /// Attribute set by the FavoritesViewController to limit the cell's width
+  var maxWidth: CGFloat? = nil {
+    didSet {
+      guard let maxWidth = maxWidth else { return }
+      maxWidthConstraint?.isActive = true
+      maxWidthConstraint?.constant = maxWidth
     }
+  }
 
-    /// Indicates if the cell is currently moving around. Update the border color when it is.
-    var moving: Bool = false {
-        didSet { self.layer.borderColor = (moving ? UIColor.systemOrange : normalBorderColor).cgColor }
-    }
+  /// Indicates if the cell is currently moving around. Update the border color when it is.
+  var moving: Bool = false {
+    didSet { self.layer.borderColor = (moving ? UIColor.systemOrange : normalBorderColor).cgColor }
+  }
 
-    /// The intrinsic size of the cell is its content view with the current label text.
-    override var intrinsicContentSize: CGSize {
-        contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-    }
+  /// The intrinsic size of the cell is its content view with the current label text.
+  override var intrinsicContentSize: CGSize {
+    contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+  }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        setupView()
-    }
+  override func awakeFromNib() {
+    super.awakeFromNib()
+    setupView()
+  }
 
-    /**
+  /**
      Show the Favorite name and `active` indicator.
-    
+
      - parameter favoriteName: the name to show
      - parameter isActive: true if the Favorite's patch is currently active.
      */
-    func update(favoriteName: String, isActive: Bool) {
-        os_log(.info, log: log, "update: %{public}s %d", favoriteName, isActive)
+  func update(favoriteName: String, isActive: Bool) {
+    os_log(.info, log: log, "update: %{public}s %d", favoriteName, isActive)
 
-        name.text = favoriteName
-        if isActive {
-            backgroundColor = activeBackgroundColor
-            name.textColor = activeForegroundColor
-            layer.borderColor = activeForegroundColor.cgColor
-        }
-        else {
-            backgroundColor = normalBackgroundColor
-            name.textColor = normalForegroundColor
-            layer.borderColor = UIColor.darkGray.cgColor
-        }
-
-        invalidateIntrinsicContentSize()
+    name.text = favoriteName
+    if isActive {
+      backgroundColor = activeBackgroundColor
+      name.textColor = activeForegroundColor
+      layer.borderColor = activeForegroundColor.cgColor
+    } else {
+      backgroundColor = normalBackgroundColor
+      name.textColor = normalForegroundColor
+      layer.borderColor = UIColor.darkGray.cgColor
     }
 
-    /// Report the layout size for a given target size. Forward request to the content view.
-    override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
-        contentView.systemLayoutSizeFitting(targetSize)
-    }
+    invalidateIntrinsicContentSize()
+  }
+
+  /// Report the layout size for a given target size. Forward request to the content view.
+  override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
+    contentView.systemLayoutSizeFitting(targetSize)
+  }
 }
 
-private extension FavoriteCell {
+extension FavoriteCell {
 
-    func setupView() {
-        layer.borderColor = UIColor.darkGray.cgColor
-        layer.borderWidth = 1.0
-        layer.cornerRadius = 10.0
+  fileprivate func setupView() {
+    layer.borderColor = UIColor.darkGray.cgColor
+    layer.borderWidth = 1.0
+    layer.cornerRadius = 10.0
 
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        invalidateIntrinsicContentSize()
-    }
+    contentView.translatesAutoresizingMaskIntoConstraints = false
+    invalidateIntrinsicContentSize()
+  }
 }

@@ -2,8 +2,6 @@
 
 import Foundation
 
-/**
- Protocol for a favorites view manager.
- */
+/// Protocol for a favorites view manager.
 public protocol FavoritesViewManager: UpperViewSwipingActivity {
 }

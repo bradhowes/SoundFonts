@@ -4,7 +4,7 @@ import CoreData
 
 public final class SoundFontCoreData: CoreDataStack<PersistentContainer> {
 
-    public convenience init() {
-        self.init(container: PersistentContainer(modelName: "SoundFonts"))
-    }
+  public convenience init() {
+    self.init(container: PersistentContainer(modelName: "SoundFonts"))
+  }
 }

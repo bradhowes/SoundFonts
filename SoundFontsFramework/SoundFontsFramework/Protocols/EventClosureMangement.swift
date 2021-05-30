@@ -2,12 +2,10 @@
 
 import Foundation
 
-/**
- Manages what swiping activity does.
- */
+/// Manages what swiping activity does.
 public protocol EventClosureManagement {
 
-    typealias Closure = () -> Void
+  typealias Closure = () -> Void
 
-    func addEventClosure<EventType>(_ event: EventType, _ closure: @escaping Closure)
+  func addEventClosure<EventType>(_ event: EventType, _ closure: @escaping Closure)
 }

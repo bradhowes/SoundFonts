@@ -4,39 +4,38 @@ import Foundation
 
 private final class SF2FilesTag {}
 
-/**
- Public interface for the SF2Files framework. It provides URLs to SF2 files that are bundled with the framework.
- */
+/// Public interface for the SF2Files framework. It provides URLs to SF2 files that are bundled with the framework.
 @objc @objcMembers public class SF2Files: NSObject {
 
-    /// The extension for an SF2 file
-    public static let sf2Extension = "sf2"
+  /// The extension for an SF2 file
+  public static let sf2Extension = "sf2"
 
-    /// The extension for an SF2 file that begins with a period ('.')
-    public static let sf2DottedExtension = "." + sf2Extension
+  /// The extension for an SF2 file that begins with a period ('.')
+  public static let sf2DottedExtension = "." + sf2Extension
 
-    private static let bundle = Bundle(for: SF2FilesTag.self)
+  private static let bundle = Bundle(for: SF2FilesTag.self)
 
-    /**
+  /**
      Locate a specific SF2 resource by name.
 
      - parameter name: the name to look for
      - returns: the URL of the resource in the bundle
      */
-    public class func resource(name: String) -> URL {
-        guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else {
-            fatalError("missing SF2 resource \(name)")
-        }
-        return url
+  public class func resource(name: String) -> URL {
+    guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else {
+      fatalError("missing SF2 resource \(name)")
     }
+    return url
+  }
 
-    /// Collection of URLs for the SF2 resources in the bundle.
-    public class var allResources: [URL] {
-        let allResourcesCount = 4
-        guard let urls = bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil),
-              urls.count == allResourcesCount else {
-            fatalError("missing SF2 resources")
-        }
-        return urls
+  /// Collection of URLs for the SF2 resources in the bundle.
+  public class var allResources: [URL] {
+    let allResourcesCount = 4
+    guard let urls = bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil),
+      urls.count == allResourcesCount
+    else {
+      fatalError("missing SF2 resources")
     }
+    return urls
+  }
 }

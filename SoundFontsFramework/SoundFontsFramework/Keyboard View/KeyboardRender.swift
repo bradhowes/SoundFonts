@@ -9,173 +9,245 @@
 //  http://www.paintcodeapp.com
 //
 
-
-
 import UIKit
 
-public class KeyboardRender : NSObject {
+public class KeyboardRender: NSObject {
 
-    //// Drawing Methods
+  //// Drawing Methods
 
-    @objc dynamic public class func drawWhiteKey(keySize: CGSize = CGSize(width: 64, height: 240), roundedCorner: CGFloat = 12, pressed: Bool = false, isMuted: Bool = false, note: String = "C4") {
-        //// General Declarations
-        let context = UIGraphicsGetCurrentContext()!
-        // This non-generic function dramatically improves compilation times of complex expressions.
-        func fastFloor(_ x: CGFloat) -> CGFloat { return floor(x) }
+  @objc dynamic public class func drawWhiteKey(
+    keySize: CGSize = CGSize(width: 64, height: 240), roundedCorner: CGFloat = 12,
+    pressed: Bool = false, isMuted: Bool = false, note: String = "C4"
+  ) {
+    //// General Declarations
+    let context = UIGraphicsGetCurrentContext()!
+    // This non-generic function dramatically improves compilation times of complex expressions.
+    func fastFloor(_ x: CGFloat) -> CGFloat { return floor(x) }
 
-        //// Color Declarations
-        let normalPressedColor = UIColor(red: 0.000, green: 1.000, blue: 0.895, alpha: 1.000)
-        let whiteKeyColor = UIColor(red: 0.912, green: 0.912, blue: 0.912, alpha: 1.000)
-        let mutedPressedColor = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1.000)
-        let color = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 0.349)
+    //// Color Declarations
+    let normalPressedColor = UIColor(red: 0.000, green: 1.000, blue: 0.895, alpha: 1.000)
+    let whiteKeyColor = UIColor(red: 0.912, green: 0.912, blue: 0.912, alpha: 1.000)
+    let mutedPressedColor = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1.000)
+    let color = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 0.349)
 
-        //// Gradient Declarations
-        let normalWhiteGradient = CGGradient(colorsSpace: nil, colors: [normalPressedColor.cgColor, normalPressedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor, UIColor.white.cgColor] as CFArray, locations: [0, 0.65, 1])!
-        let mutedWhiteGradient = CGGradient(colorsSpace: nil, colors: [mutedPressedColor.cgColor, mutedPressedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor, UIColor.white.cgColor] as CFArray, locations: [0, 0.65, 1])!
+    //// Gradient Declarations
+    let normalWhiteGradient = CGGradient(
+      colorsSpace: nil,
+      colors: [
+        normalPressedColor.cgColor,
+        normalPressedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor,
+        UIColor.white.cgColor,
+      ] as CFArray, locations: [0, 0.65, 1])!
+    let mutedWhiteGradient = CGGradient(
+      colorsSpace: nil,
+      colors: [
+        mutedPressedColor.cgColor,
+        mutedPressedColor.blended(withFraction: 0.5, of: UIColor.white).cgColor,
+        UIColor.white.cgColor,
+      ] as CFArray, locations: [0, 0.65, 1])!
 
-        //// Shadow Declarations
-        let whiteKeyShadow = NSShadow()
-        whiteKeyShadow.shadowColor = UIColor.black.withAlphaComponent(0.57)
-        whiteKeyShadow.shadowOffset = CGSize(width: 3, height: 3)
-        whiteKeyShadow.shadowBlurRadius = 5
+    //// Shadow Declarations
+    let whiteKeyShadow = NSShadow()
+    whiteKeyShadow.shadowColor = UIColor.black.withAlphaComponent(0.57)
+    whiteKeyShadow.shadowOffset = CGSize(width: 3, height: 3)
+    whiteKeyShadow.shadowBlurRadius = 5
 
-        //// Variable Declarations
-        let pressedWhiteGradient = isMuted ? mutedWhiteGradient : normalWhiteGradient
+    //// Variable Declarations
+    let pressedWhiteGradient = isMuted ? mutedWhiteGradient : normalWhiteGradient
 
-        //// Frames
-        let frame = CGRect(x: 0, y: 0, width: keySize.width, height: keySize.height)
+    //// Frames
+    let frame = CGRect(x: 0, y: 0, width: keySize.width, height: keySize.height)
 
-        //// Subframes
-        let group: CGRect = CGRect(x: frame.minX, y: frame.minY, width: frame.width - 4, height: frame.height - 4)
+    //// Subframes
+    let group: CGRect = CGRect(
+      x: frame.minX, y: frame.minY, width: frame.width - 4, height: frame.height - 4)
 
+    //// Group
+    //// Key Drawing
+    let keyPath = UIBezierPath(
+      roundedRect: CGRect(
+        x: group.minX + fastFloor(group.width * 0.00000 + 0.5),
+        y: group.minY + fastFloor(group.height * 0.00000 + 0.5),
+        width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5),
+        height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)),
+      byRoundingCorners: [.bottomLeft, .bottomRight],
+      cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
+    keyPath.close()
+    context.saveGState()
+    context.setShadow(
+      offset: whiteKeyShadow.shadowOffset, blur: whiteKeyShadow.shadowBlurRadius,
+      color: (whiteKeyShadow.shadowColor as! UIColor).cgColor)
+    whiteKeyColor.setFill()
+    keyPath.fill()
+    context.restoreGState()
 
-        //// Group
-        //// Key Drawing
-        let keyPath = UIBezierPath(roundedRect: CGRect(x: group.minX + fastFloor(group.width * 0.00000 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5), height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)), byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
-        keyPath.close()
-        context.saveGState()
-        context.setShadow(offset: whiteKeyShadow.shadowOffset, blur: whiteKeyShadow.shadowBlurRadius, color: (whiteKeyShadow.shadowColor as! UIColor).cgColor)
-        whiteKeyColor.setFill()
-        keyPath.fill()
-        context.restoreGState()
-
-
-
-        if (pressed) {
-            //// PressedKey Drawing
-            let pressedKeyRect = CGRect(x: group.minX + fastFloor(group.width * 0.00000 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5), height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5))
-            let pressedKeyPath = UIBezierPath(roundedRect: pressedKeyRect, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
-            pressedKeyPath.close()
-            context.saveGState()
-            pressedKeyPath.addClip()
-            context.drawLinearGradient(pressedWhiteGradient,
-                start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
-                end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
-                options: [])
-            context.restoreGState()
-        }
-
-
-
-
-        //// Text Drawing
-        let textRect = CGRect(x: frame.minX, y: frame.minY + frame.height - 36, width: frame.width - 4, height: 21)
-        let textStyle = NSMutableParagraphStyle()
-        textStyle.alignment = .center
-        let textFontAttributes = [
-            .font: UIFont.systemFont(ofSize: UIFont.labelFontSize),
-            .foregroundColor: color,
-            .paragraphStyle: textStyle,
-        ] as [NSAttributedString.Key: Any]
-
-        let textTextHeight: CGFloat = note.boundingRect(with: CGSize(width: textRect.width, height: CGFloat.infinity), options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil).height
-        context.saveGState()
-        context.clip(to: textRect)
-        note.draw(in: CGRect(x: textRect.minX, y: textRect.minY + (textRect.height - textTextHeight) / 2, width: textRect.width, height: textTextHeight), withAttributes: textFontAttributes)
-        context.restoreGState()
+    if pressed {
+      //// PressedKey Drawing
+      let pressedKeyRect = CGRect(
+        x: group.minX + fastFloor(group.width * 0.00000 + 0.5),
+        y: group.minY + fastFloor(group.height * 0.00000 + 0.5),
+        width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5),
+        height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5))
+      let pressedKeyPath = UIBezierPath(
+        roundedRect: pressedKeyRect, byRoundingCorners: [.bottomLeft, .bottomRight],
+        cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
+      pressedKeyPath.close()
+      context.saveGState()
+      pressedKeyPath.addClip()
+      context.drawLinearGradient(
+        pressedWhiteGradient,
+        start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
+        end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
+        options: [])
+      context.restoreGState()
     }
 
-    @objc dynamic public class func drawBlackKey(keySize: CGSize = CGSize(width: 64, height: 240), roundedCorner: CGFloat = 12, pressed: Bool = false, isMuted: Bool = false) {
-        //// General Declarations
-        let context = UIGraphicsGetCurrentContext()!
-        // This non-generic function dramatically improves compilation times of complex expressions.
-        func fastFloor(_ x: CGFloat) -> CGFloat { return floor(x) }
+    //// Text Drawing
+    let textRect = CGRect(
+      x: frame.minX, y: frame.minY + frame.height - 36, width: frame.width - 4, height: 21)
+    let textStyle = NSMutableParagraphStyle()
+    textStyle.alignment = .center
+    let textFontAttributes =
+      [
+        .font: UIFont.systemFont(ofSize: UIFont.labelFontSize),
+        .foregroundColor: color,
+        .paragraphStyle: textStyle,
+      ] as [NSAttributedString.Key: Any]
 
-        //// Color Declarations
-        let blackKeyGapColor = UIColor(red: 0.386, green: 0.383, blue: 0.383, alpha: 1.000)
-        let normalPressedColor = UIColor(red: 0.000, green: 1.000, blue: 0.895, alpha: 1.000)
-        let pressedBlackGradientColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
-        let mutedPressedColor = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1.000)
+    let textTextHeight: CGFloat = note.boundingRect(
+      with: CGSize(width: textRect.width, height: CGFloat.infinity),
+      options: .usesLineFragmentOrigin, attributes: textFontAttributes, context: nil
+    ).height
+    context.saveGState()
+    context.clip(to: textRect)
+    note.draw(
+      in: CGRect(
+        x: textRect.minX, y: textRect.minY + (textRect.height - textTextHeight) / 2,
+        width: textRect.width, height: textTextHeight), withAttributes: textFontAttributes)
+    context.restoreGState()
+  }
 
-        //// Gradient Declarations
-        let normalBlackGradient = CGGradient(colorsSpace: nil, colors: [normalPressedColor.cgColor, normalPressedColor.blended(withFraction: 0.5, of: pressedBlackGradientColor).cgColor, pressedBlackGradientColor.cgColor] as CFArray, locations: [0, 0.75, 1])!
-        let mutedBlackGradient = CGGradient(colorsSpace: nil, colors: [mutedPressedColor.cgColor, mutedPressedColor.blended(withFraction: 0.5, of: pressedBlackGradientColor).cgColor, pressedBlackGradientColor.cgColor] as CFArray, locations: [0, 0.75, 1])!
+  @objc dynamic public class func drawBlackKey(
+    keySize: CGSize = CGSize(width: 64, height: 240), roundedCorner: CGFloat = 12,
+    pressed: Bool = false, isMuted: Bool = false
+  ) {
+    //// General Declarations
+    let context = UIGraphicsGetCurrentContext()!
+    // This non-generic function dramatically improves compilation times of complex expressions.
+    func fastFloor(_ x: CGFloat) -> CGFloat { return floor(x) }
 
-        //// Shadow Declarations
-        let whiteKeyShadow = NSShadow()
-        whiteKeyShadow.shadowColor = UIColor.black.withAlphaComponent(0.57)
-        whiteKeyShadow.shadowOffset = CGSize(width: 3, height: 3)
-        whiteKeyShadow.shadowBlurRadius = 5
+    //// Color Declarations
+    let blackKeyGapColor = UIColor(red: 0.386, green: 0.383, blue: 0.383, alpha: 1.000)
+    let normalPressedColor = UIColor(red: 0.000, green: 1.000, blue: 0.895, alpha: 1.000)
+    let pressedBlackGradientColor = UIColor(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
+    let mutedPressedColor = UIColor(red: 1.000, green: 0.000, blue: 0.000, alpha: 1.000)
 
-        //// Variable Declarations
-        let pressedBlackGradient = isMuted ? mutedBlackGradient : normalBlackGradient
+    //// Gradient Declarations
+    let normalBlackGradient = CGGradient(
+      colorsSpace: nil,
+      colors: [
+        normalPressedColor.cgColor,
+        normalPressedColor.blended(withFraction: 0.5, of: pressedBlackGradientColor).cgColor,
+        pressedBlackGradientColor.cgColor,
+      ] as CFArray, locations: [0, 0.75, 1])!
+    let mutedBlackGradient = CGGradient(
+      colorsSpace: nil,
+      colors: [
+        mutedPressedColor.cgColor,
+        mutedPressedColor.blended(withFraction: 0.5, of: pressedBlackGradientColor).cgColor,
+        pressedBlackGradientColor.cgColor,
+      ] as CFArray, locations: [0, 0.75, 1])!
 
-        //// Frames
-        let frame = CGRect(x: 0, y: 0, width: keySize.width, height: keySize.height)
+    //// Shadow Declarations
+    let whiteKeyShadow = NSShadow()
+    whiteKeyShadow.shadowColor = UIColor.black.withAlphaComponent(0.57)
+    whiteKeyShadow.shadowOffset = CGSize(width: 3, height: 3)
+    whiteKeyShadow.shadowBlurRadius = 5
 
-        //// Subframes
-        let group: CGRect = CGRect(x: frame.minX, y: frame.minY, width: frame.width - 4, height: frame.height)
+    //// Variable Declarations
+    let pressedBlackGradient = isMuted ? mutedBlackGradient : normalBlackGradient
 
+    //// Frames
+    let frame = CGRect(x: 0, y: 0, width: keySize.width, height: keySize.height)
 
-        //// Group
-        //// Gap Drawing
-        let gapPath = UIBezierPath(roundedRect: CGRect(x: group.minX + fastFloor(group.width * 0.00000 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5), height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)), byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
-        gapPath.close()
-        blackKeyGapColor.setFill()
-        gapPath.fill()
+    //// Subframes
+    let group: CGRect = CGRect(
+      x: frame.minX, y: frame.minY, width: frame.width - 4, height: frame.height)
 
+    //// Group
+    //// Gap Drawing
+    let gapPath = UIBezierPath(
+      roundedRect: CGRect(
+        x: group.minX + fastFloor(group.width * 0.00000 + 0.5),
+        y: group.minY + fastFloor(group.height * 0.00000 + 0.5),
+        width: fastFloor(group.width * 1.00000 + 0.5) - fastFloor(group.width * 0.00000 + 0.5),
+        height: fastFloor(group.height * 1.00000 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)),
+      byRoundingCorners: [.bottomLeft, .bottomRight],
+      cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
+    gapPath.close()
+    blackKeyGapColor.setFill()
+    gapPath.fill()
 
-        //// Key Drawing
-        let keyPath = UIBezierPath(roundedRect: CGRect(x: group.minX + fastFloor(group.width * 0.03333 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 0.96667 + 0.5) - fastFloor(group.width * 0.03333 + 0.5), height: fastFloor(group.height * 0.98333 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)), byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
-        keyPath.close()
-        context.saveGState()
-        context.setShadow(offset: whiteKeyShadow.shadowOffset, blur: whiteKeyShadow.shadowBlurRadius, color: (whiteKeyShadow.shadowColor as! UIColor).cgColor)
-        UIColor.black.setFill()
-        keyPath.fill()
-        context.restoreGState()
+    //// Key Drawing
+    let keyPath = UIBezierPath(
+      roundedRect: CGRect(
+        x: group.minX + fastFloor(group.width * 0.03333 + 0.5),
+        y: group.minY + fastFloor(group.height * 0.00000 + 0.5),
+        width: fastFloor(group.width * 0.96667 + 0.5) - fastFloor(group.width * 0.03333 + 0.5),
+        height: fastFloor(group.height * 0.98333 + 0.5) - fastFloor(group.height * 0.00000 + 0.5)),
+      byRoundingCorners: [.bottomLeft, .bottomRight],
+      cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
+    keyPath.close()
+    context.saveGState()
+    context.setShadow(
+      offset: whiteKeyShadow.shadowOffset, blur: whiteKeyShadow.shadowBlurRadius,
+      color: (whiteKeyShadow.shadowColor as! UIColor).cgColor)
+    UIColor.black.setFill()
+    keyPath.fill()
+    context.restoreGState()
 
-
-
-        if (pressed) {
-            //// PressedKey Drawing
-            let pressedKeyRect = CGRect(x: group.minX + fastFloor(group.width * 0.03333 + 0.5), y: group.minY + fastFloor(group.height * 0.00000 + 0.5), width: fastFloor(group.width * 0.96667 + 0.5) - fastFloor(group.width * 0.03333 + 0.5), height: fastFloor(group.height * 0.98333 + 0.5) - fastFloor(group.height * 0.00000 + 0.5))
-            let pressedKeyPath = UIBezierPath(roundedRect: pressedKeyRect, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
-            pressedKeyPath.close()
-            context.saveGState()
-            pressedKeyPath.addClip()
-            context.drawLinearGradient(pressedBlackGradient,
-                start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
-                end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
-                options: [])
-            context.restoreGState()
-        }
+    if pressed {
+      //// PressedKey Drawing
+      let pressedKeyRect = CGRect(
+        x: group.minX + fastFloor(group.width * 0.03333 + 0.5),
+        y: group.minY + fastFloor(group.height * 0.00000 + 0.5),
+        width: fastFloor(group.width * 0.96667 + 0.5) - fastFloor(group.width * 0.03333 + 0.5),
+        height: fastFloor(group.height * 0.98333 + 0.5) - fastFloor(group.height * 0.00000 + 0.5))
+      let pressedKeyPath = UIBezierPath(
+        roundedRect: pressedKeyRect, byRoundingCorners: [.bottomLeft, .bottomRight],
+        cornerRadii: CGSize(width: roundedCorner, height: roundedCorner))
+      pressedKeyPath.close()
+      context.saveGState()
+      pressedKeyPath.addClip()
+      context.drawLinearGradient(
+        pressedBlackGradient,
+        start: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.maxY),
+        end: CGPoint(x: pressedKeyRect.midX, y: pressedKeyRect.minY),
+        options: [])
+      context.restoreGState()
     }
+  }
 
 }
 
+extension UIColor {
+  fileprivate func blended(withFraction fraction: CGFloat, of color: UIColor) -> UIColor {
+    var r1: CGFloat = 1
+    var g1: CGFloat = 1
+    var b1: CGFloat = 1
+    var a1: CGFloat = 1
+    var r2: CGFloat = 1
+    var g2: CGFloat = 1
+    var b2: CGFloat = 1
+    var a2: CGFloat = 1
 
+    self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+    color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
 
-private extension UIColor {
-    func blended(withFraction fraction: CGFloat, of color: UIColor) -> UIColor {
-        var r1: CGFloat = 1, g1: CGFloat = 1, b1: CGFloat = 1, a1: CGFloat = 1
-        var r2: CGFloat = 1, g2: CGFloat = 1, b2: CGFloat = 1, a2: CGFloat = 1
-
-        self.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
-        color.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
-
-        return UIColor(red: r1 * (1 - fraction) + r2 * fraction,
-            green: g1 * (1 - fraction) + g2 * fraction,
-            blue: b1 * (1 - fraction) + b2 * fraction,
-            alpha: a1 * (1 - fraction) + a2 * fraction);
-    }
+    return UIColor(
+      red: r1 * (1 - fraction) + r2 * fraction,
+      green: g1 * (1 - fraction) + g2 * fraction,
+      blue: b1 * (1 - fraction) + b2 * fraction,
+      alpha: a1 * (1 - fraction) + a2 * fraction)
+  }
 }

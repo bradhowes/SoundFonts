@@ -2,68 +2,66 @@
 
 import UIKit
 
-/**
- State change events that can happen with a ComponentContainer.
- */
+/// State change events that can happen with a ComponentContainer.
 public enum ComponentContainerEvent {
-    /// The sampler is ready for use.
-    case samplerAvailable(Sampler)
-    /// The reverb effect is ready for use.
-    case reverbAvailable(ReverbEffect)
-    /// The delay effect is ready for use.
-    case delayAvailable(DelayEffect)
+  /// The sampler is ready for use.
+  case samplerAvailable(Sampler)
+  /// The reverb effect is ready for use.
+  case reverbAvailable(ReverbEffect)
+  /// The delay effect is ready for use.
+  case delayAvailable(DelayEffect)
 }
 
-/**
- Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
- application launch. Each view controller is responsible for establishing the connections in their
- `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
- not between controllers themselves. This is enforced here through access restrictions to known controllers.
- */
+/// Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
+/// application launch. Each view controller is responsible for establishing the connections in their
+/// `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
+/// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public protocol ComponentContainer {
 
-    /// The Sampler that is used to generate sounds
-    var sampler: Sampler { get }
-    /// The collection of installed sound font files
-    var soundFonts: SoundFonts { get }
-    /// The collection of favorite presets
-    var favorites: Favorites { get }
-    /// The collection of user-defined tags for sound fonts
-    var tags: Tags { get }
-    /// The manager that tracks and holds the active preset that is in use in the samplers
-    var activePatchManager: ActivePatchManager { get }
-    /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
-    /// active preset.s
-    var selectedSoundFontManager: SelectedSoundFontManager { get }
-    /// The manager for the info bar that sits below the sound font and preset table views and above the keyboard.
-    var infoBar: InfoBar { get }
-    /// The keyboard manager if inside the application; the AUv3 component has no keyboard and so this will be nil.
-    var keyboard: Keyboard? { get }
-    /// The manager of the preset table view
-    var patchesViewManager: PatchesViewManager { get }
-    /// The manager of the favorites collection view
-    var favoritesViewManager: FavoritesViewManager { get }
-    /// The provider of swipe actions for the sound fonts view
-    var fontEditorActionGenerator: FontEditorActionGenerator { get }
-    /// The reverb effect that is used if inside the application; the AUv3 component has none, so this will be nil.
-    var reverbEffect: ReverbEffect? { get }
-    /// The delay effect that is used if inside the application; the AUv3 component has none, so this will be nil.
-    var delayEffect: DelayEffect? { get }
+  /// The Sampler that is used to generate sounds
+  var sampler: Sampler { get }
+  /// The collection of installed sound font files
+  var soundFonts: SoundFonts { get }
+  /// The collection of favorite presets
+  var favorites: Favorites { get }
+  /// The collection of user-defined tags for sound fonts
+  var tags: Tags { get }
+  /// The manager that tracks and holds the active preset that is in use in the samplers
+  var activePatchManager: ActivePatchManager { get }
+  /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
+  /// active preset.s
+  var selectedSoundFontManager: SelectedSoundFontManager { get }
+  /// The manager for the info bar that sits below the sound font and preset table views and above the keyboard.
+  var infoBar: InfoBar { get }
+  /// The keyboard manager if inside the application; the AUv3 component has no keyboard and so this will be nil.
+  var keyboard: Keyboard? { get }
+  /// The manager of the preset table view
+  var patchesViewManager: PatchesViewManager { get }
+  /// The manager of the favorites collection view
+  var favoritesViewManager: FavoritesViewManager { get }
+  /// The provider of swipe actions for the sound fonts view
+  var fontEditorActionGenerator: FontEditorActionGenerator { get }
+  /// The reverb effect that is used if inside the application; the AUv3 component has none, so this will be nil.
+  var reverbEffect: ReverbEffect? { get }
+  /// The delay effect that is used if inside the application; the AUv3 component has none, so this will be nil.
+  var delayEffect: DelayEffect? { get }
 
-    /**
+  /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.
 
      - parameter subscriber: the object doing the monitoring
      - parameter notifier: the closure to invoke when a change takes place
      - returns: token that can be used to unsubscribe
      */
-    @discardableResult
-    func subscribe<O: AnyObject>(_ subscriber: O,
-                                 notifier: @escaping (ComponentContainerEvent) -> Void) -> SubscriberToken
+  @discardableResult
+  func subscribe<O: AnyObject>(
+    _ subscriber: O,
+    notifier: @escaping (ComponentContainerEvent) -> Void
+  ) -> SubscriberToken
 }
 
-public extension ComponentContainer {
+extension ComponentContainer {
 
-    /// Returns true if running in the app, false when running in the AUv3 extension.
-    var isMainApp: Bool { return keyboard != nil }
+  /// Returns true if running in the app, false when running in the AUv3 extension.
+  public var isMainApp: Bool { return keyboard != nil }
 }
