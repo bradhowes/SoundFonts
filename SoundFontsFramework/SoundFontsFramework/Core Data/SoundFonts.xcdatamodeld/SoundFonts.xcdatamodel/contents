@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20E241" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="AppState" representedClassName="AppState" syncable="YES">
+    <entity name="ManagedAppState" representedClassName="ManagedAppState" syncable="YES">
         <attribute name="lastUpdated" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="favorites" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Favorite" inverseName="orderedBy" inverseEntity="Favorite"/>
-        <relationship name="soundFonts" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="SoundFont" inverseName="ownedBy" inverseEntity="SoundFont"/>
+        <relationship name="favorites" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ManagedFavorite" inverseName="orderedBy" inverseEntity="ManagedFavorite"/>
+        <relationship name="soundFonts" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedSoundFont" inverseName="ownedBy" inverseEntity="ManagedSoundFont"/>
+        <relationship name="tags" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ManagedTag" inverseName="orderedBy" inverseEntity="ManagedTag"/>
     </entity>
-    <entity name="DelayConfig" representedClassName="DelayConfig" syncable="YES">
+    <entity name="ManagedDelayConfig" representedClassName="ManagedDelayConfig" syncable="YES">
         <attribute name="cutoff" attributeType="Float" usesScalarValueType="YES"/>
         <attribute name="enabled" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="feedback" attributeType="Float" usesScalarValueType="YES"/>
         <attribute name="time" attributeType="Float" usesScalarValueType="YES"/>
         <attribute name="wetDryMix" attributeType="Float" usesScalarValueType="YES"/>
-        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PresetConfig" inverseName="delayConfig" inverseEntity="PresetConfig"/>
+        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPresetConfig" inverseName="delayConfig" inverseEntity="ManagedPresetConfig"/>
     </entity>
-    <entity name="Favorite" representedClassName="Favorite" syncable="YES">
-        <attribute name="displayName" optional="YES" attributeType="String"/>
-        <relationship name="configuration" maxCount="1" deletionRule="Cascade" destinationEntity="PresetConfig" inverseName="ownedByFavorite" inverseEntity="PresetConfig"/>
-        <relationship name="orderedBy" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="favorites" inverseEntity="AppState"/>
-        <relationship name="preset" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="alias" inverseEntity="Preset"/>
+    <entity name="ManagedFavorite" representedClassName="ManagedFavorite" syncable="YES">
+        <attribute name="displayName" attributeType="String"/>
+        <relationship name="configuration" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedPresetConfig" inverseName="ownedByFavorite" inverseEntity="ManagedPresetConfig"/>
+        <relationship name="orderedBy" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedAppState" inverseName="favorites" inverseEntity="ManagedAppState"/>
+        <relationship name="preset" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPreset" inverseName="aliases" inverseEntity="ManagedPreset"/>
     </entity>
-    <entity name="Preset" representedClassName="Preset" syncable="YES">
+    <entity name="ManagedPreset" representedClassName="ManagedPreset" syncable="YES">
         <attribute name="bank" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="displayName" attributeType="String"/>
         <attribute name="embeddedName" attributeType="String"/>
-        <attribute name="index" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="index" attributeType="Integer 16" usesScalarValueType="YES"/>
         <attribute name="patch" attributeType="Integer 16" usesScalarValueType="YES"/>
-        <relationship name="alias" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Favorite" inverseName="preset" inverseEntity="Favorite"/>
-        <relationship name="configuration" maxCount="1" deletionRule="Cascade" destinationEntity="PresetConfig" inverseName="ownedByPreset" inverseEntity="PresetConfig"/>
-        <relationship name="parent" maxCount="1" deletionRule="Nullify" destinationEntity="SoundFont" inverseName="presets" inverseEntity="SoundFont"/>
+        <relationship name="aliases" toMany="YES" deletionRule="Cascade" destinationEntity="ManagedFavorite" inverseName="preset" inverseEntity="ManagedFavorite"/>
+        <relationship name="configuration" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedPresetConfig" inverseName="ownedByPreset" inverseEntity="ManagedPresetConfig"/>
+        <relationship name="parent" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedSoundFont" inverseName="presets" inverseEntity="ManagedSoundFont"/>
         <fetchIndex name="byName">
             <fetchIndexElement property="displayName" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -35,7 +36,7 @@
             <fetchIndexElement property="index" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="PresetConfig" representedClassName="PresetConfig" syncable="YES">
+    <entity name="ManagedPresetConfig" representedClassName="ManagedPresetConfig" syncable="YES">
         <attribute name="gain" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="hidden" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="keyboardLowestNote" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
@@ -45,46 +46,51 @@
         <attribute name="tuning" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="tuningEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="userNotes" optional="YES" attributeType="String"/>
-        <relationship name="delayConfig" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DelayConfig" inverseName="ownedBy" inverseEntity="DelayConfig"/>
-        <relationship name="ownedByFavorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Favorite" inverseName="configuration" inverseEntity="Favorite"/>
-        <relationship name="ownedByPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Preset" inverseName="configuration" inverseEntity="Preset"/>
-        <relationship name="reverbConfig" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReverbConfig" inverseName="ownedBy" inverseEntity="ReverbConfig"/>
+        <relationship name="delayConfig" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedDelayConfig" inverseName="ownedBy" inverseEntity="ManagedDelayConfig"/>
+        <relationship name="ownedByFavorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedFavorite" inverseName="configuration" inverseEntity="ManagedFavorite"/>
+        <relationship name="ownedByPreset" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPreset" inverseName="configuration" inverseEntity="ManagedPreset"/>
+        <relationship name="reverbConfig" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ManagedReverbConfig" inverseName="ownedBy" inverseEntity="ManagedReverbConfig"/>
     </entity>
-    <entity name="ReverbConfig" representedClassName="ReverbConfig" syncable="YES">
+    <entity name="ManagedReverbConfig" representedClassName="ManagedReverbConfig" syncable="YES">
         <attribute name="enabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="presetIndex" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="wetDryMix" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PresetConfig" inverseName="reverbConfig" inverseEntity="PresetConfig"/>
+        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedPresetConfig" inverseName="reverbConfig" inverseEntity="ManagedPresetConfig"/>
     </entity>
-    <entity name="SoundFont" representedClassName="SoundFont" syncable="YES">
-        <attribute name="bookmark" optional="YES" attributeType="Binary"/>
-        <attribute name="embeddedName" attributeType="String"/>
-        <attribute name="name" attributeType="String"/>
-        <attribute name="path" attributeType="URI"/>
-        <attribute name="resource" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="visible" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AppState" inverseName="soundFonts" inverseEntity="AppState"/>
-        <relationship name="presets" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Preset" inverseName="parent" inverseEntity="Preset"/>
-        <relationship name="tags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tag" inverseName="tagged" inverseEntity="Tag"/>
+    <entity name="ManagedSoundFont" representedClassName="ManagedSoundFont" syncable="YES">
+        <attribute name="displayName" attributeType="String"/>
+        <attribute name="embeddedAuthor" attributeType="String" defaultValueString=""/>
+        <attribute name="embeddedComment" attributeType="String" defaultValueString=""/>
+        <attribute name="embeddedCopyright" attributeType="String" defaultValueString=""/>
+        <attribute name="embeddedName" attributeType="String" defaultValueString=""/>
+        <attribute name="originalDisplayName" attributeType="String"/>
+        <attribute name="resourceBookmark" optional="YES" attributeType="Binary"/>
+        <attribute name="resourceName" optional="YES" attributeType="String"/>
+        <attribute name="resourcePath" optional="YES" attributeType="URI"/>
+        <attribute name="visible" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="ownedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedAppState" inverseName="soundFonts" inverseEntity="ManagedAppState"/>
+        <relationship name="presets" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ManagedPreset" inverseName="parent" inverseEntity="ManagedPreset"/>
+        <relationship name="tags" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedTag" inverseName="tagged" inverseEntity="ManagedTag"/>
         <fetchIndex name="byName">
-            <fetchIndexElement property="name" type="Binary" order="ascending"/>
+            <fetchIndexElement property="displayName" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="Tag" representedClassName="Tag" syncable="YES">
+    <entity name="ManagedTag" representedClassName="ManagedTag" syncable="YES">
         <attribute name="name" attributeType="String" minValueString="1"/>
-        <relationship name="tagged" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SoundFont" inverseName="tags" inverseEntity="SoundFont"/>
+        <relationship name="orderedBy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ManagedAppState" inverseName="tags" inverseEntity="ManagedAppState"/>
+        <relationship name="tagged" toMany="YES" deletionRule="Nullify" destinationEntity="ManagedSoundFont" inverseName="tags" inverseEntity="ManagedSoundFont"/>
         <fetchIndex name="byName">
             <fetchIndexElement property="name" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <elements>
-        <element name="AppState" positionX="-378" positionY="-126" width="128" height="74"/>
-        <element name="DelayConfig" positionX="-360" positionY="-99" width="128" height="119"/>
-        <element name="Favorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="89"/>
-        <element name="Preset" positionX="-211.8515625" positionY="92.87890625" width="128" height="149"/>
-        <element name="PresetConfig" positionX="-378" positionY="-117" width="128" height="224"/>
-        <element name="ReverbConfig" positionX="-369" positionY="-108" width="128" height="89"/>
-        <element name="SoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="164"/>
-        <element name="Tag" positionX="-378" positionY="-117" width="128" height="59"/>
+        <element name="ManagedAppState" positionX="-378" positionY="-126" width="128" height="89"/>
+        <element name="ManagedDelayConfig" positionX="-360" positionY="-99" width="128" height="119"/>
+        <element name="ManagedFavorite" positionX="-192.9375" positionY="-277.81640625" width="128" height="89"/>
+        <element name="ManagedPreset" positionX="-211.8515625" positionY="92.87890625" width="128" height="149"/>
+        <element name="ManagedPresetConfig" positionX="-378" positionY="-117" width="128" height="224"/>
+        <element name="ManagedReverbConfig" positionX="-369" positionY="-108" width="128" height="89"/>
+        <element name="ManagedSoundFont" positionX="-565.94140625" positionY="51.71875" width="128" height="224"/>
+        <element name="ManagedTag" positionX="-378" positionY="-117" width="128" height="74"/>
     </elements>
 </model>

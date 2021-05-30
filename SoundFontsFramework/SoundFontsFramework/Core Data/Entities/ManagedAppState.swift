@@ -3,8 +3,13 @@
 import Foundation
 import CoreData
 
-@objc(AppState)
+@objc(ManagedAppState)
 public final class ManagedAppState: NSManagedObject, Managed {
+
+    @NSManaged public private(set) var lastUpdated: Date
+    @NSManaged private var favorites: NSOrderedSet
+    @NSManaged private var soundFonts: NSSet
+    @NSManaged private var tags: NSOrderedSet
 
     static var fetchRequest: FetchRequest {
         let request = typedFetchRequest
@@ -12,94 +17,87 @@ public final class ManagedAppState: NSManagedObject, Managed {
         request.resultType = .managedObjectResultType
         return request
     }
-
-    @NSManaged private var lastUpdated: Date?
-    @NSManaged private var favoritesSet: NSOrderedSet
-    @NSManaged public private(set) var soundFonts: NSOrderedSet
 }
 
 extension ManagedAppState {
 
+    /// Obtain the ordered collection of favorites
+    public var favoritesCollection: EntityCollection<ManagedFavorite> { EntityCollection(favorites) }
+
+    /// Obtain the ordered collection of tags
+    public var tagsCollection: EntityCollection<ManagedTag> { EntityCollection(tags) }
+
+    /// Obtain the set of installed sound fonts. NOTE: that this is unordered.
+    public var soundFontsSet: Set<ManagedSoundFont> { soundFonts as! Set<ManagedSoundFont> }
+
+    public var allTag: ManagedTag { tagsCollection[0] }
+
+    public var builtInTag: ManagedTag { tagsCollection[1] }
+}
+
+extension ManagedAppState {
+
+    /**
+     Fetch the ManagedAppState singleton.
+
+     - parameter context: the Core Data context to work in
+     - returns: the ManagedAppState instance
+     */
     public static func get(context: NSManagedObjectContext) -> ManagedAppState {
-        if let appState: ManagedAppState = context.object(forSingleObjectCacheKey: "AppState") { return appState }
-        let appState = findOrCreate(in: context, request: typedFetchRequest) { _ in }
-        context.set(appState, forSingleObjectCacheKey: "AppState")
+        if let appState: ManagedAppState = context.object(forSingleObjectCacheKey: "ManagedAppState") {
+            return appState
+        }
+
+        let appState = findOrCreate(in: context, request: typedFetchRequest) { appState in
+            appState.addToTags(ManagedTag(in: context, name: "All"))
+            appState.addToTags(ManagedTag(in: context, name: "Built-In"))
+        }
+
+        context.set(appState, forSingleObjectCacheKey: "ManagedAppState")
         context.saveChangesAsync()
+
         return appState
     }
 }
 
+// MARK: Generated accessors for favorites
 extension ManagedAppState {
 
-    public var favorites: EntityCollection<ManagedFavorite> { EntityCollection<ManagedFavorite>(favoritesSet) }
+    @objc(insertObject:inFavoritesAtIndex:)
+    @NSManaged public func insertIntoFavorites(_ value: ManagedFavorite, at idx: Int)
 
-    public func createFavorite(preset: ManagedPreset) -> ManagedFavorite {
-        guard let context = managedObjectContext else { fatalError() }
-        let fav = ManagedFavorite(in: context, preset: preset)
-        self.addToOrderedFavorites(fav)
-        context.saveChangesAsync()
-        return fav
-    }
+    @objc(removeObjectFromFavoritesAtIndex:)
+    @NSManaged public func removeFromFavorites(at idx: Int)
 
-    public func deleteFavorite(favorite: ManagedFavorite) {
-        guard let context = managedObjectContext else { fatalError() }
-        self.removeFromFavorites(favorite)
-        favorite.delete()
-        context.saveChangesAsync()
-    }
+    @objc(addFavoritesObject:)
+    @NSManaged public func addToFavorites(_ value: ManagedFavorite)
 
-    public func move(favorite: ManagedFavorite, to newIndex: Int) {
-        guard let context = managedObjectContext else { fatalError() }
-        let oldIndex = self.favoritesSet.index(of: favorite)
-        guard oldIndex >= 0 else { fatalError("favorite is not in collection") }
-        guard oldIndex != newIndex else { return }
-        guard let mutableFavorites = self.favoritesSet.mutableCopy() as? NSMutableOrderedSet else { fatalError() }
-        mutableFavorites.moveObjects(at: IndexSet(integer: oldIndex), to: newIndex)
-        self.favoritesSet = mutableFavorites
-        context.saveChangesAsync()
-    }
+    @objc(removeFavoritesObject:)
+    @NSManaged public func removeFromFavorites(_ value: ManagedFavorite)
 }
 
+// MARK: Generated accessors for soundFonts
 extension ManagedAppState {
 
-//    public func setActive(preset: ManagedPreset?) {
-//        guard let context = managedObjectContext else { fatalError() }
-//        self.activePreset?.setActivated(nil)
-//        self.activePreset = preset
-//        preset?.setActivated(self)
-//        context.saveChangesAsync()
-//    }
+    @objc(addSoundFontsObject:)
+    @NSManaged public func addToSoundFonts(_ value: ManagedSoundFont)
+
+    @objc(removeSoundFontsObject:)
+    @NSManaged public func removeFromSoundFonts(_ value: ManagedSoundFont)
 }
 
-private extension ManagedAppState {
+// MARK: Generated accessors for tags
+extension ManagedAppState {
 
-    @objc(insertObject:inOrderedFavoritesAtIndex:)
-    @NSManaged func insertIntoOrderedFavorites(_ value: ManagedFavorite, at idx: Int)
+    @objc(insertObject:inTagsAtIndex:)
+    @NSManaged public func insertIntoTags(_ value: ManagedTag, at idx: Int)
 
-    @objc(removeObjectFromOrderedFavoritesAtIndex:)
-    @NSManaged func removeFromOrderedFavorites(at idx: Int)
+    @objc(removeObjectFromTagsAtIndex:)
+    @NSManaged public func removeFromTags(at idx: Int)
 
-    @objc(insertOrderedFavorites:atIndexes:)
-    @NSManaged func insertIntoOrderedFavorites(_ values: [ManagedFavorite], at indexes: NSIndexSet)
+    @objc(addTagsObject:)
+    @NSManaged public func addToTags(_ value: ManagedTag)
 
-    @objc(removeOrderedFavoritesAtIndexes:)
-    @NSManaged func removeFromOrderedFavorites(at indexes: NSIndexSet)
-
-    @objc(replaceObjectInOrderedFavoritesAtIndex:withObject:)
-    @NSManaged func replaceOrderedFavorites(at idx: Int, with value: ManagedFavorite)
-
-    @objc(replaceOrderedFavoritesAtIndexes:withFavorites:)
-    @NSManaged func replaceOrderedFavorites(at indexes: NSIndexSet, with values: [ManagedFavorite])
-
-    @objc(addOrderedFavoritesObject:)
-    @NSManaged func addToOrderedFavorites(_ value: ManagedFavorite)
-
-    @objc(removeOrderedFavoritesObject:)
-    @NSManaged func removeFromFavorites(_ value: ManagedFavorite)
-
-    @objc(addOrderedFavorites:)
-    @NSManaged func addToOrderedFavorites(_ values: NSOrderedSet)
-
-    @objc(removeOrderedFavorites:)
-    @NSManaged func removeFromFavorites(_ values: NSOrderedSet)
+    @objc(removeTagsObject:)
+    @NSManaged public func removeFromTags(_ value: ManagedTag)
 }

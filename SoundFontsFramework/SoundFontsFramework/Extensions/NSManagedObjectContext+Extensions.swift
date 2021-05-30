@@ -19,8 +19,10 @@ public extension NSManagedObjectContext {
         return config(obj)
     }
 
+    /// Save changes made to entities managed by this context
     func saveChanges() throws { if hasChanges { try save() } }
 
+    /// Save changes made to entities managed by this context without blocking.
     func saveChangesAsync() {
         if hasChanges {
             perform { self.saveOrRollback() }
@@ -92,12 +94,24 @@ private typealias SingleObjectCache = [String: NSManagedObject]
 
 public extension NSManagedObjectContext {
 
+    /**
+     Set a managed object in a cache.
+
+     - parameter object: the value to cache
+     - parameter key: the key to store under
+     */
     func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
         var cache = userInfo[singleObjectCacheKey] as? SingleObjectCache ?? [:]
         cache[key] = object
         userInfo[singleObjectCacheKey] = cache
     }
 
+    /**
+     Obtain an object from the cache
+
+     - parameter key: the value to look for
+     - returns: object found in cache or nil
+     */
     func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
         guard let cache = userInfo[singleObjectCacheKey] as? SingleObjectCache else { return nil }
         return cache[key] as? T

@@ -4,19 +4,21 @@ import Foundation
 import CoreData
 import SoundFontInfoLib
 
-@objc(Preset)
+@objc(ManagedPreset)
 public final class ManagedPreset: NSManagedObject, Managed {
-    @NSManaged public private(set) var displayName: String?
-    @NSManaged public private(set) var embeddedName: String?
+
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedPreset> {
+        return NSFetchRequest<ManagedPreset>(entityName: "ManagedPreset")
+    }
+
+    @NSManaged public var displayName: String
+    @NSManaged public private(set) var embeddedName: String
+    @NSManaged public private(set) var index: Int16
     @NSManaged public private(set) var bank: Int16
     @NSManaged public private(set) var patch: Int16
-    @NSManaged public private(set) var index: Int16
+    @NSManaged public private(set) var aliases: NSSet
     @NSManaged public private(set) var configuration: ManagedPresetConfig
-    @NSManaged public private(set) var alias: NSSet
     @NSManaged public private(set) var parent: ManagedSoundFont
-}
-
-extension ManagedPreset {
 
     @discardableResult
     public convenience init(in context: NSManagedObjectContext, owner: ManagedSoundFont, index: Int,
@@ -29,30 +31,26 @@ extension ManagedPreset {
         self.index = Int16(index)
         self.configuration = ManagedPresetConfig(context: context)
         self.configuration.ownedByPreset = self
-        self.alias = NSSet()
+        self.aliases = NSSet()
         self.parent = owner
 
         context.saveChangesAsync()
     }
+}
 
-    public func setName(_ value: String) { displayName = value }
+// MARK: Generated accessors for alias
+extension ManagedPreset {
 
-    // swiftlint:disable empty_count
-    public var hasFavorite: Bool { alias.count != 0 }
+    @objc(addAliasesObject:)
+    @NSManaged public func addToAliases(_ value: ManagedFavorite)
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<ManagedPreset> {
-        return NSFetchRequest<ManagedPreset>(entityName: "Preset")
-    }
+    @objc(removeAliasesObject:)
+    @NSManaged public func removeFromAliases(_ value: ManagedFavorite)
 
-    @objc(addAliasObject:)
-    @NSManaged public func addToAlias(_ value: ManagedFavorite)
+    @objc(addAliases:)
+    @NSManaged public func addToAliases(_ values: NSSet)
 
-    @objc(removeAliasObject:)
-    @NSManaged public func removeFromAlias(_ value: ManagedFavorite)
+    @objc(removeAliases:)
+    @NSManaged public func removeFromAliases(_ values: NSSet)
 
-    @objc(addAlias:)
-    @NSManaged public func addToAlias(_ values: NSSet)
-
-    @objc(removeAlias:)
-    @NSManaged public func removeFromAlias(_ values: NSSet)
 }

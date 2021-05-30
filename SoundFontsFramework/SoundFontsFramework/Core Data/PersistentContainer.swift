@@ -8,11 +8,16 @@ import CoreData
  */
 open class PersistentContainer: NSPersistentContainer {
 
-    /// Place the DB into the shared documents directory so both the app and the AUV3 extention can see it.
+    /// Place the DB into the shared documents directory so both the app and the AUV3 extension can see it.
     override open class func defaultDirectoryURL() -> URL {
         FileManager.default.sharedDocumentsDirectory
     }
 
+    /**
+     Create new container
+
+     - parameter modelName: the name of the model to persist in the container
+     */
     public init(modelName: String) {
         let bundle = Bundle(for: PersistentContainer.self)
         let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!

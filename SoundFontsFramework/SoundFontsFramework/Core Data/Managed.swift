@@ -47,7 +47,7 @@ public extension Managed where Self: NSManagedObject {
      Create a fetch request and execute it.
 
      - parameter context: the context where the managed objects live
-     - paramater request: what to request
+     - parameter request: what to request
      - returns: array of managed objects
      */
     static func fetch(in context: NSManagedObjectContext, request: FetchRequest) -> [Self] {
@@ -59,13 +59,15 @@ public extension Managed where Self: NSManagedObject {
      Find or create a managed object
 
      - parameter context: the context where the managed objects live
-     - paramater request: what to request
+     - parameter request: what to request
+     - parameter block: code to run to initialize an object
      - returns: found/created managed object
      */
-    static func findOrCreate(in context: NSManagedObjectContext, request: FetchRequest, initer: Initializer) -> Self {
+    static func findOrCreate(in context: NSManagedObjectContext, request: FetchRequest,
+                             initializer: Initializer) -> Self {
         guard let object = findOrFetch(in: context, request: request) else {
             let newObject: Self = context.insertObject()
-            initer(newObject)
+            initializer(newObject)
             return newObject
         }
         return object
@@ -102,7 +104,14 @@ public extension Managed where Self: NSManagedObject {
         return nil
     }
 
+    /// Delete the managed object
     func delete() {
         managedObjectContext?.delete(self)
+    }
+
+    /// Obtain the ManagedAppState singleton from the context associated with this entity
+    var appState: ManagedAppState {
+        guard let context = managedObjectContext else { fatalError("attempt to use nil NSManagedObjectContext") }
+        return ManagedAppState.get(context: context)
     }
 }

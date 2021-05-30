@@ -8,15 +8,15 @@ import CoreData
 class CoreDataStackTests: XCTestCase {
 
     func testAnnounceWhenCoreDataIsReady() {
-        doWhenCoreDataReady(#function) { cdth, context in }
+        doWhenCoreDataReady(#function) { testHarness, context in }
     }
 
     func testAsyncWaitsInBlock() {
-        doWhenCoreDataReady(#function) { cdth, context in
-            let exp = XCTestExpectation(description: "invalid")
+        doWhenCoreDataReady(#function) { testHarness, context in
+            let expectation = XCTestExpectation(description: "invalid")
             let waiter = XCTWaiter()
-            DispatchQueue.global(qos: .background).asyncLater(interval: .milliseconds(5)) { exp.fulfill() }
-            let result = waiter.wait(for: [exp], timeout: 10.0)
+            DispatchQueue.global(qos: .background).asyncLater(interval: .milliseconds(5)) { expectation.fulfill() }
+            let result = waiter.wait(for: [expectation], timeout: 10.0)
             XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
         }
     }

@@ -631,6 +631,7 @@
 				TargetAttributes = {
 					BD74D16623CDB1D200204ED4 = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1250;
 					};
 					BD74D16F23CDB1D200204ED4 = {
 						CreatedOnToolsVersion = 11.3;
@@ -921,6 +922,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
@@ -954,6 +956,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
@@ -965,6 +968,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";

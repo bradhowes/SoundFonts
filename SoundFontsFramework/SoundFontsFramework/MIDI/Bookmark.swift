@@ -21,9 +21,9 @@ public final class Bookmark: Codable {
 
     /// The name of the sound font represented by the bookmark
     public let name: String
+    public private(set) var bookmark: Data?
+    public let original: URL
 
-    private var bookmark: Data?
-    private let original: URL
     private var _resolved: URL?
 
     /**
@@ -37,6 +37,15 @@ public final class Bookmark: Codable {
         original = url
         bookmark = bookmarkData
         os_log(.info, log: log, "name: %{public}s data.count: %d url: %{public}s", name, bookmark?.count ?? 0, url.path)
+    }
+
+    /**
+     Restore bookmark from Core Data values
+     */
+    public init(name: String, original: URL, bookmark: Data?) {
+        self.name = name
+        self.original = original
+        self.bookmark = bookmark
     }
 
     /**

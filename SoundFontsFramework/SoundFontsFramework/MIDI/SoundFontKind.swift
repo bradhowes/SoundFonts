@@ -16,7 +16,7 @@ public enum SoundFontKindError: Error {
  a file kind which comes from an external source.
  */
 public enum SoundFontKind {
-    static let log = Logging.logger("SFKind")
+    static let log = Logging.logger("SoundFontKind")
 
     /// Built-in sound font file that is comes with the app. Holds a URL to a bundle resource
     case builtin(resource: URL)

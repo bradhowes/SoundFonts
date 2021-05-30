@@ -74,8 +74,8 @@ public final class LegacySoundFont: Codable {
         self.originalDisplayName = displayName
         self.embeddedName = soundFontInfo.embeddedName
         self.embeddedComment = soundFontInfo.embeddedComment
-        self.embeddedAuthor = soundFontInfo.embeddedAuthor.isEmpty ? "Unknown" : soundFontInfo.embeddedAuthor
-        self.embeddedCopyright = soundFontInfo.embeddedCopyright.isEmpty ? "Unknown" : soundFontInfo.embeddedCopyright
+        self.embeddedAuthor = soundFontInfo.embeddedAuthor
+        self.embeddedCopyright = soundFontInfo.embeddedCopyright
         self.kind = .builtin(resource: resource)
         self.patches = Self.makePatches(soundFontInfo.presets)
     }
