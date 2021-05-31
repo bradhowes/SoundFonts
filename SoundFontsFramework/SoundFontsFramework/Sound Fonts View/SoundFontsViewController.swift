@@ -12,12 +12,11 @@ public final class SoundFontsViewController: UIViewController {
 
   @IBOutlet private weak var soundFontsView: UITableView!
   @IBOutlet private weak var tagsView: UITableView!
-  @IBOutlet private weak var patchesView: PatchesTableView!
-  @IBOutlet private weak var searchBar: UISearchBar!
   @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var dividerControl: UIView!
   @IBOutlet private weak var patchesWidthConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var patchesView: UIView!
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
   private var soundFonts: SoundFonts!
@@ -26,7 +25,6 @@ public final class SoundFontsViewController: UIViewController {
   private var tags: Tags!
 
   private var fontsTableViewManager: FontsTableViewManager!
-  private var patchesTableViewManager: PatchesTableViewManager!
   private var tagsTableViewManager: ActiveTagManager!
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var keyboard: Keyboard?
@@ -36,6 +34,8 @@ public final class SoundFontsViewController: UIViewController {
 
   public let swipeLeft = UISwipeGestureRecognizer()
   public let swipeRight = UISwipeGestureRecognizer()
+
+  private weak var presetsTableViewController: PresetsTableViewController?
 }
 
 extension SoundFontsViewController {
@@ -107,7 +107,6 @@ extension SoundFontsViewController {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     fontsTableViewManager?.selectActive()
-    patchesTableViewManager?.selectActive(animated: false)
   }
 
   public override func viewWillTransition(
@@ -123,7 +122,6 @@ extension SoundFontsViewController {
       },
       completion: { _ in
         self.fontsTableViewManager.selectActive()
-        self.patchesTableViewManager.selectActive(animated: false)
       })
   }
 }
@@ -180,11 +178,6 @@ extension SoundFontsViewController {
 
     present(alertController, animated: true, completion: nil)
   }
-
-  public func reload() {
-    soundFontsView.reloadData()
-    patchesView.reloadData()
-  }
 }
 
 extension SoundFontsViewController: UIDocumentPickerDelegate {
@@ -214,32 +207,24 @@ extension SoundFontsViewController: ControllerConfiguration {
       activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
       soundFonts: router.soundFonts, tags: tags)
 
-    patchesTableViewManager = PatchesTableViewManager(
-      viewController: self, view: patchesView, searchBar: searchBar,
-      activePatchManager: router.activePatchManager,
-      selectedSoundFontManager: selectedSoundFontManager,
-      soundFonts: soundFonts, favorites: favorites, keyboard: router.keyboard,
-      infoBar: router.infoBar)
-
     tagsTableViewManager = ActiveTagManager(
       view: tagsView, tags: router.tags, tagsHider: self.hideTags)
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
 
+    presetsTableViewController?.establishConnections(router)
+
     fontsTableViewManager?.selectActive()
-    patchesTableViewManager?.selectActive(animated: false)
   }
 }
 
 // MARK: - PatchesViewManager Protocol
 
-extension SoundFontsViewController: PatchesViewManager {
+extension SoundFontsViewController: FontsViewManager {
 
   public func dismissSearchKeyboard() {
-    if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
-      searchBar.resignFirstResponder()
-    }
+    presetsTableViewController?.dismissSearchKeyboard()
   }
 
   public func addSoundFonts(urls: [URL]) {
@@ -319,6 +304,7 @@ extension SoundFontsViewController: SegueHandler {
   public enum SegueIdentifier: String {
     case fontEditor
     case fontBrowser
+    case presetsTableView
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -329,8 +315,13 @@ extension SoundFontsViewController: SegueHandler {
       }
       prepareToEdit(segue, config: config)
 
-    case .fontBrowser:
-      break
+    case .fontBrowser: break
+
+    case .presetsTableView:
+      guard let destination = segue.destination as? PresetsTableViewController else {
+        fatalError("expected PresetsTableViewController for segue destination")
+      }
+      presetsTableViewController = destination
     }
   }
 

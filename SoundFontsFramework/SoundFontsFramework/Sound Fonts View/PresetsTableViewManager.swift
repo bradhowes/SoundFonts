@@ -12,14 +12,13 @@ private enum Slot: Equatable {
 
 /// Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
 /// broken up into smaller components.
-final class PatchesTableViewManager: NSObject {
+final class PresetsTableViewManager: NSObject {
 
-  private lazy var log = Logging.logger("PatchesTableViewManager")
+  private lazy var log = Logging.logger("PresetsTableViewManager")
 
-  private weak var viewController: UIViewController?
-  private let view: PatchesTableView
+  private weak var viewController: PresetsTableViewController!
+  private var view: UITableView { viewController.tableView }
 
-  private let searchBar: UISearchBar
   private var lastSearchText: String?
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePatchManager: ActivePatchManager
@@ -35,6 +34,8 @@ final class PatchesTableViewManager: NSObject {
   private var notificationObserver: NSObjectProtocol?
   private var contentSizeObserver: NSKeyValueObservation?
 
+  private var searchBar: UISearchBar { viewController.searchBar }
+
   /**
      Construct a new patches table view manager.
 
@@ -47,15 +48,10 @@ final class PatchesTableViewManager: NSObject {
      - parameter keyboard: the optional keyboard view manager
      - parameter infoBar: the info bar manager
      */
-  init(
-    viewController: UIViewController, view: PatchesTableView, searchBar: UISearchBar,
-    activePatchManager: ActivePatchManager, selectedSoundFontManager: SelectedSoundFontManager,
-    soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?, infoBar: InfoBar
-  ) {
+  init(viewController: PresetsTableViewController, activePatchManager: ActivePatchManager,
+       selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
+       keyboard: Keyboard?, infoBar: InfoBar) {
     self.viewController = viewController
-    self.view = view
-    self.searchBar = searchBar
-    searchBar.text = nil
     self.selectedSoundFontManager = selectedSoundFontManager
     self.activePatchManager = activePatchManager
     self.soundFonts = soundFonts
@@ -68,7 +64,7 @@ final class PatchesTableViewManager: NSObject {
     contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { tableView, change in
       guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue
       else { return }
-      if !self.searchBar.isFirstResponder && tableView.contentOffset.y < searchBar.frame.size.height
+      if !self.searchBar.isFirstResponder && tableView.contentOffset.y < self.searchBar.frame.size.height
       {
         tableView.contentOffset = CGPoint(x: 0, y: self.searchBar.frame.size.height)
       }
@@ -133,7 +129,7 @@ extension Array where Element == Slot {
 }
 
 // MARK: - UITableViewDataSource Protocol
-extension PatchesTableViewManager: UITableViewDataSource {
+extension PresetsTableViewManager: UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int {
     showingSearchResults ? 1 : sectionRowCounts.count
@@ -166,7 +162,6 @@ extension PatchesTableViewManager: UITableViewDataSource {
       return 0
     }
 
-    dismissSearchKeyboard()
     return index - 1
   }
 
@@ -180,7 +175,7 @@ extension PatchesTableViewManager: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate Protocol
-extension PatchesTableViewManager: UITableViewDelegate {
+extension PresetsTableViewManager: UITableViewDelegate {
 
   func tableView(
     _ tableView: UITableView,
@@ -239,13 +234,13 @@ extension PatchesTableViewManager: UITableViewDelegate {
   }
 }
 
-extension PatchesTableViewManager: UISearchBarDelegate {
+extension PresetsTableViewManager: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     search(for: searchBar.searchTerm ?? "")
   }
 }
 
-extension PatchesTableViewManager {
+extension PresetsTableViewManager {
 
   private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T?) -> T? {
     guard let soundFont = selectedSoundFontManager.selected else { return nil }
@@ -282,7 +277,7 @@ extension PatchesTableViewManager {
     searchBar.resignFirstResponder()
   }
 
-  private func regenerateViewSlots(_ completionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = nil) {
+  private func regenerateViewSlots(_ completionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = nil) {
     os_log(.info, log: log, "updateViewPresets")
     let source = selectedSoundFontManager.selected?.patches ?? []
 
@@ -307,7 +302,7 @@ extension PatchesTableViewManager {
       return
     }
 
-    view.oneShotLayoutCompletionHandler = completionHandler
+    viewController?.oneShotLayoutCompletionHandler = completionHandler
     os_log(.debug, log: log, "begin reloadData")
     view.reloadData()
     os_log(.debug, log: log, "end reloadData")
@@ -469,7 +464,7 @@ extension PatchesTableViewManager {
     os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
            old?.displayName ?? "N/A", new?.displayName ?? "N/A")
 
-    let oneShotLayoutCompletionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = {
+    let oneShotLayoutCompletionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = {
       if view.isEditing {
         if let soundFont = new {
           return { self.initializeVisibilitySelections(soundFont: soundFont) }
@@ -604,7 +599,7 @@ extension PatchesTableViewManager {
     view.reloadData()
   }
 
-  private func hideSearchBar(animated: Bool) {
+  public func hideSearchBar(animated: Bool) {
     dismissSearchKeyboard()
     if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height * 2 { return }
     os_log(.info, log: log, "hiding search bar")
@@ -649,7 +644,7 @@ extension PatchesTableViewManager {
 
 // MARK: - Swipe Actions
 
-extension PatchesTableViewManager {
+extension PresetsTableViewManager {
 
   private func leadingSwipeActions(at indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = view.cellForRow(at: indexPath) else { return nil }
@@ -872,7 +867,7 @@ extension PatchesTableViewManager {
 
 // MARK: - Updates
 
-extension PatchesTableViewManager {
+extension PresetsTableViewManager {
 
   private func getSlot(at indexPath: IndexPath) -> Slot {
     showingSearchResults ? searchSlots[indexPath] : viewSlots[indexPath]

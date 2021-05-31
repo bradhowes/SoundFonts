@@ -25,25 +25,12 @@
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="il0-aC-ept" userLabel="Patches" customClass="PatchesTableView" customModule="SoundFontsFramework" customModuleProvider="target">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYn-Fy-3EM" userLabel="Patches">
                                         <rect key="frame" x="177" y="0.0" width="237" height="896"/>
-                                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <searchBar key="tableHeaderView" contentMode="redraw" barStyle="black" placeholder="Name" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fl2-Sg-7ea" userLabel="Search">
-                                            <rect key="frame" x="0.0" y="0.0" width="237" height="51"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="56" id="GnP-gT-7qu"/>
-                                            </constraints>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                            <scopeButtonTitles>
-                                                <string>Title</string>
-                                                <string>Title</string>
-                                            </scopeButtonTitles>
-                                            <attributedString key="userComments">
-                                                <fragment content="Search"/>
-                                            </attributedString>
-                                        </searchBar>
-                                    </tableView>
+                                        <connections>
+                                            <segue destination="nUO-8a-gh3" kind="embed" identifier="presetsTableView" id="aCh-x1-qAE"/>
+                                        </connections>
+                                    </containerView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-uD-xKG" userLabel="Tags">
                                         <rect key="frame" x="0.0" y="904" width="169" height="360"/>
                                         <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -76,16 +63,16 @@
                                 <constraints>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="1To-12-Edz"/>
-                                    <constraint firstItem="il0-aC-ept" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="6Iw-H1-bIv"/>
+                                    <constraint firstAttribute="trailing" secondItem="OYn-Fy-3EM" secondAttribute="trailing" id="Bry-Oj-IWi"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="CnL-zR-Heg"/>
                                     <constraint firstItem="UU4-kD-PNI" firstAttribute="centerY" secondItem="V3j-Cj-T3A" secondAttribute="centerY" id="IUy-3y-qQZ"/>
-                                    <constraint firstItem="il0-aC-ept" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="Mvo-0D-YFt"/>
-                                    <constraint firstAttribute="bottom" secondItem="il0-aC-ept" secondAttribute="bottom" id="Pw5-9k-6te"/>
+                                    <constraint firstAttribute="bottom" secondItem="OYn-Fy-3EM" secondAttribute="bottom" id="P6K-iS-S6d"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="UVF-RL-zrd"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="top" secondItem="fmV-bj-iZB" secondAttribute="bottom" constant="8" id="Zet-Sn-wdW"/>
-                                    <constraint firstAttribute="trailing" secondItem="il0-aC-ept" secondAttribute="trailing" id="d3t-rg-LLR"/>
                                     <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="-8" id="dgq-Is-bSI"/>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
-                                    <constraint firstItem="il0-aC-ept" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="j1h-Lp-Qhe"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="khq-jh-OFk"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="v2f-zJ-l9G"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" id="wPI-ss-8PY"/>
                                 </constraints>
                             </view>
@@ -102,9 +89,8 @@
                     </view>
                     <connections>
                         <outlet property="dividerControl" destination="UU4-kD-PNI" id="8nC-1v-PkV"/>
-                        <outlet property="patchesView" destination="il0-aC-ept" id="1ff-gv-FFp"/>
-                        <outlet property="patchesWidthConstraint" destination="j1h-Lp-Qhe" id="cKh-BV-s6r"/>
-                        <outlet property="searchBar" destination="Fl2-Sg-7ea" id="LaW-BL-rxP"/>
+                        <outlet property="patchesView" destination="OYn-Fy-3EM" id="F2f-aR-7Qv"/>
+                        <outlet property="patchesWidthConstraint" destination="v2f-zJ-l9G" id="pfd-WW-Ivb"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
                         <outlet property="tagsBottomConstraint" destination="1To-12-Edz" id="hIi-Cp-XkC"/>
                         <outlet property="tagsView" destination="Sk2-uD-xKG" id="od0-Vb-z6v"/>
@@ -115,6 +101,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CxO-4H-XNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="73.913043478260875" y="-1937.2767857142856"/>
+        </scene>
+        <!--PresetsTableView-->
+        <scene sceneID="FiA-cQ-VeK">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PresetsTableView" id="nUO-8a-gh3" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Edt-3o-dfZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="795" y="-1905"/>
         </scene>
         <!--FontEditor-->
         <scene sceneID="NwP-pY-F46">

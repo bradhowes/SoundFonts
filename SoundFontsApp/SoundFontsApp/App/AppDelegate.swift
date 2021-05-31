@@ -58,7 +58,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     _ app: UIApplication, open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
   ) -> Bool {
-    DispatchQueue.main.async { self.components.patchesViewManager.addSoundFonts(urls: [url]) }
+    DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
     return true
   }
 

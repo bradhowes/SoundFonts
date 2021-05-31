@@ -251,7 +251,6 @@ extension FavoritesViewController: SegueHandler {
 
     present(alertController, animated: true, completion: nil)
   }
-
 }
 
 extension FavoritesViewController: FavoriteEditorDelegate {

@@ -27,7 +27,7 @@
 		BD074C5523CDAF51001987E9 /* SoundFontAndPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */; };
 		BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */; };
 		BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */; };
-		BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */; };
+		BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */; };
 		BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF723CDAF51001987E9 /* FontEditor.swift */; };
 		BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF823CDAF51001987E9 /* TableCell.swift */; };
 		BD074C5D23CDAF51001987E9 /* (null) in Resources */ = {isa = PBXBuildFile; };
@@ -65,7 +65,7 @@
 		BD074C8C23CDAF51001987E9 /* ControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3723CDAF51001987E9 /* ControllerConfiguration.swift */; };
 		BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3823CDAF51001987E9 /* Keyboard.swift */; };
 		BD074C8E23CDAF51001987E9 /* ReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3923CDAF51001987E9 /* ReusableView.swift */; };
-		BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */; };
+		BD074C8F23CDAF51001987E9 /* FontsViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3A23CDAF51001987E9 /* FontsViewManager.swift */; };
 		BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074C3B23CDAF51001987E9 /* SegueHandler.swift */; };
 		BD0E20192555701B00D36607 /* TouchKeyMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20182555701B00D36607 /* TouchKeyMap.swift */; };
 		BD0E20612555D68900D36607 /* FourCharCode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E20602555D68900D36607 /* FourCharCode+Extensions.swift */; };
@@ -105,7 +105,6 @@
 		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePatchKind.swift */; };
 		BD27E98B2516113600591FD0 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */; };
-		BD3799882664BADE004C8EA5 /* PatchesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3799872664BADD004C8EA5 /* PatchesTableView.swift */; };
 		BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */; };
 		BD3F44C525018EB100653ABD /* CachedValueTypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */; };
 		BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C425018EB000653ABD /* TypedNotification.swift */; };
@@ -125,6 +124,8 @@
 		BD62CF5D253DE22D00DBDC1B /* InfoBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */; };
 		BD62CF5E253DE22D00DBDC1B /* SoundFontsControls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */; };
 		BD62CF5F253DE22D00DBDC1B /* GuideView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */; };
+		BD6476322665120700FDD94B /* PresetsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6476312665120700FDD94B /* PresetsTableViewController.swift */; };
+		BD6476342665167300FDD94B /* PresetsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6476332665167300FDD94B /* PresetsTableView.storyboard */; };
 		BD6E057825CC6F6E004058D9 /* Intro.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057725CC6F6E004058D9 /* Intro.storyboard */; };
 		BD6E057E25CC74B1004058D9 /* Done.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD6E057D25CC74B1004058D9 /* Done.storyboard */; };
 		BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */; };
@@ -246,7 +247,7 @@
 		BD074BF023CDAF51001987E9 /* SoundFontAndPatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPatch.swift; sourceTree = "<group>"; };
 		BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
 		BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsTableViewManager.swift; sourceTree = "<group>"; };
-		BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesTableViewManager.swift; sourceTree = "<group>"; };
+		BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewManager.swift; sourceTree = "<group>"; };
 		BD074BF723CDAF51001987E9 /* FontEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontEditor.swift; sourceTree = "<group>"; };
 		BD074BF823CDAF51001987E9 /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
 		BD074C0223CDAF51001987E9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -282,7 +283,7 @@
 		BD074C3723CDAF51001987E9 /* ControllerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllerConfiguration.swift; sourceTree = "<group>"; };
 		BD074C3823CDAF51001987E9 /* Keyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		BD074C3923CDAF51001987E9 /* ReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableView.swift; sourceTree = "<group>"; };
-		BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatchesViewManager.swift; sourceTree = "<group>"; };
+		BD074C3A23CDAF51001987E9 /* FontsViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsViewManager.swift; sourceTree = "<group>"; };
 		BD074C3B23CDAF51001987E9 /* SegueHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandler.swift; sourceTree = "<group>"; };
 		BD074C3C23CDAF51001987E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E20182555701B00D36607 /* TouchKeyMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMap.swift; sourceTree = "<group>"; };
@@ -317,7 +318,6 @@
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
-		BD3799872664BADD004C8EA5 /* PatchesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchesTableView.swift; sourceTree = "<group>"; };
 		BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
@@ -338,6 +338,8 @@
 		BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = InfoBar.storyboard; sourceTree = "<group>"; };
 		BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SoundFontsControls.storyboard; sourceTree = "<group>"; };
 		BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GuideView.storyboard; sourceTree = "<group>"; };
+		BD6476312665120700FDD94B /* PresetsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewController.swift; sourceTree = "<group>"; };
+		BD6476332665167300FDD94B /* PresetsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PresetsTableView.storyboard; sourceTree = "<group>"; };
 		BD6E057725CC6F6E004058D9 /* Intro.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Intro.storyboard; sourceTree = "<group>"; };
 		BD6E057D25CC74B1004058D9 /* Done.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Done.storyboard; sourceTree = "<group>"; };
 		BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattersTests.swift; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				BD130B0E25615A3300D1CDF6 /* Editors */,
 				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
 				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
+				BD6476332665167300FDD94B /* PresetsTableView.storyboard */,
 				BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */,
 				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
 				BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */,
@@ -560,8 +563,8 @@
 			children = (
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
-				BD3799872664BADD004C8EA5 /* PatchesTableView.swift */,
-				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
+				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
+				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
@@ -643,6 +646,7 @@
 			children = (
 				BDA5ACF6265D427C000AE48E /* EventClosureMangement.swift */,
 				BDA5ACF5265D427C000AE48E /* FontEditorActionGenerator.swift */,
+				BD074C3A23CDAF51001987E9 /* FontsViewManager.swift */,
 				BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */,
 				BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */,
 				BD074C2F23CDAF51001987E9 /* ComponentContainer.swift */,
@@ -655,12 +659,11 @@
 				BD074C3823CDAF51001987E9 /* Keyboard.swift */,
 				BD0E206B2556B78900D36607 /* MIDIReceiver.swift */,
 				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
-				BD074C3A23CDAF51001987E9 /* PatchesViewManager.swift */,
 				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
 				BD074C3B23CDAF51001987E9 /* SegueHandler.swift */,
 				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
-				BDBF897A25B5930100B58E23 /* Tags.swift */,
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
+				BDBF897A25B5930100B58E23 /* Tags.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
 			);
 			path = Protocols;
@@ -948,6 +951,7 @@
 				BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */,
 				BD62CF5D253DE22D00DBDC1B /* InfoBar.storyboard in Resources */,
 				BD62CF5E253DE22D00DBDC1B /* SoundFontsControls.storyboard in Resources */,
+				BD6476342665167300FDD94B /* PresetsTableView.storyboard in Resources */,
 				BDB7408325CC29690051B4E4 /* InfoBar1.storyboard in Resources */,
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
 				BDB7408525CC29690051B4E4 /* SoundFontList.storyboard in Resources */,
@@ -996,6 +1000,7 @@
 				BDD5FA6D250430B000367F0B /* SoundFontCoreData.swift in Sources */,
 				BD074C8B23CDAF51001987E9 /* SoundFonts.swift in Sources */,
 				BD074C8323CDAF51001987E9 /* Favorites.swift in Sources */,
+				BD6476322665120700FDD94B /* PresetsTableViewController.swift in Sources */,
 				BD074C7023CDAF51001987E9 /* Settings.swift in Sources */,
 				BD074C4F23CDAF51001987E9 /* LegacySoundFontsManager.swift in Sources */,
 				BD074C8A23CDAF51001987E9 /* FavoriteEditorDelegate.swift in Sources */,
@@ -1042,7 +1047,6 @@
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
 				BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */,
 				BDD5FA6F25043C2500367F0B /* Managed.swift in Sources */,
-				BD3799882664BADE004C8EA5 /* PatchesTableView.swift in Sources */,
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
 				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
 				BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */,
@@ -1052,7 +1056,7 @@
 				BD074C6F23CDAF51001987E9 /* ViewSlider.swift in Sources */,
 				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
 				BDBF897725B5900900B58E23 /* LegacyTagsManager.swift in Sources */,
-				BD074C5A23CDAF51001987E9 /* PatchesTableViewManager.swift in Sources */,
+				BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit+Extensions.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer+Extensions.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
@@ -1082,7 +1086,7 @@
 				BD1971BE266186EC00C7FCF5 /* ManagdDelayConfig.swift in Sources */,
 				BDA5ACFA265D4284000AE48E /* Icon.swift in Sources */,
 				BDA5ACF2265D4266000AE48E /* DelayEffect.swift in Sources */,
-				BD074C8F23CDAF51001987E9 /* PatchesViewManager.swift in Sources */,
+				BD074C8F23CDAF51001987E9 /* FontsViewManager.swift in Sources */,
 				BDF3B3D52566BB9C003F7BB3 /* UILabel+Extensions.swift in Sources */,
 				BD3F44C525018EB100653ABD /* CachedValueTypedNotification.swift in Sources */,
 				BD6EEA2C251E030300253D96 /* SoundFontFileLoadFailure.swift in Sources */,

@@ -36,7 +36,7 @@ public protocol ComponentContainer {
   /// The keyboard manager if inside the application; the AUv3 component has no keyboard and so this will be nil.
   var keyboard: Keyboard? { get }
   /// The manager of the preset table view
-  var patchesViewManager: PatchesViewManager { get }
+  var fontsViewManager: FontsViewManager { get }
   /// The manager of the favorites collection view
   var favoritesViewManager: FavoritesViewManager { get }
   /// The provider of swipe actions for the sound fonts view

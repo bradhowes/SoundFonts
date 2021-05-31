@@ -60,11 +60,10 @@ extension SoundFontsControlsController: ControllerConfiguration {
   public func establishConnections(_ router: ComponentContainer) {
     components = router
 
-    let patchesViewManager = router.patchesViewManager
-    patchesViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
+    let fontsViewManager = router.fontsViewManager
+    fontsViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
 
     let favoritesViewManager = router.favoritesViewManager
-    favoritesViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
     favoritesViewManager.addEventClosure(.swipeRight, showPreviousConfigurationView)
 
     infoBar = router.infoBar
@@ -134,7 +133,7 @@ extension SoundFontsControlsController {
      */
   private func showNextConfigurationView(_ action: AnyObject) {
     if upperViewManager.active == 0 {
-      components.patchesViewManager.dismissSearchKeyboard()
+      components.fontsViewManager.dismissSearchKeyboard()
     }
     upperViewManager.slideNextHorizontally()
     Settings.instance.showingFavorites = upperViewManager.active == 1

@@ -44,8 +44,8 @@ where T: ControllerConfiguration {
   public var infoBar: InfoBar { infoBarController }
   /// The controller for the keyboard (nil when running in the AUv3 app extension)
   public var keyboard: Keyboard? { keyboardController }
-  /// The manager of the presets view
-  public var patchesViewManager: PatchesViewManager { soundFontsController }
+  /// The manager of the fonts/presets view
+  public var fontsViewManager: FontsViewManager { soundFontsController }
   /// The manager of the favorites view
   public var favoritesViewManager: FavoritesViewManager { favoritesController }
   /// Swipe actions generator for sound font rows
