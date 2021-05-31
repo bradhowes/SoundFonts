@@ -6,7 +6,7 @@ import os
 /// Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
 /// restored when the app relaunches.
 final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
-  private let log = Logging.logger("FavMgr")
+  private lazy var log = Logging.logger("FavoritesManager")
 
   private var observer: ConfigFileObserver!
   var restored: Bool { observer.restored }

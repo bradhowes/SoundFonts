@@ -5,8 +5,7 @@ import os
 
 /// Collection of Tag instances.
 public final class LegacyTagCollection: Codable {
-
-  private var log: OSLog { Logging.logger("TagCol") }
+  private lazy var log: OSLog = Logging.logger("TagCollection")
 
   private var tags: [LegacyTag]
 

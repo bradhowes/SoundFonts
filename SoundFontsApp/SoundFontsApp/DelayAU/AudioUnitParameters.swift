@@ -6,8 +6,7 @@ import os
 
 /// Definitions for the runtime parameters of the audio unit.
 public struct AudioUnitParameters {
-
-  private let log = Logging.logger("DelayParameters")
+  private let log = Logging.logger("AudioUnitParameters")
 
   enum Address: AUParameterAddress {
     case time = 1
@@ -18,47 +17,35 @@ public struct AudioUnitParameters {
 
   public let time: AUParameter = {
     let param = AUParameterTree.createParameter(
-      withIdentifier: "time", name: "Time",
-      address: Address.time.rawValue, min: 0.0, max: 2.0, unit: .seconds,
-      unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable],
-      valueStrings: nil, dependentParameters: nil)
+      withIdentifier: "time", name: "Time", address: Address.time.rawValue, min: 0.0, max: 2.0, unit: .seconds,
+      unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil, dependentParameters: nil)
     param.value = 1.0
     return param
   }()
 
   public let feedback: AUParameter = {
     let param = AUParameterTree.createParameter(
-      withIdentifier: "feedback", name: "Feedback",
-      address: Address.feedback.rawValue, min: -100.0, max: 100.0,
-      unit: .percent, unitName: nil,
-      flags: [.flag_IsReadable, .flag_IsWritable],
-      valueStrings: nil, dependentParameters: nil)
+      withIdentifier: "feedback", name: "Feedback", address: Address.feedback.rawValue, min: -100.0, max: 100.0,
+      unit: .percent, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil,
+      dependentParameters: nil)
     param.value = 50.0
     return param
   }()
 
   public let cutoff: AUParameter = {
     let param = AUParameterTree.createParameter(
-      withIdentifier: "cutoff", name: "Cutoff",
-      address: Address.cutoff.rawValue, min: 10.0, max: 20_000.0,
-      unit: .hertz, unitName: nil,
-      flags: [
-        .flag_IsReadable, .flag_IsWritable,
-        .flag_DisplayLogarithmic,
-      ],
-      valueStrings: nil,
-      dependentParameters: nil)
+      withIdentifier: "cutoff", name: "Cutoff", address: Address.cutoff.rawValue, min: 10.0, max: 20_000.0,
+      unit: .hertz, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable, .flag_DisplayLogarithmic],
+      valueStrings: nil, dependentParameters: nil)
     param.value = 18_000.0
     return param
   }()
 
   public let wetDryMix: AUParameter = {
     let param = AUParameterTree.createParameter(
-      withIdentifier: "wetDryMix", name: "Mix",
-      address: Address.wetDryMix.rawValue, min: 0.0, max: 100.0,
-      unit: .percent, unitName: nil,
-      flags: [.flag_IsReadable, .flag_IsWritable],
-      valueStrings: nil, dependentParameters: nil)
+      withIdentifier: "wetDryMix", name: "Mix", address: Address.wetDryMix.rawValue, min: 0.0, max: 100.0,
+      unit: .percent, unitName: nil, flags: [.flag_IsReadable, .flag_IsWritable], valueStrings: nil,
+      dependentParameters: nil)
     param.value = 30.0
     return param
   }()
@@ -99,9 +86,7 @@ public struct AudioUnitParameters {
         default: return "?"
         }
       }()
-      os_log(
-        .debug, log: log, "parameter %d as string: %d %f %{public}s", param.address, param.value,
-        formatted)
+      os_log(.debug, log: log, "parameter %d as string: %d %f %{public}s", param.address, param.value, formatted)
       return formatted
     }
   }

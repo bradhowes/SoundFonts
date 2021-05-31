@@ -13,7 +13,6 @@ private enum Slot: Equatable {
 /// Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
 /// broken up into smaller components.
 final class PresetsTableViewManager: NSObject {
-
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
   private weak var viewController: PresetsTableViewController!
@@ -39,8 +38,7 @@ final class PresetsTableViewManager: NSObject {
   /**
      Construct a new patches table view manager.
 
-     - parameter view: the view to manage
-     - parameter searchBar: the search bar that filters on preset name
+     - parameter viewController: the view controller that holds this manager
      - parameter activePatchManager: the active preset manager
      - parameter selectedSoundFontManager: the selected sound font manager
      - parameter soundFonts: the sound fonts collection manager
@@ -61,12 +59,10 @@ final class PresetsTableViewManager: NSObject {
     super.init()
 
     // When there is a change in size, hide the search bar if it is not in use.
-    contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { tableView, change in
-      guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue
-      else { return }
-      if !self.searchBar.isFirstResponder && tableView.contentOffset.y < self.searchBar.frame.size.height
-      {
-        tableView.contentOffset = CGPoint(x: 0, y: self.searchBar.frame.size.height)
+    contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { view, change in
+      guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
+      if !self.searchBar.isFirstResponder && view.contentOffset.y < self.searchBar.frame.size.height {
+        view.contentOffset = CGPoint(x: 0, y: self.searchBar.frame.size.height)
       }
     }
 
@@ -106,9 +102,7 @@ extension IndexPath {
 
 extension Array where Element == Slot {
   fileprivate subscript(indexPath: IndexPath) -> Element { self[indexPath.slotIndex] }
-}
 
-extension Array where Element == Slot {
   fileprivate func findFavoriteKey(_ key: LegacyFavorite.Key) -> Int? {
     for (index, slot) in self.enumerated() {
       if case let .favorite(slotKey) = slot, slotKey == key {
@@ -146,15 +140,10 @@ extension PresetsTableViewManager: UITableViewDataSource {
   func sectionIndexTitles(for tableView: UITableView) -> [String]? {
     if showingSearchResults { return nil }
     return [view.isEditing ? "" : UITableView.indexSearch, "•"]
-      + stride(
-        from: sectionSize, to: viewSlots.count - 1,
-        by: sectionSize
-      ).map { "\($0)" }
+      + stride(from: sectionSize, to: viewSlots.count - 1, by: sectionSize).map { "\($0)" }
   }
 
-  func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int)
-    -> Int
-  {
+  func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
     if index == 0 {
       if !view.isEditing {
         DispatchQueue.main.async { self.showSearchBar() }
@@ -177,14 +166,9 @@ extension PresetsTableViewManager: UITableViewDataSource {
 // MARK: - UITableViewDelegate Protocol
 extension PresetsTableViewManager: UITableViewDelegate {
 
-  func tableView(
-    _ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath
-  ) -> UITableViewCell.EditingStyle {
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none
   }
-
-  // func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { true }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if view.isEditing {
@@ -197,10 +181,7 @@ extension PresetsTableViewManager: UITableViewDelegate {
 
     switch slot {
     case let .preset(presetIndex): selectPreset(presetIndex)
-    case let .favorite(key):
-      activePatchManager.setActive(
-        favorite: favorites.getBy(key: key),
-        playSample: Settings.shared.playSample)
+    case let .favorite(key): selectFavorite(key)
     }
   }
 
@@ -209,23 +190,17 @@ extension PresetsTableViewManager: UITableViewDelegate {
     setSlotVisibility(at: indexPath, state: false)
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
+  func tableView(_ tableView: UITableView,
+                 leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     showingSearchResults ? nil : leadingSwipeActions(at: indexPath)
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
+  func tableView(_ tableView: UITableView,
+                 trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     showingSearchResults ? nil : trailingSwipeActions(at: indexPath)
   }
 
-  func tableView(
-    _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
-  ) {
+  func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
     guard let header = view as? UITableViewHeaderFooterView else { return }
     header.textLabel?.textColor = .systemTeal
     header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
@@ -249,10 +224,17 @@ extension PresetsTableViewManager {
 
   private func selectPreset(_ presetIndex: Int) {
     withSoundFont { soundFont in
-      let soundFontAndPatch = SoundFontAndPatch(
-        soundFontKey: soundFont.key, patchIndex: presetIndex)
-      activePatchManager.setActive(
-        preset: soundFontAndPatch, playSample: Settings.shared.playSample)
+      let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
+      if !activePatchManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample) {
+        hideSearchBar(animated: true)
+      }
+    }
+  }
+
+  private func selectFavorite(_ key: LegacyFavorite.Key) {
+    let favorite = favorites.getBy(key: key)
+    if !activePatchManager.setActive(favorite: favorite, playSample: Settings.shared.playSample) {
+      hideSearchBar(animated: true)
     }
   }
 
@@ -885,7 +867,7 @@ extension PresetsTableViewManager {
   }
 
   private func updateRow(with activeKind: ActivePatchKind?) {
-    os_log(.debug, log: log, "updateView - with activeKind")
+    os_log(.debug, log: log, "updateRow - with activeKind")
     guard let activeKind = activeKind else { return }
     switch activeKind {
     case .none: return

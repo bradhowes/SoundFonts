@@ -3,7 +3,7 @@
 import Foundation
 import os
 
-private let log = Logging.logger("FileMgr")
+private let log = Logging.logger("FileManager")
 
 extension FileManager {
   public var groupIdentifier: String { "group.com.braysoftware.SoundFontsShare" }

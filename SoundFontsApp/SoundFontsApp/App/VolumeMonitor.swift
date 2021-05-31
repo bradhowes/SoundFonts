@@ -7,7 +7,7 @@ import os
 /// Monitor volume setting on device and the "silence" or "mute" switch. When there is no apparent audio
 /// output, update the Keyboard and NotePlayer instances so that they can show an indication to the user.
 final class VolumeMonitor {
-  private let log = Logging.logger("VolumeMonitor")
+  private lazy var log = Logging.logger("VolumeMonitor")
 
   private enum Reason {
     /// Volume level is at zero

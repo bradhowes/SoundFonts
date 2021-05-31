@@ -20,12 +20,10 @@ public final class TutorialViewController: UIViewController {
   }
 
   private class func createViewControllers() -> (UINavigationController, TutorialViewController)? {
-    let storyboard = UIStoryboard(
-      name: "Tutorial", bundle: Bundle(for: TutorialViewController.self))
+    let storyboard = UIStoryboard(name: "Tutorial", bundle: Bundle(for: TutorialViewController.self))
     let viewController = storyboard.instantiateInitialViewController()
     guard let vc = viewController as? UINavigationController,
-      let top = vc.topViewController as? TutorialViewController
-    else {
+          let top = vc.topViewController as? TutorialViewController else {
       os_log(.error, log: log, "problem instantiating TutorialViewController from storyboard")
       return nil
     }

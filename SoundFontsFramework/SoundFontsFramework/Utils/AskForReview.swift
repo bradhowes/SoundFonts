@@ -6,7 +6,6 @@ import os
 /// Manages when to ask the user for an app review. Relies on SKStoreReviewController.requestReview to do the actual
 /// review prompt, but makes sure that the interval between asks is reasonable and within App Store policy.
 public final class AskForReview: NSObject {
-
   private lazy var log = Logging.logger("AskForReview")
 
   /**

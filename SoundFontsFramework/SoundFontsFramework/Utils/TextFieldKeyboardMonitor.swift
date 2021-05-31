@@ -7,7 +7,7 @@ import os
 /// the keyboard appears. Contains a slot `viewToKeepVisible` which when set to a UIView will cause the
 /// monitor to scroll so that the view is visible.
 final public class TextFieldKeyboardMonitor {
-  private let log = Logging.logger("TextFieldKeyboardMonitor")
+  private lazy var log = Logging.logger("TextFieldKeyboardMonitor")
   private let view: UIView
   private let scrollView: UIScrollView
   private var adjustment: CGFloat = 0.0
@@ -26,14 +26,11 @@ final public class TextFieldKeyboardMonitor {
   public init(view: UIView, scrollView: UIScrollView) {
     self.view = view
     self.scrollView = scrollView
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(adjustForKeyboard),
-      name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(
-      self, selector: #selector(adjustForKeyboard),
-      name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(adjustForKeyboard),
+                                           name: UIResponder.keyboardWillHideNotification, object: nil)
     scrollView.addGestureRecognizer(numberKeyboardDoneProxy)
-
     numberKeyboardDoneProxy.addClosure { _ in self.viewToKeepVisible?.endEditing(true) }
   }
 
@@ -44,10 +41,7 @@ final public class TextFieldKeyboardMonitor {
      - parameter notification: the notification that fired
      */
   @objc private func adjustForKeyboard(_ notification: Notification) {
-    guard
-      let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
-        as? NSValue
-    else {
+    guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
       return
     }
 

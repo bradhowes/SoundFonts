@@ -7,7 +7,7 @@ import os
 /// The controller creates an entire 108 keyboard which it then shows only a part of on the screen. The keyboard can
 /// be shifted up/down by octaves or by sliding via touch (if enabled).
 final class KeyboardController: UIViewController {
-  private let log = Logging.logger("KeyCon")
+  private lazy var log = Logging.logger("KeyCon")
 
   /// MIDI value of the first note in the keyboard
   private var firstMidiNoteValue = 48 {

@@ -5,7 +5,7 @@ import os
 
 /// Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
-  private lazy var log = Logging.logger("FavCell")
+  private lazy var log = Logging.logger("FavoriteCell")
 
   /// The name of the favorite
   @IBOutlet private weak var name: UILabel!

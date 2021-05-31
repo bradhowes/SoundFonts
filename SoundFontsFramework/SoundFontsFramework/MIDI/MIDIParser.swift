@@ -18,6 +18,7 @@ public enum MIDIMsg {
 /// MIDIController
 public struct MIDIParser {
   static private let log = Logging.logger("MIDIParser")
+  private var log: OSLog { Self.log }
 
   /**
      Extract MIDI messages and send to controller.

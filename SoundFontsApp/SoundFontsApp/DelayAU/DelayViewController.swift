@@ -5,7 +5,7 @@ import SoundFontsFramework
 import os
 
 public final class DelayViewController: AUViewController {
-  private let log = Logging.logger("DelayVC")
+  private lazy var log = Logging.logger("DelayViewController")
   private var audioUnit: DelayAU?
   private var parameterObserverToken: AUParameterObserverToken?
 
@@ -49,9 +49,7 @@ public final class DelayViewController: AUViewController {
 
 extension DelayViewController: AUAudioUnitFactory {
 
-  public func createAudioUnit(with componentDescription: AudioComponentDescription) throws
-    -> AUAudioUnit
-  {
+  public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     let audioUnit = try DelayAU(componentDescription: componentDescription)
     os_log(.info, log: log, "created DelayAU")
     self.audioUnit = audioUnit
@@ -84,8 +82,7 @@ extension DelayViewController {
     setCutoff(value: cutoff.value)
     setWetDryMix(value: wetDryMix.value)
 
-    parameterObserverToken = parameterTree.token(byAddingParameterObserver: {
-      [weak self] address, value in
+    parameterObserverToken = parameterTree.token(byAddingParameterObserver: { [weak self] address, value in
       guard let self = self else { return }
       os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
       switch AudioUnitParameters.Address(rawValue: address) {

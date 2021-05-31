@@ -109,20 +109,11 @@ extension SoundFontsViewController {
     fontsTableViewManager?.selectActive()
   }
 
-  public override func viewWillTransition(
-    to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
-  ) {
+  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
     if showingTags {
       hideTags()
     }
-
-    coordinator.animate(
-      alongsideTransition: { _ in
-      },
-      completion: { _ in
-        self.fontsTableViewManager.selectActive()
-      })
   }
 }
 

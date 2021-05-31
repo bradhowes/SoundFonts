@@ -6,7 +6,7 @@ import os
 
 /// Manager for the tag collection.
 final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
-  private let log = Logging.logger("TagsMgr")
+  private lazy var log = Logging.logger("TagsManager")
 
   private var observer: ConfigFileObserver!
 

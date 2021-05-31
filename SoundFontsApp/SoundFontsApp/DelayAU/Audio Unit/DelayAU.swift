@@ -13,17 +13,15 @@ final class DelayAU: AUAudioUnit {
 
   private var _currentPreset: AUAudioUnitPreset?
 
-  public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(
-    parameterHandler: self)
+  public private(set) lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
   public init(componentDescription: AudioComponentDescription) throws {
     let log = Logging.logger("DelayAU")
     self.log = log
 
-    os_log(
-      .info, log: log, "init - flags: %d man: %d type: sub: %d",
-      componentDescription.componentFlags, componentDescription.componentManufacturer,
-      componentDescription.componentType, componentDescription.componentSubType)
+    os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
+           componentDescription.componentManufacturer, componentDescription.componentType,
+           componentDescription.componentSubType)
 
     do {
       try super.init(componentDescription: componentDescription, options: [])
@@ -72,8 +70,7 @@ extension DelayAU: AUParameterHandler {
 extension DelayAU {
 
   override public func supportedViewConfigurations(
-    _ availableViewConfigurations: [AUAudioUnitViewConfiguration]
-  ) -> IndexSet {
+    _ availableViewConfigurations: [AUAudioUnitViewConfiguration]) -> IndexSet {
     IndexSet(availableViewConfigurations.indices)
   }
 
@@ -87,8 +84,7 @@ extension DelayAU {
     do {
       try wrapped.allocateRenderResources()
     } catch {
-      os_log(
-        .error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
+      os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
     }
     os_log(.info, log: log, "allocateRenderResources - done")

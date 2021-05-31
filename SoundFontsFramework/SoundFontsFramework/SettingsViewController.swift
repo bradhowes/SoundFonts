@@ -17,7 +17,7 @@ public enum KeyLabelOption: Int {
 
 /// Manages window showing various runtime settings and options.
 public final class SettingsViewController: UIViewController {
-  private let log = Logging.logger("SettingsViewController")
+  private lazy var log = Logging.logger("SettingsViewController")
 
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet private weak var contentView: UIView!

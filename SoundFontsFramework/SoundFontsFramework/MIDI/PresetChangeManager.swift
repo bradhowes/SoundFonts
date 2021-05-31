@@ -4,7 +4,7 @@ import AVFoundation
 import os
 
 private final class PresetChangeOperation: Operation {
-  private let log = Logging.logger("PresetChgOp")
+  private lazy var log = Logging.logger("PresetChangeOperation")
 
   private weak var sampler: AVAudioUnitSampler?
   private let url: URL
@@ -35,11 +35,8 @@ private final class PresetChangeOperation: Operation {
 
   override var isAsynchronous: Bool { true }
 
-  init(
-    sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
-    afterLoadBlock: (() -> Void)? = nil
-  ) {
-    os_log(.info, log: log, "init")
+  init(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
+       afterLoadBlock: (() -> Void)? = nil) {
     self.sampler = sampler
     self.url = url
     self.program = program
@@ -47,6 +44,7 @@ private final class PresetChangeOperation: Operation {
     self.bankLSB = bankLSB
     self.afterLoadBlock = afterLoadBlock
     super.init()
+    os_log(.info, log: log, "init")
   }
 
   override func start() {
@@ -77,14 +75,13 @@ private final class PresetChangeOperation: Operation {
     }
 
     afterLoadBlock?()
-
     isExecuting = false
     isFinished = true
   }
 }
 
 final class PresetChangeManager {
-  private let log = Logging.logger("PresetChgMgr")
+  private lazy var log = Logging.logger("PresetChangeManager")
   private let queue = OperationQueue()
   private var active = true
 

@@ -5,7 +5,7 @@ import SoundFontsFramework
 import os
 
 public final class ReverbViewController: AUViewController {
-  private let log = Logging.logger("ReverbVC")
+  private let log = Logging.logger("ReverbViewController")
   private var audioUnit: ReverbAU?
   private var parameterObserverToken: AUParameterObserverToken?
 

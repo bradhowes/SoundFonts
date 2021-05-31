@@ -36,7 +36,7 @@ public enum SamplerStartFailure: Error {
 
 /// This class encapsulates Apple's AVAudioUnitSampler in order to load MIDI sound bank.
 public final class Sampler: SubscriptionManager<SamplerEvent> {
-  private lazy var log = Logging.logger("Samp")
+  private lazy var log = Logging.logger("Sampler")
 
   /// Largest MIDI value available for the last key
   public static let maxMidiValue = 12 * 9  // C8
@@ -76,9 +76,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter mode: determines how the sampler is hosted.
      */
-  public init(
-    mode: Mode, activePatchManager: ActivePatchManager, reverb: ReverbEffect?, delay: DelayEffect?
-  ) {
+  public init(mode: Mode, activePatchManager: ActivePatchManager, reverb: ReverbEffect?, delay: DelayEffect?) {
     self.mode = mode
     self.activePatchManager = activePatchManager
     self.reverbEffect = reverb

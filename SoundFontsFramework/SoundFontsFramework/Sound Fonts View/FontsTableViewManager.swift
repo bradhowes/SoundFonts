@@ -222,6 +222,7 @@ extension FontsTableViewManager {
       guard let newSoundFont = self.soundFonts.getBy(key: self.viewSoundFonts[newRow]) else {
         return
       }
+
       if self.activePatchManager.activeSoundFont == soundFont {
         self.activePatchManager.setActive(
           preset: SoundFontAndPatch(

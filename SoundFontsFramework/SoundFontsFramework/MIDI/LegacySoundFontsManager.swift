@@ -7,7 +7,6 @@ import os
 
 /// Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
 public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
-
   private static let log = Logging.logger("SoundFontsManager")
   private var log: OSLog { Self.log }
 

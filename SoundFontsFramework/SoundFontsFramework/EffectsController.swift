@@ -6,7 +6,7 @@ import os
 
 /// View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects components.
 public final class EffectsController: UIViewController {
-  private let log = Logging.logger("Effects")
+  private lazy var log = Logging.logger("EffectsController")
 
   @IBOutlet private weak var reverbEnabled: UIButton!
   @IBOutlet private weak var reverbGlobal: UIButton!

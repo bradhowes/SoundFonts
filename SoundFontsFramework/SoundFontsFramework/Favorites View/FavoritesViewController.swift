@@ -6,7 +6,7 @@ import os
 /// Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
 /// settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
 public final class FavoritesViewController: UIViewController, FavoritesViewManager {
-  private lazy var log = Logging.logger("FavsVC")
+  private lazy var log = Logging.logger("FavoritesViewController")
 
   @IBOutlet private var favoritesView: UICollectionView!
   @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
@@ -51,13 +51,6 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     layout.minimumLineSpacing = 8
 
     favoritesView.setCollectionViewLayout(layout, animated: false)
-  }
-
-  public override func viewWillTransition(
-    to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator
-  ) {
-    super.viewWillTransition(to: size, with: coordinator)
-    favoritesView.reloadData()
   }
 
   public override func viewWillAppear(_ animated: Bool) {

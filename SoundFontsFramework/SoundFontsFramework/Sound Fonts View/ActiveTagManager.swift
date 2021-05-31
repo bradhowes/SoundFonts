@@ -5,7 +5,7 @@ import os
 
 /// Tracks and manages the active tag.
 final class ActiveTagManager: NSObject {
-  private let log = Logging.logger("ActiveTagManager")
+  private lazy var log = Logging.logger("ActiveTagManager")
   private let view: UITableView
   private let tags: Tags
   private var token: SubscriberToken?

@@ -19,7 +19,7 @@ public enum ActivePatchEvent {
 /// Maintains the active SoundFont patch being used for sound generation. There should only ever be one instance of this
 /// class, but this is not enforced.
 public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
-  private let log = Logging.logger("ActPatMan")
+  private lazy var log = Logging.logger("ActivePatchManager")
   private let soundFonts: SoundFonts
   private let selectedSoundFontManager: SelectedSoundFontManager
 
@@ -61,11 +61,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
      */
   public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
-    os_log(.info, log: log, "init")
     self.active = .none
     self.soundFonts = soundFonts
     self.selectedSoundFontManager = selectedSoundFontManager
     super.init()
+    os_log(.info, log: log, "init")
     soundFonts.subscribe(self, notifier: soundFontsChange)
     os_log(.info, log: log, "active: %{public}s", active.description)
   }
@@ -97,7 +97,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter preset: the preset to make active
      - parameter playSample: if true, play a note using the new preset
      */
-  public func setActive(preset: SoundFontAndPatch, playSample: Bool) {
+  @discardableResult
+  public func setActive(preset: SoundFontAndPatch, playSample: Bool) -> Bool {
     setActive(.preset(soundFontAndPatch: preset), playSample: playSample)
   }
 
@@ -107,7 +108,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter favorite: the favorite to make active
      - parameter playSample: if true, play a note using the new preset
      */
-  public func setActive(favorite: LegacyFavorite, playSample: Bool) {
+  @discardableResult
+  public func setActive(favorite: LegacyFavorite, playSample: Bool) -> Bool {
     setActive(.favorite(favorite: favorite), playSample: playSample)
   }
 
@@ -117,7 +119,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter kind: wrapped value to set
      - parameter playSample: if true, play a note using the new preset
      */
-  public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) {
+  @discardableResult
+  public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) -> Bool {
     os_log(.debug, log: log, "setActive: %{public}s", kind.description)
     guard soundFonts.restored else {
 
@@ -129,18 +132,20 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
       if pending == .none {
         pending = kind
       }
-      return
+      return true
     }
 
     guard active != kind else {
       os_log(.debug, log: log, "already active")
-      return
+      return false
     }
 
     let old = active
     active = kind
     save(kind)
     DispatchQueue.main.async { self.notify(.active(old: old, new: kind, playSample: playSample)) }
+
+    return true
   }
 }
 

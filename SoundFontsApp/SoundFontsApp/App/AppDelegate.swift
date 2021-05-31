@@ -8,7 +8,7 @@ import os
 /// Delegate for the SoundFonts app.
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-  private let log = Logging.logger("AppDel")
+  private lazy var log = Logging.logger("AppDelegate")
   private lazy var components = Components<MainViewController>(inApp: true)
   private var observer: NSObjectProtocol?
 
@@ -35,13 +35,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
      - parameter application: the application that is running
      - parameter launchOptions: the options used to start the application
      */
-  func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
-    observer = NotificationCenter.default.addObserver(
-      forName: .visitAppStore, object: nil, queue: nil
-    ) { _ in
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
       self.visitAppStore()
     }
     return true
@@ -54,10 +50,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
      - parameter url: the URL of the file to open
      - parameter options: dictionary of options that may affect the opening (unused)
      */
-  func application(
-    _ app: UIApplication, open url: URL,
-    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-  ) -> Bool {
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
     return true
   }
@@ -70,6 +63,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
+    NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
 
   /**
@@ -112,10 +106,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   @objc private func visitAppStore() {
-    guard
-      let writeReviewURL = URL(
-        string: "https://itunes.apple.com/app/id1453325077?action=write-review")
-    else {
+    guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") else {
       fatalError("Expected a valid URL")
     }
     UIApplication.shared.open(writeReviewURL, options: [:], completionHandler: nil)

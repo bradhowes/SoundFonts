@@ -7,7 +7,7 @@ import os
 /// The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
-  private let log = Logging.logger("SFAUVC")
+  private lazy var log = Logging.logger("SoundFontsAUViewController")
   private let noteInjector = NoteInjector()
   private var components: Components<SoundFontsAUViewController>!
   private var audioUnit: SoundFontsAU?

@@ -5,6 +5,7 @@ import os
 
 public struct ConsolidatedConfig: Codable {
   private static let log = Logging.logger("ConsolidatedConfig")
+  private var log: OSLog { Self.log }
 
   public var soundFonts: LegacySoundFontCollection
   public var favorites: LegacyFavoriteCollection
@@ -31,6 +32,7 @@ public final class ConsolidatedConfigFile: UIDocument {
   static let filename = "Consolidated.plist"
 
   public lazy var config: ConsolidatedConfig = ConsolidatedConfig()
+
   @objc dynamic public private(set) var restored: Bool = false {
     didSet {
       self.updateChangeCount(.done)
@@ -46,7 +48,7 @@ public final class ConsolidatedConfigFile: UIDocument {
   }
 
   private func initialize(_ sharedArchivePath: URL) {
-    os_log(.info, log: Self.log, "initialize - %{public}s", sharedArchivePath.path)
+    os_log(.info, log: log, "initialize - %{public}s", sharedArchivePath.path)
     self.open { ok in
       if !ok {
         os_log(.info, log: Self.log, "failed to open - attempting legacy loading")

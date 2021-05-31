@@ -7,7 +7,7 @@ import os
 /// Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create
 /// an instance and set the controller (aka delegate) to receive the incoming MIDI traffic.
 final class MIDI {
-  private let log = Logging.logger("MIDI")
+  private lazy var log = Logging.logger("MIDI")
 
   private let clientName = Bundle.main.bundleID
   private let portName = "SoundFonts"

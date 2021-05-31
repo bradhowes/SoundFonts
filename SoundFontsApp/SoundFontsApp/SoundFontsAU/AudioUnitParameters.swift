@@ -7,8 +7,7 @@ import os
 
 /// Definitions for the runtime parameters of the AU.
 public final class AudioUnitParameters: NSObject {
-
-  private let log = Logging.logger("FilterParameters")
+  private lazy var log = Logging.logger("AudioUnitParameters")
 
   enum Address: AUParameterAddress {
     case undefined = 1

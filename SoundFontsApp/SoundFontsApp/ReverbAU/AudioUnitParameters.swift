@@ -7,8 +7,7 @@ import os
 
 /// Definitions for the runtime parameters of the reverb.
 public struct AudioUnitParameters {
-
-  private let log = Logging.logger("ReverbParameters")
+  private let log = Logging.logger("AudioUnitParameters")
 
   /// Addresses for the individual AUParameter values
   enum Address: AUParameterAddress {

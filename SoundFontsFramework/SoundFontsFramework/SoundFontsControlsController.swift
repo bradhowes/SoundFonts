@@ -9,15 +9,15 @@ import os
 /// to the background or stops being active.
 public final class SoundFontsControlsController: UIViewController {
 
-  private lazy var logger = Logging.logger("SFCC")
+  private lazy var logger = Logging.logger("SoundFontsControlsController")
 
   @IBOutlet private weak var favoritesView: UIView!
   @IBOutlet private weak var patchesView: UIView!
   @IBOutlet private weak var effectsHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var effectsBottomConstraint: NSLayoutConstraint!
 
-  private var components: ComponentContainer!
   private var upperViewManager: SlidingViewManager!
+  private var fontsViewManager: FontsViewManager!
   private var infoBar: InfoBar!
 
   private var isMainApp: Bool = false
@@ -58,9 +58,8 @@ extension SoundFontsControlsController: ControllerConfiguration {
      - parameter context: the RunContext that holds all of the registered managers / controllers
      */
   public func establishConnections(_ router: ComponentContainer) {
-    components = router
 
-    let fontsViewManager = router.fontsViewManager
+    fontsViewManager = router.fontsViewManager
     fontsViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
 
     let favoritesViewManager = router.favoritesViewManager
@@ -133,7 +132,7 @@ extension SoundFontsControlsController {
      */
   private func showNextConfigurationView(_ action: AnyObject) {
     if upperViewManager.active == 0 {
-      components.fontsViewManager.dismissSearchKeyboard()
+      fontsViewManager.dismissSearchKeyboard()
     }
     upperViewManager.slideNextHorizontally()
     Settings.instance.showingFavorites = upperViewManager.active == 1

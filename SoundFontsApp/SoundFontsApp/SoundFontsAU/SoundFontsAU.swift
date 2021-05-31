@@ -33,20 +33,16 @@ final class SoundFontsAU: AUAudioUnit {
      - parameter sampler: the Sampler instance to use for actually rendering audio
      - parameter activePatchManager: the manager of the active preset/patch
      */
-  public init(
-    componentDescription: AudioComponentDescription, sampler: Sampler,
-    activePatchManager: ActivePatchManager
-  ) throws {
-    let log = Logging.logger("SFAU")
+  public init(componentDescription: AudioComponentDescription, sampler: Sampler,
+              activePatchManager: ActivePatchManager) throws {
+    let log = Logging.logger("SoundFontsAU")
     self.log = log
     self.activePatchManager = activePatchManager
     self.sampler = sampler
 
-    os_log(
-      .info, log: log, "init - flags: %d man: %d type: sub: %d",
-      componentDescription.componentFlags, componentDescription.componentManufacturer,
-      componentDescription.componentType, componentDescription.componentSubType)
-
+    os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
+           componentDescription.componentManufacturer, componentDescription.componentType,
+           componentDescription.componentSubType)
     os_log(.info, log: log, "starting AVAudioUnitSampler")
 
     switch sampler.start() {
@@ -104,16 +100,14 @@ extension SoundFontsAU {
   override public var component: AudioComponent { wrapped.component }
 
   override public func allocateRenderResources() throws {
-    os_log(
-      .info, log: log, "allocateRenderResources - outputBusses: %{public}d", outputBusses.count)
+    os_log(.info, log: log, "allocateRenderResources - outputBusses: %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
     do {
       try wrapped.allocateRenderResources()
     } catch {
-      os_log(
-        .error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
+      os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
     }
     os_log(.info, log: log, "allocateRenderResources - done")
@@ -127,7 +121,6 @@ extension SoundFontsAU {
   override public var renderResourcesAllocated: Bool {
     os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
     return wrapped.renderResourcesAllocated
-
   }
 
   override public func reset() {
@@ -136,9 +129,8 @@ extension SoundFontsAU {
     guard let sampler = sampler.auSampler else { return }
     guard let soundFont = activePatchManager.activeSoundFont else { return }
     guard let patch = activePatchManager.activePatch else { return }
-    try? sampler.loadSoundBankInstrument(
-      at: soundFont.fileURL, program: UInt8(patch.program),
-      bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program),
+                                         bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
   }
 
   override public var inputBusses: AUAudioUnitBusArray {

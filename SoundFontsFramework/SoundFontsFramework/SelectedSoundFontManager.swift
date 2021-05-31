@@ -8,7 +8,7 @@ public enum SelectedSoundFontEvent {
 }
 
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
-  private let log = Logging.logger("SelectedSoundFontManager")
+  private lazy var log = Logging.logger("SelectedSoundFontManager")
 
   private(set) var selected: LegacySoundFont?
 
