@@ -95,7 +95,7 @@ final class PatchesTableViewManager: NSObject {
     ]
     UITextField.appearance().defaultTextAttributes = defaultTextAttributes
 
-    updateViewPresets()
+    regenerateViewSlots()
   }
 }
 
@@ -282,8 +282,10 @@ extension PatchesTableViewManager {
     searchBar.resignFirstResponder()
   }
 
-  private func updateViewPresets(_ completionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = nil) {
+  private func regenerateViewSlots(_ completionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = nil) {
+    os_log(.info, log: log, "updateViewPresets")
     let source = selectedSoundFontManager.selected?.patches ?? []
+
     viewSlots.removeAll()
     for (index, preset) in source.enumerated() {
       if preset.presetConfig.isVisible || view.isEditing {
@@ -297,12 +299,21 @@ extension PatchesTableViewManager {
       }
     }
 
-    updateSectionRowCounts(reload: false)
+    calculateSectionRowCounts(reload: false)
+
+    if showingSearchResults, let term = lastSearchText {
+      os_log(.info, log: log, "regenerating search results")
+      search(for: term)
+      return
+    }
+
     view.oneShotLayoutCompletionHandler = completionHandler
+    os_log(.debug, log: log, "begin reloadData")
     view.reloadData()
+    os_log(.debug, log: log, "end reloadData")
   }
 
-  private func updateSectionRowCounts(reload: Bool) {
+  private func calculateSectionRowCounts(reload: Bool) {
     let numFullSections = viewSlots.count / sectionSize
     sectionRowCounts = [Int](repeating: sectionSize, count: numFullSections)
     sectionRowCounts.append(viewSlots.count - numFullSections * sectionSize)
@@ -373,7 +384,7 @@ extension PatchesTableViewManager {
 
   private func beginVisibilityEditing() {
     withSoundFont { soundFont in
-      self.updateSectionRowCounts(reload: true)
+      self.calculateSectionRowCounts(reload: true)
       view.setEditing(true, animated: true)
       let changes = performChanges(soundFont: soundFont)
       os_log(.info, log: log, "beginVisibilityEditing - %d changes", changes.count)
@@ -390,7 +401,7 @@ extension PatchesTableViewManager {
     withSoundFont { soundFont in
       CATransaction.begin()
       CATransaction.setCompletionBlock {
-        self.updateSectionRowCounts(reload: true)
+        self.calculateSectionRowCounts(reload: true)
       }
       view.setEditing(false, animated: true)
 
@@ -474,7 +485,7 @@ extension PatchesTableViewManager {
       return nil
     }()
 
-    updateViewPresets(oneShotLayoutCompletionHandler)
+    regenerateViewSlots(oneShotLayoutCompletionHandler)
   }
 
   private func favoritesRestored() {
@@ -509,7 +520,7 @@ extension PatchesTableViewManager {
   }
 
   private func soundFontsRestored() {
-    updateViewPresets {
+    regenerateViewSlots {
       self.selectActive(animated: false)
       self.hideSearchBar(animated: false)
     }
@@ -519,7 +530,7 @@ extension PatchesTableViewManager {
     switch event {
     case let .unhidPresets(font: soundFont):
       if soundFont == selectedSoundFontManager.selected {
-        updateViewPresets()
+        regenerateViewSlots()
       }
 
     case let .presetChanged(soundFont, index):
@@ -708,7 +719,7 @@ extension PatchesTableViewManager {
       view.insertRows(at: [favoriteIndex], with: .automatic)
       sectionRowCounts[favoriteIndex.section] += 1
     } completion: { _ in
-      self.updateSectionRowCounts(reload: true)
+      self.calculateSectionRowCounts(reload: true)
     }
 
     return true
@@ -734,7 +745,7 @@ extension PatchesTableViewManager {
       view.deleteRows(at: [indexPath], with: .automatic)
       sectionRowCounts[indexPath.section] -= 1
     } completion: { _ in
-      self.updateSectionRowCounts(reload: true)
+      self.calculateSectionRowCounts(reload: true)
       if favorite == self.activePatchManager.activeFavorite {
         self.activePatchManager.setActive(preset: favorite.soundFontAndPatch, playSample: false)
       }
@@ -819,7 +830,7 @@ extension PatchesTableViewManager {
         self.sectionRowCounts[indexPath.section] -= 1
       },
       completion: { _ in
-        self.updateSectionRowCounts(reload: true)
+        self.calculateSectionRowCounts(reload: true)
       })
     completionHandler(true)
   }
@@ -922,8 +933,7 @@ extension PatchesTableViewManager {
     switch getSlot(at: indexPath) {
     case let .preset(presetIndex):
       let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
-      // FIXME: 2 crash reports where presetIndex is invalid
-      let preset = soundFont.patches[max(presetIndex, soundFont.patches.count - 1)]
+      let preset = soundFont.patches[presetIndex]
       os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
              preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
       cell.updateForPreset(name: preset.presetConfig.name,
