@@ -17,7 +17,7 @@ final class PatchesTableViewManager: NSObject {
   private lazy var log = Logging.logger("PatchesTableViewManager")
 
   private weak var viewController: UIViewController?
-  private let view: UITableView
+  private let view: PatchesTableView
 
   private let searchBar: UISearchBar
   private var lastSearchText: String?
@@ -48,7 +48,7 @@ final class PatchesTableViewManager: NSObject {
      - parameter infoBar: the info bar manager
      */
   init(
-    viewController: UIViewController, view: UITableView, searchBar: UISearchBar,
+    viewController: UIViewController, view: PatchesTableView, searchBar: UISearchBar,
     activePatchManager: ActivePatchManager, selectedSoundFontManager: SelectedSoundFontManager,
     soundFonts: SoundFonts, favorites: Favorites, keyboard: Keyboard?, infoBar: InfoBar
   ) {
@@ -282,7 +282,7 @@ extension PatchesTableViewManager {
     searchBar.resignFirstResponder()
   }
 
-  private func updateViewPresets() {
+  private func updateViewPresets(_ completionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = nil) {
     let source = selectedSoundFontManager.selected?.patches ?? []
     viewSlots.removeAll()
     for (index, preset) in source.enumerated() {
@@ -298,6 +298,7 @@ extension PatchesTableViewManager {
     }
 
     updateSectionRowCounts(reload: false)
+    view.oneShotLayoutCompletionHandler = completionHandler
     view.reloadData()
   }
 
@@ -454,23 +455,26 @@ extension PatchesTableViewManager {
 
   private func selectedSoundFontChange(_ event: SelectedSoundFontEvent) {
     guard case let .changed(old: old, new: new) = event else { return }
-    os_log(
-      .debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
-      old?.displayName ?? "N/A", new?.displayName ?? "N/A")
-    updateViewPresets()
-    if view.isEditing {
-      if let soundFont = new {
-        initializeVisibilitySelections(soundFont: soundFont)
-      }
-      return
-    }
+    os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
+           old?.displayName ?? "N/A", new?.displayName ?? "N/A")
 
-    if activePatchManager.activeSoundFont == new {
-      selectActive(animated: false)
-    } else if !showingSearchResults {
-      view.layoutIfNeeded()
-      hideSearchBar(animated: false)
-    }
+    let oneShotLayoutCompletionHandler: PatchesTableView.OneShotLayoutCompletionHandler? = {
+      if view.isEditing {
+        if let soundFont = new {
+          return { self.initializeVisibilitySelections(soundFont: soundFont) }
+        }
+      }
+      else {
+        if activePatchManager.activeSoundFont == new {
+          return { self.selectActive(animated: false) }
+        } else if !showingSearchResults {
+          return { self.hideSearchBar(animated: false) }
+        }
+      }
+      return nil
+    }()
+
+    updateViewPresets(oneShotLayoutCompletionHandler)
   }
 
   private func favoritesRestored() {
@@ -505,9 +509,10 @@ extension PatchesTableViewManager {
   }
 
   private func soundFontsRestored() {
-    updateViewPresets()
-    selectActive(animated: false)
-    hideSearchBar(animated: false)
+    updateViewPresets {
+      self.selectActive(animated: false)
+      self.hideSearchBar(animated: false)
+    }
   }
 
   private func soundFontsChange(_ event: SoundFontsEvent) {

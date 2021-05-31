@@ -105,6 +105,7 @@
 		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePatchKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePatchKind.swift */; };
 		BD27E98B2516113600591FD0 /* UIControl+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */; };
+		BD3799882664BADE004C8EA5 /* PatchesTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3799872664BADD004C8EA5 /* PatchesTableView.swift */; };
 		BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */; };
 		BD3F44C525018EB100653ABD /* CachedValueTypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */; };
 		BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C425018EB000653ABD /* TypedNotification.swift */; };
@@ -316,6 +317,7 @@
 		BD27E986251605CD00591FD0 /* ActivePatchKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePatchKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Extensions.swift"; sourceTree = "<group>"; };
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
+		BD3799872664BADD004C8EA5 /* PatchesTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchesTableView.swift; sourceTree = "<group>"; };
 		BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
+				BD3799872664BADD004C8EA5 /* PatchesTableView.swift */,
 				BD074BF623CDAF51001987E9 /* PatchesTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
@@ -1039,6 +1042,7 @@
 				BD074C8523CDAF51001987E9 /* FontEditorDelegate.swift in Sources */,
 				BDCCFCBA23F5A7D700DD518D /* Timer+Extensions.swift in Sources */,
 				BDD5FA6F25043C2500367F0B /* Managed.swift in Sources */,
+				BD3799882664BADE004C8EA5 /* PatchesTableView.swift in Sources */,
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
 				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
 				BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */,

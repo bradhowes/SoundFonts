@@ -12,7 +12,7 @@ public final class SoundFontsViewController: UIViewController {
 
   @IBOutlet private weak var soundFontsView: UITableView!
   @IBOutlet private weak var tagsView: UITableView!
-  @IBOutlet private weak var patchesView: UITableView!
+  @IBOutlet private weak var patchesView: PatchesTableView!
   @IBOutlet private weak var searchBar: UISearchBar!
   @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
