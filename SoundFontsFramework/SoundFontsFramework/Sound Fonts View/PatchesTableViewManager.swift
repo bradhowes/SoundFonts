@@ -921,24 +921,20 @@ extension PatchesTableViewManager {
 
     switch getSlot(at: indexPath) {
     case let .preset(presetIndex):
-      let soundFontAndPatch = SoundFontAndPatch(
-        soundFontKey: soundFont.key, patchIndex: presetIndex)
-      let preset = soundFont.patches[presetIndex]
-      os_log(
-        .debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
-        preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
-      cell.updateForPreset(
-        name: preset.presetConfig.name,
-        isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch
-          && activePatchManager.activeFavorite == nil)
+      let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
+      // FIXME: 2 crash reports where presetIndex is invalid
+      let preset = soundFont.patches[max(presetIndex, soundFont.patches.count - 1)]
+      os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
+             preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
+      cell.updateForPreset(name: preset.presetConfig.name,
+                           isActive: soundFontAndPatch == activePatchManager.active.soundFontAndPatch
+                                && activePatchManager.activeFavorite == nil)
     case let .favorite(key):
       let favorite = favorites.getBy(key: key)
-      os_log(
-        .debug, log: log, "updateCell - favorite '%{public}s' in row %d section %d",
-        favorite.presetConfig.name, indexPath.row, indexPath.section)
-      cell.updateForFavorite(
-        name: favorite.presetConfig.name,
-        isActive: activePatchManager.activeFavorite == favorite)
+      os_log(.debug, log: log, "updateCell - favorite '%{public}s' in row %d section %d",
+             favorite.presetConfig.name, indexPath.row, indexPath.section)
+      cell.updateForFavorite(name: favorite.presetConfig.name,
+                             isActive: activePatchManager.activeFavorite == favorite)
     }
     return cell
   }
