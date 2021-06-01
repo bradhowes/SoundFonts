@@ -4,6 +4,7 @@ disabled_rules:
   - nesting
   - opening_brace
   - function_body_length
+  - cyclomatic_complexity
   
 opt_in_rules:
   - empty_count
