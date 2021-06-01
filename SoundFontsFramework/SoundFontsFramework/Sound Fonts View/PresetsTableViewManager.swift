@@ -67,11 +67,9 @@ final class PresetsTableViewManager: NSObject {
     super.init()
 
     // When there is a change in size, hide the search bar if it is not in use.
-    contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { view, change in
+    contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { _, change in
       guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
-      if !self.searchBar.isFirstResponder && view.contentOffset.y < self.searchBar.frame.size.height {
-        view.contentOffset = CGPoint(x: 0, y: self.searchBar.frame.size.height)
-      }
+      self.hideSearchBar(animated: true)
     }
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
