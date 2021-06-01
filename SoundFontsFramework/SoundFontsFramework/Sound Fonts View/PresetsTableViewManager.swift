@@ -2,7 +2,7 @@
 import UIKit
 import os
 
-/// Number of sections we partition patches into
+/// Number of sections we partition presets into
 private let sectionSize = 20
 
 private enum Slot: Equatable {
@@ -10,8 +10,15 @@ private enum Slot: Equatable {
   case favorite(key: LegacyFavorite.Key)
 }
 
-/// Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
-/// broken up into smaller components.
+/**
+ Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
+ broken up into smaller components. There are three four areas of functionality:
+
+ - table view drawing and selecting
+ - row visibility editing
+ - searching
+ - row swiping
+*/
 final class PresetsTableViewManager: NSObject {
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
@@ -27,13 +34,14 @@ final class PresetsTableViewManager: NSObject {
   private let infoBar: InfoBar
 
   private var viewSlots = [Slot]()
-  private var searchSlots = [Slot]()
+  private var searchSlots: [Slot]?
   private var sectionRowCounts = [Int]()
 
   private var notificationObserver: NSObjectProtocol?
   private var contentSizeObserver: NSKeyValueObservation?
 
   private var searchBar: UISearchBar { viewController.searchBar }
+  private var showingSearchResults: Bool { searchSlots != nil }
 
   /**
      Construct a new patches table view manager.
@@ -130,7 +138,7 @@ extension PresetsTableViewManager: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    showingSearchResults ? searchSlots.count : sectionRowCounts[section]
+    searchSlots?.count ?? sectionRowCounts[section]
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -171,21 +179,23 @@ extension PresetsTableViewManager: UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    os_log(.debug, log: log, "tableView.didSelectRow")
     if view.isEditing {
       setSlotVisibility(at: indexPath, state: true)
       return
     }
 
     let slot = getSlot(at: indexPath)
-    dismissSearchResults()
+    let wasSearching = dismissSearchResults()
 
     switch slot {
-    case let .preset(presetIndex): selectPreset(presetIndex)
-    case let .favorite(key): selectFavorite(key)
+    case let .preset(presetIndex): selectedPreset(presetIndex, wasSearching: wasSearching)
+    case let .favorite(key): selectedFavorite(key, wasSearching: wasSearching)
     }
   }
 
   func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    os_log(.debug, log: log, "tableView.didDeselectRow")
     guard view.isEditing else { return }
     setSlotVisibility(at: indexPath, state: false)
   }
@@ -210,7 +220,15 @@ extension PresetsTableViewManager: UITableViewDelegate {
 }
 
 extension PresetsTableViewManager: UISearchBarDelegate {
+
+  /**
+   Notification from searchBar that the text value changed. NOTE: this is not invoked when programmatically set.
+
+   - parameter searchBar: the UISearchBar where the change took place
+   - parameter searchText: the current search term
+   */
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    os_log(.debug, log: log, "searchBar.textDidChange - %{public}s", searchText)
     search(for: searchBar.searchTerm ?? "")
   }
 }
@@ -222,18 +240,24 @@ extension PresetsTableViewManager {
     return closure(soundFont)
   }
 
-  private func selectPreset(_ presetIndex: Int) {
+  private func selectedPreset(_ presetIndex: Int, wasSearching: Bool) {
     withSoundFont { soundFont in
       let soundFontAndPatch = SoundFontAndPatch(soundFontKey: soundFont.key, patchIndex: presetIndex)
       if !activePatchManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample) {
+        if let indexPath = getPresetIndexPath(for: soundFontAndPatch) {
+          view.scrollToRow(at: indexPath, at: .none, animated: false)
+        }
         hideSearchBar(animated: true)
       }
     }
   }
 
-  private func selectFavorite(_ key: LegacyFavorite.Key) {
+  private func selectedFavorite(_ key: LegacyFavorite.Key, wasSearching: Bool) {
     let favorite = favorites.getBy(key: key)
     if !activePatchManager.setActive(favorite: favorite, playSample: Settings.shared.playSample) {
+      if let indexPath = getPresetIndexPath(for: key) {
+        view.scrollToRow(at: indexPath, at: .none, animated: false)
+      }
       hideSearchBar(animated: true)
     }
   }
@@ -241,14 +265,17 @@ extension PresetsTableViewManager {
   private func showSearchBar() {
     guard searchBar.isFirstResponder == false else { return }
 
+    let term = self.lastSearchText ?? ""
+    self.searchBar.text = term
+
     searchBar.inputAssistantItem.leadingBarButtonGroups = []
     searchBar.inputAssistantItem.trailingBarButtonGroups = []
-    UIView.animate(withDuration: 0.25) {
+
+    UIView.animate(withDuration: 0.125) {
       self.searchBar.becomeFirstResponder()
       self.view.contentOffset = CGPoint.zero
     } completion: { _ in
-      if let term = self.lastSearchText, !term.isEmpty {
-        self.searchBar.text = term
+      if !term.isEmpty {
         self.search(for: term)
       }
     }
@@ -315,7 +342,7 @@ extension PresetsTableViewManager {
     let button = sender as? UIButton
     button?.tintColor = view.isEditing ? .systemTeal : .systemOrange
     if view.isEditing == false {
-      dismissSearchResults()
+      _ = dismissSearchResults()
       beginVisibilityEditing()
     } else {
       endVisibilityEditing()
@@ -529,7 +556,7 @@ extension PresetsTableViewManager {
   private func getPresetIndexPath(for key: LegacyFavorite.Key) -> IndexPath? {
     guard favorites.contains(key: key) else { return nil }
     if showingSearchResults {
-      guard let row = searchSlots.findFavoriteKey(key) else { return nil }
+      guard let row = searchSlots?.findFavoriteKey(key) else { return nil }
       return IndexPath(row: row, section: 0)
     }
 
@@ -544,7 +571,7 @@ extension PresetsTableViewManager {
     else { return nil }
     let presetIndex = soundFontAndPatch.patchIndex
     if showingSearchResults {
-      guard let row = searchSlots.findPresetIndex(presetIndex) else { return nil }
+      guard let row = searchSlots?.findPresetIndex(presetIndex) else { return nil }
       return IndexPath(row: row, section: 0)
     }
 
@@ -552,15 +579,14 @@ extension PresetsTableViewManager {
     return IndexPath(slotIndex: index)
   }
 
-  private var showingSearchResults: Bool { searchBar.searchTerm != nil }
-
-  private func dismissSearchResults() {
-    guard searchBar.searchTerm != nil else { return }
+  private func dismissSearchResults() -> Bool {
+    guard searchBar.searchTerm != nil else { return false }
     os_log(.debug, log: log, "dismissSearchResults")
     searchBar.text = nil
-    searchSlots.removeAll()
+    searchSlots = nil
     view.reloadData()
     dismissSearchKeyboard()
+    return true
   }
 
   private func search(for searchTerm: String) {
@@ -577,14 +603,15 @@ extension PresetsTableViewManager {
         return name.localizedCaseInsensitiveContains(searchTerm)
       }
     }
-    os_log(.debug, log: log, "found %d matches", searchSlots.count)
+    os_log(.debug, log: log, "found %d matches", searchSlots?.count ?? 0)
+
     view.reloadData()
   }
 
   public func hideSearchBar(animated: Bool) {
     dismissSearchKeyboard()
     if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height * 2 { return }
-    os_log(.info, log: log, "hiding search bar")
+    os_log(.info, log: log, "hiding search bar - %d", animated)
     let view = self.view
     let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
     if animated {
@@ -598,15 +625,14 @@ extension PresetsTableViewManager {
   }
 
   func selectActive(animated: Bool) {
-    os_log(.debug, log: log, "selectActive")
-    guard
-      let activeSlot: Slot = {
-        switch activePatchManager.active {
-        case let .preset(soundFontAndPatch): return .preset(index: soundFontAndPatch.patchIndex)
-        case let .favorite(favorite): return .favorite(key: favorite.key)
-        case .none: return nil
-        }
-      }()
+    os_log(.debug, log: log, "selectActive - %d", animated)
+    guard let activeSlot: Slot = {
+      switch activePatchManager.active {
+      case let .preset(soundFontAndPatch): return .preset(index: soundFontAndPatch.patchIndex)
+      case let .favorite(favorite): return .favorite(key: favorite.key)
+      case .none: return nil
+      }
+    }()
     else { return }
 
     guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
@@ -851,9 +877,7 @@ extension PresetsTableViewManager {
 
 extension PresetsTableViewManager {
 
-  private func getSlot(at indexPath: IndexPath) -> Slot {
-    showingSearchResults ? searchSlots[indexPath] : viewSlots[indexPath]
-  }
+  private func getSlot(at indexPath: IndexPath) -> Slot { searchSlots?[indexPath] ?? viewSlots[indexPath] }
 
   private func makeSoundFontAndPatch(at indexPath: IndexPath) -> SoundFontAndPatch? {
     guard let soundFont = selectedSoundFontManager.selected else { return nil }

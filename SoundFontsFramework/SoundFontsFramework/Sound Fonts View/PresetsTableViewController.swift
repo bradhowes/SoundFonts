@@ -32,7 +32,7 @@ extension PresetsTableViewController {
   }
 
   public override func viewDidLayoutSubviews() {
-    os_log(.info, log: log, "viewDidLayoutSubviews - %d %d", isBeingPresented, isBeingDismissed)
+    os_log(.debug, log: log, "viewDidLayoutSubviews")
     super.viewDidLayoutSubviews()
     oneShotLayoutCompletionHandler?()
     oneShotLayoutCompletionHandler = nil
