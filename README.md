@@ -7,13 +7,15 @@
 
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
-![](images/image.gif)
+![](images/landscape.png)
 
 This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
 as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free (and of variable
 quaility). There are four sound font files that are bundled with the application, and more can be added via the iCloud
 integration.
+
+![](images/portrait.png)
 
 > NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
 > to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
@@ -35,16 +37,19 @@ applications that support AUv3 audio units, such as
 [GarageBand](https://apps.apple.com/us/app/garageband/id408709785) and
 [AUM](https://apps.apple.com/app/id1055636344).
 
-![](images/AUM.png)
+![](images/AUM1.png) ![](images/AUM2.png)
 
 The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add them to your signal processing
 chain in an AUv3 host such as AUM.
+
+![](images/effects.png)
 
 I have additional AUv3 effects available:
 
 - [Simply Flange](https://github.com/bradhowes/SimplyFlange) -- a simple flange effect
 - [Simply Trremolo](https://github.com/bradhowes/SimplyTremolo) -- a simple tremolo effect
 - [Simply Phaser](https://github.com/bradhowes/SimplyPhaser) -- a simple phaser effect
+
 
 ## User Interface
 
@@ -82,6 +87,8 @@ Double-tapping on the info bar switches between the fonts view and the the "favo
 moving it to a new location among the others. There are various parameters one can adjust for a favorite that remain independent of the 
 original preset it derived from. These include:
 
+![](images/favorite.png)
+
 - the first note of the keyboard when the favorite becomes active
 - a custom tuning to apply
 - pitch bend range
@@ -96,6 +103,10 @@ Also, you can have more than one favorite for the same preset, each with its own
 You can create custom "tags" and assign them to sound fonts in your collection. Selecting a tag acts as a filter, only showing the sound fonts
 are a member of the active tag. This can be an easy and effective way to organize your sound fonts files by categories or even by performance
 or song.
+
+## Settings
+
+![](images/settings1.png) ![](images/settings2.png)
 
 ## Dependencies
 

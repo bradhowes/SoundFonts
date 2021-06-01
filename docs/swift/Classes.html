@@ -17,7 +17,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> 2.21.2 Docs</a> (63% documented)</p>
+        <p><a href="index.html"> 2.21.6 Docs</a> (63% documented)</p>
         <p class="header-right"><a href="https://github.com/bradhowes/SoundFonts"><img src="img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="search.json">
@@ -53,9 +53,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/AppDelegate.html">AppDelegate</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/AppState.html">AppState</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ArrowView.html">ArrowView</a>
@@ -113,9 +110,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/EffectsController.html">EffectsController</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/Favorite.html">Favorite</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/FavoriteCell.html">FavoriteCell</a>
@@ -229,22 +223,46 @@
                 <a href="Classes/MainViewController.html">MainViewController</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/ManagedAppState.html">ManagedAppState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedDelayConfig.html">ManagedDelayConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedFavorite.html">ManagedFavorite</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedPreset.html">ManagedPreset</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedPresetConfig.html">ManagedPresetConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedReverbConfig.html">ManagedReverbConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedSoundFont.html">ManagedSoundFont</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ManagedTag.html">ManagedTag</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/NotificationObserver.html">NotificationObserver</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/PatchesTableViewManager.html">PatchesTableViewManager</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Classes/PersistentContainer.html">PersistentContainer</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/Preset.html">Preset</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/PresetChangeManager.html">PresetChangeManager</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/PresetsPageViewController.html">PresetsPageViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PresetsTableViewController.html">PresetsTableViewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/PresetsTableViewManager.html">PresetsTableViewManager</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/ReverbEffect.html">ReverbEffect</a>
@@ -271,12 +289,6 @@
                 <a href="Classes/SettingsViewController.html">SettingsViewController</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/SoundFont.html">SoundFont</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/SoundFont/Kind.html">– Kind</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Classes/SoundFontCoreData.html">SoundFontCoreData</a>
               </li>
               <li class="nav-group-task">
@@ -299,9 +311,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Classes/TableViewDataSource.html">TableViewDataSource</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Classes/Tag.html">Tag</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/TagsTableViewController.html">TagsTableViewController</a>
@@ -574,6 +583,9 @@
                 <a href="Protocols/FontEditorDelegate.html">FontEditorDelegate</a>
               </li>
               <li class="nav-group-task">
+                <a href="Protocols/FontsViewManager.html">FontsViewManager</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/InfoBar.html">InfoBar</a>
               </li>
               <li class="nav-group-task">
@@ -587,9 +599,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/NibLoadableView.html">NibLoadableView</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Protocols/PatchesViewManager.html">PatchesViewManager</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ReusableView.html">ReusableView</a>
@@ -694,6 +703,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Structs/TouchKeyMap.html">TouchKeyMap</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/VersionComponents.html">VersionComponents</a>
               </li>
             </ul>
           </li>
@@ -801,7 +813,8 @@ not between controllers themselves. This is enforced here through access restric
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Components</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="o">&gt;</span><span class="p">:</span> <span class="kt"><a href="Classes/SubscriptionManager.html">SubscriptionManager</a></span><span class="o">&lt;</span><span class="kt"><a href="Enums/ComponentContainerEvent.html">ComponentContainerEvent</a></span><span class="o">&gt;</span><span class="p">,</span>
-                                                    <span class="kt"><a href="Protocols/ComponentContainer.html">ComponentContainer</a></span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="Protocols/ControllerConfiguration.html">ControllerConfiguration</a></span></code></pre>
+  <span class="kt"><a href="Protocols/ComponentContainer.html">ComponentContainer</a></span>
+<span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt"><a href="Protocols/ControllerConfiguration.html">ControllerConfiguration</a></span></code></pre>
 
                         </div>
                       </div>
@@ -867,9 +880,9 @@ not between controllers themselves. This is enforced here through access restric
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)AppState"></a>
-                    <a name="//apple_ref/swift/Class/AppState" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)AppState">AppState</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedDelayConfig"></a>
+                    <a name="//apple_ref/swift/Class/ManagedDelayConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedDelayConfig">ManagedDelayConfig</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -879,14 +892,14 @@ not between controllers themselves. This is enforced here through access restric
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Classes/AppState.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ManagedDelayConfig.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">AppState</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppState</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedDelayConfig</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedDelayConfig</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
 
                         </div>
                       </div>
@@ -896,9 +909,9 @@ not between controllers themselves. This is enforced here through access restric
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)Favorite"></a>
-                    <a name="//apple_ref/swift/Class/Favorite" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)Favorite">Favorite</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedAppState"></a>
+                    <a name="//apple_ref/swift/Class/ManagedAppState" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedAppState">ManagedAppState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -908,14 +921,14 @@ not between controllers themselves. This is enforced here through access restric
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Classes/Favorite.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ManagedAppState.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">Favorite</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Favorite</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedAppState</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedAppState</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
 
                         </div>
                       </div>
@@ -925,9 +938,9 @@ not between controllers themselves. This is enforced here through access restric
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)Preset"></a>
-                    <a name="//apple_ref/swift/Class/Preset" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)Preset">Preset</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedFavorite"></a>
+                    <a name="//apple_ref/swift/Class/ManagedFavorite" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedFavorite">ManagedFavorite</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -937,14 +950,14 @@ not between controllers themselves. This is enforced here through access restric
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Classes/Preset.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ManagedFavorite.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">Preset</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Preset</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedFavorite</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedFavorite</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
 
                         </div>
                       </div>
@@ -954,9 +967,9 @@ not between controllers themselves. This is enforced here through access restric
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)SoundFont"></a>
-                    <a name="//apple_ref/swift/Class/SoundFont" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)SoundFont">SoundFont</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedPreset"></a>
+                    <a name="//apple_ref/swift/Class/ManagedPreset" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedPreset">ManagedPreset</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -966,14 +979,14 @@ not between controllers themselves. This is enforced here through access restric
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Classes/SoundFont.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ManagedPreset.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">SoundFont</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SoundFont</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedPreset</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedPreset</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
 
                         </div>
                       </div>
@@ -983,9 +996,9 @@ not between controllers themselves. This is enforced here through access restric
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)Tag"></a>
-                    <a name="//apple_ref/swift/Class/Tag" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)Tag">Tag</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedPresetConfig"></a>
+                    <a name="//apple_ref/swift/Class/ManagedPresetConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedPresetConfig">ManagedPresetConfig</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -995,14 +1008,101 @@ not between controllers themselves. This is enforced here through access restric
                       <div class="abstract">
                         <p>Undocumented</p>
 
-                        <a href="Classes/Tag.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ManagedPresetConfig.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">Tag</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Tag</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedPresetConfig</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ManagedPresetConfig</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedReverbConfig"></a>
+                    <a name="//apple_ref/swift/Class/ManagedReverbConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedReverbConfig">ManagedReverbConfig</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/ManagedReverbConfig.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedReverbConfig</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="kt">ManagedReverbConfig</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedSoundFont"></a>
+                    <a name="//apple_ref/swift/Class/ManagedSoundFont" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedSoundFont">ManagedSoundFont</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Definition of the Core Data managed sound font entities.</p>
+
+                        <a href="Classes/ManagedSoundFont.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedSoundFont</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedSoundFont</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)ManagedTag"></a>
+                    <a name="//apple_ref/swift/Class/ManagedTag" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)ManagedTag">ManagedTag</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/ManagedTag.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@objc</span><span class="p">(</span><span class="kt">ManagedTag</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">ManagedTag</span> <span class="p">:</span> <span class="kt">NSManagedObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/Managed.html">Managed</a></span></code></pre>
 
                         </div>
                       </div>
@@ -1088,8 +1188,9 @@ based on code from obj.io Core Data book.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TableViewDataSource</span><span class="o">&lt;</span><span class="kt">Delegate</span><span class="p">:</span> <span class="kt"><a href="Protocols/TableViewDataSourceDelegate.html">TableViewDataSourceDelegate</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">UITableViewDataSource</span><span class="p">,</span>
-                                                                         <span class="kt">NSFetchedResultsControllerDelegate</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TableViewDataSource</span><span class="o">&lt;</span><span class="kt">Delegate</span><span class="p">:</span> <span class="kt"><a href="Protocols/TableViewDataSourceDelegate.html">TableViewDataSourceDelegate</a></span><span class="o">&gt;</span><span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span>
+  <span class="kt">UITableViewDataSource</span><span class="p">,</span>
+  <span class="kt">NSFetchedResultsControllerDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -1141,7 +1242,7 @@ based on code from obj.io Core Data book.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>A tag is just a unique name that can be associated with zero or more sound fonts. By default there is an &lsquo;all&rsquo; tag
-which matches all sound fonts.</p>
+which matches all sound fonts, and a &lsquo;built-in&rsquo; tag that shows just those that come with the app.</p>
 
                         <a href="Classes/LegacyTag.html" class="slightly-smaller">See more</a>
                       </div>
@@ -1210,7 +1311,8 @@ which matches all sound fonts.</p>
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">FavoriteEditor</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FavoriteEditor</span><span class="p">:</span> <span class="kt">UITextFieldDelegate</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FavoriteEditor</span><span class="p">:</span> <span class="kt">UITextViewDelegate</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FavoriteEditor</span><span class="p">:</span> <span class="kt">UIPopoverPresentationControllerDelegate</span><span class="p">,</span> <span class="kt">UIAdaptivePresentationControllerDelegate</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FavoriteEditor</span><span class="p">:</span> <span class="kt">UIPopoverPresentationControllerDelegate</span><span class="p">,</span>
+                          <span class="kt">UIAdaptivePresentationControllerDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -2090,7 +2192,8 @@ instance. It also maintains an array of SoundFont.Key values that are ordered by
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">FontEditor</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FontEditor</span><span class="p">:</span> <span class="kt">UITextFieldDelegate</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FontEditor</span><span class="p">:</span> <span class="kt">UIPopoverPresentationControllerDelegate</span><span class="p">,</span> <span class="kt">UIAdaptivePresentationControllerDelegate</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FontEditor</span><span class="p">:</span> <span class="kt">UIPopoverPresentationControllerDelegate</span><span class="p">,</span>
+  <span class="kt">UIAdaptivePresentationControllerDelegate</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">FontEditor</span><span class="p">:</span> <span class="kt"><a href="Protocols/SegueHandler.html">SegueHandler</a></span></code></pre>
 
                         </div>
@@ -2132,9 +2235,38 @@ are available in the app.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/c:@M@SoundFontsFramework@objc(cs)PatchesTableViewManager"></a>
-                    <a name="//apple_ref/swift/Class/PatchesTableViewManager" class="dashAnchor"></a>
-                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)PatchesTableViewManager">PatchesTableViewManager</a>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)PresetsTableViewController"></a>
+                    <a name="//apple_ref/swift/Class/PresetsTableViewController" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)PresetsTableViewController">PresetsTableViewController</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>View controller for the UITableView showing the presets of a sound font</p>
+
+                        <a href="Classes/PresetsTableViewController.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">PresetsTableViewController</span> <span class="p">:</span> <span class="kt">UITableViewController</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PresetsTableViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/ControllerConfiguration.html">ControllerConfiguration</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@SoundFontsFramework@objc(cs)PresetsTableViewManager"></a>
+                    <a name="//apple_ref/swift/Class/PresetsTableViewManager" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@SoundFontsFramework@objc(cs)PresetsTableViewManager">PresetsTableViewManager</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -2143,18 +2275,25 @@ are available in the app.</p>
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
-broken up into smaller components.</p>
+broken up into smaller components. There are three four areas of functionality:</p>
 
-                        <a href="Classes/PatchesTableViewManager.html" class="slightly-smaller">See more</a>
+<ul>
+<li>table view drawing and selecting</li>
+<li>row visibility editing</li>
+<li>searching</li>
+<li>row swiping</li>
+</ul>
+
+                        <a href="Classes/PresetsTableViewManager.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">PatchesTableViewManager</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PatchesTableViewManager</span><span class="p">:</span> <span class="kt">UITableViewDataSource</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PatchesTableViewManager</span><span class="p">:</span> <span class="kt">UITableViewDelegate</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PatchesTableViewManager</span><span class="p">:</span> <span class="kt">UISearchBarDelegate</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">PresetsTableViewManager</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PresetsTableViewManager</span><span class="p">:</span> <span class="kt">UITableViewDataSource</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PresetsTableViewManager</span><span class="p">:</span> <span class="kt">UITableViewDelegate</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">PresetsTableViewManager</span><span class="p">:</span> <span class="kt">UISearchBarDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -2188,7 +2327,7 @@ API for this class.</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">SoundFontsViewController</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt">UIDocumentPickerDelegate</span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/ControllerConfiguration.html">ControllerConfiguration</a></span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/PatchesViewManager.html">PatchesViewManager</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/FontsViewManager.html">FontsViewManager</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/FontEditorActionGenerator.html">FontEditorActionGenerator</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/SegueHandler.html">SegueHandler</a></span></code></pre>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">SoundFontsViewController</span><span class="p">:</span> <span class="kt"><a href="Protocols/FontEditorDelegate.html">FontEditorDelegate</a></span></code></pre>
@@ -2211,8 +2350,8 @@ API for this class.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Specialization of UITableViewCell that will display a SoundFont entry or a Preset entry. Better would be to separate
-these two into distinct classes.</p>
+                        <p>Specialization of UITableViewCell that will display a SoundFont name, a Preset name, or a Tag name.
+Probably better would be to separate these into distinct classes, but this works for now.</p>
 
                         <a href="Classes/TableCell.html" class="slightly-smaller">See more</a>
                       </div>
@@ -3048,7 +3187,7 @@ output, update the Keyboard and NotePlayer instances so that they can show an in
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-05-26)</p>
+          <p>&copy; 2021 <a class="link" href="https://linkedin.com/in/bradhowes" target="_blank" rel="external">Brad Howes</a>. All rights reserved. (Last updated: 2021-06-01)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
