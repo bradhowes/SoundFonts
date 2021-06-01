@@ -37,8 +37,8 @@ applications that support AUv3 audio units, such as
 [GarageBand](https://apps.apple.com/us/app/garageband/id408709785) and
 [AUM](https://apps.apple.com/app/id1055636344).
 
-![AUM 1](images/AUM1.png)
-![AUM 2](images/AUM2.png)
+![AUM 1](images/AUM1.PNG)
+![AUM 2](images/AUM2.PNG)
 
 The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add them to your signal processing
 chain in an AUv3 host such as AUM.
