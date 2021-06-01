@@ -23,6 +23,10 @@ public enum InfoBarEvent {
   case showEffects
   /// Show/hide the tags list
   case showTags
+
+  case showMoreButtons
+
+  case hideMoreButtons
 }
 
 /// Handles the actions and display of items in a hypothetical info bar above the keyboard
@@ -41,7 +45,7 @@ public protocol InfoBar: AnyObject {
 
      - parameter value: the value to show
      */
-  func setStatus(_ value: String)
+  func setStatusText(_ value: String)
 
   /**
      Set the lowest and highest note labels of the keyboard

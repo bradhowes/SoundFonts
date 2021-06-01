@@ -64,22 +64,21 @@ public final class InfoBarController: UIViewController {
     showEffects.tintColor = Settings.instance.showEffects ? .systemOrange : .systemTeal
   }
 
-  public override func willTransition(
-    to newCollection: UITraitCollection,
-    with coordinator: UIViewControllerTransitionCoordinator
-  ) {
+  /**
+   Detect changes in orientation and adjust button layouts
+
+   - parameter newCollection: the new size traits
+   - parameter coordinator: the animation coordinator
+   */
+  public override func willTransition(to newCollection: UITraitCollection,
+                                      with coordinator: UIViewControllerTransitionCoordinator) {
     super.willTransition(to: newCollection, with: coordinator)
-    let showingMoreButtons = self.showingMoreButtons
     coordinator.animate(
       alongsideTransition: { _ in
-        if showingMoreButtons {
-          self.hideMoreButtons()
-        }
+        self.hideMoreButtons()
       },
       completion: { _ in
-        if showingMoreButtons {
-          self.hideMoreButtons()
-        }
+        self.hideMoreButtons()
       })
   }
 }
@@ -146,16 +145,8 @@ extension InfoBarController: InfoBar {
      */
   public func addEventClosure(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure) {
     switch event {
-    case .shiftKeyboardUp:
-      highestKey.addClosure(closure)
-      highestKey.isHidden = false
-      slidingKeyboard.isHidden = false
-
-    case .shiftKeyboardDown:
-      lowestKey.addClosure(closure)
-      lowestKey.isHidden = false
-      slidingKeyboard.isHidden = false
-
+    case .shiftKeyboardUp: addShiftKeyboardUpClosure(closure)
+    case .shiftKeyboardDown: addShiftKeyboardDownClosure(closure)
     case .doubleTap: doubleTap.addClosure(closure)
     case .addSoundFont: addSoundFont.addClosure(closure)
     case .showGuide: showGuide.addClosure(closure)
@@ -163,6 +154,34 @@ extension InfoBarController: InfoBar {
     case .editVisibility: editVisibility.addClosure(closure)
     case .showEffects: showEffects.addClosure(closure)
     case .showTags: showTags.addClosure(closure)
+    case .showMoreButtons: addShowMoreButtonsClosure(closure)
+    case .hideMoreButtons: addHideMoreButtonsClosure(closure)
+    }
+  }
+
+  private func addShiftKeyboardUpClosure(_ closure: @escaping UIControl.Closure) {
+    highestKey.addClosure(closure)
+    highestKey.isHidden = false
+    slidingKeyboard.isHidden = false
+  }
+
+  private func addShiftKeyboardDownClosure(_ closure: @escaping UIControl.Closure) {
+    lowestKey.addClosure(closure)
+    lowestKey.isHidden = false
+    slidingKeyboard.isHidden = false
+  }
+
+  private func addShowMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
+    showMoreButtonsButton.addClosure { [weak self] button in
+      guard let self = self, self.showingMoreButtons else { return }
+      closure(button)
+    }
+  }
+
+  private func addHideMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
+    showMoreButtonsButton.addClosure { [weak self] button in
+      guard let self = self, !self.showingMoreButtons else { return }
+      closure(button)
     }
   }
 
@@ -175,9 +194,7 @@ extension InfoBarController: InfoBar {
       case .editVisibility: return editVisibility
       case .showEffects: return showEffects
       case .showTags: return showTags
-      case .shiftKeyboardUp: return nil
-      case .shiftKeyboardDown: return nil
-      case .doubleTap: return nil
+      default: return nil
       }
     }()
     button?.tintColor = .systemTeal
@@ -188,7 +205,7 @@ extension InfoBarController: InfoBar {
 
      - parameter value: the text to display
      */
-  public func setStatus(_ value: String) {
+  public func setStatusText(_ value: String) {
     status.text = value
     startStatusAnimation()
   }

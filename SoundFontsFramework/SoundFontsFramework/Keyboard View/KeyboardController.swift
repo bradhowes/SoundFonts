@@ -334,13 +334,11 @@ extension KeyboardController {
 
   private func updateInfoBar(note: Note) {
     if isMuted {
-      infoBar.setStatus("🔇")
+      infoBar.setStatusText("🔇")
+    } else if Settings.shared.showSolfegeLabel {
+      infoBar.setStatusText(note.label + " - " + note.solfege)
     } else {
-      if Settings.shared.showSolfegeLabel {
-        infoBar.setStatus(note.label + " - " + note.solfege)
-      } else {
-        infoBar.setStatus(note.label)
-      }
+      infoBar.setStatusText(note.label)
     }
   }
 }

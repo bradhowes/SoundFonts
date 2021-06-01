@@ -38,7 +38,7 @@ final class PresetsTableViewManager: NSObject {
   private var sectionRowCounts = [Int]()
 
   private var notificationObserver: NSObjectProtocol?
-  private var contentSizeObserver: NSKeyValueObservation?
+  private var observers = [NSKeyValueObservation]()
 
   private var searchBar: UISearchBar { viewController.searchBar }
   private var showingSearchResults: Bool { searchSlots != nil }
@@ -67,12 +67,18 @@ final class PresetsTableViewManager: NSObject {
     super.init()
 
     // When there is a change in size, hide the search bar if it is not in use.
-    contentSizeObserver = self.view.observe(\.contentSize, options: [.old, .new]) { _, change in
+    observers.append(self.view.observe(\.contentSize, options: [.old, .new]) { _, change in
       guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
       self.hideSearchBar(animated: true)
-    }
+    })
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
+    infoBar.addEventClosure(.hideMoreButtons) { _ in
+      if self.view.isEditing {
+        self.toggleVisibilityEditing(self)
+        self.infoBar.resetButtonState(.editVisibility)
+      }
+    }
 
     view.register(TableCell.self)
     view.dataSource = self
