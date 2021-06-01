@@ -15,7 +15,7 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quaility). There are four sound font files that are bundled with the application, and more can be added via the iCloud
 integration.
 
-![](images/portrait.png | width=100)
+![](images/portrait.png|width=100)
 
 > NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
 > to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
