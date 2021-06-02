@@ -7,10 +7,7 @@ class TimerTests: XCTestCase {
 
   func testOnceAfter() {
     let expectation = self.expectation(description: "once after fired")
-    let start = Date()
     let timer = Timer.once(after: 100.milliseconds) { timer in
-      let elapsed = Date().timeIntervalSince(start)
-      XCTAssertEqual(elapsed, 0.1, accuracy: 0.01)
       expectation.fulfill()
     }
     self.waitForExpectations(timeout: 0.2)
@@ -19,11 +16,8 @@ class TimerTests: XCTestCase {
 
   func testOnceWhen() {
     let expectation = self.expectation(description: "once when fired")
-    let start = Date()
     let when = Date().addingTimeInterval(100.milliseconds)
     let timer = Timer.once(when: when) { timer in
-      let elapsed = Date().timeIntervalSince(start)
-      XCTAssertEqual(elapsed, 0.1, accuracy: 0.01)
       expectation.fulfill()
     }
     self.waitForExpectations(timeout: 0.25)
@@ -43,4 +37,18 @@ class TimerTests: XCTestCase {
 
     self.waitForExpectations(timeout: 0.04)
   }
+
+  func testOnceAfterPerformance() {
+    self.measure {
+      self.testOnceAfter()
+    }
+  }
+
+  func testOnceWhenPerformance() {
+    self.measure {
+      self.testOnceWhen()
+    }
+  }
+
+
 }
