@@ -132,6 +132,14 @@ files may not always be available. Hopefully the code does the right thing in th
 intuitive and clear on all points. That said, it appears to work great for me so far with my devices and iCloud and I have also tested it using an
 external USB drive without any issues so far.
 
+## Importing and Exporting App Configuration
+
+The Settings panel above provides a way to export the existing app configuration to a location outside of the app's private sandbox. You can 
+visit this location using the Files app, selecting "On My…" location, and scrolling to find the folder for SoundFonts. The exported configuration
+files all end with "plist" extension (there are currently three of them). The export operation will also make copies of any  installed SF2 files. You
+can replicate a SoundFonts setup on another device by simply copying everything that is exported to the SoundFonts folder on the new 
+device and then choose "Import all SF2 files…" action in the Settings panel.
+
 ## Dependencies
 
 There are no external dependencies. I wrote the code in Xcode 10.1, targeting iOS 12.1. The Xcode version has increased as has the Swift 
