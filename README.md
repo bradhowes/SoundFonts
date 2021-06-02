@@ -116,9 +116,21 @@ or song.
 
 ## Settings
 
+There are a variety of customization settings available.
+
 <p align="center">
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/settings.png?raw=true" alt="Settings configuration editor"/>
 </p>
+
+The app supports MIDI connectivity via direct wired connection or via Bluetooth MIDI. 
+
+You can also control how the app adds new SF2 files. By default, the app will copy the SF2 file into the app's sandbox. This is the safest since
+it guarantees that the app will always be able to locate and use the file. However, it does take up additional space on your device. Disabling 
+the "Copy SF2 files when adding" option means the app will instead obtain a secure bookmark reference to the file's location. This can be 
+somewhere else on your device -- including the Files app for iCloud files -- or on a supported external USB storage device. However, these
+files may not always be available. Hopefully the code does the right thing in these situations, but the secure bookmarking API is not exactly
+intuitive and clear on all points. That said, it appears to work great for me so far with my devices and iCloud and I have also tested it using an
+external USB drive without any issues so far.
 
 ## Dependencies
 
