@@ -101,7 +101,7 @@ extension FavoritesManager: Favorites {
     var invalidFavoriteKeys = [Favorite.Key]()
     for index in 0..<self.count {
       let favorite = self.getBy(index: index)
-      if let preset = soundFonts.resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
+      if let preset = soundFonts.resolve(soundFontAndPatch: favorite.soundFontAndPreset) {
         if !preset.favorites.contains(favorite.key) {
           os_log(.error, log: log, "linking favorite - '%{public}s'", favorite.presetConfig.name)
           preset.favorites.append(favorite.key)

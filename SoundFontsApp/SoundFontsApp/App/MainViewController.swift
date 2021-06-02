@@ -207,7 +207,7 @@ extension MainViewController: ControllerConfiguration {
     }
   }
 
-  private func useActivePatchKind(_ activePatchKind: ActivePatchKind, playSample: Bool) {
+  private func useActivePatchKind(_ activePatchKind: ActivePresetKind, playSample: Bool) {
     volumeMonitor?.activePreset = activePatchKind != .none
     midiController?.releaseAllKeys()
     guard let sampler = self.sampler else { return }

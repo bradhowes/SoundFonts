@@ -86,7 +86,7 @@ final public class FavoriteCollection: Codable {
 extension FavoriteCollection: CustomStringConvertible {
   public var description: String {
     "["
-      + favorites.map { "\($0.soundFontAndPatch) '\($0.presetConfig.name)'" }.joined(separator: ",")
+      + favorites.map { "\($0.soundFontAndPreset) '\($0.presetConfig.name)'" }.joined(separator: ",")
       + "]"
   }
 }
@@ -94,6 +94,6 @@ extension FavoriteCollection: CustomStringConvertible {
 extension FavoriteCollection {
 
   private func findAll(associatedWith soundFontKey: SoundFont.Key) -> [Favorite] {
-    favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFontKey }
+    favorites.filter { $0.soundFontAndPreset.soundFontKey == soundFontKey }
   }
 }

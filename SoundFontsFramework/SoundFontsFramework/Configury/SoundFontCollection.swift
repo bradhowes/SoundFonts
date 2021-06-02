@@ -18,7 +18,7 @@ public final class SoundFontCollection: Codable {
   public var count: Int { sortedKeys.count }
 
   /// Obtain the first preset of the first sound font if one exists.
-  public var defaultPreset: SoundFontAndPatch? {
+  public var defaultPreset: SoundFontAndPreset? {
     isEmpty ? nil : getBy(index: 0).makeSoundFontAndPatch(at: 0)
   }
 

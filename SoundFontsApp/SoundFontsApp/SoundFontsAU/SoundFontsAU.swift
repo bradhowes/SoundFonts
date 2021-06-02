@@ -203,7 +203,7 @@ extension SoundFontsAU {
       os_log(.info, log: log, "fullState SET")
       if let fullState = newValue {
         if let data = fullState[activeSoundFontPatchKey] as? Data {
-          if let value = ActivePatchKind.decodeFromData(data) {
+          if let value = ActivePresetKind.decodeFromData(data) {
             os_log(.info, log: log, "%{public}s", value.description)
             self.activePatchManager.setActive(value)
           }

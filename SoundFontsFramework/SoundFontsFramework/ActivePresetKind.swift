@@ -4,21 +4,21 @@ import Foundation
 import os
 
 /// Container for a user-selected soundfont patch or a user-created favorite.
-public enum ActivePatchKind: Equatable {
+public enum ActivePresetKind: Equatable {
   /// Normal soundfont patch description
-  case preset(soundFontAndPatch: SoundFontAndPatch)
+  case preset(soundFontAndPatch: SoundFontAndPreset)
   /// Favorite soundfont patch
   case favorite(favorite: Favorite)
   /// Exceptional case when there is no active patch
   case none
 }
 
-extension ActivePatchKind {
+extension ActivePresetKind {
   /// Get the associated SoundFontAndPatch value
-  public var soundFontAndPatch: SoundFontAndPatch? {
+  public var soundFontAndPatch: SoundFontAndPreset? {
     switch self {
     case .preset(let soundFontAndPatch): return soundFontAndPatch
-    case .favorite(let favorite): return favorite.soundFontAndPatch
+    case .favorite(let favorite): return favorite.soundFontAndPreset
     case .none: return nil
     }
   }
@@ -33,14 +33,14 @@ extension ActivePatchKind {
   }
 }
 
-extension ActivePatchKind: Codable {
+extension ActivePresetKind: Codable {
 
   private enum InternalKey: Int {
     case preset = 0
     case favorite = 1
     case none = 2
 
-    static func key(for kind: ActivePatchKind) -> InternalKey {
+    static func key(for kind: ActivePresetKind) -> InternalKey {
       switch kind {
       case .preset(soundFontAndPatch: _): return .preset
       case .favorite(favorite: _): return .favorite
@@ -55,8 +55,8 @@ extension ActivePatchKind: Codable {
      - parameter data: container to extract from
      - returns: optional ActivePatchKind
      */
-  public static func decodeFromData(_ data: Data) -> ActivePatchKind? {
-    try? JSONDecoder().decode(ActivePatchKind.self, from: data)
+  public static func decodeFromData(_ data: Data) -> ActivePresetKind? {
+    try? JSONDecoder().decode(ActivePresetKind.self, from: data)
   }
 
   /**
@@ -75,7 +75,7 @@ extension ActivePatchKind: Codable {
     var container = try decoder.unkeyedContainer()
     guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
     switch kind {
-    case .preset: self = .preset(soundFontAndPatch: try container.decode(SoundFontAndPatch.self))
+    case .preset: self = .preset(soundFontAndPatch: try container.decode(SoundFontAndPreset.self))
     case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
     case .none: self = .none
     }
@@ -97,7 +97,7 @@ extension ActivePatchKind: Codable {
   }
 }
 
-extension ActivePatchKind: CustomStringConvertible {
+extension ActivePresetKind: CustomStringConvertible {
 
   /// Get a description string for the value
   public var description: String {

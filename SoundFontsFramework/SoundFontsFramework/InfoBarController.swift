@@ -316,7 +316,7 @@ extension InfoBarController {
     switch event {
     case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
     case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-    case let .removed(index: _, favorite: favorite): updateInfoBar(with: favorite.soundFontAndPatch)
+    case let .removed(index: _, favorite: favorite): updateInfoBar(with: favorite.soundFontAndPreset)
     case .selected: break
     case .beginEdit: break
     case .removedAll: break
@@ -325,12 +325,12 @@ extension InfoBarController {
   }
 
   private func updateInfoBar(with favorite: Favorite) {
-    if favorite.soundFontAndPatch == activePatchManager.active.soundFontAndPatch {
+    if favorite.soundFontAndPreset == activePatchManager.active.soundFontAndPatch {
       setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
     }
   }
 
-  private func updateInfoBar(with soundFontAndPatch: SoundFontAndPatch) {
+  private func updateInfoBar(with soundFontAndPatch: SoundFontAndPreset) {
     if soundFontAndPatch == activePatchManager.active.soundFontAndPatch {
       if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
         setPatchInfo(name: patch.presetConfig.name, isFavored: false)
@@ -338,7 +338,7 @@ extension InfoBarController {
     }
   }
 
-  private func useActivePatchKind(_ activePatchKind: ActivePatchKind) {
+  private func useActivePatchKind(_ activePatchKind: ActivePresetKind) {
     if let favorite = activePatchKind.favorite {
       setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
     } else if let soundFontAndPatch = activePatchKind.soundFontAndPatch {

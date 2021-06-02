@@ -2,7 +2,7 @@
 
 import Foundation
 
-/// A custom setting with a SoundFont patch and a keyboard configuration.
+/// A custom setting with a SoundFont preset and a keyboard configuration.
 public class Favorite: Codable {
 
   /// The type for the unique Key for a favorite
@@ -21,30 +21,28 @@ public class Favorite: Codable {
   /// Encoding keys with PresetConfig
   enum V2Keys: String, CodingKey {
     case key
-    case soundFontAndPatch
+    case soundFontAndPreset = "soundFontAndPatch" // legacy naming
     case presetConfig
   }
 
   /// The unique key of the favorite
   public let key: Key
   /// The key for the preset
-  public let soundFontAndPatch: SoundFontAndPatch
+  public let soundFontAndPreset: SoundFontAndPreset
   /// The custom configuration for the preset
   public var presetConfig: PresetConfig {
     didSet { PresetConfig.changedNotification.post(value: presetConfig) }
   }
 
   /**
-     Create a new instance. The name of the favorite will start with the name of the patch.
+     Create a new instance. The name of the favorite will start with the name of the preset.
 
-     - parameter patch: the Patch to use
+     - parameter soundFontAndPreset: the preset to use
      - parameter keyboardLowestNote: the starting note of the keyboard
      */
-  public init(
-    soundFontAndPatch: SoundFontAndPatch, presetConfig: PresetConfig, keyboardLowestNote: Note?
-  ) {
+  public init(soundFontAndPreset: SoundFontAndPreset, presetConfig: PresetConfig, keyboardLowestNote: Note?) {
     self.key = Key()
-    self.soundFontAndPatch = soundFontAndPatch
+    self.soundFontAndPreset = soundFontAndPreset
     self.presetConfig = presetConfig
     self.presetConfig.keyboardLowestNote = keyboardLowestNote
     self.presetConfig.keyboardLowestNoteEnabled = false
@@ -61,10 +59,10 @@ public class Favorite: Codable {
       // Attempt to decode the latest version first
       let values = try decoder.container(keyedBy: V2Keys.self)
       let key = try values.decode(Key.self, forKey: .key)
-      let soundFontAndPatch = try values.decode(SoundFontAndPatch.self, forKey: .soundFontAndPatch)
+      let soundFontAndPreset = try values.decode(SoundFontAndPreset.self, forKey: .soundFontAndPreset)
       let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
       self.key = key
-      self.soundFontAndPatch = soundFontAndPatch
+      self.soundFontAndPreset = soundFontAndPreset
       self.presetConfig = presetConfig
     } catch {
       let err = error
@@ -72,14 +70,13 @@ public class Favorite: Codable {
         // Attempt to decode previous version, building a PresetConfig from the values at hand
         let values = try decoder.container(keyedBy: V1Keys.self)
         let key = try values.decode(Key.self, forKey: .key)
-        let soundFontAndPatch = try values.decode(
-          SoundFontAndPatch.self, forKey: .soundFontAndPatch)
+        let soundFontAndPreset = try values.decode(SoundFontAndPreset.self, forKey: .soundFontAndPatch)
         let name = try values.decode(String.self, forKey: .name)
         let lowestNote = try values.decodeIfPresent(Note.self, forKey: .keyboardLowestNote)
         let gain = try values.decode(Float.self, forKey: .gain)
         let pan = try values.decode(Float.self, forKey: .pan)
         self.key = key
-        self.soundFontAndPatch = soundFontAndPatch
+        self.soundFontAndPreset = soundFontAndPreset
         self.presetConfig = PresetConfig(
           name: name, keyboardLowestNote: lowestNote,
           keyboardLowestNoteEnabled: lowestNote != nil,
@@ -100,7 +97,7 @@ public class Favorite: Codable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: V2Keys.self)
     try container.encode(key, forKey: .key)
-    try container.encode(soundFontAndPatch, forKey: .soundFontAndPatch)
+    try container.encode(soundFontAndPreset, forKey: .soundFontAndPreset)
     try container.encode(presetConfig, forKey: .presetConfig)
   }
 }
@@ -118,5 +115,5 @@ extension Favorite: Equatable {
 
 extension Favorite: CustomStringConvertible {
   /// Custom string representation for a favorite
-  public var description: String { "['\(presetConfig.name)' - \(soundFontAndPatch)]" }
+  public var description: String { "['\(presetConfig.name)' - \(soundFontAndPreset)]" }
 }

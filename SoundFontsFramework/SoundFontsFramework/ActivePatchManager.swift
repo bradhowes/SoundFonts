@@ -13,7 +13,7 @@ public enum ActivePatchEvent {
      - Parameter new: the new active patch
      - Parameter playSample: if true, play a note using the new patch
      */
-  case active(old: ActivePatchKind, new: ActivePatchKind, playSample: Bool)
+  case active(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
 }
 
 /// Maintains the active SoundFont patch being used for sound generation. There should only ever be one instance of this
@@ -23,10 +23,10 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
   private let soundFonts: SoundFonts
   private let selectedSoundFontManager: SelectedSoundFontManager
 
-  private var pending: ActivePatchKind = .none
+  private var pending: ActivePresetKind = .none
 
   /// The currently active patch (if any)
-  public private(set) var active: ActivePatchKind
+  public private(set) var active: ActivePresetKind
 
   /// The currently active sound font (if any)
   public var activeSoundFont: SoundFont? {
@@ -49,8 +49,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
   }
 
   /// Obtain the last-saved active patch value
-  static var restoredActivePatchKind: ActivePatchKind? {
-    ActivePatchKind.decodeFromData(Settings.instance.lastActivePatch)
+  static var restoredActivePatchKind: ActivePresetKind? {
+    ActivePresetKind.decodeFromData(Settings.instance.lastActivePatch)
   }
 
   /**
@@ -76,7 +76,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter soundFontAndPatch: the preset key to resolve
      - returns: optional sound font instance that corresponds to the given key
      */
-  public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> SoundFont? {
+  public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPreset) -> SoundFont? {
     return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
   }
 
@@ -86,7 +86,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter soundFontAndPatch: the preset key to resolve
      - returns: optional patch instance that corresponds to the given key
      */
-  public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> Preset? {
+  public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPreset) -> Preset? {
     return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[
       soundFontAndPatch.patchIndex]
   }
@@ -98,7 +98,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter playSample: if true, play a note using the new preset
      */
   @discardableResult
-  public func setActive(preset: SoundFontAndPatch, playSample: Bool) -> Bool {
+  public func setActive(preset: SoundFontAndPreset, playSample: Bool) -> Bool {
     setActive(.preset(soundFontAndPatch: preset), playSample: playSample)
   }
 
@@ -120,7 +120,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter playSample: if true, play a note using the new preset
      */
   @discardableResult
-  public func setActive(_ kind: ActivePatchKind, playSample: Bool = false) -> Bool {
+  public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) -> Bool {
     os_log(.debug, log: log, "setActive: %{public}s", kind.description)
     guard soundFonts.restored else {
 
@@ -171,7 +171,7 @@ extension ActivePatchManager {
     }
   }
 
-  private func save(_ kind: ActivePatchKind) {
+  private func save(_ kind: ActivePresetKind) {
     os_log(.info, log: log, "save - %{public}s", kind.description)
     DispatchQueue.global(qos: .background).async {
       if let data = kind.encodeToData() {
@@ -180,7 +180,7 @@ extension ActivePatchManager {
     }
   }
 
-  private func isValid(_ active: ActivePatchKind) -> Bool {
+  private func isValid(_ active: ActivePresetKind) -> Bool {
     guard soundFonts.restored else { return true }
     guard let soundFontAndPatch = active.soundFontAndPatch else { return false }
     return soundFonts.resolve(soundFontAndPatch: soundFontAndPatch) != nil

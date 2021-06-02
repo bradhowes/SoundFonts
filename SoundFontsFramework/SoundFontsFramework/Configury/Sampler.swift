@@ -10,7 +10,7 @@ public enum SamplerEvent {
   /// Notification that the sampler is up and running
   case running
   /// Notification that the sampler has loaded a new preset
-  case loaded(patch: ActivePatchKind)
+  case loaded(patch: ActivePresetKind)
 }
 
 /// Failure modes for a sampler

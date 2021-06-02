@@ -98,7 +98,8 @@ where T: ControllerConfiguration {
      */
   public init(inApp: Bool) {
     self.inApp = inApp
-    self.consolidatedConfigFile = ConsolidatedConfigFile()
+    let configPath = FileManager.default.sharedPath(for: ConsolidatedConfigFile.filename)
+    self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 
     self.askForReview = AskForReview(isMain: inApp)
 

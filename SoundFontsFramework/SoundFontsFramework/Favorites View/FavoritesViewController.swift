@@ -208,7 +208,7 @@ extension FavoritesViewController: SegueHandler {
     let favorite = favorites.getBy(index: indexPath.item)
     guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
-    if activePatchManager.resolveToSoundFont(favorite.soundFontAndPatch) == nil {
+    if activePatchManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
       favorites.remove(key: favorite.key)
       postNotice(msg: "Removed favorite that was invalid.")
       return
@@ -219,7 +219,7 @@ extension FavoritesViewController: SegueHandler {
       sourceView: favoritesView, sourceRect: view.frame,
       currentLowestNote: self.keyboard?.lowestNote,
       completionHandler: nil, soundFonts: self.soundFonts,
-      soundFontAndPatch: favorite.soundFontAndPatch)
+      soundFontAndPatch: favorite.soundFontAndPreset)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     showEditor(config: config)
   }

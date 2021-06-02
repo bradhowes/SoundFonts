@@ -225,7 +225,7 @@ extension FontsTableViewManager {
 
       if self.activePatchManager.activeSoundFont == soundFont {
         self.activePatchManager.setActive(
-          preset: SoundFontAndPatch(
+          preset: SoundFontAndPreset(
             soundFontKey: newSoundFont.key,
             patchIndex: 0), playSample: false)
         self.selectedSoundFontManager.setSelected(newSoundFont)

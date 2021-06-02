@@ -41,13 +41,33 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(favorite.presetConfig.name, "Synclavier")
     XCTAssertEqual(favorite.presetConfig.gain, 0.0)
     XCTAssertEqual(favorite.presetConfig.pan, -1.0)
-    XCTAssertEqual(favorite.soundFontAndPatch.patchIndex, 0)
+    XCTAssertEqual(favorite.soundFontAndPreset.patchIndex, 0)
 
-    let sf = soundFonts.getBy(key: favorite.soundFontAndPatch.soundFontKey)
+    let sf = soundFonts.getBy(key: favorite.soundFontAndPreset.soundFontKey)
     XCTAssertNotNil(sf)
     XCTAssertEqual(sf!.displayName, "Evil synclavier")
-    let p = sf?.patches[favorite.soundFontAndPatch.patchIndex]
+    let p = sf?.patches[favorite.soundFontAndPreset.patchIndex]
     XCTAssertNotNil(p)
     XCTAssertEqual(p!.originalName, "Evil Synclavier")
+  }
+
+  func testDecodingLegacyConsolidatedFile() {
+    let bundle = Bundle(for: type(of: self))
+    let url = bundle.url(forResource: "Consolidated", withExtension: "plist")!
+    let configFile = ConsolidatedConfigFile(fileURL: url)
+
+
+    let waiter = XCTWaiter()
+    let expectation = XCTestExpectation(description: "loaded")
+    let observer = ConfigFileObserver(configFile: configFile) {
+      expectation.fulfill()
+    }
+
+    let result = waiter.wait(for: [expectation], timeout: 10.0)
+    XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
+
+    XCTAssertEqual(observer.soundFonts.count, 6)
+    XCTAssertEqual(observer.favorites.count, 2)
+    XCTAssertEqual(observer.tags.count, 3)
   }
 }

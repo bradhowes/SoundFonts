@@ -12,7 +12,7 @@ final public class FavoriteEditor: UIViewController {
     let currentLowestNote: Note?
     let completionHandler: ((Bool) -> Void)?
     let soundFonts: SoundFonts
-    let soundFontAndPatch: SoundFontAndPatch
+    let soundFontAndPatch: SoundFontAndPreset
   }
 
   public enum Config {
@@ -42,7 +42,7 @@ final public class FavoriteEditor: UIViewController {
   }
 
   public enum Response {
-    case preset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig)
+    case preset(soundFontAndPatch: SoundFontAndPreset, config: PresetConfig)
     case favorite(config: PresetConfig)
   }
 
@@ -52,7 +52,7 @@ final public class FavoriteEditor: UIViewController {
   private var currentLowestNote: Note?
   private var completionHandler: ((Bool) -> Void)?
   private var soundFonts: SoundFonts! = nil
-  private var soundFontAndPatch: SoundFontAndPatch! = nil
+  private var soundFontAndPatch: SoundFontAndPreset! = nil
 
   weak var delegate: FavoriteEditorDelegate?
 

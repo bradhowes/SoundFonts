@@ -69,7 +69,7 @@ extension SoundFontsManager: SoundFonts {
 
   public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
 
-  public var defaultPreset: SoundFontAndPatch? { collection.defaultPreset }
+  public var defaultPreset: SoundFontAndPreset? { collection.defaultPreset }
 
   public func firstIndex(of key: SoundFont.Key) -> Int? { collection.firstIndex(of: key) }
 
@@ -87,7 +87,7 @@ extension SoundFontsManager: SoundFonts {
     }
   }
 
-  public func resolve(soundFontAndPatch: SoundFontAndPatch) -> Preset? {
+  public func resolve(soundFontAndPatch: SoundFontAndPreset) -> Preset? {
     let soundFont = collection.getBy(key: soundFontAndPatch.soundFontKey)
     return soundFont?.patches[soundFontAndPatch.patchIndex]
   }
@@ -148,7 +148,7 @@ extension SoundFontsManager: SoundFonts {
     }
   }
 
-  public func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
+  public func createFavorite(soundFontAndPatch: SoundFontAndPreset, keyboardLowestNote: Note?)
     -> Favorite?
   {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return nil }
@@ -158,14 +158,14 @@ extension SoundFontsManager: SoundFonts {
       soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: keyboardLowestNote)
   }
 
-  public func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: Favorite.Key) {
+  public func deleteFavorite(soundFontAndPatch: SoundFontAndPreset, key: Favorite.Key) {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
     defer { collectionChanged() }
     let preset = soundFont.patches[soundFontAndPatch.patchIndex]
     preset.favorites.removeAll { $0 == key }
   }
 
-  public func updatePreset(soundFontAndPatch: SoundFontAndPatch, config: PresetConfig) {
+  public func updatePreset(soundFontAndPatch: SoundFontAndPreset, config: PresetConfig) {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
     defer { collectionChanged() }
     let patch = soundFont.patches[soundFontAndPatch.patchIndex]
@@ -173,7 +173,7 @@ extension SoundFontsManager: SoundFonts {
     notify(.presetChanged(font: soundFont, index: soundFontAndPatch.patchIndex))
   }
 
-  public func setVisibility(soundFontAndPatch: SoundFontAndPatch, state isVisible: Bool) {
+  public func setVisibility(soundFontAndPatch: SoundFontAndPreset, state isVisible: Bool) {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
     defer { collectionChanged() }
     let patch = soundFont.patches[soundFontAndPatch.patchIndex]
@@ -184,7 +184,7 @@ extension SoundFontsManager: SoundFonts {
   }
 
   public func setEffects(
-    soundFontAndPatch: SoundFontAndPatch, delay: DelayConfig?, reverb: ReverbConfig?
+    soundFontAndPatch: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?
   ) {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
     os_log(
