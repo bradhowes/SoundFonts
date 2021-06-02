@@ -17,7 +17,7 @@ final public class FavoriteEditor: UIViewController {
 
   public enum Config {
     case preset(state: State)
-    case favorite(state: State, favorite: LegacyFavorite)
+    case favorite(state: State, favorite: Favorite)
 
     var state: State {
       switch self {
@@ -26,7 +26,7 @@ final public class FavoriteEditor: UIViewController {
       }
     }
 
-    var favorite: LegacyFavorite? {
+    var favorite: Favorite? {
       switch self {
       case .preset: return nil
       case .favorite(_, let favorite): return favorite

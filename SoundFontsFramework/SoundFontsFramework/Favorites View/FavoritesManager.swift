@@ -5,13 +5,13 @@ import os
 
 /// Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
 /// restored when the app relaunches.
-final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
+final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log = Logging.logger("FavoritesManager")
 
   private var observer: ConfigFileObserver!
   var restored: Bool { observer.restored }
 
-  var collection: LegacyFavoriteCollection {
+  var collection: FavoriteCollection {
     precondition(observer.restored)
     return observer.favorites
   }
@@ -26,19 +26,19 @@ final class LegacyFavoritesManager: SubscriptionManager<FavoritesEvent> {
 
 // MARK: - Favorites protocol
 
-extension LegacyFavoritesManager: Favorites {
+extension FavoritesManager: Favorites {
 
   var count: Int { collection.count }
 
-  func contains(key: LegacyFavorite.Key) -> Bool { collection.contains(key: key) }
+  func contains(key: Favorite.Key) -> Bool { collection.contains(key: key) }
 
-  func index(of key: LegacyFavorite.Key) -> Int { collection.index(of: key) }
+  func index(of key: Favorite.Key) -> Int { collection.index(of: key) }
 
-  func getBy(index: Int) -> LegacyFavorite { collection.getBy(index: index) }
+  func getBy(index: Int) -> Favorite { collection.getBy(index: index) }
 
-  func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { collection.getBy(key: key) }
+  func getBy(key: Favorite.Key) -> Favorite { collection.getBy(key: key) }
 
-  func add(favorite: LegacyFavorite) {
+  func add(favorite: Favorite) {
     defer { collectionChanged() }
     collection.add(favorite: favorite)
     notify(.added(index: count - 1, favorite: favorite))
@@ -65,30 +65,30 @@ extension LegacyFavoritesManager: Favorites {
     notify(.selected(index: index, favorite: collection.getBy(index: index)))
   }
 
-  func remove(key: LegacyFavorite.Key) {
+  func remove(key: Favorite.Key) {
     defer { collectionChanged() }
     let index = collection.index(of: key)
     let favorite = collection.remove(at: index)
     notify(.removed(index: index, favorite: favorite))
   }
 
-  func removeAll(associatedWith soundFont: LegacySoundFont) {
+  func removeAll(associatedWith soundFont: SoundFont) {
     defer { collectionChanged() }
     collection.removeAll(associatedWith: soundFont.key)
     notify(.removedAll(associatedWith: soundFont))
   }
 
-  func count(associatedWith soundFont: LegacySoundFont) -> Int {
+  func count(associatedWith soundFont: SoundFont) -> Int {
     collection.count(associatedWith: soundFont.key)
   }
 
-  func setVisibility(key: LegacyFavorite.Key, state isVisible: Bool) {
+  func setVisibility(key: Favorite.Key, state isVisible: Bool) {
     defer { collectionChanged() }
     let favorite = collection.getBy(key: key)
     favorite.presetConfig.isHidden = !isVisible
   }
 
-  func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?) {
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?) {
     os_log(
       .debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
       delay?.description ?? "nil", reverb?.description ?? "nil")
@@ -98,7 +98,7 @@ extension LegacyFavoritesManager: Favorites {
   }
 
   func validate(_ soundFonts: SoundFonts) {
-    var invalidFavoriteKeys = [LegacyFavorite.Key]()
+    var invalidFavoriteKeys = [Favorite.Key]()
     for index in 0..<self.count {
       let favorite = self.getBy(index: index)
       if let preset = soundFonts.resolve(soundFontAndPatch: favorite.soundFontAndPatch) {
@@ -118,9 +118,9 @@ extension LegacyFavoritesManager: Favorites {
   }
 }
 
-extension LegacyFavoritesManager {
+extension FavoritesManager {
 
-  static var defaultCollection: LegacyFavoriteCollection { LegacyFavoriteCollection() }
+  static var defaultCollection: FavoriteCollection { FavoriteCollection() }
 
   private func collectionChanged() {
     os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

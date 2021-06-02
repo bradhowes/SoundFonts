@@ -7,11 +7,11 @@ import XCTest
 class SoundFontLibraryPListTest: XCTestCase {
 
   func testDecodingLegacyConfigurationFiles() {
-    let soundFonts: LegacySoundFontCollection = {
+    let soundFonts: SoundFontCollection = {
       let bundle = Bundle(for: type(of: self))
       let url = bundle.url(forResource: "SoundFontLibrary", withExtension: "plist")!
       let data = try! Data(contentsOf: url)
-      return try! PropertyListDecoder().decode(LegacySoundFontCollection.self, from: data)
+      return try! PropertyListDecoder().decode(SoundFontCollection.self, from: data)
     }()
 
     XCTAssertEqual(soundFonts.count, 9)
@@ -28,11 +28,11 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(patch.bank, 0)
     XCTAssertEqual(patch.program, 0)
 
-    let favorites: LegacyFavoriteCollection = {
+    let favorites: FavoriteCollection = {
       let bundle = Bundle(for: type(of: self))
       let url = bundle.url(forResource: "Favorites", withExtension: "plist")!
       let data = try! Data(contentsOf: url)
-      return try! PropertyListDecoder().decode(LegacyFavoriteCollection.self, from: data)
+      return try! PropertyListDecoder().decode(FavoriteCollection.self, from: data)
     }()
 
     XCTAssertEqual(favorites.count, 6)

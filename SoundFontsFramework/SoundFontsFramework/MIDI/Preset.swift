@@ -5,8 +5,8 @@ import Foundation
 import os
 
 /// Representation of a patch in a sound font.
-final public class LegacyPatch: Codable {
-  private static let log = Logging.logger("LegacyPatch")
+final public class Preset: Codable {
+  private static let log = Logging.logger("Preset")
   private var log: OSLog { Self.log }
 
   private enum V1Keys: String, CodingKey {
@@ -46,7 +46,7 @@ final public class LegacyPatch: Codable {
     didSet { PresetConfig.changedNotification.post(value: presetConfig) }
   }
 
-  public var favorites: [LegacyFavorite.Key] = []
+  public var favorites: [Favorite.Key] = []
 
   private var bankType: MIDIBankType { MIDIBankType.basedOn(bank: bank) }
 
@@ -80,7 +80,7 @@ final public class LegacyPatch: Codable {
       let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
       let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
       let favorites =
-        try values.decodeIfPresent(Array<LegacyFavorite.Key>.self, forKey: .favorites) ?? []
+        try values.decodeIfPresent(Array<Favorite.Key>.self, forKey: .favorites) ?? []
 
       self.originalName = originalName
       self.bank = bank
@@ -115,15 +115,15 @@ final public class LegacyPatch: Codable {
   }
 }
 
-extension LegacyPatch {
+extension Preset {
   func makeFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
-    -> LegacyFavorite
+    -> Favorite
   {
     os_log(.info, log: log, "makeFavorite")
     var newConfig = presetConfig
     newConfig.name = presetConfig.name + " \(favorites.count + 1)"
     os_log(.info, log: log, "makeFavorite - '%{public}s'", newConfig.name)
-    let favorite = LegacyFavorite(
+    let favorite = Favorite(
       soundFontAndPatch: soundFontAndPatch, presetConfig: newConfig,
       keyboardLowestNote: keyboardLowestNote)
     favorites.append(favorite.key)
@@ -147,6 +147,6 @@ extension LegacyPatch {
   }
 }
 
-extension LegacyPatch: CustomStringConvertible {
+extension Preset: CustomStringConvertible {
   public var description: String { "[Patch '\(originalName)' \(bank):\(program)]" }
 }

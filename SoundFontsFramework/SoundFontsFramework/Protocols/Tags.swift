@@ -6,13 +6,13 @@ import Foundation
 public enum TagsEvent {
 
   /// New tag added
-  case added(new: Int, tag: LegacyTag)
+  case added(new: Int, tag: Tag)
   /// Tag moved
-  case moved(old: Int, new: Int, tag: LegacyTag)
+  case moved(old: Int, new: Int, tag: Tag)
   /// Tag name changed
-  case changed(index: Int, tag: LegacyTag)
+  case changed(index: Int, tag: Tag)
   /// Tag removed
-  case removed(old: Int, tag: LegacyTag)
+  case removed(old: Int, tag: Tag)
   /// Tags were restored from disk / configuration
   case restored
 }
@@ -33,7 +33,7 @@ public protocol Tags: AnyObject {
      - parameter keys: the collection to work with
      - returns: list of strings
      */
-  func names(of keys: Set<LegacyTag.Key>) -> [String]
+  func names(of keys: Set<Tag.Key>) -> [String]
 
   /**
      Get the index for the given tag.
@@ -41,7 +41,7 @@ public protocol Tags: AnyObject {
      - parameter of: the tag to search for
      - returns: the option index of the tag
      */
-  func index(of: LegacyTag.Key) -> Int?
+  func index(of: Tag.Key) -> Int?
 
   /**
      Get the tag at a given index.
@@ -49,7 +49,7 @@ public protocol Tags: AnyObject {
      - parameter index: the index to fetch
      - returns tag at the index
      */
-  func getBy(index: Int) -> LegacyTag
+  func getBy(index: Int) -> Tag
 
   /**
      Get the tag by its key.
@@ -57,7 +57,7 @@ public protocol Tags: AnyObject {
      - parameter key: the key of the tag to get
      - returns: tag with the given key
      */
-  func getBy(key: LegacyTag.Key) -> LegacyTag?
+  func getBy(key: Tag.Key) -> Tag?
 
   /**
      Add a tag to the collection.
@@ -65,7 +65,7 @@ public protocol Tags: AnyObject {
      - parameter tag: the tag to add
      - returns: index of the new tag
      */
-  func append(_ tag: LegacyTag) -> Int
+  func append(_ tag: Tag) -> Int
 
   /**
      Remove the tag at the given index.
@@ -74,7 +74,7 @@ public protocol Tags: AnyObject {
      - returns: tag that was removed
      */
   @discardableResult
-  func remove(at index: Int) -> LegacyTag
+  func remove(at index: Int) -> Tag
 
   /**
      Rename a tag.
@@ -90,7 +90,7 @@ public protocol Tags: AnyObject {
      - parameter tag: the tag to insert
      - parameter index: the location to insert it
      */
-  func insert(_ tag: LegacyTag, at index: Int)
+  func insert(_ tag: Tag, at index: Int)
 
   /**
      Obtain the set of tags that correspond to a set of indices.
@@ -98,7 +98,7 @@ public protocol Tags: AnyObject {
      - parameter indices: the indices to fetch
      - returns: set of tags
      */
-  func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key>
+  func keySet(of indices: Set<Int>) -> Set<Tag.Key>
 
   /**
      Allow subscriptions for tag collection changes.

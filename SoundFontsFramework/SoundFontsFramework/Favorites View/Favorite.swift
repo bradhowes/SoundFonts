@@ -3,7 +3,7 @@
 import Foundation
 
 /// A custom setting with a SoundFont patch and a keyboard configuration.
-public class LegacyFavorite: Codable {
+public class Favorite: Codable {
 
   /// The type for the unique Key for a favorite
   public typealias Key = UUID
@@ -105,7 +105,7 @@ public class LegacyFavorite: Codable {
   }
 }
 
-extension LegacyFavorite: Equatable {
+extension Favorite: Equatable {
   /**
      Support equality operator
 
@@ -113,10 +113,10 @@ extension LegacyFavorite: Equatable {
      - parameter rhs: second argument to compare
      - returns: true if same
      */
-  public static func == (lhs: LegacyFavorite, rhs: LegacyFavorite) -> Bool { lhs.key == rhs.key }
+  public static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.key == rhs.key }
 }
 
-extension LegacyFavorite: CustomStringConvertible {
+extension Favorite: CustomStringConvertible {
   /// Custom string representation for a favorite
   public var description: String { "['\(presetConfig.name)' - \(soundFontAndPatch)]" }
 }

@@ -5,7 +5,7 @@ import UIKit
 /// Reason why the FontEditor view was dismissed by the user.
 public enum FontEditorDismissedReason {
   case cancel
-  case done(soundFontKey: LegacySoundFont.Key)
+  case done(soundFontKey: SoundFont.Key)
 }
 
 /// Protocol for the `SoundFontDetailController` delegate instance.

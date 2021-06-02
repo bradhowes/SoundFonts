@@ -29,19 +29,19 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
   public private(set) var active: ActivePatchKind
 
   /// The currently active sound font (if any)
-  public var activeSoundFont: LegacySoundFont? {
+  public var activeSoundFont: SoundFont? {
     guard let key = active.soundFontAndPatch?.soundFontKey else { return nil }
     return soundFonts.getBy(key: key)
   }
 
   /// The currently active preset instance (if any)
-  public var activePatch: LegacyPatch? {
+  public var activePatch: Preset? {
     guard let index = active.soundFontAndPatch?.patchIndex else { return nil }
     return activeSoundFont?.patches[index]
   }
 
   /// The currently active preset instance (if any)
-  public var activeFavorite: LegacyFavorite? { active.favorite }
+  public var activeFavorite: Favorite? { active.favorite }
 
   /// The preset configuration for the currently active preset or favorite
   public var activePresetConfig: PresetConfig? {
@@ -76,7 +76,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter soundFontAndPatch: the preset key to resolve
      - returns: optional sound font instance that corresponds to the given key
      */
-  public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> LegacySoundFont? {
+  public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPatch) -> SoundFont? {
     return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
   }
 
@@ -86,7 +86,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter soundFontAndPatch: the preset key to resolve
      - returns: optional patch instance that corresponds to the given key
      */
-  public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
+  public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPatch) -> Preset? {
     return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[
       soundFontAndPatch.patchIndex]
   }
@@ -109,7 +109,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter playSample: if true, play a note using the new preset
      */
   @discardableResult
-  public func setActive(favorite: LegacyFavorite, playSample: Bool) -> Bool {
+  public func setActive(favorite: Favorite, playSample: Bool) -> Bool {
     setActive(.favorite(favorite: favorite), playSample: playSample)
   }
 

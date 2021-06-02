@@ -4,8 +4,8 @@ import Foundation
 import os
 
 /// Collection of Favorite instances created by the user.
-final public class LegacyFavoriteCollection: Codable {
-  private var favorites: [LegacyFavorite]
+final public class FavoriteCollection: Codable {
+  private var favorites: [Favorite]
 
   /// Number of favorites defined
   var count: Int { favorites.count }
@@ -14,9 +14,9 @@ final public class LegacyFavoriteCollection: Codable {
     self.favorites = []
   }
 
-  func contains(key: LegacyFavorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
+  func contains(key: Favorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
 
-  func index(of key: LegacyFavorite.Key) -> Int {
+  func index(of key: Favorite.Key) -> Int {
     guard let index = (favorites.firstIndex { $0.key == key }) else {
       fatalError("internal inconsistency - missing favorite key '\(key.uuidString)'")
     }
@@ -29,7 +29,7 @@ final public class LegacyFavoriteCollection: Codable {
      - parameter index: the index to use
      - returns: the favorite instance
      */
-  func getBy(index: Int) -> LegacyFavorite { favorites[index] }
+  func getBy(index: Int) -> Favorite { favorites[index] }
 
   /**
      Obtain the favorite by its key.
@@ -37,14 +37,14 @@ final public class LegacyFavoriteCollection: Codable {
      - parameter key: the key to look for
      - returns: the optional favorite instance
      */
-  func getBy(key: LegacyFavorite.Key) -> LegacyFavorite { getBy(index: index(of: key)) }
+  func getBy(key: Favorite.Key) -> Favorite { getBy(index: index(of: key)) }
 
   /**
      Add a favorite to the end of the collection.
 
      - parameter favorite: the new favorite to add
      */
-  func add(favorite: LegacyFavorite) {
+  func add(favorite: Favorite) {
     favorites.append(favorite)
     AskForReview.maybe()
   }
@@ -55,7 +55,7 @@ final public class LegacyFavoriteCollection: Codable {
      - parameter index: the location to replace
      - parameter favorite: the new value to store
      */
-  func replace(index: Int, with favorite: LegacyFavorite) {
+  func replace(index: Int, with favorite: Favorite) {
     favorites[index] = favorite
   }
 
@@ -64,26 +64,26 @@ final public class LegacyFavoriteCollection: Codable {
     AskForReview.maybe()
   }
 
-  func remove(key: LegacyFavorite.Key) -> LegacyFavorite {
+  func remove(key: Favorite.Key) -> Favorite {
     defer { AskForReview.maybe() }
     return favorites.remove(at: index(of: key))
   }
 
-  func remove(at index: Int) -> LegacyFavorite {
+  func remove(at index: Int) -> Favorite {
     defer { AskForReview.maybe() }
     return favorites.remove(at: index)
   }
 
-  func removeAll(associatedWith soundFontKey: LegacySoundFont.Key) {
+  func removeAll(associatedWith soundFontKey: SoundFont.Key) {
     findAll(associatedWith: soundFontKey).forEach { _ = self.remove(key: $0.key) }
   }
 
-  func count(associatedWith soundFontKey: LegacySoundFont.Key) -> Int {
+  func count(associatedWith soundFontKey: SoundFont.Key) -> Int {
     findAll(associatedWith: soundFontKey).count
   }
 }
 
-extension LegacyFavoriteCollection: CustomStringConvertible {
+extension FavoriteCollection: CustomStringConvertible {
   public var description: String {
     "["
       + favorites.map { "\($0.soundFontAndPatch) '\($0.presetConfig.name)'" }.joined(separator: ",")
@@ -91,9 +91,9 @@ extension LegacyFavoriteCollection: CustomStringConvertible {
   }
 }
 
-extension LegacyFavoriteCollection {
+extension FavoriteCollection {
 
-  private func findAll(associatedWith soundFontKey: LegacySoundFont.Key) -> [LegacyFavorite] {
+  private func findAll(associatedWith soundFontKey: SoundFont.Key) -> [Favorite] {
     favorites.filter { $0.soundFontAndPatch.soundFontKey == soundFontKey }
   }
 }

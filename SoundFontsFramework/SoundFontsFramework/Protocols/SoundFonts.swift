@@ -6,19 +6,19 @@ import Foundation
 public enum SoundFontsEvent {
 
   /// New SoundFont added to the collection
-  case added(new: Int, font: LegacySoundFont)
+  case added(new: Int, font: SoundFont)
 
   /// Existing SoundFont moved from one position in the collection to another due to name change
-  case moved(old: Int, new: Int, font: LegacySoundFont)
+  case moved(old: Int, new: Int, font: SoundFont)
 
   /// Existing SoundFont instance removed from the collection
-  case removed(old: Int, font: LegacySoundFont)
+  case removed(old: Int, font: SoundFont)
 
   /// Hidden presets were restored and made visible in a given sound font
-  case unhidPresets(font: LegacySoundFont)
+  case unhidPresets(font: SoundFont)
 
   /// A preset in a sound font changed
-  case presetChanged(font: LegacySoundFont, index: Int)
+  case presetChanged(font: SoundFont, index: Int)
 
   /// Sound font collection was restored from disk and is now safe to use
   case restored
@@ -48,7 +48,7 @@ public protocol SoundFonts: AnyObject {
      - parameter of: the key to look for
      - returns: the index of the matching entry or nil if not found
      */
-  func firstIndex(of: LegacySoundFont.Key) -> Int?
+  func firstIndex(of: SoundFont.Key) -> Int?
 
   /**
      Obtain the SoundFont in the collection by its unique key
@@ -56,15 +56,15 @@ public protocol SoundFonts: AnyObject {
      - parameter key: the key to look for
      - returns: the index of the matching entry or nil if not found
      */
-  func getBy(key: LegacySoundFont.Key) -> LegacySoundFont?
+  func getBy(key: SoundFont.Key) -> SoundFont?
 
   /**
      Obtain an actual preset object from the given SoundFontAndPatch value.
 
      - parameter soundFontAndPatch: reference to a preset in a sound font
-     - returns: LegacyPatch object that corresponds to the given value
+     - returns: Preset object that corresponds to the given value
      */
-  func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch?
+  func resolve(soundFontAndPatch: SoundFontAndPatch) -> Preset?
 
   /**
      Obtain the collection of sound fonts that contains the given tag.
@@ -72,9 +72,9 @@ public protocol SoundFonts: AnyObject {
      - parameter tag: the tag to filter on
      - returns: collection of sound font instances that have the given tag
      */
-  func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key]
+  func filtered(by tag: Tag.Key) -> [SoundFont.Key]
 
-  func filteredIndex(index: Int, tag: LegacyTag.Key) -> Int
+  func filteredIndex(index: Int, tag: Tag.Key) -> Int
 
   /**
      Get the names of the given sound fonts.
@@ -82,7 +82,7 @@ public protocol SoundFonts: AnyObject {
      - parameter keys: the sound font keys to look for
      - returns: list of sound font names
      */
-  func names(of keys: [LegacySoundFont.Key]) -> [String]
+  func names(of keys: [SoundFont.Key]) -> [String]
 
   /**
      Add a new SoundFont.
@@ -92,14 +92,14 @@ public protocol SoundFonts: AnyObject {
      - returns: 2-tuple containing the index in the collection where the new SoundFont was inserted, and the SoundFont
      instance created from the raw data
      */
-  func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure>
+  func add(url: URL) -> Result<(Int, SoundFont), SoundFontFileLoadFailure>
 
   /**
      Remove the SoundFont at the given index
 
      - parameter index: the location to remove
      */
-  func remove(key: LegacySoundFont.Key)
+  func remove(key: SoundFont.Key)
 
   /**
      Change the name of a SoundFont
@@ -107,14 +107,14 @@ public protocol SoundFonts: AnyObject {
      - parameter index: location of the SoundFont to edit
      - parameter name: new name to use
      */
-  func rename(key: LegacySoundFont.Key, name: String)
+  func rename(key: SoundFont.Key, name: String)
 
   /**
      Remove an association between a sound font and a tag
 
      - parameter tag: the tag to remove
      */
-  func removeTag(_ tag: LegacyTag.Key)
+  func removeTag(_ tag: Tag.Key)
 
   /**
      Create a new favorite for a sound font preset.
@@ -124,7 +124,7 @@ public protocol SoundFonts: AnyObject {
      - returns: new Favorite
      */
   func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
-    -> LegacyFavorite?
+    -> Favorite?
 
   /**
      Remove an existing favorite.
@@ -132,7 +132,7 @@ public protocol SoundFonts: AnyObject {
      - parameter soundFontAndPatch: the preset that was used to create the favorite
      - parameter key: the unique key of the favorite to remove
      */
-  func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: LegacyFavorite.Key)
+  func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: Favorite.Key)
 
   /**
      Update the configuration of a preset.
@@ -155,7 +155,7 @@ public protocol SoundFonts: AnyObject {
 
      - parameter key: the unique key of the SoundFont to change
      */
-  func makeAllVisible(key: LegacySoundFont.Key)
+  func makeAllVisible(key: SoundFont.Key)
 
   /**
      Attach effect configurations to a preset.
@@ -171,7 +171,7 @@ public protocol SoundFonts: AnyObject {
 
      - parameter key: the sound font to reload
      */
-  func reloadEmbeddedInfo(key: LegacySoundFont.Key)
+  func reloadEmbeddedInfo(key: SoundFont.Key)
 
   /// Determine if there are any bundled fonts in the collection
   var hasAnyBundled: Bool { get }

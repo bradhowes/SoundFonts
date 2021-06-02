@@ -14,20 +14,20 @@ public final class TagsTableViewController: UITableViewController {
     /// The collection of all of the tags that exist for the app
     let tags: Tags
     /// The set of tags that are currently active for the sound font
-    let active: Set<LegacyTag.Key>
+    let active: Set<Tag.Key>
     /// True if the sound font being edited is built-in
     let builtIn: Bool
     /// The method to invoke when the controller is dismissed
-    let completionHandler: (Set<LegacyTag.Key>) -> Void
+    let completionHandler: (Set<Tag.Key>) -> Void
   }
 
   @IBOutlet private var addButton: UIBarButtonItem!
   @IBOutlet private var editButton: UIBarButtonItem!
 
   private var tags: Tags!
-  private var active = Set<LegacyTag.Key>()
+  private var active = Set<Tag.Key>()
   private var builtIn: Bool = false
-  private var completionHandler: ((Set<LegacyTag.Key>) -> Void)!
+  private var completionHandler: ((Set<Tag.Key>) -> Void)!
 
   private enum Action {
     case editTagEntries
@@ -134,7 +134,7 @@ public final class TagsTableViewController: UITableViewController {
   @IBAction public func addTag(_ sender: UIBarButtonItem) {
     os_log(.debug, log: log, "addTag")
     let indexPath = IndexPath(
-      row: tags.append(LegacyTag(name: Formatters.strings.newTagName)), section: 0)
+      row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     startEditingName(indexPath)
   }
@@ -177,7 +177,7 @@ extension TagsTableViewController {
     self.builtIn = config.builtIn
     self.completionHandler = config.completionHandler
     for tag in config.active {
-      if !LegacyTag.stockTagSet.contains(tag) {
+      if !Tag.stockTagSet.contains(tag) {
         self.active.insert(tag)
       }
     }
@@ -206,7 +206,7 @@ extension TagsTableViewController {
     }
 
     let tag = tags.getBy(index: indexPath.row)
-    if LegacyTag.stockTagSet.contains(tag.key) {
+    if Tag.stockTagSet.contains(tag.key) {
       tableView.deselectRow(at: indexPath, animated: true)
       return
     }
@@ -232,7 +232,7 @@ extension TagsTableViewController {
     editingStyleForRowAt indexPath: IndexPath
   ) -> UITableViewCell.EditingStyle {
     let tag = tags.getBy(index: indexPath.row)
-    if tag.key == LegacyTag.allTag.key || tag.key == LegacyTag.builtInTag.key {
+    if tag.key == Tag.allTag.key || tag.key == Tag.builtInTag.key {
       return .none
     }
     return .delete
@@ -287,8 +287,8 @@ extension TagsTableViewController {
     }
 
     let isActive =
-      tag == LegacyTag.allTag || active.contains(tag.key)
-      || (self.builtIn && tag == LegacyTag.builtInTag)
+      tag == Tag.allTag || active.contains(tag.key)
+      || (self.builtIn && tag == Tag.builtInTag)
     cell.updateForTag(name: tag.name, isActive: isActive)
 
     return cell

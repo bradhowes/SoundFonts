@@ -20,8 +20,8 @@ final class FontsTableViewManager: NSObject {
   private let tags: Tags
 
   private var activeTagsObservation: NSKeyValueObservation?
-  private var viewSoundFonts = [LegacySoundFont.Key]()
-  private var filterTagKey: LegacyTag.Key = LegacyTag.allTag.key
+  private var viewSoundFonts = [SoundFont.Key]()
+  private var filterTagKey: Tag.Key = Tag.allTag.key
 
   init(
     view: UITableView, selectedSoundFontManager: SelectedSoundFontManager,
@@ -120,7 +120,7 @@ extension FontsTableViewManager: UITableViewDelegate {
 
 extension FontsTableViewManager {
 
-  private func updateFilterTag(tagKey: LegacyTag.Key) {
+  private func updateFilterTag(tagKey: Tag.Key) {
     filterTagKey = tagKey
     updateViewSoundFonts()
   }
@@ -171,7 +171,7 @@ extension FontsTableViewManager {
     }
   }
 
-  private func addSoundFont(index: Int, soundFont: LegacySoundFont) {
+  private func addSoundFont(index: Int, soundFont: SoundFont) {
     let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
     guard filteredIndex >= 0 else {
       return
@@ -187,7 +187,7 @@ extension FontsTableViewManager {
     }
   }
 
-  private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: LegacySoundFont) {
+  private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: SoundFont) {
     let oldFilteredIndex = soundFonts.filteredIndex(index: oldIndex, tag: filterTagKey)
     guard oldFilteredIndex >= 0 else { return }
     let newFilteredIndex = soundFonts.filteredIndex(index: newIndex, tag: filterTagKey)
@@ -206,7 +206,7 @@ extension FontsTableViewManager {
     }
   }
 
-  private func removeSoundFont(index: Int, soundFont: LegacySoundFont) {
+  private func removeSoundFont(index: Int, soundFont: SoundFont) {
     let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
     guard filteredIndex >= 0 else { return }
     view.performBatchUpdates {
@@ -256,7 +256,7 @@ extension FontsTableViewManager {
     case let .removed(_, tag):
       os_log(.info, log: log, "removing tag from fonts - %{public}@", tag.name)
       soundFonts.removeTag(tag.key)
-      updateFilterTag(tagKey: LegacyTag.allTag.key)
+      updateFilterTag(tagKey: Tag.allTag.key)
 
     case .restored: updateFilterTag(tagKey: Settings.shared.activeTagKey)
     case .added: break

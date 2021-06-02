@@ -5,12 +5,12 @@ import UIKit
 import os
 
 /// Manager for the tag collection.
-final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
+final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log = Logging.logger("TagsManager")
 
   private var observer: ConfigFileObserver!
 
-  private var collection: LegacyTagCollection {
+  private var collection: TagCollection {
     precondition(observer.restored)
     return observer.tags
   }
@@ -26,7 +26,7 @@ final class LegacyTagsManager: SubscriptionManager<TagsEvent> {
   }
 }
 
-extension LegacyTagsManager: Tags {
+extension TagsManager: Tags {
 
   /// Indicator that the collection of tags has been restored
   var restored: Bool { observer.restored }
@@ -37,28 +37,28 @@ extension LegacyTagsManager: Tags {
   /// The number of tags in the collection
   var count: Int { collection.count }
 
-  func names(of keys: Set<LegacyTag.Key>) -> [String] { collection.names(of: keys) }
+  func names(of keys: Set<Tag.Key>) -> [String] { collection.names(of: keys) }
 
-  func index(of key: LegacyTag.Key) -> Int? { collection.index(of: key) }
+  func index(of key: Tag.Key) -> Int? { collection.index(of: key) }
 
-  func getBy(index: Int) -> LegacyTag { collection.getBy(index: index) }
+  func getBy(index: Int) -> Tag { collection.getBy(index: index) }
 
-  func getBy(key: LegacyTag.Key) -> LegacyTag? { collection.getBy(key: key) }
+  func getBy(key: Tag.Key) -> Tag? { collection.getBy(key: key) }
 
-  func append(_ tag: LegacyTag) -> Int {
+  func append(_ tag: Tag) -> Int {
     defer { collectionChanged() }
     let index = collection.append(tag)
     notify(.added(new: index, tag: tag))
     return index
   }
 
-  func insert(_ tag: LegacyTag, at index: Int) {
+  func insert(_ tag: Tag, at index: Int) {
     defer { collectionChanged() }
     collection.insert(tag, at: index)
     notify(.added(new: index, tag: tag))
   }
 
-  func remove(at index: Int) -> LegacyTag {
+  func remove(at index: Int) -> Tag {
     defer { collectionChanged() }
     let tag = collection.remove(at: index)
     notify(.removed(old: index, tag: tag))
@@ -71,16 +71,16 @@ extension LegacyTagsManager: Tags {
     notify(.changed(index: index, tag: collection.getBy(index: index)))
   }
 
-  func keySet(of indices: Set<Int>) -> Set<LegacyTag.Key> {
+  func keySet(of indices: Set<Int>) -> Set<Tag.Key> {
     Set(indices.map { collection.getBy(index: $0).key })
   }
 
   func validate() {
-    var invalidTags = [LegacyTag.Key]()
+    var invalidTags = [Tag.Key]()
     for index in 0..<self.count {
       let tag = self.getBy(index: index)
-      if (tag.name == "All" && tag.key != LegacyTag.allTag.key)
-        || (tag.name == "Built-in" && tag.key != LegacyTag.builtInTag.key)
+      if (tag.name == "All" && tag.key != Tag.allTag.key)
+        || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key)
       {
         invalidTags.append(tag.key)
       }
@@ -92,20 +92,20 @@ extension LegacyTagsManager: Tags {
       }
     }
 
-    if self.getBy(key: LegacyTag.builtInTag.key) == nil {
-      insert(LegacyTag.builtInTag, at: 0)
+    if self.getBy(key: Tag.builtInTag.key) == nil {
+      insert(Tag.builtInTag, at: 0)
     }
 
-    if self.getBy(key: LegacyTag.allTag.key) == nil {
-      insert(LegacyTag.allTag, at: 0)
+    if self.getBy(key: Tag.allTag.key) == nil {
+      insert(Tag.allTag, at: 0)
     }
   }
 }
 
-extension LegacyTagsManager {
+extension TagsManager {
 
   /// Default collection that is used when first running the app
-  static var defaultCollection: LegacyTagCollection { LegacyTagCollection(tags: []) }
+  static var defaultCollection: TagCollection { TagCollection(tags: []) }
 
   private func collectionChanged() {
     os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)

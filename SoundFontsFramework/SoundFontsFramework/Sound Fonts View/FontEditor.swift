@@ -19,7 +19,7 @@ final class FontEditor: UIViewController {
     /// The collection of all sound fonts
     let soundFonts: SoundFonts
     /// The unique key for the sound font being edited
-    let soundFontKey: LegacySoundFont.Key
+    let soundFontKey: SoundFont.Key
     /// The number of favorites associated with the sound font being edited
     let favoriteCount: Int
     /// The collection of known tags
@@ -29,7 +29,7 @@ final class FontEditor: UIViewController {
   }
 
   private var config: Config!
-  private var activeTags = Set<LegacyTag.Key>()
+  private var activeTags = Set<Tag.Key>()
 
   weak var delegate: FontEditorDelegate?
 
@@ -52,7 +52,7 @@ final class FontEditor: UIViewController {
 
   private var textFieldKeyboardMonitor: TextFieldKeyboardMonitor!
 
-  private var soundFont: LegacySoundFont {
+  private var soundFont: SoundFont {
     guard let soundFont = config.soundFonts.getBy(key: config.soundFontKey) else { fatalError() }
     return soundFont
   }
@@ -67,7 +67,7 @@ extension FontEditor {
     self.config = config
     config.soundFonts.reloadEmbeddedInfo(key: config.soundFontKey)
     // Don't show the stock tags that don't make sense for the user to change
-    activeTags = soundFont.tags.subtracting(LegacyTag.stockTagSet)
+    activeTags = soundFont.tags.subtracting(Tag.stockTagSet)
   }
 
   override func viewWillAppear(_ animated: Bool) {

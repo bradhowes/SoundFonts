@@ -8,7 +8,7 @@ public enum ActivePatchKind: Equatable {
   /// Normal soundfont patch description
   case preset(soundFontAndPatch: SoundFontAndPatch)
   /// Favorite soundfont patch
-  case favorite(favorite: LegacyFavorite)
+  case favorite(favorite: Favorite)
   /// Exceptional case when there is no active patch
   case none
 }
@@ -24,7 +24,7 @@ extension ActivePatchKind {
   }
 
   /// Get the associated Favorite value
-  public var favorite: LegacyFavorite? {
+  public var favorite: Favorite? {
     switch self {
     case .preset: return nil
     case .favorite(let favorite): return favorite
@@ -76,7 +76,7 @@ extension ActivePatchKind: Codable {
     guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
     switch kind {
     case .preset: self = .preset(soundFontAndPatch: try container.decode(SoundFontAndPatch.self))
-    case .favorite: self = .favorite(favorite: try container.decode(LegacyFavorite.self))
+    case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
     case .none: self = .none
     }
   }

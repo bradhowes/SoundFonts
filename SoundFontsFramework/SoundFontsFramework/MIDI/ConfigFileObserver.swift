@@ -8,9 +8,9 @@ public final class ConfigFileObserver {
   public let configFile: ConsolidatedConfigFile
   public private(set) var restored = false
 
-  public var soundFonts: LegacySoundFontCollection { configFile.config.soundFonts }
-  public var favorites: LegacyFavoriteCollection { configFile.config.favorites }
-  public var tags: LegacyTagCollection { configFile.config.tags }
+  public var soundFonts: SoundFontCollection { configFile.config.soundFonts }
+  public var favorites: FavoriteCollection { configFile.config.favorites }
+  public var tags: TagCollection { configFile.config.tags }
 
   private var configFileObserver: NSKeyValueObservation?
 

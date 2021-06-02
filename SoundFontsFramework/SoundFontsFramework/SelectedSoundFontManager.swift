@@ -4,13 +4,13 @@ import Foundation
 import os
 
 public enum SelectedSoundFontEvent {
-  case changed(old: LegacySoundFont?, new: LegacySoundFont?)
+  case changed(old: SoundFont?, new: SoundFont?)
 }
 
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
   private lazy var log = Logging.logger("SelectedSoundFontManager")
 
-  private(set) var selected: LegacySoundFont?
+  private(set) var selected: SoundFont?
 
   public init() {
     super.init()
@@ -19,7 +19,7 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
       String.pointer(selected))
   }
 
-  public func setSelected(_ soundFont: LegacySoundFont) {
+  public func setSelected(_ soundFont: SoundFont) {
     os_log(
       .info, log: log, "setSelected: %{public}s %{public}s", soundFont.displayName,
       String.pointer(soundFont))

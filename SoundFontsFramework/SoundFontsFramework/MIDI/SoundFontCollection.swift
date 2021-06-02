@@ -4,10 +4,10 @@ import Foundation
 
 /// Collection of SoundFont entities. The collection maintains a mapping between a SoundFont.Key (UUID) and a SoundFont
 /// instance. It also maintains an array of SoundFont.Key values that are ordered by SoundFont.name values.
-public final class LegacySoundFontCollection: Codable {
-  public typealias Element = LegacySoundFont
-  public typealias CatalogMap = [LegacySoundFont.Key: LegacySoundFont]
-  public typealias SortedKeyArray = [LegacySoundFont.Key]
+public final class SoundFontCollection: Codable {
+  public typealias Element = SoundFont
+  public typealias CatalogMap = [SoundFont.Key: SoundFont]
+  public typealias SortedKeyArray = [SoundFont.Key]
 
   private var catalog: CatalogMap
   private var sortedKeys: SortedKeyArray
@@ -27,15 +27,15 @@ public final class LegacySoundFontCollection: Codable {
 
      - parameter soundFonts: array of SoundFont instances
      */
-  public init(soundFonts: [LegacySoundFont]) {
-    self.catalog = [LegacySoundFont.Key: LegacySoundFont](
+  public init(soundFonts: [SoundFont]) {
+    self.catalog = [SoundFont.Key: SoundFont](
       uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
     self.sortedKeys = soundFonts.sorted {
       $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
     }.map { $0.key }
   }
 
-  public var soundFonts: [LegacySoundFont] { sortedKeys.map { self.catalog[$0]! } }
+  public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
   /**
      Obtain the index of the given SoundFont.Key value.
@@ -43,7 +43,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter key: the key to look for
      - returns: index value if found, else nil
      */
-  public func firstIndex(of key: LegacySoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
+  public func firstIndex(of key: SoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
 
   /**
      Obtain the index of a SoundFont with the given URL.
@@ -69,7 +69,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter index: the SoundFont.Key to look for
      - returns: the SoundFont value found
      */
-  public func getBy(index: Int) -> LegacySoundFont { catalog[sortedKeys[index]]! }
+  public func getBy(index: Int) -> SoundFont { catalog[sortedKeys[index]]! }
 
   /**
      Obtain a SoundFont by its UUID value
@@ -77,7 +77,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter key: the UUID to look for
      - returns: the SoundFont instance found, else nil
      */
-  public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { catalog[key] }
+  public func getBy(key: SoundFont.Key) -> SoundFont? { catalog[key] }
 
   /**
      Add a new SoundFont definition to the collection.
@@ -85,7 +85,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter soundFont: the SoundFont to add
      - returns: index of the SoundFont in the collection
      */
-  public func add(_ soundFont: LegacySoundFont) -> Int {
+  public func add(_ soundFont: SoundFont) -> Int {
     catalog[soundFont.key] = soundFont
     let index = insertionIndex(of: soundFont.key)
     sortedKeys.insert(soundFont.key, at: index)
@@ -99,7 +99,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter index: the index of the SoundFont to remove.
      - returns: the removed SoundFont instance, nil if not found.
      */
-  public func remove(_ index: Int) -> LegacySoundFont? {
+  public func remove(_ index: Int) -> SoundFont? {
     let key = sortedKeys.remove(at: index)
     AskForReview.maybe()
     return catalog.removeValue(forKey: key)
@@ -112,7 +112,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter name: the new name for the SoundFont
      - returns: 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
      */
-  public func rename(_ index: Int, name: String) -> (Int, LegacySoundFont) {
+  public func rename(_ index: Int, name: String) -> (Int, SoundFont) {
     let key = sortedKeys.remove(at: index)
 
     let soundFont = catalog[key]!
@@ -132,7 +132,7 @@ public final class LegacySoundFontCollection: Codable {
      - parameter key: the name of the SoundFont to insert
      - returns: the index in the collection to insert
      */
-  private func insertionIndex(of key: LegacySoundFont.Key) -> Int {
+  private func insertionIndex(of key: SoundFont.Key) -> Int {
     sortedKeys.insertionIndex(of: key) {
       catalog[$0]!.displayName.localizedCaseInsensitiveCompare(catalog[$1]!.displayName)
         == .orderedAscending
@@ -140,7 +140,7 @@ public final class LegacySoundFontCollection: Codable {
   }
 }
 
-extension LegacySoundFontCollection: CustomStringConvertible {
+extension SoundFontCollection: CustomStringConvertible {
   public var description: String {
     "[" + catalog.map { "\($0.key): '\($0.value.displayName)'" }.joined(separator: ",") + "]"
   }

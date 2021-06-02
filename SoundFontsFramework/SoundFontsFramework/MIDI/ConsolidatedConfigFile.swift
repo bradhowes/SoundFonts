@@ -7,17 +7,17 @@ public struct ConsolidatedConfig: Codable {
   private static let log = Logging.logger("ConsolidatedConfig")
   private var log: OSLog { Self.log }
 
-  public var soundFonts: LegacySoundFontCollection
-  public var favorites: LegacyFavoriteCollection
-  public var tags: LegacyTagCollection
+  public var soundFonts: SoundFontCollection
+  public var favorites: FavoriteCollection
+  public var tags: TagCollection
 }
 
 extension ConsolidatedConfig {
   public init() {
     os_log(.info, log: Self.log, "creating default collection")
-    soundFonts = LegacySoundFontsManager.defaultCollection
-    favorites = LegacyFavoritesManager.defaultCollection
-    tags = LegacyTagsManager.defaultCollection
+    soundFonts = SoundFontsManager.defaultCollection
+    favorites = FavoritesManager.defaultCollection
+    tags = TagsManager.defaultCollection
   }
 }
 
@@ -97,11 +97,11 @@ extension ConsolidatedConfigFile {
   private func attemptLegacyLoad(_ sharedArchivePath: URL) {
     os_log(.info, log: log, "attemptLegacyLoad")
     guard
-      let soundFonts = LegacyConfigFileLoader<LegacySoundFontCollection>.load(
+      let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(
         filename: "SoundFontLibrary.plist"),
-      let favorites = LegacyConfigFileLoader<LegacyFavoriteCollection>.load(
+      let favorites = LegacyConfigFileLoader<FavoriteCollection>.load(
         filename: "Favorites.plist"),
-      let tags = LegacyConfigFileLoader<LegacyTagCollection>.load(filename: "Tags.plist")
+      let tags = LegacyConfigFileLoader<TagCollection>.load(filename: "Tags.plist")
     else {
       os_log(.info, log: log, "failed to load one or more legacy files")
       initializeCollections()

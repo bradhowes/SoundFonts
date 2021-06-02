@@ -102,13 +102,13 @@ where T: ControllerConfiguration {
 
     self.askForReview = AskForReview(isMain: inApp)
 
-    let soundFontsManager = LegacySoundFontsManager(consolidatedConfigFile)
+    let soundFontsManager = SoundFontsManager(consolidatedConfigFile)
     self.soundFonts = soundFontsManager
 
-    let favoritesManager = LegacyFavoritesManager(consolidatedConfigFile)
+    let favoritesManager = FavoritesManager(consolidatedConfigFile)
     self.favorites = favoritesManager
 
-    self.tags = LegacyTagsManager(consolidatedConfigFile)
+    self.tags = TagsManager(consolidatedConfigFile)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
     self.activePatchManager = ActivePatchManager(

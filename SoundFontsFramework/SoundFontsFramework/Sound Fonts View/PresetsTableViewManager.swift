@@ -7,7 +7,7 @@ private let sectionSize = 20
 
 private enum Slot: Equatable {
   case preset(index: Int)
-  case favorite(key: LegacyFavorite.Key)
+  case favorite(key: Favorite.Key)
 }
 
 /**
@@ -115,7 +115,7 @@ extension IndexPath {
 extension Array where Element == Slot {
   fileprivate subscript(indexPath: IndexPath) -> Element { self[indexPath.slotIndex] }
 
-  fileprivate func findFavoriteKey(_ key: LegacyFavorite.Key) -> Int? {
+  fileprivate func findFavoriteKey(_ key: Favorite.Key) -> Int? {
     for (index, slot) in self.enumerated() {
       if case let .favorite(slotKey) = slot, slotKey == key {
         return index
@@ -239,7 +239,7 @@ extension PresetsTableViewManager: UISearchBarDelegate {
 
 extension PresetsTableViewManager {
 
-  private func withSoundFont<T>(_ closure: (LegacySoundFont) -> T?) -> T? {
+  private func withSoundFont<T>(_ closure: (SoundFont) -> T?) -> T? {
     guard let soundFont = selectedSoundFontManager.selected else { return nil }
     return closure(soundFont)
   }
@@ -256,7 +256,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func selectedFavorite(_ key: LegacyFavorite.Key, wasSearching: Bool) {
+  private func selectedFavorite(_ key: Favorite.Key, wasSearching: Bool) {
     let favorite = favorites.getBy(key: key)
     if !activePatchManager.setActive(favorite: favorite, playSample: Settings.shared.playSample) {
       if let indexPath = getPresetIndexPath(for: key) {
@@ -353,7 +353,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  func performChanges(soundFont: LegacySoundFont) -> [IndexPath] {
+  func performChanges(soundFont: SoundFont) -> [IndexPath] {
     var changes = [IndexPath]()
 
     func processPresetConfig(_ slotIndex: Int, presetConfig: PresetConfig, slot: () -> Slot) {
@@ -435,7 +435,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func initializeVisibilitySelections(soundFont: LegacySoundFont) {
+  private func initializeVisibilitySelections(soundFont: SoundFont) {
     precondition(view.isEditing)
     os_log(.debug, log: self.log, "initializeVisibilitySelections")
     for (slotIndex, slot) in viewSlots.enumerated() {
@@ -557,7 +557,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func getPresetIndexPath(for key: LegacyFavorite.Key) -> IndexPath? {
+  private func getPresetIndexPath(for key: Favorite.Key) -> IndexPath? {
     guard favorites.contains(key: key) else { return nil }
     if showingSearchResults {
       guard let row = searchSlots?.findFavoriteKey(key) else { return nil }
@@ -904,7 +904,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func updateRow(with favorite: LegacyFavorite) {
+  private func updateRow(with favorite: Favorite) {
     os_log(.debug, log: log, "updateRow - with favorite")
     guard let indexPath = getPresetIndexPath(for: favorite.key),
       let cell: TableCell = view.cellForRow(at: indexPath)

@@ -4,10 +4,10 @@ import Foundation
 import os
 
 /// Collection of Tag instances.
-public final class LegacyTagCollection: Codable {
+public final class TagCollection: Codable {
   private lazy var log: OSLog = Logging.logger("TagCollection")
 
-  private var tags: [LegacyTag]
+  private var tags: [Tag]
 
   /// Contains true if the collection is empty
   public var isEmpty: Bool { return tags.isEmpty }
@@ -20,7 +20,7 @@ public final class LegacyTagCollection: Codable {
 
      - parameter tags: collection to use
      */
-  public init(tags: [LegacyTag] = []) { self.tags = tags }
+  public init(tags: [Tag] = []) { self.tags = tags }
 
   /**
      Obtain a list of Tag names from a set of Tag keys
@@ -28,7 +28,7 @@ public final class LegacyTagCollection: Codable {
      - parameter keys: the keys of the Tags to include
      - returns: list of Tag names
      */
-  public func names(of keys: Set<LegacyTag.Key>) -> [String] {
+  public func names(of keys: Set<Tag.Key>) -> [String] {
     keys.compactMap { getBy(key: $0)?.name }
   }
 
@@ -38,7 +38,7 @@ public final class LegacyTagCollection: Codable {
      - parameter key: the Tag key to look for
      - returns: the optional index value
      */
-  public func index(of key: LegacyTag.Key) -> Int? { tags.firstIndex { $0.key == key } }
+  public func index(of key: Tag.Key) -> Int? { tags.firstIndex { $0.key == key } }
 
   /**
      Obtain a Tag instance at the given index.
@@ -46,7 +46,7 @@ public final class LegacyTagCollection: Codable {
      - parameter index: the collection index to get
      - returns: the Tag value
      */
-  public func getBy(index: Int) -> LegacyTag { tags[index] }
+  public func getBy(index: Int) -> Tag { tags[index] }
 
   /**
      Obtain the Tag that has the given key
@@ -54,7 +54,7 @@ public final class LegacyTagCollection: Codable {
      - parameter key: the key to look for
      - returns: the optional Tag that was found
      */
-  public func getBy(key: LegacyTag.Key) -> LegacyTag? { tags.first { $0.key == key } }
+  public func getBy(key: Tag.Key) -> Tag? { tags.first { $0.key == key } }
 
   /**
      Add a new Tag to the collection
@@ -62,7 +62,7 @@ public final class LegacyTagCollection: Codable {
      - parameter tag: the Tag to add
      - returns: the position in the collection of the tag
      */
-  public func append(_ tag: LegacyTag) -> Int {
+  public func append(_ tag: Tag) -> Int {
     tags.append(tag)
     return count - 1
   }
@@ -73,7 +73,7 @@ public final class LegacyTagCollection: Codable {
      - parameter tag: the Tag to insert
      - parameter index: the location to insert it
      */
-  public func insert(_ tag: LegacyTag, at index: Int) { tags.insert(tag, at: index) }
+  public func insert(_ tag: Tag, at index: Int) { tags.insert(tag, at: index) }
 
   /**
      Remove a tag from the collection.
@@ -81,7 +81,7 @@ public final class LegacyTagCollection: Codable {
      - parameter index: the location to remove
      - returns: the Tag that was removed
      */
-  public func remove(at index: Int) -> LegacyTag { tags.remove(at: index) }
+  public func remove(at index: Int) -> Tag { tags.remove(at: index) }
 
   /**
      Rename a tag.
@@ -92,7 +92,7 @@ public final class LegacyTagCollection: Codable {
   public func rename(_ index: Int, name: String) { tags[index].name = name }
 }
 
-extension LegacyTagCollection: CustomStringConvertible {
+extension TagCollection: CustomStringConvertible {
   /// Custom description string for the tag collection
   public var description: String { tags.description }
 }

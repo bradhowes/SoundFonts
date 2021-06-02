@@ -6,14 +6,14 @@ import UIKit
 import os
 
 /// Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
-public final class LegacySoundFontsManager: SubscriptionManager<SoundFontsEvent> {
+public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private static let log = Logging.logger("SoundFontsManager")
   private var log: OSLog { Self.log }
 
   private var observer: ConfigFileObserver!
   public var restored: Bool { observer.restored }
 
-  public var collection: LegacySoundFontCollection {
+  public var collection: SoundFontCollection {
     precondition(observer.restored)
     return observer.soundFonts
   }
@@ -35,7 +35,7 @@ extension FileManager {
     return fileNames.map { FileManager.default.sharedPath(for: $0) }
   }
 
-  fileprivate func validateSF2Files(log: OSLog, collection: LegacySoundFontCollection) -> Int {
+  fileprivate func validateSF2Files(log: OSLog, collection: SoundFontCollection) -> Int {
     guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else {
       return -1
     }
@@ -65,15 +65,15 @@ extension FileManager {
 
 // MARK: - SoundFonts Protocol
 
-extension LegacySoundFontsManager: SoundFonts {
+extension SoundFontsManager: SoundFonts {
 
   public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
 
   public var defaultPreset: SoundFontAndPatch? { collection.defaultPreset }
 
-  public func firstIndex(of key: LegacySoundFont.Key) -> Int? { collection.firstIndex(of: key) }
+  public func firstIndex(of key: SoundFont.Key) -> Int? { collection.firstIndex(of: key) }
 
-  public func getBy(key: LegacySoundFont.Key) -> LegacySoundFont? { collection.getBy(key: key) }
+  public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
 
   public func validateCollections(favorites: Favorites, tags: Tags) {
     os_log(.info, log: log, "validateCollections")
@@ -87,35 +87,35 @@ extension LegacySoundFontsManager: SoundFonts {
     }
   }
 
-  public func resolve(soundFontAndPatch: SoundFontAndPatch) -> LegacyPatch? {
+  public func resolve(soundFontAndPatch: SoundFontAndPatch) -> Preset? {
     let soundFont = collection.getBy(key: soundFontAndPatch.soundFontKey)
     return soundFont?.patches[soundFontAndPatch.patchIndex]
   }
 
-  public func filtered(by tag: LegacyTag.Key) -> [LegacySoundFont.Key] {
+  public func filtered(by tag: Tag.Key) -> [SoundFont.Key] {
     collection.soundFonts.filter { soundFont in
-      soundFont.tags.union(soundFont.kind.resource ? LegacyTag.stockTagSet : LegacyTag.allTagSet)
+      soundFont.tags.union(soundFont.kind.resource ? Tag.stockTagSet : Tag.allTagSet)
         .contains(tag)
     }.map { $0.key }
   }
 
-  public func filteredIndex(index: Int, tag: LegacyTag.Key) -> Int {
+  public func filteredIndex(index: Int, tag: Tag.Key) -> Int {
     var reduction = 0
     for entry in collection.soundFonts.enumerated()
-    where entry.offset <= index && !entry.element.tags.union(LegacyTag.allTagSet).contains(tag) {
+    where entry.offset <= index && !entry.element.tags.union(Tag.allTagSet).contains(tag) {
       reduction += 1
     }
 
     return index - reduction
   }
 
-  public func names(of keys: [LegacySoundFont.Key]) -> [String] {
+  public func names(of keys: [SoundFont.Key]) -> [String] {
     keys.compactMap { getBy(key: $0)?.displayName }
   }
 
   @discardableResult
-  public func add(url: URL) -> Result<(Int, LegacySoundFont), SoundFontFileLoadFailure> {
-    switch LegacySoundFont.makeSoundFont(from: url) {
+  public func add(url: URL) -> Result<(Int, SoundFont), SoundFontFileLoadFailure> {
+    switch SoundFont.makeSoundFont(from: url) {
     case .failure(let failure): return .failure(failure)
     case .success(let soundFont):
       defer { collectionChanged() }
@@ -125,21 +125,21 @@ extension LegacySoundFontsManager: SoundFonts {
     }
   }
 
-  public func remove(key: LegacySoundFont.Key) {
+  public func remove(key: SoundFont.Key) {
     guard let index = collection.firstIndex(of: key) else { return }
     guard let soundFont = collection.remove(index) else { return }
     defer { collectionChanged() }
     notify(.removed(old: index, font: soundFont))
   }
 
-  public func rename(key: LegacySoundFont.Key, name: String) {
+  public func rename(key: SoundFont.Key, name: String) {
     guard let index = collection.firstIndex(of: key) else { return }
     defer { collectionChanged() }
     let (newIndex, soundFont) = collection.rename(index, name: name)
     notify(.moved(old: index, new: newIndex, font: soundFont))
   }
 
-  public func removeTag(_ tag: LegacyTag.Key) {
+  public func removeTag(_ tag: Tag.Key) {
     defer { collectionChanged() }
     for soundFont in collection.soundFonts {
       var tags = soundFont.tags
@@ -149,7 +149,7 @@ extension LegacySoundFontsManager: SoundFonts {
   }
 
   public func createFavorite(soundFontAndPatch: SoundFontAndPatch, keyboardLowestNote: Note?)
-    -> LegacyFavorite?
+    -> Favorite?
   {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return nil }
     defer { collectionChanged() }
@@ -158,7 +158,7 @@ extension LegacySoundFontsManager: SoundFonts {
       soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: keyboardLowestNote)
   }
 
-  public func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: LegacyFavorite.Key) {
+  public func deleteFavorite(soundFontAndPatch: SoundFontAndPatch, key: Favorite.Key) {
     guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
     defer { collectionChanged() }
     let preset = soundFont.patches[soundFontAndPatch.patchIndex]
@@ -197,7 +197,7 @@ extension LegacySoundFontsManager: SoundFonts {
     patch.presetConfig.reverbConfig = reverb
   }
 
-  public func makeAllVisible(key: LegacySoundFont.Key) {
+  public func makeAllVisible(key: SoundFont.Key) {
     guard let soundFont = getBy(key: key) else { return }
     defer { collectionChanged() }
     for preset in soundFont.patches where preset.presetConfig.isHidden == true {
@@ -244,7 +244,7 @@ extension LegacySoundFontsManager: SoundFonts {
     }
   }
 
-  public func reloadEmbeddedInfo(key: LegacySoundFont.Key) {
+  public func reloadEmbeddedInfo(key: SoundFont.Key) {
     guard let soundFont = getBy(key: key) else { return }
     guard
       soundFont.embeddedAuthor.isEmpty && soundFont.embeddedComment.isEmpty
@@ -339,37 +339,37 @@ extension LegacySoundFontsManager: SoundFonts {
   }
 }
 
-extension LegacySoundFontsManager {
+extension SoundFontsManager {
 
   private static let niceNames = [
     "Fluid": "Fluid R3", "Free Font": "FreeFont", "GeneralUser": "MuseScore", "User": "Roland"
   ]
 
   @discardableResult
-  fileprivate static func addFromBundle(url: URL) -> LegacySoundFont? {
+  fileprivate static func addFromBundle(url: URL) -> SoundFont? {
     guard let info = SoundFontInfo.load(viaParser: url) else { return nil }
     guard let infoName = info.embeddedName else { return nil }
     guard !(infoName.isEmpty || info.presets.isEmpty) else { return nil }
     let displayName =
       niceNames.first { (key, _) in info.embeddedName.hasPrefix(key) }?.value ?? infoName
-    return LegacySoundFont(displayName, soundFontInfo: info, resource: url)
+    return SoundFont(displayName, soundFontInfo: info, resource: url)
   }
 
   @discardableResult
-  fileprivate static func addFromSharedFolder(url: URL) -> LegacySoundFont? {
-    switch LegacySoundFont.makeSoundFont(from: url) {
+  fileprivate static func addFromSharedFolder(url: URL) -> SoundFont? {
+    switch SoundFont.makeSoundFont(from: url) {
     case .success(let soundFont): return soundFont
     case .failure: return nil
     }
   }
 }
 
-extension LegacySoundFontsManager {
+extension SoundFontsManager {
 
-  static var defaultCollection: LegacySoundFontCollection {
+  static var defaultCollection: SoundFontCollection {
     let bundleUrls: [URL] = SF2Files.allResources
     let fileUrls = FileManager.default.installedSF2Files
-    return LegacySoundFontCollection(
+    return SoundFontCollection(
       soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) })
         + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
   }

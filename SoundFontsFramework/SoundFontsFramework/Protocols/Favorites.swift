@@ -5,22 +5,22 @@ import UIKit
 /// The different events which are emitted by a Favorites collection when the collection changes.
 public enum FavoritesEvent {
   /// A new favorite has been added
-  case added(index: Int, favorite: LegacyFavorite)
+  case added(index: Int, favorite: Favorite)
   /// A favorite has been selected
-  case selected(index: Int, favorite: LegacyFavorite)
+  case selected(index: Int, favorite: Favorite)
   /// A favorite will be edited
   case beginEdit(config: FavoriteEditor.Config)
   /// A favorite has changed
-  case changed(index: Int, favorite: LegacyFavorite)
+  case changed(index: Int, favorite: Favorite)
   /// A favorite has been removed
-  case removed(index: Int, favorite: LegacyFavorite)
+  case removed(index: Int, favorite: Favorite)
   /// All favorites that were associated with a sound font have been removed
-  case removedAll(associatedWith: LegacySoundFont)
+  case removedAll(associatedWith: SoundFont)
   /// The collection of favorites has been restored from disk
   case restored
 
   /// Obtain the favorite instance that is associated with an event, if there is one.
-  var favorite: LegacyFavorite? {
+  var favorite: Favorite? {
     switch self {
     case let .added(index: _, favorite: favorite): return favorite
     case let .selected(index: _, favorite: favorite): return favorite
@@ -46,7 +46,7 @@ public protocol Favorites {
      - parameter key: the key to look for
      - returns: true if it exists
      */
-  func contains(key: LegacyFavorite.Key) -> Bool
+  func contains(key: Favorite.Key) -> Bool
 
   /**
      Obtain the index of the given Favorite in the collection.
@@ -54,7 +54,7 @@ public protocol Favorites {
      - parameter favorite: what to look for
      - returns: the position of the Favorite
      */
-  func index(of favorite: LegacyFavorite.Key) -> Int
+  func index(of favorite: Favorite.Key) -> Int
 
   /**
      Obtain the Favorite at the given index
@@ -62,7 +62,7 @@ public protocol Favorites {
      - parameter index: the location to get
      - returns: Favorite at the index
      */
-  func getBy(index: Int) -> LegacyFavorite
+  func getBy(index: Int) -> Favorite
 
   /**
      Obtain the Favorite by its key.
@@ -70,14 +70,14 @@ public protocol Favorites {
      - parameter key the key to look for
      - returns: Favorite with the given key
      */
-  func getBy(key: LegacyFavorite.Key) -> LegacyFavorite
+  func getBy(key: Favorite.Key) -> Favorite
 
   /**
      Add a Favorite to the collection
 
      - parameter favorite: instance to add
      */
-  func add(favorite: LegacyFavorite)
+  func add(favorite: Favorite)
 
   /**
      Begin editing a Favorite
@@ -109,7 +109,7 @@ public protocol Favorites {
      - parameter key: the key of the favorite to change
      - parameter state: the visibility state to use
      */
-  func setVisibility(key: LegacyFavorite.Key, state: Bool)
+  func setVisibility(key: Favorite.Key, state: Bool)
 
   /**
      Set the effects configurations for a given favorite.
@@ -118,7 +118,7 @@ public protocol Favorites {
      - delay: the delay configuration to save
      - reverb: the reverb configuration to save
      */
-  func setEffects(favorite: LegacyFavorite, delay: DelayConfig?, reverb: ReverbConfig?)
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?)
 
   /**
      The Favorite at the given index is selected by the user.
@@ -132,14 +132,14 @@ public protocol Favorites {
 
      - parameter index: the index to remove
      */
-  func remove(key: LegacyFavorite.Key)
+  func remove(key: Favorite.Key)
 
   /**
      Remove all Favorite instances associated with the given SoundFont.
 
      - parameter associatedWith: the SoundFont to look for
      */
-  func removeAll(associatedWith: LegacySoundFont)
+  func removeAll(associatedWith: SoundFont)
 
   /**
      Obtain a count of the number of Favorite instances associated with the given SoundFont.
@@ -147,7 +147,7 @@ public protocol Favorites {
      - parameter associatedWith: what to look for
      - returns: count
      */
-  func count(associatedWith: LegacySoundFont) -> Int
+  func count(associatedWith: SoundFont) -> Int
 
   /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

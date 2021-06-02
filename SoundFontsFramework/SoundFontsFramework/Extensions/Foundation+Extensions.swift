@@ -74,25 +74,25 @@ extension Date: SettingSerializable {
   }
 }
 
-extension LegacyTag.Key: SettingSerializable {
-  public static func set(key: String, value: LegacyTag.Key, userDefaults: UserDefaults) {
+extension Tag.Key: SettingSerializable {
+  public static func set(key: String, value: Tag.Key, userDefaults: UserDefaults) {
     userDefaults.set(value.uuidString, forKey: key)
   }
 
-  public static func get(key: String, userDefaults: UserDefaults) -> LegacyTag.Key? {
+  public static func get(key: String, userDefaults: UserDefaults) -> Tag.Key? {
     guard let tmp = userDefaults.string(forKey: key) else { return nil }
-    return LegacyTag.Key(uuidString: tmp)
+    return Tag.Key(uuidString: tmp)
   }
 }
 
-extension Set: SettingSerializable where Set.Element == LegacyTag.Key {
-  public static func set(key: String, value: Set<LegacyTag.Key>, userDefaults: UserDefaults) {
+extension Set: SettingSerializable where Set.Element == Tag.Key {
+  public static func set(key: String, value: Set<Tag.Key>, userDefaults: UserDefaults) {
     userDefaults.set(value.map { $0.uuidString }, forKey: key)
   }
 
-  public static func get(key: String, userDefaults: UserDefaults) -> Set<LegacyTag.Key>? {
+  public static func get(key: String, userDefaults: UserDefaults) -> Set<Tag.Key>? {
     guard let tmp = userDefaults.stringArray(forKey: key) else {
-      return Set([LegacyTag.allTag.key])
+      return Set([Tag.allTag.key])
     }
     return Set(tmp.map { UUID(uuidString: $0)! })
   }

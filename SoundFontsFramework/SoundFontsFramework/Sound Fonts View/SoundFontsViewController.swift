@@ -133,7 +133,7 @@ extension SoundFontsViewController {
     present(documentPicker, animated: true)
   }
 
-  private func remove(soundFont: LegacySoundFont, completionHandler: ((_ completed: Bool) -> Void)?)
+  private func remove(soundFont: SoundFont, completionHandler: ((_ completed: Bool) -> Void)?)
   {
     let promptTitle = Formatters.strings.deleteFontTitle
     let promptMessage = Formatters.strings.deleteFontMessage
@@ -257,7 +257,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
   public func createEditSwipeAction(
     at: IndexPath, cell: TableCell,
-    soundFont: LegacySoundFont
+    soundFont: SoundFont
   ) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
       let config = FontEditor.Config(
@@ -281,7 +281,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      */
   public func createDeleteSwipeAction(
     at: IndexPath, cell: TableCell,
-    soundFont: LegacySoundFont
+    soundFont: SoundFont
   ) -> UIContextualAction {
     UIContextualAction(icon: .remove, color: .red) { _, _, completionHandler in
       self.remove(soundFont: soundFont, completionHandler: completionHandler)

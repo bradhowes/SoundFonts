@@ -6,7 +6,7 @@ import SoundFontInfoLib
 import os
 
 /// Representation of a sound font library. NOTE: all sound font files must have 'sf2' extension.
-public final class LegacySoundFont: Codable {
+public final class SoundFont: Codable {
   private static let log = Logging.logger("SoundFont")
   private var log: OSLog { Self.log }
 
@@ -32,10 +32,10 @@ public final class LegacySoundFont: Codable {
   let kind: SoundFontKind
 
   /// The collection of Patches found in the sound font
-  let patches: [LegacyPatch]
+  let patches: [Preset]
 
   /// Collection of tags assigned to the sound font
-  @DecodableDefault.EmptyTagSet var tags: Set<LegacyTag.Key>
+  @DecodableDefault.EmptyTagSet var tags: Set<Tag.Key>
 
   /**
      Constructor for installed sound font files -- those added via File app.
@@ -80,10 +80,10 @@ public final class LegacySoundFont: Codable {
   }
 }
 
-extension LegacySoundFont {
+extension SoundFont {
 
   public static func makeSoundFont(from url: URL) -> Result<
-    LegacySoundFont, SoundFontFileLoadFailure
+    SoundFont, SoundFontFileLoadFailure
   > {
     os_log(.info, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
@@ -107,7 +107,7 @@ extension LegacySoundFont {
       info.embeddedName = displayName
     }
 
-    let soundFont = LegacySoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key())
+    let soundFont = SoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key())
     if Settings.shared.copyFilesWhenAdding {
       do {
         try copyToAppFolder(source: url, destination: soundFont.fileURL)
@@ -128,12 +128,12 @@ extension LegacySoundFont {
     try FileManager.default.copyItem(at: source, to: destination)
   }
 
-  private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [LegacyPatch] {
-    patches.enumerated().map { LegacyPatch($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
+  private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [Preset] {
+    patches.enumerated().map { Preset($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
   }
 }
 
-extension LegacySoundFont {
+extension SoundFont {
 
   /// Determines if the sound font file exists on the device
   public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
@@ -142,7 +142,7 @@ extension LegacySoundFont {
     SoundFontAndPatch(soundFontKey: self.key, patchIndex: index)
   }
 
-  public func makeSoundFontAndPatch(for patch: LegacyPatch) -> SoundFontAndPatch {
+  public func makeSoundFontAndPatch(for patch: Preset) -> SoundFontAndPatch {
     SoundFontAndPatch(soundFontKey: self.key, patchIndex: patch.soundFontIndex)
   }
 
@@ -155,7 +155,7 @@ extension LegacySoundFont {
   }
 
   public func validate(_ tags: Tags) {
-    var invalidTags = [LegacyTag.Key]()
+    var invalidTags = [Tag.Key]()
     for tagKey in self.tags {
       if let tag = tags.getBy(key: tagKey) {
         if tag.name == "All" || tag.name == "Built-in" {
@@ -174,14 +174,14 @@ extension LegacySoundFont {
   }
 }
 
-extension LegacySoundFont: Hashable {
+extension SoundFont: Hashable {
 
   public func hash(into hasher: inout Hasher) { hasher.combine(key) }
 
-  public static func == (lhs: LegacySoundFont, rhs: LegacySoundFont) -> Bool { lhs.key == rhs.key }
+  public static func == (lhs: SoundFont, rhs: SoundFont) -> Bool { lhs.key == rhs.key }
 }
 
-extension LegacySoundFont: CustomStringConvertible {
+extension SoundFont: CustomStringConvertible {
 
   public var description: String { "[SoundFont '\(displayName)' '\(key)]" }
 }
