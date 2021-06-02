@@ -10,12 +10,12 @@
 ![](images/landscape.png)
 
 This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
-instance to generate the sounds for touched keys. The sounds that are avaiable come from _sound font_ files such
+instance to generate the sounds for touched keys. The sounds that are available come from _sound font_ files such
 as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free (and of variable
-quaility). There are four sound font files that are bundled with the application, and more can be added via the iCloud
+quality). There are four sound font files that are bundled with the application, and more can be added via the iCloud
 integration.
 
-![](images/portrait.png|width=100)
+![](images/portrait.png)
 
 > NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
 > to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
