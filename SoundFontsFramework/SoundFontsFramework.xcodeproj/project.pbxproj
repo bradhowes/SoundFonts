@@ -93,7 +93,7 @@
 		BD1971BD266186E900C7FCF5 /* ManagedTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBF895625B57F1000B58E23 /* ManagedTag.swift */; };
 		BD1971BE266186EC00C7FCF5 /* ManagdDelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7DF754265EE99F0083B246 /* ManagdDelayConfig.swift */; };
 		BD1971C02662500D00C7FCF5 /* ManagedAppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */; };
-		BD1A2A772667E12D009E2338 /* Consolidated.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1A2A762667E12D009E2338 /* Consolidated.plist */; };
+		BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */; };
 		BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22B025CC913C007C114F /* Settings.storyboard */; };
 		BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */; };
 		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
@@ -306,7 +306,7 @@
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
 		BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigFileObserver.swift; sourceTree = "<group>"; };
 		BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAppStateTests.swift; sourceTree = "<group>"; };
-		BD1A2A762667E12D009E2338 /* Consolidated.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated.plist; sourceTree = "<group>"; };
+		BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V1.plist; sourceTree = "<group>"; };
 		BD1C22B025CC913C007C114F /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
@@ -823,7 +823,7 @@
 		BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */ = {
 			isa = PBXGroup;
 			children = (
-				BD1A2A762667E12D009E2338 /* Consolidated.plist */,
+				BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */,
 				BDD5FA662504118000367F0B /* Favorites.plist */,
 				BDC961AA24FFC6EA003D9BEF /* SoundFontLibrary.plist */,
 				BDC961A824FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift */,
@@ -983,7 +983,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDEB1260262084FF003CE8EE /* Changes.md in Resources */,
-				BD1A2A772667E12D009E2338 /* Consolidated.plist in Resources */,
+				BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */,
 				BDD5FA672504118100367F0B /* Favorites.plist in Resources */,
 				BDC961AC24FFC6EA003D9BEF /* SoundFontLibrary.plist in Resources */,
 			);

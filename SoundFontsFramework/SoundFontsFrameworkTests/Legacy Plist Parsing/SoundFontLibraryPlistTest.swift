@@ -51,11 +51,14 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(p!.originalName, "Evil Synclavier")
   }
 
-  func testDecodingLegacyConsolidatedFile() {
+  // Make sure that we can always restore from a legacy consolidated file. If a future file format changes, duplicate
+  // this test and rename, capture a Consolidated.plist file from a SoundFontsApp via the "export" option, and add to
+  // this test bundle so it can be referenced in the test.
+  //
+  func testDecodingLegacyConsolidatedFile_V1() {
     let bundle = Bundle(for: type(of: self))
-    let url = bundle.url(forResource: "Consolidated", withExtension: "plist")!
+    let url = bundle.url(forResource: "Consolidated_V1", withExtension: "plist")!
     let configFile = ConsolidatedConfigFile(fileURL: url)
-
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
