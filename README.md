@@ -55,7 +55,7 @@ chain in an AUv3 host such as AUM.
 I have additional AUv3 effects available:
 
 - [Simply Flange](https://github.com/bradhowes/SimplyFlange) -- a simple flange effect
-- [Simply Trremolo](https://github.com/bradhowes/SimplyTremolo) -- a simple tremolo effect
+- [Simply Tremolo](https://github.com/bradhowes/SimplyTremolo) -- a simple tremolo effect
 - [Simply Phaser](https://github.com/bradhowes/SimplyPhaser) -- a simple phaser effect
 
 
