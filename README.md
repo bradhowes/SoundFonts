@@ -7,7 +7,9 @@
 
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
-![](images/landscape.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/landscape.png?raw=true" alt="App shown in landscape on iPhone"/>
+</p>
 
 This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
 instance to generate the sounds for touched keys. The sounds that are available come from _sound font_ files such
