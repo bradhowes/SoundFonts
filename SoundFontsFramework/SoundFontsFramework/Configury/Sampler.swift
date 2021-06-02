@@ -22,14 +22,14 @@ public enum SamplerStartFailure: Error {
   /// Failed to start audio engine
   case engineStarting(error: NSError)
   /// Failed to load a preset
-  case patchLoading(error: NSError)
+  case presetLoading(error: NSError)
   /// The system error associated with a failure.
   var error: NSError {
     switch self {
     case .noSampler: return NSError()
     case .sessionActivating(let err): return err
     case .engineStarting(let err): return err
-    case .patchLoading(let err): return err
+    case .presetLoading(let err): return err
     }
   }
 }
@@ -54,7 +54,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   public private(set) var auSampler: AVAudioUnitSampler?
 
   private let mode: Mode
-  private let activePatchManager: ActivePresetManager
+  private let activePresetManager: ActivePresetManager
   private let reverbEffect: ReverbEffect?
   private let delayEffect: DelayEffect?
   private let presetChangeManager = PresetChangeManager()
@@ -76,9 +76,9 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 
      - parameter mode: determines how the sampler is hosted.
      */
-  public init(mode: Mode, activePatchManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?) {
+  public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?) {
     self.mode = mode
-    self.activePatchManager = activePatchManager
+    self.activePresetManager = activePresetManager
     self.reverbEffect = reverb
     self.delayEffect = delay
     super.init()
@@ -136,14 +136,14 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   }
 
   /**
-     Ask the sampler to use the active preset held by the ActivePatchManager.
+     Ask the sampler to use the active preset held by the ActivePresetManager.
 
      - parameter afterLoadBlock: callback to invoke after the load is successfully done
 
      - returns: Result instance indicating success or failure
      */
   public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
-    os_log(.info, log: log, "loadActivePreset - %{public}s", activePatchManager.active.description)
+    os_log(.info, log: log, "loadActivePreset - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the patch when it is
     guard let sampler = auSampler else {
@@ -151,17 +151,17 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
       return .success(.none)
     }
 
-    guard let soundFont = activePatchManager.activeSoundFont else {
-      os_log(.info, log: log, "activePatchManager.soundFont is nil")
+    guard let soundFont = activePresetManager.activeSoundFont else {
+      os_log(.info, log: log, "activePresetManager.activeSoundFont is nil")
       return .success(sampler)
     }
 
-    guard let patch = activePatchManager.activePreset else {
-      os_log(.info, log: log, "activePatchManager.patch is nil")
+    guard let patch = activePresetManager.activePreset else {
+      os_log(.info, log: log, "activePresetManager.activePreset is nil")
       return .success(sampler)
     }
 
-    let favorite = activePatchManager.active.favorite
+    let favorite = activePresetManager.active.favorite
     self.loaded = false
     let presetConfig = favorite?.presetConfig ?? patch.presetConfig
 
@@ -176,8 +176,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
       DispatchQueue.main.async {
         self.loaded = true
         afterLoadBlock?()
-        os_log(.info, log: self.log, "notifing loaded")
-        self.notify(.loaded(patch: self.activePatchManager.active))
+        os_log(.info, log: self.log, "notifying loaded")
+        self.notify(.loaded(patch: self.activePresetManager.active))
       }
     }
 
@@ -228,7 +228,7 @@ extension Sampler {
      - parameter velocity: how loud to play the note (1-127)
      */
   public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     guard velocity > 0 else {
       noteOff(midiValue)
       return
@@ -244,7 +244,7 @@ extension Sampler {
      */
   public func noteOff(_ midiValue: UInt8) {
     os_log(.debug, log: log, "noteOff - %d", midiValue)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.stopNote(midiValue, onChannel: 0)
   }
 
@@ -256,7 +256,7 @@ extension Sampler {
      */
   public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
     os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.sendPressure(forKey: midiValue, withValue: pressure, onChannel: 0)
   }
 
@@ -267,7 +267,7 @@ extension Sampler {
      */
   public func channelPressure(_ pressure: UInt8) {
     os_log(.debug, log: log, "channelPressure - %d", pressure)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.sendPressure(pressure, onChannel: 0)
   }
 
@@ -278,19 +278,19 @@ extension Sampler {
      */
   public func pitchBendChange(_ value: UInt16) {
     os_log(.debug, log: log, "pitchBend - %d", value)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.sendPitchBend(value, onChannel: 0)
   }
 
   public func controlChange(_ controller: UInt8, value: UInt8) {
     os_log(.debug, log: log, "controllerChange - %d %d", controller, value)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.sendController(controller, withValue: value, onChannel: 0)
   }
 
   public func programChange(_ program: UInt8) {
     os_log(.debug, log: log, "programChange - %d", program)
-    guard activePatchManager.active != .none, self.loaded else { return }
+    guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.sendProgramChange(program, onChannel: 0)
   }
 

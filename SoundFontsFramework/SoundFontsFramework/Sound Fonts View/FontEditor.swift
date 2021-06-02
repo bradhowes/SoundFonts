@@ -90,7 +90,7 @@ extension FontEditor {
       }
     }()
 
-    presetsCountLabel.text = Formatters.format(presetCount: soundFont.patches.count)
+    presetsCountLabel.text = Formatters.format(presetCount: soundFont.presets.count)
     favoritesCountLabel.text = Formatters.format(favoriteCount: config.favoriteCount)
 
     updateHiddenCount()
@@ -202,7 +202,7 @@ extension FontEditor: SegueHandler {
 extension FontEditor {
 
   private func updateHiddenCount() {
-    let hiddenCount = soundFont.patches.filter { $0.presetConfig.isHidden ?? false }.count
+    let hiddenCount = soundFont.presets.filter { $0.presetConfig.isHidden ?? false }.count
     if hiddenCount > 0 {
       hiddenCountLabel.text = "\(hiddenCount) hidden"
       resetVisibilityButton.isHidden = false

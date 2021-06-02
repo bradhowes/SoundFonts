@@ -19,10 +19,10 @@ class SoundFontLibraryPListTest: XCTestCase {
     let soundFont = soundFonts.getBy(index: 0)
     XCTAssertEqual(soundFont.displayName, "Dirtelec")
     XCTAssertEqual(soundFont.embeddedName, "User Define Bank")
-    XCTAssertEqual(soundFont.patches.count, 1)
+    XCTAssertEqual(soundFont.presets.count, 1)
     XCTAssertEqual(soundFont.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
 
-    let patch = soundFont.patches[0]
+    let patch = soundFont.presets[0]
     XCTAssertEqual(patch.originalName, "Dirty Elec Organ")
     XCTAssertEqual(patch.soundFontIndex, 0)
     XCTAssertEqual(patch.bank, 0)
@@ -46,7 +46,7 @@ class SoundFontLibraryPListTest: XCTestCase {
     let sf = soundFonts.getBy(key: favorite.soundFontAndPreset.soundFontKey)
     XCTAssertNotNil(sf)
     XCTAssertEqual(sf!.displayName, "Evil synclavier")
-    let p = sf?.patches[favorite.soundFontAndPreset.patchIndex]
+    let p = sf?.presets[favorite.soundFontAndPreset.patchIndex]
     XCTAssertNotNil(p)
     XCTAssertEqual(p!.originalName, "Evil Synclavier")
   }

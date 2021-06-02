@@ -25,7 +25,7 @@ final class KeyboardController: UIViewController {
   private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
   private var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
-  private var activePatchManager: ActivePresetManager!
+  private var activePresetManager: ActivePresetManager!
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
 
@@ -101,11 +101,11 @@ extension KeyboardController: ControllerConfiguration {
      - parameter router: the container holding the other components
      */
   func establishConnections(_ router: ComponentContainer) {
-    activePatchManager = router.activePatchManager
+    activePresetManager = router.activePresetManager
     infoBar = router.infoBar
     infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
     infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
-    router.activePatchManager.subscribe(self, notifier: presetChanged)
+    router.activePresetManager.subscribe(self, notifier: presetChanged)
     router.favorites.subscribe(self, notifier: favoritesChange)
     router.subscribe(self, notifier: routerChange)
   }
@@ -119,7 +119,7 @@ extension KeyboardController: ControllerConfiguration {
   private func presetChanged(_ event: ActivePresetEvent) {
     switch event {
     case .active:
-      if let presetConfig = activePatchManager.activePreset?.presetConfig {
+      if let presetConfig = activePresetManager.activePreset?.presetConfig {
         updateWith(presetConfig: presetConfig)
       }
     }
@@ -128,7 +128,7 @@ extension KeyboardController: ControllerConfiguration {
   private func favoritesChange(_ event: FavoritesEvent) {
     switch event {
     case let .changed(index: _, favorite: favorite):
-      if activePatchManager.activeFavorite == favorite {
+      if activePresetManager.activeFavorite == favorite {
         updateWith(presetConfig: favorite.presetConfig)
       }
     case let .selected(index: _, favorite: favorite):

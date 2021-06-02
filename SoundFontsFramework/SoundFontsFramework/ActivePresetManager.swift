@@ -37,7 +37,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   /// The currently active preset instance (if any)
   public var activePreset: Preset? {
     guard let index = active.soundFontAndPreset?.patchIndex else { return nil }
-    return activeSoundFont?.patches[index]
+    return activeSoundFont?.presets[index]
   }
 
   /// The currently active preset instance (if any)
@@ -83,11 +83,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   /**
      Obtain the preset instance that corresponds to the given preset key.
 
-     - parameter soundFontAndPatch: the preset key to resolve
+     - parameter soundFontAndPreset: the preset key to resolve
      - returns: optional patch instance that corresponds to the given key
      */
-  public func resolveToPatch(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
-    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.patches[soundFontAndPreset.patchIndex]
+  public func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
+    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.patchIndex]
   }
 
   /**

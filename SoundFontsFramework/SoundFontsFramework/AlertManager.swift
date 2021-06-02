@@ -157,7 +157,7 @@ extension AlertManager {
         body: String(
           format: Formatters.strings.engineStartingFailureBody,
           error.localizedDescription))
-    case .patchLoading(let error):
+    case .presetLoading(let error):
       return AlertConfig(
         title: title,
         body: String(

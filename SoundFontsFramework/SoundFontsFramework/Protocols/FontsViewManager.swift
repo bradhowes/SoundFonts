@@ -2,7 +2,7 @@
 
 import Foundation
 
-/// Defines the available actions of a PatchesViewManager which contains both the list of installed sound fonts on the
+/// Defines the available actions of a FontsViewManager which contains both the list of installed sound fonts on the
 /// left and on the right the list of presets found in the selected sound font.
 public protocol FontsViewManager: UpperViewSwipingActivity {
 

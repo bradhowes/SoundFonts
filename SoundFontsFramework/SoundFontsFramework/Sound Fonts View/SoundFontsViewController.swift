@@ -3,9 +3,9 @@
 import UIKit
 import os
 
-/// View controller for the SoundFont / Patches UITableView combination. Much of the UITableView management is handled
-/// by specific *Manager classes. This controller mainly serves to manage the active Patch state, plus the switching
-/// between normal Patch table view display and Patch search results display. Apart from the adopted protocols, there is no
+/// View controller for the SoundFont / Presets UITableView combination. Much of the UITableView management is handled
+/// by specific *Manager classes. This controller mainly serves to manage the active preset state, plus the switching
+/// between normal preset table view display and preset search results display. Apart from the adopted protocols, there is no
 /// API for this class.
 public final class SoundFontsViewController: UIViewController {
   private lazy var log = Logging.logger("SoundFontsViewController")
@@ -137,8 +137,7 @@ extension SoundFontsViewController {
   {
     let promptTitle = Formatters.strings.deleteFontTitle
     let promptMessage = Formatters.strings.deleteFontMessage
-    let alertController = UIAlertController(
-      title: promptTitle, message: promptMessage, preferredStyle: .alert)
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
     let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { _ in
       self.soundFonts.remove(key: soundFont.key)
@@ -173,9 +172,7 @@ extension SoundFontsViewController {
 
 extension SoundFontsViewController: UIDocumentPickerDelegate {
 
-  public func documentPicker(
-    _ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]
-  ) {
+  public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     os_log(.info, log: log, "documentPicker didPickDocumentAt")
     addSoundFonts(urls: urls)
   }
@@ -193,13 +190,13 @@ extension SoundFontsViewController: ControllerConfiguration {
     infoBar = router.infoBar
     tags = router.tags
 
-    fontsTableViewManager = FontsTableViewManager(
-      view: soundFontsView, selectedSoundFontManager: selectedSoundFontManager,
-      activePatchManager: router.activePatchManager, fontEditorActionGenerator: self,
-      soundFonts: router.soundFonts, tags: tags)
+    fontsTableViewManager = FontsTableViewManager(view: soundFontsView,
+                                                  selectedSoundFontManager: selectedSoundFontManager,
+                                                  activePresetManager: router.activePresetManager,
+                                                  fontEditorActionGenerator: self,
+                                                  soundFonts: router.soundFonts, tags: tags)
 
-    tagsTableViewManager = ActiveTagManager(
-      view: tagsView, tags: router.tags, tagsHider: self.hideTags)
+    tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, tagsHider: self.hideTags)
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
@@ -210,7 +207,7 @@ extension SoundFontsViewController: ControllerConfiguration {
   }
 }
 
-// MARK: - PatchesViewManager Protocol
+// MARK: - FontsViewManager Protocol
 
 extension SoundFontsViewController: FontsViewManager {
 
@@ -225,19 +222,15 @@ extension SoundFontsViewController: FontsViewManager {
     for each in urls {
       os_log(.info, log: log, "processing %{public}s", each.path)
       switch soundFonts.add(url: each) {
-      case .success(let (_, soundFont)):
-        ok.append(soundFont.fileURL.lastPathComponent)
-      case .failure(let failure):
-        failures.append(failure)
+      case .success(let (_, soundFont)): ok.append(soundFont.fileURL.lastPathComponent)
+      case .failure(let failure): failures.append(failure)
       }
     }
 
     if urls.count > 1 || !failures.isEmpty {
       let message = Formatters.makeAddSoundFontBody(ok: ok, failures: failures, total: urls.count)
-      let alert = UIAlertController(
-        title: Formatters.strings.addSoundFontsStatusTitle,
-        message: message,
-        preferredStyle: .alert)
+      let alert = UIAlertController(title: Formatters.strings.addSoundFontsStatusTitle, message: message,
+                                    preferredStyle: .alert)
       alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
       self.present(alert, animated: true, completion: nil)
     }
@@ -255,17 +248,12 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter with: the SoundFont that will be edited by the swipe action
      - returns: new UIContextualAction that will perform the edit
      */
-  public func createEditSwipeAction(
-    at: IndexPath, cell: TableCell,
-    soundFont: SoundFont
-  ) -> UIContextualAction {
+  public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
-      let config = FontEditor.Config(
-        indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
-        soundFontKey: soundFont.key,
-        favoriteCount: self.favorites.count(associatedWith: soundFont),
-        tags: self.tags,
-        completionHandler: completionHandler)
+      let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
+                                     soundFontKey: soundFont.key,
+                                     favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
+                                     completionHandler: completionHandler)
       self.performSegue(withIdentifier: .fontEditor, sender: config)
     }
   }
@@ -279,10 +267,7 @@ extension SoundFontsViewController: FontEditorActionGenerator {
      - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
      - returns: new UIContextualAction that will perform the edit
      */
-  public func createDeleteSwipeAction(
-    at: IndexPath, cell: TableCell,
-    soundFont: SoundFont
-  ) -> UIContextualAction {
+  public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .remove, color: .red) { _, _, completionHandler in
       self.remove(soundFont: soundFont, completionHandler: completionHandler)
     }
@@ -301,9 +286,7 @@ extension SoundFontsViewController: SegueHandler {
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .fontEditor:
-      guard let config = sender as? FontEditor.Config else {
-        fatalError("expected FontEditor.Config")
-      }
+      guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
       prepareToEdit(segue, config: config)
 
     case .fontBrowser: break
@@ -318,7 +301,7 @@ extension SoundFontsViewController: SegueHandler {
 
   private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
     guard let navController = segue.destination as? UINavigationController,
-      let viewController = navController.topViewController as? FontEditor
+          let viewController = navController.topViewController as? FontEditor
     else {
       return
     }

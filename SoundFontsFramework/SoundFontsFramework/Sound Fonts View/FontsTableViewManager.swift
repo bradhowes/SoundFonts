@@ -14,7 +14,7 @@ final class FontsTableViewManager: NSObject {
 
   private let view: UITableView
   private let selectedSoundFontManager: SelectedSoundFontManager
-  private let activePatchManager: ActivePresetManager
+  private let activePresetManager: ActivePresetManager
   private let fontEditorActionGenerator: FontEditorActionGenerator
   private let soundFonts: SoundFonts
   private let tags: Tags
@@ -25,13 +25,13 @@ final class FontsTableViewManager: NSObject {
 
   init(
     view: UITableView, selectedSoundFontManager: SelectedSoundFontManager,
-    activePatchManager: ActivePresetManager,
+    activePresetManager: ActivePresetManager,
     fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags
   ) {
 
     self.view = view
     self.selectedSoundFontManager = selectedSoundFontManager
-    self.activePatchManager = activePatchManager
+    self.activePresetManager = activePresetManager
     self.fontEditorActionGenerator = fontEditorActionGenerator
     self.soundFonts = soundFonts
     self.tags = tags
@@ -43,7 +43,7 @@ final class FontsTableViewManager: NSObject {
 
     soundFonts.subscribe(self, notifier: soundFontsChange)
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
-    activePatchManager.subscribe(self, notifier: activePatchChange)
+    activePresetManager.subscribe(self, notifier: activePresetChange)
     tags.subscribe(self, notifier: tagsChange)
 
     activeTagsObservation = Settings.shared.observe(\.activeTagKey) { [weak self] setting, _ in
@@ -52,7 +52,7 @@ final class FontsTableViewManager: NSObject {
   }
 
   func selectActive() {
-    guard let key = activePatchManager.activeSoundFont?.key else { return }
+    guard let key = activePresetManager.activeSoundFont?.key else { return }
     guard let row = viewSoundFonts.firstIndex(of: key) else { return }
     selectAndShow(row: row)
   }
@@ -133,8 +133,8 @@ extension FontsTableViewManager {
     view.reloadData()
   }
 
-  private func activePatchChange(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePatchChange")
+  private func activePresetChange(_ event: ActivePresetEvent) {
+    os_log(.info, log: log, "activePresetChange")
     switch event {
     case let .active(old: old, new: new, playSample: _):
       if old.soundFontAndPreset?.soundFontKey != new.soundFontAndPreset?.soundFontKey {
@@ -143,11 +143,11 @@ extension FontsTableViewManager {
           updateRow(row: row)
         }
 
-        if let soundFontAndPatch = new.soundFontAndPreset {
-          let key = soundFontAndPatch.soundFontKey
+        if let soundFontAndPreset = new.soundFontAndPreset {
+          let key = soundFontAndPreset.soundFontKey
           let row = viewSoundFonts.firstIndex(of: key)
           updateRow(row: row)
-          if let soundFont = activePatchManager.resolveToSoundFont(soundFontAndPatch) {
+          if let soundFont = activePresetManager.resolveToSoundFont(soundFontAndPreset) {
             selectedSoundFontManager.setSelected(soundFont)
           } else {
             selectedSoundFontManager.clearSelected()
@@ -223,11 +223,9 @@ extension FontsTableViewManager {
         return
       }
 
-      if self.activePatchManager.activeSoundFont == soundFont {
-        self.activePatchManager.setActive(
-          preset: SoundFontAndPreset(
-            soundFontKey: newSoundFont.key,
-            patchIndex: 0), playSample: false)
+      if self.activePresetManager.activeSoundFont == soundFont {
+        self.activePresetManager.setActive(
+          preset: SoundFontAndPreset(soundFontKey: newSoundFont.key, presetIndex: 0), playSample: false)
         self.selectedSoundFontManager.setSelected(newSoundFont)
       } else if self.selectedSoundFontManager.selected == soundFont {
         self.selectedSoundFontManager.setSelected(newSoundFont)
@@ -288,7 +286,7 @@ extension FontsTableViewManager {
     os_log(
       .debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
     let isSelected = selectedSoundFontManager.selected == soundFont
-    let isActive = activePatchManager.activeSoundFont == soundFont
+    let isActive = activePresetManager.activeSoundFont == soundFont
     cell.updateForFont(
       name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected,
       isActive: isActive)

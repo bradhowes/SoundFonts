@@ -9,6 +9,7 @@ public class Favorite: Codable {
   public typealias Key = UUID
 
   /// Legacy encoding keys before consolidation into PresetConfig
+  /// NOTE: do not change any key names
   enum V1Keys: String, CodingKey {
     case key
     case soundFontAndPatch
@@ -19,6 +20,7 @@ public class Favorite: Codable {
   }
 
   /// Encoding keys with PresetConfig
+  /// NOTE: do not change any key names without setting a custom coding key
   enum V2Keys: String, CodingKey {
     case key
     case soundFontAndPreset = "soundFontAndPatch" // legacy naming

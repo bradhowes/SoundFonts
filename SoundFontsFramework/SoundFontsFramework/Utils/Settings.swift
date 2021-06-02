@@ -30,7 +30,7 @@ extension SettingKeys {
     "keyLabelOption", defaultValue: KeyLabelOption.cOnly.rawValue)
   /// Current keyboard key width
   public static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
-  /// The last active preset/patch
+  /// The last active patch (name string is legacy)
   public static let lastActivePreset = SettingKey("lastActivePatch", defaultValue: Data())
   /// The lowest note on the keyboard that is currently visible
   public static let lowestKeyNote = SettingKey("lowestKeyNote", defaultValue: 48)

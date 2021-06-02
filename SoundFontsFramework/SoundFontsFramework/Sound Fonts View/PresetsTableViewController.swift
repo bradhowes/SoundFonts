@@ -42,14 +42,13 @@ extension PresetsTableViewController {
 extension PresetsTableViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
-    presetsTableViewManager = PresetsTableViewManager(
-      viewController: self,
-      activePatchManager: router.activePatchManager,
-      selectedSoundFontManager: router.selectedSoundFontManager,
-      soundFonts: router.soundFonts,
-      favorites: router.favorites,
-      keyboard: router.keyboard,
-      infoBar: router.infoBar)
+    presetsTableViewManager = PresetsTableViewManager(viewController: self,
+                                                      activePresetManager: router.activePresetManager,
+                                                      selectedSoundFontManager: router.selectedSoundFontManager,
+                                                      soundFonts: router.soundFonts,
+                                                      favorites: router.favorites,
+                                                      keyboard: router.keyboard,
+                                                      infoBar: router.infoBar)
     presetsTableViewManager?.selectActive(animated: false)
   }
 }

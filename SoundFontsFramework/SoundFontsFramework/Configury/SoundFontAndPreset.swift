@@ -7,4 +7,9 @@ import Foundation
 public struct SoundFontAndPreset: Codable, Hashable {
   public let soundFontKey: SoundFont.Key
   public let patchIndex: Int
+
+  public init(soundFontKey: SoundFont.Key, presetIndex: Int) {
+    self.soundFontKey = soundFontKey
+    self.patchIndex = presetIndex
+  }
 }

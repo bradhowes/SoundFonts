@@ -12,7 +12,7 @@ final public class FavoriteEditor: UIViewController {
     let currentLowestNote: Note?
     let completionHandler: ((Bool) -> Void)?
     let soundFonts: SoundFonts
-    let soundFontAndPatch: SoundFontAndPreset
+    let soundFontAndPreset: SoundFontAndPreset
   }
 
   public enum Config {
@@ -42,7 +42,7 @@ final public class FavoriteEditor: UIViewController {
   }
 
   public enum Response {
-    case preset(soundFontAndPatch: SoundFontAndPreset, config: PresetConfig)
+    case preset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig)
     case favorite(config: PresetConfig)
   }
 
@@ -52,7 +52,7 @@ final public class FavoriteEditor: UIViewController {
   private var currentLowestNote: Note?
   private var completionHandler: ((Bool) -> Void)?
   private var soundFonts: SoundFonts! = nil
-  private var soundFontAndPatch: SoundFontAndPreset! = nil
+  private var soundFontAndPreset: SoundFontAndPreset! = nil
 
   weak var delegate: FavoriteEditorDelegate?
 
@@ -106,7 +106,7 @@ final public class FavoriteEditor: UIViewController {
     self.currentLowestNote = state.currentLowestNote
     self.completionHandler = state.completionHandler
     self.soundFonts = state.soundFonts
-    self.soundFontAndPatch = state.soundFontAndPatch
+    self.soundFontAndPreset = state.soundFontAndPreset
   }
 
   override public func viewDidLoad() {
@@ -135,12 +135,12 @@ final public class FavoriteEditor: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    precondition(config != nil && soundFonts != nil && soundFontAndPatch != nil)
+    precondition(config != nil && soundFonts != nil && soundFontAndPreset != nil)
 
-    guard let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else {
+    guard let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else {
       fatalError()
     }
-    let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
     let editingFavorite = config.favorite != nil
 
     presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
@@ -178,8 +178,7 @@ final public class FavoriteEditor: UIViewController {
 
     soundFontName.text = soundFont.displayName
     bankIndex.text = "Bank: \(preset.bank) Index: \(preset.program)"
-    keyLabel.text =
-      config.favorite?.key.uuidString ?? config.state.soundFontAndPatch.soundFontKey.uuidString
+    keyLabel.text = config.favorite?.key.uuidString ?? config.state.soundFontAndPreset.soundFontKey.uuidString
 
     notesTextView.text = presetConfig.notes
   }
@@ -240,13 +239,13 @@ extension FavoriteEditor {
      */
   @IBAction private func donePressed(_ sender: UIBarButtonItem) {
     guard
-      let soundFont = soundFonts.getBy(key: soundFontAndPatch.soundFontKey),
+      let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey),
       let tuningComponent = self.tuningComponent
     else {
       fatalError()
     }
 
-    let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
     var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
     let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)
@@ -270,7 +269,7 @@ extension FavoriteEditor {
     let response: Response =
       self.config.isFavorite
       ? .favorite(config: presetConfig)
-      : .preset(soundFontAndPatch: soundFontAndPatch, config: presetConfig)
+      : .preset(soundFontAndPreset: soundFontAndPreset, config: presetConfig)
 
     AskForReview.maybe()
     delegate?.dismissed(position, reason: .done(response: response))

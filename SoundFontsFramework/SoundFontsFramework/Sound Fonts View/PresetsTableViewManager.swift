@@ -11,7 +11,7 @@ private enum Slot: Equatable {
 }
 
 /**
- Data source and delegate for the Patches UITableView. This is one of the most complicated managers and it should be
+ Data source and delegate for the presets UITableView. This is one of the most complicated managers and it should be
  broken up into smaller components. There are three four areas of functionality:
 
  - table view drawing and selecting
@@ -44,22 +44,22 @@ final class PresetsTableViewManager: NSObject {
   private var showingSearchResults: Bool { searchSlots != nil }
 
   /**
-     Construct a new patches table view manager.
+     Construct a new presets table view manager.
 
      - parameter viewController: the view controller that holds this manager
-     - parameter activePatchManager: the active preset manager
+     - parameter activePresetManager: the active preset manager
      - parameter selectedSoundFontManager: the selected sound font manager
      - parameter soundFonts: the sound fonts collection manager
      - parameter favorites: the favorites collection manager
      - parameter keyboard: the optional keyboard view manager
      - parameter infoBar: the info bar manager
      */
-  init(viewController: PresetsTableViewController, activePatchManager: ActivePresetManager,
+  init(viewController: PresetsTableViewController, activePresetManager: ActivePresetManager,
        selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
        keyboard: Keyboard?, infoBar: InfoBar) {
     self.viewController = viewController
     self.selectedSoundFontManager = selectedSoundFontManager
-    self.activePresetManager = activePatchManager
+    self.activePresetManager = activePresetManager
     self.soundFonts = soundFonts
     self.favorites = favorites
     self.keyboard = keyboard
@@ -86,7 +86,7 @@ final class PresetsTableViewManager: NSObject {
     searchBar.delegate = self
 
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
-    activePatchManager.subscribe(self, notifier: activePatchChange)
+    activePresetManager.subscribe(self, notifier: activePresetChange)
     favorites.subscribe(self, notifier: favoritesChange)
     soundFonts.subscribe(self, notifier: soundFontsChange)
 
@@ -246,9 +246,9 @@ extension PresetsTableViewManager {
 
   private func selectedPreset(_ presetIndex: Int, wasSearching: Bool) {
     withSoundFont { soundFont in
-      let soundFontAndPatch = SoundFontAndPreset(soundFontKey: soundFont.key, patchIndex: presetIndex)
-      if !activePresetManager.setActive(preset: soundFontAndPatch, playSample: Settings.shared.playSample) {
-        if let indexPath = getPresetIndexPath(for: soundFontAndPatch) {
+      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
+      if !activePresetManager.setActive(preset: soundFontAndPreset, playSample: Settings.shared.playSample) {
+        if let indexPath = getPresetIndexPath(for: soundFontAndPreset) {
           view.scrollToRow(at: indexPath, at: .none, animated: false)
         }
         hideSearchBar(animated: true)
@@ -292,7 +292,7 @@ extension PresetsTableViewManager {
 
   private func regenerateViewSlots(_ completionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = nil) {
     os_log(.info, log: log, "updateViewPresets")
-    let source = selectedSoundFontManager.selected?.patches ?? []
+    let source = selectedSoundFontManager.selected?.presets ?? []
 
     viewSlots.removeAll()
     for (index, preset) in source.enumerated() {
@@ -337,7 +337,7 @@ extension PresetsTableViewManager {
     case .favorite(let key):
       favorites.setVisibility(key: key, state: state)
     case .preset(let index):
-      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, patchIndex: index)
+      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: index)
       soundFonts.setVisibility(soundFontAndPreset: soundFontAndPreset, state: state)
     }
   }
@@ -373,7 +373,7 @@ extension PresetsTableViewManager {
     }
 
     var slotIndex = 0
-    for (presetIndex, preset) in soundFont.patches.enumerated() {
+    for (presetIndex, preset) in soundFont.presets.enumerated() {
       processPresetConfig(slotIndex, presetConfig: preset.presetConfig) {
         .preset(index: presetIndex)
       }
@@ -430,7 +430,7 @@ extension PresetsTableViewManager {
     return withSoundFont { soundFont in
       switch slot {
       case .favorite(let key): return favorites.getBy(key: key).presetConfig
-      case .preset(let presetIndex): return soundFont.patches[presetIndex].presetConfig
+      case .preset(let presetIndex): return soundFont.presets[presetIndex].presetConfig
       }
     }
   }
@@ -447,10 +447,10 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func activePatchChange(_ event: ActivePresetEvent) {
+  private func activePresetChange(_ event: ActivePresetEvent) {
     switch event {
     case let .active(old: old, new: new, playSample: _):
-      os_log(.debug, log: log, "activePatchChange")
+      os_log(.debug, log: log, "activePresetChange")
 
       // Update the two rows involved in the change in active preset
       view.performBatchUpdates(
@@ -568,12 +568,12 @@ extension PresetsTableViewManager {
     return IndexPath(slotIndex: index)
   }
 
-  private func getPresetIndexPath(for soundFontAndPatch: SoundFontAndPreset?) -> IndexPath? {
-    guard let soundFontAndPatch = soundFontAndPatch else { return nil }
+  private func getPresetIndexPath(for soundFontAndPreset: SoundFontAndPreset?) -> IndexPath? {
+    guard let soundFontAndPreset = soundFontAndPreset else { return nil }
     guard let soundFont = selectedSoundFontManager.selected,
-      soundFont.key == soundFontAndPatch.soundFontKey
+      soundFont.key == soundFontAndPreset.soundFontKey
     else { return nil }
-    let presetIndex = soundFontAndPatch.patchIndex
+    let presetIndex = soundFontAndPreset.patchIndex
     if showingSearchResults {
       guard let row = searchSlots?.findPresetIndex(presetIndex) else { return nil }
       return IndexPath(row: row, section: 0)
@@ -601,7 +601,7 @@ extension PresetsTableViewManager {
         let name: String = {
           switch slot {
           case .favorite(let key): return favorites.getBy(key: key).presetConfig.name
-          case .preset(let presetIndex): return soundFont.patches[presetIndex].presetConfig.name
+          case .preset(let presetIndex): return soundFont.presets[presetIndex].presetConfig.name
           }
         }()
         return name.localizedCaseInsensitiveContains(searchTerm)
@@ -632,7 +632,7 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "selectActive - %d", animated)
     guard let activeSlot: Slot = {
       switch activePresetManager.active {
-      case let .preset(soundFontAndPatch): return .preset(index: soundFontAndPatch.patchIndex)
+      case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.patchIndex)
       case let .favorite(favorite): return .favorite(key: favorite.key)
       case .none: return nil
       }
@@ -649,8 +649,8 @@ extension PresetsTableViewManager {
     hideSearchBar(animated: true)
   }
 
-  private func isActive(_ soundFontAndPatch: SoundFontAndPreset) -> Bool {
-    activePresetManager.active.soundFontAndPreset == soundFontAndPatch
+  private func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {
+    activePresetManager.active.soundFontAndPreset == soundFontAndPreset
   }
 }
 
@@ -664,11 +664,11 @@ extension PresetsTableViewManager {
     let actions: [UIContextualAction] = {
       switch slot {
       case .preset:
-        guard let soundFontAndPatch = makeSoundFontAndPreset(at: indexPath) else { return [] }
+        guard let soundFontAndPreset = makeSoundFontAndPreset(at: indexPath) else { return [] }
         return [
-          editPresetSwipeAction(at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch),
+          editPresetSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset),
           createFavoriteSwipeAction(
-            at: indexPath, cell: cell, soundFontAndPatch: soundFontAndPatch)
+            at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
         ]
       case .favorite:
         return [
@@ -681,7 +681,7 @@ extension PresetsTableViewManager {
 
   private func editPresetSwipeAction(
     at indexPath: IndexPath, cell: TableCell,
-    soundFontAndPatch: SoundFontAndPreset
+    soundFontAndPreset: SoundFontAndPreset
   ) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
       var rect = self.view.rectForRow(at: indexPath)
@@ -692,28 +692,26 @@ extension PresetsTableViewManager {
             indexPath: indexPath, sourceView: view, sourceRect: view.bounds,
             currentLowestNote: self.keyboard?.lowestNote,
             completionHandler: completionHandler, soundFonts: self.soundFonts,
-            soundFontAndPatch: soundFontAndPatch))
+            soundFontAndPreset: soundFontAndPreset))
       )
     }
   }
 
   private func createFavoriteSwipeAction(
     at indexPath: IndexPath, cell: TableCell,
-    soundFontAndPatch: SoundFontAndPreset
+    soundFontAndPreset: SoundFontAndPreset
   ) -> UIContextualAction {
     UIContextualAction(icon: .favorite, color: .systemOrange) { _, _, completionHandler in
-      completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPatch))
+      completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPreset))
     }
   }
 
-  private func createFavorite(at indexPath: IndexPath, with soundFontAndPatch: SoundFontAndPreset)
+  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset)
     -> Bool
   {
-    guard let soundFont = self.soundFonts.getBy(key: soundFontAndPatch.soundFontKey) else {
-      return false
-    }
-    let preset = soundFont.patches[soundFontAndPatch.patchIndex]
-    guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPatch,
+    guard let soundFont = self.soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else { return false }
+    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPreset,
                                                    keyboardLowestNote: keyboard?.lowestNote) else { return false }
     favorites.add(favorite: favorite)
     let favoriteIndex = IndexPath(slotIndex: indexPath.slotIndex + preset.favorites.count)
@@ -729,18 +727,14 @@ extension PresetsTableViewManager {
     return true
   }
 
-  private func deleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell)
-    -> UIContextualAction
-  {
+  private func deleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
     UIContextualAction(icon: .unfavorite, color: .systemRed) { _, _, completionHandler in
       completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
     }
   }
 
   private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
-    guard case let .favorite(key) = getSlot(at: indexPath) else {
-      fatalError("unexpected slot type")
-    }
+    guard case let .favorite(key) = getSlot(at: indexPath) else { fatalError("unexpected slot type") }
     let favorite = favorites.getBy(key: key)
     favorites.remove(key: key)
     soundFonts.deleteFavorite(soundFontAndPreset: favorite.soundFontAndPreset, key: favorite.key)
@@ -775,7 +769,7 @@ extension PresetsTableViewManager {
       sourceView: view, sourceRect: view.bounds,
       currentLowestNote: self.keyboard?.lowestNote,
       completionHandler: completionHandler, soundFonts: self.soundFonts,
-      soundFontAndPatch: favorite.soundFontAndPreset)
+      soundFontAndPreset: favorite.soundFontAndPreset)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     self.favorites.beginEdit(config: config)
   }
@@ -797,62 +791,48 @@ extension PresetsTableViewManager {
     return makeSwipeActionConfiguration(actions: actions)
   }
 
-  private func createHideSwipeAction(
-    at indexPath: IndexPath, cell: TableCell,
-    soundFontAndPreset: SoundFontAndPreset
-  ) -> UIContextualAction {
+  private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
+                                     soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .hide, color: .gray) { _, _, completionHandler in
       if Settings.shared.showedHidePresetPrompt {
-        self.hidePreset(
-          soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
-          completionHandler: completionHandler)
+        self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
+                        completionHandler: completionHandler)
       } else {
-        self.promptToHidePreset(
-          soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
-          completionHandler: completionHandler)
+        self.promptToHidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
+                                completionHandler: completionHandler)
       }
     }
   }
 
-  private func makeSwipeActionConfiguration(actions: [UIContextualAction])
-    -> UISwipeActionsConfiguration
-  {
+  private func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
     let actions = UISwipeActionsConfiguration(actions: actions)
     actions.performsFirstActionWithFullSwipe = false
     return actions
   }
 
-  private func hidePreset(
-    soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
-    completionHandler: (Bool) -> Void
-  ) {
+  private func hidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
+                          completionHandler: (Bool) -> Void) {
     self.soundFonts.setVisibility(soundFontAndPreset: soundFontAndPreset, state: false)
     self.viewSlots.remove(at: indexPath.slotIndex)
-    self.view.performBatchUpdates(
-      {
-        self.view.deleteRows(at: [indexPath], with: .automatic)
-        self.sectionRowCounts[indexPath.section] -= 1
-      },
-      completion: { _ in
-        self.calculateSectionRowCounts(reload: true)
-      })
+    self.view.performBatchUpdates({
+      self.view.deleteRows(at: [indexPath], with: .automatic)
+      self.sectionRowCounts[indexPath.section] -= 1
+    },
+    completion: { _ in
+      self.calculateSectionRowCounts(reload: true)
+    })
     completionHandler(true)
   }
 
-  private func promptToHidePreset(
-    soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
-    completionHandler: @escaping (Bool) -> Void
-  ) {
+  private func promptToHidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
+                                  completionHandler: @escaping (Bool) -> Void) {
     let promptTitle = Formatters.strings.hidePresetTitle
     let promptMessage = Formatters.strings.hidePresetMessage
-    let alertController = UIAlertController(
-      title: promptTitle, message: promptMessage, preferredStyle: .alert)
-
+    let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
     let hide = UIAlertAction(title: Formatters.strings.hidePresetAction, style: .default) { _ in
       Settings.shared.showedHidePresetPrompt = true
-      self.hidePreset(
-        soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
-        completionHandler: completionHandler)
+      self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
+                      completionHandler: completionHandler)
     }
 
     let cancel = UIAlertAction(title: Formatters.strings.cancelAction, style: .cancel) { _ in
@@ -864,9 +844,7 @@ extension PresetsTableViewManager {
 
     if let popoverController = alertController.popoverPresentationController {
       popoverController.sourceView = self.view
-      popoverController.sourceRect = CGRect(
-        x: self.view.bounds.midX, y: self.view.bounds.midY,
-        width: 0, height: 0)
+      popoverController.sourceRect = CGRect(x: self.view.bounds.midX, y: self.view.bounds.midY, width: 0, height: 0)
       popoverController.permittedArrowDirections = []
     }
 
@@ -888,7 +866,7 @@ extension PresetsTableViewManager {
       case .preset(let presetIndex): return presetIndex
       }
     }()
-    return SoundFontAndPreset(soundFontKey: soundFont.key, patchIndex: presetIndex)
+    return SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
   }
 
   private func updateRow(with activeKind: ActivePresetKind?) {
@@ -934,8 +912,8 @@ extension PresetsTableViewManager {
 
     switch getSlot(at: indexPath) {
     case let .preset(presetIndex):
-      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, patchIndex: presetIndex)
-      let preset = soundFont.patches[presetIndex]
+      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
+      let preset = soundFont.presets[presetIndex]
       os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
              preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)
       cell.updateForPreset(name: preset.presetConfig.name,

@@ -57,11 +57,12 @@ final public class Preset: Codable {
   public var bankLSB: Int { bankType.bankLSB }
 
   /**
-     Initialize Patch instance.
+   Initialize instance.
 
-     - parameter name: the display name for the patch
-     - parameter bank: the bank where the patch resides
-     - parameter patch: the program ID of the patch in the sound font
+   - parameter name: the display name for the patch
+   - parameter bank: the bank where the patch resides
+   - parameter program: the program ID of the patch in the sound font
+   - parameter index: the entry for the preset in the sound font presets array
      */
   public init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
     self.originalName = name
@@ -79,8 +80,7 @@ final public class Preset: Codable {
       let program = try values.decode(Int.self, forKey: .program)
       let soundFontIndex = try values.decode(Int.self, forKey: .soundFontIndex)
       let presetConfig = try values.decode(PresetConfig.self, forKey: .presetConfig)
-      let favorites =
-        try values.decodeIfPresent(Array<Favorite.Key>.self, forKey: .favorites) ?? []
+      let favorites = try values.decodeIfPresent(Array<Favorite.Key>.self, forKey: .favorites) ?? []
 
       self.originalName = originalName
       self.bank = bank
@@ -104,10 +104,9 @@ final public class Preset: Codable {
         self.bank = bank
         self.program = program
         self.soundFontIndex = soundFontIndex
-        self.presetConfig = PresetConfig(
-          name: name, keyboardLowestNote: nil, keyboardLowestNoteEnabled: false,
-          reverbConfig: reverbConfig, delayConfig: delayConfig,
-          gain: 0.0, pan: 0.0, presetTuning: 0.0, presetTuningEnabled: false)
+        self.presetConfig = PresetConfig(name: name, keyboardLowestNote: nil, keyboardLowestNoteEnabled: false,
+                                         reverbConfig: reverbConfig, delayConfig: delayConfig, gain: 0.0, pan: 0.0,
+                                         presetTuning: 0.0, presetTuningEnabled: false)
       } catch {
         throw err
       }
@@ -131,9 +130,8 @@ extension Preset {
     var invalidFavoriteIndices = [Int]()
     for (favoriteIndex, favoriteKey) in self.favorites.enumerated().reversed() {
       if !favorites.contains(key: favoriteKey) {
-        os_log(
-          .error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'",
-          self.presetConfig.name, favoriteKey.uuidString)
+        os_log(.error, log: log, "preset '%{public}s' has invalid favorite key '%{public}s'", self.presetConfig.name,
+               favoriteKey.uuidString)
         invalidFavoriteIndices.append(favoriteIndex)
       }
     }
@@ -145,5 +143,5 @@ extension Preset {
 }
 
 extension Preset: CustomStringConvertible {
-  public var description: String { "[Patch '\(originalName)' \(bank):\(program)]" }
+  public var description: String { "[Preset '\(originalName)' \(bank):\(program)]" }
 }

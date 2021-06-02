@@ -32,10 +32,23 @@ public final class SoundFont: Codable {
   let kind: SoundFontKind
 
   /// The collection of presets found in the sound font
-  let patches: [Preset]
+  let presets: [Preset]
 
   /// Collection of tags assigned to the sound font
   @DecodableDefault.EmptyTagSet var tags: Set<Tag.Key>
+
+  private enum CodingKeys: String, CodingKey {
+    case key
+    case displayName
+    case originalDisplayName
+    case embeddedName
+    case embeddedComment
+    case embeddedAuthor
+    case embeddedCopyright
+    case kind
+    case presets = "patches" // legacy name
+    case tags
+  }
 
   /**
      Constructor for installed sound font files -- those added via File app.
@@ -57,7 +70,7 @@ public final class SoundFont: Codable {
       Settings.shared.copyFilesWhenAdding
       ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension)
       : .reference(bookmark: Bookmark(url: url, name: displayName))
-    self.patches = Self.makePresets(soundFontInfo.presets)
+    self.presets = Self.makePresets(soundFontInfo.presets)
   }
 
   /**
@@ -76,15 +89,13 @@ public final class SoundFont: Codable {
     self.embeddedAuthor = soundFontInfo.embeddedAuthor
     self.embeddedCopyright = soundFontInfo.embeddedCopyright
     self.kind = .builtin(resource: resource)
-    self.patches = Self.makePresets(soundFontInfo.presets)
+    self.presets = Self.makePresets(soundFontInfo.presets)
   }
 }
 
 extension SoundFont {
 
-  public static func makeSoundFont(from url: URL) -> Result<
-    SoundFont, SoundFontFileLoadFailure
-  > {
+  public static func makeSoundFont(from url: URL) -> Result<SoundFont, SoundFontFileLoadFailure> {
     os_log(.info, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
     guard let info = SoundFontInfo.load(viaParser: url) else {
@@ -101,8 +112,7 @@ extension SoundFont {
 
     // Strip off the extension to make a display name. We set the embedded name if it is empty, but we do not use
     // the embedded name as it is often garbage. We do show it in the SoundFont editor sheet.
-    let displayName = String(
-      fileName[fileName.startIndex..<(fileName.lastIndex(of: ".") ?? fileName.endIndex)])
+    let displayName = String(fileName[fileName.startIndex..<(fileName.lastIndex(of: ".") ?? fileName.endIndex)])
     if info.embeddedName.isEmpty {
       info.embeddedName = displayName
     }
@@ -139,11 +149,11 @@ extension SoundFont {
   public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
   public func makeSoundFontAndPreset(at index: Int) -> SoundFontAndPreset {
-    SoundFontAndPreset(soundFontKey: self.key, patchIndex: index)
+    SoundFontAndPreset(soundFontKey: self.key, presetIndex: index)
   }
 
   public func makeSoundFontAndPreset(for patch: Preset) -> SoundFontAndPreset {
-    SoundFontAndPreset(soundFontKey: self.key, patchIndex: patch.soundFontIndex)
+    SoundFontAndPreset(soundFontKey: self.key, presetIndex: patch.soundFontIndex)
   }
 
   public func reloadEmbeddedInfo() -> Bool {

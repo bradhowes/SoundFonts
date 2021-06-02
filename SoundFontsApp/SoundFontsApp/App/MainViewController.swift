@@ -12,7 +12,7 @@ final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
   private var midiController: MIDIController?
-  private var activePatchManager: ActivePresetManager!
+  private var activePresetManager: ActivePresetManager!
   private var keyboard: Keyboard!
   private var sampler: Sampler?
   private var infoBar: InfoBar!
@@ -178,13 +178,13 @@ extension MainViewController: ControllerConfiguration {
 
     infoBar = router.infoBar
     keyboard = router.keyboard
-    activePatchManager = router.activePatchManager
+    activePresetManager = router.activePresetManager
 
     #if !targetEnvironment(macCatalyst)
       volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
     #endif
 
-    router.activePatchManager.subscribe(self, notifier: activePatchChange)
+    router.activePresetManager.subscribe(self, notifier: activePresetChange)
   }
 
   private func routerChange(_ event: ComponentContainerEvent) {
@@ -201,14 +201,14 @@ extension MainViewController: ControllerConfiguration {
     case .delayAvailable: break
     }
   }
-  private func activePatchChange(_ event: ActivePresetEvent) {
+  private func activePresetChange(_ event: ActivePresetEvent) {
     if case let .active(old: _, new: new, playSample: playSample) = event {
-      useActivePatchKind(new, playSample: playSample)
+      useActivePresetKind(new, playSample: playSample)
     }
   }
 
-  private func useActivePatchKind(_ activePatchKind: ActivePresetKind, playSample: Bool) {
-    volumeMonitor?.activePreset = activePatchKind != .none
+  private func useActivePresetKind(_ activePresetKind: ActivePresetKind, playSample: Bool) {
+    volumeMonitor?.activePreset = activePresetKind != .none
     midiController?.releaseAllKeys()
     guard let sampler = self.sampler else { return }
 

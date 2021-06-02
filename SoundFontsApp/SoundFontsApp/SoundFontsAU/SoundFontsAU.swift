@@ -18,7 +18,7 @@ extension String {
 /// associated with the sampler.
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let activePatchManager: ActivePresetManager
+  private let activePresetManager: ActivePresetManager
   private let sampler: Sampler
   private let wrapped: AUAudioUnit
 
@@ -31,13 +31,13 @@ final class SoundFontsAU: AUAudioUnit {
 
      - parameter componentDescription: the definition used when locating the component to create
      - parameter sampler: the Sampler instance to use for actually rendering audio
-     - parameter activePatchManager: the manager of the active preset/patch
+     - parameter activePresetManager: the manager of the active preset
      */
   public init(componentDescription: AudioComponentDescription, sampler: Sampler,
-              activePatchManager: ActivePresetManager) throws {
+              activePresetManager: ActivePresetManager) throws {
     let log = Logging.logger("SoundFontsAU")
     self.log = log
-    self.activePatchManager = activePatchManager
+    self.activePresetManager = activePresetManager
     self.sampler = sampler
 
     os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
@@ -127,10 +127,10 @@ extension SoundFontsAU {
     os_log(.info, log: log, "reset")
     wrapped.reset()
     guard let sampler = sampler.auSampler else { return }
-    guard let soundFont = activePatchManager.activeSoundFont else { return }
-    guard let patch = activePatchManager.activePreset else { return }
-    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program),
-                                         bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
+    guard let soundFont = activePresetManager.activeSoundFont else { return }
+    guard let preset = activePresetManager.activePreset else { return }
+    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(preset.program),
+                                         bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB))
   }
 
   override public var inputBusses: AUAudioUnitBusArray {
@@ -187,25 +187,25 @@ extension SoundFontsAU {
     set { wrapped.midiOutputEventBlock = newValue }
   }
 
-  private var activeSoundFontPatchKey: String { "soundFontPatch" }
+  private var activeSoundFontPresetKey: String { "soundFontPatch" } // Do not change
 
   override public var fullState: [String: Any]? {
     get {
       os_log(.info, log: log, "fullState GET")
       var fullState = [String: Any]()
-      if let data = self.activePatchManager.active.encodeToData() {
-        os_log(.info, log: log, "%{public}s", self.activePatchManager.active.description)
-        fullState[activeSoundFontPatchKey] = data
+      if let data = self.activePresetManager.active.encodeToData() {
+        os_log(.info, log: log, "%{public}s", self.activePresetManager.active.description)
+        fullState[activeSoundFontPresetKey] = data
       }
       return fullState
     }
     set {
       os_log(.info, log: log, "fullState SET")
       if let fullState = newValue {
-        if let data = fullState[activeSoundFontPatchKey] as? Data {
+        if let data = fullState[activeSoundFontPresetKey] as? Data {
           if let value = ActivePresetKind.decodeFromData(data) {
             os_log(.info, log: log, "%{public}s", value.description)
-            self.activePatchManager.setActive(value)
+            self.activePresetManager.setActive(value)
           }
         }
       }

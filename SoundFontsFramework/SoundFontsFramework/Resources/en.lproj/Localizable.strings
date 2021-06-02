@@ -9,7 +9,6 @@
 "saveButton" = "Save";
 
 "favorite" = "favorite";
-"patch" = "patch";
 "preset" = "preset";
 "font" = "font";
 
@@ -48,7 +47,7 @@ have been lost.";
 "samplerStartFailureTitle" = "Audio Engine Failure";
 "noSamplerFailureBody" = "No sampler instance available to start";
 "engineStartingFailureBody" = "Failed to start the audio engine";
-"patchLoadingFailureBody" = "Unable to load the preset";
+"presetLoadingFailureBody" = "Unable to load the preset";
 "sessionActivatingFailureBody" = "Unable to activate the audio session";
 
 /* The volume setting for the device is zero (no output) */

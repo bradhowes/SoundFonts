@@ -20,7 +20,7 @@ where T: ControllerConfiguration {
   /// The manager for the collection of sound font tags
   public let tags: Tags
   /// The manager of the active preset
-  public let activePatchManager: ActivePresetManager
+  public let activePresetManager: ActivePresetManager
   /// The manager of the selected sound font
   public let selectedSoundFontManager: SelectedSoundFontManager
   /// True if running in the app; false when running in the AUv3 app extension
@@ -112,7 +112,7 @@ where T: ControllerConfiguration {
     self.tags = TagsManager(consolidatedConfigFile)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
-    self.activePatchManager = ActivePresetManager(
+    self.activePresetManager = ActivePresetManager(
       soundFonts: soundFonts,
       selectedSoundFontManager: selectedSoundFontManager)
     super.init()
@@ -125,17 +125,14 @@ where T: ControllerConfiguration {
         self._reverbEffect = reverb
         let delay = inApp ? DelayEffect() : nil
         self._delayEffect = delay
-        self._sampler = Sampler(
-          mode: inApp ? .standalone : .audioUnit,
-          activePatchManager: self.activePatchManager,
-          reverb: reverb, delay: delay)
+        self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePresetManager: self.activePresetManager,
+                                reverb: reverb, delay: delay)
       }
     } else {
 
       // Do not create Sampler asynchronously when supporting AUv3 component.
-      self._sampler = Sampler(
-        mode: inApp ? .standalone : .audioUnit, activePatchManager: self.activePatchManager,
-        reverb: nil, delay: nil)
+      self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePresetManager: self.activePresetManager,
+                              reverb: nil, delay: nil)
     }
   }
 

@@ -12,7 +12,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
   @IBOutlet public var doubleTapGestureRecognizer: UITapGestureRecognizer!
 
-  private var activePatchManager: ActivePresetManager!
+  private var activePresetManager: ActivePresetManager!
   private var keyboard: Keyboard?
   private var favorites: Favorites!
   private var soundFonts: SoundFonts!
@@ -23,7 +23,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   public var swipeLeft = UISwipeGestureRecognizer()
   public var swipeRight = UISwipeGestureRecognizer()
 
-  private var activePatchManagerSubscription: SubscriberToken?
+  private var activePresetManagerSubscription: SubscriberToken?
   private var favoritesSubscription: SubscriberToken?
   private var soundFontsSubscription: SubscriberToken?
   private var tagsSubscription: SubscriberToken?
@@ -57,7 +57,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     os_log(.info, log: log, "viewWillAppear")
     super.viewWillAppear(animated)
 
-    guard let favorite = activePatchManager?.activeFavorite else { return }
+    guard let favorite = activePresetManager?.activeFavorite else { return }
     updateCell(with: favorite)
   }
 }
@@ -65,20 +65,20 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
 extension FavoritesViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
-    activePatchManager = router.activePatchManager
+    activePresetManager = router.activePresetManager
     favorites = router.favorites
     keyboard = router.keyboard
     soundFonts = router.soundFonts
     tags = router.tags
 
-    activePatchManagerSubscription = activePatchManager.subscribe(self, notifier: activePatchChange)
+    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChange)
     favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
     soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChange)
     tagsSubscription = tags.subscribe(self, notifier: tagsChange)
   }
 
-  private func activePatchChange(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePatchChange")
+  private func activePresetChange(_ event: ActivePresetEvent) {
+    os_log(.info, log: log, "activePresetChange")
     guard favorites.restored && soundFonts.restored else { return }
     switch event {
     case let .active(old: old, new: new, playSample: _):
@@ -99,7 +99,7 @@ extension FavoritesViewController: ControllerConfiguration {
     case let .added(index: index, favorite: favorite):
       os_log(.info, log: log, "added item %d", index)
       favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-      if favorite == activePatchManager.activeFavorite {
+      if favorite == activePresetManager.activeFavorite {
         favoritesView.selectItem(
           at: indexPath(of: favorite.key), animated: false,
           scrollPosition: .centeredVertically)
@@ -108,7 +108,7 @@ extension FavoritesViewController: ControllerConfiguration {
 
     case let .selected(index: index, favorite: favorite):
       os_log(.info, log: log, "selected %d", index)
-      activePatchManager.setActive(favorite: favorite, playSample: true)
+      activePresetManager.setActive(favorite: favorite, playSample: true)
 
     case let .beginEdit(config: config):
       showEditor(config: config)
@@ -208,18 +208,15 @@ extension FavoritesViewController: SegueHandler {
     let favorite = favorites.getBy(index: indexPath.item)
     guard let view = favoritesView.cellForItem(at: indexPath) else { fatalError() }
 
-    if activePatchManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
+    if activePresetManager.resolveToSoundFont(favorite.soundFontAndPreset) == nil {
       favorites.remove(key: favorite.key)
       postNotice(msg: "Removed favorite that was invalid.")
       return
     }
 
-    let configState = FavoriteEditor.State(
-      indexPath: indexPath,
-      sourceView: favoritesView, sourceRect: view.frame,
-      currentLowestNote: self.keyboard?.lowestNote,
-      completionHandler: nil, soundFonts: self.soundFonts,
-      soundFontAndPatch: favorite.soundFontAndPreset)
+    let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
+                                           currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
+                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     showEditor(config: config)
   }
@@ -255,14 +252,14 @@ extension FavoritesViewController: FavoriteEditorDelegate {
         favorites.update(index: indexPath.item, config: config)
         favoritesView.reloadItems(at: [indexPath])
         favoritesView.collectionViewLayout.invalidateLayout()
-      case .preset(let soundFontAndPatch, let config):
-        soundFonts.updatePreset(soundFontAndPreset: soundFontAndPatch, config: config)
+      case .preset(let soundFontAndPreset, let config):
+        soundFonts.updatePreset(soundFontAndPreset: soundFontAndPreset, config: config)
       }
     }
 
     // Reapply the active PresetConfig just to make sure we are in sync. This should only be necessary for the
     // `cancel` case above, but just to be safe...
-    if let presetConfig = activePatchManager.activePresetConfig {
+    if let presetConfig = activePresetManager.activePresetConfig {
       PresetConfig.changedNotification.post(value: presetConfig)
     }
 
@@ -343,7 +340,7 @@ extension FavoritesViewController {
   private func update(cell: FavoriteCell, with favorite: Favorite) -> FavoriteCell {
     cell.update(
       favoriteName: favorite.presetConfig.name,
-      isActive: favorite == activePatchManager.activeFavorite)
+      isActive: favorite == activePresetManager.activeFavorite)
     return cell
   }
 }

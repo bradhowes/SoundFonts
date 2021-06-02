@@ -28,7 +28,7 @@ public final class EffectsController: UIViewController {
   @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
   private var isMainApp: Bool = false
-  private var activePatchManager: ActivePresetManager!
+  private var activePresetManager: ActivePresetManager!
   private var soundFonts: SoundFonts!
   private var favorites: Favorites!
 
@@ -144,9 +144,9 @@ extension EffectsController: ControllerConfiguration {
     isMainApp = true
     soundFonts = router.soundFonts
     favorites = router.favorites
-    activePatchManager = router.activePatchManager
+    activePresetManager = router.activePresetManager
     router.subscribe(self, notifier: routerChange)
-    activePatchManager.subscribe(self, notifier: activePatchChange)
+    activePresetManager.subscribe(self, notifier: activePresetChange)
   }
 }
 
@@ -223,7 +223,7 @@ extension EffectsController {
     let reverbConfig: ReverbConfig? = {
       if Settings.instance.reverbGlobal {
         os_log(.info, log: log, "updating global reverb")
-        return activePatchManager.activePresetConfig?.reverbConfig
+        return activePresetManager.activePresetConfig?.reverbConfig
       } else if reverbEffect.active.enabled {
         os_log(.info, log: log, "updating preset reverb")
         return reverbEffect.active
@@ -236,7 +236,7 @@ extension EffectsController {
     let delayConfig: DelayConfig? = {
       if Settings.instance.delayGlobal {
         os_log(.info, log: log, "updating global delay")
-        return activePatchManager.activePresetConfig?.delayConfig
+        return activePresetManager.activePresetConfig?.delayConfig
       } else if delayEffect.active.enabled {
         os_log(.info, log: log, "updating preset delay")
         return delayEffect.active
@@ -246,12 +246,12 @@ extension EffectsController {
       }
     }()
 
-    if let favorite = activePatchManager.activeFavorite {
+    if let favorite = activePresetManager.activeFavorite {
       os_log(
         .info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
         delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
-    } else if let soundFontAndPreset = activePatchManager.active.soundFontAndPreset {
+    } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
       os_log(
         .info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
         delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
@@ -275,14 +275,14 @@ extension EffectsController {
     }
   }
 
-  private func activePatchChange(_ event: ActivePresetEvent) {
+  private func activePresetChange(_ event: ActivePresetEvent) {
     guard case .active = event else { return }
     updateState()
   }
 
   private func updateState() {
     os_log(.info, log: log, "updateState")
-    let presetConfig = activePatchManager.activePresetConfig
+    let presetConfig = activePresetManager.activePresetConfig
 
     reverbGlobal.showEnabled(Settings.instance.reverbGlobal)
     if Settings.instance.reverbGlobal {

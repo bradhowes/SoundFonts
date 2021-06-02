@@ -8,7 +8,7 @@ import os
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   private lazy var log = Logging.logger("TableCell")
 
-  /// Unicode character to show when a cell refers to a Patch that is in a Favorite
+  /// Unicode character to show when a cell refers to a preset that is in a Favorite
   private static let goldStarPrefix = "✪"
 
   public static func favoriteTag(_ isFavorite: Bool) -> String {

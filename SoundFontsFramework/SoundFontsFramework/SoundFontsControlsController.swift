@@ -158,7 +158,7 @@ extension SoundFontsControlsController: SegueHandler {
   public enum SegueIdentifier: String {
     case guidedView
     case favorites
-    case soundFontPatches
+    case soundFontPresets
     case infoBar
     case effects
   }
