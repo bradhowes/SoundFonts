@@ -8,7 +8,7 @@
 🥳 [Check it out on Apple's App Store](https://apps.apple.com/us/app/soundfonts/id1453325077)
 
 <p align="center">
-<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/landscape.png?raw=true" alt="App shown in landscape on iPhone"/>
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/landscape.png?raw=true" alt="App shown in landscape orientation on iPhone"/>
 </p>
 
 This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
@@ -17,7 +17,9 @@ as those available [online](http://www.synthfont.com/links_to_soundfonts.html) f
 quality). There are four sound font files that are bundled with the application, and more can be added via the iCloud
 integration.
 
-![](images/portrait.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/portrait.png?raw=true" alt="App shown in portrait orientation on iPhone"/>
+</p>
 
 > NOTE: AVAudioUnitSampler can and will crash if the SoundFont patch it is using for rendering does not conform
 > to spec. Unfortunately, there is no way to insulate the app from this so it too will crash along with
@@ -39,12 +41,16 @@ applications that support AUv3 audio units, such as
 [GarageBand](https://apps.apple.com/us/app/garageband/id408709785) and
 [AUM](https://apps.apple.com/app/id1055636344).
 
-![AUM](images/AUM.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/AUM.png?raw=true" alt="AUM hosting SoundFonts AUv3 component"/>
+</p>
 
 The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add them to your signal processing
 chain in an AUv3 host such as AUM.
 
-![](images/effects.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/effects.png?raw=true" alt="App effects controls"/>
+</p>
 
 I have additional AUv3 effects available:
 
@@ -89,7 +95,9 @@ Double-tapping on the info bar switches between the fonts view and the the "favo
 moving it to a new location among the others. There are various parameters one can adjust for a favorite that remain independent of the 
 original preset it derived from. These include:
 
-![](images/favorite.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/favorite.png?raw=true" alt="Favorite configuration editor"/>
+</p>
 
 - the first note of the keyboard when the favorite becomes active
 - a custom tuning to apply
@@ -108,7 +116,9 @@ or song.
 
 ## Settings
 
-![](images/settings.png)
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/settings.png?raw=true" alt="Settings configuration editor"/>
+</p>
 
 ## Dependencies
 
