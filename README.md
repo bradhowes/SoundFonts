@@ -61,7 +61,15 @@ I have additional AUv3 effects available:
 
 ## User Interface
 
-Here is what you can do with it:
+There is a bar between the list views and the keyboard. This is called the "info bar" since it shows the name of the current preset. It is also the
+location for most of the controls for the app. On smaller devices, some of the control buttons are hidden until revealed by touching the unfilled
+triangle at the far right of the bar. Below is an image of the additional controls that appear:
+
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/infobar.png?raw=true" alt="SoundFonts info bar"/>
+</p>
+
+Here are some of the features available:
 
 * Switch between the patches view (image above) and a _favorites_ view (see below) by swiping left/right on the upper view with two touches.
 * Double-tapping the patch name in the info bar above the keyboard will also switch the upper view
@@ -69,10 +77,11 @@ Here is what you can do with it:
   above, the first key is at "C4" and the last key shown is "G5". You can go as low as "C0" and as high as "C9".
 * You can also swipe with a finger on back bar to change the keyboard range
 * Swipe right on a patch name to make it a favorite (same to unfavorite). Favorited patches have a star next to
-  their name.
-* Add/Remove sound font files. In the "prsets view" press the "+" button to bring up a file picker. Locate a sound font file
-  to add from a location on your device, or from your iCloud drive or Google Drive. Added files can be removed via the "-" button or a
+  their name. You can also swipe to edit or hide a preset.
+* Add/Remove sound font files. In the "presets view" press the "+" button to bring up a file picker. Locate a sound font file
+  to add from a location on your device, or from your iCloud drive or Google Drive. Added files can be removed via a
   left-swipe on the sound font name.
+* Adjust visibility of individual presets either by a swipe or as a whole via the "list" button.
 
 ## Notes on Adding From Cloud Drives
 
