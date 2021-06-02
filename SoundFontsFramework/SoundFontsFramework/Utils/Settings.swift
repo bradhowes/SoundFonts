@@ -31,7 +31,7 @@ extension SettingKeys {
   /// Current keyboard key width
   public static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
   /// The last active preset/patch
-  public static let lastActivePatch = SettingKey("lastActivePatch", defaultValue: Data())
+  public static let lastActivePreset = SettingKey("lastActivePatch", defaultValue: Data())
   /// The lowest note on the keyboard that is currently visible
   public static let lowestKeyNote = SettingKey("lowestKeyNote", defaultValue: 48)
   /// When true, play a sound when changing the active preset
@@ -208,9 +208,9 @@ extension UserDefaults {
     set { self[.showEffects] = newValue }
   }
   /// The last active preset/patch
-  @objc public dynamic var lastActivePatch: Data {
-    get { self[.lastActivePatch] }
-    set { self[.lastActivePatch] = newValue }
+  @objc public dynamic var lastActivePreset: Data {
+    get { self[.lastActivePreset] }
+    set { self[.lastActivePreset] = newValue }
   }
   /// When true, the upper view is showing the favorites. Used to restore the app to the last view.
   @objc public dynamic var showingFavorites: Bool {

@@ -12,7 +12,7 @@ final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
   private var midiController: MIDIController?
-  private var activePatchManager: ActivePatchManager!
+  private var activePatchManager: ActivePresetManager!
   private var keyboard: Keyboard!
   private var sampler: Sampler?
   private var infoBar: InfoBar!
@@ -201,7 +201,7 @@ extension MainViewController: ControllerConfiguration {
     case .delayAvailable: break
     }
   }
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     if case let .active(old: _, new: new, playSample: playSample) = event {
       useActivePatchKind(new, playSample: playSample)
     }

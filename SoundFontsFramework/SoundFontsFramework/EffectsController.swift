@@ -28,7 +28,7 @@ public final class EffectsController: UIViewController {
   @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
   private var isMainApp: Bool = false
-  private var activePatchManager: ActivePatchManager!
+  private var activePatchManager: ActivePresetManager!
   private var soundFonts: SoundFonts!
   private var favorites: Favorites!
 
@@ -251,12 +251,11 @@ extension EffectsController {
         .info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
         delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig)
-    } else if let soundFontAndPatch = activePatchManager.active.soundFontAndPatch {
+    } else if let soundFontAndPreset = activePatchManager.active.soundFontAndPreset {
       os_log(
         .info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
         delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
-      soundFonts.setEffects(
-        soundFontAndPatch: soundFontAndPatch, delay: delayConfig, reverb: reverbConfig)
+      soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig)
     }
 
     updateGlobalConfig()
@@ -276,7 +275,7 @@ extension EffectsController {
     }
   }
 
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     guard case .active = event else { return }
     updateState()
   }

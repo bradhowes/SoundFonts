@@ -12,7 +12,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
   @IBOutlet public var doubleTapGestureRecognizer: UITapGestureRecognizer!
 
-  private var activePatchManager: ActivePatchManager!
+  private var activePatchManager: ActivePresetManager!
   private var keyboard: Keyboard?
   private var favorites: Favorites!
   private var soundFonts: SoundFonts!
@@ -77,7 +77,7 @@ extension FavoritesViewController: ControllerConfiguration {
     tagsSubscription = tags.subscribe(self, notifier: tagsChange)
   }
 
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     os_log(.info, log: log, "activePatchChange")
     guard favorites.restored && soundFonts.restored else { return }
     switch event {
@@ -256,7 +256,7 @@ extension FavoritesViewController: FavoriteEditorDelegate {
         favoritesView.reloadItems(at: [indexPath])
         favoritesView.collectionViewLayout.invalidateLayout()
       case .preset(let soundFontAndPatch, let config):
-        soundFonts.updatePreset(soundFontAndPatch: soundFontAndPatch, config: config)
+        soundFonts.updatePreset(soundFontAndPreset: soundFontAndPatch, config: config)
       }
     }
 

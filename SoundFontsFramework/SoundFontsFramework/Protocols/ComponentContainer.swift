@@ -27,7 +27,7 @@ public protocol ComponentContainer {
   /// The collection of user-defined tags for sound fonts
   var tags: Tags { get }
   /// The manager that tracks and holds the active preset that is in use in the samplers
-  var activePatchManager: ActivePatchManager { get }
+  var activePatchManager: ActivePresetManager { get }
   /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
   /// active preset.s
   var selectedSoundFontManager: SelectedSoundFontManager { get }

@@ -29,7 +29,7 @@ public final class InfoBarController: UIViewController {
 
   private var panOrigin: CGPoint = CGPoint.zero
   private var fader: UIViewPropertyAnimator?
-  private var activePatchManager: ActivePatchManager!
+  private var activePatchManager: ActivePresetManager!
   private var soundFonts: SoundFonts!
   private var isMainApp: Bool!
 
@@ -306,7 +306,7 @@ extension InfoBarController {
     }
   }
 
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     if case let .active(old: _, new: new, playSample: _) = event {
       useActivePatchKind(new)
     }
@@ -325,13 +325,13 @@ extension InfoBarController {
   }
 
   private func updateInfoBar(with favorite: Favorite) {
-    if favorite.soundFontAndPreset == activePatchManager.active.soundFontAndPatch {
+    if favorite.soundFontAndPreset == activePatchManager.active.soundFontAndPreset {
       setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
     }
   }
 
   private func updateInfoBar(with soundFontAndPatch: SoundFontAndPreset) {
-    if soundFontAndPatch == activePatchManager.active.soundFontAndPatch {
+    if soundFontAndPatch == activePatchManager.active.soundFontAndPreset {
       if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
         setPatchInfo(name: patch.presetConfig.name, isFavored: false)
       }
@@ -341,7 +341,7 @@ extension InfoBarController {
   private func useActivePatchKind(_ activePatchKind: ActivePresetKind) {
     if let favorite = activePatchKind.favorite {
       setPatchInfo(name: favorite.presetConfig.name, isFavored: true)
-    } else if let soundFontAndPatch = activePatchKind.soundFontAndPatch {
+    } else if let soundFontAndPatch = activePatchKind.soundFontAndPreset {
       if let patch = activePatchManager.resolveToPatch(soundFontAndPatch) {
         setPatchInfo(name: patch.presetConfig.name, isFavored: false)
       }

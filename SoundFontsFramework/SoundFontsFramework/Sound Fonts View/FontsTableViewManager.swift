@@ -14,7 +14,7 @@ final class FontsTableViewManager: NSObject {
 
   private let view: UITableView
   private let selectedSoundFontManager: SelectedSoundFontManager
-  private let activePatchManager: ActivePatchManager
+  private let activePatchManager: ActivePresetManager
   private let fontEditorActionGenerator: FontEditorActionGenerator
   private let soundFonts: SoundFonts
   private let tags: Tags
@@ -25,7 +25,7 @@ final class FontsTableViewManager: NSObject {
 
   init(
     view: UITableView, selectedSoundFontManager: SelectedSoundFontManager,
-    activePatchManager: ActivePatchManager,
+    activePatchManager: ActivePresetManager,
     fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags
   ) {
 
@@ -133,17 +133,17 @@ extension FontsTableViewManager {
     view.reloadData()
   }
 
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     os_log(.info, log: log, "activePatchChange")
     switch event {
     case let .active(old: old, new: new, playSample: _):
-      if old.soundFontAndPatch?.soundFontKey != new.soundFontAndPatch?.soundFontKey {
-        if let key = old.soundFontAndPatch?.soundFontKey {
+      if old.soundFontAndPreset?.soundFontKey != new.soundFontAndPreset?.soundFontKey {
+        if let key = old.soundFontAndPreset?.soundFontKey {
           let row = viewSoundFonts.firstIndex(of: key)
           updateRow(row: row)
         }
 
-        if let soundFontAndPatch = new.soundFontAndPatch {
+        if let soundFontAndPatch = new.soundFontAndPreset {
           let key = soundFontAndPatch.soundFontKey
           let row = viewSoundFonts.firstIndex(of: key)
           updateRow(row: row)

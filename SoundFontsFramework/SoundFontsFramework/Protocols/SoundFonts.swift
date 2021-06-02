@@ -59,12 +59,12 @@ public protocol SoundFonts: AnyObject {
   func getBy(key: SoundFont.Key) -> SoundFont?
 
   /**
-     Obtain an actual preset object from the given SoundFontAndPatch value.
+     Obtain an actual preset object from the given SoundFontAndPreset value.
 
-     - parameter soundFontAndPatch: reference to a preset in a sound font
+     - parameter soundFontAndPreset: reference to a preset in a sound font
      - returns: Preset object that corresponds to the given value
      */
-  func resolve(soundFontAndPatch: SoundFontAndPreset) -> Preset?
+  func resolve(soundFontAndPreset: SoundFontAndPreset) -> Preset?
 
   /**
      Obtain the collection of sound fonts that contains the given tag.
@@ -119,36 +119,35 @@ public protocol SoundFonts: AnyObject {
   /**
      Create a new favorite for a sound font preset.
 
-     - parameter soundFontAndPatch: the preset to make a favorite
+     - parameter soundFontAndPreset: the preset to make a favorite
      - parameter keyboardLowestNote: the lowest note to use for the preset
      - returns: new Favorite
      */
-  func createFavorite(soundFontAndPatch: SoundFontAndPreset, keyboardLowestNote: Note?)
-    -> Favorite?
+  func createFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite?
 
   /**
      Remove an existing favorite.
 
-     - parameter soundFontAndPatch: the preset that was used to create the favorite
+     - parameter soundFontAndPreset: the preset that was used to create the favorite
      - parameter key: the unique key of the favorite to remove
      */
-  func deleteFavorite(soundFontAndPatch: SoundFontAndPreset, key: Favorite.Key)
+  func deleteFavorite(soundFontAndPreset: SoundFontAndPreset, key: Favorite.Key)
 
   /**
      Update the configuration of a preset.
 
-     - parameter soundFontAndPatch: the preset to update
+     - parameter soundFontAndPreset: the preset to update
      - parameter config: the configuration to use
      */
-  func updatePreset(soundFontAndPatch: SoundFontAndPreset, config: PresetConfig)
+  func updatePreset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig)
 
   /**
      Set the preset visibility.
 
-     - parameter soundFontAndPatch: the preset to change
+     - parameter soundFontAndPreset: the preset to change
      - parameter state: the new visibility state for the preset
      */
-  func setVisibility(soundFontAndPatch: SoundFontAndPreset, state: Bool)
+  func setVisibility(soundFontAndPreset: SoundFontAndPreset, state: Bool)
 
   /**
      Make all presets of a given SoundFont visible.
@@ -160,11 +159,11 @@ public protocol SoundFonts: AnyObject {
   /**
      Attach effect configurations to a preset.
 
-     - parameter soundFontAndPatch: the preset to change
+     - parameter soundFontAndPreset: the preset to change
      - parameter delay: the configuration for the delay
      - parameter reverb: the configuration for the reverb
      */
-  func setEffects(soundFontAndPatch: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?)
+  func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?)
 
   /**
      Reload the embedded contents of the sound font

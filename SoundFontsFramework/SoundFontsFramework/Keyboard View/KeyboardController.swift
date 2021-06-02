@@ -25,7 +25,7 @@ final class KeyboardController: UIViewController {
   private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
   private var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
-  private var activePatchManager: ActivePatchManager!
+  private var activePatchManager: ActivePresetManager!
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
 
@@ -116,10 +116,10 @@ extension KeyboardController: ControllerConfiguration {
     }
   }
 
-  private func presetChanged(_ event: ActivePatchEvent) {
+  private func presetChanged(_ event: ActivePresetEvent) {
     switch event {
     case .active:
-      if let presetConfig = activePatchManager.activePatch?.presetConfig {
+      if let presetConfig = activePatchManager.activePreset?.presetConfig {
         updateWith(presetConfig: presetConfig)
       }
     }

@@ -31,7 +31,7 @@ public final class SoundFont: Codable {
 
   let kind: SoundFontKind
 
-  /// The collection of Patches found in the sound font
+  /// The collection of presets found in the sound font
   let patches: [Preset]
 
   /// Collection of tags assigned to the sound font
@@ -41,7 +41,7 @@ public final class SoundFont: Codable {
      Constructor for installed sound font files -- those added via File app.
 
      - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: patch info from the sound font
+     - parameter soundFontInfo: preset info from the sound font
      - parameter url: the resource URL for this sound font
      - parameter key: UUID for this font
      */
@@ -57,14 +57,14 @@ public final class SoundFont: Codable {
       Settings.shared.copyFilesWhenAdding
       ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension)
       : .reference(bookmark: Bookmark(url: url, name: displayName))
-    self.patches = Self.makePatches(soundFontInfo.presets)
+    self.patches = Self.makePresets(soundFontInfo.presets)
   }
 
   /**
      Constructor for built-in sound font files -- those in the Bundle.
 
      - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: patch info from the sound font
+     - parameter soundFontInfo: preset info from the sound font
      - parameter resource: the name of the resource in the bundle
      */
   public init(_ displayName: String, soundFontInfo: SoundFontInfo, resource: URL) {
@@ -76,7 +76,7 @@ public final class SoundFont: Codable {
     self.embeddedAuthor = soundFontInfo.embeddedAuthor
     self.embeddedCopyright = soundFontInfo.embeddedCopyright
     self.kind = .builtin(resource: resource)
-    self.patches = Self.makePatches(soundFontInfo.presets)
+    self.patches = Self.makePresets(soundFontInfo.presets)
   }
 }
 
@@ -128,8 +128,8 @@ extension SoundFont {
     try FileManager.default.copyItem(at: source, to: destination)
   }
 
-  private static func makePatches(_ patches: [SoundFontInfoPreset]) -> [Preset] {
-    patches.enumerated().map { Preset($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
+  private static func makePresets(_ presets: [SoundFontInfoPreset]) -> [Preset] {
+    presets.enumerated().map { Preset($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
   }
 }
 
@@ -138,11 +138,11 @@ extension SoundFont {
   /// Determines if the sound font file exists on the device
   public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
-  public func makeSoundFontAndPatch(at index: Int) -> SoundFontAndPreset {
+  public func makeSoundFontAndPreset(at index: Int) -> SoundFontAndPreset {
     SoundFontAndPreset(soundFontKey: self.key, patchIndex: index)
   }
 
-  public func makeSoundFontAndPatch(for patch: Preset) -> SoundFontAndPreset {
+  public func makeSoundFontAndPreset(for patch: Preset) -> SoundFontAndPreset {
     SoundFontAndPreset(soundFontKey: self.key, patchIndex: patch.soundFontIndex)
   }
 

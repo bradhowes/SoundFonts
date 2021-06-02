@@ -87,9 +87,9 @@ extension SoundFontsManager: SoundFonts {
     }
   }
 
-  public func resolve(soundFontAndPatch: SoundFontAndPreset) -> Preset? {
-    let soundFont = collection.getBy(key: soundFontAndPatch.soundFontKey)
-    return soundFont?.patches[soundFontAndPatch.patchIndex]
+  public func resolve(soundFontAndPreset: SoundFontAndPreset) -> Preset? {
+    let soundFont = collection.getBy(key: soundFontAndPreset.soundFontKey)
+    return soundFont?.patches[soundFontAndPreset.patchIndex]
   }
 
   public func filtered(by tag: Tag.Key) -> [SoundFont.Key] {
@@ -148,51 +148,46 @@ extension SoundFontsManager: SoundFonts {
     }
   }
 
-  public func createFavorite(soundFontAndPatch: SoundFontAndPreset, keyboardLowestNote: Note?)
-    -> Favorite?
-  {
-    guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return nil }
+  public func createFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite? {
+    guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return nil }
     defer { collectionChanged() }
-    let preset = soundFont.patches[soundFontAndPatch.patchIndex]
-    return preset.makeFavorite(
-      soundFontAndPatch: soundFontAndPatch, keyboardLowestNote: keyboardLowestNote)
+    let preset = soundFont.patches[soundFontAndPreset.patchIndex]
+    return preset.makeFavorite(soundFontAndPreset: soundFontAndPreset, keyboardLowestNote: keyboardLowestNote)
   }
 
-  public func deleteFavorite(soundFontAndPatch: SoundFontAndPreset, key: Favorite.Key) {
-    guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+  public func deleteFavorite(soundFontAndPreset: SoundFontAndPreset, key: Favorite.Key) {
+    guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let preset = soundFont.patches[soundFontAndPatch.patchIndex]
+    let preset = soundFont.patches[soundFontAndPreset.patchIndex]
     preset.favorites.removeAll { $0 == key }
   }
 
-  public func updatePreset(soundFontAndPatch: SoundFontAndPreset, config: PresetConfig) {
-    guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+  public func updatePreset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig) {
+    guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+    let patch = soundFont.patches[soundFontAndPreset.patchIndex]
     patch.presetConfig = config
-    notify(.presetChanged(font: soundFont, index: soundFontAndPatch.patchIndex))
+    notify(.presetChanged(font: soundFont, index: soundFontAndPreset.patchIndex))
   }
 
-  public func setVisibility(soundFontAndPatch: SoundFontAndPreset, state isVisible: Bool) {
-    guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+  public func setVisibility(soundFontAndPreset: SoundFontAndPreset, state isVisible: Bool) {
+    guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+    let patch = soundFont.patches[soundFontAndPreset.patchIndex]
     os_log(
       .debug, log: log, "setVisibility - %{public}s %d - %d",
-      soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex, isVisible)
+      soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.patchIndex, isVisible)
     patch.presetConfig.isHidden = !isVisible
   }
 
-  public func setEffects(
-    soundFontAndPatch: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?
-  ) {
-    guard let soundFont = getBy(key: soundFontAndPatch.soundFontKey) else { return }
+  public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?) {
+    guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     os_log(
       .debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
-      soundFontAndPatch.soundFontKey.uuidString, soundFontAndPatch.patchIndex,
+      soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.patchIndex,
       delay?.description ?? "nil", reverb?.description ?? "nil")
     defer { collectionChanged() }
-    let patch = soundFont.patches[soundFontAndPatch.patchIndex]
+    let patch = soundFont.patches[soundFontAndPreset.patchIndex]
     patch.presetConfig.delayConfig = delay
     patch.presetConfig.reverbConfig = reverb
   }

@@ -18,7 +18,7 @@ extension String {
 /// associated with the sampler.
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let activePatchManager: ActivePatchManager
+  private let activePatchManager: ActivePresetManager
   private let sampler: Sampler
   private let wrapped: AUAudioUnit
 
@@ -34,7 +34,7 @@ final class SoundFontsAU: AUAudioUnit {
      - parameter activePatchManager: the manager of the active preset/patch
      */
   public init(componentDescription: AudioComponentDescription, sampler: Sampler,
-              activePatchManager: ActivePatchManager) throws {
+              activePatchManager: ActivePresetManager) throws {
     let log = Logging.logger("SoundFontsAU")
     self.log = log
     self.activePatchManager = activePatchManager
@@ -128,7 +128,7 @@ extension SoundFontsAU {
     wrapped.reset()
     guard let sampler = sampler.auSampler else { return }
     guard let soundFont = activePatchManager.activeSoundFont else { return }
-    guard let patch = activePatchManager.activePatch else { return }
+    guard let patch = activePatchManager.activePreset else { return }
     try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(patch.program),
                                          bankMSB: UInt8(patch.bankMSB), bankLSB: UInt8(patch.bankLSB))
   }

@@ -3,40 +3,40 @@
 import Foundation
 import os
 
-/// The event notifications that can come from an ActivePatchManager subscription.
-public enum ActivePatchEvent {
+/// The event notifications that can come from an ActivePresetManager subscription.
+public enum ActivePresetEvent {
 
   /**
      Change event
 
-     - Parameter old: the previous active patch
-     - Parameter new: the new active patch
-     - Parameter playSample: if true, play a note using the new patch
+     - Parameter old: the previous active preset
+     - Parameter new: the new active preset
+     - Parameter playSample: if true, play a note using the new preset
      */
   case active(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
 }
 
-/// Maintains the active SoundFont patch being used for sound generation. There should only ever be one instance of this
+/// Maintains the active SoundFont preset being used for sound generation. There should only ever be one instance of this
 /// class, but this is not enforced.
-public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
-  private lazy var log = Logging.logger("ActivePatchManager")
+public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
+  private lazy var log = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFonts
   private let selectedSoundFontManager: SelectedSoundFontManager
 
   private var pending: ActivePresetKind = .none
 
-  /// The currently active patch (if any)
+  /// The currently active preset (if any)
   public private(set) var active: ActivePresetKind
 
   /// The currently active sound font (if any)
   public var activeSoundFont: SoundFont? {
-    guard let key = active.soundFontAndPatch?.soundFontKey else { return nil }
+    guard let key = active.soundFontAndPreset?.soundFontKey else { return nil }
     return soundFonts.getBy(key: key)
   }
 
   /// The currently active preset instance (if any)
-  public var activePatch: Preset? {
-    guard let index = active.soundFontAndPatch?.patchIndex else { return nil }
+  public var activePreset: Preset? {
+    guard let index = active.soundFontAndPreset?.patchIndex else { return nil }
     return activeSoundFont?.patches[index]
   }
 
@@ -45,12 +45,12 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
 
   /// The preset configuration for the currently active preset or favorite
   public var activePresetConfig: PresetConfig? {
-    activeFavorite?.presetConfig ?? activePatch?.presetConfig
+    activeFavorite?.presetConfig ?? activePreset?.presetConfig
   }
 
-  /// Obtain the last-saved active patch value
-  static var restoredActivePatchKind: ActivePresetKind? {
-    ActivePresetKind.decodeFromData(Settings.instance.lastActivePatch)
+  /// Obtain the last-saved active preset value
+  static var restoredActivePresetKind: ActivePresetKind? {
+    ActivePresetKind.decodeFromData(Settings.instance.lastActivePreset)
   }
 
   /**
@@ -73,11 +73,11 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
   /**
      Obtain the sound font instance that corresponds to the given preset key.
 
-     - parameter soundFontAndPatch: the preset key to resolve
+     - parameter soundFontAndPreset: the preset key to resolve
      - returns: optional sound font instance that corresponds to the given key
      */
-  public func resolveToSoundFont(_ soundFontAndPatch: SoundFontAndPreset) -> SoundFont? {
-    return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)
+  public func resolveToSoundFont(_ soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
+    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
   }
 
   /**
@@ -86,9 +86,8 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      - parameter soundFontAndPatch: the preset key to resolve
      - returns: optional patch instance that corresponds to the given key
      */
-  public func resolveToPatch(_ soundFontAndPatch: SoundFontAndPreset) -> Preset? {
-    return soundFonts.getBy(key: soundFontAndPatch.soundFontKey)?.patches[
-      soundFontAndPatch.patchIndex]
+  public func resolveToPatch(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
+    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.patches[soundFontAndPreset.patchIndex]
   }
 
   /**
@@ -99,7 +98,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
      */
   @discardableResult
   public func setActive(preset: SoundFontAndPreset, playSample: Bool) -> Bool {
-    setActive(.preset(soundFontAndPatch: preset), playSample: playSample)
+    setActive(.preset(soundFontAndPreset: preset), playSample: playSample)
   }
 
   /**
@@ -149,7 +148,7 @@ public final class ActivePatchManager: SubscriptionManager<ActivePatchEvent> {
   }
 }
 
-extension ActivePatchManager {
+extension ActivePresetManager {
 
   private func soundFontsChange(_ event: SoundFontsEvent) {
 
@@ -160,7 +159,7 @@ extension ActivePatchManager {
     if pending != .none {
       os_log(.info, log: log, "using pending value")
       setActive(pending, playSample: false)
-    } else if let restored = Self.restoredActivePatchKind,
+    } else if let restored = Self.restoredActivePresetKind,
       isValid(restored)
     {
       os_log(.info, log: log, "using restored value from UserDefaults")
@@ -175,14 +174,14 @@ extension ActivePatchManager {
     os_log(.info, log: log, "save - %{public}s", kind.description)
     DispatchQueue.global(qos: .background).async {
       if let data = kind.encodeToData() {
-        Settings.instance.lastActivePatch = data
+        Settings.instance.lastActivePreset = data
       }
     }
   }
 
   private func isValid(_ active: ActivePresetKind) -> Bool {
     guard soundFonts.restored else { return true }
-    guard let soundFontAndPatch = active.soundFontAndPatch else { return false }
-    return soundFonts.resolve(soundFontAndPatch: soundFontAndPatch) != nil
+    guard let soundFontAndPreset = active.soundFontAndPreset else { return false }
+    return soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil
   }
 }

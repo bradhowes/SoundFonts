@@ -3,21 +3,21 @@
 import Foundation
 import os
 
-/// Container for a user-selected soundfont patch or a user-created favorite.
+/// Container for a user-selected soundfont preset or a user-created favorite.
 public enum ActivePresetKind: Equatable {
-  /// Normal soundfont patch description
-  case preset(soundFontAndPatch: SoundFontAndPreset)
-  /// Favorite soundfont patch
+  /// Normal soundfont preset description
+  case preset(soundFontAndPreset: SoundFontAndPreset)
+  /// Favorite soundfont preset
   case favorite(favorite: Favorite)
-  /// Exceptional case when there is no active patch
+  /// Exceptional case when there is no active preset
   case none
 }
 
 extension ActivePresetKind {
-  /// Get the associated SoundFontAndPatch value
-  public var soundFontAndPatch: SoundFontAndPreset? {
+  /// Get the associated SoundFontAndPreset value
+  public var soundFontAndPreset: SoundFontAndPreset? {
     switch self {
-    case .preset(let soundFontAndPatch): return soundFontAndPatch
+    case .preset(let soundFontAndPreset): return soundFontAndPreset
     case .favorite(let favorite): return favorite.soundFontAndPreset
     case .none: return nil
     }
@@ -42,7 +42,7 @@ extension ActivePresetKind: Codable {
 
     static func key(for kind: ActivePresetKind) -> InternalKey {
       switch kind {
-      case .preset(soundFontAndPatch: _): return .preset
+      case .preset(soundFontAndPreset: _): return .preset
       case .favorite(favorite: _): return .favorite
       case .none: return .none
       }
@@ -50,17 +50,17 @@ extension ActivePresetKind: Codable {
   }
 
   /**
-     Attempt to obtain an active patch from data
+     Attempt to obtain an active preset from data
 
      - parameter data: container to extract from
-     - returns: optional ActivePatchKind
+     - returns: optional ActivePresetKind
      */
   public static func decodeFromData(_ data: Data) -> ActivePresetKind? {
     try? JSONDecoder().decode(ActivePresetKind.self, from: data)
   }
 
   /**
-     Attempt to encode an ActivePatchKind value to Data
+     Attempt to encode an ActivePresetKind value to Data
 
      - returns: optional Data containing the encoded value
      */
@@ -75,7 +75,7 @@ extension ActivePresetKind: Codable {
     var container = try decoder.unkeyedContainer()
     guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
     switch kind {
-    case .preset: self = .preset(soundFontAndPatch: try container.decode(SoundFontAndPreset.self))
+    case .preset: self = .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
     case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
     case .none: self = .none
     }
@@ -90,7 +90,7 @@ extension ActivePresetKind: Codable {
     var container = encoder.unkeyedContainer()
     try container.encode(InternalKey.key(for: self).rawValue)
     switch self {
-    case .preset(let soundFontPatch): try container.encode(soundFontPatch)
+    case .preset(let soundFontPreset): try container.encode(soundFontPreset)
     case .favorite(let favorite): try container.encode(favorite)
     case .none: break
     }
@@ -102,7 +102,7 @@ extension ActivePresetKind: CustomStringConvertible {
   /// Get a description string for the value
   public var description: String {
     switch self {
-    case let .preset(soundFontAndPatch: soundFontPatch): return ".preset(\(soundFontPatch)"
+    case let .preset(soundFontAndPreset: soundFontPreset): return ".preset(\(soundFontPreset)"
     case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
     case .none: return "nil"
     }

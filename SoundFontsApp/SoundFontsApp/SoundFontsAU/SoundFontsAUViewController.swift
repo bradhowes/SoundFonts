@@ -54,7 +54,7 @@ extension SoundFontsAUViewController: ControllerConfiguration {
     router.activePatchManager.subscribe(self, notifier: activePatchChange)
   }
 
-  private func activePatchChange(_ event: ActivePatchEvent) {
+  private func activePatchChange(_ event: ActivePresetEvent) {
     if case let .active(old: _, new: _, playSample: playSample) = event {
       os_log(.info, log: log, "activePatchChange - playSample: %d", playSample)
       useActivePatchKind(playSample: playSample)
