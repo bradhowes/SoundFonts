@@ -170,3 +170,32 @@ resource in the SF2Files target.
 
 If you are interested, there is some [developer documentation](https://bradhowes.github.io/SoundFonts/)
 available.
+
+## Code Guide
+
+The application and the three AUv3 app extensions are found in the
+[SoundFontsApp](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsApp/SoundFontsApp) folder. There you will find:
+
+* [App](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsApp/SoundFontsApp/App) -- the application code and resources
+* [DelayAU](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsApp/SoundFontsApp/DelayAU) -- the AUv3 component for the
+delay effect that you can use in an AUv3 host app
+* [ReverbAU](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsApp/SoundFontsApp/ReverbAU) -- the AUv3 component
+for the reverb effect that you can use in an AUv3 host app
+* [SoundFontsAU](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsApp/SoundFontsApp/SoundFontsAU) -- the AUv3
+component for the SoundFonts instrument that lets you use SoundFonts functionality in an AUv3 host app such as AUM.
+
+The app and the AUv3 app extensions share code via the
+[SoundFontsFramework](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsFramework) framework. This holds most of the UI
+definitions and nearly all of the SF2 handling code. This is all in Swift.
+
+Parsing SF2 files is done in an Objective-C framework with C++ code that represents entities defined the in the SoundFont v2 specification. 
+It is called [SoundFontInfoLib](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontInfoLib). Its original purpose was to provide
+a fast way to extract the preset information from an SF2 file, but it has grown to understand all of the components in the SoundFont v2 spec.
+There is also the beginnings of my own custom SF2 audio rendering facility which will one day replace SoundFonts' dependency on
+Apple's own AVAudioUnitSampler.
+
+Finally, the embedded SF2 files that come with the app in the App Store are packaged up in the
+[SF2Files](https://github.com/bradhowes/SoundFonts/tree/main/SF2Files) framework. As mentioned above, there is special-handling of the
+FluidR3_GM SF2 file which is performed in a custom build phase for this framework. It does nothing more than concatenate the three parts
+together to make a whole SF2 file which the build system then puts into the framework.
+
