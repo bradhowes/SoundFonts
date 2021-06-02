@@ -106,7 +106,7 @@ or song.
 
 ## Settings
 
-![](images/settings1.png) ![](images/settings2.png)
+![](images/settings.png)
 
 ## Dependencies
 
