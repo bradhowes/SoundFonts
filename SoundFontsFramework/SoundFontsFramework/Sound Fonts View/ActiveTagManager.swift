@@ -56,10 +56,7 @@ extension ActiveTagManager: UITableViewDelegate {
     Settings.shared.activeTagKey = tags.getBy(index: activeIndex).key
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath
-  ) -> UITableViewCell.EditingStyle {
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none
   }
 }

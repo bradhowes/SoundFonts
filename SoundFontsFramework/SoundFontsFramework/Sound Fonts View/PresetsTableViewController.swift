@@ -55,7 +55,7 @@ extension PresetsTableViewController: ControllerConfiguration {
 
 extension PresetsTableViewController {
 
-  public func dismissSearchKeyboard() {
+  @objc public func dismissSearchKeyboard() {
     os_log(.info, log: log, "dismissSearchKeyboard")
     if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
       searchBar.resignFirstResponder()

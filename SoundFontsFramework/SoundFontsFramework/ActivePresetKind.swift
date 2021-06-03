@@ -40,7 +40,7 @@ extension ActivePresetKind: Codable {
     case favorite = 1
     case none = 2
 
-    static func key(for kind: ActivePresetKind) -> InternalKey {
+    fileprivate static func key(for kind: ActivePresetKind) -> InternalKey {
       switch kind {
       case .preset(soundFontAndPreset: _): return .preset
       case .favorite(favorite: _): return .favorite

@@ -25,7 +25,7 @@ final class PresetsTableViewManager: NSObject {
   private weak var viewController: PresetsTableViewController!
   private var view: UITableView { viewController.tableView }
 
-  private var lastSearchText: String?
+  private var lastSearchText = ""
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePresetManager: ActivePresetManager
   private let soundFonts: SoundFonts
@@ -36,9 +36,6 @@ final class PresetsTableViewManager: NSObject {
   private var viewSlots = [Slot]()
   private var searchSlots: [Slot]?
   private var sectionRowCounts = [Int]()
-
-  private var notificationObserver: NSObjectProtocol?
-  private var observers = [NSKeyValueObservation]()
 
   private var searchBar: UISearchBar { viewController.searchBar }
   private var showingSearchResults: Bool { searchSlots != nil }
@@ -65,12 +62,6 @@ final class PresetsTableViewManager: NSObject {
     self.keyboard = keyboard
     self.infoBar = infoBar
     super.init()
-
-    // When there is a change in size, hide the search bar if it is not in use.
-    observers.append(self.view.observe(\.contentSize, options: [.old, .new]) { _, change in
-      guard let oldValue = change.oldValue, let newValue = change.newValue, oldValue != newValue else { return }
-      self.hideSearchBar(animated: true)
-    })
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
     infoBar.addEventClosure(.hideMoreButtons) { _ in
@@ -233,7 +224,14 @@ extension PresetsTableViewManager: UISearchBarDelegate {
    */
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     os_log(.debug, log: log, "searchBar.textDidChange - %{public}s", searchText)
-    search(for: searchBar.searchTerm ?? "")
+    guard let term = searchBar.searchTerm else {
+      lastSearchText = ""
+      searchSlots = nil
+      regenerateViewSlots()
+      return
+    }
+
+    search(for: term)
   }
 }
 
@@ -268,10 +266,9 @@ extension PresetsTableViewManager {
 
   private func showSearchBar() {
     guard searchBar.isFirstResponder == false else { return }
+    os_log(.info, log: log, "showSearchBar - '%{public}s'", lastSearchText)
 
-    let term = self.lastSearchText ?? ""
-    self.searchBar.text = term
-
+    self.searchBar.text = lastSearchText
     searchBar.inputAssistantItem.leadingBarButtonGroups = []
     searchBar.inputAssistantItem.trailingBarButtonGroups = []
 
@@ -279,8 +276,8 @@ extension PresetsTableViewManager {
       self.searchBar.becomeFirstResponder()
       self.view.contentOffset = CGPoint.zero
     } completion: { _ in
-      if !term.isEmpty {
-        self.search(for: term)
+      if !self.lastSearchText.isEmpty {
+        self.search(for: self.lastSearchText)
       }
     }
   }
@@ -309,9 +306,9 @@ extension PresetsTableViewManager {
 
     calculateSectionRowCounts(reload: false)
 
-    if showingSearchResults, let term = lastSearchText {
+    if showingSearchResults, !lastSearchText.isEmpty {
       os_log(.info, log: log, "regenerating search results")
-      search(for: term)
+      search(for: lastSearchText)
       return
     }
 

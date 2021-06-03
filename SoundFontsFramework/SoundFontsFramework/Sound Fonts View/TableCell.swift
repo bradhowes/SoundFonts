@@ -16,7 +16,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   private var activeIndicatorAnimator: UIViewPropertyAnimator?
-
   private let normalFontColor: UIColor = .lightGray
   private let selectedFontColor: UIColor = .white
   private let activeFontColor: UIColor = .systemTeal
@@ -80,9 +79,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
      */
   public func updateForFavorite(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForFavorite - '%{public}s' A: %d", name, isActive)
-    update(
-      name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive,
-      isFavorite: true)
+    update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true)
   }
 
   /**
@@ -109,8 +106,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
   private func update(name: String, isSelected: Bool, isActive: Bool, isFavorite: Bool) {
     self.name.text = name
-    self.name.textColor = fontColorWhen(
-      isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
+    self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
     showActiveIndicator(isActive)
   }
 

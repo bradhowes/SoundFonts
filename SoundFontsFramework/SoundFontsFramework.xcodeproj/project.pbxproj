@@ -581,12 +581,12 @@
 		BD074BF123CDAF51001987E9 /* Sound Fonts View */ = {
 			isa = PBXGroup;
 			children = (
+				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
 				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
 				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
-				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 			);

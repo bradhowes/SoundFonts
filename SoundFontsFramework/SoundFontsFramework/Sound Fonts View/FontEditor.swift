@@ -172,8 +172,7 @@ extension FontEditor: UIPopoverPresentationControllerDelegate,
      Notification that the font editor is being dismissed. Treat as a close.
      */
   func popoverPresentationControllerDidDismissPopover(
-    _ popoverPresentationController: UIPopoverPresentationController
-  ) {
+    _ popoverPresentationController: UIPopoverPresentationController) {
     close(doneButton)
   }
 }
@@ -217,10 +216,8 @@ extension FontEditor {
       fatalError("unexpected view configuration")
     }
 
-    let config = TagsTableViewController.Config(
-      tags: self.config.tags, active: activeTags,
-      builtIn: soundFont.kind.resource
-    ) { tags in
+    let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,
+                                                builtIn: soundFont.kind.resource) { tags in
       self.activeTags = tags
     }
 

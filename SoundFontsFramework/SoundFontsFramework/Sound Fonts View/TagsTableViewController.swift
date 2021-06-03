@@ -7,6 +7,12 @@ import os
 public final class TagsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("TagsTableViewController")
 
+  private enum Action {
+    case editTagEntries
+    case editTagName(indexPath: IndexPath)
+    case doneEditing
+  }
+
   /**
      Configuration for the controller that is passed to it via the segue that makes it appear.
      */
@@ -29,15 +35,106 @@ public final class TagsTableViewController: UITableViewController {
   private var builtIn: Bool = false
   private var completionHandler: ((Set<Tag.Key>) -> Void)!
 
-  private enum Action {
-    case editTagEntries
-    case editTagName(indexPath: IndexPath)
-    case doneEditing
-  }
-
   private var currentAction: Action = .doneEditing {
     didSet { updateButtons() }
   }
+
+  /**
+   Configure the view.
+   */
+  func configure(_ config: Config) {
+    self.active.removeAll()
+    self.tags = config.tags
+    self.builtIn = config.builtIn
+    self.completionHandler = config.completionHandler
+    for tag in config.active {
+      if !Tag.stockTagSet.contains(tag) {
+        self.active.insert(tag)
+      }
+    }
+  }
+
+  override public func viewDidLoad() {
+    super.viewDidLoad()
+    tableView.register(TableCell.self)
+
+    let longPressGesture = UILongPressGestureRecognizer(
+      target: self, action: #selector(editTagName(_:)))
+    longPressGesture.minimumPressDuration = 0.5
+    tableView.addGestureRecognizer(longPressGesture)
+  }
+
+  override public func viewWillAppear(_ animated: Bool) {
+    os_log(.debug, log: log, "viewWillAppear")
+    super.viewWillAppear(animated)
+    currentAction = .doneEditing
+  }
+
+  override public func viewWillDisappear(_ animated: Bool) {
+    os_log(.debug, log: log, "viewWillDisappear")
+    stopEditingName()
+    super.viewWillDisappear(animated)
+    completionHandler(active)
+  }
+}
+
+extension TagsTableViewController {
+
+  /**
+   Create a new tag.
+
+   - parameter sender: the source of the action
+   */
+  @IBAction public func addTag(_ sender: UIBarButtonItem) {
+    os_log(.debug, log: log, "addTag")
+    let indexPath = IndexPath(
+      row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
+    tableView.insertRows(at: [indexPath], with: .automatic)
+    startEditingName(indexPath)
+  }
+
+  @IBAction public func editTagName(_ sender: UILongPressGestureRecognizer) {
+    os_log(.debug, log: log, "editTagName")
+    guard case .doneEditing = currentAction,
+          let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
+          sender.state == .began
+    else {
+      return
+    }
+
+    startEditingName(indexPath)
+  }
+
+  /**
+   Toggle editing mode. If not editing anything, begin editing the table rows.
+
+   - parameter sender: the source of the action
+   */
+  @IBAction public func toggleTagEditing(_ sender: UIBarButtonItem) {
+    os_log(.debug, log: log, "toggleTagEditing")
+    switch currentAction {
+    case .doneEditing: currentAction = .editTagEntries
+    case .editTagEntries: currentAction = .doneEditing
+    case .editTagName: stopEditingName()
+    }
+  }
+}
+
+extension TagsTableViewController: UITextFieldDelegate {
+
+  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    os_log(.debug, log: log, "textFieldShouldReturn")
+    textField.resignFirstResponder()
+    return true
+  }
+
+  public func textFieldDidEndEditing(_ textField: UITextField) {
+    os_log(.debug, log: log, "textFieldDidEndEditing")
+    stopEditingName()
+  }
+}
+
+extension TagsTableViewController {
 
   private var activeNameEditor: IndexPath? {
     switch currentAction {
@@ -77,29 +174,6 @@ public final class TagsTableViewController: UITableViewController {
     }
   }
 
-  override public func viewDidLoad() {
-    super.viewDidLoad()
-    tableView.register(TableCell.self)
-
-    let longPressGesture = UILongPressGestureRecognizer(
-      target: self, action: #selector(editTagName(_:)))
-    longPressGesture.minimumPressDuration = 0.5
-    tableView.addGestureRecognizer(longPressGesture)
-  }
-
-  override public func viewWillAppear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillAppear")
-    super.viewWillAppear(animated)
-    currentAction = .doneEditing
-  }
-
-  override public func viewWillDisappear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillDisappear")
-    stopEditingName()
-    super.viewWillDisappear(animated)
-    completionHandler(active)
-  }
-
   private func startEditingName(_ indexPath: IndexPath) {
     os_log(.debug, log: log, "startEditingName - row: %d", indexPath.row)
     currentAction = .editTagName(indexPath: indexPath)
@@ -125,76 +199,15 @@ public final class TagsTableViewController: UITableViewController {
       cell.tagEditor.resignFirstResponder()
     }
   }
-
-  /**
-     Create a new tag.
-
-     - parameter sender: the source of the action
-     */
-  @IBAction public func addTag(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "addTag")
-    let indexPath = IndexPath(
-      row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
-    tableView.insertRows(at: [indexPath], with: .automatic)
-    startEditingName(indexPath)
-  }
-
-  @IBAction public func editTagName(_ sender: UILongPressGestureRecognizer) {
-    os_log(.debug, log: log, "editTagName")
-    guard case .doneEditing = currentAction,
-      let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
-      sender.state == .began
-    else {
-      return
-    }
-
-    startEditingName(indexPath)
-  }
-
-  /**
-     Toggle editing mode. If not editing anything, begin editing the table rows.
-
-     - parameter sender: the source of the action
-     */
-  @IBAction public func toggleTagEditing(_ sender: UIBarButtonItem) {
-    os_log(.debug, log: log, "toggleTagEditing")
-    switch currentAction {
-    case .doneEditing: currentAction = .editTagEntries
-    case .editTagEntries: currentAction = .doneEditing
-    case .editTagName: stopEditingName()
-    }
-  }
 }
 
 extension TagsTableViewController {
 
-  /**
-     Configure the view.
-     */
-  func configure(_ config: Config) {
-    self.active.removeAll()
-    self.tags = config.tags
-    self.builtIn = config.builtIn
-    self.completionHandler = config.completionHandler
-    for tag in config.active {
-      if !Tag.stockTagSet.contains(tag) {
-        self.active.insert(tag)
-      }
-    }
-  }
-}
-
-extension TagsTableViewController {
-
-  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int)
-    -> Int
-  {
+  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     tags.count
   }
 
-  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
-    -> UITableViewCell
-  {
+  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     update(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
   }
 
@@ -227,10 +240,8 @@ extension TagsTableViewController {
   //        tableView.reloadRows(at: [indexPath], with: .automatic)
   //    }
 
-  override public func tableView(
-    _ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath
-  ) -> UITableViewCell.EditingStyle {
+  override public func tableView(_ tableView: UITableView,
+                                 editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     let tag = tags.getBy(index: indexPath.row)
     if tag.key == Tag.allTag.key || tag.key == Tag.builtInTag.key {
       return .none
@@ -238,29 +249,21 @@ extension TagsTableViewController {
     return .delete
   }
 
-  override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath)
-    -> Bool
-  {
+  override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
     true
   }
 
-  override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath)
-    -> Bool
-  {
+  override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
     true
   }
 
-  override public func tableView(
-    _ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,
-    to destinationIndexPath: IndexPath
-  ) {
+  override public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath,
+                                 to destinationIndexPath: IndexPath) {
     tags.insert(tags.remove(at: sourceIndexPath.row), at: destinationIndexPath.row)
   }
 
-  override public func tableView(
-    _ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
-    forRowAt indexPath: IndexPath
-  ) {
+  override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+                                 forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
       active.remove(tags.remove(at: indexPath.row).key)
       tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -268,6 +271,9 @@ extension TagsTableViewController {
 
     currentAction = .doneEditing
   }
+}
+
+extension TagsTableViewController {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let tag = tags.getBy(index: indexPath.row)
@@ -292,19 +298,5 @@ extension TagsTableViewController {
     cell.updateForTag(name: tag.name, isActive: isActive)
 
     return cell
-  }
-}
-
-extension TagsTableViewController: UITextFieldDelegate {
-
-  public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    os_log(.debug, log: log, "textFieldShouldReturn")
-    textField.resignFirstResponder()
-    return true
-  }
-
-  public func textFieldDidEndEditing(_ textField: UITextField) {
-    os_log(.debug, log: log, "textFieldDidEndEditing")
-    stopEditingName()
   }
 }
