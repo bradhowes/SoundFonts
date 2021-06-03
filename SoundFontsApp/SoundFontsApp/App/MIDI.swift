@@ -9,7 +9,7 @@ import os
 final class MIDI {
   private lazy var log = Logging.logger("MIDI")
 
-  private let clientName = Bundle.main.bundleID
+  private let clientName = Bundle.main.bundleIdentifier?.localizedLowercase ?? "?"
   private let portName = "SoundFonts"
   private var client: MIDIClientRef = 0
   private var inputPort: MIDIPortRef = 0

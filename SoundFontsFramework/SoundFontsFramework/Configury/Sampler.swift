@@ -219,7 +219,7 @@ extension Sampler {
   }
 }
 
-extension Sampler {
+extension Sampler: NoteProcessor {
 
   /**
      Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
@@ -247,6 +247,9 @@ extension Sampler {
     guard activePresetManager.active != .none, self.loaded else { return }
     auSampler?.stopNote(midiValue, onChannel: 0)
   }
+}
+
+extension Sampler {
 
   /**
      After-touch for the given playing note.

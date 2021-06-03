@@ -1,6 +1,7 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
 public struct PresetConfig: Codable {
+
   public typealias ChangedNotification = TypedNotification<PresetConfig>
 
   /// Notification that will be emitted when the persistent container is available to use.

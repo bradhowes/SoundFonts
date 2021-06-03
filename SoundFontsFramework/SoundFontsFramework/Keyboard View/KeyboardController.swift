@@ -112,7 +112,7 @@ extension KeyboardController: ControllerConfiguration {
 
   private func routerChange(_ event: ComponentContainerEvent) {
     if case let .samplerAvailable(sampler) = event {
-      touchedKeys.sampler = sampler
+      touchedKeys.processor = sampler
     }
   }
 

@@ -8,7 +8,7 @@ private class BundleTag {}
 public struct Logging {
 
   /// The top-level identifier for the app.
-  public static let subsystem = Bundle(for: BundleTag.self).bundleID
+  public static let subsystem = Bundle(for: BundleTag.self).bundleIdentifier?.lowercased() ?? "?"
 
   /**
      Create a new logger for a subsystem

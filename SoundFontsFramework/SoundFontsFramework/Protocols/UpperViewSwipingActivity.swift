@@ -35,9 +35,7 @@ extension UpperViewSwipingActivity {
      - parameter event: the event to link to
      - parameter closure: the closure to invokes when the event takes place
      */
-  public func addEventClosure(
-    _ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void
-  ) {
+  public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void) {
     switch event {
     case .swipeLeft: swipeLeft.addClosure(closure)
     case .swipeRight: swipeRight.addClosure(closure)

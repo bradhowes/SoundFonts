@@ -8,17 +8,17 @@ public final class DelayEffect: NSObject {
   public let audioUnit = AVAudioUnitDelay()
 
   private let _factoryPresetDefs = [
-    PresetEntry(
+    AUPresetEntry(
       name: "Slap Back",
       config: DelayConfig(
         enabled: true, time: 0.25, feedback: 0, cutoff: 20_000.0,
         wetDryMix: 50)),
-    PresetEntry(
+    AUPresetEntry(
       name: "Muffled Echo",
       config: DelayConfig(
         enabled: true, time: 0.38, feedback: 60, cutoff: 980,
         wetDryMix: 35)),
-    PresetEntry(
+    AUPresetEntry(
       name: "Fripptastic",
       config: DelayConfig(
         enabled: true, time: 2.0, feedback: 95, cutoff: 640,

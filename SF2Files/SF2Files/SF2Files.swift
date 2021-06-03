@@ -4,6 +4,11 @@ import Foundation
 
 private final class SF2FilesTag {}
 
+public enum SF2FilesError: Error {
+  case notFound(name: String)
+  case missingResources
+}
+
 /// Public interface for the SF2Files framework. It provides URLs to SF2 files that are bundled with the framework.
 @objc @objcMembers public class SF2Files: NSObject {
 
@@ -21,21 +26,20 @@ private final class SF2FilesTag {}
      - parameter name: the name to look for
      - returns: the URL of the resource in the bundle
      */
-  public class func resource(name: String) -> URL {
+  public class func resource(name: String) throws -> URL {
     guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else {
-      fatalError("missing SF2 resource \(name)")
+      throw SF2FilesError.notFound(name: name)
     }
     return url
   }
 
   /// Collection of URLs for the SF2 resources in the bundle.
-  public class var allResources: [URL] {
-    let allResourcesCount = 4
-    guard let urls = bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil),
-      urls.count == allResourcesCount
-    else {
-      fatalError("missing SF2 resources")
+  public class var allResources: [URL] { bundle.urls(forResourcesWithExtension: sf2Extension, subdirectory: nil)! }
+
+  public class func validate(expectedResourceCount: Int = 4) throws {
+    let urls = allResources
+    if urls.count != expectedResourceCount {
+      throw SF2FilesError.missingResources
     }
-    return urls
   }
 }

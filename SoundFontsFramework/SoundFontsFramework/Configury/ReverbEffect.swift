@@ -8,22 +8,22 @@ public final class ReverbEffect: NSObject {
   public let audioUnit = AVAudioUnitReverb()
 
   private let _factoryPresetDefs = [
-    PresetEntry(
+    AUPresetEntry(
       name: "Metallic Taste",
       config: ReverbConfig(
         enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .plate)!,
         wetDryMix: 100)),
-    PresetEntry(
+    AUPresetEntry(
       name: "Shower",
       config: ReverbConfig(
         enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .smallRoom)!,
         wetDryMix: 60)),
-    PresetEntry(
+    AUPresetEntry(
       name: "Bedroom",
       config: ReverbConfig(
         enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .mediumRoom)!,
         wetDryMix: 40)),
-    PresetEntry(
+    AUPresetEntry(
       name: "Church",
       config: ReverbConfig(
         enabled: true, preset: ReverbEffect.roomPresets.firstIndex(of: .cathedral)!,

@@ -54,10 +54,8 @@ public protocol ComponentContainer {
      - returns: token that can be used to unsubscribe
      */
   @discardableResult
-  func subscribe<O: AnyObject>(
-    _ subscriber: O,
-    notifier: @escaping (ComponentContainerEvent) -> Void
-  ) -> SubscriberToken
+  func subscribe<O: AnyObject>(_ subscriber: O,
+                               notifier: @escaping (ComponentContainerEvent) -> Void) -> SubscriberToken
 }
 
 extension ComponentContainer {

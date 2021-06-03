@@ -10,19 +10,16 @@ public enum SelectedSoundFontEvent {
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
   private lazy var log = Logging.logger("SelectedSoundFontManager")
 
-  private(set) var selected: SoundFont?
+  public private(set) var selected: SoundFont?
 
   public init() {
     super.init()
-    os_log(
-      .info, log: log, "selected: %{public}s %{public}s", selected?.displayName ?? "nil",
-      String.pointer(selected))
+    os_log(.info, log: log, "selected: %{public}s %{public}s", selected?.displayName ?? "nil",
+           String.pointer(selected))
   }
 
   public func setSelected(_ soundFont: SoundFont) {
-    os_log(
-      .info, log: log, "setSelected: %{public}s %{public}s", soundFont.displayName,
-      String.pointer(soundFont))
+    os_log(.info, log: log, "setSelected: %{public}s %{public}s", soundFont.displayName, String.pointer(soundFont))
     guard selected != soundFont else {
       os_log(.info, log: log, "already active")
       return

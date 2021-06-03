@@ -6,23 +6,23 @@ import UIKit
 internal struct TouchKeyMap {
 
   /// The sampler that is generating sound
-  var sampler: Sampler?
+  var processor: NoteProcessor?
 
   private var touchedKeys = [UITouch: Key]()
 
   /**
-     Remove all assignments.
-     */
+   Remove all assignments.
+   */
   mutating func releaseAll() {
     touchedKeys.forEach { keyRelease($0.1) }
     touchedKeys.removeAll()
   }
 
   /**
-     Release any key that is attached to the given touch.
+   Release any key that is attached to the given touch.
 
-     - parameter touch: the touch to remove
-     */
+   - parameter touch: the touch to remove
+   */
   mutating func release(_ touch: UITouch) {
     guard let key = touchedKeys[touch] else { return }
     keyRelease(key)
@@ -30,14 +30,15 @@ internal struct TouchKeyMap {
   }
 
   /**
-     Assign a key to the given touch. If the touch is already assigned, release the previous assignment.
+   Assign a key to the given touch. If the touch is already assigned, release the previous assignment.
 
-     - parameter touch: the touch to attach to
-     - parameter key: the key to press
-     */
+   - parameter touch: the touch to attach to
+   - parameter key: the key to press
+   - returns: true if a new note was started
+   */
   mutating func assign(_ touch: UITouch, key: Key) -> Bool {
     if let previous = touchedKeys[touch] {
-      guard previous != key else { return false }
+      guard previous.note != key.note else { return false }
       keyRelease(previous)
     }
 
@@ -51,11 +52,11 @@ extension TouchKeyMap {
 
   private func keyPress(_ key: Key) {
     key.pressed = true
-    sampler?.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
+    processor?.noteOn(UInt8(key.note.midiNoteValue), velocity: 64)
   }
 
   private func keyRelease(_ key: Key) {
     key.pressed = false
-    sampler?.noteOff(UInt8(key.note.midiNoteValue))
+    processor?.noteOff(UInt8(key.note.midiNoteValue))
   }
 }

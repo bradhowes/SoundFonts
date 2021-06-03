@@ -94,6 +94,15 @@
 		BD1971BE266186EC00C7FCF5 /* ManagdDelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7DF754265EE99F0083B246 /* ManagdDelayConfig.swift */; };
 		BD1971C02662500D00C7FCF5 /* ManagedAppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */; };
 		BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */ = {isa = PBXBuildFile; fileRef = BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */; };
+		BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */; };
+		BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A7A266820A1009E2338 /* TouchKeyMapTests.swift */; };
+		BD1A2A7D26682146009E2338 /* NoteProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A7C26682146009E2338 /* NoteProcessor.swift */; };
+		BD1A2A7F26682DAB009E2338 /* SelectedSoundFontManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A7E26682DAB009E2338 /* SelectedSoundFontManagerTests.swift */; };
+		BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A802668A9C7009E2338 /* ReusableViewTests.swift */; };
+		BD1A2A832668AB75009E2338 /* PresetConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */; };
+		BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */; };
+		BD1A2A872668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */; };
+		BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A882668E347009E2338 /* BundleTests.swift */; };
 		BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22B025CC913C007C114F /* Settings.storyboard */; };
 		BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */; };
 		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
@@ -183,7 +192,7 @@
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
 		BDD2836925BABD1D00B3A59A /* PresetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2836825BABD1D00B3A59A /* PresetConfig.swift */; };
 		BDD2836D25BAC48A00B3A59A /* TuningComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */; };
-		BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD29FDD258293A0007A5F0F /* PresetEntry.swift */; };
+		BDD29FDE258293A0007A5F0F /* AUPresetEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */; };
 		BDD5FA672504118100367F0B /* Favorites.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDD5FA662504118000367F0B /* Favorites.plist */; };
 		BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5FA682504220E00367F0B /* CoreDataStack.swift */; };
 		BDD5FA6B25042FBA00367F0B /* BackgroundManagedObjectContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD5FA6A25042FB900367F0B /* BackgroundManagedObjectContext.swift */; };
@@ -307,6 +316,15 @@
 		BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigFileObserver.swift; sourceTree = "<group>"; };
 		BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAppStateTests.swift; sourceTree = "<group>"; };
 		BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V1.plist; sourceTree = "<group>"; };
+		BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePresetKindTests.swift; sourceTree = "<group>"; };
+		BD1A2A7A266820A1009E2338 /* TouchKeyMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchKeyMapTests.swift; sourceTree = "<group>"; };
+		BD1A2A7C26682146009E2338 /* NoteProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteProcessor.swift; sourceTree = "<group>"; };
+		BD1A2A7E26682DAB009E2338 /* SelectedSoundFontManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedSoundFontManagerTests.swift; sourceTree = "<group>"; };
+		BD1A2A802668A9C7009E2338 /* ReusableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReusableViewTests.swift; sourceTree = "<group>"; };
+		BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetConfigTests.swift; sourceTree = "<group>"; };
+		BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadableViewTests.swift; sourceTree = "<group>"; };
+		BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpaceOnlyIsNilTests.swift; sourceTree = "<group>"; };
+		BD1A2A882668E347009E2338 /* BundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleTests.swift; sourceTree = "<group>"; };
 		BD1C22B025CC913C007C114F /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
@@ -406,7 +424,7 @@
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
 		BDD2836825BABD1D00B3A59A /* PresetConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetConfig.swift; sourceTree = "<group>"; };
 		BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TuningComponent.swift; sourceTree = "<group>"; };
-		BDD29FDD258293A0007A5F0F /* PresetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetEntry.swift; sourceTree = "<group>"; };
+		BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AUPresetEntry.swift; sourceTree = "<group>"; };
 		BDD5FA662504118000367F0B /* Favorites.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Favorites.plist; sourceTree = "<group>"; };
 		BDD5FA682504220E00367F0B /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		BDD5FA6A25042FB900367F0B /* BackgroundManagedObjectContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundManagedObjectContext.swift; sourceTree = "<group>"; };
@@ -546,7 +564,7 @@
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
 				BDD2836825BABD1D00B3A59A /* PresetConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
-				BDD29FDD258293A0007A5F0F /* PresetEntry.swift */,
+				BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
 				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
@@ -659,6 +677,7 @@
 				BD074C3023CDAF51001987E9 /* FontEditorDelegate.swift */,
 				BD074C3323CDAF51001987E9 /* InfoBar.swift */,
 				BD074C3823CDAF51001987E9 /* Keyboard.swift */,
+				BD1A2A7C26682146009E2338 /* NoteProcessor.swift */,
 				BD0E206B2556B78900D36607 /* MIDIReceiver.swift */,
 				BD074C3123CDAF51001987E9 /* NibLoadableView.swift */,
 				BD074C3923CDAF51001987E9 /* ReusableView.swift */,
@@ -754,12 +773,20 @@
 				BD58251123CDABCE0034A31B /* Info.plist */,
 				BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */,
 				BDD9140F25097E610068E3CE /* CoreData Tests */,
+				BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */,
+				BD1A2A7A266820A1009E2338 /* TouchKeyMapTests.swift */,
 				BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */,
 				BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */,
 				BDC961A624FFA745003D9BEF /* StringTests.swift */,
 				BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */,
 				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
+				BD1A2A882668E347009E2338 /* BundleTests.swift */,
+				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
+				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
+				BD1A2A822668AB75009E2338 /* PresetConfigTests.swift */,
+				BD1A2A802668A9C7009E2338 /* ReusableViewTests.swift */,
+				BD1A2A7E26682DAB009E2338 /* SelectedSoundFontManagerTests.swift */,
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
 				BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */,
 				BDCCFCBB23F84C5300DD518D /* TimerTests.swift */,
@@ -1097,6 +1124,7 @@
 				BDE150B1250B460200728402 /* ContextNotification.swift in Sources */,
 				BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */,
 				BDD7219D24190D9700FD3567 /* Bundle+Extensions.swift in Sources */,
+				BD1A2A7D26682146009E2338 /* NoteProcessor.swift in Sources */,
 				BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */,
 				BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */,
 				BD074C3F23CDAF51001987E9 /* FavoriteMover.swift in Sources */,
@@ -1110,7 +1138,7 @@
 				BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */,
 				BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */,
 				BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */,
-				BDD29FDE258293A0007A5F0F /* PresetEntry.swift in Sources */,
+				BDD29FDE258293A0007A5F0F /* AUPresetEntry.swift in Sources */,
 				BD074C4223CDAF51001987E9 /* Favorite.swift in Sources */,
 				BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */,
 				BDEEDC7925DC102500FEA219 /* NSLayout+Extensions.swift in Sources */,
@@ -1154,19 +1182,27 @@
 				BDC7EC41241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift in Sources */,
 				BDC35B5725081B66009CEFAF /* ManagedSoundFontTests.swift in Sources */,
 				BDC7EC43241AF3F100F789B2 /* RandomAccessCollection+Extensions.swift in Sources */,
+				BD1A2A812668A9C7009E2338 /* ReusableViewTests.swift in Sources */,
 				BD6E8AB724058AFF00067AE2 /* FormattersTests.swift in Sources */,
 				BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */,
+				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,
 				BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
+				BD1A2A7F26682DAB009E2338 /* SelectedSoundFontManagerTests.swift in Sources */,
 				BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */,
+				BD1A2A872668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift in Sources */,
 				BDEB125D26207F33003CE8EE /* ChangesCompilerTests.swift in Sources */,
+				BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */,
+				BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */,
 				BDC35B5925081B94009CEFAF /* CoreDataTestHarness.swift in Sources */,
 				BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */,
 				BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */,
 				BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */,
 				BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */,
 				BD1971C02662500D00C7FCF5 /* ManagedAppStateTests.swift in Sources */,
+				BD1A2A792668171F009E2338 /* ActivePresetKindTests.swift in Sources */,
+				BD1A2A832668AB75009E2338 /* PresetConfigTests.swift in Sources */,
 				BDCC40112418336200D8D849 /* NoteTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
