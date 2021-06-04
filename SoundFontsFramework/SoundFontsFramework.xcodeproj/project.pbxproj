@@ -103,6 +103,7 @@
 		BD1A2A852668AD07009E2338 /* NibLoadableViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */; };
 		BD1A2A872668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */; };
 		BD1A2A892668E347009E2338 /* BundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A882668E347009E2338 /* BundleTests.swift */; };
+		BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8A26696AD2009E2338 /* IconTests.swift */; };
 		BD1C22B125CC913C007C114F /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22B025CC913C007C114F /* Settings.storyboard */; };
 		BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */; };
 		BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */; };
@@ -325,6 +326,7 @@
 		BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadableViewTests.swift; sourceTree = "<group>"; };
 		BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhiteSpaceOnlyIsNilTests.swift; sourceTree = "<group>"; };
 		BD1A2A882668E347009E2338 /* BundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleTests.swift; sourceTree = "<group>"; };
+		BD1A2A8A26696AD2009E2338 /* IconTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconTests.swift; sourceTree = "<group>"; };
 		BD1C22B025CC913C007C114F /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		BD1C22E425CDC4A8007C114F /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		BD1C22E825CDC6AE007C114F /* TutorialContentPager.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TutorialContentPager.storyboard; sourceTree = "<group>"; };
@@ -781,6 +783,7 @@
 				BD6E8AB624058AFF00067AE2 /* FormattersTests.swift */,
 				BD23948925540855004E5E0D /* KeyTests.swift */,
 				BDCC40102418336200D8D849 /* NoteTests.swift */,
+				BD1A2A8A26696AD2009E2338 /* IconTests.swift */,
 				BD1A2A882668E347009E2338 /* BundleTests.swift */,
 				BD1A2A862668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift */,
 				BD1A2A842668AD07009E2338 /* NibLoadableViewTests.swift */,
@@ -1187,6 +1190,7 @@
 				BDD91412250983F60068E3CE /* PlistTranslation.swift in Sources */,
 				BD1A2A7B266820A1009E2338 /* TouchKeyMapTests.swift in Sources */,
 				BD8A317F2503B5400077320F /* CoreDataStackTests.swift in Sources */,
+				BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
 				BD1A2A7F26682DAB009E2338 /* SelectedSoundFontManagerTests.swift in Sources */,

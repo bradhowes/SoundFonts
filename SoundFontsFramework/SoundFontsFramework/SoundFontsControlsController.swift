@@ -12,7 +12,7 @@ public final class SoundFontsControlsController: UIViewController {
   private lazy var logger = Logging.logger("SoundFontsControlsController")
 
   @IBOutlet private weak var favoritesView: UIView!
-  @IBOutlet private weak var patchesView: UIView!
+  @IBOutlet private weak var presetsView: UIView!
   @IBOutlet private weak var effectsHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var effectsBottomConstraint: NSLayoutConstraint!
 
@@ -30,11 +30,11 @@ public final class SoundFontsControlsController: UIViewController {
       return Settings.instance.showingFavorites
     }()
 
-    patchesView.isHidden = showingFavorites
+    presetsView.isHidden = showingFavorites
     favoritesView.isHidden = !showingFavorites
     upperViewManager = SlidingViewManager(active: showingFavorites ? 1 : 0)
 
-    upperViewManager.add(view: patchesView)
+    upperViewManager.add(view: presetsView)
     upperViewManager.add(view: favoritesView)
   }
 

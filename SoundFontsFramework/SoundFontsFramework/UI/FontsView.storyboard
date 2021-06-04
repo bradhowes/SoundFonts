@@ -13,20 +13,26 @@
         <scene sceneID="3Rz-C9-6PO">
             <objects>
                 <viewController storyboardIdentifier="SoundFontPatchesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hF8-Yx-irV" userLabel="SoundFontsController" customClass="SoundFontsViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Jon-CW-SMD" userLabel="SoundFontsView">
+                    <view key="view" contentMode="scaleToFill" id="Jon-CW-SMD" userLabel="FontsCollection">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3j-Cj-T3A" userLabel="Sounds">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3j-Cj-T3A" userLabel="FontsAndPresets">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmV-bj-iZB" userLabel="SoundFonts">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmV-bj-iZB" userLabel="Fonts">
                                         <rect key="frame" x="0.0" y="0.0" width="169" height="896"/>
                                         <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <attributedString key="userComments">
+                                            <fragment content="List of installed fonts"/>
+                                        </attributedString>
                                     </tableView>
-                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYn-Fy-3EM" userLabel="Patches">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYn-Fy-3EM" userLabel="Presets">
                                         <rect key="frame" x="177" y="0.0" width="237" height="896"/>
+                                        <attributedString key="userComments">
+                                            <fragment content="List of presets in selected font"/>
+                                        </attributedString>
                                         <connections>
                                             <segue destination="nUO-8a-gh3" kind="embed" identifier="presetsTableView" id="aCh-x1-qAE"/>
                                         </connections>
@@ -38,6 +44,9 @@
                                             <constraint firstAttribute="height" constant="360" id="3lx-F9-yk6"/>
                                         </constraints>
                                         <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <attributedString key="userComments">
+                                            <fragment content="List of tags for font filtering"/>
+                                        </attributedString>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UU4-kD-PNI" userLabel="Divider Control">
                                         <rect key="frame" x="161" y="428" width="24" height="40"/>
@@ -50,6 +59,9 @@
                                             </label>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" hint="Controls width of font and preset tables" identifier="Divider" label="DividerControl">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerY" secondItem="UU4-kD-PNI" secondAttribute="centerY" constant="-3" id="7c7-0N-knO"/>
                                             <constraint firstItem="UcI-Qm-Wp4" firstAttribute="centerX" secondItem="UU4-kD-PNI" secondAttribute="centerX" id="TjP-KC-f6Z"/>
@@ -59,7 +71,9 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <accessibility key="accessibilityConfiguration" identifier="Sounds" label="Sounds"/>
+                                <accessibility key="accessibilityConfiguration" hint="List of font and presets" identifier="FontsAndPresets" label="FontsAndPresets">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="1To-12-Edz"/>
@@ -72,14 +86,19 @@
                                     <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="-8" id="dgq-Is-bSI"/>
                                     <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="khq-jh-OFk"/>
-                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="v2f-zJ-l9G"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="v2f-zJ-l9G" userLabel="Presets Width Constraint"/>
                                     <constraint firstItem="Sk2-uD-xKG" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" id="wPI-ss-8PY"/>
                                 </constraints>
+                                <attributedString key="userComments">
+                                    <fragment content="List of font and presets"/>
+                                </attributedString>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oTm-H0-ZYi"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <accessibility key="accessibilityConfiguration" identifier="SoundFontsView" label="SoundFontsView"/>
+                        <accessibility key="accessibilityConfiguration" hint="Upper view showing fonts and presets" identifier="FontsCollection" label="FontsCollection">
+                            <bool key="isElement" value="NO"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="V3j-Cj-T3A" firstAttribute="leading" secondItem="Jon-CW-SMD" secondAttribute="leading" id="8I0-zB-O1k"/>
                             <constraint firstItem="V3j-Cj-T3A" firstAttribute="top" secondItem="Jon-CW-SMD" secondAttribute="top" id="9Kx-kL-zBb"/>
@@ -89,8 +108,8 @@
                     </view>
                     <connections>
                         <outlet property="dividerControl" destination="UU4-kD-PNI" id="8nC-1v-PkV"/>
-                        <outlet property="patchesView" destination="OYn-Fy-3EM" id="F2f-aR-7Qv"/>
-                        <outlet property="patchesWidthConstraint" destination="v2f-zJ-l9G" id="pfd-WW-Ivb"/>
+                        <outlet property="presetsView" destination="OYn-Fy-3EM" id="R6n-86-XeF"/>
+                        <outlet property="presetsWidthConstraint" destination="v2f-zJ-l9G" id="jr5-Ch-D9k"/>
                         <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
                         <outlet property="tagsBottomConstraint" destination="1To-12-Edz" id="hIi-Cp-XkC"/>
                         <outlet property="tagsView" destination="Sk2-uD-xKG" id="od0-Vb-z6v"/>

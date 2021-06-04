@@ -17,7 +17,7 @@
                BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
                BuildableName = "SoundFontsApp.app"
                BlueprintName = "SoundFontsApp"
-               ReferencedContainer = "container:App.xcodeproj">
+               ReferencedContainer = "container:SoundFontsApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "BD58250023CDABCD0034A31B"
                BuildableName = "SoundFontsFramework.framework"
                BlueprintName = "SoundFontsFramework"
-               ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
+               ReferencedContainer = "container:../SoundFontsFramework/SoundFontsFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "BD74D16623CDB1D200204ED4"
                BuildableName = "SoundFontInfoLib.framework"
                BlueprintName = "SoundFontInfoLib"
-               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
+               ReferencedContainer = "container:../SoundFontInfoLib/SoundFontInfoLib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -59,7 +59,7 @@
                BlueprintIdentifier = "BD0FABFF251F676900EEF187"
                BuildableName = "SF2Files.framework"
                BlueprintName = "SF2Files"
-               ReferencedContainer = "container:SF2Files/SF2Files.xcodeproj">
+               ReferencedContainer = "container:../SF2Files/SF2Files.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -73,7 +73,7 @@
                BlueprintIdentifier = "BD88BCBB2419A9D400399DE5"
                BuildableName = "ScreenShots.xctest"
                BlueprintName = "ScreenShots"
-               ReferencedContainer = "container:App.xcodeproj">
+               ReferencedContainer = "container:SoundFontsApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -91,7 +91,7 @@
                BlueprintIdentifier = "BD88BCBB2419A9D400399DE5"
                BuildableName = "ScreenShots.xctest"
                BlueprintName = "ScreenShots"
-               ReferencedContainer = "container:App.xcodeproj">
+               ReferencedContainer = "container:SoundFontsApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -106,16 +106,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
-            BuildableName = "SoundFontsApp.app"
-            BlueprintName = "SoundFontsApp"
-            ReferencedContainer = "container:App.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -129,7 +119,7 @@
             BlueprintIdentifier = "BD75B25F218B8CFD00C7EBD7"
             BuildableName = "SoundFontsApp.app"
             BlueprintName = "SoundFontsApp"
-            ReferencedContainer = "container:App.xcodeproj">
+            ReferencedContainer = "container:SoundFontsApp.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

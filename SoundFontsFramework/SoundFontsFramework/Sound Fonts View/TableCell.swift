@@ -57,6 +57,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
     os_log(.debug, log: log, "updateForFont - '%{public}s' A: %d S: %d", name, isActive, isSelected)
     update(name: name, isSelected: isSelected, isActive: isActive, isFavorite: false)
+    self.name.accessibilityLabel = "font \(name)"
+    self.name.accessibilityHint = "font list entry for font \(name)"
   }
 
   /**
@@ -69,6 +71,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   public func updateForPreset(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForPreset - '%{public}s' A: %d", name, isActive)
     update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
+    self.name.accessibilityLabel = "preset \(name)"
+    self.name.accessibilityHint = "preset list entry for preset \(name)"
   }
 
   /**
@@ -80,6 +84,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   public func updateForFavorite(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForFavorite - '%{public}s' A: %d", name, isActive)
     update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true)
+    self.name.accessibilityLabel = "favorite \(name)"
+    self.name.accessibilityHint = "preset list entry for favorite \(name)"
   }
 
   /**
@@ -91,6 +97,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   public func updateForTag(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForTag - '%{public}s' A: %d", name, isActive)
     update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
+    self.name.accessibilityLabel = "tag \(name)"
+    self.name.accessibilityHint = "tag list entry for tag \(name)"
   }
 
   /**
@@ -108,6 +116,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     self.name.text = name
     self.name.textColor = fontColorWhen(isSelected: isSelected, isActive: isActive, isFavorite: isFavorite)
     showActiveIndicator(isActive)
+    activeIndicator.accessibilityIdentifier = isActive ? "\(name) is active" : "\(name) is not active"
   }
 
   override public func prepareForReuse() {

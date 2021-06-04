@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T8r-NH-bPO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T8r-NH-bPO">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,6 +30,9 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4e7-4I-TWW" userLabel="Favorites">
                                                 <rect key="frame" x="156" y="0.0" width="78" height="22.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Collection of user favorites" label="GuideFavoritesTitle">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Favorites">
                                                         <attributes>
@@ -40,12 +43,21 @@
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Collection of user favorites"/>
+                                                </attributedString>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Double-tap to edit. Long-tap to move." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EOv-ZO-3C2" userLabel="Favorites">
                                                 <rect key="frame" x="0.0" y="30.333333333333343" width="390" height="310.33333333333326"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Description of the favorite collection" label="GuiideFavoritesDescription">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Description of the favorite collection"/>
+                                                </attributedString>
                                             </textView>
                                         </subviews>
                                         <viewLayoutGuide key="safeArea" id="LgK-3M-nu4"/>
@@ -63,6 +75,9 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBA-6x-9Vl">
                                                 <rect key="frame" x="39.666666666666664" y="0.0" width="67.666666666666686" height="22.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" hint="List of available fonts" label="GuildeFontsTitle">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Font list">
                                                         <attributes>
@@ -73,15 +88,27 @@
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="List of available fonts"/>
+                                                </attributedString>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe right to edit name. Swipe left to remove." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLi-Uk-y1l" userLabel="Font list">
                                                 <rect key="frame" x="0.0" y="30.333333333333343" width="147" height="310.33333333333326"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Description for the font list" label="GuildeFontsDescription">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Description for the font list"/>
+                                                </attributedString>
                                             </textView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-pz-3Zu">
                                                 <rect key="frame" x="230.66666666666666" y="0.0" width="83.666666666666657" height="22.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" hint="List of presets in selected font" label="GuidePresetsTitle">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Preset list">
                                                         <attributes>
@@ -92,12 +119,21 @@
                                                     </fragment>
                                                 </attributedString>
                                                 <nil key="highlightedColor"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="List of presets in selected font"/>
+                                                </attributedString>
                                             </label>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Swipe right to mark favorite. Swipe left to hide." textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuY-7w-toc" userLabel="Preset list">
                                                 <rect key="frame" x="155" y="30.333333333333343" width="235" height="310.33333333333326"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Description for the list of presets" label="GuidePresetsDescription">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="Description for the list of presets"/>
+                                                </attributedString>
                                             </textView>
                                         </subviews>
                                         <constraints>
@@ -120,6 +156,9 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add files" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nIB-an-6Rm" userLabel="Add files Label">
                                                 <rect key="frame" x="0.0" y="0.0" width="59.666666666666664" height="18.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide arrow to add button" label="GuideAddFile">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
@@ -132,6 +171,9 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tags" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csw-xS-Cbe" userLabel="Tags Label">
                                                 <rect key="frame" x="47" y="34.333333333333314" width="34.333333333333343" height="18.333333333333329"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide arrow to tags button" label="GuideTags">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
@@ -144,6 +186,9 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key range" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x4u-Am-pP5" userLabel="Key Range Label">
                                                 <rect key="frame" x="139" y="-0.66666666666668561" width="72" height="19"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Arrrow to key range buttons" label="GuideKeyRange">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
@@ -156,6 +201,9 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kmG-qq-3S8" userLabel="Settings Label">
                                                 <rect key="frame" x="302" y="34.333333333333314" width="58" height="18.333333333333329"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide arrow to settings button" label="GuideSettings">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
@@ -168,6 +216,9 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preset visibility" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MuL-XK-1yC" userLabel="Preset visibility Label">
                                                 <rect key="frame" x="239.33333333333334" y="0.0" width="103.66666666666666" height="18.333333333333332"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide arrow to preset visibility button" label="GuideVisibility">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>
@@ -180,6 +231,9 @@
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="➠ Toggles slide mode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glj-gY-jrI" userLabel="Key Slide Label">
                                                 <rect key="frame" x="191" y="34.333333333333314" width="80" height="36.666666666666657"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide description for slide mode" label="GuideSlide">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="80" id="ccP-Od-b4g"/>
                                                 </constraints>
@@ -189,6 +243,9 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Effects" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ymw-jL-grM" userLabel="Effects Label">
                                                 <rect key="frame" x="95.333333333333329" y="34.333333333333314" width="47.999999999999986" height="18"/>
+                                                <accessibility key="accessibilityConfiguration" hint="Guide arrow to effects button" label="GuideEffects">
+                                                    <bool key="isElement" value="NO"/>
+                                                </accessibility>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="17"/>
                                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                                 <nil key="highlightedColor"/>

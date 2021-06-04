@@ -38,7 +38,7 @@ final public class Preset: Codable {
   /// Program patch number where the patch resides in the sound font
   public let program: Int
 
-  /// The index into the owning soundFont's patches array
+  /// The index into the owning soundFont's presets array
   public let soundFontIndex: Int
 
   /// Configuration parameters that can be adjusted by the user.

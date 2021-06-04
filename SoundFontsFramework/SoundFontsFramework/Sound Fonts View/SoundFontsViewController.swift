@@ -15,8 +15,8 @@ public final class SoundFontsViewController: UIViewController {
   @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var dividerControl: UIView!
-  @IBOutlet private weak var patchesWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var patchesView: UIView!
+  @IBOutlet private weak var presetsWidthConstraint: NSLayoutConstraint!
+  @IBOutlet private weak var presetsView: UIView!
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
   private var soundFonts: SoundFonts!
@@ -43,6 +43,21 @@ extension SoundFontsViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    soundFontsView.isAccessibilityElement = false
+    soundFontsView.accessibilityIdentifier = "FontsTableList"
+    soundFontsView.accessibilityHint = "List of available fonts"
+    soundFontsView.accessibilityLabel = "FontsTableList"
+
+    presetsView.isAccessibilityElement = false
+    presetsView.accessibilityIdentifier = "PresetsTableList"
+    presetsView.accessibilityHint = "List of presets in selected font"
+    presetsView.accessibilityLabel = "PresetTableList"
+
+    tagsView.isAccessibilityElement = false
+    tagsView.accessibilityIdentifier = "TagsTableList"
+    tagsView.accessibilityHint = "List of tags for filtering fonts"
+    tagsView.accessibilityLabel = "TagsTableList"
+
     swipeLeft.direction = .left
     swipeLeft.numberOfTouchesRequired = 2
     view.addGestureRecognizer(swipeLeft)
@@ -54,7 +69,7 @@ extension SoundFontsViewController {
     maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
     let multiplier = Settings.instance.presetsWidthMultiplier
-    patchesWidthConstraint = patchesWidthConstraint.setMultiplier(CGFloat(multiplier))
+    presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
     dividerDragGesture.maximumNumberOfTouches = 1
     dividerDragGesture.minimumNumberOfTouches = 1
@@ -78,22 +93,22 @@ extension SoundFontsViewController {
       lastDividerPos += change
       gesture.setTranslation(.zero, in: view)
 
-      let patchesWidth = patchesView.frame.width - change
+      let presetsWidth = presetsView.frame.width - change
 
       // Don't allow the preset view to shrink below 80 but do let it grow if it was below 80.
-      if patchesWidth < 80.0 && change > 0 { return }
+      if presetsWidth < 80.0 && change > 0 { return }
 
       let fontsWidth = soundFontsView.frame.width + change
 
       // Likewise, don't allow the fonts view to shrink below 80 but do let it grow if it was below 80.
       if fontsWidth < 80.0 && change < 0 { return }
 
-      let multiplier = patchesWidth / fontsWidth
+      let multiplier = presetsWidth / fontsWidth
       os_log(
         .info, log: log, "moveDivider - old: %f new: %f",
-        patchesWidthConstraint.multiplier,
+        presetsWidthConstraint.multiplier,
         multiplier)
-      patchesWidthConstraint = patchesWidthConstraint.setMultiplier(multiplier)
+      presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
       Settings.instance.presetsWidthMultiplier = Double(multiplier)
 
     default: break

@@ -3,7 +3,7 @@
 import UIKit
 import os
 
-/// Manager of the strip informational strip between the keyboard and the SoundFont patches / favorites screens. Supports
+/// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
 public final class InfoBarController: UIViewController {
   private lazy var log = Logging.logger("InfoBarController")

@@ -1,4 +1,4 @@
-// Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2021 Brad Howes. All rights reserved.
 
 import UIKit
 import os
@@ -23,11 +23,8 @@ final class FontsTableViewManager: NSObject {
   private var viewSoundFonts = [SoundFont.Key]()
   private var filterTagKey: Tag.Key = Tag.allTag.key
 
-  init(
-    view: UITableView, selectedSoundFontManager: SelectedSoundFontManager,
-    activePresetManager: ActivePresetManager,
-    fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags
-  ) {
+  init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePresetManager: ActivePresetManager,
+       fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags) {
 
     self.view = view
     self.selectedSoundFontManager = selectedSoundFontManager
@@ -64,9 +61,7 @@ extension FontsTableViewManager: UITableViewDataSource {
 
   func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    viewSoundFonts.count
-  }
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { viewSoundFonts.count }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     updateCell(cell: tableView.dequeueReusableCell(at: indexPath), indexPath: indexPath)
@@ -82,34 +77,25 @@ extension FontsTableViewManager: UITableViewDelegate {
     selectedSoundFontManager.setSelected(soundFont)
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    editingStyleForRowAt indexPath: IndexPath
-  ) -> UITableViewCell.EditingStyle {
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
+  func tableView(_ tableView: UITableView,
+                 leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
     guard let soundFont = soundFonts.getBy(key: viewSoundFonts[indexPath.row]) else { return nil }
-    let action = fontEditorActionGenerator.createEditSwipeAction(
-      at: indexPath, cell: cell, soundFont: soundFont)
+    let action = fontEditorActionGenerator.createEditSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
     let actions = UISwipeActionsConfiguration(actions: [action])
     actions.performsFirstActionWithFullSwipe = false
     return actions
   }
 
-  func tableView(
-    _ tableView: UITableView,
-    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
+  func tableView(_ tableView: UITableView,
+                 trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
     guard let soundFont = soundFonts.getBy(key: viewSoundFonts[indexPath.row]) else { return nil }
-    let action = fontEditorActionGenerator.createDeleteSwipeAction(
-      at: indexPath, cell: cell, soundFont: soundFont)
+    let action = fontEditorActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
     let actions = UISwipeActionsConfiguration(actions: [action])
     actions.performsFirstActionWithFullSwipe = false
     return actions
@@ -173,9 +159,7 @@ extension FontsTableViewManager {
 
   private func addSoundFont(index: Int, soundFont: SoundFont) {
     let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
-    guard filteredIndex >= 0 else {
-      return
-    }
+    guard filteredIndex >= 0 else { return }
     view.performBatchUpdates {
       view.insertRows(at: [filteredIndex.indexPath], with: .automatic)
       viewSoundFonts.insert(soundFont.key, at: filteredIndex)
@@ -194,8 +178,7 @@ extension FontsTableViewManager {
     guard newFilteredIndex >= 0 else { return }
     view.performBatchUpdates {
       view.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
-      self.viewSoundFonts.insert(
-        self.viewSoundFonts.remove(at: oldFilteredIndex), at: newFilteredIndex)
+      self.viewSoundFonts.insert(self.viewSoundFonts.remove(at: oldFilteredIndex), at: newFilteredIndex)
     } completion: { completed in
       if completed {
         self.updateRow(row: newFilteredIndex)
@@ -224,8 +207,8 @@ extension FontsTableViewManager {
       }
 
       if self.activePresetManager.activeSoundFont == soundFont {
-        self.activePresetManager.setActive(
-          preset: SoundFontAndPreset(soundFontKey: newSoundFont.key, presetIndex: 0), playSample: false)
+        self.activePresetManager.setActive(preset: SoundFontAndPreset(soundFontKey: newSoundFont.key, presetIndex: 0),
+                                           playSample: false)
         self.selectedSoundFontManager.setSelected(newSoundFont)
       } else if self.selectedSoundFontManager.selected == soundFont {
         self.selectedSoundFontManager.setSelected(newSoundFont)
@@ -239,10 +222,8 @@ extension FontsTableViewManager {
     os_log(.info, log: log, "soundFontsChange")
     switch event {
     case let .added(new, soundFont): addSoundFont(index: new, soundFont: soundFont)
-    case let .moved(old, new, soundFont):
-      movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont)
-    case let .removed(old, deletedSoundFont):
-      removeSoundFont(index: old, soundFont: deletedSoundFont)
+    case let .moved(old, new, soundFont): movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont)
+    case let .removed(old, deletedSoundFont): removeSoundFont(index: old, soundFont: deletedSoundFont)
     case .presetChanged: break
     case .unhidPresets: break
     case .restored: updateViewSoundFonts()
@@ -283,13 +264,10 @@ extension FontsTableViewManager {
   private func updateCell(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let key = viewSoundFonts[indexPath.row]
     guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
-    os_log(
-      .debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
+    os_log(.debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
     let isSelected = selectedSoundFontManager.selected == soundFont
     let isActive = activePresetManager.activeSoundFont == soundFont
-    cell.updateForFont(
-      name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected,
-      isActive: isActive)
+    cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected, isActive: isActive)
     return cell
   }
 }

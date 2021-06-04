@@ -51,6 +51,11 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     layout.minimumLineSpacing = 8
 
     favoritesView.setCollectionViewLayout(layout, animated: false)
+
+    favoritesView.isAccessibilityElement = false
+    favoritesView.accessibilityIdentifier = "FavoritesView"
+    favoritesView.accessibilityHint = "View holding favorites"
+    favoritesView.accessibilityLabel = "FavoritesView"
   }
 
   public override func viewWillAppear(_ animated: Bool) {

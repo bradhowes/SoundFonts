@@ -36,7 +36,7 @@
                                     <segue destination="M8C-1m-Paa" kind="embed" identifier="favorites" id="W26-q2-5GP"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Patches" translatesAutoresizingMaskIntoConstraints="NO" id="eeU-Zp-LO7" userLabel="Patches">
+                            <containerView opaque="NO" contentMode="scaleToFill" restorationIdentifier="Presets" translatesAutoresizingMaskIntoConstraints="NO" id="eeU-Zp-LO7" userLabel="Presets">
                                 <rect key="frame" x="0.0" y="44" width="414" height="778"/>
                                 <connections>
                                     <segue destination="Y2X-0f-Kke" kind="embed" identifier="soundFontPresets" id="u7z-Un-LBl"/>
@@ -63,7 +63,9 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="3Ns-BN-Xtc"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <accessibility key="accessibilityConfiguration" identifier="MainView" label="MainView"/>
+                        <accessibility key="accessibilityConfiguration" identifier="MainView" label="MainView">
+                            <bool key="isElement" value="NO"/>
+                        </accessibility>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="kcX-5K-Faj" firstAttribute="top" secondItem="3Ns-BN-Xtc" secondAttribute="top" id="7Ww-5x-tsF"/>
@@ -96,7 +98,7 @@
                         <outlet property="effectsBottomConstraint" destination="RjO-VY-hDV" id="arr-WF-8Yn"/>
                         <outlet property="effectsHeightConstraint" destination="720-5y-i6l" id="wew-sf-fb0"/>
                         <outlet property="favoritesView" destination="efO-vf-51K" id="LXI-ih-l5M"/>
-                        <outlet property="patchesView" destination="eeU-Zp-LO7" id="Ttb-SJ-1CI"/>
+                        <outlet property="presetsView" destination="eeU-Zp-LO7" id="cOx-he-Wxv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3od-BK-CUG" userLabel="First Responder" sceneMemberID="firstResponder"/>

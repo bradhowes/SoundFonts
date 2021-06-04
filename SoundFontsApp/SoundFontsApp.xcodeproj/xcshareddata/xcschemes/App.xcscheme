@@ -127,9 +127,19 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD3CF701241FA779004A13D1"
-               BuildableName = "AppTests.xctest"
-               BlueprintName = "AppTests"
+               BlueprintIdentifier = "BD58250923CDABCD0034A31B"
+               BuildableName = "SoundFontsFrameworkTests.xctest"
+               BlueprintName = "SoundFontsFrameworkTests"
+               ReferencedContainer = "container:../SoundFontsFramework/SoundFontsFramework.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BD88BCBB2419A9D400399DE5"
+               BuildableName = "ScreenShots.xctest"
+               BlueprintName = "ScreenShots"
                ReferencedContainer = "container:SoundFontsApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -137,10 +147,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD58250923CDABCD0034A31B"
-               BuildableName = "SoundFontsFrameworkTests.xctest"
-               BlueprintName = "SoundFontsFrameworkTests"
-               ReferencedContainer = "container:../SoundFontsFramework/SoundFontsFramework.xcodeproj">
+               BlueprintIdentifier = "BD3CF701241FA779004A13D1"
+               BuildableName = "AppTests.xctest"
+               BlueprintName = "AppTests"
+               ReferencedContainer = "container:SoundFontsApp.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
