@@ -28,9 +28,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
      - parameter componentDescription: the definition used when locating the component to create
      - returns: new SoundFontsAU instance
      */
-  public func createAudioUnit(with componentDescription: AudioComponentDescription) throws
-    -> AUAudioUnit
-  {
+  public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     os_log(.info, log: log, "createAudioUnit")
     let audioUnit = try SoundFontsAU(
       componentDescription: componentDescription, sampler: components.sampler,

@@ -33,4 +33,6 @@ extension Notification.Name {
   public static let samplerStartFailure = Notification.Name("samplerStartFailure")
   /// Notification that app is resigning active state
   public static let appResigningActive = Notification.Name("appResigningActive")
+  /// Notification to show the tutorial screen
+  public static let showTutorial = Notification.Name("showTutorial")
 }

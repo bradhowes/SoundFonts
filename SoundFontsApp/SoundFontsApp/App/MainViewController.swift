@@ -19,6 +19,7 @@ final class MainViewController: UIViewController {
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
   private let midi = MIDI()
+  private var observer: NSObjectProtocol?
 
   fileprivate var noteInjector = NoteInjector()
 
@@ -34,39 +35,21 @@ final class MainViewController: UIViewController {
     super.viewDidLoad()
     UIApplication.shared.appDelegate.setMainViewController(self)
     setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+    observer = NotificationCenter.default.addObserver(forName: .showTutorial, object: nil, queue: nil) { _ in
+      self.showTutorial()
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-
-    guard !skipTutorial else { return }
-
-    // Settings.instance.showedChanges = ""
-    // Settings.instance.showedTutorial = false
-
-    let currentVersion = Bundle.main.releaseVersionNumber
-    if !Settings.instance.showedTutorial {
+    if !skipTutorial && !Settings.instance.showedTutorial {
+      showTutorial()
       Settings.instance.showedTutorial = true
-      Settings.instance.showedChanges = currentVersion
-      if let viewController = TutorialViewController.instantiate() {
-        present(viewController, animated: true, completion: nil)
-      }
-    } else if Settings.instance.showedChanges != currentVersion {
-
-      // For speed of launch this should be done on separate thread
-      let changes = ChangesCompiler.compile(since: Settings.instance.showedChanges)
-
-      Settings.instance.showedChanges = currentVersion
-      if let viewController = TutorialViewController.instantiateChanges(changes) {
-        present(viewController, animated: true, completion: nil)
-      }
     }
   }
 
-  override func willTransition(
-    to newCollection: UITraitCollection,
-    with coordinator: UIViewControllerTransitionCoordinator
-  ) {
+  override func willTransition(to newCollection: UITraitCollection,
+                               with coordinator: UIViewControllerTransitionCoordinator) {
     super.willTransition(to: newCollection, with: coordinator)
     coordinator.animate(
       alongsideTransition: { _ in
@@ -79,6 +62,23 @@ final class MainViewController: UIViewController {
 }
 
 extension MainViewController {
+
+  func showChanges() {
+    let currentVersion = Bundle.main.releaseVersionNumber
+    if Settings.instance.showedChanges != currentVersion {
+      let changes = ChangesCompiler.compile(since: Settings.instance.showedChanges)
+      Settings.instance.showedChanges = currentVersion
+      if let viewController = TutorialViewController.instantiateChanges(changes) {
+        present(viewController, animated: true, completion: nil)
+      }
+    }
+  }
+
+  func showTutorial() {
+    if let viewController = TutorialViewController.instantiate() {
+      present(viewController, animated: true, completion: nil)
+    }
+  }
 
   /**
      Start audio processing. This is done as the app is brought into the foreground.

@@ -415,8 +415,7 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
   }
 
   @IBAction private func showTutorial(_ sender: Any) {
-    if let tutorial = TutorialViewController.instantiate() {
-      self.present(tutorial, animated: true)
-    }
+    dismiss(animated: true)
+    NotificationCenter.default.post(name: .showTutorial, object: nil)
   }
 }
