@@ -465,6 +465,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mHN-pb-pNJ">
                                                                 <rect key="frame" x="336" y="0.0" width="38" height="30"/>
+                                                                <accessibility key="accessibilityConfiguration" hint="Show tutorial screens" identifier="ShowTutorial" label="ShowTutorial"/>
                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <state key="normal" title="Show">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
@@ -490,6 +491,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NL8-An-Dti">
                                                                 <rect key="frame" x="325" y="0.0" width="49" height="30"/>
+                                                                <accessibility key="accessibilityConfiguration" hint="Submit a review" identifier="ReviewApp" label="ReviewApp"/>
                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <state key="normal" title="Review">
                                                                     <color key="titleColor" systemColor="systemTealColor"/>
@@ -514,6 +516,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUE-bc-cFq">
                                                                 <rect key="frame" x="349" y="0.0" width="25" height="25"/>
+                                                                <accessibility key="accessibilityConfiguration" hint="Send email to developer" identifier="EmailDeveloper" label="EmailDeveloper"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <state key="normal" image="Mail">
