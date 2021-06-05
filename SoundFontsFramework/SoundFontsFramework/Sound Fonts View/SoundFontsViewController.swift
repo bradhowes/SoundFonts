@@ -362,7 +362,6 @@ extension SoundFontsViewController {
       hideTags()
     } else {
       button?.tintColor = .systemOrange
-      tagsTableViewManager.refresh()
       showTags()
     }
   }
@@ -378,10 +377,11 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
-    UIViewPropertyAnimator.runningPropertyAnimator(
-      withDuration: 0.25, delay: 0.0,
-      options: [.allowUserInteraction, .curveEaseIn],
-      animations: self.view.layoutIfNeeded)
+    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
+                                                   options: [.allowUserInteraction, .curveEaseIn],
+                                                   animations: self.view.layoutIfNeeded) { _ in
+      self.tagsTableViewManager.showActiveTag(animated: false)
+    }
   }
 
   private func hideTags() {

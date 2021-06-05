@@ -31,6 +31,10 @@ final class ActiveTagManager: NSObject {
     activeIndex = tags.index(of: tagKey) ?? 0
     view.reloadData()
   }
+
+  public func showActiveTag(animated: Bool) {
+    view.scrollToRow(at: IndexPath(row: activeIndex, section: 0), at: .none, animated: animated)
+  }
 }
 
 extension ActiveTagManager: UITableViewDataSource {
