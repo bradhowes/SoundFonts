@@ -182,11 +182,6 @@ final public class FavoriteEditor: UIViewController {
 
     notesTextView.text = presetConfig.notes
   }
-
-  override public func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-    self.tuningComponent = nil
-  }
 }
 
 // MARK: - UITextFieldDelegate
@@ -205,7 +200,7 @@ extension FavoriteEditor: UITextFieldDelegate {
      */
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
-    donePressed(doneButton)
+    save()
     return false
   }
 
@@ -237,7 +232,62 @@ extension FavoriteEditor {
 
      - parameter sender: the `Done` button
      */
-  @IBAction private func donePressed(_ sender: UIBarButtonItem) {
+  @IBAction private func donePressed(_ sender: UIBarButtonItem) { save() }
+
+  /**
+     Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
+
+     - parameter sender: the `Cancel` button.
+     */
+  @IBAction private func cancelPressed(_ sender: UIBarButtonItem) { discard() }
+
+  @IBAction private func useOriginalName(_ sender: UIButton) { name.text = originalName.text }
+
+  /**
+     Event handler for the lowest key stepper.
+
+     - parameter sender: UIStepper control
+     */
+  @IBAction private func changeLowestKey(_ sender: UIStepper) {
+    lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
+  }
+
+  @IBAction func pitchBendStep(_ sender: UIStepper) { updatePitchBendRange() }
+
+  @IBAction func resetPitchBend(_ sender: UIButton) {
+    presetConfig.pitchBendRange = nil
+    setPitchBendRange(Settings.shared.pitchBendRange)
+  }
+
+  /**
+     Event handler for the gain slider
+
+     - parameter sender: UISlider
+     */
+  @IBAction private func volumeChanged(_ sender: UISlider) { setGainValue(sender.value) }
+
+  @IBAction private func resetGain(_ sender: UIButton) { setGainValue(0.0) }
+
+  /**
+     Event handler for the pan slider
+
+     - parameter sender: UISlider
+     */
+  @IBAction private func panChanged(_ sender: UISlider) {
+    setPanValue(sender.value)
+  }
+
+  @IBAction private func resetPan(_ sender: UIButton) {
+    setPanValue(0.0)
+  }
+
+  @IBAction private func useCurrentLowestNote(_ sender: Any) {
+    guard let currentLowestNote = self.currentLowestNote else { return }
+    lowestNoteValue.text = currentLowestNote.label
+    lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
+  }
+
+  private func save() {
     guard
       let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey),
       let tuningComponent = self.tuningComponent
@@ -271,77 +321,16 @@ extension FavoriteEditor {
       ? .favorite(config: presetConfig)
       : .preset(soundFontAndPreset: soundFontAndPreset, config: presetConfig)
 
-    AskForReview.maybe()
-    delegate?.dismissed(position, reason: .done(response: response))
-    completionHandler?(true)
-
-    self.tuningComponent = nil
+    dismissed(reason: .done(response: response))
   }
 
-  /**
-     Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
+  private func discard() { dismissed(reason: .cancel) }
 
-     - parameter sender: the `Cancel` button.
-     */
-  @IBAction private func cancelPressed(_ sender: UIBarButtonItem) {
+  private func dismissed(reason: FavoriteEditorDismissedReason) {
     AskForReview.maybe()
-    delegate?.dismissed(position, reason: .cancel)
+    delegate?.dismissed(position, reason: reason)
     completionHandler?(false)
     self.tuningComponent = nil
-  }
-
-  @IBAction private func useOriginalName(_ sender: UIButton) {
-    name.text = originalName.text
-  }
-
-  /**
-     Event handler for the lowest key stepper.
-
-     - parameter sender: UIStepper control
-     */
-  @IBAction private func changeLowestKey(_ sender: UIStepper) {
-    lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
-  }
-
-  @IBAction func pitchBendStep(_ sender: UIStepper) {
-    updatePitchBendRange()
-  }
-
-  @IBAction func resetPitchBend(_ sender: UIButton) {
-    presetConfig.pitchBendRange = nil
-    setPitchBendRange(Settings.shared.pitchBendRange)
-  }
-
-  /**
-     Event handler for the gain slider
-
-     - parameter sender: UISlider
-     */
-  @IBAction private func volumeChanged(_ sender: UISlider) {
-    setGainValue(sender.value)
-  }
-
-  @IBAction private func resetGain(_ sender: UIButton) {
-    setGainValue(0.0)
-  }
-
-  /**
-     Event handler for the pan slider
-
-     - parameter sender: UISlider
-     */
-  @IBAction private func panChanged(_ sender: UISlider) {
-    setPanValue(sender.value)
-  }
-
-  @IBAction private func resetPan(_ sender: UIButton) {
-    setPanValue(0.0)
-  }
-
-  @IBAction private func useCurrentLowestNote(_ sender: Any) {
-    guard let currentLowestNote = self.currentLowestNote else { return }
-    lowestNoteValue.text = currentLowestNote.label
-    lowestNoteStepper.value = Double(currentLowestNote.midiNoteValue)
   }
 
   private func updatePitchBendRange() {
@@ -384,12 +373,15 @@ extension FavoriteEditor {
   }
 }
 
-extension FavoriteEditor: UIPopoverPresentationControllerDelegate,
-                          UIAdaptivePresentationControllerDelegate
+extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePresentationControllerDelegate
 {
+  /**
+   Notification that the presentation controller has been dismissed.
 
+   - parameter presentationController: the controller that was dismissed
+   */
   public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-    donePressed(doneButton)
+    discard()
   }
 
   /**
@@ -398,8 +390,7 @@ extension FavoriteEditor: UIPopoverPresentationControllerDelegate,
      - parameter popoverPresentationController: the controller being monitored
      */
   public func popoverPresentationControllerDidDismissPopover(
-    _ popoverPresentationController: UIPopoverPresentationController
-  ) {
-    donePressed(doneButton)
+    _ popoverPresentationController: UIPopoverPresentationController) {
+    discard()
   }
 }

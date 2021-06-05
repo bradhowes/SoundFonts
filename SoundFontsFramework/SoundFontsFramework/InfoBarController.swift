@@ -17,7 +17,7 @@ public final class InfoBarController: UIViewController {
   @IBOutlet private weak var showGuide: UIButton!
   @IBOutlet private weak var showSettings: UIButton!
   @IBOutlet private weak var editVisibility: UIButton!
-  @IBOutlet private weak var slidingKeyboard: UIButton!
+  @IBOutlet private weak var slidingKeyboardToggle: UIButton!
   @IBOutlet private weak var showTags: UIButton!
   @IBOutlet private weak var showEffects: UIButton!
 
@@ -41,9 +41,10 @@ public final class InfoBarController: UIViewController {
 
   public override func viewDidLoad() {
 
+    // Hide until we know for sure that they should be visible
     highestKey.isHidden = true
     lowestKey.isHidden = true
-    slidingKeyboard.isHidden = true
+    slidingKeyboardToggle.isHidden = true
 
     doubleTap.numberOfTouchesRequired = 1
     doubleTap.numberOfTapsRequired = 2
@@ -130,8 +131,9 @@ extension InfoBarController: ControllerConfiguration {
 
 extension InfoBarController: InfoBar {
 
-  public func setEditVisibilityButtonEnabled(_ state: Bool) {
-    editVisibility.isEnabled = state
+  public func updateButtonsForPresetsViewState(visible: Bool) {
+    editVisibility.isEnabled = visible
+    showTags.isEnabled = visible
   }
 
   public var moreButtonsVisible: Bool { showingMoreButtons }
@@ -162,13 +164,13 @@ extension InfoBarController: InfoBar {
   private func addShiftKeyboardUpClosure(_ closure: @escaping UIControl.Closure) {
     highestKey.addClosure(closure)
     highestKey.isHidden = false
-    slidingKeyboard.isHidden = false
+    slidingKeyboardToggle.isHidden = false
   }
 
   private func addShiftKeyboardDownClosure(_ closure: @escaping UIControl.Closure) {
     lowestKey.addClosure(closure)
     lowestKey.isHidden = false
-    slidingKeyboard.isHidden = false
+    slidingKeyboardToggle.isHidden = false
   }
 
   private func addShowMoreButtonsClosure(_ closure: @escaping UIControl.Closure) {
@@ -415,7 +417,6 @@ extension InfoBarController {
   }
 
   private func updateSlidingKeyboardState() {
-    slidingKeyboard.setTitleColor(
-      Settings.shared.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+    slidingKeyboardToggle.setTitleColor(Settings.shared.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
   }
 }

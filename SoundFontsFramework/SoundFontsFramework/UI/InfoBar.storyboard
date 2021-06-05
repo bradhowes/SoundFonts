@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
-    <device id="retina6_1" orientation="landscape" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -47,10 +45,10 @@
                                 <state key="normal" image="Effects"/>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-VG-nmd" userLabel="TouchView">
-                                <rect key="frame" x="135" y="0.0" width="113" height="40"/>
+                                <rect key="frame" x="135" y="0.0" width="282" height="40"/>
                                 <subviews>
                                     <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-eK-8gI">
-                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="274" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
@@ -58,7 +56,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label hidden="YES" opaque="NO" contentMode="left" text="Status" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwl-He-nQi" userLabel="Status">
-                                        <rect key="frame" x="0.0" y="0.0" width="105" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="274" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="Status" label="Status"/>
                                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
@@ -81,7 +79,7 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
-                                <rect key="frame" x="240" y="0.0" width="225" height="40"/>
+                                <rect key="frame" x="202" y="0.0" width="225" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnb-O4-iay" userLabel="Help">
                                         <rect key="frame" x="190" y="7.5" width="25" height="25"/>
@@ -106,10 +104,10 @@
                                         <state key="normal" image="EditVisibility"/>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="keu-yf-YQQ" userLabel="KeyRange">
-                                        <rect key="frame" x="8" y="3" width="84" height="34"/>
+                                        <rect key="frame" x="8" y="2" width="84" height="36"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IO0-ky-FSn" userLabel="LowestKey">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="36"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="LowestKey" label="LowestKey"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                                 <state key="normal" title="C2">
@@ -117,7 +115,7 @@
                                                 </state>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BW4-Wd-vsq">
-                                                <rect key="frame" x="30" y="0.0" width="24" height="34"/>
+                                                <rect key="frame" x="30" y="0.0" width="24" height="36"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="Yad-sP-air"/>
                                                 </constraints>
@@ -129,7 +127,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBF-bM-n1r" userLabel="HighestKey">
-                                                <rect key="frame" x="54" y="0.0" width="30" height="34"/>
+                                                <rect key="frame" x="54" y="0.0" width="30" height="36"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                                 <state key="normal" title="C3">
@@ -242,7 +240,7 @@
                         <outlet property="showMoreButtonsButton" destination="D81-HT-18k" id="ArG-gf-vjZ"/>
                         <outlet property="showSettings" destination="7YL-wn-sth" id="aT3-P4-LH3"/>
                         <outlet property="showTags" destination="nyJ-h2-UbA" id="Xcq-R2-c4f"/>
-                        <outlet property="slidingKeyboard" destination="BW4-Wd-vsq" id="qMR-q7-x8c"/>
+                        <outlet property="slidingKeyboardToggle" destination="BW4-Wd-vsq" id="qMR-q7-x8c"/>
                         <outlet property="status" destination="bwl-He-nQi" id="BUJ-LW-oBD"/>
                         <outlet property="touchView" destination="JeZ-VG-nmd" id="u9O-3R-VIL"/>
                     </connections>

@@ -73,9 +73,9 @@ public protocol InfoBar: AnyObject {
   func resetButtonState(_ event: InfoBarEvent)
 
   /**
-     Update the enabled state of the button that begins preset visibility editing.
+     Update the enabled state of info buttons depending on appearance of presets view.
 
-     - parameter state: state to set the button to, true if currently editing preset visibility or false if not
+     - parameter visible: true if presets view is showin
      */
-  func setEditVisibilityButtonEnabled(_ state: Bool)
+  func updateButtonsForPresetsViewState(visible: Bool)
 }

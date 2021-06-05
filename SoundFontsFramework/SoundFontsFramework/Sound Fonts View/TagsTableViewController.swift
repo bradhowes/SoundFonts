@@ -58,8 +58,7 @@ public final class TagsTableViewController: UITableViewController {
     super.viewDidLoad()
     tableView.register(TableCell.self)
 
-    let longPressGesture = UILongPressGestureRecognizer(
-      target: self, action: #selector(editTagName(_:)))
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editTagName(_:)))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)
   }
@@ -97,7 +96,8 @@ extension TagsTableViewController {
     os_log(.debug, log: log, "editTagName")
     guard case .doneEditing = currentAction,
           let indexPath = self.tableView.indexPathForRow(at: sender.location(in: tableView)),
-          sender.state == .began
+          sender.state == .began,
+          !Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key)
     else {
       return
     }

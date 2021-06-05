@@ -664,8 +664,7 @@ extension PresetsTableViewManager {
         guard let soundFontAndPreset = makeSoundFontAndPreset(at: indexPath) else { return [] }
         return [
           editPresetSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset),
-          createFavoriteSwipeAction(
-            at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
+          createFavoriteSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
         ]
       case .favorite:
         return [
@@ -676,10 +675,8 @@ extension PresetsTableViewManager {
     return makeSwipeActionConfiguration(actions: actions)
   }
 
-  private func editPresetSwipeAction(
-    at indexPath: IndexPath, cell: TableCell,
-    soundFontAndPreset: SoundFontAndPreset
-  ) -> UIContextualAction {
+  private func editPresetSwipeAction(at indexPath: IndexPath, cell: TableCell,
+                                     soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
       var rect = self.view.rectForRow(at: indexPath)
       rect.size.width = 240.0
@@ -694,17 +691,14 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func createFavoriteSwipeAction(
-    at indexPath: IndexPath, cell: TableCell,
-    soundFontAndPreset: SoundFontAndPreset
-  ) -> UIContextualAction {
+  private func createFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell,
+                                         soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .favorite, color: .systemOrange) { _, _, completionHandler in
       completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPreset))
     }
   }
 
-  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset)
-    -> Bool
+  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool
   {
     guard let soundFont = self.soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else { return false }
     let preset = soundFont.presets[soundFontAndPreset.patchIndex]
