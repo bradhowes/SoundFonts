@@ -336,6 +336,7 @@
                         <outlet property="reverbRoom" destination="MCb-jT-Avp" id="qkz-Xt-UVx"/>
                         <outlet property="reverbWetDryMix" destination="T20-Wa-s33" id="Vyn-BI-Wee"/>
                         <outlet property="reverbWetDryMixLabel" destination="liX-ZF-LkS" id="gCz-CY-wPl"/>
+                        <outlet property="scrollView" destination="tQU-9E-SkR" id="cLD-Pq-QpY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Gs-1T-Hst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

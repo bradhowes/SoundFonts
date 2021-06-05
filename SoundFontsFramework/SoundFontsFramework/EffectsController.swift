@@ -8,6 +8,7 @@ import os
 public final class EffectsController: UIViewController {
   private lazy var log = Logging.logger("EffectsController")
 
+  @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet private weak var reverbEnabled: UIButton!
   @IBOutlet private weak var reverbGlobal: UIButton!
   @IBOutlet private weak var reverbControls: UIStackView!
@@ -57,6 +58,29 @@ public final class EffectsController: UIViewController {
     delayWetDryMix.maximumValue = 100
     delayWetDryMix.value = 20
 
+    // contentView.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor)
+    // Do the same for Y axis
+    // contentView.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor)
+  }
+}
+
+extension EffectsController {
+
+  public override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    let contentSize = scrollView.contentSize
+    let scrollViewSize = scrollView.frame.size
+    var contentOffset = scrollView.contentOffset
+
+    if contentSize.width < scrollViewSize.width {
+      contentOffset.x = -(scrollViewSize.width - contentSize.width) / 2.0
+    }
+
+    if contentSize.height < scrollViewSize.height {
+      contentOffset.y = -(scrollViewSize.height - contentSize.height) / 2.0
+    }
+
+    scrollView.setContentOffset(contentOffset, animated: false)
   }
 }
 
