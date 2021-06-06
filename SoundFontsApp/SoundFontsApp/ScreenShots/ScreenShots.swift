@@ -6,28 +6,183 @@ import XCTest
 class ScreenShots: XCTestCase {
   let timeout = 5.0
   var app: XCUIApplication!
-  var effectsButton: XCUIElement!
   var suffix: String!
 
-  func test01PresetsPortrait() { run(.portrait, "Presets") { showPresetsView() } }
-  func test02FavoritesPortrait() { run(.portrait, "Favorites") { showFavoritesView() } }
-  func test03SettingsPortrait() { run(.portrait, "Settings") { showSettingsView() } }
-  func test04FontEditPortrait() { run(.portrait, "FontEdit") { showFontEditView() } }
-  func test05PresetEditPortrait() { run(.portrait, "FavoriteEdit") { showPresetEditView() } }
-  func test05ShowEffectsPortrait() { run(.portrait, "Effects") { showEffectsView() } }
+//  func test01PresetsPortrait() { run(.portrait, "Presets") { showPresetsView() } }
+//  func test02FavoritesPortrait() { run(.portrait, "Favorites") { showFavoritesView() } }
+//  func test03SettingsPortrait() { run(.portrait, "Settings") { showSettingsView() } }
+//  func test04FontEditPortrait() { run(.portrait, "FontEdit") { showFontEditView() } }
+//  func test05PresetEditPortrait() { run(.portrait, "FavoriteEdit") { showPresetEditView() } }
+//  func test05ShowEffectsPortrait() { run(.portrait, "Effects") { showEffectsView() } }
+//
+//  func test06PresetsLandscape() { run(.landscapeLeft, "Presets") { showPresetsView() } }
+//  func test07FavoritesLandscape() { run(.landscapeLeft, "Favorites") { showFavoritesView() } }
+//  func test08SettingsLandscape() { run(.landscapeLeft, "Settings") { showSettingsView() } }
+//  func test09FontEditLandscape() { run(.landscapeLeft, "FontEdit") { showFontEditView() } }
+//  func test10PresetEditLandscape() { run(.landscapeLeft, "FavoriteEdit") { showPresetEditView() } }
+//  func test11ShowEffectsLandscape() { run(.landscapeLeft, "Effects") { showEffectsView() } }
+//
+//  func test12ShowTags() { run(.portrait, "Tags") { showTagsView() } }
+//  func test13TagsEdit() { run(.portrait, "TagsEdit") { showTagsEditView() } }
+//  func test14ShowWelcomeScreen() { run(.portrait, "Welcome") { showWelcomeScreen() } }
+//  func test15Search() { run(.portrait, "Search") { showSearch() } }
+//
 
-  func test06PresetsLandscape() { run(.landscapeLeft, "Presets") { showPresetsView() } }
-  func test07FavoritesLandscape() { run(.landscapeLeft, "Favorites") { showFavoritesView() } }
-  func test08SettingsLandscape() { run(.landscapeLeft, "Settings") { showSettingsView() } }
-  func test09FontEditLandscape() { run(.landscapeLeft, "FontEdit") { showFontEditView() } }
-  func test10PresetEditLandscape() { run(.landscapeLeft, "FavoriteEdit") { showPresetEditView() } }
-  func test11ShowEffectsLandscape() { run(.landscapeLeft, "Effects") { showEffectsView() } }
+  func test01PortraitSnaps() { snapshotDriver(.portrait) }
+  func test02LandscapeSnaps() { snapshotDriver(.landscapeLeft) }
 
-  func test12ShowTags() { run(.portrait, "Tags") { showTagsView() } }
-  func test13TagsEdit() { run(.portrait, "TagsEdit") { showTagsEditView() } }
-  func test14ShowWelcomeScreen() { run(.portrait, "Welcome") { showWelcomeScreen() } }
-  func test15Search() { run(.portrait, "Search") { showSearch() } }
+  func snapshotDriver(_ orientation: UIDeviceOrientation) {
+    initialize(orientation)
 
+    let font = app.tables.staticTexts["font MuseScore"]
+    XCTAssert(font.waitForExistence(timeout: timeout))
+    font.tap()
+
+    let preset = app.tables.staticTexts["preset Bright Grand"]
+    XCTAssert(preset.waitForExistence(timeout: timeout))
+    preset.tap()
+
+    snap("Presets")
+
+    font.tap()
+    font.swipeRight()
+    app.tables.buttons["Edit item"].tap()
+
+    let fontEditor = app.navigationBars["SoundFont"]
+    XCTAssert(fontEditor.waitForExistence(timeout: timeout))
+
+    snap("FontEditor")
+
+    let editTags = app.buttons.staticTexts["Edit Tags"]
+    XCTAssert(editTags.waitForExistence(timeout: timeout))
+    editTags.tap()
+
+    let tagsEditor = app.navigationBars["Tags"]
+    XCTAssert(tagsEditor.waitForExistence(timeout: timeout))
+
+    snap("TagsEditor")
+
+    print(tagsEditor.debugDescription)
+    let backButton = tagsEditor.buttons["SoundFont"]
+    backButton.tap()
+
+    let doneButton = app.buttons["Done"]
+    doneButton.tap()
+
+    preset.tap()
+    preset.swipeRight()
+    app.tables.buttons["Edit item"].tap()
+
+    let presetEditor = app.navigationBars["Preset"]
+    XCTAssert(presetEditor.waitForExistence(timeout: timeout))
+
+    snap("PresetEditor")
+
+    let cancelButton = presetEditor.buttons["Cancel"]
+    cancelButton.tap()
+
+    let tagsButton = app.buttons["Tags"]
+    tagsButton.tap()
+
+    let tagsList = app.tables["TagsTableList"]
+    XCTAssert(tagsList.waitForExistence(timeout: timeout))
+
+    let lfrp = tagsList.staticTexts["tag LFRP"]
+    lfrp.tap()
+
+    if orientation == .portrait {
+      snap("Tags")
+    }
+
+    tagsList.staticTexts["tag All"].tap()
+    tagsButton.tap()
+
+    let effectsButton = app.buttons["Effects"]
+    effectsButton.tap()
+
+    let enableReverb = app.buttons["EnableReverbEffect"]
+    if enableReverb.exists && enableReverb.isHittable {
+      enableReverb.tap()
+    }
+    let disableReverb = app.buttons["DisableReverbEffect"]
+
+    let enableDelay = app.buttons["EnableDelayEffect"]
+    if enableDelay.exists && enableDelay.isHittable {
+      enableDelay.tap()
+    }
+    let disableDelay = app.buttons["DisableDelayEffect"]
+
+    if orientation == .portrait {
+      snap("Effects")
+    }
+
+    disableReverb.tap()
+    disableDelay.tap()
+    effectsButton.tap()
+
+    if app.buttons["More Right"].exists {
+      app.buttons["More Right"].tap()
+    }
+    app.buttons["Settings"].tap()
+
+    let settingsView = app.otherElements["SettingsView"]
+    XCTAssert(settingsView.waitForExistence(timeout: timeout))
+
+    snap("Settings")
+
+    let showTutorial = settingsView.buttons["ShowTutorial"]
+    XCTAssert(showTutorial.waitForExistence(timeout: timeout))
+    showTutorial.tap()
+    XCTAssert(app.buttons["Done"].waitForExistence(timeout: timeout))
+
+    snap("Welcome")
+
+    app.buttons["Done"].tap()
+
+    if orientation == .portrait {
+
+      let sectionIndex = app.otherElements["Section index"]
+      XCTAssert(sectionIndex.waitForExistence(timeout: timeout))
+      sectionIndex.tap()
+
+      let searchField = app.searchFields["Name"]
+      XCTAssert(searchField.waitForExistence(timeout: timeout))
+      searchField.typeText("Harp")
+      let presetHarpsiPad = app.tables.staticTexts["preset Harpsi Pad"]
+      XCTAssert(presetHarpsiPad.waitForExistence(timeout: timeout))
+
+      snap("Search")
+    }
+
+    // Switch to Favorites view
+
+    let touchView = app.otherElements["TouchView"]
+    touchView.doubleTap()
+
+    let favorite = app.staticTexts["favorite Overdrive"]
+    XCTAssert(favorite.waitForExistence(timeout: timeout))
+    favorite.tap()
+
+    snap("Favorites")
+
+    favorite.doubleTap()
+
+    let favoriteEditor = app.navigationBars["Favorite"]
+    XCTAssert(favoriteEditor.waitForExistence(timeout: timeout))
+
+    snap("FavoriteEditor")
+
+    favoriteEditor.buttons["Cancel"].tap()
+
+    // Show help screen
+
+    if app.buttons["More Right"].exists {
+      app.buttons["More Right"].tap()
+    }
+    app.buttons["Help"].tap()
+
+    snap("Help")
+  }
 }
 
 extension ScreenShots {
@@ -50,12 +205,13 @@ extension ScreenShots {
 
     showUpperView(name: "FontsCollection")
 
-    effectsButton = app.buttons["Effects"]
+    let effectsButton = app.buttons["Effects"]
     XCTAssert(effectsButton.waitForExistence(timeout: timeout))
 
     // Hide effects at start
-    let reverb = app.buttons["ReverbToggle"]
-    if reverb.exists && reverb.isHittable {
+    let reverbEnable = app.buttons["EnableReverbEffect"]
+    let reverbDisable = app.buttons["DisableReverbEffect"]
+    if reverbEnable.exists && reverbEnable.isHittable || reverbDisable.exists && reverbDisable.isHittable {
       app.buttons["Effects"].tap()
     }
 
@@ -95,6 +251,11 @@ extension ScreenShots {
 
   func showPresetsView() {
     showUpperView(name: "FontsCollection")
+
+    let font = app.tables.staticTexts["font MuseScore"]
+    XCTAssert(font.waitForExistence(timeout: timeout))
+    font.tap()
+
     let preset = app.tables.staticTexts["preset Bright Grand"]
     XCTAssert(preset.waitForExistence(timeout: timeout))
     preset.tap()
@@ -143,16 +304,16 @@ extension ScreenShots {
 
   func showPresetEditView() {
     showPresetsView()
-    let entry = app.tables.staticTexts["font MuseScore"]
-    XCTAssert(entry.waitForExistence(timeout: timeout))
-    entry.tap()
+    let font = app.tables.staticTexts["font MuseScore"]
+    XCTAssert(font.waitForExistence(timeout: timeout))
+    font.tap()
 
     let preset = app.tables.staticTexts["preset Bright Grand"]
     XCTAssert(preset.waitForExistence(timeout: timeout))
     preset.tap()
+
     preset.swipeRight()
     app.tables.buttons["Edit item"].tap()
-
     let presetEditor = app.navigationBars["Preset"]
     XCTAssert(presetEditor.waitForExistence(timeout: timeout))
   }
