@@ -57,10 +57,6 @@ public final class EffectsController: UIViewController {
     delayWetDryMix.minimumValue = 0
     delayWetDryMix.maximumValue = 100
     delayWetDryMix.value = 20
-
-    // contentView.centerXAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerXAnchor)
-    // Do the same for Y axis
-    // contentView.centerYAnchor.constraint(equalTo: scrollView.contentLayoutGuide.centerYAnchor)
   }
 }
 
@@ -345,6 +341,7 @@ extension EffectsController {
   private func updateReverbState(_ enabled: Bool) {
     os_log(.info, log: log, "updateReverbState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+    self.reverbEnabled.accessibilityValue = enabled ? "DisableReverbEffect" : "EnableReverbEffect"
     animator.addAnimations {
       self.reverbEnabled.showEnabled(enabled)
       self.reverbGlobal.isEnabled = true
@@ -374,6 +371,7 @@ extension EffectsController {
   private func updateDelayState(_ enabled: Bool) {
     os_log(.info, log: log, "updateDelayState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
+    self.delayEnabled.accessibilityValue = enabled ? "DisableDelayEffect" : "EnableDelayEffect"
     animator.addAnimations {
       self.delayEnabled.showEnabled(enabled)
       self.delayGlobal.isEnabled = true

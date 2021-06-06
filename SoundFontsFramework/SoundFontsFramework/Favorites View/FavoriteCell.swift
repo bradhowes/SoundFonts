@@ -75,6 +75,9 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
       layer.borderColor = UIColor.darkGray.cgColor
     }
 
+    self.name.accessibilityLabel = "favorite \(favoriteName)"
+    self.name.accessibilityHint = "favorite collection entry for favorite \(favoriteName)"
+
     invalidateIntrinsicContentSize()
   }
 

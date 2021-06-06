@@ -93,9 +93,20 @@ extension ScreenShots {
     XCTAssert(upperView.waitForExistence(timeout: timeout), "failed to show view '\(name)'")
   }
 
-  func showPresetsView() { showUpperView(name: "FontsCollection") }
+  func showPresetsView() {
+    showUpperView(name: "FontsCollection")
+    let preset = app.tables.staticTexts["preset Bright Grand"]
+    XCTAssert(preset.waitForExistence(timeout: timeout))
+    preset.tap()
+  }
 
-  func showFavoritesView() { showUpperView(name: "FavoritesCollection") }
+  func showFavoritesView() {
+    showUpperView(name: "FavoritesCollection")
+    print(app.debugDescription)
+    let favorite = app.staticTexts["favorite Overdrive"]
+    XCTAssert(favorite.waitForExistence(timeout: timeout))
+    favorite.tap()
+  }
 
   func showSettingsView() {
     if app.buttons["More Right"].exists {
@@ -135,9 +146,8 @@ extension ScreenShots {
     let entry = app.tables.staticTexts["font MuseScore"]
     XCTAssert(entry.waitForExistence(timeout: timeout))
     entry.tap()
-    app.scrollToTop()
 
-    let preset = app.tables.staticTexts["preset Electric Grand"]
+    let preset = app.tables.staticTexts["preset Bright Grand"]
     XCTAssert(preset.waitForExistence(timeout: timeout))
     preset.tap()
     preset.swipeRight()
@@ -150,9 +160,8 @@ extension ScreenShots {
   func showTagsView() {
     let font = app.tables.staticTexts["font MuseScore"]
     font.tap()
-    app.scrollToTop()
 
-    let preset = app.tables.staticTexts["preset Tine Electric Piano"]
+    let preset = app.tables.staticTexts["preset Bright Grand"]
     XCTAssert(preset.waitForExistence(timeout: timeout))
     preset.tap()
 
@@ -165,18 +174,19 @@ extension ScreenShots {
     print(app.debugDescription)
     let font = app.tables.staticTexts["font MuseScore"]
     XCTAssert(font.waitForExistence(timeout: timeout))
-
-    let reverb = app.buttons["ReverbToggle"]
-
     font.tap()
-    app.scrollToTop()
 
-    let preset = app.tables.staticTexts["preset Stereo Grand"]
+    let preset = app.tables.staticTexts["preset Bright Grand"]
     XCTAssert(preset.waitForExistence(timeout: timeout))
     preset.tap()
 
     app.buttons["Effects"].tap()
+    let reverb = app.buttons["ReverbToggle"]
+    print(reverb.debugDescription)
     XCTAssert(reverb.waitForExistence(timeout: timeout))
+    reverb.tap()
+    let delay = app.buttons["DelayToggle"]
+    delay.tap()
   }
 
   func showWelcomeScreen() {
