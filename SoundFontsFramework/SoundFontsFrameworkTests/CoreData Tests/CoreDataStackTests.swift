@@ -18,7 +18,7 @@ class CoreDataStackTests: XCTestCase {
       DispatchQueue.global(qos: .background).asyncLater(interval: .milliseconds(5)) {
         expectation.fulfill()
       }
-      let result = waiter.wait(for: [expectation], timeout: 10.0)
+      let result = waiter.wait(for: [expectation], timeout: 30.0)
       XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
     }
   }
