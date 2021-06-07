@@ -118,7 +118,7 @@ extension Preset {
   func makeFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite {
     os_log(.info, log: log, "makeFavorite")
     var newConfig = presetConfig
-    newConfig.name = presetConfig.name + " \(favorites.count + 1)"
+    newConfig.name = presetConfig.name
     os_log(.info, log: log, "makeFavorite - '%{public}s'", newConfig.name)
     let favorite = Favorite(soundFontAndPreset: soundFontAndPreset, presetConfig: newConfig,
                             keyboardLowestNote: keyboardLowestNote)
