@@ -10,7 +10,7 @@ languages([
 ])
 
 scheme("ScreenShots")
-output_directory("./screenshots")
+output_directory("./AppStoreScreenshots")
 clear_previous_screenshots(true)
 override_status_bar(true)
 concurrent_simulators(false)
