@@ -16,7 +16,7 @@ public enum ComponentContainerEvent {
 /// application launch. Each view controller is responsible for establishing the connections in their
 /// `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
-public protocol ComponentContainer {
+public protocol ComponentContainer: AnyObject {
 
   /// The Sampler that is used to generate sounds
   var sampler: Sampler { get }
@@ -45,6 +45,8 @@ public protocol ComponentContainer {
   var reverbEffect: ReverbEffect? { get }
   /// The delay effect that is used if inside the application; the AUv3 component has none, so this will be nil.
   var delayEffect: DelayEffect? { get }
+
+  func createAudioComponents()
 
   /**
      Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.

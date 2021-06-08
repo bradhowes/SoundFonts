@@ -87,13 +87,12 @@ extension VolumeMonitor {
 extension VolumeMonitor {
 
   private func update() {
+    let session = AVAudioSession.sharedInstance()
     if volume < 0.01 {
       reason = .volumeLevel
     } else if !activePreset {
       reason = .noPreset
-    } else if AVAudioSession.sharedInstance().isOtherAudioPlaying
-      || AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint
-    {
+    } else if session.isOtherAudioPlaying || session.secondaryAudioShouldBeSilencedHint {
       reason = .otherAudio
     } else {
       reason = .none

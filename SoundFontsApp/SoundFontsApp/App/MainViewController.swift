@@ -11,6 +11,7 @@ import os
 final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
+  private weak var router: ComponentContainer?
   private var midiController: MIDIController?
   private var activePresetManager: ActivePresetManager!
   private var keyboard: Keyboard!
@@ -19,7 +20,7 @@ final class MainViewController: UIViewController {
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
   private let midi = MIDI()
-  private var observer: NSObjectProtocol?
+  private var observers = [NSObjectProtocol]()
 
   fileprivate var noteInjector = NoteInjector()
 
@@ -35,9 +36,21 @@ final class MainViewController: UIViewController {
     super.viewDidLoad()
     UIApplication.shared.appDelegate.setMainViewController(self)
     setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-    observer = NotificationCenter.default.addObserver(forName: .showTutorial, object: nil, queue: nil) { _ in
+    observers.append(NotificationCenter.default.addObserver(forName: .showTutorial, object: nil, queue: nil) { _ in
       self.showTutorial()
-    }
+    })
+
+    observers.append(NotificationCenter.default.addObserver(forName: AVAudioSession.mediaServicesWereResetNotification,
+                                                            object: nil, queue: nil) { _ in
+      self.recreateSampler()
+    })
+  }
+
+  private func recreateSampler() {
+    os_log(.error, log: log, "recreating audio components due to media services reset")
+    self.stopAudio()
+    router?.createAudioComponents()
+    self.startAudio()
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -89,10 +102,53 @@ extension MainViewController {
     DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
   }
 
+  private func setupAudioSessionNotifications() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange),
+                                           name: AVAudioSession.routeChangeNotification, object: nil)
+  }
+
+  private func dump(route: AVAudioSessionRouteDescription) {
+    for input in route.inputs {
+      os_log(.info, log: log, "AVAudioSession input - %{public}s", input.portName)
+    }
+    for output in route.outputs {
+      os_log(.info, log: log, "AVAudioSession output - %{public}s", output.portName)
+    }
+  }
+
+  @objc func handleRouteChange(notification: Notification) {
+    guard let userInfo = notification.userInfo,
+          let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+          let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
+      return
+    }
+
+    // Switch over the route change reason.
+    switch reason {
+
+    case .newDeviceAvailable: // New device found.
+      let session = AVAudioSession.sharedInstance()
+      dump(route: session.currentRoute)
+
+    case .oldDeviceUnavailable: // Old device removed.
+      let session = AVAudioSession.sharedInstance()
+      if let previousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
+        dump(route: previousRoute)
+        dump(route: session.currentRoute)
+      }
+
+    default:
+      os_log(.info, log: log, "AVAudioSession.unknown reason - %d", reason.rawValue)
+    }
+  }
+
   private func startAudioBackground(_ sampler: Sampler) {
     let sampleRate: Double = 44100.0
     let bufferSize: Int = 512
     let session = AVAudioSession.sharedInstance()
+
+    setupAudioSessionNotifications()
+
     do {
       do {
         try session.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
@@ -101,6 +157,9 @@ extension MainViewController {
           .error, log: log, "Failed to set the audio session category and mode: %{public}s",
           error.localizedDescription)
       }
+
+      os_log(.info, log: log, "sampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
+      os_log(.info, log: log, "preferredSampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
 
       do {
         try session.setPreferredSampleRate(sampleRate)
@@ -120,6 +179,9 @@ extension MainViewController {
 
       os_log(.info, log: log, "setting active audio session")
       try session.setActive(true, options: [])
+
+      dump(route: session.currentRoute)
+
       os_log(.info, log: log, "starting sampler")
       let result = sampler.start()
       DispatchQueue.main.async { self.finishStart(result) }
@@ -161,6 +223,8 @@ extension MainViewController {
       os_log(
         .error, log: log, "Failed session.setActive(false): %{public}s", error.localizedDescription)
     }
+
+    sampler = nil
   }
 }
 
@@ -174,6 +238,7 @@ extension MainViewController: ControllerConfiguration {
      - parameter router: the ComponentContainer that holds all of the registered managers / controllers
      */
   func establishConnections(_ router: ComponentContainer) {
+    self.router = router
     router.subscribe(self, notifier: routerChange)
 
     infoBar = router.infoBar

@@ -6,8 +6,7 @@ import UIKit
 /// application launch. Each view controller is responsible for establishing the connections in their
 /// `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
-public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>,
-  ComponentContainer
+public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>, ComponentContainer
 where T: ControllerConfiguration {
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigFile: ConsolidatedConfigFile
@@ -116,16 +115,20 @@ where T: ControllerConfiguration {
       soundFonts: soundFonts,
       selectedSoundFontManager: selectedSoundFontManager)
     super.init()
+    createAudioComponents()
+  }
 
-    if inApp {
+  public func createAudioComponents() {
+    if self.inApp {
 
       // Create audio components in background to free up main thread in application
       DispatchQueue.global(qos: .userInitiated).async {
-        let reverb = inApp ? ReverbEffect() : nil
+        let reverb = self.inApp ? ReverbEffect() : nil
         self._reverbEffect = reverb
-        let delay = inApp ? DelayEffect() : nil
+        let delay = self.inApp ? DelayEffect() : nil
         self._delayEffect = delay
-        self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePresetManager: self.activePresetManager,
+        self._sampler = Sampler(mode: self.inApp ? .standalone : .audioUnit,
+                                activePresetManager: self.activePresetManager,
                                 reverb: reverb, delay: delay)
       }
     } else {
