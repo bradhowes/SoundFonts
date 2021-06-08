@@ -119,7 +119,7 @@ extension KeyboardController: ControllerConfiguration {
   private func presetChanged(_ event: ActivePresetEvent) {
     switch event {
     case .active:
-      if let presetConfig = activePresetManager.activePreset?.presetConfig {
+      if let presetConfig = activePresetManager.activePresetConfig {
         updateWith(presetConfig: presetConfig)
       }
     }

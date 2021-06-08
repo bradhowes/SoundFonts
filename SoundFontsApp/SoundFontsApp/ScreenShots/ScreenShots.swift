@@ -28,6 +28,73 @@ class ScreenShots: XCTestCase {
 //  func test15Search() { run(.portrait, "Search") { showSearch() } }
 //
 
+  func testPlaySequence() {
+    XCUIDevice.shared.orientation = .portrait
+    continueAfterFailure = false
+
+    app = XCUIApplication()
+    app.launch()
+
+    showUpperView(name: "FavoritesCollection")
+
+    // let effectsButton = app.buttons["Effects"]
+    let preset1 = app.staticTexts["favorite Ambiance"]
+    let preset2 = app.staticTexts["favorite Tribal 5th"]
+    let preset3 = app.staticTexts["favorite PAd 2"]
+    let preset4 = app.staticTexts["favorite BowedG"]
+    let preset5 = app.staticTexts["favorite Ice Rain Cometh"]
+    let preset6 = app.staticTexts["favorite Shakuhachi  Max"]
+    let preset7 = app.staticTexts["favorite Synclavier"]
+
+    preset1.tap()
+    let C6 = app.otherElements["C6"]
+    Thread.sleep(forTimeInterval: 0.125)
+    C6.press(forDuration: 2.0)
+    Thread.sleep(forTimeInterval: 1.5)
+
+    preset2.tap()
+    let F4 = app.otherElements["F4"]
+    Thread.sleep(forTimeInterval: 0.125)
+    F4.press(forDuration: 1.0)
+    Thread.sleep(forTimeInterval: 1.5)
+
+    preset3.tap()
+    let C4 = app.otherElements["C4"]
+    Thread.sleep(forTimeInterval: 0.125)
+    C4.press(forDuration: 1.0)
+    Thread.sleep(forTimeInterval: 1.5)
+
+    preset4.tap()
+    let F5 = app.otherElements["F5"]
+    let E5 = app.otherElements["E5"]
+    let D5 = app.otherElements["D5"]
+    let C5 = app.otherElements["C5"]
+    F5.press(forDuration: 0.125)
+    E5.press(forDuration: 0.125)
+    D5.press(forDuration: 0.125)
+    C5.press(forDuration: 0.125)
+    Thread.sleep(forTimeInterval: 0.5)
+
+    preset5.tap()
+    let C2 = app.otherElements["C2"]
+    let E2 = app.otherElements["E2"]
+    Thread.sleep(forTimeInterval: 0.125)
+    C2.press(forDuration: 1.0)
+    E2.press(forDuration: 1.0)
+    Thread.sleep(forTimeInterval: 1.0)
+
+    preset6.tap()
+    let F2 = app.otherElements["F2"]
+    Thread.sleep(forTimeInterval: 0.125)
+    F2.press(forDuration: 0.125)
+    Thread.sleep(forTimeInterval: 0.5)
+
+    preset7.tap()
+    Thread.sleep(forTimeInterval: 0.125)
+    C5.press(forDuration: 0.25)
+    Thread.sleep(forTimeInterval: 2.0)
+  }
+
   func test01PortraitSnaps() { snapshotDriver(.portrait) }
   func test02LandscapeSnaps() { snapshotDriver(.landscapeLeft) }
 

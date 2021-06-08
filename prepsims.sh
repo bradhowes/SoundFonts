@@ -12,6 +12,7 @@ DEVICES=( "3CFCCF00-20ED-4235-9738-62168A7E612D"  # iPhone 12 Pro Max
 
 # Device to consider as the master, the one that will be used as the source for the rest
 MASTER="6B7B61BD-A280-4E68-9E0C-455CDF81A853" # iPhone SE (2nd generation)
+MASTER="EBBF6C18-1B03-47CD-B14D-D9E9147650B4" # iPhone 8 Plus
 
 CONTAINER=""
 function get_app_container # DEVICE
