@@ -14,8 +14,6 @@ final class VolumeMonitor {
     case volumeLevel
     /// There is no preset active in the sampler
     case noPreset
-    /// Another app is playing audio
-    case otherAudio
   }
 
   private let keyboard: Keyboard?
@@ -87,13 +85,10 @@ extension VolumeMonitor {
 extension VolumeMonitor {
 
   private func update() {
-    let session = AVAudioSession.sharedInstance()
     if volume < 0.01 {
       reason = .volumeLevel
     } else if !activePreset {
       reason = .noPreset
-    } else if session.isOtherAudioPlaying || session.secondaryAudioShouldBeSilencedHint {
-      reason = .otherAudio
     } else {
       reason = .none
     }
@@ -108,7 +103,6 @@ extension VolumeMonitor {
     switch reason {
     case .volumeLevel: InfoHUD.show(text: Formatters.strings.volumeIsZero)
     case .noPreset: InfoHUD.show(text: Formatters.strings.noPresetLoaded)
-    case .otherAudio: InfoHUD.show(text: Formatters.strings.otherAppAudio)
     case .none: InfoHUD.clear()
     }
   }
