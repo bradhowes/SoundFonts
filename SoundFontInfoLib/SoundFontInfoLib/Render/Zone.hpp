@@ -14,8 +14,7 @@
 #include "Render/Range.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 using MIDIRange = Range<int>;
 
@@ -186,5 +185,4 @@ private:
     inline static Logger log_{Logger::Make("Render", "Zone")};
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

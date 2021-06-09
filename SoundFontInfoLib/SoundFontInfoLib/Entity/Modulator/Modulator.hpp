@@ -12,14 +12,11 @@
 #include "Entity/Modulator/Source.hpp"
 #include "Entity/Modulator/Transform.hpp"
 
-namespace SF2 {
-namespace Entity {
-
 /**
  Classes involved in describing an SF2 modulator. A modulator uses a value from a source to modulate a specific
  generator's value.
  */
-namespace Modulator {
+namespace SF2::Entity::Modulator {
 
 /**
  Memory layout of a 'pmod'/'imod' entry. The size of this is defined to be 10.
@@ -103,6 +100,4 @@ private:
     Transform sfModTransOper;
 };
 
-} // end namespace Modulator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Modulator

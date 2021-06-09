@@ -19,12 +19,10 @@
 #include "IO/ChunkItems.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
 
-namespace SF2 {
-
 /**
  Collection of classes and types involved in parsing an SF2 file or data stream.
  */
-namespace IO {
+namespace SF2::IO {
 
 /**
  Represents an SF2 file. The constructor will process the entire file to validate its integrity and record the
@@ -128,5 +126,4 @@ private:
     inline static Logger log_{Logger::Make("IO", "File")};
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

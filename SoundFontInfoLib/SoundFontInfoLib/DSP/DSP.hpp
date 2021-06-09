@@ -9,12 +9,7 @@
 
 #include "Types.hpp"
 
-namespace SF2 {
-
-/**
- Collection of general-purpose constants and routines involved in audio rendering.
- */
-namespace DSP {
+namespace SF2::DSP {
 
 inline constexpr Float PI = M_PI;            // 180°
 inline constexpr Float TwoPI = 2.0 * PI;     // 360°
@@ -150,13 +145,11 @@ constexpr Float parabolicSine(Float angle) {
     const Float y = B * angle + C * angle * (angle >= 0.0 ? angle : -angle);
     return P * y * ((y >= 0.0 ? y : -y) - 1.0) + y;
 }
-} // DSP namespace
-} // SF2 namespace
+} // SF2::DSP namespace
 
 #include "DSPTables.hpp" // implementation details for lookups used below
 
-namespace SF2 {
-namespace DSP {
+namespace SF2::DSP {
 
 /**
  Calculate the amount of left and right signal gain in [0.0-1.0] for the given `pan` value which is in range
@@ -244,5 +237,4 @@ inline static Float cubic4thOrder(Float partial, Float x0, Float x1, Float x2, F
 }
 
 } // Interpolation namespace
-} // DSP namespace
-} // SF2 namespace
+} // SF2::DSP namespaces

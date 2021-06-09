@@ -8,8 +8,7 @@
 #include "Entity/Entity.hpp"
 #include "IO/Pos.hpp"
 
-namespace SF2 {
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Memory layout of a 'ibag/pbag' entry in a sound font resource. Used to access packed values from a
@@ -59,5 +58,4 @@ private:
     uint16_t wModNdx;
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

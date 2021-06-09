@@ -4,9 +4,7 @@
 
 #include <cstdlib>
 
-namespace SF2 {
-namespace Entity {
-namespace Generator {
+namespace SF2::Entity::Generator {
 
 /**
  Holds the amount to apply to a generator. Note that this is an immutable value that comes straight from an SF2 file.
@@ -51,6 +49,4 @@ private:
     } raw_{0};
 };
 
-} // end namespace Generator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Generator

@@ -7,8 +7,7 @@
 #import <AudioUnit/AudioUnit.h>
 #import <AVFoundation/AVFoundation.h>
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Provides a simple std::vector view of an AudioBufferList.
@@ -115,5 +114,4 @@ private:
     std::vector<AUValue*> pointers_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

@@ -9,12 +9,10 @@
 #import "Render/Instrument.hpp"
 #import "Render/Preset.hpp"
 
-namespace SF2 {
-
 /**
  Classes that allow for audio sample rendering of SF2 sample data.
  */
-namespace Render {
+namespace SF2::Render {
 
 class Engine : public T {
 public:
@@ -27,5 +25,4 @@ public:
 private:
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

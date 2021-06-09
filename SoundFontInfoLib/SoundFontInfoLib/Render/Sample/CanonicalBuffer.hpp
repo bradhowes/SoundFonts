@@ -11,9 +11,7 @@
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/BufferIndex.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Sample {
+namespace SF2::Render::Sample {
 
 /**
  Contains a collection of audio samples that range between -1.0 and 1.0. The values are derived from the
@@ -85,6 +83,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};
 };
 
-} // namespace Sample
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Sample

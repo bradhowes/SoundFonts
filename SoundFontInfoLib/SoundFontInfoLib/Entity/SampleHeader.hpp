@@ -6,8 +6,7 @@
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
 
-namespace SF2 {
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Define the audio samples to be used for playing a specific sound.
@@ -99,5 +98,4 @@ private:
     uint16_t sampleType;
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

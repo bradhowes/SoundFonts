@@ -375,12 +375,12 @@
 		BDB1BF41265DB1F0002AD159 /* MIDI */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF42265DB1F0002AD159 /* Note.hpp */,
-				BDB1BF43265DB1F0002AD159 /* ValueTransformer.cpp */,
 				BDB1BF44265DB1F0002AD159 /* README.md */,
 				BDB1BF45265DB1F0002AD159 /* Channel.hpp */,
-				BDB1BF46265DB1F0002AD159 /* ValueTransformer.hpp */,
 				BDB1BF47265DB1F0002AD159 /* MIDI.hpp */,
+				BDB1BF42265DB1F0002AD159 /* Note.hpp */,
+				BDB1BF43265DB1F0002AD159 /* ValueTransformer.cpp */,
+				BDB1BF46265DB1F0002AD159 /* ValueTransformer.hpp */,
 			);
 			name = MIDI;
 			path = SoundFontInfoLib/MIDI;
@@ -389,20 +389,20 @@
 		BDB1BF48265DB1F0002AD159 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF49265DB1F0002AD159 /* Preset.hpp */,
-				BDB1BF4A265DB1F0002AD159 /* Instrument.cpp */,
-				BDB1BF4B265DB1F0002AD159 /* Modulator */,
-				BDB1BF52265DB1F0002AD159 /* Bag.cpp */,
-				BDB1BF53265DB1F0002AD159 /* Version.cpp */,
-				BDB1BF54265DB1F0002AD159 /* SampleHeader.hpp */,
 				BDB1BF55265DB1F0002AD159 /* README.md */,
-				BDB1BF56265DB1F0002AD159 /* Version.hpp */,
-				BDB1BF57265DB1F0002AD159 /* Generator */,
-				BDB1BF5E265DB1F0002AD159 /* SampleHeader.cpp */,
-				BDB1BF5F265DB1F0002AD159 /* Preset.cpp */,
-				BDB1BF60265DB1F0002AD159 /* Instrument.hpp */,
+				BDB1BF52265DB1F0002AD159 /* Bag.cpp */,
 				BDB1BF61265DB1F0002AD159 /* Bag.hpp */,
 				BDB1BF62265DB1F0002AD159 /* Entity.hpp */,
+				BDB1BF57265DB1F0002AD159 /* Generator */,
+				BDB1BF4A265DB1F0002AD159 /* Instrument.cpp */,
+				BDB1BF60265DB1F0002AD159 /* Instrument.hpp */,
+				BDB1BF4B265DB1F0002AD159 /* Modulator */,
+				BDB1BF5F265DB1F0002AD159 /* Preset.cpp */,
+				BDB1BF49265DB1F0002AD159 /* Preset.hpp */,
+				BDB1BF5E265DB1F0002AD159 /* SampleHeader.cpp */,
+				BDB1BF54265DB1F0002AD159 /* SampleHeader.hpp */,
+				BDB1BF53265DB1F0002AD159 /* Version.cpp */,
+				BDB1BF56265DB1F0002AD159 /* Version.hpp */,
 			);
 			name = Entity;
 			path = SoundFontInfoLib/Entity;
@@ -411,12 +411,12 @@
 		BDB1BF4B265DB1F0002AD159 /* Modulator */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF4C265DB1F0002AD159 /* Source.cpp */,
-				BDB1BF4D265DB1F0002AD159 /* Modulator.hpp */,
-				BDB1BF4E265DB1F0002AD159 /* Transform.hpp */,
-				BDB1BF4F265DB1F0002AD159 /* Transform.cpp */,
-				BDB1BF50265DB1F0002AD159 /* Source.hpp */,
 				BDB1BF51265DB1F0002AD159 /* Modulator.cpp */,
+				BDB1BF4D265DB1F0002AD159 /* Modulator.hpp */,
+				BDB1BF4C265DB1F0002AD159 /* Source.cpp */,
+				BDB1BF50265DB1F0002AD159 /* Source.hpp */,
+				BDB1BF4F265DB1F0002AD159 /* Transform.cpp */,
+				BDB1BF4E265DB1F0002AD159 /* Transform.hpp */,
 			);
 			name = Modulator;
 			path = SoundFontInfoLib/Entity/Modulator;
@@ -425,12 +425,12 @@
 		BDB1BF57265DB1F0002AD159 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF58265DB1F0002AD159 /* Generator.cpp */,
-				BDB1BF59265DB1F0002AD159 /* Index.hpp */,
-				BDB1BF5A265DB1F0002AD159 /* Definition.hpp */,
-				BDB1BF5B265DB1F0002AD159 /* Definition.cpp */,
 				BDB1BF5C265DB1F0002AD159 /* Amount.hpp */,
+				BDB1BF5B265DB1F0002AD159 /* Definition.cpp */,
+				BDB1BF5A265DB1F0002AD159 /* Definition.hpp */,
+				BDB1BF58265DB1F0002AD159 /* Generator.cpp */,
 				BDB1BF5D265DB1F0002AD159 /* Generator.hpp */,
+				BDB1BF59265DB1F0002AD159 /* Index.hpp */,
 			);
 			name = Generator;
 			path = SoundFontInfoLib/Entity/Generator;
@@ -439,20 +439,20 @@
 		BDB1BF63265DB1F0002AD159 /* IO */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF64265DB1F0002AD159 /* Parser.hpp */,
-				BDB1BF65265DB1F0002AD159 /* Tag.hpp */,
-				BDB1BF66265DB1F0002AD159 /* File.hpp */,
-				BDB1BF67265DB1F0002AD159 /* ChunkList.hpp */,
-				BDB1BF68265DB1F0002AD159 /* ChunkItems.cpp */,
-				BDB1BF69265DB1F0002AD159 /* Pos.cpp */,
 				BDB1BF6A265DB1F0002AD159 /* README.md */,
-				BDB1BF6B265DB1F0002AD159 /* File.cpp */,
-				BDB1BF6C265DB1F0002AD159 /* StringUtils.hpp */,
 				BDB1BF6D265DB1F0002AD159 /* Chunk.hpp */,
+				BDB1BF68265DB1F0002AD159 /* ChunkItems.cpp */,
 				BDB1BF6E265DB1F0002AD159 /* ChunkItems.hpp */,
-				BDB1BF6F265DB1F0002AD159 /* Pos.hpp */,
-				BDB1BF70265DB1F0002AD159 /* Parser.cpp */,
+				BDB1BF67265DB1F0002AD159 /* ChunkList.hpp */,
+				BDB1BF6B265DB1F0002AD159 /* File.cpp */,
+				BDB1BF66265DB1F0002AD159 /* File.hpp */,
 				BDB1BF71265DB1F0002AD159 /* Format.hpp */,
+				BDB1BF70265DB1F0002AD159 /* Parser.cpp */,
+				BDB1BF64265DB1F0002AD159 /* Parser.hpp */,
+				BDB1BF69265DB1F0002AD159 /* Pos.cpp */,
+				BDB1BF6F265DB1F0002AD159 /* Pos.hpp */,
+				BDB1BF6C265DB1F0002AD159 /* StringUtils.hpp */,
+				BDB1BF65265DB1F0002AD159 /* Tag.hpp */,
 			);
 			name = IO;
 			path = SoundFontInfoLib/IO;
@@ -461,27 +461,27 @@
 		BDB1BF72265DB1F0002AD159 /* Render */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF73265DB1F0002AD159 /* Engine.hpp */,
-				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
-				BDB1BF75265DB1F0002AD159 /* InstrumentCollection.hpp */,
-				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
-				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
-				BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */,
-				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
-				BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */,
-				BDB1BF7B265DB1F0002AD159 /* DelayBuffer.hpp */,
-				BDB1BF7C265DB1F0002AD159 /* InstrumentZone.hpp */,
-				BDB1BF7D265DB1F0002AD159 /* BufferFacet.hpp */,
 				BDB1BF7E265DB1F0002AD159 /* README.md */,
+				BDB1BF7D265DB1F0002AD159 /* BufferFacet.hpp */,
+				BDB1BF7B265DB1F0002AD159 /* DelayBuffer.hpp */,
+				BDB1BF73265DB1F0002AD159 /* Engine.hpp */,
 				BDB1BF7F265DB1F0002AD159 /* Envelope */,
-				BDB1BF82265DB1F0002AD159 /* Voice */,
-				BDB1BF88265DB1F0002AD159 /* LFO.hpp */,
-				BDB1BF89265DB1F0002AD159 /* Sample */,
-				BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */,
+				BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */,
 				BDB1BF90265DB1F0002AD159 /* Instrument.hpp */,
-				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
-				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
+				BDB1BF75265DB1F0002AD159 /* InstrumentCollection.hpp */,
+				BDB1BF7C265DB1F0002AD159 /* InstrumentZone.hpp */,
+				BDB1BF88265DB1F0002AD159 /* LFO.hpp */,
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
+				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
+				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
+				BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */,
+				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
+				BDB1BF89265DB1F0002AD159 /* Sample */,
+				BDB1BF82265DB1F0002AD159 /* Voice */,
+				BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */,
+				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
+				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
+				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
 			);
 			name = Render;
 			path = SoundFontInfoLib/Render;
@@ -500,10 +500,10 @@
 		BDB1BF82265DB1F0002AD159 /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF83265DB1F0002AD159 /* Voice.cpp */,
+				BDB1BF86265DB1F0002AD159 /* Setup.hpp */,
 				BDB1BF84265DB1F0002AD159 /* State.cpp */,
 				BDB1BF85265DB1F0002AD159 /* State.hpp */,
-				BDB1BF86265DB1F0002AD159 /* Setup.hpp */,
+				BDB1BF83265DB1F0002AD159 /* Voice.cpp */,
 				BDB1BF87265DB1F0002AD159 /* Voice.hpp */,
 			);
 			name = Voice;
@@ -514,10 +514,10 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */,
-				BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */,
-				BDB1BF8C265DB1F0002AD159 /* PitchControl.hpp */,
-				BDB1BF8D265DB1F0002AD159 /* Generator.hpp */,
 				BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */,
+				BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */,
+				BDB1BF8D265DB1F0002AD159 /* Generator.hpp */,
+				BDB1BF8C265DB1F0002AD159 /* PitchControl.hpp */,
 			);
 			name = Sample;
 			path = SoundFontInfoLib/Render/Sample;
@@ -526,10 +526,10 @@
 		BDB1BF96265DB1F0002AD159 /* DSP */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */,
 				BDB1BF98265DB1F0002AD159 /* README.md */,
 				BDB1BF99265DB1F0002AD159 /* DSP.hpp */,
 				BDB1BF9A265DB1F0002AD159 /* DSPGenerator.hpp */,
+				BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */,
 			);
 			name = DSP;
 			path = ../../../../Users/howes/src/Mine/SoundFonts/SoundFontInfoLib/SoundFontInfoLib/DSP;

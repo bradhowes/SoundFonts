@@ -5,8 +5,7 @@
 #include <cmath>
 #include <vector>
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Circular buffer that acts as a delay for samples.
@@ -94,5 +93,4 @@ private:
     size_t writePos_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2 Render

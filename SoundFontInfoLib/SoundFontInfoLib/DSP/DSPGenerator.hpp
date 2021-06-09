@@ -7,9 +7,7 @@
 #include "DSP/DSP.hpp"
 #include "MIDI/ValueTransformer.hpp"
 
-namespace SF2 {
-namespace DSP {
-namespace Tables {
+namespace SF2::DSP::Tables {
 
 /**
  Table value generators and initializers. This is only used by the DSPGenerators program which creates the DSP tables
@@ -82,6 +80,4 @@ struct Generator {
     Generator(std::ostream& os);
 };
 
-}
-}
-}
+} // SF2::DSP::Tables

@@ -7,8 +7,7 @@
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
 
-namespace SF2 {
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Memory layout of 'phdr' entry in sound font. The size of this is defined to be 38 bytes, but due
@@ -61,5 +60,4 @@ private:
     uint32_t dwMorphology;
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

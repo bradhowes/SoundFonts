@@ -11,13 +11,10 @@
 #include "Render/Envelope/Stage.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
-
 /**
  Representation of an envelope with various states that have timing characteristics and levels.
  */
-namespace Envelope {
+namespace SF2::Render::Envelope {
 
 /**
  Collection of states for all of the stages in an envelope.
@@ -238,6 +235,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Envelope", "Generator")};
 };
 
-} // namespace Envelope
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Envelope

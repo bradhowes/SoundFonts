@@ -6,8 +6,7 @@
 
 #include "IO/Format.hpp"
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 class Chunk;
 class ChunkList;
@@ -144,5 +143,4 @@ private:
     size_t end_;
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

@@ -7,8 +7,7 @@
 #include "Render/Voice/Setup.hpp"
 #include "Render/WithZones.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Represents a preset that knows how to emit sounds for MIDI events when it is active.
@@ -58,5 +57,4 @@ public:
     }
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

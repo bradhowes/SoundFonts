@@ -7,8 +7,7 @@
 #include "Render/Zone.hpp"
 #include "Render/ZoneCollection.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Base class for entities that contain a collection of zones.
@@ -44,5 +43,4 @@ protected:
     const EntityType& configuration_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

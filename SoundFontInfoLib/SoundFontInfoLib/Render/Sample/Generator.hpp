@@ -15,9 +15,7 @@
 #include "Render/Sample/Bounds.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Sample {
+namespace SF2::Render::Sample {
 
 /**
  Generator of new samples from a stream of original samples, properly scaled to sound correct for the output sample
@@ -126,6 +124,4 @@ private:
     double lastPitchAdjustment_{0.0};
 };
 
-} // namespace Sample
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::aSample

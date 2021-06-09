@@ -2,9 +2,6 @@
 
 #pragma once
 
-namespace SF2 {
-namespace DSP {
-
 /**
  Namespace for compile-time generated tables. Each table is encapsulated in a `struct` that has three components:
 
@@ -15,7 +12,7 @@ namespace DSP {
  All structs also include a class method that performs a lookup for a given value. However, this is not used by the
  table generating infrastructure.
  */
-namespace Tables {
+namespace SF2::DSP::Tables {
 
 struct Generator;
 
@@ -228,6 +225,4 @@ private:
     friend struct Generator;
 };
 
-} // Tables namespace
-} // DSP namespace
-} // SF2 namespace
+} // SF2::DSP::Tables namespaces

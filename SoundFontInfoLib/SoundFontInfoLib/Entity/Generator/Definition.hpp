@@ -9,9 +9,7 @@
 #include "Entity/Generator/Amount.hpp"
 #include "Entity/Generator/Index.hpp"
 
-namespace SF2 {
-namespace Entity {
-namespace Generator {
+namespace SF2::Entity::Generator {
 
 /**
  Meta data for SF2 generators. These are attributes associated with a generator but that are not found in an SF2 file.
@@ -110,6 +108,4 @@ private:
     bool availableInPreset_;
 };
 
-} // end namespace Generator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Generator

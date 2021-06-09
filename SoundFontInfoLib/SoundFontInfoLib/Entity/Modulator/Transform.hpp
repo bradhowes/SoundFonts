@@ -5,9 +5,7 @@
 #include <cmath>
 #include <iosfwd>
 
-namespace SF2 {
-namespace Entity {
-namespace Modulator {
+namespace SF2::Entity::Modulator {
 
 /**
  Modulator value transform. The spec defines two types:
@@ -61,6 +59,4 @@ private:
     const uint16_t bits_;
 };
 
-} // end namespace Modulator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Modulator

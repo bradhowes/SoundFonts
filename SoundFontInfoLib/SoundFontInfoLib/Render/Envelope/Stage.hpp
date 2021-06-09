@@ -7,9 +7,7 @@
 
 #include "Logger.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Envelope {
+namespace SF2::Render::Envelope {
 
 enum struct StageIndex {
     idle = -1,
@@ -130,6 +128,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Envelope", "Stage")};
 };
 
-} // namespace Envelope
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Envelope

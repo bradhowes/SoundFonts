@@ -14,9 +14,7 @@
 #include "MIDI/Channel.hpp"
 #include "Render/Modulator.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Voice {
+namespace SF2::Render::Voice {
 
 class Setup;
 
@@ -250,6 +248,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };
 
-} // namespace Voice
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Voice

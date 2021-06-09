@@ -8,9 +8,7 @@
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/Bounds.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Sample {
+namespace SF2::Render::Sample {
 
 /**
  Interpolatable index into a CanonicalBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)
@@ -82,6 +80,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Sample", "BufferIndex")};
 };
 
-} // namespace Sample
-} // namespace Render
-} // namespace SF2
+} // namespace Sf2::Render::Sample

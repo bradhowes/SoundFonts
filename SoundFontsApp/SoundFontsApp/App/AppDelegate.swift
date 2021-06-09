@@ -73,6 +73,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
      */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
+    components.consolidatedConfigFile.save()
   }
 
   /**
@@ -103,6 +104,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()
+    components.consolidatedConfigFile.save()
   }
 
   @objc private func visitAppStore() {

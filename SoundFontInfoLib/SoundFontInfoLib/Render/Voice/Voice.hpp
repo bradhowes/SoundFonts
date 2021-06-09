@@ -10,17 +10,13 @@
 #include "Render/Sample/Generator.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-
-namespace MIDI { class Channel; }
-
-namespace Render {
+namespace SF2::MIDI { class Channel; }
 
 /**
  Collection of types involved in generating audio samples for note that is being played. For a polyphonic instrument,
  there can be more than one voice playing at the same time.
  */
-namespace Voice {
+namespace SF2::Render::Voice {
 
 class Setup;
 
@@ -88,6 +84,4 @@ private:
     inline static Logger log_{Logger::Make("Render", "Voice")};
 };
 
-} // namespace Voice
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Voice

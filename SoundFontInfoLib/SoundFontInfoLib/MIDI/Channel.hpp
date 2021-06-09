@@ -11,8 +11,7 @@
 #include "MIDI/MIDI.hpp"
 #include "MIDI/Note.hpp"
 
-namespace SF2 {
-namespace MIDI {
+namespace SF2::MIDI {
 
 /**
  Collection of state values that pertains to a specific MIDI channel.
@@ -115,5 +114,4 @@ private:
     int pitchWheelSensitivity_{200};
 };
 
-} // namespace MIDI
-} // namespace SF2
+} // namespace SF2::MIDI

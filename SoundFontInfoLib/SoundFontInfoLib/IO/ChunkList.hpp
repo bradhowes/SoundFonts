@@ -4,8 +4,7 @@
 
 #include "IO/Chunk.hpp"
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 /**
  Like `Chunk`, this class represents a tagged chunk of a file, but this is also a collection of similar items all with
@@ -35,5 +34,4 @@ private:
     Tag kind_;
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

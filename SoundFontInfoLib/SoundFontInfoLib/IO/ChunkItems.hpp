@@ -8,8 +8,7 @@
 
 #include "IO/Chunk.hpp"
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 struct ChunkItemsSupport {
     static void beginDump(size_t size);
@@ -136,5 +135,4 @@ private:
     friend class File;
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

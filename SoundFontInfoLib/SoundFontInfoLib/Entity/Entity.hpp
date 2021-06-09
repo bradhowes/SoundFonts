@@ -4,12 +4,10 @@
 
 #include <cassert>
 
-namespace SF2 {
-
 /**
  Collection of types that mirror data structures defined in the SF2 spec. These are all read-only representations.
  */
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Base class that offers common functionality for working with entities that are part of a collection.
@@ -38,5 +36,4 @@ struct Entity {
     static const T& next(const T* obj) { return *(obj + 1); }
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

@@ -4,8 +4,7 @@
 
 #include <string>
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 /**
  Each RIFF chunk or blob has a 4-character tag that uniquely identifies the contents of the chunk. This is also a 4-byte
@@ -72,5 +71,4 @@ enum Tags {
     unkn = Pack4Chars("????"),
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

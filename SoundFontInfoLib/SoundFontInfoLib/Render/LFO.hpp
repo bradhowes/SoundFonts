@@ -7,8 +7,7 @@
 #include "Types.hpp"
 #include "DSP/DSP.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Implementation of a low-frequency triangular oscillator. By design, this LFO emits bipolar values from -1.0 to 1.0 in
@@ -190,5 +189,4 @@ private:
     size_t delaySampleCount_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

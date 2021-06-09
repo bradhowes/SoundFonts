@@ -6,13 +6,10 @@
 #include "Entity/SampleHeader.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
-
 /**
  Classes used to generate new samples from SF2 sample data for a given pitch and sample rate.
  */
-namespace Sample {
+namespace SF2::Render::Sample {
 
 /**
  Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity as well as
@@ -73,6 +70,4 @@ private:
     size_t endIndex_;
 };
 
-} // namespace Sample
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Sample

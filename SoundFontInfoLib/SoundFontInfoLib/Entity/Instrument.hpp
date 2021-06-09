@@ -6,8 +6,7 @@
 #include "IO/Pos.hpp"
 #include "IO/StringUtils.hpp"
 
-namespace SF2 {
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Memory layout of a 'inst' entry. The size of this is defined to be 22 bytes.
@@ -41,5 +40,4 @@ private:
     uint16_t wInstBagNdx;
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

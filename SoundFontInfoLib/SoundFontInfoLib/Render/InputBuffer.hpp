@@ -9,8 +9,7 @@
 
 #import "BufferFacet.h"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Maintains a buffer of PCM samples which is used to save samples from an upstream node. Note that despite its name,
@@ -110,5 +109,4 @@ private:
     BufferFacet bufferFacet_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

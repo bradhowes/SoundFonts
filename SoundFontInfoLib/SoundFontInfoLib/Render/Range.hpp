@@ -4,8 +4,7 @@
 
 #include "Entity/Generator/Amount.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Representation of a range of values between low and high values inclusive. It can answer if a given value is within
@@ -51,5 +50,4 @@ private:
     ValueType high_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

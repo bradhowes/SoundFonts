@@ -6,9 +6,7 @@
 #include "Entity/SampleHeader.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Sample {
+namespace SF2::Render::Sample {
 
 struct PitchControl {
     using Index = Entity::Generator::Index;
@@ -31,6 +29,4 @@ private:
     double modulatorEnvelopeToPitch_;
 };
 
-} // namespace Sample
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Sample

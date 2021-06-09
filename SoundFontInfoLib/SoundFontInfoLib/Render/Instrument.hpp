@@ -7,8 +7,7 @@
 #include "Render/InstrumentZone.hpp"
 #include "Render/WithZones.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  Representation of an `instrument` in an SF2 file. An instrument is made up of one or more zones, where a zone is
@@ -46,5 +45,4 @@ public:
     InstrumentZoneCollection::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

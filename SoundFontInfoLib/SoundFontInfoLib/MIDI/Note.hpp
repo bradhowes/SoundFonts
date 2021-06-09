@@ -6,8 +6,7 @@
 #include <string>
 #include <array>
 
-namespace SF2 {
-namespace MIDI {
+namespace SF2::MIDI {
 
 /**
  A MIDI note representation. MIDI note values range from 0 to 255, and so does this.
@@ -56,5 +55,4 @@ private:
     short note_;
 };
 
-} // namespace MIDI
-} // namespace SF2
+} // namespace SF2::MIDI

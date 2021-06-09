@@ -7,8 +7,7 @@
 
 #include "Render/Zone.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 class VoiceState;
 
@@ -45,5 +44,4 @@ private:
     const Render::Sample::CanonicalBuffer* sampleBuffer_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

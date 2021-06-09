@@ -46,13 +46,6 @@ final class MainViewController: UIViewController {
     })
   }
 
-  private func recreateSampler() {
-    os_log(.error, log: log, "recreating audio components due to media services reset")
-    self.stopAudio()
-    router?.createAudioComponents()
-    self.startAudio()
-  }
-
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     if !skipTutorial && !Settings.instance.showedTutorial {
@@ -76,6 +69,9 @@ final class MainViewController: UIViewController {
 
 extension MainViewController {
 
+  /**
+   Show the changes screen if there are changes to be shown.
+   */
   func showChanges() {
     let currentVersion = Bundle.main.releaseVersionNumber
     if Settings.instance.showedChanges != currentVersion {
@@ -87,6 +83,9 @@ extension MainViewController {
     }
   }
 
+  /**
+   Show the tutorial screens.
+   */
   func showTutorial() {
     if let viewController = TutorialViewController.instantiate() {
       present(viewController, animated: true, completion: nil)
@@ -94,26 +93,13 @@ extension MainViewController {
   }
 
   /**
-     Start audio processing. This is done as the app is brought into the foreground.
-     */
+   Start audio processing. This is done as the app is brought into the foreground.
+   */
   func startAudio() {
+    os_log(.info, log: log, "startAudio")
     startRequested = true
     guard let sampler = self.sampler else { return }
     DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
-  }
-
-  private func setupAudioSessionNotifications() {
-    NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange),
-                                           name: AVAudioSession.routeChangeNotification, object: nil)
-  }
-
-  private func dump(route: AVAudioSessionRouteDescription) {
-    for input in route.inputs {
-      os_log(.info, log: log, "AVAudioSession input - %{public}s", input.portName)
-    }
-    for output in route.outputs {
-      os_log(.info, log: log, "AVAudioSession output - %{public}s", output.portName)
-    }
   }
 
   @objc func handleRouteChange(notification: Notification) {
@@ -141,6 +127,32 @@ extension MainViewController {
       os_log(.info, log: log, "AVAudioSession.unknown reason - %d", reason.rawValue)
     }
   }
+
+  /**
+     Stop audio processing. This is done prior to the app moving into the background.
+     */
+  func stopAudio() {
+    startRequested = false
+    guard sampler != nil else { return }
+
+    midi.receiver = nil
+    volumeMonitor?.stop()
+    sampler?.stop()
+
+    let session = AVAudioSession.sharedInstance()
+    do {
+      try session.setActive(false, options: [])
+      os_log(.info, log: log, "set audio session inactive")
+    } catch let error as NSError {
+      os_log(
+        .error, log: log, "Failed session.setActive(false): %{public}s", error.localizedDescription)
+    }
+  }
+}
+
+// MARK: - Controller Configuration
+
+extension MainViewController: ControllerConfiguration {
 
   private func startAudioBackground(_ sampler: Sampler) {
     let sampleRate: Double = 44100.0
@@ -192,45 +204,6 @@ extension MainViewController {
       DispatchQueue.main.async { self.finishStart(.failure(result)) }
     }
   }
-
-  private func finishStart(_ result: Sampler.StartResult) {
-    switch result {
-    case let .failure(what):
-      os_log(.info, log: log, "set active audio session")
-      postAlert(for: what)
-    case .success:
-      midi.receiver = midiController
-      volumeMonitor?.start()
-    }
-  }
-
-  /**
-     Stop audio processing. This is done prior to the app moving into the background.
-     */
-  func stopAudio() {
-    startRequested = false
-    guard sampler != nil else { return }
-
-    midi.receiver = nil
-    volumeMonitor?.stop()
-    sampler?.stop()
-
-    let session = AVAudioSession.sharedInstance()
-    do {
-      try session.setActive(false, options: [])
-      os_log(.info, log: log, "set audio session inactive")
-    } catch let error as NSError {
-      os_log(
-        .error, log: log, "Failed session.setActive(false): %{public}s", error.localizedDescription)
-    }
-
-    sampler = nil
-  }
-}
-
-// MARK: - Controller Configuration
-
-extension MainViewController: ControllerConfiguration {
 
   /**
      Establish connections with other managers / controllers.
@@ -288,7 +261,40 @@ extension MainViewController: ControllerConfiguration {
     }
   }
 
+  private func finishStart(_ result: Sampler.StartResult) {
+    switch result {
+    case let .failure(what):
+      os_log(.info, log: log, "set active audio session")
+      postAlert(for: what)
+    case .success:
+      midi.receiver = midiController
+      volumeMonitor?.start()
+    }
+  }
+
+  private func recreateSampler() {
+    os_log(.error, log: log, "recreating audio components due to media services reset")
+    self.stopAudio()
+    self.sampler = nil
+    router?.createAudioComponents()
+    self.startAudio()
+  }
+
   private func postAlert(for what: SamplerStartFailure) {
     NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what))
+  }
+
+  private func setupAudioSessionNotifications() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange),
+                                           name: AVAudioSession.routeChangeNotification, object: nil)
+  }
+
+  private func dump(route: AVAudioSessionRouteDescription) {
+    for input in route.inputs {
+      os_log(.info, log: log, "AVAudioSession input - %{public}s", input.portName)
+    }
+    for output in route.outputs {
+      os_log(.info, log: log, "AVAudioSession output - %{public}s", output.portName)
+    }
   }
 }

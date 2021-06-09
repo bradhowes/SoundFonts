@@ -12,12 +12,10 @@
 #include "Types.hpp"
 #include "MIDI/Note.hpp"
 
-namespace SF2 {
-
 /**
  Collection of enums and types used to represent MIDI values and state.
  */
-namespace MIDI {
+namespace SF2::MIDI {
 
 enum struct CoreEvent {
     noteOff = 0x80,
@@ -125,5 +123,4 @@ enum struct RPNEvent
     modulationDepthRange = 0x05
 };
 
-} // namespace MIDI
-} // namespace SF2
+} // namespace SF2::MIDI

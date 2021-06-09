@@ -4,9 +4,7 @@
 #include "Render/InstrumentZone.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
 
-namespace SF2 {
-namespace Render {
-namespace Voice {
+namespace SF2::Render::Voice {
 
 class State;
 
@@ -34,7 +32,7 @@ public:
     instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
 
     /**
-     Update a VoiceState with the various zone configurations.
+     Update a State with the various zone configurations.
 
      @param state the VoiceState to update
      */
@@ -71,7 +69,5 @@ private:
     int velocity_;
 };
 
-} // namespace Voice
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render::Voice
 

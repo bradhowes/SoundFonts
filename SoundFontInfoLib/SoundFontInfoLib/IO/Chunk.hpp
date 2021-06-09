@@ -11,8 +11,7 @@
 #include "IO/StringUtils.hpp"
 #include "IO/Tag.hpp"
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 /**
  Represents a tagged chunk of a file. A chunk starts with a 4-byte value that is taken as 4
@@ -101,5 +100,4 @@ private:
     Pos const pos_;
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

@@ -4,8 +4,7 @@
 
 #include "IO/Pos.hpp"
 
-namespace SF2 {
-namespace Entity {
+namespace SF2::Entity {
 
 /**
  Memory layout of a 'iver' entry in a sound font resource. Holds the version info of a file.
@@ -38,5 +37,4 @@ private:
     uint16_t wMinor;
 };
 
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity

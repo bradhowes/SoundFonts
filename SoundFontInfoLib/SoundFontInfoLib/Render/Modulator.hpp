@@ -10,12 +10,11 @@
 #include "Logger.hpp"
 #include "MIDI/ValueTransformer.hpp"
 
-namespace SF2 {
+namespace SF2::Entity::Modulator { class Modulator; class Source; }
 
-namespace Entity::Modulator { class Modulator; class Source; }
-namespace MIDI { class Channel; }
+namespace SF2::MIDI { class Channel; }
 
-namespace Render {
+namespace SF2::Render {
 
 namespace Voice { class State; }
 
@@ -110,5 +109,4 @@ private:
     inline static Logger log_{Logger::Make("Render.Voice", "Modulator")};
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

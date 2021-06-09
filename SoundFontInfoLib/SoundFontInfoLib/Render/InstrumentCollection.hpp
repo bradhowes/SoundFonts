@@ -6,9 +6,8 @@
 
 #include "Render/Instrument.hpp"
 
-namespace SF2 {
-namespace IO { class File; }
-namespace Render {
+namespace SF2::IO { class File; }
+namespace SF2::Render {
 
 /**
  Collection of all of the Entity::Instrument instances in an SF2 file, each of which is wrapped in a
@@ -35,5 +34,4 @@ private:
     std::vector<Instrument> instruments_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

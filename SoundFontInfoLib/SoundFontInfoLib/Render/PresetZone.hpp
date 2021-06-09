@@ -10,8 +10,7 @@
 #include "Render/Zone.hpp"
 #include "Render/Voice/State.hpp"
 
-namespace SF2 {
-namespace Render {
+namespace SF2::Render {
 
 /**
  A specialization of a Zone for a Preset. Non-global Preset zones refer to an Instrument.
@@ -47,5 +46,4 @@ private:
     const Render::Instrument* instrument_;
 };
 
-} // namespace Render
-} // namespace SF2
+} // namespace SF2::Render

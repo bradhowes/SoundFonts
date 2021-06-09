@@ -7,9 +7,7 @@
 #include <iosfwd>
 #include <string>
 
-namespace SF2 {
-namespace Entity {
-namespace Modulator {
+namespace SF2::Entity::Modulator {
 
 /**
  The source of an SF2 modulator. There are two types:
@@ -131,6 +129,4 @@ private:
     uint16_t bits_;
 };
 
-} // end namespace Modulator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Modulator

@@ -2,8 +2,7 @@
 
 #pragma once
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 /**
  We only operate with FormatRIFF.
@@ -13,5 +12,4 @@ enum struct Format {
     error
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

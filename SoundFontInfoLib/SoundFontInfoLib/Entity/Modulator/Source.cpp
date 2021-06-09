@@ -36,9 +36,7 @@ Source::description() const {
     return os.str();
 }
 
-namespace SF2 {
-namespace Entity {
-namespace Modulator {
+namespace SF2::Entity::Modulator {
 
 std::ostream&
 operator<<(std::ostream& os, const Source& mod)
@@ -46,6 +44,4 @@ operator<<(std::ostream& os, const Source& mod)
     return os << mod.description();
 }
 
-}
-}
 }

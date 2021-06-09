@@ -9,8 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 /**
  SoundFont file parser.
@@ -50,5 +49,4 @@ public:
     static Info parse(int fd, size_t size);
 };
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

@@ -8,8 +8,7 @@
 #include <cctype>
 #include <locale>
 
-namespace SF2 {
-namespace IO {
+namespace SF2::IO {
 
 static inline void trim_property(char* property, size_t size)
 {
@@ -28,5 +27,4 @@ static inline void trim_property(char* property, size_t size)
 
 template <typename T> static inline void trim_property(T& property) { trim_property(property, sizeof(property)); }
 
-} // end namespace IO
-} // end namespace SF2
+} // end namespace SF2::IO

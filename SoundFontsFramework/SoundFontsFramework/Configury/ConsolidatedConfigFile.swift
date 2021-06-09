@@ -51,7 +51,7 @@ public final class ConsolidatedConfigFile: UIDocument {
   @objc dynamic public private(set) var restored: Bool = false {
     didSet {
       self.updateChangeCount(.done)
-      self.autosave(completionHandler: nil)
+      self.save(to: fileURL, for: .forOverwriting)
     }
   }
 
@@ -59,6 +59,10 @@ public final class ConsolidatedConfigFile: UIDocument {
     os_log(.info, log: Self.log, "init - fileURL: %{public}s", fileURL.absoluteString)
     super.init(fileURL: fileURL)
     initialize(fileURL)
+  }
+
+  public func save() {
+    self.save(to: fileURL, for: .forOverwriting)
   }
 
   private func initialize(_ sharedArchivePath: URL) {

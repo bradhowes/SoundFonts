@@ -10,9 +10,9 @@
 
 #include "Entity/Modulator/Source.hpp"
 
-namespace SF2 {
-namespace DSP { namespace Tables { struct Generator; } }
-namespace MIDI {
+namespace SF2::DSP { namespace Tables { struct Generator; } }
+
+namespace SF2::MIDI {
 
 /**
  Transforms MIDI controller domain values (between 0 and 127) into various ranges. This currently only works with the
@@ -161,5 +161,4 @@ private:
     friend struct DSP::Tables::Generator;
 };
 
-} // namespace MIDI
-} // namespace SF2
+} // namespace SF2::MIDI

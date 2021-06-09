@@ -6,13 +6,10 @@
 #include "Entity/Generator/Index.hpp"
 #include "IO/Pos.hpp"
 
-namespace SF2 {
-namespace Entity {
-
 /**
  Classes involved in describing an SF2 generator that provides or "generates" a value that is used to render audio.
  */
-namespace Generator {
+namespace SF2::Entity::Generator {
 
 /**
  Memory layout of a 'pgen'/'igen' entry. The size of this is defined to be 4. Each instance represents a generator
@@ -51,6 +48,4 @@ private:
     Amount amount_;
 };
 
-} // end namespace Generator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Generator

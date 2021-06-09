@@ -2,9 +2,7 @@
 
 #pragma once
 
-namespace SF2 {
-namespace Entity {
-namespace Generator {
+namespace SF2::Entity::Generator {
 
 /**
  Enumeration of valid SF2 generators. This is a strongly-typed version of the integer values found in the spec. The
@@ -461,6 +459,4 @@ private:
     uint16_t const value_;
 };
 
-} // end namespace Generator
-} // end namespace Entity
-} // end namespace SF2
+} // end namespace SF2::Entity::Generator
