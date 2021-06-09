@@ -18,43 +18,43 @@ namespace SF2::Render {
  */
 class Preset : public WithZones<PresetZone, Entity::Preset> {
 public:
-    using PresetZoneCollection = WithZoneCollection;
+  using PresetZoneCollection = WithZoneCollection;
 
-    using Matches = std::vector<Voice::Setup>;
+  using Matches = std::vector<Voice::Setup>;
 
-    /**
-     Construct new Preset from SF2 entities
+  /**
+   Construct new Preset from SF2 entities
 
-     @param file the SF2 file that is loaded
-     @param instruments the collection of instruments that apply to the preset
-     @param config the SF2 preset definition
-     */
-    Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config) :
-    WithZones<PresetZone, Entity::Preset>(config.zoneCount(), config) {
-        for (const Entity::Bag& bag : file.presetZones().slice(config.firstZoneIndex(), config.zoneCount())) {
-            zones_.add(file, bag, instruments);
-        }
+   @param file the SF2 file that is loaded
+   @param instruments the collection of instruments that apply to the preset
+   @param config the SF2 preset definition
+   */
+  Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config) :
+  WithZones<PresetZone, Entity::Preset>(config.zoneCount(), config) {
+    for (const Entity::Bag& bag : file.presetZones().slice(config.firstZoneIndex(), config.zoneCount())) {
+      zones_.add(file, bag, instruments);
+    }
+  }
+
+  /**
+   Locate preset/instrument pairs for the given key/velocity values.
+
+   @param key the MIDI key to filter with
+   @param velocity the MIDI velocity to filter with
+   @returns vector of matching preset/instrument pairs
+   */
+  Matches find(int key, int velocity) const {
+    Matches zonePairs;
+    for (const PresetZone& presetZone : zones_.filter(key, velocity)) {
+      const Instrument& instrument = presetZone.instrument();
+      const InstrumentZone* instrumentGlobal = instrument.globalZone();
+      for (const InstrumentZone& instrumentZone : instrument.filter(key, velocity)) {
+        zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal, key, velocity);
+      }
     }
 
-    /**
-     Locate preset/instrument pairs for the given key/velocity values.
-
-     @param key the MIDI key to filter with
-     @param velocity the MIDI velocity to filter with
-     @returns vector of matching preset/instrument pairs
-     */
-    Matches find(int key, int velocity) const {
-        Matches zonePairs;
-        for (const PresetZone& presetZone : zones_.filter(key, velocity)) {
-            const Instrument& instrument = presetZone.instrument();
-            const InstrumentZone* instrumentGlobal = instrument.globalZone();
-            for (const InstrumentZone& instrumentZone : instrument.filter(key, velocity)) {
-                zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal, key, velocity);
-            }
-        }
-
-        return zonePairs;
-    }
+    return zonePairs;
+  }
 };
 
 } // namespace SF2::Render

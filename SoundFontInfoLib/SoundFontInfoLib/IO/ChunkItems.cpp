@@ -10,6 +10,6 @@ using namespace SF2::IO;
 void
 ChunkItemsSupport::beginDump(size_t size)
 {
-    std::cout << " count: " << size << std::endl;
+  std::cout << " count: " << size << std::endl;
 }
 

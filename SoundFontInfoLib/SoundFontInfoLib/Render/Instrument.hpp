@@ -20,29 +20,29 @@ namespace SF2::Render {
 class Instrument : public WithZones<InstrumentZone, Entity::Instrument>
 {
 public:
-    using InstrumentZoneCollection = WithZoneCollection;
+  using InstrumentZoneCollection = WithZoneCollection;
 
-    /**
-     Construct new Instrument from SF2 entities
+  /**
+   Construct new Instrument from SF2 entities
 
-     @param file the SF2 file that was loaded
-     @param config the SF2 file entity that defines the instrument
-     */
-    Instrument(const IO::File& file, const Entity::Instrument& config) :
-    WithZones<InstrumentZone, Entity::Instrument>(config.zoneCount(), config) {
-        for (const Entity::Bag& bag : file.instrumentZones().slice(config.firstZoneIndex(), config.zoneCount())) {
-            zones_.add(file, bag);
-        }
+   @param file the SF2 file that was loaded
+   @param config the SF2 file entity that defines the instrument
+   */
+  Instrument(const IO::File& file, const Entity::Instrument& config) :
+  WithZones<InstrumentZone, Entity::Instrument>(config.zoneCount(), config) {
+    for (const Entity::Bag& bag : file.instrumentZones().slice(config.firstZoneIndex(), config.zoneCount())) {
+      zones_.add(file, bag);
     }
+  }
 
-    /**
-     Locate the instrument zones that apply to the given key/velocity values.
+  /**
+   Locate the instrument zones that apply to the given key/velocity values.
 
-     @param key the MIDI key number
-     @param velocity the MIDI velocity value
-     @returns vector of matching zones
-     */
-    InstrumentZoneCollection::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
+   @param key the MIDI key number
+   @param velocity the MIDI velocity value
+   @returns vector of matching zones
+   */
+  InstrumentZoneCollection::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
 };
 
 } // namespace SF2::Render

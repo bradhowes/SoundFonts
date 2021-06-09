@@ -23,81 +23,81 @@ namespace SF2::IO {
 class Chunk {
 public:
 
-    /**
-     Constructor
+  /**
+   Constructor
 
-     @param tag the chunk's Tag type
-     @param size the number of bytes held by the chunk
-     @param pos the file position where the contents of the chunk is to be found
-     */
-    Chunk(Tag tag, uint32_t size, Pos pos) : tag_{tag}, size_{size}, pos_{pos} {}
+   @param tag the chunk's Tag type
+   @param size the number of bytes held by the chunk
+   @param pos the file position where the contents of the chunk is to be found
+   */
+  Chunk(Tag tag, uint32_t size, Pos pos) : tag_{tag}, size_{size}, pos_{pos} {}
 
-    /**
-     Obtain the Tag type for the chunk
+  /**
+   Obtain the Tag type for the chunk
 
-     @return Tag type
-     */
-    Tag tag() const { return tag_; }
+   @return Tag type
+   */
+  Tag tag() const { return tag_; }
 
-    /**
-     Obtain the size of the chunk data
+  /**
+   Obtain the size of the chunk data
 
-     @return Tag type
-     */
-    size_t size() const { return size_; }
+   @return Tag type
+   */
+  size_t size() const { return size_; }
 
-    /**
-     Obtain the location of the first byte of the chunk data
+  /**
+   Obtain the location of the first byte of the chunk data
 
-     @return Pos instance
-     */
-    Pos begin() const { return pos_; }
+   @return Pos instance
+   */
+  Pos begin() const { return pos_; }
 
-    /**
-     Obtain the location right after the last byte of chunk data
+  /**
+   Obtain the location right after the last byte of chunk data
 
-     @return Pos instance
-     */
-    Pos end() const { return pos_.advance(size_); }
+   @return Pos instance
+   */
+  Pos end() const { return pos_.advance(size_); }
 
-    /** Obtain the file position of the next chunk in the file after this one.
+  /** Obtain the file position of the next chunk in the file after this one.
 
-     @return Pos instance
-     */
-    Pos advance() const { return pos_.advance(paddedSize()); }
+   @return Pos instance
+   */
+  Pos advance() const { return pos_.advance(paddedSize()); }
 
-    /**
-     Treat the chunk data as a string of ASCII characters with a max length of 256 characters. The result is sanitized:
-     leading/trailing spaces are removed, non-ASCII characters are converted to '_' (the SF2 spec is pre-Unicode).
+  /**
+   Treat the chunk data as a string of ASCII characters with a max length of 256 characters. The result is sanitized:
+   leading/trailing spaces are removed, non-ASCII characters are converted to '_' (the SF2 spec is pre-Unicode).
 
-     @return chunk contents as std::string value
-     */
-    std::string extract() const {
-        char buffer[256];
-        size_t count = std::min(size(), sizeof(buffer));
-        begin().readInto(buffer, count);
-        buffer[count - 1] = 0;
-        trim_property(buffer);
-        return std::string(buffer);
-    }
+   @return chunk contents as std::string value
+   */
+  std::string extract() const {
+    char buffer[256];
+    size_t count = std::min(size(), sizeof(buffer));
+    begin().readInto(buffer, count);
+    buffer[count - 1] = 0;
+    trim_property(buffer);
+    return std::string(buffer);
+  }
 
-    /**
-     Read samples into a new buffer.
+  /**
+   Read samples into a new buffer.
 
-     @returns new buffer containing the 16-bit audio samples
-     */
-    std::shared_ptr<int16_t> extractSamples() const {
-        auto buffer = std::shared_ptr<int16_t>(new int16_t[size() / sizeof(int16_t)]);
-        begin().readInto((void*)buffer.get(), size());
-        return buffer;
-    }
+   @returns new buffer containing the 16-bit audio samples
+   */
+  std::shared_ptr<int16_t> extractSamples() const {
+    auto buffer = std::shared_ptr<int16_t>(new int16_t[size() / sizeof(int16_t)]);
+    begin().readInto((void*)buffer.get(), size());
+    return buffer;
+  }
 
 private:
-    uint32_t paddedSize() const { return size_ + (size_ & 1); }
+  uint32_t paddedSize() const { return size_ + (size_ & 1); }
 
-    Tag const tag_;
-    uint32_t const size_;
-    Pos const pos_;
+  Tag const tag_;
+  uint32_t const size_;
+  Pos const pos_;
 };
 
 } // end namespace SF2::IO

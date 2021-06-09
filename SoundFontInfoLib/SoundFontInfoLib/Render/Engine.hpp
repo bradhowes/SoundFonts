@@ -17,10 +17,10 @@ namespace SF2::Render {
 class Engine : public T {
 public:
 
-    Engine(double sampleRate);
+  Engine(double sampleRate);
 
-    const Preset& preset(size_t index) const;
-    const Preset* lookup(short bank, short preset) const;
+  const Preset& preset(size_t index) const;
+  const Preset* lookup(short bank, short preset) const;
 
 private:
 };

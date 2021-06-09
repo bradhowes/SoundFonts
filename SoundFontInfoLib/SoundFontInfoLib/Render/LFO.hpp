@@ -18,175 +18,175 @@ namespace SF2::Render {
 class LFO {
 public:
 
-    /**
-     Configures an LFO via a "fluent" interface.
-     */
-    struct Config {
-
-        /**
-         Begin configuration with the sample rate
-
-         @param sampleRate the sample rate to use
-         */
-        explicit Config(Float sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
-
-        /**
-         Set the frequency for the LFO.
-
-         @param frequency the frequency to run the LFO at
-         */
-        Config& frequency(Float frequency) {
-            frequency_ = frequency;
-            return *this;
-        }
-
-        /**
-         Set the delay for the LFO. Until the delay duration passes, the LFO will emit 0.0 values.
-
-         @param delay the number of seconds to wait before starting the LFO.
-         */
-        Config& delay(Float delay) {
-            delay_ = delay;
-            return *this;
-        }
-
-        /**
-         Create an LFO instance with the configured properties.
-
-         @returns LFO instance
-         */
-        LFO make() const {
-            return LFO(sampleRate_, frequency_, delay_);
-        }
-
-    private:
-        Float sampleRate_;
-        Float frequency_;
-        Float delay_;
-    };
+  /**
+   Configures an LFO via a "fluent" interface.
+   */
+  struct Config {
 
     /**
-     Create a new instance.
+     Begin configuration with the sample rate
 
-     @param sampleRate number of samples per second
-     @param frequency the frequency of the oscillator
-     @param delay the number of seconds to wait before starting the LFO.
+     @param sampleRate the sample rate to use
      */
-    LFO(Float sampleRate, Float frequency, Float delay) { initialize(sampleRate, frequency, delay); }
+    explicit Config(Float sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
 
     /**
-     Initialize the LFO with the given parameters.
+     Set the frequency for the LFO.
 
-     @param sampleRate number of samples per second
-     @param frequency the frequency of the oscillator
-     @param delay the number of seconds to wait before starting the LFO.
+     @param frequency the frequency to run the LFO at
      */
-    void initialize(Float sampleRate, Float frequency, Float delay) {
-        sampleRate_ = sampleRate;
-        frequency_ = frequency;
-        delaySampleCount_ = size_t(sampleRate * delay);
-        setPhaseIncrement();
-        reset();
+    Config& frequency(Float frequency) {
+      frequency_ = frequency;
+      return *this;
     }
 
     /**
-     Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
-
-     @param frequency the frequency to operate at
-     */
-    void setFrequency(Float frequency) {
-        frequency_ = frequency;
-        setPhaseIncrement();
-    }
-
-    /**
-     Set the delay of the oscillator in seconds. NOTE: resets the counter.
+     Set the delay for the LFO. Until the delay duration passes, the LFO will emit 0.0 values.
 
      @param delay the number of seconds to wait before starting the LFO.
      */
-    void setDelay(Float delay) {
-        delaySampleCount_ = size_t(delay * sampleRate_);
-        reset();
+    Config& delay(Float delay) {
+      delay_ = delay;
+      return *this;
     }
 
     /**
-     Restart from a known zero state.
+     Create an LFO instance with the configured properties.
+
+     @returns LFO instance
      */
-    void reset() {
-        counter_ = 0.0;
-        if (increment_ < 0) increment_ = -increment_;
+    LFO make() const {
+      return LFO(sampleRate_, frequency_, delay_);
     }
 
-    struct State {
-        Float counter_;
-        size_t delaySampleCount_;
-        State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
-    };
+  private:
+    Float sampleRate_;
+    Float frequency_;
+    Float delay_;
+  };
 
-    /**
-     Save the state of the oscillator.
+  /**
+   Create a new instance.
 
-     @returns current internal state
-     */
-    State saveState() const { return State(counter_, delaySampleCount_); }
+   @param sampleRate number of samples per second
+   @param frequency the frequency of the oscillator
+   @param delay the number of seconds to wait before starting the LFO.
+   */
+  LFO(Float sampleRate, Float frequency, Float delay) { initialize(sampleRate, frequency, delay); }
 
-    /**
-     Restore the oscillator to a previously-saved state.
+  /**
+   Initialize the LFO with the given parameters.
 
-     @param state the state to restore to
-     */
-    void restoreState(const State& state) {
-        counter_ = state.counter_;
-        delaySampleCount_ = state.delaySampleCount_;
+   @param sampleRate number of samples per second
+   @param frequency the frequency of the oscillator
+   @param delay the number of seconds to wait before starting the LFO.
+   */
+  void initialize(Float sampleRate, Float frequency, Float delay) {
+    sampleRate_ = sampleRate;
+    frequency_ = frequency;
+    delaySampleCount_ = size_t(sampleRate * delay);
+    setPhaseIncrement();
+    reset();
+  }
+
+  /**
+   Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
+
+   @param frequency the frequency to operate at
+   */
+  void setFrequency(Float frequency) {
+    frequency_ = frequency;
+    setPhaseIncrement();
+  }
+
+  /**
+   Set the delay of the oscillator in seconds. NOTE: resets the counter.
+
+   @param delay the number of seconds to wait before starting the LFO.
+   */
+  void setDelay(Float delay) {
+    delaySampleCount_ = size_t(delay * sampleRate_);
+    reset();
+  }
+
+  /**
+   Restart from a known zero state.
+   */
+  void reset() {
+    counter_ = 0.0;
+    if (increment_ < 0) increment_ = -increment_;
+  }
+
+  struct State {
+    Float counter_;
+    size_t delaySampleCount_;
+    State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
+  };
+
+  /**
+   Save the state of the oscillator.
+
+   @returns current internal state
+   */
+  State saveState() const { return State(counter_, delaySampleCount_); }
+
+  /**
+   Restore the oscillator to a previously-saved state.
+
+   @param state the state to restore to
+   */
+  void restoreState(const State& state) {
+    counter_ = state.counter_;
+    delaySampleCount_ = state.delaySampleCount_;
+  }
+
+  /**
+   Increment the oscillator to the next value.
+   */
+  void increment() {
+    if (delaySampleCount_ > 0) {
+      --delaySampleCount_;
     }
-
-    /**
-     Increment the oscillator to the next value.
-     */
-    void increment() {
-        if (delaySampleCount_ > 0) {
-            --delaySampleCount_;
-        }
-        else {
-            counter_ += increment_;
-            if (counter_ >= 1.0) {
-                increment_ = -increment_;
-                counter_ = 2.0 - counter_;
-            }
-            else if (counter_ <= -1.0) {
-                increment_ = -increment_;
-                counter_ = -2.0 - counter_;
-            }
-        }
+    else {
+      counter_ += increment_;
+      if (counter_ >= 1.0) {
+        increment_ = -increment_;
+        counter_ = 2.0 - counter_;
+      }
+      else if (counter_ <= -1.0) {
+        increment_ = -increment_;
+        counter_ = -2.0 - counter_;
+      }
     }
+  }
 
-    /**
-     Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
+  /**
+   Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
 
-     @returns current waveform value
-     */
-    Float valueAndIncrement() {
-        auto counter = counter_;
-        increment();
-        return counter;
-    }
+   @returns current waveform value
+   */
+  Float valueAndIncrement() {
+    auto counter = counter_;
+    increment();
+    return counter;
+  }
 
-    /**
-     Obtain the current value of the oscillator.
+  /**
+   Obtain the current value of the oscillator.
 
-     @returns current waveform value
-     */
-    Float value() { return counter_; }
+   @returns current waveform value
+   */
+  Float value() { return counter_; }
 
 private:
 
-    void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
+  void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
 
-    Float sampleRate_;
-    Float frequency_;
-    Float counter_{0.0};
-    Float increment_;
-    size_t delaySampleCount_;
+  Float sampleRate_;
+  Float frequency_;
+  Float counter_{0.0};
+  Float increment_;
+  size_t delaySampleCount_;
 };
 
 } // namespace SF2::Render

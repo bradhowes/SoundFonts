@@ -18,32 +18,32 @@ namespace SF2::Render {
 class PresetZone : public Zone {
 public:
 
-    /**
-     Construct new zone from entity in file.
+  /**
+   Construct new zone from entity in file.
 
-     @param file the file to work with
-     @param instruments to collection of instruments found in the file
-     @param bag the zone definition
-     */
-    PresetZone(const IO::File& file, const Entity::Bag& bag, const Render::InstrumentCollection& instruments) :
-    Zone(file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
-         file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
-         Entity::Generator::Index::instrument), instrument_{isGlobal() ? nullptr : &instruments[resourceLink()]}
-    {}
+   @param file the file to work with
+   @param instruments to collection of instruments found in the file
+   @param bag the zone definition
+   */
+  PresetZone(const IO::File& file, const Entity::Bag& bag, const Render::InstrumentCollection& instruments) :
+  Zone(file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
+       file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
+       Entity::Generator::Index::instrument), instrument_{isGlobal() ? nullptr : &instruments[resourceLink()]}
+  {}
 
-    /**
-     Apply the zone generator values to the given voice state. Unlike instrument zones, those of a Preset only refine
-     existing values.
+  /**
+   Apply the zone generator values to the given voice state. Unlike instrument zones, those of a Preset only refine
+   existing values.
 
-     @param state the state to update
-     */
-    void refine(Voice::State& state) const { Zone::refine(state); }
+   @param state the state to update
+   */
+  void refine(Voice::State& state) const { Zone::refine(state); }
 
-    /// @returns the Instrument configured for this zone
-    const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
+  /// @returns the Instrument configured for this zone
+  const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }
 
 private:
-    const Render::Instrument* instrument_;
+  const Render::Instrument* instrument_;
 };
 
 } // namespace SF2::Render

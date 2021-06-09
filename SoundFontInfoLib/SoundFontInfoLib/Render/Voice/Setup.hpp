@@ -16,57 +16,57 @@ class State;
 class Setup {
 public:
 
-    /**
-     Construct a preset/instrument pair
+  /**
+   Construct a preset/instrument pair
 
-     @param presetZone the PresetZone that matched a key/velocity search
-     @param presetGlobal the global PresetZone to apply (optional -- nullptr if no global)
-     @param instrumentZone the InstrumentZone that matched a key/velocity search
-     @param instrumentGlobal the global InstrumentZone to apply (optional -- nullptr if no global)
-     @param key the MIDI key that triggered the rendering
-     @param velocity the MIDI velocity that triggered the rendering
-     */
-    Setup(const PresetZone& presetZone, const PresetZone* presetGlobal, const InstrumentZone& instrumentZone,
-          const InstrumentZone* instrumentGlobal, int key, int velocity) :
-    presetZone_{presetZone}, presetGlobal_{presetGlobal}, instrumentZone_{instrumentZone},
-    instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
+   @param presetZone the PresetZone that matched a key/velocity search
+   @param presetGlobal the global PresetZone to apply (optional -- nullptr if no global)
+   @param instrumentZone the InstrumentZone that matched a key/velocity search
+   @param instrumentGlobal the global InstrumentZone to apply (optional -- nullptr if no global)
+   @param key the MIDI key that triggered the rendering
+   @param velocity the MIDI velocity that triggered the rendering
+   */
+  Setup(const PresetZone& presetZone, const PresetZone* presetGlobal, const InstrumentZone& instrumentZone,
+        const InstrumentZone* instrumentGlobal, int key, int velocity) :
+  presetZone_{presetZone}, presetGlobal_{presetGlobal}, instrumentZone_{instrumentZone},
+  instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
 
-    /**
-     Update a State with the various zone configurations.
+  /**
+   Update a State with the various zone configurations.
 
-     @param state the VoiceState to update
-     */
-    void apply(State& state) const {
+   @param state the VoiceState to update
+   */
+  void apply(State& state) const {
 
-        // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
-        // their settings.
-        if (instrumentGlobal_ != nullptr) instrumentGlobal_->apply(state);
-        instrumentZone_.apply(state);
+    // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
+    // their settings.
+    if (instrumentGlobal_ != nullptr) instrumentGlobal_->apply(state);
+    instrumentZone_.apply(state);
 
-        // According to spec, a preset global should only be applied iff there is NOT a preset generator.
-        if (presetGlobal_ != nullptr) presetGlobal_->refine(state);
-        presetZone_.refine(state);
-    }
+    // According to spec, a preset global should only be applied iff there is NOT a preset generator.
+    if (presetGlobal_ != nullptr) presetGlobal_->refine(state);
+    presetZone_.refine(state);
+  }
 
-    /// @returns the buffer of audio samples to use for rendering
-    const Sample::CanonicalBuffer& sampleBuffer() const {
-        assert(instrumentZone_.sampleBuffer() != nullptr);
-        return *(instrumentZone_.sampleBuffer());
-    }
+  /// @returns the buffer of audio samples to use for rendering
+  const Sample::CanonicalBuffer& sampleBuffer() const {
+    assert(instrumentZone_.sampleBuffer() != nullptr);
+    return *(instrumentZone_.sampleBuffer());
+  }
 
-    /// @returns original MIDI key that triggered the voice
-    int key() const { return key_; }
+  /// @returns original MIDI key that triggered the voice
+  int key() const { return key_; }
 
-    /// @returns original MIDI velocity that triggered the voice
-    int velocity() const { return velocity_; }
+  /// @returns original MIDI velocity that triggered the voice
+  int velocity() const { return velocity_; }
 
 private:
-    const PresetZone& presetZone_;
-    const PresetZone* presetGlobal_;
-    const InstrumentZone& instrumentZone_;
-    const InstrumentZone* instrumentGlobal_;
-    int key_;
-    int velocity_;
+  const PresetZone& presetZone_;
+  const PresetZone* presetGlobal_;
+  const InstrumentZone& instrumentZone_;
+  const InstrumentZone* instrumentGlobal_;
+  int key_;
+  int velocity_;
 };
 
 } // namespace SF2::Render::Voice

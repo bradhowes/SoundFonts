@@ -18,17 +18,17 @@ sampleGenerator_{setup.sampleBuffer(), state_},
 gainEnvelope_{Envelope::Generator::Volume(state_)},
 modulatorEnvelope_{Envelope::Generator::Modulator(state_)},
 modulatorLFO_{
-    LFO::Config(sampleRate)
-    .frequency(state_.modulated(Index::frequencyModulatorLFO))
-    .delay(state_.modulated(Index::delayModulatorLFO))
-    .make()
+  LFO::Config(sampleRate)
+  .frequency(state_.modulated(Index::frequencyModulatorLFO))
+  .delay(state_.modulated(Index::delayModulatorLFO))
+  .make()
 },
 vibratoLFO_{
-    LFO::Config(sampleRate)
-    .frequency(state_.modulated(Index::frequencyVibratoLFO))
-    .delay(state_.modulated(Index::delayVibratoLFO))
-    .make()
+  LFO::Config(sampleRate)
+  .frequency(state_.modulated(Index::frequencyVibratoLFO))
+  .delay(state_.modulated(Index::delayVibratoLFO))
+  .make()
 }
 {
-    os_log_debug(log_, "loopingMode: %d", loopingMode_);
+  os_log_debug(log_, "loopingMode: %d", loopingMode_);
 }

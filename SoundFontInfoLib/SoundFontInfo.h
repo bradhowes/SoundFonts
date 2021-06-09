@@ -18,7 +18,7 @@
 
 /**
  Create a new preset entry
-
+ 
  @param name the name of the preset
  @param bank the MIDI bank to use to select the preset
  @param preset the MIDI patch/preset to use to select the preset
@@ -47,9 +47,9 @@
 
 /**
  Class method that creates a new SoundFontInfo instance by using the efficient Parser class
-
+ 
  @param url the location of the SF2 file to process
-
+ 
  @returns new SoundFontInfo instance
  */
 + (SoundFontInfo*)loadViaParser:(NSURL*)url;
@@ -57,38 +57,38 @@
 /**
  Class method that creates a new SoundFontInfo instance by using the robust File class. This should result in the same
  results as the above method.
-
+ 
  @param url the location of the SF2 file to process
-
+ 
  @returns new SoundFontInfo instance
  */
 + (SoundFontInfo*)loadViaFile:(NSURL*)url;
 
 /**
  Class method that creates a new SoundFontInfo instance by using the efficient Parser class on an open file descriptor.
-
+ 
  @param url the location of the SF2 file to process (only used for book-keeping)
  @param fd the file descriptor to read from
  @param fileSize the total number of bytes available for reading from the file descriptor
-
+ 
  @returns new SoundFontInfo instance
  */
 + (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
 /**
  Class method that creates a new SoundFontInfo instance by using the robust File class on an open file descriptor.
-
+ 
  @param url the location of the SF2 file to process (only used for book-keeping)
  @param fd the file descriptor to read from
  @param fileSize the total number of bytes available for reading from the file descriptor
-
+ 
  @returns new SoundFontInfo instance
  */
 + (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
 
 /**
  Constructor for SoundFontInfo instance.
-
+ 
  @param name the name that was embedded in the SF2 file
  @param url the URL that was used for processing
  @param embeddedAuthor the name of the author found in the SF2 file

@@ -9,24 +9,24 @@
 namespace SF2::Render::Sample {
 
 struct PitchControl {
-    using Index = Entity::Generator::Index;
+  using Index = Entity::Generator::Index;
 
-    /**
-     Construct new instance using information from 'shdr' and current voice state values from generators related to
-     sample indices.
+  /**
+   Construct new instance using information from 'shdr' and current voice state values from generators related to
+   sample indices.
 
-     @param state the generator values to use
-     */
-    PitchControl(const Voice::State& state) {
-        modulatorLFOToPitch_ = state.modulated(Index::modulatorLFOToPitch);
-        vibratoLFOToPitch_ = state.modulated(Index::vibratoLFOToPitch);
-        modulatorEnvelopeToPitch_ = state.modulated(Index::modulatorEnvelopeToPitch);
-    }
+   @param state the generator values to use
+   */
+  PitchControl(const Voice::State& state) {
+    modulatorLFOToPitch_ = state.modulated(Index::modulatorLFOToPitch);
+    vibratoLFOToPitch_ = state.modulated(Index::vibratoLFOToPitch);
+    modulatorEnvelopeToPitch_ = state.modulated(Index::modulatorEnvelopeToPitch);
+  }
 
 private:
-    double modulatorLFOToPitch_;
-    double vibratoLFOToPitch_;
-    double modulatorEnvelopeToPitch_;
+  double modulatorLFOToPitch_;
+  double vibratoLFOToPitch_;
+  double modulatorEnvelopeToPitch_;
 };
 
 } // namespace SF2::Render::Sample

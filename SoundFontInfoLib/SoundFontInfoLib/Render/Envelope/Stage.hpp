@@ -10,26 +10,26 @@
 namespace SF2::Render::Envelope {
 
 enum struct StageIndex {
-    idle = -1,
-    delay = 0,
-    attack,
-    hold,
-    decay,
-    sustain,
-    release
+  idle = -1,
+  delay = 0,
+  attack,
+  hold,
+  decay,
+  sustain,
+  release
 };
 
 inline const char* StageName(StageIndex stageIndex) {
-    switch (stageIndex) {
-        case StageIndex::idle: return "idle";
-        case StageIndex::delay: return "delay";
-        case StageIndex::attack: return "attack";
-        case StageIndex::hold: return "hold";
-        case StageIndex::decay: return "decay";
-        case StageIndex::sustain: return "sustain";
-        case StageIndex::release: return "release";
-        default: throw "unknown stage value";
-    }
+  switch (stageIndex) {
+    case StageIndex::idle: return "idle";
+    case StageIndex::delay: return "delay";
+    case StageIndex::attack: return "attack";
+    case StageIndex::hold: return "hold";
+    case StageIndex::decay: return "decay";
+    case StageIndex::sustain: return "sustain";
+    case StageIndex::release: return "release";
+    default: throw "unknown stage value";
+  }
 }
 
 class Generator;
@@ -40,92 +40,92 @@ class Generator;
 class Stage
 {
 public:
-    inline static constexpr double minimumCurvature = 0.000000001;
-    inline static constexpr double maximumCurvature = 10.0;
+  inline static constexpr double minimumCurvature = 0.000000001;
+  inline static constexpr double maximumCurvature = 10.0;
 
-    /**
-     Generate a configuration that will emit a constant value for a fixed or indefinite time.
-     */
-    static Stage SetConstant(StageIndex stageIndex, int sampleCount, double value) {
-        return Stage(stageIndex, value, 1.0, 0.0, sampleCount);
-    }
+  /**
+   Generate a configuration that will emit a constant value for a fixed or indefinite time.
+   */
+  static Stage SetConstant(StageIndex stageIndex, int sampleCount, double value) {
+    return Stage(stageIndex, value, 1.0, 0.0, sampleCount);
+  }
 
-    /**
-     Generate a configuration for the delay stage.
-     */
-    static Stage ConfigureDelay(int sampleCount) { return SetConstant(StageIndex::delay, sampleCount, 0.0); }
+  /**
+   Generate a configuration for the delay stage.
+   */
+  static Stage ConfigureDelay(int sampleCount) { return SetConstant(StageIndex::delay, sampleCount, 0.0); }
 
-    /**
-     Generate a configuration for the attack stage.
-     */
-    static Stage ConfigureAttack(int sampleCount, double curvature) {
-        curvature = clampCurvature(curvature);
-        double alpha = calculateCoefficient(sampleCount, curvature);
-        return Stage(StageIndex::attack, 0.0, alpha, (1.0 + curvature) * (1.0 - alpha), sampleCount);
-    }
+  /**
+   Generate a configuration for the attack stage.
+   */
+  static Stage ConfigureAttack(int sampleCount, double curvature) {
+    curvature = clampCurvature(curvature);
+    double alpha = calculateCoefficient(sampleCount, curvature);
+    return Stage(StageIndex::attack, 0.0, alpha, (1.0 + curvature) * (1.0 - alpha), sampleCount);
+  }
 
-    /**
-     Generate a configuration for the delay stage.
-     */
-    static Stage ConfigureHold(int sampleCount) { return SetConstant(StageIndex::hold, sampleCount, 1.0); }
+  /**
+   Generate a configuration for the delay stage.
+   */
+  static Stage ConfigureHold(int sampleCount) { return SetConstant(StageIndex::hold, sampleCount, 1.0); }
 
-    /**
-     Generate a configuration for the decay stage.
-     */
-    static Stage ConfigureDecay(int sampleCount, double curvature, double sustainLevel) {
-        curvature = clampCurvature(curvature);
-        double alpha = calculateCoefficient(sampleCount, curvature);
-        return Stage(StageIndex::decay, 1.0, alpha, (sustainLevel - curvature) * (1.0 - alpha), sampleCount);
-    }
+  /**
+   Generate a configuration for the decay stage.
+   */
+  static Stage ConfigureDecay(int sampleCount, double curvature, double sustainLevel) {
+    curvature = clampCurvature(curvature);
+    double alpha = calculateCoefficient(sampleCount, curvature);
+    return Stage(StageIndex::decay, 1.0, alpha, (sustainLevel - curvature) * (1.0 - alpha), sampleCount);
+  }
 
-    /**
-     Generate a configuration for the sustain stage.
-     */
-    static Stage ConfigureSustain(double level) {
-        return SetConstant(StageIndex::sustain, std::numeric_limits<uint16_t>::max(), level);
-    }
+  /**
+   Generate a configuration for the sustain stage.
+   */
+  static Stage ConfigureSustain(double level) {
+    return SetConstant(StageIndex::sustain, std::numeric_limits<uint16_t>::max(), level);
+  }
 
-    /**
-     Generate a configuration for the release stage.
-     */
-    static Stage ConfigureRelease(int sampleCount, double curvature, double sustainLevel) {
-        curvature = clampCurvature(curvature);
-        double alpha = calculateCoefficient(sampleCount, curvature);
-        return Stage(StageIndex::release, sustainLevel, alpha, (0.0 - curvature) * (1.0 - alpha), sampleCount);
-    }
+  /**
+   Generate a configuration for the release stage.
+   */
+  static Stage ConfigureRelease(int sampleCount, double curvature, double sustainLevel) {
+    curvature = clampCurvature(curvature);
+    double alpha = calculateCoefficient(sampleCount, curvature);
+    return Stage(StageIndex::release, sustainLevel, alpha, (0.0 - curvature) * (1.0 - alpha), sampleCount);
+  }
 
-    /**
-     Obtain the next value of a stage.
+  /**
+   Obtain the next value of a stage.
 
-     @param last last value generated by a stage
-     @returns new value
-     */
-    double next(double last) const { return std::max<double>(std::min<double>(last * alpha_ + beta_, 1.0), 0.0); }
+   @param last last value generated by a stage
+   @returns new value
+   */
+  double next(double last) const { return std::max<double>(std::min<double>(last * alpha_ + beta_, 1.0), 0.0); }
 
 private:
 
-    Stage(StageIndex stageIndex, double initial, double alpha, double beta, int durationInSamples) :
-    initial_{initial}, alpha_{alpha}, beta_{beta}, durationInSamples_{durationInSamples} {
-        log_.info() << "Stage " << StageName(stageIndex) << " init: " << initial << " alpha: " << alpha
-        << " beta: " << beta << std::endl;
-    }
+  Stage(StageIndex stageIndex, double initial, double alpha, double beta, int durationInSamples) :
+  initial_{initial}, alpha_{alpha}, beta_{beta}, durationInSamples_{durationInSamples} {
+    log_.info() << "Stage " << StageName(stageIndex) << " init: " << initial << " alpha: " << alpha
+    << " beta: " << beta << std::endl;
+  }
 
-    static double clampCurvature(double curvature) {
-        return std::max(std::min(curvature, maximumCurvature), minimumCurvature);
-    }
+  static double clampCurvature(double curvature) {
+    return std::max(std::min(curvature, maximumCurvature), minimumCurvature);
+  }
 
-    static double calculateCoefficient(double sampleCount, double curvature) {
-        curvature = clampCurvature(curvature);
-        return (sampleCount <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / sampleCount);
-    }
+  static double calculateCoefficient(double sampleCount, double curvature) {
+    curvature = clampCurvature(curvature);
+    return (sampleCount <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / sampleCount);
+  }
 
-    friend class Generator;
+  friend class Generator;
 
-    const double initial_{0.0};
-    const double alpha_{0.0};
-    const double beta_{0.0};
-    const int durationInSamples_{0};
-    inline static Logger log_{Logger::Make("Render.Envelope", "Stage")};
+  const double initial_{0.0};
+  const double alpha_{0.0};
+  const double beta_{0.0};
+  const int durationInSamples_{0};
+  inline static Logger log_{Logger::Make("Render.Envelope", "Stage")};
 };
 
 } // namespace SF2::Render::Envelope

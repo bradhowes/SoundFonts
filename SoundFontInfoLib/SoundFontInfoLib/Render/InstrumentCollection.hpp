@@ -16,22 +16,22 @@ namespace SF2::Render {
 class InstrumentCollection
 {
 public:
-    InstrumentCollection(const IO::File& file) : instruments_{} {
-        auto count = file.instruments().size();
-        instruments_.reserve(count);
-        for (const Entity::Instrument& configuration : file.instruments().slice(0, count)) {
-            instruments_.emplace_back(file, configuration);
-        }
+  InstrumentCollection(const IO::File& file) : instruments_{} {
+    auto count = file.instruments().size();
+    instruments_.reserve(count);
+    for (const Entity::Instrument& configuration : file.instruments().slice(0, count)) {
+      instruments_.emplace_back(file, configuration);
     }
+  }
 
 #ifdef DEBUG
-    const Instrument& operator[](size_t index) const { return instruments_.at(index); }
+  const Instrument& operator[](size_t index) const { return instruments_.at(index); }
 #else
-    const Instrument& operator[](size_t index) const { return instruments_[index]; }
+  const Instrument& operator[](size_t index) const { return instruments_[index]; }
 #endif
 
 private:
-    std::vector<Instrument> instruments_;
+  std::vector<Instrument> instruments_;
 };
 
 } // namespace SF2::Render

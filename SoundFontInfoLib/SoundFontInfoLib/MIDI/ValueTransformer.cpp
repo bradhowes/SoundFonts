@@ -13,18 +13,18 @@ using namespace SF2::MIDI;
 ValueTransformer::ValueTransformer(Kind kind, Direction dir, Polarity pol) : active_{selectActive(kind, dir, pol)} {}
 
 const ValueTransformer::TransformArrayType& ValueTransformer::selectActive(Kind kind, Direction dir, Polarity pol) {
-    if (pol == Polarity::unipolar) {
-        switch (kind) {
-            case Kind::linear: return dir == Direction::ascending ? positiveLinear_ : negativeLinear_;
-            case Kind::concave: return dir == Direction::ascending ? positiveConcave_ : negativeConcave_;
-            case Kind::convex: return dir == Direction::ascending ? positiveConvex_ : negativeConvex_;
-            case Kind::switched: return dir == Direction::ascending ? positiveSwitched_ : negativeSwitched_;
-        }
-    }
+  if (pol == Polarity::unipolar) {
     switch (kind) {
-        case Kind::linear: return dir == Direction::ascending ? positiveLinearBipolar_ : negativeLinearBipolar_;
-        case Kind::concave: return dir== Direction::ascending ? positiveConcaveBipolar_ : negativeConcaveBipolar_;
-        case Kind::convex: return dir == Direction::ascending ? positiveConvexBipolar_ : negativeConvexBipolar_;
-        case Kind::switched: return dir == Direction::ascending ? positiveSwitchedBipolar_ : negativeSwitchedBipolar_;
+      case Kind::linear: return dir == Direction::ascending ? positiveLinear_ : negativeLinear_;
+      case Kind::concave: return dir == Direction::ascending ? positiveConcave_ : negativeConcave_;
+      case Kind::convex: return dir == Direction::ascending ? positiveConvex_ : negativeConvex_;
+      case Kind::switched: return dir == Direction::ascending ? positiveSwitched_ : negativeSwitched_;
     }
+  }
+  switch (kind) {
+    case Kind::linear: return dir == Direction::ascending ? positiveLinearBipolar_ : negativeLinearBipolar_;
+    case Kind::concave: return dir== Direction::ascending ? positiveConcaveBipolar_ : negativeConcaveBipolar_;
+    case Kind::convex: return dir == Direction::ascending ? positiveConvexBipolar_ : negativeConvexBipolar_;
+    case Kind::switched: return dir == Direction::ascending ? positiveSwitchedBipolar_ : negativeSwitchedBipolar_;
+  }
 }

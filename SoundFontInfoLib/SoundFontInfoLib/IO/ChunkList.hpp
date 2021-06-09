@@ -13,25 +13,25 @@ namespace SF2::IO {
 class ChunkList : public Chunk {
 public:
 
-    /**
-     Constructor
+  /**
+   Constructor
 
-     @param tag the container's Tag type
-     @param size the number of bytes used by the chunk list
-     @param kind the Tag type for the elements in the chunk list
-     @param pos the file position where the first item in the list is to be found
-     */
-    ChunkList(Tag tag, uint32_t size, Tag kind, Pos pos) : Chunk(tag, size, pos), kind_{kind} {}
+   @param tag the container's Tag type
+   @param size the number of bytes used by the chunk list
+   @param kind the Tag type for the elements in the chunk list
+   @param pos the file position where the first item in the list is to be found
+   */
+  ChunkList(Tag tag, uint32_t size, Tag kind, Pos pos) : Chunk(tag, size, pos), kind_{kind} {}
 
-    /**
-     Obtain the Tag type for the elements held in the container
+  /**
+   Obtain the Tag type for the elements held in the container
 
-     @return Tag type
-     */
-    Tag kind() const { return kind_; }
+   @return Tag type
+   */
+  Tag kind() const { return kind_; }
 
 private:
-    Tag kind_;
+  Tag kind_;
 };
 
 } // end namespace SF2::IO

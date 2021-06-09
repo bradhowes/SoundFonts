@@ -18,45 +18,45 @@ namespace SF2::Entity::Modulator {
 class Transform {
 public:
 
-    enum struct Kind {
-        linear = 0,
-        absolute = 2
-    };
+  enum struct Kind {
+    linear = 0,
+    absolute = 2
+  };
 
-    /**
-     Constructor
+  /**
+   Constructor
 
-     @param bits the value that determines the type of transform to apply
-     */
-    explicit Transform(uint16_t bits) : bits_{bits} {}
+   @param bits the value that determines the type of transform to apply
+   */
+  explicit Transform(uint16_t bits) : bits_{bits} {}
 
-    /**
-     Default constructor.
-     */
-    Transform() : Transform(0) {}
+  /**
+   Default constructor.
+   */
+  Transform() : Transform(0) {}
 
-    /// @returns the kind of transform to apply
-    Kind kind() const { return bits_ == 0 ? Kind::linear : Kind::absolute; }
+  /// @returns the kind of transform to apply
+  Kind kind() const { return bits_ == 0 ? Kind::linear : Kind::absolute; }
 
-    /**
-     Transform a value.
+  /**
+   Transform a value.
 
-     @param value the value to transform
-     @returns transformed value
-     */
-    template <typename T>
-    T transform(T value) const {
-        switch (kind()) {
-            case Kind::linear: return value;
-            case Kind::absolute: return std::abs(value);
-            default: throw "unexpected transform kind";
-        }
+   @param value the value to transform
+   @returns transformed value
+   */
+  template <typename T>
+  T transform(T value) const {
+    switch (kind()) {
+      case Kind::linear: return value;
+      case Kind::absolute: return std::abs(value);
+      default: throw "unexpected transform kind";
     }
+  }
 
-    friend std::ostream& operator<<(std::ostream& os, const Transform& value);
+  friend std::ostream& operator<<(std::ostream& os, const Transform& value);
 
 private:
-    const uint16_t bits_;
+  const uint16_t bits_;
 };
 
 } // end namespace SF2::Entity::Modulator

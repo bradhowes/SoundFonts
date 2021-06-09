@@ -22,61 +22,61 @@ template <typename Kind>
 class ZoneCollection
 {
 public:
-    using Matches = typename std::vector<std::reference_wrapper<Kind const>>;
+  using Matches = typename std::vector<std::reference_wrapper<Kind const>>;
 
-    /**
-     Construct a new collection that expects to hold the given number of elements.
+  /**
+   Construct a new collection that expects to hold the given number of elements.
 
-     @param zoneCount the number of zones that the collection will hold
-     */
-    explicit ZoneCollection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
+   @param zoneCount the number of zones that the collection will hold
+   */
+  explicit ZoneCollection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
 
-    /// @returns number of zones in the collection (include the optional global one)
-    size_t size() const { return zones_.size(); }
+  /// @returns number of zones in the collection (include the optional global one)
+  size_t size() const { return zones_.size(); }
 
-    /**
-     Locate the zone(s) that match the given key/velocity pair.
+  /**
+   Locate the zone(s) that match the given key/velocity pair.
 
-     @param key the MIDI key to filter on
-     @param velocity the MIDI velocity to filter on
-     @returns a vector of matching zones
-     */
-    Matches filter(int key, int velocity) const {
-        Matches matches;
-        auto pos = zones_.begin();
-        if (hasGlobal()) ++pos;
-        std::copy_if(pos, zones_.end(), std::back_inserter(matches),
-                     [key, velocity](const Zone& zone) { return zone.appliesTo(key, velocity); });
-        return matches;
+   @param key the MIDI key to filter on
+   @param velocity the MIDI velocity to filter on
+   @returns a vector of matching zones
+   */
+  Matches filter(int key, int velocity) const {
+    Matches matches;
+    auto pos = zones_.begin();
+    if (hasGlobal()) ++pos;
+    std::copy_if(pos, zones_.end(), std::back_inserter(matches),
+                 [key, velocity](const Zone& zone) { return zone.appliesTo(key, velocity); });
+    return matches;
+  }
+
+  /// @returns true if first zone in collection is a global zone
+  bool hasGlobal() const { return zones_.empty() ? false : zones_.front().isGlobal(); }
+
+  /// @returns get pointer to global zone or nullptr if there is not one
+  const Kind* global() const { return hasGlobal() ? &zones_.front() : nullptr; }
+
+  /**
+   Add a zone with the given args. Note that empty zones (no generators and no modulators) are dropped, as are any
+   global zones that are not the first zone.
+
+   @param file the SF2 file with the entities to use
+   @param bag the definition for the Zone
+   @param values additional arguments for the Zone construction
+   */
+  template<class... Args>
+  void add(const IO::File& file, const Entity::Bag& bag, Args&&... values) {
+    // Per spec, skip empty zone definitions
+    if (bag.generatorCount() == 0 && bag.modulatorCount() == 0) return;
+    zones_.emplace_back(file, bag, std::forward<Args>(values)...);
+    // Per spec, only allow one global zone and it must be the first one
+    if (zones_.size() > 1 && zones_.back().isGlobal()) {
+      zones_.pop_back();
     }
-
-    /// @returns true if first zone in collection is a global zone
-    bool hasGlobal() const { return zones_.empty() ? false : zones_.front().isGlobal(); }
-
-    /// @returns get pointer to global zone or nullptr if there is not one
-    const Kind* global() const { return hasGlobal() ? &zones_.front() : nullptr; }
-
-    /**
-     Add a zone with the given args. Note that empty zones (no generators and no modulators) are dropped, as are any
-     global zones that are not the first zone.
-
-     @param file the SF2 file with the entities to use
-     @param bag the definition for the Zone
-     @param values additional arguments for the Zone construction
-     */
-    template<class... Args>
-    void add(const IO::File& file, const Entity::Bag& bag, Args&&... values) {
-        // Per spec, skip empty zone definitions
-        if (bag.generatorCount() == 0 && bag.modulatorCount() == 0) return;
-        zones_.emplace_back(file, bag, std::forward<Args>(values)...);
-        // Per spec, only allow one global zone and it must be the first one
-        if (zones_.size() > 1 && zones_.back().isGlobal()) {
-            zones_.pop_back();
-        }
-    }
+  }
 
 private:
-    std::vector<Kind> zones_;
+  std::vector<Kind> zones_;
 };
 
 } // namespace SF2::Render

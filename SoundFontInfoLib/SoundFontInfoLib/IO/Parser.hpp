@@ -17,36 +17,36 @@ namespace SF2::IO {
 class Parser {
 public:
 
-    /// Extracted preset information from the SF2 file.
-    struct PresetInfo {
-        PresetInfo(std::string n, uint16_t b, uint16_t p) : name{n}, bank{b}, preset{p} {}
+  /// Extracted preset information from the SF2 file.
+  struct PresetInfo {
+    PresetInfo(std::string n, uint16_t b, uint16_t p) : name{n}, bank{b}, preset{p} {}
 
-        std::string name;
-        uint16_t bank;
-        uint16_t preset;
-    };
+    std::string name;
+    uint16_t bank;
+    uint16_t preset;
+  };
 
-    /// Extract SF2 info
-    struct Info {
+  /// Extract SF2 info
+  struct Info {
 
-        /// The name embedded in the SF2 file
-        std::string embeddedName;
-        std::string embeddedAuthor;
-        std::string embeddedCopyright;
-        std::string embeddedComment;
+    /// The name embedded in the SF2 file
+    std::string embeddedName;
+    std::string embeddedAuthor;
+    std::string embeddedCopyright;
+    std::string embeddedComment;
 
-        /// The collection of preset definitions from the SF2 file
-        std::vector<PresetInfo> presets;
-    };
+    /// The collection of preset definitions from the SF2 file
+    std::vector<PresetInfo> presets;
+  };
 
-    /**
-     Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this
-     really just parses any RIFF format. We postpone the SF2 evaluation until the initial loading is done.
+  /**
+   Attempt to parse a SoundFont resource. Any failures to do so will throw a FormatError exception. Note that this
+   really just parses any RIFF format. We postpone the SF2 evaluation until the initial loading is done.
 
-     - parameter fd: file descriptor of the SF2 file to read from for data
-     - parameter size: the number of bytes available for processing
-     */
-    static Info parse(int fd, size_t size);
+   - parameter fd: file descriptor of the SF2 file to read from for data
+   - parameter size: the number of bytes available for processing
+   */
+  static Info parse(int fd, size_t size);
 };
 
 } // end namespace SF2::IO

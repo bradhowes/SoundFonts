@@ -17,35 +17,35 @@ namespace SF2::Entity::Generator {
  */
 class Generator {
 public:
-    static constexpr size_t size = 4;
+  static constexpr size_t size = 4;
 
-    /**
-     Constructor from file.
+  /**
+   Constructor from file.
 
-     @param pos location in file to read
-     */
-    explicit Generator(IO::Pos& pos) { assert(sizeof(*this) == size); pos = pos.readInto(*this); }
+   @param pos location in file to read
+   */
+  explicit Generator(IO::Pos& pos) { assert(sizeof(*this) == size); pos = pos.readInto(*this); }
 
-    /// @returns index of the generator as an enumerated type
-    Index index() const { return index_.index(); }
+  /// @returns index of the generator as an enumerated type
+  Index index() const { return index_.index(); }
 
-    /// @returns value configured for the generator
-    Amount amount() const { return amount_; }
+  /// @returns value configured for the generator
+  Amount amount() const { return amount_; }
 
-    /// @returns meta-data for the generator
-    const Definition& definition() const { return Definition::definition(index_.index()); }
+  /// @returns meta-data for the generator
+  const Definition& definition() const { return Definition::definition(index_.index()); }
 
-    /// @returns the name of the generator
-    const std::string& name() const { return definition().name(); }
+  /// @returns the name of the generator
+  const std::string& name() const { return definition().name(); }
 
-    /// @returns the configured value of a generator
-    int value() const { return definition().valueOf(amount_); }
+  /// @returns the configured value of a generator
+  int value() const { return definition().valueOf(amount_); }
 
-    void dump(const std::string& indent, int index) const;
+  void dump(const std::string& indent, int index) const;
 
 private:
-    RawIndex index_;
-    Amount amount_;
+  RawIndex index_;
+  Amount amount_;
 };
 
 } // end namespace SF2::Entity::Generator

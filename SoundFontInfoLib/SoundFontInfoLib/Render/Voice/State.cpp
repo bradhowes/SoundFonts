@@ -12,70 +12,70 @@ using namespace SF2::Render::Voice;
 State::State(double sampleRate, const MIDI::Channel& channel, const Setup& setup) :
 values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, velocity_{setup.velocity()}
 {
-    // (1) Initialize to default values
-    setDefaults();
+  // (1) Initialize to default values
+  setDefaults();
 
-    // (2) Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
-    setup.apply(*this);
+  // (2) Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
+  setup.apply(*this);
 
-    // (3) Now finish configuring the modulators by resolving any links between them.
-    for (const auto& modulator : modulators_) {
-        if (modulator.configuration().hasModulatorDestination()) {
-            for (auto& destination : modulators_) {
-                if (destination.configuration().source().isLinked() &&
-                    modulator.configuration().linkDestination() == destination.index()) {
-                    destination.setSource(modulator);
-                }
-            }
+  // (3) Now finish configuring the modulators by resolving any links between them.
+  for (const auto& modulator : modulators_) {
+    if (modulator.configuration().hasModulatorDestination()) {
+      for (auto& destination : modulators_) {
+        if (destination.configuration().source().isLinked() &&
+            modulator.configuration().linkDestination() == destination.index()) {
+          destination.setSource(modulator);
         }
+      }
     }
+  }
 }
 
 void
 State::setDefaults() {
-    values_.fill(0);
-    adjustments_.fill(0);
-    setValue(Index::initialFilterCutoff, 13500);
-    setValue(Index::delayModulatorLFO, -12000);
-    setValue(Index::delayVibratoLFO, -12000);
-    setValue(Index::delayModulatorEnvelope, -12000);
-    setValue(Index::attackModulatorEnvelope, -12000);
-    setValue(Index::holdModulatorEnvelope, -12000);
-    setValue(Index::decayModulatorEnvelope, -12000);
-    setValue(Index::releaseModulatorEnvelope, -12000);
-    setValue(Index::delayVolumeEnvelope, -12000);
-    setValue(Index::attackVolumeEnvelope, -12000);
-    setValue(Index::holdVolumeEnvelope, -12000);
-    setValue(Index::decayVolumeEnvelope, -12000);
-    setValue(Index::releaseVolumeEnvelope, -12000);
-    setValue(Index::forcedMIDIKey, -1);
-    setValue(Index::forcedMIDIVelocity, -1);
-    setValue(Index::scaleTuning, 100);
-    setValue(Index::overridingRootKey, -1);
+  values_.fill(0);
+  adjustments_.fill(0);
+  setValue(Index::initialFilterCutoff, 13500);
+  setValue(Index::delayModulatorLFO, -12000);
+  setValue(Index::delayVibratoLFO, -12000);
+  setValue(Index::delayModulatorEnvelope, -12000);
+  setValue(Index::attackModulatorEnvelope, -12000);
+  setValue(Index::holdModulatorEnvelope, -12000);
+  setValue(Index::decayModulatorEnvelope, -12000);
+  setValue(Index::releaseModulatorEnvelope, -12000);
+  setValue(Index::delayVolumeEnvelope, -12000);
+  setValue(Index::attackVolumeEnvelope, -12000);
+  setValue(Index::holdVolumeEnvelope, -12000);
+  setValue(Index::decayVolumeEnvelope, -12000);
+  setValue(Index::releaseVolumeEnvelope, -12000);
+  setValue(Index::forcedMIDIKey, -1);
+  setValue(Index::forcedMIDIVelocity, -1);
+  setValue(Index::scaleTuning, 100);
+  setValue(Index::overridingRootKey, -1);
 
-    // Install default modulators for the voice. Zones can override them and add new ones.
-    for (const auto& modulator : Entity::Modulator::Modulator::defaults) {
-        addModulator(modulator);
-    }
+  // Install default modulators for the voice. Zones can override them and add new ones.
+  for (const auto& modulator : Entity::Modulator::Modulator::defaults) {
+    addModulator(modulator);
+  }
 }
 
 void
 State::addModulator(const Entity::Modulator::Modulator& modulator) {
 
-    // Per spec, there must only be one modulator with specific (sfModSrcOper, sfModDestOper, and sfModSrcAmtOper)
-    // values. If we find a duplicate, flag it as not being used, but keep it around so that modulator linking is not
-    // broken if it is used.
-    for (auto pos = modulators_.begin(); pos < modulators_.end(); ++pos) {
-        if (pos->configuration() == modulator) {
-            pos->flagInvalid();
-            break;
-        }
+  // Per spec, there must only be one modulator with specific (sfModSrcOper, sfModDestOper, and sfModSrcAmtOper)
+  // values. If we find a duplicate, flag it as not being used, but keep it around so that modulator linking is not
+  // broken if it is used.
+  for (auto pos = modulators_.begin(); pos < modulators_.end(); ++pos) {
+    if (pos->configuration() == modulator) {
+      pos->flagInvalid();
+      break;
     }
+  }
 
-    size_t index = modulators_.size();
-    modulators_.emplace_back(index, modulator, *this);
+  size_t index = modulators_.size();
+  modulators_.emplace_back(index, modulator, *this);
 
-    if (modulator.hasGeneratorDestination()) {
-        valueModulators_[Entity::Generator::indexValue(modulator.generatorDestination())].push_front(index);
-    }
+  if (modulator.hasGeneratorDestination()) {
+    valueModulators_[Entity::Generator::indexValue(modulator.generatorDestination())].push_front(index);
+  }
 }
