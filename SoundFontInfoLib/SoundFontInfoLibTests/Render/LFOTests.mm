@@ -16,69 +16,69 @@ using namespace SF2::Render;
 @implementation LFOTests
 
 - (void)setUp {
-    _epsilon = 0.0001;
+  _epsilon = 0.0001;
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+  // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
 - (void)testSamples {
-    LFO osc(8.0, 1.0, 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), -0.5);
-    SamplesEqual(osc.valueAndIncrement(), -1.0);
-    SamplesEqual(osc.valueAndIncrement(), -0.5);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
+  LFO osc(8.0, 1.0, 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), -0.5);
+  SamplesEqual(osc.valueAndIncrement(), -1.0);
+  SamplesEqual(osc.valueAndIncrement(), -0.5);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
 }
 
 - (void)testSaveRestore {
-    LFO osc(8.0, 1.0, 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    auto state = osc.saveState();
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc.restoreState(state);
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
+  LFO osc(8.0, 1.0, 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  auto state = osc.saveState();
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  osc.restoreState(state);
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
 }
 
 - (void)testDelay {
-    LFO osc(8.0, 1.0, 0.125);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc.setDelay(0.25);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
+  LFO osc(8.0, 1.0, 0.125);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  osc.setDelay(0.25);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
 }
 
 - (void)testConfig {
-    auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    osc = LFO::Config(8.0).frequency(2.0).make();
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
-    osc = LFO::Config(8.0).frequency(1.0).make();
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
-    osc = LFO::Config(8.0).frequency(1.0).make();
-    SamplesEqual(osc.valueAndIncrement(), 0.0);
-    SamplesEqual(osc.valueAndIncrement(), 0.5);
-    SamplesEqual(osc.valueAndIncrement(), 1.0);
+  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  osc = LFO::Config(8.0).frequency(2.0).make();
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
+  osc = LFO::Config(8.0).frequency(1.0).make();
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
+  osc = LFO::Config(8.0).frequency(1.0).make();
+  SamplesEqual(osc.valueAndIncrement(), 0.0);
+  SamplesEqual(osc.valueAndIncrement(), 0.5);
+  SamplesEqual(osc.valueAndIncrement(), 1.0);
 }
 
 @end

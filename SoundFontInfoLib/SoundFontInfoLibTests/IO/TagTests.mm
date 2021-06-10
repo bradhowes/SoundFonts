@@ -14,12 +14,12 @@ using namespace SF2::IO;
 @implementation TagsTests
 
 - (void)testPack4Chars {
-    uint32_t value = Pack4Chars("abcd");
-    XCTAssertEqual(1684234849, value);
+  uint32_t value = Pack4Chars("abcd");
+  XCTAssertEqual(1684234849, value);
 }
 
 - (void)testRiff {
-    XCTAssertEqual(1179011410, riff);
+  XCTAssertEqual(1179011410, riff);
 }
 
 @end

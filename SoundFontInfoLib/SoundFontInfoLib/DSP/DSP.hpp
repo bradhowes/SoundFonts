@@ -42,7 +42,7 @@ inline constexpr Float InterNoteMultiplier = 1.05946309435929530984310531493975;
  
  @param value the number to convert
  */
-inline Float centsToSeconds(Float value) { return std::pow(2.0, value / 1200.0); }
+inline Float centsToSeconds(Float value) { return std::exp2(value / 1200.0); }
 
 /**
  Convert cents value into a power of 2. There are 1200 cents per power of 2.
@@ -50,7 +50,7 @@ inline Float centsToSeconds(Float value) { return std::pow(2.0, value / 1200.0);
  @param value the value to convert
  @returns power of 2 value
  */
-inline Float centsToPower2(Float value) { return std::pow(2.0, Float(value) / CentsPerOctave); }
+inline Float centsToPower2(Float value) { return std::exp2(Float(value) / CentsPerOctave); }
 
 /**
  Convert cents to frequency, with 0 being 8.175798 Hz. Values are clamped to [-16000, 4500].

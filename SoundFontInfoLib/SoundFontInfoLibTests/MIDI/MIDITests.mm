@@ -16,7 +16,7 @@ using namespace SF2::MIDI;
 @implementation MIDITests
 
 - (void)setUp {
-    self.epsilon = 0.0000001;
+  self.epsilon = 0.0000001;
 }
 
 @end

@@ -85,7 +85,7 @@ public:
 private:
 
   static size_t smallestPowerOf2For(double value) {
-    return size_t(std::pow(2.0, std::ceil(std::log2(std::fmaxf(value, 1.0)))));
+    return size_t(std::exp2(std::ceil(std::log2(std::fmaxf(value, 1.0)))));
   }
 
   size_t wrapMask_;

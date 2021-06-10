@@ -27,30 +27,30 @@ static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -
 }
 
 - (void)testLoading {
-    CanonicalBuffer buffer{values, header};
-    XCTAssertFalse(buffer.isLoaded());
-    buffer.load();
-    XCTAssertTrue(buffer.isLoaded());
+  CanonicalBuffer buffer{values, header};
+  XCTAssertFalse(buffer.isLoaded());
+  buffer.load();
+  XCTAssertTrue(buffer.isLoaded());
 }
 
 - (void)testLinearInterpolation {
-    CanonicalBuffer buffer{values, header};
-    Generator gen{buffer, State(76.9230769231, channel, 69, 64)};
-    buffer.load();
-    XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.732421875, gen.generate(0.0, true), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.335693359375, gen.generate(0.0, true), 0.0000001);
+  CanonicalBuffer buffer{values, header};
+  Generator gen{buffer, State(76.9230769231, channel, 69, 64)};
+  buffer.load();
+  XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.732421875, gen.generate(0.0, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.335693359375, gen.generate(0.0, true), 0.0000001);
 }
 
 - (void)testCubicInterpolation {
-    CanonicalBuffer buffer{values, header};
-    Generator gen{buffer, State(76.9230769231, channel, 69, 64), Generator::Interpolator::cubic4thOrder};
-    buffer.load();
-    XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, false), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.721051098083, gen.generate(0.0, false), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.761876096931, gen.generate(0.0, false), 0.0000001);
-    XCTAssertEqualWithAccuracy(0.348288029812, gen.generate(0.0, false), 0.0000001);
+  CanonicalBuffer buffer{values, header};
+  Generator gen{buffer, State(76.9230769231, channel, 69, 64), Generator::Interpolator::cubic4thOrder};
+  buffer.load();
+  XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, false), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.721051098083, gen.generate(0.0, false), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.761876096931, gen.generate(0.0, false), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.348288029812, gen.generate(0.0, false), 0.0000001);
 }
 
 @end

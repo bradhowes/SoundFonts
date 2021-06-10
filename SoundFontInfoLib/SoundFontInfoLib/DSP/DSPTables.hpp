@@ -109,7 +109,7 @@ struct CentsFrequencyLookup {
 private:
   inline constexpr static Float Span = Float((CentsFrequencyLookup::TableSize - 1) / 2);
   
-  static Float value(size_t index) { return std::pow(2.0, (index - Span) / Span); }
+  static Float value(size_t index) { return std::exp((index - Span) / Span); }
   
   static const std::array<Float, TableSize> lookup_;
   CentsFrequencyLookup() = delete;
@@ -126,7 +126,7 @@ struct CentsPartialLookup {
   static Float convert(int partial) { return lookup_[std::clamp<int>(partial, 0, MaxCentsValue - 1)]; }
   
 private:
-  static Float value(size_t index) { return 6.875 * std::pow(2.0, Float(index) / 1200.0); }
+  static Float value(size_t index) { return 6.875 * std::exp2(Float(index) / 1200.0); }
   static const std::array<Float, TableSize> lookup_;
   CentsPartialLookup() = delete;
   friend struct Generator;

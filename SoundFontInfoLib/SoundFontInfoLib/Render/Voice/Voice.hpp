@@ -49,11 +49,14 @@ public:
 
   /// @returns true if the voice can enter a loop if it is available
   bool canLoop() const {
-    return (loopingMode_ == State::continuously ||
-            (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated()));
+    return loopingMode_ == State::continuously || (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated());
   }
 
-  /// @returns renders a sample
+  /**
+   Renders the next sample for a voice. Inactive voices always return 0.0.
+
+   @returns next sample
+   */
   double render() {
     if (!isActive()) return 0.0;
 
@@ -74,10 +77,8 @@ private:
   State state_;
   State::LoopingMode loopingMode_;
   Sample::Generator sampleGenerator_;
-
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
-
   LFO modulatorLFO_;
   LFO vibratoLFO_;
 

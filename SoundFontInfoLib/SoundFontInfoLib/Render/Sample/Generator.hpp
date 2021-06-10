@@ -47,6 +47,8 @@ public:
   /**
    Obtain an interpolated sample value at the given index.
 
+   @param pitchAdjustment value to add to the fundamental pitch of the key being played
+   @param canLoop true if the generator is permitted to loop for more samples
    @returns new sample value
    */
   double generate(double pitchAdjustment, bool canLoop) {
@@ -68,8 +70,8 @@ private:
   void calculateIndexIncrement(double pitchAdjustment) {
     if (pitchAdjustment == lastPitchAdjustment_ && bufferIndex_.hasIncrement()) return;
     lastPitchAdjustment_ = pitchAdjustment;
-    double frequencyRatio = std::pow(2.0, (state_.pitch() + pitchAdjustment -
-                                           samples_.header().originalMIDIKey()) / 12.0);
+    double exponent = (state_.pitch() + pitchAdjustment - samples_.header().originalMIDIKey()) / 12.0;
+    double frequencyRatio = std::exp2(exponent);
     double increment = sampleRateRatio_ * frequencyRatio;
     bufferIndex_.setIncrement(increment);
   }
