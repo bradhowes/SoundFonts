@@ -2,9 +2,10 @@
 
 #pragma once
 
+#include <optional>
+
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
-
 #include "Render/Zone.hpp"
 
 namespace SF2::Render {
@@ -16,6 +17,8 @@ class VoiceState;
  */
 class InstrumentZone : public Zone {
 public:
+  /// The type for the optional global InstrumentZone
+  using GlobalType = std::optional<const InstrumentZone*>;
 
   /**
    Construct new zone from entity in file.
@@ -43,5 +46,8 @@ public:
 private:
   const Render::Sample::CanonicalBuffer* sampleBuffer_;
 };
+
+/// The type for the optional global InstrumentZone
+using GlobalInstrumentZone = InstrumentZone::GlobalType;
 
 } // namespace SF2::Render

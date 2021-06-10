@@ -8,7 +8,6 @@
 #include "IO/File.hpp"
 #include "Render/InstrumentCollection.hpp"
 #include "Render/Zone.hpp"
-#include "Render/Voice/State.hpp"
 
 namespace SF2::Render {
 
@@ -17,6 +16,8 @@ namespace SF2::Render {
  */
 class PresetZone : public Zone {
 public:
+  /// The type for the optional global PresetZone
+  using GlobalType = std::optional<const PresetZone*>;
 
   /**
    Construct new zone from entity in file.
@@ -45,5 +46,8 @@ public:
 private:
   const Render::Instrument* instrument_;
 };
+
+/// The type for the optional global PresetZone
+using GlobalPresetZone = PresetZone::GlobalType;
 
 } // namespace SF2::Render

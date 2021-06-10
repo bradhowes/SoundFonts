@@ -22,6 +22,7 @@ template <typename Kind>
 class ZoneCollection
 {
 public:
+  using GlobalZoneType = typename Kind::GlobalType;
   using Matches = typename std::vector<std::reference_wrapper<Kind const>>;
 
   /**
@@ -54,7 +55,7 @@ public:
   bool hasGlobal() const { return zones_.empty() ? false : zones_.front().isGlobal(); }
 
   /// @returns get pointer to global zone or nullptr if there is not one
-  const Kind* global() const { return hasGlobal() ? &zones_.front() : nullptr; }
+  GlobalZoneType global() const { return hasGlobal() ? GlobalZoneType(&zones_.front()) : GlobalZoneType(); }
 
   /**
    Add a zone with the given args. Note that empty zones (no generators and no modulators) are dropped, as are any

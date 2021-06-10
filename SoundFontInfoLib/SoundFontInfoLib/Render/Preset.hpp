@@ -47,7 +47,7 @@ public:
     Matches zonePairs;
     for (const PresetZone& presetZone : zones_.filter(key, velocity)) {
       const Instrument& instrument = presetZone.instrument();
-      const InstrumentZone* instrumentGlobal = instrument.globalZone();
+      auto instrumentGlobal = instrument.globalZone();
       for (const InstrumentZone& instrumentZone : instrument.filter(key, velocity)) {
         zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal, key, velocity);
       }

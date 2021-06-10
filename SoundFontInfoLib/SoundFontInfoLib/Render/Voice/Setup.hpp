@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "Render/PresetZone.hpp"
 #include "Render/InstrumentZone.hpp"
 #include "Render/Sample/CanonicalBuffer.hpp"
@@ -20,31 +22,32 @@ public:
    Construct a preset/instrument pair
 
    @param presetZone the PresetZone that matched a key/velocity search
-   @param presetGlobal the global PresetZone to apply (optional -- nullptr if no global)
+   @param globalPresetZone the global PresetZone to apply (optional -- nullptr if no global)
    @param instrumentZone the InstrumentZone that matched a key/velocity search
-   @param instrumentGlobal the global InstrumentZone to apply (optional -- nullptr if no global)
+   @param globalInstrumentZone the global InstrumentZone to apply (optional -- nullptr if no global)
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Setup(const PresetZone& presetZone, const PresetZone* presetGlobal, const InstrumentZone& instrumentZone,
-        const InstrumentZone* instrumentGlobal, int key, int velocity) :
-  presetZone_{presetZone}, presetGlobal_{presetGlobal}, instrumentZone_{instrumentZone},
-  instrumentGlobal_{instrumentGlobal}, key_{key}, velocity_{velocity} {}
+  Setup(const PresetZone& presetZone, GlobalPresetZone globalPresetZone, const InstrumentZone& instrumentZone,
+        GlobalInstrumentZone globalInstrumentZone, int key, int velocity) :
+  presetZone_{presetZone}, globalPresetZone_{globalPresetZone}, instrumentZone_{instrumentZone},
+  globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity} {}
 
   /**
-   Update a State with the various zone configurations.
+   Update a state with the various zone configurations. This is to be done just once during the start of a voice playing
+   a note.
 
-   @param state the VoiceState to update
+   @param state the voice state to update
    */
   void apply(State& state) const {
 
     // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
     // their settings.
-    if (instrumentGlobal_ != nullptr) instrumentGlobal_->apply(state);
+    if (globalInstrumentZone_) globalInstrumentZone_.value()->apply(state);
     instrumentZone_.apply(state);
 
     // According to spec, a preset global should only be applied iff there is NOT a preset generator.
-    if (presetGlobal_ != nullptr) presetGlobal_->refine(state);
+    if (globalPresetZone_) globalPresetZone_.value()->refine(state);
     presetZone_.refine(state);
   }
 
@@ -62,9 +65,9 @@ public:
 
 private:
   const PresetZone& presetZone_;
-  const PresetZone* presetGlobal_;
+  const GlobalPresetZone globalPresetZone_;
   const InstrumentZone& instrumentZone_;
-  const InstrumentZone* instrumentGlobal_;
+  const GlobalInstrumentZone globalInstrumentZone_;
   int key_;
   int velocity_;
 };

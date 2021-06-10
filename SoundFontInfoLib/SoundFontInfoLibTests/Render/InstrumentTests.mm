@@ -32,9 +32,9 @@ using namespace SF2::Render;
     XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());
 
     XCTAssertTrue(instrument.hasGlobalZone());
-    const InstrumentZone* globalZone = instrument.globalZone();
-    XCTAssertTrue(globalZone != nullptr);
-    XCTAssertEqual(nullptr, globalZone->sampleBuffer());
+    auto globalZone = instrument.globalZone();
+    XCTAssertTrue(globalZone);
+    XCTAssertEqual(nullptr, globalZone.value()->sampleBuffer());
 
     auto zones = instrument.filter(64, 10);
     XCTAssertEqual(2, zones.size());
