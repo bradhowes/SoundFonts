@@ -13,7 +13,7 @@ class State;
 /**
  A combination of preset zone and instrument zone (plus optional global zones for each) that pertains to a MIDI
  key/velocity pair. One instance represents the configuration that should apply to the state of one voice for rendering
- samples.
+ samples at a specific key frequency and velocity.
  */
 class Setup {
 public:

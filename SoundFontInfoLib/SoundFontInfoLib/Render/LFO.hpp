@@ -13,7 +13,7 @@ namespace SF2::Render {
  Implementation of a low-frequency triangular oscillator. By design, this LFO emits bipolar values from -1.0 to 1.0 in
  order to be useful in SF2 processing. One can obtain unipolar values via the DSP::bipolarToUnipolar method. An LFO
  will start emitting with value 0.0, again by design, in order to smoothly transition from a paused LFO into a running
- one.
+ one. An LFO can be configured to delay oscillating for N samples. During that time it will emit 0.0.
  */
 class LFO {
 public:
@@ -141,26 +141,6 @@ public:
   }
 
   /**
-   Increment the oscillator to the next value.
-   */
-  void increment() {
-    if (delaySampleCount_ > 0) {
-      --delaySampleCount_;
-    }
-    else {
-      counter_ += increment_;
-      if (counter_ >= 1.0) {
-        increment_ = -increment_;
-        counter_ = 2.0 - counter_;
-      }
-      else if (counter_ <= -1.0) {
-        increment_ = -increment_;
-        counter_ = -2.0 - counter_;
-      }
-    }
-  }
-
-  /**
    Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
 
    @returns current waveform value
@@ -181,6 +161,25 @@ public:
 private:
 
   void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
+
+  void increment() {
+    if (delaySampleCount_ > 0) {
+      --delaySampleCount_;
+      return;
+    }
+
+    counter_ += increment_;
+
+    // For triangle waveform, the increment is the slope, so to just negate current value when changing directions.
+    if (counter_ >= 1.0) {
+      increment_ = -increment_;
+      counter_ = 2.0 - counter_;
+    }
+    else if (counter_ <= -1.0) {
+      increment_ = -increment_;
+      counter_ = -2.0 - counter_;
+    }
+  }
 
   Float sampleRate_;
   Float frequency_;
