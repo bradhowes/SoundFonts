@@ -18,12 +18,17 @@ using namespace SF2::Render;
 static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 @interface VoiceTests : XCTestCase <AVAudioPlayerDelegate>
+@property (nonatomic) bool playAudio;
 @property (nonatomic, retain) AVAudioPlayer* player;
 @property (nonatomic, retain) XCTestExpectation* expectation;
 @property (nonatomic, retain) NSURL* audioFileURL;
 @end
 
 @implementation VoiceTests
+
+- (void)setUp {
+  self.playAudio = NO;
+}
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
   [[NSFileManager defaultManager] removeItemAtPath:[self.audioFileURL path]  error:NULL];
@@ -200,6 +205,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 - (void)playSamples:(AVAudioPCMBuffer*)buffer count:(int)sampleCount
 {
+  if (!self.playAudio) return;
+
   buffer.frameLength = sampleCount;
 
   NSError* error = nil;

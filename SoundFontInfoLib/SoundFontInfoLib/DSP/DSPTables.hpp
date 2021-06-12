@@ -109,7 +109,7 @@ struct CentsFrequencyLookup {
 private:
   inline constexpr static Float Span = Float((CentsFrequencyLookup::TableSize - 1) / 2);
   
-  static Float value(size_t index) { return std::exp((index - Span) / Span); }
+  static Float value(size_t index) { return std::exp2((index - Span) / Span); }
   
   static const std::array<Float, TableSize> lookup_;
   CentsFrequencyLookup() = delete;
