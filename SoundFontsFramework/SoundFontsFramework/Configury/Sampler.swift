@@ -120,19 +120,29 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     presetChangeManager.stop()
 
     if let engine = self.engine {
+      os_log(.debug, log: log, "stopping engine")
       engine.stop()
       if let sampler = self.auSampler {
+        os_log(.debug, log: log, "resetting sampler")
+        sampler.reset()
+        os_log(.debug, log: log, "detaching sampler")
         engine.detach(sampler)
+        os_log(.debug, log: log, "dropping sampler")
+        self.auSampler = nil
       }
+
+      os_log(.debug, log: log, "resetting engine")
       engine.reset()
+      os_log(.debug, log: log, "dropping engine")
+      self.engine = nil
     }
 
     if let sampler = self.auSampler {
+      os_log(.debug, log: log, "resetting sampler")
       sampler.reset()
+      os_log(.debug, log: log, "dropping sampler")
+      self.auSampler = nil
     }
-
-    auSampler = nil
-    engine = nil
   }
 
   /**
