@@ -193,11 +193,11 @@ extension FavoriteEditor: UITextFieldDelegate {
     return true
   }
   /**
-     Configure name field so that pressing RETURN will exit the editor.
+   Configure name field so that pressing RETURN will exit the editor.
 
-     - parameter textField: the name UITextField to work with
-     - returns: false
-     */
+   - parameter textField: the name UITextField to work with
+   - returns: false
+   */
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     save()
@@ -228,26 +228,26 @@ extension FavoriteEditor: UITextViewDelegate {
 extension FavoriteEditor {
 
   /**
-     Event handler for the `Done` button. Updates the Favorite instance with new values from the editing view.
+   Event handler for the `Done` button. Updates the Favorite instance with new values from the editing view.
 
-     - parameter sender: the `Done` button
-     */
+   - parameter sender: the `Done` button
+   */
   @IBAction private func donePressed(_ sender: UIBarButtonItem) { save() }
 
   /**
-     Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
+   Event handler for the `Cancel` button. Does nothing but asks for the delegate to dismiss the view.
 
-     - parameter sender: the `Cancel` button.
-     */
+   - parameter sender: the `Cancel` button.
+   */
   @IBAction private func cancelPressed(_ sender: UIBarButtonItem) { discard() }
 
   @IBAction private func useOriginalName(_ sender: UIButton) { name.text = originalName.text }
 
   /**
-     Event handler for the lowest key stepper.
+   Event handler for the lowest key stepper.
 
-     - parameter sender: UIStepper control
-     */
+   - parameter sender: UIStepper control
+   */
   @IBAction private func changeLowestKey(_ sender: UIStepper) {
     lowestNoteValue.text = Note(midiNoteValue: Int(sender.value)).label
   }
@@ -260,19 +260,19 @@ extension FavoriteEditor {
   }
 
   /**
-     Event handler for the gain slider
+   Event handler for the gain slider
 
-     - parameter sender: UISlider
-     */
+   - parameter sender: UISlider
+   */
   @IBAction private func volumeChanged(_ sender: UISlider) { setGainValue(sender.value) }
 
   @IBAction private func resetGain(_ sender: UIButton) { setGainValue(0.0) }
 
   /**
-     Event handler for the pan slider
+   Event handler for the pan slider
 
-     - parameter sender: UISlider
-     */
+   - parameter sender: UISlider
+   */
   @IBAction private func panChanged(_ sender: UISlider) {
     setPanValue(sender.value)
   }
@@ -363,11 +363,11 @@ extension FavoriteEditor {
   }
 
   /**
-     Format a Float value so that it shows only two digits after the decimal point.
+   Format a Float value so that it shows only two digits after the decimal point.
 
-     - parameter value: the value to format
-     - returns: formatted value
-     */
+   - parameter value: the value to format
+   - returns: formatted value
+   */
   private func formatFloat(_ value: Float) -> String {
     String(format: "%+.1f", locale: Locale.current, arguments: [value])
   }
@@ -385,10 +385,10 @@ extension FavoriteEditor: UIPopoverPresentationControllerDelegate, UIAdaptivePre
   }
 
   /**
-     Treat touches outside of the popover as a signal to dismiss via Done button
+   Treat touches outside of the popover as a signal to dismiss via Done button
 
-     - parameter popoverPresentationController: the controller being monitored
-     */
+   - parameter popoverPresentationController: the controller being monitored
+   */
   public func popoverPresentationControllerDidDismissPopover(
     _ popoverPresentationController: UIPopoverPresentationController) {
     discard()

@@ -29,10 +29,10 @@ public struct ContextNotification<T> where T: NSManagedObject {
   }
 
   /**
-     Create wrapper for the given notification. The notification's name must be .NSManagedObjectContextDidSave.
+   Create wrapper for the given notification. The notification's name must be .NSManagedObjectContextDidSave.
 
-     - parameter notification: the object to wrap
-     */
+   - parameter notification: the object to wrap
+   */
   public init(notification: Notification) {
     guard
       notification.name == .NSManagedObjectContextDidSave

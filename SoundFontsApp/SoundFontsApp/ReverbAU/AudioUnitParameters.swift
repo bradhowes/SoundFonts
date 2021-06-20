@@ -46,15 +46,15 @@ public struct AudioUnitParameters {
   public let parameterTree: AUParameterTree
 
   /**
-     Create a new AUParameterTree for the defined filter parameters.
+   Create a new AUParameterTree for the defined filter parameters.
 
-     Installs three closures in the tree:
-     - one for providing values
-     - one for accepting new values from other sources
-     - and one for obtaining formatted string values
+   Installs three closures in the tree:
+   - one for providing values
+   - one for accepting new values from other sources
+   - and one for obtaining formatted string values
 
-     - parameter parameterHandler the object to use to handle the AUParameterTree requests
-     */
+   - parameter parameterHandler the object to use to handle the AUParameterTree requests
+   */
   public init(parameterHandler: AUParameterHandler) {
     parameterTree = AUParameterTree.createTree(withChildren: [roomPreset, wetDryMix])
     parameterTree.implementorValueObserver = { parameterHandler.set($0, value: $1) }
@@ -77,10 +77,10 @@ public struct AudioUnitParameters {
   }
 
   /**
-     Apply a configuration to the reverb.
+   Apply a configuration to the reverb.
 
-     - parameter config: the configuration to use
-     */
+   - parameter config: the configuration to use
+   */
   func setConfig(_ config: ReverbConfig) {
     os_log(.info, log: log, "setConfig")
     self.roomPreset.setValue(AUValue(config.preset), originator: nil)
@@ -88,12 +88,12 @@ public struct AudioUnitParameters {
   }
 
   /**
-     Set a configuration parameter value.
+   Set a configuration parameter value.
 
-     - parameter address: the parameter to change
-     - parameter value: the new value for the parameter
-     - parameter originator: a token from the source of the value change request
-     */
+   - parameter address: the parameter to change
+   - parameter value: the new value for the parameter
+   - parameter originator: a token from the source of the value change request
+   */
   func set(_ address: Address, value: AUValue, originator: AUParameterObserverToken?) {
     switch address {
     case .roomPreset: roomPreset.setValue(value, originator: originator)
@@ -105,11 +105,11 @@ public struct AudioUnitParameters {
 extension AUParameterTree {
 
   /**
-     Obtain the current value of a configuration parameter.
+   Obtain the current value of a configuration parameter.
 
-     - parameter withAddress: the parameter to fetch
-     - returns: the current value of the parameter
-     */
+   - parameter withAddress: the parameter to fetch
+   - returns: the current value of the parameter
+   */
   func parameter(withAddress: AudioUnitParameters.Address) -> AUParameter? {
     parameter(withAddress: withAddress.rawValue)
   }

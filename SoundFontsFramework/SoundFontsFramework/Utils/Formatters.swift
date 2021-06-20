@@ -212,30 +212,30 @@ public struct Formatters {
   public static let strings: Strings = Strings()
 
   /**
-     Obtain a formatted slider value.
+   Obtain a formatted slider value.
 
-     - parameter sliderValue the value to format
-     - returns string value
-     */
+   - parameter sliderValue the value to format
+   - returns string value
+   */
   public static func format(sliderValue: Float) -> String {
     sliderFormatter.string(for: sliderValue) ?? "???"
   }
   /**
-     Obtain a formatted representation of a file count
+   Obtain a formatted representation of a file count
 
-     - parameter fileCount: value to format
-     - returns: string value
-     */
+   - parameter fileCount: value to format
+   - returns: string value
+   */
   public static func format(fileCount: Int) -> String {
     .localizedStringWithFormat(strings.fileCount, fileCount)
   }
 
   /**
-     Obtain a formatted representation of a preset count value.
+   Obtain a formatted representation of a preset count value.
 
-     - parameter presetCount: value to format
-     - returns: string value
-     */
+   - parameter presetCount: value to format
+   - returns: string value
+   */
   public static func format(presetCount: Int) -> String {
     .localizedStringWithFormat(strings.presetCount, presetCount)
   }
@@ -257,11 +257,11 @@ public struct Formatters {
   }
 
   /**
-     Generate a string that shows what failed when attempting to add one or more sound fonts to the app.
+   Generate a string that shows what failed when attempting to add one or more sound fonts to the app.
 
-     - parameter failures: the list of failures
-     - returns: string value
-     */
+   - parameter failures: the list of failures
+   - returns: string value
+   */
   public static func makeAddSoundFontFailureText(failures: [SoundFontFileLoadFailure]) -> String {
     guard !failures.isEmpty else { return "" }
     var counts = [SoundFontFileLoadFailure: [String]]()
@@ -287,13 +287,13 @@ public struct Formatters {
   }
 
   /**
-     Generate a string that shows the success and failures when adding one or more sound fonts to the app.
+   Generate a string that shows the success and failures when adding one or more sound fonts to the app.
 
-     - parameter ok: the names of the sound fonts that succeeded
-     - parameter failures: the collection of failures and their reasons
-     - parameter total: total number of sound fonts attempted
-     - returns: string value
-     */
+   - parameter ok: the names of the sound fonts that succeeded
+   - parameter failures: the collection of failures and their reasons
+   - parameter total: total number of sound fonts attempted
+   - returns: string value
+   */
   public static func makeAddSoundFontBody(
     ok: [String], failures: [SoundFontFileLoadFailure],
     total: Int

@@ -12,10 +12,10 @@ open class PersistentContainer: NSPersistentContainer {
   }
 
   /**
-     Create new container
+   Create new container
 
-     - parameter modelName: the name of the model to persist in the container
-     */
+   - parameter modelName: the name of the model to persist in the container
+   */
   public init(modelName: String) {
     let bundle = Bundle(for: PersistentContainer.self)
     let momUrl = bundle.url(forResource: modelName, withExtension: "momd")!

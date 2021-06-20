@@ -96,10 +96,10 @@ extension KeyboardController {
 extension KeyboardController: ControllerConfiguration {
 
   /**
-     Establish connections with other components
+   Establish connections with other components
 
-     - parameter router: the container holding the other components
-     */
+   - parameter router: the container holding the other components
+   */
   func establishConnections(_ router: ComponentContainer) {
     activePresetManager = router.activePresetManager
     infoBar = router.infoBar
@@ -153,21 +153,21 @@ extension KeyboardController: ControllerConfiguration {
 extension KeyboardController {
 
   /**
-     Begin processing a touch event for the keyboard
+   Begin processing a touch event for the keyboard
 
-     - parameter touches: the touch events that started
-     - parameter event: the event that spawned the touches
-     */
+   - parameter touches: the touch events that started
+   - parameter event: the event that spawned the touches
+   */
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     pressKeys(touches)
   }
 
   /**
-     Update touch events for the keyboard
+   Update touch events for the keyboard
 
-     - parameter touches: the touch events that moved
-     - parameter event: the event that spawned the touches
-     */
+   - parameter touches: the touch events that moved
+   - parameter event: the event that spawned the touches
+   */
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     if Settings.shared.slideKeyboard {
       if trackedTouch == nil {
@@ -196,19 +196,19 @@ extension KeyboardController {
   }
 
   /**
-     Complete touch events for the keyboard
+   Complete touch events for the keyboard
 
-     - parameter touches: the touch events that stopped
-     - parameter event: the event that spawned the touches
-     */
+   - parameter touches: the touch events that stopped
+   - parameter event: the event that spawned the touches
+   */
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { releaseKeys(touches) }
 
   /**
-     Cancel touch events for the keyboard
+   Cancel touch events for the keyboard
 
-     - parameter touches: the touch events that stopped
-     - parameter event: the event that spawned the touches
-     */
+   - parameter touches: the touch events that stopped
+   - parameter event: the event that spawned the touches
+   */
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     releaseKeys(touches)
   }
@@ -219,10 +219,10 @@ extension KeyboardController {
 extension KeyboardController: Keyboard {
 
   /**
-     Notification that the given note is being played (eg by MIDI event)
+   Notification that the given note is being played (eg by MIDI event)
 
-     - parameter note: the MIDI note value being played
-     */
+   - parameter note: the MIDI note value being played
+   */
   func noteIsOn(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
@@ -233,10 +233,10 @@ extension KeyboardController: Keyboard {
   }
 
   /**
-     Notification that the given note is not being played (eg by MIDI event)
+   Notification that the given note is not being played (eg by MIDI event)
 
-     - parameter note: the MIDI note value not being played
-     */
+   - parameter note: the MIDI note value not being played
+   */
   func noteIsOff(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
@@ -253,8 +253,8 @@ extension KeyboardController: Keyboard {
   var highestNote: Note { Note(midiNoteValue: lastMidiNoteValue) }
 
   /**
-     Demand that all keys stop playing audio.
-     */
+   Demand that all keys stop playing audio.
+   */
   func releaseAllKeys() {
     touchedKeys.releaseAll()
     DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }

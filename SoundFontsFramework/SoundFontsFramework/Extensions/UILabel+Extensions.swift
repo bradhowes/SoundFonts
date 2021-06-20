@@ -24,12 +24,12 @@ extension UILabel {
   }
 
   /**
-     Show a temporary status string in a label, replacing its current value. After some amount of time elapses, restore
-     the label to the original content.
+   Show a temporary status string in a label, replacing its current value. After some amount of time elapses, restore
+   the label to the original content.
 
-     - parameter status: the value to show
-     - parameter duration: the amount of time to show the status value
-     */
+   - parameter status: the value to show
+   - parameter duration: the amount of time to show the status value
+   */
   public func showStatus(_ status: String, duration: Double = 1.0) {
     if let timer = self.fadeTimer {
       timer.invalidate()

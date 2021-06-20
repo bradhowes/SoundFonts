@@ -15,21 +15,21 @@ public protocol Keyboard: AnyObject {
   var isMuted: Bool { get set }
 
   /**
-     Command the keyboard to release any pressed keys
-     */
+   Command the keyboard to release any pressed keys
+   */
   func releaseAllKeys()
 
   /**
-     Notify the keyboard that a given note is not playing.
+   Notify the keyboard that a given note is not playing.
 
-     - parameter note: the note that is not playing
-     */
+   - parameter note: the note that is not playing
+   */
   func noteIsOff(note: UInt8)
 
   /**
-     Notify the keyboard that a given note is currently playing.
+   Notify the keyboard that a given note is currently playing.
 
-     - parameter note: the note that is playing
-     */
+   - parameter note: the note that is playing
+   */
   func noteIsOn(note: UInt8)
 }

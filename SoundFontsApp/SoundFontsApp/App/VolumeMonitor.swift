@@ -32,10 +32,10 @@ final class VolumeMonitor {
   public var activePreset = true
 
   /**
-     Construct new monitor.
+   Construct new monitor.
 
-     - parameter keyboard: Keyboard instance that handle key renderings
-     */
+   - parameter keyboard: Keyboard instance that handle key renderings
+   */
   init(keyboard: Keyboard?) {
     self.keyboard = keyboard
   }
@@ -44,10 +44,10 @@ final class VolumeMonitor {
 extension VolumeMonitor {
 
   /**
-     Begin monitoring volume of the given AVAudioSession
+   Begin monitoring volume of the given AVAudioSession
 
-     - parameter session: the AVAudioSession to monitor
-     */
+   - parameter session: the AVAudioSession to monitor
+   */
   func start() {
     os_log(.info, log: log, "start")
     reason = nil
@@ -59,8 +59,8 @@ extension VolumeMonitor {
   }
 
   /**
-     Stop monitoring the output volume of an AVAudioSession
-     */
+   Stop monitoring the output volume of an AVAudioSession
+   */
   func stop() {
     os_log(.info, log: log, "stop")
     reason = nil
@@ -72,13 +72,13 @@ extension VolumeMonitor {
 extension VolumeMonitor {
 
   /**
-     Check the current volume state.
-     */
+   Check the current volume state.
+   */
   // func check() { update() }
 
   /**
-     Show any previously-posted silence reason.
-     */
+   Show any previously-posted silence reason.
+   */
   func repostNotice() { showReason() }
 }
 

@@ -56,11 +56,11 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Show the Favorite name and `active` indicator.
+   Show the Favorite name and `active` indicator.
 
-     - parameter favoriteName: the name to show
-     - parameter isActive: true if the Favorite's patch is currently active.
-     */
+   - parameter favoriteName: the name to show
+   - parameter isActive: true if the Favorite's patch is currently active.
+   */
   func update(favoriteName: String, isActive: Bool) {
     os_log(.info, log: log, "update: %{public}s %d", favoriteName, isActive)
 

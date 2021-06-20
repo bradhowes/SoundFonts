@@ -39,11 +39,11 @@ extension ManagedAppState {
 extension ManagedAppState {
 
   /**
-     Fetch the ManagedAppState singleton.
+   Fetch the ManagedAppState singleton.
 
-     - parameter context: the Core Data context to work in
-     - returns: the ManagedAppState instance
-     */
+   - parameter context: the Core Data context to work in
+   - returns: the ManagedAppState instance
+   */
   public static func get(context: NSManagedObjectContext) -> ManagedAppState {
     if let appState: ManagedAppState = context.object(forSingleObjectCacheKey: "ManagedAppState") {
       return appState

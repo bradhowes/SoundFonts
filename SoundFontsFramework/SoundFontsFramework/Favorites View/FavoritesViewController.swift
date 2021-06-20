@@ -151,10 +151,10 @@ extension FavoritesViewController: ControllerConfiguration {
 
   private func restored() {
     guard favoritesView != nil,
-      soundFonts.restored,
-      favorites.restored,
-      tags.restored,
-      favoritesView.delegate == nil
+          soundFonts.restored,
+          favorites.restored,
+          tags.restored,
+          favoritesView.delegate == nil
     else {
       return
     }
@@ -184,7 +184,7 @@ extension FavoritesViewController: SegueHandler {
 
   private func prepareToEdit(_ segue: UIStoryboardSegue, config: FavoriteEditor.Config) {
     guard let navController = segue.destination as? UINavigationController,
-      let viewController = navController.topViewController as? FavoriteEditor
+          let viewController = navController.topViewController as? FavoriteEditor
     else {
       return
     }

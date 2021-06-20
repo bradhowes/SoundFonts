@@ -9,9 +9,9 @@ public final class AskForReview: NSObject {
   private lazy var log = Logging.logger("AskForReview")
 
   /**
-     Class method that fires a notification to ask for a review check. If properly initialized, there should be an
-     instance of AskForReview around that is listening for the notification and will perform the actual review request.
-     */
+   Class method that fires a notification to ask for a review check. If properly initialized, there should be an
+   instance of AskForReview around that is listening for the notification and will perform the actual review request.
+   */
   static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
   /// Obtain the version found in the main bundle.
@@ -61,10 +61,10 @@ public final class AskForReview: NSObject {
   private var observer: NSObjectProtocol?
 
   /**
-     Construct new (sole) instance
+   Construct new (sole) instance
 
-     - parameter isMain: true if running inside app (vs AUv3 extension)
-     */
+   - parameter isMain: true if running inside app (vs AUv3 extension)
+   */
   public init(isMain: Bool) {
     super.init()
     os_log(
@@ -81,12 +81,12 @@ public final class AskForReview: NSObject {
   }
 
   /**
-     Ask user for a review. Whether the ask actually happens depends on *when* this method is called:
+   Ask user for a review. Whether the ask actually happens depends on *when* this method is called:
 
-     - must be at least 14 days since the app was first launched
-     - must be at least 2 months since the last review request
-     - version of the app must be different than the last version
-     */
+   - must be at least 14 days since the app was first launched
+   - must be at least 2 months since the last review request
+   - version of the app must be different than the last version
+   */
   public func ask() {
     os_log(.info, log: log, "ask")
 

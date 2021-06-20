@@ -109,8 +109,8 @@ public struct Settings {
   private let _instance: UserDefaults
 
   /**
-     Initialize settings from UserDefaults.
-     */
+   Initialize settings from UserDefaults.
+   */
   init() {
     guard let shared = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare")
     else {
@@ -119,7 +119,7 @@ public struct Settings {
 
     let instance = UserDefaults.standard
     if let sharedInit = shared.persistentDomain(
-      forName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare")
+        forName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare")
     {
       instance.register(defaults: sharedInit)
     }

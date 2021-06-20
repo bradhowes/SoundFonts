@@ -23,11 +23,11 @@ public final class SoundFontsAUViewController: AUViewController {
 extension SoundFontsAUViewController: AUAudioUnitFactory {
 
   /**
-     Create an audio unit to go with the view.
+   Create an audio unit to go with the view.
 
-     - parameter componentDescription: the definition used when locating the component to create
-     - returns: new SoundFontsAU instance
-     */
+   - parameter componentDescription: the definition used when locating the component to create
+   - returns: new SoundFontsAU instance
+   */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     os_log(.info, log: log, "createAudioUnit")
     let audioUnit = try SoundFontsAU(
@@ -44,10 +44,10 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
 extension SoundFontsAUViewController: ControllerConfiguration {
 
   /**
-     Establish connections with other managers / controllers.
+   Establish connections with other managers / controllers.
 
-     - parameter context: the RunContext that holds all of the registered managers / controllers
-     */
+   - parameter context: the RunContext that holds all of the registered managers / controllers
+   */
   public func establishConnections(_ router: ComponentContainer) {
     router.activePresetManager.subscribe(self, notifier: activePresetChange)
   }

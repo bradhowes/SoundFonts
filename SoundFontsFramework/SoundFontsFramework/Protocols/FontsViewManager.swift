@@ -7,14 +7,14 @@ import Foundation
 public protocol FontsViewManager: UpperViewSwipingActivity {
 
   /**
-     Dismiss the search keyboard if it is active.
-     */
+   Dismiss the search keyboard if it is active.
+   */
   func dismissSearchKeyboard()
 
   /**
-     Add one or more sound fonts to the app via URLs.
+   Add one or more sound fonts to the app via URLs.
 
-     - parameter urls: collection of URLs to add
-     */
+   - parameter urls: collection of URLs to add
+   */
   func addSoundFonts(urls: [URL])
 }

@@ -18,7 +18,7 @@ private enum Slot: Equatable {
  - row visibility editing
  - searching
  - row swiping
-*/
+ */
 final class PresetsTableViewManager: NSObject {
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
@@ -41,16 +41,16 @@ final class PresetsTableViewManager: NSObject {
   private var showingSearchResults: Bool { searchSlots != nil }
 
   /**
-     Construct a new presets table view manager.
+   Construct a new presets table view manager.
 
-     - parameter viewController: the view controller that holds this manager
-     - parameter activePresetManager: the active preset manager
-     - parameter selectedSoundFontManager: the selected sound font manager
-     - parameter soundFonts: the sound fonts collection manager
-     - parameter favorites: the favorites collection manager
-     - parameter keyboard: the optional keyboard view manager
-     - parameter infoBar: the info bar manager
-     */
+   - parameter viewController: the view controller that holds this manager
+   - parameter activePresetManager: the active preset manager
+   - parameter selectedSoundFontManager: the selected sound font manager
+   - parameter soundFonts: the sound fonts collection manager
+   - parameter favorites: the favorites collection manager
+   - parameter keyboard: the optional keyboard view manager
+   - parameter infoBar: the info bar manager
+   */
   init(viewController: PresetsTableViewController, activePresetManager: ActivePresetManager,
        selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
        keyboard: Keyboard?, infoBar: InfoBar) {
@@ -568,7 +568,7 @@ extension PresetsTableViewManager {
   private func getPresetIndexPath(for soundFontAndPreset: SoundFontAndPreset?) -> IndexPath? {
     guard let soundFontAndPreset = soundFontAndPreset else { return nil }
     guard let soundFont = selectedSoundFontManager.selected,
-      soundFont.key == soundFontAndPreset.soundFontKey
+          soundFont.key == soundFontAndPreset.soundFontKey
     else { return nil }
     let presetIndex = soundFontAndPreset.patchIndex
     if showingSearchResults {
@@ -873,7 +873,7 @@ extension PresetsTableViewManager {
   private func updateRow(with favorite: Favorite) {
     os_log(.debug, log: log, "updateRow - with favorite")
     guard let indexPath = getPresetIndexPath(for: favorite.key),
-      let cell: TableCell = view.cellForRow(at: indexPath)
+          let cell: TableCell = view.cellForRow(at: indexPath)
     else { return }
     updateCell(cell: cell, at: indexPath)
   }
@@ -881,7 +881,7 @@ extension PresetsTableViewManager {
   private func updateRow(with soundFontAndPreset: SoundFontAndPreset?) {
     os_log(.debug, log: log, "updateRow - with soundFontAndPreset")
     guard let indexPath = getPresetIndexPath(for: soundFontAndPreset),
-      let cell: TableCell = view.cellForRow(at: indexPath)
+          let cell: TableCell = view.cellForRow(at: indexPath)
     else { return }
     updateCell(cell: cell, at: indexPath)
   }

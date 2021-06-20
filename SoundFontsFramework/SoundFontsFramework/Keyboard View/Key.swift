@@ -28,11 +28,11 @@ public final class Key: UIView {
   }
 
   /**
-     Create new Key instance
+   Create new Key instance
 
-     - parameter frame: location of the key
-     - parameter note: the note that the key plays
-     */
+   - parameter frame: location of the key
+   - parameter note: the note that the key plays
+   */
   public init(frame: CGRect, note: Note) {
     self.note = note
     super.init(frame: frame)
@@ -40,19 +40,19 @@ public final class Key: UIView {
   }
 
   /**
-     Regenerate a Key using contents of an NSCoder
+   Regenerate a Key using contents of an NSCoder
 
-     - parameter coder: data container to use
-     */
+   - parameter coder: data container to use
+   */
   public required init?(coder aDecoder: NSCoder) {
     fatalError()
   }
 
   /**
-     Draw the key. Relies on the KeyboardRender methods to do the work.
+   Draw the key. Relies on the KeyboardRender methods to do the work.
 
-     - parameter rect: the region to draw in
-     */
+   - parameter rect: the region to draw in
+   */
   public override func draw(_ rect: CGRect) {
     let roundedCorner: CGFloat = (0.1875 * rect.width).rounded()
     if note.accented {
@@ -88,22 +88,22 @@ public final class Key: UIView {
 extension RandomAccessCollection where Element == Key {
 
   /**
-     Obtain the key that is touched by the given point.
+   Obtain the key that is touched by the given point.
 
-     - parameter point: the location to consider
-     - returns: Key instance that contains the point, or nil if none.
-     */
+   - parameter point: the location to consider
+   - returns: Key instance that contains the point, or nil if none.
+   */
   func touched(by point: CGPoint) -> Key? {
     let pos = orderedInsertionIndex(for: point)
     return pos < endIndex && self[pos].frame.contains(point) ? self[pos] : nil
   }
 
   /**
-     Obtain the sequence of keys that fill the given rect. Only considers the horizontal span for inclusion.
+   Obtain the sequence of keys that fill the given rect. Only considers the horizontal span for inclusion.
 
-     - parameter rect: the region to consider
-     - returns: sequence of Key instances that are in the given region
-     */
+   - parameter rect: the region to consider
+   - returns: sequence of Key instances that are in the given region
+   */
   func keySpan(for rect: CGRect) -> Self.SubSequence {
     let first = orderedInsertionIndex(for: rect.origin)
     let last = orderedInsertionIndex(for: rect.offsetBy(dx: rect.width, dy: 0.0).origin)
@@ -111,12 +111,12 @@ extension RandomAccessCollection where Element == Key {
   }
 
   /**
-     Obtain the index of the key in the collection that corresponds to the given position. Performs a binary search to
-     locate the right key.
+   Obtain the index of the key in the collection that corresponds to the given position. Performs a binary search to
+   locate the right key.
 
-     - parameter point: the location to consider
-     - returns: index where to insert
-     */
+   - parameter point: the location to consider
+   - returns: index where to insert
+   */
   func orderedInsertionIndex(for point: CGPoint) -> Index {
     var low = startIndex
     var high = endIndex

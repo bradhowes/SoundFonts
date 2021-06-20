@@ -129,8 +129,8 @@ extension MainViewController {
   }
 
   /**
-     Stop audio processing. This is done prior to the app moving into the background.
-     */
+   Stop audio processing. This is done prior to the app moving into the background.
+   */
   func stopAudio() {
     startRequested = false
     guard sampler != nil else { return }
@@ -206,10 +206,10 @@ extension MainViewController: ControllerConfiguration {
   }
 
   /**
-     Establish connections with other managers / controllers.
+   Establish connections with other managers / controllers.
 
-     - parameter router: the ComponentContainer that holds all of the registered managers / controllers
-     */
+   - parameter router: the ComponentContainer that holds all of the registered managers / controllers
+   */
   func establishConnections(_ router: ComponentContainer) {
     self.router = router
     router.subscribe(self, notifier: routerChange)
@@ -219,7 +219,7 @@ extension MainViewController: ControllerConfiguration {
     activePresetManager = router.activePresetManager
 
     #if !targetEnvironment(macCatalyst)
-      volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
+    volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
     #endif
 
     router.activePresetManager.subscribe(self, notifier: activePresetChange)

@@ -4,7 +4,7 @@
 public protocol AudioUnitManagerDelegate: AnyObject {
 
   /**
-     Notification that a ViewController for the audio unit has been instantiated.
-     */
+   Notification that a ViewController for the audio unit has been instantiated.
+   */
   func connected()
 }

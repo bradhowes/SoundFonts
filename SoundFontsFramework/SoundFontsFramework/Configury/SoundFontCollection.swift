@@ -23,10 +23,10 @@ public final class SoundFontCollection: Codable {
   }
 
   /**
-     Create a new collection.
+   Create a new collection.
 
-     - parameter soundFonts: array of SoundFont instances
-     */
+   - parameter soundFonts: array of SoundFont instances
+   */
   public init(soundFonts: [SoundFont]) {
     self.catalog = [SoundFont.Key: SoundFont](
       uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
@@ -38,19 +38,19 @@ public final class SoundFontCollection: Codable {
   public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
   /**
-     Obtain the index of the given SoundFont.Key value.
+   Obtain the index of the given SoundFont.Key value.
 
-     - parameter key: the key to look for
-     - returns: index value if found, else nil
-     */
+   - parameter key: the key to look for
+   - returns: index value if found, else nil
+   */
   public func firstIndex(of key: SoundFont.Key) -> Int? { sortedKeys.firstIndex(of: key) }
 
   /**
-     Obtain the index of a SoundFont with the given URL.
+   Obtain the index of a SoundFont with the given URL.
 
-     - parameter url: the URL to look for
-     - returns: index value if found, else nil
-     */
+   - parameter url: the URL to look for
+   - returns: index value if found, else nil
+   */
   public func index(of url: URL) -> Int? {
     guard
       let found =
@@ -64,27 +64,27 @@ public final class SoundFontCollection: Codable {
   }
 
   /**
-     Obtain a SoundFont by its (sorted) index value
+   Obtain a SoundFont by its (sorted) index value
 
-     - parameter index: the SoundFont.Key to look for
-     - returns: the SoundFont value found
-     */
+   - parameter index: the SoundFont.Key to look for
+   - returns: the SoundFont value found
+   */
   public func getBy(index: Int) -> SoundFont { catalog[sortedKeys[index]]! }
 
   /**
-     Obtain a SoundFont by its UUID value
+   Obtain a SoundFont by its UUID value
 
-     - parameter key: the UUID to look for
-     - returns: the SoundFont instance found, else nil
-     */
+   - parameter key: the UUID to look for
+   - returns: the SoundFont instance found, else nil
+   */
   public func getBy(key: SoundFont.Key) -> SoundFont? { catalog[key] }
 
   /**
-     Add a new SoundFont definition to the collection.
+   Add a new SoundFont definition to the collection.
 
-     - parameter soundFont: the SoundFont to add
-     - returns: index of the SoundFont in the collection
-     */
+   - parameter soundFont: the SoundFont to add
+   - returns: index of the SoundFont in the collection
+   */
   public func add(_ soundFont: SoundFont) -> Int {
     catalog[soundFont.key] = soundFont
     let index = insertionIndex(of: soundFont.key)
@@ -94,11 +94,11 @@ public final class SoundFontCollection: Codable {
   }
 
   /**
-     Remove a SoundFont from the collection.
+   Remove a SoundFont from the collection.
 
-     - parameter index: the index of the SoundFont to remove.
-     - returns: the removed SoundFont instance, nil if not found.
-     */
+   - parameter index: the index of the SoundFont to remove.
+   - returns: the removed SoundFont instance, nil if not found.
+   */
   public func remove(_ index: Int) -> SoundFont? {
     let key = sortedKeys.remove(at: index)
     AskForReview.maybe()
@@ -106,12 +106,12 @@ public final class SoundFontCollection: Codable {
   }
 
   /**
-     Rename an existing SoundFont.
+   Rename an existing SoundFont.
 
-     - parameter index: the index of the SoundFont to change
-     - parameter name: the new name for the SoundFont
-     - returns: 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
-     */
+   - parameter index: the index of the SoundFont to change
+   - parameter name: the new name for the SoundFont
+   - returns: 2-tuple containing the new index of the SoundFont due to name reordering, and the SoundFont itself
+   */
   public func rename(_ index: Int, name: String) -> (Int, SoundFont) {
     let key = sortedKeys.remove(at: index)
 
@@ -126,12 +126,12 @@ public final class SoundFontCollection: Codable {
   }
 
   /**
-     Obtain the index in the collection to insert a SoundFont key so that the alphabetical ordering of the collection
-     is maintained
+   Obtain the index in the collection to insert a SoundFont key so that the alphabetical ordering of the collection
+   is maintained
 
-     - parameter key: the name of the SoundFont to insert
-     - returns: the index in the collection to insert
-     */
+   - parameter key: the name of the SoundFont to insert
+   - returns: the index in the collection to insert
+   */
   private func insertionIndex(of key: SoundFont.Key) -> Int {
     sortedKeys.insertionIndex(of: key) {
       catalog[$0]!.displayName.localizedCaseInsensitiveCompare(catalog[$1]!.displayName)

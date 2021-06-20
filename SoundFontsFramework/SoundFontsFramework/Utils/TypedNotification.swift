@@ -11,44 +11,44 @@ open class TypedNotification<A> {
   public let name: Notification.Name
 
   /**
-     Construct a new notification definition.
+   Construct a new notification definition.
 
-     - parameter name: the unique name for the notification
-     */
+   - parameter name: the unique name for the notification
+   */
   public required init(name: Notification.Name) { self.name = name }
 
   /**
-     Construct a new notification definition.
+   Construct a new notification definition.
 
-     - parameter name: the unique name for the notification
-     */
+   - parameter name: the unique name for the notification
+   */
   public convenience init(name: String) { self.init(name: Notification.Name(name)) }
 
   /**
-     Post this notification to all observers of it
+   Post this notification to all observers of it
 
-     - parameter value: the value to forward to the observers
-     */
+   - parameter value: the value to forward to the observers
+   */
   open func post(value: A) {
     NotificationCenter.default.post(name: name, object: nil, userInfo: ["value": value])
   }
 
   /**
-     Register an observer to receive this notification defintion.
+   Register an observer to receive this notification defintion.
 
-     - parameter block: a closure to execute when this kind of notification arrives
-     - returns: a NotificationObserver instance that records the registration.
-     */
+   - parameter block: a closure to execute when this kind of notification arrives
+   - returns: a NotificationObserver instance that records the registration.
+   */
   open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
     NotificationObserver(notification: self, block: block)
   }
 
   /**
-     Register for a notification that *only* takes place on the app's main (UI) thread.
+   Register for a notification that *only* takes place on the app's main (UI) thread.
 
-     - parameter block: a closure to execute when this kind of notification arrives
-     - returns: a NotificationObserver instance that records the registration.
-     */
+   - parameter block: a closure to execute when this kind of notification arrives
+   - returns: a NotificationObserver instance that records the registration.
+   */
   open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
     NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
   }
@@ -61,8 +61,8 @@ public class NotificationObserver {
   private var observer: NSObjectProtocol?
 
   /**
-     Create a new observer for the given typed notification
-     */
+   Create a new observer for the given typed notification
+   */
   public init<A>(notification: TypedNotification<A>, block aBlock: @escaping (A) -> Void) {
     name = notification.name
     observer = NotificationCenter.default.addObserver(
@@ -76,9 +76,9 @@ public class NotificationObserver {
   }
 
   /**
-     Force the observer to forget its observation reference (something that happens automatically if/when the observer
-     is no longer held by another object).
-     */
+   Force the observer to forget its observation reference (something that happens automatically if/when the observer
+   is no longer held by another object).
+   */
   public func forget() {
     guard let obs = observer else { return }
     NotificationCenter.default.removeObserver(obs)
@@ -86,8 +86,8 @@ public class NotificationObserver {
   }
 
   /**
-     Cleanup notification registration by removing our internal observer from notifications.
-     */
+   Cleanup notification registration by removing our internal observer from notifications.
+   */
   deinit {
     forget()
   }

@@ -54,15 +54,15 @@ final class MIDI {
   private func name(for status: OSStatus) -> String { errorTag[status] ?? "?" }
 
   /**
-     Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
-     */
+   Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
+   */
   init() {
     DispatchQueue.global(qos: .background).async { self.initialize() }
   }
 
   /**
-     Tear down MIDI plumbing.
-     */
+   Tear down MIDI plumbing.
+   */
   deinit {
     if inputPort != 0 { MIDIPortDispose(inputPort) }
     if virtualEndpoint != 0 { MIDIEndpointDispose(virtualEndpoint) }

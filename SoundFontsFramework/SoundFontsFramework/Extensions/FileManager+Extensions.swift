@@ -8,11 +8,11 @@ private let log = Logging.logger("FileManager")
 extension FileManager {
   public var groupIdentifier: String { "group.com.braysoftware.SoundFontsShare" }
   /**
-     Obtain the URL for a new, temporary file. The file will exist on the system but will be empty.
+   Obtain the URL for a new, temporary file. The file will exist on the system but will be empty.
 
-     - returns: the location of the temporary file.
-     - throws: exceptions encountered by FileManager while locating location for temporary file
-     */
+   - returns: the location of the temporary file.
+   - throws: exceptions encountered by FileManager while locating location for temporary file
+   */
   public func newTemporaryFile() throws -> URL {
     let temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
     let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(
@@ -85,11 +85,11 @@ extension FileManager {
   }
 
   /**
-     Try to obtain the size of a given file.
+   Try to obtain the size of a given file.
 
-     - parameter url: the location of the file to measure
-     - returns: size in bytes or 0 if there was a problem getting the size
-     */
+   - parameter url: the location of the file to measure
+   - returns: size in bytes or 0 if there was a problem getting the size
+   */
   public func fileSizeOf(url: URL) -> UInt64 {
     let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
     os_log(.info, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)

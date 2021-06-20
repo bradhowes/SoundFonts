@@ -91,10 +91,10 @@ where T: ControllerConfiguration {
   }
 
   /**
-     Create a new instance
+   Create a new instance
 
-     - parameter inApp: true if running in the app
-     */
+   - parameter inApp: true if running in the app
+   */
   public init(inApp: Bool) {
     self.inApp = inApp
     let configPath = FileManager.default.sharedPath(for: ConsolidatedConfigFile.filename)
@@ -140,10 +140,10 @@ where T: ControllerConfiguration {
   }
 
   /**
-     Install the main view controller
+   Install the main view controller
 
-     - parameter mvc: the main view controller to use
-     */
+   - parameter mvc: the main view controller to use
+   */
   public func setMainViewController(_ mvc: T) {
     mainViewController = mvc
     _alertManager = AlertManager(presenter: mvc)
@@ -155,8 +155,8 @@ where T: ControllerConfiguration {
   }
 
   /**
-     Invoke `establishConnections` on each tracked view controller.
-     */
+   Invoke `establishConnections` on each tracked view controller.
+   */
   public func establishConnections() {
     soundFontsController.establishConnections(self)
     favoritesController.establishConnections(self)

@@ -19,9 +19,9 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   }
 
   /**
-     Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
-     fails then creates a new one containing SoundFont instances embedded in the app.
-     */
+   Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
+   fails then creates a new one containing SoundFont instances embedded in the app.
+   */
   public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
     observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
@@ -254,8 +254,8 @@ extension SoundFontsManager: SoundFonts {
   }
 
   /**
-     Copy one file to the local document directory.
-     */
+   Copy one file to the local document directory.
+   */
   public func copyToLocalDocumentsDirectory(name: String) -> Bool {
     let fm = FileManager.default
     let source = fm.sharedDocumentsDirectory.appendingPathComponent(name)
@@ -274,8 +274,8 @@ extension SoundFontsManager: SoundFonts {
   }
 
   /**
-     Copy all of the known SF2 files to the local document directory.
-     */
+   Copy all of the known SF2 files to the local document directory.
+   */
   public func exportToLocalDocumentsDirectory() -> (good: Int, total: Int) {
     let fm = FileManager.default
     guard let contents = try? fm.contentsOfDirectory(atPath: fm.sharedDocumentsDirectory.path)
@@ -311,8 +311,8 @@ extension SoundFontsManager: SoundFonts {
   }
 
   /**
-     Import all SF2 files from the local documents directory that is visible to the user.
-     */
+   Import all SF2 files from the local documents directory that is visible to the user.
+   */
   public func importFromLocalDocumentsDirectory() -> (good: Int, total: Int) {
     let fm = FileManager.default
     guard let contents = try? fm.contentsOfDirectory(atPath: fm.localDocumentsDirectory.path) else {
@@ -370,8 +370,8 @@ extension SoundFontsManager {
   }
 
   /**
-     Mark the current configuration as dirty so that it will get saved.
-     */
+   Mark the current configuration as dirty so that it will get saved.
+   */
   private func collectionChanged() {
     os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
     observer.markChanged()

@@ -10,18 +10,18 @@ public class ActiveIndicatorView: UIView {
   override public class var layerClass: AnyClass { CAGradientLayer.self }
 
   /**
-     Layout changed, update the gradient of the background layer.
-     */
+   Layout changed, update the gradient of the background layer.
+   */
   override public func layoutSubviews() {
     super.layoutSubviews()
     update()
   }
 
   /**
-     Traits changed, update the gradient of the background layer.
+   Traits changed, update the gradient of the background layer.
 
-     - parameter previousTraitCollection: previous traits
-     */
+   - parameter previousTraitCollection: previous traits
+   */
   override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     update()

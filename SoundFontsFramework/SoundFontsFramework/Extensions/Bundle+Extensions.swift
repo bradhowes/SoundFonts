@@ -22,12 +22,12 @@ extension Bundle {
 extension Bundle {
 
   /**
-     Obtain a UIImage to use for an effect on/off button.
+   Obtain a UIImage to use for an effect on/off button.
 
-     - parameter enabled: the state of the button
-     - parameter compatibleWith: traits to consider when looking for an image
-     - returns: UIImage instance for the button state
-     */
+   - parameter enabled: the state of the button
+   - parameter compatibleWith: traits to consider when looking for an image
+   - returns: UIImage instance for the button state
+   */
   public static func effectEnabledButtonImage(
     enabled: Bool, compatibleWith: UITraitCollection? = nil
   ) -> UIImage {

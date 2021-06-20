@@ -37,11 +37,11 @@ public class Favorite: Codable {
   }
 
   /**
-     Create a new instance. The name of the favorite will start with the name of the preset.
+   Create a new instance. The name of the favorite will start with the name of the preset.
 
-     - parameter soundFontAndPreset: the preset to use
-     - parameter keyboardLowestNote: the starting note of the keyboard
-     */
+   - parameter soundFontAndPreset: the preset to use
+   - parameter keyboardLowestNote: the starting note of the keyboard
+   */
   public init(soundFontAndPreset: SoundFontAndPreset, presetConfig: PresetConfig, keyboardLowestNote: Note?) {
     self.key = Key()
     self.soundFontAndPreset = soundFontAndPreset
@@ -51,11 +51,11 @@ public class Favorite: Codable {
   }
 
   /**
-     Instantiate a Favorite using saved encoding.
+   Instantiate a Favorite using saved encoding.
 
-     - parameter decoder: the container to decode from
-     - throws exception if unable to decode
-     */
+   - parameter decoder: the container to decode from
+   - throws exception if unable to decode
+   */
   public required init(from decoder: Decoder) throws {
     do {
       // Attempt to decode the latest version first
@@ -91,11 +91,11 @@ public class Favorite: Codable {
   }
 
   /**
-     Custom encoder for the class because of the custom decoding.
+   Custom encoder for the class because of the custom decoding.
 
-     - parameter encoder: the container to encode into
-     - throws exception if unable to encode
-     */
+   - parameter encoder: the container to encode into
+   - throws exception if unable to encode
+   */
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: V2Keys.self)
     try container.encode(key, forKey: .key)
@@ -106,12 +106,12 @@ public class Favorite: Codable {
 
 extension Favorite: Equatable {
   /**
-     Support equality operator
+   Support equality operator
 
-     - parameter lhs: first argument to compare
-     - parameter rhs: second argument to compare
-     - returns: true if same
-     */
+   - parameter lhs: first argument to compare
+   - parameter rhs: second argument to compare
+   - returns: true if same
+   */
   public static func == (lhs: Favorite, rhs: Favorite) -> Bool { lhs.key == rhs.key }
 }
 

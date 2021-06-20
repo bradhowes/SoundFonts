@@ -3,11 +3,11 @@ import UIKit
 extension NSLayoutConstraint {
 
   /**
-     Change multiplier constraint
+   Change multiplier constraint
 
-     - parameter multiplier: CGFloat
-     - returns: NSLayoutConstraint
-     */
+   - parameter multiplier: CGFloat
+   - returns: NSLayoutConstraint
+   */
   func setMultiplier(_ multiplier: CGFloat) -> NSLayoutConstraint {
     guard let firstItem = self.firstItem else { return self }
     guard let secondItem = self.secondItem else { return self }

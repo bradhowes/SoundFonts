@@ -17,10 +17,10 @@ public struct NoteInjector {
   public init() {}
 
   /**
-     Post MIDI commands to Sampler to play a short note.
+   Post MIDI commands to Sampler to play a short note.
 
-     - parameter sampler: the sampler to command
-     */
+   - parameter sampler: the sampler to command
+   */
   public mutating func post(to sampler: Sampler) {
     guard Settings.shared.playSample == true else { return }
     let note = self.note
@@ -35,10 +35,10 @@ public struct NoteInjector {
   }
 
   /**
-     Post MIDI commands to an audio unit to play a short note.
+   Post MIDI commands to an audio unit to play a short note.
 
-     - parameter audioUnit: the audio unit to command
-     */
+   - parameter audioUnit: the audio unit to command
+   */
   public mutating func post(to audioUnit: AUAudioUnit) {
     guard Settings.shared.playSample == true else { return }
 

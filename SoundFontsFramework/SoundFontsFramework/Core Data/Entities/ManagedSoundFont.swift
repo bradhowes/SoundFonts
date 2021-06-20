@@ -56,11 +56,11 @@ extension ManagedSoundFont {
   }()
 
   /**
-     Fetch request to use for table rows.
+   Fetch request to use for table rows.
 
-     - parameter tag: the tag to filter with
-     - returns: sound fonts that are visible and that belong to a given tag.
-     */
+   - parameter tag: the tag to filter with
+   - returns: sound fonts that are visible and that belong to a given tag.
+   */
   public static func fetchRequestForRows(tag: ManagedTag) -> FetchRequest {
     let request = typedFetchRequest
     request.predicate = NSPredicate(format: "ANY tags = %@ AND visible == YES", tag)
@@ -68,25 +68,25 @@ extension ManagedSoundFont {
   }
 
   /**
-     Obtain a count for the number of sound fonts that are visible and belong to a given tag.
+   Obtain a count for the number of sound fonts that are visible and belong to a given tag.
 
-     - parameter context: the context to operate in
-     - parameter tag: the tag to filter with
-     - returns: count of sound fonts that are visible and that belong to a given tag.
-     */
+   - parameter context: the context to operate in
+   - parameter tag: the tag to filter with
+   - returns: count of sound fonts that are visible and that belong to a given tag.
+   */
   public static func countRows(in context: NSManagedObjectContext, tag: ManagedTag) -> Int {
     return count(in: context, request: fetchRequestForRows(tag: tag))
   }
 
   /**
-     Fetch the sound fonts that are visible and belong to a given tag.
+   Fetch the sound fonts that are visible and belong to a given tag.
 
-     - parameter context: the context to operate in
-     - parameter tag: the tag to filter with
-     - returns: collection of sound fonts that are visible and that belong to a given tag.
-     */
+   - parameter context: the context to operate in
+   - parameter tag: the tag to filter with
+   - returns: collection of sound fonts that are visible and that belong to a given tag.
+   */
   public static func fetchRows(in context: NSManagedObjectContext, tag: ManagedTag)
-    -> [ManagedSoundFont]
+  -> [ManagedSoundFont]
   {
     let request = fetchRequestForRows(tag: tag)
     request.fetchBatchSize = 50
@@ -115,11 +115,11 @@ extension ManagedSoundFont {
   }
 
   /**
-     Create a new ManagedSoundFont instance using data from a SoundFontInfo description.
+   Create a new ManagedSoundFont instance using data from a SoundFontInfo description.
 
-     - parameter context: the context to operate in
-     - parameter config: the description to use
-     */
+   - parameter context: the context to operate in
+   - parameter config: the description to use
+   */
   @discardableResult
   public convenience init(in context: NSManagedObjectContext, config: SoundFontInfo) {
     self.init(context: context)
@@ -142,20 +142,20 @@ extension ManagedSoundFont {
   }
 
   /**
-     Set the display name for the sound font
+   Set the display name for the sound font
 
-     - parameter name: the display name to use
-     */
+   - parameter name: the display name to use
+   */
   public func setDisplayName(_ name: String) {
     self.displayName = name
     self.originalDisplayName = name
   }
 
   /**
-     Set the location of the sound font file via a bookmark.
+   Set the location of the sound font file via a bookmark.
 
-     - parameter bookmark: the location of the sound font file
-     */
+   - parameter bookmark: the location of the sound font file
+   */
   public func setBookmark(_ bookmark: Bookmark) {
     self.resourceBookmark = bookmark.bookmark
     self.resourcePath = bookmark.original
@@ -163,10 +163,10 @@ extension ManagedSoundFont {
   }
 
   /**
-     Set the location of the sound font file via a Bundle resource URL.
+   Set the location of the sound font file via a Bundle resource URL.
 
-     - parameter url: the location of the sound font file
-     */
+   - parameter url: the location of the sound font file
+   */
   public func setBundleUrl(_ url: URL) {
     self.resourcePath = url
     self.resourceBookmark = nil
@@ -175,10 +175,10 @@ extension ManagedSoundFont {
   }
 
   /**
-     Set the location of the sound font file via a file name in the app's private storage
+   Set the location of the sound font file via a file name in the app's private storage
 
-     - parameter fileName: the name of the file in the app's private storage
-     */
+   - parameter fileName: the name of the file in the app's private storage
+   */
   public func setFileName(_ fileName: String) {
     self.resourceName = fileName
     self.resourceBookmark = nil
@@ -186,10 +186,10 @@ extension ManagedSoundFont {
   }
 
   /**
-     Change the visibility state of a sound font.
+   Change the visibility state of a sound font.
 
-     - parameter value: true if visible
-     */
+   - parameter value: true if visible
+   */
   public func setVisible(_ value: Bool) { self.visible = value }
 }
 

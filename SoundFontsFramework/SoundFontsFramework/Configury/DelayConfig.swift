@@ -32,10 +32,10 @@ extension DelayConfig {
 
   public init?(state: [String: Any]) {
     guard let enabled = state[.enabled] == 0.0 ? false : true,
-      let time = state[.time],
-      let feedback = state[.feedback],
-      let cutoff = state[.cutoff],
-      let wetDryMix = state[.wetDryMix]
+          let time = state[.time],
+          let feedback = state[.feedback],
+          let cutoff = state[.cutoff],
+          let wetDryMix = state[.wetDryMix]
     else { return nil }
     self.init(
       enabled: enabled, time: time, feedback: feedback, cutoff: cutoff, wetDryMix: wetDryMix)

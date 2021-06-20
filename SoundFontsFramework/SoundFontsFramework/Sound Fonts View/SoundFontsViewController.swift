@@ -257,12 +257,12 @@ extension SoundFontsViewController: FontsViewManager {
 extension SoundFontsViewController: FontEditorActionGenerator {
 
   /**
-     Create right-swipe action to edit a SoundFont.
+   Create right-swipe action to edit a SoundFont.
 
-     - parameter at: the FontCell that will hold the swipe action
-     - parameter with: the SoundFont that will be edited by the swipe action
-     - returns: new UIContextualAction that will perform the edit
-     */
+   - parameter at: the FontCell that will hold the swipe action
+   - parameter with: the SoundFont that will be edited by the swipe action
+   - returns: new UIContextualAction that will perform the edit
+   */
   public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
       let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
@@ -274,14 +274,14 @@ extension SoundFontsViewController: FontEditorActionGenerator {
   }
 
   /**
-     Create left-swipe action to *delete* a SoundFont. When activated, the action will display a prompt to the user
-     asking for confirmation about the SoundFont deletion.
+   Create left-swipe action to *delete* a SoundFont. When activated, the action will display a prompt to the user
+   asking for confirmation about the SoundFont deletion.
 
-     - parameter at: the FontCell that will hold the swipe action
-     - parameter with: the SoundFont that will be edited by the swipe action
-     - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
-     - returns: new UIContextualAction that will perform the edit
-     */
+   - parameter at: the FontCell that will hold the swipe action
+   - parameter with: the SoundFont that will be edited by the swipe action
+   - parameter indexPath: the IndexPath of the FontCell that would be removed by the action
+   - returns: new UIContextualAction that will perform the edit
+   */
   public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
     UIContextualAction(icon: .remove, color: .red) { _, _, completionHandler in
       self.remove(soundFont: soundFont, completionHandler: completionHandler)

@@ -11,14 +11,14 @@ public protocol SegueHandler {
 extension SegueHandler where Self: UIViewController, SegueIdentifier.RawValue == String {
 
   /**
-     Obtain a segue identifier for a segue
+   Obtain a segue identifier for a segue
 
-     - parameter segue: the segue to look for
-     - returns: the identifier for the segue
-     */
+   - parameter segue: the segue to look for
+   - returns: the identifier for the segue
+   */
   public func segueIdentifier(for segue: UIStoryboardSegue) -> SegueIdentifier {
     guard let identifier = segue.identifier,
-      let segueIdentifier = SegueIdentifier(rawValue: identifier)
+          let segueIdentifier = SegueIdentifier(rawValue: identifier)
     else {
       fatalError("unknown segue '\(segue.identifier!)'")
     }
@@ -26,10 +26,10 @@ extension SegueHandler where Self: UIViewController, SegueIdentifier.RawValue ==
   }
 
   /**
-     Perform a known segue transition between two view controllers
+   Perform a known segue transition between two view controllers
 
-     - parameter segueIdentifier: the identifier of the segue to perform
-     */
+   - parameter segueIdentifier: the identifier of the segue to perform
+   */
   public func performSegue(withIdentifier segueIdentifier: SegueIdentifier, sender: Any? = nil) {
     performSegue(withIdentifier: segueIdentifier.rawValue, sender: sender)
   }

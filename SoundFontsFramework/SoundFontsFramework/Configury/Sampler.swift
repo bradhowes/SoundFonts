@@ -68,14 +68,14 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   private var setGlobalPitchBendRangeNotifier: NotificationObserver?
 
   /**
-     Create a new instance of a Sampler.
+   Create a new instance of a Sampler.
 
-     In `standalone` mode, the sampler will create a `AVAudioEngine` to use to host the sampler and to generate sound.
-     In `audioUnit` mode, the sampler will exist on its own and will expect an AUv3 host to provide the appropriate
-     context to generate sound from its output.
+   In `standalone` mode, the sampler will create a `AVAudioEngine` to use to host the sampler and to generate sound.
+   In `audioUnit` mode, the sampler will exist on its own and will expect an AUv3 host to provide the appropriate
+   context to generate sound from its output.
 
-     - parameter mode: determines how the sampler is hosted.
-     */
+   - parameter mode: determines how the sampler is hosted.
+   */
   public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?) {
     self.mode = mode
     self.activePresetManager = activePresetManager
@@ -98,10 +98,10 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   }
 
   /**
-     Connect up a sampler and start the audio engine to allow the sampler to make sounds.
+   Connect up a sampler and start the audio engine to allow the sampler to make sounds.
 
-     - returns: Result value indicating success or failure
-     */
+   - returns: Result value indicating success or failure
+   */
   public func start() -> StartResult {
     os_log(.info, log: log, "start")
     auSampler = AVAudioUnitSampler()
@@ -113,8 +113,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   }
 
   /**
-     Stop the existing audio engine. Releases the sampler and engine.
-     */
+   Stop the existing audio engine. Releases the sampler and engine.
+   */
   public func stop() {
     os_log(.info, log: log, "stop")
     presetChangeManager.stop()
@@ -146,12 +146,12 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   }
 
   /**
-     Ask the sampler to use the active preset held by the ActivePresetManager.
+   Ask the sampler to use the active preset held by the ActivePresetManager.
 
-     - parameter afterLoadBlock: callback to invoke after the load is successfully done
+   - parameter afterLoadBlock: callback to invoke after the load is successfully done
 
-     - returns: Result instance indicating success or failure
-     */
+   - returns: Result instance indicating success or failure
+   */
   public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
     os_log(.info, log: log, "loadActivePreset - %{public}s", activePresetManager.active.description)
 
@@ -199,30 +199,30 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
 extension Sampler {
 
   /**
-     Set the AVAudioUnitSampler tuning value
+   Set the AVAudioUnitSampler tuning value
 
-     - parameter value: the value to set in cents (+/- 2400)
-     */
+   - parameter value: the value to set in cents (+/- 2400)
+   */
   public func setTuning(_ value: Float) {
     os_log(.info, log: log, "setTuning: %f", value)
     auSampler?.globalTuning = value
   }
 
   /**
-     Set the AVAudioUnitSampler masterGain value
+   Set the AVAudioUnitSampler masterGain value
 
-     - parameter value: the value to set
-     */
+   - parameter value: the value to set
+   */
   public func setGain(_ value: Float) {
     os_log(.info, log: log, "setGain: %f", value)
     auSampler?.masterGain = value
   }
 
   /**
-     Set the AVAudioUnitSampler stereoPan value
+   Set the AVAudioUnitSampler stereoPan value
 
-     - parameter value: the value to set
-     */
+   - parameter value: the value to set
+   */
   public func setPan(_ value: Float) {
     os_log(.info, log: log, "setPan: %f", value)
     auSampler?.stereoPan = value
@@ -232,11 +232,11 @@ extension Sampler {
 extension Sampler: NoteProcessor {
 
   /**
-     Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
+   Start playing a sound at the given pitch. If given velocity is 0, then stop playing the note.
 
-     - parameter midiValue: MIDI value that indicates the pitch to play
-     - parameter velocity: how loud to play the note (1-127)
-     */
+   - parameter midiValue: MIDI value that indicates the pitch to play
+   - parameter velocity: how loud to play the note (1-127)
+   */
   public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
     guard activePresetManager.active != .none, self.loaded else { return }
     guard velocity > 0 else {
@@ -248,10 +248,10 @@ extension Sampler: NoteProcessor {
   }
 
   /**
-     Stop playing a sound at the given pitch.
+   Stop playing a sound at the given pitch.
 
-     - parameter midiValue: MIDI value that indicates the pitch to stop
-     */
+   - parameter midiValue: MIDI value that indicates the pitch to stop
+   */
   public func noteOff(_ midiValue: UInt8) {
     os_log(.debug, log: log, "noteOff - %d", midiValue)
     guard activePresetManager.active != .none, self.loaded else { return }
@@ -262,11 +262,11 @@ extension Sampler: NoteProcessor {
 extension Sampler {
 
   /**
-     After-touch for the given playing note.
+   After-touch for the given playing note.
 
-     - parameter midiValue: MIDI value that indicates the pitch being played
-     - parameter pressure: the after-touch pressure value for the key
-     */
+   - parameter midiValue: MIDI value that indicates the pitch being played
+   - parameter pressure: the after-touch pressure value for the key
+   */
   public func polyphonicKeyPressure(_ midiValue: UInt8, pressure: UInt8) {
     os_log(.debug, log: log, "polyphonicKeyPressure - %d %d", midiValue, pressure)
     guard activePresetManager.active != .none, self.loaded else { return }
@@ -274,10 +274,10 @@ extension Sampler {
   }
 
   /**
-     After-touch for the whole channel.
+   After-touch for the whole channel.
 
-     - parameter pressure: the after-touch pressure value for all of the playing keys
-     */
+   - parameter pressure: the after-touch pressure value for all of the playing keys
+   */
   public func channelPressure(_ pressure: UInt8) {
     os_log(.debug, log: log, "channelPressure - %d", pressure)
     guard activePresetManager.active != .none, self.loaded else { return }
@@ -285,10 +285,10 @@ extension Sampler {
   }
 
   /**
-     Pitch-bend controller value.
+   Pitch-bend controller value.
 
-     - parameter value: the controller value. Middle is 0x200
-     */
+   - parameter value: the controller value. Middle is 0x200
+   */
   public func pitchBendChange(_ value: UInt16) {
     os_log(.debug, log: log, "pitchBend - %d", value)
     guard activePresetManager.active != .none, self.loaded else { return }

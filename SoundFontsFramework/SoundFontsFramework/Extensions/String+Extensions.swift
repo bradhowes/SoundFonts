@@ -11,8 +11,8 @@ private class BundleTag: NSObject {}
 extension String {
 
   /**
-     Obtain the width of the string if rendered in the system font
-     */
+   Obtain the width of the string if rendered in the system font
+   */
   public var systemFontWidth: CGFloat {
     (self as NSString).size(withAttributes: systemFontAttributes).width
   }
@@ -21,10 +21,10 @@ extension String {
 extension String {
 
   /**
-     Remove any embedded UUID value from the string.
+   Remove any embedded UUID value from the string.
 
-     - returns: named tuple with the stripped result and an option UUID value
-     */
+   - returns: named tuple with the stripped result and an option UUID value
+   */
   public func stripEmbeddedUUID() -> (stripped: String, uuid: UUID?) {
     let pattern = "[0-9A-F]{8}(-[0-9A-F]{4}){3}-[0-9A-F]{12}"
     let target = self as NSString
@@ -41,11 +41,11 @@ extension String {
 extension String {
 
   /**
-     Convert an object pointer into a string representation.
+   Convert an object pointer into a string representation.
 
-     - parameter object: value to convert
-     - returns: string representation of the pointer
-     */
+   - parameter object: value to convert
+   - returns: string representation of the pointer
+   */
   public static func pointer(_ object: AnyObject?) -> String {
     guard let object = object else { return "nil" }
     let opaque: UnsafeMutableRawPointer = Unmanaged.passUnretained(object).toOpaque()
@@ -61,8 +61,8 @@ public struct VersionComponents: Comparable {
   public static func < (lhs: VersionComponents, rhs: VersionComponents) -> Bool {
     lhs.major < rhs.major
       || (lhs.major == rhs.major
-        && (lhs.minor < rhs.minor
-          || (lhs.minor == rhs.minor && lhs.patch < rhs.patch)))
+                && (lhs.minor < rhs.minor
+                        || (lhs.minor == rhs.minor && lhs.patch < rhs.patch)))
   }
 }
 

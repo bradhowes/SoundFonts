@@ -6,9 +6,9 @@ import Foundation
 public protocol ControllerConfiguration {
 
   /**
-     Establish connections with other entities in the application.
+   Establish connections with other entities in the application.
 
-     - parameter context: collection of known UIViewControllers and their protocol facades.
-     */
+   - parameter context: collection of known UIViewControllers and their protocol facades.
+   */
   func establishConnections(_ router: ComponentContainer)
 }

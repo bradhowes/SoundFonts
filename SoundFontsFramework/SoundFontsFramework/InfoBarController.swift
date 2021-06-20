@@ -139,12 +139,12 @@ extension InfoBarController: InfoBar {
   public var moreButtonsVisible: Bool { showingMoreButtons }
 
   /**
-     Add an event target to one of the internal UIControl entities.
+   Add an event target to one of the internal UIControl entities.
 
-     - parameter event: the event to target
-     - parameter target: the instance to notify when the event fires
-     - parameter action: the method to call when the event fires
-     */
+   - parameter event: the event to target
+   - parameter target: the instance to notify when the event fires
+   - parameter action: the method to call when the event fires
+   */
   public func addEventClosure(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure) {
     switch event {
     case .shiftKeyboardUp: addShiftKeyboardUpClosure(closure)
@@ -203,21 +203,21 @@ extension InfoBarController: InfoBar {
   }
 
   /**
-     Set the text to temporarily show in the center of the info bar.
+   Set the text to temporarily show in the center of the info bar.
 
-     - parameter value: the text to display
-     */
+   - parameter value: the text to display
+   */
   public func setStatusText(_ value: String) {
     status.text = value
     startStatusAnimation()
   }
 
   /**
-     Set the range of keys to show in the bar
+   Set the range of keys to show in the bar
 
-     - parameter from: the first key label
-     - parameter to: the last key label
-     */
+   - parameter from: the first key label
+   - parameter to: the last key label
+   */
   public func setVisibleKeyLabels(from: String, to: String) {
     lowestKeyValue = from
     highestKeyValue = to
@@ -249,7 +249,7 @@ extension InfoBarController: SegueHandler {
 
   private func beginSettingsView(_ segue: UIStoryboardSegue, sender: Any?) {
     guard let navController = segue.destination as? UINavigationController,
-      let viewController = navController.topViewController as? SettingsViewController
+          let viewController = navController.topViewController as? SettingsViewController
     else { return }
 
     viewController.soundFonts = soundFonts

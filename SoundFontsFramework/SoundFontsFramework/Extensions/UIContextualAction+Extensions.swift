@@ -5,12 +5,12 @@ import UIKit
 extension UIContextualAction {
 
   /**
-     Convenience constructor.
+   Convenience constructor.
 
-     - parameter icon: the icon of the action
-     - parameter color: the background color of the action
-     - parameter handler: the closure to invoke when the action fires
-     */
+   - parameter icon: the icon of the action
+   - parameter color: the background color of the action
+   - parameter handler: the closure to invoke when the action fires
+   */
   public convenience init(icon: Icon, color: UIColor, handler: @escaping Handler) {
     self.init(style: .normal, title: nil, handler: handler)
     self.image = icon.image

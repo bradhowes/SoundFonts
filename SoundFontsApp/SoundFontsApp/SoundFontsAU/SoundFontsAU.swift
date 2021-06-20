@@ -27,12 +27,12 @@ final class SoundFontsAU: AUAudioUnit {
   private lazy var parameters: AudioUnitParameters = AudioUnitParameters(parameterHandler: self)
 
   /**
-     Construct a new AUv3 component.
+   Construct a new AUv3 component.
 
-     - parameter componentDescription: the definition used when locating the component to create
-     - parameter sampler: the Sampler instance to use for actually rendering audio
-     - parameter activePresetManager: the manager of the active preset
-     */
+   - parameter componentDescription: the definition used when locating the component to create
+   - parameter sampler: the Sampler instance to use for actually rendering audio
+   - parameter activePresetManager: the manager of the active preset
+   */
   public init(componentDescription: AudioComponentDescription, sampler: Sampler,
               activePresetManager: ActivePresetManager) throws {
     let log = Logging.logger("SoundFontsAU")
@@ -270,7 +270,7 @@ extension SoundFontsAU {
   }
 
   override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
-    -> MIDICIProfileState
+  -> MIDICIProfileState
   {
     wrapped.profileState(forCable: cable, channel: channel)
   }

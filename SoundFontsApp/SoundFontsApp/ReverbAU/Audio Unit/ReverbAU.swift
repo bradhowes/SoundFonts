@@ -170,7 +170,7 @@ extension ReverbAU {
     get { reverb.active.fullState }
     set {
       guard let fullState = newValue,
-        let config = ReverbConfig(state: fullState)
+            let config = ReverbConfig(state: fullState)
       else { return }
       reverb.active = config
       parameters.set(.roomPreset, value: AUValue(config.preset), originator: nil)
@@ -240,7 +240,7 @@ extension ReverbAU {
   }
 
   override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
-    -> MIDICIProfileState
+  -> MIDICIProfileState
   {
     wrapped.profileState(forCable: cable, channel: channel)
   }

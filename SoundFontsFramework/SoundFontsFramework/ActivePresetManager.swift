@@ -7,12 +7,12 @@ import os
 public enum ActivePresetEvent {
 
   /**
-     Change event
+   Change event
 
-     - Parameter old: the previous active preset
-     - Parameter new: the new active preset
-     - Parameter playSample: if true, play a note using the new preset
-     */
+   - Parameter old: the previous active preset
+   - Parameter new: the new active preset
+   - Parameter playSample: if true, play a note using the new preset
+   */
   case active(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
 }
 
@@ -54,12 +54,12 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   }
 
   /**
-     Construct new manager
+   Construct new manager
 
-     - parameter soundFont: the sound font manager
-     - parameter selectedSoundFontManager: the manager of the selected sound font
-     - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
-     */
+   - parameter soundFont: the sound font manager
+   - parameter selectedSoundFontManager: the manager of the selected sound font
+   - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
+   */
   public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
     self.active = .none
     self.soundFonts = soundFonts
@@ -71,53 +71,53 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   }
 
   /**
-     Obtain the sound font instance that corresponds to the given preset key.
+   Obtain the sound font instance that corresponds to the given preset key.
 
-     - parameter soundFontAndPreset: the preset key to resolve
-     - returns: optional sound font instance that corresponds to the given key
-     */
+   - parameter soundFontAndPreset: the preset key to resolve
+   - returns: optional sound font instance that corresponds to the given key
+   */
   public func resolveToSoundFont(_ soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
     soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
   }
 
   /**
-     Obtain the preset instance that corresponds to the given preset key.
+   Obtain the preset instance that corresponds to the given preset key.
 
-     - parameter soundFontAndPreset: the preset key to resolve
-     - returns: optional patch instance that corresponds to the given key
-     */
+   - parameter soundFontAndPreset: the preset key to resolve
+   - returns: optional patch instance that corresponds to the given key
+   */
   public func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
     soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.patchIndex]
   }
 
   /**
-     Set a new active preset.
+   Set a new active preset.
 
-     - parameter preset: the preset to make active
-     - parameter playSample: if true, play a note using the new preset
-     */
+   - parameter preset: the preset to make active
+   - parameter playSample: if true, play a note using the new preset
+   */
   @discardableResult
   public func setActive(preset: SoundFontAndPreset, playSample: Bool) -> Bool {
     setActive(.preset(soundFontAndPreset: preset), playSample: playSample)
   }
 
   /**
-     Make a favorite the active preset.
+   Make a favorite the active preset.
 
-     - parameter favorite: the favorite to make active
-     - parameter playSample: if true, play a note using the new preset
-     */
+   - parameter favorite: the favorite to make active
+   - parameter playSample: if true, play a note using the new preset
+   */
   @discardableResult
   public func setActive(favorite: Favorite, playSample: Bool) -> Bool {
     setActive(.favorite(favorite: favorite), playSample: playSample)
   }
 
   /**
-     Set a new active value.
+   Set a new active value.
 
-     - parameter kind: wrapped value to set
-     - parameter playSample: if true, play a note using the new preset
-     */
+   - parameter kind: wrapped value to set
+   - parameter playSample: if true, play a note using the new preset
+   */
   @discardableResult
   public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) -> Bool {
     os_log(.debug, log: log, "setActive: %{public}s", kind.description)
@@ -160,7 +160,7 @@ extension ActivePresetManager {
       os_log(.info, log: log, "using pending value")
       setActive(pending, playSample: false)
     } else if let restored = Self.restoredActivePresetKind,
-      isValid(restored)
+              isValid(restored)
     {
       os_log(.info, log: log, "using restored value from UserDefaults")
       setActive(restored, playSample: false)

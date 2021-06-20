@@ -6,7 +6,7 @@ import Foundation
 public protocol SubscriberToken {
 
   /**
-     Unsubscribe from the SubscriptionManager.
-     */
+   Unsubscribe from the SubscriptionManager.
+   */
   func unsubscribe()
 }

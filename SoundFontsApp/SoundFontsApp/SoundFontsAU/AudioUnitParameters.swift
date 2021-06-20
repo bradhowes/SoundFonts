@@ -17,15 +17,15 @@ public final class AudioUnitParameters: NSObject {
   public let parameterTree: AUParameterTree
 
   /**
-     Create a new AUParameterTree for the defined filter parameters.
+   Create a new AUParameterTree for the defined filter parameters.
 
-     Installs three closures in the tree:
-     - one for providing values
-     - one for accepting new values from other sources
-     - and one for obtaining formatted string values
+   Installs three closures in the tree:
+   - one for providing values
+   - one for accepting new values from other sources
+   - and one for obtaining formatted string values
 
-     - parameter parameterHandler the object to use to handle the AUParameterTree requests
-     */
+   - parameter parameterHandler the object to use to handle the AUParameterTree requests
+   */
   init(parameterHandler: AUParameterHandler) {
 
     // Define a new parameter tree with the parameter definitions

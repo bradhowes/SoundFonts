@@ -19,22 +19,22 @@ public protocol UpperViewSwipingActivity {
   var swipeRight: UISwipeGestureRecognizer { get }
 
   /**
-     Link a button / gesture event to a target/selector combination
+   Link a button / gesture event to a target/selector combination
 
-     - parameter event: the event to link to
-     - parameter closure: the closure to invokes when the event takes place
-     */
+   - parameter event: the event to link to
+   - parameter closure: the closure to invokes when the event takes place
+   */
   func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void)
 }
 
 extension UpperViewSwipingActivity {
 
   /**
-     Link a button / gesture event to a target/selector combination
+   Link a button / gesture event to a target/selector combination
 
-     - parameter event: the event to link to
-     - parameter closure: the closure to invokes when the event takes place
-     */
+   - parameter event: the event to link to
+   - parameter closure: the closure to invokes when the event takes place
+   */
   public func addEventClosure(_ event: UpperViewSwipingEvent, _ closure: @escaping (AnyObject) -> Void) {
     switch event {
     case .swipeLeft: swipeLeft.addClosure(closure)

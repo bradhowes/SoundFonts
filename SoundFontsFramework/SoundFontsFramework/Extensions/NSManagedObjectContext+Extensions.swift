@@ -6,10 +6,10 @@ import CoreData
 extension NSManagedObjectContext {
 
   /**
-     Create a new managed object of type A and insert it into the managed context.
+   Create a new managed object of type A and insert it into the managed context.
 
-     - returns: new managed object of type A
-     */
+   - returns: new managed object of type A
+   */
   @discardableResult public func insertObject<A>(_ config: ((A) -> A) = { $0 }) -> A
   where A: Managed {
     guard
@@ -31,10 +31,10 @@ extension NSManagedObjectContext {
   }
 
   /**
-     Attempt to save the context to storage, rolling back if the save fails.
+   Attempt to save the context to storage, rolling back if the save fails.
 
-     - returns: true if saved
-     */
+   - returns: true if saved
+   */
   @discardableResult public func saveOrRollback() -> Bool {
     do {
       try saveChanges()
@@ -46,10 +46,10 @@ extension NSManagedObjectContext {
   }
 
   /**
-     Execute a block asynchronously and then try to save the context.
+   Execute a block asynchronously and then try to save the context.
 
-     - parameter block: block to execute
-     */
+   - parameter block: block to execute
+   */
   public func performChangesAndSaveAsync(block: @escaping () -> Void) {
     perform {
       block()
@@ -63,14 +63,14 @@ extension NSManagedObjectContext {
   private var NC: NotificationCenter { NotificationCenter.default }
 
   /**
-     Register to receive notifications when this context has been saved.
+   Register to receive notifications when this context has been saved.
 
-     - parameter block: the block to execute after a save. It will receive a ContextNotification that
-       identifies the objects that were added, updated, and/or deleted since the last save event.
-     - returns: reference to the observation
-     */
+   - parameter block: the block to execute after a save. It will receive a ContextNotification that
+   identifies the objects that were added, updated, and/or deleted since the last save event.
+   - returns: reference to the observation
+   */
   public func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void)
-    -> NSObjectProtocol
+  -> NSObjectProtocol
   {
     return NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) {
       block(ContextNotification<T>(notification: $0))
@@ -78,12 +78,12 @@ extension NSManagedObjectContext {
   }
 
   /**
-     Register to receive notifications when this context is processing changes but before they have been saved.
+   Register to receive notifications when this context is processing changes but before they have been saved.
 
-     - parameter block: the block to execute after a save. It will receive a ContextNotification that
-     identifies the objects that were added, updated, and/or deleted since the last save event.
-     - returns: reference to the observation
-     */
+   - parameter block: the block to execute after a save. It will receive a ContextNotification that
+   identifies the objects that were added, updated, and/or deleted since the last save event.
+   - returns: reference to the observation
+   */
   public func notifyOnChanges<T: NSManagedObject>(
     _ block: @escaping (ContextNotification<T>) -> Void
   ) -> NSObjectProtocol {
@@ -101,11 +101,11 @@ private typealias SingleObjectCache = [String: NSManagedObject]
 extension NSManagedObjectContext {
 
   /**
-     Set a managed object in a cache.
+   Set a managed object in a cache.
 
-     - parameter object: the value to cache
-     - parameter key: the key to store under
-     */
+   - parameter object: the value to cache
+   - parameter key: the key to store under
+   */
   public func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
     var cache = userInfo[singleObjectCacheKey] as? SingleObjectCache ?? [:]
     cache[key] = object
@@ -113,11 +113,11 @@ extension NSManagedObjectContext {
   }
 
   /**
-     Obtain an object from the cache
+   Obtain an object from the cache
 
-     - parameter key: the value to look for
-     - returns: object found in cache or nil
-     */
+   - parameter key: the value to look for
+   - returns: object found in cache or nil
+   */
   public func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
     guard let cache = userInfo[singleObjectCacheKey] as? SingleObjectCache else { return nil }
     return cache[key] as? T

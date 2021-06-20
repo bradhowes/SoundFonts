@@ -53,10 +53,10 @@ public final class SoundFontsControlsController: UIViewController {
 extension SoundFontsControlsController: ControllerConfiguration {
 
   /**
-     Establish connections with other managers / controllers.
+   Establish connections with other managers / controllers.
 
-     - parameter context: the RunContext that holds all of the registered managers / controllers
-     */
+   - parameter context: the RunContext that holds all of the registered managers / controllers
+   */
   public func establishConnections(_ router: ComponentContainer) {
 
     fontsViewManager = router.fontsViewManager
@@ -128,8 +128,8 @@ extension SoundFontsControlsController {
 extension SoundFontsControlsController {
 
   /**
-     Show the next (right) view in the space above the info bar.
-     */
+   Show the next (right) view in the space above the info bar.
+   */
   private func showNextConfigurationView(_ action: AnyObject) {
     if upperViewManager.active == 0 {
       fontsViewManager.dismissSearchKeyboard()
@@ -140,8 +140,8 @@ extension SoundFontsControlsController {
   }
 
   /**
-     Show the previous (left) view in the space above the info bar.
-     */
+   Show the previous (left) view in the space above the info bar.
+   */
   private func showPreviousConfigurationView(_ action: AnyObject) {
     upperViewManager.slidePrevHorizontally()
     Settings.instance.showingFavorites = upperViewManager.active == 1

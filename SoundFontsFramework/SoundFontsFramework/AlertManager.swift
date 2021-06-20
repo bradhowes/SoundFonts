@@ -71,11 +71,11 @@ public final class AlertManager {
   ]
 
   /**
-     Construct a new manager that uses the given view controller for presenting new alerts. Watch for certain
-     notifications to fire, and post an alert when they do.
+   Construct a new manager that uses the given view controller for presenting new alerts. Watch for certain
+   notifications to fire, and post an alert when they do.
 
-     - parameter presenter: the view controller to use for presenting
-     */
+   - parameter presenter: the view controller to use for presenting
+   */
   public init(presenter: UIViewController) {
     self.presenter = presenter
     queue.maxConcurrentOperationCount = 1
@@ -102,10 +102,10 @@ public final class AlertManager {
   }
 
   /**
-     Post an alert to the user
+   Post an alert to the user
 
-     - parameter alert: the contents of the alert to show
-     */
+   - parameter alert: the contents of the alert to show
+   */
   public func post(alert: AlertConfig) {
     queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
   }

@@ -24,24 +24,24 @@ public class SubscriptionManager<Event> {
   private let cacheEvent: Bool
 
   /**
-     Construct a new subscription manager
+   Construct a new subscription manager
 
-     - parameter cacheEvent: when true, hold onto the last event and use it when there are new subscriptions
-     */
+   - parameter cacheEvent: when true, hold onto the last event and use it when there are new subscriptions
+   */
   public init(_ cacheEvent: Bool = false) { self.cacheEvent = cacheEvent }
 
   /**
-     Establish a connection between the SubscriptionManager and the notifier such that any future Events will be sent
-     to the notifier.
+   Establish a connection between the SubscriptionManager and the notifier such that any future Events will be sent
+   to the notifier.
 
-     - parameter subscriber: the object that is subscribing -- if it dies, then the subscription is automatically
-     removed.
-     - parameter notifier: the closure to invoke for each new Event
-     - returns: a token that knows how to unsubscribe
-     */
+   - parameter subscriber: the object that is subscribing -- if it dies, then the subscription is automatically
+   removed.
+   - parameter notifier: the closure to invoke for each new Event
+   - returns: a token that knows how to unsubscribe
+   */
   @discardableResult
   public func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping NotifierProc)
-    -> SubscriberToken
+  -> SubscriberToken
   {
     let uuid = UUID()
     let token = Token { [weak self] in self?.subscriptions.removeValue(forKey: uuid) }
@@ -61,10 +61,10 @@ public class SubscriptionManager<Event> {
   }
 
   /**
-     Notify all subscribers of a new event.
+   Notify all subscribers of a new event.
 
-     - parameter event: the event that just took place
-     */
+   - parameter event: the event that just took place
+   */
   public func notify(_ event: Event) {
     if cacheEvent { lastEvent = event }
     subscriptions.values.forEach { $0(event) }

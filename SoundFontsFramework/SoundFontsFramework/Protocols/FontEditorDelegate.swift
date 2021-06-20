@@ -11,10 +11,10 @@ public enum FontEditorDismissedReason {
 /// Protocol for the `SoundFontDetailController` delegate instance.
 public protocol FontEditorDelegate: NSObjectProtocol {
   /**
-     Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
-     is over.
+   Notification when the FontEditor is dismissed and editing of a particular SoundFont instance
+   is over.
 
-     - parameter reason: the reason for the dismissal
-     */
+   - parameter reason: the reason for the dismissal
+   */
   func dismissed(reason: FontEditorDismissedReason)
 }

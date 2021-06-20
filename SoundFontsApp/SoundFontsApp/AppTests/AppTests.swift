@@ -11,7 +11,7 @@ class AppTests: XCTestCase {
     guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
 
     #if !targetEnvironment(macCatalyst)
-      XCUIDevice.shared.orientation = .portrait
+    XCUIDevice.shared.orientation = .portrait
     #endif
 
     super.setUp()
@@ -20,10 +20,10 @@ class AppTests: XCTestCase {
   }
 
   /**
-     - Launch the app
-     - Bring up the setting panel
-     - Make sure that the version shown in the Version label matches the value found in the bundle
-     */
+   - Launch the app
+   - Bring up the setting panel
+   - Make sure that the version shown in the Version label matches the value found in the bundle
+   */
   func testVersionMatchesBundle() {
     guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
 

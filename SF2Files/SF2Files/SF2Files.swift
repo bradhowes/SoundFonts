@@ -21,11 +21,11 @@ public enum SF2FilesError: Error {
   private static let bundle = Bundle(for: SF2FilesTag.self)
 
   /**
-     Locate a specific SF2 resource by name.
+   Locate a specific SF2 resource by name.
 
-     - parameter name: the name to look for
-     - returns: the URL of the resource in the bundle
-     */
+   - parameter name: the name to look for
+   - returns: the URL of the resource in the bundle
+   */
   public class func resource(name: String) throws -> URL {
     guard let url = bundle.url(forResource: name, withExtension: sf2Extension) else {
       throw SF2FilesError.notFound(name: name)

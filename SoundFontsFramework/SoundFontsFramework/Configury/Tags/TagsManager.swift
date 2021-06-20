@@ -16,10 +16,10 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
   }
 
   /**
-     Construct new manager
+   Construct new manager
 
-     - parameter consolidatedConfigFile: the configuration file that holds the tags to manage
-     */
+   - parameter consolidatedConfigFile: the configuration file that holds the tags to manage
+   */
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
     observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
@@ -80,7 +80,7 @@ extension TagsManager: Tags {
     for index in 0..<self.count {
       let tag = self.getBy(index: index)
       if (tag.name == "All" && tag.key != Tag.allTag.key)
-        || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key)
+                || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key)
       {
         invalidTags.append(tag.key)
       }

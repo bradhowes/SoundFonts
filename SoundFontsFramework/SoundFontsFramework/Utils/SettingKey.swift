@@ -7,12 +7,12 @@ import os
 public protocol SettingSettable {
 
   /**
-     Store a setting value under the given key.
+   Store a setting value under the given key.
 
-     - parameter key: the setting name
-     - parameter value: the value to store
-     - parameter userDefaults: the container to store in
-     */
+   - parameter key: the setting name
+   - parameter value: the value to store
+   - parameter userDefaults: the container to store in
+   */
   static func set(key: String, value: Self, userDefaults: UserDefaults)
 }
 
@@ -20,12 +20,12 @@ public protocol SettingSettable {
 public protocol SettingGettable {
 
   /**
-     Obtain the setting value under the given key.
+   Obtain the setting value under the given key.
 
-     - parameter key: the setting name
-     - parameter userDefaults: the container to fetch from
-     - returns: optional value
-     */
+   - parameter key: the setting name
+   - parameter userDefaults: the container to fetch from
+   - returns: optional value
+   */
   static func get(key: String, userDefaults: UserDefaults) -> Self?
 }
 
@@ -43,9 +43,9 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
   typealias ValueType = ValueType
 
   /**
-     There are two types of default values: a constant and a generator. The latter is useful when the value must be
-     determined at runtime.
-     */
+   There are two types of default values: a constant and a generator. The latter is useful when the value must be
+   determined at runtime.
+   */
   enum DefaultValue {
     /// Constant default value
     case constant(ValueType)
@@ -71,44 +71,44 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
   public lazy var defaultValue: ValueType = self._defaultValue.defaultValue
 
   /**
-     Define a new setting key.
+   Define a new setting key.
 
-     - parameter key: the unique identifier to use for this setting
-     - parameter defaultValue: the constant default value to use
-     */
+   - parameter key: the unique identifier to use for this setting
+   - parameter defaultValue: the constant default value to use
+   */
   public init(_ key: String, defaultValue: ValueType) {
     self.userDefaultsKey = key
     self._defaultValue = .constant(defaultValue)
   }
 
   /**
-     Define a new setting key.
+   Define a new setting key.
 
-     - parameter key: the unique identifier to use for this setting
-     - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
-     only be called at most one time.
-     */
+   - parameter key: the unique identifier to use for this setting
+   - parameter defaultValueGenerator: block to call to generate the default value, with a guarantee that this will
+   only be called at most one time.
+   */
   public init(_ key: String, defaultValueGenerator: @escaping () -> ValueType) {
     self.userDefaultsKey = key
     self._defaultValue = .generator(defaultValueGenerator)
   }
 
   /**
-     Obtain a setting value.
+   Obtain a setting value.
 
-     - parameter source: the setting container to query
-     - returns: the current setting value
-     */
+   - parameter source: the setting container to query
+   - returns: the current setting value
+   */
   public func get(_ source: UserDefaults) -> ValueType {
     ValueType.get(key: userDefaultsKey, userDefaults: source) ?? defaultValue
   }
 
   /**
-     Set a setting value.
+   Set a setting value.
 
-     - parameter source: the setting container to modify
-     - parameter value: the new setting value
-     */
+   - parameter source: the setting container to modify
+   - parameter value: the new setting value
+   */
   public func set(_ source: UserDefaults, _ value: ValueType) {
     ValueType.set(key: userDefaultsKey, value: value, userDefaults: source)
   }

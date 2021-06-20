@@ -8,25 +8,25 @@ class ScreenShots: XCTestCase {
   var app: XCUIApplication!
   var suffix: String!
 
-//  func test01PresetsPortrait() { run(.portrait, "Presets") { showPresetsView() } }
-//  func test02FavoritesPortrait() { run(.portrait, "Favorites") { showFavoritesView() } }
-//  func test03SettingsPortrait() { run(.portrait, "Settings") { showSettingsView() } }
-//  func test04FontEditPortrait() { run(.portrait, "FontEdit") { showFontEditView() } }
-//  func test05PresetEditPortrait() { run(.portrait, "FavoriteEdit") { showPresetEditView() } }
-//  func test05ShowEffectsPortrait() { run(.portrait, "Effects") { showEffectsView() } }
-//
-//  func test06PresetsLandscape() { run(.landscapeLeft, "Presets") { showPresetsView() } }
-//  func test07FavoritesLandscape() { run(.landscapeLeft, "Favorites") { showFavoritesView() } }
-//  func test08SettingsLandscape() { run(.landscapeLeft, "Settings") { showSettingsView() } }
-//  func test09FontEditLandscape() { run(.landscapeLeft, "FontEdit") { showFontEditView() } }
-//  func test10PresetEditLandscape() { run(.landscapeLeft, "FavoriteEdit") { showPresetEditView() } }
-//  func test11ShowEffectsLandscape() { run(.landscapeLeft, "Effects") { showEffectsView() } }
-//
-//  func test12ShowTags() { run(.portrait, "Tags") { showTagsView() } }
-//  func test13TagsEdit() { run(.portrait, "TagsEdit") { showTagsEditView() } }
-//  func test14ShowWelcomeScreen() { run(.portrait, "Welcome") { showWelcomeScreen() } }
-//  func test15Search() { run(.portrait, "Search") { showSearch() } }
-//
+  //  func test01PresetsPortrait() { run(.portrait, "Presets") { showPresetsView() } }
+  //  func test02FavoritesPortrait() { run(.portrait, "Favorites") { showFavoritesView() } }
+  //  func test03SettingsPortrait() { run(.portrait, "Settings") { showSettingsView() } }
+  //  func test04FontEditPortrait() { run(.portrait, "FontEdit") { showFontEditView() } }
+  //  func test05PresetEditPortrait() { run(.portrait, "FavoriteEdit") { showPresetEditView() } }
+  //  func test05ShowEffectsPortrait() { run(.portrait, "Effects") { showEffectsView() } }
+  //
+  //  func test06PresetsLandscape() { run(.landscapeLeft, "Presets") { showPresetsView() } }
+  //  func test07FavoritesLandscape() { run(.landscapeLeft, "Favorites") { showFavoritesView() } }
+  //  func test08SettingsLandscape() { run(.landscapeLeft, "Settings") { showSettingsView() } }
+  //  func test09FontEditLandscape() { run(.landscapeLeft, "FontEdit") { showFontEditView() } }
+  //  func test10PresetEditLandscape() { run(.landscapeLeft, "FavoriteEdit") { showPresetEditView() } }
+  //  func test11ShowEffectsLandscape() { run(.landscapeLeft, "Effects") { showEffectsView() } }
+  //
+  //  func test12ShowTags() { run(.portrait, "Tags") { showTagsView() } }
+  //  func test13TagsEdit() { run(.portrait, "TagsEdit") { showTagsEditView() } }
+  //  func test14ShowWelcomeScreen() { run(.portrait, "Welcome") { showWelcomeScreen() } }
+  //  func test15Search() { run(.portrait, "Search") { showSearch() } }
+  //
 
   func testPlaySequence() {
     XCUIDevice.shared.orientation = .portrait

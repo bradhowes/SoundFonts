@@ -12,11 +12,11 @@ public enum FavoriteEditorDismissedReason {
 public protocol FavoriteEditorDelegate: NSObjectProtocol {
 
   /**
-     Notification when the FavoriteDetailController is dismissed and editing of a particular Favorite instance
-     is over.
+   Notification when the FavoriteDetailController is dismissed and editing of a particular Favorite instance
+   is over.
 
-     - parameter index: the index of the Favorite that was being edited
-     - parameter reason: the reason for the dismissal
-     */
+   - parameter index: the index of the Favorite that was being edited
+   - parameter reason: the reason for the dismissal
+   */
   func dismissed(_ index: IndexPath, reason: FavoriteEditorDismissedReason)
 }

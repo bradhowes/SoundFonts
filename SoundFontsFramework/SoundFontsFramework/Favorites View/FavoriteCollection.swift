@@ -24,37 +24,37 @@ final public class FavoriteCollection: Codable {
   }
 
   /**
-     Obtain the favorite at the given index.
+   Obtain the favorite at the given index.
 
-     - parameter index: the index to use
-     - returns: the favorite instance
-     */
+   - parameter index: the index to use
+   - returns: the favorite instance
+   */
   func getBy(index: Int) -> Favorite { favorites[index] }
 
   /**
-     Obtain the favorite by its key.
+   Obtain the favorite by its key.
 
-     - parameter key: the key to look for
-     - returns: the optional favorite instance
-     */
+   - parameter key: the key to look for
+   - returns: the optional favorite instance
+   */
   func getBy(key: Favorite.Key) -> Favorite { getBy(index: index(of: key)) }
 
   /**
-     Add a favorite to the end of the collection.
+   Add a favorite to the end of the collection.
 
-     - parameter favorite: the new favorite to add
-     */
+   - parameter favorite: the new favorite to add
+   */
   func add(favorite: Favorite) {
     favorites.append(favorite)
     AskForReview.maybe()
   }
 
   /**
-     Replace an existing entry with a new value.
+   Replace an existing entry with a new value.
 
-     - parameter index: the location to replace
-     - parameter favorite: the new value to store
-     */
+   - parameter index: the location to replace
+   - parameter favorite: the new value to store
+   */
   func replace(index: Int, with favorite: Favorite) {
     favorites[index] = favorite
   }

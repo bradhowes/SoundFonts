@@ -106,14 +106,14 @@ extension TutorialContentPagerViewController {
 
   private func page(before viewController: UIViewController?) -> UIViewController? {
     guard let pageViewController = viewController as? TutorialPageViewController,
-      let index = pages.firstIndex(of: pageViewController)
+          let index = pages.firstIndex(of: pageViewController)
     else { return nil }
     return index == 0 ? nil : pages[index - 1]
   }
 
   private func page(after viewController: UIViewController?) -> UIViewController? {
     guard let pageViewController = viewController as? TutorialPageViewController,
-      let index = pages.firstIndex(of: pageViewController)
+          let index = pages.firstIndex(of: pageViewController)
     else { return nil }
     return index == pages.count - 1 ? nil : pages[index + 1]
   }

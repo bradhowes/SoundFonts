@@ -13,19 +13,19 @@ final class InfoHUD: NSObject {
   static private var windowCenter: CGPoint? { rootView?.center }
 
   /**
-     Remove any existing HUD view.
-     */
+   Remove any existing HUD view.
+   */
   static func clear() {
     self.cancelPreviousPerformRequests(withTarget: self)
     windows.removeAll(keepingCapacity: false)
   }
 
   /**
-     Show a HUD view with the given text. Automatically dispose of the view after `duration` seconds.
+   Show a HUD view with the given text. Automatically dispose of the view after `duration` seconds.
 
-     - parameter text: the text to show in the view
-     - parameter duration: the number of seconds to show the view for
-     */
+   - parameter text: the text to show in the view
+   - parameter duration: the number of seconds to show the view for
+   */
   static func show(text: String, duration: TimeInterval = 3.0) {
     guard let center = windowCenter else { return }
 
@@ -86,10 +86,10 @@ extension Selector {
 @objc extension InfoHUD {
 
   /**
-     Hide the HUD view.
+   Hide the HUD view.
 
-     - parameter sender: the object that is requesting the visibility change.
-     */
+   - parameter sender: the object that is requesting the visibility change.
+   */
   static func hide(_ sender: UIWindow) {
     if let view = sender.subviews.first {
       UIView.animate(

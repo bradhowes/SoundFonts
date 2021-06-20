@@ -18,10 +18,10 @@ open class CoreDataStack<T: NSPersistentContainer> {
   public lazy var mainContext: NSManagedObjectContext = { persistentContainer.viewContext }()
 
   /**
-     Construct a new Core Data stack that will provide values from a given persistent container
+   Construct a new Core Data stack that will provide values from a given persistent container
 
-     - parameter container: the container to work with
-     */
+   - parameter container: the container to work with
+   */
   public required init(container: T) {
     availableNotification = AvailableNotification(name: container.name + "ManagedObjectContext")
     persistentContainer = container
@@ -32,8 +32,8 @@ open class CoreDataStack<T: NSPersistentContainer> {
 extension CoreDataStack {
 
   /**
-     Save any changes in main managed object context. NOTE: better to do this from NSManagedObject context.
-     */
+   Save any changes in main managed object context. NOTE: better to do this from NSManagedObject context.
+   */
   public func saveChanges() { saveChanges(in: mainContext) }
 }
 

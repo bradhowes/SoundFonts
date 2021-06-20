@@ -25,11 +25,11 @@ public final class Bookmark: Codable {
   private var _resolved: URL?
 
   /**
-     Construct a new bookmark
+   Construct a new bookmark
 
-     - parameter url: the file to bookmark
-     - parameter name: the name to associate with the bookmark
-     */
+   - parameter url: the file to bookmark
+   - parameter name: the name to associate with the bookmark
+   */
   public init(url: URL, name: String) {
     self.name = name
     original = url
@@ -38,8 +38,8 @@ public final class Bookmark: Codable {
   }
 
   /**
-     Restore bookmark from Core Data values
-     */
+   Restore bookmark from Core Data values
+   */
   public init(name: String, original: URL, bookmark: Data?) {
     self.name = name
     self.original = original
@@ -47,11 +47,11 @@ public final class Bookmark: Codable {
   }
 
   /**
-     Attempt to reconstitute a bookmark from an encoded container
+   Attempt to reconstitute a bookmark from an encoded container
 
-     - parameter decoder: the container to read from
-     - throws exception if unable to decode from container
-     */
+   - parameter decoder: the container to read from
+   - throws exception if unable to decode from container
+   */
   public init(from decoder: Decoder) throws {
     let values = try decoder.container(keyedBy: CodingKeys.self)
     name = try values.decode(String.self, forKey: .name)
@@ -141,18 +141,18 @@ extension Bookmark {
 extension Bookmark: Hashable {
 
   /**
-     Provide a hash for a bookmark. Relies on the bookmark hash value.
+   Provide a hash for a bookmark. Relies on the bookmark hash value.
 
-     - parameter hasher: the object to hash into
-     */
+   - parameter hasher: the object to hash into
+   */
   public func hash(into hasher: inout Hasher) { hasher.combine(bookmark) }
 
   /**
-     Allow comparison operator for bookmarks
+   Allow comparison operator for bookmarks
 
-     - parameter lhs: first argument to compare
-     - parameter rhs: second argument to compare
-     - returns: true if they are the same
-     */
+   - parameter lhs: first argument to compare
+   - parameter rhs: second argument to compare
+   - returns: true if they are the same
+   */
   public static func == (lhs: Bookmark, rhs: Bookmark) -> Bool { lhs.bookmark == rhs.bookmark }
 }

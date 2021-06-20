@@ -35,7 +35,7 @@ public final class ReverbViewController: AUViewController {
 extension ReverbViewController: AUAudioUnitFactory {
 
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws
-    -> AUAudioUnit
+  -> AUAudioUnit
   {
     let audioUnit = try ReverbAU(componentDescription: componentDescription)
     os_log(.info, log: log, "created ReverbAU")

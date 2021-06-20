@@ -14,8 +14,8 @@ public final class TagsTableViewController: UITableViewController {
   }
 
   /**
-     Configuration for the controller that is passed to it via the segue that makes it appear.
-     */
+   Configuration for the controller that is passed to it via the segue that makes it appear.
+   */
   public struct Config {
     /// The collection of all of the tags that exist for the app
     let tags: Tags

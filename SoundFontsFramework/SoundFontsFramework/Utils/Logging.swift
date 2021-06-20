@@ -11,11 +11,11 @@ public struct Logging {
   public static let subsystem = Bundle(for: BundleTag.self).bundleIdentifier?.lowercased() ?? "?"
 
   /**
-     Create a new logger for a subsystem
+   Create a new logger for a subsystem
 
-     - parameter category: the subsystem to log under
-     - returns: OSLog instance to use for subsystem logging
-     */
+   - parameter category: the subsystem to log under
+   - returns: OSLog instance to use for subsystem logging
+   */
   public static func logger(_ category: String) -> OSLog {
     OSLog(subsystem: subsystem, category: category)
   }

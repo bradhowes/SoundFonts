@@ -168,7 +168,7 @@ extension DelayAU {
     get { delay.active.fullState }
     set {
       guard let fullState = newValue,
-        let config = DelayConfig(state: fullState)
+            let config = DelayConfig(state: fullState)
       else { return }
       delay.active = config
       parameters.set(.time, value: config.time, originator: nil)
@@ -240,7 +240,7 @@ extension DelayAU {
   }
 
   override public func profileState(forCable cable: UInt8, channel: MIDIChannelNumber)
-    -> MIDICIProfileState
+  -> MIDICIProfileState
   {
     wrapped.profileState(forCable: cable, channel: channel)
   }

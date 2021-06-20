@@ -40,11 +40,11 @@ public final class Tag: Codable {
   public var isUserTag: Bool { !Self.stockTagSet.contains(self.key) }
 
   /**
-     Constructor for the built-in tags.
+   Constructor for the built-in tags.
 
-     - parameter nameProc: method/closure to invoke to get the names in a locale-dependent manner.
-     - parameter uuid: the unique UUID for the tag
-     */
+   - parameter nameProc: method/closure to invoke to get the names in a locale-dependent manner.
+   - parameter uuid: the unique UUID for the tag
+   */
   private init(nameProc: @escaping () -> String, uuid: UByte16) {
     self.key = UUID(uuid: uuid)
     self.name = nameProc()
@@ -55,10 +55,10 @@ public final class Tag: Codable {
   }
 
   /**
-     Construct new tag instance.
+   Construct new tag instance.
 
-     - parameter name: the name to show for the tag
-     */
+   - parameter name: the name to show for the tag
+   */
   public init(name: String) {
     var key = Key()
     while Self.stockTagSet.contains(key) { key = Key() }
@@ -70,12 +70,12 @@ public final class Tag: Codable {
 extension Tag: Equatable {
 
   /**
-     Allow for equality comparison based on tag key
+   Allow for equality comparison based on tag key
 
-     - parameter lhs: left-hand tag to compare
-     - parameter rhs: right-hand tag to compare
-     - returns: true if the tags are the same
-     */
+   - parameter lhs: left-hand tag to compare
+   - parameter rhs: right-hand tag to compare
+   - returns: true if the tags are the same
+   */
   public static func == (lhs: Tag, rhs: Tag) -> Bool { lhs.key == rhs.key }
 }
 

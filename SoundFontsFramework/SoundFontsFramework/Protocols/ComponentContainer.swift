@@ -49,12 +49,12 @@ public protocol ComponentContainer: AnyObject {
   func createAudioComponents()
 
   /**
-     Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.
+   Subscribe to notifications when the collection changes. The types of changes are defined in FavoritesEvent enum.
 
-     - parameter subscriber: the object doing the monitoring
-     - parameter notifier: the closure to invoke when a change takes place
-     - returns: token that can be used to unsubscribe
-     */
+   - parameter subscriber: the object doing the monitoring
+   - parameter notifier: the closure to invoke when a change takes place
+   - returns: token that can be used to unsubscribe
+   */
   @discardableResult
   func subscribe<O: AnyObject>(_ subscriber: O,
                                notifier: @escaping (ComponentContainerEvent) -> Void) -> SubscriberToken

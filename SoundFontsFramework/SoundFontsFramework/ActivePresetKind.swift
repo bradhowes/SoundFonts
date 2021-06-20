@@ -50,27 +50,27 @@ extension ActivePresetKind: Codable {
   }
 
   /**
-     Attempt to obtain an active preset from data
+   Attempt to obtain an active preset from data
 
-     - parameter data: container to extract from
-     - returns: optional ActivePresetKind
-     */
+   - parameter data: container to extract from
+   - returns: optional ActivePresetKind
+   */
   public static func decodeFromData(_ data: Data) -> ActivePresetKind? {
     try? JSONDecoder().decode(ActivePresetKind.self, from: data)
   }
 
   /**
-     Attempt to encode an ActivePresetKind value to Data
+   Attempt to encode an ActivePresetKind value to Data
 
-     - returns: optional Data containing the encoded value
-     */
+   - returns: optional Data containing the encoded value
+   */
   public func encodeToData() -> Data? { try? JSONEncoder().encode(self) }
 
   /**
-     Construct from an encoded state.
+   Construct from an encoded state.
 
-     - parameter decode: state to read from
-     */
+   - parameter decode: state to read from
+   */
   public init(from decoder: Decoder) throws {
     var container = try decoder.unkeyedContainer()
     guard let kind = InternalKey(rawValue: try container.decode(Int.self)) else { fatalError() }
@@ -82,10 +82,10 @@ extension ActivePresetKind: Codable {
   }
 
   /**
-     Save to an encoded state.
+   Save to an encoded state.
 
-     - parameter encoder: container to write to
-     */
+   - parameter encoder: container to write to
+   */
   public func encode(to encoder: Encoder) throws {
     var container = encoder.unkeyedContainer()
     try container.encode(InternalKey.key(for: self).rawValue)

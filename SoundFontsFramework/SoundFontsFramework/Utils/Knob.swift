@@ -113,30 +113,30 @@ open class Knob: UIControl {
   private var activeTouch: Bool = false
 
   /**
-     Construction from an encoded representation.
+   Construction from an encoded representation.
 
-     - parameter aDecoder: the representation to use
-     */
+   - parameter aDecoder: the representation to use
+   */
   public required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     initialize()
   }
 
   /**
-     Construct a new instance with the given location and size. A knob will take the size of the smaller of width and
-     height dimensions
-     given in the `frame` parameter.
+   Construct a new instance with the given location and size. A knob will take the size of the smaller of width and
+   height dimensions
+   given in the `frame` parameter.
 
-     - parameter frame: geometry of the new knob
-     */
+   - parameter frame: geometry of the new knob
+   */
   public override init(frame: CGRect) {
     super.init(frame: frame)
     initialize()
   }
 
   /**
-     Reposition layers to reflect new size.
-     */
+   Reposition layers to reflect new size.
+   */
   public override func layoutSubviews() {
     super.layoutSubviews()
 
@@ -151,11 +151,11 @@ open class Knob: UIControl {
   }
 
   /**
-     Set the knob value.
+   Set the knob value.
 
-     - parameter value: the new value to use
-     - parameter animated: if true, animate the view as it shows the new value
-     */
+   - parameter value: the new value to use
+   - parameter animated: if true, animate the view as it shows the new value
+   */
   public func setValue(_ value: Float, animated: Bool = false) {
     let lastValue = _value
     _value = clampedValue(value)
@@ -166,11 +166,11 @@ open class Knob: UIControl {
 extension Knob {
 
   /**
-     Begin tracking a touch event in the knob.
+   Begin tracking a touch event in the knob.
 
-     - parameter touch: the touch event that took place
-     - parameter event: the event that generated the touch
-     */
+   - parameter touch: the touch event that took place
+   - parameter event: the event that generated the touch
+   */
   override open func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
     panOrigin = touch.location(in: self)
     activeTouch = true
@@ -179,11 +179,11 @@ extension Knob {
   }
 
   /**
-     Continue tracking a touch event in the knob.
+   Continue tracking a touch event in the knob.
 
-     - parameter touch: the updated touch event
-     - parameter event: the event that generated the touch
-     */
+   - parameter touch: the updated touch event
+   - parameter event: the event that generated the touch
+   */
   override open func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
     let point = touch.location(in: self)
 
@@ -202,10 +202,10 @@ extension Knob {
   }
 
   /**
-     Cancel a touch event. NOTE: this does not reset the knob to the original value.
+   Cancel a touch event. NOTE: this does not reset the knob to the original value.
 
-     - parameter event: the event that generated the touch
-     */
+   - parameter event: the event that generated the touch
+   */
   override open func cancelTracking(with event: UIEvent?) {
     activeTouch = false
     super.cancelTracking(with: event)
@@ -213,11 +213,11 @@ extension Knob {
   }
 
   /**
-     End tracking a touch event in the knob.
+   End tracking a touch event in the knob.
 
-     - parameter touch: the updated touch event
-     - parameter event: the event that generated the touch
-     */
+   - parameter touch: the updated touch event
+   - parameter event: the event that generated the touch
+   */
   override open func endTracking(_ touch: UITouch?, with event: UIEvent?) {
     activeTouch = false
     super.endTracking(touch, with: event)

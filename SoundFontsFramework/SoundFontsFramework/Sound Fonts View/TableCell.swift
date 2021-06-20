@@ -40,13 +40,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Update cell contents for a sound font.
+   Update cell contents for a sound font.
 
-     - parameter name: the name of the sound font to show
-     - parameter kind: the type of sound font the cell represents
-     - parameter isSelected: true if the cell holds the selected sound font
-     - parameter isActive: true if the cell holds the sound font of the active preset
-     */
+   - parameter name: the name of the sound font to show
+   - parameter kind: the type of sound font the cell represents
+   - parameter isSelected: true if the cell holds the selected sound font
+   - parameter isActive: true if the cell holds the sound font of the active preset
+   */
   public func updateForFont(name: String, kind: SoundFontKind, isSelected: Bool, isActive: Bool) {
     var name = name
     if case let .reference(bookmark) = kind {
@@ -62,12 +62,12 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Update cell contents for a sound font preset.
+   Update cell contents for a sound font preset.
 
-     - parameter name: the name of the preset
-     - parameter isActive: true if the cell holds the active preset
-     - parameter isEditing: true if the table view is in edit mode
-     */
+   - parameter name: the name of the preset
+   - parameter isActive: true if the cell holds the active preset
+   - parameter isEditing: true if the table view is in edit mode
+   */
   public func updateForPreset(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForPreset - '%{public}s' A: %d", name, isActive)
     update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
@@ -76,11 +76,11 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Update cell contents for a favorite.
+   Update cell contents for a favorite.
 
-     - parameter name: the name of the favorite
-     - parameter isActive: true if the favorite is the active preset
-     */
+   - parameter name: the name of the favorite
+   - parameter isActive: true if the favorite is the active preset
+   */
   public func updateForFavorite(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForFavorite - '%{public}s' A: %d", name, isActive)
     update(name: Self.favoriteTag(true) + name, isSelected: isActive, isActive: isActive, isFavorite: true)
@@ -89,11 +89,11 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Update cell contents for a tag.
+   Update cell contents for a tag.
 
-     - parameter name: the tag name
-     - parameter isActive: true if cell holds the active tag
-     */
+   - parameter name: the tag name
+   - parameter isActive: true if cell holds the active tag
+   */
   public func updateForTag(name: String, isActive: Bool) {
     os_log(.debug, log: log, "updateForTag - '%{public}s' A: %d", name, isActive)
     update(name: name, isSelected: isActive, isActive: isActive, isFavorite: false)
@@ -102,8 +102,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   }
 
   /**
-     Make sure that the 'reorder' button can be seen when the table view is in edit mode
-     */
+   Make sure that the 'reorder' button can be seen when the table view is in edit mode
+   */
   override public func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
     if editing {

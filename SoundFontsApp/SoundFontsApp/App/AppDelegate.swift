@@ -16,11 +16,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
   /**
-     Set the main view controller for the application. Initiates the configuration process for all of the components
-     in the application.
+   Set the main view controller for the application. Initiates the configuration process for all of the components
+   in the application.
 
-     - parameter mainViewController: the view controller to use
-     */
+   - parameter mainViewController: the view controller to use
+   */
   func setMainViewController(_ mainViewController: MainViewController) {
     if ProcessInfo.processInfo.arguments.contains("-ui_testing") {
       mainViewController.skipTutorial = true
@@ -30,11 +30,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /**
-     Notification handler for when the application starts.
+   Notification handler for when the application starts.
 
-     - parameter application: the application that is running
-     - parameter launchOptions: the options used to start the application
-     */
+   - parameter application: the application that is running
+   - parameter launchOptions: the options used to start the application
+   */
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
@@ -44,22 +44,22 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /**
-     Notification handler for when the application is given an SF2 URL to open.
+   Notification handler for when the application is given an SF2 URL to open.
 
-     - parameter app: the app that is running
-     - parameter url: the URL of the file to open
-     - parameter options: dictionary of options that may affect the opening (unused)
-     */
+   - parameter app: the app that is running
+   - parameter url: the URL of the file to open
+   - parameter options: dictionary of options that may affect the opening (unused)
+   */
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
     return true
   }
 
   /**
-     Notification handler for when the application is no longer the active foreground application. Stops audio output.
+   Notification handler for when the application is no longer the active foreground application. Stops audio output.
 
-     - parameter app: the app that is running
-     */
+   - parameter app: the app that is running
+   */
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
@@ -67,29 +67,29 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /**
-     Notification handler for when the application is running in the background.
+   Notification handler for when the application is running in the background.
 
-     - parameter app: the app that is running
-     */
+   - parameter app: the app that is running
+   */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
     components.consolidatedConfigFile.save()
   }
 
   /**
-     Notification handler for when the application is running in the foreground.
+   Notification handler for when the application is running in the foreground.
 
-     - parameter app: the app that is running
-     */
+   - parameter app: the app that is running
+   */
   func applicationWillEnterForeground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillEnterForeground")
   }
 
   /**
-     Notification handler for when the application becomes the active foreground application. Starts audio output.
+   Notification handler for when the application becomes the active foreground application. Starts audio output.
 
-     - parameter app: the app that is running
-     */
+   - parameter app: the app that is running
+   */
   func applicationDidBecomeActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidBecomeActive")
     UIApplication.shared.isIdleTimerDisabled = true
@@ -97,10 +97,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   /**
-     Notification handler for when the application is being terminated. Stops audio output.
+   Notification handler for when the application is being terminated. Stops audio output.
 
-     - parameter app: the app that is running
-     */
+   - parameter app: the app that is running
+   */
   func applicationWillTerminate(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()

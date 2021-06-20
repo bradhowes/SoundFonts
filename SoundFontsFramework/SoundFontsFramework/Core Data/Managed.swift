@@ -42,25 +42,25 @@ extension Managed where Self: NSManagedObject {
   public static var entityName: String { entity().name! }
 
   /**
-     Create a fetch request and execute it.
+   Create a fetch request and execute it.
 
-     - parameter context: the context where the managed objects live
-     - parameter request: what to request
-     - returns: array of managed objects
-     */
+   - parameter context: the context where the managed objects live
+   - parameter request: what to request
+   - returns: array of managed objects
+   */
   public static func fetch(in context: NSManagedObjectContext, request: FetchRequest) -> [Self] {
     guard let result = try? context.fetch(request) else { fatalError() }
     return result
   }
 
   /**
-     Find or create a managed object
+   Find or create a managed object
 
-     - parameter context: the context where the managed objects live
-     - parameter request: what to request
-     - parameter block: code to run to initialize an object
-     - returns: found/created managed object
-     */
+   - parameter context: the context where the managed objects live
+   - parameter request: what to request
+   - parameter block: code to run to initialize an object
+   - returns: found/created managed object
+   */
   public static func findOrCreate(in context: NSManagedObjectContext, request: FetchRequest,
                                   initializer: Initializer) -> Self {
     guard let object = findOrFetch(in: context, request: request) else {
@@ -72,12 +72,12 @@ extension Managed where Self: NSManagedObject {
   }
 
   /**
-     Create a fetch request that returns the first item that matches a given predicate.
+   Create a fetch request that returns the first item that matches a given predicate.
 
-     - parameter context: the context where the managed objects live
-     - parameter predicate: the match definition
-     - returns: optional found object
-     */
+   - parameter context: the context where the managed objects live
+   - parameter predicate: the match definition
+   - returns: optional found object
+   */
   public static func findOrFetch(in context: NSManagedObjectContext, request: FetchRequest) -> Self? {
     guard let object = materializedObject(in: context, matching: request.predicate) else {
       request.returnsObjectsAsFaults = false
@@ -88,12 +88,12 @@ extension Managed where Self: NSManagedObject {
   }
 
   /**
-     Obtain the first registered object in the context that matches a given predicate.
+   Obtain the first registered object in the context that matches a given predicate.
 
-     - parameter context: the context where the managed objects live
-     - parameter predicate: the match definition
-     - returns: optional found object
-     */
+   - parameter context: the context where the managed objects live
+   - parameter predicate: the match definition
+   - returns: optional found object
+   */
   public static func materializedObject(in context: NSManagedObjectContext, matching predicate: NSPredicate?) -> Self? {
     for object in context.registeredObjects where !object.isFault {
       guard let result = object as? Self, predicate?.evaluate(with: result) ?? true else {

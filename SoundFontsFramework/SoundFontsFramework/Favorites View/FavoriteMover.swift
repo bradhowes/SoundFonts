@@ -9,11 +9,11 @@ final class FavoriteMover: NSObject {
   private var cell: FavoriteCell?
 
   /**
-     Create a new mover for the given view and long-press gesture recognizer.
+   Create a new mover for the given view and long-press gesture recognizer.
 
-     - parameter view: the view to manage
-     - parameter recognizer: the long-press gesture recognizer that triggers a move.
-     */
+   - parameter view: the view to manage
+   - parameter recognizer: the long-press gesture recognizer that triggers a move.
+   */
   init(view: UICollectionView, recognizer: UILongPressGestureRecognizer) {
     self.view = view
     super.init()
@@ -22,10 +22,10 @@ final class FavoriteMover: NSObject {
   }
 
   /**
-     Handle a long-press gesture.
+   Handle a long-press gesture.
 
-     - parameter recognizer: the gesture recognizer being used
-     */
+   - parameter recognizer: the gesture recognizer being used
+   */
   @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
     switch recognizer.state {
     case .began:

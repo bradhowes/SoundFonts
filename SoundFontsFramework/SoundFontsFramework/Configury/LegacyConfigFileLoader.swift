@@ -9,8 +9,8 @@ private let log = Logging.logger("LegacyConfigFileLoader")
 struct LegacyConfigFileLoader<T> where T: Decodable & CustomStringConvertible {
 
   /**
-     Attempts to load a legacy config file.
-     */
+   Attempts to load a legacy config file.
+   */
   static func load(filename: String, removeWhenDone: Bool = false) -> T? {
     os_log(.info, log: log, "init - %{public}s", filename)
     let sharedArchivePath = FileManager.default.sharedPath(for: filename)

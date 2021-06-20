@@ -6,9 +6,9 @@ import UIKit
 final class FontEditor: UIViewController {
 
   /**
-     A Config instance communicates values for the editor to use to do its job. It is setup during the segue that will
-     show the editor.
-     */
+   A Config instance communicates values for the editor to use to do its job. It is setup during the segue that will
+   show the editor.
+   */
   public struct Config {
     /// The index of the sound font entry being edited
     let indexPath: IndexPath
@@ -61,8 +61,8 @@ final class FontEditor: UIViewController {
 extension FontEditor {
 
   /**
-     Set the configuration for the editor.
-     */
+   Set the configuration for the editor.
+   */
   func configure(_ config: Config) {
     self.config = config
     config.soundFonts.reloadEmbeddedInfo(key: config.soundFontKey)
@@ -133,24 +133,24 @@ extension FontEditor {
 extension FontEditor: UITextFieldDelegate {
 
   /**
-     Notification that user wishes to interact with a text field. Keep it visible.
-     */
+   Notification that user wishes to interact with a text field. Keep it visible.
+   */
   public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     textFieldKeyboardMonitor.viewToKeepVisible = textField
     return true
   }
 
   /**
-     Notification that the user has hit a "return" key. Stop editing in the field.
-     */
+   Notification that the user has hit a "return" key. Stop editing in the field.
+   */
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()
     return true
   }
 
   /**
-     Notification that editing in a text field is coming to an end
-     */
+   Notification that editing in a text field is coming to an end
+   */
   public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
     textFieldKeyboardMonitor.viewToKeepVisible = nil
     return true
@@ -158,19 +158,19 @@ extension FontEditor: UITextFieldDelegate {
 }
 
 extension FontEditor: UIPopoverPresentationControllerDelegate,
-  UIAdaptivePresentationControllerDelegate
+                      UIAdaptivePresentationControllerDelegate
 {
 
   /**
-     Notification that the font editor is being dismissed. Treat as a close.
-     */
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
   func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
     close(doneButton)
   }
 
   /**
-     Notification that the font editor is being dismissed. Treat as a close.
-     */
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
   func popoverPresentationControllerDidDismissPopover(
     _ popoverPresentationController: UIPopoverPresentationController) {
     close(doneButton)
@@ -186,11 +186,11 @@ extension FontEditor: SegueHandler {
   }
 
   /**
-     User wishes to edit the collection of tags assigned to the sound font.
+   User wishes to edit the collection of tags assigned to the sound font.
 
-     - parameter segue: the segue to be performed
-     - parameter sender: the origin of the segue request
-     */
+   - parameter segue: the segue to be performed
+   - parameter sender: the origin of the segue request
+   */
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .tagsEdit: prepareToEdit(segue)

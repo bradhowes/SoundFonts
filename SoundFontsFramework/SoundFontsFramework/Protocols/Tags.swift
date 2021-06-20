@@ -28,88 +28,88 @@ public protocol Tags: AnyObject {
   var count: Int { get }
 
   /**
-     Obtain the names of tags in the given collection.
+   Obtain the names of tags in the given collection.
 
-     - parameter keys: the collection to work with
-     - returns: list of strings
-     */
+   - parameter keys: the collection to work with
+   - returns: list of strings
+   */
   func names(of keys: Set<Tag.Key>) -> [String]
 
   /**
-     Get the index for the given tag.
+   Get the index for the given tag.
 
-     - parameter of: the tag to search for
-     - returns: the option index of the tag
-     */
+   - parameter of: the tag to search for
+   - returns: the option index of the tag
+   */
   func index(of: Tag.Key) -> Int?
 
   /**
-     Get the tag at a given index.
+   Get the tag at a given index.
 
-     - parameter index: the index to fetch
-     - returns tag at the index
-     */
+   - parameter index: the index to fetch
+   - returns tag at the index
+   */
   func getBy(index: Int) -> Tag
 
   /**
-     Get the tag by its key.
+   Get the tag by its key.
 
-     - parameter key: the key of the tag to get
-     - returns: tag with the given key
-     */
+   - parameter key: the key of the tag to get
+   - returns: tag with the given key
+   */
   func getBy(key: Tag.Key) -> Tag?
 
   /**
-     Add a tag to the collection.
+   Add a tag to the collection.
 
-     - parameter tag: the tag to add
-     - returns: index of the new tag
-     */
+   - parameter tag: the tag to add
+   - returns: index of the new tag
+   */
   func append(_ tag: Tag) -> Int
 
   /**
-     Remove the tag at the given index.
+   Remove the tag at the given index.
 
-     - parameter index: the index to remove
-     - returns: tag that was removed
-     */
+   - parameter index: the index to remove
+   - returns: tag that was removed
+   */
   @discardableResult
   func remove(at index: Int) -> Tag
 
   /**
-     Rename a tag.
+   Rename a tag.
 
-     - parameter index: the index of the tag to rename
-     - parameter name: the new name to use
-     */
+   - parameter index: the index of the tag to rename
+   - parameter name: the new name to use
+   */
   func rename(_ index: Int, name: String)
 
   /**
-     Insert a tag at the given index
+   Insert a tag at the given index
 
-     - parameter tag: the tag to insert
-     - parameter index: the location to insert it
-     */
+   - parameter tag: the tag to insert
+   - parameter index: the location to insert it
+   */
   func insert(_ tag: Tag, at index: Int)
 
   /**
-     Obtain the set of tags that correspond to a set of indices.
+   Obtain the set of tags that correspond to a set of indices.
 
-     - parameter indices: the indices to fetch
-     - returns: set of tags
-     */
+   - parameter indices: the indices to fetch
+   - returns: set of tags
+   */
   func keySet(of indices: Set<Int>) -> Set<Tag.Key>
 
   /**
-     Allow subscriptions for tag collection changes.
+   Allow subscriptions for tag collection changes.
 
-     - parameter subscriber: the object that is subscribing
-     - parameter notifier: the function or closure to invoke when an even takes place
-     - returns: token that identifies the subscription and can be used to unsubscribe
-     */
+   - parameter subscriber: the object that is subscribing
+   - parameter notifier: the function or closure to invoke when an even takes place
+   - returns: token that identifies the subscription and can be used to unsubscribe
+   */
   @discardableResult
   func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void)
-    -> SubscriberToken
+  -> SubscriberToken
 
   func validate()
 }

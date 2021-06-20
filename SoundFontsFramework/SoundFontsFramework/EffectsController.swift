@@ -233,7 +233,7 @@ extension EffectsController {
 
   private func updatePresetConfig() {
     guard let reverbEffect = self.reverbEffect,
-      let delayEffect = self.delayEffect
+          let delayEffect = self.delayEffect
     else {
       return
     }

@@ -35,10 +35,10 @@ public struct Note: CustomStringConvertible, Codable {
   public var description: String { label }
 
   /**
-     Create new Note instance.
+   Create new Note instance.
 
-     - parameter midiNoteValue: MIDI note value for this instance
-     */
+   - parameter midiNoteValue: MIDI note value for this instance
+   */
   public init(midiNoteValue: Int) {
     self.midiNoteValue = midiNoteValue
     let offset = midiNoteValue % 12
@@ -60,20 +60,20 @@ public struct Note: CustomStringConvertible, Codable {
 
 extension Note: Comparable {
   /**
-     Allow for ordering of Note instances
+   Allow for ordering of Note instances
 
-     - parameter lhs: first argument to compare
-     - parameter rhs: second argument to compare
-     - returns: true if first comes before the second
-     */
+   - parameter lhs: first argument to compare
+   - parameter rhs: second argument to compare
+   - returns: true if first comes before the second
+   */
   public static func < (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue < rhs.midiNoteValue }
 
   /**
-     Allow for equality comparisons between Note instances
+   Allow for equality comparisons between Note instances
 
-     - parameter lhs: first argument to compare
-     - parameter rhs: second argument to compare
-     - returns: true if the same
-     */
+   - parameter lhs: first argument to compare
+   - parameter rhs: second argument to compare
+   - returns: true if the same
+   */
   public static func == (lhs: Note, rhs: Note) -> Bool { lhs.midiNoteValue == rhs.midiNoteValue }
 }

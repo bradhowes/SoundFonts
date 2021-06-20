@@ -25,8 +25,8 @@ extension ReverbConfig {
 
   public init?(state: [String: Any]) {
     guard let enabled = state[.enabled] == 0.0 ? false : true,
-      let preset = state[.preset],
-      let wetDryMix = state[.wetDryMix]
+          let preset = state[.preset],
+          let wetDryMix = state[.wetDryMix]
     else { return nil }
     self.init(enabled: enabled, preset: Int(preset), wetDryMix: wetDryMix)
   }

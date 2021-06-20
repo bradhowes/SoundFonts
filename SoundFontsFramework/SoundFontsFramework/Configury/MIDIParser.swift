@@ -21,11 +21,11 @@ public struct MIDIParser {
   private var log: OSLog { Self.log }
 
   /**
-     Extract MIDI messages and send to controller.
+   Extract MIDI messages and send to controller.
 
-     - parameter packetList: the MIDI data to parse
-     - parameter controller: the recipient of the MIDI messages
-     */
+   - parameter packetList: the MIDI data to parse
+   - parameter controller: the recipient of the MIDI messages
+   */
   public static func parse(packetList: MIDIPacketList, for controller: MIDIReceiver) {
     os_signpost(.begin, log: log, name: "parse")
     let numPackets = packetList.numPackets

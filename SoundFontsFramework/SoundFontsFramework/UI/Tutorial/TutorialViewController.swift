@@ -11,8 +11,8 @@ public final class TutorialViewController: UIViewController {
   private var stagedChanges: [String]?
 
   /**
-     Create a new TutorialViewController to show the tutorial.
-     */
+   Create a new TutorialViewController to show the tutorial.
+   */
   public class func instantiate() -> UIViewController? {
     os_log(.info, log: log, "instantiate")
     let viewControllers = createViewControllers()
@@ -32,11 +32,11 @@ public final class TutorialViewController: UIViewController {
   }
 
   /**
-     Create a new TutorialViewController. If given a collection of changes, it will show a "Recent Changes" page with
-     the contents. Otherwise, it will show the tutorial pages.
+   Create a new TutorialViewController. If given a collection of changes, it will show a "Recent Changes" page with
+   the contents. Otherwise, it will show the tutorial pages.
 
-     @param changes optional collection of changes that this version contains over past ones
-     */
+   @param changes optional collection of changes that this version contains over past ones
+   */
   public class func instantiateChanges(_ changes: [String]) -> UIViewController? {
     os_log(.info, log: log, "instantiate - %d", changes.count)
     guard !changes.isEmpty else {

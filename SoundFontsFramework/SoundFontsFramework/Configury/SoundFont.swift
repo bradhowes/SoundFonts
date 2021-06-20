@@ -51,13 +51,13 @@ public final class SoundFont: Codable {
   }
 
   /**
-     Constructor for installed sound font files -- those added via File app.
+   Constructor for installed sound font files -- those added via File app.
 
-     - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: preset info from the sound font
-     - parameter url: the resource URL for this sound font
-     - parameter key: UUID for this font
-     */
+   - parameter displayName: the display name of the resource
+   - parameter soundFontInfo: preset info from the sound font
+   - parameter url: the resource URL for this sound font
+   - parameter key: UUID for this font
+   */
   public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
     self.key = key
     self.displayName = displayName
@@ -74,12 +74,12 @@ public final class SoundFont: Codable {
   }
 
   /**
-     Constructor for built-in sound font files -- those in the Bundle.
+   Constructor for built-in sound font files -- those in the Bundle.
 
-     - parameter displayName: the display name of the resource
-     - parameter soundFontInfo: preset info from the sound font
-     - parameter resource: the name of the resource in the bundle
-     */
+   - parameter displayName: the display name of the resource
+   - parameter soundFontInfo: preset info from the sound font
+   - parameter resource: the name of the resource in the bundle
+   */
   public init(_ displayName: String, soundFontInfo: SoundFontInfo, resource: URL) {
     self.key = Key()
     self.displayName = displayName
