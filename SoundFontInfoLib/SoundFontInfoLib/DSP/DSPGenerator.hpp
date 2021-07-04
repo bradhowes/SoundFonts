@@ -26,9 +26,7 @@ struct Generator {
   template <typename T>
   void generate(const std::string& name) {
     os_ << "const std::array<double, " << name << "::TableSize> " << name << "::lookup_ = {\n";
-    for (auto index = 0; index < T::TableSize; ++index) {
-      os_ << T::value(index) << ",\n";
-    }
+    for (auto index = 0; index < T::TableSize; ++index) os_ << T::value(index) << ",\n";
     os_ << "};\n\n";
   }
   
@@ -43,10 +41,9 @@ struct Generator {
     os_ << "const ValueTransformer::TransformArrayType ValueTransformer::" << name;
     if (bipolar) os_ << "Bipolar";
     os_ << "_ = {\n";
-    
-    for (auto index = 0; index < MIDI::ValueTransformer::TableSize; ++index) {
-      os_ << (bipolar ? unipolarToBipolar(proc(index)) : proc(index)) << ",\n";
-    }
+
+    auto func = bipolar ? [=](auto index) { return unipolarToBipolar(proc(index)); } : proc;
+    for (auto index = 0; index < MIDI::ValueTransformer::TableSize; ++index) os_ << func(index) << ",\n";
     os_ << "};\n\n";
   }
   
