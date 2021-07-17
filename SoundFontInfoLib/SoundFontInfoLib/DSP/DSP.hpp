@@ -212,16 +212,12 @@ namespace Interpolation {
 /**
  Interpolate a value from two values.
  
- @param partial indication of affinity for one of the two values. Low values give greater weight to x0 while higher
- values give greater weight to x1.
+ @param partial indication of affinity for one of the two values. Values [0-0.5) favor x0, while values (0.5-1.0)
+ favor x1. A value of 0.5 equally favors both.
  @param x0 first value to use
  @param x1 second value to use
  */
-inline Float linear(Float partial, Float x0, Float x1) {
-  Float w1 = partial;
-  Float w0 = 1.0 - partial;
-  return x0 * w0 + x1 * w1;
-}
+inline Float linear(Float partial, Float x0, Float x1) { return x0 * (1.0 - partial) + x1 * partial; }
 
 /**
  Interpolate a value from four values.

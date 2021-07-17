@@ -14,13 +14,5 @@ FOUNDATION_EXPORT const unsigned char SoundFontInfoLibVersionString[];
  This is a C++ library with an Objective-C interface that allows one to read an SF2 file, chose a preset to use, and
  render audio samples for MIDI note activity.
 
- \section Section1 Section 1
-
- This is the first section.
-
- \section Section2 Section 2
-
- This is the second section.
-
  */
 #import "SoundFontInfoLib/SoundFontInfo.h"
