@@ -205,7 +205,7 @@
 		BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPTables.hpp; path = SoundFontInfoLib/DSP/DSPTables.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF98265DB1F0002AD159 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/DSP/README.md; sourceTree = SOURCE_ROOT; };
 		BDB1BF99265DB1F0002AD159 /* DSP.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSP.hpp; path = SoundFontInfoLib/DSP/DSP.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF9A265DB1F0002AD159 /* DSPGenerator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPGenerator.hpp; path = SoundFontInfoLib/DSP/DSPGenerator.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF9A265DB1F0002AD159 /* DSPTablesGenerator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DSPTablesGenerator.hpp; path = SoundFontInfoLib/DSP/DSPTablesGenerator.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF9B265DB1F0002AD159 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SoundFontInfoLib/Info.plist; sourceTree = SOURCE_ROOT; };
 		BDB1BF9C265DB1F0002AD159 /* SoundFontInfo.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundFontInfo.mm; sourceTree = SOURCE_ROOT; };
 		BDB266C725334B3E005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -529,7 +529,7 @@
 			children = (
 				BDB1BF98265DB1F0002AD159 /* README.md */,
 				BDB1BF99265DB1F0002AD159 /* DSP.hpp */,
-				BDB1BF9A265DB1F0002AD159 /* DSPGenerator.hpp */,
+				BDB1BF9A265DB1F0002AD159 /* DSPTablesGenerator.hpp */,
 				BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */,
 			);
 			name = DSP;

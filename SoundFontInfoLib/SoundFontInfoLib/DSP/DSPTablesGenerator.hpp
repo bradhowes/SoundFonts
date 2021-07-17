@@ -51,7 +51,7 @@ struct Generator {
    Generate the weights used for the cubic 4th-order interpolation calculations
    Based on code found in FluidSynth. Reordered and normalized to better understand coefficients.
    
-   Below is from FluidSynth source (see
+   Below comment is from FluidSynth source (see
    https://github.com/FluidSynth/fluidsynth/blob/master/src/gentables/gen_rvoice_dsp.c#L25):
    
    Initialize the coefficients for the interpolation. The math comes from a mail, posted by Olli Niemitalo to the

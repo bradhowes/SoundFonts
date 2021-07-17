@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "DSPGenerator.hpp"
+#include "DSPTablesGenerator.hpp"
 
 int main(int argc, const char * argv[]) {
   auto os = std::ofstream(argv[1]);
