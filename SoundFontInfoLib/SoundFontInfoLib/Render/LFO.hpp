@@ -19,7 +19,7 @@ class LFO {
 public:
 
   /**
-   Configures an LFO via a "fluent" interface.
+   Configuration for an LFO.
    */
   struct Config {
 
@@ -28,7 +28,7 @@ public:
 
      @param sampleRate the sample rate to use
      */
-    explicit Config(Float sampleRate) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
+    explicit Config(Float sampleRate = 44100.0) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
 
     /**
      Set the frequency for the LFO.
@@ -56,38 +56,22 @@ public:
      @returns LFO instance
      */
     LFO make() const {
-      return LFO(sampleRate_, frequency_, delay_);
+      return LFO(*this);
     }
 
   private:
     Float sampleRate_;
     Float frequency_;
     Float delay_;
+    friend class LFO;
   };
 
   /**
    Create a new instance.
 
-   @param sampleRate number of samples per second
-   @param frequency the frequency of the oscillator
-   @param delay the number of seconds to wait before starting the LFO.
+   @param config the configuration for the LFO
    */
-  LFO(Float sampleRate, Float frequency, Float delay) { initialize(sampleRate, frequency, delay); }
-
-  /**
-   Initialize the LFO with the given parameters.
-
-   @param sampleRate number of samples per second
-   @param frequency the frequency of the oscillator
-   @param delay the number of seconds to wait before starting the LFO.
-   */
-  void initialize(Float sampleRate, Float frequency, Float delay) {
-    sampleRate_ = sampleRate;
-    frequency_ = frequency;
-    delaySampleCount_ = size_t(sampleRate * delay);
-    setPhaseIncrement();
-    reset();
-  }
+  LFO(const Config& config) : config_{config} { initialize(); }
 
   /**
    Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
@@ -95,7 +79,7 @@ public:
    @param frequency the frequency to operate at
    */
   void setFrequency(Float frequency) {
-    frequency_ = frequency;
+    config_.frequency_ = frequency;
     setPhaseIncrement();
   }
 
@@ -105,7 +89,7 @@ public:
    @param delay the number of seconds to wait before starting the LFO.
    */
   void setDelay(Float delay) {
-    delaySampleCount_ = size_t(delay * sampleRate_);
+    delaySampleCount_ = size_t(delay * config_.sampleRate_);
     reset();
   }
 
@@ -118,9 +102,12 @@ public:
   }
 
   struct State {
+    State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
+
+  private:
     Float counter_;
     size_t delaySampleCount_;
-    State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
+    friend class LFO;
   };
 
   /**
@@ -160,7 +147,13 @@ public:
 
 private:
 
-  void setPhaseIncrement() { increment_ = frequency_ / sampleRate_ * 4.0; }
+  void initialize() {
+    delaySampleCount_ = size_t(config_.sampleRate_ * config_.delay_);
+    setPhaseIncrement();
+    reset();
+  }
+
+  void setPhaseIncrement() { increment_ = config_.frequency_ / config_.sampleRate_ * 4.0; }
 
   void increment() {
     if (delaySampleCount_ > 0) {
@@ -181,8 +174,7 @@ private:
     }
   }
 
-  Float sampleRate_;
-  Float frequency_;
+  Config config_;
   Float counter_{0.0};
   Float increment_;
   size_t delaySampleCount_;
