@@ -62,8 +62,8 @@ public:
   State(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
 
   /**
-   Set a generator value. Instrument zones set generator values; preset zones set their adjustments. It can be set
-   twice, once by a global instrument generator setting, and again by a non-global instrument generator setting.
+   Set a generator value. Should only be called from an InstrumentZone. It can be set twice, once by a
+   global instrument generator setting, and again by a non-global instrument generator setting.
 
    @param index the generator to set
    @param value the value to use
@@ -78,8 +78,8 @@ public:
   }
 
   /**
-   Set a generator's adjustment value. Instrument zones set generator values; preset zones set their adjustments. It
-   can be set twice, once by a global preset generator setting, and again by a non-global preset generator setting.
+   Set a generator's adjustment value. Should only be called from a PresetZone. It can be invoked twice, once by a
+   global preset setting, and again by a non-global preset generator setting.
 
    @param index the generator to set
    @param value the value to use
@@ -99,7 +99,7 @@ public:
 
   /**
    Obtain a generator value after applying any registered modulators to it. Due to the modulation calculations this
-   returns a floating-point value, but the value has not been converted from/into any particular units and should
+   returns a floating-point value, but the value has not been converted from/into any particular unit and should
    still reflect the definitions found in the spec.
 
    @param index the index of the generator
