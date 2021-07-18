@@ -24,7 +24,7 @@ using namespace SF2::Render;
 }
 
 - (void)testSamples {
-  LFO osc(8.0, 1.0, 0.0);
+  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
   SamplesEqual(osc.valueAndIncrement(), 0.0);
   SamplesEqual(osc.valueAndIncrement(), 0.5);
   SamplesEqual(osc.valueAndIncrement(), 1.0);
@@ -37,7 +37,7 @@ using namespace SF2::Render;
 }
 
 - (void)testSaveRestore {
-  LFO osc(8.0, 1.0, 0.0);
+  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
   SamplesEqual(osc.valueAndIncrement(), 0.0);
   SamplesEqual(osc.valueAndIncrement(), 0.5);
   auto state = osc.saveState();
@@ -49,7 +49,7 @@ using namespace SF2::Render;
 }
 
 - (void)testDelay {
-  LFO osc(8.0, 1.0, 0.125);
+  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
   SamplesEqual(osc.valueAndIncrement(), 0.0);
   SamplesEqual(osc.valueAndIncrement(), 0.0);
   SamplesEqual(osc.valueAndIncrement(), 0.5);
