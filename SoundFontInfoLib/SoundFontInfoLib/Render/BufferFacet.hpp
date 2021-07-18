@@ -10,7 +10,9 @@
 namespace SF2::Render {
 
 /**
- Provides a simple std::vector view of an AudioBufferList.
+ Provides a simple std::vector view of an AudioBufferList, providing indexing by channel that returns a pointer to
+ AUValue values in the buffer. The pointer value is updated in the `setOffset` call should be called before using
+ the values from the std::vector.
  */
 class BufferFacet {
 
