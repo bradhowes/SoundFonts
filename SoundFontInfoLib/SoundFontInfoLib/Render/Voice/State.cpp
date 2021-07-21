@@ -4,13 +4,13 @@
 
 #include "Render/Envelope/Generator.hpp"
 
-#include "Render/Voice/Setup.hpp"
+#include "Render/Voice/Config.hpp"
 #include "Render/Voice/State.hpp"
 
 using namespace SF2::Render::Voice;
 
-State::State(double sampleRate, const MIDI::Channel& channel, const Setup& setup) :
-values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, velocity_{setup.velocity()}
+State::State(double sampleRate, const MIDI::Channel& channel, const Config& setup) :
+sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, velocity_{setup.velocity()}
 {
   // (1) Initialize to default values
   setDefaults();
@@ -20,12 +20,14 @@ values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, veloci
 
   // (3) Now finish configuring the modulators by resolving any links between them.
   for (const auto& modulator : modulators_) {
-    if (modulator.configuration().hasModulatorDestination()) {
-      for (auto& destination : modulators_) {
-        if (destination.configuration().source().isLinked() &&
-            modulator.configuration().linkDestination() == destination.index()) {
-          destination.setSource(modulator);
-        }
+    if (!modulator.configuration().hasModulatorDestination()) continue;
+    for (auto& destination : modulators_) {
+      if (destination.configuration().source().isLinked() &&
+          modulator.configuration().linkDestination() == destination.index()) {
+
+        // Set up the destination modulator so that it pulls a value from another modulator when it is asked for a value
+        // to apply to a generator.
+        destination.setSource(modulator);
       }
     }
   }
@@ -33,25 +35,24 @@ values_{}, sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, veloci
 
 void
 State::setDefaults() {
-  values_.fill(0);
-  adjustments_.fill(0);
-  setValue(Index::initialFilterCutoff, 13500);
-  setValue(Index::delayModulatorLFO, -12000);
-  setValue(Index::delayVibratoLFO, -12000);
-  setValue(Index::delayModulatorEnvelope, -12000);
-  setValue(Index::attackModulatorEnvelope, -12000);
-  setValue(Index::holdModulatorEnvelope, -12000);
-  setValue(Index::decayModulatorEnvelope, -12000);
-  setValue(Index::releaseModulatorEnvelope, -12000);
-  setValue(Index::delayVolumeEnvelope, -12000);
-  setValue(Index::attackVolumeEnvelope, -12000);
-  setValue(Index::holdVolumeEnvelope, -12000);
-  setValue(Index::decayVolumeEnvelope, -12000);
-  setValue(Index::releaseVolumeEnvelope, -12000);
-  setValue(Index::forcedMIDIKey, -1);
-  setValue(Index::forcedMIDIVelocity, -1);
-  setValue(Index::scaleTuning, 100);
-  setValue(Index::overridingRootKey, -1);
+  gens_.fill(GenValue());
+  setPrincipleValue(Index::initialFilterCutoff, 13500);
+  setPrincipleValue(Index::delayModulatorLFO, -12000);
+  setPrincipleValue(Index::delayVibratoLFO, -12000);
+  setPrincipleValue(Index::delayModulatorEnvelope, -12000);
+  setPrincipleValue(Index::attackModulatorEnvelope, -12000);
+  setPrincipleValue(Index::holdModulatorEnvelope, -12000);
+  setPrincipleValue(Index::decayModulatorEnvelope, -12000);
+  setPrincipleValue(Index::releaseModulatorEnvelope, -12000);
+  setPrincipleValue(Index::delayVolumeEnvelope, -12000);
+  setPrincipleValue(Index::attackVolumeEnvelope, -12000);
+  setPrincipleValue(Index::holdVolumeEnvelope, -12000);
+  setPrincipleValue(Index::decayVolumeEnvelope, -12000);
+  setPrincipleValue(Index::releaseVolumeEnvelope, -12000);
+  setPrincipleValue(Index::forcedMIDIKey, -1);
+  setPrincipleValue(Index::forcedMIDIVelocity, -1);
+  setPrincipleValue(Index::scaleTuning, 100);
+  setPrincipleValue(Index::overridingRootKey, -1);
 
   // Install default modulators for the voice. Zones can override them and add new ones.
   for (const auto& modulator : Entity::Modulator::Modulator::defaults) {
@@ -76,6 +77,6 @@ State::addModulator(const Entity::Modulator::Modulator& modulator) {
   modulators_.emplace_back(index, modulator, *this);
 
   if (modulator.hasGeneratorDestination()) {
-    valueModulators_[Entity::Generator::indexValue(modulator.generatorDestination())].push_front(index);
+    gens_[indexValue(modulator.generatorDestination())].mods.push_front(index);
   }
 }

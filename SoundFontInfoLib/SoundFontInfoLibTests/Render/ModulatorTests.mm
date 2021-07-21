@@ -34,31 +34,31 @@ using namespace SF2::Entity::Generator;
 
 - (void)testKeyVelocityToInitialAttenuation {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[0]};
-  state->setValue(Index::forcedMIDIVelocity, -1);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, -1);
 
   Modulator modulator{0, config, *state};
-  state->setValue(Index::forcedMIDIVelocity, 127);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 127);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  state->setValue(Index::forcedMIDIVelocity, 64);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 64);
   XCTAssertEqualWithAccuracy(119.049498789, modulator.value(), 0.000001);
 
-  state->setValue(Index::forcedMIDIVelocity, 1);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 1);
   XCTAssertEqualWithAccuracy(841.521488382, modulator.value(), 0.000001);
 }
 
 - (void)testKeyVelocityToFilterCutoff {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[1]};
-  state->setValue(Index::forcedMIDIVelocity, -1);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, -1);
 
   Modulator modulator{0, config, *state};
-  state->setValue(Index::forcedMIDIVelocity, 127);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 127);
   XCTAssertEqualWithAccuracy(-18.75, modulator.value(), 0.000001);
 
-  state->setValue(Index::forcedMIDIVelocity, 64);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 64);
   XCTAssertEqualWithAccuracy(-1200.0, modulator.value(), 0.000001);
 
-  state->setValue(Index::forcedMIDIVelocity, 1);
+  state->setPrincipleValue(Index::forcedMIDIVelocity, 1);
   XCTAssertEqualWithAccuracy(config.amount() * 127.0 / 128.0, modulator.value(), 0.000001);
 }
 

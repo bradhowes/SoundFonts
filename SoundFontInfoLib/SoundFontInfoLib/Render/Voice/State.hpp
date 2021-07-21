@@ -6,6 +6,7 @@
 #include <cassert>
 #include <forward_list>
 #include <iostream>
+#include <numeric>
 #include <vector>
 
 #include "Logger.hpp"
@@ -16,7 +17,7 @@
 
 namespace SF2::Render::Voice {
 
-class Setup;
+class Config;
 
 /**
  Generator values for a rendering voice. Most of the values originally come from generators defined in an SF2
@@ -59,35 +60,32 @@ public:
    @param channel the MIDI channel that is in control
    @param setup the voice configuration to use
    */
-  State(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
+  State(double sampleRate, const MIDI::Channel& channel, const Config& setup);
 
   /**
-   Set a generator value. Should only be called from an InstrumentZone. It can be set twice, once by a
-   global instrument generator setting, and again by a non-global instrument generator setting.
+   Set a generator value. Should only be called with a value from an InstrumentZone. It can be set twice, once by a
+   global instrument generator setting, and again by a non-global instrument generator setting, the latter one
+   replacing the first.
 
-   @param index the generator to set
+   @param gen the generator to set
    @param value the value to use
    */
-  void setValue(Index index, int value) {
-    size_t pos{indexValue(index)};
-    if (values_[pos] != value) {
-      log_.debug() << "setting " <<  Entity::Generator::Definition::definition(index).name() << " = "
-      << value << std::endl;
-      values_[pos] = value;
-    }
+  void setPrincipleValue(Index gen, int value) {
+    log_.debug() << "setting " << Definition::definition(gen).name() << " = " << value << std::endl;
+    gens_[indexValue(gen)].principle = value;
   }
 
   /**
-   Set a generator's adjustment value. Should only be called from a PresetZone. It can be invoked twice, once by a
-   global preset setting, and again by a non-global preset generator setting.
+   Set a generator's adjustment value. Should only be called with a value from a PresetZone. It can be invoked twice,
+   once by a global preset setting, and again by a non-global preset generator setting, the latter one replacing the
+   first.
 
-   @param index the generator to set
+   @param gen the generator to set
    @param value the value to use
    */
-  void adjustValue(Index index, int value) {
-    log_.debug() << "adjusting " <<  Entity::Generator::Definition::definition(index).name() << " by "
-    << value << std::endl;
-    adjustments_[indexValue(index)] = value;
+  void setAdjustmentValue(Index gen, int value) {
+    log_.debug() << "adjusting " << Definition::definition(gen).name() << " by " << value << std::endl;
+    gens_[indexValue(gen)].adjustment = value;
   }
 
   /**
@@ -102,17 +100,13 @@ public:
    returns a floating-point value, but the value has not been converted from/into any particular unit and should
    still reflect the definitions found in the spec.
 
-   @param index the index of the generator
+   @param gen the index of the generator
    @returns current value of the generator
    */
-  double modulated(Index index) const {
-    size_t pos{indexValue(index)};
-    double value = values_[pos] + adjustments_[pos];
-    for (auto modIndex : valueModulators_[pos]) {
-      const Modulator& modulator{modulators_[modIndex]};
-      value += modulator.value();
-    }
-    return value;
+  double modulated(Index gen) const {
+    auto modSum = [this](double value, size_t mod) { return value + modulators_[mod].value(); };
+    auto& genMods{gens_[indexValue(gen)].mods};
+    return std::accumulate(genMods.begin(), genMods.end(), unmodulated(gen), modSum);
   }
 
   /**
@@ -120,12 +114,12 @@ public:
    definitions and so it is expressed as an integer. Most of the time, the `modulated` method is what is desired in
    order to account for any MIDI controller values.
 
-   @param index the index of the generator
+   @param gen the index of the generator
    @returns configured value of the generator
    */
-  int unmodulated(Index index) const {
-    size_t pos{indexValue(index)};
-    return values_[pos] + adjustments_[pos];
+  int unmodulated(Index gen) const {
+    auto& value{gens_[indexValue(gen)]};
+    return value.principle + value.adjustment;
   }
 
   /// @returns fundamental pitch to generate when rendering (semitones)
@@ -197,48 +191,51 @@ public:
 
 private:
 
+  using ModulatorIndexLinkedList = std::forward_list<size_t>;
+
+  // Three component make up a generator value:
+  // - the principle or main value from an instrument zone
+  // - any adjustment value from a preset zone
+  // - zero or more modulator indices
+  struct GenValue {
+    int principle = 0;
+    int adjustment = 0;
+    ModulatorIndexLinkedList mods = {};
+  };
+
   void setDefaults();
 
-  double envelopeSustainLevel(Index index) const {
-    assert(index == Index::sustainVolumeEnvelope || index == Index::sustainModulatorEnvelope);
-    return 1.0 - modulated(index) / 1000.0;
+  double envelopeSustainLevel(Index gen) const {
+    assert(gen == Index::sustainVolumeEnvelope || gen == Index::sustainModulatorEnvelope);
+    return 1.0 - modulated(gen) / 1000.0;
   }
 
   /**
    Obtain a generator value that is scaled by the MIDI key value. Per the spec, key 60 is unchanged. Keys higher will
    scale positively, and keys lower than 60 will scale negatively.
 
-   @param index the generator holding the timecents/semitone scaling factor
+   @param gen the generator holding the timecents/semitone scaling factor
    @returns result of generator value x (60 - key)
    */
-  double keyedEnvelopeModulator(Index index) const {
-    assert(index == Index::midiKeyToVolumeEnvelopeHold ||
-           index == Index::midiKeyToVolumeEnvelopeDecay ||
-           index == Index::midiKeyToModulatorEnvelopeHold ||
-           index == Index::midiKeyToModulatorEnvelopeDecay);
-    return modulated(index) * (60 - key());
+  double keyedEnvelopeModulator(Index gen) const {
+    assert(gen == Index::midiKeyToVolumeEnvelopeHold ||
+           gen == Index::midiKeyToVolumeEnvelopeDecay ||
+           gen == Index::midiKeyToModulatorEnvelopeHold ||
+           gen == Index::midiKeyToModulatorEnvelopeDecay);
+    return modulated(gen) * (60 - key());
   }
 
-  static size_t indexValue(Index index) { return static_cast<size_t>(index); }
+  static size_t indexValue(Index gen) { return static_cast<size_t>(gen); }
 
   const MIDI::Channel& channel_;
 
-  using ValueArray = std::array<int, static_cast<size_t>(Index::numValues)>;
+  using GenValuesArray = std::array<GenValue, static_cast<size_t>(Index::numValues)>;
 
-  /// Collection of generator values that were set by instrument zones.
-  ValueArray values_;
-
-  /// Collection of generator adjustments that were set by preset zones.
-  ValueArray adjustments_;
+  /// Collection of generator values
+  GenValuesArray gens_;
 
   /// Collection of modulators defined by instrument and preset zones.
   std::vector<Modulator> modulators_{};
-
-  using ModulatorIndexLinkedList = std::forward_list<size_t>;
-  using ValueModulatorArray = std::array<ModulatorIndexLinkedList, static_cast<size_t>(Index::numValues)>;
-
-  /// Collection of modulator lists that affect a given generator value during runtime.
-  ValueModulatorArray valueModulators_{};
 
   double sampleRate_;
   int key_;

@@ -18,7 +18,7 @@ namespace SF2::MIDI { class Channel; }
  */
 namespace SF2::Render::Voice {
 
-class Setup;
+class Config;
 
 /**
  A voice renders audio samples for a given note / pitch.
@@ -32,9 +32,9 @@ public:
 
    @param sampleRate the sample rate to use for generating audio
    @param channel the MIDI state associated with the renderer
-   @param setup the zones to apply to build the generator state
+   @param config the zones to apply to build the generator values used for rendering
    */
-  Voice(double sampleRate, const MIDI::Channel& channel, const Setup& setup);
+  Voice(double sampleRate, const MIDI::Channel& channel, const Config& config);
 
   /**
    Signal the envelopes that the key is no longer pressed, transitioning to release phase.

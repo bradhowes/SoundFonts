@@ -187,7 +187,7 @@
 		BDB1BF83265DB1F0002AD159 /* Voice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Voice.cpp; path = SoundFontInfoLib/Render/Voice/Voice.cpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF84265DB1F0002AD159 /* State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = State.cpp; path = SoundFontInfoLib/Render/Voice/State.cpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF85265DB1F0002AD159 /* State.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = State.hpp; path = SoundFontInfoLib/Render/Voice/State.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF86265DB1F0002AD159 /* Setup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Setup.hpp; path = SoundFontInfoLib/Render/Voice/Setup.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF86265DB1F0002AD159 /* Config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Config.hpp; path = SoundFontInfoLib/Render/Voice/Config.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF87265DB1F0002AD159 /* Voice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Voice.hpp; path = SoundFontInfoLib/Render/Voice/Voice.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF88265DB1F0002AD159 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LFO.hpp; path = SoundFontInfoLib/Render/LFO.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
@@ -501,7 +501,7 @@
 		BDB1BF82265DB1F0002AD159 /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF86265DB1F0002AD159 /* Setup.hpp */,
+				BDB1BF86265DB1F0002AD159 /* Config.hpp */,
 				BDB1BF84265DB1F0002AD159 /* State.cpp */,
 				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF83265DB1F0002AD159 /* Voice.cpp */,

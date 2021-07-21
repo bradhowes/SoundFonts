@@ -8,7 +8,7 @@
 #include "IO/File.hpp"
 #include "MIDI/Channel.hpp"
 #include "Render/Preset.hpp"
-#include "Render/Voice/Setup.hpp"
+#include "Render/Voice/Config.hpp"
 #include "Render/Voice/State.hpp"
 
 using namespace SF2;

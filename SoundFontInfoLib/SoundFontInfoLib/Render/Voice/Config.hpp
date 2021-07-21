@@ -15,7 +15,7 @@ class State;
  key/velocity pair. One instance represents the configuration that should apply to the state of one voice for rendering
  samples at a specific key frequency and velocity.
  */
-class Setup {
+class Config {
 public:
 
   /**
@@ -28,7 +28,7 @@ public:
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Setup(const PresetZone& presetZone, GlobalPresetZone globalPresetZone, const InstrumentZone& instrumentZone,
+  Config(const PresetZone& presetZone, GlobalPresetZone globalPresetZone, const InstrumentZone& instrumentZone,
         GlobalInstrumentZone globalInstrumentZone, int key, int velocity) :
   presetZone_{presetZone}, globalPresetZone_{globalPresetZone}, instrumentZone_{instrumentZone},
   globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity} {}
@@ -46,7 +46,7 @@ public:
     if (globalInstrumentZone_) globalInstrumentZone_.value()->apply(state);
     instrumentZone_.apply(state);
 
-    // According to spec, a preset global should only be applied iff there is NOT a preset generator.
+    // Presets apply refinements to absolute values set from instruments zones above.
     if (globalPresetZone_) globalPresetZone_.value()->refine(state);
     presetZone_.refine(state);
   }
