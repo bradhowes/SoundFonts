@@ -53,7 +53,7 @@ public:
   explicit Generator(double sampleRate) : Generator(sampleRate, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0) {}
 
   /**
-   Create new envelope for gain amp.
+   Create new envelope for gain amp due to key down event.
 
    @param state the state holding the generator values for the envelope definition
    */
@@ -71,7 +71,7 @@ public:
   }
 
   /**
-   Create new envelope for modulation.
+   Create new envelope for modulation due to key down event.
 
    @param state the state holding the generator values for the envelope definition
    */
@@ -101,8 +101,7 @@ public:
    @param noteOn if true, start the envelope
    */
   Generator(double sampleRate, double delay, double attack, double hold, double decay, double sustain,
-            double release, bool noteOn = false) :
-  stages_{
+            double release, bool noteOn = false) : stages_{
     Stage::ConfigureDelay(samplesFor(sampleRate, delay)),
     Stage::ConfigureAttack(samplesFor(sampleRate, attack), defaultCurvature),
     Stage::ConfigureHold(samplesFor(sampleRate, hold)),
