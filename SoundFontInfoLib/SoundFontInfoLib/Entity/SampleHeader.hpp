@@ -59,10 +59,11 @@ public:
   /// @returns true if samples come from a ROM
   bool isROM() const { return (sampleType & rom) == rom; }
   
-  /// @returns the index of the first sample
+  /// @returns the index of the first sample to use
   size_t startIndex() const { return dwStart; }
   
-  /// @returns index + 1 of the last sample. According to spec, this is first of 46 0.0 values after the last sample
+  /// @returns index + 1 of the last sample to use. According to spec, this is first of 46 0.0 values after the last
+  /// sample
   size_t endIndex() const { return dwEnd; }
   
   /// @returns index of the first sample in a loop.
