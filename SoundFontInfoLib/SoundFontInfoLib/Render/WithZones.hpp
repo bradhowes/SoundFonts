@@ -12,7 +12,8 @@
 namespace SF2::Render {
 
 /**
- Base class for entities that contain a collection of zones.
+ Base class for entities that contain a collection of zones (there are two: Preset and Instrument). Contains common
+ properties and methods shared between Preset and Instrument classes.
 
  - `T` is an SF2::Zone class (PresetZone or InstrumentZone) to hold in the collection
  - `E` is the SF2::Entity class that defines the zone configuration in the SF2 file.

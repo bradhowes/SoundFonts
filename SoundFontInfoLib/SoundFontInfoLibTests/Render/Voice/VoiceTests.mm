@@ -27,7 +27,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 @implementation VoiceTests
 
 - (void)setUp {
-  self.playAudio = NO;
+  self.playAudio = YES;
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -52,13 +52,19 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   Preset preset(file, instruments, file.presets()[0]);
 
   auto found = preset.find(69, 127);
-  Voice::Voice voice1{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v1L{44100, channel, found[0]};
+  Voice::Voice v1R{44100, channel, found[1]};
 
   found = preset.find(73, 127);
-  Voice::Voice voice2{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v2L{44100, channel, found[0]};
+  Voice::Voice v2R{44100, channel, found[1]};
 
   found = preset.find(76, 127);
-  Voice::Voice voice3{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v3L{44100, channel, found[0]};
+  Voice::Voice v3R{44100, channel, found[1]};
 
   double sampleRate = 44100.0;
   AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
@@ -75,44 +81,26 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   size_t keyReleaseCount{size_t(sampleCount / 4)};
   size_t voiceSampleCount{size_t(sampleCount / 3)};
   std::vector<AUValue> samples;
-  for (auto index = 0; index < voiceSampleCount; ++index) {
-    AUValue sample = voice1.render();
-    *samplesLeft++ = sample;
-    *samplesRight++ = sample;
-    if (index == 0 || index == voiceSampleCount - 1) {
-      samples.push_back(sample);
-    }
-    else if (index == keyReleaseCount) {
-      samples.push_back(sample);
-      voice1.keyReleased();
-    }
-  }
 
-  for (auto index = 0; index < voiceSampleCount; ++index) {
-    AUValue sample = voice2.render();
-    *samplesLeft++ = sample;
-    *samplesRight++ = sample;
-    if (index == 0 || index == voiceSampleCount - 1) {
-      samples.push_back(sample);
+  auto renderLR = [&](auto& left, auto& right) {
+    for (auto index = 0; index < voiceSampleCount; ++index) {
+      AUValue sample = left.render();
+      *samplesLeft++ = sample;
+      *samplesRight++ = right.render();
+      if (index == 0 || index == voiceSampleCount - 1) {
+        samples.push_back(sample);
+      }
+      else if (index == keyReleaseCount) {
+        samples.push_back(sample);
+        left.keyReleased();
+        right.keyReleased();
+      }
     }
-    else if (index == int(sampleCount / 4)) {
-      samples.push_back(sample);
-      voice2.keyReleased();
-    }
-  }
+  };
 
-  for (auto index = 0; index < voiceSampleCount; ++index) {
-    AUValue sample = voice3.render();
-    *samplesLeft++ = sample;
-    *samplesRight++ = sample;
-    if (index == 0 || index == voiceSampleCount - 1) {
-      samples.push_back(sample);
-    }
-    else if (index == keyReleaseCount) {
-      samples.push_back(sample);
-      voice3.keyReleased();
-    }
-  }
+  renderLR(v1L, v1R);
+  renderLR(v2L, v2R);
+  renderLR(v3L, v3R);
 
   XCTAssertEqual(9, samples.size());
   XCTAssertEqualWithAccuracy( 0.000000, samples[0], epsilon);
@@ -141,13 +129,19 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   Preset preset(file, instruments, file.presets()[19]);
 
   auto found = preset.find(52, 127);
-  Voice::Voice voice1{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v1L{44100, channel, found[0]};
+  Voice::Voice v1R{44100, channel, found[1]};
 
   found = preset.find(56, 127);
-  Voice::Voice voice2{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v2L{44100, channel, found[0]};
+  Voice::Voice v2R{44100, channel, found[1]};
 
   found = preset.find(59, 127);
-  Voice::Voice voice3{44100, channel, found[0]};
+  XCTAssertEqual(found.size(), 2);
+  Voice::Voice v3L{44100, channel, found[0]};
+  Voice::Voice v3R{44100, channel, found[1]};
 
   double sampleRate = 44100.0;
   AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
@@ -163,27 +157,36 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
   std::vector<AUValue> samples;
   for (auto index = 0; index < sampleCount; ++index) {
-    auto s1 = voice1.render();
-    auto s2 = voice2.render();
-    auto s3 = voice3.render();
+    auto s1L = v1L.render();
+    auto s2L = v2L.render();
+    auto s3L = v3L.render();
 
-    AUValue sample = (s1 + s2 + s3) / 3.0;
-    *samplesLeft++ = sample;
-    *samplesRight++ = sample;
+    auto s1R = v1R.render();
+    auto s2R = v2R.render();
+    auto s3R = v3R.render();
+
+    AUValue sL = (s1L + s2L + s3L) / 3.0;
+    AUValue sR = (s1R + s2R + s3R) / 3.0;
+
+    *samplesLeft++ = sL;
+    *samplesRight++ = sR;
 
     if (index == 0 || index == sampleCount - 1) {
-      samples.push_back(s1);
-      samples.push_back(s2);
-      samples.push_back(s3);
+      samples.push_back(s1L);
+      samples.push_back(s2L);
+      samples.push_back(s3L);
     }
     else if (index == int(sampleCount * 0.7)) {
-      samples.push_back(s1);
-      samples.push_back(s2);
-      samples.push_back(s3);
+      samples.push_back(s1L);
+      samples.push_back(s2L);
+      samples.push_back(s3L);
 
-      voice1.keyReleased();
-      voice2.keyReleased();
-      voice3.keyReleased();
+      v1L.keyReleased();
+      v1R.keyReleased();
+      v2L.keyReleased();
+      v2R.keyReleased();
+      v3L.keyReleased();
+      v3R.keyReleased();
     }
   }
 

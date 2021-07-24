@@ -32,15 +32,15 @@ public:
    */
   explicit ZoneCollection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
 
-  /// @returns number of zones in the collection (include the optional global one)
+  /// @returns number of zones in the collection (including the optional global one)
   size_t size() const { return zones_.size(); }
 
   /**
-   Locate the zone(s) that match the given key/velocity pair.
+   Locate the zones that match the given key/velocity pair.
 
    @param key the MIDI key to filter on
    @param velocity the MIDI velocity to filter on
-   @returns a vector of matching zones
+   @returns a vector references to matching zones
    */
   Matches filter(int key, int velocity) const {
     Matches matches;
