@@ -35,7 +35,7 @@ static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -
 
 - (void)testLinearInterpolation {
   CanonicalBuffer buffer{values, header};
-  Generator gen{buffer, State(76.9230769231, channel, 69, 64)};
+  InterpolatedGenerator gen{buffer, State(76.9230769231, channel, 69, 64)};
   buffer.load();
   XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
   XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), 0.0000001);
@@ -45,7 +45,7 @@ static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -
 
 - (void)testCubicInterpolation {
   CanonicalBuffer buffer{values, header};
-  Generator gen{buffer, State(76.9230769231, channel, 69, 64), Generator::Interpolator::cubic4thOrder};
+  InterpolatedGenerator gen{buffer, State(76.9230769231, channel, 69, 64), InterpolatedGenerator::Interpolator::cubic4thOrder};
   buffer.load();
   XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, false), 0.0000001);
   XCTAssertEqualWithAccuracy(0.721051098083, gen.generate(0.0, false), 0.0000001);

@@ -17,13 +17,54 @@
 
 namespace SF2::Render::Sample {
 
+template <typename S> class TGenerator {
+public:
+  TGenerator(S&& source) : source_{std::move(source)} {}
+
+  double generate(double pitchAdjustment, bool canLoop) { return source_.generate(pitchAdjustment, canLoop); }
+
+private:
+  S source_;
+};
+
+class ConstantGenerator {
+public:
+  ConstantGenerator(double value) : value_{value} {}
+
+  double generate(double pitchAdjustment, bool canLoop) {
+    return value_;
+  }
+
+private:
+  double value_;
+};
+
+class SineGenerator {
+public:
+
+  SineGenerator(double dTheta) : theta_{0.0}, dTheta_{dTheta} {}
+
+  double generate(double pitchAdjustment, bool canLoop) {
+    auto value = std::sin(theta_);
+    theta_ += dTheta_;
+    if (theta_ >= DSP::TwoPI) {
+      theta_ -= DSP::TwoPI;
+    }
+    return value;
+  }
+
+private:
+  double theta_;
+  double dTheta_;
+};
+
 /**
  Generator of new samples from a stream of original samples, properly scaled to sound correct for the output sample
  rate and the desired output frequency. We know the original samples' sample rate and root frequency, so we can do some
  simple math to calculate a proper increment to use when iterating through the original samples, and with some proper
  interpolation we should end up with something that does not sound too harsh.
  */
-class Generator {
+class InterpolatedGenerator {
 public:
 
   enum struct Interpolator {
@@ -38,7 +79,8 @@ public:
    @param state the generator state to use for rendering
    @param kind the kind of interpolation to perform when generating the render samples
    */
-  Generator(const CanonicalBuffer& samples, const Voice::State& state, Interpolator kind = Interpolator::linear) :
+  InterpolatedGenerator(const CanonicalBuffer& samples, const Voice::State& state,
+                        Interpolator kind = Interpolator::linear) :
   samples_{samples}, state_{state}, interpolator_{kind}, bounds_{samples.header(), state},
   sampleRateRatio_{samples_.header().sampleRate() / state_.sampleRate()}, bufferIndex_{bounds_} {
     samples.load();
@@ -52,23 +94,26 @@ public:
    @returns new sample value
    */
   double generate(double pitchAdjustment, bool canLoop) {
-    auto index = bufferIndex_.index();
-    if (index >= bounds_.endIndex()) return 0.0;
+    auto pos = bufferIndex_.pos();
+    if (pos >= bounds_.endPos()) return 0.0;
     auto partial = bufferIndex_.partial();
 
     calculateIndexIncrement(pitchAdjustment);
     bufferIndex_.increment(bounds_, canLoop);
 
     switch (interpolator_) {
-      case Interpolator::linear: return linearInterpolate(index, partial, canLoop);
-      case Interpolator::cubic4thOrder: return cubic4thOrderInterpolate(index, partial, canLoop);
+      case Interpolator::linear: return linearInterpolate(pos, partial, canLoop);
+      case Interpolator::cubic4thOrder: return cubic4thOrderInterpolate(pos, partial, canLoop);
     }
   }
 
 private:
 
   void calculateIndexIncrement(double pitchAdjustment) {
-    if (pitchAdjustment == lastPitchAdjustment_ && bufferIndex_.hasIncrement()) return;
+
+    // Don't keep calculating buffer increments if nothing has changed.
+    if (pitchAdjustment == lastPitchAdjustment_ && !bufferIndex_.finished()) return;
+
     lastPitchAdjustment_ = pitchAdjustment;
     double exponent = (state_.pitch() + pitchAdjustment - samples_.header().originalMIDIKey()) / 12.0;
     double frequencyRatio = std::exp2(exponent);
@@ -79,42 +124,42 @@ private:
   /**
    Obtain a linearly interpolated sample for a given index value.
 
-   @param index the index of the first sample to use
+   @param pos the index of the first sample to use
    @param partial the non-integral part of the index
    @param canLoop true if wrapping around in loop is allowed
    @returns interpolated sample result
    */
-  double linearInterpolate(size_t index, double partial, bool canLoop) const {
-    auto x0 = samples_[index++];
-    auto x1 = sample(index, canLoop);
+  double linearInterpolate(size_t pos, double partial, bool canLoop) const {
+    auto x0 = samples_[pos++];
+    auto x1 = sample(pos, canLoop);
     return DSP::Interpolation::linear(partial, x0, x1);
   }
 
   /**
    Obtain a cubic 4th-order interpolated sample for a given index value.
 
-   @param index the index of the first sample to use
+   @param pos the index of the first sample to use
    @param partial the non-integral part of the index
    @param canLoop true if wrapping around in loop is allowed
    @returns interpolated sample result
    */
-  double cubic4thOrderInterpolate(size_t index, double partial, bool canLoop) const {
-    auto x0 = before(index, canLoop);
-    auto x1 = sample(index++, canLoop);
-    auto x2 = sample(index++, canLoop);
-    auto x3 = sample(index++, canLoop);
+  double cubic4thOrderInterpolate(size_t pos, double partial, bool canLoop) const {
+    auto x0 = before(pos, canLoop);
+    auto x1 = sample(pos++, canLoop);
+    auto x2 = sample(pos++, canLoop);
+    auto x3 = sample(pos++, canLoop);
     return DSP::Interpolation::cubic4thOrder(partial, x0, x1, x2, x3);
   }
 
-  double sample(size_t index, bool canLoop) const {
-    if (index == bounds_.endLoopIndex() && canLoop) index = bounds_.startLoopIndex();
-    return index < samples_.size() ? samples_[index] : 0.0;
+  double sample(size_t pos, bool canLoop) const {
+    if (pos == bounds_.endLoopPos() && canLoop) pos = bounds_.startLoopPos();
+    return pos < samples_.size() ? samples_[pos] : 0.0;
   }
 
-  double before(size_t index, bool canLoop) const {
-    if (index == 0) return 0.0;
-    if (index == bounds_.startLoopIndex() && canLoop) index = bounds_.endLoopIndex();
-    return samples_[index - 1];
+  double before(size_t pos, bool canLoop) const {
+    if (pos == 0) return 0.0;
+    if (pos == bounds_.startLoopPos() && canLoop) pos = bounds_.endLoopPos();
+    return samples_[pos - 1];
   }
 
   const CanonicalBuffer& samples_;

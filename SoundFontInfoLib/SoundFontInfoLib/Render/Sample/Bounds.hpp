@@ -15,7 +15,7 @@ namespace SF2::Render::Sample {
  Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity as well as
  state values from generators that can change in real-time. Note that unlike the "absolute" values in the 'shdr' and
  the state offsets which are all based on the entire sample block of the file, these values are offsets from the first
- sample value from the 'shdr'.
+ sample value from the 'shdr'
  */
 struct Bounds {
   using Index = Entity::Generator::Index;
@@ -29,45 +29,39 @@ struct Bounds {
    */
   Bounds(const Entity::SampleHeader& header, const Voice::State& state) {
     constexpr size_t coarse = 1 << 15;
+    auto offset = [&](Index a, Index b) -> size_t { return state.unmodulated(a) + state.unmodulated(b) * coarse; };
 
-    size_t startOffset = (state.unmodulated(Index::startAddressOffset) +
-                          state.unmodulated(Index::startAddressCoarseOffset) * coarse);
-    size_t startLoopOffset = (state.unmodulated(Index::startLoopAddressOffset) +
-                              state.unmodulated(Index::startLoopAddressCoarseOffset) * coarse);
-    size_t endLoopOffset = (state.unmodulated(Index::endLoopAddressOffset) +
-                            state.unmodulated(Index::endLoopAddressCoarseOffset) * coarse);
-    size_t endOffset = (state.unmodulated(Index::endAddressOffset) +
-                        state.unmodulated(Index::endAddressCoarseOffset) * coarse);
+    // Calculate offsets for the samples using state generator values set by preset/instrument zones.
+    auto startOffset = offset(Index::startAddressOffset, Index::startAddressCoarseOffset);
+    auto startLoopOffset = offset(Index::startLoopAddressOffset, Index::startLoopAddressCoarseOffset);
+    auto endLoopOffset = offset(Index::endLoopAddressOffset, Index::endLoopAddressCoarseOffset);
+    auto endOffset = offset(Index::endAddressOffset, Index::endAddressCoarseOffset);
 
-    size_t shift = header.startIndex();
-    startIndex_ = std::clamp<size_t>(header.startIndex() + startOffset,
-                                     header.startIndex(),
-                                     header.endIndex()) - shift;
-    startLoopIndex_ = std::clamp<size_t>(header.startLoopIndex() + startLoopOffset,
-                                         header.startIndex(),
-                                         header.endIndex()) - shift;
-    endLoopIndex_ = std::clamp<size_t>(header.endLoopIndex() + endLoopOffset,
-                                       header.startIndex(),
-                                       header.endIndex()) - shift;
-    endIndex_ = std::clamp<size_t>(header.endIndex() + endOffset,
-                                   header.startIndex(),
-                                   header.endIndex()) - shift;
+    auto lower = header.startIndex();
+    auto upper = header.endIndex();
+    auto clampPos = [&](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
+
+    // Calculate sample indices from the above.
+    startPos_ = clampPos(header.startIndex() + startOffset);
+    startLoopPos_ = clampPos(header.startLoopIndex() + startLoopOffset);
+    endLoopPos_ = clampPos(header.endLoopIndex() + endLoopOffset);
+    endPos_ = clampPos(header.endIndex() + endOffset);
   }
 
   /// @returns the index of the first sample to use for rendering
-  size_t startIndex() const { return startIndex_; }
+  size_t startPos() const { return startPos_; }
   /// @returns the index of the first sample of a loop
-  size_t startLoopIndex() const { return startLoopIndex_; }
+  size_t startLoopPos() const { return startLoopPos_; }
   /// @returns the index of the first sample AFTER a loop
-  size_t endLoopIndex() const { return endLoopIndex_; }
+  size_t endLoopPos() const { return endLoopPos_; }
   /// @returns the index after the last valid sample to use for rendering
-  size_t endIndex() const { return endIndex_; }
+  size_t endPos() const { return endPos_; }
 
 private:
-  size_t startIndex_;
-  size_t startLoopIndex_;
-  size_t endLoopIndex_;
-  size_t endIndex_;
+  size_t startPos_;
+  size_t startLoopPos_;
+  size_t endLoopPos_;
+  size_t endPos_;
 };
 
 } // namespace SF2::Render::Sample

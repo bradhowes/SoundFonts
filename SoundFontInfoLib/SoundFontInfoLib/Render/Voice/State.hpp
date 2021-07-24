@@ -36,12 +36,12 @@ public:
    These are values for the sampleModes (#54) generator.
 
    - none -- rendering does not loop
-   - continuously -- loop as long as the envelope allows
+   - activeEnvelope -- loop as long as the envelope allows
    - duringKeyPress -- loop only while they key is down
    */
   enum LoopingMode {
     none = 0,
-    continuously = 1,
+    activeEnvelope = 1,
     duringKeyPress = 3
   };
 
@@ -177,7 +177,7 @@ public:
   /// @returns looping mode of the sample being rendered
   LoopingMode loopingMode() const {
     switch (unmodulated(Index::sampleModes)) {
-      case 1: return LoopingMode::continuously;
+      case 1: return LoopingMode::activeEnvelope;
       case 3: return LoopingMode::duringKeyPress;
       default: return LoopingMode::none;
     }

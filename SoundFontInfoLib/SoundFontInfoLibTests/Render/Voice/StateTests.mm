@@ -138,7 +138,7 @@ static MIDI::Channel channel;
   state.setPrincipleValue(Index::sampleModes, -1);
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
   state.setPrincipleValue(Index::sampleModes, 1);
-  XCTAssertEqual(Voice::State::LoopingMode::continuously, state.loopingMode());
+  XCTAssertEqual(Voice::State::LoopingMode::activeEnvelope, state.loopingMode());
   state.setPrincipleValue(Index::sampleModes, 2);
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
   state.setPrincipleValue(Index::sampleModes, 3);

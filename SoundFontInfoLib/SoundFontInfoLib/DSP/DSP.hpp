@@ -13,8 +13,8 @@ namespace SF2::DSP {
 
 inline constexpr Float PI = M_PI;            // 180°
 inline constexpr Float TwoPI = 2.0 * PI;     // 360°
-inline constexpr Float HalfPI = PI / 2.0;    // 90°
-inline constexpr Float QuarterPI = PI / 4.0; // 45°
+inline constexpr Float HalfPI = M_PI_2;      // 90°
+inline constexpr Float QuarterPI = M_PI_4;   // 45°
 
 inline constexpr Float ReferenceNoteFrequency = 440.0;
 inline constexpr Float ReferenceNoteMIDI = 69.0;

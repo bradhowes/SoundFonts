@@ -20,7 +20,7 @@ namespace SF2::Render::Sample {
  */
 struct BufferIndex {
 
-  BufferIndex(const Bounds& bounds) : index_{bounds.startIndex()} {}
+  BufferIndex(const Bounds& bounds) : pos_{bounds.startPos()} {}
 
   /**
    Set the increment to use when advancing the index. This can change with each sample depending on what modulators
@@ -29,11 +29,13 @@ struct BufferIndex {
    @param increment the value to apply when advancing the index
    */
   void setIncrement(double increment) {
-    indexIncrement_ = size_t(increment);
-    partialIncrement_ = increment - double(indexIncrement_);
+    posIncrement_ = size_t(increment);
+    partialIncrement_ = increment - double(posIncrement_);
   }
 
-  bool hasIncrement() const { return indexIncrement_ != 0 || partialIncrement_ != 0.0; }
+  void stop() { setIncrement(0.0); }
+
+  bool finished() const { return posIncrement_ == 0 && partialIncrement_ == 0.0; }
 
   /**
    Increment the index to the next location. Properly handles looping and buffer end.
@@ -44,37 +46,34 @@ struct BufferIndex {
   void increment(const Bounds& bounds, bool canLoop) {
     if (finished()) return;
 
-    if (indexIncrement_) index_ += indexIncrement_;
+    if (posIncrement_) pos_ += posIncrement_;
     partial_ += partialIncrement_;
 
     if (partial_ >= 1.0) {
       auto carry = size_t(partial_);
-      index_ += carry;
+      pos_ += carry;
       partial_ -= carry;
     }
 
-    if (canLoop && index_ >= bounds.endLoopIndex()) {
+    if (canLoop && pos_ >= bounds.endLoopPos()) {
       log_.debug() << "looping" << std::endl;
-      index_ -= (bounds.endLoopIndex() - bounds.startLoopIndex());
+      pos_ -= (bounds.endLoopPos() - bounds.startLoopPos());
     }
-    else if (index_ >= bounds.endIndex()) {
+    else if (pos_ >= bounds.endPos()) {
       log_.debug() << "stopping" << std::endl;
-      partialIncrement_ = -1.0;
+      stop();
     }
   }
 
   /// @returns index to first sample to use for rendering
-  size_t index() const { return index_; }
+  size_t pos() const { return pos_; }
 
   /// @returns normalized position between 2 samples. For instance, 0.5 indicates half-way between two samples.
   double partial() const { return partial_; }
 
-  /// @returns true if the index is no longer moving
-  bool finished() const { return partialIncrement_ < 0.0; }
-
 private:
-  size_t index_;
-  size_t indexIncrement_{0};
+  size_t pos_;
+  size_t posIncrement_{0};
   double partial_{0.0};
   double partialIncrement_{0.0};
   inline static Logger log_{Logger::Make("Render.Sample", "BufferIndex")};

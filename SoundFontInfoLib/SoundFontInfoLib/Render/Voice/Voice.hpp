@@ -49,7 +49,8 @@ public:
 
   /// @returns true if the voice can enter a loop if it is available
   bool canLoop() const {
-    return loopingMode_ == State::continuously || (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated());
+    return (loopingMode_ == State::activeEnvelope && gainEnvelope_.isActive()) ||
+    (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated());
   }
 
   /**
@@ -76,7 +77,7 @@ public:
 private:
   State state_;
   State::LoopingMode loopingMode_;
-  Sample::Generator sampleGenerator_;
+  Sample::TGenerator<Sample::InterpolatedGenerator> sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;
