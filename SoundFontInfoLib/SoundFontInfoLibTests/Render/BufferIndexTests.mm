@@ -4,10 +4,10 @@
 #import <XCTest/XCTest.h>
 #import "Entity/SampleHeader.hpp"
 #import "MIDI/Channel.hpp"
-#import "Render/Sample/BufferIndex.hpp"
+#import "Render/Sample/Source/BufferIndex.hpp"
 #import "Render/Voice/State.hpp"
 
-using namespace SF2::Render::Sample;
+using namespace SF2::Render::Sample::Source;
 using namespace SF2::Render::Voice;
 
 @interface SampleIndexTests : XCTestCase

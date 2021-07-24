@@ -9,7 +9,7 @@
 /**
  Classes used to generate new samples from SF2 sample data for a given pitch and sample rate.
  */
-namespace SF2::Render::Sample {
+namespace SF2::Render::Sample::Source {
 
 /**
  Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity as well as

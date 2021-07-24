@@ -7,11 +7,11 @@
 #include <AudioToolbox/AUParameters.h>
 #include <vector>
 
+#include "Logger.hpp"
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Sample/BufferIndex.hpp"
 
-namespace SF2::Render::Sample {
+namespace SF2::Render::Sample::Source {
 
 /**
  Contains a collection of audio samples that range between -1.0 and 1.0. The values are derived from the
@@ -83,4 +83,4 @@ private:
   inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};
 };
 
-} // namespace SF2::Render::Sample
+} // namespace SF2::Render::Sample::Source

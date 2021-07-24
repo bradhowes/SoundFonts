@@ -41,10 +41,10 @@ public:
   void apply(Voice::State& state) const { Zone::apply(state); }
 
   /// @returns the sample buffer registered to this zone, or nullptr if this is a global zone.
-  const Render::Sample::CanonicalBuffer* sampleBuffer() const { return sampleBuffer_; }
+  const Render::Sample::Source::CanonicalBuffer* sampleBuffer() const { return sampleBuffer_; }
 
 private:
-  const Render::Sample::CanonicalBuffer* sampleBuffer_;
+  const Render::Sample::Source::CanonicalBuffer* sampleBuffer_;
 };
 
 /// The type for the optional global InstrumentZone

@@ -4,7 +4,7 @@
 
 #include "Render/PresetZone.hpp"
 #include "Render/InstrumentZone.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/Sample/Source/CanonicalBuffer.hpp"
 
 namespace SF2::Render::Voice {
 
@@ -52,7 +52,7 @@ public:
   }
 
   /// @returns the buffer of audio samples to use for rendering
-  const Sample::CanonicalBuffer& sampleBuffer() const {
+  const Sample::Source::CanonicalBuffer& sampleBuffer() const {
     assert(instrumentZone_.sampleBuffer() != nullptr);
     return *(instrumentZone_.sampleBuffer());
   }

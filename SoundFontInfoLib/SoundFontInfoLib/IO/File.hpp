@@ -17,7 +17,7 @@
 #include "Entity/Version.hpp"
 
 #include "IO/ChunkItems.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/Sample/Source/CanonicalBuffer.hpp"
 
 /**
  Collection of classes and types involved in parsing an SF2 file or data stream.
@@ -85,7 +85,7 @@ public:
    @param index the index of the buffer to obtain
    @returns SampleBuffer reference
    */
-  const Render::Sample::CanonicalBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
+  const Render::Sample::Source::CanonicalBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
   void dumpThreaded() const;
 
@@ -119,7 +119,7 @@ private:
   ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
   ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-  std::vector<Render::Sample::CanonicalBuffer> sampleBuffers_;
+  std::vector<Render::Sample::Source::CanonicalBuffer> sampleBuffers_;
 
   std::shared_ptr<int16_t> sampleData_;
 

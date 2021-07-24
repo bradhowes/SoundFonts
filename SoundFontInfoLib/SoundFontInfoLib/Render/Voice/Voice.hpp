@@ -6,8 +6,8 @@
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
 #include "Render/Modulator.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
 #include "Render/Sample/Generator.hpp"
+#include "Render/Sample/Source/Interpolated.hpp"
 #include "Render/Voice/State.hpp"
 
 namespace SF2::MIDI { class Channel; }
@@ -77,7 +77,7 @@ public:
 private:
   State state_;
   State::LoopingMode loopingMode_;
-  Sample::TGenerator<Sample::InterpolatedGenerator> sampleGenerator_;
+  Sample::Generator<Sample::Source::Interpolated> sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;

@@ -6,9 +6,9 @@
 
 #include "Logger.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Sample/Bounds.hpp"
+#include "Render/Sample/Source/Bounds.hpp"
 
-namespace SF2::Render::Sample {
+namespace SF2::Render::Sample::Source {
 
 /**
  Interpolatable index into a CanonicalBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)

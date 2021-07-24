@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD4BD95B26AC118A00CE06D7 /* Interpolated.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD4BD95A26AC118A00CE06D7 /* Interpolated.hpp */; };
+		BD4BD95D26AC11B600CE06D7 /* Constant.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD4BD95C26AC11B600CE06D7 /* Constant.hpp */; };
+		BD4BD95F26AC11E400CE06D7 /* Sine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BD4BD95E26AC11E400CE06D7 /* Sine.hpp */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; platformFilter = maccatalyst; };
 		BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */; };
 		BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */; };
@@ -93,6 +96,9 @@
 
 /* Begin PBXFileReference section */
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		BD4BD95A26AC118A00CE06D7 /* Interpolated.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Interpolated.hpp; sourceTree = "<group>"; };
+		BD4BD95C26AC11B600CE06D7 /* Constant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Constant.hpp; sourceTree = "<group>"; };
+		BD4BD95E26AC11E400CE06D7 /* Sine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Sine.hpp; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA5ACA5265D379F000AE48E /* DSPGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -190,11 +196,11 @@
 		BDB1BF86265DB1F0002AD159 /* Config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Config.hpp; path = SoundFontInfoLib/Render/Voice/Config.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF87265DB1F0002AD159 /* Voice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Voice.hpp; path = SoundFontInfoLib/Render/Voice/Voice.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF88265DB1F0002AD159 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LFO.hpp; path = SoundFontInfoLib/Render/LFO.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanonicalBuffer.hpp; path = SoundFontInfoLib/Render/Sample/CanonicalBuffer.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Source/Bounds.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanonicalBuffer.hpp; path = SoundFontInfoLib/Render/Sample/Source/CanonicalBuffer.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8C265DB1F0002AD159 /* PitchControl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PitchControl.hpp; path = SoundFontInfoLib/Render/Sample/PitchControl.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8D265DB1F0002AD159 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Generator.hpp; path = SoundFontInfoLib/Render/Sample/Generator.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BufferIndex.hpp; path = SoundFontInfoLib/Render/Sample/BufferIndex.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BufferIndex.hpp; path = SoundFontInfoLib/Render/Sample/Source/BufferIndex.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZones.hpp; path = SoundFontInfoLib/Render/WithZones.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF90265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Instrument.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF91265DB1F0002AD159 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Range.hpp; path = SoundFontInfoLib/Render/Range.hpp; sourceTree = SOURCE_ROOT; };
@@ -243,6 +249,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD4BD96026AC123300CE06D7 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */,
+				BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */,
+				BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */,
+				BD4BD95C26AC11B600CE06D7 /* Constant.hpp */,
+				BD4BD95A26AC118A00CE06D7 /* Interpolated.hpp */,
+				BD4BD95E26AC11E400CE06D7 /* Sine.hpp */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
@@ -514,10 +533,8 @@
 		BDB1BF89265DB1F0002AD159 /* Sample */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */,
-				BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */,
-				BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */,
 				BDB1BF8D265DB1F0002AD159 /* Generator.hpp */,
+				BD4BD96026AC123300CE06D7 /* Source */,
 				BDB1BF8C265DB1F0002AD159 /* PitchControl.hpp */,
 			);
 			name = Sample;
@@ -554,7 +571,10 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD4BD95F26AC11E400CE06D7 /* Sine.hpp in Headers */,
+				BD4BD95B26AC118A00CE06D7 /* Interpolated.hpp in Headers */,
 				BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */,
+				BD4BD95D26AC11B600CE06D7 /* Constant.hpp in Headers */,
 				BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */,
 				BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */,
 			);
