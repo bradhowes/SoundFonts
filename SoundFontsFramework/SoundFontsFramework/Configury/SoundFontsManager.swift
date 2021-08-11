@@ -180,16 +180,18 @@ extension SoundFontsManager: SoundFonts {
     patch.presetConfig.isHidden = !isVisible
   }
 
-  public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?) {
+  public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?,
+                         chorus: ChorusConfig?) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     os_log(
       .debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
       soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.patchIndex,
-      delay?.description ?? "nil", reverb?.description ?? "nil")
+      delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
     defer { collectionChanged() }
     let patch = soundFont.presets[soundFontAndPreset.patchIndex]
     patch.presetConfig.delayConfig = delay
     patch.presetConfig.reverbConfig = reverb
+    patch.presetConfig.chorusConfig = chorus
   }
 
   public func makeAllVisible(key: SoundFont.Key) {

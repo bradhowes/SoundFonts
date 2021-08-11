@@ -115,10 +115,11 @@ public protocol Favorites {
    Set the effects configurations for a given favorite.
 
    - parameter favorite: the favorite to update
-   - delay: the delay configuration to save
-   - reverb: the reverb configuration to save
+   - parameter delay: the delay configuration to save
+   - parameter reverb: the reverb configuration to save
+   - parameter chorus: the chorus configuration to save
    */
-  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?)
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?)
 
   /**
    The Favorite at the given index is selected by the user.

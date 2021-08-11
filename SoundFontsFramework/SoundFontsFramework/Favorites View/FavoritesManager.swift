@@ -88,13 +88,14 @@ extension FavoritesManager: Favorites {
     favorite.presetConfig.isHidden = !isVisible
   }
 
-  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?) {
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) {
     os_log(
       .debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
-      delay?.description ?? "nil", reverb?.description ?? "nil")
+      delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
     defer { collectionChanged() }
     favorite.presetConfig.delayConfig = delay
     favorite.presetConfig.reverbConfig = reverb
+    favorite.presetConfig.chorusConfig = chorus
   }
 
   func validate(_ soundFonts: SoundFonts) {

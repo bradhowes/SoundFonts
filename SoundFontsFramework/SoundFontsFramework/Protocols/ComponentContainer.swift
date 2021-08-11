@@ -10,6 +10,8 @@ public enum ComponentContainerEvent {
   case reverbAvailable(ReverbEffect)
   /// The delay effect is ready for use.
   case delayAvailable(DelayEffect)
+  /// The chorus effect is ready for use.
+  case chorusAvailable(ChorusEffect)
 }
 
 /// Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the
@@ -45,6 +47,8 @@ public protocol ComponentContainer: AnyObject {
   var reverbEffect: ReverbEffect? { get }
   /// The delay effect that is used if inside the application; the AUv3 component has none, so this will be nil.
   var delayEffect: DelayEffect? { get }
+  /// The chorus effect that is used if inside the application; the AUv3 component has none, so this will be nil.
+  var chorusEffect: ChorusEffect? { get }
 
   func createAudioComponents()
 

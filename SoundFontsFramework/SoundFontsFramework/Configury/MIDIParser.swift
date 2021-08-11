@@ -15,7 +15,7 @@ public enum MIDIMsg {
 }
 
 /// MIDIPacketList parser that generates MIDIMsg entities for the bytes in the packets and forwards them to a
-/// MIDIController
+/// MIDIReceiver to process them.
 public struct MIDIParser {
   static private let log = Logging.logger("MIDIParser")
   private var log: OSLog { Self.log }

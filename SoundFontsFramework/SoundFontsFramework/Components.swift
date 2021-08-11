@@ -63,6 +63,11 @@ where T: ControllerConfiguration {
     precondition(self.inApp == false || _reverbEffect != nil)
     return _reverbEffect
   }
+  /// The chorus effect available for audio processing (app only)
+  public var chorusEffect: ChorusEffect? {
+    precondition(self.inApp == false || _chorusEffect != nil)
+    return _chorusEffect
+  }
 
   private var _alertManager: AlertManager?
 
@@ -86,6 +91,14 @@ where T: ControllerConfiguration {
     didSet {
       if let effect = _delayEffect {
         DispatchQueue.main.async { self.notify(.delayAvailable(effect)) }
+      }
+    }
+  }
+
+  private var _chorusEffect: ChorusEffect? {
+    didSet {
+      if let effect = _chorusEffect {
+        DispatchQueue.main.async { self.notify(.chorusAvailable(effect)) }
       }
     }
   }

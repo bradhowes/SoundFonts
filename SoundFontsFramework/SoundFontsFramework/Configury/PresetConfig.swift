@@ -23,6 +23,9 @@ public struct PresetConfig: Codable {
   /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
   public var delayConfig: DelayConfig?
 
+  /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
+  public var chorusConfig: ChorusConfig?
+
   /// Range to the pitch bend controller in semi-tones (12 per octave). Default is 2.
   public var pitchBendRange: Int?
 

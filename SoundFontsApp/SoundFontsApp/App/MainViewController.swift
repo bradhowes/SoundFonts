@@ -237,6 +237,7 @@ extension MainViewController: ControllerConfiguration {
       }
     case .reverbAvailable: break
     case .delayAvailable: break
+    case .chorusAvailable: break
     }
   }
   private func activePresetChange(_ event: ActivePresetEvent) {

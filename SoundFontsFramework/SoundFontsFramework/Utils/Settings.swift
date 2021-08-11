@@ -73,6 +73,27 @@ extension SettingKeys {
   /// The current delay mix setting
   public static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
 
+  /// If true, the chorus AU is currently active
+  public static let chorusEnabled = SettingKey("chorusEnabled", defaultValue: false)
+  /// If true, the delay AU is globally active
+  public static let chorusGlobal = SettingKey("chorusGlobal", defaultValue: false)
+  /// The current delay amount in seconds
+  public static let chorusRate = SettingKey("chorusRate", defaultValue: Float(0.19))
+  /// The current delay amount in seconds
+  public static let chorusDelay = SettingKey("chorusDelay", defaultValue: Float(0.19))
+  /// The current delay amount in seconds
+  public static let chorusDepth = SettingKey("chorusDepth", defaultValue: Float(0.19))
+  /// The current feedback setting between -100% and 100%
+  public static let chorusFeedback = SettingKey("chorusFeedback", defaultValue: Float(-75.0))
+  /// The current low-pass cutoff value for the delay effect
+  public static let chorusCutoff = SettingKey("chorusCutoff", defaultValue: Float(15000.0))
+  /// The current delay mix setting
+  public static let chorusWetDryMix = SettingKey("chorusWetDryMix", defaultValue: Float(45.0))
+  /// If true, use negative feedback
+  public static let chorusNegFeedback = SettingKey("chorusNegFeedback", defaultValue: false)
+  /// If true, the odd (R) channel is out of phase with even (L).
+  public static let chorusOdd90 = SettingKey("chorusOdd90", defaultValue: false)
+
   /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
   public static let showEffects = SettingKey("showEffects", defaultValue: false)
   /// The currently active font tag
@@ -266,6 +287,51 @@ extension UserDefaults {
   @objc public dynamic var delayWetDryMix: Float {
     get { self[.delayWetDryMix] }
     set { self[.delayWetDryMix] = newValue }
+  }
+  /// If true, the chorus AU is currently active
+  @objc public dynamic var chorusEnabled: Bool {
+    get { self[.chorusEnabled] }
+    set { self[.chorusEnabled] = newValue }
+  }
+  /// If true, the chorus AU is globally active
+  @objc public dynamic var chorusGlobal: Bool {
+    get { self[.chorusGlobal] }
+    set { self[.chorusGlobal] = newValue }
+  }
+  /// The current chorus rate in seconds
+  @objc public dynamic var chorusRate: Float {
+    get { self[.chorusRate] }
+    set { self[.chorusRate] = newValue }
+  }
+  /// The current chorus delay
+  @objc public dynamic var chorusDelay: Float {
+    get { self[.chorusDelay] }
+    set { self[.chorusDelay] = newValue }
+  }
+  /// The current chorus depth
+  @objc public dynamic var chorusDepth: Float {
+    get { self[.chorusDepth] }
+    set { self[.chorusDepth] = newValue }
+  }
+  /// The current feedback setting between -100% and 100%
+  @objc public dynamic var chorusFeedback: Float {
+    get { self[.chorusFeedback] }
+    set { self[.chorusFeedback] = newValue }
+  }
+  /// The current chorus mix setting
+  @objc public dynamic var chorusWetDryMix: Float {
+    get { self[.chorusWetDryMix] }
+    set { self[.chorusWetDryMix] = newValue }
+  }
+  /// The current chorus neg feedback switch
+  @objc public dynamic var chorusNegFeedback: Bool {
+    get { self[.chorusNegFeedback] }
+    set { self[.chorusNegFeedback] = newValue }
+  }
+  /// The current chorus odd 90° switch
+  @objc public dynamic var chorusOdd90: Bool {
+    get { self[.chorusOdd90] }
+    set { self[.chorusOdd90] = newValue }
   }
   /// The currently active font tag
   @objc public dynamic var activeTagKey: Tag.Key {
