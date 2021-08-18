@@ -46,7 +46,6 @@ public:
   /// @returns current value of the modulator
   double value() const {
     assert(isValid());
-    // log_.debug() << "evaluating " << description() << std::endl;
 
     // If there is no source for the modulator, it always returns 0.0 (no modulation).
     if (sourceValue_ == nullptr) return 0.0;
