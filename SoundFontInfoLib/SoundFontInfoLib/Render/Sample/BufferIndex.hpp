@@ -6,9 +6,9 @@
 
 #include "Logger.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Sample/Source/Bounds.hpp"
+#include "Render/Sample/Bounds.hpp"
 
-namespace SF2::Render::Sample::Source {
+namespace SF2::Render::Sample {
 
 /**
  Interpolatable index into a CanonicalBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)
@@ -18,9 +18,15 @@ namespace SF2::Render::Sample::Source {
  Updates to the index honor loops in the sample stream if allowed. The index can also signal when it has reached the
  end of the sample stream via its `finished` method.
  */
-struct BufferIndex {
+class BufferIndex {
+public:
 
-  BufferIndex(const Bounds& bounds) : pos_{bounds.startPos()} {}
+  /**
+   Create new instance
+
+   @param bounds boundaries and optional loop point for the sample being indexed
+   */
+  BufferIndex(const Bounds& bounds) : bounds_{bounds}, pos_{bounds.startPos()} {}
 
   /**
    Set the increment to use when advancing the index. This can change with each sample depending on what modulators
@@ -40,10 +46,9 @@ struct BufferIndex {
   /**
    Increment the index to the next location. Properly handles looping and buffer end.
 
-   @param bounds current boundaries and loop point for the sample being indexed
    @param canLoop true if looping is allowed
    */
-  void increment(const Bounds& bounds, bool canLoop) {
+  void increment(bool canLoop) {
     if (finished()) return;
 
     if (posIncrement_) pos_ += posIncrement_;
@@ -55,11 +60,11 @@ struct BufferIndex {
       partial_ -= carry;
     }
 
-    if (canLoop && pos_ >= bounds.endLoopPos()) {
+    if (canLoop && pos_ >= bounds_.endLoopPos()) {
       log_.debug() << "looping" << std::endl;
-      pos_ -= (bounds.endLoopPos() - bounds.startLoopPos());
+      pos_ -= (bounds_.endLoopPos() - bounds_.startLoopPos());
     }
-    else if (pos_ >= bounds.endPos()) {
+    else if (pos_ >= bounds_.endPos()) {
       log_.debug() << "stopping" << std::endl;
       stop();
     }
@@ -72,6 +77,7 @@ struct BufferIndex {
   double partial() const { return partial_; }
 
 private:
+  const Bounds& bounds_;
   size_t pos_;
   size_t posIncrement_{0};
   double partial_{0.0};

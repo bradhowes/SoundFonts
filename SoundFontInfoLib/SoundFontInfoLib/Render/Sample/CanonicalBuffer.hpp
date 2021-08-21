@@ -11,7 +11,7 @@
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 
-namespace SF2::Render::Sample::Source {
+namespace SF2::Render::Sample {
 
 /**
  Contains a collection of audio samples that range between -1.0 and 1.0. The values are derived from the
