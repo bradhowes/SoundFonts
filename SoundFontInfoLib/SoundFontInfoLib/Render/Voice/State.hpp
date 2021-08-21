@@ -49,7 +49,8 @@ public:
    Mock constructor -- only used in unit tests.
    */
   State(double sampleRate, const MIDI::Channel& channel, int key, int velocity) :
-  sampleRate_{sampleRate}, channel_{channel}, key_{key}, velocity_{velocity} {
+  sampleRate_{sampleRate}, channel_{channel}, key_{key}, velocity_{velocity}
+  {
     setDefaults();
   }
 
@@ -58,9 +59,9 @@ public:
 
    @param sampleRate the sample rate of audio being rendered
    @param channel the MIDI channel that is in control
-   @param setup the voice configuration to use
+   @param config the configuration to use to create voice state
    */
-  State(double sampleRate, const MIDI::Channel& channel, const Config& setup);
+  State(double sampleRate, const MIDI::Channel& channel, const Config& config);
 
   /**
    Set a generator value. Should only be called with a value from an InstrumentZone. It can be set twice, once by a
@@ -96,20 +97,6 @@ public:
   void addModulator(const Entity::Modulator::Modulator& modulator);
 
   /**
-   Obtain a generator value after applying any registered modulators to it. Due to the modulation calculations this
-   returns a floating-point value, but the value has not been converted from/into any particular unit and should
-   still reflect the definitions found in the spec.
-
-   @param gen the index of the generator
-   @returns current value of the generator
-   */
-  double modulated(Index gen) const {
-    auto modSum = [this](double value, size_t mod) { return value + modulators_[mod].value(); };
-    auto& genMods{gens_[indexValue(gen)].mods};
-    return std::accumulate(genMods.begin(), genMods.end(), unmodulated(gen), modSum);
-  }
-
-  /**
    Obtain a generator value without any modulation applied to it. This is the original result from the zone generator
    definitions and so it is expressed as an integer. Most of the time, the `modulated` method is what is desired in
    order to account for any MIDI controller values.
@@ -120,6 +107,26 @@ public:
   int unmodulated(Index gen) const {
     auto& value{gens_[indexValue(gen)]};
     return value.principle + value.adjustment;
+  }
+
+  /**
+   Obtain a generator value after applying any registered modulators to it. Due to the modulation calculations this
+   returns a floating-point value, but the value has not been converted into any particular unit and should
+   still reflect the definitions found in the spec for the given index.
+
+   @param gen the index of the generator
+   @returns current value of the generator
+   */
+  double modulated(Index gen) const {
+
+    // Most of the time there are no modulators.
+    auto& genMods{gens_[indexValue(gen)].mods};
+    auto value = unmodulated(gen);
+    if (genMods.empty()) return value;
+
+    // Accumulate changes to the state value from the registered modulators
+    auto modSum = [this](double value, size_t mod) { return value + modulators_[mod].value(); };
+    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
   }
 
   /// @returns fundamental pitch to generate when rendering (semitones)
@@ -193,17 +200,18 @@ private:
 
   using ModulatorIndexLinkedList = std::forward_list<size_t>;
 
-  // Three component make up a generator value:
+  // Three components make up a generator value:
   // - the principle or main value from an instrument zone
   // - any adjustment value from a preset zone
   // - zero or more modulator indices
   struct GenValue {
-    int principle = 0;
-    int adjustment = 0;
-    ModulatorIndexLinkedList mods = {};
+    int principle{0};
+    int adjustment{0};
+    ModulatorIndexLinkedList mods{};
   };
 
   void setDefaults();
+  void linkModulators();
 
   double envelopeSustainLevel(Index gen) const {
     assert(gen == Index::sustainVolumeEnvelope || gen == Index::sustainModulatorEnvelope);
@@ -229,10 +237,10 @@ private:
 
   const MIDI::Channel& channel_;
 
-  using GenValuesArray = std::array<GenValue, static_cast<size_t>(Index::numValues)>;
+  using GenValueArray = std::array<GenValue, static_cast<size_t>(Index::numValues)>;
 
   /// Collection of generator values
-  GenValuesArray gens_;
+  GenValueArray gens_;
 
   /// Collection of modulators defined by instrument and preset zones.
   std::vector<Modulator> modulators_{};

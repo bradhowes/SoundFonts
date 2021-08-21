@@ -2,8 +2,7 @@
 
 #import <iostream>
 
-#import <XCTest/XCTest.h>
-#import <SF2Files/SF2Files-Swift.h>
+#import "SampleBasedTestCase.h"
 
 #import "Entity/Generator/Index.hpp"
 #import "MIDI/Channel.hpp"
@@ -14,25 +13,14 @@ using namespace SF2;
 using namespace SF2::Render;
 using namespace SF2::Entity::Generator;
 
-static NSArray<NSURL*>* urls = SF2Files.allResources;
-static MIDI::Channel channel;
-
-@interface StateTests : XCTestCase
+@interface StateTests : SampleBasedTestCase
 @end
 
 @implementation StateTests
 
 - (void)testInit {
-  NSURL* url = [urls objectAtIndex:3];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
-  int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
-
-  InstrumentCollection instruments(file);
-  Preset preset(file, instruments, file.presets()[0]);
-  auto found = preset.find(69, 64);
-
-  Voice::State state{44100, channel, found[0]};
+  auto found = context.find(69, 64);
+  Voice::State state{44100, context.channel(), found[0]};
 
   XCTAssertEqual(0, state.unmodulated(Index::startAddressOffset));
   XCTAssertEqual(0, state.unmodulated(Index::endAddressOffset));
@@ -56,7 +44,7 @@ static MIDI::Channel channel;
 }
 
 - (void)testKey {
-  Voice::State state(44100.0, channel, 64, 32);
+  Voice::State state(44100.0, context.channel(), 64, 32);
   XCTAssertEqual(64, state.eventKey());
   XCTAssertEqual(64, state.key());
 
@@ -66,7 +54,7 @@ static MIDI::Channel channel;
 }
 
 - (void)testVelocity {
-  Voice::State state(44100.0, channel, 64, 32);
+  Voice::State state(44100.0, context.channel(), 64, 32);
   XCTAssertEqual(32, state.eventVelocity());
   XCTAssertEqual(32, state.velocity());
 
@@ -77,7 +65,7 @@ static MIDI::Channel channel;
 
 - (void)testEnvelopeSustainLevel {
   double epsilon = 0.000001;
-  Voice::State state(44100.0, channel, 64, 32);
+  Voice::State state(44100.0, context.channel(), 64, 32);
 
   state.setPrincipleValue(Index::sustainVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(1.0, state.sustainLevelVolumeEnvelope(), epsilon);
@@ -90,7 +78,7 @@ static MIDI::Channel channel;
 }
 
 - (void)testModulatedValue {
-  Voice::State state(44100.0, channel, 60, 32);
+  Voice::State state(44100.0, context.channel(), 60, 32);
   state.setPrincipleValue(Index::holdVolumeEnvelope, 100);
   state.setAdjustmentValue(Index::holdVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(100.0, state.modulated(Index::holdVolumeEnvelope), 0.000001);
@@ -99,7 +87,7 @@ static MIDI::Channel channel;
 }
 
 - (void)testKeyedEnvelopeModulator {
-  Voice::State state(44100.0, channel, 60, 32);
+  Voice::State state(44100.0, context.channel(), 60, 32);
 
   // 1s hold duration
   state.setPrincipleValue(Index::holdVolumeEnvelope, 0);
@@ -133,7 +121,7 @@ static MIDI::Channel channel;
 }
 
 - (void)testLoopingModes {
-  Voice::State state(44100.0, channel, 60, 32);
+  Voice::State state(44100.0, context.channel(), 60, 32);
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
   state.setPrincipleValue(Index::sampleModes, -1);
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());

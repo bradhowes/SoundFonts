@@ -4,6 +4,7 @@
 
 #include "MIDI/Channel.hpp"
 #include "Render/Envelope/Generator.hpp"
+#include "Render/Sample/Bounds.hpp"
 #include "Render/Voice/Config.hpp"
 #include "Render/Voice/Voice.hpp"
 
@@ -14,7 +15,8 @@ using namespace SF2::Entity::Generator;
 Voice::Voice(double sampleRate, const Channel& channel, const Config& config) :
 state_{sampleRate, channel, config},
 loopingMode_{state_.loopingMode()},
-sampleGenerator_{Sample::Source::Interpolated(config.sampleBuffer(), state_)},
+sampleGenerator_{Sample::Generator(sampleRate, config.sampleBuffer(),
+                                   Sample::Bounds::make(config.sampleBuffer().header(), state_))},
 gainEnvelope_{Envelope::Generator::Volume(state_)},
 modulatorEnvelope_{Envelope::Generator::Modulator(state_)},
 modulatorLFO_{

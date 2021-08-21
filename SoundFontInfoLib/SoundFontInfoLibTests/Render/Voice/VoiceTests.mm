@@ -10,6 +10,7 @@
 #import "IO/File.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
+#import "Render/Sample/Generator.hpp"
 #import "Render/Voice/Voice.hpp"
 
 using namespace SF2;

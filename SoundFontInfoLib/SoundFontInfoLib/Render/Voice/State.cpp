@@ -9,14 +9,14 @@
 
 using namespace SF2::Render::Voice;
 
-State::State(double sampleRate, const MIDI::Channel& channel, const Config& setup) :
-sampleRate_{sampleRate}, channel_{channel}, key_{setup.key()}, velocity_{setup.velocity()}
+State::State(double sampleRate, const MIDI::Channel& channel, const Config& config) :
+sampleRate_{sampleRate}, channel_{channel}, key_{config.key()}, velocity_{config.velocity()}
 {
   // (1) Initialize to default values
   setDefaults();
 
   // (2) Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
-  setup.apply(*this);
+  config.apply(*this);
 
   // (3) Now finish configuring the modulators by resolving any links between them.
   for (const auto& modulator : modulators_) {

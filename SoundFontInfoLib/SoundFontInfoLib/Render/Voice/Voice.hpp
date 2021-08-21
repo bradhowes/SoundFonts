@@ -7,7 +7,6 @@
 #include "Render/LFO.hpp"
 #include "Render/Modulator.hpp"
 #include "Render/Sample/Generator.hpp"
-#include "Render/Sample/Source/Interpolated.hpp"
 #include "Render/Voice/State.hpp"
 
 namespace SF2::MIDI { class Channel; }
@@ -26,7 +25,8 @@ class Config;
 class Voice
 {
 public:
-
+  using Index = Entity::Generator::Index;
+  
   /**
    Construct a new voice renderer.
 
@@ -56,28 +56,51 @@ public:
   /**
    Renders the next sample for a voice. Inactive voices always return 0.0.
 
+   Here is the modulation connections, taken from the SoundFont spec v2.
+
+            Osc ------ Filter -- Amp -- L+R ----+-------------+-+-> Output
+             | pitch     | Fc     | Volume      |            / /
+            /|          /|        |             +- Reverb --+ /
+   Mod Env +-----------+ |        |             |            /
+            /|           |        |             +- Chorus --+
+   Vib LFO + |           |        |
+            /|          /|       /|
+   Mod LFO +-----------+--------+ |
+                                 /
+   Vol Env ---------------------+
+
    @returns next sample
    */
   double render() {
     if (!isActive()) return 0.0;
 
-    auto amplitudeGain = gainEnvelope_.process();
-    auto modulatorGain = modulatorEnvelope_.process();
+    // auto scaleTuning = state_.modulated(Index::scaleTuning);
 
-    auto lfoValue = modulatorLFO_.valueAndIncrement();
-    auto vibratoValue = vibratoLFO_.valueAndIncrement();
+    auto modEnv = modulatorEnvelope_.process();
+    auto vibLfo = vibratoLFO_.valueAndIncrement();
+    auto modLfo = modulatorLFO_.valueAndIncrement();
+    auto volEnv = gainEnvelope_.process();
 
-    auto pitchAdjustment = (modulatorGain * state_.modulated(Entity::Generator::Index::modulatorEnvelopeToPitch) +
-                            lfoValue * state_.modulated(Entity::Generator::Index::modulatorLFOToPitch) +
-                            vibratoValue * state_.modulated(Entity::Generator::Index::vibratoLFOToPitch));
+    // The primary pitch value (note that this can be modulated / adjusted as well depending on mod definitions)
+    auto pitch = state_.pitch();
 
-    return sampleGenerator_.generate(pitchAdjustment, canLoop()) * amplitudeGain;
+    // The adjustments that come from the modulators and envelopes. These are specified in cents so, divide by 100 to
+    // get values in semitones.
+    auto pitchAdjustment = (modEnv * state_.modulated(Index::modulatorEnvelopeToPitch) +
+                            modLfo * state_.modulated(Index::modulatorLFOToPitch) +
+                            vibLfo * state_.modulated(Index::vibratoLFOToPitch)) / 100.0;
+
+    auto attenuation = state_.modulated(Index::initialAttenuation);
+
+    auto sample = sampleGenerator_.generate(pitch + pitchAdjustment, canLoop());
+
+    return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
   }
 
 private:
   State state_;
   State::LoopingMode loopingMode_;
-  Sample::Generator<Sample::Source::Interpolated> sampleGenerator_;
+  Sample::Generator sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;

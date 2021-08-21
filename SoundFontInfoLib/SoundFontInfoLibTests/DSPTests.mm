@@ -116,6 +116,7 @@ using namespace SF2::DSP;
   XCTAssertEqualWithAccuracy(0.5, centsToFrequencyMultiplier(-1200), self.epsilon); // -1200 = 1/2x
   XCTAssertEqualWithAccuracy(1.0, centsToFrequencyMultiplier(0), self.epsilon); // 0 = 1x
   XCTAssertEqualWithAccuracy(2.0, centsToFrequencyMultiplier(1200), self.epsilon); // +1200 = 2x
+  XCTAssertEqualWithAccuracy(2.0, centsToFrequencyMultiplier(2400), self.epsilon); // +1200 = 2x
 }
 
 - (void)testCentToFrequency {

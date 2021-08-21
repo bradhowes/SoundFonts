@@ -2,35 +2,24 @@
 
 #import <iostream>
 
-#import <XCTest/XCTest.h>
-#import <SF2Files/SF2Files-Swift.h>
-
 #import "IO/File.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
+#import "SampleBasedTestCase.h"
 
 using namespace SF2;
-
-static NSArray<NSURL*>* urls = SF2Files.allResources;
-
 using namespace SF2::Render;
 
-@interface PresetTests : XCTestCase
+@interface PresetTests : SampleBasedTestCase
 @end
 
 @implementation PresetTests
 
 - (void)testRolandPianoPreset {
-  NSURL* url = [urls objectAtIndex:3];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
-  int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
-
+  auto file{context.file()};
   XCTAssertEqual(1, file.presets().size());
 
-  MIDI::Channel channel;
-  InstrumentCollection instruments(file);
-  Preset preset(file, instruments, file.presets()[0]);
+  Preset preset{context.preset()};
   XCTAssertEqual(6, preset.zones().size());
 
   XCTAssertFalse(preset.hasGlobalZone());
@@ -38,6 +27,7 @@ using namespace SF2::Render;
   auto found = preset.find(64, 10);
   XCTAssertEqual(2, found.size());
 
+  MIDI::Channel channel;
   Voice::State left{44100, channel, found[0]};
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));

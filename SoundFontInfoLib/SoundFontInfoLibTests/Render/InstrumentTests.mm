@@ -46,7 +46,7 @@ using namespace SF2::Render;
   auto found = preset.find(64, 64);
 
   MIDI::Channel channel;
-  Voice::State left{44100.0, channel, found[0]};
+  Voice::State left{44100, channel, found[0]};
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(2041, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(9023, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));

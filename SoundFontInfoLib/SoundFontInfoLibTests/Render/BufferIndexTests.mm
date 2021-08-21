@@ -1,31 +1,25 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 #import <iostream>
-#import <XCTest/XCTest.h>
+
+#import "SampleBasedTestCase.h"
+
 #import "Entity/SampleHeader.hpp"
 #import "MIDI/Channel.hpp"
-#import "Render/Sample/Source/BufferIndex.hpp"
+#import "Render/Sample/BufferIndex.hpp"
 #import "Render/Voice/State.hpp"
 
-using namespace SF2::Render::Sample::Source;
+using namespace SF2::Render::Sample;
 using namespace SF2::Render::Voice;
 
-@interface SampleIndexTests : XCTestCase
-@property (nonatomic, assign) double epsilon;
+@interface SampleIndexTests : SampleBasedTestCase
 @end
 
 @implementation SampleIndexTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;
-static Bounds bounds{header, State(44100.0, channel, 0, 0)};
-
-- (void)setUp {
-  self.epsilon = 0.0000001;
-}
-
-- (void)tearDown {
-}
+static Bounds bounds{Bounds::make(header, State(44100.0, channel, 0, 0))};
 
 - (void)testConstruction {
   auto index = BufferIndex(bounds);
@@ -36,9 +30,9 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 - (void)testIncrement {
   auto index = BufferIndex(bounds);
   index.setIncrement(1.3);
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(1, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(2, index.pos());
   XCTAssertEqualWithAccuracy(0.6, index.partial(), 0.000001);
 }
@@ -46,59 +40,59 @@ static Bounds bounds{header, State(44100.0, channel, 0, 0)};
 - (void)testLooping {
   auto index = BufferIndex(bounds);
   index.setIncrement(1.3);
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(1, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(2, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(3, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(2, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(3, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(4, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(3, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(4, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(2, index.pos());
 }
 
 - (void)testEndLooping {
   auto index = BufferIndex(bounds);
   index.setIncrement(1.3);
-  index.increment(bounds, true);
-  index.increment(bounds, true);
-  index.increment(bounds, true);
-  index.increment(bounds, true);
-  index.increment(bounds, true);
+  index.increment(true);
+  index.increment(true);
+  index.increment(true);
+  index.increment(true);
+  index.increment(true);
   XCTAssertEqual(3, index.pos());
-  index.increment(bounds, true);
+  index.increment(true);
   XCTAssertEqual(4, index.pos());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(6, index.pos());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(6, index.pos());
 }
 
 - (void)testFinished {
   auto index = BufferIndex(bounds);
   index.setIncrement(1.3);
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(1, index.pos());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(2, index.pos());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(3, index.pos());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(5, index.pos());
   XCTAssertFalse(index.finished());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(6, index.pos());
   XCTAssertTrue(index.finished());
-  index.increment(bounds, false);
+  index.increment(false);
   XCTAssertEqual(6, index.pos());
 }
 

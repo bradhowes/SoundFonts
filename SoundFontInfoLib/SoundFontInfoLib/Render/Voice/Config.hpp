@@ -4,7 +4,7 @@
 
 #include "Render/PresetZone.hpp"
 #include "Render/InstrumentZone.hpp"
-#include "Render/Sample/Source/CanonicalBuffer.hpp"
+#include "Render/Sample/CanonicalBuffer.hpp"
 
 namespace SF2::Render::Voice {
 
@@ -28,14 +28,14 @@ public:
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Config(const PresetZone& presetZone, GlobalPresetZone globalPresetZone, const InstrumentZone& instrumentZone,
-        GlobalInstrumentZone globalInstrumentZone, int key, int velocity) :
-  presetZone_{presetZone}, globalPresetZone_{globalPresetZone}, instrumentZone_{instrumentZone},
-  globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity} {}
+  Config(const PresetZone& presetZone, GlobalPresetZone globalPresetZone,
+         const InstrumentZone& instrumentZone, GlobalInstrumentZone globalInstrumentZone, int key, int velocity) :
+  presetZone_{presetZone}, globalPresetZone_{globalPresetZone},
+  instrumentZone_{instrumentZone}, globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity}
+  {}
 
   /**
-   Update a state with the various zone configurations. This is to be done just once during the start of a voice playing
-   a note.
+   Update a state with the various zone configurations. This is done once during the initialization of a Voice.
 
    @param state the voice state to update
    */
@@ -52,7 +52,7 @@ public:
   }
 
   /// @returns the buffer of audio samples to use for rendering
-  const Sample::Source::CanonicalBuffer& sampleBuffer() const {
+  const Sample::CanonicalBuffer& sampleBuffer() const {
     assert(instrumentZone_.sampleBuffer() != nullptr);
     return *(instrumentZone_.sampleBuffer());
   }
@@ -73,4 +73,3 @@ private:
 };
 
 } // namespace SF2::Render::Voice
-
