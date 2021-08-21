@@ -4,6 +4,7 @@
 #import <cmath>
 
 #include "DSP/DSP.hpp"
+#include "FluidSynthTruths.hpp"
 
 using namespace SF2::DSP;
 
@@ -121,16 +122,41 @@ using namespace SF2::DSP;
 
 - (void)testCentToFrequency {
   XCTAssertEqualWithAccuracy(1.0, centsToFrequency(-1), self.epsilon); // A0
+  XCTAssertEqualWithAccuracy(centsToFrequency(-1), fluid_ct2hz_real(-1), self.epsilon); // A0
+
   XCTAssertEqualWithAccuracy(8.17579891564, centsToFrequency(0), self.epsilon); // A0
+  XCTAssertEqualWithAccuracy(centsToFrequency(0), fluid_ct2hz_real(0), self.epsilon); // A0
+
   XCTAssertEqualWithAccuracy(55.0, centsToFrequency(3300), self.epsilon); // A1
+  XCTAssertEqualWithAccuracy(centsToFrequency(3300), fluid_ct2hz_real(3300), self.epsilon); // A1
+
   XCTAssertEqualWithAccuracy(110.0, centsToFrequency(4500), self.epsilon); // A2
+  XCTAssertEqualWithAccuracy(centsToFrequency(4500), fluid_ct2hz_real(4500), self.epsilon); // A2
+
   XCTAssertEqualWithAccuracy(220.0, centsToFrequency(5700), self.epsilon); // A3
+  XCTAssertEqualWithAccuracy(centsToFrequency(5700), fluid_ct2hz_real(5700), self.epsilon); // A3
+
   XCTAssertEqualWithAccuracy(329.627556913, centsToFrequency(6400), self.epsilon); // C4
+  XCTAssertEqualWithAccuracy(centsToFrequency(6400), fluid_ct2hz_real(6400), self.epsilon); // C4
+
   XCTAssertEqualWithAccuracy(440.0, centsToFrequency(6900), self.epsilon); // A4
+  XCTAssertEqualWithAccuracy(centsToFrequency(6900), fluid_ct2hz_real(6900), self.epsilon); // A4
+
   XCTAssertEqualWithAccuracy(880.0, centsToFrequency(8100), self.epsilon); // A5
+  XCTAssertEqualWithAccuracy(centsToFrequency(8100), fluid_ct2hz_real(8100), self.epsilon); // A5
+
   XCTAssertEqualWithAccuracy(1760.0, centsToFrequency(9300), self.epsilon); // A6
+  XCTAssertEqualWithAccuracy(centsToFrequency(9300), fluid_ct2hz_real(9300), self.epsilon); // A6
+
   XCTAssertEqualWithAccuracy(3520.0, centsToFrequency(10500), self.epsilon); // A7
+  XCTAssertEqualWithAccuracy(centsToFrequency(10500), fluid_ct2hz_real(10500), self.epsilon); // A7
+
   XCTAssertEqualWithAccuracy(4186.00904481, centsToFrequency(10800), self.epsilon); // C8
+  XCTAssertEqualWithAccuracy(centsToFrequency(10800), fluid_ct2hz_real(10800), self.epsilon); // C8
+
+  XCTAssertEqualWithAccuracy(centsToFrequency(6901), fluid_ct2hz_real(6901), self.epsilon);
+  XCTAssertEqualWithAccuracy(centsToFrequency(6923), fluid_ct2hz_real(6923), self.epsilon);
+  XCTAssertEqualWithAccuracy(centsToFrequency(6999), fluid_ct2hz_real(6999), self.epsilon);
 }
 
 - (void)testCentibelsToAttenuation {

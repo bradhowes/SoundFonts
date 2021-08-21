@@ -117,7 +117,8 @@ private:
 };
 
 /**
- Convert cents to frequency.
+ Convert cents [0-1200) into frequency multiplier. This is used by the centsToFrequency() function to perform a fast
+ conversion between cents and frequency.
  */
 struct CentsPartialLookup {
   inline constexpr static int MaxCentsValue = 1200;

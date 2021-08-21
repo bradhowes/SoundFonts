@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BDA5ACA4265D379F000AE48E"
-               BuildableName = "DSPGenerator"
-               BlueprintName = "DSPGenerator"
+               BuildableName = "DSPTablesGenerator"
+               BlueprintName = "DSPTablesGenerator"
                ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BDA5ACA4265D379F000AE48E"
-            BuildableName = "DSPGenerator"
-            BlueprintName = "DSPGenerator"
+            BuildableName = "DSPTablesGenerator"
+            BlueprintName = "DSPTablesGenerator"
             ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

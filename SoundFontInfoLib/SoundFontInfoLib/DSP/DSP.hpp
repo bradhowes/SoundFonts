@@ -170,23 +170,15 @@ inline void panLookup(Float pan, Float& left, Float& right) { Tables::PanLookup:
 inline Float sineLookup(Float radians) { return Tables::SineLookup::sine(radians); }
 
 /**
- Convert given cents value into a frequency multiplier.
- 
- @param cent the value to convert
- @returns multiplier for a frequency that will change the frequency by the given cent value
- */
-inline Float centsToFrequencyMultiplier(int cent) { return Tables::CentsFrequencyLookup::convert(cent); }
-
-/**
  Quickly convert cent value into a frequency using a table lookup. These calculations are taken from the Fluid Synth
  fluid_conv.c file, in particular the fluid_ct2hz_real function. Uses CentPartialLookup above to convert values from
  0 - 1199 into the proper multiplier.
  */
 inline Float centsToFrequency(Float value) {
   if (value < 0.0) return 1.0;
-  unsigned int cents = value + 300;
-  unsigned int whole = cents / 1200;
-  unsigned int partial = cents - whole * 1200;
+  int cents = value + 300;
+  int whole = cents / 1200;
+  int partial = cents - whole * 1200;
   return (1u << whole) * Tables::CentsPartialLookup::convert(partial);
 }
 

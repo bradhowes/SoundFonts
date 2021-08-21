@@ -14,7 +14,8 @@ using namespace SF2;
 using namespace SF2::Render;
 using namespace SF2::Entity::Generator;
 
-@interface ModulatorTests : SampleBasedTestCase {
+@interface ModulatorTests : XCTestCase {
+  MIDI::Channel* channel;
   Voice::State* state;
 };
 @end
@@ -22,11 +23,13 @@ using namespace SF2::Entity::Generator;
 @implementation ModulatorTests
 
 - (void)setUp {
-  state = context.makeState(context.find(64, 64)[0]);
+  channel = new MIDI::Channel();
+  state = new Voice::State(44100.0, *channel, 64, 64);
 }
 
 - (void)tearDown {
   delete state;
+  delete channel;
 }
 
 - (void)testKeyVelocityToInitialAttenuation {
@@ -62,13 +65,13 @@ using namespace SF2::Entity::Generator;
 - (void)testChannelPressureToVibratoLFOPitchDepth {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[2]};
   Modulator modulator{0, config, *state};
-  context.channel().setChannelPressure(0);
+  channel->setChannelPressure(0);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setChannelPressure(64);
+  channel->setChannelPressure(64);
   XCTAssertEqualWithAccuracy(25.0, modulator.value(), 0.000001);
 
-  context.channel().setChannelPressure(127);
+  channel->setChannelPressure(127);
   XCTAssertEqualWithAccuracy(config.amount() * 127.0 / 128.0, modulator.value(), 0.000001);
 }
 
@@ -77,13 +80,13 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(1, config.source().continuousIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(1, 0);
+  channel->setContinuousControllerValue(1, 0);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(1, 64);
+  channel->setContinuousControllerValue(1, 64);
   XCTAssertEqualWithAccuracy(25.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(1, 127);
+  channel->setContinuousControllerValue(1, 127);
   XCTAssertEqualWithAccuracy(config.amount() * 127.0 / 128.0, modulator.value(), 0.000001);
 }
 
@@ -93,13 +96,13 @@ using namespace SF2::Entity::Generator;
 
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(7, 0);
+  channel->setContinuousControllerValue(7, 0);
   XCTAssertEqualWithAccuracy(960.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(7, 64);
+  channel->setContinuousControllerValue(7, 64);
   XCTAssertEqualWithAccuracy(119.049498789, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(7, 127);
+  channel->setContinuousControllerValue(7, 127);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 }
 
@@ -108,13 +111,13 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(10, config.source().continuousIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(10, 0);
+  channel->setContinuousControllerValue(10, 0);
   XCTAssertEqualWithAccuracy(-1000, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(10, 64);
+  channel->setContinuousControllerValue(10, 64);
   XCTAssertEqualWithAccuracy(0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(10, 127);
+  channel->setContinuousControllerValue(10, 127);
   XCTAssertEqualWithAccuracy(config.amount() * DSP::unipolarToBipolar(127.0 / 128.0), modulator.value(), 0.000001);
 }
 
@@ -123,13 +126,13 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(11, config.source().continuousIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(11, 0);
+  channel->setContinuousControllerValue(11, 0);
   XCTAssertEqualWithAccuracy(960.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(11, 64);
+  channel->setContinuousControllerValue(11, 64);
   XCTAssertEqualWithAccuracy(119.049498789, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(11, 127);
+  channel->setContinuousControllerValue(11, 127);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 }
 
@@ -138,13 +141,13 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(91, config.source().continuousIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(91, 0);
+  channel->setContinuousControllerValue(91, 0);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(91, 64);
+  channel->setContinuousControllerValue(91, 64);
   XCTAssertEqualWithAccuracy(100.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(91, 127);
+  channel->setContinuousControllerValue(91, 127);
   XCTAssertEqualWithAccuracy(config.amount() * 127.0 / 128.0, modulator.value(), 0.000001);
 }
 
@@ -153,13 +156,13 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(93, config.source().continuousIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setContinuousControllerValue(93, 0);
+  channel->setContinuousControllerValue(93, 0);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(93, 64);
+  channel->setContinuousControllerValue(93, 64);
   XCTAssertEqualWithAccuracy(100.0, modulator.value(), 0.000001);
 
-  context.channel().setContinuousControllerValue(93, 127);
+  channel->setContinuousControllerValue(93, 127);
   XCTAssertEqualWithAccuracy(config.amount() * 127.0 / 128.0, modulator.value(), 0.000001);
 }
 
@@ -168,26 +171,26 @@ using namespace SF2::Entity::Generator;
   XCTAssertEqual(Entity::Modulator::Source::GeneralIndex::pitchWheel, config.source().generalIndex());
   Modulator modulator{0, config, *state};
 
-  context.channel().setPitchWheelSensitivity(0);
+  channel->setPitchWheelSensitivity(0);
 
-  context.channel().setPitchWheelValue(0);
+  channel->setPitchWheelValue(0);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setPitchWheelValue(64);
+  channel->setPitchWheelValue(64);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setPitchWheelValue(127);
+  channel->setPitchWheelValue(127);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setPitchWheelSensitivity(127);
+  channel->setPitchWheelSensitivity(127);
 
-  context.channel().setPitchWheelValue(0);
+  channel->setPitchWheelValue(0);
   XCTAssertEqualWithAccuracy(-12600.78125, modulator.value(), 0.000001);
 
-  context.channel().setPitchWheelValue(64);
+  channel->setPitchWheelValue(64);
   XCTAssertEqualWithAccuracy(0.0, modulator.value(), 0.000001);
 
-  context.channel().setPitchWheelValue(127);
+  channel->setPitchWheelValue(127);
   XCTAssertEqualWithAccuracy(12403.894043, modulator.value(), 0.000001);
 }
 

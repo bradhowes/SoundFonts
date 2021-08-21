@@ -10,10 +10,14 @@
 
 struct RolandPianoPresetTestContext
 {
-  static double epsilon;
+  inline static double epsilon = 0.0001;
 
-  RolandPianoPresetTestContext();
-  
+  RolandPianoPresetTestContext() :
+  file_{makeFile()},
+  preset_{file_, SF2::Render::InstrumentCollection(file_), file_.presets()[0]},
+  channel_{}
+  {}
+
   const SF2::IO::File& file() const { return file_; }
 
   const SF2::Render::Preset& preset() const { return preset_; }
