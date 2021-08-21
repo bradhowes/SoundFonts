@@ -20,6 +20,9 @@ struct Generator;
  Lookup tables for SF2 pan values, where -500 means only left-channel, and +500 means only right channel. Other values
  give attenuation values for the left and right channels between 0.0 and 1.0. These values come from the sine function
  for a pleasing audio experience when panning.
+
+ NOTE: FluidSynth has a table size of 1002 for some reason. Thus its values are slightly off from what this table
+ contains.
  */
 struct PanLookup {
   inline constexpr static size_t TableSize = 500 + 500 + 1;
@@ -36,7 +39,7 @@ struct PanLookup {
     left = lookup_[-index + 500];
     right = lookup_[index + 500];
   }
-  
+
 private:
   inline constexpr static Float Scaling = HalfPI / (TableSize - 1);
   
@@ -212,7 +215,7 @@ struct Cubic4thOrder {
   inline static Float interpolate(Float partial, Float x0, Float x1, Float x2, Float x3) {
     auto index = size_t(partial * TableSize);
     assert(index < TableSize); // should always be true based on definition of `partial`
-    auto w = weights_[index];
+    const auto& w{weights_[index]};
     return x0 * w[0] + x1 * w[1] + x2 * w[2] + x3 * w[3];
   }
   

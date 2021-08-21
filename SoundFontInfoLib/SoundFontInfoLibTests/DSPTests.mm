@@ -76,7 +76,7 @@ using namespace SF2::DSP;
   
   SF2::DSP::panLookup(0, left, right);
   XCTAssertEqualWithAccuracy(left, right, self.epsilon);
-  
+
   SF2::DSP::panLookup(100, left, right);
   XCTAssertEqualWithAccuracy(0.587785252292, left, self.epsilon);
   XCTAssertEqualWithAccuracy(0.809016994375, right, self.epsilon);
@@ -111,13 +111,6 @@ using namespace SF2::DSP;
     // std::cout << degrees << " " << value << std::endl;
     XCTAssertEqualWithAccuracy(::std::sin(radians), value, self.epsilon);
   }
-}
-
-- (void)testCentFrequencyMultiplier {
-  XCTAssertEqualWithAccuracy(0.5, centsToFrequencyMultiplier(-1200), self.epsilon); // -1200 = 1/2x
-  XCTAssertEqualWithAccuracy(1.0, centsToFrequencyMultiplier(0), self.epsilon); // 0 = 1x
-  XCTAssertEqualWithAccuracy(2.0, centsToFrequencyMultiplier(1200), self.epsilon); // +1200 = 2x
-  XCTAssertEqualWithAccuracy(2.0, centsToFrequencyMultiplier(2400), self.epsilon); // +1200 = 2x
 }
 
 - (void)testCentToFrequency {

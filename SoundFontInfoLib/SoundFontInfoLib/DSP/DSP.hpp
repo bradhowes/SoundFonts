@@ -145,6 +145,7 @@ constexpr Float parabolicSine(Float angle) {
   const Float y = B * angle + C * angle * (angle >= 0.0 ? angle : -angle);
   return P * y * ((y >= 0.0 ? y : -y) - 1.0) + y;
 }
+
 } // SF2::DSP namespace
 
 #include "DSPTables.hpp" // implementation details for lookups used below
@@ -153,7 +154,7 @@ namespace SF2::DSP {
 
 /**
  Calculate the amount of left and right signal gain in [0.0-1.0] for the given `pan` value which is in range
- [-500-+500]. A `pan` of -500 is only left, and +500 is only right. A `pan` of 0 should result in ~0.7078 for both.
+ [-500, +500]. A `pan` of -500 is only left, and +500 is only right. A `pan` of 0 should result in ~0.7078 for both.
  
  @param pan the value to convert
  @param left reference to storage for the left gain
@@ -176,9 +177,12 @@ inline Float sineLookup(Float radians) { return Tables::SineLookup::sine(radians
  */
 inline Float centsToFrequency(Float value) {
   if (value < 0.0) return 1.0;
+
+  // This seems to be the fastest way to do the following. Curiously, the operation `cents % 1200` is faster than doing
+  // `cents - whole * 1200` in optimized build, probably due to optimizations that the compiler can perform.
   int cents = value + 300;
   int whole = cents / 1200;
-  int partial = cents - whole * 1200;
+  int partial = cents % 1200;
   return (1u << whole) * Tables::CentsPartialLookup::convert(partial);
 }
 
@@ -209,7 +213,7 @@ namespace Interpolation {
  @param x0 first value to use
  @param x1 second value to use
  */
-inline Float linear(Float partial, Float x0, Float x1) { return x0 * (1.0 - partial) + x1 * partial; }
+inline Float linear(Float partial, Float x0, Float x1) { return partial * (x1 - x0) + x0; }
 
 /**
  Interpolate a value from four values.

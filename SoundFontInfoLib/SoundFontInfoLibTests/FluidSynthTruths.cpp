@@ -43,7 +43,7 @@ fluid_real_t fluid_ct2hz_real(fluid_real_t cents)
 
 fluid_real_t fluid_pan(fluid_real_t c, int left)
 {
-  if (left)  c = -c;
+  if (left) c = -c;
   if (c <= -500.f) return 0.0;
   if (c >= 500.f) return 1.0;
   return fluid_pan_tab[(int)(c) + 500];
