@@ -14,7 +14,8 @@ struct RolandPianoPresetTestContext
 
   RolandPianoPresetTestContext() :
   file_{makeFile()},
-  preset_{file_, SF2::Render::InstrumentCollection(file_), file_.presets()[0]},
+  instruments_{file_},
+  preset_{file_, instruments_, file_.presets()[0]},
   channel_{}
   {}
 
@@ -24,8 +25,12 @@ struct RolandPianoPresetTestContext
 
   SF2::Render::Preset::VoiceConfigCollection find(int key, int velocity) const { return preset_.find(key, velocity); }
 
-  SF2::Render::Voice::State* makeState(const SF2::Render::Voice::Config& config, double sampleRate = 44100) const {
-    return new SF2::Render::Voice::State(sampleRate, channel_, config);
+  SF2::Render::Voice::State makeState(int key, int velocity) const {
+    return SF2::Render::Voice::State(44100, channel_, find(key, velocity)[0]);
+  }
+
+  SF2::Render::Voice::State makeState(const SF2::Render::Voice::Config& config, double sampleRate = 44100) const {
+    return SF2::Render::Voice::State(sampleRate, channel_, config);
   }
 
   SF2::MIDI::Channel& channel() { return channel_; }
@@ -38,6 +43,7 @@ private:
   static SF2::IO::File makeFile();
 
   SF2::IO::File file_;
+  SF2::Render::InstrumentCollection instruments_;
   SF2::Render::Preset preset_;
   SF2::MIDI::Channel channel_;
 };

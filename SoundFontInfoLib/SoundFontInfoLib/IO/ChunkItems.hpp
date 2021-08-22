@@ -54,14 +54,14 @@ public:
    @returns collection count
    */
   size_t size() const { return items_.size() - 1; }
-  
+
   /**
    Determine if collection is empty
    
    @returns true if so
    */
   bool empty() const { return items_.size() < 2; }
-  
+
   /**
    Obtain a (read-only) reference to an entity in the collection.
    
@@ -102,7 +102,7 @@ public:
    @returns iterator at the end of the collection
    */
   const_iterator end() const { return items_.end() - 1; }
-  
+
   /**
    Utility to dump out the contents of the collection
    
