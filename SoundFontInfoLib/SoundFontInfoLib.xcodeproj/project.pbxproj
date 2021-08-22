@@ -278,17 +278,17 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BE74265DAEC7002AD159 /* Info.plist */,
-				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BDB1BE73265DAEC7002AD159 /* DSPTests.mm */,
 				BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */,
 				BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */,
+				BD2FC8C726CFD8E5002AF6CD /* SampleBasedTestCase.h */,
+				BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */,
+				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BDB1BE5D265DAEC6002AD159 /* Entity */,
 				BDB1BE60265DAEC6002AD159 /* IO */,
 				BDB1BE58265DAEC6002AD159 /* MIDI */,
 				BDB1BE65265DAEC7002AD159 /* Render */,
 				BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */,
-				BD2FC8C726CFD8E5002AF6CD /* SampleBasedTestCase.h */,
-				BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */,
 			);
 			path = SoundFontInfoLibTests;
 			sourceTree = "<group>";
