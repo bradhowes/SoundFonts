@@ -17,7 +17,7 @@ using namespace SF2::Render;
 @implementation InstrumentTests
 
 - (void)testRolandPianoInstrument {
-  auto file = context.file();
+  auto file = context3.file();
 
   Instrument instrument(file, file.instruments()[0]);
   XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());

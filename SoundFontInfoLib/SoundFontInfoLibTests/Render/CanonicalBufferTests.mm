@@ -20,12 +20,6 @@ static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;
 static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -30000};
 
-- (void)setUp {
-}
-
-- (void)tearDown {
-}
-
 - (void)testLoading {
   CanonicalBuffer buffer{values, header};
   XCTAssertFalse(buffer.isLoaded());
@@ -36,8 +30,8 @@ static int16_t values[8] = {10000, 20000, 30000, 20000, 10000, -10000, -20000, -
 - (void)testLinearInterpolation {
   State state{100, channel, 69, 64};
   CanonicalBuffer buffer{values, header};
-  Generator gen{state.sampleRate(), buffer, Bounds::make(buffer.header(), state),
-    Generator::Interpolator::linear};
+  Generator gen{state.sampleRate(), buffer, Bounds::make(buffer.header(), state), Generator::Interpolator::linear};
+  auto frequency{100}
   buffer.load();
 
   XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);

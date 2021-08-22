@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */; };
 		BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6C265DAEC7002AD159 /* StateTests.mm */; };
+		BD5CA3D126D2B1790052DA39 /* VoiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6B265DAEC7002AD159 /* VoiceTests.mm */; };
+		BD5CA3D226D2B72B0052DA39 /* CanonicalBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6F265DAEC7002AD159 /* CanonicalBufferTests.mm */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; platformFilter = maccatalyst; };
 		BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */; };
 		BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE73265DAEC7002AD159 /* DSPTests.mm */; };
@@ -749,6 +751,7 @@
 				BD8E158A26D1269F000DC781 /* ChannelTests.mm in Sources */,
 				BD8E158F26D1272D000DC781 /* DelayBufferTests.mm in Sources */,
 				BD8E159326D12828000DC781 /* SampleBasedTestCase.mm in Sources */,
+				BD5CA3D226D2B72B0052DA39 /* CanonicalBufferTests.mm in Sources */,
 				BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */,
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
 				BD8E158826D12679000DC781 /* MIDITests.mm in Sources */,
@@ -759,6 +762,7 @@
 				BD8E159426D12A07000DC781 /* ModulatorTests.mm in Sources */,
 				BD8E158626D12608000DC781 /* SFFileTestsObjC.mm in Sources */,
 				BD8E158B26D126AB000DC781 /* ValueTransformerTests.mm in Sources */,
+				BD5CA3D126D2B1790052DA39 /* VoiceTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

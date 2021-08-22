@@ -8,12 +8,17 @@
 #import "IO/File.hpp"
 #import "Render/Preset.hpp"
 
-struct RolandPianoPresetTestContext
+struct PresetTestContextBase
 {
   inline static double epsilon = 0.0001;
+  static SF2::IO::File makeFile(int urlIndex);
+};
 
-  RolandPianoPresetTestContext() :
-  file_{makeFile()},
+template <int UrlIndex>
+struct PresetTestContext : PresetTestContextBase
+{
+  PresetTestContext() :
+  file_{makeFile(UrlIndex)},
   instruments_{file_},
   preset_{file_, instruments_, file_.presets()[0]},
   channel_{}
@@ -40,8 +45,6 @@ struct RolandPianoPresetTestContext
   }
 
 private:
-  static SF2::IO::File makeFile();
-
   SF2::IO::File file_;
   SF2::Render::InstrumentCollection instruments_;
   SF2::Render::Preset preset_;
@@ -49,7 +52,11 @@ private:
 };
 
 @interface SampleBasedTestCase : XCTestCase {
-  RolandPianoPresetTestContext context;
+  PresetTestContextBase context;
+  PresetTestContext<0> context0;
+  PresetTestContext<1> context1;
+  PresetTestContext<2> context2;
+  PresetTestContext<3> context3;
 }
 
 - (void)sample:(double)A equals:(double)B;

@@ -19,7 +19,7 @@ using namespace SF2::Entity::Generator;
 @implementation StateTests
 
 - (void)testInit {
-  Voice::State state{context.makeState(context.find(69, 64)[0])};
+  Voice::State state{context3.makeState(69, 64)};
   XCTAssertEqual(0, state.unmodulated(Index::startAddressOffset));
   XCTAssertEqual(0, state.unmodulated(Index::endAddressOffset));
   XCTAssertEqual(9023, state.unmodulated(Index::initialFilterCutoff));
@@ -41,7 +41,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testKey {
-  Voice::State state{context.makeState(64, 32)};
+  Voice::State state{context3.makeState(64, 32)};
   XCTAssertEqual(64, state.eventKey());
   XCTAssertEqual(64, state.key());
   state.setPrincipleValue(Index::forcedMIDIKey, 128);
@@ -50,7 +50,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testVelocity {
-  Voice::State state{context.makeState(64, 32)};
+  Voice::State state{context3.makeState(64, 32)};
   XCTAssertEqual(32, state.eventVelocity());
   XCTAssertEqual(32, state.velocity());
   state.setPrincipleValue(Index::forcedMIDIVelocity, 128);
@@ -60,7 +60,7 @@ using namespace SF2::Entity::Generator;
 
 - (void)testEnvelopeSustainLevel {
   double epsilon = 0.000001;
-  Voice::State state{context.makeState(64, 32)};
+  Voice::State state{context3.makeState(64, 32)};
   state.setPrincipleValue(Index::sustainVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(1.0, state.sustainLevelVolumeEnvelope(), epsilon);
   state.setPrincipleValue(Index::sustainVolumeEnvelope, 100);
@@ -72,7 +72,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testModulatedValue {
-  Voice::State state{context.makeState(60, 32)};
+  Voice::State state{context3.makeState(60, 32)};
   state.setPrincipleValue(Index::holdVolumeEnvelope, 100);
   state.setAdjustmentValue(Index::holdVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(100.0, state.modulated(Index::holdVolumeEnvelope), 0.000001);
@@ -81,7 +81,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testKeyedEnvelopeModulator {
-  Voice::State state{context.makeState(60, 32)};
+  Voice::State state{context3.makeState(60, 32)};
 
   // 1s hold duration
   state.setPrincipleValue(Index::holdVolumeEnvelope, 0);
@@ -115,7 +115,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testLoopingModes {
-  Voice::State state{context.makeState(60, 32)};
+  Voice::State state{context3.makeState(60, 32)};
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());
   state.setPrincipleValue(Index::sampleModes, -1);
   XCTAssertEqual(Voice::State::LoopingMode::none, state.loopingMode());

@@ -4,11 +4,8 @@
 
 #import <iostream>
 
-#import <XCTest/XCTest.h>
-#import <SF2Files/SF2Files-Swift.h>
+#import "SampleBasedTestCase.h"
 
-#import "IO/File.hpp"
-#import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
 #import "Render/Sample/Generator.hpp"
 #import "Render/Voice/Voice.hpp"
@@ -16,9 +13,7 @@
 using namespace SF2;
 using namespace SF2::Render;
 
-static NSArray<NSURL*>* urls = SF2Files.allResources;
-
-@interface VoiceTests : XCTestCase <AVAudioPlayerDelegate>
+@interface VoiceTests : SampleBasedTestCase <AVAudioPlayerDelegate>
 @property (nonatomic) bool playAudio;
 @property (nonatomic, retain) AVAudioPlayer* player;
 @property (nonatomic, retain) XCTestExpectation* expectation;
@@ -43,10 +38,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 - (void)testRolandPianoRender {
   double epsilon = 0.000001;
 
-  NSURL* url = [urls objectAtIndex:3];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
-  int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = context3.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);
@@ -120,10 +112,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 - (void)testBrass2Render {
   double epsilon = 0.000001;
 
-  NSURL* url = [urls objectAtIndex:2];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
-  int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = context2.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);
