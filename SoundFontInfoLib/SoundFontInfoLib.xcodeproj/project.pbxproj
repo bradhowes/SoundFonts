@@ -485,8 +485,8 @@
 				BDB1BF82265DB1F0002AD159 /* Voice */,
 				BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */,
 				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
-				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
 				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
+				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
 			);
 			name = Render;
 			path = SoundFontInfoLib/Render;
