@@ -31,7 +31,9 @@ public:
   Instrument(const IO::File& file, const Entity::Instrument& config) :
   WithZones<InstrumentZone, Entity::Instrument>(config.zoneCount(), config) {
     for (const Entity::Bag& bag : file.instrumentZones().slice(config.firstZoneIndex(), config.zoneCount())) {
-      zones_.add(file, bag);
+      auto&& gens{file.instrumentZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount())};
+      auto&& mods{file.instrumentZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount())};
+      zones_.add(Entity::Generator::Index::sampleID, std::move(gens), std::move(mods), file);
     }
   }
 

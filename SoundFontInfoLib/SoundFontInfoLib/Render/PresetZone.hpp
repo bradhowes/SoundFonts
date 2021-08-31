@@ -22,14 +22,12 @@ public:
   /**
    Construct new zone from entity in file.
 
-   @param file the file to work with
+   @param gens the vector of generators that define the zone
+   @param mods the vector of modulators that define the zone
    @param instruments to collection of instruments found in the file
-   @param bag the zone definition
    */
-  PresetZone(const IO::File& file, const Entity::Bag& bag, const Render::InstrumentCollection& instruments) :
-  Zone(file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
-       file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
-       Entity::Generator::Index::instrument),
+  PresetZone(GeneratorCollection&& gens, ModulatorCollection&& mods, const Render::InstrumentCollection& instruments) :
+  Zone(std::move(gens), std::move(mods), Entity::Generator::Index::instrument),
   instrument_{isGlobal() ? nullptr : &instruments[resourceLink()]}
   {}
 

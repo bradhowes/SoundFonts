@@ -23,6 +23,8 @@ class ZoneCollection
 {
 public:
   using GlobalZoneType = typename Kind::GlobalType;
+  using GeneratorCollection = typename Kind::GeneratorCollection;
+  using ModulatorCollection = typename Kind::ModulatorCollection;
   using Matches = typename std::vector<std::reference_wrapper<Kind const>>;
 
   /**
@@ -61,19 +63,22 @@ public:
    Add a zone with the given args. Note that empty zones (no generators and no modulators) are dropped, as are any
    global zones that are not the first zone.
 
-   @param file the SF2 file with the entities to use
-   @param bag the definition for the Zone
+   @param notGlobal generator index that if present at end of gen collection means the zone is not global
+   @param gens collection of generators that defines the zone
+   @param mods collection of modulators that defines the zone
    @param values additional arguments for the Zone construction
    */
   template<class... Args>
-  void add(const IO::File& file, const Entity::Bag& bag, Args&&... values) {
-    // Per spec, skip empty zone definitions
-    if (bag.generatorCount() == 0 && bag.modulatorCount() == 0) return;
-    zones_.emplace_back(file, bag, std::forward<Args>(values)...);
-    // Per spec, only allow one global zone and it must be the first one
-    if (zones_.size() > 1 && zones_.back().isGlobal()) {
-      zones_.pop_back();
-    }
+  void add(Entity::Generator::Index notGlobal, GeneratorCollection&& gens, ModulatorCollection&& mods,
+           const Args&... values) {
+
+    // Per spec, disregard zones that have no gens AND mods
+    if (gens.empty() && mods.empty()) return;
+
+    // Per spec, only one global zone allowed and it must be the first one.
+    if (Zone::IsGlobal(gens, notGlobal, mods) && !zones_.empty()) return;
+
+    zones_.emplace_back(std::move(gens), std::move(mods), values...);
   }
 
 private:

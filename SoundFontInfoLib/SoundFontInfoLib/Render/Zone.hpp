@@ -32,6 +32,22 @@ public:
   /// A range that always returns true for any MIDI value.
   static MIDIRange const all;
 
+  /**
+   Determine if the generator collection and modulator collection combo refers to a global zone. This is the
+   case iff the generator collection is empty and the modulator collection is not, or the generator collection does
+   not end with a generator of an expected type. Note that in particular if *both* collections are empty, it is *not* a
+   global zone here (it should be filtered out elsewhere)
+
+   @param gens collection of generator for the zone
+   @param expected the index type of a generator that signals the zone is NOT global
+   @param mods collection of modulators for the zone
+   */
+  static bool IsGlobal(const GeneratorCollection& gens, Entity::Generator::Index expected,
+                       const ModulatorCollection& mods) {
+    assert(!gens.empty() || !mods.empty());
+    return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
+  }
+
   /// @returns range of MID key values that this Zone handles
   const MIDIRange& keyRange() const { return keyRange_; }
 
@@ -161,20 +177,6 @@ private:
         generators[1].get().index() == Entity::Generator::Index::velocityRange)
       return MIDIRange(generators[0].get().amount());
     return all;
-  }
-
-  /**
-   Determine if the generator collection and modulator collection combo refers to a global zone. This is the
-   case iff the generator collection is empty and the modulator collection is not, or the generator collection does
-   not end with a generator of an expected type.
-
-   @param gens collection of generator for the zone
-   @param expected the index type of a generator that signals the zone is NOT global
-   @param mods collection of modulators for the zone
-   */
-  static bool IsGlobal(const GeneratorCollection& gens, Entity::Generator::Index expected,
-                       const ModulatorCollection& mods) {
-    return (gens.empty() && !mods.empty()) || (!gens.empty() && gens.back().get().index() != expected);
   }
 
   GeneratorCollection generators_;
