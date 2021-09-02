@@ -28,7 +28,7 @@ Generator::Generator(std::ostream& os) : os_{os}
   // Lookup tables
   generate<PanLookup>("PanLookup");
   generate<SineLookup>("SineLookup");
-  generate<CentsFrequencyLookup>("CentsFrequencyLookup");
+  generate<CentsFrequencyScalingLookup>("CentsFrequencyScalingLookup");
   generate<CentsPartialLookup>("CentsPartialLookup");
   generate<AttenuationLookup>("AttenuationLookup");
   generate<GainLookup>("GainLookup");

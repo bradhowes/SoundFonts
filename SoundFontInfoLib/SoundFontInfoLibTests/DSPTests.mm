@@ -7,6 +7,7 @@
 #include "FluidSynthTruths.hpp"
 
 using namespace SF2::DSP;
+using namespace SF2::DSP::Tables;
 
 @interface DSPTests : XCTestCase
 @property (nonatomic, assign) double epsilon;
@@ -150,6 +151,14 @@ using namespace SF2::DSP;
   XCTAssertEqualWithAccuracy(centsToFrequency(6901), fluid_ct2hz_real(6901), self.epsilon);
   XCTAssertEqualWithAccuracy(centsToFrequency(6923), fluid_ct2hz_real(6923), self.epsilon);
   XCTAssertEqualWithAccuracy(centsToFrequency(6999), fluid_ct2hz_real(6999), self.epsilon);
+}
+
+- (void)testCentsFrequncyScalingLookup {
+  XCTAssertEqualWithAccuracy(0.5, CentsFrequencyScalingLookup::convert(-1200), self.epsilon); // ⬇️ Octave
+  XCTAssertEqualWithAccuracy(std::sqrt(2.0) / 2.0, CentsFrequencyScalingLookup::convert(-600), self.epsilon); // ⬇️ 1/2
+  XCTAssertEqualWithAccuracy(1.0, CentsFrequencyScalingLookup::convert(0), self.epsilon); // No change
+  XCTAssertEqualWithAccuracy(std::sqrt(2.0), CentsFrequencyScalingLookup::convert(600), self.epsilon); // ⬆️ 1/2
+  XCTAssertEqualWithAccuracy(2.0, CentsFrequencyScalingLookup::convert(1200), self.epsilon); // ⬆️ Octave
 }
 
 - (void)testCentibelsToAttenuation {
