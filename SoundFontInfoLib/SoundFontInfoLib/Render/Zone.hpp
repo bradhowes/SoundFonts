@@ -146,7 +146,6 @@ protected:
         state.setAdjustmentValue(generator.index(), generator.value());
       }
     });
-    // At present, there are no preset modulators.
   }
 
 private:
@@ -158,8 +157,9 @@ private:
    @returns key range if found or `all` if not
    */
   static MIDIRange GetKeyRange(const GeneratorCollection& generators) {
-    if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::keyRange)
+    if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::keyRange) {
       return MIDIRange(generators[0].get().amount());
+    }
     return all;
   }
 
@@ -171,12 +171,15 @@ private:
    @returns velocity range if found or `all` if not
    */
   static MIDIRange GetVelocityRange(const GeneratorCollection& generators) {
-    if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::velocityRange)
-      return MIDIRange(generators[0].get().amount());
+    int index = -1;
     if (generators.size() > 1 && generators[0].get().index() == Entity::Generator::Index::keyRange &&
-        generators[1].get().index() == Entity::Generator::Index::velocityRange)
-      return MIDIRange(generators[0].get().amount());
-    return all;
+        generators[1].get().index() == Entity::Generator::Index::velocityRange) {
+      index = 1;
+    }
+    else if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::velocityRange) {
+      index = 0;
+    }
+    return index == -1 ? all : MIDIRange(generators[index].get().amount());
   }
 
   GeneratorCollection generators_;
