@@ -31,9 +31,10 @@ public:
   Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config) :
   WithZones<PresetZone, Entity::Preset>(config.zoneCount(), config) {
     for (const Entity::Bag& bag : file.presetZones().slice(config.firstZoneIndex(), config.zoneCount())) {
-      auto&& gens{file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount())};
-      auto&& mods{file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount())};
-      zones_.add(Entity::Generator::Index::instrument, std::move(gens), std::move(mods), instruments);
+      zones_.add(Entity::Generator::Index::instrument,
+                 file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
+                 file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
+                 instruments);
     }
   }
 
