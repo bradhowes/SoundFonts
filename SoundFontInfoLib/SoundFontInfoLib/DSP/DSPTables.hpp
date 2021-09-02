@@ -95,7 +95,7 @@ private:
  to drop 1 octave which is the same as multiplying the source frequency by 0.5. In the other direction an increase of
  1200 cents should result in a multiplier of 2.0 to double the source frequency.
  */
-struct CentsFrequencyLookup {
+struct CentsFrequencyScalingLookup {
   inline constexpr static int Max = 1200;
   inline constexpr static size_t TableSize = Max * 2 + 1;
   
@@ -110,12 +110,12 @@ struct CentsFrequencyLookup {
   static Float convert(Float value) { return convert(int(std::round(value))); }
   
 private:
-  inline constexpr static Float Span = Float((CentsFrequencyLookup::TableSize - 1) / 2);
+  inline constexpr static Float Span = Float((TableSize - 1) / 2);
   
   static Float value(size_t index) { return std::exp2((index - Span) / Span); }
   
   static const std::array<Float, TableSize> lookup_;
-  CentsFrequencyLookup() = delete;
+  CentsFrequencyScalingLookup() = delete;
   friend struct Generator;
 };
 
@@ -126,8 +126,15 @@ private:
 struct CentsPartialLookup {
   inline constexpr static int MaxCentsValue = 1200;
   inline constexpr static size_t TableSize = MaxCentsValue;
-  
-  static Float convert(int partial) { return lookup_[std::clamp<int>(partial, 0, MaxCentsValue - 1)]; }
+
+  /**
+   Convert a value between 0 and 1200 into a frequency multiplier. See DSP::centsToFrequency for details on how it is
+   used.
+
+   @param partial a value between 0 and MaxCentsValue - 1
+   @returns frequency multiplier
+   */
+  static Float convert(int partial) { return lookup_[std::clamp(partial, 0, MaxCentsValue - 1)]; }
   
 private:
   static Float value(size_t index) { return 6.875 * std::exp2(Float(index) / 1200.0); }

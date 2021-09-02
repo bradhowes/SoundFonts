@@ -179,7 +179,7 @@ inline Float centsToFrequency(Float value) {
   if (value < 0.0) return 1.0;
 
   // This seems to be the fastest way to do the following. Curiously, the operation `cents % 1200` is faster than doing
-  // `cents - whole * 1200` in optimized build, probably due to optimizations that the compiler can perform.
+  // `cents - whole * 1200` in optimized build.
   int cents = value + 300;
   int whole = cents / 1200;
   int partial = cents % 1200;
