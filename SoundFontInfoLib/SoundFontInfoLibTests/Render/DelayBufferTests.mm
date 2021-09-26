@@ -20,14 +20,14 @@
 }
 
 - (void)testSizing {
-  XCTAssertEqual(1, SF2::Render::DelayBuffer<float>(-1.0).size());
-  XCTAssertEqual(2, SF2::Render::DelayBuffer<float>(1.2).size());
-  XCTAssertEqual(128, SF2::Render::DelayBuffer<float>(123.4).size());
-  XCTAssertEqual(1024, SF2::Render::DelayBuffer<float>(1024.0).size());
+  XCTAssertEqual(1, SF2::Render::DelayBuffer(-1.0).size());
+  XCTAssertEqual(2, SF2::Render::DelayBuffer(1.2).size());
+  XCTAssertEqual(128, SF2::Render::DelayBuffer(123.4).size());
+  XCTAssertEqual(1024, SF2::Render::DelayBuffer(1024.0).size());
 }
 
 - (void)testReadFromOffset{
-  auto buffer = SF2::Render::DelayBuffer<float>(8);
+  auto buffer = SF2::Render::DelayBuffer(8);
   XCTAssertEqual(8, buffer.size());
   buffer.write(1.2);
   buffer.write(2.4);
@@ -38,7 +38,7 @@
 }
 
 - (void)testReadInterpolated {
-  auto buffer = SF2::Render::DelayBuffer<float>(8);
+  auto buffer = SF2::Render::DelayBuffer(8);
   XCTAssertEqual(8, buffer.size());
   buffer.write(1.2);
   buffer.write(2.4);
@@ -54,7 +54,7 @@
 }
 
 - (void)testWrapping {
-  auto buffer = SF2::Render::DelayBuffer<float>(4);
+  auto buffer = SF2::Render::DelayBuffer(4);
   XCTAssertEqual(4, buffer.size());
   buffer.write(1.2);
   buffer.write(2.4);

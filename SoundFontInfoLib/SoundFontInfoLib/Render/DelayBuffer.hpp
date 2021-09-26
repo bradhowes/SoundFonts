@@ -5,12 +5,13 @@
 #include <cmath>
 #include <vector>
 
+#include "Types.hpp"
+
 namespace SF2::Render {
 
 /**
  Circular buffer that acts as a delay for samples.
  */
-template <typename T>
 class DelayBuffer {
 public:
 
@@ -47,7 +48,7 @@ public:
 
    @param value the value to write
    */
-  void write(T value) {
+  void write(Float value) {
     buffer_[writePos_] = value;
     writePos_ = (writePos_ + 1) & wrapMask_;
   }
@@ -65,7 +66,7 @@ public:
    @param offset the offset from the most recently written sample
    @returns the value from the buffer
    */
-  T readFromOffset(int offset) const { return buffer_[(writePos_ - offset) & wrapMask_]; }
+  Float readFromOffset(int offset) const { return buffer_[(writePos_ - offset) & wrapMask_]; }
 
   /**
    Read the value at the given offset from the newest value.
@@ -73,10 +74,10 @@ public:
    @param delay the offset from the most recently written sample
    @returns the value from the buffer
    */
-  T read(double delay) const {
+  Float read(double delay) const {
     auto offset = int(delay);
-    T y1 = readFromOffset(offset);
-    T y2 = readFromOffset(offset + 1);
+    Float y1 = readFromOffset(offset);
+    Float y2 = readFromOffset(offset + 1);
     auto partial = delay - offset;
     assert(partial >= 0.0 && partial < 1.0);
     return y2 * partial + (1.0 - partial) * y1;
@@ -89,7 +90,7 @@ private:
   }
 
   size_t wrapMask_;
-  std::vector<T> buffer_;
+  std::vector<Float> buffer_;
   size_t writePos_;
 };
 

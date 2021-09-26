@@ -103,6 +103,8 @@ private:
   Sample::Generator sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
+
+  // TODO: I think these should be shared across all voices
   LFO modulatorLFO_;
   LFO vibratoLFO_;
 

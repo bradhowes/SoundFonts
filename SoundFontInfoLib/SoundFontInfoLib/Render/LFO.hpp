@@ -145,16 +145,6 @@ public:
    */
   Float value() { return counter_; }
 
-private:
-
-  void initialize() {
-    delaySampleCount_ = size_t(config_.sampleRate_ * config_.delay_);
-    setPhaseIncrement();
-    reset();
-  }
-
-  void setPhaseIncrement() { increment_ = config_.frequency_ / config_.sampleRate_ * 4.0; }
-
   void increment() {
     if (delaySampleCount_ > 0) {
       --delaySampleCount_;
@@ -173,6 +163,16 @@ private:
       counter_ = -2.0 - counter_;
     }
   }
+
+private:
+
+  void initialize() {
+    delaySampleCount_ = size_t(config_.sampleRate_ * config_.delay_);
+    setPhaseIncrement();
+    reset();
+  }
+
+  void setPhaseIncrement() { increment_ = config_.frequency_ / config_.sampleRate_ * 4.0; }
 
   Config config_;
   Float counter_{0.0};

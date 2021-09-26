@@ -35,7 +35,7 @@ public:
 
    @param sampleRate rendering sample rate
    @param samples source of audio samples
-   @param bounds the generator state to use for rendering
+   @param bounds the range of samples to use for rendering
    @param kind the kind of interpolation to perform when generating the render samples
    */
   Generator(double sampleRate, const CanonicalBuffer& samples, const Bounds& bounds,
@@ -56,6 +56,7 @@ public:
    @param canLoop true if the generator is permitted to loop for more samples
    @returns new sample value
    */
+  
   double generate(double pitch, bool canLoop) {
     auto pos = bufferIndex_.pos();
     if (pos >= bounds_.endPos()) return 0.0;

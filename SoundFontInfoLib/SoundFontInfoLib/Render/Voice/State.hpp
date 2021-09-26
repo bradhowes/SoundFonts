@@ -129,7 +129,7 @@ public:
     return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
   }
 
-  /// @returns fundamental pitch to generate when rendering (semitones)
+  /// @returns fundamental pitch in semitones to generate when rendering
   double pitch() const {
     auto pitch = key();
     auto coarseTune = modulated(Index::coarseTune); // semitones
@@ -137,7 +137,7 @@ public:
     return pitch + coarseTune + fineTune / 100.0;
   }
 
-  /// @returns key value to use
+  /// @returns MIDI key value to use (also pitch in semitones)
   int key() const {
     auto value = unmodulated(Index::forcedMIDIKey);
     return (value >= 0) ? value : eventKey();
