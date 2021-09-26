@@ -704,7 +704,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# We don't know exactly where the DSPTablesGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${DERIVED_FILE_DIR}/DSPGenerated.cpp\"\nset -- `find . -name DSPTablesGenerator`\necho ${1} \"${OUTPUT}\"\n${1} \"${OUTPUT}\"\n";
+			shellScript = "# We don't know exactly where the DSPTablesGenerators executable so we look at all possibilities and pick the first\n# This should be OK since the output of this program should be the same regardless of build type.\nset -x\ncd \"${BUILD_ROOT}\"\nOUTPUT=\"${DERIVED_FILE_DIR}/DSPGenerated.cpp\"\nset -- `find . -name DSPTablesGenerator -perm +111`\necho \"-- ${1} ${OUTPUT}\"\n\"${1}\" \"${OUTPUT}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
