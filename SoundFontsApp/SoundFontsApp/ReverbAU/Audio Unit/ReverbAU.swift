@@ -313,10 +313,7 @@ extension ReverbAU {
       var head = realtimeEventListHead
       while head != nil {
         guard let event = head?.pointee else { break }
-        switch event.head.eventType {
-        case .MIDI: break
-        case .midiSysEx: break
-        case .parameter:
+        if event.head.eventType == .parameter {
           let address = event.parameter.parameterAddress
           let value = event.parameter.value
           switch AudioUnitParameters.Address(rawValue: address) {
@@ -324,9 +321,6 @@ extension ReverbAU {
           case .wetDryMix: wetDryMixParameter.setValue(value, originator: nil)
           default: break
           }
-        case .parameterRamp: break
-        case .midiEventList: break
-        @unknown default: break
         }
         head = UnsafePointer<AURenderEvent>(event.head.next)
       }
