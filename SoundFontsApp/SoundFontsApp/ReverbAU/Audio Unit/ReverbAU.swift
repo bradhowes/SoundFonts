@@ -325,6 +325,7 @@ extension ReverbAU {
           default: break
           }
         case .parameterRamp: break
+        case .midiEventList: break
         @unknown default: break
         }
         head = UnsafePointer<AURenderEvent>(event.head.next)

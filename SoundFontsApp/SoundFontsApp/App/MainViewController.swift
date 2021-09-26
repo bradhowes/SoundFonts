@@ -225,12 +225,17 @@ extension MainViewController: ControllerConfiguration {
     router.activePresetManager.subscribe(self, notifier: activePresetChange)
   }
 
+  private func startMIDI(sampler: Sampler) {
+    os_log(.error, log: log, "starting MIDI for sampler")
+    midiController = MIDIController(sampler: sampler, keyboard: keyboard)
+    midi.receiver = midiController
+  }
+
   private func routerChange(_ event: ComponentContainerEvent) {
     switch event {
     case .samplerAvailable(let sampler):
       self.sampler = sampler
-      midiController = MIDIController(sampler: sampler, keyboard: keyboard)
-      midi.receiver = midiController
+      startMIDI(sampler: sampler)
       if startRequested {
         DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
 
@@ -240,6 +245,7 @@ extension MainViewController: ControllerConfiguration {
     case .chorusAvailable: break
     }
   }
+
   private func activePresetChange(_ event: ActivePresetEvent) {
     if case let .active(old: _, new: new, playSample: playSample) = event {
       useActivePresetKind(new, playSample: playSample)
@@ -268,7 +274,6 @@ extension MainViewController: ControllerConfiguration {
       os_log(.info, log: log, "set active audio session")
       postAlert(for: what)
     case .success:
-      midi.receiver = midiController
       volumeMonitor?.start()
     }
   }
