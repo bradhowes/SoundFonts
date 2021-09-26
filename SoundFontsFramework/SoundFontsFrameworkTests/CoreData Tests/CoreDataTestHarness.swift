@@ -21,7 +21,7 @@ extension XCTestCase {
       block(testHarness, testHarness.context)
       executed.fulfill()
     }
-    wait(for: [executed], timeout: 1.0)
+    wait(for: [executed], timeout: 30.0)
   }
 }
 
