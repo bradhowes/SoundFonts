@@ -59,31 +59,61 @@ final public class FavoriteCollection: Codable {
     favorites[index] = favorite
   }
 
+  /**
+   Move a favorite from one location to another
+
+   - parameter from: index moving from
+   - parameter to: index moving to
+   */
   func move(from: Int, to: Int) {
     favorites.insert(favorites.remove(at: from), at: to)
     AskForReview.maybe()
   }
 
+  /**
+   Remove a favorite
+
+   - parameter key: the key of the favorite to remove
+   - returns: the instance that was removed from the collection
+   */
   func remove(key: Favorite.Key) -> Favorite {
     defer { AskForReview.maybe() }
     return favorites.remove(at: index(of: key))
   }
 
+  /**
+   Remove a favorite
+
+   - parameter index: the index of the favorite to remove
+   - returns: the instance that was removed from the collection
+   */
   func remove(at index: Int) -> Favorite {
     defer { AskForReview.maybe() }
     return favorites.remove(at: index)
   }
 
+  /**
+   Remove all favorites associated with a given sound font key
+
+   - parameter soundFontKey: the key of the sound font being removed
+   */
   func removeAll(associatedWith soundFontKey: SoundFont.Key) {
     findAll(associatedWith: soundFontKey).forEach { _ = self.remove(key: $0.key) }
   }
 
+  /**
+   Count the number of favorites associated with a given sound font key
+
+   - parameter soundFontKey: the key of the sound font being queried
+   - returns: count of associated favorites
+   */
   func count(associatedWith soundFontKey: SoundFont.Key) -> Int {
     findAll(associatedWith: soundFontKey).count
   }
 }
 
 extension FavoriteCollection: CustomStringConvertible {
+
   public var description: String {
     "["
       + favorites.map { "\($0.soundFontAndPreset) '\($0.presetConfig.name)'" }.joined(separator: ",")

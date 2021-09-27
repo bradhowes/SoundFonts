@@ -3,8 +3,10 @@
 import UIKit
 import os
 
-/// Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they will be
-/// restored when the app relaunches.
+/**
+ Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they
+ will be restored when the app relaunches.
+ */
 final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log = Logging.logger("FavoritesManager")
 

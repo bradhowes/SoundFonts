@@ -2,7 +2,7 @@
 
 import AVFoundation
 
-/// Delay audio effect by way of Apple's AVAudioUnitDelay component.
+/// Chorus audio effect
 public final class ChorusEffect: NSObject {
 
   // public let audioUnit = AVAudioUnitDelay()

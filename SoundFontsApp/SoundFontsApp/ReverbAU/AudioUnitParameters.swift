@@ -5,7 +5,9 @@ import AudioUnit
 import SoundFontsFramework
 import os
 
-/// Definitions for the runtime parameters of the reverb.
+/**
+ Definitions for the runtime parameters of the reverb.
+ */
 public struct AudioUnitParameters {
   private let log = Logging.logger("AudioUnitParameters")
 

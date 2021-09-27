@@ -489,7 +489,7 @@
 			children = (
 				BD074C3C23CDAF51001987E9 /* Info.plist */,
 				BD074BD923CDAF51001987E9 /* UI */,
-				BD074BF123CDAF51001987E9 /* Sound Fonts View */,
+				BD074BF123CDAF51001987E9 /* Fonts View */,
 				BD074BD123CDAF51001987E9 /* Favorites View */,
 				BD125B3D24100C940003DE99 /* Keyboard View */,
 				BD27E986251605CD00591FD0 /* ActivePresetKind.swift */,
@@ -583,7 +583,7 @@
 			path = Configury;
 			sourceTree = "<group>";
 		};
-		BD074BF123CDAF51001987E9 /* Sound Fonts View */ = {
+		BD074BF123CDAF51001987E9 /* Fonts View */ = {
 			isa = PBXGroup;
 			children = (
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
@@ -595,7 +595,7 @@
 				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 			);
-			path = "Sound Fonts View";
+			path = "Fonts View";
 			sourceTree = "<group>";
 		};
 		BD074BF923CDAF51001987E9 /* Resources */ = {
