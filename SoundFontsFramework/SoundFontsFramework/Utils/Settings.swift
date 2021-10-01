@@ -47,9 +47,10 @@ extension SettingKeys {
 
   /// The current MIDI channel to use for incoming MIDI events. OMNI mode is a value of -1 (default).
   public static let midiChannel = SettingKey("midiChannel", defaultValue: -1)
-  /// The MIDI virtual destination ID (not usser settable)
-  public static let midiVirtualDestinationId = SettingKey(
-    "midiVirtualDestinationId", defaultValue: Int32(0))
+  /// The MIDI virtual input ID (not usser settable)
+  public static let virtualMidiInId = SettingKey("virtualMidiInId", defaultValue: Int32(0))
+  /// The MIDI virtual output ID (not usser settable)
+  public static let virtualMidiOutId = SettingKey("virtualMidiOutId", defaultValue: Int32(0))
 
   /// If true, the reverb AU is currently active
   public static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
@@ -218,10 +219,15 @@ extension UserDefaults {
     get { self[.midiChannel] }
     set { self[.midiChannel] = newValue }
   }
-  /// The MIDI virtual destination ID (not usser settable)
-  @objc public dynamic var midiVirtualDestinationId: Int32 {
-    get { self[.midiVirtualDestinationId] }
-    set { self[.midiVirtualDestinationId] = newValue }
+  /// The MIDI virtual input ID (not usser settable)
+  @objc public dynamic var virtualMidiInId: Int32 {
+    get { self[.virtualMidiInId] }
+    set { self[.virtualMidiInId] = newValue }
+  }
+  /// The MIDI virtual output ID (not usser settable)
+  @objc public dynamic var virtualMidiOutId: Int32 {
+    get { self[.virtualMidiOutId] }
+    set { self[.virtualMidiOutId] = newValue }
   }
   /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
   @objc public dynamic var showEffects: Bool {
