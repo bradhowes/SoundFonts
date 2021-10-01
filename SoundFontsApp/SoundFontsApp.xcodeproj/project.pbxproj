@@ -14,6 +14,11 @@
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD1A2A91266A00F2009E2338 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8D266A0050009E2338 /* ScreenShots.swift */; };
 		BD21CB3A266A6ECE00D4193C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */; };
+		BD2CD98427075879007DDBF7 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD2CD98327075879007DDBF7 /* UniformTypeIdentifiers.framework */; };
+		BD2CD98727075879007DDBF7 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD2CD98627075879007DDBF7 /* Media.xcassets */; };
+		BD2CD98927075879007DDBF7 /* ActionRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2CD98827075879007DDBF7 /* ActionRequestHandler.swift */; };
+		BD2CD98B27075879007DDBF7 /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = BD2CD98A27075879007DDBF7 /* Action.js */; };
+		BD2CD98F27075879007DDBF7 /* SF2 Import.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD2CD98227075879007DDBF7 /* SF2 Import.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BD3CF705241FA77A004A13D1 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
@@ -61,6 +66,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BD05836123E4C52800E094E0;
 			remoteInfo = SoundFontAU;
+		};
+		BD2CD98D27075879007DDBF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD75B258218B8CFD00C7EBD7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BD2CD98127075879007DDBF7;
+			remoteInfo = "SF2 Import";
 		};
 		BD3CF707241FA77A004A13D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -114,6 +126,7 @@
 			files = (
 				BD59079F2565CDDC004DE941 /* DelayAU.appex in Embed App Extensions */,
 				BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */,
+				BD2CD98F27075879007DDBF7 /* SF2 Import.appex in Embed App Extensions */,
 				BD59076B2565CD4C004DE941 /* ReverbAU.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -126,12 +139,19 @@
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
-		BD0F9356257164DE0065C147 /* Full.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Full.xcconfig; path = ../Full.xcconfig; sourceTree = SOURCE_ROOT; };
 		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsAUViewController.swift; sourceTree = "<group>"; };
 		BD1A2A8D266A0050009E2338 /* ScreenShots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BD1A2A8E266A0050009E2338 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
+		BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
+		BD2CD98227075879007DDBF7 /* SF2 Import.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "SF2 Import.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD2CD98327075879007DDBF7 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		BD2CD98627075879007DDBF7 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BD2CD98827075879007DDBF7 /* ActionRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionRequestHandler.swift; sourceTree = "<group>"; };
+		BD2CD98A27075879007DDBF7 /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
+		BD2CD98C27075879007DDBF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD3CF702241FA779004A13D1 /* AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3CF704241FA77A004A13D1 /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
 		BD3CF706241FA77A004A13D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -182,6 +202,14 @@
 			files = (
 				BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */,
 				BD498F9F23F0101700755AB9 /* SoundFontInfoLib.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD2CD97F27075879007DDBF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD2CD98427075879007DDBF7 /* UniformTypeIdentifiers.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +290,17 @@
 			path = ScreenShots;
 			sourceTree = "<group>";
 		};
+		BD2CD98527075879007DDBF7 /* SF2 Import */ = {
+			isa = PBXGroup;
+			children = (
+				BD2CD98627075879007DDBF7 /* Media.xcassets */,
+				BD2CD98827075879007DDBF7 /* ActionRequestHandler.swift */,
+				BD2CD98A27075879007DDBF7 /* Action.js */,
+				BD2CD98C27075879007DDBF7 /* Info.plist */,
+			);
+			path = "SF2 Import";
+			sourceTree = "<group>";
+		};
 		BD3CF703241FA77A004A13D1 /* AppTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,7 +363,10 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
+				BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */,
+				BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */,
 				BDB1BE4C265DA502002AD159 /* SoundFontsApp */,
+				BD2CD98527075879007DDBF7 /* SF2 Import */,
 				BD75B261218B8CFD00C7EBD7 /* Products */,
 				BD874C92221A228E00BBD00B /* Frameworks */,
 			);
@@ -339,6 +381,7 @@
 				BD3CF702241FA779004A13D1 /* AppTests.xctest */,
 				BD59074A2565CD4C004DE941 /* ReverbAU.appex */,
 				BD59077E2565CDDC004DE941 /* DelayAU.appex */,
+				BD2CD98227075879007DDBF7 /* SF2 Import.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -373,6 +416,7 @@
 				BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */,
 				BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */,
 				BD874C93221A228E00BBD00B /* AudioToolbox.framework */,
+				BD2CD98327075879007DDBF7 /* UniformTypeIdentifiers.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -395,7 +439,6 @@
 				BD59077F2565CDDC004DE941 /* DelayAU */,
 				BD1A2A8C266A0050009E2338 /* ScreenShots */,
 				BD3CF703241FA77A004A13D1 /* AppTests */,
-				BD0F9356257164DE0065C147 /* Full.xcconfig */,
 			);
 			path = SoundFontsApp;
 			sourceTree = "<group>";
@@ -418,6 +461,23 @@
 			name = SoundFontsAU;
 			productName = SoundFontAU;
 			productReference = BD05836223E4C52800E094E0 /* SoundFonts.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BD2CD98127075879007DDBF7 /* SF2 Import */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD2CD99227075879007DDBF7 /* Build configuration list for PBXNativeTarget "SF2 Import" */;
+			buildPhases = (
+				BD2CD97E27075879007DDBF7 /* Sources */,
+				BD2CD97F27075879007DDBF7 /* Frameworks */,
+				BD2CD98027075879007DDBF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SF2 Import";
+			productName = "SF2 Import";
+			productReference = BD2CD98227075879007DDBF7 /* SF2 Import.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		BD3CF701241FA779004A13D1 /* AppTests */ = {
@@ -489,6 +549,7 @@
 				BD05837F23E4C52800E094E0 /* PBXTargetDependency */,
 				BD59076A2565CD4C004DE941 /* PBXTargetDependency */,
 				BD59079E2565CDDC004DE941 /* PBXTargetDependency */,
+				BD2CD98E27075879007DDBF7 /* PBXTargetDependency */,
 			);
 			name = SoundFontsApp;
 			productName = SoundFonts;
@@ -519,13 +580,16 @@
 		BD75B258218B8CFD00C7EBD7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1220;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
 					BD05836123E4C52800E094E0 = {
 						CreatedOnToolsVersion = 11.3.1;
 						LastSwiftMigration = 1130;
+					};
+					BD2CD98127075879007DDBF7 = {
+						CreatedOnToolsVersion = 13.0;
 					};
 					BD3CF701241FA779004A13D1 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -574,6 +638,7 @@
 				BD59077D2565CDDC004DE941 /* DelayAU */,
 				BD88BCBB2419A9D400399DE5 /* ScreenShots */,
 				BD3CF701241FA779004A13D1 /* AppTests */,
+				BD2CD98127075879007DDBF7 /* SF2 Import */,
 			);
 		};
 /* End PBXProject section */
@@ -586,6 +651,15 @@
 				BD58B0902567F29900181F2B /* Assets.xcassets in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
 				BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BD2CD98027075879007DDBF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD2CD98B27075879007DDBF7 /* Action.js in Resources */,
+				BD2CD98727075879007DDBF7 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,6 +741,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BD2CD97E27075879007DDBF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD2CD98927075879007DDBF7 /* ActionRequestHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BD3CF6FE241FA779004A13D1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -725,6 +807,11 @@
 			target = BD05836123E4C52800E094E0 /* SoundFontsAU */;
 			targetProxy = BD05837E23E4C52800E094E0 /* PBXContainerItemProxy */;
 		};
+		BD2CD98E27075879007DDBF7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BD2CD98127075879007DDBF7 /* SF2 Import */;
+			targetProxy = BD2CD98D27075879007DDBF7 /* PBXContainerItemProxy */;
+		};
 		BD3CF708241FA77A004A13D1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			platformFilter = ios;
@@ -752,7 +839,7 @@
 /* Begin XCBuildConfiguration section */
 		BD05838123E4C52800E094E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
@@ -777,7 +864,7 @@
 		};
 		BD05838223E4C52800E094E0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
@@ -800,9 +887,64 @@
 			};
 			name = Release;
 		};
+		BD2CD99027075879007DDBF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SF2 Import/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SF2 Import";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Brad Howes. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.braysoftware.SoundFonts.SF2-Import";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BD2CD99127075879007DDBF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "SF2 Import/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "SF2 Import";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Brad Howes. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.braysoftware.SoundFonts.SF2-Import";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		BD3CF70A241FA77A004A13D1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -825,7 +967,7 @@
 		};
 		BD3CF70B241FA77A004A13D1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -847,7 +989,7 @@
 		};
 		BD59076C2565CD4C004DE941 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20211001155503;
@@ -872,7 +1014,7 @@
 		};
 		BD59076D2565CD4C004DE941 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20211001155503;
@@ -897,7 +1039,7 @@
 		};
 		BD5907A12565CDDC004DE941 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20211001155503;
@@ -922,7 +1064,7 @@
 		};
 		BD5907A22565CDDC004DE941 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20211001155503;
@@ -947,7 +1089,7 @@
 		};
 		BD75B286218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1014,7 +1156,7 @@
 		};
 		BD75B287218B8CFE00C7EBD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1076,7 +1218,7 @@
 		};
 		BD75B289218B8CFE00C7EBD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1103,7 +1245,7 @@
 		};
 		BD75B28A218B8CFE00C7EBD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1129,7 +1271,7 @@
 		};
 		BD88BCC42419A9D400399DE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -1152,7 +1294,7 @@
 		};
 		BD88BCC52419A9D400399DE5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD0F9356257164DE0065C147 /* Full.xcconfig */;
+			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
@@ -1180,6 +1322,15 @@
 			buildConfigurations = (
 				BD05838123E4C52800E094E0 /* Debug */,
 				BD05838223E4C52800E094E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BD2CD99227075879007DDBF7 /* Build configuration list for PBXNativeTarget "SF2 Import" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BD2CD99027075879007DDBF7 /* Debug */,
+				BD2CD99127075879007DDBF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

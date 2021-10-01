@@ -27,6 +27,7 @@ public final class EffectsController: UIViewController {
   @IBOutlet private weak var delayWetDryMix: Knob!
   @IBOutlet private weak var delayWetDryMixLabel: UILabel!
 
+  @IBOutlet private weak var chorusControls: UIStackView!
   @IBOutlet private weak var chorusEnabled: UIButton!
   @IBOutlet private weak var chorusGlobal: UIButton!
   @IBOutlet private weak var chorusRate: Knob!
@@ -52,6 +53,10 @@ public final class EffectsController: UIViewController {
   private var chorusEffect: ChorusEffect?
 
   public override func viewDidLoad() {
+
+    #if !DEBUG
+    chorusControls.isHidden = true
+    #endif
 
     reverbWetDryMix.minimumValue = 0
     reverbWetDryMix.maximumValue = 100

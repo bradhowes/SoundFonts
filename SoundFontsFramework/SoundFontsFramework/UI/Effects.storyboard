@@ -547,6 +547,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="414" height="132"/>
                     <connections>
+                        <outlet property="chorusControls" destination="uFt-en-Whn" id="DQX-aV-3rK"/>
                         <outlet property="chorusDelay" destination="6xU-z0-Djy" id="68I-cr-V6s"/>
                         <outlet property="chorusDelayLabel" destination="RsA-pA-ImR" id="hti-2D-Jzg"/>
                         <outlet property="chorusDepth" destination="7dl-rb-ANT" id="hn8-zS-vCj"/>

@@ -506,7 +506,7 @@
 				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
-				BD074BE823CDAF51001987E9 /* Configury */,
+				BD074BE823CDAF51001987E9 /* Audio */,
 				BD074C1C23CDAF51001987E9 /* Extensions */,
 				BD074C2D23CDAF51001987E9 /* Protocols */,
 				BD074C1323CDAF51001987E9 /* Utils */,
@@ -549,7 +549,7 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		BD074BE823CDAF51001987E9 /* Configury */ = {
+		BD074BE823CDAF51001987E9 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
 				BD94614C26AC90CC00300543 /* ChorusEffect.swift */,
@@ -580,7 +580,7 @@
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
 			);
-			path = Configury;
+			path = Audio;
 			sourceTree = "<group>";
 		};
 		BD074BF123CDAF51001987E9 /* Fonts View */ = {

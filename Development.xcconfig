@@ -2,3 +2,5 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
+OTHER_SWIFT_FLAGS = $(inherited) -DDev
+NAME_SUFFIX = Dev
