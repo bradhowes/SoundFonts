@@ -4,8 +4,10 @@ import CoreMIDI
 import SoundFontsFramework
 import os
 
-/// Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create
-/// an instance and set the controller (aka delegate) to receive the incoming MIDI traffic.
+/**
+ Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create
+ an instance and set the controller (aka delegate) to receive the incoming MIDI traffic.
+ */
 final class MIDI {
 
   private let clientName = "SoundFonts"
@@ -13,7 +15,6 @@ final class MIDI {
   private lazy var outputPortName = clientName + " Out"
 
   private var client: MIDIClientRef = 0
-
   private var virtualMidiIn: MIDIEndpointRef = 0
   private var virtualMidiOut: MIDIEndpointRef = 0
   private var inputPort: MIDIPortRef = 0
@@ -85,6 +86,7 @@ extension MIDI {
     let name = endpoint.displayName
     guard name != outputPortName else { return}
     guard !connections.contains(endpoint) else { return }
+
     connections.insert(endpoint)
     var refCon = endpoint
     os_log(.info, log: log, "connecting endpoint %d '%{public}s'", endpoint, endpoint.displayName)
@@ -93,6 +95,7 @@ extension MIDI {
 
   private func disconnectSource(endpoint: MIDIEndpointRef) {
     guard connections.contains(endpoint) else { return }
+
     connections.remove(endpoint)
     os_log(.info, log: log, "disconnecting endpoint %d '%{public}s'", endpoint, endpoint.displayName)
     logErr("MIDIPortDisconnectSource", MIDIPortDisconnectSource(inputPort, endpoint))
