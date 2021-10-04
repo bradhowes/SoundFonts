@@ -6,9 +6,11 @@ import os
 
 /**
  Connects to any and all MIDI sources, processing all messages it sees. There really is no API right now. Just create
- an instance and set the controller (aka delegate) to receive the incoming MIDI traffic.
+ an instance and set the `receiver` (aka delegate) to receive the incoming MIDI traffic.
  */
 final class MIDI {
+
+  public static var sharedInstance = MIDI()
 
   private let clientName = "SoundFonts"
   private lazy var inputPortName = clientName + " In"
@@ -16,11 +18,10 @@ final class MIDI {
 
   private var client: MIDIClientRef = 0
   private var virtualMidiIn: MIDIEndpointRef = 0
-  private var virtualMidiOut: MIDIEndpointRef = 0
   private var inputPort: MIDIPortRef = 0
 
   private var sources: MIDISources { MIDISources() }
-  private var connections = Set<MIDIEndpointRef>()
+  private var connections = Set<MIDIUniqueID>()
 
   /// Delegate which will receive incoming MIDI messages
   weak var receiver: MIDIReceiver? {
@@ -32,7 +33,7 @@ final class MIDI {
   /**
    Create new instance. Initializes CoreMIDI and creates an input port to receive MIDI traffic
    */
-  init() {
+  private init() {
 
     // Create client here -- doing it in initialize causes it to not work.
     createClient()
@@ -45,7 +46,6 @@ final class MIDI {
   deinit {
     if inputPort != 0 { MIDIPortDispose(inputPort) }
     if virtualMidiIn != 0 { MIDIEndpointDispose(virtualMidiIn) }
-    if virtualMidiOut != 0 { MIDIEndpointDispose(virtualMidiOut) }
     if client != 0 { MIDIClientDispose(client) }
   }
 }
@@ -54,10 +54,10 @@ extension MIDI {
 
   private func initialize() {
     enableNetwork()
-    guard createVirtualSource() else { return }
     guard createVirtualDestination() else { return }
     guard createInputPort() else { return }
-    updateConnections()
+    MIDIRestart()
+    // updateConnections()
   }
 
   private func createClient() {
@@ -76,37 +76,44 @@ extension MIDI {
     os_log(.info, log: log, "updateConnections")
 
     let active = sources
-    let inactive = connections.subtracting(active)
+    let inactive = connections.subtracting(active.uniqueIds)
 
     active.forEach { connectSource(endpoint: $0) }
-    inactive.forEach { disconnectSource(endpoint: $0) }
+    inactive.forEach { disconnectSource(uniqueId: $0) }
   }
 
   private func connectSource(endpoint: MIDIEndpointRef) {
     let name = endpoint.displayName
-    guard name != outputPortName else { return}
-    guard !connections.contains(endpoint) else { return }
+    guard name != outputPortName else {
+      os_log(.debug, log: log, "skipping own port '%{public}s'", name)
+      return
+    }
 
-    connections.insert(endpoint)
+    let uniqueId = endpoint.uniqueId
+    guard !connections.contains(uniqueId) else {
+      os_log(.debug, log: log, "already connected to '%{public}s'", name)
+      return
+    }
+
+    connections.insert(uniqueId)
+
     var refCon = endpoint
     os_log(.info, log: log, "connecting endpoint %d '%{public}s'", endpoint, endpoint.displayName)
     logErr("MIDIPortConnectSource", MIDIPortConnectSource(inputPort, endpoint, &refCon))
+    endpoint.setImmediateMode()
   }
 
-  private func disconnectSource(endpoint: MIDIEndpointRef) {
-    guard connections.contains(endpoint) else { return }
+  private func disconnectSource(uniqueId: MIDIUniqueID) {
+    guard connections.contains(uniqueId) else {
+      os_log(.debug, log: log, "not connected to %d", uniqueId)
+      return
+    }
 
-    connections.remove(endpoint)
+    connections.remove(uniqueId)
+    guard let endpoint = sources.first(where: { $0.uniqueId == uniqueId }) else { return }
+
     os_log(.info, log: log, "disconnecting endpoint %d '%{public}s'", endpoint, endpoint.displayName)
     logErr("MIDIPortDisconnectSource", MIDIPortDisconnectSource(inputPort, endpoint))
-  }
-
-  private func createVirtualSource() -> Bool {
-    guard !logErr("MIDISourceCreate", MIDISourceCreate(client, outputPortName as CFString, &virtualMidiOut)) else {
-      return false
-    }
-    virtualMidiOut.setUniqueId(key: SettingKeys.virtualMidiOutId)
-    return true
   }
 
   private func createVirtualDestination() -> Bool {
@@ -116,7 +123,10 @@ extension MIDI {
     guard !logErr("MIDIDestinationCreateWithBlock", err) else {
       return false
     }
-    virtualMidiIn.setUniqueId(key: SettingKeys.virtualMidiInId)
+
+    logErr("MIDIObjectSetIntegerProperty", MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyUniqueID, 44_659))
+    virtualMidiIn.setImmediateMode()
+
     return true
   }
 
@@ -161,32 +171,25 @@ private struct MIDISources: Collection {
   subscript (index: Index) -> Element { MIDIGetSource(index) }
 }
 
-extension MIDIObjectRef {
+private extension MIDIObjectRef {
 
   var displayName: String {
     var param: Unmanaged<CFString>?
-    let failed = logErr("MIDIObjectGetStringProperty",
+    let failed = logErr("MIDIObjectGetStringProperty(kMIDIPropertyDisplayName)",
                         MIDIObjectGetStringProperty(self, kMIDIPropertyDisplayName, &param))
     return failed ? "nil" : param!.takeUnretainedValue() as String
   }
 
   var uniqueId: MIDIUniqueID {
     var param: MIDIUniqueID = 0
-    logErr("MIDIObjectGetIntegerProperty", MIDIObjectGetIntegerProperty(self, kMIDIPropertyUniqueID, &param))
+    logErr("MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID)",
+           MIDIObjectGetIntegerProperty(self, kMIDIPropertyUniqueID, &param))
     return param
   }
 
-  fileprivate func setUniqueId(key: SettingKey<Int32>) {
-    var uniqueId: Int32 = Settings.shared[key]
-    var err = MIDIObjectSetIntegerProperty(self, kMIDIPropertyUniqueID, uniqueId)
-    logErr("MIDIObjectSetIntegerProperty", err)
-    if err == kMIDIIDNotUnique {
-      err = MIDIObjectGetIntegerProperty(self, kMIDIPropertyUniqueID, &uniqueId)
-      logErr("MIDIObjectGetIntegerProperty", err)
-      if err == noErr {
-        Settings.shared[key] = uniqueId
-      }
-    }
+  func setImmediateMode() {
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec)",
+           MIDIObjectSetIntegerProperty(self, kMIDIPropertyAdvanceScheduleTimeMuSec, 1))
   }
 }
 
@@ -208,7 +211,7 @@ private extension MIDINotificationMessageID {
 private let log = Logging.logger("MIDI")
 
 private extension OSStatus {
-  var errorTag : String {
+  var tag : String {
     switch self {
     case noErr: return "OK"
     case kMIDIInvalidClient: return "kMIDIInvalidClient"
@@ -234,7 +237,7 @@ private extension OSStatus {
 @discardableResult
 private func logErr(_ name: String, _ err: OSStatus) -> Bool {
   if err != noErr {
-    os_log(.error, log: log, "%{public}s - %d %{public}s", name, err, err.errorTag)
+    os_log(.error, log: log, "%{public}s - %d %{public}s", name, err, err.tag)
     return true
   }
   return false

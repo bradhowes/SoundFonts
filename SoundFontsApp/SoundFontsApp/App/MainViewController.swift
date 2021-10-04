@@ -19,7 +19,6 @@ final class MainViewController: UIViewController {
   private var infoBar: InfoBar!
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
-  private let midi = MIDI()
   private var observers = [NSObjectProtocol]()
 
   fileprivate var noteInjector = NoteInjector()
@@ -135,7 +134,7 @@ extension MainViewController {
     startRequested = false
     guard sampler != nil else { return }
 
-    midi.receiver = nil
+    MIDI.sharedInstance.receiver = nil
     volumeMonitor?.stop()
     sampler?.stop()
 
@@ -225,17 +224,17 @@ extension MainViewController: ControllerConfiguration {
     router.activePresetManager.subscribe(self, notifier: activePresetChange)
   }
 
-  private func startMIDI(sampler: Sampler) {
+  private func startMIDI() {
+    guard let sampler = self.sampler else { return }
     os_log(.error, log: log, "starting MIDI for sampler")
     midiController = MIDIController(sampler: sampler, keyboard: keyboard)
-    midi.receiver = midiController
+    MIDI.sharedInstance.receiver = midiController
   }
 
   private func routerChange(_ event: ComponentContainerEvent) {
     switch event {
     case .samplerAvailable(let sampler):
       self.sampler = sampler
-      startMIDI(sampler: sampler)
       if startRequested {
         DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
 
@@ -275,6 +274,7 @@ extension MainViewController: ControllerConfiguration {
       postAlert(for: what)
     case .success:
       volumeMonitor?.start()
+      startMIDI()
     }
   }
 
