@@ -100,7 +100,6 @@ extension MIDI {
     var refCon = endpoint
     os_log(.info, log: log, "connecting endpoint %d '%{public}s'", endpoint, endpoint.displayName)
     logErr("MIDIPortConnectSource", MIDIPortConnectSource(inputPort, endpoint, &refCon))
-    endpoint.setImmediateMode()
   }
 
   private func disconnectSource(uniqueId: MIDIUniqueID) {
@@ -124,8 +123,18 @@ extension MIDI {
       return false
     }
 
-    logErr("MIDIObjectSetIntegerProperty", MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyUniqueID, 44_659))
-    virtualMidiIn.setImmediateMode()
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyUniqueID)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyUniqueID, 44_659))
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyAdvanceScheduleTimeMuSec, 1))
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesClock)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesClock, 1))
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesNotes)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesNotes, 1));
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyReceivesProgramChanges)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyReceivesProgramChanges, 1));
+    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyMaxReceiveChannels)",
+           MIDIObjectSetIntegerProperty(virtualMidiIn, kMIDIPropertyMaxReceiveChannels, 16));
 
     return true
   }
@@ -185,11 +194,6 @@ private extension MIDIObjectRef {
     logErr("MIDIObjectGetIntegerProperty(kMIDIPropertyUniqueID)",
            MIDIObjectGetIntegerProperty(self, kMIDIPropertyUniqueID, &param))
     return param
-  }
-
-  func setImmediateMode() {
-    logErr("MIDIObjectSetIntegerProperty(kMIDIPropertyAdvanceScheduleTimeMuSec)",
-           MIDIObjectSetIntegerProperty(self, kMIDIPropertyAdvanceScheduleTimeMuSec, 1))
   }
 }
 
