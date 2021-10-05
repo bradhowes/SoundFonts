@@ -2,19 +2,34 @@
 
 import os
 
+/**
+ A controller that processes external MIDI events. Shows keys being played if given a Keyboard, and sends MIDI note
+ actions to a Sampler.
+ */
 public final class MIDIController {
   private lazy var log = Logging.logger("MIDIController")
 
+  /// Current MIDI channel to listen to for MIDI. A value of -1 means OMNI -- respond to all messages
   public private(set) var channel: Int
 
   private let sampler: Sampler
   private let keyboard: Keyboard?
   private var observer: NSKeyValueObservation?
 
+  /**
+   Construct new controller for a sampler and keyboard
+
+   - parameter sampler: the Sampler to command
+   - parameter keyboard: the Keyboard to update
+   */
   public init(sampler: Sampler, keyboard: Keyboard?) {
     self.sampler = sampler
     self.keyboard = keyboard
     self.channel = Settings.shared.midiChannel
+    monitorMIDIChannelValue()
+  }
+
+  private func monitorMIDIChannelValue() {
     self.observer = Settings.shared.observe(\.midiChannel) { [weak self] _, _ in
       guard let self = self else { return }
       let value = Settings.shared.midiChannel
@@ -38,7 +53,7 @@ extension MIDIController: MIDIReceiver {
     keyboard?.noteIsOn(note: note)
   }
 
-  public func releaseAllKeys() {
+  public func allNotesOff() {
     keyboard?.releaseAllKeys()
   }
 

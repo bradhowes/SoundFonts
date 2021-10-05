@@ -28,7 +28,7 @@ public protocol MIDIReceiver: AnyObject {
   /**
    Command the keyboard to release any pressed keys
    */
-  func releaseAllKeys()
+  func allNotesOff()
 
   /**
    Update the key pressure of a playing note
@@ -66,28 +66,4 @@ public protocol MIDIReceiver: AnyObject {
    - parameter value: the new pitch-bend value to use
    */
   func pitchBendChange(value: UInt16)
-}
-
-extension MIDIReceiver {
-
-  /**
-   Process a collection of MIDI messages for the controller.
-
-   - parameter msgs: the MIDIMsg collection
-   */
-  public func process(_ msgs: [MIDIMsg], when: MIDITimeStamp) {
-    for msg in msgs {
-      switch msg {
-      case let .noteOff(note, _): self.noteOff(note: note)
-      case let .noteOn(note, velocity): self.noteOn(note: note, velocity: velocity)
-      case let .polyphonicKeyPressure(note, pressure):
-        self.polyphonicKeyPressure(note: note, pressure: pressure)
-      case let .controlChange(controller, value):
-        self.controlChange(controller: controller, value: value)
-      case let .programChange(program): self.programChange(program: program)
-      case let .channelPressure(pressure): self.channelPressure(pressure: pressure)
-      case let .pitchBendChange(value): self.pitchBendChange(value: value)
-      }
-    }
-  }
 }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -104,10 +106,10 @@
                                         <state key="normal" image="EditVisibility"/>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="keu-yf-YQQ" userLabel="KeyRange">
-                                        <rect key="frame" x="8" y="2" width="84" height="36"/>
+                                        <rect key="frame" x="8" y="3" width="84" height="34"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IO0-ky-FSn" userLabel="LowestKey">
-                                                <rect key="frame" x="0.0" y="0.0" width="30" height="36"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="30" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="LowestKey" label="LowestKey"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                                 <state key="normal" title="C2">
@@ -115,7 +117,7 @@
                                                 </state>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BW4-Wd-vsq">
-                                                <rect key="frame" x="30" y="0.0" width="24" height="36"/>
+                                                <rect key="frame" x="30" y="0.0" width="24" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="Yad-sP-air"/>
                                                 </constraints>
@@ -127,7 +129,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBF-bM-n1r" userLabel="HighestKey">
-                                                <rect key="frame" x="54" y="0.0" width="30" height="36"/>
+                                                <rect key="frame" x="54" y="0.0" width="30" height="34"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="HighestKey" label="HighestKey"/>
                                                 <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                                                 <state key="normal" title="C3">
@@ -267,7 +269,7 @@
         <image name="Settings" width="25" height="25"/>
         <image name="Tags" width="25" height="25"/>
         <systemColor name="systemTealColor">
-            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

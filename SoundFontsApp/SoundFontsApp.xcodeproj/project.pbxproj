@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BD05838023E4C52800E094E0 /* SoundFonts.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BD05836223E4C52800E094E0 /* SoundFonts.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0E9EE724FAC0C6009316F2 /* MIDI.swift */; };
 		BD0FAC2E251F694B00EEF187 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; };
 		BD0FAC2F251F694B00EEF187 /* SF2Files.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD0FAC2D251F694B00EEF187 /* SF2Files.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
@@ -125,7 +124,6 @@
 		BD05836223E4C52800E094E0 /* SoundFonts.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SoundFonts.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD05837D23E4C52800E094E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD0E20292555991600D36607 /* MIKMIDI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MIKMIDI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD0E9EE724FAC0C6009316F2 /* MIDI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIDI.swift; sourceTree = "<group>"; };
 		BD0FAC2D251F694B00EEF187 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsAUViewController.swift; sourceTree = "<group>"; };
 		BD1A2A8D266A0050009E2338 /* ScreenShots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
@@ -355,7 +353,6 @@
 				BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */,
 				BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */,
 				BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */,
-				BD0E9EE724FAC0C6009316F2 /* MIDI.swift */,
 				BD6CEAF823986DFB00C204F0 /* UIApplication+Extensions.swift */,
 				BD498FA323F07AFC00755AB9 /* VolumeMonitor.swift */,
 				BD42F3572388697200E6D576 /* Resources */,
@@ -703,7 +700,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD0E9EE824FAC0C6009316F2 /* MIDI.swift in Sources */,
 				BDA0FC7A23C753E3005BEFD5 /* UIApplication+Extensions.swift in Sources */,
 				BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */,
 				BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */,
@@ -761,7 +757,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -770,7 +766,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -786,7 +782,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -795,7 +791,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -854,7 +850,7 @@
 			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -863,7 +859,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -879,7 +875,7 @@
 			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -888,7 +884,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -904,7 +900,7 @@
 			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -913,7 +909,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -929,7 +925,7 @@
 			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -938,7 +934,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -986,7 +982,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1053,7 +1049,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1087,7 +1083,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1096,7 +1092,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1114,7 +1110,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211004165503;
+				CURRENT_PROJECT_VERSION = 20211006004507;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1123,7 +1119,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.21.13;
+				MARKETING_VERSION = 2.22.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

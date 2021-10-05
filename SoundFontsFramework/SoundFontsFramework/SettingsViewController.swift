@@ -31,8 +31,8 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var slideKeyboardStackView: UIStackView!
   @IBOutlet private weak var divider1: UIView!
   @IBOutlet private weak var midiChannelStackView: UIStackView!
-  @IBOutlet private weak var pitchBendStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
+  @IBOutlet private weak var pitchBendStackView: UIStackView!
   @IBOutlet private weak var divider2: UIView!
   @IBOutlet private weak var copyFilesStackView: UIStackView!
   @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
@@ -51,6 +51,7 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var keyWidthSlider: UISlider!
   @IBOutlet private weak var slideKeyboard: UISwitch!
   @IBOutlet private weak var midiChannel: UILabel!
+  @IBOutlet private weak var midiConnections: UIButton!
   @IBOutlet private weak var midiChannelStepper: UIStepper!
   @IBOutlet private weak var pitchBendRange: UILabel!
   @IBOutlet private weak var pitchBendStepper: UIStepper!
@@ -81,6 +82,7 @@ public final class SettingsViewController: UIViewController {
   public var soundFonts: SoundFonts!
   public var isMainApp = true
 
+  private var midiConnectionsObserver: NSKeyValueObservation!
   private var tuningComponent: TuningComponent?
   private var tuningObserver: NSKeyValueObservation!
   private lazy var hideForKeyWidthChange: [UIView] = [
@@ -169,6 +171,13 @@ public final class SettingsViewController: UIViewController {
     keyWidthSlider.value = Settings.shared.keyWidth
     slideKeyboard.isOn = Settings.shared.slideKeyboard
 
+    updateMIDIConnectionsButton()
+    midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { _, _ in
+      self.updateMIDIConnectionsButton()
+    }
+
+    MIDI.sharedInstance.monitor = self
+
     midiChannelStepper.value = Double(Settings.shared.midiChannel)
     updateMidiChannel()
 
@@ -203,6 +212,11 @@ public final class SettingsViewController: UIViewController {
     Settings.shared.globalTuningEnabled = globalTuningEnabled.isOn
     self.tuningObserver = nil
     self.tuningComponent = nil
+    self.midiConnectionsObserver = nil
+
+    if let monitor = MIDI.sharedInstance.monitor, monitor === self {
+      MIDI.sharedInstance.monitor = nil
+    }
   }
 }
 
@@ -276,6 +290,10 @@ extension SettingsViewController {
     Settings.shared.slideKeyboard = self.slideKeyboard.isOn
   }
 
+  @IBAction func showMIDIConnections(_ sender: UIButton) {
+    print("showMIDIConnections")
+  }
+
   @IBAction func midiChannelStep(_ sender: UIStepper) {
     updateMidiChannel()
   }
@@ -295,7 +313,7 @@ extension SettingsViewController {
       let ac = UIAlertController(
         title: "Disable Copying?",
         message: """
-          Direct file access can lead to unusable SF2 file references if the file moves or is not immedately available on the
+          Direct file access can lead to unusable SF2 file references if the file moves or is not immediately available on the
           device. Are you sure you want to disable copying?
           """, preferredStyle: .alert)
       ac.addAction(
@@ -418,4 +436,45 @@ extension SettingsViewController: MFMailComposeViewControllerDelegate {
     dismiss(animated: true)
     NotificationCenter.default.post(name: .showTutorial, object: nil)
   }
+
+  private func updateMIDIConnectionsButton() {
+    let count = MIDI.sharedInstance.activeConnections.count
+    let suffix = count == 1 ? "device" : "devices"
+    midiConnections.setTitle("\(count) \(suffix)", for: .normal)
+  }
+}
+
+extension SettingsViewController: SegueHandler {
+
+  /// Segues that we support.
+  public enum SegueIdentifier: String {
+    case midiDevicesTableView
+  }
+
+  public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    switch segueIdentifier(for: segue) {
+    case .midiDevicesTableView:
+      guard let destination = segue.destination as? MIDIDevicesTableViewController else {
+        fatalError("expected MIDIDevicesTableViewController for segue destination")
+      }
+      destination.devices = MIDI.sharedInstance.devices
+    }
+  }
+}
+
+extension SettingsViewController: MIDIMonitor {
+
+  public func seen(uniqueId: MIDIUniqueID) {
+    DispatchQueue.main.async {
+      midiSeenLayerChange(self.midiConnections.layer)
+    }
+  }
+}
+
+internal func midiSeenLayerChange(_ layer: CALayer) {
+  let color = UIColor.systemOrange.cgColor
+  let animator = CABasicAnimation(keyPath: "backgroundColor")
+  animator.fromValue = color
+  animator.toValue = UIColor.clear.cgColor
+  layer.add(animator, forKey: "MIDI Seen")
 }

@@ -253,7 +253,7 @@ extension MainViewController: ControllerConfiguration {
 
   private func useActivePresetKind(_ activePresetKind: ActivePresetKind, playSample: Bool) {
     volumeMonitor?.activePreset = activePresetKind != .none
-    midiController?.releaseAllKeys()
+    midiController?.allNotesOff()
     guard let sampler = self.sampler else { return }
 
     DispatchQueue.global(qos: .userInitiated).async {
