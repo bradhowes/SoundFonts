@@ -44,7 +44,7 @@ class MIDIDevicesTableViewController: UITableViewController {
 
     let channel = MIDI.sharedInstance.channels[deviceState.uniqueId] ?? -2
     let channelText = channel == -2 ? "" : "Chan: \(channel + 1)"
-    cell.detailTextLabel?.text = "\(channelText) \(deviceState.connected ? "✅" : "🟥")"
+    cell.detailTextLabel?.text = "\(channelText)" // "\(deviceState.connected ? "✅" : "🟥")"
     return cell
   }
 

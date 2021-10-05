@@ -500,7 +500,7 @@
                                                         <rect key="frame" x="0.0" y="951.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.22.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="55.5" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="51" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -651,11 +651,11 @@
             </objects>
             <point key="canvasLocation" x="2530" y="-761"/>
         </scene>
-        <!--MIDI Devices-->
+        <!--Connected MIDI Devices-->
         <scene sceneID="WQc-b8-9D0">
             <objects>
                 <tableViewController id="MVZ-xa-FDo" customClass="MIDIDevicesTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="zlp-YF-2WO">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="zlp-YF-2WO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -692,7 +692,7 @@
                             <outlet property="delegate" destination="MVZ-xa-FDo" id="uNc-IT-y2N"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="MIDI Devices" id="LN2-yr-Wxo">
+                    <navigationItem key="navigationItem" title="Connected MIDI Devices" id="LN2-yr-Wxo">
                         <barButtonItem key="rightBarButtonItem" title="Reset" id="bjs-3h-DCo" userLabel="Reset">
                             <color key="tintColor" systemColor="systemTealColor"/>
                             <connections>
