@@ -63,7 +63,7 @@ extension MIDIPacketList {
       let packetsSize = (packets.map { $0.alignedByteSize }).reduce(0, +)
       let listSize = MemoryLayout<MIDIPacketList>.size - MemoryLayout<MIDIPacket>.size + packetsSize
 
-      func OptionalMIDIPacketListAdd(_ packetListPtr: UnsafeMutablePointer<MIDIPacketList>,
+      func optionalMIDIPacketListAdd(_ packetListPtr: UnsafeMutablePointer<MIDIPacketList>,
                                      _ curPacketPtr: UnsafeMutablePointer<MIDIPacket>,
                                      _ packet: MIDIPacket) -> UnsafeMutablePointer<MIDIPacket>? {
         return withUnsafeBytes(of: packet.data) { ptr in
@@ -78,7 +78,7 @@ extension MIDIPacketList {
         let packetListPtr = bufferPtr.bindMemory(to: MIDIPacketList.self).baseAddress!
         var curPacketPtr = MIDIPacketListInit(packetListPtr)
         for packet in packets {
-          guard let newPacketPtr = OptionalMIDIPacketListAdd(packetListPtr, curPacketPtr, packet) else {
+          guard let newPacketPtr = optionalMIDIPacketListAdd(packetListPtr, curPacketPtr, packet) else {
             fatalError()
           }
           curPacketPtr = newPacketPtr
