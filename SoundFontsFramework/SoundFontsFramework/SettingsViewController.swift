@@ -464,7 +464,7 @@ extension SettingsViewController: SegueHandler {
 
 extension SettingsViewController: MIDIMonitor {
 
-  public func seen(uniqueId: MIDIUniqueID) {
+  public func seen(uniqueId: MIDIUniqueID, channel: Int) {
     DispatchQueue.main.async {
       midiSeenLayerChange(self.midiConnections.layer)
     }

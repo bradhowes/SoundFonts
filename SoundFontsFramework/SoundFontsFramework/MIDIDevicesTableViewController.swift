@@ -55,7 +55,7 @@ class MIDIDevicesTableViewController: UITableViewController {
 
 extension MIDIDevicesTableViewController: MIDIMonitor {
 
-  public func seen(uniqueId: MIDIUniqueID) {
+  public func seen(uniqueId: MIDIUniqueID, channel: Int) {
     DispatchQueue.main.async {
       for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == uniqueId {
         let indexPath = IndexPath(row: row, section: 0)

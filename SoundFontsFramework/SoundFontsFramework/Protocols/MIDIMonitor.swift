@@ -2,6 +2,16 @@
 
 import CoreMIDI
 
+/**
+ Protocol for an object that monitors MIDI input activity
+ */
 public protocol MIDIMonitor: AnyObject {
-  func seen(uniqueId: MIDIUniqueID)
+
+  /**
+   Notification invoked when there is an incoming MIDI message.
+
+   - parameter uniqueId: the unique ID of the MIDI endpoint that sent the message
+   - parameter channel: the channel found in the MIDI message
+   */
+  func seen(uniqueId: MIDIUniqueID, channel: Int)
 }

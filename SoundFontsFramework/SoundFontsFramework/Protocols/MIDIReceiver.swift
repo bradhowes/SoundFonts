@@ -4,18 +4,22 @@ import CoreMIDI
 import Foundation
 import os
 
-/// Functionality we expect for entities that can receive MIDI messages.
+/**
+ Protocol for an object that processes supported MIDI messages. All methods of the protocol are optional; each has a
+ default implementation that does nothing.
+ */
 public protocol MIDIReceiver: AnyObject {
 
   /// The channel the controller listens on. If -1, then it wants msgs from ALL channels
   var channel: Int { get }
 
   /**
-   Stop playing note.
+   Stop playing a note.
 
    - parameter note: the MIDI note to stop
+   - parameter velocity: the velocity to use when stopping the note
    */
-  func noteOff(note: UInt8)
+  func noteOff(note: UInt8, velocity: UInt8)
 
   /**
    Start playing a note.
@@ -66,4 +70,15 @@ public protocol MIDIReceiver: AnyObject {
    - parameter value: the new pitch-bend value to use
    */
   func pitchBendChange(value: UInt16)
+}
+
+extension MIDIReceiver {
+  func noteOff(note: UInt8, velocity: UInt8) {}
+  func noteOn(note: UInt8, velocity: UInt8) {}
+  func allNotesOff() {}
+  func polyphonicKeyPressure(note: UInt8, pressure: UInt8) {}
+  func controlChange(controller: UInt8, value: UInt8) {}
+  func programChange(program: UInt8) {}
+  func channelPressure(pressure: UInt8) {}
+  func pitchBendChange(value: UInt16) {}
 }

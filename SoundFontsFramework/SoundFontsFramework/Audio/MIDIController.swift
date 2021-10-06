@@ -43,7 +43,7 @@ public final class MIDIController {
 
 extension MIDIController: MIDIReceiver {
 
-  public func noteOff(note: UInt8) {
+  public func noteOff(note: UInt8, velocity: UInt8) {
     sampler.noteOff(note)
     keyboard?.noteIsOff(note: note)
   }
