@@ -217,8 +217,8 @@ extension FontEditor {
     }
 
     let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,
-                                                builtIn: soundFont.kind.resource) { tags in
-      self.activeTags = tags
+                                                builtIn: soundFont.kind.resource) { [weak self] tags in
+      self?.activeTags = tags
     }
 
     viewController.configure(config)

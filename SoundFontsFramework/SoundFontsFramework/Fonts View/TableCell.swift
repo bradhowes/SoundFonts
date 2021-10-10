@@ -139,7 +139,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
   private func startMonitor() {
     stopMonitor()
-    timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in self.updateButton() }
+    timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in self?.updateButton() }
   }
 
   private func showActiveIndicator(_ isActive: Bool) {
@@ -210,7 +210,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       title: "Downloading", message: "Downloading the SF2 file for '\(bookmark.name)'",
       preferredStyle: .alert)
     activeAlert = alert
-    alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
+    alert.addAction(UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in self?.activeAlert = nil })
     viewController?.present(alert, animated: true)
   }
 
@@ -229,7 +229,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       message: "Unable to access the SF2 file for '\(bookmark.name)'",
       preferredStyle: .alert)
     activeAlert = alert
-    alert.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in self.activeAlert = nil })
+    alert.addAction(UIAlertAction(title: "OK", style: .cancel) { [weak self] _ in self?.activeAlert = nil })
     viewController?.present(alert, animated: true)
   }
 

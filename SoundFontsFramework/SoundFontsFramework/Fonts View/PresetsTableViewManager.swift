@@ -64,11 +64,10 @@ final class PresetsTableViewManager: NSObject {
     super.init()
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
-    infoBar.addEventClosure(.hideMoreButtons) { _ in
-      if self.view.isEditing {
-        self.toggleVisibilityEditing(self)
-        self.infoBar.resetButtonState(.editVisibility)
-      }
+    infoBar.addEventClosure(.hideMoreButtons) { [weak self] _ in
+      guard let self = self, self.view.isEditing else { return }
+      self.toggleVisibilityEditing(self)
+      self.infoBar.resetButtonState(.editVisibility)
     }
 
     view.register(TableCell.self)
@@ -677,7 +676,8 @@ extension PresetsTableViewManager {
 
   private func editPresetSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                      soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
+    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, view, completionHandler in
+      guard let self = self else { return }
       var rect = self.view.rectForRow(at: indexPath)
       rect.size.width = 240.0
       self.favorites.beginEdit(
@@ -693,7 +693,8 @@ extension PresetsTableViewManager {
 
   private func createFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                          soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .favorite, color: .systemOrange) { _, _, completionHandler in
+    UIContextualAction(icon: .favorite, color: .systemOrange) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
       completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPreset))
     }
   }
@@ -719,7 +720,8 @@ extension PresetsTableViewManager {
   }
 
   private func deleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
-    UIContextualAction(icon: .unfavorite, color: .systemRed) { _, _, completionHandler in
+    UIContextualAction(icon: .unfavorite, color: .systemRed) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
       completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
     }
   }
@@ -744,8 +746,8 @@ extension PresetsTableViewManager {
   }
 
   private func editFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemOrange) { _, _, completionHandler in
-      self.editFavorite(at: indexPath, completionHandler: completionHandler)
+    UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
+      self?.editFavorite(at: indexPath, completionHandler: completionHandler)
     }
   }
 
@@ -784,7 +786,8 @@ extension PresetsTableViewManager {
 
   private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                      soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .hide, color: .gray) { _, _, completionHandler in
+    UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
       if Settings.shared.showedHidePresetPrompt {
         self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
                         completionHandler: completionHandler)
@@ -820,7 +823,8 @@ extension PresetsTableViewManager {
     let promptTitle = Formatters.strings.hidePresetTitle
     let promptMessage = Formatters.strings.hidePresetMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
-    let hide = UIAlertAction(title: Formatters.strings.hidePresetAction, style: .default) { _ in
+    let hide = UIAlertAction(title: Formatters.strings.hidePresetAction, style: .default) { [weak self] _ in
+      guard let self = self else { return }
       Settings.shared.showedHidePresetPrompt = true
       self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
                       completionHandler: completionHandler)

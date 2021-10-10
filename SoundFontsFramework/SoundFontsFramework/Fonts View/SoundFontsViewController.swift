@@ -154,7 +154,8 @@ extension SoundFontsViewController {
     let promptMessage = Formatters.strings.deleteFontMessage
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
 
-    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { _ in
+    let delete = UIAlertAction(title: Formatters.strings.deleteAction, style: .destructive) { [weak self ] _ in
+      guard let self = self else { return }
       self.soundFonts.remove(key: soundFont.key)
       self.favorites.removeAll(associatedWith: soundFont)
       let url = soundFont.fileURL
@@ -264,7 +265,8 @@ extension SoundFontsViewController: FontEditorActionGenerator {
    - returns: new UIContextualAction that will perform the edit
    */
   public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemTeal) { _, view, completionHandler in
+    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, view, completionHandler in
+      guard let self = self else { return }
       let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
                                      soundFontKey: soundFont.key,
                                      favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
@@ -283,8 +285,8 @@ extension SoundFontsViewController: FontEditorActionGenerator {
    - returns: new UIContextualAction that will perform the edit
    */
   public func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
-    UIContextualAction(icon: .remove, color: .red) { _, _, completionHandler in
-      self.remove(soundFont: soundFont, completionHandler: completionHandler)
+    UIContextualAction(icon: .remove, color: .red) { [weak self] _, _, completionHandler in
+      self?.remove(soundFont: soundFont, completionHandler: completionHandler)
     }
   }
 }
@@ -379,8 +381,8 @@ extension SoundFontsViewController {
     tagsBottomConstraint.constant = 0.0
     UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                    options: [.allowUserInteraction, .curveEaseIn],
-                                                   animations: self.view.layoutIfNeeded) { _ in
-      self.tagsTableViewManager.showActiveTag(animated: false)
+                                                   animations: self.view.layoutIfNeeded) { [weak self] _ in
+      self?.tagsTableViewManager.showActiveTag(animated: false)
     }
   }
 

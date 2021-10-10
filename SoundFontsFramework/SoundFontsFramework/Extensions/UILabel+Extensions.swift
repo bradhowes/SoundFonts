@@ -36,7 +36,8 @@ extension UILabel {
     }
 
     let originalText = self.originalText
-    fadeTimer = Timer.once(after: 1.0) { _ in
+    fadeTimer = Timer.once(after: 1.0) { [weak self] _ in
+      guard let self = self else { return }
       UIView.transition(
         with: self, duration: 0.5, options: [.curveLinear, .transitionCrossDissolve]
       ) {

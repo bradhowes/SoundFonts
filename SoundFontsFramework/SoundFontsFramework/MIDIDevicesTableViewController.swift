@@ -10,12 +10,12 @@ class MIDIDevicesTableViewController: UITableViewController {
   private var channelsObserver: NSKeyValueObservation?
 
   override public func viewDidLoad() {
-    activeConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { _, _ in
-      self.devices = MIDI.sharedInstance.devices
+    activeConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
+      self?.devices = MIDI.sharedInstance.devices
     }
-    channelsObserver = MIDI.sharedInstance.observe(\.channels) { _, _ in
+    channelsObserver = MIDI.sharedInstance.observe(\.channels) { [weak self] _, _ in
       DispatchQueue.main.async {
-        self.tableView.reloadData()
+        self?.tableView.reloadData()
       }
     }
     super.viewDidLoad()

@@ -51,7 +51,7 @@ public final class Tag: Codable {
     NotificationCenter.default.addObserver(
       forName: NSLocale.currentLocaleDidChangeNotification, object: nil,
       queue: nil
-    ) { _ in self.name = nameProc() }
+    ) { [weak self] _ in self?.name = nameProc() }
   }
 
   /**

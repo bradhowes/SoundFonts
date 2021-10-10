@@ -18,7 +18,7 @@ final class ActiveTagManager: NSObject {
     self.tagsHider = tagsHider
     super.init()
 
-    token = tags.subscribe(self) { _ in self.refresh() }
+    token = tags.subscribe(self) { [weak self] _ in self?.refresh() }
 
     view.register(TableCell.self)
     view.dataSource = self

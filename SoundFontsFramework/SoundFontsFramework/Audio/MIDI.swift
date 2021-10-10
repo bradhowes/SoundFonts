@@ -151,7 +151,9 @@ extension MIDI {
   }
 
   private func createVirtualDestination() -> Bool {
-    let err = MIDIDestinationCreateWithBlock(client, inputPortName as CFString, &virtualMidiIn) { packetList, uniqueId in
+    let err = MIDIDestinationCreateWithBlock(client, inputPortName as CFString,
+                                             &virtualMidiIn) { [weak self] packetList, uniqueId in
+      guard let self = self else { return }
       guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
       self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
     }
@@ -176,7 +178,9 @@ extension MIDI {
   }
 
   private func createInputPort() -> Bool {
-    let err = MIDIInputPortCreateWithBlock(client, inputPortName as CFString, &inputPort) { packetList, uniqueId in
+    let err = MIDIInputPortCreateWithBlock(client, inputPortName as CFString,
+                                           &inputPort) { [weak self] packetList, uniqueId in
+      guard let self = self else { return }
       guard let uniqueId = uniqueId?.assumingMemoryBound(to: MIDIUniqueID.self).pointee else { fatalError() }
       self.processPackets(packetList: packetList.pointee, uniqueId: uniqueId)
     }

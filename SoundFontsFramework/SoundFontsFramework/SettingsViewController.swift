@@ -172,8 +172,8 @@ public final class SettingsViewController: UIViewController {
     slideKeyboard.isOn = Settings.shared.slideKeyboard
 
     updateMIDIConnectionsButton()
-    midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { _, _ in
-      self.updateMIDIConnectionsButton()
+    midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
+      self?.updateMIDIConnectionsButton()
     }
 
     MIDI.sharedInstance.monitor = self
@@ -321,8 +321,8 @@ extension SettingsViewController {
           Settings.shared.copyFilesWhenAdding = false
         })
       ac.addAction(
-        UIAlertAction(title: "Cancel", style: .cancel) { _ in
-          self.copyFiles.isOn = true
+        UIAlertAction(title: "Cancel", style: .cancel) { [weak self]_ in
+          self?.copyFiles.isOn = true
         })
       present(ac, animated: true)
     } else {

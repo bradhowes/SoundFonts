@@ -37,8 +37,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func application(_ application: UIApplication,
                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil, queue: nil) { _ in
-      self.visitAppStore()
+    observer = NotificationCenter.default.addObserver(forName: .visitAppStore, object: nil,
+                                                      queue: nil) { [weak self] _ in
+      self?.visitAppStore()
     }
     return true
   }

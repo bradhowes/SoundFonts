@@ -74,8 +74,8 @@ public final class AskForReview: NSObject {
     if isMain {
       observer = NotificationCenter.default.addObserver(
         forName: .askForReview, object: nil, queue: nil
-      ) { _ in
-        self.ask()
+      ) { [weak self] _ in
+        self?.ask()
       }
     }
   }

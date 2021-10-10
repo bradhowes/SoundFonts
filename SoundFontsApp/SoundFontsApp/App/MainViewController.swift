@@ -35,13 +35,14 @@ final class MainViewController: UIViewController {
     super.viewDidLoad()
     UIApplication.shared.appDelegate.setMainViewController(self)
     setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
-    observers.append(NotificationCenter.default.addObserver(forName: .showTutorial, object: nil, queue: nil) { _ in
-      self.showTutorial()
+    observers.append(NotificationCenter.default.addObserver(forName: .showTutorial, object: nil,
+                                                            queue: nil) { [weak self] _ in
+      self?.showTutorial()
     })
 
     observers.append(NotificationCenter.default.addObserver(forName: AVAudioSession.mediaServicesWereResetNotification,
-                                                            object: nil, queue: nil) { _ in
-      self.recreateSampler()
+                                                            object: nil, queue: nil) { [weak self] _ in
+      self?.recreateSampler()
     })
   }
 
