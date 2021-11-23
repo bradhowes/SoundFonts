@@ -29,14 +29,14 @@ extension ChorusConfig {
 
   public init() {
     self.init(
-      enabled: Settings.instance.chorusEnabled,
-      rate: Settings.instance.chorusRate,
-      delay: Settings.instance.chorusDelay,
-      depth: Settings.instance.chorusDepth,
-      feedback: Settings.instance.chorusFeedback,
-      wetDryMix: Settings.instance.chorusWetDryMix,
-      negFeedback: Settings.instance.chorusNegFeedback,
-      odd90: Settings.instance.chorusOdd90)
+      enabled: Settings.shared.chorusEnabled,
+      rate: Settings.shared.chorusRate,
+      delay: Settings.shared.chorusDelay,
+      depth: Settings.shared.chorusDepth,
+      feedback: Settings.shared.chorusFeedback,
+      wetDryMix: Settings.shared.chorusWetDryMix,
+      negFeedback: Settings.shared.chorusNegFeedback,
+      odd90: Settings.shared.chorusOdd90)
   }
 
   public init?(state: [String: Any]) {

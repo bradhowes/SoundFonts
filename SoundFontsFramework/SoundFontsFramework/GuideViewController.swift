@@ -44,7 +44,7 @@ extension GuideViewController {
     keySlideLabel.isHidden = isAUv3
     keyRangeLabel.isHidden = isAUv3
     keyRangeArrow.isHidden = isAUv3
-    if Settings.instance.showingFavorites {
+    if Settings.shared.showingFavorites {
       fontPresetPanel.isHidden = true
       favoritesPanel.isHidden = false
     } else {

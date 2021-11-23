@@ -375,7 +375,7 @@ extension Sampler {
     // - If global mode enabled, don't change anything
     // - If preset has a config use it.
     // - Otherwise, if effect was enabled disable it
-    if let delay = delayEffect, !Settings.instance.delayGlobal {
+    if let delay = delayEffect, !Settings.shared.delayGlobal {
       if let config = presetConfig.delayConfig {
         os_log(.debug, log: log, "reverb preset config")
         delay.active = config
@@ -385,7 +385,7 @@ extension Sampler {
       }
     }
 
-    if let reverb = reverbEffect, !Settings.instance.reverbGlobal {
+    if let reverb = reverbEffect, !Settings.shared.reverbGlobal {
       if let config = presetConfig.reverbConfig {
         os_log(.debug, log: log, "delay preset config")
         reverb.active = config

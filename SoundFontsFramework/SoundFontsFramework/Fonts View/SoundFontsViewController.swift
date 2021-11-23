@@ -68,7 +68,7 @@ extension SoundFontsViewController {
 
     maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
-    let multiplier = Settings.instance.presetsWidthMultiplier
+    let multiplier = Settings.shared.presetsWidthMultiplier
     presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
     dividerDragGesture.maximumNumberOfTouches = 1
@@ -109,7 +109,7 @@ extension SoundFontsViewController {
         presetsWidthConstraint.multiplier,
         multiplier)
       presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
-      Settings.instance.presetsWidthMultiplier = Double(multiplier)
+      Settings.shared.presetsWidthMultiplier = Double(multiplier)
 
     default: break
     }

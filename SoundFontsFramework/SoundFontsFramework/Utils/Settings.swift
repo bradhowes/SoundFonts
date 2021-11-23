@@ -2,153 +2,114 @@
 
 import Foundation
 
-/// Key definitions that include the key name, the value type, and any default value associated with the setting if not
-/// found
-extension SettingKeys {
+/// Collection of user settings.
+public struct Settings {
+  public static let shared = UserDefaults.standard
+}
 
+public extension SettingKeys {
   // AskForReview settings
 
   /// The number of days to wait after the first launch of the app before asking for a review
-  public static let daysAfterFirstLaunchBeforeRequest = SettingKey(
-    "daysAfterFirstLaunchBeforeRequest", defaultValue: 14)
+  static let daysAfterFirstLaunchBeforeRequest = SettingKey("daysAfterFirstLaunchBeforeRequest", 14)
   /// The number of months to wait between review requests
-  public static let monthsAfterLastReviewBeforeRequest = SettingKey(
-    "monthsAfterLastReviewBeforeRequest", defaultValue: 2)
+  static let monthsAfterLastReviewBeforeRequest = SettingKey("monthsAfterLastReviewBeforeRequest", 2)
   /// The date of the first launch (not saved across reinstalls)
-  public static let firstLaunchDate = SettingKey("firstLaunchDate", defaultValue: Date.distantPast)
+  static let firstLaunchDate = SettingKey("firstLaunchDate", Date.distantPast)
   /// The date of the last review request
-  public static let lastReviewRequestDate = SettingKey(
-    "lastReviewRequestDate", defaultValue: Date.distantPast)
+  static let lastReviewRequestDate = SettingKey("lastReviewRequestDate", Date.distantPast)
   /// The version of the app for the last review request
-  public static let lastReviewRequestVersion = SettingKey(
-    "lastReviewRequestVersion", defaultValue: "")
+  static let lastReviewRequestVersion = SettingKey("lastReviewRequestVersion", "")
 
   // App settings
 
   /// Current keyboard key labeling
-  public static let keyLabelOption = SettingKey(
-    "keyLabelOption", defaultValue: KeyLabelOption.cOnly.rawValue)
+  static let keyLabelOption = SettingKey("keyLabelOption", KeyLabelOption.cOnly.rawValue)
   /// Current keyboard key width
-  public static let keyWidth = SettingKey<Float>("keyWidth", defaultValue: 64.0)
-  /// The last active patch (name string is legacy)
-  public static let lastActivePreset = SettingKey("lastActivePatch", defaultValue: Data())
+  static let keyWidth = SettingKey<Float>("keyWidth", 64.0)
+  /// The last active preset (name is legacy)
+  static let lastActivePreset = SettingKey("lastActivePatch", Data())
   /// The lowest note on the keyboard that is currently visible
-  public static let lowestKeyNote = SettingKey("lowestKeyNote", defaultValue: 48)
+  static let lowestKeyNote = SettingKey("lowestKeyNote", 48)
   /// When true, play a sound when changing the active preset
-  public static let playSample = SettingKey("playSample", defaultValue: false)
+  static let playSample = SettingKey("playSample", false)
   /// When true, the upper view is showing the favorites. Used to restore the app to the last view.
-  public static let showingFavorites = SettingKey("showingFavorites", defaultValue: false)
+  static let showingFavorites = SettingKey("showingFavorites", false)
   /// When true, show a solfege label when a note is played
-  public static let showSolfegeLabel = SettingKey("showSolfegeLabel", defaultValue: true)
+  static let showSolfegeLabel = SettingKey("showSolfegeLabel", true)
   /// When true, copy an SF2 file into the application's folder when the file is added to the app.
-  public static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", defaultValue: true)
+  static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", true)
   /// When true, allow finger movements on the keyboard to slide the keyboard to a new position
-  public static let slideKeyboard = SettingKey("slideKeyboard", defaultValue: false)
+  static let slideKeyboard = SettingKey("slideKeyboard", false)
 
   /// The current MIDI channel to use for incoming MIDI events. OMNI mode is a value of -1 (default).
-  public static let midiChannel = SettingKey("midiChannel", defaultValue: -1)
+  static let midiChannel = SettingKey("midiChannel", -1)
   /// The MIDI virtual input ID (not usser settable)
-  public static let virtualMidiInId = SettingKey("virtualMidiInId", defaultValue: Int32(0))
+  static let virtualMidiInId = SettingKey("virtualMidiInId", Int32(0))
   /// The MIDI virtual output ID (not usser settable)
-  public static let virtualMidiOutId = SettingKey("virtualMidiOutId", defaultValue: Int32(0))
+  static let virtualMidiOutId = SettingKey("virtualMidiOutId", Int32(0))
 
   /// If true, the reverb AU is currently active
-  public static let reverbEnabled = SettingKey("reverbEnabled", defaultValue: false)
+  static let reverbEnabled = SettingKey("reverbEnabled", false)
   /// If true, the reverb AU is globally active
-  public static let reverbGlobal = SettingKey("reverbGlobal", defaultValue: false)
+  static let reverbGlobal = SettingKey("reverbGlobal", false)
   /// The current reverb preset being used
-  public static let reverbPreset = SettingKey("reverbPreset", defaultValue: 1)
+  static let reverbPreset = SettingKey("reverbPreset", 1)
   /// The current reverb mix setting
-  public static let reverbWetDryMix = SettingKey("reverbWetDryMix", defaultValue: Float(35.0))
+  static let reverbWetDryMix = SettingKey("reverbWetDryMix", Float(35.0))
 
   /// If true, the delay AU is currently active
-  public static let delayEnabled = SettingKey("delayEnabled", defaultValue: false)
+  static let delayEnabled = SettingKey("delayEnabled", false)
   /// If true, the delay AU is globally active
-  public static let delayGlobal = SettingKey("delayGlobal", defaultValue: false)
+  static let delayGlobal = SettingKey("delayGlobal", false)
   /// The current delay amount in seconds
-  public static let delayTime = SettingKey("delayTime", defaultValue: Float(0.19))
+  static let delayTime = SettingKey("delayTime", Float(0.19))
   /// The current feedback setting between -100% and 100%
-  public static let delayFeedback = SettingKey("delayFeedback", defaultValue: Float(-75.0))
+  static let delayFeedback = SettingKey("delayFeedback", Float(-75.0))
   /// The current low-pass cutoff value for the delay effect
-  public static let delayCutoff = SettingKey("delayCutoff", defaultValue: Float(15000.0))
+  static let delayCutoff = SettingKey("delayCutoff", Float(15000.0))
   /// The current delay mix setting
-  public static let delayWetDryMix = SettingKey("delayWetDryMix", defaultValue: Float(45.0))
+  static let delayWetDryMix = SettingKey("delayWetDryMix", Float(45.0))
 
   /// If true, the chorus AU is currently active
-  public static let chorusEnabled = SettingKey("chorusEnabled", defaultValue: false)
+  static let chorusEnabled = SettingKey("chorusEnabled", false)
   /// If true, the delay AU is globally active
-  public static let chorusGlobal = SettingKey("chorusGlobal", defaultValue: false)
+  static let chorusGlobal = SettingKey("chorusGlobal", false)
   /// The current delay amount in seconds
-  public static let chorusRate = SettingKey("chorusRate", defaultValue: Float(0.19))
+  static let chorusRate = SettingKey("chorusRate", Float(0.19))
   /// The current delay amount in seconds
-  public static let chorusDelay = SettingKey("chorusDelay", defaultValue: Float(0.19))
+  static let chorusDelay = SettingKey("chorusDelay", Float(0.19))
   /// The current delay amount in seconds
-  public static let chorusDepth = SettingKey("chorusDepth", defaultValue: Float(0.19))
+  static let chorusDepth = SettingKey("chorusDepth", Float(0.19))
   /// The current feedback setting between -100% and 100%
-  public static let chorusFeedback = SettingKey("chorusFeedback", defaultValue: Float(-75.0))
+  static let chorusFeedback = SettingKey("chorusFeedback", Float(-75.0))
   /// The current low-pass cutoff value for the delay effect
-  public static let chorusCutoff = SettingKey("chorusCutoff", defaultValue: Float(15000.0))
+  static let chorusCutoff = SettingKey("chorusCutoff", Float(15000.0))
   /// The current delay mix setting
-  public static let chorusWetDryMix = SettingKey("chorusWetDryMix", defaultValue: Float(45.0))
+  static let chorusWetDryMix = SettingKey("chorusWetDryMix", Float(45.0))
   /// If true, use negative feedback
-  public static let chorusNegFeedback = SettingKey("chorusNegFeedback", defaultValue: false)
+  static let chorusNegFeedback = SettingKey("chorusNegFeedback", false)
   /// If true, the odd (R) channel is out of phase with even (L).
-  public static let chorusOdd90 = SettingKey("chorusOdd90", defaultValue: false)
+  static let chorusOdd90 = SettingKey("chorusOdd90", false)
 
   /// When true, the effects panel is visible. Used to restore UI state when relaunching the app.
-  public static let showEffects = SettingKey("showEffects", defaultValue: false)
+  static let showEffects = SettingKey("showEffects", false)
   /// The currently active font tag
-  public static let activeTagKey = SettingKey("activeTagKey", defaultValue: Tag.allTag.key)
+  static let activeTagKey = SettingKey("activeTagKey", Tag.allTag.key)
   /// The global tuning setting that is in effect
-  public static let globalTuning = SettingKey("globalTuning", defaultValue: Float(0.0))
+  static let globalTuning = SettingKey("globalTuning", Float(0.0))
   /// When true, global tuning is active
-  public static let globalTuningEnabled = SettingKey("globalTuningEnabled", defaultValue: false)
+  static let globalTuningEnabled = SettingKey("globalTuningEnabled", false)
   /// When true, the user has viewed the tutorial pages
-  public static let showedTutorial = SettingKey("showedTutorial", defaultValue: false)
+  static let showedTutorial = SettingKey("showedTutorial", false)
   /// When true, the user has viewed the changes page
-  public static let showedChanges = SettingKey("showedChanges", defaultValue: "")
+  static let showedChanges = SettingKey("showedChanges", "")
   /// The current scale factor that controls how much of the presets view to show in comparison to the fonts view
-  public static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", defaultValue: 1.4)
+  static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", 1.4)
   /// The number of semitones a max pitch bend will cause in a playing note
-  public static let pitchBendRange = SettingKey("pitchBendRange", defaultValue: 2)
+  static let pitchBendRange = SettingKey("pitchBendRange", 2)
   /// When true, the user has seen the prompt on how to restore hidden presets
-  public static let showedHidePresetPrompt = SettingKey(
-    "showedHidePresetPrompt", defaultValue: false)
-}
-
-/// Collection of user settings. There are two types: shared and instance. Shared settings affect both the app and the
-/// AUv3 component; instance settings affect only one instance.
-public struct Settings {
-
-  /// The collection of shared settings
-  public static let shared = singleton._shared
-  /// The collection of per-instance settings
-  public static let instance = singleton._instance
-
-  private static let singleton = Settings()
-
-  private let _shared: UserDefaults
-  private let _instance: UserDefaults
-
-  /**
-   Initialize settings from UserDefaults.
-   */
-  init() {
-    guard let shared = UserDefaults(suiteName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare")
-    else {
-      fatalError("unable to access SoundFontsShare")
-    }
-
-    let instance = UserDefaults.standard
-    if let sharedInit = shared.persistentDomain(
-        forName: "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare")
-    {
-      instance.register(defaults: sharedInit)
-    }
-
-    self._shared = shared
-    self._instance = instance
-  }
+  static let showedHidePresetPrompt = SettingKey("showedHidePresetPrompt", false)
 }
 
 /// KVO properties based on the above key definitions.
@@ -219,12 +180,12 @@ extension UserDefaults {
     get { self[.midiChannel] }
     set { self[.midiChannel] = newValue }
   }
-  /// The MIDI virtual input ID (not usser settable)
+  /// The MIDI virtual input ID (not user settable)
   @objc public dynamic var virtualMidiInId: Int32 {
     get { self[.virtualMidiInId] }
     set { self[.virtualMidiInId] = newValue }
   }
-  /// The MIDI virtual output ID (not usser settable)
+  /// The MIDI virtual output ID (not user settable)
   @objc public dynamic var virtualMidiOutId: Int32 {
     get { self[.virtualMidiOutId] }
     set { self[.virtualMidiOutId] = newValue }

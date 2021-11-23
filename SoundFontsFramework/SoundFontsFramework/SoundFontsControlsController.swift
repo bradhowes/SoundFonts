@@ -27,7 +27,7 @@ public final class SoundFontsControlsController: UIViewController {
 
     let showingFavorites: Bool = {
       if CommandLine.arguments.contains("--screenshots") { return false }
-      return Settings.instance.showingFavorites
+      return Settings.shared.showingFavorites
     }()
 
     presetsView.isHidden = showingFavorites
@@ -40,7 +40,7 @@ public final class SoundFontsControlsController: UIViewController {
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if isMainApp && Settings.instance.showEffects {
+    if isMainApp && Settings.shared.showEffects {
       showEffects(false)
     }
 
@@ -107,7 +107,7 @@ extension SoundFontsControlsController {
         NotificationCenter.default.post(name: .showingEffects, object: nil)
       }
     }
-    Settings.instance.showEffects = true
+    Settings.shared.showEffects = true
   }
 
   private func hideEffects(_ animated: Bool = true) {
@@ -121,7 +121,7 @@ extension SoundFontsControlsController {
         NotificationCenter.default.post(name: .hidingEffects, object: nil)
       }
     }
-    Settings.instance.showEffects = false
+    Settings.shared.showEffects = false
   }
 }
 
@@ -135,7 +135,7 @@ extension SoundFontsControlsController {
       fontsViewManager.dismissSearchKeyboard()
     }
     upperViewManager.slideNextHorizontally()
-    Settings.instance.showingFavorites = upperViewManager.active == 1
+    Settings.shared.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 
@@ -144,7 +144,7 @@ extension SoundFontsControlsController {
    */
   private func showPreviousConfigurationView(_ action: AnyObject) {
     upperViewManager.slidePrevHorizontally()
-    Settings.instance.showingFavorites = upperViewManager.active == 1
+    Settings.shared.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 

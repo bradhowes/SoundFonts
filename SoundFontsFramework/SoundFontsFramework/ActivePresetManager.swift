@@ -50,7 +50,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
   /// Obtain the last-saved active preset value
   static var restoredActivePresetKind: ActivePresetKind? {
-    ActivePresetKind.decodeFromData(Settings.instance.lastActivePreset)
+    ActivePresetKind.decodeFromData(Settings.shared.lastActivePreset)
   }
 
   /**
@@ -174,7 +174,7 @@ extension ActivePresetManager {
     os_log(.info, log: log, "save - %{public}s", kind.description)
     DispatchQueue.global(qos: .background).async {
       if let data = kind.encodeToData() {
-        Settings.instance.lastActivePreset = data
+        Settings.shared.lastActivePreset = data
       }
     }
   }

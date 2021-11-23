@@ -65,16 +65,15 @@ extension KeyboardController {
     firstMidiNoteValue = lowestKeyNote
     offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
 
-    keyLabelOptionObservation = Settings.shared.observe(
-      \.keyLabelOption,
-      options: [.new]
-    ) { [weak self] _, change in
+    _ = Settings.shared.keyLabelOption
+    keyLabelOptionObservation = Settings.shared.observe(\.keyLabelOption, options: [.new]) { [weak self] _, change in
       guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else {
         return
       }
       self?.keyLabelOption = option
     }
 
+    _ = Settings.shared.keyWidth
     keyWidthObservation = Settings.shared.observe(\.keyWidth, options: [.new]) { [weak self] _, change in
       guard let self = self, let keyWidth = change.newValue else { return }
       precondition(!self.allKeys.isEmpty)

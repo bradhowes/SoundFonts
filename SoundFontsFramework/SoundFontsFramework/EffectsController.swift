@@ -124,8 +124,8 @@ extension EffectsController {
   }
 
   @IBAction func toggleReverbGlobal(_ sender: UIButton) {
-    let value = !Settings.instance.reverbGlobal
-    Settings.instance.reverbGlobal = value
+    let value = !Settings.shared.reverbGlobal
+    Settings.shared.reverbGlobal = value
     reverbGlobal.showEnabled(value)
     updatePresetConfig()
   }
@@ -151,8 +151,8 @@ extension EffectsController {
   }
 
   @IBAction func toggleDelayGlobal(_ sender: UIButton) {
-    let value = !Settings.instance.delayGlobal
-    Settings.instance.delayGlobal = value
+    let value = !Settings.shared.delayGlobal
+    Settings.shared.delayGlobal = value
     delayGlobal.showEnabled(value)
     updatePresetConfig()
   }
@@ -199,8 +199,8 @@ extension EffectsController {
   }
 
   @IBAction func toggleChorusGlobal(_ sender: UIButton) {
-    let value = !Settings.instance.chorusGlobal
-    Settings.instance.chorusGlobal = value
+    let value = !Settings.shared.chorusGlobal
+    Settings.shared.chorusGlobal = value
     chorusGlobal.showEnabled(value)
     updatePresetConfig()
   }
@@ -309,33 +309,33 @@ extension EffectsController: UIPickerViewDelegate {
 extension EffectsController {
 
   private func updateGlobalConfig() {
-    if let reverbEffect = self.reverbEffect, Settings.instance.reverbGlobal {
+    if let reverbEffect = self.reverbEffect, Settings.shared.reverbGlobal {
       os_log(.info, log: log, "updating global reverb settings")
       let config = reverbEffect.active
-      Settings.instance.reverbEnabled = config.enabled
-      Settings.instance.reverbPreset = config.preset
-      Settings.instance.reverbWetDryMix = config.wetDryMix
+      Settings.shared.reverbEnabled = config.enabled
+      Settings.shared.reverbPreset = config.preset
+      Settings.shared.reverbWetDryMix = config.wetDryMix
     }
 
-    if let delayEffect = self.delayEffect, Settings.instance.delayGlobal {
+    if let delayEffect = self.delayEffect, Settings.shared.delayGlobal {
       os_log(.info, log: log, "updating global delay settings")
       let config = delayEffect.active
-      Settings.instance.delayEnabled = config.enabled
-      Settings.instance.delayTime = config.time
-      Settings.instance.delayFeedback = config.feedback
-      Settings.instance.delayCutoff = config.cutoff
-      Settings.instance.delayWetDryMix = config.wetDryMix
+      Settings.shared.delayEnabled = config.enabled
+      Settings.shared.delayTime = config.time
+      Settings.shared.delayFeedback = config.feedback
+      Settings.shared.delayCutoff = config.cutoff
+      Settings.shared.delayWetDryMix = config.wetDryMix
     }
 
-    if let chorusEffect = self.chorusEffect, Settings.instance.chorusGlobal {
+    if let chorusEffect = self.chorusEffect, Settings.shared.chorusGlobal {
       os_log(.info, log: log, "updating global chorus settings")
       let config = chorusEffect.active
-      Settings.instance.chorusEnabled = config.enabled
-      Settings.instance.chorusRate = config.rate
-      Settings.instance.chorusDelay = config.delay
-      Settings.instance.chorusDepth = config.depth
-      Settings.instance.chorusFeedback = config.feedback
-      Settings.instance.chorusWetDryMix = config.wetDryMix
+      Settings.shared.chorusEnabled = config.enabled
+      Settings.shared.chorusRate = config.rate
+      Settings.shared.chorusDelay = config.delay
+      Settings.shared.chorusDepth = config.depth
+      Settings.shared.chorusFeedback = config.feedback
+      Settings.shared.chorusWetDryMix = config.wetDryMix
     }
   }
 
@@ -350,7 +350,7 @@ extension EffectsController {
     os_log(.info, log: log, "updatePresetConfig")
 
     let reverbConfig: ReverbConfig? = {
-      if Settings.instance.reverbGlobal {
+      if Settings.shared.reverbGlobal {
         os_log(.info, log: log, "updating global reverb")
         return activePresetManager.activePresetConfig?.reverbConfig
       } else if reverbEffect.active.enabled {
@@ -363,7 +363,7 @@ extension EffectsController {
     }()
 
     let delayConfig: DelayConfig? = {
-      if Settings.instance.delayGlobal {
+      if Settings.shared.delayGlobal {
         os_log(.info, log: log, "updating global delay")
         return activePresetManager.activePresetConfig?.delayConfig
       } else if delayEffect.active.enabled {
@@ -376,7 +376,7 @@ extension EffectsController {
     }()
 
     let chorusConfig: ChorusConfig? = {
-      if Settings.instance.chorusGlobal {
+      if Settings.shared.chorusGlobal {
         os_log(.info, log: log, "updating global chorus")
         return activePresetManager.activePresetConfig?.chorusConfig
       } else if chorusEffect.active.enabled {
@@ -431,8 +431,8 @@ extension EffectsController {
     os_log(.info, log: log, "updateState")
     let presetConfig = activePresetManager.activePresetConfig
 
-    reverbGlobal.showEnabled(Settings.instance.reverbGlobal)
-    if Settings.instance.reverbGlobal {
+    reverbGlobal.showEnabled(Settings.shared.reverbGlobal)
+    if Settings.shared.reverbGlobal {
       os_log(.info, log: log, "showing global reverb state")
       let config = ReverbConfig()
       update(config: config)
@@ -443,8 +443,8 @@ extension EffectsController {
       update(config: config)
     }
 
-    delayGlobal.showEnabled(Settings.instance.delayGlobal)
-    if Settings.instance.delayGlobal {
+    delayGlobal.showEnabled(Settings.shared.delayGlobal)
+    if Settings.shared.delayGlobal {
       os_log(.info, log: log, "showing global delay state")
       update(config: DelayConfig())
     } else {
@@ -454,8 +454,8 @@ extension EffectsController {
       update(config: config)
     }
 
-    chorusGlobal.showEnabled(Settings.instance.chorusGlobal)
-    if Settings.instance.chorusGlobal {
+    chorusGlobal.showEnabled(Settings.shared.chorusGlobal)
+    if Settings.shared.chorusGlobal {
       os_log(.info, log: log, "showing global chorus state")
       update(config: ChorusConfig())
     } else {

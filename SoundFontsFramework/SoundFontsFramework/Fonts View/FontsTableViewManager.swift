@@ -43,6 +43,7 @@ final class FontsTableViewManager: NSObject {
     activePresetManager.subscribe(self, notifier: activePresetChange)
     tags.subscribe(self, notifier: tagsChange)
 
+    _ = Settings.shared.activeTagKey
     activeTagsObservation = Settings.shared.observe(\.activeTagKey) { [weak self] setting, _ in
       self?.updateFilterTag(tagKey: setting.activeTagKey)
     }
@@ -237,7 +238,7 @@ extension FontsTableViewManager {
       soundFonts.removeTag(tag.key)
       updateFilterTag(tagKey: Tag.allTag.key)
 
-    case .restored: updateFilterTag(tagKey: Settings.shared.activeTagKey)
+    case .restored: updateFilterTag(tagKey: Settings.shared[.activeTagKey])
     case .added: break
     case .moved: break
     case .changed: break

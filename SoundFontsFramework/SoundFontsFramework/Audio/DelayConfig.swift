@@ -23,11 +23,11 @@ extension DelayConfig {
 
   public init() {
     self.init(
-      enabled: Settings.instance.delayEnabled,
-      time: Settings.instance.delayTime,
-      feedback: Settings.instance.delayFeedback,
-      cutoff: Settings.instance.delayCutoff,
-      wetDryMix: Settings.instance.delayWetDryMix)
+      enabled: Settings.shared.delayEnabled,
+      time: Settings.shared.delayTime,
+      feedback: Settings.shared.delayFeedback,
+      cutoff: Settings.shared.delayCutoff,
+      wetDryMix: Settings.shared.delayWetDryMix)
   }
 
   public init?(state: [String: Any]) {

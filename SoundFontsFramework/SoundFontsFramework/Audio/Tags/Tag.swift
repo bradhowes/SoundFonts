@@ -83,3 +83,18 @@ extension Tag: CustomStringConvertible {
   /// Custom description for Tag instances
   public var description: String { "Tag('\(name)')" }
 }
+
+extension Tag.Key: SettingSerializable {
+
+  public static func register(key: String, value: UUID, userDefaults: UserDefaults) {
+    userDefaults.register(defaults: [key: value.uuidString])
+  }
+
+  public static func get(key: String, userDefaults: UserDefaults) -> Tag.Key {
+    Tag.Key(uuidString: userDefaults.string(forKey: key)!) ?? Tag.allTag.key
+  }
+
+  public static func set(key: String, value: Tag.Key, userDefaults: UserDefaults) {
+    userDefaults.set(value.uuidString, forKey: key)
+  }
+}

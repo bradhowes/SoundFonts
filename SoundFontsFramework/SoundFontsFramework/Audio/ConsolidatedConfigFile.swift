@@ -58,21 +58,20 @@ public final class ConsolidatedConfigFile: UIDocument {
   override public init(fileURL: URL) {
     os_log(.info, log: Self.log, "init - fileURL: %{public}s", fileURL.absoluteString)
     super.init(fileURL: fileURL)
-    initialize(fileURL)
   }
 
   public func save() {
     self.save(to: fileURL, for: .forOverwriting)
   }
 
-  private func initialize(_ sharedArchivePath: URL) {
-    os_log(.info, log: log, "initialize - %{public}s", sharedArchivePath.path)
+  public func load() {
+    os_log(.info, log: log, "load - %{public}s", fileURL.path)
     self.open { ok in
       if !ok {
         os_log(.error, log: Self.log, "failed to open - attempting legacy loading")
         // We are back on the main thread so do the loading in the background.
         DispatchQueue.global(qos: .userInitiated).async {
-          self.attemptLegacyLoad(sharedArchivePath)
+          self.attemptLegacyLoad()
         }
       }
     }
@@ -112,7 +111,7 @@ public final class ConsolidatedConfigFile: UIDocument {
 
 extension ConsolidatedConfigFile {
 
-  private func attemptLegacyLoad(_ sharedArchivePath: URL) {
+  private func attemptLegacyLoad() {
     os_log(.info, log: log, "attemptLegacyLoad")
     guard
       let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(filename: "SoundFontLibrary.plist"),

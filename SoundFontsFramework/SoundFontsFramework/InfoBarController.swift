@@ -55,14 +55,16 @@ public final class InfoBarController: UIViewController {
     panner.maximumNumberOfTouches = 1
     touchView.addGestureRecognizer(panner)
 
+    updateSlidingKeyboardState()
+
+    showEffects.tintColor = Settings.shared.showEffects ? .systemOrange : .systemTeal
+
+    // NOTE: begin observing *after* first accessing setting value.
     observers.append(
       Settings.shared.observe(\.slideKeyboard, options: [.new]) { [weak self] _, _ in
         self?.updateSlidingKeyboardState()
       }
     )
-
-    updateSlidingKeyboardState()
-    showEffects.tintColor = Settings.instance.showEffects ? .systemOrange : .systemTeal
   }
 
   /**

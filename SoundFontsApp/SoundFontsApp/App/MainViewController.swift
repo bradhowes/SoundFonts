@@ -48,9 +48,9 @@ final class MainViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if !skipTutorial && !Settings.instance.showedTutorial {
+    if !skipTutorial && !Settings.shared.showedTutorial {
       showTutorial()
-      Settings.instance.showedTutorial = true
+      Settings.shared.showedTutorial = true
     }
   }
 
@@ -74,9 +74,9 @@ extension MainViewController {
    */
   func showChanges() {
     let currentVersion = Bundle.main.releaseVersionNumber
-    if Settings.instance.showedChanges != currentVersion {
-      let changes = ChangesCompiler.compile(since: Settings.instance.showedChanges)
-      Settings.instance.showedChanges = currentVersion
+    if Settings.shared.showedChanges != currentVersion {
+      let changes = ChangesCompiler.compile(since: Settings.shared.showedChanges)
+      Settings.shared.showedChanges = currentVersion
       if let viewController = TutorialViewController.instantiateChanges(changes) {
         present(viewController, animated: true, completion: nil)
       }

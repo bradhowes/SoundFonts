@@ -61,7 +61,6 @@ public:
     }
 
     if (canLoop && pos_ >= bounds_.endLoopPos()) {
-      log_.debug() << "looping" << std::endl;
       pos_ -= (bounds_.endLoopPos() - bounds_.startLoopPos());
     }
     else if (pos_ >= bounds_.endPos()) {
