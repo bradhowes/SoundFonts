@@ -6,14 +6,14 @@ import XCTest
 private let ud = UserDefaults(suiteName: "UserDefaultsTests")!
 
 private struct Settings {
-  static let intSetting = SettingKey<Int>("intSetting", 123, userDefaults: ud)
-  static let int32Setting = SettingKey<Int32>("int32Setting", -123, userDefaults: ud)
-  static let doubleSetting = SettingKey<Double>("doubleSetting", 123.45, userDefaults: ud)
-  static let floatSetting = SettingKey<Float>("floatSetting", -123.45, userDefaults: ud)
-  static let stringSetting = SettingKey<String>("stringSetting", "stringSetting", userDefaults: ud)
-  static let timeIntervalSetting = SettingKey<TimeInterval>("timeIntervalSetting", Date().timeIntervalSince1970, userDefaults: ud)
-  static let boolSetting = SettingKey("boolSetting", false, userDefaults: ud)
-  static let tagSetting = SettingKey("tagSetting", Tag.allTag.key, userDefaults: ud)
+  static let intSetting = SettingKey<Int>("intSetting", 123, source: ud)
+  static let int32Setting = SettingKey<Int32>("int32Setting", -123, source: ud)
+  static let doubleSetting = SettingKey<Double>("doubleSetting", 123.45, source: ud)
+  static let floatSetting = SettingKey<Float>("floatSetting", -123.45, source: ud)
+  static let stringSetting = SettingKey<String>("stringSetting", "stringSetting", source: ud)
+  static let timeIntervalSetting = SettingKey<TimeInterval>("timeIntervalSetting", Date().timeIntervalSince1970, source: ud)
+  static let boolSetting = SettingKey("boolSetting", false, source: ud)
+  static let tagSetting = SettingKey("tagSetting", Tag.allTag.key, source: ud)
 }
 
 class SettingsTests: XCTestCase {

@@ -86,15 +86,15 @@ extension Tag: CustomStringConvertible {
 
 extension Tag.Key: SettingSerializable {
 
-  public static func register(key: String, value: UUID, userDefaults: UserDefaults) {
-    userDefaults.register(defaults: [key: value.uuidString])
+  public static func register(key: String, value: UUID, source: UserDefaults) {
+    source.register(defaults: [key: value.uuidString])
   }
 
-  public static func get(key: String, userDefaults: UserDefaults) -> Tag.Key {
-    Tag.Key(uuidString: userDefaults.string(forKey: key)!) ?? Tag.allTag.key
+  public static func get(key: String, source: UserDefaults) -> Tag.Key {
+    Tag.Key(uuidString: source.string(forKey: key)!) ?? Tag.allTag.key
   }
 
-  public static func set(key: String, value: Tag.Key, userDefaults: UserDefaults) {
-    userDefaults.set(value.uuidString, forKey: key)
+  public static func set(key: String, value: Tag.Key, source: UserDefaults) {
+    source.set(value.uuidString, forKey: key)
   }
 }

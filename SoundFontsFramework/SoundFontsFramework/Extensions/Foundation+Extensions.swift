@@ -3,87 +3,87 @@
 import Foundation
 
 extension String: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> String {
-    userDefaults.string(forKey: key)!
+  public static func get(key: String, source: UserDefaults) -> String {
+    source.string(forKey: key)!
   }
-  public static func set(key: String, value: String, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: String, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Int: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Int {
+  public static func get(key: String, source: UserDefaults) -> Int {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Int
+    source.object(forKey: key) as! Int
     // swiftlint:enable force_cast
   }
-  public static func set(key: String, value: Int, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Int, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Int32: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Int32 {
+  public static func get(key: String, source: UserDefaults) -> Int32 {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Int32
+    source.object(forKey: key) as! Int32
     // swiftlint:enable force_cast
   }
-  public static func set(key: String, value: Int32, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Int32, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Float: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Float {
+  public static func get(key: String, source: UserDefaults) -> Float {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Float
+    source.object(forKey: key) as! Float
     // swiftlint:enable force_cast
   }
-  public static func set(key: String, value: Float, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Float, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Double: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Double {
+  public static func get(key: String, source: UserDefaults) -> Double {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Double
+    source.object(forKey: key) as! Double
     // swiftlint:enable force_cast
   }
-  public static func set(key: String, value: Double, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Double, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Bool: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Bool {
+  public static func get(key: String, source: UserDefaults) -> Bool {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Bool
+    source.object(forKey: key) as! Bool
     // swiftlint:enable force_cast
   }
-  public static func set(key: String, value: Bool, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Bool, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Data: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Data {
-    userDefaults.data(forKey: key)!
+  public static func get(key: String, source: UserDefaults) -> Data {
+    source.data(forKey: key)!
   }
-  public static func set(key: String, value: Data, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Data, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
 extension Date: SettingSerializable {
-  public static func get(key: String, userDefaults: UserDefaults) -> Date {
+  public static func get(key: String, source: UserDefaults) -> Date {
     // swiftlint:disable force_cast
-    userDefaults.object(forKey: key) as! Date
+    source.object(forKey: key) as! Date
     // swiftlint:enable force_cast
   }
 
-  public static func set(key: String, value: Date, userDefaults: UserDefaults) {
-    userDefaults.set(value, forKey: key)
+  public static func set(key: String, value: Date, source: UserDefaults) {
+    source.set(value, forKey: key)
   }
 }
 
