@@ -653,7 +653,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -x\nCMD=\"/opt/homebrew/bin/swiftlint\"\nif [[ -x \"${CMD}\" ]]; then\n  \"${CMD}\" --config .swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "set -x\nCMD=\"/opt/homebrew/bin/swiftlint\"\nif [[ -x \"${CMD}\" ]]; then\n  \"${CMD}\" --config \"${PROJECT_DIR}/../.swiftlint.yml\"\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -32,7 +32,7 @@ final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
   let normalBorderColor = UIColor.darkGray
 
   /// Attribute set by the FavoritesViewController to limit the cell's width
-  var maxWidth: CGFloat? = nil {
+  var maxWidth: CGFloat? {
     didSet {
       guard let maxWidth = maxWidth else { return }
       maxWidthConstraint?.isActive = true
