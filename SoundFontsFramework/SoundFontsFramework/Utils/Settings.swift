@@ -44,9 +44,9 @@ public extension SettingKeys {
 
   /// The current MIDI channel to use for incoming MIDI events. OMNI mode is a value of -1 (default).
   static let midiChannel = SettingKey("midiChannel", -1)
-  /// The MIDI virtual input ID (not usser settable)
+  /// The MIDI virtual input ID (not user settable)
   static let virtualMidiInId = SettingKey("virtualMidiInId", Int32(0))
-  /// The MIDI virtual output ID (not usser settable)
+  /// The MIDI virtual output ID (not user settable)
   static let virtualMidiOutId = SettingKey("virtualMidiOutId", Int32(0))
 
   /// If true, the reverb AU is currently active

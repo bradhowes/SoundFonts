@@ -478,7 +478,7 @@
 			buildConfigurationList = BD75B288218B8CFE00C7EBD7 /* Build configuration list for PBXNativeTarget "SoundFontsApp" */;
 			buildPhases = (
 				BD75B25C218B8CFD00C7EBD7 /* Sources */,
-				BD7B44B323A8C5E90051A26A /* Swift Lint */,
+				BD7B44B323A8C5E90051A26A /* Run swiftlint */,
 				BD75B25D218B8CFD00C7EBD7 /* Frameworks */,
 				BD75B25E218B8CFD00C7EBD7 /* Resources */,
 				BDA0FBBE23C61D30005BEFD5 /* Embed App Extensions */,
@@ -636,7 +636,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		BD7B44B323A8C5E90051A26A /* Swift Lint */ = {
+		BD7B44B323A8C5E90051A26A /* Run swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -646,14 +646,14 @@
 			);
 			inputPaths = (
 			);
-			name = "Swift Lint";
+			name = "Run swiftlint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -x\nif which swiftlint >/dev/null; then\n  \n  swiftlint --config ../.swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "set -x\nCMD=\"/opt/homebrew/bin/swiftlint\"\nif [[ -x \"${CMD}\" ]]; then\n  \"${CMD}\" --config .swiftlint.yml\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
