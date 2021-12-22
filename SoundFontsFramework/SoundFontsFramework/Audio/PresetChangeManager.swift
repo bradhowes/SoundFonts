@@ -62,12 +62,10 @@ private final class PresetChangeOperation: Operation {
     }
 
     do {
-      try sampler.loadSoundBankInstrument(
-        at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
+      try sampler.loadSoundBankInstrument(at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
       AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
     } catch let error as NSError {
-      os_log(
-        .error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
+      os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
       if error.code == -54 || error.code == -43 {
         NotificationCenter.default.post(
           name: .soundFontFileAccessDenied, object: url.lastPathComponent)
@@ -94,18 +92,12 @@ final class PresetChangeManager {
     active = true
   }
 
-  func change(
-    sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
-    afterLoadBlock: (() -> Void)? = nil
-  ) {
-    os_log(
-      .info, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB,
-      bankLSB)
+  func change(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
+              afterLoadBlock: (() -> Void)? = nil) {
+    os_log(.info, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB, bankLSB)
     guard active else { return }
-    queue.addOperation(
-      PresetChangeOperation(
-        sampler: sampler, url: url, program: program, bankMSB: bankMSB,
-        bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
+    queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, program: program, bankMSB: bankMSB,
+                                             bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
   }
 
   func stop() {

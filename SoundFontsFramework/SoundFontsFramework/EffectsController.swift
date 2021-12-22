@@ -389,14 +389,12 @@ extension EffectsController {
     }()
 
     if let favorite = activePresetManager.activeFavorite {
-      os_log(
-        .info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
-        delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
+      os_log(.info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
+             delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig, chorus: chorusConfig)
     } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
-      os_log(
-        .info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
-        delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
+      os_log(.info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
+             delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig,
                             chorus: chorusConfig)
     }

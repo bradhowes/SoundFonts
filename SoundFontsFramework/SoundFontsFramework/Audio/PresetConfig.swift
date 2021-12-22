@@ -1,12 +1,15 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
+/**
+ The configuration for a SoundFont preset. While the `Preset` struct represents a specific SoundFont preset, this
+ entity holds the configuration settings for it.
+ */
 public struct PresetConfig: Codable {
 
   public typealias ChangedNotification = TypedNotification<PresetConfig>
 
   /// Notification that will be emitted when the persistent container is available to use.
-  public static let changedNotification: ChangedNotification = ChangedNotification(
-    name: .presetConfigChanged)
+  public static let changedNotification: ChangedNotification = ChangedNotification(name: .presetConfigChanged)
 
   /// The name for this preset configuration
   public var name: String
@@ -17,13 +20,13 @@ public struct PresetConfig: Codable {
   /// If true, then update the keyboard when the preset is activated
   public var keyboardLowestNoteEnabled: Bool = false
 
-  /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension)
+  /// The reverb configuration attached to the preset (NOTE: not applicable in AUv3 extension so it is optional)
   public var reverbConfig: ReverbConfig?
 
-  /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
+  /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension so it is optional)
   public var delayConfig: DelayConfig?
 
-  /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension)
+  /// The delay configuration attached to the preset (NOTE: not applicable in AUv3 extension so it is optional)
   public var chorusConfig: ChorusConfig?
 
   /// Range to the pitch bend controller in semi-tones (12 per octave). Default is 2.

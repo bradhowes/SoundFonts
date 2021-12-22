@@ -4,7 +4,12 @@ import AudioToolbox
 import Foundation
 import os
 
-/// Representation of a patch in a sound font.
+/**
+ Representation of a preset in a sound font. The preset determines what sound will be played in a sound font. There are
+ 1 or more "banks" which can hold up to 256 "programs" each, where a program is a unique configuration of SF2 sound
+ parameters and samples. These configurations are stored internally in the sound font file and are not usually available
+ for direct manipulation by the user.
+*/
 final public class Preset: Codable {
   private static let log = Logging.logger("Preset")
   private var log: OSLog { Self.log }
