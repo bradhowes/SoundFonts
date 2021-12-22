@@ -341,8 +341,8 @@ extension EffectsController {
 
   private func updatePresetConfig() {
     guard let reverbEffect = self.reverbEffect,
-          let delayEffect = self.delayEffect,
-          let chorusEffect = self.chorusEffect
+          let delayEffect = self.delayEffect
+          // let chorusEffect = self.chorusEffect
     else {
       return
     }
@@ -376,16 +376,17 @@ extension EffectsController {
     }()
 
     let chorusConfig: ChorusConfig? = {
-      if Settings.shared.chorusGlobal {
-        os_log(.info, log: log, "updating global chorus")
-        return activePresetManager.activePresetConfig?.chorusConfig
-      } else if chorusEffect.active.enabled {
-        os_log(.info, log: log, "updating preset chorus")
-        return chorusEffect.active
-      } else {
-        os_log(.info, log: log, "nil chorus preset")
-        return nil
-      }
+      return nil
+//      if Settings.shared.chorusGlobal {
+//        os_log(.info, log: log, "updating global chorus")
+//        return activePresetManager.activePresetConfig?.chorusConfig
+//      } else if chorusEffect.active.enabled {
+//        os_log(.info, log: log, "updating preset chorus")
+//        return chorusEffect.active
+//      } else {
+//        os_log(.info, log: log, "nil chorus preset")
+//        return nil
+//      }
     }()
 
     if let favorite = activePresetManager.activeFavorite {
