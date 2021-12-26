@@ -2,14 +2,14 @@
 
 import UIKit
 
-extension UICollectionView {
+public extension UICollectionView {
 
   /**
    Register a cell view type that implements ReusableView protocol.
 
    - parameter _: the cell class to register (ignored)
    */
-  public func register<T: UICollectionViewCell>(_: T.Type) where T: ReusableView {
+  func register<T: UICollectionViewCell>(_: T.Type) where T: ReusableView {
     register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
   }
 
@@ -18,8 +18,7 @@ extension UICollectionView {
 
    - parameter _: the cell class to register (ignored)
    */
-  public func register<T: UICollectionViewCell>(_: T.Type)
-  where T: ReusableView, T: NibLoadableView {
+  func register<T: UICollectionViewCell>(_: T.Type) where T: ReusableView, T: NibLoadableView {
     register(T.nib, forCellWithReuseIdentifier: T.reuseIdentifier)
   }
 
@@ -29,8 +28,8 @@ extension UICollectionView {
    - parameter indexPath: the location of the cell that is being rendered
    - returns: instance of a T class
    */
-  public func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T
-  where T: ReusableView {
+  @inlinable
+  func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T where T: ReusableView {
     let ident = T.reuseIdentifier
     guard let cell = dequeueReusableCell(withReuseIdentifier: ident, for: indexPath) as? T else {
       fatalError("could not dequeue cell with identifier \(ident)")
@@ -44,8 +43,8 @@ extension UICollectionView {
    - parameter indexPath: the index to use
    - returns: optional cell of the indicated type
    */
-  public func cellForItem<T: UICollectionViewCell>(at indexPath: IndexPath) -> T?
-  where T: ReusableView {
+  @inlinable
+  func cellForItem<T: UICollectionViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
     cellForItem(at: indexPath) as? T
   }
 }

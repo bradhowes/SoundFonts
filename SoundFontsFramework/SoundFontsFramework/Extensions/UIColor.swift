@@ -2,7 +2,7 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
 
   /**
    Initialize a color using a string containing hex values.
@@ -10,7 +10,7 @@ extension UIColor {
    - parameter hex: string of 6 hexadecimal digits 0-9 and A-F. May start with a '#' which will be ignored.
    - parameter alpha: optional alpha component for the color. By default it is 1.0 (opaque)
    */
-  public convenience init(hex: String, alpha: CGFloat = 1.0) {
+  convenience init(hex: String, alpha: CGFloat = 1.0) {
     var hexFormatted = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
     if hexFormatted.hasPrefix("#") {
       hexFormatted = String(hexFormatted.dropFirst())
@@ -35,7 +35,7 @@ extension UIColor {
    by 50%.
    - returns: new UIColor
    */
-  public func lighter(_ factor: CGFloat = 0.25) -> UIColor {
+  func lighter(_ factor: CGFloat = 0.25) -> UIColor {
     var hue: CGFloat = 0.0
     var saturation: CGFloat = 0.0
     var brightness: CGFloat = 0.0
@@ -54,7 +54,7 @@ extension UIColor {
    - parameter factor: how much to decrease current brightness. A value of 0.25 will decrease existing value by 25%.
    - returns: new UIColor
    */
-  public func darker(_ factor: CGFloat = 0.25) -> UIColor {
+  func darker(_ factor: CGFloat = 0.25) -> UIColor {
     var hue: CGFloat = 0.0
     var saturation: CGFloat = 0.0
     var brightness: CGFloat = 0.0

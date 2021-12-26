@@ -2,7 +2,7 @@
 
 import Foundation
 
-extension Timer {
+public extension Timer {
 
   /**
    Create a timer that will fire just once after some interval has elapsed.
@@ -12,7 +12,7 @@ extension Timer {
    - returns: new Timer instance
    */
   @discardableResult
-  public class func once(after: TimeInterval, _ block: @escaping (Timer) -> Void) -> Timer {
+  class func once(after: TimeInterval, _ block: @escaping (Timer) -> Void) -> Timer {
     once(when: Date().addingTimeInterval(after), block)
   }
 
@@ -24,7 +24,7 @@ extension Timer {
    - returns: new Timer instance
    */
   @discardableResult
-  public class func once(when: Date, _ block: @escaping (Timer) -> Void) -> Timer {
+  class func once(when: Date, _ block: @escaping (Timer) -> Void) -> Timer {
     let timer = Timer(fire: when, interval: 0.0, repeats: false, block: block)
     RunLoop.current.add(timer, forMode: .default)
     return timer
@@ -38,7 +38,7 @@ extension Timer {
    - returns: new Timer instance
    */
   @discardableResult
-  public class func every(_ interval: TimeInterval, _ block: @escaping (Timer) -> Void) -> Timer {
+  class func every(_ interval: TimeInterval, _ block: @escaping (Timer) -> Void) -> Timer {
     let timer = Timer(timeInterval: interval, repeats: true, block: block)
     RunLoop.current.add(timer, forMode: .default)
     return timer

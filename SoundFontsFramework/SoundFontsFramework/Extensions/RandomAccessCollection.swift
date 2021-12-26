@@ -92,12 +92,9 @@ extension Collection where Iterator.Element: Comparable {
     guard let value = first else { return nil }
     var min = value
     var max = value
-    var pos = index(after: startIndex)
-    while pos < endIndex {
-      let value = self[pos]
+    for value in self.dropFirst() {
       if value < min { min = value }
       if value > max { max = value }
-      pos = index(after: pos)
     }
     return (min: min, max: max)
   }

@@ -58,7 +58,7 @@ extension NSManagedObjectContext {
   }
 }
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
 
   private var NC: NotificationCenter { NotificationCenter.default }
 
@@ -69,10 +69,8 @@ extension NSManagedObjectContext {
    identifies the objects that were added, updated, and/or deleted since the last save event.
    - returns: reference to the observation
    */
-  public func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void)
-  -> NSObjectProtocol
-  {
-    return NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) {
+  func notifyOnSave<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
+    NC.addObserver(forName: .NSManagedObjectContextDidSave, object: self, queue: nil) {
       block(ContextNotification<T>(notification: $0))
     }
   }
@@ -84,10 +82,8 @@ extension NSManagedObjectContext {
    identifies the objects that were added, updated, and/or deleted since the last save event.
    - returns: reference to the observation
    */
-  public func notifyOnChanges<T: NSManagedObject>(
-    _ block: @escaping (ContextNotification<T>) -> Void
-  ) -> NSObjectProtocol {
-    return NC.addObserver(
+  func notifyOnChanges<T: NSManagedObject>(_ block: @escaping (ContextNotification<T>) -> Void) -> NSObjectProtocol {
+    NC.addObserver(
       forName: .NSManagedObjectContextObjectsDidChange, object: self, queue: nil
     ) {
       block(ContextNotification<T>(notification: $0))
@@ -98,7 +94,7 @@ extension NSManagedObjectContext {
 private let singleObjectCacheKey = "SingleObjectCache"
 private typealias SingleObjectCache = [String: NSManagedObject]
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
 
   /**
    Set a managed object in a cache.
@@ -106,7 +102,7 @@ extension NSManagedObjectContext {
    - parameter object: the value to cache
    - parameter key: the key to store under
    */
-  public func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
+  func set(_ object: NSManagedObject?, forSingleObjectCacheKey key: String) {
     var cache = userInfo[singleObjectCacheKey] as? SingleObjectCache ?? [:]
     cache[key] = object
     userInfo[singleObjectCacheKey] = cache
@@ -118,7 +114,7 @@ extension NSManagedObjectContext {
    - parameter key: the value to look for
    - returns: object found in cache or nil
    */
-  public func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
+  func object<T>(forSingleObjectCacheKey key: String) -> T? where T: NSManagedObject {
     guard let cache = userInfo[singleObjectCacheKey] as? SingleObjectCache else { return nil }
     return cache[key] as? T
   }

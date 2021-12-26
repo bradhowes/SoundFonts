@@ -2,14 +2,14 @@
 
 import UIKit
 
-extension UITableView {
+public extension UITableView {
 
   /**
    Register a cell view type that implements ReusableView protocol.
 
    - parameter _: the cell class to register (ignored)
    */
-  public func register<T: UITableViewCell>(_: T.Type) where T: ReusableView {
+  func register<T: UITableViewCell>(_: T.Type) where T: ReusableView {
     register(T.self, forCellReuseIdentifier: T.reuseIdentifier)
   }
 
@@ -18,7 +18,7 @@ extension UITableView {
 
    - parameter _: the cell class to register (ignored)
    */
-  public func register<T: UITableViewCell>(_: T.Type) where T: ReusableView, T: NibLoadableView {
+  func register<T: UITableViewCell>(_: T.Type) where T: ReusableView, T: NibLoadableView {
     register(T.nib, forCellReuseIdentifier: T.reuseIdentifier)
   }
 
@@ -28,8 +28,8 @@ extension UITableView {
    - parameter indexPath: the location of the cell that is being rendered
    - returns: instance of a T class
    */
-  public func dequeueReusableCell<T: UITableViewCell>(at indexPath: IndexPath) -> T
-  where T: ReusableView {
+  @inlinable
+  func dequeueReusableCell<T: UITableViewCell>(at indexPath: IndexPath) -> T where T: ReusableView {
     let ident = T.reuseIdentifier
     guard let cell = dequeueReusableCell(withIdentifier: ident, for: indexPath) as? T else {
       fatalError("could not dequeue cell with identifier \(ident)")
@@ -43,7 +43,8 @@ extension UITableView {
    - parameter indexPath: the location of the cell to return
    - returns: optional cell instance (nil if index path is out of bounds)
    */
-  public func cellForRow<T: UITableViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
+  @inlinable
+  func cellForRow<T: UITableViewCell>(at indexPath: IndexPath) -> T? where T: ReusableView {
     cellForRow(at: indexPath) as? T
   }
 }

@@ -5,7 +5,7 @@ import os
 
 private let log = Logging.logger("AudioUnit")
 
-extension AudioUnit {
+public extension AudioUnit {
 
   /**
    Obtain a property description from an AudioUnit
@@ -14,7 +14,7 @@ extension AudioUnit {
    - returns: a 2-tuple containing the size of the property value and a flag if it can be updated
    - throws exception if the property is invalid
    */
-  public func getPropertyInfo(_ pid: AudioUnitPropertyID) throws -> (size: UInt32, writable: Bool) {
+  func getPropertyInfo(_ pid: AudioUnitPropertyID) throws -> (size: UInt32, writable: Bool) {
     os_log(.info, log: log, "getPropertyInfo %d", pid)
     var size: UInt32 = 0
     var writable: DarwinBoolean = false
@@ -30,7 +30,7 @@ extension AudioUnit {
    - returns: the current value
    - throws exception if the property is invalid or the size is wrong
    */
-  public func getPropertyValue<T>(_ pid: AudioUnitPropertyID) throws -> T {
+  func getPropertyValue<T>(_ pid: AudioUnitPropertyID) throws -> T {
     os_log(.info, log: log, "getPropertyValue %d", pid)
     let (size, _) = try getPropertyInfo(pid)
     return try getPropertyValue(pid, size: size)
@@ -44,7 +44,7 @@ extension AudioUnit {
    - returns: the current value
    - throws exception if the property is invalid or the size is wrong
    */
-  public func getPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32) throws -> T {
+  func getPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32) throws -> T {
     var size = size
     let data = UnsafeMutablePointer<T>.allocate(capacity: Int(size))
     defer { data.deallocate() }
@@ -59,7 +59,7 @@ extension AudioUnit {
    - parameter value: the new value to use
    - throws exception if the property is invalid or the property is read-only
    */
-  public func setPropertyValue<T>(_ pid: AudioUnitPropertyID, value: T) throws {
+  func setPropertyValue<T>(_ pid: AudioUnitPropertyID, value: T) throws {
     let (size, _) = try getPropertyInfo(pid)
     try setPropertyValue(pid, size: size, value: value)
   }
@@ -72,20 +72,20 @@ extension AudioUnit {
    - parameter value: the new value to use
    - throws exception if the property is invalid or the property is read-only
    */
-  public func setPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32, value: T) throws {
+  func setPropertyValue<T>(_ pid: AudioUnitPropertyID, size: UInt32, value: T) throws {
     var value = value
     try AudioUnitSetProperty(self, pid, kAudioUnitScope_Global, 0, &value, size).check()
   }
 }
 
-extension OSStatus {
+public extension OSStatus {
 
   ///
   /**
    Check that the value of an OSStatus is `noErr` otherwise throw an NSError exception.
    - throws exception if not `noErr`
    */
-  public func check() throws {
+  func check() throws {
     if self != noErr {
       os_log(.error, log: log, "last call set error %d", Int(self))
       throw NSError(domain: NSOSStatusErrorDomain, code: Int(self), userInfo: nil)

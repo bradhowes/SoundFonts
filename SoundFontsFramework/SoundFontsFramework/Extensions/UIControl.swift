@@ -3,10 +3,10 @@
 import UIKit
 
 /// Extend UIControl to accept closures for events.
-extension UIControl {
+public extension UIControl {
 
   /// Type of closure to invoke when control fires.
-  public typealias Closure = (AnyObject) -> Void
+  typealias Closure = (AnyObject) -> Void
 
   /**
    Add a closure to the control.
@@ -16,14 +16,11 @@ extension UIControl {
    - returns: token to be used when removing a registration
    */
   @discardableResult
-  public func addClosure(
-    for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping Closure
-  ) -> UUID {
+  func addClosure(for controlEvents: UIControl.Event = .touchUpInside, _ closure: @escaping Closure) -> UUID {
     let sleeve = BoxedClosure(closure)
     addTarget(sleeve, action: #selector(BoxedClosure.invoke(_:)), for: controlEvents)
     let key = UUID()
-    objc_setAssociatedObject(
-      self, "[\(key)]", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+    objc_setAssociatedObject(self, "[\(key)]", sleeve, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
     return key
   }
 
@@ -33,7 +30,7 @@ extension UIControl {
    - parameter key: the token that was obtained from addClosure call
    - parameter controlEvents: the event that was registered for in the addClosure call
    */
-  public func removeClosure(key: UUID, for controlEvents: UIControl.Event) {
+  func removeClosure(key: UUID, for controlEvents: UIControl.Event) {
     guard let sleeve = objc_getAssociatedObject(self, "[\(key)]") else { return }
     removeTarget(sleeve, action: nil, for: controlEvents)
     objc_setAssociatedObject(self, "[\(key)]", nil, objc_AssociationPolicy.OBJC_ASSOCIATION_ASSIGN)

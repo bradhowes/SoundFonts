@@ -5,14 +5,14 @@ import XCTest
 
 class WhiteSpaceOnlyIsNilTests: XCTestCase {
 
-  func testAlgo() {
-    XCTAssertNil(whiteSpaceOnlyIsNil(nil))
-    XCTAssertNil(whiteSpaceOnlyIsNil(""))
-    XCTAssertNil(whiteSpaceOnlyIsNil("               "))
-    XCTAssertEqual(whiteSpaceOnlyIsNil("foo"), "foo")
-    XCTAssertEqual(whiteSpaceOnlyIsNil("foo "), "foo")
-    XCTAssertEqual(whiteSpaceOnlyIsNil(" foo"), "foo")
-    XCTAssertEqual(whiteSpaceOnlyIsNil(" foo "), "foo")
+  func testTrimming() {
+    XCTAssertNil(Optional<String>(nil)?.trimmedWhiteSpacesOrNil)
+    XCTAssertNil("".trimmedWhiteSpacesOrNil)
+    XCTAssertNil("               ".trimmedWhiteSpacesOrNil)
+    XCTAssertEqual("foo".trimmedWhiteSpacesOrNil, "foo")
+    XCTAssertEqual("foo ".trimmedWhiteSpacesOrNil, "foo")
+    XCTAssertEqual(" foo".trimmedWhiteSpacesOrNil, "foo")
+    XCTAssertEqual(" foo ".trimmedWhiteSpacesOrNil, "foo")
   }
 
   func testSearchBar() {

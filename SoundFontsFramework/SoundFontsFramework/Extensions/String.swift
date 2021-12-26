@@ -8,24 +8,27 @@ private let systemFontAttributes = [
 
 private class BundleTag: NSObject {}
 
-extension String {
+public extension String {
+
+  /// Trim whitespaces from value and return nil if empty string. Otherwise, return trimmed value
+  var trimmedWhiteSpacesOrNil: String? {
+    let text = trimmingCharacters(in: .whitespaces)
+    return text.isEmpty ? nil : text
+  }
 
   /**
    Obtain the width of the string if rendered in the system font
    */
-  public var systemFontWidth: CGFloat {
+  var systemFontWidth: CGFloat {
     (self as NSString).size(withAttributes: systemFontAttributes).width
   }
-}
-
-extension String {
 
   /**
    Remove any embedded UUID value from the string.
 
    - returns: named tuple with the stripped result and an option UUID value
    */
-  public func stripEmbeddedUUID() -> (stripped: String, uuid: UUID?) {
+  func stripEmbeddedUUID() -> (stripped: String, uuid: UUID?) {
     let pattern = "[0-9A-F]{8}(-[0-9A-F]{4}){3}-[0-9A-F]{12}"
     let target = self as NSString
     let match = target.range(of: pattern, options: .regularExpression)
@@ -36,9 +39,6 @@ extension String {
       + target.substring(from: match.location + match.length)
     return (stripped: stripped, uuid: UUID(uuidString: found))
   }
-}
-
-extension String {
 
   /**
    Convert an object pointer into a string representation.
@@ -46,7 +46,7 @@ extension String {
    - parameter object: value to convert
    - returns: string representation of the pointer
    */
-  public static func pointer(_ object: AnyObject?) -> String {
+  static func pointer(_ object: AnyObject?) -> String {
     guard let object = object else { return "nil" }
     let opaque: UnsafeMutableRawPointer = Unmanaged.passUnretained(object).toOpaque()
     return String(describing: opaque)
