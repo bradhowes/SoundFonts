@@ -213,19 +213,19 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7h4-ob-UUq" userLabel="Pitchbend">
                                                         <rect key="frame" x="0.0" y="350.5" width="374" height="32"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-vj-67t">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-vj-67t">
                                                                 <rect key="frame" x="0.0" y="6" width="254" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jit-2J-S2A">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jit-2J-S2A">
                                                                 <rect key="frame" x="262" y="6" width="10" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-cD-mQb">
+                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-cD-mQb">
                                                                 <rect key="frame" x="280" y="0.0" width="94" height="32"/>
                                                                 <color key="tintColor" systemColor="systemTealColor"/>
                                                                 <connections>
@@ -500,7 +500,7 @@
                                                         <rect key="frame" x="0.0" y="951.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.22.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="48.5" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="51" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
