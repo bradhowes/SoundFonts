@@ -115,10 +115,6 @@ extension SoundFontsViewController {
     }
   }
 
-  public override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-  }
-
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     fontsTableViewManager?.selectActive()

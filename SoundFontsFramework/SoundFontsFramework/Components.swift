@@ -8,6 +8,7 @@ import UIKit
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>, ComponentContainer
 where T: ControllerConfiguration {
+  public let settings: Settings
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigFile: ConsolidatedConfigFile
   /// Manager that controls when to ask for a review from the customer
@@ -106,49 +107,40 @@ where T: ControllerConfiguration {
   /**
    Create a new instance
 
-   - parameter inApp: true if running in the app
+   - parameter inApp: true if running in the app, false if running as audio unit
    */
   public init(inApp: Bool) {
     self.inApp = inApp
+    self.settings = Settings(inApp: inApp)
+
     let configPath = FileManager.default.sharedPath(for: ConsolidatedConfigFile.filename)
     self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 
     self.askForReview = AskForReview(isMain: inApp)
 
-    let soundFontsManager = SoundFontsManager(consolidatedConfigFile)
-    self.soundFonts = soundFontsManager
-
-    let favoritesManager = FavoritesManager(consolidatedConfigFile)
-    self.favorites = favoritesManager
-
+    self.soundFonts = SoundFontsManager(consolidatedConfigFile)
+    self.favorites = FavoritesManager(consolidatedConfigFile)
     self.tags = TagsManager(consolidatedConfigFile)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
-    self.activePresetManager = ActivePresetManager(
-      soundFonts: soundFonts,
-      selectedSoundFontManager: selectedSoundFontManager)
+    self.activePresetManager = ActivePresetManager(soundFonts: soundFonts,
+                                                   selectedSoundFontManager: selectedSoundFontManager)
     super.init()
+
     createAudioComponents()
   }
 
   public func createAudioComponents() {
     if self.inApp {
-
-      // Create audio components in background to free up main thread in application
       DispatchQueue.global(qos: .userInitiated).async {
-        let reverb = self.inApp ? ReverbEffect() : nil
-        self._reverbEffect = reverb
-        let delay = self.inApp ? DelayEffect() : nil
-        self._delayEffect = delay
-        self._sampler = Sampler(mode: self.inApp ? .standalone : .audioUnit,
+        self._reverbEffect = .init()
+        self._delayEffect = .init()
+        self._sampler = Sampler(mode: .standalone,
                                 activePresetManager: self.activePresetManager,
-                                reverb: reverb, delay: delay)
+                                reverb: self._reverbEffect, delay: self._delayEffect)
       }
     } else {
-
-      // Do not create Sampler asynchronously when supporting AUv3 component.
-      self._sampler = Sampler(mode: inApp ? .standalone : .audioUnit, activePresetManager: self.activePresetManager,
-                              reverb: nil, delay: nil)
+      self._sampler = Sampler(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil)
     }
   }
 

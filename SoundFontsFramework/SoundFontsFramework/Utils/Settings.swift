@@ -1,10 +1,42 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import Foundation
+import os.log
 
 /// Collection of user settings.
-public struct Settings {
-  public static let shared = UserDefaults.standard
+public final class Settings {
+  private static let log = Logging.logger("Settings")
+
+  public static let suiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
+  public static var shared: UserDefaults! = nil
+  public static var keyPrefix: String = ""
+  public static var identity: FileManager.Identity?
+
+  /**
+   Initialize settings from UserDefaults.
+   */
+  public init(inApp: Bool) {
+    os_log(.info, log: Self.log, "init - BEGIN: %d", inApp)
+    os_log(.info, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
+
+    guard
+      let common = UserDefaults(suiteName: Self.suiteName)
+    else {
+      os_log(.error, log: Self.log, "failed to access %{public}s", Self.suiteName)
+      fatalError("unable to access \(Self.suiteName)")
+    }
+
+    Self.shared = common
+
+    if !inApp {
+      let identity = FileManager.default.openIdentity()
+      os_log(.info, log: Self.log, "using identity %d", identity.index)
+      Self.identity = identity
+      Self.keyPrefix = "\(identity.index)_"
+    }
+
+    os_log(.info, log: Self.log, "init - END")
+  }
 }
 
 public extension SettingKeys {
@@ -28,7 +60,7 @@ public extension SettingKeys {
   /// Current keyboard key width
   static let keyWidth = SettingKey<Float>("keyWidth", 64.0)
   /// The last active preset (name is legacy)
-  static let lastActivePreset = SettingKey("lastActivePatch", Data())
+  static let lastActivePreset = SettingKey("lastActivePatch", ActivePresetKind.none)
   /// The lowest note on the keyboard that is currently visible
   static let lowestKeyNote = SettingKey("lowestKeyNote", 48)
   /// When true, play a sound when changing the active preset
@@ -195,8 +227,8 @@ extension UserDefaults {
     get { self[.showEffects] }
     set { self[.showEffects] = newValue }
   }
-  /// The last active preset/patch
-  @objc public dynamic var lastActivePreset: Data {
+  /// The last active preset
+  public dynamic var lastActivePreset: ActivePresetKind {
     get { self[.lastActivePreset] }
     set { self[.lastActivePreset] = newValue }
   }

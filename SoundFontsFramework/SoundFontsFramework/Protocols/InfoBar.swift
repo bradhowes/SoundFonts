@@ -41,7 +41,7 @@ public protocol InfoBar: AnyObject {
   func addEventClosure(_ event: InfoBarEvent, _ closure: @escaping UIControl.Closure)
 
   /**
-   Show status information on the bar. This will appear temporarily and then fade back to the patch name.
+   Show status information on the bar. This will appear temporarily and then fade back to the preset name.
 
    - parameter value: the value to show
    */

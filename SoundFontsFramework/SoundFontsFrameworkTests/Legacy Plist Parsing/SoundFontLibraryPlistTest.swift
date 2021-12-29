@@ -22,11 +22,11 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(soundFont.presets.count, 1)
     XCTAssertEqual(soundFont.key.uuidString, "00180D06-F33A-4164-A04F-D57CC25B6893")
 
-    let patch = soundFont.presets[0]
-    XCTAssertEqual(patch.originalName, "Dirty Elec Organ")
-    XCTAssertEqual(patch.soundFontIndex, 0)
-    XCTAssertEqual(patch.bank, 0)
-    XCTAssertEqual(patch.program, 0)
+    let preset = soundFont.presets[0]
+    XCTAssertEqual(preset.originalName, "Dirty Elec Organ")
+    XCTAssertEqual(preset.soundFontIndex, 0)
+    XCTAssertEqual(preset.bank, 0)
+    XCTAssertEqual(preset.program, 0)
 
     let favorites: FavoriteCollection = {
       let bundle = Bundle(for: type(of: self))
@@ -41,12 +41,12 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(favorite.presetConfig.name, "Synclavier")
     XCTAssertEqual(favorite.presetConfig.gain, 0.0)
     XCTAssertEqual(favorite.presetConfig.pan, -1.0)
-    XCTAssertEqual(favorite.soundFontAndPreset.patchIndex, 0)
+    XCTAssertEqual(favorite.soundFontAndPreset.presetIndex, 0)
 
     let sf = soundFonts.getBy(key: favorite.soundFontAndPreset.soundFontKey)
     XCTAssertNotNil(sf)
     XCTAssertEqual(sf!.displayName, "Evil synclavier")
-    let p = sf?.presets[favorite.soundFontAndPreset.patchIndex]
+    let p = sf?.presets[favorite.soundFontAndPreset.presetIndex]
     XCTAssertNotNil(p)
     XCTAssertEqual(p!.originalName, "Evil Synclavier")
   }

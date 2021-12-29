@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -159,6 +159,7 @@
 		BD9AC9A3256718ED00B47F12 /* AUParameterHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9A2256718ED00B47F12 /* AUParameterHandler.swift */; };
 		BD9AC9AE2567A50400B47F12 /* AudioUnitManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC9AD2567A50400B47F12 /* AudioUnitManagerDelegate.swift */; };
 		BD9FDEEC251616A200EA0029 /* UIGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9FDEEB251616A200EA0029 /* UIGestureRecognizer.swift */; };
+		BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */ = {isa = PBXBuildFile; productRef = BDA52C19277CB72F0010BBF1 /* DictionaryCoder */; };
 		BDA5ACED265D422C000AE48E /* PresetsPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACEB265D422C000AE48E /* PresetsPageViewController.swift */; };
 		BDA5ACEE265D422C000AE48E /* DonePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACEC265D422C000AE48E /* DonePageViewController.swift */; };
 		BDA5ACF1265D4266000AE48E /* ReverbEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */; };
@@ -476,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
+				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -919,6 +921,9 @@
 			dependencies = (
 			);
 			name = SoundFontsFramework;
+			packageProductDependencies = (
+				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
+			);
 			productName = SoundFontsFramework;
 			productReference = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -971,6 +976,9 @@
 				Base,
 			);
 			mainGroup = BD5824F723CDABCD0034A31B;
+			packageReferences = (
+				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
+			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1514,6 +1522,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/almazrafi/DictionaryCoder.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BDA52C19277CB72F0010BBF1 /* DictionaryCoder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */;
+			productName = DictionaryCoder;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		BD8A314E2502E41E0077320F /* SoundFonts.xcdatamodeld */ = {

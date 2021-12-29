@@ -9,7 +9,7 @@ import os
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   private lazy var log = Logging.logger("AppDelegate")
-  private lazy var components = Components<MainViewController>(inApp: true)
+  private let components = Components<MainViewController>(inApp: true)
   private var observer: NSObjectProtocol?
 
   /// The window used to present the app’s visual content on the device’s main screen.

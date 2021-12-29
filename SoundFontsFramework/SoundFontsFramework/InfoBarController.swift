@@ -9,7 +9,7 @@ public final class InfoBarController: UIViewController {
   private lazy var log = Logging.logger("InfoBarController")
 
   @IBOutlet private weak var status: UILabel!
-  @IBOutlet private weak var patchInfo: UILabel!
+  @IBOutlet private weak var presetInfo: UILabel!
   @IBOutlet private weak var lowestKey: UIButton!
   @IBOutlet private weak var addSoundFont: UIButton!
   @IBOutlet private weak var highestKey: UIButton!
@@ -54,12 +54,15 @@ public final class InfoBarController: UIViewController {
     panner.minimumNumberOfTouches = 1
     panner.maximumNumberOfTouches = 1
     touchView.addGestureRecognizer(panner)
+  }
 
-    updateSlidingKeyboardState()
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
 
     showEffects.tintColor = Settings.shared.showEffects ? .systemOrange : .systemTeal
 
     // NOTE: begin observing *after* first accessing setting value.
+    updateSlidingKeyboardState()
     observers.append(
       Settings.shared.observe(\.slideKeyboard, options: [.new]) { [weak self] _, _ in
         self?.updateSlidingKeyboardState()
@@ -336,8 +339,8 @@ extension InfoBarController {
 
   private func updateInfoBar(with soundFontAndPreset: SoundFontAndPreset) {
     if soundFontAndPreset == activePresetManager.active.soundFontAndPreset {
-      if let patch = activePresetManager.resolveToPreset(soundFontAndPreset) {
-        setPresetInfo(name: patch.presetConfig.name, isFavored: false)
+      if let preset = activePresetManager.resolveToPreset(soundFontAndPreset) {
+        setPresetInfo(name: preset.presetConfig.name, isFavored: false)
       }
     }
   }
@@ -356,7 +359,7 @@ extension InfoBarController {
 
   private func setPresetInfo(name: String, isFavored: Bool) {
     os_log(.info, log: log, "setPresetInfo: %{public}s %d", name, isFavored)
-    patchInfo.text = TableCell.favoriteTag(isFavored) + name
+    presetInfo.text = TableCell.favoriteTag(isFavored) + name
     cancelStatusAnimation()
   }
 
@@ -365,11 +368,11 @@ extension InfoBarController {
 
     status.isHidden = false
     status.alpha = 1.0
-    patchInfo.alpha = 0.0
+    presetInfo.alpha = 0.0
 
     self.fader = UIViewPropertyAnimator(duration: 0.25, curve: .linear) {
       self.status.alpha = 0.0
-      self.patchInfo.alpha = 1.0
+      self.presetInfo.alpha = 1.0
     }
 
     self.fader?.addCompletion { _ in

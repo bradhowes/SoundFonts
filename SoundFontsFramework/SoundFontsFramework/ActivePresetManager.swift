@@ -36,8 +36,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
   /// The currently active preset instance (if any)
   public var activePreset: Preset? {
-    guard let index = active.soundFontAndPreset?.patchIndex else { return nil }
-    return activeSoundFont?.presets[index]
+    guard let soundFont = activeSoundFont, let soundFontAndPreset = active.soundFontAndPreset else { return nil }
+    return soundFont[soundFontAndPreset]
   }
 
   /// The currently active preset instance (if any)
@@ -49,9 +49,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   }
 
   /// Obtain the last-saved active preset value
-  static var restoredActivePresetKind: ActivePresetKind? {
-    ActivePresetKind.decodeFromData(Settings.shared.lastActivePreset)
-  }
+  static var restoredActivePresetKind: ActivePresetKind? { Settings.shared.lastActivePreset }
 
   /**
    Construct new manager
@@ -87,7 +85,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - returns: optional patch instance that corresponds to the given key
    */
   public func resolveToPreset(_ soundFontAndPreset: SoundFontAndPreset) -> Preset? {
-    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.patchIndex]
+    soundFonts.getBy(key: soundFontAndPreset.soundFontKey)?.presets[soundFontAndPreset.presetIndex]
   }
 
   /**
@@ -172,11 +170,7 @@ extension ActivePresetManager {
 
   private func save(_ kind: ActivePresetKind) {
     os_log(.info, log: log, "save - %{public}s", kind.description)
-    DispatchQueue.global(qos: .background).async {
-      if let data = kind.encodeToData() {
-        Settings.shared.lastActivePreset = data
-      }
-    }
+    Settings.shared.lastActivePreset = kind
   }
 
   private func isValid(_ active: ActivePresetKind) -> Bool {

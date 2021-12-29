@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="YeB-KN-4f1">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -49,7 +49,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeZ-VG-nmd" userLabel="TouchView">
                                 <rect key="frame" x="135" y="0.0" width="282" height="40"/>
                                 <subviews>
-                                    <label opaque="NO" contentMode="left" text="Patch" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-eK-8gI">
+                                    <label opaque="NO" contentMode="left" text="Preset" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L4b-eK-8gI" userLabel="Preset Info">
                                         <rect key="frame" x="0.0" y="0.0" width="274" height="40"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="PatchInfo" label="PatchInfo"/>
@@ -236,7 +236,7 @@
                         <outlet property="lowestKey" destination="IO0-ky-FSn" id="y9d-PN-YWc"/>
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
                         <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
-                        <outlet property="patchInfo" destination="L4b-eK-8gI" id="U3A-VC-iWO"/>
+                        <outlet property="presetInfo" destination="L4b-eK-8gI" id="tRD-kx-zUh"/>
                         <outlet property="showEffects" destination="vUY-Ob-d91" id="moH-Ry-KEb"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
                         <outlet property="showMoreButtonsButton" destination="D81-HT-18k" id="ArG-gf-vjZ"/>

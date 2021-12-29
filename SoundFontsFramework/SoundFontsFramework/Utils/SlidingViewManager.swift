@@ -8,14 +8,7 @@ public struct SlidingViewManager {
   private var views = [ViewSlider]()
 
   /// The index of the currently active view
-  public private(set) var active: Int = 0
-
-  /**
-   Create a new manager for a sliding view
-
-   - parameter active: the view that is currently visible
-   */
-  init(active: Int) { self.active = active }
+  public var active: Int = 0
 
   /**
    Add a view to the manager

@@ -16,14 +16,15 @@ public final class SoundFontsControlsController: UIViewController {
   @IBOutlet private weak var effectsHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var effectsBottomConstraint: NSLayoutConstraint!
 
-  private var upperViewManager: SlidingViewManager!
+  private var upperViewManager = SlidingViewManager()
   private var fontsViewManager: FontsViewManager!
   private var infoBar: InfoBar!
 
   private var isMainApp: Bool = false
 
   public override func viewDidLoad() {
-    super.viewDidLoad()
+    upperViewManager.add(view: presetsView)
+    upperViewManager.add(view: favoritesView)
 
     let showingFavorites: Bool = {
       if CommandLine.arguments.contains("--screenshots") { return false }
@@ -32,10 +33,13 @@ public final class SoundFontsControlsController: UIViewController {
 
     presetsView.isHidden = showingFavorites
     favoritesView.isHidden = !showingFavorites
-    upperViewManager = SlidingViewManager(active: showingFavorites ? 1 : 0)
+    upperViewManager.active = showingFavorites ? 1 : 0
 
-    upperViewManager.add(view: presetsView)
-    upperViewManager.add(view: favoritesView)
+    super.viewDidLoad()
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
   }
 
   public override func viewDidAppear(_ animated: Bool) {

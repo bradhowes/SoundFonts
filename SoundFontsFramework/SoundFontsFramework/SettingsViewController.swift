@@ -86,6 +86,7 @@ public final class SettingsViewController: UIViewController {
   private var tuningComponent: TuningComponent?
   private var tuningObserver: NSKeyValueObservation!
   private lazy var hideForKeyWidthChange: [UIView] = [
+    playSamplesStackView,
     copyFilesStackView,
     midiChannelStackView,
     slideKeyboardStackView,
@@ -196,7 +197,6 @@ public final class SettingsViewController: UIViewController {
     let isAUv3 = !isMainApp
     keyLabelsStackView.isHidden = isAUv3
     solfegeStackView.isHidden = isAUv3
-    playSamplesStackView.isHidden = isAUv3
     keyWidthStackView.isHidden = isAUv3
     slideKeyboardStackView.isHidden = isAUv3
     divider1.isHidden = isAUv3

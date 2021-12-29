@@ -81,27 +81,8 @@
                                                             </switch>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="goE-tS-nbI" userLabel="Play Samples">
-                                                        <rect key="frame" x="0.0" y="86" width="374" height="31"/>
-                                                        <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play note on preset change" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Xj-zs-1iH">
-                                                                <rect key="frame" x="0.0" y="5.5" width="207" height="20.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="JaD-vu-QJ2">
-                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
-                                                                <color key="tintColor" systemColor="systemOrangeColor"/>
-                                                                <color key="onTintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="togglePlaySample:" destination="Eyw-X4-KFI" eventType="valueChanged" id="RuG-aT-2CK"/>
-                                                                </connections>
-                                                            </switch>
-                                                        </subviews>
-                                                    </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="gdn-yw-SU4" userLabel="Key Width">
-                                                        <rect key="frame" x="0.0" y="129" width="374" height="54.5"/>
+                                                        <rect key="frame" x="0.0" y="86" width="374" height="54.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key Width" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ce-kL-xHr">
                                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
@@ -125,6 +106,25 @@
                                                                     <action selector="keyWidthEditingDidEnd:" destination="Eyw-X4-KFI" eventType="touchUpOutside" id="fC3-uG-i78"/>
                                                                 </connections>
                                                             </slider>
+                                                        </subviews>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="goE-tS-nbI" userLabel="Play Samples">
+                                                        <rect key="frame" x="0.0" y="152.5" width="374" height="31"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Play note on preset change" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Xj-zs-1iH">
+                                                                <rect key="frame" x="0.0" y="5.5" width="207" height="20.5"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="JaD-vu-QJ2">
+                                                                <rect key="frame" x="325" y="0.0" width="51" height="31"/>
+                                                                <color key="tintColor" systemColor="systemOrangeColor"/>
+                                                                <color key="onTintColor" systemColor="systemTealColor"/>
+                                                                <connections>
+                                                                    <action selector="togglePlaySample:" destination="Eyw-X4-KFI" eventType="valueChanged" id="RuG-aT-2CK"/>
+                                                                </connections>
+                                                            </switch>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Y8y-cK-zGV" userLabel="Slide Keyboard">

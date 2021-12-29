@@ -40,7 +40,7 @@ final public class Preset: Codable {
   /// Bank number where the patch resides in the sound font
   public let bank: Int
 
-  /// Program patch number where the patch resides in the sound font
+  /// Program number where the preset resides in the sound font bank
   public let program: Int
 
   /// The index into the owning soundFont's presets array
@@ -64,9 +64,9 @@ final public class Preset: Codable {
   /**
    Initialize instance.
 
-   - parameter name: the display name for the patch
-   - parameter bank: the bank where the patch resides
-   - parameter program: the program ID of the patch in the sound font
+   - parameter name: the display name for the preset
+   - parameter bank: the bank where the preset resides
+   - parameter program: the program ID of the preset in the sound font
    - parameter index: the entry for the preset in the sound font presets array
    */
   public init(_ name: String, _ bank: Int, _ program: Int, _ index: Int) {
@@ -148,5 +148,5 @@ extension Preset {
 }
 
 extension Preset: CustomStringConvertible {
-  public var description: String { "[Preset '\(originalName)' \(bank):\(program)]" }
+  public var description: String { "Preset('\(originalName)' \(bank):\(program))" }
 }

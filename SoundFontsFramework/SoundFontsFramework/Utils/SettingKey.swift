@@ -33,7 +33,7 @@ public protocol SettingSerializable {
   static func set(key: String, value: Self, source: UserDefaults)
 }
 
-extension SettingSerializable {
+public extension SettingSerializable {
 
   /**
    Default registration implementation.
@@ -42,7 +42,8 @@ extension SettingSerializable {
    - parameter value: the value to register
    - parameter userDefaults: the UserDefaults instance to register in
    */
-  public static func register(key: String, value: Self, source: UserDefaults) {
+  @inlinable
+  static func register(key: String, value: Self, source: UserDefaults) {
     source.register(defaults: [key: value])
   }
 }
@@ -68,9 +69,10 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
    - parameter defaultValue: the constant default value to use
    - parameter source: the setting container to register with
    */
-  public init(_ key: String, _ defaultValue: ValueType, source: UserDefaults = .standard) {
-    self.key = key
-    ValueType.register(key: key, value: defaultValue, source: source)
+  public init(_ key: String, _ defaultValue: ValueType, source: UserDefaults = Settings.shared) {
+    self.key = Settings.keyPrefix + key
+    super.init()
+    ValueType.register(key: self.key, value: defaultValue, source: source)
   }
 
   /**
@@ -79,6 +81,7 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
    - parameter source: the setting container to query
    - returns: the current setting value
    */
+  @inlinable
   public func get(_ source: UserDefaults) -> ValueType {
     ValueType.get(key: key, source: source)
   }
@@ -89,6 +92,7 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
    - parameter source: the setting container to modify
    - parameter value: the new setting value
    */
+  @inlinable
   public func set(_ source: UserDefaults, _ value: ValueType) {
     ValueType.set(key: key, value: value, source: source)
   }

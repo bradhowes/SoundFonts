@@ -49,12 +49,14 @@ private final class PresetChangeOperation: Operation {
 
   override func start() {
     os_log(.info, log: log, "start")
+
     isExecuting = true
     guard let sampler = self.sampler else {
       os_log(.info, log: log, "nil sampler")
       isFinished = true
       return
     }
+
     if self.isCancelled {
       os_log(.info, log: log, "op cancelled")
       isFinished = true
@@ -62,13 +64,16 @@ private final class PresetChangeOperation: Operation {
     }
 
     do {
+      os_log(.info, log: log, "before loadSoundBankInstrument")
       try sampler.loadSoundBankInstrument(at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
-      AudioUnitReset(sampler.audioUnit, kAudioUnitScope_Global, 0)
+      os_log(.info, log: log, "after loadSoundBankInstrument")
     } catch let error as NSError {
-      os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
-      if error.code == -54 || error.code == -43 {
-        NotificationCenter.default.post(
-          name: .soundFontFileAccessDenied, object: url.lastPathComponent)
+      switch error.code {
+      case -1: break
+      case -43, -54: // permission error for SF2 file
+        NotificationCenter.default.post(name: .soundFontFileAccessDenied, object: url.lastPathComponent)
+      default:
+        os_log(.error, log: log, "failed loadSoundBankInstrument - %d %{public}s", errno, error.localizedDescription)
       }
     }
 
@@ -85,6 +90,7 @@ final class PresetChangeManager {
 
   init() {
     queue.maxConcurrentOperationCount = 1
+    queue.underlyingQueue = DispatchQueue.global(qos: .userInitiated)
   }
 
   func start() {

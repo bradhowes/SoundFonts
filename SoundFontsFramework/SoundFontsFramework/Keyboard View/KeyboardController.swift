@@ -24,7 +24,7 @@ final class KeyboardController: UIViewController {
   private var allKeys = [Key]()
   private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
-  private var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
+  private lazy var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
   private var activePresetManager: ActivePresetManager!
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
@@ -58,8 +58,9 @@ final class KeyboardController: UIViewController {
 
 extension KeyboardController {
 
-  /// Initialize controller with view loaded
-  override func viewDidLoad() {
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
     createKeys()
     let lowestKeyNote = Settings.shared.lowestKeyNote
     firstMidiNoteValue = lowestKeyNote
@@ -268,7 +269,7 @@ extension KeyboardController {
     var blackKeys = [Key]()
     for each in KeyParamsSequence(
       keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
-      lastMidiNote: Sampler.maxMidiValue)
+      lastMidiNote: MIDI.maxMidiValue)
     {
       let key = Key(frame: each.0, note: each.1)
       if key.note.accented {
@@ -288,7 +289,7 @@ extension KeyboardController {
       allKeys,
       KeyParamsSequence(
         keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height,
-        firstMidiNote: 0, lastMidiNote: Sampler.maxMidiValue))
+        firstMidiNote: 0, lastMidiNote: MIDI.maxMidiValue))
     {
       key.frame = def.0
     }
@@ -349,10 +350,10 @@ extension KeyboardController {
   private func shiftKeyboardUp(_ sender: AnyObject) {
     os_log(.info, log: log, "shiftKeyBoardUp")
     precondition(!allKeys.isEmpty)
-    if lastMidiNoteValue < Sampler.maxMidiValue {
+    if lastMidiNoteValue < MIDI.maxMidiValue {
       let shift: Int = {
         (firstMidiNoteValue % 12 == 0)
-          ? min(12, Sampler.maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12)
+          ? min(12, MIDI.maxMidiValue - lastMidiNoteValue) : (12 - firstMidiNoteValue % 12)
       }()
       shiftKeys(by: shift)
     }

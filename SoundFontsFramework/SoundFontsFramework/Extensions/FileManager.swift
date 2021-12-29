@@ -42,9 +42,7 @@ public extension FileManager {
     }
 
     if !self.fileExists(atPath: url.path) {
-      DispatchQueue.global(qos: .userInitiated).async {
-        try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-      }
+      try? self.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
     }
     return url
   }
@@ -94,5 +92,62 @@ public extension FileManager {
     let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
     os_log(.info, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
     return fileSize ?? 0
+  }
+}
+
+public extension FileManager {
+
+  final class Identity {
+    public let index: Int
+    public let path: URL
+    public let fileDescriptor: Int32
+
+    init(_ index: Int, _ path: URL, _ fileDescriptor: Int32) {
+      self.index = index
+      self.path = path
+      self.fileDescriptor = fileDescriptor
+    }
+
+    deinit {
+      os_log(.info, log: log, "giving up identity")
+      close(fileDescriptor)
+    }
+  }
+
+  func openIdentity() -> Identity {
+    let identityDirectory = self.sharedPath(for: "locks")
+    if !self.fileExists(atPath: identityDirectory.path) {
+      os_log(.info, log: log, "creating locks directory")
+      try? self.createDirectory(at: identityDirectory, withIntermediateDirectories: true, attributes: nil)
+    }
+
+    var counter = 0
+    while true {
+
+      let temporaryFileURL = identityDirectory.appendingPathComponent("AU_\(counter).lock")
+      os_log(.info, log: log, "trying %{public}s", temporaryFileURL.path)
+
+      let fd = open(temporaryFileURL.path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+      if fd == -1 {
+        let context = String(cString: strerror(errno))
+        os_log(.info, log: log, "failed to open file - %d %{public}s", errno, context)
+        if errno == EAGAIN {
+          continue
+        }
+        counter += 1
+        continue
+      }
+
+      let rc = flock(fd, LOCK_EX | LOCK_NB)
+      if rc == -1 {
+        let context = String(cString: strerror(errno))
+        os_log(.info, log: log, "failed to lock file - %d %{public}s", errno, context)
+        counter += 1
+        continue
+      }
+
+      os_log(.info, log: log, "using %{public}s", temporaryFileURL.path)
+      return .init(counter, temporaryFileURL, fd)
+    }
   }
 }

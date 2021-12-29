@@ -89,7 +89,7 @@ extension SoundFontsManager: SoundFonts {
 
   public func resolve(soundFontAndPreset: SoundFontAndPreset) -> Preset? {
     let soundFont = collection.getBy(key: soundFontAndPreset.soundFontKey)
-    return soundFont?.presets[soundFontAndPreset.patchIndex]
+    return soundFont?.presets[soundFontAndPreset.presetIndex]
   }
 
   public func filtered(by tag: Tag.Key) -> [SoundFont.Key] {
@@ -151,47 +151,45 @@ extension SoundFontsManager: SoundFonts {
   public func createFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite? {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return nil }
     defer { collectionChanged() }
-    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     return preset.makeFavorite(soundFontAndPreset: soundFontAndPreset, keyboardLowestNote: keyboardLowestNote)
   }
 
   public func deleteFavorite(soundFontAndPreset: SoundFontAndPreset, key: Favorite.Key) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     preset.favorites.removeAll { $0 == key }
   }
 
   public func updatePreset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let patch = soundFont.presets[soundFontAndPreset.patchIndex]
-    patch.presetConfig = config
-    notify(.presetChanged(font: soundFont, index: soundFontAndPreset.patchIndex))
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
+    preset.presetConfig = config
+    notify(.presetChanged(font: soundFont, index: soundFontAndPreset.presetIndex))
   }
 
   public func setVisibility(soundFontAndPreset: SoundFontAndPreset, state isVisible: Bool) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { collectionChanged() }
-    let patch = soundFont.presets[soundFontAndPreset.patchIndex]
-    os_log(
-      .debug, log: log, "setVisibility - %{public}s %d - %d",
-      soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.patchIndex, isVisible)
-    patch.presetConfig.isHidden = !isVisible
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
+    os_log(.debug, log: log, "setVisibility - %{public}s %d - %d", soundFontAndPreset.soundFontKey.uuidString,
+           soundFontAndPreset.presetIndex, isVisible)
+    preset.presetConfig.isHidden = !isVisible
   }
 
   public func setEffects(soundFontAndPreset: SoundFontAndPreset, delay: DelayConfig?, reverb: ReverbConfig?,
                          chorus: ChorusConfig?) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
-    os_log(
-      .debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
-      soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.patchIndex,
-      delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
+    os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
+           soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.presetIndex,
+           delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
     defer { collectionChanged() }
-    let patch = soundFont.presets[soundFontAndPreset.patchIndex]
-    patch.presetConfig.delayConfig = delay
-    patch.presetConfig.reverbConfig = reverb
-    patch.presetConfig.chorusConfig = chorus
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
+    preset.presetConfig.delayConfig = delay
+    preset.presetConfig.reverbConfig = reverb
+    preset.presetConfig.chorusConfig = chorus
   }
 
   public func makeAllVisible(key: SoundFont.Key) {
@@ -366,9 +364,8 @@ extension SoundFontsManager {
   static var defaultCollection: SoundFontCollection {
     let bundleUrls: [URL] = SF2Files.allResources
     let fileUrls = FileManager.default.installedSF2Files
-    return SoundFontCollection(
-      soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) })
-        + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
+    return .init(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) })
+                 + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
   }
 
   /**

@@ -1,39 +1,52 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import SoundFontsFramework
+@testable import SoundFontsFramework
 import XCTest
 
 class ActivePresetKindTests: XCTestCase {
 
   func testPresetKind() {
-    let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, presetIndex: 1)
+    let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!,
+                                                presetIndex: 1, name: "Foo")
     let kind = ActivePresetKind.preset(soundFontAndPreset: soundFontAndPreset)
     XCTAssertEqual(kind.soundFontAndPreset, soundFontAndPreset)
     XCTAssertNil(kind.favorite)
 
-    var data = kind.encodeToData()
-    XCTAssertNotNil(data)
-    XCTAssertEqual(ActivePresetKind.decodeFromData(data!), kind)
+    let dictData = kind.encodeToDict()
+    XCTAssertNotNil(dictData)
+    XCTAssertEqual(ActivePresetKind.decodeFromDict(dictData!), kind)
 
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     XCTAssertNoThrow(try encoder.encode(kind))
 
-    data = try? encoder.encode(kind)
-    XCTAssertNotNil(data)
+    let json = try? encoder.encode(kind)
+    XCTAssertNotNil(json)
 
     let decoder = JSONDecoder()
-    XCTAssertNoThrow(try decoder.decode(ActivePresetKind.self, from: data!))
-    let kinder = try? decoder.decode(ActivePresetKind.self, from: data!)
+    XCTAssertNoThrow(try decoder.decode(ActivePresetKind.self, from: json!))
+    let kinder = try? decoder.decode(ActivePresetKind.self, from: json!)
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, ".preset(SoundFontAndPreset(soundFontKey: E621E1F8-C36C-495A-93FC-0C247A3E6E5F, patchIndex: 1)")
+    XCTAssertEqual(kind.description, ".preset([E621E1F8-C36C-495A-93FC-0C247A3E6E5F - 1 'Foo'])")
   }
 
+  func testLegacyPresetKind() {
+    let base64 = "WzAseyJuYW1lIjoiQ2xhdmluZXQiLCJzb3VuZEZvbnRLZXkiOiI4NDFDN0FBQS1DQTg3LTRCNkUtQTI2Ny1FQUQzNzMwMDkwNEYiLCJwYXRjaEluZGV4Ijo3fV0="
+    let data = Data(base64Encoded: base64)
+    XCTAssertNotNil(data)
+    let value = ActivePresetKind.decodeFromData(data!)
+    XCTAssertNotNil(value)
+    XCTAssertEqual(7, value?.soundFontAndPreset?.presetIndex)
+    XCTAssertEqual("841C7AAA-CA87-4B6E-A267-EAD37300904F", value?.soundFontAndPreset?.soundFontKey.uuidString)
+    XCTAssertEqual("Clavinet", value?.soundFontAndPreset?.name)
+  }
+  
   func testFavoriteKind() {
     let preset = Preset("foo", 1, 2, 3)
-    let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!, presetIndex: 1)
+    let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!,
+                                                presetIndex: 1, name: "Foo")
     let favorite = Favorite(soundFontAndPreset: soundFontAndPreset,
                             presetConfig: preset.presetConfig,
                             keyboardLowestNote: Note(midiNoteValue: 64))
@@ -42,23 +55,23 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertEqual(kind.soundFontAndPreset, soundFontAndPreset)
     XCTAssertEqual(kind.favorite, favorite)
 
-    var data = kind.encodeToData()
-    XCTAssertNotNil(data)
-    XCTAssertEqual(ActivePresetKind.decodeFromData(data!), kind)
+    let dictData = kind.encodeToDict()
+    XCTAssertNotNil(dictData)
+    XCTAssertEqual(ActivePresetKind.decodeFromDict(dictData!), kind)
 
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     XCTAssertNoThrow(try encoder.encode(kind))
 
-    data = try? encoder.encode(kind)
-    XCTAssertNotNil(data)
+    let json = try? encoder.encode(kind)
+    XCTAssertNotNil(json)
 
     let decoder = JSONDecoder()
-    XCTAssertNoThrow(try decoder.decode(ActivePresetKind.self, from: data!))
-    let kinder = try? decoder.decode(ActivePresetKind.self, from: data!)
+    XCTAssertNoThrow(try decoder.decode(ActivePresetKind.self, from: json!))
+    let kinder = try? decoder.decode(ActivePresetKind.self, from: json!)
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, ".favorite(['foo' - SoundFontAndPreset(soundFontKey: E621E1F8-C36C-495A-93FC-0C247A3E6E5F, patchIndex: 1)])")
+    XCTAssertEqual(kind.description, ".favorite('foo': [E621E1F8-C36C-495A-93FC-0C247A3E6E5F - 1 'Foo'])")
   }
 }

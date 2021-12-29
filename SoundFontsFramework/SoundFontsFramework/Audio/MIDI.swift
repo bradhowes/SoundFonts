@@ -10,6 +10,7 @@ import os
 public final class MIDI: NSObject {
 
   public static var sharedInstance = MIDI()
+  public static let maxMidiValue = 12 * 9  // C8
 
   private let ourUniqueId: Int32 = 44_659
   private let clientName = "SoundFonts"
@@ -66,7 +67,7 @@ public final class MIDI: NSObject {
    */
   private override init() {
     super.init()
-    // Create client here -- doing it in initialize causes it to not work.
+    // Create client here -- doing it in initialize() does not work.
     createClient()
     DispatchQueue.global(qos: .userInitiated).async { self.initialize() }
   }
@@ -92,7 +93,6 @@ extension MIDI {
     guard createVirtualDestination() else { return }
     guard createInputPort() else { return }
     MIDIRestart()
-    // updateConnections()
   }
 
   private func createClient() {

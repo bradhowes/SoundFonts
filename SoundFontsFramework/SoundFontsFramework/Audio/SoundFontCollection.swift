@@ -19,7 +19,7 @@ public final class SoundFontCollection: Codable {
 
   /// Obtain the first preset of the first sound font if one exists.
   public var defaultPreset: SoundFontAndPreset? {
-    isEmpty ? nil : getBy(index: 0).makeSoundFontAndPreset(at: 0)
+    isEmpty ? nil : getBy(index: 0)[0]
   }
 
   /**

@@ -29,8 +29,10 @@ public class Favorite: Codable {
 
   /// The unique key of the favorite
   public let key: Key
+
   /// The key for the preset
   public let soundFontAndPreset: SoundFontAndPreset
+
   /// The custom configuration for the preset
   public var presetConfig: PresetConfig {
     didSet { PresetConfig.changedNotification.post(value: presetConfig) }
@@ -79,11 +81,9 @@ public class Favorite: Codable {
         let pan = try values.decode(Float.self, forKey: .pan)
         self.key = key
         self.soundFontAndPreset = soundFontAndPreset
-        self.presetConfig = PresetConfig(
-          name: name, keyboardLowestNote: lowestNote,
-          keyboardLowestNoteEnabled: lowestNote != nil,
-          gain: gain, pan: pan,
-          presetTuning: 0.0, presetTuningEnabled: false)
+        self.presetConfig = .init(name: name, keyboardLowestNote: lowestNote,
+                                  keyboardLowestNoteEnabled: lowestNote != nil, gain: gain, pan: pan, presetTuning: 0.0,
+                                  presetTuningEnabled: false)
       } catch {
         throw err
       }
@@ -117,5 +117,5 @@ extension Favorite: Equatable {
 
 extension Favorite: CustomStringConvertible {
   /// Custom string representation for a favorite
-  public var description: String { "['\(presetConfig.name)' - \(soundFontAndPreset)]" }
+  public var description: String { "'\(presetConfig.name)': \(soundFontAndPreset)" }
 }

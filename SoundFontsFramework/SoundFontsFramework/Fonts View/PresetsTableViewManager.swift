@@ -243,7 +243,7 @@ extension PresetsTableViewManager {
 
   private func selectedPreset(_ presetIndex: Int, wasSearching: Bool) {
     withSoundFont { soundFont in
-      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
+      let soundFontAndPreset = soundFont[presetIndex]
       if !activePresetManager.setActive(preset: soundFontAndPreset, playSample: Settings.shared.playSample) {
         if let indexPath = getPresetIndexPath(for: soundFontAndPreset) {
           view.scrollToRow(at: indexPath, at: .none, animated: false)
@@ -333,7 +333,7 @@ extension PresetsTableViewManager {
     case .favorite(let key):
       favorites.setVisibility(key: key, state: state)
     case .preset(let index):
-      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: index)
+      let soundFontAndPreset = soundFont[index]
       soundFonts.setVisibility(soundFontAndPreset: soundFontAndPreset, state: state)
     }
   }
@@ -539,7 +539,7 @@ extension PresetsTableViewManager {
 
     case let .presetChanged(soundFont, index):
       if soundFont == selectedSoundFontManager.selected {
-        let soundFontAndPreset = soundFont.makeSoundFontAndPreset(at: index)
+        let soundFontAndPreset = soundFont[index]
         updateRow(with: soundFontAndPreset)
       }
 
@@ -565,11 +565,13 @@ extension PresetsTableViewManager {
   }
 
   private func getPresetIndexPath(for soundFontAndPreset: SoundFontAndPreset?) -> IndexPath? {
-    guard let soundFontAndPreset = soundFontAndPreset else { return nil }
-    guard let soundFont = selectedSoundFontManager.selected,
-          soundFont.key == soundFontAndPreset.soundFontKey
-    else { return nil }
-    let presetIndex = soundFontAndPreset.patchIndex
+    guard let soundFontAndPreset = soundFontAndPreset,
+          let soundFont = selectedSoundFontManager.selected,
+          soundFont.key == soundFontAndPreset.soundFontKey else {
+      return nil
+    }
+
+    let presetIndex = soundFontAndPreset.presetIndex
     if showingSearchResults {
       guard let row = searchSlots?.findPresetIndex(presetIndex) else { return nil }
       return IndexPath(row: row, section: 0)
@@ -628,7 +630,7 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "selectActive - %d", animated)
     guard let activeSlot: Slot = {
       switch activePresetManager.active {
-      case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.patchIndex)
+      case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.presetIndex)
       case let .favorite(favorite): return .favorite(key: favorite.key)
       case .none: return nil
       }
@@ -702,7 +704,7 @@ extension PresetsTableViewManager {
   private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool
   {
     guard let soundFont = self.soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else { return false }
-    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPreset,
                                                    keyboardLowestNote: keyboard?.lowestNote) else { return false }
     favorites.add(favorite: favorite)
@@ -857,11 +859,11 @@ extension PresetsTableViewManager {
     guard let soundFont = selectedSoundFontManager.selected else { return nil }
     let presetIndex: Int = {
       switch getSlot(at: indexPath) {
-      case .favorite(let key): return favorites.getBy(key: key).soundFontAndPreset.patchIndex
+      case .favorite(let key): return favorites.getBy(key: key).soundFontAndPreset.presetIndex
       case .preset(let presetIndex): return presetIndex
       }
     }()
-    return SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
+    return soundFont[presetIndex]
   }
 
   private func updateRow(with activeKind: ActivePresetKind?) {
@@ -907,7 +909,7 @@ extension PresetsTableViewManager {
 
     switch getSlot(at: indexPath) {
     case let .preset(presetIndex):
-      let soundFontAndPreset = SoundFontAndPreset(soundFontKey: soundFont.key, presetIndex: presetIndex)
+      let soundFontAndPreset = soundFont[presetIndex]
       let preset = soundFont.presets[presetIndex]
       os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in row %d section %d",
              preset.presetConfig.name, presetIndex, indexPath.row, indexPath.section)

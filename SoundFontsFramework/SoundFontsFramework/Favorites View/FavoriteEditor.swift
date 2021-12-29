@@ -114,7 +114,7 @@ final public class FavoriteEditor: UIViewController {
     notesTextView.delegate = self
 
     lowestNoteStepper.minimumValue = 0
-    lowestNoteStepper.maximumValue = Double(Sampler.maxMidiValue)
+    lowestNoteStepper.maximumValue = Double(MIDI.maxMidiValue)
 
     gainSlider.minimumValue = -90.0  // db
     gainSlider.maximumValue = 12  // db
@@ -140,7 +140,7 @@ final public class FavoriteEditor: UIViewController {
     guard let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else {
       fatalError()
     }
-    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     let editingFavorite = config.favorite != nil
 
     presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
@@ -295,7 +295,7 @@ extension FavoriteEditor {
       fatalError()
     }
 
-    let preset = soundFont.presets[soundFontAndPreset.patchIndex]
+    let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     var presetConfig = config.favorite?.presetConfig ?? preset.presetConfig
 
     let newName = (self.name.text ?? "").trimmingCharacters(in: .whitespaces)

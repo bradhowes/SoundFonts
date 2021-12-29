@@ -148,12 +148,15 @@ extension SoundFont {
   /// Determines if the sound font file exists on the device
   public var isAvailable: Bool { FileManager.default.fileExists(atPath: fileURL.path) }
 
+  public subscript(index: SoundFontAndPreset) -> Preset { presets[index.presetIndex] }
+  public subscript(index: Int) -> SoundFontAndPreset { makeSoundFontAndPreset(at: index) }
+
   public func makeSoundFontAndPreset(at index: Int) -> SoundFontAndPreset {
-    SoundFontAndPreset(soundFontKey: self.key, presetIndex: index)
+    .init(soundFontKey: self.key, presetIndex: index, name: presets[index].presetConfig.name)
   }
 
-  public func makeSoundFontAndPreset(for patch: Preset) -> SoundFontAndPreset {
-    SoundFontAndPreset(soundFontKey: self.key, presetIndex: patch.soundFontIndex)
+  public func makeSoundFontAndPreset(for preset: Preset) -> SoundFontAndPreset {
+    makeSoundFontAndPreset(at: preset.soundFontIndex)
   }
 
   public func reloadEmbeddedInfo() -> Bool {

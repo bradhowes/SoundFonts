@@ -8,15 +8,28 @@ import os
 /// keyboard component.
 public final class SoundFontsAUViewController: AUViewController {
   private lazy var log = Logging.logger("SoundFontsAUViewController")
+
   private let noteInjector = NoteInjector()
-  private var components: Components<SoundFontsAUViewController>!
+  private var components: Components<SoundFontsAUViewController>! = nil
   private var audioUnit: SoundFontsAU?
 
-  override public func viewDidLoad() {
-    os_log(.info, log: log, "viewDidLoad")
-    super.viewDidLoad()
+  deinit {
+    os_log(.info, log: log, "deinit - %{public}s", String.pointer(self))
+  }
+
+  override public func loadView() {
+    os_log(.info, log: log, "loadView - BEGIN")
     components = Components<SoundFontsAUViewController>(inApp: false)
+    os_log(.info, log: log, "super.loadView")
+    super.loadView()
+    os_log(.info, log: log, "loadView - END")
+  }
+
+  override public func viewDidLoad() {
+    os_log(.info, log: log, "viewDidLoad - BEGIN: %{public}s", String.pointer(self))
+    super.viewDidLoad()
     components.setMainViewController(self)
+    os_log(.info, log: log, "viewDidLoad - END")
   }
 }
 
@@ -30,11 +43,12 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     os_log(.info, log: log, "createAudioUnit")
-    let audioUnit = try SoundFontsAU(
-      componentDescription: componentDescription, sampler: components.sampler,
-      activePresetManager: components.activePresetManager)
-    os_log(.info, log: log, "created SoundFontsAU")
+    let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
+                                     sampler: components.sampler,
+                                     activePresetManager: components.activePresetManager,
+                                     identity: Settings.identity?.index ?? -1)
     self.audioUnit = audioUnit
+    os_log(.info, log: log, "createAudioUnit - END: %{public}s", String.pointer(audioUnit))
     return audioUnit
   }
 }
@@ -61,9 +75,10 @@ extension SoundFontsAUViewController: ControllerConfiguration {
 
   private func useActivePresetKind(playSample: Bool) {
     os_log(.info, log: log, "useActivePresetKind - playSample: %d", playSample)
-    guard audioUnit != nil else { return }
+    guard let audioUnit = self.audioUnit else { return }
     switch components.sampler.loadActivePreset() {
-    case .success: break
+    case .success:
+      self.noteInjector.post(to: audioUnit)
     case .failure(let reason):
       switch reason {
       case .noSampler: os_log(.info, log: log, "no sampler")
