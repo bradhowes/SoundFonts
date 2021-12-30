@@ -8,15 +8,14 @@ public final class Settings: NSObject {
   private static let log = Logging.logger("Settings")
 
   public static let defaultSuiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
-  public let keyPrefix: String
-  public let identity: FileManager.Identity?
-  public let storage: UserDefaults
-  public var registered = Set<String>()
+  private let keyPrefix: String
+  private let storage: UserDefaults
+  private let sessionIdentity: FileManager.Identity?
 
   /**
    Initialize settings from UserDefaults.
    */
-  public init(inApp: Bool, suiteName: String = Settings.defaultSuiteName) {
+  public init(inApp: Bool, suiteName: String = Settings.defaultSuiteName, identity: Int? = nil) {
     os_log(.info, log: Self.log, "init - BEGIN: %d %{public}s", inApp, suiteName)
     os_log(.info, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
 
@@ -30,27 +29,44 @@ public final class Settings: NSObject {
     self.storage = defaults
 
     if inApp {
-      self.identity = nil
+      self.sessionIdentity = nil
       self.keyPrefix = ""
     }
     else {
-      let identity = FileManager.default.openIdentity()
-      os_log(.info, log: Self.log, "using identity %d", identity.index)
-      self.identity = identity
-      self.keyPrefix = "\(identity.index)_"
+      let sessionIdentity: FileManager.Identity = {
+        if identity != nil {
+          return .init(identity!, URL(fileURLWithPath: NSHomeDirectory()), -1)
+        }
+        return FileManager.default.openIdentity()
+      }()
+
+      os_log(.info, log: Self.log, "using identity %d", sessionIdentity.index)
+      self.sessionIdentity = sessionIdentity
+      self.keyPrefix = "\(sessionIdentity.index)_"
     }
+
+    super.init()
 
     os_log(.info, log: Self.log, "init - END")
   }
 
+  public var identity: Int? { sessionIdentity?.index }
+
+  func instanceKey(_ key: String) -> String { self.keyPrefix + key }
+
   func get<T>(key: String, defaultValue: T) -> T {
+    let key = instanceKey(key)
     if let value = storage.object(forKey: key) as? T { return value }
     storage.register(defaults: [key: defaultValue])
     return defaultValue
   }
 
-  func set<T>(key: String, value: T) { storage.set(value, forKey: key) }
-  func remove<T>(key: SettingKey<T>) { storage.removeObject(forKey: key.key) }
+  func set<T>(key: String, value: T) { storage.set(value, forKey: instanceKey(key)) }
+  func remove<T>(key: SettingKey<T>) { storage.removeObject(forKey: instanceKey(key.key)) }
+
+  func raw(key: String) -> Any? {
+    storage.object(forKey: instanceKey(key))
+  }
 }
 
 public extension SettingKeys {

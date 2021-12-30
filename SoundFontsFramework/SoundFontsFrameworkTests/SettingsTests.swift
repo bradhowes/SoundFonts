@@ -3,8 +3,6 @@
 @testable import SoundFontsFramework
 import XCTest
 
-private let settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
-
 private struct TSettings {
   static let intSetting = SettingKey<Int>("intSetting", 123)
   static let doubleSetting = SettingKey<Double>("doubleSetting", 123.45)
@@ -18,14 +16,20 @@ private struct TSettings {
 
 class SettingsTests: XCTestCase {
 
+  let settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
+  let sessionSettings1 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 1)
+  let sessionSettings2 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 2)
+
   override func setUp() {
-    settings.remove(key: TSettings.intSetting)
-    settings.remove(key: TSettings.stringSetting)
-    settings.remove(key: TSettings.timeIntervalSetting)
-    settings.remove(key: TSettings.doubleSetting)
-    settings.remove(key: TSettings.floatSetting)
-    settings.remove(key: TSettings.boolSetting)
-    settings.remove(key: TSettings.tagSetting)
+    for each in [settings, sessionSettings1, sessionSettings2] {
+      each.remove(key: TSettings.intSetting)
+      each.remove(key: TSettings.stringSetting)
+      each.remove(key: TSettings.timeIntervalSetting)
+      each.remove(key: TSettings.doubleSetting)
+      each.remove(key: TSettings.floatSetting)
+      each.remove(key: TSettings.boolSetting)
+      each.remove(key: TSettings.tagSetting)
+    }
   }
 
   func testDefaults() {
@@ -89,7 +93,28 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual("Blah", value.soundFontAndPreset?.name)
 
     // Raw-representation should be a dictionary
-    let dict = settings.storage.dictionary(forKey: "lastPresetSetting")
+    let dict = settings.raw(key: "lastPresetSetting") as? Dictionary<String, Any>
     XCTAssertNotNil(dict)
+  }
+
+  func testSessionSettings() {
+    XCTAssertEqual(123, settings[TSettings.intSetting])
+    XCTAssertEqual(123, sessionSettings1[TSettings.intSetting])
+    XCTAssertEqual(123, sessionSettings2[TSettings.intSetting])
+
+    sessionSettings1[TSettings.intSetting] = 456
+    XCTAssertEqual(123, settings[TSettings.intSetting])
+    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
+    XCTAssertEqual(123, sessionSettings2[TSettings.intSetting])
+
+    sessionSettings2[TSettings.intSetting] = 789
+    XCTAssertEqual(123, settings[TSettings.intSetting])
+    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
+    XCTAssertEqual(789, sessionSettings2[TSettings.intSetting])
+
+    settings[TSettings.intSetting] = 0
+    XCTAssertEqual(0, settings[TSettings.intSetting])
+    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
+    XCTAssertEqual(789, sessionSettings2[TSettings.intSetting])
   }
 }

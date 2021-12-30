@@ -153,7 +153,7 @@ extension ActivePresetKind: SettingSerializable {
   }
 
   public static func get(key: String, defaultValue: ActivePresetKind, source: Settings) -> ActivePresetKind {
-    guard let raw = source.storage.object(forKey: key) else {
+    guard let raw = source.raw(key: key) else {
       source.set(key: key, value: defaultValue.encodeToDict())
       return defaultValue
     }
