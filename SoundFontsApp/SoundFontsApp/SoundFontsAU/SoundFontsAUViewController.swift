@@ -12,6 +12,7 @@ public final class SoundFontsAUViewController: AUViewController {
   private var noteInjector: NoteInjector!
   private var components: Components<SoundFontsAUViewController>! = nil
   private var audioUnit: SoundFontsAU?
+  private var parameterOperator: ParametersManager?
 
   deinit {
     os_log(.info, log: log, "deinit - %{public}s", String.pointer(self))
@@ -44,10 +45,18 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     os_log(.info, log: log, "createAudioUnit")
+
+    let parameterOperator = ParametersManager(soundFonts: components.soundFonts,
+                                              selectedSoundFontManager: components.selectedSoundFontManager,
+                                              activePresetManager: components.activePresetManager)
+    self.parameterOperator = parameterOperator
+
     let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
                                      sampler: components.sampler,
                                      activePresetManager: components.activePresetManager,
-                                     identity: components.settings.identity ?? -1)
+                                     identity: components.settings.identity ?? -1,
+                                     parameterTree: parameterOperator.parameterTree)
+    
     self.audioUnit = audioUnit
     os_log(.info, log: log, "createAudioUnit - END: %{public}s", String.pointer(audioUnit))
     return audioUnit

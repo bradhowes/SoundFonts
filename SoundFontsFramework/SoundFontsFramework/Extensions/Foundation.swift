@@ -83,30 +83,8 @@ extension Double {
   public var day: TimeInterval { days }
 }
 
-extension Float {
-
-  /**
-   Restrict a value to be between two others
-
-   - parameter minValue: the lowest acceptable value
-   - parameter maxValue: the highest acceptable value
-   - returns: clamped value
-   */
-  public func clamp(min minValue: Self, max maxValue: Self) -> Self {
-    min(max(self, minValue), maxValue)
-  }
-}
-
-extension Double {
-
-  /**
-   Restrict a value to be between two others
-
-   - parameter minValue: the lowest acceptable value
-   - parameter maxValue: the highest acceptable value
-   - returns: clamped value
-   */
-  public func clamp(min minValue: Self, max maxValue: Self) -> Self {
-    min(max(self, minValue), maxValue)
+extension Comparable {
+  public func clamped(to limits: ClosedRange<Self>) -> Self {
+    min(max(self, limits.lowerBound), limits.upperBound)
   }
 }

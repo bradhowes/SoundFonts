@@ -68,11 +68,15 @@ extension FileManager {
 
 extension SoundFontsManager: SoundFonts {
 
+  public var count: Int { return collection.count }
+
   public var soundFontNames: [String] { collection.soundFonts.map { $0.displayName } }
 
   public var defaultPreset: SoundFontAndPreset? { collection.defaultPreset }
 
   public func firstIndex(of key: SoundFont.Key) -> Int? { collection.firstIndex(of: key) }
+
+  public func getBy(index: Int) -> SoundFont { collection.getBy(index: index) }
 
   public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
 

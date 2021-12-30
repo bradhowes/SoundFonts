@@ -34,6 +34,8 @@ public protocol SoundFonts: AnyObject {
   /// The default preset to use if there is not one
   var defaultPreset: SoundFontAndPreset? { get }
 
+  var count: Int { get }
+
   /**
    Validate the sound font collection, making sure that everything is in order. Removes any stray tags or favorites.
 
@@ -41,6 +43,16 @@ public protocol SoundFonts: AnyObject {
    - parameter tags: collection of tags
    */
   func validateCollections(favorites: Favorites, tags: Tags)
+
+  /**
+   Obtain the sound font at the given index. NOTE: this indexing mirrors the order seen in the UI due to name sorting.
+   Also, the index must be valid -- greater than or equal to 0 and less than the number of sound fonts in the
+   collection.
+
+   - parameter index: the index of the sound font to fetch
+   - returns: the sound font
+   */
+  func getBy(index: Int) -> SoundFont
 
   /**
    Obtain the index in the collection of a SoundFont with the given Key.

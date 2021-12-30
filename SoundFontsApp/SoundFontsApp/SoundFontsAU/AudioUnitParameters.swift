@@ -9,9 +9,38 @@ import os
 public final class AudioUnitParameters: NSObject {
   private lazy var log = Logging.logger("AudioUnitParameters")
 
-  enum Address: AUParameterAddress {
-    case undefined = 1
+  public enum Address: AUParameterAddress {
+    case soundFont = 1
+    case bank = 2
+    case program = 3
   }
+
+  public let soundFont = AUParameterTree.createParameter(withIdentifier: "soundFont", name: "SoundFont",
+                                                         address: Address.soundFont.rawValue,
+                                                         min: 0, max: 127,
+                                                         unit: .midiController,
+                                                         unitName: nil,
+                                                         flags: [.flag_IsReadable, .flag_IsWritable],
+                                                         valueStrings: nil,
+                                                         dependentParameters: nil)
+
+  public let bank = AUParameterTree.createParameter(withIdentifier: "bank", name: "Bank",
+                                                    address: Address.bank.rawValue,
+                                                    min: 0, max: 127,
+                                                    unit: .midiController,
+                                                    unitName: nil,
+                                                    flags: [.flag_IsReadable, .flag_IsWritable],
+                                                    valueStrings: nil,
+                                                    dependentParameters: nil)
+
+  public let program = AUParameterTree.createParameter(withIdentifier: "program", name: "Program",
+                                                       address: Address.program.rawValue,
+                                                       min: 0, max: 127,
+                                                       unit: .midiController,
+                                                       unitName: nil,
+                                                       flags: [.flag_IsReadable, .flag_IsWritable],
+                                                       valueStrings: nil,
+                                                       dependentParameters: nil)
 
   /// AUParameterTree created with the parameter definitions for the audio unit
   public let parameterTree: AUParameterTree
@@ -26,10 +55,10 @@ public final class AudioUnitParameters: NSObject {
 
    - parameter parameterHandler the object to use to handle the AUParameterTree requests
    */
-  init(parameterHandler: AUParameterHandler) {
+  public init(parameterHandler: AUParameterHandler) {
 
     // Define a new parameter tree with the parameter definitions
-    parameterTree = AUParameterTree.createTree(withChildren: [])
+    parameterTree = AUParameterTree.createTree(withChildren: [soundFont, bank, program])
     super.init()
 
     // Provide a way for the tree to change values in the AudioUnit
@@ -38,17 +67,14 @@ public final class AudioUnitParameters: NSObject {
     // Provide a way for the tree to obtain the current value of a parameter from the AudioUnit
     parameterTree.implementorValueProvider = { parameterHandler.get($0) }
 
-    // Provide a way to obtain String values for the current settings.
-    parameterTree.implementorStringFromValueCallback = { param, value in
-      let formatted: String = {
-        switch param.address {
-        default: return "?"
-        }
-      }()
-      os_log(
-        .info, log: self.log, "parameter %d as string: %d %f %{public}s", param.address,
-        param.value, formatted)
-      return formatted
+    // Provide a way to obtain String values for the parameter settings.
+    parameterTree.implementorStringFromValueCallback = { param, _ in
+      guard let address = Address(rawValue: param.address) else { return "" }
+      switch address {
+      case .soundFont: return "\(param.value)"
+      case .bank: return "\(param.value)"
+      case .program: return "\(param.value)"
+      }
     }
   }
 }

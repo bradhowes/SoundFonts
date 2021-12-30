@@ -32,7 +32,7 @@ public final class SoundFont: Codable {
   public let kind: SoundFontKind
 
   /// The collection of presets found in the sound font
-  let presets: [Preset]
+  public let presets: [Preset]
 
   /// Collection of tags assigned to the sound font
   @DecodableDefault.EmptyTagSet var tags: Set<Tag.Key>

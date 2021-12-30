@@ -18,9 +18,7 @@ public final class SoundFontCollection: Codable {
   public var count: Int { sortedKeys.count }
 
   /// Obtain the first preset of the first sound font if one exists.
-  public var defaultPreset: SoundFontAndPreset? {
-    isEmpty ? nil : getBy(index: 0)[0]
-  }
+  public var defaultPreset: SoundFontAndPreset? { isEmpty ? nil : getBy(index: 0)[0] }
 
   /**
    Create a new collection.
@@ -28,8 +26,7 @@ public final class SoundFontCollection: Codable {
    - parameter soundFonts: array of SoundFont instances
    */
   public init(soundFonts: [SoundFont]) {
-    self.catalog = [SoundFont.Key: SoundFont](
-      uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
+    self.catalog = [SoundFont.Key: SoundFont](uniqueKeysWithValues: soundFonts.map { ($0.key, $0) })
     self.sortedKeys = soundFonts.sorted {
       $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending
     }.map { $0.key }
@@ -52,12 +49,7 @@ public final class SoundFontCollection: Codable {
    - returns: index value if found, else nil
    */
   public func index(of url: URL) -> Int? {
-    guard
-      let found =
-        (catalog.first { entry in
-          entry.value.fileURL.absoluteString == url.absoluteString
-        })
-    else {
+    guard let found = (catalog.first { entry in entry.value.fileURL.absoluteString == url.absoluteString }) else {
       return nil
     }
     return firstIndex(of: found.key)
