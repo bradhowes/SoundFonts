@@ -17,6 +17,7 @@ final class SoundFontsAU: AUAudioUnit {
   private let identity: Int
   private var activePresetSubscriberToken: SubscriberToken?
 
+  private var _audioUnitName: String?
   private var _audioUnitShortName: String?
 
   /**
@@ -79,8 +80,8 @@ final class SoundFontsAU: AUAudioUnit {
   }
 
   private func updateShortName() {
-    let presetName = activePresetManager.activePresetConfig?.name ?? "None"
-    self.audioUnitShortName = "\(identity): \(presetName)"
+    let presetName = activePresetManager.activePresetConfig?.name ?? "---"
+    self.audioUnitShortName = "\(presetName)"
   }
 
   private func currentPresetChanged(_ preset: AUAudioUnitPreset?) {
@@ -106,6 +107,7 @@ extension SoundFontsAU {
   override public var audioUnitShortName: String? {
     get { _audioUnitShortName }
     set {
+      os_log(.info, log: log, "audioUnitShortName set - %{public}s", newValue ?? "???")
       willChangeValue(forKey: "audioUnitShortName")
       _audioUnitShortName = newValue
       didChangeValue(forKey: "audioUnitShortName")

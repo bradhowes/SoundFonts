@@ -11,25 +11,25 @@ public final class SoundFont: Codable {
   private var log: OSLog { Self.log }
 
   /// Presentation name of the sound font
-  var displayName: String
+  public var displayName: String
 
   ///  The resolved URL for the sound font
   public var fileURL: URL { kind.fileURL }
 
   /// True if the SF2 file is not part of the install
-  var removable: Bool { kind.removable }
+  public var removable: Bool { kind.removable }
 
   public typealias Key = UUID
-  let key: Key
+  public let key: Key
 
-  let originalDisplayName: String
+  public let originalDisplayName: String
 
   @DecodableDefault.EmptyString var embeddedName: String
   @DecodableDefault.EmptyString var embeddedComment: String
   @DecodableDefault.EmptyString var embeddedAuthor: String
   @DecodableDefault.EmptyString var embeddedCopyright: String
 
-  let kind: SoundFontKind
+  public let kind: SoundFontKind
 
   /// The collection of presets found in the sound font
   let presets: [Preset]
