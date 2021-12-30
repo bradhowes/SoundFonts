@@ -23,15 +23,15 @@ File::File(int fd, size_t fileSize)
   while (p0 < riff.end()) {
     auto chunkList = p0.makeChunkList();
 
-    log_.debug() << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString()
-    << std::endl;
+//    log_.debug() << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString()
+//    << std::endl;
 
     auto p1 = chunkList.begin();
     p0 = chunkList.advance();
     while (p1 < chunkList.end()) {
       auto chunk = p1.makeChunk();
       p1 = chunk.advance();
-      log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
+//      log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
 
       switch (chunk.tag().rawValue()) {
         case Tags::ifil: soundFontVersion_.load(chunk.begin()); break;

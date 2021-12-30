@@ -8,7 +8,7 @@ ourselves, and there are some `render` classes to do just this.
 ## SF2 Format
 
 A 'PHDR' sub-chunk defines a preset. Each one should have unique (wPreset, wBank) values. If the same, the first
-one wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI but it is still
+one wins. if wPreset > 127 or wBank > 128 then technically it cannot be accessed via MIDI (v1) but it is still
 considered valid.
 
 A 'PBAG' sub-chunk defines the zones of the presets. A preset can have more than one. The first zone can be a
