@@ -19,7 +19,8 @@ public enum ComponentContainerEvent {
 /// `establishConnections` method. The goal should be to have relations between a controller and protocols / facades, and
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public protocol ComponentContainer: AnyObject {
-
+  /// User settings for the app
+  var settings: Settings { get }
   /// The Sampler that is used to generate sounds
   var sampler: Sampler { get }
   /// The collection of installed sound font files

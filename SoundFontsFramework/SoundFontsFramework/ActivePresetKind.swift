@@ -152,20 +152,23 @@ extension ActivePresetKind: SettingSerializable {
     }
   }
 
-  public static func get(key: String, source: UserDefaults) -> ActivePresetKind {
-    guard let raw = source.object(forKey: key) else { return .none }
+  public static func get(key: String, defaultValue: ActivePresetKind, source: Settings) -> ActivePresetKind {
+    guard let raw = source.storage.object(forKey: key) else {
+      source.set(key: key, value: defaultValue.encodeToDict())
+      return defaultValue
+    }
     if let container = raw as? [String: Any] {
-      return ActivePresetKind.decodeFromDict(container) ?? .none
+      return ActivePresetKind.decodeFromDict(container) ?? defaultValue
     }
     else if let container = raw as? Data {
-      return ActivePresetKind.decodeFromData(container) ?? .none
+      return ActivePresetKind.decodeFromData(container) ?? defaultValue
     }
-    return .none
+    return defaultValue
   }
 
-  public static func set(key: String, value: ActivePresetKind, source: UserDefaults) {
+  public static func set(key: String, value: ActivePresetKind, source: Settings) {
     if let dict = value.encodeToDict() {
-      source.set(dict, forKey: key)
+      source.set(key: key, value: dict)
     }
   }
 }

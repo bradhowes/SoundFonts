@@ -8,13 +8,15 @@ final class ActiveTagManager: NSObject {
   private lazy var log = Logging.logger("ActiveTagManager")
   private let view: UITableView
   private let tags: Tags
+  private let settings: Settings
   private var token: SubscriberToken?
   private var activeIndex = -1
   private var tagsHider: () -> Void
 
-  init(view: UITableView, tags: Tags, tagsHider: @escaping () -> Void) {
+  init(view: UITableView, tags: Tags, settings: Settings, tagsHider: @escaping () -> Void) {
     self.view = view
     self.tags = tags
+    self.settings = settings
     self.tagsHider = tagsHider
     super.init()
 
@@ -27,7 +29,7 @@ final class ActiveTagManager: NSObject {
 
   public func refresh() {
     guard tags.restored else { return }
-    let tagKey = Settings.shared.activeTagKey
+    let tagKey = settings.activeTagKey
     activeIndex = tags.index(of: tagKey) ?? 0
     view.reloadData()
   }
@@ -57,7 +59,7 @@ extension ActiveTagManager: UITableViewDelegate {
     let oldIndexPath = IndexPath(row: activeIndex, section: 0)
     activeIndex = indexPath.row
     tableView.reloadRows(at: [oldIndexPath, indexPath], with: .automatic)
-    Settings.shared.activeTagKey = tags.getBy(index: activeIndex).key
+    settings.activeTagKey = tags.getBy(index: activeIndex).key
   }
 
   func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {

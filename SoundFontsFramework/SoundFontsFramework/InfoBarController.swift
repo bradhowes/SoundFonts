@@ -32,6 +32,7 @@ public final class InfoBarController: UIViewController {
   private var activePresetManager: ActivePresetManager!
   private var soundFonts: SoundFonts!
   private var isMainApp: Bool!
+  private var settings: Settings!
 
   private var observers = [NSKeyValueObservation]()
 
@@ -59,12 +60,12 @@ public final class InfoBarController: UIViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    showEffects.tintColor = Settings.shared.showEffects ? .systemOrange : .systemTeal
+    showEffects.tintColor = settings.showEffects ? .systemOrange : .systemTeal
 
     // NOTE: begin observing *after* first accessing setting value.
     updateSlidingKeyboardState()
     observers.append(
-      Settings.shared.observe(\.slideKeyboard, options: [.new]) { [weak self] _, _ in
+      settings.observe(\.slideKeyboard, options: [.new]) { [weak self] _, _ in
         self?.updateSlidingKeyboardState()
       }
     )
@@ -115,14 +116,13 @@ extension InfoBarController {
     )
   }
 
-  @IBAction private func toggleSlideKeyboard(_ sender: UIButton) {
-    Settings.shared.slideKeyboard = !Settings.shared.slideKeyboard
-  }
+  @IBAction private func toggleSlideKeyboard(_ sender: UIButton) { settings.slideKeyboard = !settings.slideKeyboard }
 }
 
 extension InfoBarController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
+    settings = router.settings
     activePresetManager = router.activePresetManager
     activePresetManager.subscribe(self, notifier: activePresetChange)
     soundFonts = router.soundFonts
@@ -259,6 +259,7 @@ extension InfoBarController: SegueHandler {
 
     viewController.soundFonts = soundFonts
     viewController.isMainApp = isMainApp
+    viewController.settings = settings
 
     if !isMainApp {
       viewController.modalPresentationStyle = .fullScreen
@@ -422,6 +423,6 @@ extension InfoBarController {
   }
 
   private func updateSlidingKeyboardState() {
-    slidingKeyboardToggle.setTitleColor(Settings.shared.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
+    slidingKeyboardToggle.setTitleColor(settings.slideKeyboard ? .systemTeal : .darkGray, for: .normal)
   }
 }

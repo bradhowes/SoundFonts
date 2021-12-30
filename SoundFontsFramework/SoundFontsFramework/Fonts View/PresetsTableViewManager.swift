@@ -32,6 +32,7 @@ final class PresetsTableViewManager: NSObject {
   private let favorites: Favorites
   private let keyboard: Keyboard?
   private let infoBar: InfoBar
+  private let settings: Settings
 
   private var viewSlots = [Slot]()
   private var searchSlots: [Slot]?
@@ -53,7 +54,7 @@ final class PresetsTableViewManager: NSObject {
    */
   init(viewController: PresetsTableViewController, activePresetManager: ActivePresetManager,
        selectedSoundFontManager: SelectedSoundFontManager, soundFonts: SoundFonts, favorites: Favorites,
-       keyboard: Keyboard?, infoBar: InfoBar) {
+       keyboard: Keyboard?, infoBar: InfoBar, settings: Settings) {
     self.viewController = viewController
     self.selectedSoundFontManager = selectedSoundFontManager
     self.activePresetManager = activePresetManager
@@ -61,6 +62,7 @@ final class PresetsTableViewManager: NSObject {
     self.favorites = favorites
     self.keyboard = keyboard
     self.infoBar = infoBar
+    self.settings = settings
     super.init()
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
@@ -244,7 +246,7 @@ extension PresetsTableViewManager {
   private func selectedPreset(_ presetIndex: Int, wasSearching: Bool) {
     withSoundFont { soundFont in
       let soundFontAndPreset = soundFont[presetIndex]
-      if !activePresetManager.setActive(preset: soundFontAndPreset, playSample: Settings.shared.playSample) {
+      if !activePresetManager.setActive(preset: soundFontAndPreset, playSample: settings.playSample) {
         if let indexPath = getPresetIndexPath(for: soundFontAndPreset) {
           view.scrollToRow(at: indexPath, at: .none, animated: false)
         }
@@ -255,7 +257,7 @@ extension PresetsTableViewManager {
 
   private func selectedFavorite(_ key: Favorite.Key, wasSearching: Bool) {
     let favorite = favorites.getBy(key: key)
-    if !activePresetManager.setActive(favorite: favorite, playSample: Settings.shared.playSample) {
+    if !activePresetManager.setActive(favorite: favorite, playSample: settings.playSample) {
       if let indexPath = getPresetIndexPath(for: key) {
         view.scrollToRow(at: indexPath, at: .none, animated: false)
       }
@@ -688,7 +690,8 @@ extension PresetsTableViewManager {
             indexPath: indexPath, sourceView: view, sourceRect: view.bounds,
             currentLowestNote: self.keyboard?.lowestNote,
             completionHandler: completionHandler, soundFonts: self.soundFonts,
-            soundFontAndPreset: soundFontAndPreset))
+            soundFontAndPreset: soundFontAndPreset,
+            settings: self.settings))
       )
     }
   }
@@ -764,7 +767,8 @@ extension PresetsTableViewManager {
       sourceView: view, sourceRect: view.bounds,
       currentLowestNote: self.keyboard?.lowestNote,
       completionHandler: completionHandler, soundFonts: self.soundFonts,
-      soundFontAndPreset: favorite.soundFontAndPreset)
+      soundFontAndPreset: favorite.soundFontAndPreset,
+      settings: settings)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     self.favorites.beginEdit(config: config)
   }
@@ -790,7 +794,7 @@ extension PresetsTableViewManager {
                                      soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
-      if Settings.shared.showedHidePresetPrompt {
+      if self.settings.showedHidePresetPrompt {
         self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
                         completionHandler: completionHandler)
       } else {
@@ -827,7 +831,7 @@ extension PresetsTableViewManager {
     let alertController = UIAlertController(title: promptTitle, message: promptMessage, preferredStyle: .alert)
     let hide = UIAlertAction(title: Formatters.strings.hidePresetAction, style: .default) { [weak self] _ in
       guard let self = self else { return }
-      Settings.shared.showedHidePresetPrompt = true
+      self.settings.showedHidePresetPrompt = true
       self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
                       completionHandler: completionHandler)
     }

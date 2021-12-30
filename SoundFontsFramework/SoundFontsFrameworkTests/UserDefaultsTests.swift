@@ -6,7 +6,7 @@ import XCTest
 private let ud = UserDefaults(suiteName: "UserDefaultsTests")!
 
 private struct Settings {
-  static let number = SettingKey<Int>("UserDefaultsTestIntSetting", 0, source: ud)
+  static let number = SettingKey("UserDefaultsTestIntSetting", 0)
 }
 
 class UserDefaultsTests: XCTestCase {

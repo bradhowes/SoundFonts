@@ -13,6 +13,7 @@ final public class FavoriteEditor: UIViewController {
     let completionHandler: ((Bool) -> Void)?
     let soundFonts: SoundFonts
     let soundFontAndPreset: SoundFontAndPreset
+    let settings: Settings
   }
 
   public enum Config {
@@ -53,6 +54,7 @@ final public class FavoriteEditor: UIViewController {
   private var completionHandler: ((Bool) -> Void)?
   private var soundFonts: SoundFonts! = nil
   private var soundFontAndPreset: SoundFontAndPreset! = nil
+  private var settings: Settings!
 
   weak var delegate: FavoriteEditorDelegate?
 
@@ -107,6 +109,7 @@ final public class FavoriteEditor: UIViewController {
     self.completionHandler = state.completionHandler
     self.soundFonts = state.soundFonts
     self.soundFontAndPreset = state.soundFontAndPreset
+    self.settings = state.settings
   }
 
   override public func viewDidLoad() {
@@ -167,12 +170,13 @@ final public class FavoriteEditor: UIViewController {
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: presetTuningCents,
-      tuningFrequency: presetTuningFrequency)
+      tuningFrequency: presetTuningFrequency,
+      settings: settings)
     self.tuningComponent = tuningComponent
     tuningComponent.updateState(
       enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
 
-    setPitchBendRange(presetConfig.pitchBendRange ?? Settings.shared.pitchBendRange)
+    setPitchBendRange(presetConfig.pitchBendRange ?? settings.pitchBendRange)
     setGainValue(presetConfig.gain)
     setPanValue(presetConfig.pan)
 
@@ -256,7 +260,7 @@ extension FavoriteEditor {
 
   @IBAction func resetPitchBend(_ sender: UIButton) {
     presetConfig.pitchBendRange = nil
-    setPitchBendRange(Settings.shared.pitchBendRange)
+    setPitchBendRange(settings.pitchBendRange)
   }
 
   /**

@@ -58,7 +58,7 @@ public final class SoundFont: Codable {
    - parameter url: the resource URL for this sound font
    - parameter key: UUID for this font
    */
-  public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key) {
+  public init(_ displayName: String, soundFontInfo: SoundFontInfo, url: URL, key: Key, copyFilesWhenAdding: Bool) {
     self.key = key
     self.displayName = displayName
     self.originalDisplayName = displayName
@@ -66,8 +66,7 @@ public final class SoundFont: Codable {
     self.embeddedComment = soundFontInfo.embeddedComment
     self.embeddedAuthor = soundFontInfo.embeddedAuthor
     self.embeddedCopyright = soundFontInfo.embeddedCopyright
-    self.kind =
-      Settings.shared.copyFilesWhenAdding
+    self.kind = copyFilesWhenAdding
       ? .installed(fileName: displayName + "_" + key.uuidString + SF2Files.sf2DottedExtension)
       : .reference(bookmark: Bookmark(url: url, name: displayName))
     self.presets = Self.makePresets(soundFontInfo.presets)
@@ -95,7 +94,8 @@ public final class SoundFont: Codable {
 
 extension SoundFont {
 
-  public static func makeSoundFont(from url: URL) -> Result<SoundFont, SoundFontFileLoadFailure> {
+  public static func makeSoundFont(from url: URL,
+                                   copyFilesWhenAdding: Bool) -> Result<SoundFont, SoundFontFileLoadFailure> {
     os_log(.info, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
     guard let info = SoundFontInfo.load(viaParser: url) else {
@@ -117,8 +117,9 @@ extension SoundFont {
       info.embeddedName = displayName
     }
 
-    let soundFont = SoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key())
-    if Settings.shared.copyFilesWhenAdding {
+    let soundFont = SoundFont(displayName, soundFontInfo: info, url: url, key: uuid ?? Key(),
+                              copyFilesWhenAdding: copyFilesWhenAdding)
+    if copyFilesWhenAdding {
       do {
         try copyToAppFolder(source: url, destination: soundFont.fileURL)
       } catch {

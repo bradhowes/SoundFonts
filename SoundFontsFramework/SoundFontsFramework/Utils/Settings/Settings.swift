@@ -4,39 +4,53 @@ import Foundation
 import os.log
 
 /// Collection of user settings.
-public final class Settings {
+public final class Settings: NSObject {
   private static let log = Logging.logger("Settings")
 
-  public static let suiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
-  public static var shared: UserDefaults! = nil
-  public static var keyPrefix: String = ""
-  public static var identity: FileManager.Identity?
+  public static let defaultSuiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
+  public let keyPrefix: String
+  public let identity: FileManager.Identity?
+  public let storage: UserDefaults
+  public var registered = Set<String>()
 
   /**
    Initialize settings from UserDefaults.
    */
-  public init(inApp: Bool) {
-    os_log(.info, log: Self.log, "init - BEGIN: %d", inApp)
+  public init(inApp: Bool, suiteName: String = Settings.defaultSuiteName) {
+    os_log(.info, log: Self.log, "init - BEGIN: %d %{public}s", inApp, suiteName)
     os_log(.info, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
 
     guard
-      let common = UserDefaults(suiteName: Self.suiteName)
+      let defaults = UserDefaults(suiteName: suiteName)
     else {
-      os_log(.error, log: Self.log, "failed to access %{public}s", Self.suiteName)
-      fatalError("unable to access \(Self.suiteName)")
+      os_log(.error, log: Self.log, "failed to access %{public}s", suiteName)
+      fatalError("unable to access \(suiteName)")
     }
 
-    Self.shared = common
+    self.storage = defaults
 
-    if !inApp {
+    if inApp {
+      self.identity = nil
+      self.keyPrefix = ""
+    }
+    else {
       let identity = FileManager.default.openIdentity()
       os_log(.info, log: Self.log, "using identity %d", identity.index)
-      Self.identity = identity
-      Self.keyPrefix = "\(identity.index)_"
+      self.identity = identity
+      self.keyPrefix = "\(identity.index)_"
     }
 
     os_log(.info, log: Self.log, "init - END")
   }
+
+  func get<T>(key: String, defaultValue: T) -> T {
+    if let value = storage.object(forKey: key) as? T { return value }
+    storage.register(defaults: [key: defaultValue])
+    return defaultValue
+  }
+
+  func set<T>(key: String, value: T) { storage.set(value, forKey: key) }
+  func remove<T>(key: SettingKey<T>) { storage.removeObject(forKey: key.key) }
 }
 
 public extension SettingKeys {
@@ -77,9 +91,9 @@ public extension SettingKeys {
   /// The current MIDI channel to use for incoming MIDI events. OMNI mode is a value of -1 (default).
   static let midiChannel = SettingKey("midiChannel", -1)
   /// The MIDI virtual input ID (not user settable)
-  static let virtualMidiInId = SettingKey("virtualMidiInId", Int32(0))
+  static let virtualMidiInId = SettingKey("virtualMidiInId", 0)
   /// The MIDI virtual output ID (not user settable)
-  static let virtualMidiOutId = SettingKey("virtualMidiOutId", Int32(0))
+  static let virtualMidiOutId = SettingKey("virtualMidiOutId", 0)
 
   /// If true, the reverb AU is currently active
   static let reverbEnabled = SettingKey("reverbEnabled", false)
@@ -146,7 +160,20 @@ public extension SettingKeys {
 
 /// KVO properties based on the above key definitions.
 
-extension UserDefaults {
+extension Settings {
+
+  /**
+   Enable subscripting by SettingKey instances.
+
+   - parameter key: SettingKey instance to use as a key into UserDefaults
+   - returns: instance of the template type from UserDefaults
+   */
+  @inlinable
+  subscript<T>(key: SettingKey<T>) -> T {
+    get { key.get(self) }
+    set { key.set(self, newValue) }
+  }
+
   /// The number of days to wait after the first launch of the app before asking for a review
   @objc public dynamic var daysAfterFirstLaunchBeforeRequest: Int {
     get { self[.daysAfterFirstLaunchBeforeRequest] }
@@ -213,12 +240,12 @@ extension UserDefaults {
     set { self[.midiChannel] = newValue }
   }
   /// The MIDI virtual input ID (not user settable)
-  @objc public dynamic var virtualMidiInId: Int32 {
+  @objc public dynamic var virtualMidiInId: Int {
     get { self[.virtualMidiInId] }
     set { self[.virtualMidiInId] = newValue }
   }
   /// The MIDI virtual output ID (not user settable)
-  @objc public dynamic var virtualMidiOutId: Int32 {
+  @objc public dynamic var virtualMidiOutId: Int {
     get { self[.virtualMidiOutId] }
     set { self[.virtualMidiOutId] = newValue }
   }

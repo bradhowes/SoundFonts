@@ -116,15 +116,16 @@ where T: ControllerConfiguration {
     let configPath = FileManager.default.sharedPath(for: ConsolidatedConfigFile.filename)
     self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 
-    self.askForReview = AskForReview(isMain: inApp)
+    self.askForReview = AskForReview(isMain: inApp, settings: settings)
 
-    self.soundFonts = SoundFontsManager(consolidatedConfigFile)
+    self.soundFonts = SoundFontsManager(consolidatedConfigFile, settings: settings)
     self.favorites = FavoritesManager(consolidatedConfigFile)
     self.tags = TagsManager(consolidatedConfigFile)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
     self.activePresetManager = ActivePresetManager(soundFonts: soundFonts,
-                                                   selectedSoundFontManager: selectedSoundFontManager)
+                                                   selectedSoundFontManager: selectedSoundFontManager,
+                                                   settings: settings)
     super.init()
 
     createAudioComponents()
@@ -135,12 +136,12 @@ where T: ControllerConfiguration {
       DispatchQueue.global(qos: .userInitiated).async {
         self._reverbEffect = .init()
         self._delayEffect = .init()
-        self._sampler = Sampler(mode: .standalone,
-                                activePresetManager: self.activePresetManager,
-                                reverb: self._reverbEffect, delay: self._delayEffect)
+        self._sampler = Sampler(mode: .standalone, activePresetManager: self.activePresetManager,
+                                reverb: self._reverbEffect, delay: self._delayEffect, settings: self.settings)
       }
     } else {
-      self._sampler = Sampler(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil)
+      self._sampler = Sampler(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
+                              settings: settings)
     }
   }
 

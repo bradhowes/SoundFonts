@@ -17,7 +17,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   private var favorites: Favorites!
   private var soundFonts: SoundFonts!
   private var tags: Tags!
-
+  private var settings: Settings!
   private var favoriteMover: FavoriteMover!
 
   public var swipeLeft = UISwipeGestureRecognizer()
@@ -75,6 +75,7 @@ extension FavoritesViewController: ControllerConfiguration {
     keyboard = router.keyboard
     soundFonts = router.soundFonts
     tags = router.tags
+    settings = router.settings
 
     activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChange)
     favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
@@ -221,7 +222,8 @@ extension FavoritesViewController: SegueHandler {
 
     let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
                                            currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
-                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset)
+                                           soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset,
+                                           settings: settings)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     showEditor(config: config)
   }

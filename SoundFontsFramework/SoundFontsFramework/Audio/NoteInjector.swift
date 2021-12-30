@@ -10,9 +10,12 @@ public final class NoteInjector {
   private let noteOnDuration = 0.5
   private let playingQueue = DispatchQueue(label: "NoteInjector.playingQueue", qos: .userInitiated,
                                            target: DispatchQueue.global(qos: .userInitiated))
+  private let settings: Settings
   private var workItems = [DispatchWorkItem]()
 
-  public init() {}
+  public init(settings: Settings) {
+    self.settings = settings
+  }
 
   /**
    Post MIDI commands to Sampler to play a short note.
@@ -20,7 +23,7 @@ public final class NoteInjector {
    - parameter sampler: the sampler to command
    */
   public func post(to sampler: Sampler) {
-    guard Settings.shared.playSample == true else { return }
+    guard settings.playSample == true else { return }
     workItems.forEach { $0.cancel() }
 
     let note = self.note
@@ -43,7 +46,7 @@ public final class NoteInjector {
   public func post(to audioUnit: AUAudioUnit) {
     workItems.forEach { $0.cancel() }
 
-    guard Settings.shared.playSample == true,
+    guard settings.playSample == true,
           let noteBlock = audioUnit.scheduleMIDIEventBlock
     else {
       return

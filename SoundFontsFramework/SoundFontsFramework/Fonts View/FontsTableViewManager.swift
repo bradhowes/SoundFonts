@@ -18,13 +18,14 @@ final class FontsTableViewManager: NSObject {
   private let fontEditorActionGenerator: FontEditorActionGenerator
   private let soundFonts: SoundFonts
   private let tags: Tags
+  private let settings: Settings
 
   private var activeTagsObservation: NSKeyValueObservation?
   private var viewSoundFonts = [SoundFont.Key]()
   private var filterTagKey: Tag.Key = Tag.allTag.key
 
   init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePresetManager: ActivePresetManager,
-       fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags) {
+       fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts, tags: Tags, settings: Settings) {
 
     self.view = view
     self.selectedSoundFontManager = selectedSoundFontManager
@@ -32,6 +33,7 @@ final class FontsTableViewManager: NSObject {
     self.fontEditorActionGenerator = fontEditorActionGenerator
     self.soundFonts = soundFonts
     self.tags = tags
+    self.settings = settings
     super.init()
 
     view.register(TableCell.self)
@@ -43,8 +45,8 @@ final class FontsTableViewManager: NSObject {
     activePresetManager.subscribe(self, notifier: activePresetChange)
     tags.subscribe(self, notifier: tagsChange)
 
-    _ = Settings.shared.activeTagKey
-    activeTagsObservation = Settings.shared.observe(\.activeTagKey) { [weak self] setting, _ in
+    _ = settings.activeTagKey
+    activeTagsObservation = settings.observe(\.activeTagKey) { [weak self] setting, _ in
       self?.updateFilterTag(tagKey: setting.activeTagKey)
     }
   }
@@ -239,7 +241,7 @@ extension FontsTableViewManager {
       soundFonts.removeTag(tag.key)
       updateFilterTag(tagKey: Tag.allTag.key)
 
-    case .restored: updateFilterTag(tagKey: Settings.shared[.activeTagKey])
+    case .restored: updateFilterTag(tagKey: settings.activeTagKey)
     case .added: break
     case .moved: break
     case .changed: break

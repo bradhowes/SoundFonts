@@ -23,6 +23,7 @@ public final class SoundFontsViewController: UIViewController {
   private var favorites: Favorites!
   private var infoBar: InfoBar!
   private var tags: Tags!
+  private var settings: Settings!
 
   private var fontsTableViewManager: FontsTableViewManager!
   private var tagsTableViewManager: ActiveTagManager!
@@ -68,9 +69,6 @@ extension SoundFontsViewController {
 
     maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
-    let multiplier = Settings.shared.presetsWidthMultiplier
-    presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
-
     dividerDragGesture.maximumNumberOfTouches = 1
     dividerDragGesture.minimumNumberOfTouches = 1
     dividerDragGesture.addTarget(self, action: #selector(moveDivider(_:)))
@@ -109,7 +107,7 @@ extension SoundFontsViewController {
         presetsWidthConstraint.multiplier,
         multiplier)
       presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
-      Settings.shared.presetsWidthMultiplier = Double(multiplier)
+      settings.presetsWidthMultiplier = Double(multiplier)
 
     default: break
     }
@@ -133,7 +131,7 @@ extension SoundFontsViewController {
   private func addSoundFont(_ button: AnyObject) {
     let documentPicker = UIDocumentPickerViewController(
       documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"],
-      in: Settings.shared.copyFilesWhenAdding ? .import : .open)
+      in: settings.copyFilesWhenAdding ? .import : .open)
     documentPicker.delegate = self
     if #available(iOS 13, *) {
       documentPicker.modalPresentationStyle = .automatic
@@ -195,6 +193,7 @@ extension SoundFontsViewController: UIDocumentPickerDelegate {
 extension SoundFontsViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
+    settings = router.settings
     soundFonts = router.soundFonts
     favorites = router.favorites
     keyboard = router.keyboard
@@ -202,13 +201,18 @@ extension SoundFontsViewController: ControllerConfiguration {
     infoBar = router.infoBar
     tags = router.tags
 
+    let multiplier = settings.presetsWidthMultiplier
+    presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
+
     fontsTableViewManager = FontsTableViewManager(view: soundFontsView,
                                                   selectedSoundFontManager: selectedSoundFontManager,
                                                   activePresetManager: router.activePresetManager,
                                                   fontEditorActionGenerator: self,
-                                                  soundFonts: router.soundFonts, tags: tags)
+                                                  soundFonts: router.soundFonts, tags: tags,
+                                                  settings: settings)
 
-    tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, tagsHider: self.hideTags)
+    tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, settings: settings,
+                                            tagsHider: self.hideTags)
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)

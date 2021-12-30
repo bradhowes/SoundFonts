@@ -14,6 +14,8 @@ public final class AskForReview: NSObject {
    */
   static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
+  private let settings: Settings
+
   /// Obtain the version found in the main bundle.
   private lazy var currentVersion: String = {
     guard
@@ -27,34 +29,34 @@ public final class AskForReview: NSObject {
 
   /// Obtain the first time the app was launched by the user after installing.
   private lazy var firstLaunchDate: Date = {
-    var value = Settings.shared.firstLaunchDate
+    var value = settings.firstLaunchDate
     if value == Date.distantPast {
       value = Date()
-      Settings.shared.firstLaunchDate = value
+      settings.firstLaunchDate = value
     }
     return value
   }()
 
   /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-  private var lastReviewRequestDate: Date = Settings.shared.lastReviewRequestDate {
-    didSet { Settings.shared.lastReviewRequestDate = lastReviewRequestDate }
+  private lazy var lastReviewRequestDate: Date = settings.lastReviewRequestDate {
+    didSet { settings.lastReviewRequestDate = lastReviewRequestDate }
   }
 
   /// Obtain the time when the app was last reviewed. If never, then this will be `Date.distantPast`
-  private var lastReviewRequestVersion: String = Settings.shared.lastReviewRequestVersion {
-    didSet { Settings.shared.lastReviewRequestVersion = lastReviewRequestVersion }
+  private lazy var lastReviewRequestVersion: String = settings.lastReviewRequestVersion {
+    didSet { settings.lastReviewRequestVersion = lastReviewRequestVersion }
   }
 
   /// Get the date N days days since the first launch
   private lazy var dateSinceFirstLaunch: Date =
     Calendar.current.date(
-      byAdding: .day, value: Settings.shared.daysAfterFirstLaunchBeforeRequest,
+      byAdding: .day, value: settings.daysAfterFirstLaunchBeforeRequest,
       to: firstLaunchDate)!
 
   /// Get the date N months since the last review request
   private lazy var dateSinceLastReviewRequest: Date =
     Calendar.current.date(
-      byAdding: .month, value: Settings.shared.monthsAfterLastReviewBeforeRequest,
+      byAdding: .month, value: settings.monthsAfterLastReviewBeforeRequest,
       to: lastReviewRequestDate)!
 
   private var countDown = 3
@@ -65,7 +67,8 @@ public final class AskForReview: NSObject {
 
    - parameter isMain: true if running inside app (vs AUv3 extension)
    */
-  public init(isMain: Bool) {
+  public init(isMain: Bool, settings: Settings) {
+    self.settings = settings
     super.init()
     os_log(
       .info, log: log,

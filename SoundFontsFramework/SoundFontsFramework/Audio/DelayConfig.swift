@@ -21,13 +21,13 @@ public struct DelayConfig: Codable {
 
 extension DelayConfig {
 
-  public init() {
+  public init(settings: Settings) {
     self.init(
-      enabled: Settings.shared.delayEnabled,
-      time: Settings.shared.delayTime,
-      feedback: Settings.shared.delayFeedback,
-      cutoff: Settings.shared.delayCutoff,
-      wetDryMix: Settings.shared.delayWetDryMix)
+      enabled: settings.delayEnabled,
+      time: settings.delayTime,
+      feedback: settings.delayFeedback,
+      cutoff: settings.delayCutoff,
+      wetDryMix: settings.delayWetDryMix)
   }
 
   public init?(state: [String: Any]) {

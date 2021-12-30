@@ -19,32 +19,32 @@ public final class SoundFontsControlsController: UIViewController {
   private var upperViewManager = SlidingViewManager()
   private var fontsViewManager: FontsViewManager!
   private var infoBar: InfoBar!
-
+  private var settings: Settings!
   private var isMainApp: Bool = false
 
   public override func viewDidLoad() {
+    super.viewDidLoad()
+
     upperViewManager.add(view: presetsView)
     upperViewManager.add(view: favoritesView)
+  }
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
 
     let showingFavorites: Bool = {
       if CommandLine.arguments.contains("--screenshots") { return false }
-      return Settings.shared.showingFavorites
+      return settings.showingFavorites
     }()
 
     presetsView.isHidden = showingFavorites
     favoritesView.isHidden = !showingFavorites
     upperViewManager.active = showingFavorites ? 1 : 0
-
-    super.viewDidLoad()
-  }
-
-  public override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
   }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if isMainApp && Settings.shared.showEffects {
+    if isMainApp && settings.showEffects {
       showEffects(false)
     }
 
@@ -62,7 +62,7 @@ extension SoundFontsControlsController: ControllerConfiguration {
    - parameter context: the RunContext that holds all of the registered managers / controllers
    */
   public func establishConnections(_ router: ComponentContainer) {
-
+    settings = router.settings
     fontsViewManager = router.fontsViewManager
     fontsViewManager.addEventClosure(.swipeLeft, showNextConfigurationView)
 
@@ -111,7 +111,7 @@ extension SoundFontsControlsController {
         NotificationCenter.default.post(name: .showingEffects, object: nil)
       }
     }
-    Settings.shared.showEffects = true
+    settings.showEffects = true
   }
 
   private func hideEffects(_ animated: Bool = true) {
@@ -125,7 +125,7 @@ extension SoundFontsControlsController {
         NotificationCenter.default.post(name: .hidingEffects, object: nil)
       }
     }
-    Settings.shared.showEffects = false
+    settings.showEffects = false
   }
 }
 
@@ -139,7 +139,7 @@ extension SoundFontsControlsController {
       fontsViewManager.dismissSearchKeyboard()
     }
     upperViewManager.slideNextHorizontally()
-    Settings.shared.showingFavorites = upperViewManager.active == 1
+    settings.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 
@@ -148,7 +148,7 @@ extension SoundFontsControlsController {
    */
   private func showPreviousConfigurationView(_ action: AnyObject) {
     upperViewManager.slidePrevHorizontally()
-    Settings.shared.showingFavorites = upperViewManager.active == 1
+    settings.showingFavorites = upperViewManager.active == 1
     updateInfoBarButtons()
   }
 

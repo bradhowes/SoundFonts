@@ -22,6 +22,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private lazy var log = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFonts
   private let selectedSoundFontManager: SelectedSoundFontManager
+  private let settings: Settings
 
   private var pending: ActivePresetKind = .none
 
@@ -48,9 +49,6 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     activeFavorite?.presetConfig ?? activePreset?.presetConfig
   }
 
-  /// Obtain the last-saved active preset value
-  static var restoredActivePresetKind: ActivePresetKind? { Settings.shared.lastActivePreset }
-
   /**
    Construct new manager
 
@@ -58,10 +56,12 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter selectedSoundFontManager: the manager of the selected sound font
    - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
    */
-  public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager) {
+  public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, settings: Settings) {
     self.active = .none
     self.soundFonts = soundFonts
     self.selectedSoundFontManager = selectedSoundFontManager
+    self.settings = settings
+
     super.init()
     os_log(.info, log: log, "init")
     soundFonts.subscribe(self, notifier: soundFontsChange)
@@ -157,20 +157,21 @@ extension ActivePresetManager {
     if pending != .none {
       os_log(.info, log: log, "using pending value")
       setActive(pending, playSample: false)
-    } else if let restored = Self.restoredActivePresetKind,
-              isValid(restored)
-    {
-      os_log(.info, log: log, "using restored value from UserDefaults")
-      setActive(restored, playSample: false)
-    } else if let defaultPreset = soundFonts.defaultPreset {
-      os_log(.info, log: log, "using soundFonts.defaultPreset")
-      setActive(preset: defaultPreset, playSample: false)
+    } else {
+      let restored = settings.lastActivePreset
+      if isValid(restored) {
+        os_log(.info, log: log, "using restored value from UserDefaults")
+        setActive(restored, playSample: false)
+      } else if let defaultPreset = soundFonts.defaultPreset {
+        os_log(.info, log: log, "using soundFonts.defaultPreset")
+        setActive(preset: defaultPreset, playSample: false)
+      }
     }
   }
 
   private func save(_ kind: ActivePresetKind) {
     os_log(.info, log: log, "save - %{public}s", kind.description)
-    Settings.shared.lastActivePreset = kind
+    settings.lastActivePreset = kind
   }
 
   private func isValid(_ active: ActivePresetKind) -> Bool {

@@ -48,7 +48,8 @@ extension PresetsTableViewController: ControllerConfiguration {
                                                       soundFonts: router.soundFonts,
                                                       favorites: router.favorites,
                                                       keyboard: router.keyboard,
-                                                      infoBar: router.infoBar)
+                                                      infoBar: router.infoBar,
+                                                      settings: router.settings)
     presetsTableViewManager?.selectActive(animated: false)
   }
 }

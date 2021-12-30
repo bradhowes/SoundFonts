@@ -17,11 +17,13 @@ final class MainViewController: UIViewController {
   private var keyboard: Keyboard!
   private var sampler: Sampler?
   private var infoBar: InfoBar!
+  private var settings: Settings!
+  fileprivate var noteInjector: NoteInjector!
+
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
   private var observers = [NSObjectProtocol]()
 
-  fileprivate var noteInjector = NoteInjector()
 
   /// Disable system gestures near screen edges so that touches on the keyboard are always seen by the application.
   override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
@@ -48,9 +50,9 @@ final class MainViewController: UIViewController {
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    if !skipTutorial && !Settings.shared.showedTutorial {
+    if !skipTutorial && !settings.showedTutorial {
       showTutorial()
-      Settings.shared.showedTutorial = true
+      settings.showedTutorial = true
     }
   }
 
@@ -74,9 +76,9 @@ extension MainViewController {
    */
   func showChanges() {
     let currentVersion = Bundle.main.releaseVersionNumber
-    if Settings.shared.showedChanges != currentVersion {
-      let changes = ChangesCompiler.compile(since: Settings.shared.showedChanges)
-      Settings.shared.showedChanges = currentVersion
+    if settings.showedChanges != currentVersion {
+      let changes = ChangesCompiler.compile(since: settings.showedChanges)
+      settings.showedChanges = currentVersion
       if let viewController = TutorialViewController.instantiateChanges(changes) {
         present(viewController, animated: true, completion: nil)
       }
@@ -212,23 +214,25 @@ extension MainViewController: ControllerConfiguration {
    */
   func establishConnections(_ router: ComponentContainer) {
     self.router = router
-    router.subscribe(self, notifier: routerChange)
 
     infoBar = router.infoBar
     keyboard = router.keyboard
     activePresetManager = router.activePresetManager
+    settings = router.settings
+    noteInjector = .init(settings: settings)
 
     #if !targetEnvironment(macCatalyst)
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
     #endif
 
+    router.subscribe(self, notifier: routerChange)
     router.activePresetManager.subscribe(self, notifier: activePresetChange)
   }
 
   private func startMIDI() {
     guard let sampler = self.sampler else { return }
     os_log(.error, log: log, "starting MIDI for sampler")
-    midiController = MIDIController(sampler: sampler, keyboard: keyboard)
+    midiController = MIDIController(sampler: sampler, keyboard: keyboard, settings: settings)
     MIDI.sharedInstance.receiver = midiController
   }
 

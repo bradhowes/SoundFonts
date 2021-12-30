@@ -9,10 +9,6 @@ public enum KeyLabelOption: Int {
   case off
   case all
   case cOnly
-
-  public static var savedSetting: KeyLabelOption {
-    return Self(rawValue: Settings.shared.keyLabelOption) ?? .cOnly
-  }
 }
 
 /// Manages window showing various runtime settings and options.
@@ -79,6 +75,7 @@ public final class SettingsViewController: UIViewController {
   private var revealKeyboardForKeyWidthChanges = false
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
+  public var settings: Settings!
   public var soundFonts: SoundFonts!
   public var isMainApp = true
 
@@ -108,6 +105,7 @@ public final class SettingsViewController: UIViewController {
     globalTuningCents,
     globalTuningFrequencyLabel,
     globalTuningFrequency,
+    pitchBendStackView,
     divider1,
     divider2,
     divider3,
@@ -142,21 +140,25 @@ public final class SettingsViewController: UIViewController {
 
   override public func viewWillAppear(_ animated: Bool) {
     precondition(soundFonts != nil, "nil soundFonts")
+    precondition(settings != nil, "nil settings")
+
     super.viewWillAppear(animated)
 
     let tuningComponent = TuningComponent(
-      tuning: Settings.shared.globalTuning,
+      tuning: settings.globalTuning,
       view: view, scrollView: scrollView,
       tuningEnabledSwitch: globalTuningEnabled,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: globalTuningCents,
-      tuningFrequency: globalTuningFrequency)
+      tuningFrequency: globalTuningFrequency,
+      settings: settings
+    )
     self.tuningComponent = tuningComponent
 
     tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, change in
       guard let newValue = change.newValue else { return }
-      Settings.shared.globalTuning = newValue
+      self.settings.globalTuning = newValue
     }
 
     revealKeyboardForKeyWidthChanges = true
@@ -164,13 +166,13 @@ public final class SettingsViewController: UIViewController {
       revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
     }
 
-    playSample.isOn = Settings.shared.playSample
-    showSolfegeNotes.isOn = Settings.shared.showSolfegeLabel
-    keyLabelOption.selectedSegmentIndex = KeyLabelOption.savedSetting.rawValue
+    playSample.isOn = settings.playSample
+    showSolfegeNotes.isOn = settings.showSolfegeLabel
+    keyLabelOption.selectedSegmentIndex = settings.keyLabelOption
     updateButtonState()
 
-    keyWidthSlider.value = Settings.shared.keyWidth
-    slideKeyboard.isOn = Settings.shared.slideKeyboard
+    keyWidthSlider.value = settings.keyWidth
+    slideKeyboard.isOn = settings.slideKeyboard
 
     updateMIDIConnectionsButton()
     midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
@@ -179,18 +181,18 @@ public final class SettingsViewController: UIViewController {
 
     MIDI.sharedInstance.monitor = self
 
-    midiChannelStepper.value = Double(Settings.shared.midiChannel)
+    midiChannelStepper.value = Double(settings.midiChannel)
     updateMidiChannel()
 
-    pitchBendStepper.value = Double(Settings.shared.pitchBendRange)
+    pitchBendStepper.value = Double(settings.pitchBendRange)
     updatePitchBendRange()
 
-    slideKeyboard.isOn = Settings.shared.slideKeyboard
+    slideKeyboard.isOn = settings.slideKeyboard
 
     tuningComponent.updateState(
-      enabled: globalTuningEnabled.isOn, cents: Settings.shared.globalTuning)
+      enabled: globalTuningEnabled.isOn, cents: settings.globalTuning)
 
-    copyFiles.isOn = Settings.shared.copyFilesWhenAdding
+    copyFiles.isOn = settings.copyFilesWhenAdding
 
     endShowKeyboard()
 
@@ -208,8 +210,8 @@ public final class SettingsViewController: UIViewController {
   override public func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     guard let tuningComponent = self.tuningComponent else { return }
-    Settings.shared.globalTuning = tuningComponent.tuning
-    Settings.shared.globalTuningEnabled = globalTuningEnabled.isOn
+    settings.globalTuning = tuningComponent.tuning
+    settings.globalTuningEnabled = globalTuningEnabled.isOn
     self.tuningObserver = nil
     self.tuningComponent = nil
     self.midiConnectionsObserver = nil
@@ -275,19 +277,19 @@ extension SettingsViewController {
   }
 
   @IBAction private func toggleShowSolfegeNotes(_ sender: Any) {
-    Settings.shared.showSolfegeLabel = self.showSolfegeNotes.isOn
+    settings.showSolfegeLabel = self.showSolfegeNotes.isOn
   }
 
   @IBAction private func togglePlaySample(_ sender: Any) {
-    Settings.shared.playSample = self.playSample.isOn
+    settings.playSample = self.playSample.isOn
   }
 
   @IBAction private func keyLabelOptionChanged(_ sender: Any) {
-    Settings.shared.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
+    settings.keyLabelOption = self.keyLabelOption.selectedSegmentIndex
   }
 
   @IBAction private func toggleSlideKeyboard(_ sender: Any) {
-    Settings.shared.slideKeyboard = self.slideKeyboard.isOn
+    settings.slideKeyboard = self.slideKeyboard.isOn
   }
 
   @IBAction func showMIDIConnections(_ sender: UIButton) {
@@ -318,7 +320,7 @@ extension SettingsViewController {
           """, preferredStyle: .alert)
       ac.addAction(
         UIAlertAction(title: "Yes", style: .default) { _ in
-          Settings.shared.copyFilesWhenAdding = false
+          self.settings.copyFilesWhenAdding = false
         })
       ac.addAction(
         UIAlertAction(title: "Cancel", style: .cancel) { [weak self]_ in
@@ -326,19 +328,19 @@ extension SettingsViewController {
         })
       present(ac, animated: true)
     } else {
-      Settings.shared.copyFilesWhenAdding = true
+      settings.copyFilesWhenAdding = true
     }
   }
 
   @IBAction private func keyWidthChange(_ sender: Any) {
-    let previousValue = Settings.shared.keyWidth.rounded()
+    let previousValue = settings.keyWidth.rounded()
     var newValue = keyWidthSlider.value.rounded()
     if abs(newValue - 64.0) < 4.0 { newValue = 64.0 }
     keyWidthSlider.value = newValue
 
     if newValue != previousValue {
       os_log(.info, log: log, "new key width: %f", newValue)
-      Settings.shared.keyWidth = newValue
+      settings.keyWidth = newValue
     }
   }
 
@@ -377,14 +379,14 @@ extension SettingsViewController {
     let value = Int(midiChannelStepper.value)
     os_log(.info, log: log, "new MIDI channel %d", value)
     midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
-    Settings.shared.midiChannel = value
+    settings.midiChannel = value
   }
 
   private func updatePitchBendRange() {
     let value = Int(pitchBendStepper.value)
     os_log(.info, log: log, "new pitch-bend range %d", value)
     pitchBendRange.text = "\(value)"
-    Settings.shared.pitchBendRange = value
+    settings.pitchBendRange = value
     Sampler.setPitchBendRangeNotification.post(value: value)
   }
 

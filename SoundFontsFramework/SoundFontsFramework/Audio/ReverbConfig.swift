@@ -16,11 +16,11 @@ public struct ReverbConfig: Codable {
 }
 
 extension ReverbConfig {
-  public init() {
+  public init(settings: Settings) {
     self.init(
-      enabled: Settings.shared.reverbEnabled,
-      preset: Settings.shared.reverbPreset,
-      wetDryMix: Settings.shared.delayWetDryMix)
+      enabled: settings.reverbEnabled,
+      preset: settings.reverbPreset,
+      wetDryMix: settings.delayWetDryMix)
   }
 
   public init?(state: [String: Any]) {

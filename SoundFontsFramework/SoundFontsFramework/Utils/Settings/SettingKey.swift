@@ -7,22 +7,14 @@ import os
 public protocol SettingSerializable {
 
   /**
-   Register a default value for a setting key.
-
-   - parameter key: the key to register under
-   - parameter value: the value to register
-   - parameter source: the container to register with
-   */
-  static func register(key: String, value: Self, source: UserDefaults)
-
-  /**
    Obtain the setting value under the given key.
 
    - parameter key: the setting name
    - parameter source: the container to fetch from
    - returns: optional value
    */
-  static func get(key: String, source: UserDefaults) -> Self
+  static func get(key: String, defaultValue: Self, source: Settings) -> Self
+
   /**
    Store a setting value under the given key.
 
@@ -30,22 +22,7 @@ public protocol SettingSerializable {
    - parameter value: the value to store
    - parameter source: the container to store in
    */
-  static func set(key: String, value: Self, source: UserDefaults)
-}
-
-public extension SettingSerializable {
-
-  /**
-   Default registration implementation.
-
-   - parameter key: the key to register under
-   - parameter value: the value to register
-   - parameter userDefaults: the UserDefaults instance to register in
-   */
-  @inlinable
-  static func register(key: String, value: Self, source: UserDefaults) {
-    source.register(defaults: [key: value])
-  }
+  static func set(key: String, value: Self, source: Settings)
 }
 
 /// Container to place SettingKey definitions (as class members)
@@ -61,18 +38,18 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
 
   /// The unique identifier for this setting key
   public let key: String
+  public let defaultValue: ValueType
 
   /**
    Define a new setting key.
 
    - parameter key: the unique identifier to use for this setting
    - parameter defaultValue: the constant default value to use
-   - parameter source: the setting container to register with
    */
-  public init(_ key: String, _ defaultValue: ValueType, source: UserDefaults = Settings.shared) {
-    self.key = Settings.keyPrefix + key
+  public init(_ key: String, _ defaultValue: ValueType) {
+    self.key = key
+    self.defaultValue = defaultValue
     super.init()
-    ValueType.register(key: self.key, value: defaultValue, source: source)
   }
 
   /**
@@ -82,9 +59,7 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
    - returns: the current setting value
    */
   @inlinable
-  public func get(_ source: UserDefaults) -> ValueType {
-    ValueType.get(key: key, source: source)
-  }
+  public func get(_ source: Settings) -> ValueType { ValueType.get(key: key, defaultValue: defaultValue, source: source) }
 
   /**
    Set a setting value.
@@ -93,7 +68,5 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
    - parameter value: the new setting value
    */
   @inlinable
-  public func set(_ source: UserDefaults, _ value: ValueType) {
-    ValueType.set(key: key, value: value, source: source)
-  }
+  public func set(_ source: Settings, _ value: ValueType) { ValueType.set(key: key, value: value, source: source) }
 }

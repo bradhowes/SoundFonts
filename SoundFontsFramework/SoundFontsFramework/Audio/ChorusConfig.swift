@@ -27,16 +27,16 @@ public struct ChorusConfig: Codable {
 
 extension ChorusConfig {
 
-  public init() {
+  public init(settings: Settings) {
     self.init(
-      enabled: Settings.shared.chorusEnabled,
-      rate: Settings.shared.chorusRate,
-      delay: Settings.shared.chorusDelay,
-      depth: Settings.shared.chorusDepth,
-      feedback: Settings.shared.chorusFeedback,
-      wetDryMix: Settings.shared.chorusWetDryMix,
-      negFeedback: Settings.shared.chorusNegFeedback,
-      odd90: Settings.shared.chorusOdd90)
+      enabled: settings.chorusEnabled,
+      rate: settings.chorusRate,
+      delay: settings.chorusDelay,
+      depth: settings.chorusDepth,
+      feedback: settings.chorusFeedback,
+      wetDryMix: settings.chorusWetDryMix,
+      negFeedback: settings.chorusNegFeedback,
+      odd90: settings.chorusOdd90)
   }
 
   public init?(state: [String: Any]) {

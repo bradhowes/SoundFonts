@@ -9,7 +9,7 @@ import os
 public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private static let log = Logging.logger("SoundFontsManager")
   private var log: OSLog { Self.log }
-
+  private let settings: Settings
   private var observer: ConfigFileObserver!
   public var restored: Bool { observer.restored }
 
@@ -22,7 +22,8 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
    Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
    fails then creates a new one containing SoundFont instances embedded in the app.
    */
-  public init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+  public init(_ consolidatedConfigFile: ConsolidatedConfigFile, settings: Settings) {
+    self.settings = settings
     super.init()
     observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
   }
@@ -115,7 +116,7 @@ extension SoundFontsManager: SoundFonts {
 
   @discardableResult
   public func add(url: URL) -> Result<(Int, SoundFont), SoundFontFileLoadFailure> {
-    switch SoundFont.makeSoundFont(from: url) {
+    switch SoundFont.makeSoundFont(from: url, copyFilesWhenAdding: settings.copyFilesWhenAdding) {
     case .failure(let failure): return .failure(failure)
     case .success(let soundFont):
       defer { collectionChanged() }
@@ -351,8 +352,8 @@ extension SoundFontsManager {
   }
 
   @discardableResult
-  fileprivate static func addFromSharedFolder(url: URL) -> SoundFont? {
-    switch SoundFont.makeSoundFont(from: url) {
+  fileprivate static func addFromSharedFolder(url: URL, copyFilesWhenAdding: Bool) -> SoundFont? {
+    switch SoundFont.makeSoundFont(from: url, copyFilesWhenAdding: copyFilesWhenAdding) {
     case .success(let soundFont): return soundFont
     case .failure: return nil
     }
@@ -365,7 +366,7 @@ extension SoundFontsManager {
     let bundleUrls: [URL] = SF2Files.allResources
     let fileUrls = FileManager.default.installedSF2Files
     return .init(soundFonts: (bundleUrls.compactMap { addFromBundle(url: $0) })
-                 + (fileUrls.compactMap { addFromSharedFolder(url: $0) }))
+                 + (fileUrls.compactMap { addFromSharedFolder(url: $0, copyFilesWhenAdding: true) }))
   }
 
   /**

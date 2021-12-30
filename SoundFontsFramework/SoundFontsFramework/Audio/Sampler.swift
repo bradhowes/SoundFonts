@@ -60,6 +60,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
   private let reverbEffect: ReverbEffect?
   private let delayEffect: DelayEffect?
   private let presetChangeManager = PresetChangeManager()
+  private let settings: Settings
+
   private var engine: AVAudioEngine?
   private var presetLoaded: Bool = false
 
@@ -80,12 +82,15 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
    - parameter activePresetManager: the manager of the active preset
    - parameter reverb: the reverb effect to use along with the AVAudioUnitSampler (standalone only)
    - parameter delay: the delay effect to use along with the AVAudioUnitSampler (standalone only)
+   - parameter settings: user-adjustable settings
    */
-  public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?) {
+  public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
+              settings: Settings) {
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.reverbEffect = reverb
     self.delayEffect = delay
+    self.settings = settings
     super.init()
 
     if mode == .standalone {
@@ -116,8 +121,8 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     os_log(.info, log: log, "start")
     let sampler = AVAudioUnitSampler()
     auSampler = sampler
-    if Settings.shared.globalTuningEnabled {
-      sampler.globalTuning = Settings.shared.globalTuning
+    if settings.globalTuningEnabled {
+      sampler.globalTuning = settings.globalTuning
     }
 
     presetChangeManager.start()
@@ -380,8 +385,8 @@ extension Sampler {
   private func applyPresetConfig(_ presetConfig: PresetConfig) {
     if presetConfig.presetTuningEnabled {
       setTuning(presetConfig.presetTuning)
-    } else if Settings.shared.globalTuningEnabled {
-      setTuning(Settings.shared.globalTuning)
+    } else if settings.globalTuningEnabled {
+      setTuning(settings.globalTuning)
     } else {
       setTuning(0.0)
     }
@@ -389,7 +394,7 @@ extension Sampler {
     if let pitchBendRange = presetConfig.pitchBendRange {
       setPitchBendRange(pitchBendRange)
     } else {
-      setPitchBendRange(Settings.shared.pitchBendRange)
+      setPitchBendRange(settings.pitchBendRange)
     }
 
     setGain(presetConfig.gain)
@@ -398,7 +403,7 @@ extension Sampler {
     // - If global mode enabled, don't change anything
     // - If preset has a config use it.
     // - Otherwise, if effect was enabled disable it
-    if let delay = delayEffect, !Settings.shared.delayGlobal {
+    if let delay = delayEffect, !settings.delayGlobal {
       if let config = presetConfig.delayConfig {
         os_log(.debug, log: log, "reverb preset config")
         delay.active = config
@@ -408,7 +413,7 @@ extension Sampler {
       }
     }
 
-    if let reverb = reverbEffect, !Settings.shared.reverbGlobal {
+    if let reverb = reverbEffect, !settings.reverbGlobal {
       if let config = presetConfig.reverbConfig {
         os_log(.debug, log: log, "delay preset config")
         reverb.active = config

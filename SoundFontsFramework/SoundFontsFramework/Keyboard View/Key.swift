@@ -6,14 +6,16 @@ import UIKit
 /// will emit when touched.
 public final class Key: UIView {
 
+  private let settings: Settings
+
   /// If true, audio is muted
   static var isMuted: Bool = false
 
   /// How to label the key
-  static var keyLabelOption = KeyLabelOption.savedSetting
+  private var keyLabelOption: KeyLabelOption { KeyLabelOption(rawValue: settings.keyLabelOption)! }
 
   /// Current user-adjustable key width from settings
-  static var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
+  private var keyWidth: CGFloat { CGFloat(settings.keyWidth) }
 
   /// The note to play when touched
   public let note: Note
@@ -33,8 +35,9 @@ public final class Key: UIView {
    - parameter frame: location of the key
    - parameter note: the note that the key plays
    */
-  public init(frame: CGRect, note: Note) {
+  public init(frame: CGRect, note: Note, settings: Settings) {
     self.note = note
+    self.settings = settings
     super.init(frame: frame)
     configure()
   }
@@ -61,7 +64,7 @@ public final class Key: UIView {
         isMuted: Self.isMuted)
     } else {
       let label: String = {
-        switch Self.keyLabelOption {
+        switch keyLabelOption {
         case .all: return note.label
         case .cOnly where note.midiNoteValue % 12 == 0: return note.label
         default: return ""

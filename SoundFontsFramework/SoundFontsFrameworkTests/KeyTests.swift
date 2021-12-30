@@ -5,17 +5,18 @@ import XCTest
 @testable import SoundFontsFramework
 
 class KeyTests: XCTestCase {
+  let settings = Settings(inApp: true)
 
   func makeKeys() -> [Key] {
     let gen = KeyParamsSequence(
       keyWidth: 64.0, keyHeight: 100.0, firstMidiNote: 24, lastMidiNote: 35)
     let keyDefs = [KeyParamsSequence.Element](gen)
-    return keyDefs.map { Key(frame: $0.0, note: $0.1) }
+    return keyDefs.map { Key(frame: $0.0, note: $0.1, settings: settings) }
   }
 
   func testKey() {
     let key = Key(
-      frame: CGRect(x: 0.0, y: 0.0, width: 64.0, height: 100.0), note: Note(midiNoteValue: 69))
+      frame: CGRect(x: 0.0, y: 0.0, width: 64.0, height: 100.0), note: Note(midiNoteValue: 69), settings: settings)
     XCTAssertEqual("Key(A4,false)", key.description)
     XCTAssertTrue(key.frame.contains(CGPoint(x: 0.0, y: 0.0)))
     XCTAssertFalse(key.frame.contains(CGPoint(x: 64.0, y: 0.0)))

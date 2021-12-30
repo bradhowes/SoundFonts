@@ -9,7 +9,7 @@ import os
 public final class SoundFontsAUViewController: AUViewController {
   private lazy var log = Logging.logger("SoundFontsAUViewController")
 
-  private let noteInjector = NoteInjector()
+  private var noteInjector: NoteInjector!
   private var components: Components<SoundFontsAUViewController>! = nil
   private var audioUnit: SoundFontsAU?
 
@@ -20,6 +20,7 @@ public final class SoundFontsAUViewController: AUViewController {
   override public func loadView() {
     os_log(.info, log: log, "loadView - BEGIN")
     components = Components<SoundFontsAUViewController>(inApp: false)
+    noteInjector = .init(settings: components.settings)
     os_log(.info, log: log, "super.loadView")
     super.loadView()
     os_log(.info, log: log, "loadView - END")
@@ -46,7 +47,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
     let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
                                      sampler: components.sampler,
                                      activePresetManager: components.activePresetManager,
-                                     identity: Settings.identity?.index ?? -1)
+                                     identity: components.settings.identity?.index ?? -1)
     self.audioUnit = audioUnit
     os_log(.info, log: log, "createAudioUnit - END: %{public}s", String.pointer(audioUnit))
     return audioUnit

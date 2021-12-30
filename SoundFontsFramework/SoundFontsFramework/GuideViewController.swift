@@ -6,6 +6,7 @@ public final class GuideViewController: UIViewController {
 
   private var savedParent: UIViewController!
   private var infoBar: InfoBar!
+  private var settings: Settings!
 
   @IBOutlet private weak var fontPresetPanel: UIView!
   @IBOutlet private weak var infoBarPanel: UIView!
@@ -27,6 +28,7 @@ public final class GuideViewController: UIViewController {
 extension GuideViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
+    settings = router.settings
     infoBar = router.infoBar
     isMainApp = router.isMainApp
     infoBar.addEventClosure(InfoBarEvent.showGuide, self.showGuide)
@@ -44,7 +46,7 @@ extension GuideViewController {
     keySlideLabel.isHidden = isAUv3
     keyRangeLabel.isHidden = isAUv3
     keyRangeArrow.isHidden = isAUv3
-    if Settings.shared.showingFavorites {
+    if settings.showingFavorites {
       fontPresetPanel.isHidden = true
       favoritesPanel.isHidden = false
     } else {

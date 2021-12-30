@@ -14,6 +14,7 @@ public final class MIDIController {
 
   private let sampler: Sampler
   private let keyboard: Keyboard?
+  private let settings: Settings
   private var observer: NSKeyValueObservation?
 
   /**
@@ -22,17 +23,18 @@ public final class MIDIController {
    - parameter sampler: the Sampler to command
    - parameter keyboard: the Keyboard to update
    */
-  public init(sampler: Sampler, keyboard: Keyboard?) {
+  public init(sampler: Sampler, keyboard: Keyboard?, settings: Settings) {
     self.sampler = sampler
     self.keyboard = keyboard
-    self.channel = Settings.shared.midiChannel
+    self.settings = settings
+    self.channel = settings.midiChannel
     monitorMIDIChannelValue()
   }
 
   private func monitorMIDIChannelValue() {
-    self.observer = Settings.shared.observe(\.midiChannel) { [weak self] _, _ in
+    self.observer = settings.observe(\.midiChannel) { [weak self] _, _ in
       guard let self = self else { return }
-      let value = Settings.shared.midiChannel
+      let value = self.settings.midiChannel
       if value != self.channel {
         os_log(.info, log: self.log, "new MIDI channel: %d", value)
         self.channel = value

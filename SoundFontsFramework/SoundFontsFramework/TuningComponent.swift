@@ -14,6 +14,7 @@ public final class TuningComponent: NSObject {
   private let scientificTuningButton: UIButton
   private let tuningCents: UITextField
   private let tuningFrequency: UITextField
+  private let settings: Settings
 
   private lazy var numberParserFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -37,7 +38,8 @@ public final class TuningComponent: NSObject {
     standardTuningButton: UIButton,
     scientificTuningButton: UIButton,
     tuningCents: UITextField,
-    tuningFrequency: UITextField
+    tuningFrequency: UITextField,
+    settings: Settings
   ) {
     self.tuning = tuning
     self.view = view
@@ -48,6 +50,7 @@ public final class TuningComponent: NSObject {
     self.tuningCents = tuningCents
     self.tuningFrequency = tuningFrequency
     self.textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
+    self.settings = settings
 
     super.init()
 
@@ -98,7 +101,7 @@ extension TuningComponent {
       from: NSNumber(value: centsToFrequency(tuning)))
     Sampler.setTuningNotification.post(
       value: tuningEnabledSwitch.isOn
-        ? tuning : (Settings.shared.globalTuningEnabled ? Settings.shared.globalTuning : 0.0))
+        ? tuning : (settings.globalTuningEnabled ? settings.globalTuning : 0.0))
   }
 
   private func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }

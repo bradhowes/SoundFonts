@@ -9,9 +9,11 @@ import os
 final class KeyboardController: UIViewController {
   private lazy var log = Logging.logger("KeyCon")
 
+  private var settings: Settings!
+
   /// MIDI value of the first note in the keyboard
   private var firstMidiNoteValue = 48 {
-    didSet { Settings.shared.lowestKeyNote = firstMidiNoteValue }
+    didSet { settings.lowestKeyNote = firstMidiNoteValue }
   }
 
   /// MIDI value of the last note in the keyboard
@@ -24,7 +26,7 @@ final class KeyboardController: UIViewController {
   private var allKeys = [Key]()
   private lazy var visibleKeys: Array<Key>.SubSequence = allKeys[0..<allKeys.count]
 
-  private lazy var keyWidth: CGFloat = CGFloat(Settings.shared.keyWidth)
+  private lazy var keyWidth: CGFloat = CGFloat(settings.keyWidth)
   private var activePresetManager: ActivePresetManager!
   private var keyLabelOptionObservation: NSKeyValueObservation?
   private var keyWidthObservation: NSKeyValueObservation?
@@ -36,13 +38,8 @@ final class KeyboardController: UIViewController {
   private var panPending: CGFloat = 0.0
 
   private var keyLabelOption: KeyLabelOption {
-    get { Key.keyLabelOption }
-    set {
-      if Key.keyLabelOption != newValue {
-        Key.keyLabelOption = newValue
-        allKeys.forEach { $0.setNeedsDisplay() }
-      }
-    }
+    get { KeyLabelOption(rawValue: settings.keyLabelOption)! }
+    set { _ = newValue; allKeys.forEach { $0.setNeedsDisplay() } }
   }
 
   /// Flag indicating that the audio is currently muted, and playing a note will not generate any sound
@@ -62,24 +59,23 @@ extension KeyboardController {
     super.viewWillAppear(animated)
 
     createKeys()
-    let lowestKeyNote = Settings.shared.lowestKeyNote
+    let lowestKeyNote = settings.lowestKeyNote
     firstMidiNoteValue = lowestKeyNote
     offsetKeyboard(by: -allKeys[firstMidiNoteValue].frame.minX)
 
-    _ = Settings.shared.keyLabelOption
-    keyLabelOptionObservation = Settings.shared.observe(\.keyLabelOption, options: [.new]) { [weak self] _, change in
+    _ = settings.keyLabelOption
+    keyLabelOptionObservation = settings.observe(\.keyLabelOption, options: [.new]) { [weak self] _, change in
       guard let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else {
         return
       }
       self?.keyLabelOption = option
     }
 
-    _ = Settings.shared.keyWidth
-    keyWidthObservation = Settings.shared.observe(\.keyWidth, options: [.new]) { [weak self] _, change in
+    _ = settings.keyWidth
+    keyWidthObservation = settings.observe(\.keyWidth, options: [.new]) { [weak self] _, change in
       guard let self = self, let keyWidth = change.newValue else { return }
       precondition(!self.allKeys.isEmpty)
       self.keyWidth = CGFloat(keyWidth)
-      Key.keyWidth = self.keyWidth
       self.releaseAllKeys()
       self.layoutKeys()
     }
@@ -101,6 +97,7 @@ extension KeyboardController: ControllerConfiguration {
    - parameter router: the container holding the other components
    */
   func establishConnections(_ router: ComponentContainer) {
+    settings = router.settings
     activePresetManager = router.activePresetManager
     infoBar = router.infoBar
     infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
@@ -169,7 +166,7 @@ extension KeyboardController {
    - parameter event: the event that spawned the touches
    */
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if Settings.shared.slideKeyboard {
+    if settings.slideKeyboard {
       if trackedTouch == nil {
         trackedTouch = touches.first
         panPending = 0.0
@@ -271,7 +268,7 @@ extension KeyboardController {
       keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
       lastMidiNote: MIDI.maxMidiValue)
     {
-      let key = Key(frame: each.0, note: each.1)
+      let key = Key(frame: each.0, note: each.1, settings: settings)
       if key.note.accented {
         blackKeys.append(key)
       } else {
@@ -312,7 +309,7 @@ extension KeyboardController {
       }
     }
 
-    if let firstKey = firstKey, Settings.shared.showSolfegeLabel == true {
+    if let firstKey = firstKey, settings.showSolfegeLabel == true {
       updateInfoBar(note: firstKey.note)
     }
   }
@@ -335,7 +332,7 @@ extension KeyboardController {
   private func updateInfoBar(note: Note) {
     if isMuted {
       infoBar.setStatusText("🔇")
-    } else if Settings.shared.showSolfegeLabel {
+    } else if settings.showSolfegeLabel {
       infoBar.setStatusText(note.label + " - " + note.solfege)
     } else {
       infoBar.setStatusText(note.label)
