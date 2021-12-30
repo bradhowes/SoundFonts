@@ -8,7 +8,7 @@ private struct TSettings {
   static let doubleSetting = SettingKey<Double>("doubleSetting", 123.45)
   static let floatSetting = SettingKey<Float>("floatSetting", -123.45)
   static let stringSetting = SettingKey<String>("stringSetting", "stringSetting")
-  static let timeIntervalSetting = SettingKey<TimeInterval>("timeIntervalSetting", Date().timeIntervalSince1970)
+  static let timeIntervalSetting = SettingKey<TimeInterval>("timeIntervalSetting", Date().timeIntervalSince1970 - 1.0)
   static let boolSetting = SettingKey("boolSetting", false)
   static let tagSetting = SettingKey("tagSetting", Tag.allTag.key)
   static let lastPresetSetting = SettingKey<ActivePresetKind>("lastPresetSetting", .none)
@@ -40,7 +40,9 @@ class SettingsTests: XCTestCase {
 
     let now = Date().timeIntervalSince1970
     let first = settings[TSettings.timeIntervalSetting]
-    XCTAssertEqual(now, first, accuracy: 0.01)
+    XCTAssertNotEqual(now, first)
+    settings[TSettings.timeIntervalSetting] = now
+    XCTAssertEqual(now, settings[TSettings.timeIntervalSetting], accuracy: 0.0001)
 
     XCTAssertEqual(false, settings[TSettings.boolSetting])
     XCTAssertEqual(Tag.allTag.key, settings[TSettings.tagSetting])
