@@ -499,7 +499,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ln6-wm-AuL" userLabel="Version Review">
                                                         <rect key="frame" x="0.0" y="951.5" width="374" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.22.2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.23.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
                                                                 <rect key="frame" x="0.0" y="6" width="51" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
