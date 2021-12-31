@@ -29,11 +29,11 @@ final class ParametersManager: NSObject {
    Construct new instance
 
    - parameter soundFonts: the container of known sound fonts
-   - parameter selectedSoundFontManager: the manager of the active
-   - parameter activePresetManager: <#Describe activePresetManager#>
+   - parameter selectedSoundFontManager: the manager of the selected sound font
+   - parameter activePresetManager: the manager of the active preset
    */
   public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager,
-       activePresetManager: ActivePresetManager) {
+              activePresetManager: ActivePresetManager) {
     os_log(.info, log: log, "init - BEGIN")
 
     self.soundFonts = soundFonts
