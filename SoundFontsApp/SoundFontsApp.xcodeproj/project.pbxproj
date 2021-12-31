@@ -761,7 +761,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -770,7 +770,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -786,7 +786,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/SoundFontsAU/SoundFontsAU.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/SoundFontsAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -795,7 +795,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
@@ -854,7 +854,7 @@
 			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -863,7 +863,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -879,7 +879,7 @@
 			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/ReverbAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -888,7 +888,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Reverb;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -904,7 +904,7 @@
 			baseConfigurationReference = BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -913,7 +913,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -929,7 +929,7 @@
 			baseConfigurationReference = BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				INFOPLIST_FILE = SoundFontsApp/DelayAU/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -938,7 +938,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.Delay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -986,7 +986,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1053,7 +1053,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1087,7 +1087,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1096,7 +1096,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1114,7 +1114,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = SoundFontsApp/App/Resources/SoundFonts.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20211230022424;
+				CURRENT_PROJECT_VERSION = 20211231172900;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = SoundFontsApp/App/Info.plist;
@@ -1123,7 +1123,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.23.0;
+				MARKETING_VERSION = 2.23.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
