@@ -152,9 +152,10 @@ extension ActivePresetKind: SettingSerializable {
     }
   }
 
-  public static func get(key: String, defaultValue: ActivePresetKind, source: Settings) -> ActivePresetKind {
-    guard let raw = source.raw(key: key) else {
-      source.set(key: key, value: defaultValue.encodeToDict())
+  public static func get(key: String, defaultValue: ActivePresetKind, source: Settings,
+                         isGlobal: Bool) -> ActivePresetKind {
+    guard let raw = source.raw(key: key, isGlobal: isGlobal) else {
+      source.set(key: key, value: defaultValue.encodeToDict(), isGlobal: isGlobal)
       return defaultValue
     }
     if let container = raw as? [String: Any] {
@@ -166,9 +167,9 @@ extension ActivePresetKind: SettingSerializable {
     return defaultValue
   }
 
-  public static func set(key: String, value: ActivePresetKind, source: Settings) {
+  public static func set(key: String, value: ActivePresetKind, source: Settings, isGlobal: Bool) {
     if let dict = value.encodeToDict() {
-      source.set(key: key, value: dict)
+      source.set(key: key, value: dict, isGlobal: isGlobal)
     }
   }
 }

@@ -176,7 +176,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
    - returns: Result indicating success or failure
    */
   public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
-    os_log(.info, log: log, "loadActivePreset - %{public}s", activePresetManager.active.description)
+    os_log(.info, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
     guard let sampler = auSampler else {
@@ -213,7 +213,7 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
       }
     }
 
-    os_log(.info, log: log, "done")
+    os_log(.info, log: log, "loadActivePreset END")
     return .success(sampler)
   }
 }

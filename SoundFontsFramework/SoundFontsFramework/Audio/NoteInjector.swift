@@ -44,6 +44,7 @@ public final class NoteInjector {
    - parameter audioUnit: the audio unit to command
    */
   public func post(to audioUnit: AUAudioUnit) {
+    os_log(.info, log: log, "post BEGIN")
     workItems.forEach { $0.cancel() }
 
     guard settings.playSample == true,
@@ -52,35 +53,35 @@ public final class NoteInjector {
       return
     }
 
-    os_log(.info, log: log, "post - noteBlock")
-
-    let channel: UInt8 = 0
-    let noteOn: UInt8 = 0x90
-
+    let noteOnCommand: UInt8 = 0x90
     let note = UInt8(self.note)
     let velocity: UInt8 = 64
 
     let noteOnEmitter = DispatchWorkItem {
       let bytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-      bytes[0] = noteOn
+      bytes[0] = noteOnCommand
       bytes[1] = note
       bytes[2] = velocity
-      noteBlock(AUEventSampleTimeImmediate, channel, 3, bytes)
+      // audioUnit.auAudioUnit.scheduleMIDIEventBlock?(AUEventSampleTimeImmediate, 0, 3, bytes)
+      noteBlock(AUEventSampleTimeImmediate, 0, 3, bytes)
       bytes.deallocate()
     }
 
-    playingQueue.async(execute: noteOnEmitter)
-
     let noteOffEmitter = DispatchWorkItem {
       let bytes = UnsafeMutablePointer<UInt8>.allocate(capacity: 3)
-      bytes[0] = noteOn
+      bytes[0] = noteOnCommand
       bytes[1] = note
-      bytes[2] = 0
-      noteBlock(AUEventSampleTimeImmediate, channel, 3, bytes)
+      bytes[2] = 0 // no velocity == note off
+      noteBlock(AUEventSampleTimeImmediate, 0, 3, bytes)
+      bytes.deallocate()
     }
 
-    playingQueue.asyncAfter(deadline: .now() + noteOnDuration, execute: noteOffEmitter)
-
     workItems = [noteOnEmitter, noteOffEmitter]
+
+    let dispatchTime: DispatchTime = .now() + 0.2
+    playingQueue.asyncAfter(deadline: dispatchTime, execute: noteOnEmitter)
+    playingQueue.asyncAfter(deadline: dispatchTime + noteOnDuration, execute: noteOffEmitter)
+
+    os_log(.info, log: log, "post END")
   }
 }

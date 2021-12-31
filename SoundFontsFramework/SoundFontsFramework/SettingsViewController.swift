@@ -197,6 +197,7 @@ public final class SettingsViewController: UIViewController {
     endShowKeyboard()
 
     let isAUv3 = !isMainApp
+    playSamplesStackView.isHidden = isAUv3
     keyLabelsStackView.isHidden = isAUv3
     solfegeStackView.isHidden = isAUv3
     keyWidthStackView.isHidden = isAUv3

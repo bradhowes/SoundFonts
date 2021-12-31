@@ -79,9 +79,7 @@ extension TagsManager: Tags {
     var invalidTags = [Tag.Key]()
     for index in 0..<self.count {
       let tag = self.getBy(index: index)
-      if (tag.name == "All" && tag.key != Tag.allTag.key)
-                || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key)
-      {
+      if (tag.name == "All" && tag.key != Tag.allTag.key) || (tag.name == "Built-in" && tag.key != Tag.builtInTag.key) {
         invalidTags.append(tag.key)
       }
     }

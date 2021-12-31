@@ -48,7 +48,7 @@ private final class PresetChangeOperation: Operation {
   }
 
   override func start() {
-    os_log(.info, log: log, "start")
+    os_log(.info, log: log, "start - BEGIN")
 
     isExecuting = true
     guard let sampler = self.sampler else {
@@ -77,9 +77,13 @@ private final class PresetChangeOperation: Operation {
       }
     }
 
+    os_log(.info, log: log, "before afterLoadBlock")
     afterLoadBlock?()
+    os_log(.info, log: log, "after afterLoadBlock")
+
     isExecuting = false
     isFinished = true
+    os_log(.info, log: log, "start - END")
   }
 }
 

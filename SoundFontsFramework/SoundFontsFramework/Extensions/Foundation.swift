@@ -2,66 +2,24 @@
 
 import Foundation
 
-extension String: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
+extension String: SettingSerializable {}
+extension Int: SettingSerializable {}
+extension Float: SettingSerializable {}
+extension Double: SettingSerializable {}
+extension Bool: SettingSerializable {}
+extension Data: SettingSerializable {}
+extension Date: SettingSerializable {}
 
-extension Int: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
+extension UUID: SettingSerializable {
 
-extension Float: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
+  @inlinable
+  public static func get(key: String, defaultValue: UUID, source: Settings, isGlobal: Bool) -> UUID {
+    .init(uuidString: source.get(key: key, defaultValue: defaultValue.uuidString, isGlobal: isGlobal))!
   }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
 
-extension Double: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
-
-extension Bool: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
-
-extension Data: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
-  }
-}
-
-extension Date: SettingSerializable {
-  public static func get(key: String, defaultValue: Self, source: Settings) -> Self {
-    source.get(key: key, defaultValue: defaultValue)
-  }
-  public static func set(key: String, value: Self, source: Settings) {
-    source.set(key: key, value: value)
+  @inlinable
+  public static func set(key: String, value: Tag.Key, source: Settings, isGlobal: Bool) {
+    source.set(key: key, value: value.uuidString, isGlobal: isGlobal)
   }
 }
 
@@ -84,6 +42,8 @@ extension Double {
 }
 
 extension Comparable {
+
+  @inlinable
   public func clamped(to limits: ClosedRange<Self>) -> Self {
     min(max(self, limits.lowerBound), limits.upperBound)
   }

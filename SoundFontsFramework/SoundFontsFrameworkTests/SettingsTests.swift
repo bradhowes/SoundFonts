@@ -22,13 +22,13 @@ class SettingsTests: XCTestCase {
 
   override func setUp() {
     for each in [settings, sessionSettings1, sessionSettings2] {
-      each.remove(key: TSettings.intSetting)
-      each.remove(key: TSettings.stringSetting)
-      each.remove(key: TSettings.timeIntervalSetting)
-      each.remove(key: TSettings.doubleSetting)
-      each.remove(key: TSettings.floatSetting)
-      each.remove(key: TSettings.boolSetting)
-      each.remove(key: TSettings.tagSetting)
+      each.remove(key: TSettings.intSetting, isGlobal: false)
+      each.remove(key: TSettings.stringSetting, isGlobal: false)
+      each.remove(key: TSettings.timeIntervalSetting, isGlobal: false)
+      each.remove(key: TSettings.doubleSetting, isGlobal: false)
+      each.remove(key: TSettings.floatSetting, isGlobal: false)
+      each.remove(key: TSettings.boolSetting, isGlobal: false)
+      each.remove(key: TSettings.tagSetting, isGlobal: false)
     }
   }
 
@@ -75,7 +75,7 @@ class SettingsTests: XCTestCase {
     let base64 = "WzAseyJuYW1lIjoiQ2xhdmluZXQiLCJzb3VuZEZvbnRLZXkiOiI4NDFDN0FBQS1DQTg3LTRCNkUtQTI2Ny1FQUQzNzMwMDkwNEYiLCJwYXRjaEluZGV4Ijo3fV0="
 
     // Should be good here
-    settings.set(key: "lastPresetSetting", value: Data(base64Encoded: base64)!)
+    settings.set(key: "lastPresetSetting", value: Data(base64Encoded: base64)!, isGlobal: false)
 
     var value = settings[TSettings.lastPresetSetting]
     XCTAssertNotNil(value)
@@ -95,7 +95,7 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual("Blah", value.soundFontAndPreset?.name)
 
     // Raw-representation should be a dictionary
-    let dict = settings.raw(key: "lastPresetSetting") as? Dictionary<String, Any>
+    let dict = settings.raw(key: "lastPresetSetting", isGlobal: false) as? Dictionary<String, Any>
     XCTAssertNotNil(dict)
   }
 
