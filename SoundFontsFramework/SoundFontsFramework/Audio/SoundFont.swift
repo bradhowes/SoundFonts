@@ -153,7 +153,8 @@ extension SoundFont {
   public subscript(index: Int) -> SoundFontAndPreset { makeSoundFontAndPreset(at: index) }
 
   public func makeSoundFontAndPreset(at index: Int) -> SoundFontAndPreset {
-    .init(soundFontKey: self.key, presetIndex: index, name: presets[index].presetConfig.name)
+    .init(soundFontKey: self.key, soundFontName: self.originalDisplayName, presetIndex: index,
+          itemName: presets[index].presetConfig.name)
   }
 
   public func makeSoundFontAndPreset(for preset: Preset) -> SoundFontAndPreset {

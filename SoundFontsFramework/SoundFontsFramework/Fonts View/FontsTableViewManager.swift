@@ -210,8 +210,10 @@ extension FontsTableViewManager {
       }
 
       if self.activePresetManager.activeSoundFont == soundFont {
-        self.activePresetManager.setActive(preset: .init(soundFontKey: newSoundFont.key, presetIndex: 0,
-                                                         name: newSoundFont.presets[0].presetConfig.name),
+        self.activePresetManager.setActive(preset: .init(soundFontKey: newSoundFont.key,
+                                                         soundFontName: newSoundFont.originalDisplayName,
+                                                         presetIndex: 0,
+                                                         itemName: newSoundFont.presets[0].presetConfig.name),
                                            playSample: false)
         self.selectedSoundFontManager.setSelected(newSoundFont)
       } else if self.selectedSoundFontManager.selected == soundFont {

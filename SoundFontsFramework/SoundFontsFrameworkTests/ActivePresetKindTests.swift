@@ -7,7 +7,7 @@ class ActivePresetKindTests: XCTestCase {
 
   func testPresetKind() {
     let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!,
-                                                presetIndex: 1, name: "Foo")
+                                                soundFontName: "Booboo", presetIndex: 1, itemName: "Foo")
     let kind = ActivePresetKind.preset(soundFontAndPreset: soundFontAndPreset)
     XCTAssertEqual(kind.soundFontAndPreset, soundFontAndPreset)
     XCTAssertNil(kind.favorite)
@@ -40,13 +40,13 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertNotNil(value)
     XCTAssertEqual(7, value?.soundFontAndPreset?.presetIndex)
     XCTAssertEqual("841C7AAA-CA87-4B6E-A267-EAD37300904F", value?.soundFontAndPreset?.soundFontKey.uuidString)
-    XCTAssertEqual("Clavinet", value?.soundFontAndPreset?.name)
+    XCTAssertEqual("Clavinet", value?.soundFontAndPreset?.itemName)
   }
   
   func testFavoriteKind() {
     let preset = Preset("foo", 1, 2, 3)
     let soundFontAndPreset = SoundFontAndPreset(soundFontKey: SoundFont.Key(uuidString: "E621E1F8-C36C-495A-93FC-0C247A3E6E5F")!,
-                                                presetIndex: 1, name: "Foo")
+                                                soundFontName: "Hubba", presetIndex: 1, itemName: "Foo")
     let favorite = Favorite(soundFontAndPreset: soundFontAndPreset,
                             presetConfig: preset.presetConfig,
                             keyboardLowestNote: Note(midiNoteValue: 64))

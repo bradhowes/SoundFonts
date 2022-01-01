@@ -81,18 +81,18 @@ class SettingsTests: XCTestCase {
     XCTAssertNotNil(value)
     XCTAssertEqual(7, value.soundFontAndPreset?.presetIndex)
     XCTAssertEqual("841C7AAA-CA87-4B6E-A267-EAD37300904F", value.soundFontAndPreset?.soundFontKey.uuidString)
-    XCTAssertEqual("Clavinet", value.soundFontAndPreset?.name)
+    XCTAssertEqual("Clavinet", value.soundFontAndPreset?.itemName)
 
     // Store new value
     settings[TSettings.lastPresetSetting] = ActivePresetKind.preset(
       soundFontAndPreset: .init(soundFontKey: UUID(uuidString: "841C7AAA-CA87-4B6E-A267-EAD37300904F")!,
-                                presetIndex: 123, name: "Blah"))
+                                soundFontName: "Bobby", presetIndex: 123, itemName: "Blah"))
 
     value = settings[TSettings.lastPresetSetting]
     XCTAssertNotNil(value)
     XCTAssertEqual(123, value.soundFontAndPreset?.presetIndex)
     XCTAssertEqual("841C7AAA-CA87-4B6E-A267-EAD37300904F", value.soundFontAndPreset?.soundFontKey.uuidString)
-    XCTAssertEqual("Blah", value.soundFontAndPreset?.name)
+    XCTAssertEqual("Blah", value.soundFontAndPreset?.itemName)
 
     // Raw-representation should be a dictionary
     let dict = settings.raw(key: "lastPresetSetting", isGlobal: false) as? Dictionary<String, Any>

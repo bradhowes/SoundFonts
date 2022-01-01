@@ -74,4 +74,49 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(observer.favorites.count, 2)
     XCTAssertEqual(observer.tags.count, 3)
   }
+<<<<<<< HEAD
+=======
+
+  func testDecodingLegacyConsolidatedFile_V2() {
+    let bundle = Bundle(for: type(of: self))
+    let url = bundle.url(forResource: "Consolidated_V2", withExtension: "plist")!
+    let configFile = ConsolidatedConfigFile(fileURL: url)
+
+    let waiter = XCTWaiter()
+    let expectation = XCTestExpectation(description: "loaded")
+    let observer = ConfigFileObserver(configFile: configFile) {
+      expectation.fulfill()
+    }
+    configFile.load()
+
+    let result = waiter.wait(for: [expectation], timeout: 10.0)
+    XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
+
+    XCTAssertEqual(observer.soundFonts.count, 4)
+    XCTAssertEqual(observer.favorites.count, 5)
+    XCTAssertEqual(observer.tags.count, 3)
+
+    for index in 0..<observer.favorites.count {
+      let favorite = observer.favorites.getBy(index: index)
+      let soundFont = observer.soundFonts.getBy(key: favorite.soundFontAndPreset.soundFontKey)
+      XCTAssertNotNil(soundFont)
+    }
+
+    let soundFonts = SoundFontsManager(configFile, settings: Settings(inApp: true))
+    XCTAssertTrue(soundFonts.restored)
+    let favorites = FavoritesManager(configFile)
+    XCTAssertTrue(favorites.restored)
+    let tags = TagsManager(configFile)
+    XCTAssertTrue(tags.restored)
+
+    let tag = tags.getBy(index: 0)
+    XCTAssertEqual("One", tag.name)
+
+    let filtered = soundFonts.filtered(by: tag.key)
+    XCTAssertEqual(1, filtered.count)
+    let sf = soundFonts.getBy(key: filtered[0])
+    XCTAssertNotNil(sf)
+    XCTAssertEqual("Fluid R3", sf?.displayName)
+  }
+>>>>>>> 40c6294d (Add name to SoundFontAndPreset in order to better support saved references.)
 }

@@ -80,6 +80,10 @@ extension SoundFontsManager: SoundFonts {
 
   public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
 
+  public func getBy(soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
+    collection.getBy(soundFontAndPreset: soundFontAndPreset)
+  }
+
   public func validateCollections(favorites: Favorites, tags: Tags) {
     os_log(.info, log: log, "validateCollections")
     favorites.validate(self)
@@ -93,7 +97,7 @@ extension SoundFontsManager: SoundFonts {
   }
 
   public func resolve(soundFontAndPreset: SoundFontAndPreset) -> Preset? {
-    let soundFont = collection.getBy(key: soundFontAndPreset.soundFontKey)
+    let soundFont = collection.getBy(soundFontAndPreset: soundFontAndPreset)
     return soundFont?.presets[soundFontAndPreset.presetIndex]
   }
 

@@ -9,12 +9,16 @@ public final class SoundFontCollection: Codable {
   public typealias CatalogMap = [SoundFont.Key: SoundFont]
   public typealias SortedKeyArray = [SoundFont.Key]
 
+  /// Mapping of SoundFont UUID (generated at installation) and the SoundFont instance
   private var catalog: CatalogMap
+
+  /// Sorted names of the SoundFont instances
   private var sortedKeys: SortedKeyArray
 
-  public var isEmpty: Bool { return sortedKeys.isEmpty }
+  /// True if there are no SoundFont instances in the collection
+  public var isEmpty: Bool { sortedKeys.isEmpty }
 
-  /// Obtain the number of SoundFont instances in the collection
+  /// The number of SoundFont instances in the collection
   public var count: Int { sortedKeys.count }
 
   /// Obtain the first preset of the first sound font if one exists.
@@ -32,6 +36,7 @@ public final class SoundFontCollection: Codable {
     }.map { $0.key }
   }
 
+  /// Immutable array of SoundFont instances, ordered by their names
   public var soundFonts: [SoundFont] { sortedKeys.map { self.catalog[$0]! } }
 
   /**
@@ -53,6 +58,19 @@ public final class SoundFontCollection: Codable {
       return nil
     }
     return firstIndex(of: found.key)
+  }
+
+  /**
+   Obtain a SoundFont by its unique key or its name. The reason for the latter is to support the case where a reference
+   is used on another device (SoundFont keys are unique per device).
+
+   - parameter soundFontAndPreset: the bookmark to resolve
+   - returns: the SoundFont value found or nil
+   */
+  public func getBy(soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
+    catalog[soundFontAndPreset.soundFontKey] ?? soundFonts.first {
+      $0.originalDisplayName == soundFontAndPreset.soundFontName
+    }
   }
 
   /**

@@ -66,9 +66,17 @@ public protocol SoundFonts: AnyObject {
    Obtain the SoundFont in the collection by its unique key
 
    - parameter key: the key to look for
-   - returns: the index of the matching entry or nil if not found
+   - returns: the matching entry or nil if not found
    */
   func getBy(key: SoundFont.Key) -> SoundFont?
+
+  /**
+   Obtain the SoundFont in the collection by its unique key or name
+
+   - parameter soundFontAndPreset: the key and name to look for
+   - returns: the matching entry or nil if not found
+   */
+  func getBy(soundFontAndPreset: SoundFontAndPreset) -> SoundFont?
 
   /**
    Obtain an actual preset object from the given SoundFontAndPreset value.

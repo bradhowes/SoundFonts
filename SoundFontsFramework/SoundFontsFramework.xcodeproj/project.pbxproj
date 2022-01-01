@@ -572,8 +572,7 @@
 				BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */,
 				BDBF897E25B5939400B58E23 /* Tags */,
 				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
-				BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */,
-				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */,
+				BD2F4B302780F9EB0064E31B /* Configuration File */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
@@ -591,7 +590,6 @@
 				BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */,
 				BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
-				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
 				BD074BEB23CDAF51001987E9 /* SoundFontKind.swift */,
 				BD074BEA23CDAF51001987E9 /* SoundFontsManager.swift */,
 			);
@@ -750,6 +748,16 @@
 				BD6E057D25CC74B1004058D9 /* Done.storyboard */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		BD2F4B302780F9EB0064E31B /* Configuration File */ = {
+			isa = PBXGroup;
+			children = (
+				BD17E25C25C9FDAF003E75CF /* ConfigFileObserver.swift */,
+				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */,
+				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
+			);
+			path = "Configuration File";
 			sourceTree = "<group>";
 		};
 		BD3F44B725018DEF00653ABD /* Core Data */ = {
