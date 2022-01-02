@@ -159,6 +159,13 @@ extension SoundFontsControlsController {
 
 extension SoundFontsControlsController: SegueHandler {
 
+  override public func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+    switch SegueIdentifier(rawValue: identifier) {
+    case .effects: return isMainApp
+    default: return true
+    }
+  }
+
   public enum SegueIdentifier: String {
     case guidedView
     case favorites

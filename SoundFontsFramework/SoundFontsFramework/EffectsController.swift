@@ -59,6 +59,8 @@ public final class EffectsController: UIViewController {
     chorusControls.isHidden = true
     #endif
 
+    view.isHidden = true
+
     reverbWetDryMix.minimumValue = 0
     reverbWetDryMix.maximumValue = 100
     reverbWetDryMix.value = 20
@@ -102,6 +104,12 @@ extension EffectsController {
 }
 
 extension EffectsController {
+
+  public override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    guard isMainApp else { return }
+    view.isHidden = false
+  }
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
@@ -258,7 +266,7 @@ extension EffectsController: ControllerConfiguration {
   public func establishConnections(_ router: ComponentContainer) {
     guard router.isMainApp else { return }
     settings = router.settings
-    isMainApp = true
+    isMainApp = router.isMainApp
     soundFonts = router.soundFonts
     favorites = router.favorites
     activePresetManager = router.activePresetManager

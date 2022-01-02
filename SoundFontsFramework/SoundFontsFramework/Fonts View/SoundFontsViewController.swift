@@ -67,6 +67,7 @@ extension SoundFontsViewController {
     swipeRight.numberOfTouchesRequired = 2
     view.addGestureRecognizer(swipeRight)
 
+    tagsView.isHidden = true
     maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
     dividerDragGesture.maximumNumberOfTouches = 1
@@ -379,6 +380,7 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
+    tagsView.isHidden = false
     UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                    options: [.allowUserInteraction, .curveEaseIn],
                                                    animations: self.view.layoutIfNeeded) { [weak self] _ in
@@ -393,6 +395,8 @@ extension SoundFontsViewController {
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.25, delay: 0.0,
       options: [.allowUserInteraction, .curveEaseOut],
-      animations: self.view.layoutIfNeeded)
+      animations: self.view.layoutIfNeeded,
+      completion: { _ in self.tagsView.isHidden = true }
+    )
   }
 }
