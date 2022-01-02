@@ -22,23 +22,33 @@ public final class SettingsViewController: UIViewController {
 
   @IBOutlet private weak var keyLabelsStackView: UIStackView!
   @IBOutlet private weak var solfegeStackView: UIStackView!
-  @IBOutlet private weak var playSamplesStackView: UIStackView!
   @IBOutlet private weak var keyWidthStackView: UIStackView!
+  @IBOutlet private weak var playSamplesStackView: UIStackView!
   @IBOutlet private weak var slideKeyboardStackView: UIStackView!
+
   @IBOutlet private weak var divider1: UIView!
+
   @IBOutlet private weak var midiChannelStackView: UIStackView!
   @IBOutlet private weak var bluetoothMIDIConnectStackView: UIStackView!
   @IBOutlet private weak var pitchBendStackView: UIStackView!
+
   @IBOutlet private weak var divider2: UIView!
+
+  @IBOutlet private weak var tuningStackView: UIStackView!
+
   @IBOutlet private weak var copyFilesStackView: UIStackView!
   @IBOutlet private weak var removeSoundFontsStackView: UIStackView!
   @IBOutlet private weak var restoreSoundFontsStackView: UIStackView!
+
   @IBOutlet private weak var divider3: UIView!
+
   @IBOutlet private weak var exportSoundFontsStackView: UIStackView!
   @IBOutlet private weak var importSoundFontsStackView: UIStackView!
+
   @IBOutlet private weak var divider4: UIView!
-  @IBOutlet private weak var versionReviewStackView: UIStackView!
+
   @IBOutlet private weak var showTutorialStackView: UIStackView!
+  @IBOutlet private weak var versionReviewStackView: UIStackView!
   @IBOutlet private weak var contactDeveloperStackView: UIStackView!
 
   @IBOutlet private weak var keyLabelOption: UISegmentedControl!
@@ -196,16 +206,29 @@ public final class SettingsViewController: UIViewController {
 
     endShowKeyboard()
 
+    // Hide items if running as AUv3 component
     let isAUv3 = !isMainApp
-    playSamplesStackView.isHidden = isAUv3
     keyLabelsStackView.isHidden = isAUv3
     solfegeStackView.isHidden = isAUv3
     keyWidthStackView.isHidden = isAUv3
+    playSamplesStackView.isHidden = isAUv3
     slideKeyboardStackView.isHidden = isAUv3
-    divider1.isHidden = isAUv3
+
     midiChannelStackView.isHidden = isAUv3
     bluetoothMIDIConnectStackView.isHidden = isAUv3
-    divider5.isHidden = isAUv3
+
+    divider2.isHidden = isAUv3
+    divider3.isHidden = isAUv3
+    divider4.isHidden = isAUv3
+
+    copyFilesStackView.isHidden = true
+    removeSoundFontsStackView.isHidden = true
+    restoreSoundFontsStackView.isHidden = true
+
+    exportSoundFontsStackView.isHidden = true
+    importSoundFontsStackView.isHidden = true
+    showTutorialStackView.isHidden = true
+    versionReviewStackView.isHidden = true
   }
 
   override public func viewDidDisappear(_ animated: Bool) {

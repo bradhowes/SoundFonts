@@ -125,7 +125,7 @@ extension ActivePresetKind: CustomStringConvertible {
 extension ActivePresetKind: SettingSerializable {
 
   // Legacy support
-  internal static func decodeFromData(_ data: Data) -> ActivePresetKind? {
+  public static func decodeFromData(_ data: Data) -> ActivePresetKind? {
     try? JSONDecoder().decode(ActivePresetKind.self, from: data)
   }
 

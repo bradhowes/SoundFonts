@@ -500,7 +500,7 @@
                                                         <rect key="frame" x="0.0" y="951.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.23.1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="51" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="48.5" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -643,6 +643,7 @@
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>
                         <outlet property="standardTuningButton" destination="3wE-M0-nqR" id="g5o-gI-Agu"/>
                         <outlet property="standardTuningLabel" destination="6MB-U0-bhb" id="ZoG-aK-RY9"/>
+                        <outlet property="tuningStackView" destination="2U6-4F-HCm" id="nev-iD-2NG"/>
                         <outlet property="upperBackground" destination="gJm-Kh-cBE" id="bct-YV-mXV"/>
                         <outlet property="versionReviewStackView" destination="Ln6-wm-AuL" id="Jd3-Ws-lEP"/>
                     </connections>
