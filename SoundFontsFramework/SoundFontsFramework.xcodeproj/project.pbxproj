@@ -198,6 +198,7 @@
 		BDCAE70425C7E0B100202BAC /* ConsolidatedConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */; };
 		BDCAE70825C7E64700202BAC /* LegacyConfigFileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */; };
 		BDCC40112418336200D8D849 /* NoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC40102418336200D8D849 /* NoteTests.swift */; };
+		BDCCD45427824DBF005C18BD /* Consolidated_V2.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */; };
 		BDCCFCBA23F5A7D700DD518D /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCB923F5A7D700DD518D /* Timer.swift */; };
 		BDCCFCBC23F84C5300DD518D /* TimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCCFCBB23F84C5300DD518D /* TimerTests.swift */; };
 		BDD2836925BABD1D00B3A59A /* PresetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2836825BABD1D00B3A59A /* PresetConfig.swift */; };
@@ -438,6 +439,7 @@
 		BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigFile.swift; sourceTree = "<group>"; };
 		BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyConfigFileLoader.swift; sourceTree = "<group>"; };
 		BDCC40102418336200D8D849 /* NoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTests.swift; sourceTree = "<group>"; };
+		BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V2.plist; sourceTree = "<group>"; };
 		BDCCFCB923F5A7D700DD518D /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		BDCCFCBB23F84C5300DD518D /* TimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerTests.swift; sourceTree = "<group>"; };
 		BDD2836825BABD1D00B3A59A /* PresetConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetConfig.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 		BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */ = {
 			isa = PBXGroup;
 			children = (
+				BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */,
 				BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */,
 				BDD5FA662504118000367F0B /* Favorites.plist */,
 				BDC961AA24FFC6EA003D9BEF /* SoundFontLibrary.plist */,
@@ -1060,6 +1063,7 @@
 				BDEB1260262084FF003CE8EE /* Changes.md in Resources */,
 				BD1A2A772667E12D009E2338 /* Consolidated_V1.plist in Resources */,
 				BDD5FA672504118100367F0B /* Favorites.plist in Resources */,
+				BDCCD45427824DBF005C18BD /* Consolidated_V2.plist in Resources */,
 				BDC961AC24FFC6EA003D9BEF /* SoundFontLibrary.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

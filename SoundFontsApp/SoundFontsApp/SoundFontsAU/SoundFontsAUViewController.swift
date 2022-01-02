@@ -31,7 +31,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
     os_log(.info, log: log, "createAudioUnit")
     let audioUnit = try SoundFontsAU(
       componentDescription: componentDescription, sampler: components.sampler,
-      activePresetManager: components.activePresetManager)
+      activePresetManager: components.activePresetManager, settings: components.settings)
     os_log(.info, log: log, "created SoundFontsAU")
     self.audioUnit = audioUnit
     return audioUnit

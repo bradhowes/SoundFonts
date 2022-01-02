@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "xcrun agvtool new-version -all $(date &apos;+%Y%m%d%H%M%S&apos;)&#10;">
+               scriptText = "# xcrun agvtool new-version -all $(date &apos;+%Y%m%d%H%M%S&apos;)&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"

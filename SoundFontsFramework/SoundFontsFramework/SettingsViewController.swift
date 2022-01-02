@@ -127,19 +127,16 @@ public final class SettingsViewController: UIViewController {
     super.viewDidLoad()
 
     review.isEnabled = isMainApp
-    keyLabelOption.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
-    keyLabelOption.setTitleTextAttributes(
-      [NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+    keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.lightGray], for: .normal)
+    keyLabelOption.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.black], for: .selected)
+
     keyWidthSlider.maximumValue = 96.0
     keyWidthSlider.minimumValue = 32.0
     keyWidthSlider.isContinuous = true
 
     // iOS bug? Workaround to get the tint to affect the stepper button labels
-    midiChannelStepper.setDecrementImage(
-      midiChannelStepper.decrementImage(for: .normal), for: .normal)
-    midiChannelStepper.setIncrementImage(
-      midiChannelStepper.incrementImage(for: .normal), for: .normal)
+    midiChannelStepper.setDecrementImage(midiChannelStepper.decrementImage(for: .normal), for: .normal)
+    midiChannelStepper.setIncrementImage(midiChannelStepper.incrementImage(for: .normal), for: .normal)
 
     pitchBendStepper.setDecrementImage(pitchBendStepper.decrementImage(for: .normal), for: .normal)
     pitchBendStepper.setIncrementImage(pitchBendStepper.incrementImage(for: .normal), for: .normal)
@@ -171,64 +168,66 @@ public final class SettingsViewController: UIViewController {
       self.settings.globalTuning = newValue
     }
 
-    revealKeyboardForKeyWidthChanges = true
-    if let popoverPresentationVC = self.parent?.popoverPresentationController {
-      revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
-    }
-
-    playSample.isOn = settings.playSample
-    showSolfegeNotes.isOn = settings.showSolfegeLabel
-    keyLabelOption.selectedSegmentIndex = settings.keyLabelOption
-    updateButtonState()
-
-    keyWidthSlider.value = settings.keyWidth
-    slideKeyboard.isOn = settings.slideKeyboard
-
-    updateMIDIConnectionsButton()
-    midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
-      self?.updateMIDIConnectionsButton()
-    }
-
-    MIDI.sharedInstance.monitor = self
-
-    midiChannelStepper.value = Double(settings.midiChannel)
-    updateMidiChannel()
-
     pitchBendStepper.value = Double(settings.pitchBendRange)
     updatePitchBendRange()
 
-    slideKeyboard.isOn = settings.slideKeyboard
-
-    tuningComponent.updateState(
-      enabled: globalTuningEnabled.isOn, cents: settings.globalTuning)
-
-    copyFiles.isOn = settings.copyFilesWhenAdding
-
-    endShowKeyboard()
+    tuningComponent.updateState(enabled: globalTuningEnabled.isOn, cents: settings.globalTuning)
 
     // Hide items if running as AUv3 component
-    let isAUv3 = !isMainApp
-    keyLabelsStackView.isHidden = isAUv3
-    solfegeStackView.isHidden = isAUv3
-    keyWidthStackView.isHidden = isAUv3
-    playSamplesStackView.isHidden = isAUv3
-    slideKeyboardStackView.isHidden = isAUv3
+    if isMainApp {
 
-    midiChannelStackView.isHidden = isAUv3
-    bluetoothMIDIConnectStackView.isHidden = isAUv3
+      revealKeyboardForKeyWidthChanges = true
+      if let popoverPresentationVC = self.parent?.popoverPresentationController {
+        revealKeyboardForKeyWidthChanges = popoverPresentationVC.arrowDirection == .unknown
+      }
 
-    divider2.isHidden = isAUv3
-    divider3.isHidden = isAUv3
-    divider4.isHidden = isAUv3
+      playSample.isOn = settings.playSample
+      showSolfegeNotes.isOn = settings.showSolfegeLabel
+      keyLabelOption.selectedSegmentIndex = settings.keyLabelOption
+      updateButtonState()
 
-    copyFilesStackView.isHidden = true
-    removeSoundFontsStackView.isHidden = true
-    restoreSoundFontsStackView.isHidden = true
+      keyWidthSlider.value = settings.keyWidth
+      slideKeyboard.isOn = settings.slideKeyboard
 
-    exportSoundFontsStackView.isHidden = true
-    importSoundFontsStackView.isHidden = true
-    showTutorialStackView.isHidden = true
-    versionReviewStackView.isHidden = true
+      updateMIDIConnectionsButton()
+      midiConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
+        self?.updateMIDIConnectionsButton()
+      }
+
+      MIDI.sharedInstance.monitor = self
+
+      midiChannelStepper.value = Double(settings.midiChannel)
+      updateMidiChannel()
+
+      slideKeyboard.isOn = settings.slideKeyboard
+
+      copyFiles.isOn = settings.copyFilesWhenAdding
+
+      endShowKeyboard()
+    }
+    else {
+      keyLabelsStackView.isHidden = true
+      solfegeStackView.isHidden = true
+      keyWidthStackView.isHidden = true
+      playSamplesStackView.isHidden = true
+      slideKeyboardStackView.isHidden = true
+
+      midiChannelStackView.isHidden = true
+      bluetoothMIDIConnectStackView.isHidden = true
+
+      divider2.isHidden = true
+      divider3.isHidden = true
+      divider4.isHidden = true
+
+      copyFilesStackView.isHidden = true
+      removeSoundFontsStackView.isHidden = true
+      restoreSoundFontsStackView.isHidden = true
+
+      exportSoundFontsStackView.isHidden = true
+      importSoundFontsStackView.isHidden = true
+      showTutorialStackView.isHidden = true
+      versionReviewStackView.isHidden = true
+    }
   }
 
   override public func viewDidDisappear(_ animated: Bool) {

@@ -74,8 +74,6 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertEqual(observer.favorites.count, 2)
     XCTAssertEqual(observer.tags.count, 3)
   }
-<<<<<<< HEAD
-=======
 
   func testDecodingLegacyConsolidatedFile_V2() {
     let bundle = Bundle(for: type(of: self))
@@ -118,5 +116,4 @@ class SoundFontLibraryPListTest: XCTestCase {
     XCTAssertNotNil(sf)
     XCTAssertEqual("Fluid R3", sf?.displayName)
   }
->>>>>>> 40c6294d (Add name to SoundFontAndPreset in order to better support saved references.)
 }

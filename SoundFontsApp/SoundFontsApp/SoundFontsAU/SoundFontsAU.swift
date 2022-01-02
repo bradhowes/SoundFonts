@@ -1,18 +1,26 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import AVFoundation
 import CoreAudioKit
 import SoundFontsFramework
 import os
 
-/// AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does not
-/// contain reverb or delay effects. Most of the methods and getters forward to another AUAudioUnit, the one that is
-/// associated with the sampler.
+/**
+ AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does
+ not contain reverb or delay effects. Most of the methods and getters forward to a _wrapped_ AUAudioUnit, the one that
+ comes from the AVAudioUnitSampler.
+ */
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
   private let activePresetManager: ActivePresetManager
   private let sampler: Sampler
   private let wrapped: AUAudioUnit
+  private let settings: Settings
+
+  private var currentPresetObserver: NSKeyValueObservation?
+  private var activePresetSubscriberToken: SubscriberToken?
+
+  private var _audioUnitName: String?
+  private var _audioUnitShortName: String?
 
   private var _currentPreset: AUAudioUnitPreset?
 
@@ -22,13 +30,15 @@ final class SoundFontsAU: AUAudioUnit {
    - parameter componentDescription: the definition used when locating the component to create
    - parameter sampler: the Sampler instance to use for actually rendering audio
    - parameter activePresetManager: the manager of the active preset
+   - parameter settings: the repository of user settings
    */
   public init(componentDescription: AudioComponentDescription, sampler: Sampler,
-              activePresetManager: ActivePresetManager) throws {
+              activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU")
     self.log = log
     self.activePresetManager = activePresetManager
     self.sampler = sampler
+    self.settings = settings
 
     os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,
@@ -55,13 +65,93 @@ final class SoundFontsAU: AUAudioUnit {
       throw error
     }
 
+    self.currentPresetObserver = wrapped.observe(\.currentPreset, options: [.new]) { [weak self] _, change in
+      guard let self = self, let newValue = change.newValue else { return }
+      self.currentPresetChanged(newValue)
+    }
+
+    self.activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
+    self.updateShortName()
     loadActivePreset()
 
     os_log(.info, log: log, "init - done")
   }
+
+  deinit {
+    self.currentPresetObserver?.invalidate()
+  }
+}
+
+
+extension SoundFontsAU {
+
+  /**
+   Notification that the active preset in the UI has changed. Update the short name of the component to show the preset
+   name.
+
+   - parameter event: the event that happened
+   */
+  private func activePresetChanged(_ event: ActivePresetEvent) {
+    self.updateShortName()
+    self.currentPreset = nil
+    switch event {
+    case .active: self.useActivePreset()
+    }
+  }
+
+  private func updateShortName() {
+    let presetName = activePresetManager.activePresetConfig?.name ?? "---"
+    self.audioUnitShortName = "\(presetName)"
+  }
+
+  private func useActivePreset() {
+    os_log(.info, log: log, "useActivePreset - BEGIN")
+    let result = sampler.loadActivePreset {
+      os_log(.info, log: self.log, "useActivePreset: loadActivePreset done")
+      // self.noteInjector.post(to: self)
+    }
+    switch result {
+    case .success: break
+    case .failure(let reason): logFailure(reason)
+    }
+    os_log(.info, log: log, "useActivePreset - END")
+  }
+
+  private func logFailure(_ reason: SamplerStartFailure) {
+    switch reason {
+    case .noSampler:
+      os_log(.error, log: log, "no sampler")
+    case .sessionActivating(let err):
+      os_log(.error, log: log, "failed to activate session: %{public}s", err.localizedDescription)
+    case .engineStarting(let err):
+      os_log(.error, log: log, "failed to start engine: %{public}s", err.localizedDescription)
+    case .presetLoading(let err):
+      os_log(.error, log: log, "failed to load preset: %{public}s", err.localizedDescription)
+    }
+  }
 }
 
 extension SoundFontsAU {
+
+  override public var audioUnitName: String? {
+    get { _audioUnitName }
+    set {
+      os_log(.info, log: log, "audioUnitName set - %{public}s", newValue ?? "???")
+      willChangeValue(forKey: "audioUnitName")
+      _audioUnitName = newValue
+      didChangeValue(forKey: "audioUnitName")
+    }
+  }
+
+  override public var audioUnitShortName: String? {
+    get { _audioUnitShortName }
+    set {
+      os_log(.info, log: log, "audioUnitShortName set - %{public}s", newValue ?? "???")
+      willChangeValue(forKey: "audioUnitShortName")
+      _audioUnitShortName = newValue
+      didChangeValue(forKey: "audioUnitShortName")
+    }
+  }
 
   override public func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
     os_log(.info, log: log, "supportedViewConfigurations")
@@ -168,33 +258,25 @@ extension SoundFontsAU {
     get { wrapped.midiOutputEventBlock }
     set { wrapped.midiOutputEventBlock = newValue }
   }
+}
 
-  private var activeSoundFontPresetKey: String { "soundFontPatch" } // Do not change
+// MAKR: - State Management
+
+extension SoundFontsAU {
+
+  private var activeSoundFontPresetKey: String { "soundFontPatch" } // Legacy name -- do not change
 
   override public var fullState: [String: Any]? {
     get {
       os_log(.info, log: log, "fullState GET")
-      var fullState = [String: Any]()
-      if let dict = self.activePresetManager.active.encodeToDict() {
-        os_log(.info, log: log, "%{public}s", self.activePresetManager.active.description)
-        fullState[activeSoundFontPresetKey] = dict
-      }
-      return fullState
+      var state = [String: Any]()
+      addInstanceSettings(into: &state)
+      return state
     }
     set {
       os_log(.info, log: log, "fullState SET")
       if let fullState = newValue {
-        if let dict = fullState[activeSoundFontPresetKey] as? [String: Any],
-           let value = ActivePresetKind.decodeFromDict(dict) {
-          os_log(.info, log: log, "%{public}s", value.description)
-          self.activePresetManager.setActive(value)
-          return
-        }
-        else if let data = fullState[activeSoundFontPresetKey] as? Data,
-                let value = ActivePresetKind.decodeFromData(data) {
-          os_log(.info, log: log, "%{public}s", value.description)
-          self.activePresetManager.setActive(value)
-        }
+        restoreInstanceSettings(from: fullState)
       }
     }
   }
@@ -220,7 +302,87 @@ extension SoundFontsAU {
     }
   }
 
+  /**
+   Save into a state dictionary the settings that are really part of an AUv3 instance
+
+   - parameter state: the storage to hold the settings
+   */
+  private func addInstanceSettings(into state: inout [String: Any]) {
+    os_log(.info, log: log, "addInstanceSettings - BEGIN")
+
+    if let dict = self.activePresetManager.active.encodeToDict() {
+      state[activeSoundFontPresetKey] = dict
+    }
+
+    state[SettingKeys.activeTagKey.key] = settings.activeTagKey.uuidString
+    state[SettingKeys.showingFavorites.key] = settings.showingFavorites
+    state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
+    state[SettingKeys.pitchBendRange.key] = settings.pitchBendRange
+    os_log(.info, log: log, "addInstanceSettings - END")
+  }
+
+  /**
+   Restore from a state dictionary the settings that are really part of an AUv3 instance
+
+   - parameter state: the storage that holds the settings
+   */
+  private func restoreInstanceSettings(from state: [String: Any]) {
+    os_log(.info, log: log, "restoreInstanceSettings - BEGIN")
+
+    if let activeTagKeyString = state[SettingKeys.activeTagKey.key] as? String,
+       let activeTagKey = UUID(uuidString: activeTagKeyString) {
+      settings.activeTagKey = activeTagKey
+    }
+
+    settings.restore(key: SettingKeys.showingFavorites, from: state)
+    settings.restore(key: SettingKeys.presetsWidthMultiplier, from: state)
+    settings.restore(key: SettingKeys.pitchBendRange, from: state)
+
+    let value: ActivePresetKind = {
+      if let dict = state[activeSoundFontPresetKey] as? [String: Any],
+         let value = ActivePresetKind.decodeFromDict(dict) {
+        return value
+      }
+      if let data = state[activeSoundFontPresetKey] as? Data,
+         let value = ActivePresetKind.decodeFromData(data) {
+        return value
+      }
+      return .none
+    }()
+
+    self.activePresetManager.setActive(value)
+
+    os_log(.info, log: log, "restoreInstanceSettings - END")
+  }
+}
+
+// MARK: - User Presets Management
+
+extension SoundFontsAU {
+
   override var supportsUserPresets: Bool { true }
+
+  /**
+   Notification that the `currentPreset` attribute of the AudioUnit has changed. These should be user presets created
+   by a host application. The host can then change the current preset and we need to react to this change by updating
+   the active preset value. We do this as a side-effect of setting the `fullState` attribute with the state for the
+   give user preset.
+
+   - parameter preset: the new value of `currentPreset`
+   */
+  private func currentPresetChanged(_ preset: AUAudioUnitPreset?) {
+    guard let preset = preset else { return }
+    os_log(.info, log: log, "currentPresetChanged %{public}s", preset)
+
+    // There are no factory presets (should there be?) so this only applies to user presets.
+    guard preset.number < 0 else  { return }
+
+    if #available(iOS 13.0, *) {
+      guard let state = try? wrapped.presetState(for: preset) else { return }
+      os_log(.info, log: log, "state: %{public}s", state.debugDescription)
+      fullState = state
+    }
+  }
 
   override var currentPreset: AUAudioUnitPreset? {
     get { _currentPreset }
