@@ -5,14 +5,6 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
-extension String {
-  fileprivate static func pointer(_ object: AnyObject?) -> String {
-    guard let object = object else { return "nil" }
-    let opaque: UnsafeMutableRawPointer = Unmanaged.passUnretained(object).toOpaque()
-    return String(describing: opaque)
-  }
-}
-
 /// AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does not
 /// contain reverb or delay effects. Most of the methods and getters forward to another AUAudioUnit, the one that is
 /// associated with the sampler.
@@ -63,32 +55,17 @@ final class SoundFontsAU: AUAudioUnit {
       throw error
     }
 
+    loadActivePreset()
+
     os_log(.info, log: log, "init - done")
-  }
-}
-
-extension SoundFontsAU: AUParameterHandler {
-
-  public func set(_ parameter: AUParameter, value: AUValue) {
-    switch parameter.address {
-    default: break
-    }
-  }
-
-  public func get(_ parameter: AUParameter) -> AUValue {
-    switch parameter.address {
-    default: return 0
-    }
   }
 }
 
 extension SoundFontsAU {
 
-  override public func supportedViewConfigurations(
-    _ availableViewConfigurations: [AUAudioUnitViewConfiguration]
-  ) -> IndexSet {
+  override public func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
     os_log(.info, log: log, "supportedViewConfigurations")
-    let indices = availableViewConfigurations.enumerated().compactMap {
+    let indices = viewConfigs.enumerated().compactMap {
       $0.1.height > 270 ? $0.0 : nil
     }
     os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
@@ -124,9 +101,16 @@ extension SoundFontsAU {
   override public func reset() {
     os_log(.info, log: log, "reset")
     wrapped.reset()
-    guard let sampler = sampler.auSampler else { return }
-    guard let soundFont = activePresetManager.activeSoundFont else { return }
-    guard let preset = activePresetManager.activePreset else { return }
+    loadActivePreset()
+  }
+
+  private func loadActivePreset() {
+    guard let sampler = sampler.auSampler,
+          let soundFont = activePresetManager.activeSoundFont,
+          let preset = activePresetManager.activePreset
+    else {
+      return
+    }
     try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(preset.program),
                                          bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB))
   }
