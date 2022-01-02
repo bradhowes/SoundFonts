@@ -3,11 +3,23 @@
 import UIKit
 import CoreMIDI
 
-class MIDIDevicesTableViewController: UITableViewController {
+/**
+ A table view that shows the known MIDI devices.
+ */
+final class MIDIDevicesTableViewController: UITableViewController {
 
-  var devices = [MIDI.DeviceState]() { didSet { self.tableView.reloadData() } }
+  private var devices = [MIDI.DeviceState]() { didSet { self.tableView.reloadData() } }
   private var activeConnectionsObserver: NSKeyValueObservation?
   private var channelsObserver: NSKeyValueObservation?
+
+  func setDevices(_ devices: [MIDI.DeviceState]) {
+    self.devices = devices
+  }
+}
+
+// MARK: - View Management
+
+extension MIDIDevicesTableViewController {
 
   override public func viewDidLoad() {
     activeConnectionsObserver = MIDI.sharedInstance.observe(\.activeConnections) { [weak self] _, _ in
@@ -32,6 +44,11 @@ class MIDIDevicesTableViewController: UITableViewController {
       MIDI.sharedInstance.monitor = nil
     }
   }
+}
+
+// MARK: - Table View Methods
+
+extension MIDIDevicesTableViewController {
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     devices.count
@@ -53,6 +70,8 @@ class MIDIDevicesTableViewController: UITableViewController {
   }
 }
 
+// MARK: - MIDIMonitor Methods
+
 extension MIDIDevicesTableViewController: MIDIMonitor {
 
   public func seen(uniqueId: MIDIUniqueID, channel: Int) {
@@ -61,9 +80,17 @@ extension MIDIDevicesTableViewController: MIDIMonitor {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell = self.tableView.cellForRow(at: indexPath) {
           let layer = cell.contentView.layer
-          midiSeenLayerChange(layer)
+          Self.midiSeenLayerChange(layer)
         }
       }
     }
+  }
+
+  public static func midiSeenLayerChange(_ layer: CALayer) {
+    let color = UIColor.systemOrange.cgColor
+    let animator = CABasicAnimation(keyPath: "backgroundColor")
+    animator.fromValue = color
+    animator.toValue = UIColor.clear.cgColor
+    layer.add(animator, forKey: "MIDI Seen")
   }
 }

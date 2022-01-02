@@ -11,7 +11,9 @@ public enum KeyLabelOption: Int {
   case cOnly
 }
 
-/// Manages window showing various runtime settings and options.
+/**
+ Manages view showing various runtime settings and options that the user can modify.
+ */
 public final class SettingsViewController: UIViewController {
   private lazy var log = Logging.logger("SettingsViewController")
 
@@ -173,7 +175,6 @@ public final class SettingsViewController: UIViewController {
 
     tuningComponent.updateState(enabled: globalTuningEnabled.isOn, cents: settings.globalTuning)
 
-    // Hide items if running as AUv3 component
     if isMainApp {
 
       revealKeyboardForKeyWidthChanges = true
@@ -482,7 +483,7 @@ extension SettingsViewController: SegueHandler {
       guard let destination = segue.destination as? MIDIDevicesTableViewController else {
         fatalError("expected MIDIDevicesTableViewController for segue destination")
       }
-      destination.devices = MIDI.sharedInstance.devices
+      destination.setDevices(MIDI.sharedInstance.devices)
     }
   }
 }
@@ -491,15 +492,7 @@ extension SettingsViewController: MIDIMonitor {
 
   public func seen(uniqueId: MIDIUniqueID, channel: Int) {
     DispatchQueue.main.async {
-      midiSeenLayerChange(self.midiConnections.layer)
+      MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer)
     }
   }
-}
-
-internal func midiSeenLayerChange(_ layer: CALayer) {
-  let color = UIColor.systemOrange.cgColor
-  let animator = CABasicAnimation(keyPath: "backgroundColor")
-  animator.fromValue = color
-  animator.toValue = UIColor.clear.cgColor
-  layer.add(animator, forKey: "MIDI Seen")
 }
