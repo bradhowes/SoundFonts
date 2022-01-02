@@ -41,6 +41,7 @@ public final class InfoBarController: UIViewController {
   private var showingMoreButtons = false
 
   public override func viewDidLoad() {
+    super .viewDidLoad()
 
     // Hide until we know for sure that they should be visible
     highestKey.isHidden = true
