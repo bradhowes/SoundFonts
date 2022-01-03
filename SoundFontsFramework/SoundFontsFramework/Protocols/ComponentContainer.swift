@@ -22,7 +22,7 @@ public protocol ComponentContainer: AnyObject {
   /// User settings for the app
   var settings: Settings { get }
   /// The Sampler that is used to generate sounds
-  var sampler: Sampler { get }
+  var sampler: Sampler? { get }
   /// The collection of installed sound font files
   var soundFonts: SoundFonts { get }
   /// The collection of favorite presets

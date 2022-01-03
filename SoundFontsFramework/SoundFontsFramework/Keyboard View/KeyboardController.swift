@@ -105,6 +105,10 @@ extension KeyboardController: ControllerConfiguration {
     router.activePresetManager.subscribe(self, notifier: presetChanged)
     router.favorites.subscribe(self, notifier: favoritesChange)
     router.subscribe(self, notifier: routerChange)
+
+    if router.sampler != nil {
+      touchedKeys.processor = router.sampler
+    }
   }
 
   private func routerChange(_ event: ComponentContainerEvent) {
