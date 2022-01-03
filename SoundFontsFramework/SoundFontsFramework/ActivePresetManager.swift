@@ -37,7 +37,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
   /// The currently active preset instance (if any)
   public var activePreset: Preset? {
-    guard let soundFont = activeSoundFont, let soundFontAndPreset = active.soundFontAndPreset else { return nil }
+    guard let soundFontAndPreset = active.soundFontAndPreset,
+          let soundFont = soundFonts.getBy(key: soundFontAndPreset.soundFontKey)
+    else {
+      return nil
+    }
     return soundFont[soundFontAndPreset]
   }
 
@@ -175,7 +179,7 @@ extension ActivePresetManager {
   }
 
   private func isValid(_ active: ActivePresetKind) -> Bool {
-    guard soundFonts.restored else { return true }
+    precondition(soundFonts.restored)
     guard let soundFontAndPreset = active.soundFontAndPreset else { return false }
     return soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil
   }
