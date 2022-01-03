@@ -1,10 +1,10 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+import DictionaryCoder
 import Foundation
 import os
-import DictionaryCoder
 
-/// Container for a user-selected soundfont preset or a user-created favorite.
+/// Container for a user-selected SoundFont preset or a user-created favorite.
 public enum ActivePresetKind: Equatable {
   /// Normal soundfont preset description
   case preset(soundFontAndPreset: SoundFontAndPreset)
@@ -35,6 +35,8 @@ public extension ActivePresetKind {
   }
 }
 
+// MARK: - Codable
+
 extension ActivePresetKind: Codable {
 
   private enum InternalKey: Int {
@@ -56,7 +58,7 @@ extension ActivePresetKind: Codable {
     case value
   }
 
-  private enum DecodingFailure: Error { case invalidInternalKey }
+  public enum DecodingFailure: Error { case invalidInternalKey }
 
   /**
    Construct from an encoded state.
@@ -65,6 +67,9 @@ extension ActivePresetKind: Codable {
    */
   public init(from decoder: Decoder) throws {
     do {
+
+      // Current encoding version using keyed container
+      //
       let values = try decoder.container(keyedBy: Keys.self)
       guard let internalKey = InternalKey(rawValue: try values.decode(Int.self, forKey: .internalKey)) else {
         throw DecodingFailure.invalidInternalKey
@@ -78,6 +83,9 @@ extension ActivePresetKind: Codable {
     } catch {
       let err = error
       do {
+
+        // Legacy encoding using using unkeyed container
+        //
         var container = try decoder.unkeyedContainer()
         guard let internalKey = InternalKey(rawValue: try container.decode(Int.self)) else {
           throw DecodingFailure.invalidInternalKey
@@ -117,10 +125,12 @@ extension ActivePresetKind: CustomStringConvertible {
     switch self {
     case let .preset(soundFontAndPreset: soundFontPreset): return ".preset(\(soundFontPreset))"
     case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
-    case .none: return "nil"
+    case .none: return ".none"
     }
   }
 }
+
+// MARK: - SettingSerializable
 
 extension ActivePresetKind: SettingSerializable {
 
@@ -154,6 +164,10 @@ extension ActivePresetKind: SettingSerializable {
 
   public static func get(key: String, defaultValue: ActivePresetKind, source: Settings,
                          isGlobal: Bool) -> ActivePresetKind {
+
+    // Hand-decoding from Settings value to support legacy values which used Data containers.
+    // Fetch the value as `Any` and then try to work with it as a Dict or as a Data container.
+    //
     guard let raw = source.raw(key: key, isGlobal: isGlobal) else {
       source.set(key: key, value: defaultValue.encodeToDict(), isGlobal: isGlobal)
       return defaultValue

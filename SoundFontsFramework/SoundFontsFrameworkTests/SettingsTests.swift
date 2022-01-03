@@ -22,13 +22,13 @@ class SettingsTests: XCTestCase {
 
   override func setUp() {
     for each in [settings, sessionSettings1, sessionSettings2] {
-      each.remove(key: TSettings.intSetting, isGlobal: false)
-      each.remove(key: TSettings.stringSetting, isGlobal: false)
-      each.remove(key: TSettings.timeIntervalSetting, isGlobal: false)
-      each.remove(key: TSettings.doubleSetting, isGlobal: false)
-      each.remove(key: TSettings.floatSetting, isGlobal: false)
-      each.remove(key: TSettings.boolSetting, isGlobal: false)
-      each.remove(key: TSettings.tagSetting, isGlobal: false)
+      each.remove(key: TSettings.intSetting)
+      each.remove(key: TSettings.stringSetting)
+      each.remove(key: TSettings.timeIntervalSetting)
+      each.remove(key: TSettings.doubleSetting)
+      each.remove(key: TSettings.floatSetting)
+      each.remove(key: TSettings.boolSetting)
+      each.remove(key: TSettings.tagSetting)
     }
   }
 

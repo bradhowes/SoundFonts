@@ -107,8 +107,8 @@ extension Settings {
    - parameter isGlobal: `true` if the setting is a global/shared setting and not distinct for each running instance.
    */
   @inlinable
-  public func remove<T>(key: SettingKey<T>, isGlobal: Bool) {
-    storage.removeObject(forKey: instanceKey(key.key, isGlobal: isGlobal))
+  public func remove<T>(key: SettingKey<T>) {
+    storage.removeObject(forKey: instanceKey(key.key, isGlobal: key.isGlobal))
   }
 
   /**
