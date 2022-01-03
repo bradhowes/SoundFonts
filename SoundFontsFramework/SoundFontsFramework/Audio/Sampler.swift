@@ -260,12 +260,15 @@ extension Sampler: NoteProcessor {
    - parameter velocity: how loud to play the note (1-127)
    */
   public func noteOn(_ midiValue: UInt8, velocity: UInt8) {
-    guard presetLoaded else { return }
+    os_log(.debug, log: log, "noteOn - %d %d", midiValue, velocity)
+    guard presetLoaded else {
+      os_log(.error, log: log, "no preset loaded")
+      return
+    }
     guard velocity > 0 else {
       noteOff(midiValue)
       return
     }
-    os_log(.debug, log: log, "noteOn - %d %d", midiValue, velocity)
     auSampler?.startNote(midiValue, withVelocity: velocity, onChannel: 0)
   }
 

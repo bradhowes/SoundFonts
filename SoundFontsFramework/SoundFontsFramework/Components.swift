@@ -53,22 +53,13 @@ where T: ControllerConfiguration {
   /// The manager for posting alerts
   public var alertManager: AlertManager { _alertManager! }
   /// The sampler engine that generates audio from sound font files
-  public var sampler: Sampler { _sampler! }
+  public var sampler: Sampler? { _sampler }
   /// The delay effect available for audio processing (app only)
-  public var delayEffect: DelayEffect? {
-    precondition(self.inApp == false || _delayEffect != nil)
-    return _delayEffect
-  }
+  public var delayEffect: DelayEffect? { _delayEffect }
   /// The reverb effect available for audio processing (app only)
-  public var reverbEffect: ReverbEffect? {
-    precondition(self.inApp == false || _reverbEffect != nil)
-    return _reverbEffect
-  }
+  public var reverbEffect: ReverbEffect? { _reverbEffect }
   /// The chorus effect available for audio processing (app only)
-  public var chorusEffect: ChorusEffect? {
-    precondition(self.inApp == false || _chorusEffect != nil)
-    return _chorusEffect
-  }
+  public var chorusEffect: ChorusEffect? { _chorusEffect }
 
   private var _alertManager: AlertManager?
 

@@ -3,6 +3,7 @@
 import CoreAudioKit
 import SoundFontsFramework
 import os
+import AVFAudio
 
 /**
  AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does
@@ -12,7 +13,7 @@ import os
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
   private let activePresetManager: ActivePresetManager
-  private let sampler: Sampler
+  private let sampler: AVAudioUnitSampler
   private let wrapped: AUAudioUnit
   private let settings: Settings
 
@@ -32,12 +33,14 @@ final class SoundFontsAU: AUAudioUnit {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, sampler: Sampler,
-              activePresetManager: ActivePresetManager, settings: Settings) throws {
+  public init(componentDescription: AudioComponentDescription, activePresetManager: ActivePresetManager,
+              settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU")
+
     self.log = log
     self.activePresetManager = activePresetManager
-    self.sampler = sampler
+    self.sampler = AVAudioUnitSampler()
+    self.wrapped = sampler.auAudioUnit
     self.settings = settings
 
     os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
@@ -45,15 +48,6 @@ final class SoundFontsAU: AUAudioUnit {
            componentDescription.componentSubType)
     os_log(.info, log: log, "starting AVAudioUnitSampler")
 
-    switch sampler.start() {
-    case let .success(auSampler):
-      guard let auSampler = auSampler else { fatalError("unexpected error") }
-      self.wrapped = auSampler.auAudioUnit
-
-    case .failure(let what):
-      os_log(.info, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
-      throw what
-    }
 
     os_log(.info, log: log, "super.init")
     do {
@@ -71,8 +65,7 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     self.activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
-    self.updateShortName()
-    loadActivePreset()
+    useActivePreset()
 
     os_log(.info, log: log, "init - done")
   }
@@ -92,42 +85,21 @@ extension SoundFontsAU {
    - parameter event: the event that happened
    */
   private func activePresetChanged(_ event: ActivePresetEvent) {
-    self.updateShortName()
-    self.currentPreset = nil
     switch event {
-    case .active: self.useActivePreset()
+    case .active:
+      self.currentPreset = nil
+      useActivePreset()
     }
+  }
+
+  private func useActivePreset() {
+    updateShortName()
+    loadActivePreset()
   }
 
   private func updateShortName() {
     let presetName = activePresetManager.activePresetConfig?.name ?? "---"
     self.audioUnitShortName = "\(presetName)"
-  }
-
-  private func useActivePreset() {
-    os_log(.info, log: log, "useActivePreset - BEGIN")
-    let result = sampler.loadActivePreset {
-      os_log(.info, log: self.log, "useActivePreset: loadActivePreset done")
-      // self.noteInjector.post(to: self)
-    }
-    switch result {
-    case .success: break
-    case .failure(let reason): logFailure(reason)
-    }
-    os_log(.info, log: log, "useActivePreset - END")
-  }
-
-  private func logFailure(_ reason: SamplerStartFailure) {
-    switch reason {
-    case .noSampler:
-      os_log(.error, log: log, "no sampler")
-    case .sessionActivating(let err):
-      os_log(.error, log: log, "failed to activate session: %{public}s", err.localizedDescription)
-    case .engineStarting(let err):
-      os_log(.error, log: log, "failed to start engine: %{public}s", err.localizedDescription)
-    case .presetLoading(let err):
-      os_log(.error, log: log, "failed to load preset: %{public}s", err.localizedDescription)
-    }
   }
 }
 
@@ -195,8 +167,7 @@ extension SoundFontsAU {
   }
 
   private func loadActivePreset() {
-    guard let sampler = sampler.auSampler,
-          let soundFont = activePresetManager.activeSoundFont,
+    guard let soundFont = activePresetManager.activeSoundFont,
           let preset = activePresetManager.activePreset
     else {
       return
@@ -260,7 +231,7 @@ extension SoundFontsAU {
   }
 }
 
-// MAKR: - State Management
+// MARK: - State Management
 
 extension SoundFontsAU {
 
