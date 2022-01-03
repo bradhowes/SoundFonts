@@ -237,7 +237,7 @@ extension Sampler {
    */
   public func setGain(_ value: Float) {
     os_log(.info, log: log, "setGain: %f", value)
-    auSampler?.masterGain = value
+    auSampler?.overallGain = value
   }
 
   /**

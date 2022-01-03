@@ -92,7 +92,7 @@ public final class AskForReview: NSObject {
    */
   public func ask() {
     os_log(.info, log: log, "ask")
-
+#if !targetEnvironment(macCatalyst)
     let now = Date()
     let currentVersion = self.currentVersion
     guard currentVersion != self.lastReviewRequestVersion else {
@@ -117,9 +117,13 @@ public final class AskForReview: NSObject {
     }
 
     DispatchQueue.main.async {
-      SKStoreReviewController.requestReview()
+      for scene in UIApplication.shared.connectedScenes where scene.activationState == .foregroundActive {
+        SKStoreReviewController.requestReview(in: scene)
+        break
+      }
       self.lastReviewRequestVersion = currentVersion
       self.lastReviewRequestDate = now
     }
+#endif
   }
 }
