@@ -119,4 +119,12 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
     XCTAssertEqual(789, sessionSettings2[TSettings.intSetting])
   }
+
+  func testMigration() {
+    let oldSettings = UserDefaults.standard
+    oldSettings.set(999, forKey: TSettings.intSetting.key)
+    let settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
+    XCTAssertEqual(999, settings[TSettings.intSetting])
+    oldSettings.remove(key: TSettings.intSetting)
+  }
 }

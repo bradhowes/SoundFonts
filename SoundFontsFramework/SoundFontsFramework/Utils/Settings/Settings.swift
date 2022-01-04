@@ -41,6 +41,12 @@ public final class Settings: NSObject {
     if inApp {
       self.sessionIdentity = nil
       self.keyPrefix = ""
+
+      // Before moving to use the shared settings container, user settings were stored in the default container. Fetch
+      // any values from there and register them as default values for the shared one in order to migrate previously-set
+      // values.
+      let oldValues = UserDefaults.standard.dictionaryRepresentation()
+      defaults.register(defaults: oldValues)
     }
     else {
       let sessionIdentity: FileManager.Identity = {
