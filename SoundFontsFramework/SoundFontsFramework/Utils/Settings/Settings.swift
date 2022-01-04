@@ -10,12 +10,19 @@ import os.log
 public final class Settings: NSObject {
   private static let log = Logging.logger("Settings")
 
+  /// The name of the suite to use for user settings. This points to the shared location accessible by both the app and
+  /// AUv3 components.
   public static let defaultSuiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
+
   @usableFromInline
   internal let storage: UserDefaults
   private let sessionIdentity: FileManager.Identity?
 
+  /// The unique identifier for a AUv3 component. This is nil for the app.
   public var identity: Int? { sessionIdentity?.index }
+
+  /// A prefix that will be added to all user setting keys to isolate a configuration to an entity with a particular
+  /// identity.
   public let keyPrefix: String
 
   /**
