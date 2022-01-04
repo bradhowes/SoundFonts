@@ -1,5 +1,8 @@
 import UIKit
 
+/**
+ A custom `UIPageViewController` that handles the presentation of the individual tutorial pages. Provides
+ */
 public final class TutorialContentPagerViewController: UIPageViewController {
 
   public var changes: [String]?
@@ -31,62 +34,48 @@ public final class TutorialContentPagerViewController: UIPageViewController {
     let appearance = UIPageControl.appearance(whenContainedInInstancesOf: [
       UIPageViewController.self
     ])
+
     appearance.pageIndicatorTintColor = .systemTeal
     appearance.currentPageIndicatorTintColor = .systemOrange
   }
 
+  /**
+   Notification that user touched the `Done` button. Dismiss the tutorial view.
+
+   - parameter sender: the button that was tapped
+   */
   @IBAction func donePressed(_ sender: Any) {
     dismiss(animated: true)
   }
 
+  /**
+   Show the next page in the tutorial.
+   */
   public func nextPage() {
     guard changes == nil, let next = page(after: self.viewControllers?.first) else { return }
     setViewControllers([next], direction: .forward, animated: true, completion: nil)
   }
 
+  /**
+   Show the previous page in the tutorial.
+   */
   public func previousPage() {
     guard changes == nil, let prev = page(before: self.viewControllers?.first) else { return }
     setViewControllers([prev], direction: .reverse, animated: true, completion: nil)
   }
-
-  private static func loadPage(_ name: String) -> TutorialPageViewController {
-    let storyboard = UIStoryboard(name: name, bundle: Bundle(for: TutorialViewController.self))
-    guard
-      let viewController = storyboard.instantiateInitialViewController()
-        as? TutorialPageViewController
-    else {
-      fatalError("failed to load tutorial page \(name)")
-    }
-    return viewController
-  }
-
-  private func loadChanges(_ changes: [String]) -> ChangesPageViewController {
-    let storyboard = UIStoryboard(name: "Changes", bundle: Bundle(for: TutorialViewController.self))
-    guard
-      let viewController = storyboard.instantiateInitialViewController()
-        as? ChangesPageViewController
-    else {
-      fatalError("failed to load Changes page")
-    }
-    viewController.changes = changes
-    return viewController
-  }
-
 }
+
+// MARK: - UIPageViewControllerDataSource
 
 extension TutorialContentPagerViewController: UIPageViewControllerDataSource {
 
-  public func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerBefore viewController: UIViewController
-  ) -> UIViewController? {
+  public func pageViewController(_ pageViewController: UIPageViewController,
+                                 viewControllerBefore viewController: UIViewController) -> UIViewController? {
     changes != nil ? nil : page(before: viewController)
   }
 
-  public func pageViewController(
-    _ pageViewController: UIPageViewController,
-    viewControllerAfter viewController: UIViewController
-  ) -> UIViewController? {
+  public func pageViewController(_ pageViewController: UIPageViewController,
+                                 viewControllerAfter viewController: UIViewController) -> UIViewController? {
     changes != nil ? nil : page(after: viewController)
   }
 
@@ -102,7 +91,31 @@ extension TutorialContentPagerViewController: UIPageViewControllerDataSource {
   }
 }
 
+// MARK: - Private
+
 extension TutorialContentPagerViewController {
+
+  private static func loadPage(_ name: String) -> TutorialPageViewController {
+    let storyboard = UIStoryboard(name: name, bundle: Bundle(for: TutorialViewController.self))
+    guard
+      let viewController = storyboard.instantiateInitialViewController()
+        as? TutorialPageViewController
+    else {
+      fatalError("failed to load tutorial page \(name)")
+    }
+    return viewController
+  }
+
+  private func loadChanges(_ changes: [String]) -> ChangesPageViewController {
+    let storyboard = UIStoryboard(name: "Changes", bundle: Bundle(for: TutorialViewController.self))
+    guard
+      let viewController = storyboard.instantiateInitialViewController() as? ChangesPageViewController
+    else {
+      fatalError("failed to load Changes page")
+    }
+    viewController.changes = changes
+    return viewController
+  }
 
   private func page(before viewController: UIViewController?) -> UIViewController? {
     guard let pageViewController = viewController as? TutorialPageViewController,

@@ -44,7 +44,7 @@ public final class TutorialViewController: UIViewController {
       return nil
     }
 
-    guard !changesDisabled else { return nil }
+    if changesDisabled { return nil }
     let viewControllers = createViewControllers()
     viewControllers?.1.stagedChanges = changes
     return viewControllers?.0
