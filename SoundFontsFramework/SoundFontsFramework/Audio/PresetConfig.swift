@@ -45,9 +45,12 @@ public struct PresetConfig: Codable {
   /// True if preset tuning should be applied when preset is active
   public var presetTuningEnabled: Bool = false
 
+  /// User notes about the preset
   public var notes: String?
 
+  /// True if the preset is hidden from display
   public var isHidden: Bool?
 
+  /// True if the preset is visible in the display
   public var isVisible: Bool { (isHidden ?? false) == false }
 }

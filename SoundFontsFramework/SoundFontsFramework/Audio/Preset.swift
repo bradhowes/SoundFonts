@@ -47,10 +47,9 @@ final public class Preset: Codable {
   public let soundFontIndex: Int
 
   /// Configuration parameters that can be adjusted by the user.
-  public var presetConfig: PresetConfig {
-    didSet { PresetConfig.changedNotification.post(value: presetConfig) }
-  }
+  public var presetConfig: PresetConfig { didSet { PresetConfig.changedNotification.post(value: presetConfig) } }
 
+  /// Collection of keys for Favorite instances based off of the preset.
   public var favorites: [Favorite.Key] = []
 
   private var bankType: MIDIBankType { MIDIBankType.basedOn(bank: bank) }
@@ -120,6 +119,7 @@ final public class Preset: Codable {
 }
 
 extension Preset {
+
   func makeFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite {
     os_log(.info, log: log, "makeFavorite")
     var newConfig = presetConfig
