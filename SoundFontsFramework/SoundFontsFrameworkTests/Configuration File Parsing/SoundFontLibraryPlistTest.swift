@@ -115,5 +115,20 @@ class SoundFontLibraryPListTest: XCTestCase {
     let sf = soundFonts.getBy(key: filtered[0])
     XCTAssertNotNil(sf)
     XCTAssertEqual("Fluid R3", sf?.displayName)
+
+    let sfap1 = SoundFontAndPreset(soundFontKey: sf!.key,
+                                   soundFontName: sf!.originalDisplayName,
+                                   presetIndex: 0,
+                                   itemName: sf!.presets[0].originalName)
+    let resolved1 = soundFonts.resolve(soundFontAndPreset: sfap1)
+    XCTAssertNotNil(resolved1)
+
+    let sfap2 = SoundFontAndPreset(soundFontKey: UUID(),
+                                   soundFontName: sf!.originalDisplayName,
+                                   presetIndex: 0,
+                                   itemName: sf!.presets[0].originalName)
+    let resolved2 = soundFonts.resolve(soundFontAndPreset: sfap2)
+    XCTAssertNotNil(resolved2)
+    XCTAssertTrue(resolved1 === resolved2)
   }
 }
