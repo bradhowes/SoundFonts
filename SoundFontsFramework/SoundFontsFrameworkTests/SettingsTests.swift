@@ -16,12 +16,25 @@ private struct TSettings {
 
 class SettingsTests: XCTestCase {
 
-  let settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
-  let sessionSettings1 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 1)
-  let sessionSettings2 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 2)
+  var settings: Settings!
+  var sessionSettings1: Settings!
+  var sessionSettings2: Settings!
 
   override func setUp() {
-    for each in [settings, sessionSettings1, sessionSettings2] {
+    UserDefaults.resetStandardUserDefaults()
+    let oldSettings = UserDefaults.standard
+    oldSettings.synchronize()
+
+    oldSettings.removeObject(forKey: TSettings.intSetting.key)
+    oldSettings.synchronize()
+
+    print(oldSettings.dictionaryRepresentation())
+
+    settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
+    sessionSettings1 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 1)
+    sessionSettings2 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 2)
+
+    for each in [settings!, sessionSettings1!, sessionSettings2!] {
       each.remove(key: TSettings.intSetting)
       each.remove(key: TSettings.stringSetting)
       each.remove(key: TSettings.timeIntervalSetting)
@@ -100,6 +113,12 @@ class SettingsTests: XCTestCase {
   }
 
   func testSessionSettings() {
+
+    // Need this for some reason
+    settings[TSettings.intSetting] = 123
+    sessionSettings1[TSettings.intSetting] = 123
+    sessionSettings2[TSettings.intSetting] = 123
+
     XCTAssertEqual(123, settings[TSettings.intSetting])
     XCTAssertEqual(123, sessionSettings1[TSettings.intSetting])
     XCTAssertEqual(123, sessionSettings2[TSettings.intSetting])
@@ -123,8 +142,8 @@ class SettingsTests: XCTestCase {
   func testMigration() {
     let oldSettings = UserDefaults.standard
     oldSettings.set(999, forKey: TSettings.intSetting.key)
-    let settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
+    let settings = Settings(inApp: true, suiteName: "UserDefaultsTests2")
     XCTAssertEqual(999, settings[TSettings.intSetting])
-    oldSettings.remove(key: TSettings.intSetting)
+    UserDefaults.resetStandardUserDefaults()
   }
 }

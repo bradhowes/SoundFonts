@@ -117,6 +117,7 @@
 		BD239486255213CB004E5E0D /* KeyParamSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD239485255213CB004E5E0D /* KeyParamSequence.swift */; };
 		BD23948A25540855004E5E0D /* KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23948925540855004E5E0D /* KeyTests.swift */; };
 		BD2436B02579356200162A49 /* ArrowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2436AF2579356200162A49 /* ArrowView.swift */; };
+		BD2454D8278474E3004B445A /* SoundFontAndPresetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2454D7278474E3004B445A /* SoundFontAndPresetTests.swift */; };
 		BD27E987251605CD00591FD0 /* ActivePresetKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E986251605CD00591FD0 /* ActivePresetKind.swift */; };
 		BD27E98B2516113600591FD0 /* UIControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD27E98A2516113600591FD0 /* UIControl.swift */; };
 		BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD2F4B23277F28EE0064E31B /* SettingSerializable.swift */; };
@@ -350,6 +351,7 @@
 		BD239485255213CB004E5E0D /* KeyParamSequence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyParamSequence.swift; sourceTree = "<group>"; };
 		BD23948925540855004E5E0D /* KeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyTests.swift; sourceTree = "<group>"; };
 		BD2436AF2579356200162A49 /* ArrowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowView.swift; sourceTree = "<group>"; };
+		BD2454D7278474E3004B445A /* SoundFontAndPresetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPresetTests.swift; sourceTree = "<group>"; };
 		BD27E986251605CD00591FD0 /* ActivePresetKind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePresetKind.swift; sourceTree = "<group>"; };
 		BD27E98A2516113600591FD0 /* UIControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIControl.swift; sourceTree = "<group>"; };
 		BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontEditor.storyboard; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 		BD074BD023CDAF51001987E9 /* SoundFontsFramework */ = {
 			isa = PBXGroup;
 			children = (
+				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BD074C3C23CDAF51001987E9 /* Info.plist */,
 				BD074BD923CDAF51001987E9 /* UI */,
 				BD074BF123CDAF51001987E9 /* Fonts View */,
@@ -522,7 +525,6 @@
 				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD1B8CD6270C5EB400C6BF15 /* MIDIDevicesTableViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
-				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
 				BD074BE823CDAF51001987E9 /* Audio */,
@@ -571,12 +573,10 @@
 		BD074BE823CDAF51001987E9 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				BD94614C26AC90CC00300543 /* ChorusEffect.swift */,
-				BDA5ACF0265D4266000AE48E /* DelayEffect.swift */,
-				BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */,
+				BD2454D627847074004B445A /* Effects */,
 				BDBF897E25B5939400B58E23 /* Tags */,
-				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BD2F4B302780F9EB0064E31B /* Configuration File */,
+				BDC6629F253F92B400C03C5F /* Bookmark.swift */,
 				BD074BEE23CDAF51001987E9 /* Note.swift */,
 				BD88BCB124194FA000399DE5 /* NoteInjector.swift */,
 				BD074BED23CDAF51001987E9 /* Preset.swift */,
@@ -585,12 +585,11 @@
 				BDB3BF9E270C534800C4257A /* MIDI.swift */,
 				BD4E2CAF25C5759200A7E9D4 /* MIDIBankType.swift */,
 				BD0F940A25728E610065C147 /* MIDIController.swift */,
-				BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */,
 				BD94614E26AC912D00300543 /* ChorusConfig.swift */,
 				BDE03B99256E405E00F904E3 /* DelayConfig.swift */,
 				BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */,
-				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD62CF33253DACE300DBDC1B /* PresetChangeManager.swift */,
+				BD074BEC23CDAF51001987E9 /* SoundFont.swift */,
 				BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */,
 				BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */,
 				BD074BE923CDAF51001987E9 /* SoundFontCollection.swift */,
@@ -754,6 +753,17 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		BD2454D627847074004B445A /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				BD94614C26AC90CC00300543 /* ChorusEffect.swift */,
+				BDA5ACF0265D4266000AE48E /* DelayEffect.swift */,
+				BDA5ACEF265D4266000AE48E /* ReverbEffect.swift */,
+				BDD29FDD258293A0007A5F0F /* AUPresetEntry.swift */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
 		BD2F4B302780F9EB0064E31B /* Configuration File */ = {
 			isa = PBXGroup;
 			children = (
@@ -804,7 +814,7 @@
 			isa = PBXGroup;
 			children = (
 				BD58251123CDABCE0034A31B /* Info.plist */,
-				BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */,
+				BDD9141025097EBE0068E3CE /* Configuration File Parsing */,
 				BDD9140F25097E610068E3CE /* CoreData Tests */,
 				BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */,
 				BDCCD4552782FE2B005C18BD /* ActivePresetManagerTests.swift */,
@@ -826,6 +836,7 @@
 				BD6E8AB824058C6200067AE2 /* SettingsTests.swift */,
 				BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */,
 				BDCCFCBB23F84C5300DD518D /* TimerTests.swift */,
+				BD2454D7278474E3004B445A /* SoundFontAndPresetTests.swift */,
 				BD7B7C482660D4AF00F0D18D /* TagTests.swift */,
 				BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */,
 				BDC7EC40241AEBBF00F789B2 /* Foundation+ExtensionsTests.swift */,
@@ -894,7 +905,7 @@
 			path = "CoreData Tests";
 			sourceTree = "<group>";
 		};
-		BDD9141025097EBE0068E3CE /* Legacy Plist Parsing */ = {
+		BDD9141025097EBE0068E3CE /* Configuration File Parsing */ = {
 			isa = PBXGroup;
 			children = (
 				BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */,
@@ -903,7 +914,7 @@
 				BDC961AA24FFC6EA003D9BEF /* SoundFontLibrary.plist */,
 				BDC961A824FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift */,
 			);
-			path = "Legacy Plist Parsing";
+			path = "Configuration File Parsing";
 			sourceTree = "<group>";
 		};
 		BDE150B2250CC3CA00728402 /* Entities */ = {
@@ -1251,6 +1262,7 @@
 				BD1A2A8B26696AD2009E2338 /* IconTests.swift in Sources */,
 				BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */,
 				BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */,
+				BD2454D8278474E3004B445A /* SoundFontAndPresetTests.swift in Sources */,
 				BD1A2A7F26682DAB009E2338 /* SelectedSoundFontManagerTests.swift in Sources */,
 				BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */,
 				BD1A2A872668B2CC009E2338 /* WhiteSpaceOnlyIsNilTests.swift in Sources */,
