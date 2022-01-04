@@ -137,7 +137,7 @@ extension SoundFontsAU {
   override public var component: AudioComponent { wrapped.component }
 
   override public func allocateRenderResources() throws {
-    os_log(.info, log: log, "allocateRenderResources - outputBusses: %{public}d", outputBusses.count)
+    os_log(.info, log: log, "allocateRenderResources BEGIN - outputBusses: %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
@@ -147,7 +147,7 @@ extension SoundFontsAU {
       os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
     }
-    os_log(.info, log: log, "allocateRenderResources - done")
+    os_log(.info, log: log, "allocateRenderResources END")
   }
 
   override public func deallocateRenderResources() {
@@ -161,19 +161,31 @@ extension SoundFontsAU {
   }
 
   override public func reset() {
-    os_log(.info, log: log, "reset")
+    os_log(.info, log: log, "reset BEGIN")
     wrapped.reset()
     loadActivePreset()
+    os_log(.info, log: log, "reset END")
   }
 
   private func loadActivePreset() {
+    os_log(.info, log: log, "loadActivePreset BEGIN")
     guard let soundFont = activePresetManager.activeSoundFont,
           let preset = activePresetManager.activePreset
     else {
+      os_log(.info, log: log, "loadActivePreset - nil activeSoundFont and/or activePreset")
+      os_log(.info, log: log, "loadActivePreset END")
       return
     }
-    try? sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(preset.program),
-                                         bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB))
+
+    do {
+      os_log(.info, log: log, "loadActivePreset - calling loadSoundBankInstrument")
+      try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(preset.program),
+                                          bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB))
+      os_log(.info, log: log, "loadActivePreset - called loadSoundBankInstrument")
+    } catch {
+      os_log(.error, log: log, "loadActivePreset - failed: %{public}s", error.localizedDescription)
+    }
+    os_log(.info, log: log, "loadActivePreset END")
   }
 
   override public var inputBusses: AUAudioUnitBusArray {
@@ -279,7 +291,7 @@ extension SoundFontsAU {
    - parameter state: the storage to hold the settings
    */
   private func addInstanceSettings(into state: inout [String: Any]) {
-    os_log(.info, log: log, "addInstanceSettings - BEGIN")
+    os_log(.info, log: log, "addInstanceSettings BEGIN")
 
     if let dict = self.activePresetManager.active.encodeToDict() {
       state[activeSoundFontPresetKey] = dict
@@ -289,7 +301,7 @@ extension SoundFontsAU {
     state[SettingKeys.showingFavorites.key] = settings.showingFavorites
     state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
     state[SettingKeys.pitchBendRange.key] = settings.pitchBendRange
-    os_log(.info, log: log, "addInstanceSettings - END")
+    os_log(.info, log: log, "addInstanceSettings END")
   }
 
   /**
@@ -298,7 +310,7 @@ extension SoundFontsAU {
    - parameter state: the storage that holds the settings
    */
   private func restoreInstanceSettings(from state: [String: Any]) {
-    os_log(.info, log: log, "restoreInstanceSettings - BEGIN")
+    os_log(.info, log: log, "restoreInstanceSettings BEGIN")
 
     if let activeTagKeyString = state[SettingKeys.activeTagKey.key] as? String,
        let activeTagKey = UUID(uuidString: activeTagKeyString) {
@@ -323,7 +335,7 @@ extension SoundFontsAU {
 
     self.activePresetManager.setActive(value)
 
-    os_log(.info, log: log, "restoreInstanceSettings - END")
+    os_log(.info, log: log, "restoreInstanceSettings END")
   }
 }
 
@@ -343,7 +355,7 @@ extension SoundFontsAU {
    */
   private func currentPresetChanged(_ preset: AUAudioUnitPreset?) {
     guard let preset = preset else { return }
-    os_log(.info, log: log, "currentPresetChanged %{public}s", preset)
+    os_log(.info, log: log, "currentPresetChanged BEGIN - %{public}s", preset)
 
     // There are no factory presets (should there be?) so this only applies to user presets.
     guard preset.number < 0 else  { return }
