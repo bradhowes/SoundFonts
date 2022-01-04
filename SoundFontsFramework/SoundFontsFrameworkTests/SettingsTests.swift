@@ -21,19 +21,21 @@ class SettingsTests: XCTestCase {
   var sessionSettings2: Settings!
 
   override func setUp() {
-    UserDefaults.resetStandardUserDefaults()
     let oldSettings = UserDefaults.standard
-    oldSettings.synchronize()
-
-    oldSettings.removeObject(forKey: TSettings.intSetting.key)
-    oldSettings.synchronize()
-
-    print(oldSettings.dictionaryRepresentation())
+    oldSettings.set(123, forKey: "intSetting")
+    oldSettings.set("stringSetting", forKey: "stringSetting")
+    oldSettings.set(Date().timeIntervalSince1970 - 1.0, forKey: "timeIntervalSetting")
+    oldSettings.set(123.45, forKey: "doubleSetting")
+    oldSettings.set(Float(-123.45), forKey: "floatSetting")
+    oldSettings.set(false, forKey: "boolSetting")
+    oldSettings.set(Tag.allTag.key.uuidString, forKey: "tagSetting")
 
     settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
     sessionSettings1 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 1)
     sessionSettings2 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 2)
+  }
 
+  override func tearDown() {
     for each in [settings!, sessionSettings1!, sessionSettings2!] {
       each.remove(key: TSettings.intSetting)
       each.remove(key: TSettings.stringSetting)
@@ -43,6 +45,15 @@ class SettingsTests: XCTestCase {
       each.remove(key: TSettings.boolSetting)
       each.remove(key: TSettings.tagSetting)
     }
+
+    let oldSettings = UserDefaults.standard
+    oldSettings.removeObject(forKey: "intSetting")
+    oldSettings.removeObject(forKey: "stringSetting")
+    oldSettings.removeObject(forKey: "timeIntervalSetting")
+    oldSettings.removeObject(forKey: "doubleSetting")
+    oldSettings.removeObject(forKey: "floatSetting")
+    oldSettings.removeObject(forKey: "boolSetting")
+    oldSettings.removeObject(forKey: "tagSetting")
   }
 
   func testDefaults() {
@@ -115,9 +126,9 @@ class SettingsTests: XCTestCase {
   func testSessionSettings() {
 
     // Need this for some reason
-    settings[TSettings.intSetting] = 123
-    sessionSettings1[TSettings.intSetting] = 123
-    sessionSettings2[TSettings.intSetting] = 123
+//    settings[TSettings.intSetting] = 123
+//    sessionSettings1[TSettings.intSetting] = 123
+//    sessionSettings2[TSettings.intSetting] = 123
 
     XCTAssertEqual(123, settings[TSettings.intSetting])
     XCTAssertEqual(123, sessionSettings1[TSettings.intSetting])
