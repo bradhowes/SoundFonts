@@ -2,7 +2,12 @@
 
 import CoreAudioKit
 import SoundFontsFramework
-import os
+import os.log
+
+public enum SoundFontsAUFailure: Error {
+  case missingSampler
+  case unableToStart
+}
 
 /// The view controller class for the SoundFonts AUv3 app extension. Presents the same UI as the app except for the
 /// keyboard component.
@@ -12,10 +17,11 @@ public final class SoundFontsAUViewController: AUViewController {
   private var audioUnit: SoundFontsAU?
 
   override public func viewDidLoad() {
-    os_log(.info, log: log, "viewDidLoad")
+    os_log(.info, log: log, "viewDidLoad BEGIN - %{public}s", String.pointer(self))
     super.viewDidLoad()
     components = Components<SoundFontsAUViewController>(inApp: false)
     components.setMainViewController(self)
+    os_log(.info, log: log, "viewDidLoad END")
   }
 }
 
@@ -28,12 +34,20 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    - returns: new SoundFontsAU instance
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-    os_log(.info, log: log, "createAudioUnit")
+    os_log(.info, log: log, "createAudioUnit BEGIN - %{public}s", String.pointer(self))
+
+    guard let sampler = components.sampler else {
+      os_log(.fault, log: log, "missing Sampler instance")
+      throw SoundFontsAUFailure.missingSampler
+    }
+
     let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
+                                     sampler: sampler,
                                      activePresetManager: components.activePresetManager,
                                      settings: components.settings)
-    os_log(.info, log: log, "created SoundFontsAU")
     self.audioUnit = audioUnit
+
+    os_log(.info, log: log, "createAudioUnit END - %{public}s", String.pointer(audioUnit))
     return audioUnit
   }
 }

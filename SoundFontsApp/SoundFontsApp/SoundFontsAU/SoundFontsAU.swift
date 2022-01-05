@@ -1,9 +1,9 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-import CoreAudioKit
+import AudioToolbox
 import SoundFontsFramework
+import CoreAudioKit
 import os
-import AVFAudio
 
 /**
  AUv3 component for SoundFonts. The component hosts its own Sampler instance but unlike the SoundFonts app, it does
@@ -13,10 +13,11 @@ import AVFAudio
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
   private let activePresetManager: ActivePresetManager
-  private let sampler: AVAudioUnitSampler
+  private let sampler: Sampler
   private let wrapped: AUAudioUnit
   private let settings: Settings
-
+  private let kernel: KernelAdapter
+  
   private var currentPresetObserver: NSKeyValueObservation?
   private var activePresetSubscriberToken: SubscriberToken?
 
@@ -24,6 +25,7 @@ final class SoundFontsAU: AUAudioUnit {
   private var _audioUnitShortName: String?
 
   private var _currentPreset: AUAudioUnitPreset?
+  private var _needLoad = true
 
   /**
    Construct a new AUv3 component.
@@ -33,14 +35,12 @@ final class SoundFontsAU: AUAudioUnit {
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, activePresetManager: ActivePresetManager,
-              settings: Settings) throws {
+  public init(componentDescription: AudioComponentDescription, sampler: Sampler,
+              activePresetManager: ActivePresetManager, settings: Settings) throws {
     let log = Logging.logger("SoundFontsAU")
-
     self.log = log
     self.activePresetManager = activePresetManager
-    self.sampler = AVAudioUnitSampler()
-    self.wrapped = sampler.auAudioUnit
+    self.sampler = sampler
     self.settings = settings
 
     os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
@@ -48,6 +48,21 @@ final class SoundFontsAU: AUAudioUnit {
            componentDescription.componentSubType)
     os_log(.info, log: log, "starting AVAudioUnitSampler")
 
+    switch sampler.start() {
+    case let .success(auSampler):
+      guard
+        let auSampler = auSampler
+      else {
+        throw SoundFontsAUFailure.unableToStart
+      }
+      self.wrapped = auSampler.auAudioUnit
+
+    case .failure(let what):
+      os_log(.info, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
+      throw what
+    }
+
+    self.kernel = KernelAdapter("SoundFontsAU", wrapped: self.wrapped)
 
     os_log(.info, log: log, "super.init")
     do {
@@ -94,7 +109,7 @@ extension SoundFontsAU {
 
   private func useActivePreset() {
     updateShortName()
-    loadActivePreset()
+    reloadActivePreset()
   }
 
   private func updateShortName() {
@@ -143,6 +158,7 @@ extension SoundFontsAU {
     }
     do {
       try wrapped.allocateRenderResources()
+      reloadActivePreset()
     } catch {
       os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
@@ -161,29 +177,64 @@ extension SoundFontsAU {
   }
 
   override public func reset() {
-    os_log(.info, log: log, "reset BEGIN")
+    os_log(.info, log: log, "reset BEGIN - %d", renderResourcesAllocated)
     wrapped.reset()
-    loadActivePreset()
     os_log(.info, log: log, "reset END")
+  }
+
+  private func reloadActivePreset() {
+    os_log(.info, log: log, "reloadActivePreset BEGIN")
+    guard let activePreset = activePresetManager.activePreset,
+          let soundFont = activePresetManager.activeSoundFont
+    else {
+      os_log(.info, log: log, "reloadActivePreset END - no active preset")
+      return
+    }
+
+    do {
+
+      // This is a hack but it seems necessary to do if the host the AudioUnit is rendering. Cause the AudioUnit to just
+      // emit zeros until `setBypass(false)` below.
+      self.kernel.setBypass(true)
+      os_log(.info, log: log, "reloadActivePreset - before loadSoundBankInstrument")
+      try sampler.auSampler?.loadSoundBankInstrument(at: soundFont.fileURL,
+                                                     program: UInt8(activePreset.program),
+                                                     bankMSB: UInt8(activePreset.bankMSB),
+                                                     bankLSB: UInt8(activePreset.bankLSB))
+      os_log(.info, log: log, "reloadActivePreset - after loadSoundBankInstrument")
+    } catch {
+      os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
+    }
+
+    // This is an inherent *flaky* hack. We don't immediately reenable rendering with the AudioUnit.
+    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.future(0.2)) {
+      self.kernel.setBypass(false)
+    }
+
+    os_log(.info, log: log, "reloadActivePreset END")
   }
 
   private func loadActivePreset() {
     os_log(.info, log: log, "loadActivePreset BEGIN")
-    guard let soundFont = activePresetManager.activeSoundFont,
-          let preset = activePresetManager.activePreset
+    guard activePresetManager.activeSoundFont != nil && activePresetManager.activePreset != nil
     else {
       os_log(.info, log: log, "loadActivePreset - nil activeSoundFont and/or activePreset")
       os_log(.info, log: log, "loadActivePreset END")
       return
     }
 
-    do {
-      os_log(.info, log: log, "loadActivePreset - calling loadSoundBankInstrument")
-      try sampler.loadSoundBankInstrument(at: soundFont.fileURL, program: UInt8(preset.program),
-                                          bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB))
-      os_log(.info, log: log, "loadActivePreset - called loadSoundBankInstrument")
-    } catch {
-      os_log(.error, log: log, "loadActivePreset - failed: %{public}s", error.localizedDescription)
+    os_log(.info, log: log, "loadActivePreset - calling loadActivePreset")
+    self.kernel.setBypass(true)
+    let result = sampler.loadActivePreset {
+      os_log(.info, log: self.log, "loadActivePreset - called loadActivePreset")
+      DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.future(0.1)) {
+        self.kernel.setBypass(false)
+      }
+    }
+    switch result {
+    case .success: os_log(.info, log: log, "loadActivePreset - OK")
+    case .failure(let error): os_log(.fault, log: log, "loadActivePreset - FAILED: %{public}s",
+                                     error.localizedDescription)
     }
     os_log(.info, log: log, "loadActivePreset END")
   }
@@ -258,8 +309,8 @@ extension SoundFontsAU {
     }
     set {
       os_log(.info, log: log, "fullState SET")
-      if let fullState = newValue {
-        restoreInstanceSettings(from: fullState)
+      if let state = newValue {
+        restoreInstanceSettings(from: state)
       }
     }
   }
@@ -459,5 +510,9 @@ extension SoundFontsAU {
   }
 
   override public var renderBlock: AURenderBlock { wrapped.renderBlock }
-  override var internalRenderBlock: AUInternalRenderBlock { wrapped.internalRenderBlock }
+
+  override public var internalRenderBlock: AUInternalRenderBlock {
+    os_log(.info, log: log, "internalRenderBlock")
+    return kernel.internalRenderBlock()
+  }
 }

@@ -13,6 +13,7 @@
 		BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */; };
 		BD1A2A91266A00F2009E2338 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8D266A0050009E2338 /* ScreenShots.swift */; };
 		BD21CB3A266A6ECE00D4193C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */; };
+		BD2454DC2785A480004B445A /* KernelAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2454DA2785A480004B445A /* KernelAdapter.mm */; };
 		BD3CF705241FA77A004A13D1 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
@@ -128,6 +129,9 @@
 		BD1A2A8D266A0050009E2338 /* ScreenShots.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenShots.swift; sourceTree = "<group>"; };
 		BD1A2A8E266A0050009E2338 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		BD2454D92785A47F004B445A /* SoundFontsAU-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SoundFontsAU-Bridging-Header.h"; sourceTree = "<group>"; };
+		BD2454DA2785A480004B445A /* KernelAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KernelAdapter.mm; sourceTree = "<group>"; };
+		BD2454DB2785A480004B445A /* KernelAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KernelAdapter.h; sourceTree = "<group>"; };
 		BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
 		BD2CD98327075879007DDBF7 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
@@ -236,7 +240,10 @@
 				BD498F9423EEF34100755AB9 /* SoundFontsAU.entitlements */,
 				BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */,
 				BD137513240A9CDA007584BB /* SoundFontsAUViewController.swift */,
+				BD2454DB2785A480004B445A /* KernelAdapter.h */,
+				BD2454DA2785A480004B445A /* KernelAdapter.mm */,
 				BD05837123E4C52800E094E0 /* UI */,
+				BD2454D92785A47F004B445A /* SoundFontsAU-Bridging-Header.h */,
 			);
 			path = SoundFontsAU;
 			sourceTree = "<group>";
@@ -523,7 +530,7 @@
 				TargetAttributes = {
 					BD05836123E4C52800E094E0 = {
 						CreatedOnToolsVersion = 11.3.1;
-						LastSwiftMigration = 1130;
+						LastSwiftMigration = 1320;
 					};
 					BD3CF701241FA779004A13D1 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -659,6 +666,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD2454DC2785A480004B445A /* KernelAdapter.mm in Sources */,
 				BD137514240A9CDB007584BB /* SoundFontsAUViewController.swift in Sources */,
 				BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */,
 			);
@@ -766,6 +774,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontsApp/SoundFontsAU/SoundFontsAU-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -791,6 +801,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFonts.SoundFontsAU;
 				PRODUCT_NAME = SoundFonts;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SoundFontsApp/SoundFontsAU/SoundFontsAU-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
