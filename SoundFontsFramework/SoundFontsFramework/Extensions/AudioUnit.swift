@@ -111,5 +111,5 @@ extension AUAudioUnitPreset {
 extension AUAudioUnitPreset {
 
   /// Obtain a custom description string of the instance
-  override public var description: String { "<AuAudioUnitPreset name: \(name)/\(number)>" }
+  override public var description: String { "<AUAudioUnitPreset name: \(name)/\(number)>" }
 }
