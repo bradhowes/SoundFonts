@@ -22,7 +22,7 @@ private enum Slot: Equatable {
 final class PresetsTableViewManager: NSObject {
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
-  private weak var viewController: PresetsTableViewController!
+  private let viewController: PresetsTableViewController
   private var view: UITableView { viewController.tableView }
 
   private var lastSearchText = ""
@@ -84,7 +84,7 @@ final class PresetsTableViewManager: NSObject {
 
     view.sectionIndexColor = .darkGray
 
-    let customFont = UIFont(name: "Eurostile", size: 20)!
+    guard let customFont = UIFont(name: "Eurostile", size: 20) else { fatalError("missing Eurostile font") }
     let defaultTextAttributes = [
       NSAttributedString.Key.font: customFont,
       NSAttributedString.Key.foregroundColor: UIColor.systemTeal
@@ -313,7 +313,7 @@ extension PresetsTableViewManager {
       return
     }
 
-    viewController?.oneShotLayoutCompletionHandler = completionHandler
+    viewController.oneShotLayoutCompletionHandler = completionHandler
     os_log(.debug, log: log, "begin reloadData")
     view.reloadData()
     os_log(.debug, log: log, "end reloadData")
@@ -641,11 +641,7 @@ extension PresetsTableViewManager {
 
     guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
     let indexPath = IndexPath(slotIndex: slotIndex)
-    let visibleRows = view.indexPathsForVisibleRows
-    if !(visibleRows?.contains(indexPath) ?? false) {
-      os_log(.debug, log: log, "scrolling to selected row")
-      view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
-    }
+    view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
     hideSearchBar(animated: true)
   }
 
@@ -849,7 +845,7 @@ extension PresetsTableViewManager {
       popoverController.permittedArrowDirections = []
     }
 
-    viewController?.present(alertController, animated: true, completion: nil)
+    viewController.present(alertController, animated: true, completion: nil)
   }
 }
 
@@ -857,7 +853,10 @@ extension PresetsTableViewManager {
 
 extension PresetsTableViewManager {
 
-  private func getSlot(at indexPath: IndexPath) -> Slot { searchSlots?[indexPath] ?? viewSlots[indexPath] }
+  private func getSlot(at indexPath: IndexPath) -> Slot {
+    os_log(.debug, log: log, "getSlot BEGIN: %d %d %d", indexPath.row, searchSlots?.count ?? 0, viewSlots.count)
+    return searchSlots?[indexPath] ?? viewSlots[indexPath]
+  }
 
   private func makeSoundFontAndPreset(at indexPath: IndexPath) -> SoundFontAndPreset? {
     guard let soundFont = selectedSoundFontManager.selected else { return nil }
