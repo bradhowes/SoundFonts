@@ -26,8 +26,11 @@ extension PresetsTableViewController {
   public override func viewDidLayoutSubviews() {
     os_log(.debug, log: log, "viewDidLayoutSubviews")
     super.viewDidLayoutSubviews()
-    oneShotLayoutCompletionHandler?()
-    oneShotLayoutCompletionHandler = nil
+    if oneShotLayoutCompletionHandler != nil {
+      oneShotLayoutCompletionHandler?()
+      oneShotLayoutCompletionHandler = nil
+      presetsTableViewManager?.selectActive(animated: false)
+    }
   }
 }
 

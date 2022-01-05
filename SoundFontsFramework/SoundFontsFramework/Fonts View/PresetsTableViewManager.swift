@@ -288,6 +288,12 @@ extension PresetsTableViewManager {
     searchBar.resignFirstResponder()
   }
 
+  /**
+   Something has invalidated the viewSlots array. Regenerate it and then reload the table. This will cause the view to
+   layout its children, after which it will run the given completion handler.
+
+   - parameter completionHandler: the completion handler to run at end of the table view's layout activity
+   */
   private func regenerateViewSlots(_ completionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = nil) {
     os_log(.info, log: log, "updateViewPresets")
     let source = selectedSoundFontManager.selected?.presets ?? []
