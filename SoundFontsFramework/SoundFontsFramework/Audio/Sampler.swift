@@ -1,4 +1,4 @@
-// Copyright © 2018 Brad Howes. All rights reserved.
+// Copyright © 2022 Brad Howes. All rights reserved.
 
 import AVFoundation
 import AudioToolbox
@@ -26,7 +26,9 @@ public enum SamplerStartFailure: Error {
   }
 }
 
-/// This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
+/**
+ This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
+ */
 public final class Sampler {
   private lazy var log = Logging.logger("Sampler")
 
