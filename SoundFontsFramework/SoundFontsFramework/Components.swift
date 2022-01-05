@@ -26,19 +26,17 @@ where T: ControllerConfiguration {
   /// True if running in the app; false when running in the AUv3 app extension
   public let inApp: Bool
   /// The main view controller of the app
-  public private(set) var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
+  public private(set) weak var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
 
-  private var soundFontsControlsController: SoundFontsControlsController! {
-    didSet { oneTimeSet(oldValue) }
-  }
-  private var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
-  private var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
-  private var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
-  private var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
-  private var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
-  private var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
-  private var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
-  private var tagsController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
+  private weak var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
+  private weak var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
+  private weak var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
+  private weak var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
+  private weak var tagsController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
   /// The controller for the info bar
   public var infoBar: InfoBar { infoBarController }
