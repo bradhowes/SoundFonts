@@ -14,20 +14,17 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
 
   public init() {
     super.init()
-    os_log(.info, log: log, "selected: %{public}s %{public}s", selected?.displayName ?? "nil",
-           String.pointer(selected))
   }
 
   public func setSelected(_ soundFont: SoundFont) {
-    os_log(.info, log: log, "setSelected: %{public}s %{public}s", soundFont.displayName, String.pointer(soundFont))
-    guard selected != soundFont else {
-      os_log(.info, log: log, "already active")
-      return
+    os_log(.info, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,
+           String.pointer(soundFont))
+    if selected != soundFont {
+      let old = selected
+      selected = soundFont
+      notify(.changed(old: old, new: soundFont))
     }
-
-    let old = selected
-    selected = soundFont
-    notify(.changed(old: old, new: soundFont))
+    os_log(.info, log: log, "setSelected END")
   }
 
   public func clearSelected() {
