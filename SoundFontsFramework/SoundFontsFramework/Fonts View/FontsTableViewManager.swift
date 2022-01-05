@@ -111,7 +111,7 @@ extension FontsTableViewManager {
 
   private func updateFilterTag(tagKey: Tag.Key) {
     filterTagKey = tagKey
-    updateViewSoundFonts()
+    DispatchQueue.main.async(execute: self.updateViewSoundFonts)
   }
 
   private func updateViewSoundFonts() {
