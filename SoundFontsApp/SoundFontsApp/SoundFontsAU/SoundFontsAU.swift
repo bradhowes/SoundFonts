@@ -27,6 +27,9 @@ final class SoundFontsAU: AUAudioUnit {
   private var _currentPreset: AUAudioUnitPreset?
   private var _needLoad = true
 
+  /// Maximum frames to render
+  private let maxFramesToRender: UInt32 = 512
+
   /**
    Construct a new AUv3 component.
 
@@ -74,6 +77,8 @@ final class SoundFontsAU: AUAudioUnit {
       throw error
     }
 
+    maximumFramesToRender = maxFramesToRender
+
     self.currentPresetObserver = wrapped.observe(\.currentPreset, options: [.new]) { [weak self] _, change in
       guard let self = self, let newValue = change.newValue else { return }
       self.currentPresetChanged(newValue)
@@ -81,6 +86,8 @@ final class SoundFontsAU: AUAudioUnit {
 
     self.activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
+
+    kernel.setMaxFramesToRender(maxFramesToRender)
 
     os_log(.info, log: log, "init - done")
   }
@@ -163,6 +170,10 @@ extension SoundFontsAU {
       os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
     }
+
+    // Communicate to the kernel the new formats being used
+    kernel.setMaxFramesToRender(maximumFramesToRender)
+
     os_log(.info, log: log, "allocateRenderResources END")
   }
 
