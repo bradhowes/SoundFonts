@@ -11,11 +11,11 @@
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/landscape.png?raw=true" alt="App shown in landscape orientation on iPhone"/>
 </p>
 
-This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses an`AVAudioUnitSampler`
-instance to generate the sounds for touched keys. The sounds that are available come from _sound font_ files such
-as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free (and of variable
-quality). There are four sound font files that are bundled with the application, and more can be added via the iCloud
-integration.
+This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses
+an`AVAudioUnitSampler` instance to generate the sounds for touched keys. The sounds that are available come from
+_sound font_ files such as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free
+(and of variable quality). There are four sound font files that are bundled with the application, and more can
+be added via the iCloud integration.
 
 <p align="center">
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/portrait.png?raw=true" alt="App shown in portrait orientation on iPhone"/>
@@ -45,19 +45,33 @@ applications that support AUv3 audio units, such as
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/AUM.png?raw=true" alt="AUM hosting SoundFonts AUv3 component"/>
 </p>
 
-The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add them to your signal processing
-chain in an AUv3 host such as AUM.
+And here are 4 instances running in GarageBand:
+
+<p align="center">
+<img src="https://github.com/bradhowes/SoundFonts/blob/main/images/GarageBand.png?raw=true" alt="GarageBand hosting SoundFonts AUv3 component"/>
+</p>
+
+Here is a rendering straight from GarageBand:
+
+<figure>
+  <figcaption>GarageBand Render</figcaption>
+    <audio controls src="https://github.com/bradhowes/SoundFonts/blob/main/media/Rendering.m4a">
+Your browser does not support the <code>audio</code> element.
+    </audio>
+</figure>
+
+The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add
+them to your signal processing chain in an AUv3 host such as AUM.
 
 <p align="center">
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/effects.png?raw=true" alt="App effects controls"/>
 </p>
 
-I have additional AUv3 effects available:
+I have additional AUv3 effects available here and on the AppStore:
 
 - [Simply Flange](https://github.com/bradhowes/SimplyFlange) -- a simple flange effect
 - [Simply Tremolo](https://github.com/bradhowes/SimplyTremolo) -- a simple tremolo effect
 - [Simply Phaser](https://github.com/bradhowes/SimplyPhaser) -- a simple phaser effect
-
 
 ## User Interface
 
@@ -99,9 +113,9 @@ a cloud drive before it can be imported via the iOS sharing sheet.
 
 ## Favorites
 
-Double-tapping on the info bar switches between the fonts view and the the "favorites". This view shows all of the presets that have been 
-"faved" or "starred". Pressing on a favorite will make its associated preset active. You can also reorder them by long-touching one and 
-moving it to a new location among the others. There are various parameters one can adjust for a favorite that remain independent of the 
+Double-tapping on the info bar switches between the fonts view and the the "favorites". This view shows all of the presets that have been
+"faved" or "starred". Pressing on a favorite will make its associated preset active. You can also reorder them by long-touching one and
+moving it to a new location among the others. There are various parameters one can adjust for a favorite that remain independent of the
 original preset it derived from. These include:
 
 <p align="center">
@@ -111,7 +125,7 @@ original preset it derived from. These include:
 - the first note of the keyboard when the favorite becomes active
 - a custom tuning to apply
 - pitch bend range
-- custom gain 
+- custom gain
 - custom stereo panning
 - reverb and delay settings (app only)
 
@@ -131,11 +145,11 @@ There are a variety of customization settings available.
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/settings.png?raw=true" alt="Settings configuration editor"/>
 </p>
 
-The app supports MIDI connectivity via direct wired connection or via Bluetooth MIDI. 
+The app supports MIDI connectivity via direct wired connection or via Bluetooth MIDI.
 
 You can also control how the app adds new SF2 files. By default, the app will copy the SF2 file into the app's sandbox. This is the safest since
-it guarantees that the app will always be able to locate and use the file. However, it does take up additional space on your device. Disabling 
-the "Copy SF2 files when adding" option means the app will instead obtain a secure bookmark reference to the file's location. This can be 
+it guarantees that the app will always be able to locate and use the file. However, it does take up additional space on your device. Disabling
+the "Copy SF2 files when adding" option means the app will instead obtain a secure bookmark reference to the file's location. This can be
 somewhere else on your device -- including the Files app for iCloud files -- or on a supported external USB storage device. However, these
 files may not always be available. Hopefully the code does the right thing in these situations, but the secure bookmarking API is not exactly
 intuitive and clear on all points. That said, it appears to work great for me so far with my devices and iCloud and I have also tested it using an
@@ -143,15 +157,15 @@ external USB drive without any issues so far.
 
 ## Importing and Exporting App Configuration
 
-The Settings panel above provides a way to export the existing app configuration to a location outside of the app's private sandbox. You can 
+The Settings panel above provides a way to export the existing app configuration to a location outside of the app's private sandbox. You can
 visit this location using the Files app, selecting "On My…" location, and scrolling to find the folder for SoundFonts. The exported configuration
 files all end with "plist" extension (there are currently three of them). The export operation will also make copies of any  installed SF2 files. You
-can replicate a SoundFonts setup on another device by simply copying everything that is exported to the SoundFonts folder on the new 
+can replicate a SoundFonts setup on another device by simply copying everything that is exported to the SoundFonts folder on the new
 device and then choose "Import all SF2 files…" action in the Settings panel.
 
 ## Dependencies
 
-There are no external dependencies. I wrote the code in Xcode 10.1, targeting iOS 12.1. The Xcode version has increased as has the Swift 
+There are no external dependencies. I wrote the code in Xcode 10.1, targeting iOS 12.1. The Xcode version has increased as has the Swift
 version, but it still works on iOS 12.1 devices.
 
 The keys of the keyboard are painted by the code found in `KeyboardRender.swift`. This was generated by the
@@ -163,7 +177,7 @@ of the build process and PaintCode is not necessary to build.
 The repository comes with four SoundFont files, though the largest one -- `FluidR3_GM` -- is too large to store
 natively on Github so it has been broken into three files: `FluidR3_GM.sf2.1`, `FluidR3_GM.sf2.2`, and
 `FluidR3_GM.sf2.3`. I could move it to LFS but I do not want to mess with that. Instead, I have an Xcode build
-phaase that should concatenate the individual files into one big one before packaging them all up into a 
+phaase that should concatenate the individual files into one big one before packaging them all up into a
 resource in the SF2Files target.
 
 # API Documentation
@@ -188,7 +202,7 @@ The app and the AUv3 app extensions share code via the
 [SoundFontsFramework](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsFramework) framework. This holds most of the UI
 definitions and nearly all of the SF2 handling code. This is all in Swift.
 
-Parsing SF2 files is done in an Objective-C framework with C++ code that represents entities defined the in the SoundFont v2 specification. 
+Parsing SF2 files is done in an Objective-C framework with C++ code that represents entities defined the in the SoundFont v2 specification.
 It is called [SoundFontInfoLib](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontInfoLib). Its original purpose was to provide
 a fast way to extract the preset information from an SF2 file, but it has grown to understand all of the components in the SoundFont v2 spec.
 There is also the beginnings of my own custom SF2 audio rendering facility which will one day replace SoundFonts' dependency on
@@ -198,4 +212,3 @@ Finally, the embedded SF2 files that come with the app in the App Store are pack
 [SF2Files](https://github.com/bradhowes/SoundFonts/tree/main/SF2Files) framework. As mentioned above, there is special-handling of the
 FluidR3_GM SF2 file which is performed in a custom build phase for this framework. It does nothing more than concatenate the three parts
 together to make a whole SF2 file which the build system then puts into the framework.
-
