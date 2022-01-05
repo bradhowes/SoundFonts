@@ -18,17 +18,9 @@ public final class PresetsTableViewController: UITableViewController {
 
 extension PresetsTableViewController {
 
-  public override func viewDidLoad() {
-    super.viewDidLoad()
-  }
-
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     presetsTableViewManager?.selectActive(animated: false)
-  }
-
-  public override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
   }
 
   public override func viewDidLayoutSubviews() {
