@@ -157,20 +157,20 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       return
     }
 
-    activeIndicator.alpha = 0.0
+    activeIndicator.alpha = 1.0
     activeIndicator.isHidden = false
-    let activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) {
-      self.activeIndicator.alpha = 1.0
-    }
-    activeIndicatorAnimator.addCompletion { _ in self.activeIndicator.alpha = 1.0 }
-    activeIndicatorAnimator.startAnimation()
-    self.activeIndicatorAnimator = activeIndicatorAnimator
+//    let activeIndicatorAnimator = UIViewPropertyAnimator(duration: 0.4, curve: .easeIn) {
+//      self.activeIndicator.alpha = 1.0
+//    }
+//    activeIndicatorAnimator.addCompletion { _ in self.activeIndicator.alpha = 1.0 }
+//    activeIndicatorAnimator.startAnimation()
+//    self.activeIndicatorAnimator = activeIndicatorAnimator
     os_log(.debug, log: log, "showActiveIndicator - '%{public}s' done", name.text ?? "?")
   }
 
   private func stopAnimation() {
-    activeIndicatorAnimator?.stopAnimation(false)
-    activeIndicatorAnimator?.finishAnimation(at: .end)
+//    activeIndicatorAnimator?.stopAnimation(false)
+//    activeIndicatorAnimator?.finishAnimation(at: .end)
     activeIndicatorAnimator = nil
   }
 
