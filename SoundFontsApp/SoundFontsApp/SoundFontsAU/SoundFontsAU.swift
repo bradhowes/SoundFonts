@@ -214,31 +214,6 @@ extension SoundFontsAU {
     os_log(.info, log: log, "reloadActivePreset END")
   }
 
-  private func loadActivePreset() {
-    os_log(.info, log: log, "loadActivePreset BEGIN")
-    guard activePresetManager.activeSoundFont != nil && activePresetManager.activePreset != nil
-    else {
-      os_log(.info, log: log, "loadActivePreset - nil activeSoundFont and/or activePreset")
-      os_log(.info, log: log, "loadActivePreset END")
-      return
-    }
-
-    os_log(.info, log: log, "loadActivePreset - calling loadActivePreset")
-    self.kernel.setBypass(true)
-    let result = sampler.loadActivePreset {
-      os_log(.info, log: self.log, "loadActivePreset - called loadActivePreset")
-      DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.future(0.1)) {
-        self.kernel.setBypass(false)
-      }
-    }
-    switch result {
-    case .success: os_log(.info, log: log, "loadActivePreset - OK")
-    case .failure(let error): os_log(.fault, log: log, "loadActivePreset - FAILED: %{public}s",
-                                     error.localizedDescription)
-    }
-    os_log(.info, log: log, "loadActivePreset END")
-  }
-
   override public var inputBusses: AUAudioUnitBusArray {
     os_log(.info, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
     return wrapped.inputBusses
