@@ -1,6 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
 import UIKit
+import os.log
 
 /// Configuration for an alert to be shown to the user.
 public struct AlertConfig {
@@ -60,8 +61,10 @@ private final class AlertOperation: Operation {
 /// will queue until it is their turn to be shown. Although this works, there is the risk of annoying the user with a
 /// crapload of alerts because of some catastrophic failure.
 public final class AlertManager {
+  private let log = Logging.logger("AlertManager")
+
   private let queue: OperationQueue = OperationQueue()
-  private let presenter: UIViewController
+  private weak var presenter: UIViewController?
   private var observers: [NSObjectProtocol] = []
   private let notifications: [Notification.Name] = [
     .configLoadFailure,
@@ -86,6 +89,7 @@ public final class AlertManager {
   }
 
   private func notify(_ notification: Notification) {
+    os_log(.info, log: log, "notify BEGIN - %{public}s", notifications.description)
     let alertConfig: AlertConfig = {
       switch notification.name {
       case .configLoadFailure: return configLoadFailureAlert()
@@ -107,7 +111,10 @@ public final class AlertManager {
    - parameter alert: the contents of the alert to show
    */
   public func post(alert: AlertConfig) {
+    guard let presenter = self.presenter else { return }
+    os_log(.info, log: log, "post BEGIN")
     queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
+    os_log(.info, log: log, "post END")
   }
 }
 
