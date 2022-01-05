@@ -51,14 +51,8 @@ And here are 4 instances running in GarageBand:
 <img src="https://github.com/bradhowes/SoundFonts/blob/main/images/GarageBand.png?raw=true" alt="GarageBand hosting SoundFonts AUv3 component"/>
 </p>
 
-Here is a rendering straight from GarageBand:
-
-<figure>
-  <figcaption>GarageBand Render</figcaption>
-    <audio controls src="https://github.com/bradhowes/SoundFonts/blob/main/media/Rendering.m4a">
-Your browser does not support the <code>audio</code> element.
-    </audio>
-</figure>
+Here is a rendering straight from GarageBand: <a href="https://github.com/bradhowes/SoundFonts/blob/main/media/Rendering.m4a">Rendering.m4a</a>
+</p>
 
 The app also includes two AUv3 effects: reverb, and delay. You can use them directly in the application, or add
 them to your signal processing chain in an AUv3 host such as AUM.
