@@ -5,14 +5,6 @@ import AudioToolbox
 import Foundation
 import os
 
-/// Events from a Sampler that can be monitored
-public enum SamplerEvent {
-  /// Notification that the sampler is up and running
-  case running
-  /// Notification that the sampler has loaded a new preset
-  case loaded(preset: ActivePresetKind)
-}
-
 /// Failure modes for a sampler
 public enum SamplerStartFailure: Error {
   /// No sampler is available
@@ -35,7 +27,7 @@ public enum SamplerStartFailure: Error {
 }
 
 /// This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
-public final class Sampler: SubscriptionManager<SamplerEvent> {
+public final class Sampler {
   private lazy var log = Logging.logger("Sampler")
 
   /// The notification that tuning values have changed for the sampler
@@ -91,7 +83,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
     self.reverbEffect = reverb
     self.delayEffect = delay
     self.settings = settings
-    super.init()
 
     if mode == .standalone {
       precondition(reverb != nil, "unexpected nil for reverb")
@@ -208,8 +199,6 @@ public final class Sampler: SubscriptionManager<SamplerEvent> {
         guard let self = self else { return }
         self.presetLoaded = true
         afterLoadBlock?()
-        os_log(.info, log: self.log, "notifying loaded")
-        self.notify(.loaded(preset: self.activePresetManager.active))
       }
     }
 
@@ -226,8 +215,10 @@ extension Sampler {
    - parameter value: the value to set in cents (+/- 2400)
    */
   public func setTuning(_ value: Float) {
-    os_log(.info, log: log, "setTuning: %f", value)
-    auSampler?.globalTuning = value
+    if value != auSampler?.globalTuning {
+      os_log(.info, log: log, "setTuning: %f", value)
+      auSampler?.globalTuning = value
+    }
   }
 
   /**
@@ -236,8 +227,10 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setGain(_ value: Float) {
-    os_log(.info, log: log, "setGain: %f", value)
-    auSampler?.masterGain = value
+    if value != auSampler?.masterGain {
+      os_log(.info, log: log, "setGain: %f", value)
+      auSampler?.masterGain = value
+    }
   }
 
   /**
@@ -246,8 +239,10 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setPan(_ value: Float) {
-    os_log(.info, log: log, "setPan: %f", value)
-    auSampler?.stereoPan = value
+    if value != auSampler?.stereoPan {
+      os_log(.info, log: log, "setPan: %f", value)
+      auSampler?.stereoPan = value
+    }
   }
 }
 
