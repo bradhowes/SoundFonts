@@ -234,6 +234,8 @@
 		BDEB1260262084FF003CE8EE /* Changes.md in Resources */ = {isa = PBXBuildFile; fileRef = BDEB12542620728B003CE8EE /* Changes.md */; };
 		BDEB12642620939B003CE8EE /* ChangesPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */; };
 		BDEEDC7925DC102500FEA219 /* NSLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDEEDC7825DC102500FEA219 /* NSLayout.swift */; };
+		BDF1C0DD278763A700E451C3 /* PresetViewSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */; };
+		BDF1C0E02787675600E451C3 /* Tagged in Frameworks */ = {isa = PBXBuildFile; productRef = BDF1C0DF2787675600E451C3 /* Tagged */; };
 		BDF3B3D52566BB9C003F7BB3 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3D42566BB9C003F7BB3 /* UILabel.swift */; };
 		BDF3B3DB2566C9A1003F7BB3 /* AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */; };
 		BDF7AA5E24095813001D7C2F /* SubscriptionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */; };
@@ -479,6 +481,7 @@
 		BDEB125C26207F33003CE8EE /* ChangesCompilerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesCompilerTests.swift; sourceTree = "<group>"; };
 		BDEB12632620939B003CE8EE /* ChangesPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesPageViewController.swift; sourceTree = "<group>"; };
 		BDEEDC7825DC102500FEA219 /* NSLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayout.swift; sourceTree = "<group>"; };
+		BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetViewSlot.swift; sourceTree = "<group>"; };
 		BDF3B3D42566BB9C003F7BB3 /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		BDF3B3DA2566C9A1003F7BB3 /* AssociatedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssociatedObject.swift; sourceTree = "<group>"; };
 		BDF7AA5D24095813001D7C2F /* SubscriptionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManagerTests.swift; sourceTree = "<group>"; };
@@ -492,6 +495,7 @@
 			files = (
 				BD0FAC2A251F692000EEF187 /* SF2Files.framework in Frameworks */,
 				BDA52C1A277CB72F0010BBF1 /* DictionaryCoder in Frameworks */,
+				BDF1C0E02787675600E451C3 /* Tagged in Frameworks */,
 				BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -903,6 +907,7 @@
 			children = (
 				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
 				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
+				BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */,
 			);
 			path = Presets;
 			sourceTree = "<group>";
@@ -976,6 +981,7 @@
 			name = SoundFontsFramework;
 			packageProductDependencies = (
 				BDA52C19277CB72F0010BBF1 /* DictionaryCoder */,
+				BDF1C0DF2787675600E451C3 /* Tagged */,
 			);
 			productName = SoundFontsFramework;
 			productReference = BD58250123CDABCD0034A31B /* SoundFontsFramework.framework */;
@@ -1031,6 +1037,7 @@
 			mainGroup = BD5824F723CDABCD0034A31B;
 			packageReferences = (
 				BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */,
+				BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */,
 			);
 			productRefGroup = BD58250223CDABCD0034A31B /* Products */;
 			projectDirPath = "";
@@ -1162,6 +1169,7 @@
 				BDCCFCBA23F5A7D700DD518D /* Timer.swift in Sources */,
 				BDD5FA6F25043C2500367F0B /* Managed.swift in Sources */,
 				BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */,
+				BDF1C0DD278763A700E451C3 /* PresetViewSlot.swift in Sources */,
 				BD125B38241006200003DE99 /* AskForReview.swift in Sources */,
 				BDD5FA692504220E00367F0B /* CoreDataStack.swift in Sources */,
 				BD1971B92661763800C7FCF5 /* ManagedPreset.swift in Sources */,
@@ -1592,6 +1600,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-tagged";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1599,6 +1615,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BDA52C18277CB72F0010BBF1 /* XCRemoteSwiftPackageReference "DictionaryCoder" */;
 			productName = DictionaryCoder;
+		};
+		BDF1C0DF2787675600E451C3 /* Tagged */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BDF1C0DE2787675600E451C3 /* XCRemoteSwiftPackageReference "swift-tagged" */;
+			productName = Tagged;
 		};
 /* End XCSwiftPackageProductDependency section */
 

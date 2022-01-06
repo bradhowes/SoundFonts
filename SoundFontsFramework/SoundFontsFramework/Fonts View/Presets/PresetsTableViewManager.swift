@@ -1,14 +1,9 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
+
 import UIKit
 import os
 
 /// Number of sections we partition presets into
-private let sectionSize = 20
-
-private enum Slot: Equatable {
-  case preset(index: Int)
-  case favorite(key: Favorite.Key)
-}
 
 /**
  Data source and delegate for the presets UITableView. This is one of the most complicated managers and it should be
@@ -34,8 +29,8 @@ final class PresetsTableViewManager: NSObject {
   private let infoBar: InfoBar
   private let settings: Settings
 
-  private var viewSlots = [Slot]()
-  private var searchSlots: [Slot]?
+  private var viewSlots = [PresetViewSlot]()
+  private var searchSlots: [PresetViewSlot]?
   private var sectionRowCounts = [Int]()
 
   private var searchBar: UISearchBar { viewController.searchBar }
@@ -88,37 +83,6 @@ final class PresetsTableViewManager: NSObject {
   }
 }
 
-extension IndexPath {
-  fileprivate init(slotIndex: Int) {
-    let section = slotIndex / sectionSize
-    self.init(row: slotIndex - section * sectionSize, section: section)
-  }
-
-  fileprivate var slotIndex: Int { section * sectionSize + row }
-}
-
-extension Array where Element == Slot {
-  fileprivate subscript(indexPath: IndexPath) -> Element { self[indexPath.slotIndex] }
-
-  fileprivate func findFavoriteKey(_ key: Favorite.Key) -> Int? {
-    for (index, slot) in self.enumerated() {
-      if case let .favorite(slotKey) = slot, slotKey == key {
-        return index
-      }
-    }
-    return nil
-  }
-
-  fileprivate func findPresetIndex(_ presetIndex: Int) -> Int? {
-    for (index, slot) in self.enumerated() {
-      if case let .preset(slotIndex) = slot, slotIndex == presetIndex {
-        return index
-      }
-    }
-    return nil
-  }
-}
-
 // MARK: - UITableViewDataSource Protocol
 extension PresetsTableViewManager: UITableViewDataSource {
 
@@ -136,8 +100,7 @@ extension PresetsTableViewManager: UITableViewDataSource {
 
   func sectionIndexTitles(for tableView: UITableView) -> [String]? {
     if showingSearchResults { return nil }
-    return [view.isEditing ? "" : UITableView.indexSearch, "•"]
-      + stride(from: sectionSize, to: viewSlots.count - 1, by: sectionSize).map { "\($0)" }
+    return [view.isEditing ? "" : UITableView.indexSearch, "•"] + IndexPath.sectionsTitles(sourceSize: viewSlots.count)
   }
 
   func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
@@ -156,7 +119,7 @@ extension PresetsTableViewManager: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    "\(section * sectionSize)"
+    "\(section * IndexPath.sectionSize)"
   }
 }
 
@@ -315,12 +278,12 @@ extension PresetsTableViewManager {
   }
 
   private func calculateSectionRowCounts(reload: Bool) {
-    let numFullSections = viewSlots.count / sectionSize
-    sectionRowCounts = [Int](repeating: sectionSize, count: numFullSections)
-    sectionRowCounts.append(viewSlots.count - numFullSections * sectionSize)
+    let numFullSections = viewSlots.count / IndexPath.sectionSize
+    let remaining = viewSlots.count - numFullSections * IndexPath.sectionSize
+    sectionRowCounts = [Int](repeating: IndexPath.sectionSize, count: numFullSections)
+    if remaining > 0 { sectionRowCounts.append(remaining) }
     if reload {
-      view.reloadSections(
-        IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .none)
+      view.reloadSections( IndexSet(stride(from: 0, to: self.sectionRowCounts.count, by: 1)), with: .none)
     }
   }
 
@@ -349,23 +312,23 @@ extension PresetsTableViewManager {
   func performChanges(soundFont: SoundFont) -> [IndexPath] {
     var changes = [IndexPath]()
 
-    func processPresetConfig(_ slotIndex: Int, presetConfig: PresetConfig, slot: () -> Slot) {
+    func processPresetConfig(_ slotIndex: PresetViewSlotIndex, presetConfig: PresetConfig, slot: () -> PresetViewSlot) {
       guard presetConfig.isVisible == false else { return }
       let indexPath = IndexPath(slotIndex: slotIndex)
       if view.isEditing {
-        os_log(.info, log: log, "slot %d showing - '%{public}s'", slotIndex, presetConfig.name)
-        viewSlots.insert(slot(), at: slotIndex)
+        os_log(.info, log: log, "slot %d showing - '%{public}s'", slotIndex.rawValue, presetConfig.name)
+        viewSlots.insert(slot(), at: slotIndex.rawValue)
         changes.append(indexPath)
         sectionRowCounts[indexPath.section] += 1
       } else {
-        os_log(.info, log: log, "slot %d hiding - '%{public}s'", slotIndex, presetConfig.name)
-        viewSlots.remove(at: slotIndex - changes.count)
+        os_log(.info, log: log, "slot %d hiding - '%{public}s'", slotIndex.rawValue, presetConfig.name)
+        viewSlots.remove(at: slotIndex.rawValue - changes.count)
         changes.append(indexPath)
         sectionRowCounts[indexPath.section] -= 1
       }
     }
 
-    var slotIndex = 0
+    var slotIndex: PresetViewSlotIndex = 0
     for (presetIndex, preset) in soundFont.presets.enumerated() {
       processPresetConfig(slotIndex, presetConfig: preset.presetConfig) {
         .preset(index: presetIndex)
@@ -419,7 +382,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func presetConfigForSlot(_ slot: Slot) -> PresetConfig? {
+  private func presetConfigForSlot(_ slot: PresetViewSlot) -> PresetConfig? {
     return withSoundFont { soundFont in
       switch slot {
       case .favorite(let key): return favorites.getBy(key: key).presetConfig
@@ -431,8 +394,8 @@ extension PresetsTableViewManager {
   private func initializeVisibilitySelections(soundFont: SoundFont) {
     precondition(view.isEditing)
     os_log(.debug, log: self.log, "initializeVisibilitySelections")
-    for (slotIndex, slot) in viewSlots.enumerated() {
-      let indexPath = IndexPath(slotIndex: slotIndex)
+    for (index, slot) in viewSlots.enumerated() {
+      let indexPath = IndexPath(slotIndex: .init(rawValue: index))
       guard let presetConfig = presetConfigForSlot(slot) else { continue }
       if presetConfig.isVisible {
         view.selectRow(at: indexPath, animated: false, scrollPosition: .none)
@@ -553,7 +516,7 @@ extension PresetsTableViewManager {
     guard favorites.contains(key: key) else { return nil }
     if showingSearchResults {
       guard let row = searchSlots?.findFavoriteKey(key) else { return nil }
-      return IndexPath(row: row, section: 0)
+      return IndexPath(row: row.rawValue, section: 0)
     }
 
     guard let index = viewSlots.findFavoriteKey(key) else { return nil }
@@ -570,7 +533,7 @@ extension PresetsTableViewManager {
     let presetIndex = soundFontAndPreset.presetIndex
     if showingSearchResults {
       guard let row = searchSlots?.findPresetIndex(presetIndex) else { return nil }
-      return IndexPath(row: row, section: 0)
+      return IndexPath(row: row.rawValue, section: 0)
     }
 
     guard let index = viewSlots.findPresetIndex(presetIndex) else { return nil }
@@ -628,7 +591,7 @@ extension PresetsTableViewManager {
 
   public func selectActive(animated: Bool) {
     os_log(.debug, log: log, "selectActive - %d", animated)
-    guard let activeSlot: Slot = {
+    guard let activeSlot: PresetViewSlot = {
       switch activePresetManager.active {
       case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.presetIndex)
       case let .favorite(favorite): return .favorite(key: favorite.key)
@@ -637,8 +600,8 @@ extension PresetsTableViewManager {
     }()
     else { return }
 
-    guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
-    let indexPath = IndexPath(slotIndex: slotIndex)
+    guard let index = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
+    let indexPath = IndexPath(slotIndex: .init(rawValue: index))
     view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
     hideSearchBar(animated: animated)
   }
@@ -705,10 +668,12 @@ extension PresetsTableViewManager {
     guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPreset,
                                                    keyboardLowestNote: keyboard?.lowestNote) else { return false }
     favorites.add(favorite: favorite)
+
+    // The new index is below the source preset and all other favorites that are based on the preset
     let favoriteIndex = IndexPath(slotIndex: indexPath.slotIndex + preset.favorites.count)
 
     view.performBatchUpdates {
-      viewSlots.insert(.favorite(key: favorite.key), at: favoriteIndex.slotIndex)
+      viewSlots.insert(.favorite(key: favorite.key), at: favoriteIndex)
       view.insertRows(at: [favoriteIndex], with: .automatic)
       sectionRowCounts[favoriteIndex.section] += 1
     } completion: { _ in
@@ -731,7 +696,7 @@ extension PresetsTableViewManager {
     favorites.remove(key: key)
     soundFonts.deleteFavorite(soundFontAndPreset: favorite.soundFontAndPreset, key: favorite.key)
     view.performBatchUpdates {
-      viewSlots.remove(at: indexPath.slotIndex)
+      viewSlots.remove(at: indexPath)
       view.deleteRows(at: [indexPath], with: .automatic)
       sectionRowCounts[indexPath.section] -= 1
     } completion: { _ in
@@ -851,7 +816,7 @@ extension PresetsTableViewManager {
 
 extension PresetsTableViewManager {
 
-  private func getSlot(at indexPath: IndexPath) -> Slot {
+  private func getSlot(at indexPath: IndexPath) -> PresetViewSlot {
     os_log(.debug, log: log, "getSlot BEGIN: %d %d %d", indexPath.row, searchSlots?.count ?? 0, viewSlots.count)
     return searchSlots?[indexPath] ?? viewSlots[indexPath]
   }
