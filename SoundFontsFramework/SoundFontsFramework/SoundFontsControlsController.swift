@@ -27,6 +27,13 @@ public final class SoundFontsControlsController: UIViewController {
 
     upperViewManager.add(view: presetsView)
     upperViewManager.add(view: favoritesView)
+
+    guard let customFont = UIFont(name: "Eurostile", size: 20) else { fatalError("missing Eurostile font") }
+    let defaultTextAttributes = [
+      NSAttributedString.Key.font: customFont,
+      NSAttributedString.Key.foregroundColor: UIColor.systemTeal
+    ]
+    UITextField.appearance().defaultTextAttributes = defaultTextAttributes
   }
 
   public override func viewWillAppear(_ animated: Bool) {

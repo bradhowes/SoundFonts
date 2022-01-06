@@ -12,7 +12,7 @@ private enum Slot: Equatable {
 
 /**
  Data source and delegate for the presets UITableView. This is one of the most complicated managers and it should be
- broken up into smaller components. There are three four areas of functionality:
+ broken up into smaller components. There are four areas of functionality:
 
  - table view drawing and selecting
  - row visibility editing
@@ -83,13 +83,6 @@ final class PresetsTableViewManager: NSObject {
     soundFonts.subscribe(self, notifier: soundFontsChange)
 
     view.sectionIndexColor = .darkGray
-
-    guard let customFont = UIFont(name: "Eurostile", size: 20) else { fatalError("missing Eurostile font") }
-    let defaultTextAttributes = [
-      NSAttributedString.Key.font: customFont,
-      NSAttributedString.Key.foregroundColor: UIColor.systemTeal
-    ]
-    UITextField.appearance().defaultTextAttributes = defaultTextAttributes
 
     regenerateViewSlots()
   }
@@ -185,8 +178,8 @@ extension PresetsTableViewManager: UITableViewDelegate {
     let wasSearching = dismissSearchResults()
 
     switch slot {
-    case let .preset(presetIndex): selectedPreset(presetIndex, wasSearching: wasSearching)
-    case let .favorite(key): selectedFavorite(key, wasSearching: wasSearching)
+    case let .preset(presetIndex): selectPreset(presetIndex, wasSearching: wasSearching)
+    case let .favorite(key): selectFavorite(key, wasSearching: wasSearching)
     }
   }
 
@@ -243,7 +236,7 @@ extension PresetsTableViewManager {
     return closure(soundFont)
   }
 
-  private func selectedPreset(_ presetIndex: Int, wasSearching: Bool) {
+  private func selectPreset(_ presetIndex: Int, wasSearching: Bool) {
     withSoundFont { soundFont in
       let soundFontAndPreset = soundFont[presetIndex]
       if !activePresetManager.setActive(preset: soundFontAndPreset, playSample: settings.playSample) {
@@ -255,7 +248,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func selectedFavorite(_ key: Favorite.Key, wasSearching: Bool) {
+  private func selectFavorite(_ key: Favorite.Key, wasSearching: Bool) {
     let favorite = favorites.getBy(key: key)
     if !activePresetManager.setActive(favorite: favorite, playSample: settings.playSample) {
       if let indexPath = getPresetIndexPath(for: key) {
@@ -269,12 +262,8 @@ extension PresetsTableViewManager {
     guard searchBar.isFirstResponder == false else { return }
     os_log(.info, log: log, "showSearchBar - '%{public}s'", lastSearchText)
 
-    self.searchBar.text = lastSearchText
-    searchBar.inputAssistantItem.leadingBarButtonGroups = []
-    searchBar.inputAssistantItem.trailingBarButtonGroups = []
-
+    self.searchBar.beginSearch(with: lastSearchText)
     UIView.animate(withDuration: 0.125) {
-      self.searchBar.becomeFirstResponder()
       self.view.contentOffset = CGPoint.zero
     } completion: { _ in
       if !self.lastSearchText.isEmpty {

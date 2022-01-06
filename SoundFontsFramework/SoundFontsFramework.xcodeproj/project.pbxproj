@@ -609,8 +609,7 @@
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
-				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
-				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
+				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BDBF894C25B5784300B58E23 /* TagsTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
@@ -897,6 +896,15 @@
 				BDBF897625B5900900B58E23 /* TagsManager.swift */,
 			);
 			path = Tags;
+			sourceTree = "<group>";
+		};
+		BDBFCF9327874C5000B64481 /* Presets */ = {
+			isa = PBXGroup;
+			children = (
+				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
+				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
+			);
+			path = Presets;
 			sourceTree = "<group>";
 		};
 		BDD9140F25097E610068E3CE /* CoreData Tests */ = {
