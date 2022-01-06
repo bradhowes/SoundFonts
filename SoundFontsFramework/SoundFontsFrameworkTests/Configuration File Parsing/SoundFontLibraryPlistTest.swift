@@ -65,7 +65,6 @@ class SoundFontLibraryPListTest: XCTestCase {
     let observer = ConfigFileObserver(configFile: configFile) {
       expectation.fulfill()
     }
-    configFile.load()
 
     let result = waiter.wait(for: [expectation], timeout: 10.0)
     XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
@@ -85,7 +84,6 @@ class SoundFontLibraryPListTest: XCTestCase {
     let observer = ConfigFileObserver(configFile: configFile) {
       expectation.fulfill()
     }
-    configFile.load()
 
     let result = waiter.wait(for: [expectation], timeout: 10.0)
     XCTAssertNotEqual(result, XCTWaiter.Result.timedOut)
