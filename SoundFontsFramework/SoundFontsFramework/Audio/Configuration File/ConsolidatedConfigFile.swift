@@ -28,20 +28,14 @@ public final class ConsolidatedConfigFile: UIDocument {
     os_log(.info, log: Self.log, "init - fileURL: %{public}s", fileURL.absoluteString)
     super.init(fileURL: fileURL)
     self.monitor = ConfigFileConflictMonitor(configFile: self)
+    DispatchQueue.main.async { self.restore() }
   }
 
   /**
-   Save the current contents of the document.
+   Restore from the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left
+   with the default collections.
    */
-//  public func save() {
-//    self.save(to: fileURL, for: .forOverwriting)
-//  }
-
-  /**
-   Load the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left with
-   the default collections.
-   */
-  func load() {
+  private func restore() {
     os_log(.info, log: log, "load - %{public}s", fileURL.path)
     self.open { ok in
       if !ok {

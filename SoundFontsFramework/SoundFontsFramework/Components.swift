@@ -146,7 +146,6 @@ where T: ControllerConfiguration {
     }
     validate()
     establishConnections()
-    self.consolidatedConfigFile.load()
   }
 
   /**
