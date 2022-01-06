@@ -15,17 +15,18 @@ public struct ConsolidatedConfig: Codable {
   private static let log = Logging.logger("ConsolidatedConfig")
   private var log: OSLog { Self.log }
 
-  /// The collection of installed sound fonts and their presets
+  /// The collection of installed soundfonts and their presets
   public var soundFonts: SoundFontCollection
   /// The collection of created favorites
   public var favorites: FavoriteCollection
-  /// The collection of tags
+  /// The collection of tags that categorize the soundfonts
   public var tags: TagCollection
 }
 
 extension ConsolidatedConfig {
 
-  /// Construct a new default collection, such as when the app is first installed or there is a problem loading.
+  /// Construct a new default collection, such as when the app is first installed or there is a problem loading a
+  /// previously-saved file.
   public init() {
     os_log(.info, log: Self.log, "creating default collection")
     soundFonts = SoundFontsManager.defaultCollection
@@ -35,6 +36,8 @@ extension ConsolidatedConfig {
 }
 
 extension ConsolidatedConfig: CustomStringConvertible {
+
+  /// Custom description for the instance
   public var description: String { "<Config \(soundFonts), \(favorites), \(tags)>" }
 }
 
@@ -43,7 +46,7 @@ public final class ConsolidatedConfigFile: UIDocument {
   private static let log = Logging.logger("ConsolidatedConfigFile")
   private var log: OSLog { Self.log }
 
-  /// The file name for the sole document
+  /// The file name for the consolidated document
   static let filename = "Consolidated.plist"
 
   public lazy var config: ConsolidatedConfig = ConsolidatedConfig()
@@ -64,11 +67,14 @@ public final class ConsolidatedConfigFile: UIDocument {
     self.save(to: fileURL, for: .forOverwriting)
   }
 
+  /// Load the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left with
+  /// the default collections.
   public func load() {
     os_log(.info, log: log, "load - %{public}s", fileURL.path)
     self.open { ok in
       if !ok {
         os_log(.error, log: Self.log, "failed to open - attempting legacy loading")
+
         // We are back on the main thread so do the loading in the background.
         DispatchQueue.global(qos: .userInitiated).async {
           self.attemptLegacyLoad()
@@ -77,6 +83,14 @@ public final class ConsolidatedConfigFile: UIDocument {
     }
   }
 
+  /**
+   Encode the configuration that will be written to the configuration file. The actual result type is `Data` but it is
+   type erased for the API.
+
+   - parameter typeName: the name of the type to generate (ignored)
+   - returns: result of the encoding to write out
+   - throws exception if the encoding fails for any reason
+   */
   override public func contents(forType typeName: String) throws -> Any {
     os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
     let contents = try PropertyListEncoder().encode(config)
@@ -84,10 +98,18 @@ public final class ConsolidatedConfigFile: UIDocument {
     return contents
   }
 
+  /**
+   Decode the raw data that was read from the configuration file.
+
+   - parameter contents: the encoded contents to work with. Should be `Data` type.
+   - parameter typeName: the name of the type that it represents
+   - throws exception if the decoding fails for any reason
+   */
   override public func load(fromContents contents: Any, ofType typeName: String?) throws {
     os_log(.info, log: log, "load - typeName: %{public}s", typeName ?? "nil")
+
     guard let data = contents as? Data else {
-      os_log(.error, log: log, "failed to convert contents to Data")
+      os_log(.error, log: log, "given contents was not Data")
       restoreConfig(ConsolidatedConfig())
       NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
@@ -104,6 +126,7 @@ public final class ConsolidatedConfigFile: UIDocument {
     restoreConfig(config)
   }
 
+  /// FIXME
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
     completionHandler?(false)
   }

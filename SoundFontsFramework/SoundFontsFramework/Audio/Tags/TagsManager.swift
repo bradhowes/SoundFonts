@@ -22,7 +22,7 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
    */
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
   }
 }
 

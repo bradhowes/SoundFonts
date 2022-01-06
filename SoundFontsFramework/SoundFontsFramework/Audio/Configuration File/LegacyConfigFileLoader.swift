@@ -5,7 +5,9 @@ import os
 
 private let log = Logging.logger("LegacyConfigFileLoader")
 
-/// Represents a config file loader.
+/**
+ Represents a config file loader for the old way of storing soundfont configurations.
+ */
 struct LegacyConfigFileLoader<T> where T: Decodable & CustomStringConvertible {
 
   /**

@@ -4,7 +4,8 @@ import Foundation
 
 /**
  Holds reference to ConsolidatedConfigFile and monitors it for changes to its `restored` attribute. When it changes
- to true, calls the closure which was given during construction.
+ to true, calls the closure which was given during construction. This facility is use by the various data owners to
+ determine when there is data available for them to use.
  */
 public final class ConfigFileObserver {
   private let configFile: ConsolidatedConfigFile
@@ -24,13 +25,14 @@ public final class ConfigFileObserver {
    Create a new observer.
 
    - parameter configFile: the configuration file to observe
-   - parameter closure: the closure to invoke when the file has been restored
+   - parameter restored: the closure to invoke when the file has been restored
    */
-  public init(configFile: ConsolidatedConfigFile, closure: @escaping () -> Void) {
+  public init(configFile: ConsolidatedConfigFile, restored closure: @escaping () -> Void) {
     self.configFile = configFile
     self.configFileObserver = configFile.observe(\.restored) { [weak self] _, _ in
       self?.checkRestored(closure)
     }
+
     checkRestored(closure)
   }
 
@@ -41,8 +43,11 @@ public final class ConfigFileObserver {
     AskForReview.maybe()
     configFile.updateChangeCount(.done)
   }
+}
 
-  private func checkRestored(_ closure: () -> Void) {
+private extension ConfigFileObserver {
+
+  func checkRestored(_ closure: () -> Void) {
     guard configFile.restored == true else { return }
     restored = true
     closure()

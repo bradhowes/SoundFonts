@@ -22,7 +22,7 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
   }
 }
 

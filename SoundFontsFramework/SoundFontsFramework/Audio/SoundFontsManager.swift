@@ -25,7 +25,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   public init(_ consolidatedConfigFile: ConsolidatedConfigFile, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, closure: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
   }
 }
 
