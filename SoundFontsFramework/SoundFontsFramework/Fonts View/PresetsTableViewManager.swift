@@ -481,6 +481,7 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
            old?.displayName ?? "N/A", new?.displayName ?? "N/A")
 
+    let animateHideSearchBar = searchBarIsVisible
     let oneShotLayoutCompletionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = {
       if view.isEditing {
         if let soundFont = new {
@@ -491,7 +492,7 @@ extension PresetsTableViewManager {
         if activePresetManager.activeSoundFont == new {
           return { self.selectActive(animated: false) }
         } else if !showingSearchResults {
-          return { self.hideSearchBar(animated: false) }
+          return { self.hideSearchBar(animated: animateHideSearchBar) }
         }
       }
       return nil
@@ -545,7 +546,6 @@ extension PresetsTableViewManager {
       }
 
     case .restored: soundFontsRestored()
-
     case .added: break
     case .moved: break
     case .removed: break
@@ -553,9 +553,10 @@ extension PresetsTableViewManager {
   }
 
   private func soundFontsRestored() {
+    let animateHideSearchBar = searchBarIsVisible
     regenerateViewSlots {
       self.selectActive(animated: false)
-      self.hideSearchBar(animated: false)
+      self.hideSearchBar(animated: animateHideSearchBar)
     }
   }
 
@@ -616,10 +617,14 @@ extension PresetsTableViewManager {
     view.reloadData()
   }
 
+  public var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
+
   public func hideSearchBar(animated: Bool) {
     dismissSearchKeyboard()
+
     if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height * 2 { return }
     os_log(.info, log: log, "hiding search bar - %d", animated)
+
     let view = self.view
     let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
     if animated {
@@ -646,7 +651,7 @@ extension PresetsTableViewManager {
     guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
     let indexPath = IndexPath(slotIndex: slotIndex)
     view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
-    hideSearchBar(animated: true)
+    hideSearchBar(animated: animated)
   }
 
   private func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {
