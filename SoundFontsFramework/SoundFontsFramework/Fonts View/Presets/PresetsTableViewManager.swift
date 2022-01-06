@@ -606,7 +606,7 @@ extension PresetsTableViewManager {
     view.reloadData()
   }
 
-  public var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
+  private var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
 
   public func hideSearchBar(animated: Bool) {
     dismissSearchKeyboard()
@@ -626,7 +626,7 @@ extension PresetsTableViewManager {
     }
   }
 
-  func selectActive(animated: Bool) {
+  public func selectActive(animated: Bool) {
     os_log(.debug, log: log, "selectActive - %d", animated)
     guard let activeSlot: Slot = {
       switch activePresetManager.active {
