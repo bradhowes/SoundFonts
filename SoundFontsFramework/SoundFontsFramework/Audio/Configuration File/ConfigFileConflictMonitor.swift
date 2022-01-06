@@ -21,12 +21,11 @@ extension UIDocument.State {
 class ConfigFileConflictMonitor: NSObject {
   private let log = Logging.logger("ConfigFileConflictMonitor")
 
-  let configFile: ConsolidatedConfigFile
+  weak var configFile: ConsolidatedConfigFile?
 
   init(configFile: ConsolidatedConfigFile) {
     self.configFile = configFile
     super.init()
-
     NotificationCenter.default.addObserver(self, selector: #selector(processStateChange(_:)),
                                            name: UIDocument.stateChangedNotification, object: configFile)
   }
@@ -36,6 +35,6 @@ class ConfigFileConflictMonitor: NSObject {
   }
 
   @objc func processStateChange(_ notification: Notification) {
-    os_log(.info, log: log, "processStateChange BEGIN - %{public}s", configFile.documentState.description)
+    os_log(.info, log: log, "processStateChange: %{public}s", configFile?.documentState.description ?? "NA")
   }
 }

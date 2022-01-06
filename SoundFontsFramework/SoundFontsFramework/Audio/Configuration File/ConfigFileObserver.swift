@@ -12,12 +12,24 @@ public final class ConfigFileObserver {
 
   /// Flag indicating that the configuration file has been read in and the runtime elements reconstituted from it
   public private(set) var restored = false
+
   /// Convenience accessor for the collection of installed sound fonts
-  public var soundFonts: SoundFontCollection { configFile.config.soundFonts }
+  public var soundFonts: SoundFontCollection {
+    precondition(restored)
+    return configFile.config.soundFonts
+  }
+
   /// Convenience accessor for the collection of user favorites
-  public var favorites: FavoriteCollection { configFile.config.favorites }
+  public var favorites: FavoriteCollection {
+    precondition(restored)
+    return configFile.config.favorites
+  }
+
   /// Convenience accessor for the collection of user tags for font filtering
-  public var tags: TagCollection { configFile.config.tags }
+  public var tags: TagCollection {
+    precondition(restored)
+    return configFile.config.tags
+  }
 
   private var configFileObserver: NSKeyValueObservation?
 

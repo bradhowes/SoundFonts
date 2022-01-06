@@ -11,7 +11,6 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log = Logging.logger("FavoritesManager")
 
   private var observer: ConfigFileObserver!
-  var restored: Bool { observer.restored }
 
   var collection: FavoriteCollection {
     precondition(observer.restored)
@@ -22,13 +21,15 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
 // MARK: - Favorites protocol
 
 extension FavoritesManager: Favorites {
+
+  var restored: Bool { observer.restored }
 
   var count: Int { collection.count }
 
@@ -41,13 +42,13 @@ extension FavoritesManager: Favorites {
   func getBy(key: Favorite.Key) -> Favorite { collection.getBy(key: key) }
 
   func add(favorite: Favorite) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     collection.add(favorite: favorite)
     notify(.added(index: count - 1, favorite: favorite))
   }
 
   func update(index: Int, config: PresetConfig) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let favorite = collection.getBy(index: index)
     favorite.presetConfig = config
     collection.replace(index: index, with: favorite)
@@ -59,7 +60,7 @@ extension FavoritesManager: Favorites {
   }
 
   func move(from: Int, to: Int) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     collection.move(from: from, to: to)
   }
 
@@ -68,14 +69,14 @@ extension FavoritesManager: Favorites {
   }
 
   func remove(key: Favorite.Key) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let index = collection.index(of: key)
     let favorite = collection.remove(at: index)
     notify(.removed(index: index, favorite: favorite))
   }
 
   func removeAll(associatedWith soundFont: SoundFont) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     collection.removeAll(associatedWith: soundFont.key)
     notify(.removedAll(associatedWith: soundFont))
   }
@@ -85,7 +86,7 @@ extension FavoritesManager: Favorites {
   }
 
   func setVisibility(key: Favorite.Key, state isVisible: Bool) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let favorite = collection.getBy(key: key)
     favorite.presetConfig.isHidden = !isVisible
   }
@@ -94,7 +95,7 @@ extension FavoritesManager: Favorites {
     os_log(
       .debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
       delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     favorite.presetConfig.delayConfig = delay
     favorite.presetConfig.reverbConfig = reverb
     favorite.presetConfig.chorusConfig = chorus
@@ -125,13 +126,13 @@ extension FavoritesManager {
 
   static var defaultCollection: FavoriteCollection { FavoriteCollection() }
 
-  private func collectionChanged() {
-    os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+  private func markCollectionChanged() {
+    os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markChanged()
   }
 
-  private func collectionRestored() {
-    os_log(.info, log: self.log, "restored")
+  private func notifyCollectionRestored() {
+    os_log(.info, log: log, "notifyCollectionRestored")
     DispatchQueue.main.async { self.notify(.restored) }
   }
 }

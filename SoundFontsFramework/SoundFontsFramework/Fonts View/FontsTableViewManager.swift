@@ -111,10 +111,10 @@ extension FontsTableViewManager {
 
   private func updateFilterTag(tagKey: Tag.Key) {
     filterTagKey = tagKey
-    DispatchQueue.main.async(execute: self.updateViewSoundFonts)
+    DispatchQueue.main.async(execute: self.updateTableView)
   }
 
-  private func updateViewSoundFonts() {
+  private func updateTableView() {
     guard tags.restored && soundFonts.restored else { return }
     viewSoundFonts = soundFonts.filtered(by: filterTagKey)
     os_log(.debug, log: log, "viewSoundFonts: %{public}@", viewSoundFonts.description)
@@ -232,7 +232,7 @@ extension FontsTableViewManager {
     case let .removed(old, deletedSoundFont): removeSoundFont(index: old, soundFont: deletedSoundFont)
     case .presetChanged: break
     case .unhidPresets: break
-    case .restored: updateViewSoundFonts()
+    case .restored: updateTableView()
     }
   }
 

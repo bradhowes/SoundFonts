@@ -11,7 +11,6 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private var log: OSLog { Self.log }
   private let settings: Settings
   private var observer: ConfigFileObserver!
-  public var restored: Bool { observer.restored }
 
   public var collection: SoundFontCollection {
     precondition(observer.restored)
@@ -25,7 +24,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   public init(_ consolidatedConfigFile: ConsolidatedConfigFile, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
@@ -67,6 +66,8 @@ extension FileManager {
 // MARK: - SoundFonts Protocol
 
 extension SoundFontsManager: SoundFonts {
+
+  public var restored: Bool { observer.restored }
 
   public var count: Int { return collection.count }
 
@@ -127,7 +128,7 @@ extension SoundFontsManager: SoundFonts {
     switch SoundFont.makeSoundFont(from: url, copyFilesWhenAdding: settings.copyFilesWhenAdding) {
     case .failure(let failure): return .failure(failure)
     case .success(let soundFont):
-      defer { collectionChanged() }
+      defer { markCollectionChanged() }
       let index = collection.add(soundFont)
       notify(.added(new: index, font: soundFont))
       return .success((index, soundFont))
@@ -137,19 +138,19 @@ extension SoundFontsManager: SoundFonts {
   public func remove(key: SoundFont.Key) {
     guard let index = collection.firstIndex(of: key) else { return }
     guard let soundFont = collection.remove(index) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     notify(.removed(old: index, font: soundFont))
   }
 
   public func rename(key: SoundFont.Key, name: String) {
     guard let index = collection.firstIndex(of: key) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let (newIndex, soundFont) = collection.rename(index, name: name)
     notify(.moved(old: index, new: newIndex, font: soundFont))
   }
 
   public func removeTag(_ tag: Tag.Key) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     for soundFont in collection.soundFonts {
       var tags = soundFont.tags
       tags.remove(tag)
@@ -159,29 +160,30 @@ extension SoundFontsManager: SoundFonts {
 
   public func createFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite? {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return nil }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     return preset.makeFavorite(soundFontAndPreset: soundFontAndPreset, keyboardLowestNote: keyboardLowestNote)
   }
 
   public func deleteFavorite(soundFontAndPreset: SoundFontAndPreset, key: Favorite.Key) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     preset.favorites.removeAll { $0 == key }
   }
 
   public func updatePreset(soundFontAndPreset: SoundFontAndPreset, config: PresetConfig) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
+    os_log(.info, log: log, "updatePreset - %{public}s %{public}s", preset.originalName, config.name)
     preset.presetConfig = config
     notify(.presetChanged(font: soundFont, index: soundFontAndPreset.presetIndex))
   }
 
   public func setVisibility(soundFontAndPreset: SoundFontAndPreset, state isVisible: Bool) {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     os_log(.debug, log: log, "setVisibility - %{public}s %d - %d", soundFontAndPreset.soundFontKey.uuidString,
            soundFontAndPreset.presetIndex, isVisible)
@@ -194,7 +196,7 @@ extension SoundFontsManager: SoundFonts {
     os_log(.debug, log: log, "setEffects - %{public}s %d %{public}s %{public}s",
            soundFontAndPreset.soundFontKey.uuidString, soundFontAndPreset.presetIndex,
            delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     preset.presetConfig.delayConfig = delay
     preset.presetConfig.reverbConfig = reverb
@@ -203,7 +205,7 @@ extension SoundFontsManager: SoundFonts {
 
   public func makeAllVisible(key: SoundFont.Key) {
     guard let soundFont = getBy(key: key) else { return }
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     for preset in soundFont.presets where preset.presetConfig.isHidden == true {
       preset.presetConfig.isHidden = false
     }
@@ -224,7 +226,7 @@ extension SoundFontsManager: SoundFonts {
 
   public func removeBundled() {
     os_log(.info, log: log, "removeBundled")
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     for url in SF2Files.allResources {
       if let index = collection.index(of: url) {
         os_log(.info, log: log, "removing %{public}s", url.absoluteString)
@@ -236,7 +238,7 @@ extension SoundFontsManager: SoundFonts {
 
   public func restoreBundled() {
     os_log(.info, log: log, "restoreBundled")
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     for url in SF2Files.allResources {
       if collection.index(of: url) == nil {
         os_log(.info, log: log, "restoring %{public}s", url.absoluteString)
@@ -258,7 +260,7 @@ extension SoundFontsManager: SoundFonts {
     }
 
     if soundFont.reloadEmbeddedInfo() {
-      collectionChanged()
+      markCollectionChanged()
     }
   }
 
@@ -380,13 +382,13 @@ extension SoundFontsManager {
   /**
    Mark the current configuration as dirty so that it will get saved.
    */
-  private func collectionChanged() {
-    os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+  private func markCollectionChanged() {
+    os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markChanged()
   }
 
-  private func collectionRestored() {
-    os_log(.info, log: self.log, "restored")
+  private func notifyCollectionRestored() {
+    os_log(.info, log: log, "restored")
     DispatchQueue.main.async { self.notify(.restored) }
   }
 }

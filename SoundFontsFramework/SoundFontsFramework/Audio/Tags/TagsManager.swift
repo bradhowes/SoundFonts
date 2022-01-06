@@ -22,7 +22,7 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
    */
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: collectionRestored)
+    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
@@ -46,27 +46,27 @@ extension TagsManager: Tags {
   func getBy(key: Tag.Key) -> Tag? { collection.getBy(key: key) }
 
   func append(_ tag: Tag) -> Int {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let index = collection.append(tag)
     notify(.added(new: index, tag: tag))
     return index
   }
 
   func insert(_ tag: Tag, at index: Int) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     collection.insert(tag, at: index)
     notify(.added(new: index, tag: tag))
   }
 
   func remove(at index: Int) -> Tag {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     let tag = collection.remove(at: index)
     notify(.removed(old: index, tag: tag))
     return tag
   }
 
   func rename(_ index: Int, name: String) {
-    defer { collectionChanged() }
+    defer { markCollectionChanged() }
     collection.rename(index, name: name)
     notify(.changed(index: index, tag: collection.getBy(index: index)))
   }
@@ -105,13 +105,13 @@ extension TagsManager {
   /// Default collection that is used when first running the app
   static var defaultCollection: TagCollection { TagCollection(tags: []) }
 
-  private func collectionChanged() {
-    os_log(.info, log: log, "collectionChanged - %{public}@", collection.description)
+  private func markCollectionChanged() {
+    os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markChanged()
   }
 
-  private func collectionRestored() {
-    os_log(.info, log: self.log, "restored")
+  private func notifyCollectionRestored() {
+    os_log(.info, log: log, "notifyCollectionRestored")
     DispatchQueue.main.async { self.notify(.restored) }
   }
 }

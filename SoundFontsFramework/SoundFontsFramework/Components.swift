@@ -98,11 +98,10 @@ where T: ControllerConfiguration {
 
    - parameter inApp: true if running in the app, false if running as audio unit
    */
-  public init(inApp: Bool) {
+  public init(inApp: Bool, configPath: URL) {
     self.inApp = inApp
     self.settings = Settings(inApp: inApp)
 
-    let configPath = FileManager.default.sharedPath(for: ConsolidatedConfigFile.filename)
     self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 
     self.askForReview = AskForReview(isMain: inApp, settings: settings)

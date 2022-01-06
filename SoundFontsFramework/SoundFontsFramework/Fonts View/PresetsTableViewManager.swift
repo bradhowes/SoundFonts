@@ -500,14 +500,6 @@ extension PresetsTableViewManager {
     regenerateViewSlots(oneShotLayoutCompletionHandler)
   }
 
-  private func favoritesRestored() {
-    if let visibleRows = view.indexPathsForVisibleRows {
-      view.reloadRows(at: visibleRows, with: .automatic)
-    } else {
-      view.reloadData()
-    }
-  }
-
   private func favoritesChange(_ event: FavoritesEvent) {
     os_log(.debug, log: log, "favoritesChange")
     switch event {
@@ -531,10 +523,11 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func soundFontsRestored() {
-    regenerateViewSlots {
-      self.selectActive(animated: false)
-      self.hideSearchBar(animated: false)
+  private func favoritesRestored() {
+    if let visibleRows = view.indexPathsForVisibleRows {
+      view.reloadRows(at: visibleRows, with: .automatic)
+    } else {
+      view.reloadData()
     }
   }
 
@@ -551,13 +544,18 @@ extension PresetsTableViewManager {
         updateRow(with: soundFontAndPreset)
       }
 
-    case .restored:
-      if viewSlots.isEmpty {
-        soundFontsRestored()
-      }
+    case .restored: soundFontsRestored()
+
     case .added: break
     case .moved: break
     case .removed: break
+    }
+  }
+
+  private func soundFontsRestored() {
+    regenerateViewSlots {
+      self.selectActive(animated: false)
+      self.hideSearchBar(animated: false)
     }
   }
 

@@ -9,7 +9,8 @@ import os
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
   private lazy var log = Logging.logger("AppDelegate")
-  private let components = Components<MainViewController>(inApp: true)
+  private let components = Components<MainViewController>(inApp: true,
+                                                          configPath: ConsolidatedConfigFile.sharedConfigPath)
   private var observer: NSObjectProtocol?
 
   /// The window used to present the app’s visual content on the device’s main screen.
@@ -74,7 +75,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
-    components.consolidatedConfigFile.save()
+    // components.consolidatedConfigFile.save()
   }
 
   /**
@@ -105,7 +106,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()
-    components.consolidatedConfigFile.save()
+    // components.consolidatedConfigFile.save()
   }
 
   @objc private func visitAppStore() {

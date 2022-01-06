@@ -19,7 +19,8 @@ public final class SoundFontsAUViewController: AUViewController {
   override public func viewDidLoad() {
     os_log(.info, log: log, "viewDidLoad BEGIN - %{public}s", String.pointer(self))
     super.viewDidLoad()
-    components = Components<SoundFontsAUViewController>(inApp: false)
+    components = Components<SoundFontsAUViewController>(inApp: false,
+                                                        configPath: ConsolidatedConfigFile.sharedConfigPath)
     components.setMainViewController(self)
     os_log(.info, log: log, "viewDidLoad END")
   }
