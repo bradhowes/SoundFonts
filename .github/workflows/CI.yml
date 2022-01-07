@@ -11,5 +11,5 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests
-      run: xcodebuild clean test -workspace SoundFonts.xcworkspace -scheme App -destination 'name=iPhone 11' -showBuildTimingSummary -allowProvisioningUpdates
+    - name: Build, test, and code coverage
+      run: make
