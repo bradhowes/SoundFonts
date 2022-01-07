@@ -569,7 +569,7 @@ extension PresetsTableViewManager {
     view.reloadData()
   }
 
-  private var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
+  public var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
 
   public func hideSearchBar(animated: Bool) {
     dismissSearchKeyboard()

@@ -8,28 +8,44 @@ import os
 public final class PresetsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("PresetsTableViewController")
 
+  private var searchBarIsVisibleBeforeLayout: Bool = false
+
   @IBOutlet public weak var searchBar: UISearchBar!
 
   public typealias OneShotLayoutCompletionHandler = (() -> Void)
   public var oneShotLayoutCompletionHandler: OneShotLayoutCompletionHandler?
 
-  private var presetsTableViewManager: PresetsTableViewManager?
+  private var presetsTableViewManager: PresetsTableViewManager!
 }
 
 extension PresetsTableViewController {
 
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    presetsTableViewManager?.selectActive(animated: false)
+    presetsTableViewManager.selectActive(animated: false)
+  }
+
+  public override func viewWillLayoutSubviews() {
+    searchBarIsVisibleBeforeLayout = presetsTableViewManager.searchBarIsVisible
   }
 
   public override func viewDidLayoutSubviews() {
     os_log(.debug, log: log, "viewDidLayoutSubviews")
     super.viewDidLayoutSubviews()
+    if !searchBarIsVisibleBeforeLayout {
+      presetsTableViewManager.hideSearchBar(animated: false)
+    }
+
     if oneShotLayoutCompletionHandler != nil {
       oneShotLayoutCompletionHandler?()
       oneShotLayoutCompletionHandler = nil
-      presetsTableViewManager?.selectActive(animated: false)
+      presetsTableViewManager.selectActive(animated: false)
+    }
+  }
+
+  public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    if !presetsTableViewManager.searchBarIsVisible {
+      coordinator.animate { _ in self.presetsTableViewManager.hideSearchBar(animated: true) } completion: { _ in }
     }
   }
 }
@@ -56,6 +72,6 @@ extension PresetsTableViewController {
     if searchBar.isFirstResponder && searchBar.canResignFirstResponder {
       searchBar.resignFirstResponder()
     }
-    presetsTableViewManager?.hideSearchBar(animated: true)
+    presetsTableViewManager.hideSearchBar(animated: true)
   }
 }
