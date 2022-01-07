@@ -61,7 +61,7 @@ extension PresetsTableViewController: ControllerConfiguration {
                                                       keyboard: router.keyboard,
                                                       infoBar: router.infoBar,
                                                       settings: router.settings)
-    presetsTableViewManager?.selectActive(animated: false)
+    presetsTableViewManager.selectActive(animated: false)
   }
 }
 
