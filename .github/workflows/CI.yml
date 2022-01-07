@@ -13,3 +13,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build, test, and code coverage
       run: make
+    - name: Create Coverage Badge
+      uses: schneegans/dynamic-badges-action@v1.1.0
+      with:
+        auth: ${{ secrets.GIST_UPDATE }}
+        gistID: 61c608b414893498479c268f2a106292
+        filename: SoundFonts-coverage.json
+        label: Coverage
+        message: ${{ env.PERCENTAGE }}
+        color: success
