@@ -227,11 +227,6 @@ extension MainViewController: ControllerConfiguration {
 
     router.subscribe(self, notifier: routerChange)
     router.activePresetManager.subscribe(self, notifier: activePresetChange)
-
-    self.sampler = router.sampler
-    if let sampler = self.sampler, startRequested {
-      DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
-    }
   }
 
   private func startMIDI() {

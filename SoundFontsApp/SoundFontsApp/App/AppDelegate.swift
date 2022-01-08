@@ -109,6 +109,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     // components.consolidatedConfigFile.save()
   }
 
+  func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+    false
+  }
+
   @objc private func visitAppStore() {
     guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1453325077?action=write-review") else {
       fatalError("Expected a valid URL")

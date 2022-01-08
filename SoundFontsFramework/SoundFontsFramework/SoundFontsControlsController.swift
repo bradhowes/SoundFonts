@@ -122,6 +122,7 @@ extension SoundFontsControlsController {
   }
 
   private func hideEffects(_ animated: Bool = true) {
+    NotificationCenter.default.post(name: .hidingEffects, object: nil)
     effectsBottomConstraint.constant = effectsHeightConstraint.constant + 8
     if animated {
       UIViewPropertyAnimator.runningPropertyAnimator(
@@ -129,7 +130,6 @@ extension SoundFontsControlsController {
         options: [.allowUserInteraction, .curveEaseOut],
         animations: self.view.layoutIfNeeded
       ) { _ in
-        NotificationCenter.default.post(name: .hidingEffects, object: nil)
       }
     }
     settings.showEffects = false

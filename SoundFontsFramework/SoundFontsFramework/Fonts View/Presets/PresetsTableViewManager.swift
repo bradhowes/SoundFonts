@@ -26,7 +26,6 @@ final class PresetsTableViewManager: NSObject {
   private let soundFonts: SoundFonts
   private let favorites: Favorites
   private let keyboard: Keyboard?
-  private let infoBar: InfoBar
   private let settings: Settings
 
   private var viewSlots = [PresetViewSlot]()
@@ -56,15 +55,16 @@ final class PresetsTableViewManager: NSObject {
     self.soundFonts = soundFonts
     self.favorites = favorites
     self.keyboard = keyboard
-    self.infoBar = infoBar
     self.settings = settings
     super.init()
+
+    os_log(.info, log: log, "init")
 
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
     infoBar.addEventClosure(.hideMoreButtons) { [weak self] _ in
       guard let self = self, self.view.isEditing else { return }
       self.toggleVisibilityEditing(self)
-      self.infoBar.resetButtonState(.editVisibility)
+      infoBar.resetButtonState(.editVisibility)
     }
 
     view.register(TableCell.self)
@@ -79,7 +79,7 @@ final class PresetsTableViewManager: NSObject {
 
     view.sectionIndexColor = .darkGray
 
-    regenerateViewSlots()
+    // regenerateViewSlots()
   }
 }
 
@@ -236,8 +236,13 @@ extension PresetsTableViewManager {
   }
 
   private func dismissSearchKeyboard() {
-    guard searchBar.isFirstResponder && searchBar.canResignFirstResponder else { return }
+    os_log(.debug, log: log, "dismissSearchKeyboard BEGIN")
+    guard searchBar.isFirstResponder && searchBar.canResignFirstResponder else {
+      os_log(.debug, log: log, "dismissSearchKeyboard END - skipping")
+      return
+    }
     searchBar.resignFirstResponder()
+    os_log(.debug, log: log, "dismissSearchKeyboard END")
   }
 
   /**
@@ -247,7 +252,7 @@ extension PresetsTableViewManager {
    - parameter completionHandler: the completion handler to run at end of the table view's layout activity
    */
   private func regenerateViewSlots(_ completionHandler: PresetsTableViewController.OneShotLayoutCompletionHandler? = nil) {
-    os_log(.info, log: log, "updateViewPresets")
+    os_log(.info, log: log, "regenerateViewSlots BEGIN")
     let source = selectedSoundFontManager.selected?.presets ?? []
 
     viewSlots.removeAll()
@@ -268,13 +273,16 @@ extension PresetsTableViewManager {
     if showingSearchResults, !lastSearchText.isEmpty {
       os_log(.info, log: log, "regenerating search results")
       search(for: lastSearchText)
+      os_log(.info, log: log, "regenerateViewSlots END - showing search")
       return
     }
 
     viewController.oneShotLayoutCompletionHandler = completionHandler
-    os_log(.debug, log: log, "begin reloadData")
+    os_log(.debug, log: log, "regenerateViewSlots - befre reloadData")
     view.reloadData()
-    os_log(.debug, log: log, "end reloadData")
+    os_log(.debug, log: log, "regenerateViewSlots - after reloadData")
+
+    os_log(.info, log: log, "regenerateViewSlots END")
   }
 
   private func calculateSectionRowCounts(reload: Bool) {
@@ -310,6 +318,7 @@ extension PresetsTableViewManager {
   }
 
   func performChanges(soundFont: SoundFont) -> [IndexPath] {
+    os_log(.debug, log: log, "performChanges BEGIN")
     var changes = [IndexPath]()
 
     func processPresetConfig(_ slotIndex: PresetViewSlotIndex, presetConfig: PresetConfig, slot: () -> PresetViewSlot) {
@@ -371,12 +380,7 @@ extension PresetsTableViewManager {
 
       let changes = performChanges(soundFont: soundFont)
       os_log(.info, log: log, "endVisibilityEditing - %d changes", changes.count)
-
-      view.performBatchUpdates {
-        view.deleteRows(at: changes, with: .automatic)
-      } completion: { _ in
-        self.infoBar.hideMoreButtons()
-      }
+      view.performBatchUpdates { view.deleteRows(at: changes, with: .automatic) } completion: { _ in }
 
       CATransaction.commit()
     }
@@ -406,7 +410,7 @@ extension PresetsTableViewManager {
   private func activePresetChange(_ event: ActivePresetEvent) {
     switch event {
     case let .active(old: old, new: new, playSample: _):
-      os_log(.debug, log: log, "activePresetChange")
+      os_log(.debug, log: log, "activePresetChange BEGIN")
 
       // Update the two rows involved in the change in active preset
       view.performBatchUpdates(
@@ -454,7 +458,7 @@ extension PresetsTableViewManager {
   }
 
   private func favoritesChange(_ event: FavoritesEvent) {
-    os_log(.debug, log: log, "favoritesChange")
+    os_log(.debug, log: log, "favoritesChange BEGIN")
     switch event {
     case .restored:
       os_log(.info, log: log, "favoritesChange - restored")
@@ -474,17 +478,21 @@ extension PresetsTableViewManager {
     case .beginEdit: break
     case .removedAll: break
     }
+    os_log(.debug, log: log, "favoritesChange END")
   }
 
   private func favoritesRestored() {
+    os_log(.info, log: log, "favoritesRestored BEGIN")
     if let visibleRows = view.indexPathsForVisibleRows {
       view.reloadRows(at: visibleRows, with: .automatic)
     } else {
       view.reloadData()
     }
+    os_log(.info, log: log, "favoritesRestored END")
   }
 
   private func soundFontsChange(_ event: SoundFontsEvent) {
+    os_log(.info, log: log, "soundFontsChange BEGIN")
     switch event {
     case let .unhidPresets(font: soundFont):
       if soundFont == selectedSoundFontManager.selected {
@@ -502,14 +510,17 @@ extension PresetsTableViewManager {
     case .moved: break
     case .removed: break
     }
+    os_log(.info, log: log, "soundFontsChange END")
   }
 
   private func soundFontsRestored() {
+    os_log(.info, log: log, "soundFontsRestore BEGIN")
     let animateHideSearchBar = searchBarIsVisible
     regenerateViewSlots {
       self.selectActive(animated: false)
       self.hideSearchBar(animated: animateHideSearchBar)
     }
+    os_log(.info, log: log, "soundFontsRestore END")
   }
 
   private func getPresetIndexPath(for key: Favorite.Key) -> IndexPath? {
@@ -541,12 +552,13 @@ extension PresetsTableViewManager {
   }
 
   private func dismissSearchResults() -> Bool {
+    os_log(.debug, log: log, "dismissSearchResults BEGIN")
     guard searchBar.searchTerm != nil else { return false }
-    os_log(.debug, log: log, "dismissSearchResults")
     searchBar.text = nil
     searchSlots = nil
     view.reloadData()
     dismissSearchKeyboard()
+    os_log(.debug, log: log, "dismissSearchResults BEGIN")
     return true
   }
 
@@ -572,25 +584,37 @@ extension PresetsTableViewManager {
   public var searchBarIsVisible: Bool { view.contentOffset.y < searchBar.frame.size.height }
 
   public func hideSearchBar(animated: Bool) {
+    os_log(.info, log: log, "hideSearchBar BEGIN - animated: %d", animated)
+
     dismissSearchKeyboard()
 
-    if showingSearchResults || view.contentOffset.y > searchBar.frame.size.height * 2 { return }
-    os_log(.info, log: log, "hiding search bar - %d", animated)
+    if showingSearchResults || view.contentOffset.y >= searchBar.frame.size.height {
+      os_log(.info, log: log, "hideSearchBar END - leaving alone")
+      return
+    }
 
     let view = self.view
-    let contentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
+    let newContentOffset = CGPoint(x: 0, y: searchBar.frame.size.height)
     if animated {
+      os_log(.info, log: log, "hideSearchBar - animating at contentOffset.y: %f", view.contentOffset.y)
       UIViewPropertyAnimator.runningPropertyAnimator(
         withDuration: 0.3, delay: 0.0, options: [.curveEaseOut],
-        animations: { view.contentOffset = contentOffset },
-        completion: { _ in view.contentOffset = contentOffset })
+        animations: {
+          if view.contentOffset.y < newContentOffset.y {
+            view.contentOffset = newContentOffset
+          }
+        },
+        completion: { _ in }
+      )
     } else {
-      view.contentOffset = contentOffset
+      view.contentOffset = newContentOffset
     }
+
+    os_log(.info, log: log, "hideSearchBar END")
   }
 
   public func selectActive(animated: Bool) {
-    os_log(.debug, log: log, "selectActive - %d", animated)
+    os_log(.info, log: log, "selectActive BEGIN - animated: %d", animated)
     guard let activeSlot: PresetViewSlot = {
       switch activePresetManager.active {
       case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.presetIndex)
@@ -598,12 +622,23 @@ extension PresetsTableViewManager {
       case .none: return nil
       }
     }()
-    else { return }
+    else {
+      os_log(.info, log: log, "selectActive END - no active slot")
+      return
+    }
 
-    guard let index = (viewSlots.firstIndex { $0 == activeSlot }) else { return }
+    guard let index = (viewSlots.firstIndex { $0 == activeSlot }) else {
+      os_log(.info, log: log, "selectActive END - active slot not found in viewSLots")
+      return
+    }
+
     let indexPath = IndexPath(slotIndex: .init(rawValue: index))
+    os_log(.info, log: log, "selectActive - index: %d indexPath: %{public}s", index, indexPath.description)
+
     view.selectRow(at: indexPath, animated: animated, scrollPosition: .middle)
-    hideSearchBar(animated: animated)
+    // DispatchQueue.main.async { self.hideSearchBar(animated: animated) }
+
+    os_log(.info, log: log, "selectActive END")
   }
 
   private func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {

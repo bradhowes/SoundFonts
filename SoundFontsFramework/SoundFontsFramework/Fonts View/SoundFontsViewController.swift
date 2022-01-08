@@ -3,10 +3,12 @@
 import UIKit
 import os
 
-/// View controller for the SoundFont / Presets UITableView combination. Much of the UITableView management is handled
-/// by specific *Manager classes. This controller mainly serves to manage the active preset state, plus the switching
-/// between normal preset table view display and preset search results display. Apart from the adopted protocols, there is no
-/// API for this class.
+/**
+ View controller for the SoundFont / Presets UITableView combination. Much of the UITableView management is handled
+ by specific *Manager classes. This controller mainly serves to manage the active preset state, plus the switching
+ between normal preset table view display and preset search results display. Apart from the adopted protocols, there
+ is no API for this class.
+ */
 public final class SoundFontsViewController: UIViewController {
   private lazy var log = Logging.logger("SoundFontsViewController")
 
@@ -17,6 +19,8 @@ public final class SoundFontsViewController: UIViewController {
   @IBOutlet private weak var dividerControl: UIView!
   @IBOutlet private weak var presetsWidthConstraint: NSLayoutConstraint!
   @IBOutlet private weak var presetsView: UIView!
+
+  private weak var presetsTableViewController: PresetsTableViewController!
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
   private var soundFonts: SoundFonts!
@@ -35,8 +39,6 @@ public final class SoundFontsViewController: UIViewController {
 
   public let swipeLeft = UISwipeGestureRecognizer()
   public let swipeRight = UISwipeGestureRecognizer()
-
-  private weak var presetsTableViewController: PresetsTableViewController?
 }
 
 extension SoundFontsViewController {
@@ -218,7 +220,7 @@ extension SoundFontsViewController: ControllerConfiguration {
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
 
-    presetsTableViewController?.establishConnections(router)
+    presetsTableViewController.establishConnections(router)
 
     fontsTableViewManager?.selectActive()
   }
@@ -229,7 +231,7 @@ extension SoundFontsViewController: ControllerConfiguration {
 extension SoundFontsViewController: FontsViewManager {
 
   public func dismissSearchKeyboard() {
-    presetsTableViewController?.dismissSearchKeyboard()
+    presetsTableViewController.dismissSearchKeyboard()
   }
 
   public func addSoundFonts(urls: [URL]) {
