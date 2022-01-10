@@ -98,8 +98,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter preset: the preset to make active
    - parameter playSample: if true, play a note using the new preset
    */
-  @discardableResult
-  public func setActive(preset: SoundFontAndPreset, playSample: Bool) -> Bool {
+  public func setActive(preset: SoundFontAndPreset, playSample: Bool) {
     setActive(.preset(soundFontAndPreset: preset), playSample: playSample)
   }
 
@@ -109,8 +108,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter favorite: the favorite to make active
    - parameter playSample: if true, play a note using the new preset
    */
-  @discardableResult
-  public func setActive(favorite: Favorite, playSample: Bool) -> Bool {
+  public func setActive(favorite: Favorite, playSample: Bool) {
     setActive(.favorite(favorite: favorite), playSample: playSample)
   }
 
@@ -120,33 +118,28 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter kind: wrapped value to set
    - parameter playSample: if true, play a note using the new preset
    */
-  @discardableResult
-  public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) -> Bool {
+  public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
     os_log(.debug, log: log, "setActive: %{public}s", kind.description)
     guard soundFonts.restored else {
 
       // NOTE: this could be the case for AUv3 where the audio unit is up and running and has restored a
       // configuration but we don't have everything else restored just yet.
-      os_log(
-        .info, log: log, "not yet restored - setting pending - current: %{public}s",
-        kind.description)
+      os_log(.info, log: log, "not yet restored - setting pending - current: %{public}s", kind.description)
       if pending == .none {
         pending = kind
       }
-      return true
+      return
     }
 
     guard active != kind else {
       os_log(.debug, log: log, "already active")
-      return false
+      return
     }
 
     let old = active
     active = kind
     save(kind)
     DispatchQueue.main.async { self.notify(.active(old: old, new: kind, playSample: playSample)) }
-
-    return true
   }
 }
 

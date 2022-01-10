@@ -16,6 +16,9 @@ public extension String {
     return text.isEmpty ? nil : text
   }
 
+  /// Trim whitespaces from value.
+  var trimmedWhiteSpaces: String { trimmingCharacters(in: .whitespaces) }
+
   /**
    Obtain the width of the string if rendered in the system font
    */

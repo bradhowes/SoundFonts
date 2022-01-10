@@ -231,7 +231,7 @@ extension SoundFontsViewController: ControllerConfiguration {
 extension SoundFontsViewController: FontsViewManager {
 
   public func dismissSearchKeyboard() {
-    presetsTableViewController.dismissSearchKeyboard()
+    presetsTableViewController.searchBar.endSearch()
   }
 
   public func addSoundFonts(urls: [URL]) {

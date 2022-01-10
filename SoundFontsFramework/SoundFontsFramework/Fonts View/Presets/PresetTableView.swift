@@ -2,22 +2,22 @@
 
 import UIKit.UITableView
 
-extension UITableViewDelegate {
-
-  /**
-   Allow delegate to modify
-   */
-  public func validateContentOffset(_ offset: CGPoint, for tableView: UITableView) -> CGPoint {
-    return offset
-  }
+protocol ContentOffsetMonitor {
+  func validate(_ offset: CGPoint) -> CGPoint
 }
 
 class PresetTableView: UITableView {
 
+  public var contentOffsetMonitor: ContentOffsetMonitor?
+
   open override var contentOffset: CGPoint {
     get { return super.contentOffset }
     set {
-      super.contentOffset = delegate?.validateContentOffset(newValue, for: self) ?? newValue
+      if let monitor = self.contentOffsetMonitor, !self.isTracking {
+        super.contentOffset = monitor.validate(newValue)
+      } else {
+        super.contentOffset = newValue
+      }
     }
   }
 }

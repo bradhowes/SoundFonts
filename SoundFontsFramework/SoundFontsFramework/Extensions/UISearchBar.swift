@@ -6,6 +6,7 @@ extension UISearchBar {
 
   /// Obtain the current string value in the search bar, nil if the string is empty.
   public var searchTerm: String? { self.text?.trimmedWhiteSpacesOrNil }
+  public var nonNilSearchTerm: String { return self.text?.trimmedWhiteSpaces ?? "" }
 
   /**
    Begin a search by making the search field appear and contain the given search term
@@ -16,10 +17,13 @@ extension UISearchBar {
     self.text = term
     self.inputAssistantItem.leadingBarButtonGroups = []
     self.inputAssistantItem.trailingBarButtonGroups = []
+    self.becomeFirstResponder()
+  }
 
-    UIView.animate(withDuration: 0.125) {
-      self.becomeFirstResponder()
-    } completion: { _ in
+  func endSearch() {
+    if isFirstResponder && canResignFirstResponder {
+      resignFirstResponder()
+      self.text = nil
     }
   }
 }
