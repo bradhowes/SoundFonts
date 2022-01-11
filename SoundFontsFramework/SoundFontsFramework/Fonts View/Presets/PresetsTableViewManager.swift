@@ -552,14 +552,13 @@ extension PresetsTableViewManager {
                           completionHandler: (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
     self.soundFonts.setVisibility(soundFontAndPreset: soundFontAndPreset, state: false)
-    self.viewSlots.remove(at: slotIndex)
-    viewController.tableView.performBatchUpdates({
+    viewController.tableView.performBatchUpdates {
+      self.viewSlots.remove(at: slotIndex)
       viewController.tableView.deleteRows(at: [indexPath], with: .automatic)
       self.sectionRowCounts[indexPath.section] -= 1
-    },
-                                  completion: { _ in
+    } completion: { _ in
       self.calculateSectionRowCounts(reload: true)
-    })
+    }
     completionHandler(true)
   }
 
@@ -581,13 +580,6 @@ extension PresetsTableViewManager {
 
     alertController.addAction(hide)
     alertController.addAction(cancel)
-
-    if let popoverController = alertController.popoverPresentationController {
-      popoverController.sourceView = viewController.tableView
-      let bounds = viewController.tableView.bounds
-      popoverController.sourceRect = CGRect(x: bounds.midX, y: bounds.midY, width: 0, height: 0)
-      popoverController.permittedArrowDirections = []
-    }
 
     viewController.present(alertController, animated: true, completion: nil)
   }

@@ -58,6 +58,5 @@ have been lost.";
 "otherAppAudio" = "Another app is controlling audio";
 
 "hidePresetTitle" = "Hide Preset";
-"hidePresetBody" = "You will no longer see this preset.
-Restore preset visibility using the Change Visibility button in the info bar.";
-"hidePresetAction" = "Hide";
+"hidePresetBody" = "You will no longer see this preset when hidden. You can restore preset visibility using the Edit Visibility button in the info bar.";
+"hidePresetAction" = "Continue";
