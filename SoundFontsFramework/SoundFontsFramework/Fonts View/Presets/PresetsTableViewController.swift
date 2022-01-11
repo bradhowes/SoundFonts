@@ -15,18 +15,19 @@ public final class PresetsTableViewController: UITableViewController {
     set { tableView.isEditing = newValue }
   }
 
+  /// Text field for entering preset search queries.
   @IBOutlet public var searchBar: UISearchBar!
 
+  /// True when user is searching
   public var isSearching: Bool { searchBar.isFirstResponder }
-  private var lastSearchText = ""
 
-  private var presetsTableViewManager: PresetsTableViewManager!
+  public typealias AfterReloadDataAction = () -> Void
 
-  typealias AfterReloadDataAction = () -> Void
+  /// Closure to execute after the table view performs `layoutSubviews`. This is reset to nil in `viewDidLayoutSubviews`.
+  public var afterReloadDataAction: AfterReloadDataAction?
 
-  var afterReloadDataAction: AfterReloadDataAction?
-
-  var slotToScrollTo: IndexPath? {
+  /// A row to make visible after the table view performs `layoutSubviews`. This is reset to nil in `viewDidLayoutSubviews`.
+  public var slotToScrollTo: IndexPath? {
     didSet {
       os_log(.debug, log: log, "slotToScrollTo: %{public}s", slotToScrollTo.descriptionOrNil)
       if slotToScrollTo == lastSelectedSlot {
@@ -35,9 +36,12 @@ public final class PresetsTableViewController: UITableViewController {
     }
   }
 
-  var lastSelectedSlot: IndexPath? {
+  private var lastSelectedSlot: IndexPath? {
     didSet { os_log(.debug, log: log, "lastSelectedSlot: %{public}s", lastSelectedSlot.descriptionOrNil) }
   }
+
+  private var lastSearchText = ""
+  private var presetsTableViewManager: PresetsTableViewManager!
 }
 
 extension PresetsTableViewController {
@@ -54,11 +58,13 @@ extension PresetsTableViewController {
     os_log(.info, log: log, "viewWillAppear BEGIN")
     super.viewWillAppear(animated)
 
-    tableView.tableHeaderView = nil
-
     os_log(.info, log: log, "viewWillAppear END")
   }
 
+  /**
+   Notification that the table view has performed `layoutSubviews`. Here we perform actions that needed to wait until the
+   table view was updated.
+   */
   public override func viewDidLayoutSubviews() {
     os_log(.info, log: log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
@@ -141,8 +147,8 @@ public extension PresetsTableViewController {
   override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
     if index == 0 {
       if !isEditing {
-        DispatchQueue.main.async {
-          self.beginSearch() }
+        // Need to do this because the view will update due to the section touch.
+        DispatchQueue.main.async { self.beginSearch() }
       }
       return 0
     }
@@ -173,8 +179,10 @@ public extension PresetsTableViewController  {
       return
     }
 
+    // Don't let `viewDidLayoutSubviews` reposition the selected row
     lastSelectedSlot = indexPath
     presetsTableViewManager.selectSlot(at: indexPath)
+
     if isSearching {
       endSearch()
     }
@@ -212,13 +220,22 @@ public extension PresetsTableViewController  {
 
 extension PresetsTableViewController {
 
+  /**
+   Toggle the edit visibility action.
+
+   - parameter sender: the button that was touched
+   */
   func toggleVisibilityEditing(_ sender: AnyObject) {
     guard let soundFont = presetsTableViewManager.selectedSoundFont else { return }
     let button = sender as? UIButton
     button?.tintColor = isEditing ? .systemTeal : .systemOrange
     if isEditing == false {
+
+      // If user was searching, cancel out of it.
       searchBar.endSearch()
       presetsTableViewManager.cancelSearch()
+
+      // Begin editing after next `layoutSubviews`.
       afterReloadDataAction = { self.beginVisibilityEditing(for: soundFont) }
     } else {
       endVisibilityEditing(for: soundFont)
@@ -261,7 +278,7 @@ extension PresetsTableViewController {
 
 extension PresetsTableViewController: UISearchBarDelegate {
 
-  public func beginSearch() {
+  private func beginSearch() {
     guard searchBar.isFirstResponder == false else { return }
     let offset: CGPoint = .init(x: self.tableView.contentOffset.x, y: 0)
     tableView.tableHeaderView = searchBar
@@ -273,7 +290,7 @@ extension PresetsTableViewController: UISearchBarDelegate {
     }
   }
 
-  public func endSearch() {
+  private func endSearch() {
     lastSearchText = searchBar.nonNilSearchTerm
     presetsTableViewManager.cancelSearch()
     self.searchBar.endSearch()
@@ -335,5 +352,6 @@ extension PresetsTableViewController: ControllerConfiguration {
                                                       keyboard: router.keyboard,
                                                       infoBar: router.infoBar,
                                                       settings: router.settings)
+    tableView.tableHeaderView = nil
   }
 }
