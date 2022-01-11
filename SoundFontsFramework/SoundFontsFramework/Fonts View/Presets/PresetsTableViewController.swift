@@ -8,8 +8,16 @@ import os
 public final class PresetsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("PresetsTableViewController")
 
+  // UIViewController also has an isEditing attribute, but it is not tied to the tableView.isEditing value which can
+  // lead to bugs.
+  public override var isEditing: Bool {
+    get { tableView.isEditing }
+    set { tableView.isEditing = newValue }
+  }
+
   @IBOutlet public var searchBar: UISearchBar!
 
+  public var beginSearchDueToDrag: Bool = false
   public var isSearching: Bool { searchBar.isFirstResponder }
   private var lastSearchText = ""
 
@@ -19,7 +27,7 @@ public final class PresetsTableViewController: UITableViewController {
   var isSearchBarVisible: Bool { self.tableView.contentOffset.y < searchBar.frame.height }
 
   typealias AfterReloadDataAction = () -> Void
-  var afterReloadDataActions = [AfterReloadDataAction]()
+  var afterReloadDataAction: AfterReloadDataAction?
 }
 
 extension PresetsTableViewController {
@@ -29,6 +37,7 @@ extension PresetsTableViewController {
 
     tableView.sectionIndexColor = .darkGray
     tableView.register(TableCell.self)
+
     searchBar.delegate = self
 
     // Don't show the search bar due to elongation of table view when the effects view disappears.
@@ -56,13 +65,33 @@ extension PresetsTableViewController {
     os_log(.info, log: log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
 
-    for action in afterReloadDataActions {
-      action()
+    if isEditing {
+      hideSearchBarIfVisible()
+      os_log(.info, log: log, "viewDidLayoutSubviews END")
+      return
     }
-    afterReloadDataActions.removeAll()
 
-    scrollToActiveSlot()
-    hideSearchIfVisible()
+    // While the table is moving, record if the searchBar is visible.
+    if tableView.isDragging || tableView.isDecelerating {
+      beginSearchDueToDrag = isSearchBarVisible
+    }
+    else {
+      // If searchBar was visible at end of drag, begin search. Otherwise, make sure that the searchBar stays hidden.
+      if beginSearchDueToDrag {
+        beginSearchDueToDrag = false
+        beginSearch()
+      }
+      else {
+        if let action = afterReloadDataAction {
+          os_log(.info, log: log, "viewDidLayoutSubviews - running action")
+          afterReloadDataAction = nil
+          action()
+        }
+
+         scrollToActiveSlot()
+         hideSearchBarIfVisible()
+      }
+    }
 
     os_log(.info, log: log, "viewDidLayoutSubviews END")
   }
@@ -77,6 +106,7 @@ extension PresetsTableViewController {
 
   public func scrollToActiveSlot() {
     if let scrollToSlot = self.scrollToSlot {
+      os_log(.info, log: log, "scrollToActiveSlot %d/%d", scrollToSlot.section, scrollToSlot.row)
       tableView.scrollToRow(at: scrollToSlot, at: .none, animated: false)
       self.scrollToSlot = nil
     }
@@ -102,13 +132,13 @@ public extension PresetsTableViewController {
   override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
     if isSearching { return nil}
     let titles = presetsTableViewManager.sectionIndexTitles
-    if tableView.isEditing { return titles }
+    if isEditing { return titles }
     return [UITableView.indexSearch, "•"] + titles
   }
 
   override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
     if index == 0 {
-      if !tableView.isEditing {
+      if !isEditing {
         DispatchQueue.main.async { self.beginSearch() }
       }
       return 0
@@ -135,7 +165,7 @@ public extension PresetsTableViewController  {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     os_log(.debug, log: log, "tableView.didSelectRow")
-    if tableView.isEditing {
+    if isEditing {
       presetsTableViewManager.setSlotVisibility(at: indexPath, state: true)
       return
     }
@@ -148,7 +178,7 @@ public extension PresetsTableViewController  {
 
   override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
     os_log(.debug, log: log, "tableView.didDeselectRow")
-    if tableView.isEditing {
+    if isEditing {
       presetsTableViewManager.setSlotVisibility(at: indexPath, state: false)
     }
   }
@@ -181,41 +211,54 @@ extension PresetsTableViewController {
   func toggleVisibilityEditing(_ sender: AnyObject) {
     guard let soundFont = presetsTableViewManager.selectedSoundFont else { return }
     let button = sender as? UIButton
-    button?.tintColor = tableView.isEditing ? .systemTeal : .systemOrange
-    if tableView.isEditing == false {
+    button?.tintColor = isEditing ? .systemTeal : .systemOrange
+    if isEditing == false {
       searchBar.endSearch()
       presetsTableViewManager.cancelSearch()
-      beginVisibilityEditing(for: soundFont)
+      afterReloadDataAction = { self.beginVisibilityEditing(for: soundFont) }
     } else {
       endVisibilityEditing(for: soundFont)
     }
   }
 
-  func beginVisibilityEditing(for soundFont: SoundFont) {
-    presetsTableViewManager.calculateSectionRowCounts(reload: true)
+  private func beginVisibilityEditing(for soundFont: SoundFont) {
+    os_log(.info, log: log, "beginVisibilityEditing BEGIN")
     tableView.setEditing(true, animated: true)
-    let changes = presetsTableViewManager.calculateVisibilityChanges(soundFont: soundFont, isEditing: isEditing)
+    let changes = presetsTableViewManager.applyVisibilityChanges(soundFont: soundFont, isEditing: true)
     tableView.performBatchUpdates {
-      tableView.insertRows(at: changes, with: .automatic)
+      tableView.reloadSectionIndexTitles()
+
+      // ???
+      if tableView.contentOffset.y == searchBar.frame.height {
+        tableView.contentOffset = .zero
+      }
+      if !changes.isEmpty {
+        self.tableView.insertRows(at: changes, with: .none)
+      }
     } completion: { _ in
       self.presetsTableViewManager.initializeVisibilitySelections(soundFont: soundFont)
     }
+
+    os_log(.info, log: log, "beginVisibilityEditing END")
   }
 
-  func endVisibilityEditing(for soundFont: SoundFont) {
+  private func endVisibilityEditing(for soundFont: SoundFont) {
     CATransaction.begin()
     CATransaction.setCompletionBlock {
       self.presetsTableViewManager.calculateSectionRowCounts(reload: true)
     }
 
     tableView.setEditing(false, animated: true)
-
-    let changes = presetsTableViewManager.calculateVisibilityChanges(soundFont: soundFont, isEditing: isEditing)
-    tableView.performBatchUpdates { tableView.deleteRows(at: changes, with: .automatic) } completion: { _ in }
+    let changes = presetsTableViewManager.applyVisibilityChanges(soundFont: soundFont, isEditing: false)
+    tableView.performBatchUpdates {
+      tableView.deleteRows(at: changes, with: .automatic)
+    } completion: { _ in }
 
     CATransaction.commit()
   }
 }
+
+// MARK: Searching
 
 extension PresetsTableViewController: UISearchBarDelegate {
 
@@ -225,7 +268,8 @@ extension PresetsTableViewController: UISearchBarDelegate {
     UIView.animate(withDuration: 0.25) {
       self.tableView.contentOffset = offset
       self.searchBar.beginSearch(with: self.lastSearchText)
-      self.tableView.reloadData()
+    } completion: { _ in
+      self.presetsTableViewManager.search(for: self.lastSearchText)
     }
   }
 
@@ -238,10 +282,13 @@ extension PresetsTableViewController: UISearchBarDelegate {
     }
   }
 
-  public func hideSearchIfVisible() {
+  public func hideSearchBarIfVisible() {
+    os_log(.debug, log: log, "hideSearchIfVisible BEGIN")
     if !isSearching && isSearchBarVisible {
+      os_log(.debug, log: log, "hideSearchIfVisible - hiding")
       hideSearchBar()
     }
+    os_log(.debug, log: log, "hideSearchIfVisible END")
   }
 
   private func hideSearchBar() {
@@ -266,6 +313,16 @@ extension PresetsTableViewController: UISearchBarDelegate {
     presetsTableViewManager.search(for: term)
     lastSearchText = term
   }
+
+  public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    os_log(.debug, log: log, "searchBarTextDidEndEditing - %d", searchBar.isFirstResponder)
+    endSearch()
+  }
+
+  public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    os_log(.debug, log: log, "searchBarSearchButtonClicked - %d", searchBar.isFirstResponder)
+    endSearch()
+  }
 }
 
 extension PresetsTableViewController: ControllerConfiguration {
@@ -275,7 +332,7 @@ extension PresetsTableViewController: ControllerConfiguration {
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
 
     infoBar.addEventClosure(.hideMoreButtons) { [weak self] _ in
-      guard let self = self, self.tableView.isEditing else { return }
+      guard let self = self, self.isEditing else { return }
       self.toggleVisibilityEditing(self)
       infoBar.resetButtonState(.editVisibility)
     }
@@ -290,5 +347,3 @@ extension PresetsTableViewController: ControllerConfiguration {
                                                       settings: router.settings)
   }
 }
-
-

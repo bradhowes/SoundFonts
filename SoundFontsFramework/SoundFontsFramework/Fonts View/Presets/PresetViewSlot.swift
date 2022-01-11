@@ -34,13 +34,24 @@ internal extension IndexPath {
 
    - parameter slotIndex: the slot index to work with
    */
-  init(slotIndex: PresetViewSlotIndex) {
-    let section = slotIndex.rawValue / Self.sectionSize
-    self.init(row: slotIndex.rawValue - section * Self.sectionSize, section: section)
+  init(slotIndex: PresetViewSlotIndex, sectionRowCounts: [Int]) {
+    precondition(!sectionRowCounts.isEmpty)
+    var remaining = slotIndex.rawValue
+    for (sectionIndex, rowCount) in sectionRowCounts.enumerated() {
+      if remaining < rowCount {
+        self.init(row: remaining, section: sectionIndex)
+        return
+      }
+      remaining -= rowCount
+    }
+
+    self.init(row: remaining, section: sectionRowCounts.count - 1)
   }
 
   /// Convert from row/section to slot index
-  var slotIndex: PresetViewSlotIndex { .init(rawValue: section * Self.sectionSize + row) }
+  func slotIndex(using sectionRowCounts: [Int]) -> PresetViewSlotIndex {
+    .init(rawValue: row + sectionRowCounts[0..<section].reduce(0, +))
+  }
 
   /**
    Obtain section title strings
@@ -51,17 +62,11 @@ internal extension IndexPath {
   static func sectionsTitles(sourceSize: Int) -> [String] {
     stride(from: Self.sectionSize, to: sourceSize - 1, by: Self.sectionSize).map { "\($0)" }
   }
+
+  var description: String { "<S:\(section) R:\(row)>"}
 }
 
 internal extension Array where Element == PresetViewSlot {
-
-  /**
-   Indexing via IndexPath value (row, section)
-
-   - parameter indexPath: the index to use
-   - returns: PresetViewSlot at the given index
-   */
-  subscript(indexPath: IndexPath) -> Element { self[indexPath.slotIndex] }
 
   /**
    Indexing via PresetViewSlotIndex value.
@@ -107,22 +112,7 @@ internal extension Array where Element == PresetViewSlot {
    - parameter value: the value to insert
    - parameter index: the location to insert at
    */
-  mutating func insert(_ value: PresetViewSlot, at index: IndexPath) { insert(value, at: index.slotIndex) }
-
-  /**
-   Insert a value in the collection at a particular location.
-
-   - parameter value: the value to insert
-   - parameter index: the location to insert at
-   */
   mutating func insert(_ value: PresetViewSlot, at index: PresetViewSlotIndex) { insert(value, at: index.rawValue) }
-
-  /**
-   Remove item from the collection at a particular location.
-
-   - parameter index: the location to remove at
-   */
-  mutating func remove(at index: IndexPath) { remove(at: index.slotIndex) }
 
   /**
    Remove item from the collection at a particular location.

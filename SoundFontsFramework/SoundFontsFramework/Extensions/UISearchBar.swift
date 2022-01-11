@@ -14,16 +14,29 @@ extension UISearchBar {
    - parameter term: the search term to use
    */
   public func beginSearch(with term: String) {
-    self.text = term
-    self.inputAssistantItem.leadingBarButtonGroups = []
-    self.inputAssistantItem.trailingBarButtonGroups = []
-    self.becomeFirstResponder()
+    text = term
+    keyboardType = .default
+    returnKeyType = .done
+    enablesReturnKeyAutomatically = false
+
+    autocapitalizationType = .none
+    spellCheckingType = .no
+    autocorrectionType = .no
+
+    // Here to silence auto-layout warnings
+    inputAssistantItem.leadingBarButtonGroups = []
+    inputAssistantItem.trailingBarButtonGroups = []
+
+    becomeFirstResponder()
   }
 
+  /**
+   End search by resigning first responder status.
+   */
   func endSearch() {
     if isFirstResponder && canResignFirstResponder {
       resignFirstResponder()
-      self.text = nil
+      text = nil
     }
   }
 }
