@@ -75,7 +75,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
-    // components.consolidatedConfigFile.save()
+    // components.consolidatedConfigFile.close()
   }
 
   /**
@@ -106,7 +106,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()
-    // components.consolidatedConfigFile.save()
+    // components.consolidatedConfigFile.close()
   }
 
   func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {

@@ -14,13 +14,13 @@ extension Date: SettingSerializable {}
 extension UUID: SettingSerializable {
 
   @inlinable
-  public static func get(key: String, defaultValue: UUID, source: Settings, isGlobal: Bool) -> UUID {
-    .init(uuidString: source.get(key: key, defaultValue: defaultValue.uuidString, isGlobal: isGlobal))!
+  public static func get(key: String, defaultValue: UUID, source: Settings) -> UUID {
+    .init(uuidString: source.get(key: key, defaultValue: defaultValue.uuidString))!
   }
 
   @inlinable
-  public static func set(key: String, value: Tag.Key, source: Settings, isGlobal: Bool) {
-    source.set(key: key, value: value.uuidString, isGlobal: isGlobal)
+  public static func set(key: String, value: Tag.Key, source: Settings) {
+    source.set(key: key, value: value.uuidString)
   }
 }
 

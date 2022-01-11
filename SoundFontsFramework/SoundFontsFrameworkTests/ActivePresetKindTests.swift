@@ -204,47 +204,47 @@ class ActivePresetKindTests: XCTestCase {
   func testSettingsGet() {
     let foo = "get_foo"
     let bar = "get_bar"
-    let settings = Settings(inApp: true, suiteName: suiteName)
+    let settings = Settings(suiteName: suiteName)
     let userDefaults = UserDefaults(suiteName: suiteName)!
     userDefaults.removeObject(forKey: foo)
     userDefaults.removeObject(forKey: bar)
 
     // No previous setting
-    var kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings, isGlobal: false)
+    var kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
     XCTAssertNotNil(userDefaults.object(forKey: foo))
 
     // Legacy previous setting
     userDefaults.set(Data(base64Encoded: Data("[2]".utf8).base64EncodedString())!, forKey: bar)
-    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings, isGlobal: false)
+    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
 
     // Invalid legacy previous setting
     userDefaults.set(Data(base64Encoded: Data("[999]".utf8).base64EncodedString())!, forKey: bar)
-    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings, isGlobal: false)
+    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
 
     // Invalid dict value
     userDefaults.set(["Hello": "mom"], forKey: bar)
-    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings, isGlobal: false)
+    kind = ActivePresetKind.get(key: bar, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
 
     // Invalid data type
     userDefaults.set(15, forKey: foo)
-    kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings, isGlobal: false)
+    kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
 
     // Fetch after setting
-    kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings, isGlobal: false)
+    kind = ActivePresetKind.get(key: foo, defaultValue: .none, source: settings)
     XCTAssertEqual(kind, .none)
   }
 
   func testSettingsSet() {
     let foo = "set_foo"
-    let settings = Settings(inApp: true, suiteName: suiteName)
+    let settings = Settings(suiteName: suiteName)
     let userDefaults = UserDefaults(suiteName: suiteName)!
     userDefaults.removeObject(forKey: foo)
-    ActivePresetKind.set(key: foo, value: .none, source: settings, isGlobal: false)
+    ActivePresetKind.set(key: foo, value: .none, source: settings)
     XCTAssertNotNil(userDefaults.object(forKey: foo))
   }
 }

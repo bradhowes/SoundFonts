@@ -164,14 +164,16 @@ final public class FavoriteEditor: UIViewController {
     }
 
     let tuningComponent = TuningComponent(
-      tuning: 0.0, view: view,
+      enabled: presetConfig.presetTuningEnabled,
+      tuning: presetConfig.presetTuning,
+      view: view,
       scrollView: scrollView,
       tuningEnabledSwitch: presetTuningEnabled,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: presetTuningCents,
-      tuningFrequency: presetTuningFrequency,
-      settings: settings)
+      tuningFrequency: presetTuningFrequency)
+
     self.tuningComponent = tuningComponent
     tuningComponent.updateState(
       enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)

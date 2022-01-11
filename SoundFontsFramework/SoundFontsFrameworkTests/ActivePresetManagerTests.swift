@@ -83,7 +83,7 @@ class ActivePresetManagerTests: XCTestCase {
 
   override func setUp()
   {
-    settings = .init(inApp: true, suiteName: "ActivePresetManagerTests")
+    settings = .init(suiteName: "ActivePresetManagerTests")
     settings.remove(key: .lastActivePreset)
     soundFonts = .init()
     selectedSoundFontManager = .init()

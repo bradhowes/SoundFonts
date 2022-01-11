@@ -5,8 +5,6 @@ import UIKit
 @objc
 public final class TuningComponent: NSObject {
 
-  @objc dynamic public private(set) var tuning: Float
-
   private let view: UIView
   private let scrollView: UIScrollView
   private let tuningEnabledSwitch: UISwitch
@@ -14,7 +12,7 @@ public final class TuningComponent: NSObject {
   private let scientificTuningButton: UIButton
   private let tuningCents: UITextField
   private let tuningFrequency: UITextField
-  private let settings: Settings
+  private var tuningCentsValue: Float
 
   private lazy var numberParserFormatter: NumberFormatter = {
     let formatter = NumberFormatter()
@@ -25,12 +23,15 @@ public final class TuningComponent: NSObject {
 
   private let textFieldKeyboardMonitor: TextFieldKeyboardMonitor
 
+  public var tuning: Float { tuningCentsValue }
+
   public var viewToKeepVisible: UIView? {
     get { textFieldKeyboardMonitor.viewToKeepVisible }
     set { textFieldKeyboardMonitor.viewToKeepVisible = newValue }
   }
 
   public init(
+    enabled: Bool,
     tuning: Float,
     view: UIView,
     scrollView: UIScrollView,
@@ -38,10 +39,9 @@ public final class TuningComponent: NSObject {
     standardTuningButton: UIButton,
     scientificTuningButton: UIButton,
     tuningCents: UITextField,
-    tuningFrequency: UITextField,
-    settings: Settings
+    tuningFrequency: UITextField
   ) {
-    self.tuning = tuning
+    self.tuningCentsValue = tuning
     self.view = view
     self.scrollView = scrollView
     self.tuningEnabledSwitch = tuningEnabledSwitch
@@ -50,7 +50,6 @@ public final class TuningComponent: NSObject {
     self.tuningCents = tuningCents
     self.tuningFrequency = tuningFrequency
     self.textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
-    self.settings = settings
 
     super.init()
 
@@ -63,6 +62,8 @@ public final class TuningComponent: NSObject {
 
     tuningCents.inputAssistantItem.leadingBarButtonGroups = []
     tuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
+
+    updateState(enabled: enabled, cents: tuning)
 
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(
@@ -84,27 +85,24 @@ extension TuningComponent {
 
 extension TuningComponent {
 
-  private func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuning) }
+  private func toggledTuningEnabled(_ switch: Any) { setTuningCents(tuningCentsValue) }
 
   private func useStandardTuning(_ button: Any) { setTuningFrequency(440.0) }
 
   private func useScientificTuning(_ button: Any) { setTuningFrequency(432.0) }
+
+  private func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }
 
   private func centsToFrequency(_ cents: Float) -> Float { pow(2.0, (cents / 1200.0)) * 440.0 }
 
   private func frequencyToCents(_ frequency: Float) -> Float { log2(frequency / 440.0) * 1200.0 }
 
   private func setTuningCents(_ value: Float) {
-    tuning = min(max(value, -2400.0), 2400.0)
-    tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuning))
-    tuningFrequency.text = numberParserFormatter.string(
-      from: NSNumber(value: centsToFrequency(tuning)))
-    Sampler.setTuningNotification.post(
-      value: tuningEnabledSwitch.isOn
-        ? tuning : (settings.globalTuningEnabled ? settings.globalTuning : 0.0))
+    tuningCentsValue = min(max(value, -2400.0), 2400.0)
+    tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
+    tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuningCentsValue)))
+    Sampler.setTuningNotification.post(value: tuningEnabledSwitch.isOn ? tuningCentsValue : 0.0)
   }
-
-  private func setTuningFrequency(_ value: Float) { setTuningCents(frequencyToCents(value)) }
 }
 
 extension TuningComponent: UITextFieldDelegate {
@@ -121,16 +119,12 @@ extension TuningComponent: UITextFieldDelegate {
 
   public func textFieldDidBeginEditing(_ textField: UITextField) {
     DispatchQueue.main.async {
-      textField.selectedTextRange = textField.textRange(
-        from: textField.endOfDocument,
-        to: textField.endOfDocument)
+      textField.selectedTextRange = textField.textRange(from: textField.endOfDocument, to: textField.endOfDocument)
     }
   }
 
-  public func textField(
-    _ textField: UITextField, shouldChangeCharactersIn range: NSRange,
-    replacementString string: String
-  ) -> Bool {
+  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+                        replacementString string: String) -> Bool {
     let invalid = NSCharacterSet(charactersIn: "0123456789.-").inverted
     let filtered = string.components(separatedBy: invalid).joined(separator: "")
     return string == filtered
@@ -138,9 +132,9 @@ extension TuningComponent: UITextFieldDelegate {
 
   public func textFieldDidEndEditing(_ textField: UITextField) {
     if textField == tuningCents {
-      parseGlobalTuningCents()
+      parseTuningCents()
     } else {
-      parseGlobalTuningFrequency()
+      parseTuningFrequency()
     }
     textFieldKeyboardMonitor.viewToKeepVisible = nil
   }
@@ -150,8 +144,7 @@ extension TuningComponent {
 
   @objc private func adjustForKeyboard(_ notification: Notification) {
     guard
-      let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
-        as? NSValue
+      let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
     else {
       return
     }
@@ -170,28 +163,28 @@ extension TuningComponent {
 
 extension TuningComponent {
 
-  private func parseGlobalTuningCents() {
+  private func parseTuningCents() {
     guard let text = tuningCents.text else {
-      setTuningCents(tuning)
+      setTuningCents(tuningCentsValue)
       return
     }
 
     guard let value = numberParserFormatter.number(from: text) else {
-      setTuningCents(tuning)
+      setTuningCents(tuningCentsValue)
       return
     }
 
     setTuningCents(value.floatValue)
   }
 
-  private func parseGlobalTuningFrequency() {
+  private func parseTuningFrequency() {
     guard let text = tuningFrequency.text else {
-      setTuningCents(tuning)
+      setTuningCents(tuningCentsValue)
       return
     }
 
     guard let value = numberParserFormatter.number(from: text) else {
-      setTuningCents(tuning)
+      setTuningCents(tuningCentsValue)
       return
     }
 

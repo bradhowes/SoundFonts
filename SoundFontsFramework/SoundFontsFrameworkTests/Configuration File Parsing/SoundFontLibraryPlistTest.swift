@@ -98,7 +98,7 @@ class SoundFontLibraryPListTest: XCTestCase {
       XCTAssertNotNil(soundFont)
     }
 
-    let soundFonts = SoundFontsManager(configFile, settings: Settings(inApp: true))
+    let soundFonts = SoundFontsManager(configFile, settings: Settings())
     XCTAssertTrue(soundFonts.restored)
     let favorites = FavoritesManager(configFile)
     XCTAssertTrue(favorites.restored)

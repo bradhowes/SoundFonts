@@ -15,7 +15,7 @@ public final class ConfigFileObserver {
 
   /// Convenience accessor for the collection of installed sound fonts
   public var soundFonts: SoundFontCollection {
-    precondition(restored)
+    precondition(restored && !configFile.config.soundFonts.isEmpty)
     return configFile.config.soundFonts
   }
 

@@ -10,92 +10,67 @@ import os.log
 public final class Settings: NSObject {
   private static let log = Logging.logger("Settings")
 
-  /// The name of the suite to use for user settings. This points to the shared location accessible by both the app and
-  /// AUv3 components.
-  public static let defaultSuiteName = "9GE3SKDXJM.group.com.braysoftware.SoundFontsShare"
+  @usableFromInline
+  internal var log: OSLog { Self.log }
 
   @usableFromInline
   internal let storage: UserDefaults
-  private let sessionIdentity: FileManager.Identity?
 
-  /// The unique identifier for a AUv3 component. This is nil for the app.
-  public var identity: Int? { sessionIdentity?.index }
-
-  /// A prefix that will be added to all user setting keys to isolate a configuration to an entity with a particular
-  /// identity.
-  public let keyPrefix: String
+  @usableFromInline
+  internal var componentSettings: [String: Any]?
 
   /**
    Construct new Settings instance.
 
-   - parameter inApp: `true` if running as the app
    - parameter suiteName: the UserDefaults suite to load (only for testing)
-   - parameter identity: optional identity to take on (only for testing)
    */
-  public init(inApp: Bool, suiteName: String = Settings.defaultSuiteName, identity: Int? = nil) {
-    os_log(.info, log: Self.log, "init - BEGIN: %d %{public}s", inApp, suiteName)
+  public init(suiteName: String = "") {
+    os_log(.info, log: Self.log, "init BEGIN - suiteName: '%{public}s'", suiteName)
     os_log(.info, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
 
-    guard
-      let defaults = UserDefaults(suiteName: suiteName)
-    else {
-      os_log(.error, log: Self.log, "failed to access %{public}s", suiteName)
-      fatalError("unable to access \(suiteName)")
-    }
-
-    self.storage = defaults
-
-    if inApp {
-      self.sessionIdentity = nil
-      self.keyPrefix = ""
-
-      // Before moving to use the shared settings container, user settings were stored in the default container. Fetch
-      // any values from there and register them as default values for the shared one in order to migrate previously-set
-      // values.
-      let oldValues = UserDefaults.standard.dictionaryRepresentation()
-      defaults.register(defaults: oldValues)
-    }
-    else {
-      let sessionIdentity: FileManager.Identity = {
-        if identity != nil {
-          return .init(identity!, URL(fileURLWithPath: NSHomeDirectory()), -1)
-        }
-        return FileManager.default.openIdentity()
-      }()
-
-      os_log(.info, log: Self.log, "using identity %d", sessionIdentity.index)
-      self.sessionIdentity = sessionIdentity
-      self.keyPrefix = "\(sessionIdentity.index)_"
+    if suiteName == "" {
+      self.storage = UserDefaults.standard
+    } else {
+      guard let defaults = UserDefaults(suiteName: suiteName) else {
+        os_log(.error, log: Self.log, "failed to access suite '%{public}s'", suiteName)
+        fatalError("unable to access \(suiteName)")
+      }
+      self.storage = defaults
     }
 
     super.init()
 
-    os_log(.info, log: Self.log, "init - END")
+    os_log(.info, log: Self.log, "init END")
   }
 }
 
 extension Settings {
 
   /**
-   Obtain a settings key that is appropriate for the instance that is running (app or AUv3 component)
+   Install values from a AUv3 state to serve as the settings for a AUv3 component.
 
-   - parameter key: the primary key
-   - returns: the instance key to use
+   - parameter state: dictionary of settings to use for setting values
    */
   @inlinable
-  public func instanceKey(_ key: String, isGlobal: Bool) -> String { isGlobal ? key : self.keyPrefix + key }
+  public func setAudioUnitState(_ state: [String: Any]) {
+    os_log(.info, log: log, "setAudioUnitState BEGIN - %{public}s", state.description)
+    componentSettings = state
+    os_log(.info, log: log, "setAudioUnitState END")
+  }
+}
+
+extension Settings {
 
   /**
    Fetch a settings value with a specific type.
 
    - parameter key: the name of the setting to fetch
    - parameter defaultValue: the default value to return if the setting has not been set
-   - parameter isGlobal: `true` if the setting is a global/shared setting and not distinct for each running instance.
    - returns: the setting value
    */
   @inlinable
-  public func get<T>(key: String, defaultValue: T, isGlobal: Bool) -> T {
-    let key = instanceKey(key, isGlobal: isGlobal)
+  public func get<T>(key: String, defaultValue: T) -> T {
+    if let value = componentSettings?[key] as? T { return value }
     if let value = storage.object(forKey: key) as? T { return value }
     storage.register(defaults: [key: defaultValue])
     return defaultValue
@@ -106,22 +81,27 @@ extension Settings {
 
    - parameter key: the name of the setting to set
    - parameter value: the value to assign to the setting
-   - parameter isGlobal: `true` if the setting is a global/shared setting and not distinct for each running instance.
    */
   @inlinable
-  public func set<T>(key: String, value: T, isGlobal: Bool) {
-    storage.set(value, forKey: instanceKey(key, isGlobal: isGlobal))
+  public func set<T>(key: String, value: T) {
+    if var state = componentSettings {
+      state[key] = value
+    } else {
+      storage.set(value, forKey: key)
+    }
   }
 
   /**
    Remove a setting.
 
    - parameter key: the name of the setting to remove
-   - parameter isGlobal: `true` if the setting is a global/shared setting and not distinct for each running instance.
    */
   @inlinable
   public func remove<T>(key: SettingKey<T>) {
-    storage.removeObject(forKey: instanceKey(key.key, isGlobal: key.isGlobal))
+    if var state = componentSettings {
+      state.removeValue(forKey: key.key)
+    }
+    storage.removeObject(forKey: key.key)
   }
 
   /**
@@ -132,8 +112,9 @@ extension Settings {
    - returns: the optional value found in the database
    */
   @inlinable
-  public func raw(key: String, isGlobal: Bool) -> Any? {
-    storage.object(forKey: instanceKey(key, isGlobal: isGlobal))
+  public func raw(key: String) -> Any? {
+    if let state = componentSettings, let value = state[key] { return value }
+    return storage.object(forKey: key)
   }
 
   /**
@@ -144,23 +125,8 @@ extension Settings {
    */
   @inlinable
   public subscript<T>(key: SettingKey<T>) -> T {
-    get { T.get(key: key.key, defaultValue: key.defaultValue, source: self, isGlobal: key.isGlobal) }
-    set { T.set(key: key.key, value: newValue, source: self, isGlobal: key.isGlobal) }
-  }
-
-  /**
-   Set/update a setting using a value taken from a type-erased dictionary. If the given dictionary has an entry that
-   matches the given key and the value in the dictionary can be used to create value of type `T`, then the settings
-   database will be updated with the typed value.
-
-   - parameter key: SettingKey instance to use as a key
-   - parameter from: the dictionary holding values to use
-   */
-  @inlinable
-  public func restore<T>(key: SettingKey<T>, from: [String: Any]) {
-    if let newValue = from[key.key] as? T {
-      T.set(key: key.key, value: newValue, source: self, isGlobal: key.isGlobal)
-    }
+    get { T.get(key: key.key, defaultValue: key.defaultValue, source: self) }
+    set { T.set(key: key.key, value: newValue, source: self) }
   }
 }
 

@@ -100,7 +100,7 @@ where T: ControllerConfiguration {
    */
   public init(inApp: Bool, configPath: URL) {
     self.inApp = inApp
-    self.settings = Settings(inApp: inApp)
+    self.settings = Settings()
 
     self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 

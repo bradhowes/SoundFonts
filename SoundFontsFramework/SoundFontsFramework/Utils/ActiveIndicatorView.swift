@@ -1,7 +1,6 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import os
 
 /// Show a vertical blue gradient band to indicate the active item in a list.
 public class ActiveIndicatorView: UIView {

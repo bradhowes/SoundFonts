@@ -162,14 +162,13 @@ extension ActivePresetKind: SettingSerializable {
     }
   }
 
-  public static func get(key: String, defaultValue: ActivePresetKind, source: Settings,
-                         isGlobal: Bool) -> ActivePresetKind {
+  public static func get(key: String, defaultValue: ActivePresetKind, source: Settings) -> ActivePresetKind {
 
     // Hand-decoding from Settings value to support legacy values which used Data containers.
     // Fetch the value as `Any` and then try to work with it as a Dict or as a Data container.
     //
-    guard let raw = source.raw(key: key, isGlobal: isGlobal) else {
-      source.set(key: key, value: defaultValue.encodeToDict(), isGlobal: isGlobal)
+    guard let raw = source.raw(key: key) else {
+      source.set(key: key, value: defaultValue.encodeToDict())
       return defaultValue
     }
     if let container = raw as? [String: Any] {
@@ -181,9 +180,9 @@ extension ActivePresetKind: SettingSerializable {
     return defaultValue
   }
 
-  public static func set(key: String, value: ActivePresetKind, source: Settings, isGlobal: Bool) {
+  public static func set(key: String, value: ActivePresetKind, source: Settings) {
     if let dict = value.encodeToDict() {
-      source.set(key: key, value: dict, isGlobal: isGlobal)
+      source.set(key: key, value: dict)
     }
   }
 }

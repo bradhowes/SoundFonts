@@ -21,17 +21,17 @@ public extension SettingKeys {
   static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", 1.4)
   /// The number of semitones a max pitch bend will cause in a playing note
   static let pitchBendRange = SettingKey("pitchBendRange", 2)
+  /// When true, global tuning is active
+  static let globalTuningEnabled = SettingKey("globalTuningEnabled", false)
+  /// The global tuning setting that is in effect
+  static let globalTuning = SettingKey("globalTuning", Float(0.0))
+  /// When true, copy an SF2 file into the application's folder when the file is added to the app.
 
   // MARK: - App / AUv3 shared settings
 
-  /// When true, global tuning is active
-  static let globalTuningEnabled = SettingKey("globalTuningEnabled", false, isGlobal: true)
-  /// The global tuning setting that is in effect
-  static let globalTuning = SettingKey("globalTuning", Float(0.0), isGlobal: true)
-  /// When true, copy an SF2 file into the application's folder when the file is added to the app.
-  static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", true, isGlobal: true)
+  static let copyFilesWhenAdding = SettingKey("copyFilesWhenAdding", true)
   /// When true, the user has seen the prompt on how to restore hidden presets
-  static let showedHidePresetPrompt = SettingKey("showedHidePresetPrompt", false, isGlobal: true)
+  static let showedHidePresetPrompt = SettingKey("showedHidePresetPrompt", false)
 
   // MARK: - App-only settings (not relevant for AUv3)
 

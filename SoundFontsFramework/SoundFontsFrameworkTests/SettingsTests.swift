@@ -17,8 +17,6 @@ private struct TSettings {
 class SettingsTests: XCTestCase {
 
   var settings: Settings!
-  var sessionSettings1: Settings!
-  var sessionSettings2: Settings!
 
   override func setUp() {
     let oldSettings = UserDefaults.standard
@@ -30,20 +28,18 @@ class SettingsTests: XCTestCase {
     oldSettings.set(false, forKey: "boolSetting")
     oldSettings.set(Tag.allTag.key.uuidString, forKey: "tagSetting")
 
-    settings = Settings(inApp: true, suiteName: "UserDefaultsTests")
-    sessionSettings1 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 1)
-    sessionSettings2 = Settings(inApp: false, suiteName: "UserDefaultsTests", identity: 2)
+    settings = Settings(suiteName: "UserDefaultsTests")
   }
 
   override func tearDown() {
-    for each in [settings!, sessionSettings1!, sessionSettings2!] {
-      each.remove(key: TSettings.intSetting)
-      each.remove(key: TSettings.stringSetting)
-      each.remove(key: TSettings.timeIntervalSetting)
-      each.remove(key: TSettings.doubleSetting)
-      each.remove(key: TSettings.floatSetting)
-      each.remove(key: TSettings.boolSetting)
-      each.remove(key: TSettings.tagSetting)
+    for each in [settings] {
+      each!.remove(key: TSettings.intSetting)
+      each!.remove(key: TSettings.stringSetting)
+      each!.remove(key: TSettings.timeIntervalSetting)
+      each!.remove(key: TSettings.doubleSetting)
+      each!.remove(key: TSettings.floatSetting)
+      each!.remove(key: TSettings.boolSetting)
+      each!.remove(key: TSettings.tagSetting)
     }
 
     let oldSettings = UserDefaults.standard
@@ -99,7 +95,7 @@ class SettingsTests: XCTestCase {
     let base64 = "WzAseyJuYW1lIjoiQ2xhdmluZXQiLCJzb3VuZEZvbnRLZXkiOiI4NDFDN0FBQS1DQTg3LTRCNkUtQTI2Ny1FQUQzNzMwMDkwNEYiLCJwYXRjaEluZGV4Ijo3fV0="
 
     // Should be good here
-    settings.set(key: "lastPresetSetting", value: Data(base64Encoded: base64)!, isGlobal: false)
+    settings.set(key: "lastPresetSetting", value: Data(base64Encoded: base64)!)
 
     var value = settings[TSettings.lastPresetSetting]
     XCTAssertNotNil(value)
@@ -119,42 +115,17 @@ class SettingsTests: XCTestCase {
     XCTAssertEqual("Blah", value.soundFontAndPreset?.itemName)
 
     // Raw-representation should be a dictionary
-    let dict = settings.raw(key: "lastPresetSetting", isGlobal: false) as? Dictionary<String, Any>
+    let dict = settings.raw(key: "lastPresetSetting") as? Dictionary<String, Any>
     XCTAssertNotNil(dict)
   }
 
-  func testSessionSettings() {
-
-    // Need this for some reason
-//    settings[TSettings.intSetting] = 123
-//    sessionSettings1[TSettings.intSetting] = 123
-//    sessionSettings2[TSettings.intSetting] = 123
-
+  func testAudioUnitStateSettings() {
+    var state: [String: Any] = ["intSetting": 1, "doubleSetting": 2.0, "stringSetting": "345"];
     XCTAssertEqual(123, settings[TSettings.intSetting])
-    XCTAssertEqual(123, sessionSettings1[TSettings.intSetting])
-    XCTAssertEqual(123, sessionSettings2[TSettings.intSetting])
-
-    sessionSettings1[TSettings.intSetting] = 456
-    XCTAssertEqual(123, settings[TSettings.intSetting])
-    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
-    XCTAssertEqual(123, sessionSettings2[TSettings.intSetting])
-
-    sessionSettings2[TSettings.intSetting] = 789
-    XCTAssertEqual(123, settings[TSettings.intSetting])
-    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
-    XCTAssertEqual(789, sessionSettings2[TSettings.intSetting])
-
-    settings[TSettings.intSetting] = 0
-    XCTAssertEqual(0, settings[TSettings.intSetting])
-    XCTAssertEqual(456, sessionSettings1[TSettings.intSetting])
-    XCTAssertEqual(789, sessionSettings2[TSettings.intSetting])
-  }
-
-  func testMigration() {
-    let oldSettings = UserDefaults.standard
-    oldSettings.set(999, forKey: TSettings.intSetting.key)
-    let settings = Settings(inApp: true, suiteName: "UserDefaultsTests2")
-    XCTAssertEqual(999, settings[TSettings.intSetting])
-    UserDefaults.resetStandardUserDefaults()
+    settings.setAudioUnitState(state)
+    XCTAssertEqual(1, settings[TSettings.intSetting])
+    state["intSetting"] = 2
+    settings.setAudioUnitState(state)
+    XCTAssertEqual(2, settings[TSettings.intSetting])
   }
 }

@@ -639,7 +639,6 @@
 		BD074C1323CDAF51001987E9 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				BDA5ACF9265D4284000AE48E /* Icon.swift */,
 				BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */,
 				BD2436AF2579356200162A49 /* ArrowView.swift */,
 				BD125B37241006200003DE99 /* AskForReview.swift */,
@@ -648,6 +647,7 @@
 				BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */,
 				BD074C1923CDAF51001987E9 /* Formatters.swift */,
 				BD130B182561755F00D1CDF6 /* Knob.swift */,
+				BDA5ACF9265D4284000AE48E /* Icon.swift */,
 				BD074C1523CDAF51001987E9 /* Logging.swift */,
 				BDA52C1B277CFFB70010BBF1 /* Settings */,
 				BD074C1A23CDAF51001987E9 /* SlidingViewManager.swift */,

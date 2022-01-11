@@ -5,7 +5,7 @@ import XCTest
 @testable import SoundFontsFramework
 
 class KeyTests: XCTestCase {
-  let settings = Settings(inApp: true)
+  let settings = Settings()
 
   func makeKeys() -> [Key] {
     let gen = KeyParamsSequence(

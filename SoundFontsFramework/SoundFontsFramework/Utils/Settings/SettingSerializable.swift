@@ -14,10 +14,9 @@ public protocol SettingSerializable {
    - parameter key: the setting name
    - parameter defaultValue: the default value to apply if the setting does not yet exist
    - parameter source: the container to fetch from
-   - parameter isGlobal: `true` if the setting is not unique for each instance but is shared by all of them
    - returns: value from the source
    */
-  static func get(key: String, defaultValue: Self, source: Settings, isGlobal: Bool) -> Self
+  static func get(key: String, defaultValue: Self, source: Settings) -> Self
 
   /**
    Store a setting value under the given key.
@@ -25,9 +24,8 @@ public protocol SettingSerializable {
    - parameter key: the setting name
    - parameter value: the value to save
    - parameter source: the container to save into
-   - parameter isGlobal: `true` if the setting is not unique for each instance but is shared by all of them
    */
-  static func set(key: String, value: Self, source: Settings, isGlobal: Bool)
+  static func set(key: String, value: Self, source: Settings)
 }
 
 public extension SettingSerializable {
@@ -38,11 +36,10 @@ public extension SettingSerializable {
    - parameter key: the setting name
    - parameter defaultValue: the default value to apply if the setting does not yet exist
    - parameter source: the container to fetch from
-   - parameter isGlobal: `true` if the setting is not unique for each instance but is shared by all of them
    - returns: value from the source
    */
-  static func get(key: String, defaultValue: Self, source: Settings, isGlobal: Bool) -> Self {
-    source.get(key: key, defaultValue: defaultValue, isGlobal: isGlobal)
+  static func get(key: String, defaultValue: Self, source: Settings) -> Self {
+    source.get(key: key, defaultValue: defaultValue)
   }
 
   /**
@@ -51,9 +48,8 @@ public extension SettingSerializable {
    - parameter key: the setting name
    - parameter value: the value to save
    - parameter source: the container to save into
-   - parameter isGlobal: `true` if the setting is not unique for each instance but is shared by all of them
    */
-  static func set(key: String, value: Self, source: Settings, isGlobal: Bool) {
-    source.set(key: key, value: value, isGlobal: isGlobal)
+  static func set(key: String, value: Self, source: Settings) {
+    source.set(key: key, value: value)
   }
 }

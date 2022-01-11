@@ -30,6 +30,15 @@ final class SoundFontsAU: AUAudioUnit {
   /// Maximum frames to render
   private let maxFramesToRender: UInt32 = 512
 
+  struct SoundFontAUState {
+    let activeTag: Tag.Key
+    let tuningCents: Float
+    let tuningEnabled: Bool
+    let pitchBendRange: Int
+    let presetsWidthMultiplier: Double
+    let showingFavorites: Bool
+  }
+
   /**
    Construct a new AUv3 component.
 
@@ -304,17 +313,7 @@ extension SoundFontsAU {
   override public var fullStateForDocument: [String: Any]? {
     get {
       os_log(.info, log: log, "fullStateForDocument GET")
-      var state = fullState ?? [String: Any]()
-      if let preset = _currentPreset {
-        state[kAUPresetNameKey] = preset.name
-        state[kAUPresetNumberKey] = preset.number
-      }
-      state[kAUPresetDataKey] = Data()
-      state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aumu")
-      state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "sfnt")
-      state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
-      state[kAUPresetVersionKey] = FourCharCode(67072)
-      return state
+      return fullState ?? [String: Any]()
     }
     set {
       os_log(.info, log: log, "fullStateForDocument SET")
@@ -335,9 +334,12 @@ extension SoundFontsAU {
     }
 
     state[SettingKeys.activeTagKey.key] = settings.activeTagKey.uuidString
-    state[SettingKeys.showingFavorites.key] = settings.showingFavorites
-    state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
+    state[SettingKeys.globalTuning.key] = settings.globalTuning
+    state[SettingKeys.globalTuningEnabled.key] = settings.globalTuningEnabled
     state[SettingKeys.pitchBendRange.key] = settings.pitchBendRange
+    state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
+    state[SettingKeys.showingFavorites.key] = settings.showingFavorites
+
     os_log(.info, log: log, "addInstanceSettings END")
   }
 
@@ -349,14 +351,7 @@ extension SoundFontsAU {
   private func restoreInstanceSettings(from state: [String: Any]) {
     os_log(.info, log: log, "restoreInstanceSettings BEGIN")
 
-    if let activeTagKeyString = state[SettingKeys.activeTagKey.key] as? String,
-       let activeTagKey = UUID(uuidString: activeTagKeyString) {
-      settings.activeTagKey = activeTagKey
-    }
-
-    settings.restore(key: SettingKeys.showingFavorites, from: state)
-    settings.restore(key: SettingKeys.presetsWidthMultiplier, from: state)
-    settings.restore(key: SettingKeys.pitchBendRange, from: state)
+    settings.setAudioUnitState(state)
 
     let value: ActivePresetKind = {
       if let dict = state[activeSoundFontPresetKey] as? [String: Any],
@@ -371,6 +366,11 @@ extension SoundFontsAU {
     }()
 
     self.activePresetManager.setActive(value)
+
+    if let activeTagKeyString = state[SettingKeys.activeTagKey.key] as? String,
+       let activeTagKey = UUID(uuidString: activeTagKeyString) {
+      settings.activeTagKey = activeTagKey
+    }
 
     os_log(.info, log: log, "restoreInstanceSettings END")
   }

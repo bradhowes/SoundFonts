@@ -273,7 +273,8 @@ extension FontsTableViewManager {
     os_log(.debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
     let isSelected = selectedSoundFontManager.selected == soundFont
     let isActive = activePresetManager.activeSoundFont == soundFont
-    cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, isSelected: isSelected, isActive: isActive)
+    cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, selected: isSelected ? .yes : .no,
+                       active: isActive ? .yes : .no)
     return cell
   }
 }

@@ -23,7 +23,6 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private let soundFonts: SoundFonts
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
-
   private var pending: ActivePresetKind = .none
 
   /// The currently active preset (if any)
@@ -151,9 +150,12 @@ extension ActivePresetManager {
     guard case .restored = event else { return }
     os_log(.info, log: log, "SF collection restored")
 
+    guard active == .none else { return }
+
     if pending != .none {
       os_log(.info, log: log, "using pending value")
       setActive(pending, playSample: false)
+      pending = .none
     } else {
       let restored = settings.lastActivePreset
       if isValid(restored) {

@@ -11,7 +11,7 @@ class SamplerMock: NoteProcessor {
 
 class TouchKeyMapTests: XCTestCase {
 
-  let settings = Settings(inApp: true)
+  let settings = Settings()
   var sampler: SamplerMock!
   var map: TouchKeyMap!
 

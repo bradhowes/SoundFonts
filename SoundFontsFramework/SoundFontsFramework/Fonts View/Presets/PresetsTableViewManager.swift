@@ -653,14 +653,16 @@ extension PresetsTableViewManager {
       os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in slot %d",
              preset.presetConfig.name, presetIndex, slotIndex.rawValue)
       cell.updateForPreset(name: preset.presetConfig.name,
-                           isActive: soundFontAndPreset == activePresetManager.active.soundFontAndPreset
-                           && activePresetManager.activeFavorite == nil)
+                           active: soundFontAndPreset == activePresetManager.active.soundFontAndPreset
+                           && activePresetManager.activeFavorite == nil ? .yes : .no,
+                           customTuning: preset.presetConfig.presetTuningEnabled ? .yes : .no)
     case let .favorite(key):
       let favorite = favorites.getBy(key: key)
       os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
              favorite.presetConfig.name, slotIndex.rawValue)
       cell.updateForFavorite(name: favorite.presetConfig.name,
-                             isActive: activePresetManager.activeFavorite == favorite)
+                             active: activePresetManager.activeFavorite == favorite ? .yes : .no,
+                             customTuning: favorite.presetConfig.presetTuningEnabled ? .yes : .no)
     }
     return cell
   }

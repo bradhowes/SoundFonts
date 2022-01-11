@@ -154,26 +154,20 @@ public final class SettingsViewController: UIViewController {
     super.viewWillAppear(animated)
 
     let tuningComponent = TuningComponent(
+      enabled: settings.globalTuningEnabled,
       tuning: settings.globalTuning,
       view: view, scrollView: scrollView,
       tuningEnabledSwitch: globalTuningEnabled,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: globalTuningCents,
-      tuningFrequency: globalTuningFrequency,
-      settings: settings
+      tuningFrequency: globalTuningFrequency
     )
-    self.tuningComponent = tuningComponent
 
-    tuningObserver = tuningComponent.observe(\.tuning, options: [.new]) { _, change in
-      guard let newValue = change.newValue else { return }
-      self.settings.globalTuning = newValue
-    }
+    self.tuningComponent = tuningComponent
 
     pitchBendStepper.value = Double(settings.pitchBendRange)
     updatePitchBendRange()
-
-    tuningComponent.updateState(enabled: globalTuningEnabled.isOn, cents: settings.globalTuning)
 
     if isMainApp {
 
@@ -232,17 +226,25 @@ public final class SettingsViewController: UIViewController {
   }
 
   override public func viewDidDisappear(_ animated: Bool) {
+    os_log(.info, log: log, "viewDidDisapper BEGIN")
     super.viewDidDisappear(animated)
-    guard let tuningComponent = self.tuningComponent else { return }
-    settings.globalTuning = tuningComponent.tuning
+
+    guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
+
     settings.globalTuningEnabled = globalTuningEnabled.isOn
-    self.tuningObserver = nil
+    settings.globalTuning = tuningComponent.tuning
+
+    os_log(.debug, log: log, "viewDidDisappear - tuningEnabled: %d", settings.globalTuningEnabled)
+    os_log(.debug, log: log, "viewDidDisappear - tuningEnabled: %f", settings.globalTuning)
+
     self.tuningComponent = nil
     self.midiConnectionsObserver = nil
 
     if let monitor = MIDI.sharedInstance.monitor, monitor === self {
       MIDI.sharedInstance.monitor = nil
     }
+
+    os_log(.info, log: log, "viewDidDisapper BEND")
   }
 }
 
@@ -261,6 +263,7 @@ extension SettingsViewController {
     for view in hideForKeyWidthChange {
       view.isHidden = false
     }
+
     midiChannelStackView.isHidden = isAUv3
     slideKeyboardStackView.isHidden = isAUv3
     bluetoothMIDIConnectStackView.isHidden = isAUv3

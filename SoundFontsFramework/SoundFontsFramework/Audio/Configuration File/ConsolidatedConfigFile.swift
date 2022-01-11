@@ -13,7 +13,7 @@ public final class ConsolidatedConfigFile: UIDocument {
   public static var sharedConfigPath: URL { FileManager.default.sharedPath(for: filename) }
 
   /// The value held in the document.
-  public lazy var config: ConsolidatedConfig = ConsolidatedConfig()
+  public var config: ConsolidatedConfig!
 
   @objc dynamic public private(set) var restored: Bool = false
 
@@ -36,10 +36,10 @@ public final class ConsolidatedConfigFile: UIDocument {
    with the default collections.
    */
   private func restore() {
-    os_log(.info, log: log, "load - %{public}s", fileURL.path)
+    os_log(.info, log: log, "restore - %{public}s", fileURL.path)
     self.open { ok in
       if !ok {
-        os_log(.error, log: Self.log, "failed to open - attempting legacy loading")
+        os_log(.error, log: Self.log, "restore - failed to open - attempting legacy loading")
 
         // We are back on the main thread so do the loading in the background.
         DispatchQueue.global(qos: .userInitiated).async {
@@ -93,6 +93,11 @@ public final class ConsolidatedConfigFile: UIDocument {
 
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
     os_log(.info, log: log, "revert: %{public}s", url.path)
+    self.close { ok in
+      if !ok {
+        os_log(.fault, log: Self.log, "revert - failed to close configuration file")
+      }
+    }
     super.revert(toContentsOf: url, completionHandler: completionHandler)
   }
 }
@@ -124,6 +129,12 @@ extension ConsolidatedConfigFile {
     os_log(.info, log: log, "restoreConfig")
     self.config = config
     self.restored = true
-    self.save(to: fileURL, for: .forOverwriting, completionHandler: nil)
+    if save {
+      self.save(to: fileURL, for: .forOverwriting) { ok in
+        if !ok {
+          os_log(.fault, log: Self.log, "restoreConfig - failed to save configuration file")
+        }
+      }
+    }
   }
 }

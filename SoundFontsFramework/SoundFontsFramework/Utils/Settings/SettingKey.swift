@@ -14,19 +14,14 @@ public class SettingKey<ValueType: SettingSerializable>: SettingKeys {
   /// The default value to register for the setting
   public let defaultValue: ValueType
 
-  /// When `true`, the setting is shared across all instances of the app / AUv3
-  public let isGlobal: Bool
-
   /**
    Define a new setting key.
 
    - parameter key: the unique identifier to use for this setting
    - parameter defaultValue: the constant default value to use
-   - parameter isGlobal: determines if setting is shared (`true`) across instances or is unique (`false`) for each
    */
-  public init(_ key: String, _ defaultValue: ValueType, isGlobal: Bool = false) {
+  public init(_ key: String, _ defaultValue: ValueType) {
     self.key = key
     self.defaultValue = defaultValue
-    self.isGlobal = isGlobal
   }
 }

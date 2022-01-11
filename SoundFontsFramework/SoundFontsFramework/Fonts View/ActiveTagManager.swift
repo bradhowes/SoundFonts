@@ -73,7 +73,7 @@ extension ActiveTagManager {
     let row = indexPath.row
     let tag = tags.getBy(index: row)
     let name = tag.name
-    cell.updateForTag(name: name, isActive: activeIndex == row)
+    cell.updateForTag(name: name, active: activeIndex == row ? .yes : .no)
     return cell
   }
 }

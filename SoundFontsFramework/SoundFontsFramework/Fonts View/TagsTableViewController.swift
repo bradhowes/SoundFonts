@@ -293,7 +293,7 @@ extension TagsTableViewController {
     }
 
     let isActive = tag == Tag.allTag || active.contains(tag.key) || (self.builtIn && tag == Tag.builtInTag)
-    cell.updateForTag(name: tag.name, isActive: isActive)
+    cell.updateForTag(name: tag.name, active: isActive ? .yes : .no)
 
     return cell
   }
