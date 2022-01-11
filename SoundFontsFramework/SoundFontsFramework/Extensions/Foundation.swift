@@ -1,6 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
+import CoreGraphics
 
 extension String: SettingSerializable {}
 extension Int: SettingSerializable {}
@@ -47,4 +48,8 @@ extension Comparable {
   public func clamped(to limits: ClosedRange<Self>) -> Self {
     min(max(self, limits.lowerBound), limits.upperBound)
   }
+}
+
+extension CGPoint: CustomStringConvertible {
+  public var description: String { "<CGPoint x: \(x), y: \(y)>"}
 }
