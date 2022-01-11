@@ -17,17 +17,16 @@ public final class PresetsTableViewController: UITableViewController {
 
   @IBOutlet public var searchBar: UISearchBar!
 
-  public var beginSearchDueToDrag: Bool = false
   public var isSearching: Bool { searchBar.isFirstResponder }
   private var lastSearchText = ""
 
   private var presetsTableViewManager: PresetsTableViewManager!
   var scrollToSlot: IndexPath?
 
-  var isSearchBarVisible: Bool { self.tableView.contentOffset.y < searchBar.frame.height }
-
   typealias AfterReloadDataAction = () -> Void
   var afterReloadDataAction: AfterReloadDataAction?
+
+  var searchBarHeight: CGFloat = 0.0
 }
 
 extension PresetsTableViewController {
@@ -37,28 +36,17 @@ extension PresetsTableViewController {
 
     tableView.sectionIndexColor = .darkGray
     tableView.register(TableCell.self)
-
     searchBar.delegate = self
-
-    // Don't show the search bar due to elongation of table view when the effects view disappears.
-    NotificationCenter.default.addObserver(forName: .hidingEffects, object: nil, queue: nil) { _ in
-      DispatchQueue.main.async {
-        os_log(.info, log: self.log, "hiding effects view -- hiding search bar")
-        self.hideSearchBar()
-      }
-    }
   }
 
   public override func viewWillAppear(_ animated: Bool) {
     os_log(.info, log: log, "viewWillAppear BEGIN")
     super.viewWillAppear(animated)
-    os_log(.info, log: log, "viewWillAppear END")
-  }
 
-  public override func viewWillLayoutSubviews() {
-    // os_log(.info, log: log, "viewWillLayoutSubviews BEGIN")
-    super.viewWillLayoutSubviews()
-    // os_log(.info, log: log, "viewWillLayoutSubviews END")
+    searchBarHeight = searchBar.frame.height
+    tableView.tableHeaderView = nil
+
+    os_log(.info, log: log, "viewWillAppear END")
   }
 
   public override func viewDidLayoutSubviews() {
@@ -66,48 +54,34 @@ extension PresetsTableViewController {
     super.viewDidLayoutSubviews()
 
     if isEditing {
-      hideSearchBarIfVisible()
       os_log(.info, log: log, "viewDidLayoutSubviews END")
       return
     }
 
-    // While the table is moving, record if the searchBar is visible.
-    if tableView.isDragging || tableView.isDecelerating {
-      beginSearchDueToDrag = isSearchBarVisible
+    if tableView.isDragging && tableView.contentOffset.y < -60 {
+      beginSearch()
+      return
     }
-    else {
-      // If searchBar was visible at end of drag, begin search. Otherwise, make sure that the searchBar stays hidden.
-      if beginSearchDueToDrag {
-        beginSearchDueToDrag = false
-        beginSearch()
-      }
-      else {
-        if let action = afterReloadDataAction {
-          os_log(.info, log: log, "viewDidLayoutSubviews - running action")
-          afterReloadDataAction = nil
-          action()
-        }
 
-         scrollToActiveSlot()
-         hideSearchBarIfVisible()
-      }
+    if let action = afterReloadDataAction {
+      os_log(.info, log: log, "viewDidLayoutSubviews - running action")
+      afterReloadDataAction = nil
+      action()
     }
+    scrollToActiveSlot()
 
     os_log(.info, log: log, "viewDidLayoutSubviews END")
   }
 
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     os_log(.debug, log: log, "viewWillTransition BEGIN")
-    if isSearchBarVisible {
-      coordinator.animate { _ in self.hideSearchBar() } completion: { _ in }
-    }
     os_log(.debug, log: log, "viewWillTransition END")
   }
 
   public func scrollToActiveSlot() {
     if let scrollToSlot = self.scrollToSlot {
       os_log(.info, log: log, "scrollToActiveSlot %d/%d", scrollToSlot.section, scrollToSlot.row)
-      tableView.scrollToRow(at: scrollToSlot, at: .none, animated: false)
+      tableView.scrollToRow(at: scrollToSlot, at: .middle, animated: false)
       self.scrollToSlot = nil
     }
   }
@@ -227,11 +201,6 @@ extension PresetsTableViewController {
     let changes = presetsTableViewManager.applyVisibilityChanges(soundFont: soundFont, isEditing: true)
     tableView.performBatchUpdates {
       tableView.reloadSectionIndexTitles()
-
-      // ???
-      if tableView.contentOffset.y == searchBar.frame.height {
-        tableView.contentOffset = .zero
-      }
       if !changes.isEmpty {
         self.tableView.insertRows(at: changes, with: .none)
       }
@@ -265,6 +234,7 @@ extension PresetsTableViewController: UISearchBarDelegate {
   public func beginSearch() {
     guard searchBar.isFirstResponder == false else { return }
     let offset: CGPoint = .init(x: self.tableView.contentOffset.x, y: 0)
+    tableView.tableHeaderView = searchBar
     UIView.animate(withDuration: 0.25) {
       self.tableView.contentOffset = offset
       self.searchBar.beginSearch(with: self.lastSearchText)
@@ -277,24 +247,20 @@ extension PresetsTableViewController: UISearchBarDelegate {
     lastSearchText = searchBar.nonNilSearchTerm
     searchBar.endSearch()
     presetsTableViewManager.cancelSearch()
-    UIView.animate(withDuration: 0.25) {
-      self.hideSearchBar()
-    }
-  }
-
-  public func hideSearchBarIfVisible() {
-    os_log(.debug, log: log, "hideSearchIfVisible BEGIN")
-    if !isSearching && isSearchBarVisible {
-      os_log(.debug, log: log, "hideSearchIfVisible - hiding")
-      hideSearchBar()
-    }
-    os_log(.debug, log: log, "hideSearchIfVisible END")
-  }
-
-  private func hideSearchBar() {
-    if isSearchBarVisible {
-      self.tableView.contentOffset = .init(x: self.tableView.contentOffset.x, y: searchBar.frame.height)
-    }
+    self.tableView.tableHeaderView = nil
+    self.presetsTableViewManager.showActiveSlot()
+//
+//    if self.tableView.contentOffset.y < self.searchBar.frame.height {
+//      UIView.animate(withDuration: 0.25) {
+//        self.tableView.contentOffset = .init(x: 0, y: self.searchBar.frame.height)
+//      } completion: { _ in
+//        self.tableView.tableHeaderView = nil
+//        self.tableView.contentOffset = .zero
+//      }
+//    }
+//    else {
+//      self.tableView.tableHeaderView = nil
+//    }
   }
 
   /**
