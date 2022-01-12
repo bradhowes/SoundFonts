@@ -5,7 +5,7 @@ import os
 
 /// Typed notification definition. Template argument defines the type of a value that will be transmitted in the
 /// notification userInfo["value"] slot. This value will be available to blocks registered to receive it
-open class TypedNotification<A> {
+open class TypedNotification<ValueType> {
 
   /// The name of the notification
   public let name: Notification.Name
@@ -29,17 +29,17 @@ open class TypedNotification<A> {
 
    - parameter value: the value to forward to the observers
    */
-  open func post(value: A) {
+  open func post(value: ValueType) {
     NotificationCenter.default.post(name: name, object: nil, userInfo: ["value": value])
   }
 
   /**
-   Register an observer to receive this notification defintion.
+   Register an observer to receive this notification definition.
 
    - parameter block: a closure to execute when this kind of notification arrives
    - returns: a NotificationObserver instance that records the registration.
    */
-  open func registerOnAny(block: @escaping (A) -> Void) -> NotificationObserver {
+  open func registerOnAny(block: @escaping (ValueType) -> Void) -> NotificationObserver {
     NotificationObserver(notification: self, block: block)
   }
 
@@ -49,7 +49,7 @@ open class TypedNotification<A> {
    - parameter block: a closure to execute when this kind of notification arrives
    - returns: a NotificationObserver instance that records the registration.
    */
-  open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
+  open func registerOnMain(block: @escaping (ValueType) -> Void) -> NotificationObserver {
     NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
   }
 }
@@ -63,14 +63,10 @@ public class NotificationObserver {
   /**
    Create a new observer for the given typed notification
    */
-  public init<A>(notification: TypedNotification<A>, block aBlock: @escaping (A) -> Void) {
+  public init<ValueType>(notification: TypedNotification<ValueType>, block aBlock: @escaping (ValueType) -> Void) {
     name = notification.name
-    observer = NotificationCenter.default.addObserver(
-      forName: notification.name, object: nil, queue: nil
-    ) { note in
-      guard let value = note.userInfo?["value"] as? A else {
-        fatalError("Couldn't understand user info")
-      }
+    observer = NotificationCenter.default.addObserver(forName: notification.name, object: nil, queue: nil) { note in
+      guard let value = note.userInfo?["value"] as? ValueType else { fatalError("Couldn't understand user info") }
       aBlock(value)
     }
   }
@@ -80,9 +76,9 @@ public class NotificationObserver {
    is no longer held by another object).
    */
   public func forget() {
-    guard let obs = observer else { return }
-    NotificationCenter.default.removeObserver(obs)
-    observer = nil
+    guard let observer = self.observer else { return }
+    NotificationCenter.default.removeObserver(observer)
+    self.observer = nil
   }
 
   /**

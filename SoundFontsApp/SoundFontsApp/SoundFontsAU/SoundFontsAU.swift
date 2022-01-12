@@ -88,10 +88,10 @@ final class SoundFontsAU: AUAudioUnit {
 
     maximumFramesToRender = maxFramesToRender
 
-    self.currentPresetObserver = wrapped.observe(\.currentPreset, options: [.new]) { [weak self] _, change in
-      guard let self = self, let newValue = change.newValue else { return }
-      self.currentPresetChanged(newValue)
-    }
+//    self.currentPresetObserver = wrapped.observe(\.currentPreset, options: [.new]) { [weak self] _, change in
+//      guard let self = self, let newValue = change.newValue else { return }
+//      self.currentPresetChanged(newValue)
+//    }
 
     self.activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
@@ -116,8 +116,9 @@ extension SoundFontsAU {
    - parameter event: the event that happened
    */
   private func activePresetChanged(_ event: ActivePresetEvent) {
+    os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     switch event {
-    case .active:
+    case .change:
       self.currentPreset = nil
       useActivePreset()
     }
@@ -205,7 +206,8 @@ extension SoundFontsAU {
   private func reloadActivePreset() {
     os_log(.info, log: log, "reloadActivePreset BEGIN")
     guard let activePreset = activePresetManager.activePreset,
-          let soundFont = activePresetManager.activeSoundFont
+          let soundFont = activePresetManager.activeSoundFont,
+          let presetConfig = activePresetManager.activePresetConfig
     else {
       os_log(.info, log: log, "reloadActivePreset END - no active preset")
       return
@@ -229,6 +231,7 @@ extension SoundFontsAU {
     // This is an inherent *flaky* hack. We don't immediately reenable rendering with the AudioUnit.
     DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.future(0.2)) {
       self.kernel.setBypass(false)
+      self.sampler.applyPresetConfig(presetConfig)
     }
 
     os_log(.info, log: log, "reloadActivePreset END")
@@ -365,7 +368,7 @@ extension SoundFontsAU {
       return .none
     }()
 
-    self.activePresetManager.setActive(value)
+    self.activePresetManager.restoreActive(value)
 
     if let activeTagKeyString = state[SettingKeys.activeTagKey.key] as? String,
        let activeTagKey = UUID(uuidString: activeTagKeyString) {
@@ -414,7 +417,7 @@ extension SoundFontsAU {
 
       if preset.number < 0 {
         if #available(iOS 13.0, *) {
-          if let fullState = try? presetState(for: preset) {
+          if let fullState = try? wrapped.presetState(for: preset) {
             self.fullState = fullState
             _currentPreset = preset
           }

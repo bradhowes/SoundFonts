@@ -226,7 +226,16 @@ extension MainViewController: ControllerConfiguration {
     #endif
 
     router.subscribe(self, notifier: routerChange)
-    router.activePresetManager.subscribe(self, notifier: activePresetChange)
+    router.activePresetManager.subscribe(self, notifier: activePresetChanged)
+
+    let preset: ActivePresetKind = {
+      let lastActivePreset = settings.lastActivePreset
+      if lastActivePreset != .none { return lastActivePreset }
+      if let defaultPreset = router.soundFonts.defaultPreset { return .preset(soundFontAndPreset: defaultPreset) }
+      return .none
+    }()
+
+    activePresetManager.restoreActive(preset)
   }
 
   private func startMIDI() {
@@ -249,8 +258,8 @@ extension MainViewController: ControllerConfiguration {
     }
   }
 
-  private func activePresetChange(_ event: ActivePresetEvent) {
-    if case let .active(old: _, new: new, playSample: playSample) = event {
+  private func activePresetChanged(_ event: ActivePresetEvent) {
+    if case let .change(old: _, new: new, playSample: playSample) = event {
       useActivePresetKind(new, playSample: playSample)
     }
   }

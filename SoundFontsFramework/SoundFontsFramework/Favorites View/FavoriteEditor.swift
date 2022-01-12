@@ -2,7 +2,8 @@
 
 import UIKit
 
-/// Provides an editing facility for presets and favorites instances.
+/// Provides an editing facility for presets and favorites instances. Originally it was just for favorites, hence the
+/// name.
 final public class FavoriteEditor: UIViewController {
 
   public struct State {
@@ -13,6 +14,7 @@ final public class FavoriteEditor: UIViewController {
     let completionHandler: ((Bool) -> Void)?
     let soundFonts: SoundFonts
     let soundFontAndPreset: SoundFontAndPreset
+    let isActive: Bool
     let settings: Settings
   }
 
@@ -91,7 +93,6 @@ final public class FavoriteEditor: UIViewController {
   @IBOutlet private weak var bankIndex: UILabel!
   @IBOutlet private weak var keyLabel: UILabel!
 
-  @IBOutlet private weak var presetTuningEnabled: UISwitch!
   @IBOutlet private weak var standardTuningButton: UIButton!
   @IBOutlet private weak var scientificTuningButton: UIButton!
   @IBOutlet private weak var presetTuningCents: UITextField!
@@ -164,19 +165,17 @@ final public class FavoriteEditor: UIViewController {
     }
 
     let tuningComponent = TuningComponent(
-      enabled: presetConfig.presetTuningEnabled,
       tuning: presetConfig.presetTuning,
       view: view,
       scrollView: scrollView,
-      tuningEnabledSwitch: presetTuningEnabled,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: presetTuningCents,
-      tuningFrequency: presetTuningFrequency)
+      tuningFrequency: presetTuningFrequency,
+      isActive: config.state.isActive)
 
     self.tuningComponent = tuningComponent
-    tuningComponent.updateState(
-      enabled: presetConfig.presetTuningEnabled, cents: presetConfig.presetTuning)
+    tuningComponent.updateState(cents: presetConfig.presetTuning)
 
     setPitchBendRange(presetConfig.pitchBendRange ?? settings.pitchBendRange)
     setGainValue(presetConfig.gain)
@@ -318,7 +317,6 @@ extension FavoriteEditor {
     presetConfig.gain = self.presetConfig.gain
     presetConfig.pan = self.presetConfig.pan
 
-    presetConfig.presetTuningEnabled = presetTuningEnabled.isOn
     presetConfig.presetTuning = tuningComponent.tuning
     presetConfig.notes = notesTextView.text
 
@@ -330,7 +328,9 @@ extension FavoriteEditor {
     dismissed(reason: .done(response: response))
   }
 
-  private func discard() { dismissed(reason: .cancel) }
+  private func discard() {
+    dismissed(reason: .cancel)
+  }
 
   private func dismissed(reason: FavoriteEditorDismissedReason) {
     AskForReview.maybe()
@@ -343,7 +343,9 @@ extension FavoriteEditor {
     let value = Int(pitchBendStepper.value)
     pitchBendRange.text = "\(value)"
     presetConfig.pitchBendRange = value
-    PresetConfig.changedNotification.post(value: presetConfig)
+    if config.state.isActive {
+      Sampler.pitchBendRangeChangedNotification.post(value: value)
+    }
   }
 
   private func setPitchBendRange(_ value: Int) {
@@ -355,7 +357,9 @@ extension FavoriteEditor {
     gainValue.text = "\(formatFloat(value)) dB"
     gainSlider.value = value
     presetConfig.gain = value
-    PresetConfig.changedNotification.post(value: presetConfig)
+    if config.state.isActive {
+      Sampler.gainChangedNotification.post(value: value)
+    }
   }
 
   private func setPanValue(_ value: Float) {
@@ -365,7 +369,9 @@ extension FavoriteEditor {
     panRight.text = "\(right)"
     panSlider.value = value
     presetConfig.pan = value
-    PresetConfig.changedNotification.post(value: presetConfig)
+    if config.state.isActive {
+      Sampler.panChangedNotification.post(value: value)
+    }
   }
 
   /**

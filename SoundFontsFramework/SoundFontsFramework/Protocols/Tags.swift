@@ -3,7 +3,7 @@
 import Foundation
 
 /// The various tag events that can happen.
-public enum TagsEvent {
+public enum TagsEvent: CustomStringConvertible {
 
   /// New tag added
   case added(new: Int, tag: Tag)
@@ -15,6 +15,16 @@ public enum TagsEvent {
   case removed(old: Int, tag: Tag)
   /// Tags were restored from disk / configuration
   case restored
+
+  public var description: String {
+    switch self {
+    case let .added(new, tag): return "<TagsEvent: added \(new) '\(tag)'>"
+    case let .moved(old, new, tag): return "<TagsEvent: moved \(old) \(new) '\(tag)'>"
+    case let .changed(index, tag): return "<TagsEvent: changed \(index) '\(tag)'>"
+    case let .removed(old, tag): return "<TagsEvent: removed \(old) '\(tag)'>"
+    case .restored: return "<TagsEvent: restored>"
+    }
+  }
 }
 
 /// Protocol for activity involving sound font tags.

@@ -39,7 +39,7 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, ".preset(<E621E1F8-C36C-495A-93FC-0C247A3E6E5F[1]: 'Foo'>)")
+    XCTAssertEqual(kind.description, "<ActivePresetKind: preset <E621E1F8-C36C-495A-93FC-0C247A3E6E5F[1]: 'Foo'>>")
   }
 
   func testFavoriteKind() {
@@ -72,7 +72,7 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, ".favorite('foo': <E621E1F8-C36C-495A-93FC-0C247A3E6E5F[1]: 'Foo'>)")
+    XCTAssertEqual(kind.description, "<ActivePresetKind: favorite 'foo': <E621E1F8-C36C-495A-93FC-0C247A3E6E5F[1]: 'Foo'>>")
   }
 
   func testNoneKind() {
@@ -97,7 +97,7 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, ".none")
+    XCTAssertEqual(kind.description, "<ActivePresetKind: none>")
   }
 
   func testBogusEncoding1() {

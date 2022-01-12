@@ -26,7 +26,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="309"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LhQ-ia-e1C" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1058.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1015.5"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJm-Kh-cBE" userLabel="Upper Background">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
@@ -36,7 +36,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="mMk-qS-UW8">
-                                                <rect key="frame" x="20" y="20" width="374" height="1018.5"/>
+                                                <rect key="frame" x="20" y="20" width="374" height="975.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Dxo-aN-fl6" userLabel="Key Labels">
                                                         <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
@@ -210,28 +210,33 @@
                                                             </button>
                                                         </subviews>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7h4-ob-UUq" userLabel="Pitchbend">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="PJ9-Xw-Zgl" userLabel="Pitchbend">
                                                         <rect key="frame" x="0.0" y="350.5" width="374" height="32"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-vj-67t">
-                                                                <rect key="frame" x="0.0" y="6" width="254" height="20.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jit-2J-S2A">
-                                                                <rect key="frame" x="262" y="6" width="10" height="20.5"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-cD-mQb">
-                                                                <rect key="frame" x="280" y="0.0" width="94" height="32"/>
-                                                                <color key="tintColor" systemColor="systemTealColor"/>
-                                                                <connections>
-                                                                    <action selector="pitchBendStep:" destination="Eyw-X4-KFI" eventType="valueChanged" id="bbq-kC-pKD"/>
-                                                                </connections>
-                                                            </stepper>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7h4-ob-UUq" userLabel="Pitchbend">
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="32"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="250" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-vj-67t" userLabel="Range (semitones)">
+                                                                        <rect key="frame" x="0.0" y="6" width="254" height="20.5"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jit-2J-S2A">
+                                                                        <rect key="frame" x="262" y="6" width="10" height="20.5"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minimumValue="1" maximumValue="24" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-cD-mQb">
+                                                                        <rect key="frame" x="280" y="0.0" width="94" height="32"/>
+                                                                        <color key="tintColor" systemColor="systemTealColor"/>
+                                                                        <connections>
+                                                                            <action selector="pitchBendStep:" destination="Eyw-X4-KFI" eventType="valueChanged" id="bbq-kC-pKD"/>
+                                                                        </connections>
+                                                                    </stepper>
+                                                                </subviews>
+                                                            </stackView>
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YUI-6Q-fOc" userLabel="Divider">
@@ -242,29 +247,13 @@
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="2U6-4F-HCm" userLabel="Tuning">
-                                                        <rect key="frame" x="0.0" y="418.5" width="374" height="184"/>
+                                                        <rect key="frame" x="0.0" y="418.5" width="374" height="141"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KS0-2S-foY">
-                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="31"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Global Tuning" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nCc-so-4ci" userLabel="Global Tuning">
-                                                                        <rect key="frame" x="0.0" y="5.5" width="104.5" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4XA-dy-hJr" userLabel="enableTuning">
-                                                                        <rect key="frame" x="325" y="0.0" width="51" height="31"/>
-                                                                        <color key="tintColor" systemColor="systemTealColor"/>
-                                                                        <color key="onTintColor" systemColor="systemTealColor"/>
-                                                                    </switch>
-                                                                </subviews>
-                                                            </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1zf-mx-tmn" userLabel="Standard Tuning">
-                                                                <rect key="frame" x="0.0" y="43" width="374" height="25.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="374" height="25.5"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Standard tuning (A4 = 440 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6MB-U0-bhb">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="235.5" height="20.5"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Standard (A4 = 440 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6MB-U0-bhb">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="183" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -278,10 +267,10 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="boz-vQ-bax" userLabel="Verdi Tuning">
-                                                                <rect key="frame" x="0.0" y="80.5" width="374" height="25.5"/>
+                                                                <rect key="frame" x="0.0" y="37.5" width="374" height="25.5"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scientific tuning (A4 = 432 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZfA-VF-oxp">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="235.5" height="20.5"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scientific (A4 = 432 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZfA-VF-oxp">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="183" height="20.5"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -295,7 +284,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lS9-o5-kne" userLabel="Cents">
-                                                                <rect key="frame" x="0.0" y="118" width="374" height="27"/>
+                                                                <rect key="frame" x="0.0" y="75" width="374" height="27"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cents (± 2400)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K1s-DB-ebe" userLabel="Cents">
                                                                         <rect key="frame" x="0.0" y="0.0" width="266" height="20.5"/>
@@ -316,7 +305,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="YdH-Uw-e2B" userLabel="Frequency">
-                                                                <rect key="frame" x="0.0" y="157" width="374" height="27"/>
+                                                                <rect key="frame" x="0.0" y="114" width="374" height="27"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A4 Frequency (Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zMb-Ed-4MZ" userLabel="Frequency">
                                                                         <rect key="frame" x="0.0" y="0.0" width="266" height="20.5"/>
@@ -339,14 +328,14 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmY-uR-JYF">
-                                                        <rect key="frame" x="0.0" y="614.5" width="374" height="12"/>
+                                                        <rect key="frame" x="0.0" y="571.5" width="374" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="12" id="eyf-UE-daP"/>
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4X-SY-9Rn" userLabel="Copy Files">
-                                                        <rect key="frame" x="0.0" y="638.5" width="374" height="31"/>
+                                                        <rect key="frame" x="0.0" y="595.5" width="374" height="31"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy SF2 files when adding" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9S-nd-AKR">
                                                                 <rect key="frame" x="0.0" y="5.5" width="211" height="20.5"/>
@@ -365,7 +354,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gCc-WA-CKG" userLabel="Remove">
-                                                        <rect key="frame" x="0.0" y="681.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="638.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hide built-in soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="feS-ti-Bte">
                                                                 <rect key="frame" x="0.0" y="5" width="334" height="20.5"/>
@@ -388,7 +377,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cY9-56-y6L" userLabel="Restore">
-                                                        <rect key="frame" x="0.0" y="723.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="680.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unhide built-in soundfonts" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ol-Ma-VZZ">
                                                                 <rect key="frame" x="0.0" y="5" width="328" height="20.5"/>
@@ -411,14 +400,14 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ift-0W-6iX">
-                                                        <rect key="frame" x="0.0" y="765.5" width="374" height="12"/>
+                                                        <rect key="frame" x="0.0" y="722.5" width="374" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="12" id="FKE-yc-9AT"/>
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9qL-FM-FBf" userLabel="Export">
-                                                        <rect key="frame" x="0.0" y="789.5" width="374" height="36"/>
+                                                        <rect key="frame" x="0.0" y="746.5" width="374" height="36"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Export all internal files to local SoundFonts folder on device." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjM-gJ-jQO">
                                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="36"/>
@@ -441,7 +430,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dRV-OG-PKO" userLabel="Import">
-                                                        <rect key="frame" x="0.0" y="837.5" width="374" height="36"/>
+                                                        <rect key="frame" x="0.0" y="794.5" width="374" height="36"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import all SF2 files in local SoundFonts folder on device." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAS-mV-qSc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="321" height="36"/>
@@ -464,7 +453,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rqq-tx-St9">
-                                                        <rect key="frame" x="0.0" y="885.5" width="374" height="12"/>
+                                                        <rect key="frame" x="0.0" y="842.5" width="374" height="12"/>
                                                         <viewLayoutGuide key="safeArea" id="TXV-e3-b5L"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
@@ -472,7 +461,7 @@
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="DU9-N7-tqE" userLabel="View tutorial screens">
-                                                        <rect key="frame" x="0.0" y="909.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="866.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View tutorial screens" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2FA-05-Mz7">
                                                                 <rect key="frame" x="0.0" y="6" width="143" height="18"/>
@@ -497,10 +486,10 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ln6-wm-AuL" userLabel="Version Review">
-                                                        <rect key="frame" x="0.0" y="951.5" width="374" height="30"/>
+                                                        <rect key="frame" x="0.0" y="908.5" width="374" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v2.23.4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yhk-bi-aBB" userLabel="APP_VERSION">
-                                                                <rect key="frame" x="0.0" y="6" width="48.5" height="18"/>
+                                                                <rect key="frame" x="0.0" y="6" width="51.5" height="18"/>
                                                                 <accessibility key="accessibilityConfiguration" identifier="Version"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -523,7 +512,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="M6m-O9-UZT" userLabel="Contact">
-                                                        <rect key="frame" x="0.0" y="993.5" width="374" height="25"/>
+                                                        <rect key="frame" x="0.0" y="950.5" width="374" height="25"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact developer (bradhowes@mac.com)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9L-FZ-ynD">
                                                                 <rect key="frame" x="0.0" y="3.5" width="293" height="18"/>
@@ -608,11 +597,7 @@
                         <outlet property="doneButton" destination="mMf-hJ-ZMc" id="4R0-Cf-eaW"/>
                         <outlet property="exportSoundFontsStackView" destination="9qL-FM-FBf" id="xah-p1-Y89"/>
                         <outlet property="globalTuningCents" destination="Nx6-PD-bKC" id="tlo-k8-XIK"/>
-                        <outlet property="globalTuningCentsLabel" destination="K1s-DB-ebe" id="KzE-5L-Qnu"/>
-                        <outlet property="globalTuningEnabled" destination="4XA-dy-hJr" id="gAz-nj-TnP"/>
                         <outlet property="globalTuningFrequency" destination="beq-ex-flb" id="s9w-Wj-55d"/>
-                        <outlet property="globalTuningFrequencyLabel" destination="zMb-Ed-4MZ" id="RhO-me-KjA"/>
-                        <outlet property="globalTuningTitle" destination="nCc-so-4ci" id="NMr-n2-4PR"/>
                         <outlet property="importSoundFontsStackView" destination="dRV-OG-PKO" id="03i-Di-Cqz"/>
                         <outlet property="keyLabelOption" destination="ajK-bt-gBN" id="t1n-L2-f6P"/>
                         <outlet property="keyLabelsStackView" destination="Dxo-aN-fl6" id="we4-5R-t2n"/>
@@ -623,7 +608,7 @@
                         <outlet property="midiChannelStepper" destination="5iQ-ck-lxN" id="f3f-18-xuQ"/>
                         <outlet property="midiConnections" destination="CEa-Q3-3GX" id="TlR-xh-pww"/>
                         <outlet property="pitchBendRange" destination="jit-2J-S2A" id="87O-PR-ola"/>
-                        <outlet property="pitchBendStackView" destination="7h4-ob-UUq" id="Vb8-Qu-hY2"/>
+                        <outlet property="pitchBendStackView" destination="PJ9-Xw-Zgl" id="EEE-Sr-M9h"/>
                         <outlet property="pitchBendStepper" destination="RY5-cD-mQb" id="mvR-Xp-0gp"/>
                         <outlet property="playSample" destination="JaD-vu-QJ2" id="N6G-zv-aub"/>
                         <outlet property="playSamplesStackView" destination="goE-tS-nbI" id="ot1-z5-tk6"/>
@@ -633,7 +618,6 @@
                         <outlet property="restoreSoundFontsStackView" destination="cY9-56-y6L" id="mfE-fl-LMu"/>
                         <outlet property="review" destination="NL8-An-Dti" id="Sfa-bh-6RE"/>
                         <outlet property="scientificTuningButton" destination="THj-i9-SWg" id="ede-EJ-tNS"/>
-                        <outlet property="scientificTuningLabel" destination="ZfA-VF-oxp" id="3cE-VJ-bQn"/>
                         <outlet property="scrollView" destination="b5u-sn-F2E" id="YBE-AN-NUe"/>
                         <outlet property="showSolfegeNotes" destination="Ngg-Rs-cwx" id="FxF-mH-RiW"/>
                         <outlet property="showTutorialButton" destination="mHN-pb-pNJ" id="66y-5t-a5U"/>
@@ -642,7 +626,6 @@
                         <outlet property="slideKeyboardStackView" destination="Y8y-cK-zGV" id="BXr-jm-6g5"/>
                         <outlet property="solfegeStackView" destination="Tmr-5h-0DY" id="Pf8-GH-5K9"/>
                         <outlet property="standardTuningButton" destination="3wE-M0-nqR" id="g5o-gI-Agu"/>
-                        <outlet property="standardTuningLabel" destination="6MB-U0-bhb" id="ZoG-aK-RY9"/>
                         <outlet property="tuningStackView" destination="2U6-4F-HCm" id="nev-iD-2NG"/>
                         <outlet property="upperBackground" destination="gJm-Kh-cBE" id="bct-YV-mXV"/>
                         <outlet property="versionReviewStackView" destination="Ln6-wm-AuL" id="Jd3-Ws-lEP"/>

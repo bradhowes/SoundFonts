@@ -7,11 +7,12 @@ public final class TuningComponent: NSObject {
 
   private let view: UIView
   private let scrollView: UIScrollView
-  private let tuningEnabledSwitch: UISwitch
   private let standardTuningButton: UIButton
   private let scientificTuningButton: UIButton
   private let tuningCents: UITextField
   private let tuningFrequency: UITextField
+  private let isActive: Bool
+
   private var tuningCentsValue: Float
 
   private lazy var numberParserFormatter: NumberFormatter = {
@@ -31,31 +32,28 @@ public final class TuningComponent: NSObject {
   }
 
   public init(
-    enabled: Bool,
     tuning: Float,
     view: UIView,
     scrollView: UIScrollView,
-    tuningEnabledSwitch: UISwitch,
     standardTuningButton: UIButton,
     scientificTuningButton: UIButton,
     tuningCents: UITextField,
-    tuningFrequency: UITextField
+    tuningFrequency: UITextField,
+    isActive: Bool
   ) {
     self.tuningCentsValue = tuning
     self.view = view
     self.scrollView = scrollView
-    self.tuningEnabledSwitch = tuningEnabledSwitch
     self.standardTuningButton = standardTuningButton
     self.scientificTuningButton = scientificTuningButton
     self.tuningCents = tuningCents
     self.tuningFrequency = tuningFrequency
     self.textFieldKeyboardMonitor = TextFieldKeyboardMonitor(view: view, scrollView: scrollView)
-
+    self.isActive = isActive
     super.init()
 
     standardTuningButton.addClosure(useStandardTuning)
     scientificTuningButton.addClosure(useScientificTuning)
-    tuningEnabledSwitch.addClosure(toggledTuningEnabled)
 
     tuningCents.delegate = self
     tuningFrequency.delegate = self
@@ -63,7 +61,7 @@ public final class TuningComponent: NSObject {
     tuningCents.inputAssistantItem.leadingBarButtonGroups = []
     tuningFrequency.inputAssistantItem.trailingBarButtonGroups = []
 
-    updateState(enabled: enabled, cents: tuning)
+    updateState(cents: tuning)
 
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(
@@ -77,8 +75,7 @@ public final class TuningComponent: NSObject {
 
 extension TuningComponent {
 
-  public func updateState(enabled: Bool, cents: Float) {
-    tuningEnabledSwitch.setOn(enabled, animated: false)
+  public func updateState(cents: Float) {
     setTuningCents(cents)
   }
 }
@@ -101,7 +98,9 @@ extension TuningComponent {
     tuningCentsValue = min(max(value, -2400.0), 2400.0)
     tuningCents.text = numberParserFormatter.string(from: NSNumber(value: tuningCentsValue))
     tuningFrequency.text = numberParserFormatter.string(from: NSNumber(value: centsToFrequency(tuningCentsValue)))
-    Sampler.setTuningNotification.post(value: tuningEnabledSwitch.isOn ? tuningCentsValue : 0.0)
+    if isActive {
+      Sampler.tuningChangedNotification.post(value: tuningCentsValue)
+    }
   }
 }
 

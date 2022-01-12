@@ -21,6 +21,10 @@ public final class InfoBarController: UIViewController {
   @IBOutlet private weak var showTags: UIButton!
   @IBOutlet private weak var showEffects: UIButton!
 
+  @IBOutlet private weak var tuningIndicator: UILabel!
+  @IBOutlet private weak var panIndicator: UILabel!
+  @IBOutlet private weak var gainIndicator: UILabel!
+
   @IBOutlet private weak var showMoreButtonsButton: UIButton!
   @IBOutlet private weak var moreButtons: UIView!
   @IBOutlet private weak var moreButtonsXConstraint: NSLayoutConstraint!
@@ -39,6 +43,8 @@ public final class InfoBarController: UIViewController {
   private var lowestKeyValue = ""
   private var highestKeyValue = ""
   private var showingMoreButtons = false
+  private var tuningChangedNotifier: NotificationObserver?
+  private var presetConfigChangedNotifier: NotificationObserver?
 
   public override func viewDidLoad() {
     super .viewDidLoad()
@@ -56,6 +62,9 @@ public final class InfoBarController: UIViewController {
     panner.minimumNumberOfTouches = 1
     panner.maximumNumberOfTouches = 1
     touchView.addGestureRecognizer(panner)
+
+    tuningChangedNotifier = Sampler.tuningChangedNotification.registerOnAny(block: updateTuningIndicator(_:))
+    presetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: updateIndicators(_:))
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -125,11 +134,11 @@ extension InfoBarController: ControllerConfiguration {
   public func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
     activePresetManager = router.activePresetManager
-    activePresetManager.subscribe(self, notifier: activePresetChange)
+    activePresetManager.subscribe(self, notifier: activePresetChanged)
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
-    router.favorites.subscribe(self, notifier: favoritesChange)
-    useActivePresetKind(activePresetManager.active)
+    router.favorites.subscribe(self, notifier: favoritesChanged)
+    showActivePreset()
     showEffects.isEnabled = router.isMainApp
     showEffects.isHidden = !router.isMainApp
   }
@@ -237,6 +246,24 @@ extension InfoBarController: InfoBar {
   public func hideMoreButtons() {
     setMoreButtonsVisible(state: false)
   }
+
+  public func updateIndicators(_ presetConfig: PresetConfig) {
+    updateTuningIndicator(presetConfig.presetTuning)
+    updateGainIndicator(presetConfig.gain)
+    updatePanIndicator(presetConfig.pan)
+  }
+
+  public func updateTuningIndicator() {
+    updateTuningIndicator(activePresetManager.activePresetConfig?.presetTuning ?? 0.0)
+  }
+
+  public func updatePanIndicator() {
+    updatePanIndicator(activePresetManager.activePresetConfig?.pan ?? 0.0)
+  }
+
+  public func updateGainIndicator() {
+    updateGainIndicator(activePresetManager.activePresetConfig?.gain ?? 0.0)
+  }
 }
 
 // MARK: - Private
@@ -261,6 +288,7 @@ extension InfoBarController: SegueHandler {
     viewController.soundFonts = soundFonts
     viewController.isMainApp = isMainApp
     viewController.settings = settings
+    viewController.infoBar = self
 
     if !isMainApp {
       viewController.modalPresentationStyle = .fullScreen
@@ -315,54 +343,56 @@ extension InfoBarController {
     }
   }
 
-  private func activePresetChange(_ event: ActivePresetEvent) {
-    if case let .active(old: _, new: new, playSample: _) = event {
-      useActivePresetKind(new)
+  private func soundFontsChanged(_ event: SoundFontsEvent) {
+    if case .restored = event {
+      showActivePreset()
     }
   }
 
-  private func favoritesChange(_ event: FavoritesEvent) {
-    switch event {
-    case let .added(index: _, favorite: favorite): updateInfoBar(with: favorite)
-    case let .changed(index: _, favorite: favorite): updateInfoBar(with: favorite)
-    case let .removed(index: _, favorite: favorite): updateInfoBar(with: favorite.soundFontAndPreset)
-    case .selected: break
-    case .beginEdit: break
-    case .removedAll: break
-    case .restored: break
+  private func activePresetChanged(_ event: ActivePresetEvent) {
+    if case .change = event {
+      showActivePreset()
     }
   }
 
-  private func updateInfoBar(with favorite: Favorite) {
-    if favorite.soundFontAndPreset == activePresetManager.active.soundFontAndPreset {
-      setPresetInfo(name: favorite.presetConfig.name, isFavored: true)
-    }
+  private func favoritesChanged(_ event: FavoritesEvent) {
+    showActivePreset()
   }
 
-  private func updateInfoBar(with soundFontAndPreset: SoundFontAndPreset) {
-    if soundFontAndPreset == activePresetManager.active.soundFontAndPreset {
-      if let preset = activePresetManager.resolveToPreset(soundFontAndPreset) {
-        setPresetInfo(name: preset.presetConfig.name, isFavored: false)
-      }
-    }
-  }
-
-  private func useActivePresetKind(_ activePresetKind: ActivePresetKind) {
+  private func showActivePreset() {
+    let activePresetKind = activePresetManager.active
+    os_log(.debug, log: log, "useActivePresetKind BEGIN - %{public}s", activePresetKind.description)
     if let favorite = activePresetKind.favorite {
-      setPresetInfo(name: favorite.presetConfig.name, isFavored: true)
-    } else if let soundFontAndPreset = activePresetKind.soundFontAndPreset {
-      if let preset = activePresetManager.resolveToPreset(soundFontAndPreset) {
-        setPresetInfo(name: preset.presetConfig.name, isFavored: false)
-      }
+      setPresetInfo(presetConfig: favorite.presetConfig, isFavored: true)
+    } else if let soundFontAndPreset = activePresetKind.soundFontAndPreset,
+              let preset = activePresetManager.resolveToPreset(soundFontAndPreset) {
+      setPresetInfo(presetConfig: preset.presetConfig, isFavored: false)
     } else {
-      setPresetInfo(name: "-", isFavored: false)
+      setPresetInfo(presetConfig: .init(name: "-"), isFavored: false)
     }
   }
 
-  private func setPresetInfo(name: String, isFavored: Bool) {
-    os_log(.info, log: log, "setPresetInfo: %{public}s %d", name, isFavored)
-    presetInfo.text = TableCell.favoriteTag(isFavored) + name
+  private func setPresetInfo(presetConfig: PresetConfig, isFavored: Bool) {
+    os_log(.info, log: log, "setPresetInfo: %{public}s %d %f", presetConfig.name, isFavored)
+    presetInfo.text = TableCell.favoriteTag(isFavored) + presetConfig.name
+    updateTuningIndicator(presetConfig.presetTuning)
+    updatePanIndicator(presetConfig.pan)
+    updateGainIndicator(presetConfig.gain)
     cancelStatusAnimation()
+  }
+
+  private func updateTuningIndicator(_ presetTuning: Float) {
+    os_log(.debug, log: log, "updateTuningIndicator BEGIN - %f", presetTuning)
+    tuningIndicator.isHidden = presetTuning == 0.0 && settings.globalTuning == 0.0
+    os_log(.debug, log: log, "updateTuningIndicator END")
+  }
+
+  private func updatePanIndicator(_ presetPan: Float) {
+    panIndicator.isHidden = presetPan == 0.0
+  }
+
+  private func updateGainIndicator(_ presetGain: Float) {
+    gainIndicator.isHidden = presetGain == 0.0
   }
 
   private func startStatusAnimation() {

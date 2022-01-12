@@ -103,15 +103,15 @@ extension KeyboardController: ControllerConfiguration {
     infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
     infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
     router.activePresetManager.subscribe(self, notifier: presetChanged)
-    router.favorites.subscribe(self, notifier: favoritesChange)
-    router.subscribe(self, notifier: routerChange)
+    router.favorites.subscribe(self, notifier: favoritesChanged)
+    router.subscribe(self, notifier: routerChanged)
 
     if router.sampler != nil {
       touchedKeys.processor = router.sampler
     }
   }
 
-  private func routerChange(_ event: ComponentContainerEvent) {
+  private func routerChanged(_ event: ComponentContainerEvent) {
     if case let .samplerAvailable(sampler) = event {
       touchedKeys.processor = sampler
     }
@@ -119,14 +119,14 @@ extension KeyboardController: ControllerConfiguration {
 
   private func presetChanged(_ event: ActivePresetEvent) {
     switch event {
-    case .active:
+    case .change:
       if let presetConfig = activePresetManager.activePresetConfig {
         updateWith(presetConfig: presetConfig)
       }
     }
   }
 
-  private func favoritesChange(_ event: FavoritesEvent) {
+  private func favoritesChanged(_ event: FavoritesEvent) {
     switch event {
     case let .changed(index: _, favorite: favorite):
       if activePresetManager.activeFavorite == favorite {

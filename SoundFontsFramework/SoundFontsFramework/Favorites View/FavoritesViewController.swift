@@ -77,17 +77,17 @@ extension FavoritesViewController: ControllerConfiguration {
     tags = router.tags
     settings = router.settings
 
-    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChange)
-    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChange)
-    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChange)
-    tagsSubscription = tags.subscribe(self, notifier: tagsChange)
+    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChanged)
+    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChanged)
+    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged)
+    tagsSubscription = tags.subscribe(self, notifier: tagsChanged)
   }
 
-  private func activePresetChange(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePresetChange")
+  private func activePresetChanged(_ event: ActivePresetEvent) {
+    os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     guard favorites.restored && soundFonts.restored else { return }
     switch event {
-    case let .active(old: old, new: new, playSample: _):
+    case let .change(old: old, new: new, playSample: _):
       if case let .favorite(oldFave) = old {
         os_log(.info, log: log, "updating previous favorite cell")
         updateCell(with: oldFave)
@@ -99,8 +99,8 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func favoritesChange(_ event: FavoritesEvent) {
-    os_log(.info, log: log, "favoritesChange")
+  private func favoritesChanged(_ event: FavoritesEvent) {
+    os_log(.info, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
       os_log(.info, log: log, "added item %d", index)
@@ -136,14 +136,14 @@ extension FavoritesViewController: ControllerConfiguration {
     }
   }
 
-  private func soundFontsChange(_ event: SoundFontsEvent) {
+  private func soundFontsChanged(_ event: SoundFontsEvent) {
     switch event {
     case .restored: restored()
     default: break
     }
   }
 
-  private func tagsChange(_ event: TagsEvent) {
+  private func tagsChanged(_ event: TagsEvent) {
     switch event {
     case .restored: restored()
     default: break
@@ -220,10 +220,11 @@ extension FavoritesViewController: SegueHandler {
       return
     }
 
+    let isActive = activePresetManager.activeFavorite?.key == favorite.key
     let configState = FavoriteEditor.State(indexPath: indexPath, sourceView: favoritesView, sourceRect: view.frame,
                                            currentLowestNote: self.keyboard?.lowestNote, completionHandler: nil,
                                            soundFonts: self.soundFonts, soundFontAndPreset: favorite.soundFontAndPreset,
-                                           settings: settings)
+                                           isActive: isActive, settings: settings)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     showEditor(config: config)
   }
@@ -264,8 +265,6 @@ extension FavoritesViewController: FavoriteEditorDelegate {
       }
     }
 
-    // Reapply the active PresetConfig just to make sure we are in sync. This should only be necessary for the
-    // `cancel` case above, but just to be safe...
     if let presetConfig = activePresetManager.activePresetConfig {
       PresetConfig.changedNotification.post(value: presetConfig)
     }

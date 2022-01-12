@@ -32,11 +32,17 @@ public enum SamplerStartFailure: Error {
 public final class Sampler {
   private lazy var log = Logging.logger("Sampler")
 
-  /// The notification that tuning values have changed for the sampler
-  public static let setTuningNotification = TypedNotification<Float>(name: .setTuning)
+  /// The notification that tuning value has changed for the sampler
+  public static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
+
+  /// The notification that gain value has changed for the sampler
+  public static let gainChangedNotification = TypedNotification<Float>(name: .gainChanged)
+
+  /// The notification that pan value has changed for the sampler
+  public static let panChangedNotification = TypedNotification<Float>(name: .panChanged)
 
   /// The notification that pitch bend range has changed for the sampler
-  public static let setPitchBendRangeNotification = TypedNotification<Int>(name: .setPitchBendRange)
+  public static let pitchBendRangeChangedNotification = TypedNotification<Int>(name: .pitchBendRangeChanged)
 
   public typealias StartResult = Result<AVAudioUnitSampler?, SamplerStartFailure>
 
@@ -61,9 +67,12 @@ public final class Sampler {
 
   /// Expose the underlying sampler's auAudioUnit property so that it can be used in an AudioUnit extension
   private var auAudioUnit: AUAudioUnit? { auSampler?.auAudioUnit }
-  private var presetConfigNotifier: NotificationObserver?
-  private var setGlobalTuningNotifier: NotificationObserver?
-  private var setGlobalPitchBendRangeNotifier: NotificationObserver?
+
+  private var activePresetConfigChangedNotifier: NotificationObserver?
+  private var tuningChangedNotifier: NotificationObserver?
+  private var gainChangedNotifier: NotificationObserver?
+  private var panChangedNotifier: NotificationObserver?
+  private var pitchBendRangeChangedNotifier: NotificationObserver?
 
   /**
    Create a new instance of a Sampler.
@@ -91,18 +100,11 @@ public final class Sampler {
       precondition(delay != nil, "unexpected nil for delay")
     }
 
-    presetConfigNotifier = PresetConfig.changedNotification.registerOnAny { [weak self] presetConfig in
-      guard let self = self else { return }
-      self.applyPresetConfig(presetConfig)
-    }
-
-    setGlobalTuningNotifier = Self.setTuningNotification.registerOnAny { [weak self] tuning in
-      self?.setTuning(tuning)
-    }
-
-    setGlobalPitchBendRangeNotifier = Self.setPitchBendRangeNotification.registerOnAny { [weak self] range in
-      self?.setPitchBendRange(range)
-    }
+    activePresetConfigChangedNotifier = PresetConfig.changedNotification.registerOnAny(block: applyPresetConfig(_:))
+    tuningChangedNotifier = Self.tuningChangedNotification.registerOnAny(block: setTuning(_:))
+    gainChangedNotifier = Self.gainChangedNotification.registerOnAny(block: setGain(_:))
+    panChangedNotifier = Self.panChangedNotification.registerOnAny(block: setPan(_:))
+    pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange(_:))
   }
 
   /**
@@ -114,6 +116,7 @@ public final class Sampler {
     os_log(.info, log: log, "start")
     let sampler = AVAudioUnitSampler()
     auSampler = sampler
+
     if settings.globalTuningEnabled {
       sampler.globalTuning = settings.globalTuning
     }
@@ -121,7 +124,7 @@ public final class Sampler {
     presetChangeManager.start()
 
     if mode == .audioUnit {
-      return loadActivePreset()
+      return .success(sampler)
     }
 
     return startEngine(sampler)
@@ -132,8 +135,9 @@ public final class Sampler {
    */
   public func stop() {
     os_log(.info, log: log, "stop")
-    presetChangeManager.stop()
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
+
+    presetChangeManager.stop()
 
     if let engine = self.engine {
       os_log(.debug, log: log, "stopping engine")
@@ -217,10 +221,9 @@ extension Sampler {
    - parameter value: the value to set in cents (+/- 2400)
    */
   public func setTuning(_ value: Float) {
-    if value != auSampler?.globalTuning {
-      os_log(.info, log: log, "setTuning: %f", value)
-      auSampler?.globalTuning = value
-    }
+    os_log(.info, log: log, "setTuning BEGIN - %f", value)
+    auSampler?.globalTuning = value
+    os_log(.info, log: log, "setTuning END")
   }
 
   /**
@@ -229,10 +232,9 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setGain(_ value: Float) {
-    if value != auSampler?.masterGain {
-      os_log(.info, log: log, "setGain: %f", value)
-      auSampler?.masterGain = value
-    }
+    os_log(.info, log: log, "setGain BEGIN - %f", value)
+    auSampler?.masterGain = value
+    os_log(.info, log: log, "setGain END")
   }
 
   /**
@@ -241,10 +243,31 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setPan(_ value: Float) {
-    if value != auSampler?.stereoPan {
-      os_log(.info, log: log, "setPan: %f", value)
-      auSampler?.stereoPan = value
+    os_log(.info, log: log, "setPan BEGIN - %f", value)
+    auSampler?.stereoPan = value
+    os_log(.info, log: log, "setPan END")
+  }
+
+  /**
+   Set the pitch bend range for the controller input.
+
+   - parameter value: range in semitones
+   */
+  public func setPitchBendRange(_ value: Int) {
+    os_log(.debug, log: log, "setPitchBendRange BEGIN - %d", value)
+    guard value > 0 && value < 25 else {
+      os_log(.error, log: log, "setPitchBendRange END - invalid value: %d", value)
+      return
     }
+
+    auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
+    auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
+    auSampler?.sendMIDIEvent(0xB0, data1: 6, data2: UInt8(value))
+    auSampler?.sendMIDIEvent(0xB0, data1: 38, data2: 0)
+
+    // auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 127)
+    // auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 127)
+    os_log(.debug, log: log, "setPitchBendRange END")
   }
 }
 
@@ -328,18 +351,6 @@ extension Sampler {
     guard presetLoaded else { return }
     auSampler?.sendProgramChange(program, onChannel: 0)
   }
-
-  /// For the future -- AVAudioUnitSampler does not support this
-  public func setPitchBendRange(_ value: Int) {
-    guard value > 0 && value < 25 else {
-      os_log(.error, log: log, "invalid pitch bend range: %d", value)
-      return
-    }
-    auSampler?.sendMIDIEvent(0xB0, data1: 101, data2: 0)
-    auSampler?.sendMIDIEvent(0xB0, data1: 100, data2: 0)
-    auSampler?.sendMIDIEvent(0xB0, data1: 0x06, data2: UInt8(value))
-    auSampler?.sendMIDIEvent(0xB0, data1: 0x26, data2: 0)
-  }
 }
 
 extension Sampler {
@@ -382,14 +393,15 @@ extension Sampler {
     return loadActivePreset()
   }
 
-  private func applyPresetConfig(_ presetConfig: PresetConfig) {
-    if presetConfig.presetTuningEnabled {
-      setTuning(presetConfig.presetTuning)
-    } else if settings.globalTuningEnabled {
-      setTuning(settings.globalTuning)
-    } else {
-      setTuning(0.0)
-    }
+  public func applyPresetConfig(_ presetConfig: PresetConfig) {
+    os_log(.debug, log: log, "applyPresetConfig BEGIN")
+
+    let tuning: Float = {
+      if presetConfig.presetTuning != 0.0 { return presetConfig.presetTuning }
+      if settings.globalTuning != 0.0 { return settings.globalTuning }
+      return 0.0
+    }()
+    setTuning(tuning)
 
     if let pitchBendRange = presetConfig.pitchBendRange {
       setPitchBendRange(pitchBendRange)
@@ -422,5 +434,6 @@ extension Sampler {
         reverb.active = reverb.active.setEnabled(false)
       }
     }
+    os_log(.debug, log: log, "applyPresetConfig END")
   }
 }

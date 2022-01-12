@@ -9,8 +9,9 @@ public final class AskForReview: NSObject {
   private lazy var log = Logging.logger("AskForReview")
 
   /**
-   Class method that fires a notification to ask for a review check. If properly initialized, there should be an
-   instance of AskForReview around that is listening for the notification and will perform the actual review request.
+   Class method that fires a notification to ask for a review check. When running as an application, there should be
+   an AskForReview instance listening for the notification which will perform the actual review request. Otherwise,
+   the notification just goes off in to space...
    */
   static public func maybe() { NotificationCenter.default.post(Notification(name: .askForReview)) }
 
@@ -65,21 +66,15 @@ public final class AskForReview: NSObject {
   /**
    Construct new (sole) instance
 
-   - parameter isMain: true if running inside app (vs AUv3 extension)
+   - parameter settings: source of user/app settings
    */
-  public init(isMain: Bool, settings: Settings) {
+  public init(settings: Settings) {
     self.settings = settings
     super.init()
-    os_log(
-      .info, log: log,
-      "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
-      dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
-    if isMain {
-      observer = NotificationCenter.default.addObserver(
-        forName: .askForReview, object: nil, queue: nil
-      ) { [weak self] _ in
-        self?.ask()
-      }
+    os_log(.info, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
+           dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
+    observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { [weak self] _ in
+      self?.ask()
     }
   }
 

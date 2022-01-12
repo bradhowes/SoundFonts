@@ -389,6 +389,6 @@ extension SoundFontsManager {
 
   private func notifyCollectionRestored() {
     os_log(.info, log: log, "restored")
-    DispatchQueue.main.async { self.notify(.restored) }
+    notify(.restored)
   }
 }

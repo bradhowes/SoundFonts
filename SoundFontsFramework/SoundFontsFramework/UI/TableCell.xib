@@ -44,12 +44,33 @@
                         <color key="backgroundColor" systemColor="systemTealColor"/>
                         <accessibility key="accessibilityConfiguration" hint="A blue band indicating the active entry" label="ActiveIndicator"/>
                     </view>
-                    <view contentMode="scaleToFill" id="1aD-L8-y3n" userLabel="Tuning">
-                        <rect key="frame" x="9" y="8" width="6" height="6"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" systemColor="systemGreenColor"/>
-                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3f-s5-yIZ" userLabel="Tuning">
+                        <rect key="frame" x="10" y="4" width="6" height="11"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" systemColor="systemRedColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yD-Jy-NY4" userLabel="Pan">
+                        <rect key="frame" x="10" y="16.5" width="6" height="11"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" systemColor="systemYellowColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="G" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mm4-RS-coO" userLabel="Gain">
+                        <rect key="frame" x="9.5" y="29" width="7" height="11"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" systemColor="systemGreenColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="1yD-Jy-NY4" firstAttribute="centerY" secondItem="UqT-gz-ivI" secondAttribute="centerY" id="5su-zJ-AR5"/>
+                    <constraint firstAttribute="bottom" secondItem="mm4-RS-coO" secondAttribute="bottom" constant="4" id="APi-gh-C5j"/>
+                    <constraint firstItem="H3f-s5-yIZ" firstAttribute="top" secondItem="UqT-gz-ivI" secondAttribute="top" constant="4" id="Dzn-aO-hrl"/>
+                    <constraint firstItem="H3f-s5-yIZ" firstAttribute="leading" secondItem="UqT-gz-ivI" secondAttribute="leading" constant="10" id="Kk8-Df-d37"/>
+                    <constraint firstItem="1yD-Jy-NY4" firstAttribute="centerX" secondItem="H3f-s5-yIZ" secondAttribute="centerX" id="VJj-Id-AWT"/>
+                    <constraint firstItem="mm4-RS-coO" firstAttribute="centerX" secondItem="H3f-s5-yIZ" secondAttribute="centerX" id="ZGm-o2-Mnt"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration">
@@ -57,9 +78,11 @@
             </accessibility>
             <connections>
                 <outlet property="activeIndicator" destination="vTo-oj-deq" id="vPu-we-yHf"/>
+                <outlet property="gainIndicator" destination="mm4-RS-coO" id="BN9-15-Cjm"/>
                 <outlet property="name" destination="NbC-Ga-rcB" id="JmH-Zl-iZ4"/>
+                <outlet property="panIndicator" destination="1yD-Jy-NY4" id="eaj-NM-UdL"/>
                 <outlet property="tagEditor" destination="blq-gq-kkl" id="FUv-Nh-iOY"/>
-                <outlet property="tuningIndicator" destination="1aD-L8-y3n" id="hdc-7j-C74"/>
+                <outlet property="tuningIndicator" destination="H3f-s5-yIZ" id="sRr-UH-sYV"/>
             </connections>
             <point key="canvasLocation" x="-304.04797601199402" y="-966.39999999999998"/>
         </tableViewCell>
@@ -68,8 +91,14 @@
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

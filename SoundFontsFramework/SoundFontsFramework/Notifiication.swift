@@ -17,12 +17,16 @@ extension Notification.Name {
   public static let soundFontFileAccessDenied = Notification.Name("soundFontFileAccessDenied")
   /// Notification that we cannot locate an SF2 file
   public static let soundFontFileNotAvailable = Notification.Name("soundFontFileNotAvailable")
-  /// A PresetConfig changed
-  public static let presetConfigChanged = Notification.Name("presetConfigChanged")
-  /// Set a tuning
-  public static let setTuning = Notification.Name("setTuningChanged")
-  /// Set pitch-bend range
-  public static let setPitchBendRange = Notification.Name("setPitchBendRange")
+  /// Notification that the active preset config changed.
+  public static let activePresetConfigChanged = Notification.Name("activePresetConfigChanged")
+  /// Notification that the sampler tuning should changed
+  public static let tuningChanged = Notification.Name("tuningChanged")
+  /// Notification that the sampler gain should changed
+  public static let gainChanged = Notification.Name("gainChanged")
+  /// Notification that the sampler pan should changed
+  public static let panChanged = Notification.Name("panChanged")
+  /// Notification that the sampler pitch-bend range should changed
+  public static let pitchBendRangeChanged = Notification.Name("pitchBendRangeChanged")
   /// Failed to load the consolidated config file
   public static let configLoadFailure = Notification.Name("configLoadFailure")
   /// Notification that the effects view is appearing.

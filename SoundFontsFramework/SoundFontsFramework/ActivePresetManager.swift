@@ -4,7 +4,7 @@ import Foundation
 import os
 
 /// The event notifications that can come from an ActivePresetManager subscription.
-public enum ActivePresetEvent {
+public enum ActivePresetEvent: CustomStringConvertible {
 
   /**
    Change event
@@ -13,7 +13,13 @@ public enum ActivePresetEvent {
    - Parameter new: the new active preset
    - Parameter playSample: if true, play a note using the new preset
    */
-  case active(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
+  case change(old: ActivePresetKind, new: ActivePresetKind, playSample: Bool)
+
+  public var description: String {
+    switch self {
+    case let .change(old, new, _): return "<ActivePresetEvent: change old: \(old) new: \(new)>"
+    }
+  }
 }
 
 /// Maintains the active SoundFont preset being used for sound generation. There should only ever be one instance of this
@@ -21,6 +27,7 @@ public enum ActivePresetEvent {
 public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
   private lazy var log = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFonts
+  private let favorites: Favorites
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
   private var pending: ActivePresetKind = .none
@@ -59,16 +66,19 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter selectedSoundFontManager: the manager of the selected sound font
    - parameter inApp: true if the running inside the app, false if running in the AUv3 extension
    */
-  public init(soundFonts: SoundFonts, selectedSoundFontManager: SelectedSoundFontManager, settings: Settings) {
+  public init(soundFonts: SoundFonts, favorites: Favorites, selectedSoundFontManager: SelectedSoundFontManager,
+              settings: Settings) {
     self.active = .none
     self.soundFonts = soundFonts
+    self.favorites = favorites
     self.selectedSoundFontManager = selectedSoundFontManager
     self.settings = settings
 
     super.init()
     os_log(.info, log: log, "init")
-    soundFonts.subscribe(self, notifier: soundFontsChange)
-    os_log(.info, log: log, "active: %{public}s", active.description)
+
+    soundFonts.subscribe(self, notifier: soundFontsChanged)
+    favorites.subscribe(self, notifier: favoritesChanged)
   }
 
   /**
@@ -118,56 +128,68 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
    - parameter playSample: if true, play a note using the new preset
    */
   public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
-    os_log(.debug, log: log, "setActive: %{public}s", kind.description)
-    guard soundFonts.restored else {
+    os_log(.debug, log: log, "setActive BEGIN - %{public}s", kind.description)
 
-      // NOTE: this could be the case for AUv3 where the audio unit is up and running and has restored a
-      // configuration but we don't have everything else restored just yet.
-      os_log(.info, log: log, "not yet restored - setting pending - current: %{public}s", kind.description)
-      if pending == .none {
-        pending = kind
-      }
+    guard soundFonts.restored && favorites.restored && pending == .none else {
+      os_log(.debug, log: log, "setActive END - not restored")
       return
     }
 
     guard active != kind else {
-      os_log(.debug, log: log, "already active")
+      os_log(.debug, log: log, "setActive END - preset already active")
       return
     }
 
     let old = active
     active = kind
     save(kind)
-    DispatchQueue.main.async { self.notify(.active(old: old, new: kind, playSample: playSample)) }
+    notify(.change(old: old, new: kind, playSample: playSample))
+  }
+
+  /**
+   Restore an active value.
+
+   - parameter kind: wrapped value to set
+   */
+  public func restoreActive(_ kind: ActivePresetKind) {
+    os_log(.debug, log: log, "restoreActive BEGIN - %{public}s", kind.description)
+    pending = kind
+    notifyPending()
+  }
+
+  private func notifyPending() {
+    os_log(.info, log: log, "notifyFirstActive BEGIN")
+    guard soundFonts.restored && favorites.restored && pending != .none else {
+      return
+    }
+    let kind = pending
+    pending = .none
+    setActive(rebuild(kind), playSample: false)
+    pending = .none
+  }
+
+  private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
+    switch kind {
+    case .preset: return kind
+    case .favorite(let favorite): return .favorite(favorite: favorites.getBy(key: favorite.key))
+    case .none: return .none
+    }
   }
 }
 
 extension ActivePresetManager {
 
-  private func soundFontsChange(_ event: SoundFontsEvent) {
-
-    // We only care about restoration event
-    guard case .restored = event else { return }
-    os_log(.info, log: log, "SF collection restored")
-
-    guard active == .none else { return }
-
-    if pending != .none {
-      os_log(.info, log: log, "using pending value")
-      setActive(pending, playSample: false)
-      pending = .none
-    } else {
-      let restored = settings.lastActivePreset
-      if isValid(restored) {
-        os_log(.info, log: log, "using restored value from UserDefaults")
-        setActive(restored, playSample: false)
-      } else if let defaultPreset = soundFonts.defaultPreset {
-        os_log(.info, log: log, "using soundFonts.defaultPreset")
-        setActive(preset: defaultPreset, playSample: false)
-      }
+  private func favoritesChanged(_ event: FavoritesEvent) {
+    if case .restored = event {
+      notifyPending()
     }
   }
 
+  private func soundFontsChanged(_ event: SoundFontsEvent) {
+    if case .restored = event {
+      notifyPending()
+    }
+  }
   private func save(_ kind: ActivePresetKind) {
     os_log(.info, log: log, "save - %{public}s", kind.description)
     settings.lastActivePreset = kind

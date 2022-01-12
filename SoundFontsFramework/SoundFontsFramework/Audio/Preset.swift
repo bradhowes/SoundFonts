@@ -47,7 +47,7 @@ final public class Preset: Codable {
   public let soundFontIndex: Int
 
   /// Configuration parameters that can be adjusted by the user.
-  public var presetConfig: PresetConfig { didSet { PresetConfig.changedNotification.post(value: presetConfig) } }
+  public var presetConfig: PresetConfig
 
   /// Collection of keys for Favorite instances based off of the preset.
   public var favorites: [Favorite.Key] = []
@@ -110,7 +110,7 @@ final public class Preset: Codable {
         self.soundFontIndex = soundFontIndex
         self.presetConfig = PresetConfig(name: name, keyboardLowestNote: nil, keyboardLowestNoteEnabled: false,
                                          reverbConfig: reverbConfig, delayConfig: delayConfig, gain: 0.0, pan: 0.0,
-                                         presetTuning: 0.0, presetTuningEnabled: false)
+                                         presetTuning: 0.0)
       } catch {
         throw err
       }

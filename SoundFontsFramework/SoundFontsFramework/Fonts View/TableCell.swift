@@ -8,6 +8,25 @@ import os
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   private lazy var log = Logging.logger("TableCell")
 
+  public struct Flags: OptionSet {
+    public let rawValue: Int
+    public init(rawValue: Int) { self.rawValue = rawValue }
+
+    public static let selected = Flags(rawValue: 1 << 0)
+    public static let active = Flags(rawValue: 1 << 1)
+    public static let favorite = Flags(rawValue: 1 << 2)
+    public static let tuningSetting = Flags(rawValue: 1 << 3)
+    public static let panSetting = Flags(rawValue: 1 << 4)
+    public static let gainSetting = Flags(rawValue: 1 << 5)
+
+    public var isSelected: Bool { self.contains(.selected) }
+    public var isActive: Bool { self.contains(.active) }
+    public var isFavorite: Bool { self.contains(.favorite) }
+    public var hasTuningSetting: Bool { self.contains(.tuningSetting) }
+    public var hasPanSetting: Bool { self.contains(.panSetting) }
+    public var hasGainSetting: Bool { self.contains(.gainSetting) }
+  }
+
   /// Unicode character to show when a cell refers to a preset that is in a Favorite
   private static let goldStarPrefix = "✪"
 
@@ -24,10 +43,13 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   @IBOutlet weak var activeIndicator: UIView!
   /// Text field used to edit tag names (not used for SoundFont or Preset names)
   @IBOutlet weak var tagEditor: UITextField!
-  @IBOutlet weak var tuningIndicator: UIView!
+
+  @IBOutlet weak var tuningIndicator: UILabel!
+  @IBOutlet weak var panIndicator: UILabel!
+  @IBOutlet weak var gainIndicator: UILabel!
 
   private var bookmark: Bookmark?
-  private var timer: Timer?
+  private var buttonMonitor: Timer?
 
   /// Set if there is a problem accessing a file associated with this cell.
   var activeAlert: UIAlertController?
@@ -40,26 +62,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     tuningIndicator.layer.cornerRadius = 3.0
   }
 
-  public enum Selected: Int {
-    case no = 0
-    case yes = 1
-  }
-
-  public enum Active: Int {
-    case no = 0
-    case yes = 1
-  }
-
-  public enum CustomTuning: Int {
-    case no = 0
-    case yes = 1
-  }
-
-  public enum Favorite: Int {
-    case no = 0
-    case yes = 1
-  }
-
   /**
    Update cell contents for a sound font.
 
@@ -68,16 +70,16 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter isSelected: true if the cell holds the selected sound font
    - parameter isActive: true if the cell holds the sound font of the active preset
    */
-  public func updateForFont(name: String, kind: SoundFontKind, selected: Selected, active: Active) {
+  public func updateForFont(name: String, kind: SoundFontKind, flags: Flags) {
     var name = name
     if case let .reference(bookmark) = kind {
       self.bookmark = bookmark
       name += "°"
       updateButton()
-      startMonitor()
+      startButtonMonitor()
     }
-    os_log(.debug, log: log, "updateForFont - '%{public}s' A: %d S: %d", name, active.rawValue, selected.rawValue)
-    update(name: name, selected: selected, active: active, customTuning: .no, favorite: .no)
+    os_log(.debug, log: log, "updateForFont - '%{public}s' flags: %d", name, flags.rawValue)
+    update(name: name, flags: flags)
     self.name.accessibilityLabel = "font \(name)"
     self.name.accessibilityHint = "font list entry for font \(name)"
   }
@@ -88,10 +90,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the name of the preset
    - parameter isActive: true if the cell holds the active preset
    */
-  public func updateForPreset(name: String, active: Active, customTuning: CustomTuning) {
-    os_log(.debug, log: log, "updateForPreset - '%{public}s' A: %d T: %d", name, active.rawValue, customTuning.rawValue)
-    update(name: name, selected: Selected(rawValue: active.rawValue)!, active: active, customTuning: customTuning,
-           favorite: .no)
+  public func updateForPreset(name: String, flags: Flags) {
+    update(name: name, flags: flags)
     self.name.accessibilityLabel = "preset \(name)"
     self.name.accessibilityHint = "preset list entry for preset \(name)"
   }
@@ -102,10 +102,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the name of the favorite
    - parameter isActive: true if the favorite is the active preset
    */
-  public func updateForFavorite(name: String, active: Active, customTuning: CustomTuning) {
-    os_log(.debug, log: log, "updateForFavorite - '%{public}s' A: %d T: %d", name, active.rawValue, customTuning.rawValue)
-    update(name: Self.favoriteTag(true) + name, selected: Selected(rawValue: active.rawValue)!, active: active,
-           customTuning: customTuning, favorite: .yes)
+  public func updateForFavorite(name: String, flags: Flags) {
+    update(name: Self.favoriteTag(true) + name, flags: flags)
     self.name.accessibilityLabel = "favorite \(name)"
     self.name.accessibilityHint = "preset list entry for favorite \(name)"
   }
@@ -116,9 +114,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the tag name
    - parameter active: .yes if cell holds the active tag
    */
-  public func updateForTag(name: String, active: Active) {
-    os_log(.debug, log: log, "updateForTag - '%{public}s' A: %d", name, active.rawValue)
-    update(name: name, selected: Selected(rawValue: active.rawValue)!, active: active, customTuning: .no, favorite: .no)
+  public func updateForTag(name: String, flags: Flags) {
+    update(name: name, flags: flags)
     self.name.accessibilityLabel = "tag \(name)"
     self.name.accessibilityHint = "tag list entry for tag \(name)"
   }
@@ -127,26 +124,42 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    Make sure that the 'reorder' button can be seen when the table view is in edit mode
    */
   override public func setEditing(_ editing: Bool, animated: Bool) {
+    os_log(.debug, log: log, "setEditing BEGIN - %d", editing)
     super.setEditing(editing, animated: animated)
     if editing {
       reorderControlImageView?.tint(color: .white)
     }
+    os_log(.debug, log: log, "setEditing END")
   }
 
-  private func update(name: String, selected: Selected, active: Active, customTuning: CustomTuning, favorite: Favorite) {
+  private func update(name: String, flags: Flags) {
     self.name.text = name
-    self.name.textColor = fontColorWhen(selected: selected, active: active, favorite: favorite)
-    showActiveIndicator(active)
-    showTuningIndicator(customTuning)
-    activeIndicator.accessibilityIdentifier = active == .yes ? "\(name) is active" : "\(name) is not active"
-    tuningIndicator.accessibilityIdentifier = customTuning == .yes ? "\(name) has tuning" : "\(name) has no tuning"
+    self.name.textColor = fontColor(for: flags)
+
+    activeIndicator.isHidden = !flags.isActive
+    tuningIndicator.isHidden = !flags.hasTuningSetting
+    panIndicator.isHidden = !flags.hasPanSetting
+    gainIndicator.isHidden = !flags.hasGainSetting
+
+    activeIndicator.accessibilityIdentifier = flags.isActive ? "\(name) is active" : "\(name) is not active"
+    tuningIndicator.accessibilityIdentifier = flags.hasTuningSetting ? "\(name) has tuning" : "\(name) has no tuning"
+    panIndicator.accessibilityIdentifier = flags.hasPanSetting ? "\(name) has pan" : "\(name) has no pan"
+    gainIndicator.accessibilityIdentifier = flags.hasGainSetting ? "\(name) has gain" : "\(name) has no gain"
+  }
+
+  private func stopButtonMonitor() {
+    buttonMonitor?.invalidate()
+  }
+
+  private func startButtonMonitor() {
+    stopButtonMonitor()
+    buttonMonitor = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in self?.updateButton() }
   }
 
   override public func prepareForReuse() {
     os_log(.debug, log: log, "prepareForReuse")
     super.prepareForReuse()
 
-    stopMonitor()
     accessoryView = nil
     activeAlert = nil
 
@@ -155,38 +168,14 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     tagEditor.isEnabled = false
 
     tuningIndicator.isHidden = true
+    panIndicator.isHidden = true
+    gainIndicator.isHidden = true
   }
 
-  private func stopMonitor() {
-    timer?.invalidate()
-  }
-
-  private func startMonitor() {
-    stopMonitor()
-    timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in self?.updateButton() }
-  }
-
-  private func showTuningIndicator(_ customTuning: CustomTuning) {
-    tuningIndicator.isHidden = customTuning == .no
-  }
-
-  private func showActiveIndicator(_ active: Active) {
-    guard active == .yes && !isEditing else {
-      if !activeIndicator.isHidden {
-        activeIndicator.isHidden = true
-        os_log(.debug, log: log, "showActiveIndicator - '%{public}s' hidden", name.text ?? "?")
-      }
-      return
-    }
-
-    activeIndicator.isHidden = false
-    os_log(.debug, log: log, "showActiveIndicator - '%{public}s' done", name.text ?? "?")
-  }
-
-  private func fontColorWhen(selected: Selected, active: Active, favorite: Favorite) -> UIColor? {
-    if active == .yes { return activeFontColor }
-    if favorite == .yes { return favoriteFontColor }
-    if selected == .yes { return selectedFontColor }
+  private func fontColor(for flags: Flags) -> UIColor? {
+    if flags.contains(.active) { return activeFontColor }
+    if flags.contains(.favorite) { return favoriteFontColor }
+    if flags.contains(.selected) { return selectedFontColor }
     return normalFontColor
   }
 

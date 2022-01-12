@@ -59,9 +59,9 @@ public final class ConfigFileObserver {
 
 private extension ConfigFileObserver {
 
-  func checkRestored(_ closure: () -> Void) {
+  func checkRestored(_ closure: @escaping () -> Void) {
     guard configFile.restored == true else { return }
     restored = true
-    closure()
+    DispatchQueue.main.async { closure() }
   }
 }

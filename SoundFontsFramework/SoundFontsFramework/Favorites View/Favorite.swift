@@ -34,9 +34,7 @@ public class Favorite: Codable {
   public let soundFontAndPreset: SoundFontAndPreset
 
   /// The custom configuration for the preset
-  public var presetConfig: PresetConfig {
-    didSet { PresetConfig.changedNotification.post(value: presetConfig) }
-  }
+  public var presetConfig: PresetConfig
 
   /**
    Create a new instance. The name of the favorite will start with the name of the preset.
@@ -82,8 +80,8 @@ public class Favorite: Codable {
         self.key = key
         self.soundFontAndPreset = soundFontAndPreset
         self.presetConfig = .init(name: name, keyboardLowestNote: lowestNote,
-                                  keyboardLowestNoteEnabled: lowestNote != nil, gain: gain, pan: pan, presetTuning: 0.0,
-                                  presetTuningEnabled: false)
+                                  keyboardLowestNoteEnabled: lowestNote != nil,
+                                  gain: gain, pan: pan, presetTuning: 0.0)
       } catch {
         throw err
       }

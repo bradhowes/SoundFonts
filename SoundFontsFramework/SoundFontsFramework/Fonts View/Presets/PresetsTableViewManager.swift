@@ -62,7 +62,7 @@ final class PresetsTableViewManager: NSObject {
     os_log(.info, log: log, "init")
 
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChange)
-    activePresetManager.subscribe(self, notifier: activePresetChange)
+    activePresetManager.subscribe(self, notifier: activePresetChanged)
     favorites.subscribe(self, notifier: favoritesChange)
     soundFonts.subscribe(self, notifier: soundFontsChange)
   }
@@ -246,9 +246,9 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func activePresetChange(_ event: ActivePresetEvent) {
+  private func activePresetChanged(_ event: ActivePresetEvent) {
     switch event {
-    case let .active(old: old, new: new, playSample: _):
+    case let .change(old: old, new: new, playSample: _):
       os_log(.debug, log: log, "activePresetChange BEGIN")
       guard let slotIndex = getSlotIndex(for: new) else { return }
       viewController.slotToScrollTo = indexPath(from: slotIndex)
@@ -403,7 +403,7 @@ extension PresetsTableViewManager {
         ]
       case .favorite:
         return [
-          editFavoriteSwipeAction(at: indexPath)
+          editFavoriteSwipeAction(at: indexPath, cell: cell)
         ]
       }
     }()
@@ -413,6 +413,7 @@ extension PresetsTableViewManager {
   private func editPresetSwipeAction(at indexPath: IndexPath, cell: TableCell,
                                      soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, actionView, completionHandler in
+      cell.setEditing(false, animated: false)
       guard let self = self else { return }
       var rect = self.viewController.tableView.rectForRow(at: indexPath)
       rect.size.width = 240.0
@@ -423,6 +424,7 @@ extension PresetsTableViewManager {
             currentLowestNote: self.keyboard?.lowestNote,
             completionHandler: completionHandler, soundFonts: self.soundFonts,
             soundFontAndPreset: soundFontAndPreset,
+            isActive: self.isActive(soundFontAndPreset),
             settings: self.settings))
       )
     }
@@ -487,8 +489,9 @@ extension PresetsTableViewManager {
     return true
   }
 
-  private func editFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
+  private func editFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
+      cell.setEditing(false, animated: false)
       self?.editFavorite(at: indexPath, completionHandler: completionHandler)
     }
   }
@@ -500,12 +503,16 @@ extension PresetsTableViewManager {
     let position = favorites.index(of: favorite.key)
     var rect = viewController.tableView.rectForRow(at: indexPath)
     rect.size.width = 240.0
+    let isActive = favorite.key == activePresetManager.active.favorite?.key
+
     let configState = FavoriteEditor.State(
       indexPath: IndexPath(item: position, section: 0),
       sourceView: viewController.tableView, sourceRect: viewController.tableView.bounds,
       currentLowestNote: self.keyboard?.lowestNote,
-      completionHandler: completionHandler, soundFonts: self.soundFonts,
+      completionHandler: completionHandler,
+      soundFonts: self.soundFonts,
       soundFontAndPreset: favorite.soundFontAndPreset,
+      isActive: isActive,
       settings: settings)
     let config = FavoriteEditor.Config.favorite(state: configState, favorite: favorite)
     self.favorites.beginEdit(config: config)
@@ -652,17 +659,26 @@ extension PresetsTableViewManager {
       let preset = soundFont.presets[presetIndex]
       os_log(.debug, log: log, "updateCell - preset '%{public}s' %d in slot %d",
              preset.presetConfig.name, presetIndex, slotIndex.rawValue)
-      cell.updateForPreset(name: preset.presetConfig.name,
-                           active: soundFontAndPreset == activePresetManager.active.soundFontAndPreset
-                           && activePresetManager.activeFavorite == nil ? .yes : .no,
-                           customTuning: preset.presetConfig.presetTuningEnabled ? .yes : .no)
+      var flags: TableCell.Flags = .init()
+      if soundFontAndPreset == activePresetManager.active.soundFontAndPreset &&
+          activePresetManager.activeFavorite == nil {
+        flags.insert(.active)
+      }
+      if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
+      if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
+      if preset.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
+      cell.updateForPreset(name: preset.presetConfig.name, flags: flags)
+
     case let .favorite(key):
       let favorite = favorites.getBy(key: key)
       os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
              favorite.presetConfig.name, slotIndex.rawValue)
-      cell.updateForFavorite(name: favorite.presetConfig.name,
-                             active: activePresetManager.activeFavorite == favorite ? .yes : .no,
-                             customTuning: favorite.presetConfig.presetTuningEnabled ? .yes : .no)
+      var flags: TableCell.Flags = [.favorite]
+      if activePresetManager.activeFavorite == favorite { flags.insert(.active) }
+      if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
+      if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
+      if favorite.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
+      cell.updateForFavorite(name: favorite.presetConfig.name, flags: flags)
     }
     return cell
   }

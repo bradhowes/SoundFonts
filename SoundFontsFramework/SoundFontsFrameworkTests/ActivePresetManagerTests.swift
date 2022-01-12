@@ -34,7 +34,7 @@ let sfTwo = SoundFont(sfiTwo.embeddedName, soundFontInfo: sfiTwo, resource: sfiT
 
 class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFonts {
   let collection = [sfOne, sfTwo]
-  var restored: Bool = false { didSet { self.notify(.restored) } }
+  var restored: Bool = false { didSet { notify(.restored) } }
   let soundFontNames: [String] = ["One", "Two"]
   let defaultPreset: SoundFontAndPreset? = .init(soundFontKey: sfOne.key, soundFontName: sfOne.displayName, presetIndex: 0, itemName: "an")
   var count: Int { soundFontNames.count }
@@ -74,10 +74,32 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFonts {
   func importFromLocalDocumentsDirectory() -> (good: Int, total: Int) { (good: 0, total: 0) }
 }
 
+class FavoritesMock: SubscriptionManager<FavoritesEvent>, Favorites {
+  let favorites: [Favorite] = .init()
+  var restored: Bool = false { didSet { notify(.restored) } }
+  var count: Int { favorites.count }
+  func contains(key: Favorite.Key) -> Bool { false }
+  func index(of favorite: Favorite.Key) -> Int { fatalError() }
+  func getBy(index: Int) -> Favorite { fatalError() }
+  func getBy(key: Favorite.Key) -> Favorite { fatalError() }
+  func add(favorite: Favorite) { fatalError() }
+  func beginEdit(config: FavoriteEditor.Config) { fatalError() }
+  func update(index: Int, config: PresetConfig) { fatalError() }
+  func move(from: Int, to: Int) { fatalError() }
+  func setVisibility(key: Favorite.Key, state: Bool) { fatalError() }
+  func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) { fatalError() }
+  func selected(index: Int) { fatalError() }
+  func remove(key: Favorite.Key) { fatalError() }
+  func removeAll(associatedWith: SoundFont) { fatalError() }
+  func count(associatedWith: SoundFont) -> Int { 0 }
+  func validate(_ soundFonts: SoundFonts) {}
+}
+
 class ActivePresetManagerTests: XCTestCase {
 
   var settings: Settings!
   var soundFonts: SoundFontsMock!
+  var favorites: FavoritesMock!
   var selectedSoundFontManager: SelectedSoundFontManager!
   var activePresetManager: ActivePresetManager!
 
@@ -86,8 +108,9 @@ class ActivePresetManagerTests: XCTestCase {
     settings = .init(suiteName: "ActivePresetManagerTests")
     settings.remove(key: .lastActivePreset)
     soundFonts = .init()
+    favorites = .init()
     selectedSoundFontManager = .init()
-    activePresetManager = .init(soundFonts: soundFonts, selectedSoundFontManager: selectedSoundFontManager, settings: settings)
+    activePresetManager = .init(soundFonts: soundFonts, favorites: favorites, selectedSoundFontManager: selectedSoundFontManager, settings: settings)
   }
 
   func testInitialState() {
@@ -107,10 +130,25 @@ class ActivePresetManagerTests: XCTestCase {
 
     // Receive restoration signal
     soundFonts.restored = true
+    favorites.restored = true
+
+    // Now it is the preset
+    XCTAssertEqual(activePresetManager.active, .none)
+  }
+
+  func testRestoreActiveBeforeRestoration() {
+    let preset = soundFonts.defaultPreset!
+
+    // Remembers the set but does not make it active yet
+    activePresetManager.restoreActive(.preset(soundFontAndPreset: preset))
+    XCTAssertEqual(activePresetManager.active, .none)
+
+    // Receive restoration signal
+    soundFonts.restored = true
+    favorites.restored = true
 
     // Now it is the preset
     XCTAssertEqual(activePresetManager.active, .preset(soundFontAndPreset: preset))
-
     XCTAssertNotNil(activePresetManager.activeSoundFont)
     XCTAssertNotNil(activePresetManager.activePreset)
   }
@@ -119,6 +157,7 @@ class ActivePresetManagerTests: XCTestCase {
     XCTAssertEqual(activePresetManager.active, .none)
     soundFonts.notify(.presetChanged(font: sfOne, index: 0))
     soundFonts.restored = true
+    favorites.restored = true
   }
 
   func testResolveToSoundFont() {
@@ -134,18 +173,12 @@ class ActivePresetManagerTests: XCTestCase {
 
   func testSetFavorite() {
     soundFonts.restored = true
+    favorites.restored = true
     let favorite: Favorite = .init(soundFontAndPreset: soundFonts.defaultPreset!, presetConfig: .init(name: "Hello"), keyboardLowestNote: nil)
     activePresetManager.setActive(favorite: favorite, playSample: false)
     XCTAssertEqual(activePresetManager.activeFavorite, favorite)
 
     // Same value
     activePresetManager.setActive(favorite: favorite, playSample: false)
-  }
-
-  func testRestoreFromSettings() {
-    XCTAssertEqual(activePresetManager.active, .none)
-    settings.lastActivePreset = ActivePresetKind.preset(soundFontAndPreset: soundFonts.defaultPreset!)
-    soundFonts.restored = true
-    XCTAssertEqual(activePresetManager.active, .preset(soundFontAndPreset: soundFonts.defaultPreset!))
   }
 }

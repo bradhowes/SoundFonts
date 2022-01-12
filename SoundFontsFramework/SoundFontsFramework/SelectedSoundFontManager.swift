@@ -3,8 +3,14 @@
 import Foundation
 import os
 
-public enum SelectedSoundFontEvent {
+public enum SelectedSoundFontEvent: CustomStringConvertible {
   case changed(old: SoundFont?, new: SoundFont?)
+
+  public var description: String {
+    switch self {
+    case let .changed(old, new): return "<SelectedSoundFontEvent: changed \(old.descriptionOrNil) \(new.descriptionOrNil)>"
+    }
+  }
 }
 
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {

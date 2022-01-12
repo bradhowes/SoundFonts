@@ -9,7 +9,7 @@ public struct PresetConfig: Codable {
   public typealias ChangedNotification = TypedNotification<PresetConfig>
 
   /// Notification that will be emitted when the persistent container is available to use.
-  public static let changedNotification: ChangedNotification = ChangedNotification(name: .presetConfigChanged)
+  public static let changedNotification: ChangedNotification = ChangedNotification(name: .activePresetConfigChanged)
 
   /// The name for this preset configuration
   public var name: String
@@ -41,9 +41,6 @@ public struct PresetConfig: Codable {
 
   /// Current preset tuning value (cents)
   public var presetTuning: Float = 0.0
-
-  /// True if preset tuning should be applied when preset is active
-  public var presetTuningEnabled: Bool = false
 
   /// User notes about the preset
   public var notes: String?

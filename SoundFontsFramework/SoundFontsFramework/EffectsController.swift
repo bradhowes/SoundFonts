@@ -271,7 +271,7 @@ extension EffectsController: ControllerConfiguration {
     favorites = router.favorites
     activePresetManager = router.activePresetManager
     router.subscribe(self, notifier: routerChange)
-    activePresetManager.subscribe(self, notifier: activePresetChange)
+    activePresetManager.subscribe(self, notifier: activePresetChanged)
   }
 }
 
@@ -417,22 +417,22 @@ extension EffectsController {
     switch event {
     case .reverbAvailable(let reverb):
       reverbEffect = reverb
-      updateState()
+      DispatchQueue.main.async { self.updateState() }
 
     case .delayAvailable(let delay):
       delayEffect = delay
-      updateState()
+      DispatchQueue.main.async { self.updateState() }
 
     case .chorusAvailable(let chorus):
       chorusEffect = chorus
-      updateState()
+      DispatchQueue.main.async { self.updateState() }
 
     case .samplerAvailable: break
     }
   }
 
-  private func activePresetChange(_ event: ActivePresetEvent) {
-    guard case .active = event else { return }
+  private func activePresetChanged(_ event: ActivePresetEvent) {
+    guard case .change = event else { return }
     updateState()
   }
 

@@ -112,6 +112,6 @@ extension TagsManager {
 
   private func notifyCollectionRestored() {
     os_log(.info, log: log, "notifyCollectionRestored")
-    DispatchQueue.main.async { self.notify(.restored) }
+    notify(.restored)
   }
 }

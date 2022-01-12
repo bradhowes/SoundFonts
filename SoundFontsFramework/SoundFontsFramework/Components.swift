@@ -12,7 +12,7 @@ where T: ControllerConfiguration {
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigFile: ConsolidatedConfigFile
   /// Manager that controls when to ask for a review from the customer
-  public let askForReview: AskForReview
+  public let askForReview: AskForReview?
   /// The manager for the collection of sound fonts
   public let soundFonts: SoundFonts
   /// The manager for the collection of favorites
@@ -64,7 +64,7 @@ where T: ControllerConfiguration {
   private var _sampler: Sampler? {
     didSet {
       if let sampler = _sampler {
-        DispatchQueue.main.async { self.notify(.samplerAvailable(sampler)) }
+        notify(.samplerAvailable(sampler))
       }
     }
   }
@@ -72,7 +72,7 @@ where T: ControllerConfiguration {
   private var _reverbEffect: ReverbEffect? {
     didSet {
       if let effect = _reverbEffect {
-        DispatchQueue.main.async { self.notify(.reverbAvailable(effect)) }
+        notify(.reverbAvailable(effect))
       }
     }
   }
@@ -80,7 +80,7 @@ where T: ControllerConfiguration {
   private var _delayEffect: DelayEffect? {
     didSet {
       if let effect = _delayEffect {
-        DispatchQueue.main.async { self.notify(.delayAvailable(effect)) }
+        notify(.delayAvailable(effect))
       }
     }
   }
@@ -88,7 +88,7 @@ where T: ControllerConfiguration {
   private var _chorusEffect: ChorusEffect? {
     didSet {
       if let effect = _chorusEffect {
-        DispatchQueue.main.async { self.notify(.chorusAvailable(effect)) }
+        notify(.chorusAvailable(effect))
       }
     }
   }
@@ -104,14 +104,14 @@ where T: ControllerConfiguration {
 
     self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
 
-    self.askForReview = AskForReview(isMain: inApp, settings: settings)
+    self.askForReview = inApp ? AskForReview(settings: settings) : nil
 
     self.soundFonts = SoundFontsManager(consolidatedConfigFile, settings: settings)
     self.favorites = FavoritesManager(consolidatedConfigFile)
     self.tags = TagsManager(consolidatedConfigFile)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
-    self.activePresetManager = ActivePresetManager(soundFonts: soundFonts,
+    self.activePresetManager = ActivePresetManager(soundFonts: soundFonts, favorites: favorites,
                                                    selectedSoundFontManager: selectedSoundFontManager,
                                                    settings: settings)
     super.init()

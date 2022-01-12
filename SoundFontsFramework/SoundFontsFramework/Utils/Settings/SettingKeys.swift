@@ -20,6 +20,8 @@ public extension SettingKeys {
   /// The current scale factor that controls how much of the presets view to show in comparison to the fonts view
   static let presetsWidthMultiplier = SettingKey("presetsWidthMultiplier", 1.4)
   /// The number of semitones a max pitch bend will cause in a playing note
+  static let pitchBendRangeEnabled = SettingKey("pitchBendRangeEnabled", false)
+  /// The number of semitones a max pitch bend will cause in a playing note
   static let pitchBendRange = SettingKey("pitchBendRange", 2)
   /// When true, global tuning is active
   static let globalTuningEnabled = SettingKey("globalTuningEnabled", false)

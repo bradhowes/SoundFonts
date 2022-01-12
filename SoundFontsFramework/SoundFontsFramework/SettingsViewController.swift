@@ -61,21 +61,16 @@ public final class SettingsViewController: UIViewController {
   @IBOutlet private weak var midiChannel: UILabel!
   @IBOutlet private weak var midiConnections: UIButton!
   @IBOutlet private weak var midiChannelStepper: UIStepper!
+
   @IBOutlet private weak var pitchBendRange: UILabel!
   @IBOutlet private weak var pitchBendStepper: UIStepper!
   @IBOutlet private weak var bluetoothMIDIConnect: UIButton!
   @IBOutlet private weak var copyFiles: UISwitch!
 
   @IBOutlet private weak var divider5: UIView!
-  @IBOutlet private weak var globalTuningTitle: UILabel!
-  @IBOutlet private weak var globalTuningEnabled: UISwitch!
-  @IBOutlet private weak var standardTuningLabel: UILabel!
   @IBOutlet private weak var standardTuningButton: UIButton!
-  @IBOutlet private weak var scientificTuningLabel: UILabel!
   @IBOutlet private weak var scientificTuningButton: UIButton!
-  @IBOutlet private weak var globalTuningCentsLabel: UILabel!
   @IBOutlet private weak var globalTuningCents: UITextField!
-  @IBOutlet private weak var globalTuningFrequencyLabel: UILabel!
   @IBOutlet private weak var globalTuningFrequency: UITextField!
 
   @IBOutlet private weak var removeDefaultSoundFonts: UIButton!
@@ -87,8 +82,9 @@ public final class SettingsViewController: UIViewController {
   private var revealKeyboardForKeyWidthChanges = false
   private let numberKeyboardDoneProxy = UITapGestureRecognizer()
 
-  public var settings: Settings!
-  public var soundFonts: SoundFonts!
+  public weak var settings: Settings!
+  public weak var soundFonts: SoundFonts!
+  public weak var infoBar: InfoBar!
   public var isMainApp = true
 
   private var midiConnectionsObserver: NSKeyValueObservation!
@@ -107,17 +103,8 @@ public final class SettingsViewController: UIViewController {
     versionReviewStackView,
     showTutorialStackView,
     contactDeveloperStackView,
-    globalTuningEnabled,
-    globalTuningTitle,
-    standardTuningLabel,
-    standardTuningButton,
-    scientificTuningLabel,
-    scientificTuningButton,
-    globalTuningCentsLabel,
-    globalTuningCents,
-    globalTuningFrequencyLabel,
-    globalTuningFrequency,
     pitchBendStackView,
+    tuningStackView,
     divider1,
     divider2,
     divider3,
@@ -154,14 +141,13 @@ public final class SettingsViewController: UIViewController {
     super.viewWillAppear(animated)
 
     let tuningComponent = TuningComponent(
-      enabled: settings.globalTuningEnabled,
       tuning: settings.globalTuning,
       view: view, scrollView: scrollView,
-      tuningEnabledSwitch: globalTuningEnabled,
       standardTuningButton: standardTuningButton,
       scientificTuningButton: scientificTuningButton,
       tuningCents: globalTuningCents,
-      tuningFrequency: globalTuningFrequency
+      tuningFrequency: globalTuningFrequency,
+      isActive: true
     )
 
     self.tuningComponent = tuningComponent
@@ -228,18 +214,13 @@ public final class SettingsViewController: UIViewController {
   override public func viewDidDisappear(_ animated: Bool) {
     os_log(.info, log: log, "viewDidDisapper BEGIN")
     super.viewDidDisappear(animated)
-
     guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
 
-    settings.globalTuningEnabled = globalTuningEnabled.isOn
     settings.globalTuning = tuningComponent.tuning
-
-    os_log(.debug, log: log, "viewDidDisappear - tuningEnabled: %d", settings.globalTuningEnabled)
-    os_log(.debug, log: log, "viewDidDisappear - tuningEnabled: %f", settings.globalTuning)
+    infoBar.updateTuningIndicator()
 
     self.tuningComponent = nil
     self.midiConnectionsObserver = nil
-
     if let monitor = MIDI.sharedInstance.monitor, monitor === self {
       MIDI.sharedInstance.monitor = nil
     }
@@ -414,7 +395,7 @@ extension SettingsViewController {
     os_log(.info, log: log, "new pitch-bend range %d", value)
     pitchBendRange.text = "\(value)"
     settings.pitchBendRange = value
-    Sampler.setPitchBendRangeNotification.post(value: value)
+    Sampler.pitchBendRangeChangedNotification.post(value: value)
   }
 
   private func postNotice(msg: String) {

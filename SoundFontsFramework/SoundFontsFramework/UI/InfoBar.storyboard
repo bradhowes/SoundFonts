@@ -65,19 +65,43 @@
                                         <color key="textColor" systemColor="systemTealColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IXh-d1-UGz" userLabel="Tuning">
+                                        <rect key="frame" x="-10" y="4" width="7" height="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" systemColor="systemRedColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="P" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cFc-aG-7R9" userLabel="Pan">
+                                        <rect key="frame" x="-10" y="14" width="7" height="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" systemColor="systemYellowColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="G" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j6v-JR-qvA" userLabel="Gain">
+                                        <rect key="frame" x="-10.5" y="24" width="8" height="12"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                        <color key="textColor" systemColor="systemGreenColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <accessibility key="accessibilityConfiguration" identifier="TouchView" label="TouchView">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
+                                    <constraint firstItem="IXh-d1-UGz" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" constant="4" id="AH1-c1-5F1"/>
+                                    <constraint firstItem="IXh-d1-UGz" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" constant="-10" id="IHC-O7-R71"/>
                                     <constraint firstAttribute="trailing" secondItem="bwl-He-nQi" secondAttribute="trailing" constant="8" id="IoM-mZ-x3t"/>
+                                    <constraint firstAttribute="bottom" secondItem="j6v-JR-qvA" secondAttribute="bottom" constant="4" id="JVi-wE-HES"/>
+                                    <constraint firstItem="cFc-aG-7R9" firstAttribute="centerY" secondItem="JeZ-VG-nmd" secondAttribute="centerY" id="L5I-MT-1Hl"/>
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" id="NXe-3x-Xt0"/>
                                     <constraint firstAttribute="trailing" secondItem="L4b-eK-8gI" secondAttribute="trailing" constant="8" id="QKg-rW-e9z"/>
                                     <constraint firstItem="bwl-He-nQi" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="Y1K-Uv-9qV"/>
                                     <constraint firstAttribute="bottom" secondItem="L4b-eK-8gI" secondAttribute="bottom" id="cGe-PD-FB7"/>
                                     <constraint firstAttribute="bottom" secondItem="bwl-He-nQi" secondAttribute="bottom" id="hCN-wY-QWu"/>
+                                    <constraint firstItem="cFc-aG-7R9" firstAttribute="centerX" secondItem="IXh-d1-UGz" secondAttribute="centerX" id="jZ5-OZ-Ccf"/>
                                     <constraint firstItem="L4b-eK-8gI" firstAttribute="top" secondItem="JeZ-VG-nmd" secondAttribute="top" id="k19-HX-DJ7"/>
                                     <constraint firstItem="L4b-eK-8gI" firstAttribute="leading" secondItem="JeZ-VG-nmd" secondAttribute="leading" id="lbN-MH-Lgi"/>
+                                    <constraint firstItem="j6v-JR-qvA" firstAttribute="centerX" secondItem="IXh-d1-UGz" secondAttribute="centerX" id="t4g-pO-KVo"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="So5-iS-wEF" userLabel="MoreButtons">
@@ -232,10 +256,12 @@
                     <connections>
                         <outlet property="addSoundFont" destination="ub1-7q-fxl" id="jRn-FL-bhT"/>
                         <outlet property="editVisibility" destination="oWy-3z-Rka" id="aYs-eJ-ELf"/>
+                        <outlet property="gainIndicator" destination="j6v-JR-qvA" id="m3c-CO-gSK"/>
                         <outlet property="highestKey" destination="gBF-bM-n1r" id="IYm-Uz-YRq"/>
                         <outlet property="lowestKey" destination="IO0-ky-FSn" id="y9d-PN-YWc"/>
                         <outlet property="moreButtons" destination="So5-iS-wEF" id="pfR-Zo-SNG"/>
                         <outlet property="moreButtonsXConstraint" destination="bxu-Ks-Ick" id="aaC-gp-dGa"/>
+                        <outlet property="panIndicator" destination="cFc-aG-7R9" id="xqB-V8-WEG"/>
                         <outlet property="presetInfo" destination="L4b-eK-8gI" id="tRD-kx-zUh"/>
                         <outlet property="showEffects" destination="vUY-Ob-d91" id="moH-Ry-KEb"/>
                         <outlet property="showGuide" destination="dnb-O4-iay" id="I2g-KM-dLC"/>
@@ -245,6 +271,7 @@
                         <outlet property="slidingKeyboardToggle" destination="BW4-Wd-vsq" id="qMR-q7-x8c"/>
                         <outlet property="status" destination="bwl-He-nQi" id="BUJ-LW-oBD"/>
                         <outlet property="touchView" destination="JeZ-VG-nmd" id="u9O-3R-VIL"/>
+                        <outlet property="tuningIndicator" destination="IXh-d1-UGz" id="rUc-sH-MBW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3H4-TR-G51" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -268,8 +295,17 @@
         <image name="More Right" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>
         <image name="Tags" width="25" height="25"/>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

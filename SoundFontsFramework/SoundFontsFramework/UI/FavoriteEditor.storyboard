@@ -21,10 +21,10 @@
                                 <rect key="frame" x="0.0" y="8" width="400" height="304"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L9n-Ds-faX" userLabel="Content">
-                                        <rect key="frame" x="0.0" y="0.0" width="400" height="984.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="400" height="941.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="OEH-l7-zkG">
-                                                <rect key="frame" x="16" y="16" width="368" height="952.5"/>
+                                                <rect key="frame" x="16" y="16" width="368" height="909.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="LLv-vL-GhR" userLabel="Name">
                                                         <rect key="frame" x="0.0" y="0.0" width="368" height="52"/>
@@ -150,26 +150,10 @@
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="bvu-MO-5fu" userLabel="Tuning">
-                                                        <rect key="frame" x="0.0" y="252" width="368" height="184"/>
+                                                        <rect key="frame" x="0.0" y="252" width="368" height="141"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="CRV-7u-S8K" userLabel="Title">
-                                                                <rect key="frame" x="0.0" y="0.0" width="368" height="31"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use preset tuning" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OGJ-Hl-cax">
-                                                                        <rect key="frame" x="0.0" y="5.5" width="135" height="20.5"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="FiF-ht-0lP" userLabel="enableTuning">
-                                                                        <rect key="frame" x="319" y="0.0" width="51" height="31"/>
-                                                                        <color key="tintColor" systemColor="systemTealColor"/>
-                                                                        <color key="onTintColor" systemColor="systemTealColor"/>
-                                                                    </switch>
-                                                                </subviews>
-                                                            </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="nSs-R1-hCK" userLabel="Standard Tuning">
-                                                                <rect key="frame" x="0.0" y="43" width="368" height="25.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="368" height="25.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Standard tuning (A4 = 440 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X2q-9H-uep">
                                                                         <rect key="frame" x="0.0" y="0.0" width="235.5" height="20.5"/>
@@ -186,7 +170,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yTy-qV-y7C" userLabel="Verdi Tuning">
-                                                                <rect key="frame" x="0.0" y="80.5" width="368" height="25.5"/>
+                                                                <rect key="frame" x="0.0" y="37.5" width="368" height="25.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scientific tuning (A4 = 432 Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vlL-7G-1Va">
                                                                         <rect key="frame" x="0.0" y="0.0" width="235.5" height="20.5"/>
@@ -203,7 +187,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="x0g-gP-Pjr" userLabel="Cents">
-                                                                <rect key="frame" x="0.0" y="118" width="368" height="27"/>
+                                                                <rect key="frame" x="0.0" y="75" width="368" height="27"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cents (± 2400)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="If3-xT-rX9" userLabel="Cents">
                                                                         <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
@@ -224,7 +208,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="IaN-yc-T3W" userLabel="Frequency">
-                                                                <rect key="frame" x="0.0" y="157" width="368" height="27"/>
+                                                                <rect key="frame" x="0.0" y="114" width="368" height="27"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A4 frequency (Hz)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNN-D0-0Hh" userLabel="Frequency">
                                                                         <rect key="frame" x="0.0" y="0.0" width="260" height="20.5"/>
@@ -247,14 +231,14 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4n5-IR-9u6" userLabel="Divider 1">
-                                                        <rect key="frame" x="0.0" y="446" width="368" height="12"/>
+                                                        <rect key="frame" x="0.0" y="403" width="368" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="12" id="oT6-ah-FBI"/>
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9EH-S0-Zry" userLabel="Pitchbend">
-                                                        <rect key="frame" x="0.0" y="468" width="368" height="32"/>
+                                                        <rect key="frame" x="0.0" y="425" width="368" height="32"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Pitch Bend Range (semitones)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3HN-WQ-Wu4">
                                                                 <rect key="frame" x="0.0" y="6" width="230" height="20.5"/>
@@ -288,7 +272,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="LgU-VJ-ePA" userLabel="Gain">
-                                                        <rect key="frame" x="0.0" y="510" width="368" height="54.5"/>
+                                                        <rect key="frame" x="0.0" y="467" width="368" height="54.5"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zko-E5-Cgz">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -331,7 +315,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="cf0-Pi-ZHp" userLabel="Pan">
-                                                        <rect key="frame" x="0.0" y="574.5" width="368" height="54.5"/>
+                                                        <rect key="frame" x="0.0" y="531.5" width="368" height="54.5"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="pXC-eW-x1T">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="20.5"/>
@@ -380,14 +364,14 @@
                                                         </subviews>
                                                     </stackView>
                                                     <view alpha="0.5" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7CP-Vq-WaW" userLabel="Divider 1">
-                                                        <rect key="frame" x="0.0" y="639" width="368" height="12"/>
+                                                        <rect key="frame" x="0.0" y="596" width="368" height="12"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="12" id="YFT-1q-RaS"/>
                                                         </constraints>
                                                     </view>
                                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="kzM-Em-ygQ" userLabel="Notes">
-                                                        <rect key="frame" x="0.0" y="661" width="368" height="146"/>
+                                                        <rect key="frame" x="0.0" y="618" width="368" height="146"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dLd-j5-bGc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="16"/>
@@ -408,7 +392,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="qWL-vj-b1p" userLabel="Font">
-                                                        <rect key="frame" x="0.0" y="817" width="368" height="38.5"/>
+                                                        <rect key="frame" x="0.0" y="774" width="368" height="38.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="SoundFont" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ho-Sw-IFF" userLabel="Font">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="16"/>
@@ -425,7 +409,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="87C-0Z-eJk" userLabel="Preset">
-                                                        <rect key="frame" x="0.0" y="865.5" width="368" height="38.5"/>
+                                                        <rect key="frame" x="0.0" y="822.5" width="368" height="38.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="opt-tT-iBx" userLabel="Preset">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="16"/>
@@ -442,7 +426,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="3lF-eK-Akn" userLabel="Key">
-                                                        <rect key="frame" x="0.0" y="914" width="368" height="38.5"/>
+                                                        <rect key="frame" x="0.0" y="871" width="368" height="38.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ED0-Yc-nXZ">
                                                                 <rect key="frame" x="0.0" y="0.0" width="368" height="16"/>
@@ -533,7 +517,6 @@
                         <outlet property="pitchBendRange" destination="rVL-Vq-eCb" id="Sfq-wf-0FJ"/>
                         <outlet property="pitchBendStepper" destination="1cR-lq-Yyp" id="ZUz-Nm-PFF"/>
                         <outlet property="presetTuningCents" destination="qGW-cI-01n" id="YmN-kn-w0A"/>
-                        <outlet property="presetTuningEnabled" destination="FiF-ht-0lP" id="JEQ-TL-TeY"/>
                         <outlet property="presetTuningFrequency" destination="lA1-zC-vUR" id="Gta-j5-GiW"/>
                         <outlet property="scientificTuningButton" destination="8DM-Wa-w19" id="3y7-Hp-YTb"/>
                         <outlet property="scrollView" destination="lZV-Mh-RrU" id="HFI-tY-3b9"/>

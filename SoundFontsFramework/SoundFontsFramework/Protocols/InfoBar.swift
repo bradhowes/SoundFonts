@@ -78,4 +78,6 @@ public protocol InfoBar: AnyObject {
    - parameter visible: true if presets view is showin
    */
   func updateButtonsForPresetsViewState(visible: Bool)
+
+  func updateTuningIndicator()
 }

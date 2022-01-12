@@ -40,9 +40,7 @@ public class SubscriptionManager<Event> {
    - returns: a token that knows how to unsubscribe
    */
   @discardableResult
-  public func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping NotifierProc)
-  -> SubscriberToken
-  {
+  public func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping NotifierProc) -> SubscriberToken {
     let uuid = UUID()
     let token = Token { [weak self] in self?.subscriptions.removeValue(forKey: uuid) }
     subscriptions[uuid] = { [weak subscriber] kind in

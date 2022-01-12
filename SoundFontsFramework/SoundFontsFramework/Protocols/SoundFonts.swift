@@ -3,7 +3,7 @@
 import Foundation
 
 /// The different events which are emitted by a SoundFonts collection when the collection changes.
-public enum SoundFontsEvent {
+public enum SoundFontsEvent: CustomStringConvertible {
 
   /// New SoundFont added to the collection
   case added(new: Int, font: SoundFont)
@@ -22,6 +22,17 @@ public enum SoundFontsEvent {
 
   /// Sound font collection was restored from disk and is now safe to use
   case restored
+
+  public var description: String {
+    switch self {
+    case let .added(new, font): return "<SoundFontsEvent added: \(new) '\(font.displayName)'>"
+    case let .moved(old, new, font): return "<SoundFontsEvent moved: \(old) \(new) '\(font.displayName)'>"
+    case let .removed(old, font): return "<SoundFontsEvent removed: \(old) '\(font.displayName)'>"
+    case let .unhidPresets(font): return "<SoundFontsEvent unhidPresets: '\(font.displayName)'>"
+    case let .presetChanged(font, index): return "<SoundFontsEvent presetChanged: '\(font.displayName)' \(index)>"
+    case .restored: return "<SoundFontsEvent restored>"
+    }
+  }
 }
 
 /// Actions available on a collection of SoundFont instances. Supports subscribing to changes.

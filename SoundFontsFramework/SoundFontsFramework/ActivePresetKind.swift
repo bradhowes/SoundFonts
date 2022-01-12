@@ -5,13 +5,21 @@ import Foundation
 import os
 
 /// Container for a user-selected SoundFont preset or a user-created favorite.
-public enum ActivePresetKind: Equatable {
+public enum ActivePresetKind: Equatable, CustomStringConvertible {
   /// Normal soundfont preset description
   case preset(soundFontAndPreset: SoundFontAndPreset)
   /// Favorite soundfont preset
   case favorite(favorite: Favorite)
   /// Exceptional case when there is no active preset
   case none
+
+  public var description: String {
+    switch self {
+    case let .preset(soundFontAndPreset): return "<ActivePresetKind: preset \(soundFontAndPreset)>"
+    case let .favorite(favorite): return "<ActivePresetKind: favorite \(favorite)>"
+    case .none: return "<ActivePresetKind: none>"
+    }
+  }
 }
 
 public extension ActivePresetKind {
@@ -84,7 +92,7 @@ extension ActivePresetKind: Codable {
       let err = error
       do {
 
-        // Legacy encoding using using unkeyed container
+        // Legacy encoding using using un-keyed container
         //
         var container = try decoder.unkeyedContainer()
         guard let internalKey = InternalKey(rawValue: try container.decode(Int.self)) else {
@@ -114,18 +122,6 @@ extension ActivePresetKind: Codable {
     case .preset(let soundFontPreset): try container.encode(soundFontPreset, forKey: .value)
     case .favorite(let favorite): try container.encode(favorite, forKey: .value)
     case .none: break
-    }
-  }
-}
-
-extension ActivePresetKind: CustomStringConvertible {
-
-  /// Get a description string for the value
-  public var description: String {
-    switch self {
-    case let .preset(soundFontAndPreset: soundFontPreset): return ".preset(\(soundFontPreset))"
-    case let .favorite(favorite: favorite): return ".favorite(\(favorite))"
-    case .none: return ".none"
     }
   }
 }
