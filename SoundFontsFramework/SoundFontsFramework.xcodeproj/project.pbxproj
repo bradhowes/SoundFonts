@@ -153,6 +153,8 @@
 		BD6FE72C278903830038760A /* PresetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6FE72B278903830038760A /* PresetTableView.swift */; };
 		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B7C482660D4AF00F0D18D /* TagTests.swift */; };
+		BD7F6C452790A7BB00C867D8 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD7F6C432790A7BB00C867D8 /* Release.xcconfig */; };
+		BD7F6C462790A7BB00C867D8 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD7F6C442790A7BB00C867D8 /* Development.xcconfig */; };
 		BD8114A624F13A830033737F /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */; };
 		BD88BCB3241952CA00399DE5 /* NoteInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB124194FA000399DE5 /* NoteInjector.swift */; };
 		BD88BCB72419952700399DE5 /* Notifiication.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD88BCB62419952700399DE5 /* Notifiication.swift */; };
@@ -398,6 +400,8 @@
 		BD7DF754265EE99F0083B246 /* ManagdDelayConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagdDelayConfig.swift; sourceTree = "<group>"; };
 		BD7DF758265EE99F0083B246 /* ManagedPresetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedPresetConfig.swift; sourceTree = "<group>"; };
 		BD7DF75E265EE99F0083B246 /* ManagedReverbConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedReverbConfig.swift; sourceTree = "<group>"; };
+		BD7F6C432790A7BB00C867D8 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
+		BD7F6C442790A7BB00C867D8 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
 		BD88BCB124194FA000399DE5 /* NoteInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteInjector.swift; sourceTree = "<group>"; };
 		BD88BCB62419952700399DE5 /* Notifiication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifiication.swift; sourceTree = "<group>"; };
 		BD8A314F2502E41E0077320F /* SoundFonts.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SoundFonts.xcdatamodel; sourceTree = "<group>"; };
@@ -805,6 +809,8 @@
 		BD5824F723CDABCD0034A31B = {
 			isa = PBXGroup;
 			children = (
+				BD7F6C432790A7BB00C867D8 /* Release.xcconfig */,
+				BD7F6C442790A7BB00C867D8 /* Development.xcconfig */,
 				BD074BD023CDAF51001987E9 /* SoundFontsFramework */,
 				BD58250E23CDABCE0034A31B /* SoundFontsFrameworkTests */,
 				BD58250223CDABCD0034A31B /* Products */,
@@ -1075,7 +1081,9 @@
 				BD074C5D23CDAF51001987E9 /* (null) in Resources */,
 				BDB7408525CC29690051B4E4 /* SoundFontList.storyboard in Resources */,
 				BDB7408125CC29690051B4E4 /* TagsList.storyboard in Resources */,
+				BD7F6C462790A7BB00C867D8 /* Development.xcconfig in Resources */,
 				BDC7EC3F241AE97000F789B2 /* Localizable.strings in Resources */,
+				BD7F6C452790A7BB00C867D8 /* Release.xcconfig in Resources */,
 				BDB7408225CC29690051B4E4 /* Favorites.storyboard in Resources */,
 				BD130B0525614A6D00D1CDF6 /* Effects.storyboard in Resources */,
 				BD1C22E925CDC6AE007C114F /* TutorialContentPager.storyboard in Resources */,
@@ -1343,6 +1351,7 @@
 /* Begin XCBuildConfiguration section */
 		BD58251323CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C442790A7BB00C867D8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1409,6 +1418,7 @@
 		};
 		BD58251423CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C432790A7BB00C867D8 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
@@ -1469,6 +1479,7 @@
 		};
 		BD58251623CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C442790A7BB00C867D8 /* Development.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20220108011737;
@@ -1497,6 +1508,7 @@
 		};
 		BD58251723CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C432790A7BB00C867D8 /* Release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20220108011737;
@@ -1525,6 +1537,7 @@
 		};
 		BD58251923CDABCE0034A31B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C442790A7BB00C867D8 /* Development.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1545,6 +1558,7 @@
 		};
 		BD58251A23CDABCE0034A31B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD7F6C432790A7BB00C867D8 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
