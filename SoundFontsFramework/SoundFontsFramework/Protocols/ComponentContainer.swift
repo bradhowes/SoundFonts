@@ -3,7 +3,7 @@
 import UIKit
 
 /// State change events that can happen with a ComponentContainer.
-public enum ComponentContainerEvent {
+public enum ComponentContainerEvent: CustomStringConvertible {
   /// The sampler is ready for use.
   case samplerAvailable(Sampler)
   /// The reverb effect is ready for use.
@@ -12,6 +12,15 @@ public enum ComponentContainerEvent {
   case delayAvailable(DelayEffect)
   /// The chorus effect is ready for use.
   case chorusAvailable(ChorusEffect)
+
+  public var description: String {
+    switch self {
+    case .samplerAvailable: return "<ComponentContainerEvent: samplerAvailable>"
+    case .reverbAvailable:  return "<ComponentContainerEvent: reverbAvailable>"
+    case .delayAvailable:  return "<ComponentContainerEvent: delayAvailable>"
+    case .chorusAvailable:  return "<ComponentContainerEvent: chorusAvailable>"
+    }
+  }
 }
 
 /// Collection of UIViewControllers and protocol facades which helps establish inter-controller relationships during the

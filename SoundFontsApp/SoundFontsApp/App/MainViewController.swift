@@ -213,6 +213,7 @@ extension MainViewController: ControllerConfiguration {
    - parameter router: the ComponentContainer that holds all of the registered managers / controllers
    */
   func establishConnections(_ router: ComponentContainer) {
+    os_log(.info, log: log, "establishConnections BEGIN")
     self.router = router
 
     infoBar = router.infoBar
@@ -225,7 +226,6 @@ extension MainViewController: ControllerConfiguration {
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
     #endif
 
-    router.subscribe(self, notifier: routerChange)
     router.activePresetManager.subscribe(self, notifier: activePresetChanged)
 
     let preset: ActivePresetKind = {
@@ -236,6 +236,13 @@ extension MainViewController: ControllerConfiguration {
     }()
 
     activePresetManager.restoreActive(preset)
+
+    router.subscribe(self, notifier: routerChanged)
+    if let sampler = router.sampler {
+      setSampler(sampler)
+    }
+    
+    os_log(.info, log: log, "establishConnections END")
   }
 
   private func startMIDI() {
@@ -245,16 +252,20 @@ extension MainViewController: ControllerConfiguration {
     MIDI.sharedInstance.receiver = midiController
   }
 
-  private func routerChange(_ event: ComponentContainerEvent) {
+  private func routerChanged(_ event: ComponentContainerEvent) {
+    os_log(.info, log: log, "routerChanged: %{public}s", event.description)
     switch event {
-    case .samplerAvailable(let sampler):
-      self.sampler = sampler
-      if startRequested {
-        DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
-      }
+    case .samplerAvailable(let sampler): setSampler(sampler)
     case .reverbAvailable: break
     case .delayAvailable: break
     case .chorusAvailable: break
+    }
+  }
+
+  private func setSampler(_ sampler: Sampler) {
+    self.sampler = sampler
+    if startRequested {
+      DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
     }
   }
 

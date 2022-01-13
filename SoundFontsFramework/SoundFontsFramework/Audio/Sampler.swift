@@ -6,7 +6,7 @@ import Foundation
 import os
 
 /// Failure modes for a sampler
-public enum SamplerStartFailure: Error {
+public enum SamplerStartFailure: Error, CustomStringConvertible {
   /// No sampler is available
   case noSampler
   /// Failed to active a session
@@ -24,13 +24,32 @@ public enum SamplerStartFailure: Error {
     case .presetLoading(let err): return err
     }
   }
+
+  public var description: String {
+    switch self {
+    case .noSampler: return "<SamplerStartFailure: no sampler>"
+    case .sessionActivating(error: let error): return "<SamplerStartFailure: sessionActivating - \(error.localizedDescription)>"
+    case .engineStarting(error: let error): return "<SamplerStartFailure: engineStarting - \(error.localizedDescription)>"
+    case .presetLoading(error: let error): return "<SamplerStartFailure: presetLoading - \(error.localizedDescription)>"
+    }
+  }
+}
+
+extension Result: CustomStringConvertible {
+  public var description: String {
+    switch self {
+    case .success(let value): return "<Result: success \(value)>"
+    case .failure(let value): return "<Result: failure \(value)>"
+    }
+  }
 }
 
 /**
  This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
  */
 public final class Sampler {
-  private lazy var log = Logging.logger("Sampler")
+  private static let log = Logging.logger("Sampler")
+  private var log: OSLog { Self.log }
 
   /// The notification that tuning value has changed for the sampler
   public static let tuningChangedNotification = TypedNotification<Float>(name: .tuningChanged)
@@ -89,6 +108,8 @@ public final class Sampler {
    */
   public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
               settings: Settings) {
+    os_log(.info, log: Self.log, "init BEGIN")
+
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.reverbEffect = reverb
@@ -105,6 +126,8 @@ public final class Sampler {
     gainChangedNotifier = Self.gainChangedNotification.registerOnAny(block: setGain(_:))
     panChangedNotifier = Self.panChangedNotification.registerOnAny(block: setPan(_:))
     pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange(_:))
+
+    os_log(.info, log: Self.log, "init END")
   }
 
   /**
@@ -113,7 +136,7 @@ public final class Sampler {
    - returns: Result value indicating success or failure
    */
   public func start() -> StartResult {
-    os_log(.info, log: log, "start")
+    os_log(.info, log: log, "start BEGIN")
     let sampler = AVAudioUnitSampler()
     auSampler = sampler
 
@@ -127,7 +150,10 @@ public final class Sampler {
       return .success(sampler)
     }
 
-    return startEngine(sampler)
+    let result = startEngine(sampler)
+    os_log(.info, log: log, "start END - %{public}s", result.description)
+
+    return result
   }
 
   /**
