@@ -61,14 +61,7 @@ final class SoundFontsAU: AUAudioUnit {
     os_log(.info, log: log, "starting AVAudioUnitSampler")
 
     switch sampler.start() {
-    case let .success(auSampler):
-      guard
-        let auSampler = auSampler
-      else {
-        throw SoundFontsAUFailure.unableToStart
-      }
-      self.wrapped = auSampler.auAudioUnit
-
+    case let .success(auSampler): self.wrapped = auSampler.auAudioUnit
     case .failure(let what):
       os_log(.info, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
       throw what
@@ -87,13 +80,7 @@ final class SoundFontsAU: AUAudioUnit {
     }
 
     maximumFramesToRender = maxFramesToRender
-
-//    self.currentPresetObserver = wrapped.observe(\.currentPreset, options: [.new]) { [weak self] _, change in
-//      guard let self = self, let newValue = change.newValue else { return }
-//      self.currentPresetChanged(newValue)
-//    }
-
-    self.activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
+    activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
 
     kernel.setMaxFramesToRender(maxFramesToRender)

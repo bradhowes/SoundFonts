@@ -6,7 +6,7 @@ import Foundation
 import os
 
 /// Failure modes for a sampler
-public enum SamplerStartFailure: Error, CustomStringConvertible {
+public enum SamplerStartFailure: Error, Equatable, CustomStringConvertible {
   /// No sampler is available
   case noSampler
   /// Failed to active a session
@@ -63,7 +63,7 @@ public final class Sampler {
   /// The notification that pitch bend range has changed for the sampler
   public static let pitchBendRangeChangedNotification = TypedNotification<Int>(name: .pitchBendRangeChanged)
 
-  public typealias StartResult = Result<AVAudioUnitSampler?, SamplerStartFailure>
+  public typealias StartResult = Result<AVAudioUnitSampler, SamplerStartFailure>
 
   /// The `Sampler` can run in a standalone app or as an AUv3 app extension. This is set at start and cannot be changed.
   public enum Mode {
@@ -160,7 +160,7 @@ public final class Sampler {
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
   public func stop() {
-    os_log(.info, log: log, "stop")
+    os_log(.info, log: log, "stop BEGIN")
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
 
     presetChangeManager.stop()
@@ -189,6 +189,8 @@ public final class Sampler {
       os_log(.debug, log: log, "dropping sampler")
       self.auSampler = nil
     }
+
+    os_log(.info, log: log, "stop END")
   }
 
   /**
@@ -204,7 +206,7 @@ public final class Sampler {
     // Ok if the sampler is not yet available. We will apply the preset when it is
     guard let sampler = auSampler else {
       os_log(.info, log: log, "no sampler yet")
-      return .success(.none)
+      return .failure(.noSampler)
     }
 
     guard let soundFont = activePresetManager.activeSoundFont else {

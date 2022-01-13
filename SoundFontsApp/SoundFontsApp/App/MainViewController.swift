@@ -285,7 +285,7 @@ extension MainViewController: ControllerConfiguration {
         if playSample { self.noteInjector.post(to: sampler) }
       }
 
-      if case let .failure(what) = result {
+      if case let .failure(what) = result, what != .noSampler {
         DispatchQueue.main.async { self.postAlert(for: what) }
       }
     }
