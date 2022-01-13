@@ -8,13 +8,6 @@ import os
 public final class PresetsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("PresetsTableViewController")
 
-  // UIViewController also has an isEditing attribute, but it is not tied to the tableView.isEditing value which can
-  // lead to bugs.
-//  public override var isEditing: Bool {
-//    get { tableView.isEditing }
-//    set { tableView.isEditing = newValue }
-//  }
-
   /// Text field for entering preset search queries.
   @IBOutlet public var searchBar: UISearchBar!
   private var infoBar: InfoBar!
@@ -43,6 +36,7 @@ public final class PresetsTableViewController: UITableViewController {
 
   private var lastSearchText = ""
   private var presetsTableViewManager: PresetsTableViewManager!
+  private let presetSectionHeaderIdentifier = "presetSectionHeader"
 }
 
 extension PresetsTableViewController {
@@ -54,6 +48,7 @@ extension PresetsTableViewController {
     tableView.sectionIndexMinimumDisplayRowCount = IndexPath.sectionSize + 1
     tableView.sectionIndexColor = .darkGray
     tableView.register(TableCell.self)
+    tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: presetSectionHeaderIdentifier)
     searchBar.delegate = self
   }
 
@@ -195,12 +190,14 @@ public extension PresetsTableViewController  {
     return isSearching ? nil : presetsTableViewManager.trailingSwipeActions(at: indexPath, cell: cell)
   }
 
-  override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-    guard let header = view as? UITableViewHeaderFooterView else { return }
-    header.textLabel?.textColor = .systemTeal
-    header.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    header.backgroundView = UIView()
-    header.backgroundView?.backgroundColor = .black
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    guard section > 0 else { return nil }
+    guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: presetSectionHeaderIdentifier) else { return nil }
+    view.textLabel?.textColor = .systemTeal
+    view.textLabel?.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    view.backgroundView = UIView()
+    view.backgroundView?.backgroundColor = .black
+    return view
   }
 }
 
@@ -229,12 +226,13 @@ extension PresetsTableViewController {
     }
   }
 
-  func beginVisibilityEditing() {
+  private func beginVisibilityEditing() {
     os_log(.info, log: log, "beginVisibilityEditing BEGIN")
 
     // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
     // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
     // back into sync. The result as written looks nice with no animation disruptions.
+    //
     setEditing(true, animated: true)
     let changes = presetsTableViewManager.calculateVisibilityChanges(isEditing: true)
     tableView.performBatchUpdates {
@@ -249,8 +247,7 @@ extension PresetsTableViewController {
     os_log(.info, log: log, "beginVisibilityEditing END")
   }
 
-  func showVisibilityState() {
-
+  private func showVisibilityState() {
     os_log(.debug, log: self.log, "showVisibilityState")
     for (indexPath, isVisible) in presetsTableViewManager.visibilityState where isVisible {
       tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
@@ -258,9 +255,11 @@ extension PresetsTableViewController {
   }
 
   func endVisibilityEditing() {
+
+    // This seems to be the best way to end visibility editing without any animation hick-ups.
     CATransaction.begin()
     CATransaction.setCompletionBlock {
-      self.presetsTableViewManager.calculateSectionRowCounts(reload: true)
+      self.presetsTableViewManager.regenerateViewSlots()
     }
 
     setEditing(false, animated: true)

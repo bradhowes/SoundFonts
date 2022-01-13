@@ -75,7 +75,7 @@ extension ActiveTagManager {
     let name = tag.name
     var flags: TableCell.Flags = .init()
     if activeIndex == row { flags.insert(.active) }
-    cell.updateForTag(name: name, flags: flags)
+    cell.updateForTag(at: indexPath, name: name, flags: flags)
     return cell
   }
 }

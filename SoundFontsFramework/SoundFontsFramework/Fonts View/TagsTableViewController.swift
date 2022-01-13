@@ -296,8 +296,8 @@ extension TagsTableViewController {
     if tag == Tag.allTag || active.contains(tag.key) || (self.builtIn && tag == Tag.builtInTag) {
       flags.insert(.active)
     }
-    cell.updateForTag(name: tag.name, flags: flags)
 
+    cell.updateForTag(at: indexPath, name: tag.name, flags: flags)
     return cell
   }
 }

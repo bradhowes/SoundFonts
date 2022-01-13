@@ -6,7 +6,7 @@ import os
 /// Number of sections we partition presets into
 
 /**
- Data source and delegate for the presets UITableView. This is one of the most complicated managers and it should be
+ Backing data source the presets UITableView. This is one of the most complicated managers and it should be
  broken up into smaller components. There are four areas of functionality:
 
  - table view drawing and selecting
@@ -85,7 +85,8 @@ extension PresetsTableViewManager {
   func numberOfRows(section: Int) -> Int { searchSlots?.count ?? sectionRowCounts[section] }
 
   func update(cell: TableCell, at indexPath: IndexPath) -> UITableViewCell {
-    update(cell: cell, at: slotIndex(from: indexPath))
+    update(cell: cell, at: indexPath, slotIndex: slotIndex(from: indexPath))
+    return cell
   }
 
   var sectionIndexTitles: [String] { IndexPath.sectionsTitles(sourceSize: viewSlots.count) }
@@ -163,18 +164,16 @@ extension PresetsTableViewManager {
     activePresetManager.setActive(favorite: favorite, playSample: settings.playSample)
   }
 
-  func calculateSectionRowCounts(reload: Bool) {
+  private func calculateSectionRowCounts() {
     let numFullSections = viewSlots.count / IndexPath.sectionSize
     let remaining = viewSlots.count - numFullSections * IndexPath.sectionSize
     sectionRowCounts = [Int](repeating: IndexPath.sectionSize, count: numFullSections)
     if remaining > 0 { sectionRowCounts.append(remaining) }
-    if reload {
-      viewController.tableView.reloadSections( IndexSet(stride(from: 0, to: sectionRowCounts.count, by: 1)), with: .none)
-    }
   }
 
   func regenerateViewSlots() {
     os_log(.info, log: log, "regenerateViewSlots BEGIN")
+
     let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
     for (index, preset) in source.enumerated() {
@@ -189,7 +188,7 @@ extension PresetsTableViewManager {
       }
     }
 
-    calculateSectionRowCounts(reload: false)
+    calculateSectionRowCounts()
 
     if isSearching {
       search(for: searchBar.nonNilSearchTerm)
@@ -392,35 +391,62 @@ extension PresetsTableViewManager {
 extension PresetsTableViewManager {
 
   func leadingSwipeActions(at indexPath: IndexPath, cell: TableCell) -> UISwipeActionsConfiguration? {
+    guard let soundFont = selectedSoundFont else { return nil }
     let slotIndex = slotIndex(from: indexPath)
     let slot = getSlot(at: slotIndex)
     let actions: [UIContextualAction] = {
       switch slot {
-      case .preset:
-        guard let soundFontAndPreset = makeSoundFontAndPreset(at: slotIndex) else { return [] }
+      case let .preset(index):
         return [
-          editPresetSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset),
-          createFavoriteSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
+          makeEditPresetSwipeAction(at: indexPath, soundFontAndPreset: soundFont[index]),
+          makeCreateFavoriteSwipeAction(at: indexPath, soundFontAndPreset: soundFont[index])
         ]
       case .favorite:
         return [
-          editFavoriteSwipeAction(at: indexPath, cell: cell)
+          makeEditFavoriteSwipeAction(at: indexPath)
         ]
       }
     }()
     return makeSwipeActionConfiguration(actions: actions)
   }
 
-  private func editPresetSwipeAction(at indexPath: IndexPath, cell: TableCell,
-                                     soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+  func trailingSwipeActions(at indexPath: IndexPath, cell: TableCell) -> UISwipeActionsConfiguration? {
+    let slotIndex = slotIndex(from: indexPath)
+    guard let soundFontAndPreset = makeSoundFontAndPreset(at: slotIndex) else { return nil }
+    let slot = getSlot(at: slotIndex)
+    let actions: [UIContextualAction] = {
+      switch slot {
+      case .preset:
+        return [
+          makeHideSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
+        ]
+      case .favorite:
+        return [
+          makeDeleteFavoriteSwipeAction(at: indexPath, cell: cell)
+        ]
+      }
+    }()
+    return makeSwipeActionConfiguration(actions: actions)
+  }
+
+  private func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
+    let actions = UISwipeActionsConfiguration(actions: actions)
+    actions.performsFirstActionWithFullSwipe = false
+    return actions
+  }
+}
+
+// MARK: - Leading swipe actions
+
+extension PresetsTableViewManager {
+
+  private func makeEditPresetSwipeAction(at indexPath: IndexPath,
+                                         soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, actionView, completionHandler in
-      cell.setEditing(false, animated: false)
       guard let self = self else { return }
-      var rect = self.viewController.tableView.rectForRow(at: indexPath)
-      rect.size.width = 240.0
       self.favorites.beginEdit(
-        config: FavoriteEditor.Config.preset(
-          state: FavoriteEditor.State(
+        config: .preset(
+          state: .init(
             indexPath: indexPath, sourceView: actionView, sourceRect: actionView.bounds,
             currentLowestNote: self.keyboard?.lowestNote,
             completionHandler: completionHandler, soundFonts: self.soundFonts,
@@ -431,16 +457,48 @@ extension PresetsTableViewManager {
     }
   }
 
-  private func createFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell,
-                                         soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+  private func makeCreateFavoriteSwipeAction(at indexPath: IndexPath,
+                                             soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
     UIContextualAction(icon: .favorite, color: .systemOrange) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
-      completionHandler(self.createFavorite(at: indexPath, with: soundFontAndPreset))
+      let status = self.createFavorite(at: indexPath, with: soundFontAndPreset)
+      completionHandler(status)
     }
   }
 
-  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool
-  {
+  private func makeEditFavoriteSwipeAction(at indexPath: IndexPath) -> UIContextualAction {
+    UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
+      self?.editFavorite(at: indexPath, completionHandler: completionHandler)
+    }
+  }
+}
+
+// MARK: - Trailing swipe actions
+
+extension PresetsTableViewManager {
+
+  private func makeHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
+                                   soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
+    UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
+      if self.settings.showedHidePresetPrompt {
+        self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
+                        completionHandler: completionHandler)
+      } else {
+        self.promptToHidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
+                                completionHandler: completionHandler)
+      }
+    }
+  }
+
+  private func makeDeleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
+    UIContextualAction(icon: .unfavorite, color: .systemRed) { [weak self] _, _, completionHandler in
+      guard let self = self else { return }
+      completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
+    }
+  }
+
+  private func createFavorite(at indexPath: IndexPath, with soundFontAndPreset: SoundFontAndPreset) -> Bool {
     guard let soundFont = self.soundFonts.getBy(key: soundFontAndPreset.soundFontKey) else { return false }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
     guard let favorite = soundFonts.createFavorite(soundFontAndPreset: soundFontAndPreset,
@@ -456,17 +514,10 @@ extension PresetsTableViewManager {
       viewController.tableView.insertRows(at: [favoriteIndex], with: .automatic)
       sectionRowCounts[favoriteIndex.section] += 1
     } completion: { _ in
-      self.calculateSectionRowCounts(reload: true)
+      self.regenerateViewSlots()
     }
 
     return true
-  }
-
-  private func deleteFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
-    UIContextualAction(icon: .unfavorite, color: .systemRed) { [weak self] _, _, completionHandler in
-      guard let self = self else { return }
-      completionHandler(self.deleteFavorite(at: indexPath, cell: cell))
-    }
   }
 
   private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
@@ -481,20 +532,13 @@ extension PresetsTableViewManager {
       viewController.tableView.deleteRows(at: [indexPath], with: .automatic)
       sectionRowCounts[indexPath.section] -= 1
     } completion: { _ in
-      self.calculateSectionRowCounts(reload: true)
+      self.regenerateViewSlots()
       if favorite == self.activePresetManager.activeFavorite {
         self.activePresetManager.setActive(preset: favorite.soundFontAndPreset, playSample: false)
       }
     }
 
     return true
-  }
-
-  private func editFavoriteSwipeAction(at indexPath: IndexPath, cell: TableCell) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemOrange) { [weak self] _, _, completionHandler in
-      cell.setEditing(false, animated: false)
-      self?.editFavorite(at: indexPath, completionHandler: completionHandler)
-    }
   }
 
   private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
@@ -519,43 +563,6 @@ extension PresetsTableViewManager {
     self.favorites.beginEdit(config: config)
   }
 
-  func trailingSwipeActions(at indexPath: IndexPath, cell: TableCell) -> UISwipeActionsConfiguration? {
-    let slotIndex = slotIndex(from: indexPath)
-    guard let soundFontAndPreset = makeSoundFontAndPreset(at: slotIndex) else { return nil }
-    let slot = getSlot(at: slotIndex)
-    let actions: [UIContextualAction] = {
-      switch slot {
-      case .preset:
-        return [
-          createHideSwipeAction(at: indexPath, cell: cell, soundFontAndPreset: soundFontAndPreset)
-        ]
-      case .favorite:
-        return [deleteFavoriteSwipeAction(at: indexPath, cell: cell)]
-      }
-    }()
-    return makeSwipeActionConfiguration(actions: actions)
-  }
-
-  private func createHideSwipeAction(at indexPath: IndexPath, cell: TableCell,
-                                     soundFontAndPreset: SoundFontAndPreset) -> UIContextualAction {
-    UIContextualAction(icon: .hide, color: .gray) { [weak self] _, _, completionHandler in
-      guard let self = self else { return }
-      if self.settings.showedHidePresetPrompt {
-        self.hidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
-                        completionHandler: completionHandler)
-      } else {
-        self.promptToHidePreset(soundFontAndPreset: soundFontAndPreset, indexPath: indexPath,
-                                completionHandler: completionHandler)
-      }
-    }
-  }
-
-  private func makeSwipeActionConfiguration(actions: [UIContextualAction]) -> UISwipeActionsConfiguration {
-    let actions = UISwipeActionsConfiguration(actions: actions)
-    actions.performsFirstActionWithFullSwipe = false
-    return actions
-  }
-
   private func hidePreset(soundFontAndPreset: SoundFontAndPreset, indexPath: IndexPath,
                           completionHandler: (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
@@ -565,7 +572,7 @@ extension PresetsTableViewManager {
       viewController.tableView.deleteRows(at: [indexPath], with: .automatic)
       self.sectionRowCounts[indexPath.section] -= 1
     } completion: { _ in
-      self.calculateSectionRowCounts(reload: true)
+      self.regenerateViewSlots()
     }
     completionHandler(true)
   }
@@ -628,7 +635,7 @@ extension PresetsTableViewManager {
     guard let slotIndex = getSlotIndex(for: favorite.key),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
     else { return }
-    update(cell: cell, at: slotIndex)
+    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
   }
 
   private func updateRow(with soundFontAndPreset: SoundFontAndPreset?) {
@@ -636,7 +643,7 @@ extension PresetsTableViewManager {
     guard let slotIndex = getSlotIndex(for: soundFontAndPreset),
           let cell: TableCell = viewController.tableView.cellForRow(at: indexPath(from: slotIndex))
     else { return }
-    update(cell: cell, at: slotIndex)
+    update(cell: cell, at: indexPath(from: slotIndex), slotIndex: slotIndex)
   }
 
   private func getSlotIndex(for activeKind: ActivePresetKind) -> PresetViewSlotIndex? {
@@ -647,11 +654,10 @@ extension PresetsTableViewManager {
     }
   }
 
-  @discardableResult
-  private func update(cell: TableCell, at slotIndex: PresetViewSlotIndex) -> TableCell {
+  private func update(cell: TableCell, at indexPath: IndexPath, slotIndex: PresetViewSlotIndex) {
     guard let soundFont = selectedSoundFont else {
       os_log(.error, log: log, "unexpected nil soundFont")
-      return cell
+      return
     }
 
     switch getSlot(at: slotIndex) {
@@ -668,7 +674,7 @@ extension PresetsTableViewManager {
       if preset.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
       if preset.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
       if preset.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
-      cell.updateForPreset(name: preset.presetConfig.name, flags: flags)
+      cell.updateForPreset(at: indexPath, name: preset.presetConfig.name, flags: flags)
 
     case let .favorite(key):
       let favorite = favorites.getBy(key: key)
@@ -679,8 +685,7 @@ extension PresetsTableViewManager {
       if favorite.presetConfig.presetTuning != 0.0 { flags.insert(.tuningSetting) }
       if favorite.presetConfig.pan != 0.0 { flags.insert(.panSetting) }
       if favorite.presetConfig.gain != 0.0 { flags.insert(.gainSetting) }
-      cell.updateForFavorite(name: favorite.presetConfig.name, flags: flags)
+      cell.updateForFavorite(at: indexPath, name: favorite.presetConfig.name, flags: flags)
     }
-    return cell
   }
 }

@@ -279,7 +279,7 @@ extension FontsTableViewManager {
     var flags: TableCell.Flags = .init()
     if selectedSoundFontManager.selected == soundFont { flags.insert(.selected) }
     if activePresetManager.activeSoundFont == soundFont { flags.insert(.active) }
-    cell.updateForFont(name: soundFont.displayName, kind: soundFont.kind, flags: flags)
+    cell.updateForFont(at: indexPath, name: soundFont.displayName, kind: soundFont.kind, flags: flags)
     return cell
   }
 }

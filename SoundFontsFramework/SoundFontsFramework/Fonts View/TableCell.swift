@@ -70,7 +70,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter isSelected: true if the cell holds the selected sound font
    - parameter isActive: true if the cell holds the sound font of the active preset
    */
-  public func updateForFont(name: String, kind: SoundFontKind, flags: Flags) {
+  public func updateForFont(at indexPath: IndexPath, name: String, kind: SoundFontKind, flags: Flags) {
     var name = name
     if case let .reference(bookmark) = kind {
       self.bookmark = bookmark
@@ -79,7 +79,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       startButtonMonitor()
     }
     os_log(.debug, log: log, "updateForFont - '%{public}s' flags: %d", name, flags.rawValue)
-    update(name: name, flags: flags)
+    update(name: indexPath.prefixRow + name, flags: flags)
     self.name.accessibilityLabel = "font \(name)"
     self.name.accessibilityHint = "font list entry for font \(name)"
   }
@@ -90,8 +90,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the name of the preset
    - parameter isActive: true if the cell holds the active preset
    */
-  public func updateForPreset(name: String, flags: Flags) {
-    update(name: name, flags: flags)
+  public func updateForPreset(at indexPath: IndexPath, name: String, flags: Flags) {
+    update(name: indexPath.prefixSectionRow + name, flags: flags)
     self.name.accessibilityLabel = "preset \(name)"
     self.name.accessibilityHint = "preset list entry for preset \(name)"
   }
@@ -102,8 +102,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the name of the favorite
    - parameter isActive: true if the favorite is the active preset
    */
-  public func updateForFavorite(name: String, flags: Flags) {
-    update(name: Self.favoriteTag(true) + name, flags: flags)
+  public func updateForFavorite(at indexPath: IndexPath, name: String, flags: Flags) {
+    update(name: indexPath.prefixSectionRow + Self.favoriteTag(true) + name, flags: flags)
     self.name.accessibilityLabel = "favorite \(name)"
     self.name.accessibilityHint = "preset list entry for favorite \(name)"
   }
@@ -114,8 +114,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    - parameter name: the tag name
    - parameter active: .yes if cell holds the active tag
    */
-  public func updateForTag(name: String, flags: Flags) {
-    update(name: name, flags: flags)
+  public func updateForTag(at indexPath: IndexPath, name: String, flags: Flags) {
+    update(name: indexPath.prefixRow + name, flags: flags)
     self.name.accessibilityLabel = "tag \(name)"
     self.name.accessibilityHint = "tag list entry for tag \(name)"
   }
@@ -255,3 +255,10 @@ extension UIImageView {
     self.tintColor = color
   }
 }
+
+#if SHOW_INDEX_PATHS
+extension IndexPath {
+  fileprivate var prefixRow: String { "[\(row)]:"}
+  fileprivate var prefixSectionRow: String { "[\(section).\(row)]:"}
+}
+#endif
