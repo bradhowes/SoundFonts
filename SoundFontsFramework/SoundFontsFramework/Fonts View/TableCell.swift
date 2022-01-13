@@ -78,6 +78,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
       updateButton()
       startButtonMonitor()
     }
+
     os_log(.debug, log: log, "updateForFont - '%{public}s' flags: %d", name, flags.rawValue)
     update(name: indexPath.prefixRow + name, flags: flags)
     self.name.accessibilityLabel = "font \(name)"
@@ -260,5 +261,10 @@ extension UIImageView {
 extension IndexPath {
   fileprivate var prefixRow: String { "[\(row)]:"}
   fileprivate var prefixSectionRow: String { "[\(section).\(row)]:"}
+}
+#else
+extension IndexPath {
+  fileprivate var prefixRow: String { ""}
+  fileprivate var prefixSectionRow: String { "" }
 }
 #endif
