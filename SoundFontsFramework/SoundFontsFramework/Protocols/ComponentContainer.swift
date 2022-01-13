@@ -6,19 +6,10 @@ import UIKit
 public enum ComponentContainerEvent: CustomStringConvertible {
   /// The sampler is ready for use.
   case samplerAvailable(Sampler)
-  /// The reverb effect is ready for use.
-  case reverbAvailable(ReverbEffect)
-  /// The delay effect is ready for use.
-  case delayAvailable(DelayEffect)
-  /// The chorus effect is ready for use.
-  case chorusAvailable(ChorusEffect)
 
   public var description: String {
     switch self {
     case .samplerAvailable: return "<ComponentContainerEvent: samplerAvailable>"
-    case .reverbAvailable:  return "<ComponentContainerEvent: reverbAvailable>"
-    case .delayAvailable:  return "<ComponentContainerEvent: delayAvailable>"
-    case .chorusAvailable:  return "<ComponentContainerEvent: chorusAvailable>"
     }
   }
 }
@@ -53,12 +44,6 @@ public protocol ComponentContainer: AnyObject {
   var favoritesViewManager: FavoritesViewManager { get }
   /// The provider of swipe actions for the sound fonts view
   var fontEditorActionGenerator: FontEditorActionGenerator { get }
-  /// The reverb effect that is used if inside the application; the AUv3 component has none, so this will be nil.
-  var reverbEffect: ReverbEffect? { get }
-  /// The delay effect that is used if inside the application; the AUv3 component has none, so this will be nil.
-  var delayEffect: DelayEffect? { get }
-  /// The chorus effect that is used if inside the application; the AUv3 component has none, so this will be nil.
-  var chorusEffect: ChorusEffect? { get }
 
   func createAudioComponents()
 

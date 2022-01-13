@@ -1,6 +1,8 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+TEST_MEDIA_SERVICES_RESTART = // -DTEST_MEDIA_SERVICES_RESTART
+
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
-OTHER_SWIFT_FLAGS = $(inherited) -DDev
+OTHER_SWIFT_FLAGS = $(inherited) -DDev $(TEST_MEDIA_SERVICES_RESTART)
 NAME_SUFFIX = Dev

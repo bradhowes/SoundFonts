@@ -65,6 +65,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
+    components.consolidatedConfigFile.save()
     NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
 
@@ -75,7 +76,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
-    // components.consolidatedConfigFile.close()
   }
 
   /**
@@ -106,7 +106,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   func applicationWillTerminate(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()
-    // components.consolidatedConfigFile.close()
   }
 
   func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {

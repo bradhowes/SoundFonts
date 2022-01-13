@@ -49,9 +49,10 @@ public final class EffectsController: UIViewController {
   private var favorites: Favorites!
   private var settings: Settings!
 
-  private var reverbEffect: ReverbEffect?
-  private var delayEffect: DelayEffect?
-  private var chorusEffect: ChorusEffect?
+  private var sampler: Sampler?
+  private var reverbEffect: ReverbEffect? { sampler?.reverbEffect }
+  private var delayEffect: DelayEffect? { sampler?.delayEffect }
+  private var chorusEffect: ChorusEffect? { sampler?.chorusEffect}
 
   public override func viewDidLoad() {
 
@@ -262,6 +263,8 @@ extension EffectsController {
   }
 }
 
+// MARK: - ControllerConfiguration
+
 extension EffectsController: ControllerConfiguration {
   public func establishConnections(_ router: ComponentContainer) {
     guard router.isMainApp else { return }
@@ -272,6 +275,10 @@ extension EffectsController: ControllerConfiguration {
     activePresetManager = router.activePresetManager
     router.subscribe(self, notifier: routerChange)
     activePresetManager.subscribe(self, notifier: activePresetChanged)
+    if let sampler = router.sampler {
+      self.sampler = sampler
+      updateState()
+    }
   }
 }
 
@@ -415,19 +422,9 @@ extension EffectsController {
 
   private func routerChange(_ event: ComponentContainerEvent) {
     switch event {
-    case .reverbAvailable(let reverb):
-      reverbEffect = reverb
-      DispatchQueue.main.async { self.updateState() }
-
-    case .delayAvailable(let delay):
-      delayEffect = delay
-      DispatchQueue.main.async { self.updateState() }
-
-    case .chorusAvailable(let chorus):
-      chorusEffect = chorus
-      DispatchQueue.main.async { self.updateState() }
-
-    case .samplerAvailable: break
+    case .samplerAvailable(let sampler):
+      self.sampler = sampler
+      DispatchQueue.main.async(execute: self.updateState)
     }
   }
 

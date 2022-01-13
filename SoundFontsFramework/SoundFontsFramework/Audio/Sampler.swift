@@ -74,10 +74,13 @@ public final class Sampler {
   /// The internal AVAudioUnitSampler that does the actual sound generation
   public private(set) var auSampler: AVAudioUnitSampler?
 
+  public let reverbEffect: ReverbEffect?
+  public let delayEffect: DelayEffect?
+  public let chorusEffect: ChorusEffect?
+
   private let mode: Mode
   private let activePresetManager: ActivePresetManager
-  private let reverbEffect: ReverbEffect?
-  private let delayEffect: DelayEffect?
+
   private let presetChangeManager = PresetChangeManager()
   private let settings: Settings
 
@@ -107,13 +110,14 @@ public final class Sampler {
    - parameter settings: user-adjustable settings
    */
   public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
-              settings: Settings) {
+              chorus: ChorusEffect?, settings: Settings) {
     os_log(.info, log: Self.log, "init BEGIN")
 
     self.mode = mode
     self.activePresetManager = activePresetManager
     self.reverbEffect = reverb
     self.delayEffect = delay
+    self.chorusEffect = chorus
     self.settings = settings
 
     if mode == .standalone {

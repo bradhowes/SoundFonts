@@ -70,16 +70,12 @@ extension Settings {
    */
   @inlinable
   public func get<T>(key: String, defaultValue: T) -> T {
-    os_log(.debug, log: log, "get<T> BEGIN - %{public}s", key)
     if let value = componentSettings?[key] as? T {
-      os_log(.debug, log: log, "get<T> END - using value '%{public}s' from componentSettings", "\(value)")
       return value
     }
     if let value = storage.object(forKey: key) as? T {
-      os_log(.debug, log: log, "get<T> END - using value '%{public}s' from storage", "\(value)")
       return value
     }
-    os_log(.debug, log: log, "get<T> END - registering and using default value '%{public}s'", "\(defaultValue)")
     storage.register(defaults: [key: defaultValue])
     return defaultValue
   }
@@ -92,12 +88,9 @@ extension Settings {
    */
   @inlinable
   public func set<T>(key: String, value: T) {
-    os_log(.debug, log: log, "set<T> BEGIN - %{public}s = %{public}s", key, "\(value)")
     if var state = componentSettings {
-      os_log(.debug, log: log, "set<T> END - setting componentSettings")
       state[key] = value
     } else {
-      os_log(.debug, log: log, "set<T> END - setting storage")
       storage.set(value, forKey: key)
     }
   }
@@ -335,24 +328,13 @@ public extension Settings {
   }
   /// The global tuning setting that is in effect
   var globalTuning: Float {
-    get {
-      return self[.globalTuning]
-    }
-    set {
-      self[.globalTuning] = newValue
-    }
+    get { self[.globalTuning] }
+    set { self[.globalTuning] = newValue }
   }
   /// When true, global tuning is active
   var globalTuningEnabled: Bool {
-    get {
-      let value = self[.globalTuningEnabled]
-      os_log(.debug, log: log, "globalTuningEnabled GET - %d", value)
-      return value
-    }
-    set {
-      os_log(.debug, log: log, "globalTuningEnabled SET - %d", newValue)
-      self[.globalTuningEnabled] = newValue
-    }
+    get { self[.globalTuningEnabled] }
+    set { self[.globalTuningEnabled] = newValue }
   }
   /// When true, the user has viewed the tutorial pages
   var showedTutorial: Bool {

@@ -124,12 +124,10 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    Make sure that the 'reorder' button can be seen when the table view is in edit mode
    */
   override public func setEditing(_ editing: Bool, animated: Bool) {
-    os_log(.debug, log: log, "setEditing BEGIN - %d", editing)
     super.setEditing(editing, animated: animated)
     if editing {
       reorderControlImageView?.tint(color: .white)
     }
-    os_log(.debug, log: log, "setEditing END")
   }
 
   private func update(name: String, flags: Flags) {

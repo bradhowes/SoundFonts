@@ -62,8 +62,6 @@ internal extension IndexPath {
   static func sectionsTitles(sourceSize: Int) -> [String] {
     stride(from: Self.sectionSize, to: sourceSize - 1, by: Self.sectionSize).map { "\($0)" }
   }
-
-  var description: String { "<S:\(section) R:\(row)>"}
 }
 
 internal extension Array where Element == PresetViewSlot {

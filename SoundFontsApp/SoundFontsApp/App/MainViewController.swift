@@ -23,7 +23,9 @@ final class MainViewController: UIViewController {
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
   private var observers = [NSObjectProtocol]()
-
+#if TEST_MEDIA_SERVICES_RESTART
+  private var resetTimer: Timer? = nil
+#endif
 
   /// Disable system gestures near screen edges so that touches on the keyboard are always seen by the application.
   override var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
@@ -54,6 +56,12 @@ final class MainViewController: UIViewController {
       showTutorial()
       settings.showedTutorial = true
     }
+
+#if TEST_MEDIA_SERVICES_RESTART
+    resetTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+      NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
+    }
+#endif
   }
 
   override func willTransition(to newCollection: UITraitCollection,
@@ -256,9 +264,6 @@ extension MainViewController: ControllerConfiguration {
     os_log(.info, log: log, "routerChanged: %{public}s", event.description)
     switch event {
     case .samplerAvailable(let sampler): setSampler(sampler)
-    case .reverbAvailable: break
-    case .delayAvailable: break
-    case .chorusAvailable: break
     }
   }
 

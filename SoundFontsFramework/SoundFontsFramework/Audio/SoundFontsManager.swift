@@ -39,21 +39,27 @@ extension FileManager {
     guard let contents = try? contentsOfDirectory(atPath: sharedDocumentsDirectory.path) else {
       return -1
     }
+
     var found = 0
     for path in contents {
       let source = sharedDocumentsDirectory.appendingPathComponent(path)
       guard source.pathExtension == SF2Files.sf2Extension else { continue }
+
       let (stripped, uuid) = path.stripEmbeddedUUID()
       if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
+
       let destination = localDocumentsDirectory.appendingPathComponent(stripped)
       os_log(.info, log: log, "removing '%{public}s' if it exists", destination.path)
+
       try? removeItem(at: destination)
       os_log(.info, log: log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+
       do {
         try copyItem(at: source, to: destination)
       } catch let error as NSError {
         os_log(.error, log: log, "%{public}s", error.localizedDescription)
       }
+
       os_log(.info, log: log, "removing '%{public}s'", source.path)
       try? removeItem(at: source)
       found += 1

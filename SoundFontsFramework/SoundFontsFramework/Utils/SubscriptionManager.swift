@@ -10,6 +10,8 @@ public class SubscriptionManager<Event> {
   /// The type of function / closure that is used to unsubscribe to a subscription manager
   public typealias UnsubscribeProc = () -> Void
 
+  private let subscriptionsQueue = DispatchQueue(label: "SubscriptionsManagerQueue", qos: .background, attributes: [],
+                                                 autoreleaseFrequency: .inherit, target: .global(qos: .background))
   private var subscriptions = [UUID: NotifierProc]()
 
   private struct Token: SubscriberToken {
@@ -42,17 +44,23 @@ public class SubscriptionManager<Event> {
   @discardableResult
   public func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping NotifierProc) -> SubscriberToken {
     let uuid = UUID()
-    let token = Token { [weak self] in self?.subscriptions.removeValue(forKey: uuid) }
-    subscriptions[uuid] = { [weak subscriber] kind in
-      if subscriber != nil {
-        notifier(kind)
-      } else {
-        token.unsubscribe()
+    let token = Token { [weak self] in
+      guard let self = self else { return }
+      _ = self.subscriptionsQueue.sync { self.subscriptions.removeValue(forKey: uuid) }
+    }
+
+    self.subscriptionsQueue.sync {
+      self.subscriptions[uuid] = { [weak subscriber] kind in
+        if subscriber != nil {
+          notifier(kind)
+        } else {
+          token.unsubscribe()
+        }
       }
     }
 
     if let event = lastEvent, cacheEvent {
-      DispatchQueue.main.async { notifier(event) }
+      notifier(event)
     }
 
     return token
@@ -65,6 +73,6 @@ public class SubscriptionManager<Event> {
    */
   public func notify(_ event: Event) {
     if cacheEvent { lastEvent = event }
-    subscriptions.values.forEach { $0(event) }
+    subscriptionsQueue.sync { subscriptions.values.forEach { $0(event) } }
   }
 }

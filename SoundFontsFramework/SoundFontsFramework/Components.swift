@@ -8,6 +8,8 @@ import UIKit
 /// not between controllers themselves. This is enforced here through access restrictions to known controllers.
 public final class Components<T: UIViewController>: SubscriptionManager<ComponentContainerEvent>, ComponentContainer
 where T: ControllerConfiguration {
+  private let accessQueue = DispatchQueue(label: "ComponentsQueue", qos: .background, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .background))
   public let settings: Settings
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigFile: ConsolidatedConfigFile
@@ -40,24 +42,24 @@ where T: ControllerConfiguration {
 
   /// The controller for the info bar
   public var infoBar: InfoBar { infoBarController }
+
   /// The controller for the keyboard (nil when running in the AUv3 app extension)
   public var keyboard: Keyboard? { keyboardController }
+
   /// The manager of the fonts/presets view
   public var fontsViewManager: FontsViewManager { soundFontsController }
+
   /// The manager of the favorites view
   public var favoritesViewManager: FavoritesViewManager { favoritesController }
+
   /// Swipe actions generator for sound font rows
   public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+
   /// The manager for posting alerts
-  public var alertManager: AlertManager { _alertManager! }
+  public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
+
   /// The sampler engine that generates audio from sound font files
-  public var sampler: Sampler? { _sampler }
-  /// The delay effect available for audio processing (app only)
-  public var delayEffect: DelayEffect? { _delayEffect }
-  /// The reverb effect available for audio processing (app only)
-  public var reverbEffect: ReverbEffect? { _reverbEffect }
-  /// The chorus effect available for audio processing (app only)
-  public var chorusEffect: ChorusEffect? { _chorusEffect }
+  public var sampler: Sampler? { accessQueue.sync { _sampler } }
 
   private var _alertManager: AlertManager?
 
@@ -65,30 +67,6 @@ where T: ControllerConfiguration {
     didSet {
       if let sampler = _sampler {
         notify(.samplerAvailable(sampler))
-      }
-    }
-  }
-
-  private var _reverbEffect: ReverbEffect? {
-    didSet {
-      if let effect = _reverbEffect {
-        notify(.reverbAvailable(effect))
-      }
-    }
-  }
-
-  private var _delayEffect: DelayEffect? {
-    didSet {
-      if let effect = _delayEffect {
-        notify(.delayAvailable(effect))
-      }
-    }
-  }
-
-  private var _chorusEffect: ChorusEffect? {
-    didSet {
-      if let effect = _chorusEffect {
-        notify(.chorusAvailable(effect))
       }
     }
   }
@@ -122,14 +100,13 @@ where T: ControllerConfiguration {
   public func createAudioComponents() {
     if self.inApp {
       DispatchQueue.global(qos: .userInitiated).async {
-        self._reverbEffect = .init()
-        self._delayEffect = .init()
-        self._sampler = Sampler(mode: .standalone, activePresetManager: self.activePresetManager,
-                                reverb: self._reverbEffect, delay: self._delayEffect, settings: self.settings)
+        let sampler = Sampler(mode: .standalone, activePresetManager: self.activePresetManager, reverb: ReverbEffect(),
+                              delay: DelayEffect(), chorus: ChorusEffect(), settings: self.settings)
+        self.accessQueue.sync { self._sampler = sampler }
       }
     } else {
       self._sampler = Sampler(mode: .audioUnit, activePresetManager: self.activePresetManager, reverb: nil, delay: nil,
-                              settings: settings)
+                              chorus: nil, settings: settings)
     }
   }
 
@@ -140,7 +117,10 @@ where T: ControllerConfiguration {
    */
   public func setMainViewController(_ mvc: T) {
     mainViewController = mvc
-    _alertManager = AlertManager(presenter: mvc)
+
+    let alertManager = AlertManager(presenter: mvc)
+    accessQueue.sync { _alertManager = alertManager }
+
     for obj in mvc.children {
       processChildController(obj)
     }

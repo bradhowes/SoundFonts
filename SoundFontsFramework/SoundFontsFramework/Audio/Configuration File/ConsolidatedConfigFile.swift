@@ -31,6 +31,14 @@ public final class ConsolidatedConfigFile: UIDocument {
     DispatchQueue.main.async { self.restore() }
   }
 
+  public func save() {
+    save(to: fileURL, for: .forOverwriting) { ok in
+      if !ok {
+        os_log(.error, log: Self.log, "save - failed to write updates")
+      }
+    }
+  }
+
   /**
    Restore from the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left
    with the default collections.
@@ -93,10 +101,13 @@ public final class ConsolidatedConfigFile: UIDocument {
 
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
     os_log(.info, log: log, "revert: %{public}s", url.path)
+
+    // When `revert` is called it is because a newer version of the file has been seen on the system, presumably due to
+    // another process updating it. We just close the current connection and let the system do its thing. NOTE: there is
+    // a risk of lost data if there are unsaved changes. For now, we are ignoring that situation.
+    //
     self.close { ok in
-      if !ok {
-        os_log(.fault, log: Self.log, "revert - failed to close configuration file")
-      }
+      if !ok { os_log(.fault, log: Self.log, "revert - failed to close configuration file") }
     }
     super.revert(toContentsOf: url, completionHandler: completionHandler)
   }

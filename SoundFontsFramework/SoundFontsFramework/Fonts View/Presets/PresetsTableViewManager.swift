@@ -72,6 +72,14 @@ final class PresetsTableViewManager: NSObject {
 
 extension PresetsTableViewManager {
 
+  var activeSlotIndexPath: IndexPath? {
+    if let slotIndex = activeSlotIndex {
+      return indexPath(from: slotIndex)
+    } else {
+      return nil
+    }
+  }
+
   var sectionCount: Int { isSearching ? 1 : sectionRowCounts.count }
 
   func numberOfRows(section: Int) -> Int { searchSlots?.count ?? sectionRowCounts[section] }
@@ -99,7 +107,7 @@ extension PresetsTableViewManager {
 
   func search(for searchTerm: String) {
     os_log(.debug, log: log, "search BEGIN - '%{public}s'", searchTerm)
-    guard let soundFont = selectedSoundFontManager.selected else { fatalError("attempting to search with nil soundFont") }
+    guard let soundFont = selectedSoundFont else { fatalError("attempting to search with nil soundFont") }
 
     if searchTerm.isEmpty {
       searchSlots = viewSlots
@@ -126,6 +134,12 @@ extension PresetsTableViewManager {
     searchSlots = nil
     regenerateViewSlots()
   }
+
+  public func showActiveSlot() {
+    if let slotIndex = activeSlotIndex {
+      viewController.slotToScrollTo = indexPath(from: slotIndex)
+    }
+  }
 }
 
 extension PresetsTableViewManager {
@@ -139,7 +153,7 @@ extension PresetsTableViewManager {
   }
 
   private func selectPreset(_ presetIndex: Int) {
-    guard let soundFont = selectedSoundFontManager.selected else { return }
+    guard let soundFont = selectedSoundFont else { return }
     let soundFontAndPreset = soundFont[presetIndex]
     activePresetManager.setActive(preset: soundFontAndPreset, playSample: settings.playSample)
   }
@@ -161,7 +175,7 @@ extension PresetsTableViewManager {
 
   func regenerateViewSlots() {
     os_log(.info, log: log, "regenerateViewSlots BEGIN")
-    let source = selectedSoundFontManager.selected?.presets ?? []
+    let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
     for (index, preset) in source.enumerated() {
       if preset.presetConfig.isVisible {
@@ -186,10 +200,11 @@ extension PresetsTableViewManager {
     os_log(.info, log: log, "regenerateViewSlots END")
   }
 
-  func calculateVisibilityChanges(soundFont: SoundFont, isEditing: Bool) -> [IndexPath] {
+  func calculateVisibilityChanges(isEditing: Bool) -> [IndexPath] {
     os_log(.debug, log: log, "calculateVisibilityChanges BEGIN")
 
     var changes = [IndexPath]()
+    guard let soundFont = selectedSoundFont else { return changes }
 
     func processPresetConfig(_ slotIndex: PresetViewSlotIndex, presetConfig: PresetConfig, slot: () -> PresetViewSlot) {
       guard presetConfig.isVisible == false else { return }
@@ -226,24 +241,19 @@ extension PresetsTableViewManager {
     return changes
   }
 
-  private func presetConfigForSlot(_ slot: PresetViewSlot) -> PresetConfig? {
-    guard let soundFont = selectedSoundFontManager.selected else { return nil }
-    switch slot {
-    case .favorite(let key): return favorites.getBy(key: key).presetConfig
-    case .preset(let presetIndex): return soundFont.presets[presetIndex].presetConfig
+  var presetConfigs: [(IndexPath, PresetConfig)] {
+    guard let soundFont = selectedSoundFont else { return [] }
+    return viewSlots.enumerated().map { item in
+      let indexPath = indexPath(from: .init(rawValue: item.0))
+      switch item.1 {
+      case .favorite(let key): return (indexPath, favorites.getBy(key: key).presetConfig)
+      case .preset(let presetIndex): return (indexPath, soundFont.presets[presetIndex].presetConfig)
+      }
     }
   }
 
-  func initializeVisibilitySelections(soundFont: SoundFont) {
-    precondition(viewController.isEditing)
-    os_log(.debug, log: self.log, "initializeVisibilitySelections")
-    for (slotIndex, slot) in viewSlots.enumerated() {
-      guard let presetConfig = presetConfigForSlot(slot) else { continue }
-      if presetConfig.isVisible {
-        viewController.tableView.selectRow(at: indexPath(from: .init(rawValue: slotIndex)), animated: false,
-                                           scrollPosition: .none)
-      }
-    }
+  var visibilityState: [(IndexPath, Bool)] {
+    presetConfigs.map { ($0.0, $0.1.isVisible) }
   }
 
   private func activePresetChanged(_ event: ActivePresetEvent) {
@@ -266,20 +276,17 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
            old?.displayName ?? "N/A", new?.displayName ?? "N/A")
 
-    let afterReloadDataAction: PresetsTableViewController.AfterReloadDataAction? = {
-      if viewController.isEditing {
-        guard let soundFont = new else { return nil }
-        return { self.initializeVisibilitySelections(soundFont: soundFont) }
+    let viewController = self.viewController
+    if viewController.isEditing {
+      viewController.afterReloadDataAction = {
+        viewController.endVisibilityEditing()
       }
-      if activePresetManager.activeSoundFont == new {
-        return { self.showActiveSlot() }
-      }
-      return nil
-    }()
+    }
+    else if activePresetManager.activeSoundFont == new {
+      viewController.afterReloadDataAction = { self.showActiveSlot() }
+    }
 
-    viewController.afterReloadDataAction = afterReloadDataAction
     regenerateViewSlots()
-    showActiveSlot()
   }
 
   private func favoritesChange(_ event: FavoritesEvent) {
@@ -316,12 +323,12 @@ extension PresetsTableViewManager {
     os_log(.info, log: log, "soundFontsChange BEGIN")
     switch event {
     case let .unhidPresets(font: soundFont):
-      if soundFont == selectedSoundFontManager.selected {
+      if soundFont == selectedSoundFont {
         regenerateViewSlots()
       }
 
     case let .presetChanged(soundFont, index):
-      if soundFont == selectedSoundFontManager.selected {
+      if soundFont == selectedSoundFont {
         let soundFontAndPreset = soundFont[index]
         updateRow(with: soundFontAndPreset)
       }
@@ -347,7 +354,7 @@ extension PresetsTableViewManager {
 
   private func getSlotIndex(for soundFontAndPreset: SoundFontAndPreset?) -> PresetViewSlotIndex? {
     guard let soundFontAndPreset = soundFontAndPreset,
-          let soundFont = selectedSoundFontManager.selected,
+          let soundFont = selectedSoundFont,
           soundFont.key == soundFontAndPreset.soundFontKey else {
             return nil
           }
@@ -356,9 +363,7 @@ extension PresetsTableViewManager {
     return isSearching ? searchSlots?.findPresetIndex(presetIndex) : viewSlots.findPresetIndex(presetIndex)
   }
 
-  public func showActiveSlot() {
-    os_log(.info, log: log, "showActiveSlot BEGIN")
-
+  private var activeSlotIndex: PresetViewSlotIndex? {
     guard let activeSlot: PresetViewSlot = {
       switch activePresetManager.active {
       case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.presetIndex)
@@ -367,18 +372,14 @@ extension PresetsTableViewManager {
       }
     }()
     else {
-      os_log(.info, log: log, "showActiveSlot END - no active slot")
-      return
+      return nil
     }
 
     guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else {
-      os_log(.info, log: log, "showActiveSlot END - active slot not found in viewSLots")
-      return
+      return nil
     }
 
-    viewController.slotToScrollTo = indexPath(from: .init(rawValue: slotIndex))
-
-    os_log(.info, log: log, "showActiveSlot END")
+    return .init(rawValue: slotIndex)
   }
 
   private func isActive(_ soundFontAndPreset: SoundFontAndPreset) -> Bool {
@@ -602,7 +603,7 @@ extension PresetsTableViewManager {
   }
 
   private func makeSoundFontAndPreset(at slotIndex: PresetViewSlotIndex) -> SoundFontAndPreset? {
-    guard let soundFont = selectedSoundFontManager.selected else { return nil }
+    guard let soundFont = selectedSoundFont else { return nil }
     let presetIndex: Int = {
       switch getSlot(at: slotIndex) {
       case .favorite(let key): return favorites.getBy(key: key).soundFontAndPreset.presetIndex
@@ -648,7 +649,7 @@ extension PresetsTableViewManager {
 
   @discardableResult
   private func update(cell: TableCell, at slotIndex: PresetViewSlotIndex) -> TableCell {
-    guard let soundFont = selectedSoundFontManager.selected else {
+    guard let soundFont = selectedSoundFont else {
       os_log(.error, log: log, "unexpected nil soundFont")
       return cell
     }

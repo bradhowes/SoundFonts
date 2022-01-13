@@ -10,13 +10,14 @@ public final class PresetsTableViewController: UITableViewController {
 
   // UIViewController also has an isEditing attribute, but it is not tied to the tableView.isEditing value which can
   // lead to bugs.
-  public override var isEditing: Bool {
-    get { tableView.isEditing }
-    set { tableView.isEditing = newValue }
-  }
+//  public override var isEditing: Bool {
+//    get { tableView.isEditing }
+//    set { tableView.isEditing = newValue }
+//  }
 
   /// Text field for entering preset search queries.
   @IBOutlet public var searchBar: UISearchBar!
+  private var infoBar: InfoBar!
 
   /// True when user is searching
   public var isSearching: Bool { searchBar.isFirstResponder }
@@ -49,16 +50,11 @@ extension PresetsTableViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Only show section view if there are enough items to justify having one.
+    tableView.sectionIndexMinimumDisplayRowCount = IndexPath.sectionSize + 1
     tableView.sectionIndexColor = .darkGray
     tableView.register(TableCell.self)
     searchBar.delegate = self
-  }
-
-  public override func viewWillAppear(_ animated: Bool) {
-    os_log(.info, log: log, "viewWillAppear BEGIN")
-    super.viewWillAppear(animated)
-
-    os_log(.info, log: log, "viewWillAppear END")
   }
 
   /**
@@ -69,12 +65,7 @@ extension PresetsTableViewController {
     os_log(.info, log: log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
 
-    if isEditing {
-      os_log(.info, log: log, "viewDidLayoutSubviews END - isEditing")
-      return
-    }
-
-    if !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
+    if !isEditing && !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
       beginSearch()
       return
     }
@@ -138,16 +129,13 @@ public extension PresetsTableViewController {
   }
 
   override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-    if isSearching { return nil}
-    let titles = presetsTableViewManager.sectionIndexTitles
-    if isEditing { return titles }
-    return [UITableView.indexSearch, "•"] + titles
+    (isSearching || isEditing) ? nil : ([UITableView.indexSearch, "•"] + presetsTableViewManager.sectionIndexTitles)
   }
 
   override func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
     if index == 0 {
       if !isEditing {
-        // Need to do this because the view will update due to the section touch.
+        // Need to do this because the view may update due to the section touch.
         DispatchQueue.main.async { self.beginSearch() }
       }
       return 0
@@ -226,7 +214,6 @@ extension PresetsTableViewController {
    - parameter sender: the button that was touched
    */
   func toggleVisibilityEditing(_ sender: AnyObject) {
-    guard let soundFont = presetsTableViewManager.selectedSoundFont else { return }
     let button = sender as? UIButton
     button?.tintColor = isEditing ? .systemTeal : .systemOrange
     if isEditing == false {
@@ -236,38 +223,51 @@ extension PresetsTableViewController {
       presetsTableViewManager.cancelSearch()
 
       // Begin editing after next `layoutSubviews`.
-      afterReloadDataAction = { self.beginVisibilityEditing(for: soundFont) }
+      afterReloadDataAction = { self.beginVisibilityEditing() }
     } else {
-      endVisibilityEditing(for: soundFont)
+      endVisibilityEditing()
     }
   }
 
-  private func beginVisibilityEditing(for soundFont: SoundFont) {
+  func beginVisibilityEditing() {
     os_log(.info, log: log, "beginVisibilityEditing BEGIN")
-    tableView.setEditing(true, animated: true)
-    let changes = presetsTableViewManager.calculateVisibilityChanges(soundFont: soundFont, isEditing: true)
+
+    // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
+    // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
+    // back into sync. The result as written looks nice with no animation disruptions.
+    setEditing(true, animated: true)
+    let changes = presetsTableViewManager.calculateVisibilityChanges(isEditing: true)
     tableView.performBatchUpdates {
       tableView.reloadSectionIndexTitles()
       if !changes.isEmpty {
         self.tableView.insertRows(at: changes, with: .none)
       }
     } completion: { _ in
-      self.presetsTableViewManager.initializeVisibilitySelections(soundFont: soundFont)
+      self.showVisibilityState()
     }
 
     os_log(.info, log: log, "beginVisibilityEditing END")
   }
 
-  private func endVisibilityEditing(for soundFont: SoundFont) {
+  func showVisibilityState() {
+
+    os_log(.debug, log: self.log, "showVisibilityState")
+    for (indexPath, isVisible) in presetsTableViewManager.visibilityState where isVisible {
+      tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+    }
+  }
+
+  func endVisibilityEditing() {
     CATransaction.begin()
     CATransaction.setCompletionBlock {
       self.presetsTableViewManager.calculateSectionRowCounts(reload: true)
     }
 
-    tableView.setEditing(false, animated: true)
-    let changes = presetsTableViewManager.calculateVisibilityChanges(soundFont: soundFont, isEditing: false)
+    setEditing(false, animated: true)
+    let changes = presetsTableViewManager.calculateVisibilityChanges(isEditing: false)
     tableView.performBatchUpdates {
       tableView.deleteRows(at: changes, with: .automatic)
+      self.infoBar.resetButtonState(.editVisibility)
     } completion: { _ in }
 
     CATransaction.commit()
@@ -332,16 +332,17 @@ extension PresetsTableViewController: UISearchBarDelegate {
   }
 }
 
+// MARK: ControllerConfiguration
+
 extension PresetsTableViewController: ControllerConfiguration {
 
   public func establishConnections(_ router: ComponentContainer) {
-    let infoBar = router.infoBar
+    infoBar = router.infoBar
     infoBar.addEventClosure(.editVisibility, self.toggleVisibilityEditing)
 
     infoBar.addEventClosure(.hideMoreButtons) { [weak self] _ in
       guard let self = self, self.isEditing else { return }
-      self.toggleVisibilityEditing(self)
-      infoBar.resetButtonState(.editVisibility)
+      self.endVisibilityEditing()
     }
 
     presetsTableViewManager = PresetsTableViewManager(viewController: self,
