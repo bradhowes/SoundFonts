@@ -176,6 +176,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
     case .favorite(let favorite):
       if favorites.contains(key: favorite.key) {
         return .favorite(favorite: favorites.getBy(key: favorite.key))
+      } else if let preset = soundFonts.defaultPreset {
+        return .preset(soundFontAndPreset: preset)
       } else {
         return .none
       }
