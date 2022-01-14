@@ -88,8 +88,8 @@ extension Settings {
    */
   @inlinable
   public func set<T>(key: String, value: T) {
-    if var state = componentSettings {
-      state[key] = value
+    if componentSettings != nil {
+      componentSettings?[key] = value
     } else {
       storage.set(value, forKey: key)
     }
