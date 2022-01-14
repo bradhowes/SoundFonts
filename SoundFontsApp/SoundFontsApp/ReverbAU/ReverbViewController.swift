@@ -4,7 +4,7 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
-public final class ReverbViewController: AUViewController {
+public final class ReverbViewController: AUViewController, Tasking {
   private let log = Logging.logger("ReverbViewController")
   private var audioUnit: ReverbAU?
   private var parameterObserverToken: AUParameterObserverToken?
@@ -101,8 +101,8 @@ extension ReverbViewController {
       [weak self] address, value in
       guard let self = self else { return }
       switch AudioUnitParameters.Address(rawValue: address) {
-      case .roomPreset: DispatchQueue.main.async { self.setActiveRoom(value: value) }
-      case .wetDryMix: DispatchQueue.main.async { self.setWetDryMix(value: value) }
+      case .roomPreset: Self.onMain { self.setActiveRoom(value: value) }
+      case .wetDryMix: Self.onMain { self.setWetDryMix(value: value) }
       default: break
       }
     })

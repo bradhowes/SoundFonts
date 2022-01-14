@@ -29,7 +29,7 @@ final class VolumeMonitor {
   private var sessionVolumeObserver: NSKeyValueObservation?
 
   /// Set to true if there is a valid preset installed and in use by the sampler.
-  public var activePreset = true
+  public var validActivePreset = true
 
   /**
    Construct new monitor.
@@ -87,7 +87,7 @@ extension VolumeMonitor {
   private func update() {
     if volume < 0.01 {
       reason = .volumeLevel
-    } else if !activePreset {
+    } else if !validActivePreset {
       reason = .noPreset
     } else {
       reason = .none

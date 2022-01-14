@@ -44,7 +44,7 @@ open class CachedValueTypedNotification<A>: TypedNotification<A> {
    */
   override open func registerOnMain(block: @escaping (A) -> Void) -> NotificationObserver {
     if let cachedValue = self.cachedValue {
-      DispatchQueue.main.async { block(cachedValue) }
+      Self.onMain { block(cachedValue) }
     }
     return super.registerOnMain(block: block)
   }

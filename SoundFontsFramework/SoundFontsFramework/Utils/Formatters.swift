@@ -24,6 +24,10 @@ public struct Formatters {
         "newTagName", bundle: bundle, comment: "The initial name to use for a new tag")
     }
 
+    public var cancelButton: String {
+      NSLocalizedString("cancelButton", bundle: bundle, comment: "Cancel or dismiss view")
+    }
+
     public var editButton: String {
       NSLocalizedString("editButton", bundle: bundle, comment: "Begin editing")
     }

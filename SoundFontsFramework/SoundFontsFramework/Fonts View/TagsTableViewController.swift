@@ -9,7 +9,7 @@ public final class TagsTableViewController: UITableViewController {
 
   private enum Action {
     case editTagEntries
-    case editTagName(indexPath: IndexPath)
+    case editTagName(indexPath: IndexPath, selected: Bool)
     case doneEditing
   }
 
@@ -20,44 +20,67 @@ public final class TagsTableViewController: UITableViewController {
     /// The collection of all of the tags that exist for the app
     let tags: Tags
     /// The set of tags that are currently active for the sound font
-    let active: Set<Tag.Key>
+    let active: Set<Tag.Key>?
     /// True if the sound font being edited is built-in
     let builtIn: Bool
     /// The method to invoke when the controller is dismissed
-    let completionHandler: (Set<Tag.Key>) -> Void
+    let completionHandler: ((Set<Tag.Key>) -> Void)?
+
+    init(tags: Tags, active: Set<Tag.Key>, builtIn: Bool, completionHandler: @escaping (Set<Tag.Key>) -> Void) {
+      self.tags = tags
+      self.active = active
+      self.builtIn = builtIn
+      self.completionHandler = completionHandler
+    }
+
+    init(tags: Tags) {
+      self.tags = tags
+      self.active = nil
+      self.builtIn = false
+      self.completionHandler = nil
+    }
   }
 
+  @IBOutlet private var cancelButton: UIBarButtonItem!
   @IBOutlet private var addButton: UIBarButtonItem!
   @IBOutlet private var editButton: UIBarButtonItem!
+  @IBOutlet private var doneButton: UIBarButtonItem!
 
   private var tags: Tags!
   private var active = Set<Tag.Key>()
   private var builtIn: Bool = false
-  private var completionHandler: ((Set<Tag.Key>) -> Void)!
+  private var selectable: Bool = true
+  private var completionHandler: ((Set<Tag.Key>) -> Void)?
 
   private var currentAction: Action = .doneEditing {
     didSet { updateButtons() }
   }
 
   /**
-   Configure the view.
+   Configure the editor.
    */
   func configure(_ config: Config) {
     self.active.removeAll()
     self.tags = config.tags
     self.builtIn = config.builtIn
+    self.selectable = config.active != nil
     self.completionHandler = config.completionHandler
-    for tag in config.active {
-      if !Tag.stockTagSet.contains(tag) {
-        self.active.insert(tag)
+
+    if let active = config.active {
+      for tag in active {
+        if !Tag.stockTagSet.contains(tag) {
+          self.active.insert(tag)
+        }
       }
+
+      // We are appearing from the FontEditor controller
+      navigationItem.leftBarButtonItem = nil
     }
   }
 
   override public func viewDidLoad() {
     super.viewDidLoad()
     tableView.register(TableCell.self)
-
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editTagName(_:)))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)
@@ -66,6 +89,7 @@ public final class TagsTableViewController: UITableViewController {
   override public func viewWillAppear(_ animated: Bool) {
     os_log(.debug, log: log, "viewWillAppear")
     super.viewWillAppear(animated)
+
     currentAction = .doneEditing
   }
 
@@ -73,11 +97,16 @@ public final class TagsTableViewController: UITableViewController {
     os_log(.debug, log: log, "viewWillDisappear")
     stopEditingName()
     super.viewWillDisappear(animated)
-    completionHandler(active)
+    completionHandler?(active)
   }
 }
 
 extension TagsTableViewController {
+
+  @IBAction public func dismiss(_ sender: UIBarButtonItem) {
+    self.dismiss(animated: true)
+    AskForReview.maybe()
+  }
 
   /**
    Create a new tag.
@@ -86,10 +115,9 @@ extension TagsTableViewController {
    */
   @IBAction public func addTag(_ sender: UIBarButtonItem) {
     os_log(.debug, log: log, "addTag")
-    let indexPath = IndexPath(
-      row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
+    let indexPath = IndexPath(row: tags.append(Tag(name: Formatters.strings.newTagName)), section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
-    startEditingName(indexPath)
+    startEditingName(indexPath, selected: true)
   }
 
   @IBAction public func editTagName(_ sender: UILongPressGestureRecognizer) {
@@ -102,7 +130,7 @@ extension TagsTableViewController {
       return
     }
 
-    startEditingName(indexPath)
+    startEditingName(indexPath, selected: false)
   }
 
   /**
@@ -110,7 +138,16 @@ extension TagsTableViewController {
 
    - parameter sender: the source of the action
    */
-  @IBAction public func toggleTagEditing(_ sender: UIBarButtonItem) {
+  @IBAction public func beginTagEditing(_ sender: UIBarButtonItem) {
+    os_log(.debug, log: log, "toggleTagEditing")
+    switch currentAction {
+    case .doneEditing: currentAction = .editTagEntries
+    case .editTagEntries: currentAction = .doneEditing
+    case .editTagName: stopEditingName()
+    }
+  }
+
+  @IBAction public func endTagEditing(_ sender: UIBarButtonItem) {
     os_log(.debug, log: log, "toggleTagEditing")
     switch currentAction {
     case .doneEditing: currentAction = .editTagEntries
@@ -138,7 +175,7 @@ extension TagsTableViewController {
 
   private var activeNameEditor: IndexPath? {
     switch currentAction {
-    case let .editTagName(indexPath): return indexPath
+    case let .editTagName(indexPath, _): return indexPath
     default: return nil
     }
   }
@@ -147,22 +184,18 @@ extension TagsTableViewController {
     switch currentAction {
     case .editTagEntries:
       os_log(.debug, log: log, "updateButtons - editing rows")
-      editButton.title = Formatters.strings.doneButton
-      editButton.isEnabled = true
-      navigationItem.setRightBarButtonItems([editButton], animated: true)
+      navigationItem.setRightBarButtonItems([doneButton], animated: true)
       tableView.setEditing(true, animated: true)
 
     case .editTagName:
       os_log(.debug, log: log, "updateButtons - editing tag name")
-      editButton.title = Formatters.strings.doneButton
-      editButton.isEnabled = true
-      navigationItem.setRightBarButtonItems([editButton], animated: true)
+      navigationItem.setRightBarButtonItems([doneButton], animated: true)
 
     case .doneEditing:
       os_log(.debug, log: log, "updateButtons - done editing")
-      editButton.title = Formatters.strings.editButton
-      editButton.isEnabled = !tags.isEmpty
+      editButton.isEnabled = tags.count > 2
       navigationItem.setRightBarButtonItems([editButton, addButton], animated: true)
+
       if tableView.isEditing {
         CATransaction.begin()
         CATransaction.setCompletionBlock {
@@ -174,9 +207,9 @@ extension TagsTableViewController {
     }
   }
 
-  private func startEditingName(_ indexPath: IndexPath) {
+  private func startEditingName(_ indexPath: IndexPath, selected: Bool) {
     os_log(.debug, log: log, "startEditingName - row: %d", indexPath.row)
-    currentAction = .editTagName(indexPath: indexPath)
+    currentAction = .editTagName(indexPath: indexPath, selected: selected)
     tableView.reloadRows(at: [indexPath], with: .automatic)
   }
 
@@ -212,7 +245,8 @@ extension TagsTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    os_log(.debug, log: log, "tableView:didSelectRow")
+    guard selectable else { return }
+
     if activeNameEditor != nil {
       stopEditingName()
       return
@@ -234,12 +268,6 @@ extension TagsTableViewController {
     tableView.reloadRows(at: [indexPath], with: .automatic)
   }
 
-  //    override public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-  //        let tag = tags.getBy(index: indexPath.row)
-  //        active.remove(tag.key)
-  //        tableView.reloadRows(at: [indexPath], with: .automatic)
-  //    }
-
   override public func tableView(_ tableView: UITableView,
                                  editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     let tag = tags.getBy(index: indexPath.row)
@@ -250,7 +278,11 @@ extension TagsTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    true
+    let tag = tags.getBy(index: indexPath.row)
+    if tag.key == Tag.allTag.key || tag.key == Tag.builtInTag.key {
+      return false
+    }
+    return true
   }
 
   override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -265,26 +297,35 @@ extension TagsTableViewController {
   override public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                                  forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-      active.remove(tags.remove(at: indexPath.row).key)
-      tableView.deleteRows(at: [indexPath], with: .automatic)
+      tableView.performBatchUpdates {
+        active.remove(tags.remove(at: indexPath.row).key)
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+      } completion: { _ in
+        if self.tags.count <= 2 {
+          self.currentAction = .doneEditing
+        }
+      }
     }
-
-    currentAction = .doneEditing
   }
 }
 
-extension TagsTableViewController {
+extension TagsTableViewController: Tasking {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let tag = tags.getBy(index: indexPath.row)
 
-    if activeNameEditor == indexPath {
+    if case let .editTagName(editIndexPath, selected) = currentAction, editIndexPath == indexPath {
       cell.name.isHidden = true
       cell.tagEditor.isHidden = false
       cell.tagEditor.isEnabled = true
       cell.tagEditor.delegate = self
       cell.tagEditor.text = tag.name
-      DispatchQueue.main.async { cell.tagEditor.becomeFirstResponder() }
+      Self.onMain {
+        cell.tagEditor.becomeFirstResponder()
+        if selected {
+          cell.tagEditor.selectAll(nil)
+        }
+      }
     } else {
       cell.name.isHidden = false
       cell.tagEditor.isHidden = true
@@ -293,11 +334,30 @@ extension TagsTableViewController {
     }
 
     var flags: TableCell.Flags = .init()
-    if tag == Tag.allTag || active.contains(tag.key) || (self.builtIn && tag == Tag.builtInTag) {
-      flags.insert(.active)
+    if selectable {
+      if tag == Tag.allTag || active.contains(tag.key) || (self.builtIn && tag == Tag.builtInTag) {
+        flags.insert(.active)
+      }
     }
 
     cell.updateForTag(at: indexPath, name: tag.name, flags: flags)
     return cell
+  }
+}
+
+extension TagsTableViewController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
+
+  /**
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
+  public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+    dismiss(cancelButton)
+  }
+
+  /**
+   Notification that the font editor is being dismissed. Treat as a close.
+   */
+  public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    dismiss(cancelButton)
   }
 }

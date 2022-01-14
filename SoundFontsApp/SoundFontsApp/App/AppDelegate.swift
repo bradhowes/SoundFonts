@@ -7,7 +7,7 @@ import os
 
 /// Delegate for the SoundFonts app.
 @UIApplicationMain
-final class AppDelegate: UIResponder, UIApplicationDelegate {
+final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
   private lazy var log = Logging.logger("AppDelegate")
   private let components = Components<MainViewController>(inApp: true,
                                                           configPath: ConsolidatedConfigFile.sharedConfigPath)
@@ -53,7 +53,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    - parameter options: dictionary of options that may affect the opening (unused)
    */
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
+    Self.onMain { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
     return true
   }
 

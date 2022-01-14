@@ -6,7 +6,7 @@ import os
 
 /// View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects
 /// components. Should be refactored and shared between the two.
-public final class EffectsController: UIViewController {
+public final class EffectsController: UIViewController, Tasking {
   private lazy var log = Logging.logger("EffectsController")
 
   @IBOutlet weak var scrollView: UIScrollView!
@@ -266,6 +266,7 @@ extension EffectsController {
 // MARK: - ControllerConfiguration
 
 extension EffectsController: ControllerConfiguration {
+
   public func establishConnections(_ router: ComponentContainer) {
     guard router.isMainApp else { return }
     settings = router.settings
@@ -273,8 +274,10 @@ extension EffectsController: ControllerConfiguration {
     soundFonts = router.soundFonts
     favorites = router.favorites
     activePresetManager = router.activePresetManager
-    router.subscribe(self, notifier: routerChange)
-    activePresetManager.subscribe(self, notifier: activePresetChanged)
+
+    router.subscribe(self, notifier: routerChange_BT)
+    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
+
     if let sampler = router.sampler {
       self.sampler = sampler
       updateState()
@@ -420,17 +423,19 @@ extension EffectsController {
     updateGlobalConfig()
   }
 
-  private func routerChange(_ event: ComponentContainerEvent) {
+  private func routerChange_BT(_ event: ComponentContainerEvent) {
     switch event {
     case .samplerAvailable(let sampler):
-      self.sampler = sampler
-      DispatchQueue.main.async(execute: self.updateState)
+      Self.onMain {
+        self.sampler = sampler
+        self.updateState()
+      }
     }
   }
 
-  private func activePresetChanged(_ event: ActivePresetEvent) {
+  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     guard case .change = event else { return }
-    updateState()
+    Self.onMain { self.updateState() }
   }
 
   private func updateState() {

@@ -48,6 +48,12 @@ internal extension IndexPath {
     self.init(row: remaining, section: sectionRowCounts.count - 1)
   }
 
+  init(slotIndex: PresetViewSlotIndex) {
+    let section = slotIndex.rawValue / Self.sectionSize
+    let row = slotIndex.rawValue - section * Self.sectionSize
+    self.init(row: row, section: section)
+  }
+
   /// Convert from row/section to slot index
   func slotIndex(using sectionRowCounts: [Int]) -> PresetViewSlotIndex {
     .init(rawValue: row + sectionRowCounts[0..<section].reduce(0, +))

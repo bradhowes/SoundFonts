@@ -4,7 +4,7 @@ import UIKit
 import os.log
 
 /// Extension of UIDocument that contains a ConsolidatedConfig value
-public final class ConsolidatedConfigFile: UIDocument {
+public final class ConsolidatedConfigFile: UIDocument, Tasking {
   private static let log = Logging.logger("ConsolidatedConfigFile")
   private var log: OSLog { Self.log }
 
@@ -28,7 +28,7 @@ public final class ConsolidatedConfigFile: UIDocument {
     os_log(.info, log: Self.log, "init - fileURL: %{public}s", fileURL.absoluteString)
     super.init(fileURL: fileURL)
     self.monitor = ConfigFileConflictMonitor(configFile: self)
-    DispatchQueue.main.async { self.restore() }
+    Self.onMain { self.restore() }
   }
 
   public func save() {
@@ -50,7 +50,7 @@ public final class ConsolidatedConfigFile: UIDocument {
         os_log(.error, log: Self.log, "restore - failed to open - attempting legacy loading")
 
         // We are back on the main thread so do the loading in the background.
-        DispatchQueue.global(qos: .userInitiated).async {
+        Self.onBackground {
           self.attemptLegacyLoad()
         }
       }

@@ -13,7 +13,7 @@ public final class BackgroundManagedObjectContext {
   }
 }
 
-extension BackgroundManagedObjectContext {
+extension BackgroundManagedObjectContext: Tasking {
 
   public convenience init(
     _ container: NSPersistentContainer, _ configure: (NSManagedObjectContext) -> Void
@@ -43,7 +43,7 @@ extension BackgroundManagedObjectContext {
         resultError = error
       }
 
-      DispatchQueue.main.async { errorBlock(resultError) }
+      Self.onMain { errorBlock(resultError) }
     }
   }
 }

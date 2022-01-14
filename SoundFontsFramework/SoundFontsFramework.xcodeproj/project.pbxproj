@@ -129,6 +129,10 @@
 		BD411C512778854700C9CEB0 /* Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD411C502778854700C9CEB0 /* Optional.swift */; };
 		BD430FA824107C7D009DB9B3 /* AUAudioUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */; };
 		BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */; };
+		BD44E60F27917C1D004E0543 /* Tasking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD44E60E27917C1D004E0543 /* Tasking.swift */; };
+		BD44E6112791A020004E0543 /* PresetsTableRowVisibilityEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */; };
+		BD44E6132791B374004E0543 /* TagsEditorView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD44E6122791B374004E0543 /* TagsEditorView.storyboard */; };
+		BD44E6152791C094004E0543 /* TagsEditor.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD44E6142791C094004E0543 /* TagsEditor.storyboard */; };
 		BD4569BD2518C33A00C2A7B2 /* SettingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */; };
 		BD498F9A23EF8B1D00755AB9 /* FavoritesViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */; };
 		BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */; };
@@ -150,7 +154,6 @@
 		BD6E8AB924058C6200067AE2 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6E8AB824058C6200067AE2 /* SettingsTests.swift */; };
 		BD6EEA2C251E030300253D96 /* SoundFontFileLoadFailure.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */; };
 		BD6EEA49251E4F3C00253D96 /* DecodableDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */; };
-		BD6FE72C278903830038760A /* PresetTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6FE72B278903830038760A /* PresetTableView.swift */; };
 		BD79915425795D2000943515 /* iPhone 12.png in Resources */ = {isa = PBXBuildFile; fileRef = BD79915325795D2000943515 /* iPhone 12.png */; };
 		BD7B7C492660D4AF00F0D18D /* TagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD7B7C482660D4AF00F0D18D /* TagTests.swift */; };
 		BD7F6C452790A7BB00C867D8 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD7F6C432790A7BB00C867D8 /* Release.xcconfig */; };
@@ -370,6 +373,10 @@
 		BD3F44CF2501958000653ABD /* PersistentContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContainer.swift; sourceTree = "<group>"; };
 		BD411C502778854700C9CEB0 /* Optional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Optional.swift; sourceTree = "<group>"; };
 		BD430FA724107C7D009DB9B3 /* AUAudioUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AUAudioUnitTests.swift; sourceTree = "<group>"; };
+		BD44E60E27917C1D004E0543 /* Tasking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tasking.swift; sourceTree = "<group>"; };
+		BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsTableRowVisibilityEditor.swift; sourceTree = "<group>"; };
+		BD44E6122791B374004E0543 /* TagsEditorView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TagsEditorView.storyboard; sourceTree = "<group>"; };
+		BD44E6142791C094004E0543 /* TagsEditor.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TagsEditor.storyboard; sourceTree = "<group>"; };
 		BD4569BC2518C33A00C2A7B2 /* SettingKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingKey.swift; sourceTree = "<group>"; };
 		BD498F9923EF8B1D00755AB9 /* FavoritesViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewManager.swift; sourceTree = "<group>"; };
 		BD4E2C9E25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldKeyboardMonitor.swift; sourceTree = "<group>"; };
@@ -393,7 +400,6 @@
 		BD6E8AB824058C6200067AE2 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		BD6EEA2B251E030300253D96 /* SoundFontFileLoadFailure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontFileLoadFailure.swift; sourceTree = "<group>"; };
 		BD6EEA48251E4F3C00253D96 /* DecodableDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodableDefault.swift; sourceTree = "<group>"; };
-		BD6FE72B278903830038760A /* PresetTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetTableView.swift; sourceTree = "<group>"; };
 		BD74D18A23CDB4C000204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD79915325795D2000943515 /* iPhone 12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone 12.png"; sourceTree = "<group>"; };
 		BD7B7C482660D4AF00F0D18D /* TagTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagTests.swift; sourceTree = "<group>"; };
@@ -720,6 +726,7 @@
 				BD074C3623CDAF51001987E9 /* SoundFonts.swift */,
 				BD074C1823CDAF51001987E9 /* SubscriberToken.swift */,
 				BDBF897A25B5930100B58E23 /* Tags.swift */,
+				BD44E60E27917C1D004E0543 /* Tasking.swift */,
 				BD074C3423CDAF51001987E9 /* UpperViewSwipingActivity.swift */,
 			);
 			path = Protocols;
@@ -743,6 +750,8 @@
 			children = (
 				BD62CF54253DE22C00DBDC1B /* FavoriteEditor.storyboard */,
 				BD299EFC25292FEF003AFE0E /* FontEditor.storyboard */,
+				BD44E6122791B374004E0543 /* TagsEditorView.storyboard */,
+				BD44E6142791C094004E0543 /* TagsEditor.storyboard */,
 			);
 			name = Editors;
 			sourceTree = "<group>";
@@ -915,7 +924,7 @@
 			children = (
 				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
 				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
-				BD6FE72B278903830038760A /* PresetTableView.swift */,
+				BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */,
 				BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */,
 			);
 			path = Presets;
@@ -1067,6 +1076,7 @@
 				BD1C22E525CDC4A8007C114F /* Tutorial.storyboard in Resources */,
 				BDEB124B262059CF003CE8EE /* Changes.storyboard in Resources */,
 				BD43C8A6252937FB00D89D7D /* FontEditor.storyboard in Resources */,
+				BD44E6152791C094004E0543 /* TagsEditor.storyboard in Resources */,
 				BD074C4723CDAF51001987E9 /* FavoriteCell.xib in Resources */,
 				BDB7408025CC29690051B4E4 /* Presets.storyboard in Resources */,
 				BD62CF59253DE22D00DBDC1B /* FontsView.storyboard in Resources */,
@@ -1099,6 +1109,7 @@
 				BDEB12552620728B003CE8EE /* Changes.md in Resources */,
 				BDC7EC3E241AE97000F789B2 /* Localizable.stringsdict in Resources */,
 				BDD979222417006D006121A1 /* Eurostile.ttc in Resources */,
+				BD44E6132791B374004E0543 /* TagsEditorView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1162,6 +1173,7 @@
 				BD074C7623CDAF51001987E9 /* RandomAccessCollection.swift in Sources */,
 				BDB3BFA0270C53D700C4257A /* MIDI.swift in Sources */,
 				BD1971BD266186E900C7FCF5 /* ManagedTag.swift in Sources */,
+				BD44E60F27917C1D004E0543 /* Tasking.swift in Sources */,
 				BDA5ACF1265D4266000AE48E /* ReverbEffect.swift in Sources */,
 				BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */,
 				BDA5ACF8265D427C000AE48E /* EventClosureMangement.swift in Sources */,
@@ -1203,6 +1215,7 @@
 				BD074C7C23CDAF51001987E9 /* UITableView.swift in Sources */,
 				BDBF893E25B4C7AC00B58E23 /* ActiveTagManager.swift in Sources */,
 				BD074C6E23CDAF51001987E9 /* Logging.swift in Sources */,
+				BD44E6112791A020004E0543 /* PresetsTableRowVisibilityEditor.swift in Sources */,
 				BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */,
 				BD94614F26AC912D00300543 /* ChorusConfig.swift in Sources */,
 				BDBF896625B58AEF00B58E23 /* TagCollection.swift in Sources */,
@@ -1226,7 +1239,6 @@
 				BDF3B3D52566BB9C003F7BB3 /* UILabel.swift in Sources */,
 				BD3F44C525018EB100653ABD /* CachedValueTypedNotification.swift in Sources */,
 				BD6EEA2C251E030300253D96 /* SoundFontFileLoadFailure.swift in Sources */,
-				BD6FE72C278903830038760A /* PresetTableView.swift in Sources */,
 				BDE150B1250B460200728402 /* ContextNotification.swift in Sources */,
 				BD074C9023CDAF51001987E9 /* SegueHandler.swift in Sources */,
 				BDD7219D24190D9700FD3567 /* Bundle.swift in Sources */,

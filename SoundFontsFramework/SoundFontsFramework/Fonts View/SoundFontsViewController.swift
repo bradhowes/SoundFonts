@@ -207,15 +207,16 @@ extension SoundFontsViewController: ControllerConfiguration {
     let multiplier = settings.presetsWidthMultiplier
     presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
+    tagsTableViewManager = ActiveTagManager(viewController: self, tableView: tagsView, tags: router.tags,
+                                            settings: settings, tagsHider: self.hideTags)
+
     fontsTableViewManager = FontsTableViewManager(view: soundFontsView,
                                                   selectedSoundFontManager: selectedSoundFontManager,
                                                   activePresetManager: router.activePresetManager,
+                                                  activeTagManager: tagsTableViewManager,
                                                   fontEditorActionGenerator: self,
                                                   soundFonts: router.soundFonts, tags: tags,
                                                   settings: settings)
-
-    tagsTableViewManager = ActiveTagManager(view: tagsView, tags: router.tags, settings: settings,
-                                            tagsHider: self.hideTags)
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
@@ -301,13 +302,14 @@ extension SoundFontsViewController: SegueHandler {
     case fontEditor
     case fontBrowser
     case presetsTableView
+    case tagsEditor
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
     case .fontEditor:
       guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
-      prepareToEdit(segue, config: config)
+      prepareToEditFont(segue, config: config)
 
     case .fontBrowser: break
 
@@ -316,10 +318,14 @@ extension SoundFontsViewController: SegueHandler {
         fatalError("expected PresetsTableViewController for segue destination")
       }
       presetsTableViewController = destination
+
+    case .tagsEditor:
+      guard let config = sender as? TagsTableViewController.Config else { fatalError("expected TagsTableViewController.Config") }
+      prepareToEditTags(segue, config: config)
     }
   }
 
-  private func prepareToEdit(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
+  private func prepareToEditFont(_ segue: UIStoryboardSegue, config: FontEditor.Config) {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FontEditor
     else {
@@ -338,6 +344,30 @@ extension SoundFontsViewController: SegueHandler {
       ppc.sourceView = config.view
       ppc.sourceRect = config.rect
       ppc.permittedArrowDirections = [.up, .down]
+      ppc.delegate = viewController
+    }
+
+    navController.presentationController?.delegate = viewController
+  }
+
+  private func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsTableViewController.Config) {
+    guard let navController = segue.destination as? UINavigationController,
+          let viewController = navController.topViewController as? TagsTableViewController
+    else {
+      return
+    }
+
+    viewController.configure(config)
+
+    if keyboard == nil {
+      viewController.modalPresentationStyle = .fullScreen
+      navController.modalPresentationStyle = .fullScreen
+    }
+
+    if let ppc = navController.popoverPresentationController {
+      ppc.sourceView = tagsView
+      ppc.sourceRect = tagsView.frame
+      ppc.permittedArrowDirections = []
       ppc.delegate = viewController
     }
 

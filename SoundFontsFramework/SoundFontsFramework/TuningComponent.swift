@@ -104,7 +104,7 @@ extension TuningComponent {
   }
 }
 
-extension TuningComponent: UITextFieldDelegate {
+extension TuningComponent: UITextFieldDelegate, Tasking {
 
   public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
     textFieldKeyboardMonitor.viewToKeepVisible = textField
@@ -117,7 +117,7 @@ extension TuningComponent: UITextFieldDelegate {
   }
 
   public func textFieldDidBeginEditing(_ textField: UITextField) {
-    DispatchQueue.main.async {
+    Self.onMain {
       textField.selectedTextRange = textField.textRange(from: textField.endOfDocument, to: textField.endOfDocument)
     }
   }

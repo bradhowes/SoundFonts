@@ -5,7 +5,7 @@ import os
 
 /// Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
 /// settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
-public final class FavoritesViewController: UIViewController, FavoritesViewManager {
+public final class FavoritesViewController: UIViewController, FavoritesViewManager, Tasking {
   private lazy var log = Logging.logger("FavoritesViewController")
 
   @IBOutlet private var favoritesView: UICollectionView!
@@ -77,75 +77,77 @@ extension FavoritesViewController: ControllerConfiguration {
     tags = router.tags
     settings = router.settings
 
-    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChanged)
-    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChanged)
-    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged)
-    tagsSubscription = tags.subscribe(self, notifier: tagsChanged)
+    activePresetManagerSubscription = activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
+    favoritesSubscription = favorites.subscribe(self, notifier: favoritesChanged_BT)
+    soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
+    tagsSubscription = tags.subscribe(self, notifier: tagsChanged_BT)
   }
 
-  private func activePresetChanged(_ event: ActivePresetEvent) {
+  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     guard favorites.restored && soundFonts.restored else { return }
     switch event {
     case let .change(old: old, new: new, playSample: _):
       if case let .favorite(oldFave) = old {
         os_log(.info, log: log, "updating previous favorite cell")
-        updateCell(with: oldFave)
+        Self.onMain { self.updateCell(with: oldFave) }
       }
       if case let .favorite(newFave) = new {
         os_log(.info, log: log, "updating new favorite cell")
-        updateCell(with: newFave)
+        Self.onMain { self.updateCell(with: newFave) }
       }
     }
   }
 
-  private func favoritesChanged(_ event: FavoritesEvent) {
+  private func favoritesChanged_BT(_ event: FavoritesEvent) {
     os_log(.info, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
-      os_log(.info, log: log, "added item %d", index)
-      favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
-      if favorite == activePresetManager.activeFavorite {
-        favoritesView.selectItem(
-          at: indexPath(of: favorite.key), animated: false,
-          scrollPosition: .centeredVertically)
-        updateCell(with: favorite)
-      }
-
-    case let .selected(index: index, favorite: favorite):
-      os_log(.info, log: log, "selected %d", index)
-      activePresetManager.setActive(favorite: favorite, playSample: true)
-
+      Self.onMain { self.handleFavoriteAdded(index: index, favorite: favorite) }
+    case let .selected(index: _, favorite: favorite):
+      Self.onMain { self.activePresetManager.setActive(favorite: favorite, playSample: true) }
     case let .beginEdit(config: config):
-      showEditor(config: config)
-
-    case let .changed(index: index, favorite: favorite):
-      os_log(.info, log: log, "changed %d", index)
-      updateCell(with: favorite)
-
+      Self.onMain { self.showEditor(config: config) }
+    case let .changed(index: _, favorite: favorite):
+      Self.onMain { self.updateCell(with: favorite) }
     case let .removed(index: index, favorite: _):
-      os_log(.info, log: log, "removed %d", index)
-      guard favoritesView.delegate != nil else { return }
-      let indexPath = IndexPath(item: index, section: 0)
-      favoritesView.deleteItems(at: [indexPath])
-      favoritesView.reloadData()
-
-    case .removedAll: favoritesView.reloadData()
-
-    case .restored: restored()
+      Self.onMain { self.handleFavoriteRemoved(index: index) }
+    case .removedAll:
+      Self.onMain { self.favoritesView.reloadData() }
+    case .restored:
+      Self.onMain { self.restored() }
     }
   }
 
-  private func soundFontsChanged(_ event: SoundFontsEvent) {
+  private func handleFavoriteAdded(index: Int, favorite: Favorite) {
+    os_log(.info, log: log, "added item %d", index)
+    favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
+    if favorite == activePresetManager.activeFavorite {
+      favoritesView.selectItem(
+        at: indexPath(of: favorite.key), animated: false,
+        scrollPosition: .centeredVertically)
+      updateCell(with: favorite)
+    }
+  }
+
+  private func handleFavoriteRemoved(index: Int) {
+    os_log(.info, log: log, "removed %d", index)
+    guard favoritesView.delegate != nil else { return }
+    let indexPath = IndexPath(item: index, section: 0)
+    favoritesView.deleteItems(at: [indexPath])
+    favoritesView.reloadData()
+  }
+
+  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     switch event {
-    case .restored: restored()
+    case .restored: Self.onMain { self.restored() }
     default: break
     }
   }
 
-  private func tagsChanged(_ event: TagsEvent) {
+  private func tagsChanged_BT(_ event: TagsEvent) {
     switch event {
-    case .restored: restored()
+    case .restored: Self.onMain { self.restored() }
     default: break
     }
   }
@@ -160,10 +162,10 @@ extension FavoritesViewController: ControllerConfiguration {
       return
     }
 
-    soundFonts.validateCollections(favorites: favorites, tags: tags)
-    favoritesView.dataSource = self
-    favoritesView.delegate = self
-    favoritesView.reloadData()
+    self.soundFonts.validateCollections(favorites: self.favorites, tags: self.tags)
+    self.favoritesView.dataSource = self
+    self.favoritesView.delegate = self
+    self.favoritesView.reloadData()
   }
 }
 

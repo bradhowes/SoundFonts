@@ -4,7 +4,7 @@ import CoreAudioKit
 import SoundFontsFramework
 import os
 
-public final class DelayViewController: AUViewController {
+public final class DelayViewController: AUViewController, Tasking {
   private lazy var log = Logging.logger("DelayViewController")
   private var audioUnit: DelayAU?
   private var parameterObserverToken: AUParameterObserverToken?
@@ -86,10 +86,10 @@ extension DelayViewController {
       guard let self = self else { return }
       os_log(.error, log: self.log, "parameterObserver - address: %ld value: %f")
       switch AudioUnitParameters.Address(rawValue: address) {
-      case .time: DispatchQueue.main.async { self.setTime(value: value) }
-      case .feedback: DispatchQueue.main.async { self.setFeedback(value: value) }
-      case .cutoff: DispatchQueue.main.async { self.setCutoff(value: value) }
-      case .wetDryMix: DispatchQueue.main.async { self.setWetDryMix(value: value) }
+      case .time: Self.onMain { self.setTime(value: value) }
+      case .feedback: Self.onMain { self.setFeedback(value: value) }
+      case .cutoff: Self.onMain { self.setCutoff(value: value) }
+      case .wetDryMix: Self.onMain { self.setWetDryMix(value: value) }
       default: break
       }
     })

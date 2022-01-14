@@ -6,7 +6,7 @@ import os
 /// Controller for the keyboard view. Creates the individual Key views and handles touch event detection within them.
 /// The controller creates an entire 108 keyboard which it then shows only a part of on the screen. The keyboard can
 /// be shifted up/down by octaves or by sliding via touch (if enabled).
-final class KeyboardController: UIViewController {
+final class KeyboardController: UIViewController, Tasking {
   private lazy var log = Logging.logger("KeyCon")
 
   private var settings: Settings!
@@ -102,43 +102,48 @@ extension KeyboardController: ControllerConfiguration {
     infoBar = router.infoBar
     infoBar.addEventClosure(.shiftKeyboardUp, self.shiftKeyboardUp)
     infoBar.addEventClosure(.shiftKeyboardDown, self.shiftKeyboardDown)
-    router.activePresetManager.subscribe(self, notifier: presetChanged)
-    router.favorites.subscribe(self, notifier: favoritesChanged)
-    router.subscribe(self, notifier: routerChanged)
+
+    router.activePresetManager.subscribe(self, notifier: presetChanged_BT)
+    router.favorites.subscribe(self, notifier: favoritesChanged_BT)
+    router.subscribe(self, notifier: routerChanged_BT)
 
     if router.sampler != nil {
       touchedKeys.processor = router.sampler
     }
   }
 
-  private func routerChanged(_ event: ComponentContainerEvent) {
+  private func routerChanged_BT(_ event: ComponentContainerEvent) {
     if case let .samplerAvailable(sampler) = event {
       touchedKeys.processor = sampler
     }
   }
 
-  private func presetChanged(_ event: ActivePresetEvent) {
+  private func presetChanged_BT(_ event: ActivePresetEvent) {
     switch event {
     case .change:
       if let presetConfig = activePresetManager.activePresetConfig {
-        updateWith(presetConfig: presetConfig)
+        Self.onMain { self.updateWith(presetConfig: presetConfig) }
       }
     }
   }
 
-  private func favoritesChanged(_ event: FavoritesEvent) {
+  private func favoritesChanged_BT(_ event: FavoritesEvent) {
     switch event {
     case let .changed(index: _, favorite: favorite):
-      if activePresetManager.activeFavorite == favorite {
-        updateWith(presetConfig: favorite.presetConfig)
-      }
+      Self.onMain { self.handleFavoriteChanged(favorite: favorite) }
     case let .selected(index: _, favorite: favorite):
-      updateWith(presetConfig: favorite.presetConfig)
+      Self.onMain { self.updateWith(presetConfig: favorite.presetConfig) }
     case .added: break
     case .beginEdit: break
     case .removed: break
     case .removedAll: break
     case .restored: break
+    }
+  }
+
+  private func handleFavoriteChanged(favorite: Favorite) {
+    if self.activePresetManager.activeFavorite == favorite {
+      self.updateWith(presetConfig: favorite.presetConfig)
     }
   }
 
@@ -227,7 +232,7 @@ extension KeyboardController: Keyboard {
   func noteIsOn(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
-    DispatchQueue.main.async {
+    Self.onMain {
       key.pressed = true
       self.updateInfoBar(note: key.note)
     }
@@ -241,7 +246,7 @@ extension KeyboardController: Keyboard {
   func noteIsOff(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
-    DispatchQueue.main.async { key.pressed = false }
+    Self.onMain { key.pressed = false }
   }
 
   /// The current lowest MIDI note of the keyboard (mutable)
@@ -258,7 +263,7 @@ extension KeyboardController: Keyboard {
    */
   func releaseAllKeys() {
     touchedKeys.releaseAll()
-    DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
+    Self.onMain { self.allKeys.forEach { $0.pressed = false } }
   }
 }
 

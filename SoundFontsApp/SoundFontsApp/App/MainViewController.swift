@@ -8,7 +8,7 @@ import os
 /// Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
 /// touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
 /// to the background or stops being active.
-final class MainViewController: UIViewController {
+final class MainViewController: UIViewController, Tasking {
   private lazy var log = Logging.logger("MainViewController")
 
   private weak var router: ComponentContainer?
@@ -109,10 +109,10 @@ extension MainViewController {
     os_log(.info, log: log, "startAudio")
     startRequested = true
     guard let sampler = self.sampler else { return }
-    DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
+    DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground_BT(sampler) }
   }
 
-  @objc func handleRouteChange(notification: Notification) {
+  @objc func handleRouteChange_BT(notification: Notification) {
     guard let userInfo = notification.userInfo,
           let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
           let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue) else {
@@ -164,12 +164,12 @@ extension MainViewController {
 
 extension MainViewController: ControllerConfiguration {
 
-  private func startAudioBackground(_ sampler: Sampler) {
+  private func startAudioBackground_BT(_ sampler: Sampler) {
     let sampleRate: Double = 44100.0
     let bufferSize: Int = 512
     let session = AVAudioSession.sharedInstance()
 
-    setupAudioSessionNotifications()
+    setupAudioSessionNotifications_BT()
 
     do {
       do {
@@ -206,12 +206,13 @@ extension MainViewController: ControllerConfiguration {
 
       os_log(.info, log: log, "starting sampler")
       let result = sampler.start()
-      DispatchQueue.main.async { self.finishStart(result) }
+      Self.onMain { self.finishStart(result) }
+
     } catch let error as NSError {
       let result: SamplerStartFailure = .sessionActivating(error: error)
       os_log(
         .error, log: log, "Failed session.setActive(true): %{public}s", error.localizedDescription)
-      DispatchQueue.main.async { self.finishStart(.failure(result)) }
+      Self.onMain { self.finishStart(.failure(result)) }
     }
   }
 
@@ -234,7 +235,7 @@ extension MainViewController: ControllerConfiguration {
     volumeMonitor = VolumeMonitor(keyboard: router.keyboard)
     #endif
 
-    router.activePresetManager.subscribe(self, notifier: activePresetChanged)
+    router.activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
 
     let preset: ActivePresetKind = {
       let lastActivePreset = settings.lastActivePreset
@@ -245,9 +246,9 @@ extension MainViewController: ControllerConfiguration {
 
     activePresetManager.restoreActive(preset)
 
-    router.subscribe(self, notifier: routerChanged)
+    router.subscribe(self, notifier: routerChanged_BT)
     if let sampler = router.sampler {
-      setSampler(sampler)
+      activePresetManager.runOnNotifyQueue { self.setSampler_BT(sampler) }
     }
     
     os_log(.info, log: log, "establishConnections END")
@@ -260,47 +261,45 @@ extension MainViewController: ControllerConfiguration {
     MIDI.sharedInstance.receiver = midiController
   }
 
-  private func routerChanged(_ event: ComponentContainerEvent) {
+  private func routerChanged_BT(_ event: ComponentContainerEvent) {
     os_log(.info, log: log, "routerChanged: %{public}s", event.description)
     switch event {
-    case .samplerAvailable(let sampler): setSampler(sampler)
+    case .samplerAvailable(let sampler): setSampler_BT(sampler)
     }
   }
 
-  private func setSampler(_ sampler: Sampler) {
+  private func setSampler_BT(_ sampler: Sampler) {
     self.sampler = sampler
     if startRequested {
-      DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground(sampler) }
+      self.startAudioBackground_BT(sampler)
     }
   }
 
-  private func activePresetChanged(_ event: ActivePresetEvent) {
+  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     if case let .change(old: _, new: new, playSample: playSample) = event {
-      useActivePresetKind(new, playSample: playSample)
+      useActivePreset_BT(new, playSample: playSample)
     }
   }
 
-  private func useActivePresetKind(_ activePresetKind: ActivePresetKind, playSample: Bool) {
-    volumeMonitor?.activePreset = activePresetKind != .none
+  private func useActivePreset_BT(_ activePresetKind: ActivePresetKind, playSample: Bool) {
+    volumeMonitor?.validActivePreset = activePresetKind != .none
     midiController?.allNotesOff()
     guard let sampler = self.sampler else { return }
+    let result = sampler.loadActivePreset {
+      if playSample { self.noteInjector.post(to: sampler) }
+    }
 
-    DispatchQueue.global(qos: .userInitiated).async {
-      let result = sampler.loadActivePreset {
-        if playSample { self.noteInjector.post(to: sampler) }
-      }
-
-      if case let .failure(what) = result, what != .noSampler {
-        DispatchQueue.main.async { self.postAlert(for: what) }
-      }
+    if case let .failure(what) = result, what != .noSampler {
+      self.postAlert_BT(for: what)
     }
   }
 
   private func finishStart(_ result: Sampler.StartResult) {
+    Thread.preconditionMainThread()
     switch result {
     case let .failure(what):
       os_log(.info, log: log, "set active audio session")
-      postAlert(for: what)
+      postAlert_BT(for: what)
     case .success:
       volumeMonitor?.start()
       startMIDI()
@@ -315,12 +314,14 @@ extension MainViewController: ControllerConfiguration {
     self.startAudio()
   }
 
-  private func postAlert(for what: SamplerStartFailure) {
-    NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what))
+  private func postAlert_BT(for what: SamplerStartFailure) {
+    Self.onMain {
+      NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what))
+    }
   }
 
-  private func setupAudioSessionNotifications() {
-    NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange),
+  private func setupAudioSessionNotifications_BT() {
+    NotificationCenter.default.addObserver(self, selector: #selector(handleRouteChange_BT),
                                            name: AVAudioSession.routeChangeNotification, object: nil)
   }
 

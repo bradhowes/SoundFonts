@@ -2,16 +2,26 @@
 
 import Foundation
 
-/// Manage subscriptions to event notifications. Events can be anything but are usually defined as an enum.
-public class SubscriptionManager<Event> {
+public class SubscriptionQueue: NSObject {
+  public static let notificationQueueQoS = DispatchQoS.userInitiated
+  public static let notificationQueue = DispatchQueue.global(qos: notificationQueueQoS.qosClass)
+}
+
+/**
+ Manages subscriptions to event notifications. Events can be anything but are usually defined as an enum. When an
+ event happens, call the `notify` method to send the event to all subscribers. Notifications happen asynchronously
+ on the `main` thread.
+ */
+public class SubscriptionManager<Event>: SubscriptionQueue {
 
   /// The type of function / closure that is used to subscribe to a subscription manager
   public typealias NotifierProc = (Event) -> Void
+
   /// The type of function / closure that is used to unsubscribe to a subscription manager
   public typealias UnsubscribeProc = () -> Void
 
-  private let subscriptionsQueue = DispatchQueue(label: "SubscriptionsManagerQueue", qos: .background, attributes: [],
-                                                 autoreleaseFrequency: .inherit, target: .global(qos: .background))
+  private let subscriptionsQueue = DispatchQueue(label: "SubscriptionsManagerQueue", qos: notificationQueueQoS,
+                                                 target: notificationQueue)
   private var subscriptions = [UUID: NotifierProc]()
 
   private struct Token: SubscriberToken {
@@ -73,6 +83,12 @@ public class SubscriptionManager<Event> {
    */
   public func notify(_ event: Event) {
     if cacheEvent { lastEvent = event }
-    subscriptionsQueue.sync { subscriptions.values.forEach { $0(event) } }
+    subscriptionsQueue.sync { subscriptions.values.forEach { closure in
+      Self.notificationQueue.async { closure(event) }
+    }}
+  }
+
+  public func runOnNotifyQueue(_ closure: @escaping () -> Void) {
+    Self.notificationQueue.async { closure() }
   }
 }

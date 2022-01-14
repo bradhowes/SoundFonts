@@ -5,7 +5,7 @@ import os
 
 /// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
-public final class InfoBarController: UIViewController {
+public final class InfoBarController: UIViewController, Tasking {
   private lazy var log = Logging.logger("InfoBarController")
 
   @IBOutlet private weak var status: UILabel!
@@ -134,13 +134,14 @@ extension InfoBarController: ControllerConfiguration {
   public func establishConnections(_ router: ComponentContainer) {
     settings = router.settings
     activePresetManager = router.activePresetManager
-    activePresetManager.subscribe(self, notifier: activePresetChanged)
     soundFonts = router.soundFonts
     isMainApp = router.isMainApp
-    router.favorites.subscribe(self, notifier: favoritesChanged)
     showActivePreset()
     showEffects.isEnabled = router.isMainApp
     showEffects.isHidden = !router.isMainApp
+
+    activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
+    router.favorites.subscribe(self, notifier: favoritesChanged_BT)
   }
 }
 
@@ -343,20 +344,20 @@ extension InfoBarController {
     }
   }
 
-  private func soundFontsChanged(_ event: SoundFontsEvent) {
+  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     if case .restored = event {
-      showActivePreset()
+      Self.onMain { self.showActivePreset() }
     }
   }
 
-  private func activePresetChanged(_ event: ActivePresetEvent) {
+  private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     if case .change = event {
-      showActivePreset()
+      Self.onMain { self.showActivePreset() }
     }
   }
 
-  private func favoritesChanged(_ event: FavoritesEvent) {
-    showActivePreset()
+  private func favoritesChanged_BT(_ event: FavoritesEvent) {
+    Self.onMain { self.showActivePreset() }
   }
 
   private func showActivePreset() {

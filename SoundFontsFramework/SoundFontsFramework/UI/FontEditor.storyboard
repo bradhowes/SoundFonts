@@ -68,7 +68,7 @@
                                                                             <color key="titleColor" systemColor="systemTealColor"/>
                                                                         </state>
                                                                         <connections>
-                                                                            <segue destination="Kr6-Nm-Npn" kind="show" identifier="tagsEdit" id="JJW-8E-rF3"/>
+                                                                            <segue destination="qzs-X6-fwN" kind="show" identifier="tagsEdit" id="JJW-8E-rF3"/>
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
@@ -377,54 +377,6 @@
             </objects>
             <point key="canvasLocation" x="1591" y="-545"/>
         </scene>
-        <!--Tags-->
-        <scene sceneID="a1N-jf-8RK">
-            <objects>
-                <tableViewController id="Kr6-Nm-Npn" customClass="TagsTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ae1-G9-ryz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="876"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tag" id="WNu-BJ-3uA">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WNu-BJ-3uA" id="BJK-ST-iC4">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="Kr6-Nm-Npn" id="jvq-Ya-73W"/>
-                            <outlet property="delegate" destination="Kr6-Nm-Npn" id="5Jq-Va-t2T"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Edit" style="done" id="DkP-nW-5rx">
-                                <connections>
-                                    <action selector="toggleTagEditing:" destination="Kr6-Nm-Npn" id="7Rn-4E-HOX"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem systemItem="add" id="ZJW-eu-kBN">
-                                <connections>
-                                    <action selector="addTag:" destination="Kr6-Nm-Npn" id="hfx-CA-WJq"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="addButton" destination="ZJW-eu-kBN" id="BTS-w2-xoh"/>
-                        <outlet property="editButton" destination="DkP-nW-5rx" id="Vnp-2r-tE9"/>
-                        <outlet property="navigationItem" destination="s0q-jo-4cq" id="5IP-nd-Z4g"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Dda-8v-ayi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2025" y="-546"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="JbL-Hk-dDI">
             <objects>
@@ -448,6 +400,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZG-Eg-g3u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1163.768115942029" y="-545.08928571428567"/>
+        </scene>
+        <!--TagsEditorView-->
+        <scene sceneID="N0y-kO-3tb">
+            <objects>
+                <viewControllerPlaceholder storyboardName="TagsEditorView" id="qzs-X6-fwN" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="dHb-mk-uYM"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xNd-oh-wXd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1951" y="-546"/>
         </scene>
     </scenes>
     <resources>

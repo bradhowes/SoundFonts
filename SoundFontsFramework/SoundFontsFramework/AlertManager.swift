@@ -11,7 +11,7 @@ public struct AlertConfig {
   let body: String
 }
 
-private final class AlertOperation: Operation {
+private final class AlertOperation: Operation, Tasking {
 
   private let alert: AlertConfig
   private let presenter: UIViewController
@@ -41,7 +41,7 @@ private final class AlertOperation: Operation {
       return
     }
 
-    DispatchQueue.main.async {
+    Self.onMain {
       let ac = UIAlertController(
         title: self.alert.title, message: self.alert.body, preferredStyle: .alert)
       ac.addAction(

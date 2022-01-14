@@ -7,7 +7,7 @@ import Foundation
  to true, calls the closure which was given during construction. This facility is use by the various data owners to
  determine when there is data available for them to use.
  */
-public final class ConfigFileObserver {
+public final class ConfigFileObserver: Tasking {
   private let configFile: ConsolidatedConfigFile
 
   /// Flag indicating that the configuration file has been read in and the runtime elements reconstituted from it
@@ -62,6 +62,6 @@ private extension ConfigFileObserver {
   func checkRestored(_ closure: @escaping () -> Void) {
     guard configFile.restored == true else { return }
     restored = true
-    DispatchQueue.main.async { closure() }
+    Self.onMain { closure() }
   }
 }

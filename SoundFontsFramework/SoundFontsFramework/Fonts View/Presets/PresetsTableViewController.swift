@@ -5,7 +5,7 @@ import AVFoundation
 import os
 
 /// View controller for the UITableView showing the presets of a sound font
-public final class PresetsTableViewController: UITableViewController {
+public final class PresetsTableViewController: UITableViewController, Tasking {
   private lazy var log = Logging.logger("PresetsTableViewController")
 
   /// Text field for entering preset search queries.
@@ -131,7 +131,7 @@ public extension PresetsTableViewController {
     if index == 0 {
       if !isEditing {
         // Need to do this because the view may update due to the section touch.
-        DispatchQueue.main.async { self.beginSearch() }
+        Self.onMain { self.beginSearch() }
       }
       return 0
     }
@@ -233,13 +233,14 @@ extension PresetsTableViewController {
     // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
     // back into sync. The result as written looks nice with no animation disruptions.
     //
-    setEditing(true, animated: true)
-    let changes = presetsTableViewManager.calculateVisibilityChanges(isEditing: true)
+    guard let insertions = presetsTableViewManager.beginVisibilityEditing() else { return }
+
     tableView.performBatchUpdates {
       tableView.reloadSectionIndexTitles()
-      if !changes.isEmpty {
-        self.tableView.insertRows(at: changes, with: .none)
-      }
+      self.tableView.insertRows(at: insertions, with: .none)
+
+      // Set editing mode here in order to have the inserted cells above in editing mode.
+      setEditing(true, animated: true)
     } completion: { _ in
       self.showVisibilityState()
     }
@@ -263,11 +264,12 @@ extension PresetsTableViewController {
     }
 
     setEditing(false, animated: true)
-    let changes = presetsTableViewManager.calculateVisibilityChanges(isEditing: false)
-    tableView.performBatchUpdates {
-      tableView.deleteRows(at: changes, with: .automatic)
-      self.infoBar.resetButtonState(.editVisibility)
-    } completion: { _ in }
+    if let deletions = presetsTableViewManager.endVisibilityEditing() {
+      tableView.performBatchUpdates {
+        tableView.deleteRows(at: deletions, with: .automatic)
+        self.infoBar.resetButtonState(.editVisibility)
+      } completion: { _ in }
+    }
 
     CATransaction.commit()
   }

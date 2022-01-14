@@ -4,6 +4,7 @@
 "builtInTagName" = "Built-in";
 "newTagName" = "New tag";
 
+"cancelButton" = "Cancel";
 "editButton" = "Edit";
 "doneButton" = "Done";
 "saveButton" = "Save";

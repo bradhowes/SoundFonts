@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Kr6-Nm-Npn">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Tags-->
+        <scene sceneID="a1N-jf-8RK">
+            <objects>
+                <tableViewController id="Kr6-Nm-Npn" customClass="TagsTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ae1-G9-ryz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tag" id="WNu-BJ-3uA">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WNu-BJ-3uA" id="BJK-ST-iC4">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="Kr6-Nm-Npn" id="jvq-Ya-73W"/>
+                            <outlet property="delegate" destination="Kr6-Nm-Npn" id="5Jq-Va-t2T"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Tags" id="s0q-jo-4cq">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="WfX-TS-bVs" userLabel="Cancel Button">
+                            <connections>
+                                <action selector="dismiss:" destination="Kr6-Nm-Npn" id="Weu-ae-vPH"/>
+                            </connections>
+                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="edit" id="DkP-nW-5rx">
+                                <connections>
+                                    <action selector="beginTagEditing:" destination="Kr6-Nm-Npn" id="gcA-wj-1Xu"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="add" id="ZJW-eu-kBN">
+                                <connections>
+                                    <action selector="addTag:" destination="Kr6-Nm-Npn" id="hfx-CA-WJq"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="done" id="Mir-Lm-jFM" userLabel="Done Button">
+                                <connections>
+                                    <action selector="endTagEditing:" destination="Kr6-Nm-Npn" id="D9n-Fd-TWP"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="addButton" destination="ZJW-eu-kBN" id="BTS-w2-xoh"/>
+                        <outlet property="cancelButton" destination="WfX-TS-bVs" id="w2Z-eQ-lUG"/>
+                        <outlet property="doneButton" destination="Mir-Lm-jFM" id="Phu-th-j5p"/>
+                        <outlet property="editButton" destination="DkP-nW-5rx" id="Vnp-2r-tE9"/>
+                        <outlet property="navigationItem" destination="s0q-jo-4cq" id="5IP-nd-Z4g"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dda-8v-ayi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2025" y="-546"/>
+        </scene>
+    </scenes>
+</document>

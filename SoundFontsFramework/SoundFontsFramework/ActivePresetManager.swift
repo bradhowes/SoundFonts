@@ -22,9 +22,11 @@ public enum ActivePresetEvent: CustomStringConvertible {
   }
 }
 
-/// Maintains the active SoundFont preset being used for sound generation. There should only ever be one instance of this
-/// class, but this is not enforced.
-public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
+/**
+ Maintains the active SoundFont preset being used for sound generation. When it changes, it sends an ActivePresetEvent
+ event to its subscribers.s
+ */
+public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, Tasking {
   private lazy var log = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFonts
   private let favorites: Favorites
@@ -77,8 +79,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
     super.init()
     os_log(.info, log: log, "init")
 
-    soundFonts.subscribe(self, notifier: soundFontsChanged)
-    favorites.subscribe(self, notifier: favoritesChanged)
+    soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
+    favorites.subscribe(self, notifier: favoritesChanged_BT)
   }
 
   /**
@@ -179,17 +181,18 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
 extension ActivePresetManager {
 
-  private func favoritesChanged(_ event: FavoritesEvent) {
+  private func favoritesChanged_BT(_ event: FavoritesEvent) {
     if case .restored = event {
-      notifyPending()
+      Self.onMain { self.notifyPending() }
     }
   }
 
-  private func soundFontsChanged(_ event: SoundFontsEvent) {
+  private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     if case .restored = event {
-      notifyPending()
+      Self.onMain { self.notifyPending() }
     }
   }
+
   private func save(_ kind: ActivePresetKind) {
     os_log(.info, log: log, "save - %{public}s", kind.description)
     settings.lastActivePreset = kind
