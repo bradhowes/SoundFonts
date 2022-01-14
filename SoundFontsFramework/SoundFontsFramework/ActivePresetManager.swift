@@ -173,7 +173,12 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
     switch kind {
     case .preset: return kind
-    case .favorite(let favorite): return .favorite(favorite: favorites.getBy(key: favorite.key))
+    case .favorite(let favorite):
+      if favorites.contains(key: favorite.key) {
+        return .favorite(favorite: favorites.getBy(key: favorite.key))
+      } else {
+        return .none
+      }
     case .none: return .none
     }
   }
