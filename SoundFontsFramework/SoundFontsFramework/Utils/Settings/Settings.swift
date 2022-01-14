@@ -47,7 +47,7 @@ public final class Settings: NSObject {
 extension Settings {
 
   /**
-   Install values from a AUv3 state to serve as the settings for a AUv3 component.
+   Install values to serve as the settings for a AUv3 component. These would normally come from the `fullState` value.
 
    - parameter state: dictionary of settings to use for setting values
    */
@@ -112,7 +112,6 @@ extension Settings {
    Obtain a type-erased value from the setting database.
 
    - parameter key: the name of the setting to set
-   - parameter isGlobal: `true` if the setting is a global/shared setting and not distinct for each running instance.
    - returns: the optional value found in the database
    */
   @inlinable
