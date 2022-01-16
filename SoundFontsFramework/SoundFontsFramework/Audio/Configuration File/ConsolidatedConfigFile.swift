@@ -96,7 +96,7 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
     }
 
     os_log(.info, log: log, "decoded contents: %{public}s", config.description)
-    restoreConfig(config, save: false)
+    useConfig(config, save: false)
   }
 
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
@@ -128,16 +128,16 @@ extension ConsolidatedConfigFile {
     }
 
     os_log(.info, log: log, "using legacy contents")
-    restoreConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
+    useConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
   }
 
   private func createConfig() {
-    os_log(.info, log: log, "initializeCollections")
-    self.restoreConfig(ConsolidatedConfig(), save: true)
+    os_log(.info, log: log, "createConfig")
+    self.useConfig(ConsolidatedConfig(), save: true)
   }
 
-  private func restoreConfig(_ config: ConsolidatedConfig, save: Bool) {
-    os_log(.info, log: log, "restoreConfig")
+  private func useConfig(_ config: ConsolidatedConfig, save: Bool) {
+    os_log(.info, log: log, "useConfig")
     self.config = config
     self.restored = true
     if save {

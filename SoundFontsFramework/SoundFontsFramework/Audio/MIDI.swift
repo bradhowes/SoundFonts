@@ -228,7 +228,7 @@ private extension MIDIObjectRef {
     var param: Unmanaged<CFString>?
     let failed = logErr("MIDIObjectGetStringProperty(kMIDIPropertyDisplayName)",
                         MIDIObjectGetStringProperty(self, kMIDIPropertyDisplayName, &param))
-    return failed ? "nil" : param!.takeUnretainedValue() as String
+    return failed ? "nil" : param!.takeRetainedValue() as String
   }
 
   var uniqueId: MIDIUniqueID {

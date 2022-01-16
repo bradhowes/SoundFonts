@@ -3,7 +3,7 @@
 import UIKit
 
 /// The different events which are emitted by a Favorites collection when the collection changes.
-public enum FavoritesEvent {
+public enum FavoritesEvent: CustomStringConvertible {
   /// A new favorite has been added
   case added(index: Int, favorite: Favorite)
   /// A favorite has been selected
@@ -24,9 +24,23 @@ public enum FavoritesEvent {
     switch self {
     case let .added(index: _, favorite: favorite): return favorite
     case let .selected(index: _, favorite: favorite): return favorite
+    case .beginEdit: return nil
     case let .changed(index: _, favorite: favorite): return favorite
     case let .removed(index: _, favorite: favorite): return favorite
-    default: return nil
+    case .removedAll: return nil
+    case .restored: return nil
+    }
+  }
+
+  public var description: String {
+    switch self {
+    case .added: return "<FavoritesEvent: added>"
+    case .selected: return "<FavoritesEvent: selected>"
+    case .beginEdit: return "<FavoritesEvent: beginEdit>"
+    case .changed: return "<FavoritesEvent: changed>"
+    case .removed: return "<FavoritesEvent: removed>"
+    case .removedAll: return "<FavoritesEvent: removedAll>"
+    case .restored: return "<FavoritesEvent: restored>"
     }
   }
 }

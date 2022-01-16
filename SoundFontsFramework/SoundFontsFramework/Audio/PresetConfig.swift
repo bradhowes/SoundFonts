@@ -51,3 +51,7 @@ public struct PresetConfig: Codable {
   /// True if the preset is visible in the display
   public var isVisible: Bool { (isHidden ?? false) == false }
 }
+
+extension PresetConfig: CustomStringConvertible {
+  public var description: String { "<PresetConfig: \(name)>" }
+}

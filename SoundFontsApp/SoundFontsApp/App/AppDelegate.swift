@@ -65,7 +65,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
-    components.consolidatedConfigFile.save()
+    // components.consolidatedConfigFile.save()
     NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
 

@@ -159,7 +159,9 @@ extension PresetsTableViewManager {
   }
 
   func showActiveSlot() {
+    os_log(.debug, log: log, "showActiveSlot - BEGIN")
     if let slotIndex = activeSlotIndex {
+      os_log(.debug, log: log, "showActiveSlot - BEGIN")
       viewController.slotToScrollTo = indexPath(from: slotIndex)
     }
   }
@@ -192,6 +194,10 @@ extension PresetsTableViewManager {
 
   func regenerateViewSlots() {
     os_log(.info, log: log, "regenerateViewSlots BEGIN")
+    guard soundFonts.restored && favorites.restored else {
+      os_log(.info, log: log, "regenerateViewSlots END - not restored")
+      return
+    }
 
     let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
@@ -311,7 +317,10 @@ extension PresetsTableViewManager {
 
   private func handleActivePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
     os_log(.debug, log: log, "activePresetChange BEGIN")
-    guard let slotIndex = getSlotIndex(for: new) else { return }
+    guard let slotIndex = getSlotIndex(for: new) else {
+      os_log(.debug, log: log, "activePresetChange END - not showing font for new preset")
+      return
+    }
     viewController.slotToScrollTo = indexPath(from: slotIndex)
     viewController.tableView.performBatchUpdates(
       {
@@ -319,20 +328,26 @@ extension PresetsTableViewManager {
         updateRow(with: new)
       },
       completion: { _ in })
+    os_log(.debug, log: log, "activePresetChange END")
   }
 
   private func handleSelectedSoundFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
+    os_log(.debug, log: log, "handleSelectedSoundFontChanged BEGIN")
+
     let viewController = self.viewController
     if viewController.isEditing {
+      os_log(.debug, log: log, "handleSelectedSoundFontChanged - stop editing")
       viewController.afterReloadDataAction = {
         viewController.endVisibilityEditing()
       }
     }
     else if activePresetManager.activeSoundFontKey == new {
+      os_log(.debug, log: log, "handleSelectedSoundFontChanged - showing active slot")
       viewController.afterReloadDataAction = { self.showActiveSlot() }
     }
 
     regenerateViewSlots()
+    os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
   }
 
   private func favoritesRestored() {
@@ -364,11 +379,18 @@ extension PresetsTableViewManager {
   }
 
   private var activeSlotIndex: PresetViewSlotIndex? {
+    os_log(.debug, log: log, "activeSlotIndex BEGIN")
     guard let activeSlot: PresetViewSlot = {
       switch activePresetManager.active {
-      case let .preset(soundFontAndPreset): return .preset(index: soundFontAndPreset.presetIndex)
-      case let .favorite(key, _): return .favorite(key: key)
-      case .none: return nil
+      case let .preset(soundFontAndPreset):
+        os_log(.debug, log: log, "activeSlotIndex END - have preset")
+        return .preset(index: soundFontAndPreset.presetIndex)
+      case let .favorite(key, _):
+        os_log(.debug, log: log, "activeSlotIndex END - have favorite")
+        return .favorite(key: key)
+      case .none:
+        os_log(.debug, log: log, "activeSlotIndex END - has none")
+        return nil
       }
     }()
     else {
@@ -376,9 +398,11 @@ extension PresetsTableViewManager {
     }
 
     guard let slotIndex = (viewSlots.firstIndex { $0 == activeSlot }) else {
+      os_log(.debug, log: log, "activeSlotIndex END - slot not found in viewSlots")
       return nil
     }
 
+    os_log(.debug, log: log, "activeSlotIndex END - slotIndex: %d", slotIndex)
     return .init(rawValue: slotIndex)
   }
 

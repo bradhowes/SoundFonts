@@ -1,7 +1,7 @@
 // Copyright © 2018 Brad Howes. All rights reserved.
 
 import UIKit
-import os
+import os.log
 
 /**
  Manages the collection of Favorite instances created by the user. Changes to the collection are saved, and they

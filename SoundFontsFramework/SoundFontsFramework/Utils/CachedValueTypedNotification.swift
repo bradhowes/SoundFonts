@@ -4,7 +4,7 @@ import Foundation
 
 /// Derivation of TypedNotification that remembers the last `post` value and will use that for any `register` calls
 /// that happen *after* the `post` call.
-open class CachedValueTypedNotification<A>: TypedNotification<A> {
+open class CachedValueTypedNotification<A: CustomStringConvertible>: TypedNotification<A> {
 
   /// The last value given in a `post` call.
   public private(set) var cachedValue: A?

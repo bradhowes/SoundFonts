@@ -1,6 +1,7 @@
 // Copyright © 2019 Brad Howes. All rights reserved.
 
 import Foundation
+import os.log
 
 public class SubscriptionQueue: NSObject {
   public static let notificationQueueQoS = DispatchQoS.userInitiated
@@ -12,7 +13,8 @@ public class SubscriptionQueue: NSObject {
  event happens, call the `notify` method to send the event to all subscribers. Notifications happen asynchronously
  on the `main` thread.
  */
-public class SubscriptionManager<Event>: SubscriptionQueue {
+public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQueue {
+  private let log = Logging.logger("SubscriptionManager")
 
   /// The type of function / closure that is used to subscribe to a subscription manager
   public typealias NotifierProc = (Event) -> Void
@@ -82,10 +84,13 @@ public class SubscriptionManager<Event>: SubscriptionQueue {
    - parameter event: the event that just took place
    */
   public func notify(_ event: Event) {
+    os_log(.info, log: log, "notify BEGIN - %{public}s", event.description)
     if cacheEvent { lastEvent = event }
-    subscriptionsQueue.sync { subscriptions.values.forEach { closure in
-      Self.notificationQueue.async { closure(event) }
+    subscriptionsQueue.sync {
+      subscriptions.values.forEach { closure in
+        Self.notificationQueue.async { closure(event) }
     }}
+    os_log(.info, log: log, "notify END")
   }
 
   public func runOnNotifyQueue(_ closure: @escaping () -> Void) {

@@ -93,7 +93,6 @@ extension PresetsTableViewController {
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     os_log(.debug, log: log, "viewWillTransition BEGIN")
     super.viewWillTransition(to: size, with: coordinator)
-
     if isSearching {
       endSearch()
       coordinator.animate { _ in } completion: { _ in self.beginSearch() }

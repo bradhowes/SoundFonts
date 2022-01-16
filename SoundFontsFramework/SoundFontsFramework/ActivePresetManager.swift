@@ -27,14 +27,22 @@ public enum ActivePresetEvent: CustomStringConvertible {
  event to its subscribers.s
  */
 public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, Tasking {
+
+  enum State: Equatable {
+    case starting
+    case pending(ActivePresetKind)
+    case normal
+  }
+
   private lazy var log = Logging.logger("ActivePresetManager")
   private let soundFonts: SoundFonts
   private let favorites: Favorites
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
+  private var state: State = .starting
 
   /// The currently active preset (if any)
-  public private(set) var active: ActivePresetKind
+  public private(set) var active: ActivePresetKind = .none
 
   public var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
 
@@ -74,7 +82,6 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
    */
   public init(soundFonts: SoundFonts, favorites: Favorites, selectedSoundFontManager: SelectedSoundFontManager,
               settings: Settings) {
-    self.active = .none
     self.soundFonts = soundFonts
     self.favorites = favorites
     self.selectedSoundFontManager = selectedSoundFontManager
@@ -137,7 +144,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
     os_log(.debug, log: log, "setActive BEGIN - %{public}s", kind.description)
 
-    guard soundFonts.restored && favorites.restored else {
+    guard state == .normal else {
       os_log(.debug, log: log, "setActive END - not restored")
       return
     }
@@ -151,6 +158,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
     active = kind
     save(kind)
     notify(.change(old: old, new: kind, playSample: playSample))
+    os_log(.debug, log: log, "setActive END")
   }
 
   /**
@@ -160,21 +168,43 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
    */
   public func restoreActive(_ kind: ActivePresetKind) {
     os_log(.debug, log: log, "restoreActive BEGIN - %{public}s", kind.description)
-    setActive(rebuild(kind))
+    switch state {
+    case .starting: state = .pending(kind)
+    case .pending: state = .pending(kind)
+    case .normal: setActive(kind)
+    }
+    os_log(.debug, log: log, "restoreActive END")
   }
 
-  private func notifyPending() {
-    os_log(.info, log: log, "notifyPending BEGIN")
+  private func updateState() {
+    os_log(.info, log: log, "updateState BEGIN")
+
     guard soundFonts.restored && favorites.restored else {
-      os_log(.info, log: log, "notifyPending END - not restored")
+      os_log(.info, log: log, "updateState END - not restored")
       return
     }
 
-    if active == .none, let defaultPreset = soundFonts.defaultPreset {
-      active = .preset(soundFontAndPreset: defaultPreset)
+    switch state {
+    case .starting:
+      os_log(.info, log: log, "updateState - starting -> normal")
+      state = .normal
+      if let defaultPreset = soundFonts.defaultPreset {
+        os_log(.info, log: log, "updateState - using defaultPreset")
+        setActive(.preset(soundFontAndPreset: defaultPreset))
+      }
+
+    case .pending(let pending):
+      os_log(.info, log: log, "updateState - pending -> normal")
+      state = .normal
+      setActive(rebuild(pending))
+
+    case .normal:
+      // This can happen when the config file is reloaded
+      os_log(.info, log: log, "updateState - normal -> normal")
     }
 
-    notify(.change(old: .none, new: active, playSample: false))
+    precondition(state == .normal)
+    os_log(.info, log: log, "updateState END")
   }
 
   private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
@@ -200,13 +230,13 @@ extension ActivePresetManager {
 
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
     if case .restored = event {
-      Self.onMain { self.notifyPending() }
+      Self.onMain { self.updateState() }
     }
   }
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     if case .restored = event {
-      Self.onMain { self.notifyPending() }
+      Self.onMain { self.updateState() }
     }
   }
 
