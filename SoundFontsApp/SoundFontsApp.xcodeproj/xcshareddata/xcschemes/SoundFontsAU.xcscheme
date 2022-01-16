@@ -63,6 +63,11 @@
       launchAutomaticallySubstyle = "2"
       viewDebuggingEnabled = "No"
       GPUProfilerEnabled = "No">
+      <RemoteRunnable
+         runnableDebuggingMode = "0"
+         BundleIdentifier = "com.kymatica.AUM"
+         RemotePath = "/var/containers/Bundle/Application/83A13B3D-A698-41A7-A187-756D9B9AB460/AUM.app">
+      </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"

@@ -179,7 +179,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   private func updateState() {
     os_log(.info, log: log, "updateState BEGIN")
 
-    guard soundFonts.restored && favorites.restored else {
+    guard soundFonts.isRestored && favorites.isRestored else {
       os_log(.info, log: log, "updateState END - not restored")
       return
     }
@@ -246,7 +246,7 @@ extension ActivePresetManager {
   }
 
   private func isValid(_ active: ActivePresetKind) -> Bool {
-    precondition(soundFonts.restored)
+    precondition(soundFonts.isRestored)
     guard let soundFontAndPreset = active.soundFontAndPreset else { return false }
     return soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil
   }

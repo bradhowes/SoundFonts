@@ -80,7 +80,7 @@ where T: ControllerConfiguration {
     self.inApp = inApp
     self.settings = Settings()
 
-    self.consolidatedConfigFile = ConsolidatedConfigFile()
+    self.consolidatedConfigFile = ConsolidatedConfigFile(inApp: inApp)
 
     self.askForReview = inApp ? AskForReview(settings: settings) : nil
 

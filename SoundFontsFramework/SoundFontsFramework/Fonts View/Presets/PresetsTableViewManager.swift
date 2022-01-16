@@ -194,7 +194,7 @@ extension PresetsTableViewManager {
 
   func regenerateViewSlots() {
     os_log(.info, log: log, "regenerateViewSlots BEGIN")
-    guard soundFonts.restored && favorites.restored else {
+    guard soundFonts.isRestored && favorites.isRestored else {
       os_log(.info, log: log, "regenerateViewSlots END - not restored")
       return
     }

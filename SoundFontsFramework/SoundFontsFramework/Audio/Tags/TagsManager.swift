@@ -8,12 +8,8 @@ import os
 final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log = Logging.logger("TagsManager")
 
-  private var observer: ConfigFileObserver!
-
-  private var collection: TagCollection {
-    precondition(observer.restored)
-    return observer.tags
-  }
+  private var observer: ConsolidatedConfigFileObserver!
+  private var collection: TagCollection { observer.tags }
 
   /**
    Construct new manager
@@ -22,14 +18,14 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
    */
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
 extension TagsManager: Tags {
 
   /// Indicator that the collection of tags has been restored
-  var restored: Bool { observer.restored }
+  var isRestored: Bool { observer.isRestored }
 
   /// True if the collection is empty
   var isEmpty: Bool { collection.isEmpty }
@@ -107,7 +103,7 @@ extension TagsManager {
 
   private func markCollectionChanged() {
     os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
-    observer.markChanged()
+    observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

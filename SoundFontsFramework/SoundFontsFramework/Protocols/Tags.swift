@@ -31,7 +31,7 @@ public enum TagsEvent: CustomStringConvertible {
 public protocol Tags: AnyObject {
 
   /// True if the tags collection has been restored
-  var restored: Bool { get }
+  var isRestored: Bool { get }
   /// True if there are no tags in the collection
   var isEmpty: Bool { get }
   /// The number of tags in the collection

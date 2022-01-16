@@ -3,172 +3,211 @@
 import UIKit
 import os.log
 
-/// Extension of UIDocument that contains a ConsolidatedConfig value
-public final class ConsolidatedConfigFile: UIDocument, Tasking {
+/**
+ Provider of a ConsolidatedConfig value. This normally comes from a configuration file. Access to the current value is
+ to be done through a ConsolidatedConfigFileObserver which will run a closure when the configuration value changes.
+ */
+public final class ConsolidatedConfigFile: NSObject {
   private static let log = Logging.logger("ConsolidatedConfigFile")
   private var log: OSLog { Self.log }
 
-  /// The file name for the consolidated document
-  public static let filename = "Consolidated.plist"
-  public static var sharedConfigPath: URL { FileManager.default.sharedPath(for: filename) }
+  private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInitiated))
 
-  /// The value held in the document.
-  public var config: ConsolidatedConfig = ConsolidatedConfig()
+  /// The current contents that was loaded from a consolidated document file.
+  private var _config: ConsolidatedConfig?
 
-  @objc dynamic public private(set) var restored: Bool = false
+  private var document: ConfigFileDocument?
+  private var documentObserver: NSKeyValueObservation?
+  private var stateObserver: NSKeyValueObservation?
 
-  private var monitor: ConsolidatedConfigFileMonitor?
+  /// Pseudo-unique ID to use for logging. Helps when looking at logs with multiple AUv3 instances. Should *only* be
+  /// used for logging.
+  private let identity: Int = UUID().hashValue
+  private var wasDisabled = false
+  private var transferring = false
+
+  /// The value that comes from the document. Access to it is serialized via the `accessQueue` so it should be safe to
+  /// access it from any thread.
+  @objc dynamic public var config: ConsolidatedConfig? {
+    get { accessQueue.sync { self._config } }
+    set { accessQueue.sync { self._config = newValue } }
+  }
 
   /**
-   Create new document that is stored at a particular location
+   Obtain the configuration contents from a configuration file.
 
    - parameter fileURL: the location for the document
    */
-  public init() {
-    os_log(.info, log: Self.log, "init")
-    super.init(fileURL: Self.sharedConfigPath)
-    self.monitor = ConsolidatedConfigFileMonitor(configFile: self)
-    Self.onMain { self.restore() }
+  public init(inApp: Bool) {
+    os_log(.info, log: Self.log, "init BEGIN")
+    super.init()
+
+    if inApp {
+      NotificationCenter.default.addObserver(self, selector: #selector(willResignActiveNotification(_:)),
+                                             name: UIApplication.willResignActiveNotification,
+                                             object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification(_:)),
+                                             name: UIApplication.willEnterForegroundNotification,
+                                             object: nil)
+    } else {
+      NotificationCenter.default.addObserver(self, selector: #selector(willResignActiveNotification(_:)),
+                                             name: NSNotification.Name.NSExtensionHostWillResignActive,
+                                             object: nil)
+      NotificationCenter.default.addObserver(self, selector: #selector(willEnterForegroundNotification(_:)),
+                                             name: NSNotification.Name.NSExtensionHostWillEnterForeground,
+                                             object: nil)
+    }
+
+    openDocument()
+
+    os_log(.info, log: Self.log, "init END")
   }
 
-  public func save() {
-    save(to: fileURL, for: .forOverwriting) { ok in
-      if !ok {
-        os_log(.error, log: Self.log, "save - failed to write updates")
+  /**
+   Flag the configuration as having been changed so that the system will save it to disk.
+   */
+  public func markAsChanged() {
+    document?.updateChangeCount(.done)
+  }
+
+  /**
+   Create a new UIDocument object to get the latest configuration file contents.
+   */
+  private func openDocument() {
+    os_log(.info, log: log, "%d openDocument BEGIN", identity)
+
+    let document = ConfigFileDocument(identity: identity, contents: config)
+    self.document = document
+
+    NotificationCenter.default.addObserver(self, selector: #selector(processStateChange(_:)),
+                                           name: UIDocument.stateChangedNotification, object: document)
+    documentObserver = document.observe(\.contents, options: []) { _, _ in
+      if let newValue = document.contents {
+        self.config = newValue
       }
     }
-  }
 
-  /**
-   Restore from the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left
-   with the default collections.
-   */
-  public func restore() {
-    os_log(.info, log: log, "restore - %{public}s", fileURL.path)
-    self.open { ok in
+    document.open { ok in
       if !ok {
-        os_log(.error, log: Self.log, "restore - failed to open - attempting legacy loading")
-
-        // We are back on the main thread so do the loading in the background.
-        Self.onBackground {
-          self.attemptLegacyLoad()
-        }
+        os_log(.error, log: Self.log, "openDocument - failed to open - attempting legacy loading")
+        document.attemptLegacyLoad()
       }
     }
-  }
-
-  /**
-   Encode the configuration that will be written to the configuration file. The actual result type is `Data`.
-
-   - parameter typeName: the name of the type to generate (ignored)
-   - returns: result of the encoding to write out
-   - throws exception if the encoding fails for any reason
-   */
-  override public func contents(forType typeName: String) throws -> Any {
-    os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
-    let contents = try PropertyListEncoder().encode(config)
-    os_log(.info, log: log, "contents - pending save of %d bytes", contents.count)
-    return contents
-  }
-
-  /**
-   Decode the raw data that was read from the configuration file.
-
-   - parameter contents: the encoded contents to work with. Should be `Data` type.
-   - parameter typeName: the name of the type that it represents
-   - throws exception if the decoding fails for any reason
-   */
-  override public func load(fromContents contents: Any, ofType typeName: String?) throws {
-    os_log(.info, log: log, "load - typeName: %{public}s", typeName ?? "nil")
-
-    guard let data = contents as? Data else {
-      os_log(.error, log: log, "load - given contents was not Data")
-      createConfig()
-      NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
-      return
-    }
-
-    guard let config = try? PropertyListDecoder().decode(ConsolidatedConfig.self, from: data) else {
-      os_log(.error, log: log, "load - failed to decode Data contents")
-      createConfig()
-      NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
-      return
-    }
-
-    os_log(.info, log: log, "decoded contents: %{public}s", config.description)
-    restoreConfig(config, save: false)
-  }
-
-  override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
-    os_log(.info, log: log, "revert BEGIN: %{public}s", url.path)
-
-    // When `revert` is called it is because a newer version of the file has been seen on the system, presumably due to
-    // another process updating it. We just close the current connection and let the system do its thing. NOTE: there is
-    // a risk of lost data if there are unsaved changes. For now, we are ignoring that situation.
-    //
-    switch documentState {
-    case .closed: os_log(.info, log: Self.log, "revert - file is closed")
-    case .editingDisabled: os_log(.info, log: Self.log, "revert - file is disabled for editing")
-    case .normal: os_log(.info, log: Self.log, "revert - file is normal")
-    case .inConflict: os_log(.info, log: Self.log, "revert - file is in conflict")
-    case .progressAvailable: os_log(.info, log: Self.log, "revert - file is in progress")
-    default: break
-    }
-
-    let wrappedHandler: (Bool) -> Void = { ok in
-      os_log(.info, log: self.log, "revert - completion OK %d", ok)
-      completionHandler?(ok)
-    }
-
-    super.revert(toContentsOf: url, completionHandler: wrappedHandler)
-
-    os_log(.info, log: log, "revert END")
-  }
-
-  public func reopen() {
-    os_log(.info, log: log, "reopen BEGIN")
-    close { ok in
-      os_log(.info, log: self.log, "reopen - closed: ok %d", ok)
-      os_log(.info, log: self.log, "reopen - invoking restore()")
-      self.restore()
-    }
-    os_log(.info, log: self.log, "reopen END")
+    os_log(.info, log: log, "%d openDocument END", identity)
   }
 }
 
-extension ConsolidatedConfigFile {
+// MARK: - State tracking
 
-  private func attemptLegacyLoad() {
-    os_log(.info, log: log, "attemptLegacyLoad")
-    guard
-      let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(filename: "SoundFontLibrary.plist"),
-      let favorites = LegacyConfigFileLoader<FavoriteCollection>.load(filename: "Favorites.plist"),
-      let tags = LegacyConfigFileLoader<TagCollection>.load(filename: "Tags.plist")
-    else {
-      os_log(.info, log: log, "failed to load one or more legacy files")
-      createConfig()
-      return
+private extension ConsolidatedConfigFile {
+
+  /**
+   Notification that the current document changed state.
+
+   - parameter state: notification
+   */
+  @objc func processStateChange(_ notification: Notification) {
+    guard let document = self.document else { return }
+    let state = document.documentState
+    os_log(.info, log: log, "processStateChange: %d", state.rawValue)
+
+    if state == .normal { os_log(.info, log: log, "processStateChange - entered normal state") }
+    if state.contains(.closed) { os_log(.info, log: log, "processStateChange - closed") }
+
+    // We look for disable/enable cycles and recreate a new document to absorb new content. This is not really the right
+    // thing to do as there is risk of data loss, but the rationale is this: there is only one active document and thus
+    // only one active editor for a document. Plus this gets around some serious limitations encountered when trying to
+    // keep AUv3 components up-to-date with changes.
+    if state.contains(.editingDisabled) {
+      os_log(.info, log: log, "processStateChange - editing disabled")
+      wasDisabled = true
+    } else if wasDisabled {
+      os_log(.info, log: log, "processStateChange - editing enabled")
+      wasDisabled = false
+      openDocument()
     }
 
-    os_log(.info, log: log, "using legacy contents")
-    restoreConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
+    if state.contains(.inConflict) {
+      os_log(.info, log: log, "processStateChange - conflict was detected")
+      resolveDocumentConflict(document: document)
+    }
+
+    if state.contains(.savingError) {
+      os_log(.info, log: log, "processStateChange - failed to save document")
+      openDocument()
+    }
+
+    handleDocStateForTransfers(state: state)
   }
 
-  private func createConfig() {
-    os_log(.info, log: log, "initializeCollections")
-    self.restoreConfig(ConsolidatedConfig(), save: true)
+  func handleDocStateForTransfers(state: UIDocument.State) {
+    if transferring {
+      if state.contains(.progressAvailable) {
+        os_log(.info, log: log, "handleDocStateForTransfers - transfer is done")
+        transferring = false
+      }
+    } else if state.contains(.progressAvailable) {
+      os_log(.info, log: log, "handleDocStateForTransfers - transfer is in progress")
+      transferring = true
+    }
   }
 
-  private func restoreConfig(_ config: ConsolidatedConfig, save: Bool) {
-    os_log(.info, log: log, "restoreConfig")
-    self.config = config
-    self.restored = true
-    if save {
-      self.save(to: fileURL, for: .forOverwriting) { ok in
-        if !ok {
-          os_log(.fault, log: Self.log, "restoreConfig - failed to save configuration file")
+  func resolveDocumentConflict(document: UIDocument) {
+    do {
+      try NSFileVersion.removeOtherVersionsOfItem(at: document.fileURL)
+      if let conflictingVersions = NSFileVersion.unresolvedConflictVersionsOfItem(at: document.fileURL) {
+        for version in conflictingVersions {
+          version.isResolved = true
         }
       }
+    } catch let error {
+      os_log(.error, log: log, "resolveDocumentConflict *** Error: %@ ***", error.localizedDescription)
     }
+  }
+}
+
+// MARK: - App-state change handlers
+
+private extension ConsolidatedConfigFile {
+
+  /**
+   Notification that the application/host is no longer the active app. We save any changes and we release the document
+   that was used to load the content.
+
+   - parameter notification: the notification that fired
+   */
+  @objc func willResignActiveNotification(_ notification: Notification) {
+    os_log(.info, log: log, "%d willResignActiveNotification BEGIN", identity)
+    guard let document = self.document else { return }
+
+    self.documentObserver = nil
+    self.document = nil
+
+    if document.hasUnsavedChanges {
+      document.save(to: document.fileURL, for: .forOverwriting) { ok in
+        os_log(.info, log: self.log, "%d willResignActiveNotification - save ok %d", self.identity, ok)
+        document.close { ok in
+          os_log(.info, log: self.log, "%d willResignActiveNotification - close ok %d", self.identity, ok)
+        }
+      }
+    } else {
+      document.close { ok in
+        os_log(.info, log: self.log, "%d willResignActiveNotification - close ok %d", self.identity, ok)
+      }
+    }
+    os_log(.info, log: log, "%d willResignActiveNotification END", identity)
+  }
+
+  /**
+   Notification that the application/host is entering the foreground state. We create a new document to load any changes
+   that may have taken place in the config file since we resigned active state.
+
+   - parameter notification: the notification that fired
+   */
+  @objc func willEnterForegroundNotification(_ notification: Notification) {
+    os_log(.info, log: log, "%d willEnterForegroundNotification BEGIN", identity)
+    self.openDocument()
+    os_log(.info, log: log, "%d willEnterForegroundNotification END", identity)
   }
 }

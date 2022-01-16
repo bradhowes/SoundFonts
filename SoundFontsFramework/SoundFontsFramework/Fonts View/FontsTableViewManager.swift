@@ -174,7 +174,7 @@ extension FontsTableViewManager {
 
   private func updateTableView() {
     os_log(.debug, log: log, "updateTableView BEGIN")
-    guard tags.restored && soundFonts.restored else {
+    guard tags.isRestored && soundFonts.isRestored else {
       os_log(.debug, log: log, "updateTableView END - not restored yet")
       return
     }

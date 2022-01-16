@@ -65,7 +65,7 @@ extension ActiveTagManager: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    tags.restored ? tags.count : 0
+    tags.isRestored ? tags.count : 0
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,7 +119,7 @@ extension ActiveTagManager {
 //  }
 
   private func refresh() {
-    guard tags.restored else { return }
+    guard tags.isRestored else { return }
     let tagKey = settings.activeTagKey
     activeIndex = tags.index(of: tagKey) ?? 0
     tableView.reloadData()

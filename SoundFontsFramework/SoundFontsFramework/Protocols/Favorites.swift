@@ -49,7 +49,7 @@ public enum FavoritesEvent: CustomStringConvertible {
 public protocol Favorites {
 
   /// True if the collection of favorites has been restored from disk
-  var restored: Bool { get }
+  var isRestored: Bool { get }
 
   /// Get number of favorites
   var count: Int { get }

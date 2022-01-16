@@ -7,29 +7,29 @@ import Foundation
  to true, calls the closure which was given during construction. This facility is use by the various data owners to
  determine when there is data available for them to use.
  */
-public final class ConfigFileObserver: Tasking {
+public final class ConsolidatedConfigFileObserver: Tasking {
   private let configFile: ConsolidatedConfigFile
-
-  /// Flag indicating that the configuration file has been read in and the runtime elements reconstituted from it
-  public private(set) var restored = false
 
   /// Convenience accessor for the collection of installed sound fonts
   public var soundFonts: SoundFontCollection {
-    precondition(restored && !configFile.config.soundFonts.isEmpty)
-    return configFile.config.soundFonts
+    guard let config = configFile.config else { fatalError("attempt to access nil config") }
+    guard !config.soundFonts.isEmpty else { fatalError("encountered empty soundFonts collection")}
+    return config.soundFonts
   }
 
   /// Convenience accessor for the collection of user favorites
   public var favorites: FavoriteCollection {
-    precondition(restored)
-    return configFile.config.favorites
+    guard let config = configFile.config else { fatalError("attempt to access nil config") }
+    return config.favorites
   }
 
   /// Convenience accessor for the collection of user tags for font filtering
   public var tags: TagCollection {
-    precondition(restored)
-    return configFile.config.tags
+    guard let config = configFile.config else { fatalError("attempt to access nil config") }
+    return config.tags
   }
+
+  public var isRestored: Bool { configFile.config != nil }
 
   private var configFileObserver: NSKeyValueObservation?
 
@@ -41,27 +41,14 @@ public final class ConfigFileObserver: Tasking {
    */
   public init(configFile: ConsolidatedConfigFile, restored closure: @escaping () -> Void) {
     self.configFile = configFile
-    self.configFileObserver = configFile.observe(\.restored) { [weak self] _, _ in
-      self?.checkRestored(closure)
-    }
-
-    checkRestored(closure)
+    self.configFileObserver = configFile.observe(\.config) { _, _ in Self.onMain { closure() } }
   }
 
   /**
    Flag the configuration file as having a change that needs to be saved.
    */
-  public func markChanged() {
+  public func markAsChanged() {
     AskForReview.maybe()
-    configFile.updateChangeCount(.done)
-  }
-}
-
-private extension ConfigFileObserver {
-
-  func checkRestored(_ closure: @escaping () -> Void) {
-    guard configFile.restored == true else { return }
-    restored = true
-    Self.onMain { closure() }
+    configFile.markAsChanged()
   }
 }

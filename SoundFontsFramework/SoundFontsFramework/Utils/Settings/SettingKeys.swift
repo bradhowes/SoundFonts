@@ -126,4 +126,6 @@ public extension SettingKeys {
   static let chorusNegFeedback = SettingKey("chorusNegFeedback", false)
   /// If true, the odd (R) channel is out of phase with even (L).
   static let chorusOdd90 = SettingKey("chorusOdd90", false)
+
+  static let settingsVersion = SettingKey("settingsVersion", 0)
 }

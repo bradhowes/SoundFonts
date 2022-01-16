@@ -10,12 +10,9 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private static let log = Logging.logger("SoundFontsManager")
   private var log: OSLog { Self.log }
   private let settings: Settings
-  private var observer: ConfigFileObserver!
 
-  public var collection: SoundFontCollection {
-    precondition(observer.restored)
-    return observer.soundFonts
-  }
+  private var observer: ConsolidatedConfigFileObserver!
+  public var collection: SoundFontCollection { observer.soundFonts }
 
   /**
    Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
@@ -24,7 +21,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   public init(_ consolidatedConfigFile: ConsolidatedConfigFile, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
@@ -73,7 +70,7 @@ extension FileManager {
 
 extension SoundFontsManager: SoundFonts {
 
-  public var restored: Bool { observer.restored }
+  public var isRestored: Bool { observer.isRestored }
 
   public var count: Int { return collection.count }
 
@@ -390,7 +387,7 @@ extension SoundFontsManager {
    */
   private func markCollectionChanged() {
     os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
-    observer.markChanged()
+    observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

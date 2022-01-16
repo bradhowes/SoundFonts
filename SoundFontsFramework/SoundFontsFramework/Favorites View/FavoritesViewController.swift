@@ -57,7 +57,7 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     favoritesView.accessibilityHint = "View holding favorites"
     favoritesView.accessibilityLabel = "FavoritesView"
 
-    restored()
+    checkIfRestored()
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -84,12 +84,12 @@ extension FavoritesViewController: ControllerConfiguration {
     soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
     tagsSubscription = tags.subscribe(self, notifier: tagsChanged_BT)
 
-    restored()
+    checkIfRestored()
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
-    guard favorites.restored && soundFonts.restored else { return }
+    guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
     case let .change(old: old, new: new, playSample: _):
       if case let .favorite(oldFaveKey, _) = old {
@@ -121,7 +121,7 @@ extension FavoritesViewController: ControllerConfiguration {
     case .removedAll:
       Self.onMain { self.favoritesView.reloadData() }
     case .restored:
-      Self.onMain { self.restored() }
+      Self.onMain { self.checkIfRestored() }
     }
   }
 
@@ -146,25 +146,25 @@ extension FavoritesViewController: ControllerConfiguration {
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     switch event {
-    case .restored: Self.onMain { self.restored() }
+    case .restored: Self.onMain { self.checkIfRestored() }
     default: break
     }
   }
 
   private func tagsChanged_BT(_ event: TagsEvent) {
     switch event {
-    case .restored: Self.onMain { self.restored() }
+    case .restored: Self.onMain { self.checkIfRestored() }
     default: break
     }
   }
 
-  private func restored() {
+  private func checkIfRestored() {
     guard soundFonts != nil,
-          soundFonts.restored,
+          soundFonts.isRestored,
           favorites != nil,
-          favorites.restored,
+          favorites.isRestored,
           tags != nil,
-          tags.restored
+          tags.isRestored
     else {
       return
     }

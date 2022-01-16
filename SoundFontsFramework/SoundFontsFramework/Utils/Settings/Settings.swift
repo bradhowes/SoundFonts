@@ -360,4 +360,9 @@ public extension Settings {
     get { self[.showedHidePresetPrompt] }
     set { self[.showedHidePresetPrompt] = newValue }
   }
+
+  @objc dynamic  var settingsVersion: Int {
+    get { self[.settingsVersion] }
+    set { self[.settingsVersion] = newValue }
+  }
 }

@@ -39,7 +39,7 @@ public enum SoundFontsEvent: CustomStringConvertible {
 public protocol SoundFonts: AnyObject {
 
   /// True if the collection of sound fonts has been restored
-  var restored: Bool { get }
+  var isRestored: Bool { get }
   /// Collection of all of the sound fount names
   var soundFontNames: [String] { get }
   /// The default preset to use if there is not one

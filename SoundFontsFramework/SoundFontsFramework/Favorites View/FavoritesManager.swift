@@ -10,18 +10,12 @@ import os.log
 final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log = Logging.logger("FavoritesManager")
 
-  private var observer: ConfigFileObserver!
-
-  var collection: FavoriteCollection {
-    precondition(observer.restored)
-    return observer.favorites
-  }
-
-  private var configFileObserver: NSKeyValueObservation?
+  private var observer: ConsolidatedConfigFileObserver!
+  private var collection: FavoriteCollection { observer.favorites }
 
   init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
     super.init()
-    observer = ConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
   }
 }
 
@@ -29,7 +23,7 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
 
 extension FavoritesManager: Favorites {
 
-  var restored: Bool { observer.restored }
+  var isRestored: Bool { observer.isRestored }
 
   var count: Int { collection.count }
 
@@ -128,7 +122,7 @@ extension FavoritesManager {
 
   private func markCollectionChanged() {
     os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
-    observer.markChanged()
+    observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {

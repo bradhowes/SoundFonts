@@ -11,7 +11,7 @@ import os.log
  even if there are two or more parties doing it. For our case, we just let the last one win without notifying the user
  that there was even a conflict.
  */
-public struct ConsolidatedConfig: Codable {
+public class ConsolidatedConfig: NSObject, Codable {
   private static let log = Logging.logger("ConsolidatedConfig")
   private var log: OSLog { Self.log }
 
@@ -21,22 +21,27 @@ public struct ConsolidatedConfig: Codable {
   public var favorites: FavoriteCollection
   /// The collection of tags that categorize the soundfonts
   public var tags: TagCollection
-}
 
-extension ConsolidatedConfig {
+  public init(soundFonts: SoundFontCollection, favorites: FavoriteCollection, tags: TagCollection) {
+    self.soundFonts = soundFonts
+    self.favorites = favorites
+    self.tags = tags
+    super.init()
+  }
 
   /// Construct a new default collection, such as when the app is first installed or there is a problem loading a
   /// previously-saved file.
-  public init() {
+  override public init() {
     os_log(.info, log: Self.log, "creating default collection")
     soundFonts = SoundFontsManager.defaultCollection
     favorites = FavoritesManager.defaultCollection
     tags = TagsManager.defaultCollection
+    super.init()
   }
 }
 
-extension ConsolidatedConfig: CustomStringConvertible {
+extension ConsolidatedConfig {
 
   /// Custom description for the instance
-  public var description: String { "<Config \(soundFonts), \(favorites), \(tags)>" }
+  override public var description: String { "<Config \(soundFonts), \(favorites), \(tags)>" }
 }
