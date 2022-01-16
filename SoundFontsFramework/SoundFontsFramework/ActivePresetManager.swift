@@ -32,10 +32,11 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   private let favorites: Favorites
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
-  private var pending: ActivePresetKind = .none
 
   /// The currently active preset (if any)
   public private(set) var active: ActivePresetKind
+
+  public var activeSoundFontKey: SoundFont.Key? { active.soundFontAndPreset?.soundFontKey }
 
   /// The currently active sound font (if any)
   public var activeSoundFont: SoundFont? {
@@ -54,7 +55,10 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   }
 
   /// The currently active preset instance (if any)
-  public var activeFavorite: Favorite? { active.favorite }
+  public var activeFavorite: Favorite? {
+    guard let key = active.favoriteKey else { return nil }
+    return favorites.getBy(key: key)
+  }
 
   /// The preset configuration for the currently active preset or favorite
   public var activePresetConfig: PresetConfig? {
@@ -120,7 +124,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
    - parameter playSample: if true, play a note using the new preset
    */
   public func setActive(favorite: Favorite, playSample: Bool) {
-    setActive(.favorite(favorite: favorite), playSample: playSample)
+    setActive(.favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset),
+              playSample: playSample)
   }
 
   /**
@@ -132,7 +137,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   public func setActive(_ kind: ActivePresetKind, playSample: Bool = false) {
     os_log(.debug, log: log, "setActive BEGIN - %{public}s", kind.description)
 
-    guard soundFonts.restored && favorites.restored && pending == .none else {
+    guard soundFonts.restored && favorites.restored else {
       os_log(.debug, log: log, "setActive END - not restored")
       return
     }
@@ -155,27 +160,32 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
    */
   public func restoreActive(_ kind: ActivePresetKind) {
     os_log(.debug, log: log, "restoreActive BEGIN - %{public}s", kind.description)
-    pending = kind
-    notifyPending()
+    setActive(rebuild(kind))
   }
 
   private func notifyPending() {
-    os_log(.info, log: log, "notifyFirstActive BEGIN")
-    guard soundFonts.restored && favorites.restored && pending != .none else {
+    os_log(.info, log: log, "notifyPending BEGIN")
+    guard soundFonts.restored && favorites.restored else {
+      os_log(.info, log: log, "notifyPending END - not restored")
       return
     }
-    let kind = pending
-    pending = .none
-    setActive(rebuild(kind), playSample: false)
-    pending = .none
+
+    if active == .none, let defaultPreset = soundFonts.defaultPreset {
+      active = .preset(soundFontAndPreset: defaultPreset)
+    }
+
+    notify(.change(old: .none, new: active, playSample: false))
   }
 
   private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
     switch kind {
     case .preset: return kind
-    case .favorite(let favorite):
-      if favorites.contains(key: favorite.key) {
-        return .favorite(favorite: favorites.getBy(key: favorite.key))
+    case let .favorite(favoriteKey, soundFontAndPreset):
+      if favorites.contains(key: favoriteKey) {
+        let favorite = favorites.getBy(key: favoriteKey)
+        return .favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset)
+      } else if soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil {
+        return .preset(soundFontAndPreset: soundFontAndPreset)
       } else if let preset = soundFonts.defaultPreset {
         return .preset(soundFontAndPreset: preset)
       } else {

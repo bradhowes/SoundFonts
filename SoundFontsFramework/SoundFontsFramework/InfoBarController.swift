@@ -363,8 +363,9 @@ extension InfoBarController {
   private func showActivePreset() {
     let activePresetKind = activePresetManager.active
     os_log(.debug, log: log, "useActivePresetKind BEGIN - %{public}s", activePresetKind.description)
-    if let favorite = activePresetKind.favorite {
-      setPresetInfo(presetConfig: favorite.presetConfig, isFavored: true)
+    if activePresetKind.favoriteKey != nil,
+       let presetConfig = activePresetManager.activePresetConfig {
+      setPresetInfo(presetConfig: presetConfig, isFavored: true)
     } else if let soundFontAndPreset = activePresetKind.soundFontAndPreset,
               let preset = activePresetManager.resolveToPreset(soundFontAndPreset) {
       setPresetInfo(presetConfig: preset.presetConfig, isFavored: false)

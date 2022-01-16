@@ -56,6 +56,8 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     favoritesView.accessibilityIdentifier = "FavoritesView"
     favoritesView.accessibilityHint = "View holding favorites"
     favoritesView.accessibilityLabel = "FavoritesView"
+
+    restored()
   }
 
   public override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +83,8 @@ extension FavoritesViewController: ControllerConfiguration {
     favoritesSubscription = favorites.subscribe(self, notifier: favoritesChanged_BT)
     soundFontsSubscription = soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
     tagsSubscription = tags.subscribe(self, notifier: tagsChanged_BT)
+
+    restored()
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
@@ -88,13 +92,15 @@ extension FavoritesViewController: ControllerConfiguration {
     guard favorites.restored && soundFonts.restored else { return }
     switch event {
     case let .change(old: old, new: new, playSample: _):
-      if case let .favorite(oldFave) = old {
+      if case let .favorite(oldFaveKey, _) = old {
         os_log(.info, log: log, "updating previous favorite cell")
-        Self.onMain { self.updateCell(with: oldFave) }
+        let favorite = favorites.getBy(key: oldFaveKey)
+        Self.onMain { self.updateCell(with: favorite) }
       }
-      if case let .favorite(newFave) = new {
+      if case let .favorite(newFaveKey, _) = new {
         os_log(.info, log: log, "updating new favorite cell")
-        Self.onMain { self.updateCell(with: newFave) }
+        let favorite = favorites.getBy(key: newFaveKey)
+        Self.onMain { self.updateCell(with: favorite) }
       }
     }
   }
@@ -153,19 +159,24 @@ extension FavoritesViewController: ControllerConfiguration {
   }
 
   private func restored() {
-    guard favoritesView != nil,
+    guard soundFonts != nil,
           soundFonts.restored,
+          favorites != nil,
           favorites.restored,
-          tags.restored,
-          favoritesView.delegate == nil
+          tags != nil,
+          tags.restored
     else {
       return
     }
 
-    self.soundFonts.validateCollections(favorites: self.favorites, tags: self.tags)
-    self.favoritesView.dataSource = self
-    self.favoritesView.delegate = self
-    self.favoritesView.reloadData()
+    if favoritesView != nil {
+      if favoritesView.dataSource == nil {
+        favoritesView.dataSource = self
+        favoritesView.delegate = self
+      }
+      soundFonts.validateCollections(favorites: self.favorites, tags: self.tags)
+      favoritesView.reloadData()
+    }
   }
 }
 
@@ -279,19 +290,12 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
   public func numberOfSections(in collectionView: UICollectionView) -> Int { 1 }
 
-  public func collectionView(
-    _ collectionView: UICollectionView, numberOfItemsInSection section: Int
-  ) -> Int {
+  public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     favorites.count
   }
 
-  public func collectionView(
-    _ collectionView: UICollectionView,
-    cellForItemAt indexPath: IndexPath
-  ) -> UICollectionViewCell {
-    update(
-      cell: collectionView.dequeueReusableCell(for: indexPath),
-      with: favorites.getBy(index: indexPath.row))
+  public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorites.getBy(index: indexPath.row))
   }
 }
 
@@ -318,10 +322,8 @@ extension FavoritesViewController: UICollectionViewDelegate {
 
 extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
-  public func collectionView(
-    _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-    sizeForItemAt indexPath: IndexPath
-  ) -> CGSize {
+  public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+                             sizeForItemAt indexPath: IndexPath) -> CGSize {
     let favorite = favorites.getBy(index: indexPath.item)
     let cell = update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorite)
     let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)

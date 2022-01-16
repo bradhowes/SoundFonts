@@ -4,7 +4,7 @@ import Foundation
 import os
 
 public enum SelectedSoundFontEvent: CustomStringConvertible {
-  case changed(old: SoundFont?, new: SoundFont?)
+  case changed(old: SoundFont.Key?, new: SoundFont.Key?)
 
   public var description: String {
     switch self {
@@ -16,7 +16,7 @@ public enum SelectedSoundFontEvent: CustomStringConvertible {
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
   private lazy var log = Logging.logger("SelectedSoundFontManager")
 
-  public private(set) var selected: SoundFont?
+  public private(set) var selected: SoundFont.Key?
 
   public init() {
     super.init()
@@ -25,10 +25,10 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
   public func setSelected(_ soundFont: SoundFont) {
     os_log(.info, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,
            String.pointer(soundFont))
-    if selected != soundFont {
+    if selected != soundFont.key {
       let old = selected
-      selected = soundFont
-      notify(.changed(old: old, new: soundFont))
+      selected = soundFont.key
+      notify(.changed(old: old, new: soundFont.key))
     }
     os_log(.info, log: log, "setSelected END")
   }

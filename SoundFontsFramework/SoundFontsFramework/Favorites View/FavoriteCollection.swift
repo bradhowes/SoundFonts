@@ -14,14 +14,14 @@ final public class FavoriteCollection: Codable {
     self.favorites = []
   }
 
-  func contains(key: Favorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
-
   func index(of key: Favorite.Key) -> Int {
     guard let index = (favorites.firstIndex { $0.key == key }) else {
       fatalError("internal inconsistency - missing favorite key '\(key.uuidString)'")
     }
     return index
   }
+
+  func contains(key: Favorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
 
   /**
    Obtain the favorite at the given index.
@@ -37,7 +37,9 @@ final public class FavoriteCollection: Codable {
    - parameter key: the key to look for
    - returns: the optional favorite instance
    */
-  func getBy(key: Favorite.Key) -> Favorite { getBy(index: index(of: key)) }
+  func getBy(key: Favorite.Key) -> Favorite {
+    favorites[index(of: key)]
+  }
 
   /**
    Add a favorite to the end of the collection.

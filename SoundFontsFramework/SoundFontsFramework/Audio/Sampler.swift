@@ -224,15 +224,16 @@ public final class Sampler: Tasking {
     }
 
     self.presetLoaded = false
-    let favorite = activePresetManager.active.favorite
-    let presetConfig = favorite?.presetConfig ?? preset.presetConfig
+    let presetConfig = activePresetManager.activePresetConfig
 
     os_log(.info, log: log, "requesting preset change")
     presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(preset.program),
                                bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB)) { [weak self] in
       guard let self = self else { return }
       os_log(.info, log: self.log, "request complete")
-      self.applyPresetConfig(presetConfig)
+      if let presetConfig = presetConfig {
+        self.applyPresetConfig(presetConfig)
+      }
       Self.onMain { [weak self] in
         guard let self = self else { return }
         self.presetLoaded = true

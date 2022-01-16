@@ -206,12 +206,12 @@ extension FontsTableViewManager {
     }
   }
 
-  private func handleFontChanged(old: SoundFont?, new: SoundFont?) {
-    if let key = old?.key, let row = dataSource.firstIndex(of: key) {
+  private func handleFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
+    if let key = old, let row = dataSource.firstIndex(of: key) {
       updateRow(row: row)
     }
 
-    if let key = new?.key, let row = dataSource.firstIndex(of: key) {
+    if let key = new, let row = dataSource.firstIndex(of: key) {
       updateRow(row: row)
       selectAndShow(row: row)
     }
@@ -242,7 +242,7 @@ extension FontsTableViewManager {
     } completion: { completed in
       if completed {
         self.updateRow(row: newFilteredIndex)
-        if self.selectedSoundFontManager.selected == soundFont {
+        if self.selectedSoundFontManager.selected == soundFont.key {
           self.selectAndShow(row: newFilteredIndex)
         }
       }
@@ -273,7 +273,7 @@ extension FontsTableViewManager {
                                                          itemName: newSoundFont.presets[0].presetConfig.name),
                                            playSample: false)
         self.selectedSoundFontManager.setSelected(newSoundFont)
-      } else if self.selectedSoundFontManager.selected == soundFont {
+      } else if self.selectedSoundFontManager.selected == soundFont.key {
         self.selectedSoundFontManager.setSelected(newSoundFont)
       }
 
@@ -303,8 +303,8 @@ extension FontsTableViewManager {
     guard let soundFont = soundFonts.getBy(key: key) else { fatalError("data out of sync") }
     os_log(.debug, log: log, "updateCell - font '%{public}s' %d", soundFont.displayName, indexPath.row)
     var flags: TableCell.Flags = .init()
-    if selectedSoundFontManager.selected == soundFont { flags.insert(.selected) }
-    if activePresetManager.activeSoundFont == soundFont { flags.insert(.active) }
+    if selectedSoundFontManager.selected == soundFont.key { flags.insert(.selected) }
+    if activePresetManager.activeSoundFontKey == soundFont.key { flags.insert(.active) }
     cell.updateForFont(at: indexPath, name: soundFont.displayName, kind: soundFont.kind, flags: flags)
     return cell
   }

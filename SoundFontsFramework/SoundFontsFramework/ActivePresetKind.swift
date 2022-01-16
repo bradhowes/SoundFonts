@@ -9,14 +9,14 @@ public enum ActivePresetKind: Equatable, CustomStringConvertible {
   /// Normal soundfont preset description
   case preset(soundFontAndPreset: SoundFontAndPreset)
   /// Favorite soundfont preset
-  case favorite(favorite: Favorite)
+  case favorite(favoriteKey: Favorite.Key, soundFontAndPreset: SoundFontAndPreset)
   /// Exceptional case when there is no active preset
   case none
 
   public var description: String {
     switch self {
     case let .preset(soundFontAndPreset): return "<ActivePresetKind: preset \(soundFontAndPreset)>"
-    case let .favorite(favorite): return "<ActivePresetKind: favorite \(favorite)>"
+    case let .favorite(favoriteKey, _): return "<ActivePresetKind: favorite \(favoriteKey)>"
     case .none: return "<ActivePresetKind: none>"
     }
   }
@@ -28,16 +28,16 @@ public extension ActivePresetKind {
   var soundFontAndPreset: SoundFontAndPreset? {
     switch self {
     case .preset(let soundFontAndPreset): return soundFontAndPreset
-    case .favorite(let favorite): return favorite.soundFontAndPreset
+    case .favorite(_, let soundFontAndPreset): return soundFontAndPreset
     case .none: return nil
     }
   }
 
   /// Get the associated Favorite value
-  var favorite: Favorite? {
+  var favoriteKey: Favorite.Key? {
     switch self {
     case .preset: return nil
-    case .favorite(let favorite): return favorite
+    case .favorite(let favoriteKey, _): return favoriteKey
     case .none: return nil
     }
   }
@@ -54,8 +54,8 @@ extension ActivePresetKind: Codable {
 
     fileprivate static func key(for kind: ActivePresetKind) -> InternalKey {
       switch kind {
-      case .preset(soundFontAndPreset: _): return .preset
-      case .favorite(favorite: _): return .favorite
+      case .preset: return .preset
+      case .favorite: return .favorite
       case .none: return .none
       }
     }
@@ -64,6 +64,11 @@ extension ActivePresetKind: Codable {
   private enum Keys: String, CodingKey {
     case internalKey
     case value
+  }
+
+  struct FavoriteValue: Codable {
+    let key: Favorite.Key
+    let soundFontAndPreset: SoundFontAndPreset
   }
 
   public enum DecodingFailure: Error { case invalidInternalKey }
@@ -85,7 +90,14 @@ extension ActivePresetKind: Codable {
 
       switch internalKey {
       case .preset: self = .preset(soundFontAndPreset: try values.decode(SoundFontAndPreset.self, forKey: .value))
-      case .favorite: self = .favorite(favorite: try values.decode(Favorite.self, forKey: .value))
+      case .favorite:
+        do {
+          let value = try values.decode(FavoriteValue.self, forKey: .value)
+          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
+        } catch {
+          let value = try values.decode(Favorite.self, forKey: .value)
+          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
+        }
       case .none: self = .none
       }
     } catch {
@@ -101,7 +113,9 @@ extension ActivePresetKind: Codable {
 
         switch internalKey {
         case .preset: self = .preset(soundFontAndPreset: try container.decode(SoundFontAndPreset.self))
-        case .favorite: self = .favorite(favorite: try container.decode(Favorite.self))
+        case .favorite:
+          let value = try container.decode(Favorite.self)
+          self = .favorite(favoriteKey: value.key, soundFontAndPreset: value.soundFontAndPreset)
         case .none: self = .none
         }
       } catch {
@@ -120,7 +134,9 @@ extension ActivePresetKind: Codable {
     try container.encode(InternalKey.key(for: self).rawValue, forKey: .internalKey)
     switch self {
     case .preset(let soundFontPreset): try container.encode(soundFontPreset, forKey: .value)
-    case .favorite(let favorite): try container.encode(favorite, forKey: .value)
+    case let .favorite(favoriteKey, soundFontPreset):
+      let value: FavoriteValue = .init(key: favoriteKey, soundFontAndPreset: soundFontPreset)
+      try container.encode(value, forKey: .value)
     case .none: break
     }
   }
