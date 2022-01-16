@@ -13,21 +13,21 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
   public static var sharedConfigPath: URL { FileManager.default.sharedPath(for: filename) }
 
   /// The value held in the document.
-  public var config: ConsolidatedConfig!
+  public var config: ConsolidatedConfig = ConsolidatedConfig()
 
   @objc dynamic public private(set) var restored: Bool = false
 
-  private var monitor: ConfigFileConflictMonitor?
+  private var monitor: ConsolidatedConfigFileMonitor?
 
   /**
    Create new document that is stored at a particular location
 
    - parameter fileURL: the location for the document
    */
-  override public init(fileURL: URL) {
-    os_log(.info, log: Self.log, "init - fileURL: %{public}s", fileURL.absoluteString)
-    super.init(fileURL: fileURL)
-    self.monitor = ConfigFileConflictMonitor(configFile: self)
+  public init() {
+    os_log(.info, log: Self.log, "init")
+    super.init(fileURL: Self.sharedConfigPath)
+    self.monitor = ConsolidatedConfigFileMonitor(configFile: self)
     Self.onMain { self.restore() }
   }
 
@@ -100,7 +100,7 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
   }
 
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
-    os_log(.info, log: log, "revert: %{public}s", url.path)
+    os_log(.info, log: log, "revert BEGIN: %{public}s", url.path)
 
     // When `revert` is called it is because a newer version of the file has been seen on the system, presumably due to
     // another process updating it. We just close the current connection and let the system do its thing. NOTE: there is
@@ -121,7 +121,18 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
     }
 
     super.revert(toContentsOf: url, completionHandler: wrappedHandler)
-    os_log(.info, log: Self.log, "revert - new file URL: %{public}s", fileURL.absoluteString)
+
+    os_log(.info, log: log, "revert END")
+  }
+
+  public func reopen() {
+    os_log(.info, log: log, "reopen BEGIN")
+    close { ok in
+      os_log(.info, log: self.log, "reopen - closed: ok %d", ok)
+      os_log(.info, log: self.log, "reopen - invoking restore()")
+      self.restore()
+    }
+    os_log(.info, log: self.log, "reopen END")
   }
 }
 

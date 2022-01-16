@@ -76,11 +76,11 @@ where T: ControllerConfiguration {
 
    - parameter inApp: true if running in the app, false if running as audio unit
    */
-  public init(inApp: Bool, configPath: URL) {
+  public init(inApp: Bool) {
     self.inApp = inApp
     self.settings = Settings()
 
-    self.consolidatedConfigFile = ConsolidatedConfigFile(fileURL: configPath)
+    self.consolidatedConfigFile = ConsolidatedConfigFile()
 
     self.askForReview = inApp ? AskForReview(settings: settings) : nil
 

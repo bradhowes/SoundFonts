@@ -9,8 +9,7 @@ import os
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
   private lazy var log = Logging.logger("AppDelegate")
-  private let components = Components<MainViewController>(inApp: true,
-                                                          configPath: ConsolidatedConfigFile.sharedConfigPath)
+  private let components = Components<MainViewController>(inApp: true)
   private var observer: NSObjectProtocol?
 
   /// The window used to present the app’s visual content on the device’s main screen.
