@@ -43,6 +43,9 @@ final class FontsTableViewManager: NSObject, Tasking {
     super.init()
 
     view.register(TableCell.self)
+    view.estimatedRowHeight = 44.0
+    view.rowHeight = UITableView.automaticDimension
+
     view.dataSource = self
     view.delegate = self
 

@@ -80,7 +80,11 @@ public final class TagsTableViewController: UITableViewController {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
+
     tableView.register(TableCell.self)
+    tableView.estimatedRowHeight = 44.0
+    tableView.rowHeight = UITableView.automaticDimension
+
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editTagName(_:)))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)

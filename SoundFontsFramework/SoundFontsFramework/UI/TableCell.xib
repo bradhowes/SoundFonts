@@ -15,34 +15,40 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="44" id="0Cs-lR-8tg" customClass="TableCell" customModule="SoundFontsFramework" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0Cs-lR-8tg" id="UqT-gz-ivI">
                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-Ga-rcB">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Testing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NbC-Ga-rcB">
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <accessibility key="accessibilityConfiguration" hint="The name of the entry in the list" label="TableCellName"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="e0a-fO-18n"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" textAlignment="natural" minimumFontSize="17" id="blq-gq-kkl">
+                    <textField hidden="YES" opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="blq-gq-kkl">
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <accessibility key="accessibilityConfiguration" hint="The tag name edit field" label="TagEditor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="Hgs-x3-dJD"/>
+                        </constraints>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                     </textField>
-                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" id="vTo-oj-deq" userLabel="ActiveIndicator" customClass="ActiveIndicatorView" customModule="SoundFontsFramework" customModuleProvider="target">
+                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="vTo-oj-deq" userLabel="ActiveIndicator" customClass="ActiveIndicatorView" customModule="SoundFontsFramework" customModuleProvider="target">
                         <rect key="frame" x="1" y="0.0" width="4" height="44"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemTealColor"/>
                         <accessibility key="accessibilityConfiguration" hint="A blue band indicating the active entry" label="ActiveIndicator"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="Wk8-BC-ZXm"/>
+                        </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3f-s5-yIZ" userLabel="Tuning">
                         <rect key="frame" x="10" y="4" width="6" height="11"/>
@@ -64,12 +70,23 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="NbC-Ga-rcB" secondAttribute="trailing" constant="20" symbolic="YES" id="1A0-3I-TOP"/>
+                    <constraint firstItem="vTo-oj-deq" firstAttribute="leading" secondItem="UqT-gz-ivI" secondAttribute="leading" constant="1" id="36e-MQ-M2o"/>
+                    <constraint firstAttribute="trailing" secondItem="blq-gq-kkl" secondAttribute="trailing" constant="20" symbolic="YES" id="4Nb-Pr-87a"/>
                     <constraint firstItem="1yD-Jy-NY4" firstAttribute="centerY" secondItem="UqT-gz-ivI" secondAttribute="centerY" id="5su-zJ-AR5"/>
                     <constraint firstAttribute="bottom" secondItem="mm4-RS-coO" secondAttribute="bottom" constant="4" id="APi-gh-C5j"/>
                     <constraint firstItem="H3f-s5-yIZ" firstAttribute="top" secondItem="UqT-gz-ivI" secondAttribute="top" constant="4" id="Dzn-aO-hrl"/>
                     <constraint firstItem="H3f-s5-yIZ" firstAttribute="leading" secondItem="UqT-gz-ivI" secondAttribute="leading" constant="10" id="Kk8-Df-d37"/>
+                    <constraint firstItem="NbC-Ga-rcB" firstAttribute="top" secondItem="UqT-gz-ivI" secondAttribute="top" id="Ksd-3c-OQO"/>
+                    <constraint firstAttribute="bottom" secondItem="blq-gq-kkl" secondAttribute="bottom" id="L4p-Ya-Y30"/>
+                    <constraint firstAttribute="bottom" secondItem="NbC-Ga-rcB" secondAttribute="bottom" id="Nlr-5B-pcs"/>
+                    <constraint firstAttribute="bottom" secondItem="vTo-oj-deq" secondAttribute="bottom" id="U4R-7j-K3c"/>
+                    <constraint firstItem="NbC-Ga-rcB" firstAttribute="leading" secondItem="UqT-gz-ivI" secondAttribute="leading" constant="20" id="UyT-f5-toA"/>
                     <constraint firstItem="1yD-Jy-NY4" firstAttribute="centerX" secondItem="H3f-s5-yIZ" secondAttribute="centerX" id="VJj-Id-AWT"/>
+                    <constraint firstItem="blq-gq-kkl" firstAttribute="top" secondItem="UqT-gz-ivI" secondAttribute="top" id="Z4y-jM-RKs"/>
                     <constraint firstItem="mm4-RS-coO" firstAttribute="centerX" secondItem="H3f-s5-yIZ" secondAttribute="centerX" id="ZGm-o2-Mnt"/>
+                    <constraint firstItem="blq-gq-kkl" firstAttribute="leading" secondItem="UqT-gz-ivI" secondAttribute="leading" constant="20" id="aiR-SN-nye"/>
+                    <constraint firstItem="vTo-oj-deq" firstAttribute="top" secondItem="UqT-gz-ivI" secondAttribute="top" id="sac-zi-jSS"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

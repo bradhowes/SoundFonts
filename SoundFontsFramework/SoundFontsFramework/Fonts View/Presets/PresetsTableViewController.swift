@@ -44,10 +44,13 @@ extension PresetsTableViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
+    tableView.register(TableCell.self)
+    tableView.estimatedRowHeight = 44.0
+    tableView.rowHeight = UITableView.automaticDimension
+
     // Only show section view if there are enough items to justify having one.
     tableView.sectionIndexMinimumDisplayRowCount = IndexPath.sectionSize + 1
     tableView.sectionIndexColor = .darkGray
-    tableView.register(TableCell.self)
     tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: presetSectionHeaderIdentifier)
     searchBar.delegate = self
   }
