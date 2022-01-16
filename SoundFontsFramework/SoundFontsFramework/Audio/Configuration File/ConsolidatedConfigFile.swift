@@ -43,7 +43,7 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
    Restore from the contents of the file. If we fail, try to load the legacy version. If that fails, then we are left
    with the default collections.
    */
-  private func restore() {
+  public func restore() {
     os_log(.info, log: log, "restore - %{public}s", fileURL.path)
     self.open { ok in
       if !ok {
@@ -67,7 +67,7 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
   override public func contents(forType typeName: String) throws -> Any {
     os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
     let contents = try PropertyListEncoder().encode(config)
-    os_log(.info, log: log, "-- pending save of %d bytes", contents.count)
+    os_log(.info, log: log, "contents - pending save of %d bytes", contents.count)
     return contents
   }
 
@@ -82,21 +82,21 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
     os_log(.info, log: log, "load - typeName: %{public}s", typeName ?? "nil")
 
     guard let data = contents as? Data else {
-      os_log(.error, log: log, "given contents was not Data")
+      os_log(.error, log: log, "load - given contents was not Data")
       createConfig()
       NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
     guard let config = try? PropertyListDecoder().decode(ConsolidatedConfig.self, from: data) else {
-      os_log(.error, log: log, "failed to decode Data contents")
+      os_log(.error, log: log, "load - failed to decode Data contents")
       createConfig()
       NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
     os_log(.info, log: log, "decoded contents: %{public}s", config.description)
-    useConfig(config, save: false)
+    restoreConfig(config, save: false)
   }
 
   override public func revert(toContentsOf url: URL, completionHandler: ((Bool) -> Void)? = nil) {
@@ -106,10 +106,22 @@ public final class ConsolidatedConfigFile: UIDocument, Tasking {
     // another process updating it. We just close the current connection and let the system do its thing. NOTE: there is
     // a risk of lost data if there are unsaved changes. For now, we are ignoring that situation.
     //
-    self.close { ok in
-      if !ok { os_log(.fault, log: Self.log, "revert - failed to close configuration file") }
+    switch documentState {
+    case .closed: os_log(.info, log: Self.log, "revert - file is closed")
+    case .editingDisabled: os_log(.info, log: Self.log, "revert - file is disabled for editing")
+    case .normal: os_log(.info, log: Self.log, "revert - file is normal")
+    case .inConflict: os_log(.info, log: Self.log, "revert - file is in conflict")
+    case .progressAvailable: os_log(.info, log: Self.log, "revert - file is in progress")
+    default: break
     }
-    super.revert(toContentsOf: url, completionHandler: completionHandler)
+
+    let wrappedHandler: (Bool) -> Void = { ok in
+      os_log(.info, log: self.log, "revert - completion OK %d", ok)
+      completionHandler?(ok)
+    }
+
+    super.revert(toContentsOf: url, completionHandler: wrappedHandler)
+    os_log(.info, log: Self.log, "revert - new file URL: %{public}s", fileURL.absoluteString)
   }
 }
 
@@ -128,16 +140,16 @@ extension ConsolidatedConfigFile {
     }
 
     os_log(.info, log: log, "using legacy contents")
-    useConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
+    restoreConfig(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
   }
 
   private func createConfig() {
-    os_log(.info, log: log, "createConfig")
-    self.useConfig(ConsolidatedConfig(), save: true)
+    os_log(.info, log: log, "initializeCollections")
+    self.restoreConfig(ConsolidatedConfig(), save: true)
   }
 
-  private func useConfig(_ config: ConsolidatedConfig, save: Bool) {
-    os_log(.info, log: log, "useConfig")
+  private func restoreConfig(_ config: ConsolidatedConfig, save: Bool) {
+    os_log(.info, log: log, "restoreConfig")
     self.config = config
     self.restored = true
     if save {

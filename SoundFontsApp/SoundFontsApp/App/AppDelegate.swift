@@ -65,7 +65,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
   func applicationWillResignActive(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
-    // components.consolidatedConfigFile.save()
     NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
 
@@ -76,6 +75,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationDidEnterBackground")
+    components.consolidatedConfigFile.save()
+    components.consolidatedConfigFile.close()
   }
 
   /**
@@ -85,6 +86,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    */
   func applicationWillEnterForeground(_ application: UIApplication) {
     os_log(.info, log: log, "applicationWillEnterForeground")
+    components.consolidatedConfigFile.restore()
   }
 
   /**
