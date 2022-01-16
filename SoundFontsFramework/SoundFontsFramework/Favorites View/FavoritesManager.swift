@@ -13,9 +13,9 @@ final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private var observer: ConsolidatedConfigFileObserver!
   private var collection: FavoriteCollection { observer.favorites }
 
-  init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+  init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
-    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
   }
 }
 

@@ -7,8 +7,8 @@ import os.log
  Provider of a ConsolidatedConfig value. This normally comes from a configuration file. Access to the current value is
  to be done through a ConsolidatedConfigFileObserver which will run a closure when the configuration value changes.
  */
-public final class ConsolidatedConfigFile: NSObject {
-  private static let log = Logging.logger("ConsolidatedConfigFile")
+public final class ConsolidatedConfigProvider: NSObject {
+  private static let log = Logging.logger("ConsolidatedConfigProvider")
   private var log: OSLog { Self.log }
 
   private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
@@ -100,7 +100,7 @@ public final class ConsolidatedConfigFile: NSObject {
 
 // MARK: - State tracking
 
-private extension ConsolidatedConfigFile {
+private extension ConsolidatedConfigProvider {
 
   /**
    Notification that the current document changed state.
@@ -169,7 +169,7 @@ private extension ConsolidatedConfigFile {
 
 // MARK: - App-state change handlers
 
-private extension ConsolidatedConfigFile {
+private extension ConsolidatedConfigProvider {
 
   /**
    Notification that the application/host is no longer the active app. We save any changes and we release the document

@@ -16,9 +16,9 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
 
    - parameter consolidatedConfigFile: the configuration file that holds the tags to manage
    */
-  init(_ consolidatedConfigFile: ConsolidatedConfigFile) {
+  init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
-    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
   }
 }
 

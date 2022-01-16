@@ -18,10 +18,10 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
    Create a new manager for a collection of SoundFonts. Attempts to load from disk a saved collection, and if that
    fails then creates a new one containing SoundFont instances embedded in the app.
    */
-  public init(_ consolidatedConfigFile: ConsolidatedConfigFile, settings: Settings) {
+  public init(_ consolidatedConfigProvider: ConsolidatedConfigProvider, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConsolidatedConfigFileObserver(configFile: consolidatedConfigFile, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
   }
 }
 

@@ -12,7 +12,7 @@ where T: ControllerConfiguration {
                                           autoreleaseFrequency: .inherit, target: .global(qos: .background))
   public let settings: Settings
   /// The configuration file that defines what fonts are installed and customizations
-  public let consolidatedConfigFile: ConsolidatedConfigFile
+  public let consolidatedConfigProvider: ConsolidatedConfigProvider
   /// Manager that controls when to ask for a review from the customer
   public let askForReview: AskForReview?
   /// The manager for the collection of sound fonts
@@ -80,13 +80,13 @@ where T: ControllerConfiguration {
     self.inApp = inApp
     self.settings = Settings()
 
-    self.consolidatedConfigFile = ConsolidatedConfigFile(inApp: inApp)
+    self.consolidatedConfigProvider = .init(inApp: inApp)
 
     self.askForReview = inApp ? AskForReview(settings: settings) : nil
 
-    self.soundFonts = SoundFontsManager(consolidatedConfigFile, settings: settings)
-    self.favorites = FavoritesManager(consolidatedConfigFile)
-    self.tags = TagsManager(consolidatedConfigFile)
+    self.soundFonts = SoundFontsManager(consolidatedConfigProvider, settings: settings)
+    self.favorites = FavoritesManager(consolidatedConfigProvider)
+    self.tags = TagsManager(consolidatedConfigProvider)
 
     self.selectedSoundFontManager = SelectedSoundFontManager()
     self.activePresetManager = ActivePresetManager(soundFonts: soundFonts, favorites: favorites,
