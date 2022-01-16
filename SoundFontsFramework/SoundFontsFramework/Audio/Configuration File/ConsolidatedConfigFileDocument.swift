@@ -4,7 +4,7 @@ import os.log
 /**
  Implementation of UIDocument that knows how to work with ConsolidatedConfig entities.
  */
-final class ConfigFileDocument: UIDocument, Tasking {
+final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
   private static let log = Logging.logger("ConfigFileDocument")
   private var log: OSLog { Self.log }
 

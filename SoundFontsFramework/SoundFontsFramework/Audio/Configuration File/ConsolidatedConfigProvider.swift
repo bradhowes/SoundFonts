@@ -14,15 +14,11 @@ public final class ConsolidatedConfigProvider: NSObject {
   private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .userInitiated))
 
-  /// The current contents that was loaded from a consolidated document file.
   private var _config: ConsolidatedConfig?
-
-  private var document: ConfigFileDocument?
+  private var document: ConsolidatedConfigFileDocument?
   private var documentObserver: NSKeyValueObservation?
   private var stateObserver: NSKeyValueObservation?
 
-  /// Pseudo-unique ID to use for logging. Helps when looking at logs with multiple AUv3 instances. Should *only* be
-  /// used for logging.
   private let identity: Int = UUID().hashValue
   private var wasDisabled = false
   private var transferring = false
@@ -77,7 +73,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   private func openDocument() {
     os_log(.info, log: log, "%d openDocument BEGIN", identity)
 
-    let document = ConfigFileDocument(identity: identity, contents: config)
+    let document = ConsolidatedConfigFileDocument(identity: identity, contents: config)
     self.document = document
 
     NotificationCenter.default.addObserver(self, selector: #selector(processStateChange(_:)),

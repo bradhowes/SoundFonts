@@ -10,12 +10,13 @@ import os.log
 final class FavoritesManager: SubscriptionManager<FavoritesEvent> {
   private lazy var log = Logging.logger("FavoritesManager")
 
-  private var observer: ConsolidatedConfigFileObserver!
+  private var observer: ConsolidatedConfigObserver!
   private var collection: FavoriteCollection { observer.favorites }
 
   init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
-    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
+                                          restored: notifyCollectionRestored)
   }
 }
 

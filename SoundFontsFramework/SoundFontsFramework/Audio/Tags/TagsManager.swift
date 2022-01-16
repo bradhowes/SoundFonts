@@ -8,7 +8,7 @@ import os
 final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log = Logging.logger("TagsManager")
 
-  private var observer: ConsolidatedConfigFileObserver!
+  private var observer: ConsolidatedConfigObserver!
   private var collection: TagCollection { observer.tags }
 
   /**
@@ -18,7 +18,8 @@ final class TagsManager: SubscriptionManager<TagsEvent> {
    */
   init(_ consolidatedConfigProvider: ConsolidatedConfigProvider) {
     super.init()
-    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
+                                          restored: notifyCollectionRestored)
   }
 }
 

@@ -62,7 +62,7 @@ class SoundFontLibraryPListTest: XCTestCase {
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
-    let observer = ConsolidatedConfigFileObserver(configFile: configFile) {
+    let observer = ConsolidatedConfigObserver(configFile: configFile) {
       expectation.fulfill()
     }
 
@@ -81,7 +81,7 @@ class SoundFontLibraryPListTest: XCTestCase {
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
-    let observer = ConsolidatedConfigFileObserver(configFile: configFile) {
+    let observer = ConsolidatedConfigObserver(configFile: configFile) {
       expectation.fulfill()
     }
 

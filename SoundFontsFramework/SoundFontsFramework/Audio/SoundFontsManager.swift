@@ -11,7 +11,7 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private var log: OSLog { Self.log }
   private let settings: Settings
 
-  private var observer: ConsolidatedConfigFileObserver!
+  private var observer: ConsolidatedConfigObserver!
   public var collection: SoundFontCollection { observer.soundFonts }
 
   /**
@@ -21,7 +21,8 @@ public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   public init(_ consolidatedConfigProvider: ConsolidatedConfigProvider, settings: Settings) {
     self.settings = settings
     super.init()
-    observer = ConsolidatedConfigFileObserver(configProvider: consolidatedConfigProvider, restored: notifyCollectionRestored)
+    observer = ConsolidatedConfigObserver(configProvider: consolidatedConfigProvider,
+                                          restored: notifyCollectionRestored)
   }
 }
 

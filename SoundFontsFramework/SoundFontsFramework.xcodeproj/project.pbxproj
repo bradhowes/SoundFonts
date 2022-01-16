@@ -82,7 +82,7 @@
 		BD130B0B2561506B00D1CDF6 /* EffectsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B0A2561506B00D1CDF6 /* EffectsController.swift */; };
 		BD130B192561755F00D1CDF6 /* Knob.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD130B182561755F00D1CDF6 /* Knob.swift */; };
 		BD156A7F24096A6B0070C325 /* UserDefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */; };
-		BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigFileObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigFileObserver.swift */; };
+		BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */; };
 		BD1971B72661733500C7FCF5 /* ManagedAppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE150B3250CC43A00728402 /* ManagedAppState.swift */; };
 		BD1971B8266174AF00C7FCF5 /* ManagedSoundFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A31612502E6920077320F /* ManagedSoundFont.swift */; };
 		BD1971B92661763800C7FCF5 /* ManagedPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD8A315D2502E6920077320F /* ManagedPreset.swift */; };
@@ -201,7 +201,7 @@
 		BDC961A724FFA745003D9BEF /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC961A624FFA745003D9BEF /* StringTests.swift */; };
 		BDC961A924FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC961A824FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift */; };
 		BDC961AC24FFC6EA003D9BEF /* SoundFontLibrary.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDC961AA24FFC6EA003D9BEF /* SoundFontLibrary.plist */; };
-		BDCAE70425C7E0B100202BAC /* ConsolidatedConfigFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */; };
+		BDCAE70425C7E0B100202BAC /* ConsolidatedConfigProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAE70325C7E0B100202BAC /* ConsolidatedConfigProvider.swift */; };
 		BDCAE70825C7E64700202BAC /* LegacyConfigFileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */; };
 		BDCC40112418336200D8D849 /* NoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCC40102418336200D8D849 /* NoteTests.swift */; };
 		BDCCD45427824DBF005C18BD /* Consolidated_V2.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */; };
@@ -225,7 +225,7 @@
 		BDD9791C24162E4F006121A1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD9791B24162E4F006121A1 /* SettingsViewController.swift */; };
 		BDD979222417006D006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD979212417006D006121A1 /* Eurostile.ttc */; };
 		BDDE3A86257A755E00B133CB /* ActiveIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */; };
-		BDDEBDC62794CBB400D3E0E1 /* ConfigFileDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDEBDC52794CBB400D3E0E1 /* ConfigFileDoc.swift */; };
+		BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */; };
 		BDE03B9A256E405E00F904E3 /* DelayConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B99256E405E00F904E3 /* DelayConfig.swift */; };
 		BDE03B9E256E40DC00F904E3 /* ReverbConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */; };
 		BDE03BB225706F2F00F904E3 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE03BB125706F2F00F904E3 /* UIButton.swift */; };
@@ -332,7 +332,7 @@
 		BD130B0A2561506B00D1CDF6 /* EffectsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EffectsController.swift; sourceTree = "<group>"; };
 		BD130B182561755F00D1CDF6 /* Knob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Knob.swift; sourceTree = "<group>"; };
 		BD156A7E24096A6B0070C325 /* UserDefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTests.swift; sourceTree = "<group>"; };
-		BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigFileObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigFileObserver.swift; sourceTree = "<group>"; };
+		BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigObserver.swift; sourceTree = "<group>"; };
 		BD1971BF2662500D00C7FCF5 /* ManagedAppStateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedAppStateTests.swift; sourceTree = "<group>"; };
 		BD1A2A762667E12D009E2338 /* Consolidated_V1.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V1.plist; sourceTree = "<group>"; };
 		BD1A2A782668171F009E2338 /* ActivePresetKindTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivePresetKindTests.swift; sourceTree = "<group>"; };
@@ -454,7 +454,7 @@
 		BDC961A624FFA745003D9BEF /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		BDC961A824FFC61B003D9BEF /* SoundFontLibraryPlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontLibraryPlistTest.swift; sourceTree = "<group>"; };
 		BDC961AA24FFC6EA003D9BEF /* SoundFontLibrary.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = SoundFontLibrary.plist; sourceTree = "<group>"; };
-		BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigFile.swift; sourceTree = "<group>"; };
+		BDCAE70325C7E0B100202BAC /* ConsolidatedConfigProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigProvider.swift; sourceTree = "<group>"; };
 		BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LegacyConfigFileLoader.swift; sourceTree = "<group>"; };
 		BDCC40102418336200D8D849 /* NoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteTests.swift; sourceTree = "<group>"; };
 		BDCCD45327824DBF005C18BD /* Consolidated_V2.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Consolidated_V2.plist; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 		BDD9791B24162E4F006121A1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BDD979212417006D006121A1 /* Eurostile.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; name = Eurostile.ttc; path = ../SoundFontsApp/SoundFontsApp/App/Resources/Eurostile.ttc; sourceTree = SOURCE_ROOT; };
 		BDDE3A85257A755E00B133CB /* ActiveIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveIndicatorView.swift; sourceTree = "<group>"; };
-		BDDEBDC52794CBB400D3E0E1 /* ConfigFileDoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigFileDoc.swift; sourceTree = "<group>"; };
+		BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsolidatedConfigFileDocument.swift; sourceTree = "<group>"; };
 		BDE03B99256E405E00F904E3 /* DelayConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayConfig.swift; sourceTree = "<group>"; };
 		BDE03B9D256E40DC00F904E3 /* ReverbConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReverbConfig.swift; sourceTree = "<group>"; };
 		BDE03BB125706F2F00F904E3 /* UIButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
@@ -788,9 +788,9 @@
 			isa = PBXGroup;
 			children = (
 				BDC8EA3427870F900010595F /* ConsolidatedConfig.swift */,
-				BDDEBDC52794CBB400D3E0E1 /* ConfigFileDoc.swift */,
-				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigFile.swift */,
-				BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigFileObserver.swift */,
+				BDDEBDC52794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift */,
+				BD17E25C25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift */,
+				BDCAE70325C7E0B100202BAC /* ConsolidatedConfigProvider.swift */,
 				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
 			);
 			path = "Configuration File";
@@ -1198,7 +1198,7 @@
 				BD0F940B25728E610065C147 /* MIDIController.swift in Sources */,
 				BDBF897725B5900900B58E23 /* TagsManager.swift in Sources */,
 				BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */,
-				BDDEBDC62794CBB400D3E0E1 /* ConfigFileDoc.swift in Sources */,
+				BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
@@ -1206,7 +1206,7 @@
 				BDEB125926207446003CE8EE /* ChangesCompiler.swift in Sources */,
 				BDD913F42508DEEE0068E3CE /* DispatchQueue.swift in Sources */,
 				BDB7407325CC29400051B4E4 /* TutorialPageViewController.swift in Sources */,
-				BDCAE70425C7E0B100202BAC /* ConsolidatedConfigFile.swift in Sources */,
+				BDCAE70425C7E0B100202BAC /* ConsolidatedConfigProvider.swift in Sources */,
 				BDD913F22508DECE0068E3CE /* DispatchTime.swift in Sources */,
 				BDA5ACED265D422C000AE48E /* PresetsPageViewController.swift in Sources */,
 				BD074C7C23CDAF51001987E9 /* UITableView.swift in Sources */,
@@ -1271,7 +1271,7 @@
 				BD074C7A23CDAF51001987E9 /* FileManager.swift in Sources */,
 				BD27E98B2516113600591FD0 /* UIControl.swift in Sources */,
 				BD1F11BC23FE690300AE9F3D /* UIViewController.swift in Sources */,
-				BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigFileObserver.swift in Sources */,
+				BD17E25D25C9FDAF003E75CF /* ConsolidatedConfigObserver.swift in Sources */,
 				BD074C7923CDAF51001987E9 /* UIColor.swift in Sources */,
 				BDA5ACF7265D427C000AE48E /* FontEditorActionGenerator.swift in Sources */,
 				BD1B8CDB270CB1E200C6BF15 /* MIDIPacketList.swift in Sources */,

@@ -3,11 +3,9 @@
 import Foundation
 
 /**
- Holds reference to ConsolidatedConfigFile and monitors it for changes to its `restored` attribute. When it changes
- to true, calls the closure which was given during construction. This facility is use by the various data owners to
- determine when there is data available for them to use.
+ Watches for changes to the `config` value from a `ConsolidatedConfigProvider` instance.
  */
-public final class ConsolidatedConfigFileObserver: Tasking {
+public struct ConsolidatedConfigObserver: Tasking {
 
   private let configProvider: ConsolidatedConfigProvider
 
@@ -30,6 +28,7 @@ public final class ConsolidatedConfigFileObserver: Tasking {
     return config.tags
   }
 
+  /// True if a configuration has been loaded.
   public var isRestored: Bool { configProvider.config != nil }
 
   private var configProviderObserver: NSKeyValueObservation?
@@ -37,12 +36,19 @@ public final class ConsolidatedConfigFileObserver: Tasking {
   /**
    Create a new observer.
 
-   - parameter configFile: the configuration file to observe
+   - parameter configProvider: the configuration file to observe
    - parameter restored: the closure to invoke when the file has been restored
    */
   public init(configProvider: ConsolidatedConfigProvider, restored closure: @escaping () -> Void) {
     self.configProvider = configProvider
     self.configProviderObserver = configProvider.observe(\.config) { _, _ in Self.onMain { closure() } }
+
+    // Handle race where `config` is already loaded
+    if isRestored {
+      Self.onMain {
+        closure()
+      }
+    }
   }
 
   /**
