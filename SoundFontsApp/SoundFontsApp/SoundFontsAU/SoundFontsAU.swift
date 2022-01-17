@@ -12,10 +12,11 @@ import os
  */
 final class SoundFontsAU: AUAudioUnit {
   private let log: OSLog
-  private let activePresetManager: ActivePresetManager
   private let sampler: Sampler
-  private let wrapped: AUAudioUnit
+  private let identity: Int
+  private let activePresetManager: ActivePresetManager
   private let settings: Settings
+  private let wrapped: AUAudioUnit
   private let kernel: KernelAdapter
   
   private var currentPresetObserver: NSKeyValueObservation?
@@ -30,29 +31,22 @@ final class SoundFontsAU: AUAudioUnit {
   /// Maximum frames to render
   private let maxFramesToRender: UInt32 = 512
 
-  struct SoundFontAUState {
-    let activeTag: Tag.Key
-    let tuningCents: Float
-    let tuningEnabled: Bool
-    let pitchBendRange: Int
-    let presetsWidthMultiplier: Double
-    let showingFavorites: Bool
-  }
-
   /**
    Construct a new AUv3 component.
 
    - parameter componentDescription: the definition used when locating the component to create
    - parameter sampler: the Sampler instance to use for actually rendering audio
+   - parameter identity: the (pseudo) unique identity for this instance
    - parameter activePresetManager: the manager of the active preset
    - parameter settings: the repository of user settings
    */
-  public init(componentDescription: AudioComponentDescription, sampler: Sampler,
+  public init(componentDescription: AudioComponentDescription, sampler: Sampler, identity: Int,
               activePresetManager: ActivePresetManager, settings: Settings) throws {
-    let log = Logging.logger("SoundFontsAU")
+    let log = Logging.logger("SoundFontsAU[\(identity)]")
     self.log = log
-    self.activePresetManager = activePresetManager
     self.sampler = sampler
+    self.identity = identity
+    self.activePresetManager = activePresetManager
     self.settings = settings
 
     os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
@@ -160,9 +154,9 @@ extension SoundFontsAU {
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
+
     do {
       try wrapped.allocateRenderResources()
-      reloadActivePreset()
     } catch {
       os_log(.error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
@@ -187,6 +181,7 @@ extension SoundFontsAU {
   override public func reset() {
     os_log(.info, log: log, "reset BEGIN - %d", renderResourcesAllocated)
     wrapped.reset()
+    reloadActivePreset()
     os_log(.info, log: log, "reset END")
   }
 
@@ -325,7 +320,6 @@ extension SoundFontsAU {
 
     state[SettingKeys.activeTagKey.key] = settings.activeTagKey.uuidString
     state[SettingKeys.globalTuning.key] = settings.globalTuning
-    state[SettingKeys.globalTuningEnabled.key] = settings.globalTuningEnabled
     state[SettingKeys.pitchBendRange.key] = settings.pitchBendRange
     state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
     state[SettingKeys.showingFavorites.key] = settings.showingFavorites
@@ -344,14 +338,17 @@ extension SoundFontsAU {
     settings.setAudioUnitState(state)
 
     let value: ActivePresetKind = {
+      // First try current representation as a dict
       if let dict = state[activeSoundFontPresetKey] as? [String: Any],
          let value = ActivePresetKind.decodeFromDict(dict) {
         return value
       }
+      // Fall back and try Data encoding
       if let data = state[activeSoundFontPresetKey] as? Data,
          let value = ActivePresetKind.decodeFromData(data) {
         return value
       }
+      // Nothing known.
       return .none
     }()
 

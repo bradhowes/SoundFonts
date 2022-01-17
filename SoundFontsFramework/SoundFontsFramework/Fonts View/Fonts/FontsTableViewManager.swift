@@ -80,6 +80,10 @@ extension FontsTableViewManager: UITableViewDataSource {
 
 extension FontsTableViewManager: UITableViewDelegate {
 
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    UITableView.automaticDimension
+  }
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) else { return }
     selectedSoundFontManager.setSelected(soundFont)

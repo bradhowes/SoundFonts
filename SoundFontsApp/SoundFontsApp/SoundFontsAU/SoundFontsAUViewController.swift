@@ -43,6 +43,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
 
     let audioUnit = try SoundFontsAU(componentDescription: componentDescription,
                                      sampler: sampler,
+                                     identity: components.identity,
                                      activePresetManager: components.activePresetManager,
                                      settings: components.settings)
     self.audioUnit = audioUnit

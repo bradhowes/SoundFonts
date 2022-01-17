@@ -19,8 +19,8 @@ public final class ConsolidatedConfigProvider: NSObject {
   private var documentObserver: NSKeyValueObservation?
   private var stateObserver: NSKeyValueObservation?
 
+  public let identity: Int = UUID().hashValue
   private let fileURL: URL?
-  private let identity: Int = UUID().hashValue
   private var wasDisabled = false
   private var transferring = false
 
