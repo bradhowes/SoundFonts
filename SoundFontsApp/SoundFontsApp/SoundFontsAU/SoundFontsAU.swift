@@ -17,16 +17,13 @@ final class SoundFontsAU: AUAudioUnit {
   private let activePresetManager: ActivePresetManager
   private let settings: Settings
   private let wrapped: AUAudioUnit
-  private let kernel: KernelAdapter
-  
+
   private var currentPresetObserver: NSKeyValueObservation?
   private var activePresetSubscriberToken: SubscriberToken?
 
   private var _audioUnitName: String?
   private var _audioUnitShortName: String?
-
   private var _currentPreset: AUAudioUnitPreset?
-  private var _needLoad = true
 
   /// Maximum frames to render
   private let maxFramesToRender: UInt32 = 512
@@ -61,8 +58,6 @@ final class SoundFontsAU: AUAudioUnit {
       throw what
     }
 
-    self.kernel = KernelAdapter("SoundFontsAU", wrapped: self.wrapped)
-
     os_log(.info, log: log, "super.init")
     do {
       try super.init(componentDescription: componentDescription, options: [])
@@ -76,8 +71,6 @@ final class SoundFontsAU: AUAudioUnit {
     maximumFramesToRender = maxFramesToRender
     activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
-
-    kernel.setMaxFramesToRender(maxFramesToRender)
 
     os_log(.info, log: log, "init - done")
   }
@@ -162,9 +155,6 @@ extension SoundFontsAU {
       throw error
     }
 
-    // Communicate to the kernel the new formats being used
-    kernel.setMaxFramesToRender(maximumFramesToRender)
-
     os_log(.info, log: log, "allocateRenderResources END")
   }
 
@@ -197,10 +187,7 @@ extension SoundFontsAU {
 
     do {
 
-      // This is a hack but it seems necessary to do if the host the AudioUnit is rendering. Cause the AudioUnit to just
-      // emit zeros until `setBypass(false)` below.
-      self.kernel.setBypass(true)
-      os_log(.info, log: log, "reloadActivePreset - before loadSoundBankInstrument")
+      os_log(.info, log: log, "reloadActivePreset - before loadSoundBankInstrument %{public}s", presetConfig.name)
       try sampler.auSampler?.loadSoundBankInstrument(at: soundFont.fileURL,
                                                      program: UInt8(activePreset.program),
                                                      bankMSB: UInt8(activePreset.bankMSB),
@@ -210,11 +197,8 @@ extension SoundFontsAU {
       os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
     }
 
-    // This is an inherent *flaky* hack. We don't immediately reenable rendering with the AudioUnit.
-    DispatchQueue.global(qos: .background).asyncAfter(deadline: DispatchTime.future(0.2)) {
-      self.kernel.setBypass(false)
-      self.sampler.applyPresetConfig(presetConfig)
-    }
+    os_log(.info, log: self.log, "reloadActivePreset - applying preset config")
+    self.sampler.applyPresetConfig(presetConfig)
 
     os_log(.info, log: log, "reloadActivePreset END")
   }
@@ -486,6 +470,6 @@ extension SoundFontsAU {
 
   override public var internalRenderBlock: AUInternalRenderBlock {
     os_log(.info, log: log, "internalRenderBlock")
-    return kernel.internalRenderBlock()
+    return wrapped.internalRenderBlock
   }
 }
