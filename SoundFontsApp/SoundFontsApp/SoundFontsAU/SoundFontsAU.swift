@@ -282,10 +282,36 @@ extension SoundFontsAU {
   override public var fullStateForDocument: [String: Any]? {
     get {
       os_log(.info, log: log, "fullStateForDocument GET")
-      return fullState ?? [String: Any]()
+      var state = fullState ?? [String: Any]()
+      if let preset = _currentPreset {
+        state[kAUPresetNameKey] = preset.name
+        state[kAUPresetNumberKey] = preset.number
+      }
+      state[kAUPresetDataKey] = Data()
+      state[kAUPresetTypeKey] = FourCharCode(stringLiteral: "aumu")
+      state[kAUPresetSubtypeKey] = FourCharCode(stringLiteral: "sfnt")
+      state[kAUPresetManufacturerKey] = FourCharCode(stringLiteral: "bray")
+      state[kAUPresetVersionKey] = FourCharCode(67072)
+      return state
     }
     set {
-      os_log(.info, log: log, "fullStateForDocument SET")
+      os_log(.info, log: log, "fullStateForDocument SET %{public}s", newValue.descriptionOrNil)
+      if let state = newValue {
+        let presetName = state[kAUPresetNameKey] as? String
+        os_log(.debug, log: log, "kAUPresetNameKey '%{public}s'", presetName.descriptionOrNil)
+        let presetNumber = state[kAUPresetNumberKey] as? Int
+        os_log(.debug, log: log, "kAUPresetNumberKey '%d'", presetNumber ?? -1)
+        let presetData = state[kAUPresetDataKey] as? Data
+        os_log(.debug, log: log, "kAUPresetDataKey '%{public}s'", presetData.descriptionOrNil)
+        let presetType = state[kAUPresetTypeKey] as? FourCharCode
+        os_log(.debug, log: log, "kAUPresetTypeKey '%{public}s'", presetType.descriptionOrNil)
+        let presetSubtype = state[kAUPresetSubtypeKey] as? FourCharCode
+        os_log(.debug, log: log, "kAUPresetSubtypeKey '%{public}s'", presetSubtype.descriptionOrNil)
+        let presetManufacturer = state[kAUPresetManufacturerKey] as? FourCharCode
+        os_log(.debug, log: log, "kAUPresetManufacturerKey '%{public}s'", presetManufacturer.descriptionOrNil)
+        let presetVersion = state[kAUPresetVersionKey] as? FourCharCode
+        os_log(.debug, log: log, "kAUPresetVersionKey '%{public}s'", presetVersion.descriptionOrNil)
+      }
       fullState = newValue
     }
   }
