@@ -56,6 +56,7 @@ final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Tasking {
   }
 
   public func showActiveTag(animated: Bool) {
+    guard tags.isRestored else { return }
     tableView.scrollToRow(at: IndexPath(row: activeIndex, section: 0), at: .none, animated: animated)
   }
 }

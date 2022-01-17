@@ -622,7 +622,6 @@
 		BD074BF123CDAF51001987E9 /* Fonts View */ = {
 			isa = PBXGroup;
 			children = (
-				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD28D73727958C84000A57DE /* Fonts */,
 				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
@@ -788,6 +787,7 @@
 		BD28D73727958C84000A57DE /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD28D73827958CE4000A57DE /* FontsTableViewController.swift */,
 				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
