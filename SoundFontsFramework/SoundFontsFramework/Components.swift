@@ -13,6 +13,8 @@ where T: ControllerConfiguration {
   public let settings: Settings
   /// The configuration file that defines what fonts are installed and customizations
   public let consolidatedConfigProvider: ConsolidatedConfigProvider
+  /// The unique identity associated with this instance (app or AUv3)
+  public var identity: Int { consolidatedConfigProvider.identity }
   /// Manager that controls when to ask for a review from the customer
   public let askForReview: AskForReview?
   /// The manager for the collection of sound fonts
