@@ -194,10 +194,6 @@ extension PresetsTableViewManager {
 
   func regenerateViewSlots() {
     os_log(.info, log: log, "regenerateViewSlots BEGIN")
-    guard soundFonts.isRestored && favorites.isRestored else {
-      os_log(.info, log: log, "regenerateViewSlots END - not restored")
-      return
-    }
 
     let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
@@ -316,9 +312,15 @@ extension PresetsTableViewManager {
   }
 
   private func handleActivePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
-    os_log(.debug, log: log, "activePresetChange BEGIN")
+    os_log(.debug, log: log, "handleActivePresetChanged BEGIN")
+
+    if viewSlots.isEmpty {
+      checkIfRestored()
+      return
+    }
+
     guard let slotIndex = getSlotIndex(for: new) else {
-      os_log(.debug, log: log, "activePresetChange END - not showing font for new preset")
+      os_log(.debug, log: log, "handleActivePresetChanged END - not showing font for new preset")
       return
     }
     viewController.slotToScrollTo = indexPath(from: slotIndex)
@@ -328,17 +330,16 @@ extension PresetsTableViewManager {
         updateRow(with: new)
       },
       completion: { _ in })
-    os_log(.debug, log: log, "activePresetChange END")
+    os_log(.debug, log: log, "handleActivePresetChanged END")
   }
 
   private func handleSelectedSoundFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {
     os_log(.debug, log: log, "handleSelectedSoundFontChanged BEGIN")
 
-    let viewController = self.viewController
     if viewController.isEditing {
       os_log(.debug, log: log, "handleSelectedSoundFontChanged - stop editing")
       viewController.afterReloadDataAction = {
-        viewController.endVisibilityEditing()
+        self.viewController.endVisibilityEditing()
       }
     }
     else if activePresetManager.activeSoundFontKey == new {
@@ -350,15 +351,23 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
   }
 
+  private func checkIfRestored() {
+    guard soundFonts.isRestored && favorites.isRestored else {
+      os_log(.info, log: log, "regenerateViewSlots END - not restored")
+      return
+    }
+    regenerateViewSlots()
+  }
+
   private func favoritesRestored() {
     os_log(.info, log: log, "favoritesRestored BEGIN")
-    regenerateViewSlots()
+    checkIfRestored()
     os_log(.info, log: log, "favoritesRestored END")
   }
 
   private func soundFontsRestored() {
     os_log(.info, log: log, "soundFontsRestore BEGIN")
-    regenerateViewSlots()
+    checkIfRestored()
     os_log(.info, log: log, "soundFontsRestore END")
   }
 
