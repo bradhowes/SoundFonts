@@ -28,8 +28,12 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   private var soundFontsSubscription: SubscriberToken?
   private var tagsSubscription: SubscriberToken?
 
+  private var cellForSizing: FavoriteCell!
+
   public override func viewDidLoad() {
+
     favoritesView.register(FavoriteCell.self)
+    cellForSizing = favoritesView.dequeueReusableCell(for: .init(item: 0, section: 0))
 
     doubleTapGestureRecognizer.numberOfTapsRequired = 2
     doubleTapGestureRecognizer.numberOfTouchesRequired = 1
@@ -301,9 +305,7 @@ extension FavoritesViewController: UICollectionViewDataSource {
 
 extension FavoritesViewController: UICollectionViewDelegate {
 
-  public func collectionView(
-    _ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath
-  ) {
+  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     favorites.selected(index: indexPath.row)
   }
 
@@ -311,10 +313,8 @@ extension FavoritesViewController: UICollectionViewDelegate {
     favorites.count > 1
   }
 
-  public func collectionView(
-    _ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
-    to destinationIndexPath: IndexPath
-  ) {
+  public func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath,
+                             to destinationIndexPath: IndexPath) {
     favorites.move(from: sourceIndexPath.item, to: destinationIndexPath.item)
     collectionView.reloadItems(at: [sourceIndexPath, destinationIndexPath])
   }
@@ -325,7 +325,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
   public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
                              sizeForItemAt indexPath: IndexPath) -> CGSize {
     let favorite = favorites.getBy(index: indexPath.item)
-    let cell = update(cell: collectionView.dequeueReusableCell(for: indexPath), with: favorite)
+    let cell = update(cell: cellForSizing, with: favorite)
     let size = cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     return CGSize(width: min(size.width, collectionView.bounds.width), height: size.height)
   }
