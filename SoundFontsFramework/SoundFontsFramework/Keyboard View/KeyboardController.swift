@@ -88,7 +88,6 @@ extension KeyboardController {
   /// Redraw keyboard after layout change.
   override func viewDidLayoutSubviews() {
     os_log(.info, log: self.log, "viewDidLayoutSubviews BEGIN")
-
     super.viewDidLayoutSubviews()
     layoutKeys()
     os_log(.info, log: self.log, "viewDidLayoutSubviews END")

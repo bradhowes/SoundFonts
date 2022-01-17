@@ -64,12 +64,12 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
     checkIfRestored()
   }
 
-  public override func viewWillAppear(_ animated: Bool) {
-    os_log(.info, log: log, "viewWillAppear")
-    super.viewWillAppear(animated)
-
+  public override func viewDidAppear(_ animated: Bool) {
+    os_log(.info, log: log, "viewWillAppear BEGIN")
+    super.viewDidAppear(animated)
     guard let favorite = activePresetManager?.activeFavorite else { return }
     updateCell(with: favorite)
+    os_log(.info, log: log, "viewWillAppear END")
   }
 }
 
