@@ -26,7 +26,7 @@
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                         <accessibility key="accessibilityConfiguration" hint="The name of the entry in the list" label="TableCellName"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="e0a-fO-18n"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="e0a-fO-18n"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <color key="textColor" systemColor="systemTealColor"/>
@@ -35,9 +35,6 @@
                     <textField hidden="YES" opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Testing" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="blq-gq-kkl">
                         <rect key="frame" x="20" y="0.0" width="374" height="44"/>
                         <accessibility key="accessibilityConfiguration" hint="The tag name edit field" label="TagEditor"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="44" id="Hgs-x3-dJD"/>
-                        </constraints>
                         <color key="textColor" systemColor="systemTealColor"/>
                         <fontDescription key="fontDescription" name="EurostileRegular" family="Eurostile" pointSize="20"/>
                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>

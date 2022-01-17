@@ -140,10 +140,6 @@ public extension PresetsTableViewController {
     return index - 1
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    section == 0 ? 0.0 : 18.0
-  }
-
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     "\(section * IndexPath.sectionSize)"
   }
@@ -192,6 +188,10 @@ public extension PresetsTableViewController  {
     return isSearching ? nil : presetsTableViewManager.trailingSwipeActions(at: indexPath, cell: cell)
   }
 
+  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    section == 0 ? 0.0 : 18.0
+  }
+
   override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     guard section > 0 else { return nil }
     guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: presetSectionHeaderIdentifier) else { return nil }
@@ -200,6 +200,14 @@ public extension PresetsTableViewController  {
     view.backgroundView = UIView()
     view.backgroundView?.backgroundColor = .black
     return view
+  }
+
+  override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    0.0
+  }
+
+  override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    nil
   }
 }
 

@@ -54,6 +54,8 @@ final class FontsTableViewManager: NSObject, Tasking {
     activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
     activeTagManager.subscribe(self, notifier: activeTagChanged_BT)
     tags.subscribe(self, notifier: tagsChanged_BT)
+
+    updateTableView()
   }
 
   func selectActive() {

@@ -249,26 +249,25 @@ extension TagsTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard selectable else { return }
+
+    tableView.deselectRow(at: indexPath, animated: true)
 
     if activeNameEditor != nil {
       stopEditingName()
       return
     }
 
-    let tag = tags.getBy(index: indexPath.row)
-    if Tag.stockTagSet.contains(tag.key) {
-      tableView.deselectRow(at: indexPath, animated: true)
-      return
+    if selectable {
+      let tag = tags.getBy(index: indexPath.row)
+      if !Tag.stockTagSet.contains(tag.key) {
+        if active.contains(tag.key) {
+          active.remove(tag.key)
+        } else {
+          active.insert(tag.key)
+        }
+      }
     }
 
-    if active.contains(tag.key) {
-      active.remove(tag.key)
-    } else {
-      active.insert(tag.key)
-    }
-
-    tableView.deselectRow(at: indexPath, animated: true)
     tableView.reloadRows(at: [indexPath], with: .automatic)
   }
 
