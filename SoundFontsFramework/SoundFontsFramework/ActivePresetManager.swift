@@ -28,7 +28,7 @@ public enum ActivePresetEvent: CustomStringConvertible {
  */
 public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, Tasking {
 
-  enum State: Equatable {
+  public enum State: Equatable {
     case starting
     case pending(ActivePresetKind)
     case normal
@@ -39,7 +39,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   private let favorites: Favorites
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let settings: Settings
-  private var state: State = .starting
+  public private(set) var state: State = .starting
 
   /// The currently active preset (if any)
   public private(set) var active: ActivePresetKind = .none

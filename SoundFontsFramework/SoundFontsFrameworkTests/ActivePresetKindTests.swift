@@ -20,7 +20,7 @@ class ActivePresetKindTests: XCTestCase {
                                                 soundFontName: "Booboo", presetIndex: 1, itemName: "Foo")
     let kind = ActivePresetKind.preset(soundFontAndPreset: soundFontAndPreset)
     XCTAssertEqual(kind.soundFontAndPreset, soundFontAndPreset)
-    XCTAssertNil(kind.favorite)
+    XCTAssertNil(kind.favoriteKey)
 
     let dictData = kind.encodeToDict()
     XCTAssertNotNil(dictData)
@@ -50,9 +50,9 @@ class ActivePresetKindTests: XCTestCase {
                             presetConfig: preset.presetConfig,
                             keyboardLowestNote: Note(midiNoteValue: 64))
 
-    let kind = ActivePresetKind.favorite(favorite: favorite)
+    let kind = ActivePresetKind.favorite(favoriteKey: favorite.key, soundFontAndPreset: soundFontAndPreset)
     XCTAssertEqual(kind.soundFontAndPreset, soundFontAndPreset)
-    XCTAssertEqual(kind.favorite, favorite)
+    XCTAssertEqual(kind.favoriteKey, favorite.key)
 
     let dictData = kind.encodeToDict()
     XCTAssertNotNil(dictData)
@@ -72,13 +72,13 @@ class ActivePresetKindTests: XCTestCase {
     XCTAssertNotNil(kinder)
     XCTAssertEqual(kind, kinder)
 
-    XCTAssertEqual(kind.description, "<ActivePresetKind: favorite 'foo': <E621E1F8-C36C-495A-93FC-0C247A3E6E5F[1]: 'Foo'>>")
+    XCTAssertEqual(kind.description, "<ActivePresetKind: favorite \(favorite.key)>")
   }
 
   func testNoneKind() {
     let kind = ActivePresetKind.none
     XCTAssertNil(kind.soundFontAndPreset)
-    XCTAssertNil(kind.favorite)
+    XCTAssertNil(kind.favoriteKey)
 
     let dictData = kind.encodeToDict()
     XCTAssertNotNil(dictData)

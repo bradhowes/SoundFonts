@@ -58,11 +58,11 @@ class SoundFontLibraryPListTest: XCTestCase {
   func testDecodingLegacyConsolidatedFile_V1() {
     let bundle = Bundle(for: type(of: self))
     let url = bundle.url(forResource: "Consolidated_V1", withExtension: "plist")!
-    let configFile = ConsolidatedConfigFile(fileURL: url)
+    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url)
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
-    let observer = ConsolidatedConfigObserver(configFile: configFile) {
+    let observer = ConsolidatedConfigObserver(configProvider: configProvider) {
       expectation.fulfill()
     }
 
@@ -77,11 +77,11 @@ class SoundFontLibraryPListTest: XCTestCase {
   func testDecodingLegacyConsolidatedFile_V2() {
     let bundle = Bundle(for: type(of: self))
     let url = bundle.url(forResource: "Consolidated_V2", withExtension: "plist")!
-    let configFile = ConsolidatedConfigFile(fileURL: url)
+    let configProvider = ConsolidatedConfigProvider(inApp: true, fileURL: url)
 
     let waiter = XCTWaiter()
     let expectation = XCTestExpectation(description: "loaded")
-    let observer = ConsolidatedConfigObserver(configFile: configFile) {
+    let observer = ConsolidatedConfigObserver(configProvider: configProvider) {
       expectation.fulfill()
     }
 
@@ -98,12 +98,12 @@ class SoundFontLibraryPListTest: XCTestCase {
       XCTAssertNotNil(soundFont)
     }
 
-    let soundFonts = SoundFontsManager(configFile, settings: Settings())
-    XCTAssertTrue(soundFonts.restored)
-    let favorites = FavoritesManager(configFile)
-    XCTAssertTrue(favorites.restored)
-    let tags = TagsManager(configFile)
-    XCTAssertTrue(tags.restored)
+    let soundFonts = SoundFontsManager(configProvider, settings: Settings())
+    XCTAssertTrue(soundFonts.isRestored)
+    let favorites = FavoritesManager(configProvider)
+    XCTAssertTrue(favorites.isRestored)
+    let tags = TagsManager(configProvider)
+    XCTAssertTrue(tags.isRestored)
 
     let tag = tags.getBy(index: 0)
     XCTAssertEqual("One", tag.name)

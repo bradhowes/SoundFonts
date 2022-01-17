@@ -19,6 +19,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   private var documentObserver: NSKeyValueObservation?
   private var stateObserver: NSKeyValueObservation?
 
+  private let fileURL: URL?
   private let identity: Int = UUID().hashValue
   private var wasDisabled = false
   private var transferring = false
@@ -35,8 +36,9 @@ public final class ConsolidatedConfigProvider: NSObject {
 
    - parameter fileURL: the location for the document
    */
-  public init(inApp: Bool) {
+  public init(inApp: Bool, fileURL: URL? = nil) {
     os_log(.info, log: Self.log, "init BEGIN")
+    self.fileURL = fileURL
     super.init()
 
     if inApp {
@@ -73,7 +75,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   private func openDocument() {
     os_log(.info, log: log, "%d openDocument BEGIN", identity)
 
-    let document = ConsolidatedConfigFileDocument(identity: identity, contents: config)
+    let document = ConsolidatedConfigFileDocument(identity: identity, contents: config, fileURL: fileURL)
     self.document = document
 
     NotificationCenter.default.addObserver(self, selector: #selector(processStateChange(_:)),

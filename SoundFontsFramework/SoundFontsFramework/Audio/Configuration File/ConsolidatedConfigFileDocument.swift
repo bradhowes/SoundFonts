@@ -23,11 +23,11 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - parameter identity: the identity to use for logging
    - parameter contents: the initial contents to sue
    */
-  init(identity: Int, contents: ConsolidatedConfig?) {
-    os_log(.info, log: Self.log, "init BEGIN")
+  init(identity: Int, contents: ConsolidatedConfig? = nil, fileURL: URL? = nil) {
+    os_log(.info, log: Self.log, "init BEGIN - %{public}s", (fileURL ?? Self.sharedConfigPath).description)
     self.identity = identity
     self.contents = contents
-    super.init(fileURL: Self.sharedConfigPath)
+    super.init(fileURL: fileURL ?? Self.sharedConfigPath)
     os_log(.info, log: Self.log, "init END")
   }
 

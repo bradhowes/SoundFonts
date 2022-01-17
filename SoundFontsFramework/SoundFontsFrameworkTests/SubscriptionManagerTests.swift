@@ -7,9 +7,15 @@ private class Monitor {
   var token: SubscriberToken?
 }
 
-private enum Event {
+private enum Event: CustomStringConvertible {
   case one
   case two
+  public var description: String {
+    switch self {
+    case .one: return "one"
+    case .two: return "two"
+    }
+  }
 }
 
 class SubscriptionManagerTests: XCTestCase {
