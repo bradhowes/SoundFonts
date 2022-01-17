@@ -8,12 +8,10 @@ import os.log
  to be done through a ConsolidatedConfigFileObserver which will run a closure when the configuration value changes.
  */
 public final class ConsolidatedConfigProvider: NSObject {
-  private static let log = Logging.logger("ConsolidatedConfigProvider")
-  private var log: OSLog { Self.log }
-
   private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
                                           autoreleaseFrequency: .inherit, target: .global(qos: .userInitiated))
 
+  private let log: OSLog
   private var _config: ConsolidatedConfig?
   private var document: ConsolidatedConfigFileDocument?
   private var documentObserver: NSKeyValueObservation?
@@ -37,7 +35,10 @@ public final class ConsolidatedConfigProvider: NSObject {
    - parameter fileURL: the location for the document
    */
   public init(inApp: Bool, fileURL: URL? = nil) {
-    os_log(.info, log: Self.log, "init BEGIN")
+    let log = Logging.logger("ConsolidatedConfigProvider[\(identity)]")
+    os_log(.info, log: log, "init BEGIN - %{public}s", fileURL.descriptionOrNil)
+
+    self.log = log
     self.fileURL = fileURL
     super.init()
 
@@ -59,7 +60,7 @@ public final class ConsolidatedConfigProvider: NSObject {
 
     openDocument()
 
-    os_log(.info, log: Self.log, "init END")
+    os_log(.info, log: log, "init END")
   }
 
   /**
@@ -73,12 +74,37 @@ public final class ConsolidatedConfigProvider: NSObject {
    Create a new UIDocument object to get the latest configuration file contents.
    */
   private func openDocument() {
-    os_log(.info, log: log, "%d openDocument BEGIN", identity)
+    os_log(.info, log: log, "openDocument BEGIN")
 
     let document = ConsolidatedConfigFileDocument(identity: identity, contents: config, fileURL: fileURL)
-    self.document = document
+    document.open { ok in
+      if ok {
+        self.useDocument(document)
+        return
+      }
 
-    NotificationCenter.default.addObserver(self, selector: #selector(processStateChange(_:)),
+      self.handleOpenFailure(document)
+    }
+  }
+
+  private func handleOpenFailure(_ document: ConsolidatedConfigFileDocument) {
+    os_log(.error, log: self.log, "handleOpenFailure BEGIN")
+    document.attemptLegacyLoad { ok in
+      if ok {
+        os_log(.error, log: self.log, "handleOpenFailure - using document")
+        self.useDocument(document)
+      } else {
+        os_log(.error, log: self.log, "handleOpenFailure - failed to get initial content")
+        fatalError()
+      }
+    }
+    os_log(.info, log: log, "handleOpenFailure END")
+  }
+
+  private func useDocument(_ document: ConsolidatedConfigFileDocument) {
+    os_log(.error, log: self.log, "useDocument BEGIN")
+    self.document = document
+    NotificationCenter.default.addObserver(self, selector: #selector(self.processStateChange(_:)),
                                            name: UIDocument.stateChangedNotification, object: document)
     documentObserver = document.observe(\.contents, options: []) { _, _ in
       if let newValue = document.contents {
@@ -86,13 +112,11 @@ public final class ConsolidatedConfigProvider: NSObject {
       }
     }
 
-    document.open { ok in
-      if !ok {
-        os_log(.error, log: Self.log, "openDocument - failed to open - attempting legacy loading")
-        document.attemptLegacyLoad()
-      }
+    if let contents = document.contents {
+      self.config = contents
     }
-    os_log(.info, log: log, "%d openDocument END", identity)
+
+    os_log(.error, log: self.log, "useDocument END")
   }
 }
 
@@ -129,11 +153,6 @@ private extension ConsolidatedConfigProvider {
     if state.contains(.inConflict) {
       os_log(.info, log: log, "processStateChange - conflict was detected")
       resolveDocumentConflict(document: document)
-    }
-
-    if state.contains(.savingError) {
-      os_log(.info, log: log, "processStateChange - failed to save document")
-      openDocument()
     }
 
     handleDocStateForTransfers(state: state)
@@ -176,7 +195,7 @@ private extension ConsolidatedConfigProvider {
    - parameter notification: the notification that fired
    */
   @objc func willResignActiveNotification(_ notification: Notification) {
-    os_log(.info, log: log, "%d willResignActiveNotification BEGIN", identity)
+    os_log(.info, log: log, "willResignActiveNotification BEGIN")
     guard let document = self.document else { return }
 
     self.documentObserver = nil
@@ -184,17 +203,17 @@ private extension ConsolidatedConfigProvider {
 
     if document.hasUnsavedChanges {
       document.save(to: document.fileURL, for: .forOverwriting) { ok in
-        os_log(.info, log: self.log, "%d willResignActiveNotification - save ok %d", self.identity, ok)
+        os_log(.info, log: self.log, "willResignActiveNotification - save ok %d", ok)
         document.close { ok in
-          os_log(.info, log: self.log, "%d willResignActiveNotification - close ok %d", self.identity, ok)
+          os_log(.info, log: self.log, "willResignActiveNotification - close ok %d", ok)
         }
       }
     } else {
       document.close { ok in
-        os_log(.info, log: self.log, "%d willResignActiveNotification - close ok %d", self.identity, ok)
+        os_log(.info, log: self.log, "willResignActiveNotification - close ok %d", ok)
       }
     }
-    os_log(.info, log: log, "%d willResignActiveNotification END", identity)
+    os_log(.info, log: log, "willResignActiveNotification END")
   }
 
   /**
@@ -204,8 +223,8 @@ private extension ConsolidatedConfigProvider {
    - parameter notification: the notification that fired
    */
   @objc func willEnterForegroundNotification(_ notification: Notification) {
-    os_log(.info, log: log, "%d willEnterForegroundNotification BEGIN", identity)
+    os_log(.info, log: log, "willEnterForegroundNotification BEGIN")
     self.openDocument()
-    os_log(.info, log: log, "%d willEnterForegroundNotification END", identity)
+    os_log(.info, log: log, "willEnterForegroundNotification END")
   }
 }

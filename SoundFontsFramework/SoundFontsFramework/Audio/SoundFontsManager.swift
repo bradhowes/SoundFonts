@@ -83,7 +83,9 @@ extension SoundFontsManager: SoundFonts {
 
   public func getBy(index: Int) -> SoundFont { collection.getBy(index: index) }
 
-  public func getBy(key: SoundFont.Key) -> SoundFont? { collection.getBy(key: key) }
+  public func getBy(key: SoundFont.Key) -> SoundFont? {
+    collection.getBy(key: key)
+  }
 
   public func getBy(soundFontAndPreset: SoundFontAndPreset) -> SoundFont? {
     collection.getBy(soundFontAndPreset: soundFontAndPreset)

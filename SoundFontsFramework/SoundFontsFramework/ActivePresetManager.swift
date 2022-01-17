@@ -157,6 +157,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
     let old = active
     active = kind
     save(kind)
+
     notify(.change(old: old, new: kind, playSample: playSample))
     os_log(.debug, log: log, "setActive END")
   }
@@ -208,20 +209,37 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   }
 
   private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
+    os_log(.info, log: log, "rebuild BEGIN - %{public}s", kind.description)
+
     switch kind {
-    case .preset: return kind
+    case .preset:
+      os_log(.info, log: log, "rebuild END - using same")
+      return kind
+
     case let .favorite(favoriteKey, soundFontAndPreset):
+      os_log(.info, log: log, "rebuild - favorite: %{public}s %{public}s", favoriteKey.uuidString,
+             soundFontAndPreset.itemName)
       if favorites.contains(key: favoriteKey) {
+        os_log(.info, log: log, "rebuild END - using favorite")
         let favorite = favorites.getBy(key: favoriteKey)
         return .favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset)
       } else if soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil {
+        os_log(.info, log: log, "rebuild END - using preset")
         return .preset(soundFontAndPreset: soundFontAndPreset)
       } else if let preset = soundFonts.defaultPreset {
+        os_log(.info, log: log, "rebuild END - using default preset")
         return .preset(soundFontAndPreset: preset)
       } else {
+        os_log(.info, log: log, "rebuild END - using none")
         return .none
       }
-    case .none: return .none
+    case .none:
+      if let defaultPreset = soundFonts.defaultPreset {
+        os_log(.info, log: log, "rebuild END - using default preset")
+        return .preset(soundFontAndPreset: defaultPreset)
+      }
+      os_log(.info, log: log, "rebuild END - using none")
+      return .none
     }
   }
 }

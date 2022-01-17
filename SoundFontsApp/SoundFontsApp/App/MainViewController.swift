@@ -13,6 +13,7 @@ final class MainViewController: UIViewController, Tasking {
 
   private weak var router: ComponentContainer?
   private var midiController: MIDIController?
+  private var soundFonts: SoundFonts!
   private var activePresetManager: ActivePresetManager!
   private var keyboard: Keyboard!
   private var sampler: Sampler?
@@ -255,6 +256,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.info, log: log, "establishConnections BEGIN")
     self.router = router
 
+    soundFonts = router.soundFonts
     infoBar = router.infoBar
     keyboard = router.keyboard
     activePresetManager = router.activePresetManager
@@ -266,21 +268,13 @@ extension MainViewController: ControllerConfiguration {
     #endif
 
     router.activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
-
-    let preset: ActivePresetKind = {
-      let lastActivePreset = settings.lastActivePreset
-      if lastActivePreset != .none { return lastActivePreset }
-      if let defaultPreset = router.soundFonts.defaultPreset { return .preset(soundFontAndPreset: defaultPreset) }
-      return .none
-    }()
-
-    activePresetManager.restoreActive(preset)
-
     router.subscribe(self, notifier: routerChanged_BT)
     if let sampler = router.sampler {
       activePresetManager.runOnNotifyQueue { self.setSampler_BT(sampler) }
     }
     
+    activePresetManager.restoreActive(settings.lastActivePreset)
+
     os_log(.info, log: log, "establishConnections END")
   }
 

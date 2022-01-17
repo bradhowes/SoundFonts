@@ -196,23 +196,32 @@ extension FontsTableViewManager {
   }
 
   private func handlePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
+    os_log(.debug, log: log, "handlePresetChanged BEGIN - old: %{public}s new: %{public}s", old.description,
+           new.description)
+
     if old.soundFontAndPreset?.soundFontKey != new.soundFontAndPreset?.soundFontKey {
+      os_log(.debug, log: log, "handlePresetChanged - font key differs")
       if let key = old.soundFontAndPreset?.soundFontKey {
         let row = dataSource.firstIndex(of: key)
+        os_log(.debug, log: log, "handlePresetChanged - updating old row")
         updateRow(row: row)
       }
 
       if let soundFontAndPreset = new.soundFontAndPreset {
         let key = soundFontAndPreset.soundFontKey
         let row = dataSource.firstIndex(of: key)
+        os_log(.debug, log: log, "handlePresetChanged - updating new row")
         updateRow(row: row)
         if let soundFont = activePresetManager.resolveToSoundFont(soundFontAndPreset) {
+          os_log(.debug, log: log, "handlePresetChanged - selecting font")
           selectedSoundFontManager.setSelected(soundFont)
         } else {
+          os_log(.debug, log: log, "handlePresetChanged - clearing font")
           selectedSoundFontManager.clearSelected()
         }
       }
     }
+    os_log(.debug, log: log, "handlePresetChanged END")
   }
 
   private func handleFontChanged(old: SoundFont.Key?, new: SoundFont.Key?) {

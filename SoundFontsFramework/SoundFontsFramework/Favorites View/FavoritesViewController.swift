@@ -178,6 +178,7 @@ extension FavoritesViewController: ControllerConfiguration {
         favoritesView.dataSource = self
         favoritesView.delegate = self
       }
+
       soundFonts.validateCollections(favorites: self.favorites, tags: self.tags)
       favoritesView.reloadData()
     }

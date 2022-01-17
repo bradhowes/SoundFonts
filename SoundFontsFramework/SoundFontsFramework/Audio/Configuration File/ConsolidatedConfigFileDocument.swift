@@ -5,8 +5,7 @@ import os.log
  Implementation of UIDocument that knows how to work with ConsolidatedConfig entities.
  */
 final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
-  private static let log = Logging.logger("ConfigFileDocument")
-  private var log: OSLog { Self.log }
+  private let log: OSLog
 
   private static let filename = "Consolidated.plist"
   private static var sharedConfigPath: URL { FileManager.default.sharedPath(for: filename) }
@@ -24,15 +23,18 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - parameter contents: the initial contents to sue
    */
   init(identity: Int, contents: ConsolidatedConfig? = nil, fileURL: URL? = nil) {
-    os_log(.info, log: Self.log, "init BEGIN - %{public}s", (fileURL ?? Self.sharedConfigPath).description)
+    let fileURL = fileURL ?? Self.sharedConfigPath
+    let log = Logging.logger("ConfigFileDocument[\(identity)]")
+    os_log(.info, log: log, "init BEGIN - %{public}s", fileURL.description)
+    self.log = log
     self.identity = identity
     self.contents = contents
-    super.init(fileURL: fileURL ?? Self.sharedConfigPath)
-    os_log(.info, log: Self.log, "init END")
+    super.init(fileURL: fileURL)
+    os_log(.info, log: log, "init END")
   }
 
   deinit{
-    os_log(.info, log: Self.log, "deinit")
+    os_log(.info, log: log, "deinit")
   }
 
   /**
@@ -43,9 +45,9 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - throws exception if the encoding fails for any reason
    */
   override public func contents(forType typeName: String) throws -> Any {
-    os_log(.info, log: log, "%d contents - typeName: %{public}s", identity, typeName)
+    os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
     let data = try PropertyListEncoder().encode(contents)
-    os_log(.info, log: log, "%d contents - pending save of %d bytes", identity, data.count)
+    os_log(.info, log: log, "contents - pending save of %d bytes", data.count)
     return data
   }
 
@@ -57,63 +59,67 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - throws exception if the decoding fails for any reason
    */
   override public func load(fromContents contents: Any, ofType typeName: String?) throws {
-    os_log(.info, log: log, "%d load BEGIN - typeName: %{public}s", identity, typeName ?? "nil")
+    os_log(.info, log: log, "load BEGIN - typeName: %{public}s", typeName ?? "nil")
 
     guard let data = contents as? Data else {
-      os_log(.error, log: log, "%d load - given contents was not Data", identity)
+      os_log(.error, log: log, "load - given contents was not Data")
       createDefaultContents()
       NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
     guard let contents = try? PropertyListDecoder().decode(ConsolidatedConfig.self, from: data) else {
-      os_log(.error, log: log, "%d load - failed to decode Data contents", identity)
+      os_log(.error, log: log, "load - failed to decode Data contents")
       createDefaultContents()
       NotificationCenter.default.post(Notification(name: .configLoadFailure, object: nil))
       return
     }
 
-    os_log(.info, log: log, "%d load decoded contents: %{public}s", identity, contents.description)
-    restoreContents(contents, save: false)
-
-    os_log(.error, log: log, "%d load END", identity)
+    os_log(.info, log: log, "load decoded contents: %{public}s", contents.description)
+    setContents(contents, save: false)
+    os_log(.error, log: log, "load END")
   }
 
   /**
    Try to load old-style legacy files. This should be called if the initial `open` fails because the config file does
    not exist.
    */
-  internal func attemptLegacyLoad() {
-    os_log(.info, log: log, "%d attemptLegacyLoad", identity)
+  internal func attemptLegacyLoad(completion: ((Bool) -> Void)? = nil) {
+    os_log(.info, log: log, "attemptLegacyLoad")
     guard
       let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(filename: "SoundFontLibrary.plist"),
       let favorites = LegacyConfigFileLoader<FavoriteCollection>.load(filename: "Favorites.plist"),
       let tags = LegacyConfigFileLoader<TagCollection>.load(filename: "Tags.plist")
     else {
-      os_log(.info, log: log, "%d failed to load one or more legacy files", identity)
-      createDefaultContents()
+      os_log(.info, log: log, "failed to load one or more legacy files")
+      createDefaultContents(completion: completion)
       return
     }
 
-    os_log(.info, log: log, "%d attemptLegacyLoad using legacy contents", identity)
-    restoreContents(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true)
+    os_log(.info, log: log, "attemptLegacyLoad using legacy contents")
+    setContents(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true,
+                completion: completion)
   }
 
   /**
    Create a new ConsolidatedConfig instance and use for the contents.
    */
-  private func createDefaultContents() {
-    os_log(.info, log: log, "%d createDefaultContents", identity)
-    self.restoreContents(ConsolidatedConfig(), save: true)
+  private func createDefaultContents(completion: ((Bool) -> Void)? = nil) {
+    os_log(.info, log: log, "createDefaultContents")
+    self.setContents(ConsolidatedConfig(), save: true, completion: completion)
   }
 
-  private func restoreContents(_ config: ConsolidatedConfig, save: Bool) {
-    os_log(.info, log: log, "%d restoreContents", identity)
+  private func setContents(_ config: ConsolidatedConfig, save: Bool, completion: ((Bool) -> Void)? = nil) {
+    os_log(.info, log: log, "restoreContents")
     self.contents = config
     if save {
+      os_log(.info, log: log, "restoreContents saving")
       self.save(to: fileURL, for: .forCreating) { ok in
-        os_log(.info, log: self.log, "%d restoreContents - save ok %d", self.identity, ok)
+        os_log(.info, log: self.log, "restoreContents - save ok %d", ok)
+        completion?(ok)
       }
+    } else {
+      completion?(true)
     }
   }
 }
