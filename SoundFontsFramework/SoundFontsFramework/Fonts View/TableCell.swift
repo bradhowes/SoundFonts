@@ -8,15 +8,24 @@ import os
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   private lazy var log = Logging.logger("TableCell")
 
+  /**
+   Attribute flags that describes the models the state of a row in a table
+   */
   public struct Flags: OptionSet {
     public let rawValue: Int
     public init(rawValue: Int) { self.rawValue = rawValue }
 
+    /// The row is currently selected but not active (pertains to the list of fonts)
     public static let selected = Flags(rawValue: 1 << 0)
+    /// The row is currently active -- shows marker besides the name
     public static let active = Flags(rawValue: 1 << 1)
+    /// The row is showing a favorited item -- shows a `star` before the name
     public static let favorite = Flags(rawValue: 1 << 2)
+    /// The row is showing a preset with a custom tuning adjustment
     public static let tuningSetting = Flags(rawValue: 1 << 3)
+    /// The row is showing a preset with a custom pan adjustment
     public static let panSetting = Flags(rawValue: 1 << 4)
+    /// The row is showing a preset with a custom gain adjustment
     public static let gainSetting = Flags(rawValue: 1 << 5)
 
     public var isSelected: Bool { self.contains(.selected) }
@@ -30,9 +39,7 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   /// Unicode character to show when a cell refers to a preset that is in a Favorite
   private static let goldStarPrefix = "✪"
 
-  public static func favoriteTag(_ isFavorite: Bool) -> String {
-    return isFavorite ? goldStarPrefix + " " : ""
-  }
+  public static func favoriteTag(_ isFavorite: Bool) -> String { isFavorite ? goldStarPrefix + " " : "" }
 
   private let normalFontColor: UIColor = .lightGray
   private let selectedFontColor: UIColor = .white
@@ -43,7 +50,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
   @IBOutlet weak var activeIndicator: UIView!
   /// Text field used to edit tag names (not used for SoundFont or Preset names)
   @IBOutlet weak var tagEditor: UITextField!
-
   @IBOutlet weak var tuningIndicator: UILabel!
   @IBOutlet weak var panIndicator: UILabel!
   @IBOutlet weak var gainIndicator: UILabel!
@@ -59,7 +65,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     translatesAutoresizingMaskIntoConstraints = true
     selectedBackgroundView = UIView()
     multipleSelectionBackgroundView = UIView()
-    tuningIndicator.layer.cornerRadius = 3.0
   }
 
   /**

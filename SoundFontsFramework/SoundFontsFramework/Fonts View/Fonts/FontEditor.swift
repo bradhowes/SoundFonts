@@ -212,7 +212,7 @@ extension FontEditor {
 
   private func prepareToEdit(_ segue: UIStoryboardSegue) {
     guard let viewController = segue.destination as? TagsTableViewController else {
-      fatalError("unexpected view configuration")
+      fatalError("unexpected controller relationships")
     }
 
     let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,

@@ -329,7 +329,7 @@ extension SoundFontsViewController: SegueHandler {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FontEditor
     else {
-      return
+      fatalError("unexpected view configuration")
     }
 
     viewController.delegate = self
@@ -354,7 +354,7 @@ extension SoundFontsViewController: SegueHandler {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? TagsTableViewController
     else {
-      return
+      fatalError("unexpected view configuration")
     }
 
     viewController.configure(config)

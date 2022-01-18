@@ -22,7 +22,8 @@ public enum ActiveTagEvent: CustomStringConvertible {
 }
 
 /**
- Tracks and manages the active tag. It also serves as the data source and delegate for the tags table view.
+ Tracks and manages the active tag. It also serves as the data source and delegate for the tags table view that is
+ revealed by the "tags" button on the info bar. There is also a `TagsTableViewController`, but this is not it.
  */
 final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Tasking {
   private lazy var log = Logging.logger("ActiveTagManager")
@@ -105,19 +106,6 @@ extension ActiveTagManager {
       viewController.performSegue(withIdentifier: .tagsEditor, sender: config)
     }
   }
-
-//  private func prepareToEdit(_ segue: UIStoryboardSegue) {
-//    guard let viewController = segue.destination as? TagsTableViewController else {
-//      fatalError("unexpected view configuration")
-//    }
-//
-//    let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,
-//                                                builtIn: soundFont.kind.resource) { [weak self] tags in
-//      self?.activeTags = tags
-//    }
-//
-//    viewController.configure(config)
-//  }
 
   private func refresh() {
     guard tags.isRestored else { return }

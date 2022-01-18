@@ -3,14 +3,30 @@
 import UIKit
 import os
 
-/// Manages the table view that appears off of the preset editor. Allows full editing of the tags collection.
+/**
+ View controller that allows one to edit the defined tags for sound fonts. This controller can change the names of
+ tags, create new ones, and delete existing ones. It can also change the ordering of tags, affecting the display ordering
+ in the `ActiveTagManager`. This controller comes into play either from the font editor or by long pressing on a tag in
+ the `ActiveTagManager` view.
+ */
 public final class TagsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("TagsTableViewController")
 
-  private enum Action {
+  /// The current action being undertaken by the editor. Used to manage state transitions and UI view.
+  fileprivate enum Action {
+    /// Enter `edit` mode and allow creation, deletion and movement of tags.
     case editTagEntries
+    /// Enter renaming mode for one tag
     case editTagName(indexPath: IndexPath, selected: Bool)
+    /// Exit editing mode and just present the tag names
     case doneEditing
+
+    var activeNameEditor: IndexPath? {
+      switch self {
+      case .editTagName(let indexPath, _): return indexPath
+      default: return nil
+      }
+    }
   }
 
   /**
@@ -26,6 +42,14 @@ public final class TagsTableViewController: UITableViewController {
     /// The method to invoke when the controller is dismissed
     let completionHandler: ((Set<Tag.Key>) -> Void)?
 
+    /**
+     Constructor for editing the tags of a sound font.
+
+     - parameter tags: the tags that currently exist
+     - parameter active: the set of tags associated with the sound font
+     - parameter builtIn: true if the sound font is a builtin one
+     - parameter completionHandler: completion handler that receives a new `active` set when the editor is dismissed.
+     */
     init(tags: Tags, active: Set<Tag.Key>, builtIn: Bool, completionHandler: @escaping (Set<Tag.Key>) -> Void) {
       self.tags = tags
       self.active = active
@@ -33,6 +57,11 @@ public final class TagsTableViewController: UITableViewController {
       self.completionHandler = completionHandler
     }
 
+    /**
+     Constructor for editing all of the tags
+
+     - parameter tags: the tags that currently exist
+     */
     init(tags: Tags) {
       self.tags = tags
       self.active = nil
@@ -41,6 +70,7 @@ public final class TagsTableViewController: UITableViewController {
     }
   }
 
+  // NOTE: do *not* make these buttons `weak` or else they will become nil when editing mode changes.
   @IBOutlet private var cancelButton: UIBarButtonItem!
   @IBOutlet private var addButton: UIBarButtonItem!
   @IBOutlet private var editButton: UIBarButtonItem!
@@ -51,18 +81,22 @@ public final class TagsTableViewController: UITableViewController {
   private var builtIn: Bool = false
   private var selectable: Bool = true
   private var completionHandler: ((Set<Tag.Key>) -> Void)?
-
-  private var currentAction: Action = .doneEditing {
-    didSet { updateButtons() }
-  }
+  private var currentAction: Action = .doneEditing { didSet { updateButtons() } }
+  private var activeNameEditor: IndexPath? { currentAction.activeNameEditor }
 
   /**
-   Configure the editor.
+   Configure the editor with given attributes
+
+   - parameter config: the configuration to apply
    */
   func configure(_ config: Config) {
     self.active.removeAll()
     self.tags = config.tags
     self.builtIn = config.builtIn
+
+    // When `active` is not nil, we are editing the tags of a specific sound font. Otherwise, we are editing all of the
+    // tags. The only real difference is that in the latter case there is no `selection` involved for adding/removing
+    // a sound font from tag membership.
     self.selectable = config.active != nil
     self.completionHandler = config.completionHandler
 
@@ -73,9 +107,11 @@ public final class TagsTableViewController: UITableViewController {
         }
       }
 
-      // We are appearing from the FontEditor controller
+      // We are appearing from the FontEditor controller, so do not show the `Cancel` button
       navigationItem.leftBarButtonItem = nil
     }
+
+    currentAction = .doneEditing
   }
 
   override public func viewDidLoad() {
@@ -88,13 +124,6 @@ public final class TagsTableViewController: UITableViewController {
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(editTagName(_:)))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)
-  }
-
-  override public func viewWillAppear(_ animated: Bool) {
-    os_log(.debug, log: log, "viewWillAppear")
-    super.viewWillAppear(animated)
-
-    currentAction = .doneEditing
   }
 
   override public func viewWillDisappear(_ animated: Bool) {
@@ -161,6 +190,8 @@ extension TagsTableViewController {
   }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension TagsTableViewController: UITextFieldDelegate {
 
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -176,13 +207,6 @@ extension TagsTableViewController: UITextFieldDelegate {
 }
 
 extension TagsTableViewController {
-
-  private var activeNameEditor: IndexPath? {
-    switch currentAction {
-    case let .editTagName(indexPath, _): return indexPath
-    default: return nil
-    }
-  }
 
   private func updateButtons() {
     switch currentAction {
@@ -225,8 +249,11 @@ extension TagsTableViewController {
     }
 
     currentAction = .doneEditing
-
     guard let cell = tableView.cellForRow(at: indexPath) as? TableCell else { fatalError() }
+
+    // Don't allow for empty tag names or ones with just whitespace characters. For now, duplicate names are OK, just a
+    // bit pointless and of no real concern since tag names are not involved in anything other than display and
+    // ordering.
     if let text = cell.tagEditor.text?.trimmingCharacters(in: .whitespaces), !text.isEmpty {
       os_log(.debug, log: log, "new tag name: '%{public}s'", text)
       tags.rename(indexPath.row, name: text)
@@ -237,6 +264,8 @@ extension TagsTableViewController {
     }
   }
 }
+
+// MARK: - UITableViewDataSource / UITableViewDelegate
 
 extension TagsTableViewController {
 
@@ -258,12 +287,12 @@ extension TagsTableViewController {
     }
 
     if selectable {
-      let tag = tags.getBy(index: indexPath.row)
-      if !Tag.stockTagSet.contains(tag.key) {
-        if active.contains(tag.key) {
-          active.remove(tag.key)
+      let tagKey = tags.getBy(index: indexPath.row).key
+      if !Tag.stockTagSet.contains(tagKey) {
+        if active.contains(tagKey) {
+          active.remove(tagKey)
         } else {
-          active.insert(tag.key)
+          active.insert(tagKey)
         }
       }
     }
@@ -273,19 +302,13 @@ extension TagsTableViewController {
 
   override public func tableView(_ tableView: UITableView,
                                  editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    let tag = tags.getBy(index: indexPath.row)
-    if tag.key == Tag.allTag.key || tag.key == Tag.builtInTag.key {
-      return .none
-    }
-    return .delete
+    // Do not allow the `All` tag and the `Built-in` tags to be edited.
+    Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key) ? .none : .delete
   }
 
   override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    let tag = tags.getBy(index: indexPath.row)
-    if tag.key == Tag.allTag.key || tag.key == Tag.builtInTag.key {
-      return false
-    }
-    return true
+    // Do not allow the `All` tag and the `Built-in` tags to be edited.
+    !Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key)
   }
 
   override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
@@ -318,6 +341,8 @@ extension TagsTableViewController: Tasking {
     let tag = tags.getBy(index: indexPath.row)
 
     if case let .editTagName(editIndexPath, selected) = currentAction, editIndexPath == indexPath {
+
+      // Show the special name editor
       cell.name.isHidden = true
       cell.tagEditor.isHidden = false
       cell.tagEditor.isEnabled = true
@@ -330,6 +355,7 @@ extension TagsTableViewController: Tasking {
         }
       }
     } else {
+      // Show the normal name view
       cell.name.isHidden = false
       cell.tagEditor.isHidden = true
       cell.tagEditor.isEnabled = false
@@ -338,6 +364,8 @@ extension TagsTableViewController: Tasking {
 
     var flags: TableCell.Flags = .init()
     if selectable {
+
+      // Use the `active` attribute to show that the sound font is currently a member of a tag.
       if tag == Tag.allTag || active.contains(tag.key) || (self.builtIn && tag == Tag.builtInTag) {
         flags.insert(.active)
       }

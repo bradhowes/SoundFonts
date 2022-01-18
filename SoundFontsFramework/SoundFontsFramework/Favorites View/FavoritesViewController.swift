@@ -205,13 +205,15 @@ extension FavoritesViewController: SegueHandler {
     guard let navController = segue.destination as? UINavigationController,
           let viewController = navController.topViewController as? FavoriteEditor
     else {
-      return
+      fatalError("unexpected controller relationships")
     }
 
     viewController.delegate = self
     viewController.configure(config)
 
     if keyboard == nil {
+
+      // Constrained layout due to being an AUv3.
       viewController.modalPresentationStyle = .fullScreen
       viewController.modalPresentationStyle = .fullScreen
     }
