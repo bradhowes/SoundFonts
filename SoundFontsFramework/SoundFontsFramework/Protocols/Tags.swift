@@ -118,8 +118,7 @@ public protocol Tags: AnyObject {
    - returns: token that identifies the subscription and can be used to unsubscribe
    */
   @discardableResult
-  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void)
-  -> SubscriberToken
+  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (TagsEvent) -> Void) -> SubscriberToken
 
   func validate()
 }

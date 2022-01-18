@@ -245,6 +245,5 @@ public protocol SoundFonts: AnyObject {
    - returns: token that can be used to unsubscribe
    */
   @discardableResult
-  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (SoundFontsEvent) -> Void)
-  -> SubscriberToken
+  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (SoundFontsEvent) -> Void) -> SubscriberToken
 }

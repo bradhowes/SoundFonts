@@ -4,7 +4,8 @@ import Foundation
 import os.log
 
 /// A unique combination of a SoundFont and one if its presets. This is the normal way to communicate what preset is
-/// active and what a `favorite` item points to.
+/// active and what a `favorite` item points to. This value is safe to store in a setting or configuration file since
+/// the soundFontKey can be resolved during loading to make sure that the soundFont has not been removed.
 public struct SoundFontAndPreset: Codable, Hashable {
   private static let log = Logging.logger("SoundFontAndPreset")
   private var log: OSLog { Self.log }
@@ -74,6 +75,5 @@ public struct SoundFontAndPreset: Codable, Hashable {
 }
 
 extension SoundFontAndPreset: CustomStringConvertible {
-  /// Custom string representation
   public var description: String { "<\(soundFontKey)[\(presetIndex)]: '\(itemName)'>" }
 }

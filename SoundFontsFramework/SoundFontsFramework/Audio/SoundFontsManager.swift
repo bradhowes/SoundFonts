@@ -5,7 +5,7 @@ import SoundFontInfoLib
 import UIKit
 import os
 
-/// Manages a collection of SoundFont instances. Changes to the collection are communicated as a SoundFontsEvent event.
+/// Manages a collection of SoundFont instances. Changes to the collection are communicated as SoundFontsEvent events.
 public final class SoundFontsManager: SubscriptionManager<SoundFontsEvent> {
   private static let log = Logging.logger("SoundFontsManager")
   private var log: OSLog { Self.log }

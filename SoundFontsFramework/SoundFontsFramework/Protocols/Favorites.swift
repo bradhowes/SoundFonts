@@ -172,8 +172,7 @@ public protocol Favorites {
    - returns: token that can be used to unsubscribe
    */
   @discardableResult
-  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (FavoritesEvent) -> Void)
-  -> SubscriberToken
+  func subscribe<O: AnyObject>(_ subscriber: O, notifier: @escaping (FavoritesEvent) -> Void) -> SubscriberToken
 
   func validate(_ soundFonts: SoundFonts)
 }

@@ -12,7 +12,7 @@ public final class SoundFontCollection: Codable {
   /// Mapping of SoundFont UUID (generated at installation) and the SoundFont instance
   private var catalog: CatalogMap
 
-  /// Sorted names of the SoundFont instances
+  /// Sorted names of the SoundFont instances. This is the order in which the SoundFont names will be displayed.
   private var sortedKeys: SortedKeyArray
 
   /// True if there are no SoundFont instances in the collection
