@@ -68,7 +68,7 @@ public protocol Favorites {
    - parameter favorite: what to look for
    - returns: the position of the Favorite
    */
-  func index(of favorite: Favorite.Key) -> Int
+  func index(of favorite: Favorite.Key) -> Int?
 
   /**
    Obtain the Favorite at the given index
@@ -84,7 +84,7 @@ public protocol Favorites {
    - parameter key the key to look for
    - returns: Favorite with the given key
    */
-  func getBy(key: Favorite.Key) -> Favorite
+  func getBy(key: Favorite.Key) -> Favorite?
 
   /**
    Add a Favorite to the collection

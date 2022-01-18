@@ -39,9 +39,10 @@ internal struct PresetsTableRowVisibilityEditor {
       processPresetConfig(preset.presetConfig) { .preset(index: presetIndex) }
       slotIndex += 1
       for favoriteKey in preset.favorites {
-        let favorite = favorites.getBy(key: favoriteKey)
-        processPresetConfig(favorite.presetConfig) { .favorite(key: favoriteKey) }
-        slotIndex += 1
+        if let favorite = favorites.getBy(key: favoriteKey) {
+          processPresetConfig(favorite.presetConfig) { .favorite(key: favoriteKey) }
+          slotIndex += 1
+        }
       }
     }
 
@@ -67,12 +68,14 @@ internal struct PresetsTableRowVisibilityEditor {
     while slotIndex.rawValue >= 0 {
       switch viewSlots[slotIndex] {
       case .preset(let index): processPresetConfig(soundFont.presets[index].presetConfig)
-      case .favorite(let key): processPresetConfig(favorites.getBy(key: key).presetConfig)
+      case .favorite(let key):
+        if let favorite = favorites.getBy(key: key) {
+          processPresetConfig(favorite.presetConfig)
+        }
       }
       slotIndex = .init(rawValue: slotIndex.rawValue - 1)
     }
 
     return tableViewChanges
   }
-
 }

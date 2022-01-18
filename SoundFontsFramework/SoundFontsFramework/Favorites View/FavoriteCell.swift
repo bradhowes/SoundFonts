@@ -3,7 +3,7 @@
 import UIKit
 import os
 
-/// Specialization of `UICollectionViewCell` that knows how to render Favorite attributes.
+/// Specialization of `UICollectionViewCell` that knows how to render Favorite names.
 final class FavoriteCell: UICollectionViewCell, ReusableView, NibLoadableView {
   private lazy var log = Logging.logger("FavoriteCell")
 

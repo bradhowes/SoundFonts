@@ -14,13 +14,7 @@ final public class FavoriteCollection: Codable {
     self.favorites = []
   }
 
-  func index(of key: Favorite.Key) -> Int {
-    guard let index = (favorites.firstIndex { $0.key == key }) else {
-      fatalError("internal inconsistency - missing favorite key '\(key.uuidString)'")
-    }
-    return index
-  }
-
+  func index(of key: Favorite.Key) -> Int? { favorites.firstIndex { $0.key == key } }
   func contains(key: Favorite.Key) -> Bool { favorites.firstIndex { $0.key == key } != nil }
 
   /**
@@ -37,8 +31,9 @@ final public class FavoriteCollection: Codable {
    - parameter key: the key to look for
    - returns: the optional favorite instance
    */
-  func getBy(key: Favorite.Key) -> Favorite {
-    favorites[index(of: key)]
+  func getBy(key: Favorite.Key) -> Favorite? {
+    guard let index = index(of: key) else { return nil }
+    return favorites[index]
   }
 
   /**
@@ -78,9 +73,10 @@ final public class FavoriteCollection: Codable {
    - parameter key: the key of the favorite to remove
    - returns: the instance that was removed from the collection
    */
-  func remove(key: Favorite.Key) -> Favorite {
+  func remove(key: Favorite.Key) -> Favorite? {
     defer { AskForReview.maybe() }
-    return favorites.remove(at: index(of: key))
+    guard let index = index(of: key) else { return nil }
+    return favorites.remove(at: index)
   }
 
   /**

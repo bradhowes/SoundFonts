@@ -2,7 +2,7 @@
 
 import Foundation
 
-/// A custom setting with a SoundFont preset and a keyboard configuration.
+/// A custom setting for a SoundFont preset.
 public class Favorite: Codable {
 
   /// The type for the unique Key for a favorite
@@ -30,7 +30,7 @@ public class Favorite: Codable {
   /// The unique key of the favorite
   public let key: Key
 
-  /// The key for the preset
+  /// The key for the preset that is the basis for the favorite.
   public let soundFontAndPreset: SoundFontAndPreset
 
   /// The custom configuration for the preset
@@ -40,7 +40,8 @@ public class Favorite: Codable {
    Create a new instance. The name of the favorite will start with the name of the preset.
 
    - parameter soundFontAndPreset: the preset to use
-   - parameter keyboardLowestNote: the starting note of the keyboard
+   - parameter presetConfig: the custom configuration to apply
+   - parameter keyboardLowestNote: the change to apply to the keyboard if allowed
    */
   public init(soundFontAndPreset: SoundFontAndPreset, presetConfig: PresetConfig, keyboardLowestNote: Note?) {
     self.key = Key()

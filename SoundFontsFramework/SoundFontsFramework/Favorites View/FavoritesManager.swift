@@ -30,11 +30,11 @@ extension FavoritesManager: Favorites {
 
   func contains(key: Favorite.Key) -> Bool { collection.contains(key: key) }
 
-  func index(of key: Favorite.Key) -> Int { collection.index(of: key) }
+  func index(of key: Favorite.Key) -> Int? { collection.index(of: key) }
 
   func getBy(index: Int) -> Favorite { collection.getBy(index: index) }
 
-  func getBy(key: Favorite.Key) -> Favorite { collection.getBy(key: key) }
+  func getBy(key: Favorite.Key) -> Favorite? { collection.getBy(key: key) }
 
   func add(favorite: Favorite) {
     defer { markCollectionChanged() }
@@ -64,16 +64,16 @@ extension FavoritesManager: Favorites {
   }
 
   func remove(key: Favorite.Key) {
-    defer { markCollectionChanged() }
-    let index = collection.index(of: key)
+    guard let index = collection.index(of: key) else { return }
     let favorite = collection.remove(at: index)
     notify(.removed(index: index, favorite: favorite))
+    markCollectionChanged()
   }
 
   func removeAll(associatedWith soundFont: SoundFont) {
-    defer { markCollectionChanged() }
     collection.removeAll(associatedWith: soundFont.key)
     notify(.removedAll(associatedWith: soundFont))
+    markCollectionChanged()
   }
 
   func count(associatedWith soundFont: SoundFont) -> Int {
@@ -81,15 +81,15 @@ extension FavoritesManager: Favorites {
   }
 
   func setVisibility(key: Favorite.Key, state isVisible: Bool) {
-    defer { markCollectionChanged() }
-    let favorite = collection.getBy(key: key)
-    favorite.presetConfig.isHidden = !isVisible
+    if let favorite = collection.getBy(key: key) {
+      favorite.presetConfig.isHidden = !isVisible
+      markCollectionChanged()
+    }
   }
 
   func setEffects(favorite: Favorite, delay: DelayConfig?, reverb: ReverbConfig?, chorus: ChorusConfig?) {
-    os_log(
-      .debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
-      delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
+    os_log(.debug, log: log, "setEffects - %d %{public}s %{public}s", favorite.presetConfig.name,
+           delay?.description ?? "nil", reverb?.description ?? "nil", chorus?.description ?? "nil")
     defer { markCollectionChanged() }
     favorite.presetConfig.delayConfig = delay
     favorite.presetConfig.reverbConfig = reverb

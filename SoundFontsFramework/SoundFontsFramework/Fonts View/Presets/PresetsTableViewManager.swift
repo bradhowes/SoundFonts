@@ -42,11 +42,14 @@ final class PresetsTableViewManager: NSObject, Tasking {
 
   public var presetConfigs: [(IndexPath, PresetConfig)] {
     guard let soundFont = selectedSoundFont else { return [] }
-    return viewSlots.enumerated().map { item in
+    return viewSlots.enumerated().compactMap { item in
       let indexPath = indexPath(from: .init(rawValue: item.0))
       switch item.1 {
-      case let .favorite(key): return (indexPath, favorites.getBy(key: key).presetConfig)
-      case .preset(let presetIndex): return (indexPath, soundFont.presets[presetIndex].presetConfig)
+      case let .favorite(key):
+        guard let favorite = favorites.getBy(key: key) else { return nil }
+        return (indexPath, favorite.presetConfig)
+      case .preset(let presetIndex):
+        return (indexPath, soundFont.presets[presetIndex].presetConfig)
       }
     }
   }
@@ -139,7 +142,12 @@ extension PresetsTableViewManager {
       let matches = viewSlots.filter { slot in
         let name: String = {
           switch slot {
-          case let .favorite(key): return favorites.getBy(key: key).presetConfig.name
+          case let .favorite(key):
+            if let favorite = favorites.getBy(key: key) {
+              return favorite.presetConfig.name
+            } else {
+              return ""
+            }
           case .preset(let presetIndex): return soundFont.presets[presetIndex].presetConfig.name
           }
         }()
@@ -203,9 +211,10 @@ extension PresetsTableViewManager {
         viewSlots.append(.preset(index: index))
       }
       for favoriteKey in preset.favorites {
-        let favorite = favorites.getBy(key: favoriteKey)
-        if favorite.presetConfig.isVisible {
-          viewSlots.append(.favorite(key: favoriteKey))
+        if let favorite = favorites.getBy(key: favoriteKey) {
+          if favorite.presetConfig.isVisible {
+            viewSlots.append(.favorite(key: favoriteKey))
+          }
         }
       }
     }
@@ -299,8 +308,9 @@ extension PresetsTableViewManager {
   }
 
   private func selectFavorite(_ key: Favorite.Key) {
-    let favorite = favorites.getBy(key: key)
-    activePresetManager.setActive(favorite: favorite, playSample: settings.playSample)
+    if let favorite = favorites.getBy(key: key) {
+      activePresetManager.setActive(favorite: favorite, playSample: settings.playSample)
+    }
   }
 
   private func calculateSectionRowCounts() {
@@ -557,8 +567,8 @@ extension PresetsTableViewManager {
   private func deleteFavorite(at indexPath: IndexPath, cell: TableCell) -> Bool {
     let slotIndex = slotIndex(from: indexPath)
     guard case let .favorite(key) = getSlot(at: slotIndex) else { fatalError("unexpected slot type") }
+    guard let favorite = favorites.getBy(key: key) else { return false }
 
-    let favorite = favorites.getBy(key: key)
     favorites.remove(key: key)
     soundFonts.deleteFavorite(soundFontAndPreset: favorite.soundFontAndPreset, key: favorite.key)
     viewController.tableView.performBatchUpdates {
@@ -578,8 +588,9 @@ extension PresetsTableViewManager {
   private func editFavorite(at indexPath: IndexPath, completionHandler: @escaping (Bool) -> Void) {
     let slotIndex = slotIndex(from: indexPath)
     guard case let .favorite(key) = getSlot(at: slotIndex) else { fatalError("unexpected nil") }
-    let favorite = favorites.getBy(key: key)
-    let position = favorites.index(of: favorite.key)
+    guard let favorite = favorites.getBy(key: key) else { return }
+    guard let position = favorites.index(of: favorite.key) else { return }
+
     var rect = viewController.tableView.rectForRow(at: indexPath)
     rect.size.width = 240.0
     let isActive = favorite.key == activePresetManager.activeFavorite?.key
@@ -645,12 +656,14 @@ extension PresetsTableViewManager {
 
   private func makeSoundFontAndPreset(at slotIndex: PresetViewSlotIndex) -> SoundFontAndPreset? {
     guard let soundFont = selectedSoundFont else { return nil }
-    let presetIndex: Int = {
+    guard let presetIndex: Int = {
       switch getSlot(at: slotIndex) {
-      case .favorite(let key): return favorites.getBy(key: key).soundFontAndPreset.presetIndex
+      case .favorite(let key):
+        guard let favorite = favorites.getBy(key: key) else { return nil }
+        return favorite.soundFontAndPreset.presetIndex
       case .preset(let presetIndex): return presetIndex
       }
-    }()
+    }() else { return nil }
     return soundFont[presetIndex]
   }
 
@@ -711,7 +724,7 @@ extension PresetsTableViewManager {
       cell.updateForPreset(at: indexPath, name: preset.presetConfig.name, flags: flags)
 
     case let .favorite(key):
-      let favorite = favorites.getBy(key: key)
+      guard let favorite = favorites.getBy(key: key) else { return }
       os_log(.debug, log: log, "updateCell - favorite '%{public}s' in slot %d",
              favorite.presetConfig.name, slotIndex.rawValue)
       var flags: TableCell.Flags = [.favorite]

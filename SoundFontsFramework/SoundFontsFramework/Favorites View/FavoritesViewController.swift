@@ -96,14 +96,12 @@ extension FavoritesViewController: ControllerConfiguration {
     guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
     case let .change(old: old, new: new, playSample: _):
-      if case let .favorite(oldFaveKey, _) = old {
+      if case let .favorite(oldFaveKey, _) = old, let favorite = favorites.getBy(key: oldFaveKey) {
         os_log(.info, log: log, "updating previous favorite cell")
-        let favorite = favorites.getBy(key: oldFaveKey)
         Self.onMain { self.updateCell(with: favorite) }
       }
-      if case let .favorite(newFaveKey, _) = new {
+      if case let .favorite(newFaveKey, _) = new, let favorite = favorites.getBy(key: newFaveKey) {
         os_log(.info, log: log, "updating new favorite cell")
-        let favorite = favorites.getBy(key: newFaveKey)
         Self.onMain { self.updateCell(with: favorite) }
       }
     }
@@ -336,15 +334,15 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 extension FavoritesViewController {
 
-  private func indexPath(of key: Favorite.Key) -> IndexPath {
-    let index = favorites.index(of: key)
+  private func indexPath(of key: Favorite.Key) -> IndexPath? {
+    guard let index = favorites.index(of: key) else { return nil }
     return IndexPath(item: index, section: 0)
   }
 
   private func updateCell(with favorite: Favorite) {
     guard favorites.contains(key: favorite.key) else { return }
-    let indexPath = self.indexPath(of: favorite.key)
-    if let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
+    if let indexPath = self.indexPath(of: favorite.key),
+       let cell: FavoriteCell = favoritesView.cellForItem(at: indexPath) {
       update(cell: cell, with: favorite)
     }
   }

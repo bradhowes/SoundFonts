@@ -219,9 +219,8 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
     case let .favorite(favoriteKey, soundFontAndPreset):
       os_log(.info, log: log, "rebuild - favorite: %{public}s %{public}s", favoriteKey.uuidString,
              soundFontAndPreset.itemName)
-      if favorites.contains(key: favoriteKey) {
+      if let favorite = favorites.getBy(key: favoriteKey) {
         os_log(.info, log: log, "rebuild END - using favorite")
-        let favorite = favorites.getBy(key: favoriteKey)
         return .favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset)
       } else if soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil {
         os_log(.info, log: log, "rebuild END - using preset")
