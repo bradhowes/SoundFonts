@@ -12,27 +12,22 @@ fileprivate extension Int {
 final class FontsTableViewManager: NSObject, Tasking {
   private lazy var log = Logging.logger("FontsTableViewManager")
 
-  private let view: UITableView
+  private let tableView: UITableView
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePresetManager: ActivePresetManager
   private let activeTagManager: ActiveTagManager
-  private let fontEditorActionGenerator: FontEditorActionGenerator
+  private let fontEditorActionGenerator: FontSwipeActionGenerator
   private let soundFonts: SoundFonts
   private let tags: Tags
   private let settings: Settings
 
   private var dataSource = [SoundFont.Key]()
-  private var filterTagKey: Tag.Key = Tag.allTag.key {
-    didSet {
-      settings.activeTagKey = filterTagKey
-    }
-  }
 
-  init(view: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePresetManager: ActivePresetManager,
-       activeTagManager: ActiveTagManager, fontEditorActionGenerator: FontEditorActionGenerator, soundFonts: SoundFonts,
+  init(tableView: UITableView, selectedSoundFontManager: SelectedSoundFontManager, activePresetManager: ActivePresetManager,
+       activeTagManager: ActiveTagManager, fontEditorActionGenerator: FontSwipeActionGenerator, soundFonts: SoundFonts,
        tags: Tags, settings: Settings) {
 
-    self.view = view
+    self.tableView = tableView
     self.selectedSoundFontManager = selectedSoundFontManager
     self.activePresetManager = activePresetManager
     self.activeTagManager = activeTagManager
@@ -42,12 +37,12 @@ final class FontsTableViewManager: NSObject, Tasking {
     self.settings = settings
     super.init()
 
-    view.register(TableCell.self)
-    view.estimatedRowHeight = 44.0
-    view.rowHeight = UITableView.automaticDimension
+    tableView.register(TableCell.self)
+    tableView.estimatedRowHeight = 44.0
+    tableView.rowHeight = UITableView.automaticDimension
 
-    view.dataSource = self
-    view.delegate = self
+    tableView.dataSource = self
+    tableView.delegate = self
 
     soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChanged_BT)
@@ -167,17 +162,12 @@ extension FontsTableViewManager {
   }
 
   private func handleTagRemoved(_ tag: Tag) {
-    self.soundFonts.removeTag(tag.key)
-    self.updateFilterTag(tagKey: Tag.allTag.key)
+    soundFonts.removeTag(tag.key)
+    activeTagManager.setActiveTag(key: Tag.allTag.key)
   }
 
-  private func handleActiveTagChanged(old: Tag, new: Tag) {
-    filterTagKey = new.key
-    updateTableView()
-  }
-
-  private func updateFilterTag(tagKey: Tag.Key) {
-    filterTagKey = tagKey
+  private func handleActiveTagChanged(old: Tag?, new: Tag) {
+    activeTagManager.setActiveTag(key: new.key)
     updateTableView()
   }
 
@@ -188,11 +178,11 @@ extension FontsTableViewManager {
       return
     }
 
-    dataSource = soundFonts.filtered(by: filterTagKey)
+    dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
     os_log(.debug, log: log, "updateTableView - dataSource: %{public}s", dataSource.description)
     os_log(.debug, log: log, "updateTableView - names: %{public}s", soundFonts.names(of: dataSource).description)
 
-    view.reloadData()
+    tableView.reloadData()
   }
 
   private func handlePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
@@ -235,11 +225,15 @@ extension FontsTableViewManager {
     }
   }
 
+  func filteredIndex(index: Int) -> Int {
+    soundFonts.filteredIndex(index: index, tag: activeTagManager.activeTag.key)
+  }
+
   private func addSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
+    let filteredIndex = soundFonts.filteredIndex(index: index, tag: activeTagManager.activeTag.key)
     guard filteredIndex >= 0 else { return }
-    view.performBatchUpdates {
-      view.insertRows(at: [filteredIndex.indexPath], with: .automatic)
+    tableView.performBatchUpdates {
+      tableView.insertRows(at: [filteredIndex.indexPath], with: .automatic)
       dataSource.insert(soundFont.key, at: filteredIndex)
     } completion: { completed in
       if completed {
@@ -250,12 +244,12 @@ extension FontsTableViewManager {
   }
 
   private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: SoundFont) {
-    let oldFilteredIndex = soundFonts.filteredIndex(index: oldIndex, tag: filterTagKey)
+    let oldFilteredIndex = filteredIndex(index: oldIndex)
     guard oldFilteredIndex >= 0 else { return }
-    let newFilteredIndex = soundFonts.filteredIndex(index: newIndex, tag: filterTagKey)
+    let newFilteredIndex = filteredIndex(index: newIndex)
     guard newFilteredIndex >= 0 else { return }
-    view.performBatchUpdates {
-      view.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
+    tableView.performBatchUpdates {
+      tableView.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
       self.dataSource.insert(self.dataSource.remove(at: oldFilteredIndex), at: newFilteredIndex)
     } completion: { completed in
       if completed {
@@ -268,10 +262,10 @@ extension FontsTableViewManager {
   }
 
   private func removeSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
+    let filteredIndex = filteredIndex(index: index)
     guard filteredIndex >= 0 else { return }
-    view.performBatchUpdates {
-      view.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
+    tableView.performBatchUpdates {
+      tableView.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
       dataSource.remove(at: filteredIndex)
     } completion: { _ in
       let newRow = min(filteredIndex, self.dataSource.count - 1)
@@ -300,17 +294,17 @@ extension FontsTableViewManager {
   }
 
   private func selectAndShow(row: Int) {
-    view.performBatchUpdates {
-      self.view.selectRow(at: row.indexPath, animated: true, scrollPosition: .none)
+    tableView.performBatchUpdates {
+      self.tableView.selectRow(at: row.indexPath, animated: true, scrollPosition: .none)
     } completion: { _ in
-      self.view.scrollToRow(at: row.indexPath, at: .none, animated: true)
+      self.tableView.scrollToRow(at: row.indexPath, at: .none, animated: true)
     }
   }
 
   private func updateRow(row: Int?) {
     guard let row = row else { return }
     os_log(.debug, log: log, "updateRow - %d", row)
-    if let cell: TableCell = view.cellForRow(at: row.indexPath) {
+    if let cell: TableCell = tableView.cellForRow(at: row.indexPath) {
       updateCell(cell: cell, indexPath: row.indexPath)
     }
   }

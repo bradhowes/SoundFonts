@@ -401,10 +401,10 @@
             </objects>
             <point key="canvasLocation" x="1163.768115942029" y="-545.08928571428567"/>
         </scene>
-        <!--TagsEditorView-->
+        <!--TagsEditorTableView-->
         <scene sceneID="N0y-kO-3tb">
             <objects>
-                <viewControllerPlaceholder storyboardName="TagsEditorView" id="qzs-X6-fwN" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardName="TagsEditorTableView" id="qzs-X6-fwN" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="dHb-mk-uYM"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNd-oh-wXd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

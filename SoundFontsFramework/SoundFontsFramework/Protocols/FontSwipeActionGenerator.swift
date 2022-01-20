@@ -3,7 +3,7 @@
 import UIKit
 
 /// Generates swipe actions that act on SoundFont instances.
-public protocol FontEditorActionGenerator {
+public protocol FontSwipeActionGenerator {
 
   /**
    Obtain a swipe action that will edit a SoundFont instance.

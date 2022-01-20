@@ -28,14 +28,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V3j-Cj-T3A" userLabel="FontsAndPresets">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmV-bj-iZB" userLabel="Fonts">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wLj-IF-tUJ" userLabel="Fonts">
                                         <rect key="frame" x="0.0" y="0.0" width="169" height="896"/>
-                                        <color key="backgroundColor" red="0.078431372550000003" green="0.078431372550000003" blue="0.078431372550000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <attributedString key="userComments">
-                                            <fragment content="List of installed fonts"/>
-                                        </attributedString>
-                                    </tableView>
+                                        <connections>
+                                            <segue destination="QLD-lL-QQd" kind="embed" identifier="fontsTableView" id="mEb-IM-0vd"/>
+                                        </connections>
+                                    </containerView>
                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OYn-Fy-3EM" userLabel="Presets">
                                         <rect key="frame" x="177" y="0.0" width="237" height="896"/>
                                         <attributedString key="userComments">
@@ -45,17 +43,15 @@
                                             <segue destination="nUO-8a-gh3" kind="embed" identifier="presetsTableView" id="aCh-x1-qAE"/>
                                         </connections>
                                     </containerView>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Sk2-uD-xKG" userLabel="Tags">
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEW-gK-Zyy" userLabel="Tags">
                                         <rect key="frame" x="0.0" y="904" width="169" height="360"/>
-                                        <color key="backgroundColor" red="0.078417681160000002" green="0.078439243140000003" blue="0.078416295349999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="360" id="3lx-F9-yk6"/>
+                                            <constraint firstAttribute="height" constant="360" id="1PJ-XU-EgD"/>
                                         </constraints>
-                                        <color key="sectionIndexColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <attributedString key="userComments">
-                                            <fragment content="List of tags for font filtering"/>
-                                        </attributedString>
-                                    </tableView>
+                                        <connections>
+                                            <segue destination="C3B-oK-W1M" kind="embed" identifier="tagsTableView" id="fd7-HX-ozn"/>
+                                        </connections>
+                                    </containerView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UU4-kD-PNI" userLabel="Divider Control">
                                         <rect key="frame" x="161" y="428" width="24" height="40"/>
                                         <subviews>
@@ -83,19 +79,19 @@
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>
                                 <constraints>
-                                    <constraint firstItem="fmV-bj-iZB" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="14E-Wd-uqA"/>
-                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="1To-12-Edz"/>
+                                    <constraint firstItem="BEW-gK-Zyy" firstAttribute="width" secondItem="wLj-IF-tUJ" secondAttribute="width" id="7Xw-2f-kgb"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="leading" secondItem="wLj-IF-tUJ" secondAttribute="trailing" constant="8" symbolic="YES" id="AWz-P7-PtO"/>
                                     <constraint firstAttribute="trailing" secondItem="OYn-Fy-3EM" secondAttribute="trailing" id="Bry-Oj-IWi"/>
                                     <constraint firstItem="OYn-Fy-3EM" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="CnL-zR-Heg"/>
                                     <constraint firstItem="UU4-kD-PNI" firstAttribute="centerY" secondItem="V3j-Cj-T3A" secondAttribute="centerY" id="IUy-3y-qQZ"/>
+                                    <constraint firstItem="BEW-gK-Zyy" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="LvY-q6-dOY"/>
                                     <constraint firstAttribute="bottom" secondItem="OYn-Fy-3EM" secondAttribute="bottom" id="P6K-iS-S6d"/>
-                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="8" id="UVF-RL-zrd"/>
-                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="top" secondItem="fmV-bj-iZB" secondAttribute="bottom" constant="8" id="Zet-Sn-wdW"/>
-                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="fmV-bj-iZB" secondAttribute="trailing" constant="-8" id="dgq-Is-bSI"/>
-                                    <constraint firstItem="fmV-bj-iZB" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="hYC-vc-XnY"/>
-                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="khq-jh-OFk"/>
-                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" multiplier="1.4" id="v2f-zJ-l9G" userLabel="Presets Width Constraint"/>
-                                    <constraint firstItem="Sk2-uD-xKG" firstAttribute="width" secondItem="fmV-bj-iZB" secondAttribute="width" id="wPI-ss-8PY"/>
+                                    <constraint firstItem="wLj-IF-tUJ" firstAttribute="leading" secondItem="V3j-Cj-T3A" secondAttribute="leading" id="T6s-Sa-eeM"/>
+                                    <constraint firstItem="BEW-gK-Zyy" firstAttribute="bottom" secondItem="V3j-Cj-T3A" secondAttribute="bottom" constant="368" id="TCg-2O-tyg"/>
+                                    <constraint firstItem="wLj-IF-tUJ" firstAttribute="top" secondItem="V3j-Cj-T3A" secondAttribute="top" id="XQd-Mx-NKa"/>
+                                    <constraint firstItem="BEW-gK-Zyy" firstAttribute="top" secondItem="wLj-IF-tUJ" secondAttribute="bottom" constant="8" symbolic="YES" id="rh8-CU-yKg"/>
+                                    <constraint firstItem="OYn-Fy-3EM" firstAttribute="width" secondItem="wLj-IF-tUJ" secondAttribute="width" multiplier="1.4" id="vgo-0V-OSR"/>
+                                    <constraint firstItem="UU4-kD-PNI" firstAttribute="leading" secondItem="wLj-IF-tUJ" secondAttribute="trailing" constant="-8" id="zZc-1z-ej5"/>
                                 </constraints>
                                 <attributedString key="userComments">
                                     <fragment content="List of font and presets"/>
@@ -116,12 +112,11 @@
                     </view>
                     <connections>
                         <outlet property="dividerControl" destination="UU4-kD-PNI" id="8nC-1v-PkV"/>
+                        <outlet property="fontsView" destination="wLj-IF-tUJ" id="Sm6-Q6-X1Y"/>
                         <outlet property="presetsView" destination="OYn-Fy-3EM" id="R6n-86-XeF"/>
-                        <outlet property="presetsWidthConstraint" destination="v2f-zJ-l9G" id="jr5-Ch-D9k"/>
-                        <outlet property="soundFontsView" destination="fmV-bj-iZB" id="ig3-RE-o2M"/>
-                        <outlet property="tagsBottomConstraint" destination="1To-12-Edz" id="hIi-Cp-XkC"/>
-                        <outlet property="tagsView" destination="Sk2-uD-xKG" id="od0-Vb-z6v"/>
-                        <outlet property="tagsViewHeightConstraint" destination="3lx-F9-yk6" id="GaN-wc-F9L"/>
+                        <outlet property="presetsWidthConstraint" destination="vgo-0V-OSR" id="yAU-z4-5Fw"/>
+                        <outlet property="tagsBottomConstraint" destination="TCg-2O-tyg" id="0Kz-Ff-ibI"/>
+                        <outlet property="tagsViewHeightConstraint" destination="1PJ-XU-EgD" id="5pv-11-U2c"/>
                         <segue destination="Fc4-Sm-RhE" kind="presentation" identifier="fontEditor" id="Oj6-XR-yF0"/>
                         <segue destination="h1D-gp-zxw" kind="presentation" identifier="tagsEditor" id="v2Q-dM-oKa"/>
                     </connections>
@@ -138,13 +133,29 @@
             </objects>
             <point key="canvasLocation" x="795" y="-1905"/>
         </scene>
+        <!--TagsTableView-->
+        <scene sceneID="1uW-i3-Bcu">
+            <objects>
+                <viewControllerPlaceholder storyboardName="TagsTableView" id="C3B-oK-W1M" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nKi-AO-cPw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="805" y="-1765"/>
+        </scene>
+        <!--FontsTableView-->
+        <scene sceneID="k0R-ek-KO9">
+            <objects>
+                <viewControllerPlaceholder storyboardName="FontsTableView" id="QLD-lL-QQd" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c93-dz-t8V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="753" y="-2044"/>
+        </scene>
         <!--FontEditor-->
         <scene sceneID="NwP-pY-F46">
             <objects>
                 <viewControllerPlaceholder storyboardName="FontEditor" id="Fc4-Sm-RhE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="phu-KX-vTt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="643" y="-1937"/>
+            <point key="canvasLocation" x="704" y="-2163"/>
         </scene>
     </scenes>
     <resources>

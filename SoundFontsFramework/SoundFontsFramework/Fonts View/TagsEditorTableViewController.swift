@@ -9,8 +9,8 @@ import os
  in the `ActiveTagManager`. This controller comes into play either from the font editor or by long pressing on a tag in
  the `ActiveTagManager` view.
  */
-public final class TagsTableViewController: UITableViewController {
-  private lazy var log = Logging.logger("TagsTableViewController")
+public final class TagsEditorTableViewController: UITableViewController {
+  private lazy var log = Logging.logger("TagsEditorTableViewController")
 
   /// The current action being undertaken by the editor. Used to manage state transitions and UI view.
   fileprivate enum Action {
@@ -134,7 +134,7 @@ public final class TagsTableViewController: UITableViewController {
   }
 }
 
-extension TagsTableViewController {
+extension TagsEditorTableViewController {
 
   @IBAction public func dismiss(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true)
@@ -192,7 +192,7 @@ extension TagsTableViewController {
 
 // MARK: - UITextFieldDelegate
 
-extension TagsTableViewController: UITextFieldDelegate {
+extension TagsEditorTableViewController: UITextFieldDelegate {
 
   public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     os_log(.debug, log: log, "textFieldShouldReturn")
@@ -206,7 +206,7 @@ extension TagsTableViewController: UITextFieldDelegate {
   }
 }
 
-extension TagsTableViewController {
+extension TagsEditorTableViewController {
 
   private func updateButtons() {
     switch currentAction {
@@ -267,7 +267,7 @@ extension TagsTableViewController {
 
 // MARK: - UITableViewDataSource / UITableViewDelegate
 
-extension TagsTableViewController {
+extension TagsEditorTableViewController {
 
   override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     tags.count
@@ -335,7 +335,7 @@ extension TagsTableViewController {
   }
 }
 
-extension TagsTableViewController: Tasking {
+extension TagsEditorTableViewController: Tasking {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let tag = tags.getBy(index: indexPath.row)
@@ -376,7 +376,7 @@ extension TagsTableViewController: Tasking {
   }
 }
 
-extension TagsTableViewController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
+extension TagsEditorTableViewController: UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
 
   /**
    Notification that the font editor is being dismissed. Treat as a close.

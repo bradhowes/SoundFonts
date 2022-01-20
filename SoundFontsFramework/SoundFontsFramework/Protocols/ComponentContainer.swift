@@ -34,6 +34,7 @@ public protocol ComponentContainer: AnyObject {
   /// The manager that tracks and holds the selected sound font. It is not necessarily the sound font that has the
   /// active preset.s
   var selectedSoundFontManager: SelectedSoundFontManager { get }
+  var activeTagManager: ActiveTagManager { get }
   /// The manager for the info bar that sits below the sound font and preset table views and above the keyboard.
   var infoBar: InfoBar { get }
   /// The keyboard manager if inside the application; the AUv3 component has no keyboard and so this will be nil.
@@ -43,7 +44,7 @@ public protocol ComponentContainer: AnyObject {
   /// The manager of the favorites collection view
   var favoritesViewManager: FavoritesViewManager { get }
   /// The provider of swipe actions for the sound fonts view
-  var fontEditorActionGenerator: FontEditorActionGenerator { get }
+  var fontSwipeActionGenerator: FontSwipeActionGenerator { get }
 
   func createAudioComponents()
 

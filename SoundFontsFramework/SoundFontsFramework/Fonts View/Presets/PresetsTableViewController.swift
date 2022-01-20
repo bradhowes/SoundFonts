@@ -105,6 +105,7 @@ extension PresetsTableViewController {
   }
 
   private func scrollToActiveSlot() {
+    fatalError()
   }
 }
 

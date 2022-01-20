@@ -27,20 +27,24 @@ where T: ControllerConfiguration {
   public let activePresetManager: ActivePresetManager
   /// The manager of the selected sound font
   public let selectedSoundFontManager: SelectedSoundFontManager
+
+  public let activeTagManager: ActiveTagManager
+
   /// True if running in the app; false when running in the AUv3 app extension
   public let inApp: Bool
   /// The main view controller of the app
   public private(set) weak var mainViewController: T! { didSet { oneTimeSet(oldValue) } }
 
   private weak var soundFontsControlsController: SoundFontsControlsController! { didSet { oneTimeSet(oldValue) } }
+  private weak var soundFontsViewController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
   private weak var infoBarController: InfoBarController! { didSet { oneTimeSet(oldValue) } }
   private weak var keyboardController: KeyboardController? { didSet { oneTimeSet(oldValue) } }
-  private weak var soundFontsController: SoundFontsViewController! { didSet { oneTimeSet(oldValue) } }
   private weak var favoritesController: FavoritesViewController! { didSet { oneTimeSet(oldValue) } }
-  private weak var favoriteEditor: FavoriteEditor! { didSet { oneTimeSet(oldValue) } }
   private weak var guideController: GuideViewController! { didSet { oneTimeSet(oldValue) } }
   private weak var effectsController: EffectsController? { didSet { oneTimeSet(oldValue) } }
-  private weak var tagsController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var fontsTableViewController: FontsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var presetsTableViewController: PresetsTableViewController! { didSet { oneTimeSet(oldValue) } }
+  private weak var tagsTableViewController: TagsTableViewController! { didSet { oneTimeSet(oldValue) } }
 
   /// The controller for the info bar
   public var infoBar: InfoBar { infoBarController }
@@ -49,13 +53,13 @@ where T: ControllerConfiguration {
   public var keyboard: Keyboard? { keyboardController }
 
   /// The manager of the fonts/presets view
-  public var fontsViewManager: FontsViewManager { soundFontsController }
+  public var fontsViewManager: FontsViewManager { soundFontsViewController }
 
   /// The manager of the favorites view
   public var favoritesViewManager: FavoritesViewManager { favoritesController }
 
   /// Swipe actions generator for sound font rows
-  public var fontEditorActionGenerator: FontEditorActionGenerator { soundFontsController }
+  public var fontSwipeActionGenerator: FontSwipeActionGenerator { soundFontsViewController }
 
   /// The manager for posting alerts
   public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }
@@ -94,6 +98,9 @@ where T: ControllerConfiguration {
     self.activePresetManager = ActivePresetManager(soundFonts: soundFonts, favorites: favorites,
                                                    selectedSoundFontManager: selectedSoundFontManager,
                                                    settings: settings)
+
+    self.activeTagManager = ActiveTagManager(tags: tags, settings: settings)
+
     super.init()
 
     createAudioComponents()
@@ -126,7 +133,9 @@ where T: ControllerConfiguration {
     for obj in mvc.children {
       processChildController(obj)
     }
+
     validate()
+
     establishConnections()
   }
 
@@ -134,7 +143,10 @@ where T: ControllerConfiguration {
    Invoke `establishConnections` on each tracked view controller.
    */
   public func establishConnections() {
-    soundFontsController.establishConnections(self)
+    fontsTableViewController.establishConnections(self)
+    presetsTableViewController.establishConnections(self)
+    tagsTableViewController.establishConnections(self)
+    soundFontsViewController.establishConnections(self)
     favoritesController.establishConnections(self)
     infoBarController.establishConnections(self)
     keyboardController?.establishConnections(self)
@@ -151,21 +163,25 @@ extension Components {
     switch obj {
     case let vc as SoundFontsControlsController:
       soundFontsControlsController = vc
-      for inner in vc.children {
-        processGrandchildController(inner)
+      for obj in vc.children {
+        processChildController(obj)
       }
-    case let vc as KeyboardController: keyboardController = vc
-    default: assertionFailure("unknown child UIViewController")
-    }
-  }
 
-  private func processGrandchildController(_ obj: UIViewController) {
-    switch obj {
+    case let vc as SoundFontsViewController:
+      soundFontsViewController = vc
+      for obj in vc.children {
+        processChildController(obj)
+      }
+
+    case let vc as KeyboardController: keyboardController = vc
     case let vc as GuideViewController: guideController = vc
-    case let vc as SoundFontsViewController: soundFontsController = vc
     case let vc as FavoritesViewController: favoritesController = vc
     case let vc as InfoBarController: infoBarController = vc
+    case let vc as FontsTableViewController: fontsTableViewController = vc
+    case let vc as PresetsTableViewController: presetsTableViewController = vc
+    case let vc as TagsTableViewController: tagsTableViewController = vc
     case let vc as EffectsController: effectsController = vc
+
     default: assertionFailure("unknown child UIViewController")
     }
   }
@@ -173,10 +189,13 @@ extension Components {
   private func validate() {
     precondition(mainViewController != nil, "nil MainViewController")
     precondition(soundFontsControlsController != nil, "nil SoundFontsControlsController")
-    precondition(guideController != nil, "nil GuidesController")
-    precondition(soundFontsController != nil, "nil SoundFontsViewController")
-    precondition(favoritesController != nil, "nil FavoritesViewController")
     precondition(infoBarController != nil, "nil InfoBarController")
+    precondition(soundFontsViewController != nil, "nil SoundFontsViewController")
+    precondition(favoritesController != nil, "nil FavoritesViewController")
+    precondition(guideController != nil, "nil GuidesController")
+    precondition(effectsController != nil, "nil EffectsController")
+    precondition(fontsTableViewController != nil, "nil FontsTableViewController")
+    precondition(presetsTableViewController != nil, "nil PresetsTableViewController")
   }
 
   private func oneTimeSet<T>(_ oldValue: T?) {

@@ -4,9 +4,9 @@ import AVKit
 import UIKit
 import os
 
-/// Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
-/// touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
-/// to the background or stops being active.
+/**
+ View controller that manages which view -- sound fonts & presets or favorites -- is shown.
+ */
 public final class SoundFontsControlsController: UIViewController {
 
   private lazy var logger = Logging.logger("SoundFontsControlsController")

@@ -5,22 +5,23 @@ import os
 
 /**
  View controller for the SoundFont / Presets UITableView combination. Much of the UITableView management is handled
- by specific *Manager classes. This controller mainly serves to manage the active preset state, plus the switching
+ by embedded view controllers. This controller mainly serves to manage the active preset state, plus the switching
  between normal preset table view display and preset search results display. Apart from the adopted protocols, there
  is no API for this class.
  */
 public final class SoundFontsViewController: UIViewController {
   private lazy var log = Logging.logger("SoundFontsViewController")
 
-  @IBOutlet private weak var soundFontsView: UITableView!
-  @IBOutlet private weak var tagsView: UITableView!
+  @IBOutlet private weak var fontsView: UIView!
+  @IBOutlet private weak var presetsView: UIView!
   @IBOutlet private weak var tagsViewHeightConstraint: NSLayoutConstraint!
   @IBOutlet private weak var tagsBottomConstraint: NSLayoutConstraint!
   @IBOutlet private weak var dividerControl: UIView!
   @IBOutlet private weak var presetsWidthConstraint: NSLayoutConstraint!
-  @IBOutlet private weak var presetsView: UIView!
 
+  private weak var fontsTableViewController: FontsTableViewController!
   private weak var presetsTableViewController: PresetsTableViewController!
+  private weak var tagsTableViewController: TagsTableViewController!
 
   private var maxTagsViewHeightConstraint: CGFloat = 0.0
   private var soundFonts: SoundFonts!
@@ -30,8 +31,8 @@ public final class SoundFontsViewController: UIViewController {
   private var settings: Settings!
 
   private var fontsTableViewManager: FontsTableViewManager!
-  private var tagsTableViewManager: ActiveTagManager!
   private var selectedSoundFontManager: SelectedSoundFontManager!
+  private var activeTagManager: ActiveTagManager!
   private var keyboard: Keyboard?
 
   private var dividerDragGesture = UIPanGestureRecognizer()
@@ -46,20 +47,15 @@ extension SoundFontsViewController {
   public override func viewDidLoad() {
     super.viewDidLoad()
 
-    soundFontsView.isAccessibilityElement = false
-    soundFontsView.accessibilityIdentifier = "FontsTableList"
-    soundFontsView.accessibilityHint = "List of available fonts"
-    soundFontsView.accessibilityLabel = "FontsTableList"
+    fontsView.isAccessibilityElement = false
+    fontsView.accessibilityIdentifier = "FontsTableList"
+    fontsView.accessibilityHint = "List of available fonts"
+    fontsView.accessibilityLabel = "FontsTableList"
 
     presetsView.isAccessibilityElement = false
     presetsView.accessibilityIdentifier = "PresetsTableList"
     presetsView.accessibilityHint = "List of presets in selected font"
     presetsView.accessibilityLabel = "PresetTableList"
-
-    tagsView.isAccessibilityElement = false
-    tagsView.accessibilityIdentifier = "TagsTableList"
-    tagsView.accessibilityHint = "List of tags for filtering fonts"
-    tagsView.accessibilityLabel = "TagsTableList"
 
     swipeLeft.direction = .left
     swipeLeft.numberOfTouchesRequired = 2
@@ -69,13 +65,16 @@ extension SoundFontsViewController {
     swipeRight.numberOfTouchesRequired = 2
     view.addGestureRecognizer(swipeRight)
 
-    tagsView.isHidden = true
     maxTagsViewHeightConstraint = tagsViewHeightConstraint.constant
 
     dividerDragGesture.maximumNumberOfTouches = 1
     dividerDragGesture.minimumNumberOfTouches = 1
     dividerDragGesture.addTarget(self, action: #selector(moveDivider(_:)))
     dividerControl.addGestureRecognizer(dividerDragGesture)
+
+//    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+//    longPressGesture.minimumPressDuration = 0.5
+//    fontsTableView.addGestureRecognizer(longPressGesture)
   }
 
   @objc func moveDivider(_ gesture: UIPanGestureRecognizer) {
@@ -99,7 +98,7 @@ extension SoundFontsViewController {
       // Don't allow the preset view to shrink below 80 but do let it grow if it was below 80.
       if presetsWidth < 80.0 && change > 0 { return }
 
-      let fontsWidth = soundFontsView.frame.width + change
+      let fontsWidth = fontsView.frame.width + change
 
       // Likewise, don't allow the fonts view to shrink below 80 but do let it grow if it was below 80.
       if fontsWidth < 80.0 && change < 0 { return }
@@ -207,21 +206,11 @@ extension SoundFontsViewController: ControllerConfiguration {
     let multiplier = settings.presetsWidthMultiplier
     presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
-    tagsTableViewManager = ActiveTagManager(viewController: self, tableView: tagsView, tags: router.tags,
-                                            settings: settings, tagsHider: self.hideTags)
-
-    fontsTableViewManager = FontsTableViewManager(view: soundFontsView,
-                                                  selectedSoundFontManager: selectedSoundFontManager,
-                                                  activePresetManager: router.activePresetManager,
-                                                  activeTagManager: tagsTableViewManager,
-                                                  fontEditorActionGenerator: self,
-                                                  soundFonts: router.soundFonts, tags: tags,
-                                                  settings: settings)
-
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
 
-    presetsTableViewController.establishConnections(router)
+//    fontsTableViewController.establishConnections(router)
+//    presetsTableViewController.establishConnections(router)
 
     fontsTableViewManager?.selectActive()
   }
@@ -259,7 +248,7 @@ extension SoundFontsViewController: FontsViewManager {
 
 // MARK: - FontEditorActionGenerator Protocol
 
-extension SoundFontsViewController: FontEditorActionGenerator {
+extension SoundFontsViewController: FontSwipeActionGenerator {
 
   /**
    Create right-swipe action to edit a SoundFont.
@@ -269,16 +258,34 @@ extension SoundFontsViewController: FontEditorActionGenerator {
    - returns: new UIContextualAction that will perform the edit
    */
   public func createEditSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction {
-    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, view, completionHandler in
+    UIContextualAction(icon: .edit, color: .systemTeal) { [weak self] _, _, completionHandler in
       guard let self = self else { return }
-      let config = FontEditor.Config(indexPath: at, view: view, rect: view.bounds, soundFonts: self.soundFonts,
-                                     soundFontKey: soundFont.key,
-                                     favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
-                                     completionHandler: completionHandler)
-      self.performSegue(withIdentifier: .fontEditor, sender: config)
+      self.beginEditingFont(at: at, cell: cell, soundFont: soundFont, completionHandler: completionHandler)
     }
   }
 
+  public func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont, completionHandler: ((Bool) -> Void)? = nil) {
+    let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: self.soundFonts,
+                                   soundFontKey: soundFont.key,
+                                   favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
+                                   completionHandler: completionHandler)
+    self.performSegue(withIdentifier: .fontEditor, sender: config)
+  }
+
+//  @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+//    switch sender.state {
+//    case .began:
+//      let pos = sender.location(in: view)
+//      guard let indexPath = fonts.indexPathForItem(at: pos) else { return }
+//      guard let cell: TableCell = fontsTableView.cellForItem(at: indexPath) else { return }
+//      beginEditingFont(at: indexPath, cell: cell, soundFont: <#T##SoundFont#>, completionHandler: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
+//
+//    default:
+//      view.cancelInteractiveMovement()
+//      cell?.moving = false
+//    }
+//  }
+//
   /**
    Create left-swipe action to *delete* a SoundFont. When activated, the action will display a prompt to the user
    asking for confirmation about the SoundFont deletion.
@@ -299,19 +306,21 @@ extension SoundFontsViewController: SegueHandler {
 
   /// Segues that we support.
   public enum SegueIdentifier: String {
+    case fontsTableView
+    case presetsTableView
+    case tagsTableView
     case fontEditor
     case fontBrowser
-    case presetsTableView
     case tagsEditor
   }
 
   public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     switch segueIdentifier(for: segue) {
-    case .fontEditor:
-      guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
-      prepareToEditFont(segue, config: config)
-
-    case .fontBrowser: break
+    case .fontsTableView:
+      guard let destination = segue.destination as? FontsTableViewController else {
+        fatalError("expected FontsTableViewController for segue destination")
+      }
+      fontsTableViewController = destination
 
     case .presetsTableView:
       guard let destination = segue.destination as? PresetsTableViewController else {
@@ -319,8 +328,23 @@ extension SoundFontsViewController: SegueHandler {
       }
       presetsTableViewController = destination
 
+    case .tagsTableView:
+      guard let destination = segue.destination as? TagsTableViewController else {
+        fatalError("expected TagsTableViewController for segue destination")
+      }
+      tagsTableViewController = destination
+      // tagsTableViewController.soundFontsViewController = self
+
+    case .fontEditor:
+      guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
+      prepareToEditFont(segue, config: config)
+
+    case .fontBrowser: break
+
     case .tagsEditor:
-      guard let config = sender as? TagsTableViewController.Config else { fatalError("expected TagsTableViewController.Config") }
+      guard let config = sender as? TagsEditorTableViewController.Config else {
+        fatalError("expected TagsEditorTableViewController.Config")
+      }
       prepareToEditTags(segue, config: config)
     }
   }
@@ -350,9 +374,9 @@ extension SoundFontsViewController: SegueHandler {
     navController.presentationController?.delegate = viewController
   }
 
-  private func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsTableViewController.Config) {
+  private func prepareToEditTags(_ segue: UIStoryboardSegue, config: TagsEditorTableViewController.Config) {
     guard let navController = segue.destination as? UINavigationController,
-          let viewController = navController.topViewController as? TagsTableViewController
+          let viewController = navController.topViewController as? TagsEditorTableViewController
     else {
       fatalError("unexpected view configuration")
     }
@@ -365,8 +389,8 @@ extension SoundFontsViewController: SegueHandler {
     }
 
     if let ppc = navController.popoverPresentationController {
-      ppc.sourceView = tagsView
-      ppc.sourceRect = tagsView.frame
+      ppc.sourceView = view
+      ppc.sourceRect = view.frame
       ppc.permittedArrowDirections = []
       ppc.delegate = viewController
     }
@@ -402,7 +426,7 @@ extension SoundFontsViewController {
   }
 
   private func showTags() {
-    let maxHeight = soundFontsView.frame.height - 8
+    let maxHeight = fontsView.frame.height - 8
     let midHeight = maxHeight / 2.0
     let minHeight = CGFloat(120.0)
 
@@ -412,11 +436,10 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
-    tagsView.isHidden = false
     UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                    options: [.allowUserInteraction, .curveEaseIn],
                                                    animations: self.view.layoutIfNeeded) { [weak self] _ in
-      self?.tagsTableViewManager.showActiveTag(animated: false)
+      // self?.tagsTableViewManager.showActiveTag(animated: false)
     }
   }
 
@@ -428,7 +451,7 @@ extension SoundFontsViewController {
       withDuration: 0.25, delay: 0.0,
       options: [.allowUserInteraction, .curveEaseOut],
       animations: self.view.layoutIfNeeded,
-      completion: { _ in self.tagsView.isHidden = true }
+      completion: nil
     )
   }
 }

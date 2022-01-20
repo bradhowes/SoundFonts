@@ -10,7 +10,7 @@
         <!--Tags-->
         <scene sceneID="a1N-jf-8RK">
             <objects>
-                <tableViewController id="Kr6-Nm-Npn" customClass="TagsTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Kr6-Nm-Npn" customClass="TagsEditorTableViewController" customModule="SoundFontsFramework" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="ae1-G9-ryz">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -211,12 +211,12 @@ extension FontEditor {
   }
 
   private func prepareToEdit(_ segue: UIStoryboardSegue) {
-    guard let viewController = segue.destination as? TagsTableViewController else {
+    guard let viewController = segue.destination as? TagsEditorTableViewController else {
       fatalError("unexpected controller relationships")
     }
 
-    let config = TagsTableViewController.Config(tags: self.config.tags, active: activeTags,
-                                                builtIn: soundFont.kind.resource) { [weak self] tags in
+    let config = TagsEditorTableViewController.Config(tags: self.config.tags, active: activeTags,
+                                                      builtIn: soundFont.kind.resource) { [weak self] tags in
       self?.activeTags = tags
     }
 
