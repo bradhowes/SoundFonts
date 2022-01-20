@@ -414,9 +414,7 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
-
-    NotificationCenter.default.post(name: .showingTags, object: nil)
-
+    
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.25,
       delay: 0.0,

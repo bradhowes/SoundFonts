@@ -3,6 +3,10 @@
 import UIKit
 import os.log
 
+/**
+ The view controller for the tags table. Display data comes from the tags collection filtered by the active tag. It
+ allows for setting the active tag, a value maintained by the ActiveTagManager.
+ */
 final class TagsTableViewController: UITableViewController, Tasking {
 
   private var tags: Tags!
@@ -23,13 +27,6 @@ final class TagsTableViewController: UITableViewController, Tasking {
     let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
     longPressGesture.minimumPressDuration = 0.5
     tableView.addGestureRecognizer(longPressGesture)
-
-    NotificationCenter.default.addObserver(forName: .showingTags, object: nil, queue: nil) { _ in
-      guard let tags = self.tags,
-            let activeTagManager = self.activeTagManager,
-            let row = tags.index(of: activeTagManager.activeTag.key) else { return }
-      self.tableView.scrollToRow(at: .init(row: row, section: 0), at: .none, animated: false)
-    }
   }
 }
 
