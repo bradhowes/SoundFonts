@@ -32,7 +32,7 @@ public class ConsolidatedConfig: NSObject, Codable {
   /// Construct a new default collection, such as when the app is first installed or there is a problem loading a
   /// previously-saved file.
   override public init() {
-    os_log(.info, log: Self.log, "creating default collection")
+    os_log(.debug, log: Self.log, "creating default collection")
     soundFonts = SoundFontsManager.defaultCollection
     favorites = FavoritesManager.defaultCollection
     tags = TagsManager.defaultCollection

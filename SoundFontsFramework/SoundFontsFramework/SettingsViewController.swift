@@ -212,7 +212,7 @@ public final class SettingsViewController: UIViewController {
   }
 
   override public func viewDidDisappear(_ animated: Bool) {
-    os_log(.info, log: log, "viewDidDisapper BEGIN")
+    os_log(.debug, log: log, "viewDidDisapper BEGIN")
     super.viewDidDisappear(animated)
     guard let tuningComponent = self.tuningComponent else { fatalError("unexpected nil tuningComponent") }
 
@@ -225,7 +225,7 @@ public final class SettingsViewController: UIViewController {
       MIDI.sharedInstance.monitor = nil
     }
 
-    os_log(.info, log: log, "viewDidDisapper BEND")
+    os_log(.debug, log: log, "viewDidDisapper BEND")
   }
 }
 
@@ -256,7 +256,7 @@ extension SettingsViewController {
   }
 
   @IBAction func keyWidthEditingDidBegin(_ sender: Any) {
-    os_log(.info, log: log, "keyWidthEditingDidBegin")
+    os_log(.debug, log: log, "keyWidthEditingDidBegin")
     guard revealKeyboardForKeyWidthChanges else { return }
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
@@ -264,7 +264,7 @@ extension SettingsViewController {
   }
 
   @IBAction func keyWidthEditingDidEnd(_ sender: Any) {
-    os_log(.info, log: log, "keyWidthEditingDidEnd")
+    os_log(.debug, log: log, "keyWidthEditingDidEnd")
     guard revealKeyboardForKeyWidthChanges else { return }
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.3, delay: 0.0, options: [.allowUserInteraction],
@@ -313,7 +313,7 @@ extension SettingsViewController {
   }
 
   @IBAction func connectBluetoothMIDIDevices(_ sender: Any) {
-    os_log(.info, log: log, "connectBluetoothMIDIDevices")
+    os_log(.debug, log: log, "connectBluetoothMIDIDevices")
     let vc = CABTMIDICentralViewController()
     self.navigationController?.pushViewController(vc, animated: true)
   }
@@ -347,7 +347,7 @@ extension SettingsViewController {
     keyWidthSlider.value = newValue
 
     if newValue != previousValue {
-      os_log(.info, log: log, "new key width: %f", newValue)
+      os_log(.debug, log: log, "new key width: %f", newValue)
       settings.keyWidth = newValue
     }
   }
@@ -385,14 +385,14 @@ extension SettingsViewController {
 
   private func updateMidiChannel() {
     let value = Int(midiChannelStepper.value)
-    os_log(.info, log: log, "new MIDI channel %d", value)
+    os_log(.debug, log: log, "new MIDI channel %d", value)
     midiChannel.text = value == -1 ? "Any" : "\(value + 1)"
     settings.midiChannel = value
   }
 
   private func updatePitchBendRange() {
     let value = Int(pitchBendStepper.value)
-    os_log(.info, log: log, "new pitch-bend range %d", value)
+    os_log(.debug, log: log, "new pitch-bend range %d", value)
     pitchBendRange.text = "\(value)"
     settings.pitchBendRange = value
     Sampler.pitchBendRangeChangedNotification.post(value: value)

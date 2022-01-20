@@ -34,7 +34,7 @@ public final class Bookmark: Codable {
     self.name = name
     original = url
     bookmark = bookmarkData
-    os_log(.info, log: log, "name: %{public}s data.count: %d url: %{public}s", name, bookmark?.count ?? 0, url.path)
+    os_log(.debug, log: log, "name: %{public}s data.count: %d url: %{public}s", name, bookmark?.count ?? 0, url.path)
   }
 
   /**

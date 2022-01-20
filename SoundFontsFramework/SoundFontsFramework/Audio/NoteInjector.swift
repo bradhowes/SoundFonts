@@ -44,7 +44,7 @@ public final class NoteInjector {
    - parameter audioUnit: the audio unit to command
    */
   public func post(to audioUnit: AUAudioUnit) {
-    os_log(.info, log: log, "post BEGIN")
+    os_log(.debug, log: log, "post BEGIN")
     workItems.forEach { $0.cancel() }
 
     guard settings.playSample == true,
@@ -82,6 +82,6 @@ public final class NoteInjector {
     playingQueue.asyncAfter(deadline: dispatchTime, execute: noteOnEmitter)
     playingQueue.asyncAfter(deadline: dispatchTime + noteOnDuration, execute: noteOffEmitter)
 
-    os_log(.info, log: log, "post END")
+    os_log(.debug, log: log, "post END")
   }
 }

@@ -68,7 +68,7 @@ public struct SoundFontAndPreset: Codable, Hashable {
         throw err
       }
 
-      os_log(.info, log: log, "restored - %{public}s %{public}s %d %{public}s", soundFontKey.uuidString, soundFontName,
+      os_log(.debug, log: log, "restored - %{public}s %{public}s %d %{public}s", soundFontKey.uuidString, soundFontName,
              presetIndex, itemName)
     }
   }

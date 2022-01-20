@@ -15,11 +15,11 @@ public extension AudioUnit {
    - throws exception if the property is invalid
    */
   func getPropertyInfo(_ pid: AudioUnitPropertyID) throws -> (size: UInt32, writable: Bool) {
-    os_log(.info, log: log, "getPropertyInfo %d", pid)
+    os_log(.debug, log: log, "getPropertyInfo %d", pid)
     var size: UInt32 = 0
     var writable: DarwinBoolean = false
     try AudioUnitGetPropertyInfo(self, pid, kAudioUnitScope_Global, 0, &size, &writable).check()
-    os_log(.info, log: log, "size: %d writable: %d", size, writable.boolValue)
+    os_log(.debug, log: log, "size: %d writable: %d", size, writable.boolValue)
     return (size: size, writable: writable.boolValue)
   }
 
@@ -31,7 +31,7 @@ public extension AudioUnit {
    - throws exception if the property is invalid or the size is wrong
    */
   func getPropertyValue<T>(_ pid: AudioUnitPropertyID) throws -> T {
-    os_log(.info, log: log, "getPropertyValue %d", pid)
+    os_log(.debug, log: log, "getPropertyValue %d", pid)
     let (size, _) = try getPropertyInfo(pid)
     return try getPropertyValue(pid, size: size)
   }

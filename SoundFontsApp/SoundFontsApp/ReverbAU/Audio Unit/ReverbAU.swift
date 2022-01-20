@@ -21,11 +21,11 @@ final class ReverbAU: AUAudioUnit {
     self.log = log
 
     os_log(
-      .info, log: log, "init - flags: %d man: %d type: sub: %d",
+      .debug, log: log, "init - flags: %d man: %d type: sub: %d",
       componentDescription.componentFlags, componentDescription.componentManufacturer,
       componentDescription.componentType, componentDescription.componentSubType)
 
-    os_log(.info, log: log, "starting AVAudioUnitSampler")
+    os_log(.debug, log: log, "starting AVAudioUnitSampler")
 
     do {
       try super.init(componentDescription: componentDescription, options: [])
@@ -36,7 +36,7 @@ final class ReverbAU: AUAudioUnit {
       throw error
     }
 
-    os_log(.info, log: log, "init - done")
+    os_log(.debug, log: log, "init - done")
   }
 }
 
@@ -78,7 +78,7 @@ extension ReverbAU {
   override public var component: AudioComponent { wrapped.component }
 
   override public func allocateRenderResources() throws {
-    os_log(.info, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
+    os_log(.debug, log: log, "allocateRenderResources - %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
@@ -89,47 +89,47 @@ extension ReverbAU {
         .error, log: log, "allocateRenderResources failed - %{public}s", error.localizedDescription)
       throw error
     }
-    os_log(.info, log: log, "allocateRenderResources - done")
+    os_log(.debug, log: log, "allocateRenderResources - done")
   }
 
   override public func deallocateRenderResources() {
-    os_log(.info, log: log, "deallocateRenderResources")
+    os_log(.debug, log: log, "deallocateRenderResources")
     wrapped.deallocateRenderResources()
   }
 
   override public var renderResourcesAllocated: Bool {
-    os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
+    os_log(.debug, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
     return wrapped.renderResourcesAllocated
   }
 
   override public func reset() {
-    os_log(.info, log: log, "reset")
+    os_log(.debug, log: log, "reset")
     wrapped.reset()
     super.reset()
   }
 
   override public var inputBusses: AUAudioUnitBusArray {
-    os_log(.info, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
+    os_log(.debug, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
     return wrapped.inputBusses
   }
 
   override public var outputBusses: AUAudioUnitBusArray {
-    os_log(.info, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
+    os_log(.debug, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
     return wrapped.outputBusses
   }
 
   override public var scheduleParameterBlock: AUScheduleParameterBlock {
-    os_log(.info, log: self.log, "scheduleParameterBlock")
+    os_log(.debug, log: self.log, "scheduleParameterBlock")
     return wrapped.scheduleParameterBlock
   }
 
   override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
-    os_log(.info, log: self.log, "token by AddingRenderObserver")
+    os_log(.debug, log: self.log, "token by AddingRenderObserver")
     return wrapped.token(byAddingRenderObserver: observer)
   }
 
   override public func removeRenderObserver(_ token: Int) {
-    os_log(.info, log: self.log, "removeRenderObserver")
+    os_log(.debug, log: self.log, "removeRenderObserver")
     wrapped.removeRenderObserver(token)
   }
 
@@ -147,7 +147,7 @@ extension ReverbAU {
   }
 
   override public func parametersForOverview(withCount count: Int) -> [NSNumber] {
-    os_log(.info, log: log, "parametersForOverview: %d", count)
+    os_log(.debug, log: log, "parametersForOverview: %d", count)
     return [NSNumber(value: parameters.wetDryMix.address)]
   }
 
@@ -155,7 +155,7 @@ extension ReverbAU {
   override public var isMusicDeviceOrEffect: Bool { true }
 
   override public var virtualMIDICableCount: Int {
-    os_log(.info, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
+    os_log(.debug, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
     return wrapped.virtualMIDICableCount
   }
 
@@ -272,14 +272,14 @@ extension ReverbAU {
   override public var isRunning: Bool { wrapped.isRunning }
 
   override public func startHardware() throws {
-    os_log(.info, log: self.log, "startHardware")
+    os_log(.debug, log: self.log, "startHardware")
     do {
       try wrapped.startHardware()
     } catch {
       os_log(.error, log: self.log, "startHardware failed - %s", error.localizedDescription)
       throw error
     }
-    os_log(.info, log: self.log, "startHardware - done")
+    os_log(.debug, log: self.log, "startHardware - done")
   }
 
   override public func stopHardware() { wrapped.stopHardware() }
@@ -289,7 +289,7 @@ extension ReverbAU {
     let log = self.log
     return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
       os_log(
-        .info, log: log,
+        .debug, log: log,
         "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
         when, channel, count, bytes[0], bytes[1], bytes[2])
       block?(when, channel, count, bytes)

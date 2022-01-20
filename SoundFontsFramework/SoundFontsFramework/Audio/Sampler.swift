@@ -111,7 +111,7 @@ public final class Sampler: Tasking {
    */
   public init(mode: Mode, activePresetManager: ActivePresetManager, reverb: ReverbEffect?, delay: DelayEffect?,
               chorus: ChorusEffect?, settings: Settings) {
-    os_log(.info, log: Self.log, "init BEGIN")
+    os_log(.debug, log: Self.log, "init BEGIN")
 
     self.mode = mode
     self.activePresetManager = activePresetManager
@@ -131,7 +131,7 @@ public final class Sampler: Tasking {
     panChangedNotifier = Self.panChangedNotification.registerOnAny(block: setPan(_:))
     pitchBendRangeChangedNotifier = Self.pitchBendRangeChangedNotification.registerOnAny(block: setPitchBendRange(_:))
 
-    os_log(.info, log: Self.log, "init END")
+    os_log(.debug, log: Self.log, "init END")
   }
 
   /**
@@ -140,7 +140,7 @@ public final class Sampler: Tasking {
    - returns: Result value indicating success or failure
    */
   public func start() -> StartResult {
-    os_log(.info, log: log, "start BEGIN")
+    os_log(.debug, log: log, "start BEGIN")
     let sampler = AVAudioUnitSampler()
     auSampler = sampler
 
@@ -155,7 +155,7 @@ public final class Sampler: Tasking {
     }
 
     let result = startEngine(sampler)
-    os_log(.info, log: log, "start END - %{public}s", result.description)
+    os_log(.debug, log: log, "start END - %{public}s", result.description)
 
     return result
   }
@@ -164,7 +164,7 @@ public final class Sampler: Tasking {
    Stop the existing audio engine. NOTE: this only applies to the standalone case.
    */
   public func stop() {
-    os_log(.info, log: log, "stop BEGIN")
+    os_log(.debug, log: log, "stop BEGIN")
     guard mode == .standalone else { fatalError("unexpected `stop` called on audioUnit") }
 
     presetChangeManager.stop()
@@ -194,7 +194,7 @@ public final class Sampler: Tasking {
       self.auSampler = nil
     }
 
-    os_log(.info, log: log, "stop END")
+    os_log(.debug, log: log, "stop END")
   }
 
   /**
@@ -205,32 +205,32 @@ public final class Sampler: Tasking {
    - returns: Result indicating success or failure
    */
   public func loadActivePreset(_ afterLoadBlock: (() -> Void)? = nil) -> StartResult {
-    os_log(.info, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
+    os_log(.debug, log: log, "loadActivePreset BEGIN - %{public}s", activePresetManager.active.description)
 
     // Ok if the sampler is not yet available. We will apply the preset when it is
     guard let sampler = auSampler else {
-      os_log(.info, log: log, "no sampler yet")
+      os_log(.debug, log: log, "no sampler yet")
       return .failure(.noSampler)
     }
 
     guard let soundFont = activePresetManager.activeSoundFont else {
-      os_log(.info, log: log, "activePresetManager.activeSoundFont is nil")
+      os_log(.debug, log: log, "activePresetManager.activeSoundFont is nil")
       return .success(sampler)
     }
 
     guard let preset = activePresetManager.activePreset else {
-      os_log(.info, log: log, "activePresetManager.activePreset is nil")
+      os_log(.debug, log: log, "activePresetManager.activePreset is nil")
       return .success(sampler)
     }
 
     self.presetLoaded = false
     let presetConfig = activePresetManager.activePresetConfig
 
-    os_log(.info, log: log, "requesting preset change")
+    os_log(.debug, log: log, "requesting preset change")
     presetChangeManager.change(sampler: sampler, url: soundFont.fileURL, program: UInt8(preset.program),
                                bankMSB: UInt8(preset.bankMSB), bankLSB: UInt8(preset.bankLSB)) { [weak self] in
       guard let self = self else { return }
-      os_log(.info, log: self.log, "request complete")
+      os_log(.debug, log: self.log, "request complete")
       if let presetConfig = presetConfig {
         self.applyPresetConfig(presetConfig)
       }
@@ -241,7 +241,7 @@ public final class Sampler: Tasking {
       }
     }
 
-    os_log(.info, log: log, "loadActivePreset END")
+    os_log(.debug, log: log, "loadActivePreset END")
     return .success(sampler)
   }
 }
@@ -254,9 +254,9 @@ extension Sampler {
    - parameter value: the value to set in cents (+/- 2400)
    */
   public func setTuning(_ value: Float) {
-    os_log(.info, log: log, "setTuning BEGIN - %f", value)
+    os_log(.debug, log: log, "setTuning BEGIN - %f", value)
     auSampler?.globalTuning = value
-    os_log(.info, log: log, "setTuning END")
+    os_log(.debug, log: log, "setTuning END")
   }
 
   /**
@@ -265,9 +265,9 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setGain(_ value: Float) {
-    os_log(.info, log: log, "setGain BEGIN - %f", value)
+    os_log(.debug, log: log, "setGain BEGIN - %f", value)
     auSampler?.masterGain = value
-    os_log(.info, log: log, "setGain END")
+    os_log(.debug, log: log, "setGain END")
   }
 
   /**
@@ -276,9 +276,9 @@ extension Sampler {
    - parameter value: the value to set
    */
   public func setPan(_ value: Float) {
-    os_log(.info, log: log, "setPan BEGIN - %f", value)
+    os_log(.debug, log: log, "setPan BEGIN - %f", value)
     auSampler?.stereoPan = value
-    os_log(.info, log: log, "setPan END")
+    os_log(.debug, log: log, "setPan END")
   }
 
   /**

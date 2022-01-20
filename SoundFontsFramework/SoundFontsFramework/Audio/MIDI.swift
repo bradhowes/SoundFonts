@@ -48,7 +48,7 @@ public final class MIDI: NSObject {
       let displayName = endpoint.displayName
       let connected = activeConnections.contains(uniqueId)
       let channel = channels[uniqueId]
-      os_log(.info, log: log, "DeviceEntry(%d '%{public}s' %d", uniqueId, displayName, connected)
+      os_log(.debug, log: log, "DeviceEntry(%d '%{public}s' %d", uniqueId, displayName, connected)
       return DeviceState(uniqueId: uniqueId, displayName: displayName, connected: connected, channel: channel)
     }
   }
@@ -56,7 +56,7 @@ public final class MIDI: NSObject {
   /// Delegate which will receive incoming MIDI messages
   public weak var receiver: MIDIReceiver? {
     didSet {
-      os_log(.info, log: log, "MIDI receiver set")
+      os_log(.debug, log: log, "MIDI receiver set")
     }
   }
 
@@ -108,7 +108,7 @@ extension MIDI {
   }
 
   private func updateConnections() {
-    os_log(.info, log: log, "updateConnections")
+    os_log(.debug, log: log, "updateConnections")
 
     let active = sources
     let inactive = activeConnections.subtracting(active.uniqueIds)
@@ -130,7 +130,7 @@ extension MIDI {
     let refCon = UnsafeMutablePointer<MIDIUniqueID>.allocate(capacity: 1)
     refCon.initialize(to: uniqueId)
 
-    os_log(.info, log: log, "connecting endpoint %d '%{public}s'", uniqueId, name)
+    os_log(.debug, log: log, "connecting endpoint %d '%{public}s'", uniqueId, name)
     logErr("MIDIPortConnectSource", MIDIPortConnectSource(inputPort, endpoint, refCon))
   }
 
@@ -146,7 +146,7 @@ extension MIDI {
       return
     }
 
-    os_log(.info, log: log, "disconnecting endpoint %d '%{public}s'", uniqueId, endpoint.displayName)
+    os_log(.debug, log: log, "disconnecting endpoint %d '%{public}s'", uniqueId, endpoint.displayName)
     logErr("MIDIPortDisconnectSource", MIDIPortDisconnectSource(inputPort, endpoint))
   }
 

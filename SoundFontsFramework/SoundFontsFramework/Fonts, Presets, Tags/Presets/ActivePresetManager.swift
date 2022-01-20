@@ -88,7 +88,7 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
     self.settings = settings
 
     super.init()
-    os_log(.info, log: log, "init")
+    os_log(.debug, log: log, "init")
 
     soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
     favorites.subscribe(self, notifier: favoritesChanged_BT)
@@ -178,66 +178,66 @@ public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, 
   }
 
   private func updateState() {
-    os_log(.info, log: log, "updateState BEGIN")
+    os_log(.debug, log: log, "updateState BEGIN")
 
     guard soundFonts.isRestored && favorites.isRestored else {
-      os_log(.info, log: log, "updateState END - not restored")
+      os_log(.debug, log: log, "updateState END - not restored")
       return
     }
 
     switch state {
     case .starting:
-      os_log(.info, log: log, "updateState - starting -> normal")
+      os_log(.debug, log: log, "updateState - starting -> normal")
       state = .normal
       if let defaultPreset = soundFonts.defaultPreset {
-        os_log(.info, log: log, "updateState - using defaultPreset")
+        os_log(.debug, log: log, "updateState - using defaultPreset")
         setActive(.preset(soundFontAndPreset: defaultPreset))
       }
 
     case .pending(let pending):
-      os_log(.info, log: log, "updateState - pending -> normal")
+      os_log(.debug, log: log, "updateState - pending -> normal")
       state = .normal
       setActive(rebuild(pending))
 
     case .normal:
       // This can happen when the config file is reloaded
-      os_log(.info, log: log, "updateState - normal -> normal")
+      os_log(.debug, log: log, "updateState - normal -> normal")
     }
 
     precondition(state == .normal)
-    os_log(.info, log: log, "updateState END")
+    os_log(.debug, log: log, "updateState END")
   }
 
   private func rebuild(_ kind: ActivePresetKind) -> ActivePresetKind {
-    os_log(.info, log: log, "rebuild BEGIN - %{public}s", kind.description)
+    os_log(.debug, log: log, "rebuild BEGIN - %{public}s", kind.description)
 
     switch kind {
     case .preset:
-      os_log(.info, log: log, "rebuild END - using same")
+      os_log(.debug, log: log, "rebuild END - using same")
       return kind
 
     case let .favorite(favoriteKey, soundFontAndPreset):
-      os_log(.info, log: log, "rebuild - favorite: %{public}s %{public}s", favoriteKey.uuidString,
+      os_log(.debug, log: log, "rebuild - favorite: %{public}s %{public}s", favoriteKey.uuidString,
              soundFontAndPreset.itemName)
       if let favorite = favorites.getBy(key: favoriteKey) {
-        os_log(.info, log: log, "rebuild END - using favorite")
+        os_log(.debug, log: log, "rebuild END - using favorite")
         return .favorite(favoriteKey: favorite.key, soundFontAndPreset: favorite.soundFontAndPreset)
       } else if soundFonts.resolve(soundFontAndPreset: soundFontAndPreset) != nil {
-        os_log(.info, log: log, "rebuild END - using preset")
+        os_log(.debug, log: log, "rebuild END - using preset")
         return .preset(soundFontAndPreset: soundFontAndPreset)
       } else if let preset = soundFonts.defaultPreset {
-        os_log(.info, log: log, "rebuild END - using default preset")
+        os_log(.debug, log: log, "rebuild END - using default preset")
         return .preset(soundFontAndPreset: preset)
       } else {
-        os_log(.info, log: log, "rebuild END - using none")
+        os_log(.debug, log: log, "rebuild END - using none")
         return .none
       }
     case .none:
       if let defaultPreset = soundFonts.defaultPreset {
-        os_log(.info, log: log, "rebuild END - using default preset")
+        os_log(.debug, log: log, "rebuild END - using default preset")
         return .preset(soundFontAndPreset: defaultPreset)
       }
-      os_log(.info, log: log, "rebuild END - using none")
+      os_log(.debug, log: log, "rebuild END - using none")
       return .none
     }
   }
@@ -258,7 +258,7 @@ extension ActivePresetManager {
   }
 
   private func save(_ kind: ActivePresetKind) {
-    os_log(.info, log: log, "save - %{public}s", kind.description)
+    os_log(.debug, log: log, "save - %{public}s", kind.description)
     settings.lastActivePreset = kind
   }
 

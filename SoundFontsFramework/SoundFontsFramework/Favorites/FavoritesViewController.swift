@@ -65,11 +65,11 @@ public final class FavoritesViewController: UIViewController, FavoritesViewManag
   }
 
   public override func viewDidAppear(_ animated: Bool) {
-    os_log(.info, log: log, "viewWillAppear BEGIN")
+    os_log(.debug, log: log, "viewWillAppear BEGIN")
     super.viewDidAppear(animated)
     guard let favorite = activePresetManager?.activeFavorite else { return }
     updateCell(with: favorite)
-    os_log(.info, log: log, "viewWillAppear END")
+    os_log(.debug, log: log, "viewWillAppear END")
   }
 }
 
@@ -92,23 +92,23 @@ extension FavoritesViewController: ControllerConfiguration {
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     guard favorites.isRestored && soundFonts.isRestored else { return }
     switch event {
     case let .change(old: old, new: new, playSample: _):
       if case let .favorite(oldFaveKey, _) = old, let favorite = favorites.getBy(key: oldFaveKey) {
-        os_log(.info, log: log, "updating previous favorite cell")
+        os_log(.debug, log: log, "updating previous favorite cell")
         Self.onMain { self.updateCell(with: favorite) }
       }
       if case let .favorite(newFaveKey, _) = new, let favorite = favorites.getBy(key: newFaveKey) {
-        os_log(.info, log: log, "updating new favorite cell")
+        os_log(.debug, log: log, "updating new favorite cell")
         Self.onMain { self.updateCell(with: favorite) }
       }
     }
   }
 
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
-    os_log(.info, log: log, "favoritesChanged")
+    os_log(.debug, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
       Self.onMain { self.handleFavoriteAdded(index: index, favorite: favorite) }
@@ -128,7 +128,7 @@ extension FavoritesViewController: ControllerConfiguration {
   }
 
   private func handleFavoriteAdded(index: Int, favorite: Favorite) {
-    os_log(.info, log: log, "added item %d", index)
+    os_log(.debug, log: log, "added item %d", index)
     favoritesView.insertItems(at: [IndexPath(item: index, section: 0)])
     if favorite == activePresetManager.activeFavorite {
       favoritesView.selectItem(
@@ -139,7 +139,7 @@ extension FavoritesViewController: ControllerConfiguration {
   }
 
   private func handleFavoriteRemoved(index: Int) {
-    os_log(.info, log: log, "removed %d", index)
+    os_log(.debug, log: log, "removed %d", index)
     guard favoritesView.delegate != nil else { return }
     let indexPath = IndexPath(item: index, section: 0)
     favoritesView.deleteItems(at: [indexPath])

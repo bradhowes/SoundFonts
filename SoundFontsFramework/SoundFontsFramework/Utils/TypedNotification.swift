@@ -31,7 +31,7 @@ open class TypedNotification<ValueType: CustomStringConvertible>: Tasking {
    - parameter value: the value to forward to the observers
    */
   open func post(value: ValueType) {
-    os_log(.info, log: log, "post")
+    os_log(.debug, log: log, "post")
     NotificationCenter.default.post(name: name, object: nil, userInfo: ["value": value])
   }
 

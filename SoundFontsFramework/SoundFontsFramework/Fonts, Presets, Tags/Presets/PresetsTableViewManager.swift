@@ -79,7 +79,7 @@ final class PresetsTableViewManager: NSObject, Tasking {
     self.settings = settings
     super.init()
 
-    os_log(.info, log: log, "init")
+    os_log(.debug, log: log, "init")
 
     selectedSoundFontManager.subscribe(self, notifier: selectedSoundFontChanged_BT)
     activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
@@ -201,7 +201,7 @@ extension PresetsTableViewManager {
   }
 
   func regenerateViewSlots() {
-    os_log(.info, log: log, "regenerateViewSlots BEGIN")
+    os_log(.debug, log: log, "regenerateViewSlots BEGIN")
 
     let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
@@ -227,7 +227,7 @@ extension PresetsTableViewManager {
     }
 
     viewController.tableView.reloadData()
-    os_log(.info, log: log, "regenerateViewSlots END")
+    os_log(.debug, log: log, "regenerateViewSlots END")
   }
 }
 
@@ -251,17 +251,17 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "favoritesChange BEGIN")
     switch event {
     case .restored:
-      os_log(.info, log: log, "favoritesChange - restored")
+      os_log(.debug, log: log, "favoritesChange - restored")
       Self.onMain { self.favoritesRestored() }
 
     case let .added(_, favorite):
-      os_log(.info, log: log, "favoritesChange - added - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange - added - %{public}s", favorite.key.uuidString)
 
     case let .removed(_, favorite):
-      os_log(.info, log: log, "favoritesChange - removed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange - removed - %{public}s", favorite.key.uuidString)
 
     case let .changed(_, favorite):
-      os_log(.info, log: log, "favoritesChange - changed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange - changed - %{public}s", favorite.key.uuidString)
       Self.onMain { self.updateRow(with: favorite.key) }
 
     case .selected: break
@@ -272,7 +272,7 @@ extension PresetsTableViewManager {
   }
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    os_log(.info, log: log, "soundFontsChange BEGIN")
+    os_log(.debug, log: log, "soundFontsChange BEGIN")
     switch event {
     case let .unhidPresets(font: soundFont):
       if soundFont == self.selectedSoundFont {
@@ -290,7 +290,7 @@ extension PresetsTableViewManager {
     case .moved: break
     case .removed: break
     }
-    os_log(.info, log: log, "soundFontsChange END")
+    os_log(.debug, log: log, "soundFontsChange END")
   }
 
   private func slotIndex(from indexPath: IndexPath) -> PresetViewSlotIndex {
@@ -363,22 +363,22 @@ extension PresetsTableViewManager {
 
   private func checkIfRestored() {
     guard soundFonts.isRestored && favorites.isRestored else {
-      os_log(.info, log: log, "regenerateViewSlots END - not restored")
+      os_log(.debug, log: log, "regenerateViewSlots END - not restored")
       return
     }
     regenerateViewSlots()
   }
 
   private func favoritesRestored() {
-    os_log(.info, log: log, "favoritesRestored BEGIN")
+    os_log(.debug, log: log, "favoritesRestored BEGIN")
     checkIfRestored()
-    os_log(.info, log: log, "favoritesRestored END")
+    os_log(.debug, log: log, "favoritesRestored END")
   }
 
   private func soundFontsRestored() {
-    os_log(.info, log: log, "soundFontsRestore BEGIN")
+    os_log(.debug, log: log, "soundFontsRestore BEGIN")
     checkIfRestored()
-    os_log(.info, log: log, "soundFontsRestore END")
+    os_log(.debug, log: log, "soundFontsRestore END")
   }
 
   private func getSlotIndex(for key: Favorite.Key) -> PresetViewSlotIndex? {

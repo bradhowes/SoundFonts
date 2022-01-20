@@ -14,7 +14,7 @@ public final class ReverbViewController: AUViewController, Tasking {
   @IBOutlet private weak var room: UIPickerView!
 
   public override func viewDidLoad() {
-    os_log(.info, log: log, "viewDidLoad")
+    os_log(.debug, log: log, "viewDidLoad")
     super.viewDidLoad()
 
     wetDryMix.minimumValue = 0
@@ -38,7 +38,7 @@ extension ReverbViewController: AUAudioUnitFactory {
   -> AUAudioUnit
   {
     let audioUnit = try ReverbAU(componentDescription: componentDescription)
-    os_log(.info, log: log, "created ReverbAU")
+    os_log(.debug, log: log, "created ReverbAU")
     self.audioUnit = audioUnit
     return audioUnit
   }
@@ -57,7 +57,7 @@ extension ReverbViewController: UIPickerViewDelegate {
   public func pickerView(
     _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int
   ) {
-    os_log(.info, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
+    os_log(.debug, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
     setParameter(.roomPreset, AUValue(row))
   }
 

@@ -47,10 +47,10 @@ extension FileManager {
       if let uuid = uuid, collection.getBy(key: uuid) != nil { continue }
 
       let destination = localDocumentsDirectory.appendingPathComponent(stripped)
-      os_log(.info, log: log, "removing '%{public}s' if it exists", destination.path)
+      os_log(.debug, log: log, "removing '%{public}s' if it exists", destination.path)
 
       try? removeItem(at: destination)
-      os_log(.info, log: log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+      os_log(.debug, log: log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
 
       do {
         try copyItem(at: source, to: destination)
@@ -58,7 +58,7 @@ extension FileManager {
         os_log(.error, log: log, "%{public}s", error.localizedDescription)
       }
 
-      os_log(.info, log: log, "removing '%{public}s'", source.path)
+      os_log(.debug, log: log, "removing '%{public}s'", source.path)
       try? removeItem(at: source)
       found += 1
     }
@@ -92,7 +92,7 @@ extension SoundFontsManager: SoundFonts {
   }
 
   public func validateCollections(favorites: Favorites, tags: Tags) {
-    os_log(.info, log: log, "validateCollections")
+    os_log(.debug, log: log, "validateCollections")
     favorites.validate(self)
     tags.validate()
     for soundFont in collection.soundFonts {
@@ -182,7 +182,7 @@ extension SoundFontsManager: SoundFonts {
     guard let soundFont = getBy(key: soundFontAndPreset.soundFontKey) else { return }
     defer { markCollectionChanged() }
     let preset = soundFont.presets[soundFontAndPreset.presetIndex]
-    os_log(.info, log: log, "updatePreset - %{public}s %{public}s", preset.originalName, config.name)
+    os_log(.debug, log: log, "updatePreset - %{public}s %{public}s", preset.originalName, config.name)
     preset.presetConfig = config
     notify(.presetChanged(font: soundFont, index: soundFontAndPreset.presetIndex))
   }
@@ -231,11 +231,11 @@ extension SoundFontsManager: SoundFonts {
   }
 
   public func removeBundled() {
-    os_log(.info, log: log, "removeBundled")
+    os_log(.debug, log: log, "removeBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources {
       if let index = collection.index(of: url) {
-        os_log(.info, log: log, "removing %{public}s", url.absoluteString)
+        os_log(.debug, log: log, "removing %{public}s", url.absoluteString)
         guard let soundFont = collection.remove(index) else { return }
         notify(.removed(old: index, font: soundFont))
       }
@@ -243,11 +243,11 @@ extension SoundFontsManager: SoundFonts {
   }
 
   public func restoreBundled() {
-    os_log(.info, log: log, "restoreBundled")
+    os_log(.debug, log: log, "restoreBundled")
     defer { markCollectionChanged() }
     for url in SF2Files.allResources {
       if collection.index(of: url) == nil {
-        os_log(.info, log: log, "restoring %{public}s", url.absoluteString)
+        os_log(.debug, log: log, "restoring %{public}s", url.absoluteString)
         if let soundFont = Self.addFromBundle(url: url) {
           let index = collection.add(soundFont)
           notify(.added(new: index, font: soundFont))
@@ -278,10 +278,10 @@ extension SoundFontsManager: SoundFonts {
     let source = fm.sharedDocumentsDirectory.appendingPathComponent(name)
     let destination = fm.localDocumentsDirectory.appendingPathComponent(name)
     do {
-      os_log(.info, log: Self.log, "removing '%{public}s' if it exists", destination.path)
+      os_log(.debug, log: Self.log, "removing '%{public}s' if it exists", destination.path)
       try? fm.removeItem(at: destination)
       os_log(
-        .info, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
+        .debug, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path, destination.path)
       try fm.copyItem(at: source, to: destination)
       return true
     } catch let error as NSError {
@@ -312,10 +312,10 @@ extension SoundFontsManager: SoundFonts {
 
       let destination = fm.localDocumentsDirectory.appendingPathComponent(stripped)
       do {
-        os_log(.info, log: Self.log, "removing '%{public}s' if it exists", destination.path)
+        os_log(.debug, log: Self.log, "removing '%{public}s' if it exists", destination.path)
         try? fm.removeItem(at: destination)
         os_log(
-          .info, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path,
+          .debug, log: Self.log, "copying '%{public}s' to '%{public}s'", source.path,
           destination.path)
         try fm.copyItem(at: source, to: destination)
         good += 1
@@ -389,12 +389,12 @@ extension SoundFontsManager {
    Mark the current configuration as dirty so that it will get saved.
    */
   private func markCollectionChanged() {
-    os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
+    os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
-    os_log(.info, log: log, "restored")
+    os_log(.debug, log: log, "restored")
     notify(.restored)
   }
 }

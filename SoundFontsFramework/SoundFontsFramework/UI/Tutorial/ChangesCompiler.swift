@@ -5,7 +5,7 @@ public struct ChangesCompiler {
   private static let log = Logging.logger("ChangesCompiler")
 
   public static func compile(since: String, maxItems: Int = 6) -> [String] {
-    os_log(.info, log: log, "compile changes since: %{public}s", since)
+    os_log(.debug, log: log, "compile changes since: %{public}s", since)
 
     var entries = [String]()
     let bundle = Bundle(for: TutorialViewController.self)
@@ -26,26 +26,26 @@ public struct ChangesCompiler {
       if line.hasPrefix("# ") {
         let version = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
-        os_log(.info, log: log, "found version line - '%{public}s'", version)
+        os_log(.debug, log: log, "found version line - '%{public}s'", version)
         if version.versionComponents <= sinceVersion {
-          os_log(.info, log: log, "version <= since")
+          os_log(.debug, log: log, "version <= since")
           break
         }
       } else if line.hasPrefix("* ") {
         let entry = String(line[line.index(line.startIndex, offsetBy: 2)...])
           .trimmingCharacters(in: .whitespaces)
-        os_log(.info, log: log, "entry: '%{public}s'", entry)
+        os_log(.debug, log: log, "entry: '%{public}s'", entry)
         entries.append(entry)
         if entries.count >= maxItems {
-          os_log(.info, log: log, "max items reached")
+          os_log(.debug, log: log, "max items reached")
           break
         }
       } else {
-        os_log(.info, log: log, "skipping: '%{public}s'", line)
+        os_log(.debug, log: log, "skipping: '%{public}s'", line)
       }
     }
 
-    os_log(.info, log: log, "done - %d", entries.count)
+    os_log(.debug, log: log, "done - %d", entries.count)
     return entries
   }
 

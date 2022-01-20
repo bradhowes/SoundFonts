@@ -72,7 +72,7 @@ public struct AudioUnitParameters {
         }
       }()
       os_log(
-        .info, log: log, "parameter %d as string: %d %f %{public}s",
+        .debug, log: log, "parameter %d as string: %d %f %{public}s",
         param.address, param.value, formatted)
       return formatted
     }
@@ -84,7 +84,7 @@ public struct AudioUnitParameters {
    - parameter config: the configuration to use
    */
   func setConfig(_ config: ReverbConfig) {
-    os_log(.info, log: log, "setConfig")
+    os_log(.debug, log: log, "setConfig")
     self.roomPreset.setValue(AUValue(config.preset), originator: nil)
     self.wetDryMix.setValue(config.wetDryMix, originator: nil)
   }

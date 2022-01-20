@@ -301,7 +301,7 @@ extension EffectsController: UIPickerViewDelegate {
     _ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int
   ) {
     guard let reverbEffect = self.reverbEffect else { return }
-    os_log(.info, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
+    os_log(.debug, log: log, "new reverb room: %d", ReverbEffect.roomPresets[row].rawValue)
     reverbEffect.active = reverbEffect.active.setPreset(row)
     updatePresetConfig()
   }
@@ -330,7 +330,7 @@ extension EffectsController {
 
   private func updateGlobalConfig() {
     if let reverbEffect = self.reverbEffect, settings.reverbGlobal {
-      os_log(.info, log: log, "updating global reverb settings")
+      os_log(.debug, log: log, "updating global reverb settings")
       let config = reverbEffect.active
       settings.reverbEnabled = config.enabled
       settings.reverbPreset = config.preset
@@ -338,7 +338,7 @@ extension EffectsController {
     }
 
     if let delayEffect = self.delayEffect, settings.delayGlobal {
-      os_log(.info, log: log, "updating global delay settings")
+      os_log(.debug, log: log, "updating global delay settings")
       let config = delayEffect.active
       settings.delayEnabled = config.enabled
       settings.delayTime = config.time
@@ -348,7 +348,7 @@ extension EffectsController {
     }
 
     if let chorusEffect = self.chorusEffect, settings.chorusGlobal {
-      os_log(.info, log: log, "updating global chorus settings")
+      os_log(.debug, log: log, "updating global chorus settings")
       let config = chorusEffect.active
       settings.chorusEnabled = config.enabled
       settings.chorusRate = config.rate
@@ -367,30 +367,30 @@ extension EffectsController {
       return
     }
 
-    os_log(.info, log: log, "updatePresetConfig")
+    os_log(.debug, log: log, "updatePresetConfig")
 
     let reverbConfig: ReverbConfig? = {
       if settings.reverbGlobal {
-        os_log(.info, log: log, "updating global reverb")
+        os_log(.debug, log: log, "updating global reverb")
         return activePresetManager.activePresetConfig?.reverbConfig
       } else if reverbEffect.active.enabled {
-        os_log(.info, log: log, "updating preset reverb")
+        os_log(.debug, log: log, "updating preset reverb")
         return reverbEffect.active
       } else {
-        os_log(.info, log: log, "nil reverb preset")
+        os_log(.debug, log: log, "nil reverb preset")
         return nil
       }
     }()
 
     let delayConfig: DelayConfig? = {
       if settings.delayGlobal {
-        os_log(.info, log: log, "updating global delay")
+        os_log(.debug, log: log, "updating global delay")
         return activePresetManager.activePresetConfig?.delayConfig
       } else if delayEffect.active.enabled {
-        os_log(.info, log: log, "updating preset delay")
+        os_log(.debug, log: log, "updating preset delay")
         return delayEffect.active
       } else {
-        os_log(.info, log: log, "nil delay preset")
+        os_log(.debug, log: log, "nil delay preset")
         return nil
       }
     }()
@@ -398,23 +398,23 @@ extension EffectsController {
     let chorusConfig: ChorusConfig? = {
       return nil
 //      if settings.chorusGlobal {
-//        os_log(.info, log: log, "updating global chorus")
+//        os_log(.debug, log: log, "updating global chorus")
 //        return activePresetManager.activePresetConfig?.chorusConfig
 //      } else if chorusEffect.active.enabled {
-//        os_log(.info, log: log, "updating preset chorus")
+//        os_log(.debug, log: log, "updating preset chorus")
 //        return chorusEffect.active
 //      } else {
-//        os_log(.info, log: log, "nil chorus preset")
+//        os_log(.debug, log: log, "nil chorus preset")
 //        return nil
 //      }
     }()
 
     if let favorite = activePresetManager.activeFavorite {
-      os_log(.info, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
+      os_log(.debug, log: log, "updating favorite - delay: %{public}s reverb: %{public}s",
              delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       favorites.setEffects(favorite: favorite, delay: delayConfig, reverb: reverbConfig, chorus: chorusConfig)
     } else if let soundFontAndPreset = activePresetManager.active.soundFontAndPreset {
-      os_log(.info, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
+      os_log(.debug, log: log, "updating preset - delay: %{public}s reverb: %{public}s",
              delayConfig?.description ?? "nil", reverbConfig?.description ?? "nil")
       soundFonts.setEffects(soundFontAndPreset: soundFontAndPreset, delay: delayConfig, reverb: reverbConfig,
                             chorus: chorusConfig)
@@ -439,40 +439,40 @@ extension EffectsController {
   }
 
   private func updateState() {
-    os_log(.info, log: log, "updateState")
+    os_log(.debug, log: log, "updateState")
     let presetConfig = activePresetManager.activePresetConfig
 
     reverbGlobal.showEnabled(settings.reverbGlobal)
     if settings.reverbGlobal {
-      os_log(.info, log: log, "showing global reverb state")
+      os_log(.debug, log: log, "showing global reverb state")
       let config = ReverbConfig(settings: settings)
       update(config: config)
     } else {
       guard let reverbEffect = self.reverbEffect else { return }
       let config = presetConfig?.reverbConfig ?? reverbEffect.active.setEnabled(false)
-      os_log(.info, log: log, "showing preset reverb state - %{public}s", config.description)
+      os_log(.debug, log: log, "showing preset reverb state - %{public}s", config.description)
       update(config: config)
     }
 
     delayGlobal.showEnabled(settings.delayGlobal)
     if settings.delayGlobal {
-      os_log(.info, log: log, "showing global delay state")
+      os_log(.debug, log: log, "showing global delay state")
       update(config: DelayConfig(settings: settings))
     } else {
       guard let delayEffect = self.delayEffect else { return }
       let config = presetConfig?.delayConfig ?? delayEffect.active.setEnabled(false)
-      os_log(.info, log: log, "showing preset delay state - %{public}s", config.description)
+      os_log(.debug, log: log, "showing preset delay state - %{public}s", config.description)
       update(config: config)
     }
 
     chorusGlobal.showEnabled(settings.chorusGlobal)
     if settings.chorusGlobal {
-      os_log(.info, log: log, "showing global chorus state")
+      os_log(.debug, log: log, "showing global chorus state")
       update(config: ChorusConfig(settings: settings))
     } else {
       guard let chorusEffect = self.chorusEffect else { return }
       let config = presetConfig?.chorusConfig ?? chorusEffect.active.setEnabled(false)
-      os_log(.info, log: log, "showing preset chorus state - %{public}s", config.description)
+      os_log(.debug, log: log, "showing preset chorus state - %{public}s", config.description)
       update(config: config)
     }
   }
@@ -480,7 +480,7 @@ extension EffectsController {
   private func alpha(for enabled: Bool) -> CGFloat { enabled ? 1.0 : 0.5 }
 
   private func update(config: ReverbConfig) {
-    os_log(.info, log: log, "update ReverbConfig - %{public}s", config.description)
+    os_log(.debug, log: log, "update ReverbConfig - %{public}s", config.description)
     reverbRoom.selectRow(config.preset, inComponent: 0, animated: true)
     reverbWetDryMix.setValue(config.wetDryMix, animated: true)
     showReverbMixValue()
@@ -488,7 +488,7 @@ extension EffectsController {
   }
 
   private func updateReverbState(_ enabled: Bool) {
-    os_log(.info, log: log, "updateReverbState - %d", enabled)
+    os_log(.debug, log: log, "updateReverbState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.reverbEnabled.accessibilityLabel = enabled ? "DisableReverbEffect" : "EnableReverbEffect"
     animator.addAnimations {
@@ -505,7 +505,7 @@ extension EffectsController {
   }
 
   private func update(config: DelayConfig) {
-    os_log(.info, log: log, "update DelayConfig - %{public}s", config.description)
+    os_log(.debug, log: log, "update DelayConfig - %{public}s", config.description)
     delayTime.setValue(config.time, animated: true)
     showDelayTimeValue()
     delayFeedback.setValue(config.feedback, animated: true)
@@ -518,7 +518,7 @@ extension EffectsController {
   }
 
   private func updateDelayState(_ enabled: Bool) {
-    os_log(.info, log: log, "updateDelayState - %d", enabled)
+    os_log(.debug, log: log, "updateDelayState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.delayEnabled.accessibilityLabel = enabled ? "DisableDelayEffect" : "EnableDelayEffect"
     animator.addAnimations {
@@ -542,7 +542,7 @@ extension EffectsController {
   }
 
   private func update(config: ChorusConfig) {
-    os_log(.info, log: log, "update ChorusConfig - %{public}s", config.description)
+    os_log(.debug, log: log, "update ChorusConfig - %{public}s", config.description)
     chorusRate.setValue(config.rate, animated: true)
     showChorusRateValue()
     chorusDelay.setValue(config.delay, animated: true)
@@ -559,7 +559,7 @@ extension EffectsController {
   }
 
   private func updateChorusState(_ enabled: Bool) {
-    os_log(.info, log: log, "updateChorusState - %d", enabled)
+    os_log(.debug, log: log, "updateChorusState - %d", enabled)
     let animator = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
     self.chorusEnabled.accessibilityLabel = enabled ? "DisableChorusEffect" : "EnableChorusEffect"
     animator.addAnimations {

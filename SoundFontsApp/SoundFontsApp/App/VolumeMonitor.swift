@@ -20,7 +20,7 @@ final class VolumeMonitor {
 
   private var volume: Float = 1.0 {
     didSet {
-      os_log(.info, log: log, "volume changed %f", volume)
+      os_log(.debug, log: log, "volume changed %f", volume)
       update()
     }
   }
@@ -49,7 +49,7 @@ extension VolumeMonitor {
    - parameter session: the AVAudioSession to monitor
    */
   func start() {
-    os_log(.info, log: log, "start")
+    os_log(.debug, log: log, "start")
     reason = nil
     let session = AVAudioSession.sharedInstance()
     sessionVolumeObserver = session.observe(\.outputVolume) { [weak self] session, _ in
@@ -62,7 +62,7 @@ extension VolumeMonitor {
    Stop monitoring the output volume of an AVAudioSession
    */
   func stop() {
-    os_log(.info, log: log, "stop")
+    os_log(.debug, log: log, "stop")
     reason = nil
     sessionVolumeObserver?.invalidate()
     sessionVolumeObserver = nil
@@ -95,7 +95,7 @@ extension VolumeMonitor {
 
     keyboard?.isMuted = reason != .none
 
-    os_log(.info, log: log, "reason: %{public}s", reason.debugDescription)
+    os_log(.debug, log: log, "reason: %{public}s", reason.debugDescription)
     showReason()
   }
 

@@ -121,10 +121,10 @@ final public class Preset: Codable {
 extension Preset {
 
   func makeFavorite(soundFontAndPreset: SoundFontAndPreset, keyboardLowestNote: Note?) -> Favorite {
-    os_log(.info, log: log, "makeFavorite")
+    os_log(.debug, log: log, "makeFavorite")
     var newConfig = presetConfig
     newConfig.name = presetConfig.name
-    os_log(.info, log: log, "makeFavorite - '%{public}s'", newConfig.name)
+    os_log(.debug, log: log, "makeFavorite - '%{public}s'", newConfig.name)
     let favorite = Favorite(soundFontAndPreset: soundFontAndPreset, presetConfig: newConfig,
                             keyboardLowestNote: keyboardLowestNote)
     favorites.append(favorite.key)

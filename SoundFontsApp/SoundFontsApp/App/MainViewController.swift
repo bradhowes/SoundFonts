@@ -105,7 +105,7 @@ extension MainViewController {
    Show the tutorial screens.
    */
   func showTutorial() {
-    os_log(.info, log: log, "showTuorial")
+    os_log(.debug, log: log, "showTuorial")
     if let viewController = TutorialViewController.instantiate() {
       present(viewController, animated: true, completion: nil)
     }
@@ -115,24 +115,24 @@ extension MainViewController {
    Start audio processing. This is done as the app is brought into the foreground.
    */
   func startAudio() {
-    os_log(.info, log: log, "startAudio BEGIN")
+    os_log(.debug, log: log, "startAudio BEGIN")
     startRequested = true
     guard let sampler = self.sampler else {
-      os_log(.info, log: log, "startAudio END - no sampler")
+      os_log(.debug, log: log, "startAudio END - no sampler")
       return
     }
 
     Self.onBackground { self.startAudioBackground_BT(sampler) }
-    os_log(.info, log: log, "startAudio END")
+    os_log(.debug, log: log, "startAudio END")
   }
 
   @objc func handleRouteChange_BT(notification: Notification) {
-    os_log(.info, log: log, "handleRouteChange_BT BEGIN")
+    os_log(.debug, log: log, "handleRouteChange_BT BEGIN")
     guard let userInfo = notification.userInfo,
           let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
           let reason = AVAudioSession.RouteChangeReason(rawValue: reasonValue)
     else {
-      os_log(.info, log: log, "handleRouteChange_BT END - nothing to see")
+      os_log(.debug, log: log, "handleRouteChange_BT END - nothing to see")
       return
     }
 
@@ -140,12 +140,12 @@ extension MainViewController {
     switch reason {
 
     case .newDeviceAvailable: // New device found.
-      os_log(.info, log: log, "handleRouteChange_BT - new device available")
+      os_log(.debug, log: log, "handleRouteChange_BT - new device available")
       let session = AVAudioSession.sharedInstance()
       dump(route: session.currentRoute)
 
     case .oldDeviceUnavailable: // Old device removed.
-      os_log(.info, log: log, "handleRouteChange_BT - old device unavailable")
+      os_log(.debug, log: log, "handleRouteChange_BT - old device unavailable")
       let session = AVAudioSession.sharedInstance()
       if let previousRoute = userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
         dump(route: previousRoute)
@@ -153,19 +153,19 @@ extension MainViewController {
       }
 
     default:
-      os_log(.info, log: log, "handleRouteChange_BT - AVAudioSession.unknown reason - %d", reason.rawValue)
+      os_log(.debug, log: log, "handleRouteChange_BT - AVAudioSession.unknown reason - %d", reason.rawValue)
     }
-    os_log(.info, log: log, "handleRouteChange_BT END")
+    os_log(.debug, log: log, "handleRouteChange_BT END")
   }
 
   /**
    Stop audio processing. This is done prior to the app moving into the background.
    */
   func stopAudio() {
-    os_log(.info, log: log, "stopAudio BEGIN")
+    os_log(.debug, log: log, "stopAudio BEGIN")
     startRequested = false
     guard sampler != nil else {
-      os_log(.info, log: log, "stopAudio END - no sampler")
+      os_log(.debug, log: log, "stopAudio END - no sampler")
       return
     }
 
@@ -175,14 +175,14 @@ extension MainViewController {
 
     let session = AVAudioSession.sharedInstance()
     do {
-      os_log(.info, log: log, "stopAudio - setting AudioSession to inactive")
+      os_log(.debug, log: log, "stopAudio - setting AudioSession to inactive")
       try session.setActive(false, options: [])
-      os_log(.info, log: log, "stopAudio - done")
+      os_log(.debug, log: log, "stopAudio - done")
     } catch let error as NSError {
       os_log(.error, log: log, "stopAudio - Failed session.setActive(false): %{public}s", error.localizedDescription)
     }
 
-    os_log(.info, log: log, "stopAudio END")
+    os_log(.debug, log: log, "stopAudio END")
   }
 }
 
@@ -191,7 +191,7 @@ extension MainViewController {
 extension MainViewController: ControllerConfiguration {
 
   private func startAudioBackground_BT(_ sampler: Sampler) {
-    os_log(.info, log: log, "startAudioBackground_BT BEGIN")
+    os_log(.debug, log: log, "startAudioBackground_BT BEGIN")
 
     let sampleRate: Double = 44100.0
     let bufferSize: Int = 512
@@ -200,51 +200,51 @@ extension MainViewController: ControllerConfiguration {
     setupAudioSessionNotifications_BT()
 
     do {
-      os_log(.info, log: log, "startAudioBackground_BT - setting AudioSession category")
+      os_log(.debug, log: log, "startAudioBackground_BT - setting AudioSession category")
       try session.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
-      os_log(.info, log: log, "startAudioBackground_BT - done")
+      os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch let error as NSError {
       os_log(.error, log: log,
              "startAudioBackground_BT - failed to set the audio session category and mode: %{public}s",
              error.localizedDescription)
     }
 
-    os_log(.info, log: log, "startAudioBackground_BT - sampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
-    os_log(.info, log: log, "startAudioBackground_BT - preferredSampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
+    os_log(.debug, log: log, "startAudioBackground_BT - sampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
+    os_log(.debug, log: log, "startAudioBackground_BT - preferredSampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
 
     do {
-      os_log(.info, log: log, "startAudioBackground_BT - setting sample rate")
+      os_log(.debug, log: log, "startAudioBackground_BT - setting sample rate")
       try session.setPreferredSampleRate(sampleRate)
-      os_log(.info, log: log, "startAudioBackground_BT - done")
+      os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch let error as NSError {
       os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred sample rate to %f: %{public}s", sampleRate,
              error.localizedDescription)
     }
 
     do {
-      os_log(.info, log: log, "startAudioBackground_BT - setting IO buffer duration")
+      os_log(.debug, log: log, "startAudioBackground_BT - setting IO buffer duration")
       try session.setPreferredIOBufferDuration(Double(bufferSize) / sampleRate)
-      os_log(.info, log: log, "startAudioBackground_BT - done")
+      os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch let error as NSError {
       os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred buffer size to %d: %{public}s", bufferSize,
              error.localizedDescription)
     }
 
     do {
-      os_log(.info, log: log, "startAudioBackground_BT - setting active audio session")
+      os_log(.debug, log: log, "startAudioBackground_BT - setting active audio session")
       try session.setActive(true, options: [])
-      os_log(.info, log: log, "startAudioBackground_BT - done")
+      os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch {
       os_log(.error, log: log, "startAudioBackground_BT - failed to set active", error.localizedDescription)
     }
 
     dump(route: session.currentRoute)
 
-    os_log(.info, log: log, "startAudioBackground_BT - starting sampler")
+    os_log(.debug, log: log, "startAudioBackground_BT - starting sampler")
     let result = sampler.start()
 
     Self.onMain { self.finishStart(result) }
-    os_log(.info, log: log, "startAudioBackground_BT END")
+    os_log(.debug, log: log, "startAudioBackground_BT END")
   }
 
   /**
@@ -253,7 +253,7 @@ extension MainViewController: ControllerConfiguration {
    - parameter router: the ComponentContainer that holds all of the registered managers / controllers
    */
   func establishConnections(_ router: ComponentContainer) {
-    os_log(.info, log: log, "establishConnections BEGIN")
+    os_log(.debug, log: log, "establishConnections BEGIN")
     self.router = router
 
     soundFonts = router.soundFonts
@@ -275,44 +275,44 @@ extension MainViewController: ControllerConfiguration {
     
     activePresetManager.restoreActive(settings.lastActivePreset)
 
-    os_log(.info, log: log, "establishConnections END")
+    os_log(.debug, log: log, "establishConnections END")
   }
 
   private func startMIDI() {
-    os_log(.info, log: log, "startMIDI BEGIN")
+    os_log(.debug, log: log, "startMIDI BEGIN")
     guard let sampler = self.sampler else { return }
     os_log(.error, log: log, "starting MIDI for sampler")
     midiController = MIDIController(sampler: sampler, keyboard: keyboard, settings: settings)
     MIDI.sharedInstance.receiver = midiController
-    os_log(.info, log: log, "startMIDI END")
+    os_log(.debug, log: log, "startMIDI END")
   }
 
   private func routerChanged_BT(_ event: ComponentContainerEvent) {
-    os_log(.info, log: log, "routerChanged: %{public}s", event.description)
+    os_log(.debug, log: log, "routerChanged: %{public}s", event.description)
     switch event {
     case .samplerAvailable(let sampler): setSampler_BT(sampler)
     }
   }
 
   private func setSampler_BT(_ sampler: Sampler) {
-    os_log(.info, log: log, "setSampler_BT BEGIN")
+    os_log(.debug, log: log, "setSampler_BT BEGIN")
     self.sampler = sampler
     if startRequested {
       self.startAudioBackground_BT(sampler)
     }
-    os_log(.info, log: log, "setSampler_BT END")
+    os_log(.debug, log: log, "setSampler_BT END")
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePresetChanged_BT BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "activePresetChanged_BT BEGIN - %{public}s", event.description)
     if case let .change(old: _, new: new, playSample: playSample) = event {
       useActivePreset_BT(new, playSample: playSample)
     }
-    os_log(.info, log: log, "activePresetChanged_BT END")
+    os_log(.debug, log: log, "activePresetChanged_BT END")
   }
 
   private func useActivePreset_BT(_ activePresetKind: ActivePresetKind, playSample: Bool) {
-    os_log(.info, log: log, "useActivePreset_BT BEGIN - %{public}s", activePresetKind.description)
+    os_log(.debug, log: log, "useActivePreset_BT BEGIN - %{public}s", activePresetKind.description)
     volumeMonitor?.validActivePreset = activePresetKind != .none
     midiController?.allNotesOff()
     guard let sampler = self.sampler else { return }
@@ -324,18 +324,18 @@ extension MainViewController: ControllerConfiguration {
       self.postAlert_BT(for: what)
     }
 
-    os_log(.info, log: log, "useActivePreset_BT END")
+    os_log(.debug, log: log, "useActivePreset_BT END")
   }
 
   private func finishStart(_ result: Sampler.StartResult) {
-    os_log(.info, log: log, "finishStart BEGIN - %{public}s", result.description)
+    os_log(.debug, log: log, "finishStart BEGIN - %{public}s", result.description)
 
     switch result {
     case let .failure(what):
-      os_log(.info, log: log, "finishStart - failed to start audio session")
+      os_log(.debug, log: log, "finishStart - failed to start audio session")
       postAlert_BT(for: what)
     case .success:
-      os_log(.info, log: log, "finishStart - starting volumeMonitor and MIDI")
+      os_log(.debug, log: log, "finishStart - starting volumeMonitor and MIDI")
       volumeMonitor?.start()
       startMIDI()
     }
@@ -364,10 +364,10 @@ extension MainViewController: ControllerConfiguration {
 
   private func dump(route: AVAudioSessionRouteDescription) {
     for input in route.inputs {
-      os_log(.info, log: log, "AVAudioSession input - %{public}s", input.portName)
+      os_log(.debug, log: log, "AVAudioSession input - %{public}s", input.portName)
     }
     for output in route.outputs {
-      os_log(.info, log: log, "AVAudioSession output - %{public}s", output.portName)
+      os_log(.debug, log: log, "AVAudioSession output - %{public}s", output.portName)
     }
   }
 }

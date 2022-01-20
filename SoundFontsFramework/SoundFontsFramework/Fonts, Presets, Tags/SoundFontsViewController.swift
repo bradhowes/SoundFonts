@@ -77,16 +77,16 @@ extension SoundFontsViewController {
   @objc func moveDivider(_ gesture: UIPanGestureRecognizer) {
     switch gesture.state {
     case .began:
-      os_log(.info, log: log, "moveDivider - BEGIN")
+      os_log(.debug, log: log, "moveDivider - BEGIN")
       lastDividerPos = gesture.location(in: view).x
 
     case .changed:
-      os_log(.info, log: log, "moveDivider - CHANGED")
+      os_log(.debug, log: log, "moveDivider - CHANGED")
       let pos = gesture.location(in: self.view)
       let change = CGFloat(Int(pos.x - lastDividerPos))
       guard abs(change) > 0 else { return }
 
-      os_log(.info, log: log, "moveDivider - CHANGE: %f", change)
+      os_log(.debug, log: log, "moveDivider - CHANGE: %f", change)
       lastDividerPos += change
       gesture.setTranslation(.zero, in: view)
 
@@ -102,7 +102,7 @@ extension SoundFontsViewController {
 
       let multiplier = presetsWidth / fontsWidth
       os_log(
-        .info, log: log, "moveDivider - old: %f new: %f",
+        .debug, log: log, "moveDivider - old: %f new: %f",
         presetsWidthConstraint.multiplier,
         multiplier)
       presetsWidthConstraint = presetsWidthConstraint.setMultiplier(multiplier)
@@ -181,7 +181,7 @@ extension SoundFontsViewController {
 extension SoundFontsViewController: UIDocumentPickerDelegate {
 
   public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    os_log(.info, log: log, "documentPicker didPickDocumentAt")
+    os_log(.debug, log: log, "documentPicker didPickDocumentAt")
     addSoundFonts(urls: urls)
   }
 }
@@ -226,7 +226,7 @@ extension SoundFontsViewController: FontsViewManager {
     var ok = [String]()
     var failures = [SoundFontFileLoadFailure]()
     for each in urls {
-      os_log(.info, log: log, "processing %{public}s", each.path)
+      os_log(.debug, log: log, "processing %{public}s", each.path)
       switch soundFonts.add(url: each) {
       case .success(let (_, soundFont)): ok.append(soundFont.fileURL.lastPathComponent)
       case .failure(let failure): failures.append(failure)

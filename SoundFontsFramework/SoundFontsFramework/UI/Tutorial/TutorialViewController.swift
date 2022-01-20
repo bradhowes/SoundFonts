@@ -14,7 +14,7 @@ public final class TutorialViewController: UIViewController {
    Create a new TutorialViewController to show the tutorial.
    */
   public class func instantiate() -> UIViewController? {
-    os_log(.info, log: log, "instantiate")
+    os_log(.debug, log: log, "instantiate")
     let viewControllers = createViewControllers()
     return viewControllers?.0
   }
@@ -38,9 +38,9 @@ public final class TutorialViewController: UIViewController {
    @param changes optional collection of changes that this version contains over past ones
    */
   public class func instantiateChanges(_ changes: [String]) -> UIViewController? {
-    os_log(.info, log: log, "instantiate - %d", changes.count)
+    os_log(.debug, log: log, "instantiate - %d", changes.count)
     guard !changes.isEmpty else {
-      os_log(.info, log: log, "nothing to show")
+      os_log(.debug, log: log, "nothing to show")
       return nil
     }
 
@@ -55,7 +55,7 @@ public final class TutorialViewController: UIViewController {
   }
 
   override public func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    os_log(.info, log: log, "prepare")
+    os_log(.debug, log: log, "prepare")
     if let vc = segue.destination as? TutorialContentPagerViewController {
       vc.changes = stagedChanges
       stagedChanges = nil

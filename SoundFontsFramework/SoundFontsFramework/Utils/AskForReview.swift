@@ -71,7 +71,7 @@ public final class AskForReview: NSObject, Tasking {
   public init(settings: Settings) {
     self.settings = settings
     super.init()
-    os_log(.info, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
+    os_log(.debug, log: log, "init: dateSinceFirstLaunch - %{public}s  dateSinceLastReviewRequest - %{public}s",
            dateSinceFirstLaunch.description, dateSinceLastReviewRequest.description)
     observer = NotificationCenter.default.addObserver(forName: .askForReview, object: nil, queue: nil) { [weak self] _ in
       self?.ask()
@@ -86,28 +86,28 @@ public final class AskForReview: NSObject, Tasking {
    - version of the app must be different than the last version
    */
   public func ask() {
-    os_log(.info, log: log, "ask")
+    os_log(.debug, log: log, "ask")
 
     let now = Date()
     let currentVersion = self.currentVersion
     guard currentVersion != self.lastReviewRequestVersion else {
-      os_log(.info, log: log, "same version as last review request")
+      os_log(.debug, log: log, "same version as last review request")
       return
     }
 
     guard now >= dateSinceFirstLaunch else {
-      os_log(.info, log: log, "too soon after first launch")
+      os_log(.debug, log: log, "too soon after first launch")
       return
     }
 
     guard now >= dateSinceLastReviewRequest else {
-      os_log(.info, log: log, "too soon after last review request")
+      os_log(.debug, log: log, "too soon after last review request")
       return
     }
 
     guard countDown < 1 else {
       countDown -= 1
-      os_log(.info, log: log, "too soon after launching")
+      os_log(.debug, log: log, "too soon after launching")
       return
     }
 

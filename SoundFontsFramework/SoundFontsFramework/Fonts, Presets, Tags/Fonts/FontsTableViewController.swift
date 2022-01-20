@@ -118,7 +118,7 @@ extension FontsTableViewController {
 extension FontsTableViewController {
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    os_log(.info, log: log, "soundFontsChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "soundFontsChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .added(new, soundFont):
       Self.onMain { self.addSoundFont(index: new, soundFont: soundFont) }
@@ -134,14 +134,14 @@ extension FontsTableViewController {
   }
 
   private func selectedSoundFontChanged_BT(_ event: SelectedSoundFontEvent) {
-    os_log(.info, log: log, "selectedSoundFontChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "selectedSoundFontChanged BEGIN - %{public}s", event.description)
     if case let .changed(old: old, new: new) = event {
       Self.onMain { self.handleFontChanged(old: old, new: new) }
     }
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .change(old: old, new: new, playSample: _):
       Self.onMain { self.handlePresetChanged(old: old, new: new) }
@@ -149,7 +149,7 @@ extension FontsTableViewController {
   }
 
   private func activeTagChanged_BT(_ event: ActiveTagEvent) {
-    os_log(.info, log: log, "activeTagChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "activeTagChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .change(old: old, new: new):
       Self.onMain { self.handleActiveTagChanged(old: old, new: new) }
@@ -157,7 +157,7 @@ extension FontsTableViewController {
   }
 
   private func tagsChanged_BT(_ event: TagsEvent) {
-    os_log(.info, log: log, "tagsChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "tagsChanged BEGIN - %{public}s", event.description)
     if case let .removed(_, tag) = event {
       Self.onMain { self.handleTagRemoved(tag) }
     }

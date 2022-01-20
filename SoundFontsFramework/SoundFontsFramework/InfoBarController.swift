@@ -375,7 +375,7 @@ extension InfoBarController {
   }
 
   private func setPresetInfo(presetConfig: PresetConfig, isFavored: Bool) {
-    os_log(.info, log: log, "setPresetInfo: %{public}s %d %f", presetConfig.name, isFavored)
+    os_log(.debug, log: log, "setPresetInfo: %{public}s %d %f", presetConfig.name, isFavored)
     presetInfo.text = TableCell.favoriteTag(isFavored) + presetConfig.name
     updateTuningIndicator(presetConfig.presetTuning)
     updatePanIndicator(presetConfig.pan)

@@ -96,7 +96,7 @@ extension SoundFont {
 
   public static func makeSoundFont(from url: URL,
                                    copyFilesWhenAdding: Bool) -> Result<SoundFont, SoundFontFileLoadFailure> {
-    os_log(.info, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
+    os_log(.debug, log: log, "makeSoundFont - '%{public}s'", url.lastPathComponent)
 
     guard let info = SoundFontInfo.load(viaParser: url) else {
       os_log(.error, log: log, "failed to process SF2 file")
@@ -132,8 +132,8 @@ extension SoundFont {
   }
 
   private static func copyToAppFolder(source: URL, destination: URL) throws {
-    os_log(.info, log: log, "SF2 source: '%{public}s'", source.absoluteString)
-    os_log(.info, log: log, "SF2 destination: '%{public}s'", destination.absoluteString)
+    os_log(.debug, log: log, "SF2 source: '%{public}s'", source.absoluteString)
+    os_log(.debug, log: log, "SF2 destination: '%{public}s'", destination.absoluteString)
     let secured = source.startAccessingSecurityScopedResource()
     defer { if secured { source.stopAccessingSecurityScopedResource() } }
     try FileManager.default.copyItem(at: source, to: destination)

@@ -31,7 +31,7 @@ extension MIDIPacketList: Sequence {
    */
   public func parse(receiver: MIDIReceiver?, monitor: MIDIMonitor?, uniqueId: MIDIUniqueID) {
     os_signpost(.begin, log: log, name: "parse")
-    os_log(.info, log: log, "processPackets - %d", numPackets)
+    os_log(.debug, log: log, "processPackets - %d", numPackets)
     for packet in self {
       os_signpost(.begin, log: log, name: "sendToController")
       packet.parse(receiver: receiver, monitor: monitor, uniqueId: uniqueId)

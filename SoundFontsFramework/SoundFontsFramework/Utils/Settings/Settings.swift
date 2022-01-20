@@ -25,8 +25,8 @@ public final class Settings: NSObject {
    - parameter suiteName: the UserDefaults suite to load (only for testing)
    */
   public init(suiteName: String = "") {
-    os_log(.info, log: Self.log, "init BEGIN - suiteName: '%{public}s'", suiteName)
-    os_log(.info, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
+    os_log(.debug, log: Self.log, "init BEGIN - suiteName: '%{public}s'", suiteName)
+    os_log(.debug, log: Self.log, "application directory: %{public}s", NSHomeDirectory())
 
     if suiteName == "" {
       self.storage = UserDefaults.standard
@@ -40,7 +40,7 @@ public final class Settings: NSObject {
 
     super.init()
 
-    os_log(.info, log: Self.log, "init END")
+    os_log(.debug, log: Self.log, "init END")
   }
 }
 
@@ -53,9 +53,9 @@ extension Settings {
    */
   @inlinable
   public func setAudioUnitState(_ state: [String: Any]) {
-    os_log(.info, log: log, "setAudioUnitState BEGIN - %{public}s", state.description)
+    os_log(.debug, log: log, "setAudioUnitState BEGIN - %{public}s", state.description)
     componentSettings = state
-    os_log(.info, log: log, "setAudioUnitState END")
+    os_log(.debug, log: log, "setAudioUnitState END")
   }
 }
 

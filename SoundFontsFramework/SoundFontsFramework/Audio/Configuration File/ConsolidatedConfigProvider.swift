@@ -36,7 +36,7 @@ public final class ConsolidatedConfigProvider: NSObject {
    */
   public init(inApp: Bool, fileURL: URL? = nil) {
     let log = Logging.logger("ConsolidatedConfigProvider[\(identity)]")
-    os_log(.info, log: log, "init BEGIN - %{public}s", fileURL.descriptionOrNil)
+    os_log(.debug, log: log, "init BEGIN - %{public}s", fileURL.descriptionOrNil)
 
     self.log = log
     self.fileURL = fileURL
@@ -60,7 +60,7 @@ public final class ConsolidatedConfigProvider: NSObject {
 
     openDocument()
 
-    os_log(.info, log: log, "init END")
+    os_log(.debug, log: log, "init END")
   }
 
   /**
@@ -74,7 +74,7 @@ public final class ConsolidatedConfigProvider: NSObject {
    Create a new UIDocument object to get the latest configuration file contents.
    */
   private func openDocument() {
-    os_log(.info, log: log, "openDocument BEGIN")
+    os_log(.debug, log: log, "openDocument BEGIN")
 
     let document = ConsolidatedConfigFileDocument(identity: identity, contents: config, fileURL: fileURL)
     document.open { ok in
@@ -98,7 +98,7 @@ public final class ConsolidatedConfigProvider: NSObject {
         fatalError()
       }
     }
-    os_log(.info, log: log, "handleOpenFailure END")
+    os_log(.debug, log: log, "handleOpenFailure END")
   }
 
   private func useDocument(_ document: ConsolidatedConfigFileDocument) {
@@ -132,26 +132,26 @@ private extension ConsolidatedConfigProvider {
   @objc func processStateChange(_ notification: Notification) {
     guard let document = self.document else { return }
     let state = document.documentState
-    os_log(.info, log: log, "processStateChange: %d", state.rawValue)
+    os_log(.debug, log: log, "processStateChange: %d", state.rawValue)
 
-    if state == .normal { os_log(.info, log: log, "processStateChange - entered normal state") }
-    if state.contains(.closed) { os_log(.info, log: log, "processStateChange - closed") }
+    if state == .normal { os_log(.debug, log: log, "processStateChange - entered normal state") }
+    if state.contains(.closed) { os_log(.debug, log: log, "processStateChange - closed") }
 
     // We look for disable/enable cycles and recreate a new document to absorb new content. This is not really the right
     // thing to do as there is risk of data loss, but the rationale is this: there is only one active document and thus
     // only one active editor for a document. Plus this gets around some serious limitations encountered when trying to
     // keep AUv3 components up-to-date with changes.
     if state.contains(.editingDisabled) {
-      os_log(.info, log: log, "processStateChange - editing disabled")
+      os_log(.debug, log: log, "processStateChange - editing disabled")
       wasDisabled = true
     } else if wasDisabled {
-      os_log(.info, log: log, "processStateChange - editing enabled")
+      os_log(.debug, log: log, "processStateChange - editing enabled")
       wasDisabled = false
       openDocument()
     }
 
     if state.contains(.inConflict) {
-      os_log(.info, log: log, "processStateChange - conflict was detected")
+      os_log(.debug, log: log, "processStateChange - conflict was detected")
       resolveDocumentConflict(document: document)
     }
 
@@ -161,11 +161,11 @@ private extension ConsolidatedConfigProvider {
   func handleDocStateForTransfers(state: UIDocument.State) {
     if transferring {
       if state.contains(.progressAvailable) {
-        os_log(.info, log: log, "handleDocStateForTransfers - transfer is done")
+        os_log(.debug, log: log, "handleDocStateForTransfers - transfer is done")
         transferring = false
       }
     } else if state.contains(.progressAvailable) {
-      os_log(.info, log: log, "handleDocStateForTransfers - transfer is in progress")
+      os_log(.debug, log: log, "handleDocStateForTransfers - transfer is in progress")
       transferring = true
     }
   }
@@ -195,7 +195,7 @@ private extension ConsolidatedConfigProvider {
    - parameter notification: the notification that fired
    */
   @objc func willResignActiveNotification(_ notification: Notification) {
-    os_log(.info, log: log, "willResignActiveNotification BEGIN")
+    os_log(.debug, log: log, "willResignActiveNotification BEGIN")
     guard let document = self.document else { return }
 
     self.documentObserver = nil
@@ -203,17 +203,17 @@ private extension ConsolidatedConfigProvider {
 
     if document.hasUnsavedChanges {
       document.save(to: document.fileURL, for: .forOverwriting) { ok in
-        os_log(.info, log: self.log, "willResignActiveNotification - save ok %d", ok)
+        os_log(.debug, log: self.log, "willResignActiveNotification - save ok %d", ok)
         document.close { ok in
-          os_log(.info, log: self.log, "willResignActiveNotification - close ok %d", ok)
+          os_log(.debug, log: self.log, "willResignActiveNotification - close ok %d", ok)
         }
       }
     } else {
       document.close { ok in
-        os_log(.info, log: self.log, "willResignActiveNotification - close ok %d", ok)
+        os_log(.debug, log: self.log, "willResignActiveNotification - close ok %d", ok)
       }
     }
-    os_log(.info, log: log, "willResignActiveNotification END")
+    os_log(.debug, log: log, "willResignActiveNotification END")
   }
 
   /**
@@ -223,8 +223,8 @@ private extension ConsolidatedConfigProvider {
    - parameter notification: the notification that fired
    */
   @objc func willEnterForegroundNotification(_ notification: Notification) {
-    os_log(.info, log: log, "willEnterForegroundNotification BEGIN")
+    os_log(.debug, log: log, "willEnterForegroundNotification BEGIN")
     self.openDocument()
-    os_log(.info, log: log, "willEnterForegroundNotification END")
+    os_log(.debug, log: log, "willEnterForegroundNotification END")
   }
 }

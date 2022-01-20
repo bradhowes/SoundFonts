@@ -56,7 +56,7 @@ final class KeyboardController: UIViewController, Tasking {
 extension KeyboardController {
 
   override func viewWillAppear(_ animated: Bool) {
-    os_log(.info, log: log, "viewWillAppear - BEGIN")
+    os_log(.debug, log: log, "viewWillAppear - BEGIN")
     super.viewWillAppear(animated)
 
     createKeys()
@@ -69,28 +69,28 @@ extension KeyboardController {
       guard let self = self, let newValue = change.newValue, let option = KeyLabelOption(rawValue: newValue) else {
         return
       }
-      os_log(.info, log: self.log, "keyLabelOptionObservation - option: %d", option.rawValue)
+      os_log(.debug, log: self.log, "keyLabelOptionObservation - option: %d", option.rawValue)
       self.keyLabelOption = option
     }
 
     _ = settings.keyWidth
     keyWidthObservation = settings.observe(\.keyWidth, options: [.new]) { [weak self] _, change in
       guard let self = self, let keyWidth = change.newValue else { return }
-      os_log(.info, log: self.log, "keyWidthObservation - keyWidth: %f", keyWidth)
+      os_log(.debug, log: self.log, "keyWidthObservation - keyWidth: %f", keyWidth)
       precondition(!self.allKeys.isEmpty)
       self.keyWidth = CGFloat(keyWidth)
       self.releaseAllKeys()
       self.layoutKeys()
     }
-    os_log(.info, log: log, "viewWillAppear - END")
+    os_log(.debug, log: log, "viewWillAppear - END")
   }
 
   /// Redraw keyboard after layout change.
   override func viewDidLayoutSubviews() {
-    os_log(.info, log: self.log, "viewDidLayoutSubviews BEGIN")
+    os_log(.debug, log: self.log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
     layoutKeys()
-    os_log(.info, log: self.log, "viewDidLayoutSubviews END")
+    os_log(.debug, log: self.log, "viewDidLayoutSubviews END")
   }
 }
 
@@ -268,10 +268,10 @@ extension KeyboardController: Keyboard {
    Demand that all keys stop playing audio.
    */
   func releaseAllKeys() {
-    os_log(.info, log: self.log, "releaseAllKeys BEGIN")
+    os_log(.debug, log: self.log, "releaseAllKeys BEGIN")
     touchedKeys.releaseAll()
     Self.onMain { self.allKeys.forEach { $0.pressed = false } }
-    os_log(.info, log: self.log, "releaseAllKeys END")
+    os_log(.debug, log: self.log, "releaseAllKeys END")
   }
 }
 
@@ -280,7 +280,7 @@ extension KeyboardController: Keyboard {
 extension KeyboardController {
 
   private func createKeys() {
-    os_log(.info, log: self.log, "createKeys BEGIN")
+    os_log(.debug, log: self.log, "createKeys BEGIN")
     var blackKeys = [Key]()
     for each in KeyParamsSequence(
       keyWidth: keyWidth, keyHeight: keyboard.bounds.size.height, firstMidiNote: 0,
@@ -297,11 +297,11 @@ extension KeyboardController {
 
     blackKeys.forEach { keyboard.addSubview($0) }
     keyboardWidthConstraint.constant = allKeys[allKeys.count - 1].frame.maxX
-    os_log(.info, log: self.log, "createKeys END")
+    os_log(.debug, log: self.log, "createKeys END")
   }
 
   private func layoutKeys() {
-    os_log(.info, log: self.log, "layoutKeys BEGIN")
+    os_log(.debug, log: self.log, "layoutKeys BEGIN")
     for (key, def) in zip(
       allKeys,
       KeyParamsSequence(
@@ -312,7 +312,7 @@ extension KeyboardController {
     }
 
     updateVisibleKeys()
-    os_log(.info, log: self.log, "layoutKeys END")
+    os_log(.debug, log: self.log, "layoutKeys END")
   }
 
   private func offsetKeyboard(by offset: CGFloat) {
@@ -343,17 +343,17 @@ extension KeyboardController {
   }
 
   private func updateVisibleKeys() {
-    os_log(.info, log: self.log, "updateVisibleKeys BEGIN")
+    os_log(.debug, log: self.log, "updateVisibleKeys BEGIN")
     let offset = keyboardLeadingConstraint.constant
     let visible = allKeys.keySpan(for: view.bounds.offsetBy(dx: -offset, dy: 0.0))
     firstMidiNoteValue = visible.startIndex
     lastMidiNoteValue = visible.endIndex - 1
     infoBar?.setVisibleKeyLabels(from: lowestNote.label, to: highestNote.label)
-    os_log(.info, log: self.log, "updateVisibleKeys END")
+    os_log(.debug, log: self.log, "updateVisibleKeys END")
   }
 
   private func updateInfoBar(note: Note) {
-    os_log(.info, log: self.log, "updateInfoBar BEGIN - note: %{public}s", note.description)
+    os_log(.debug, log: self.log, "updateInfoBar BEGIN - note: %{public}s", note.description)
     if isMuted {
       infoBar.setStatusText("🔇")
     } else if settings.showSolfegeLabel {
@@ -361,7 +361,7 @@ extension KeyboardController {
     } else {
       infoBar.setStatusText(note.label)
     }
-    os_log(.info, log: self.log, "updateInfoBar END")
+    os_log(.debug, log: self.log, "updateInfoBar END")
   }
 }
 
@@ -370,7 +370,7 @@ extension KeyboardController {
 extension KeyboardController {
 
   private func shiftKeyboardUp(_ sender: AnyObject) {
-    os_log(.info, log: log, "shiftKeyBoardUp")
+    os_log(.debug, log: log, "shiftKeyBoardUp")
     precondition(!allKeys.isEmpty)
     if lastMidiNoteValue < MIDI.maxMidiValue {
       let shift: Int = {
@@ -383,7 +383,7 @@ extension KeyboardController {
   }
 
   private func shiftKeyboardDown(_ sender: AnyObject) {
-    os_log(.info, log: log, "shiftKeyBoardDown")
+    os_log(.debug, log: log, "shiftKeyBoardDown")
     precondition(!allKeys.isEmpty)
     if firstMidiNoteValue >= 12 {
       let shift: Int = {

@@ -27,7 +27,7 @@ internal struct PresetsTableRowVisibilityEditor {
     func processPresetConfig(_ presetConfig: PresetConfig, slotGenerator: () -> PresetViewSlot) {
       guard presetConfig.isVisible == false else { return }
       let indexPath = IndexPath(slotIndex: slotIndex)
-      os_log(.info, log: log, "calculateVisibilityRowChanges - showing slot %d [%d.%d] '%{public}s'",
+      os_log(.debug, log: log, "calculateVisibilityRowChanges - showing slot %d [%d.%d] '%{public}s'",
              slotIndex.rawValue, indexPath.section, indexPath.row, presetConfig.name)
 
       viewSlots.insert(slotGenerator(), at: slotIndex.rawValue)
@@ -58,7 +58,7 @@ internal struct PresetsTableRowVisibilityEditor {
     func processPresetConfig(_ presetConfig: PresetConfig) {
       guard presetConfig.isVisible == false else { return }
       let indexPath = IndexPath(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
-      os_log(.info, log: log, "calculateVisibilityRowChanges - hiding slot %d [%d.%d] '%{public}s'",
+      os_log(.debug, log: log, "calculateVisibilityRowChanges - hiding slot %d [%d.%d] '%{public}s'",
              slotIndex.rawValue, indexPath.section, indexPath.row, presetConfig.name)
       viewSlots.remove(at: slotIndex.rawValue)
       tableViewChanges.append(indexPath)

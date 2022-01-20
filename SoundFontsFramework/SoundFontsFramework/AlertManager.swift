@@ -89,7 +89,7 @@ public final class AlertManager {
   }
 
   private func notify(_ notification: Notification) {
-    os_log(.info, log: log, "notify BEGIN - %{public}s", notifications.description)
+    os_log(.debug, log: log, "notify BEGIN - %{public}s", notifications.description)
     let alertConfig: AlertConfig = {
       switch notification.name {
       case .configLoadFailure: return configLoadFailureAlert()
@@ -112,9 +112,9 @@ public final class AlertManager {
    */
   public func post(alert: AlertConfig) {
     guard let presenter = self.presenter else { return }
-    os_log(.info, log: log, "post BEGIN")
+    os_log(.debug, log: log, "post BEGIN")
     queue.addOperation(AlertOperation(alert: alert, presenter: presenter))
-    os_log(.info, log: log, "post END")
+    os_log(.debug, log: log, "post END")
   }
 }
 

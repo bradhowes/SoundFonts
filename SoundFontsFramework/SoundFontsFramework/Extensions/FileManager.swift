@@ -18,7 +18,7 @@ public extension FileManager {
     let temporaryFileURL = temporaryDirectoryURL.appendingPathComponent(
       ProcessInfo().globallyUniqueString)
     precondition(self.createFile(atPath: temporaryFileURL.path, contents: nil))
-    os_log(.info, log: log, "newTemporaryFile - %{public}@", temporaryFileURL.absoluteString)
+    os_log(.debug, log: log, "newTemporaryFile - %{public}@", temporaryFileURL.absoluteString)
     return temporaryFileURL
   }
 
@@ -61,7 +61,7 @@ public extension FileManager {
   /// Location of documents on device that can be backed-up to iCloud if enabled.
   var localDocumentsDirectory: URL {
     let path = self.urls(for: .documentDirectory, in: .userDomainMask).last!
-    os_log(.info, log: log, "localDocumentsDirectory - %@", path.path)
+    os_log(.debug, log: log, "localDocumentsDirectory - %@", path.path)
     return path
   }
 
@@ -70,7 +70,7 @@ public extension FileManager {
   var cloudDocumentsDirectory: URL? {
     precondition(Thread.current.isMainThread == false)
     guard let loc = self.url(forUbiquityContainerIdentifier: nil) else {
-      os_log(.info, log: log, "cloudDocumentsDirectory - nil")
+      os_log(.debug, log: log, "cloudDocumentsDirectory - nil")
       return nil
     }
     let dir = loc.appendingPathComponent("Documents")
@@ -78,7 +78,7 @@ public extension FileManager {
       try? self.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
     }
 
-    os_log(.info, log: log, "cloudDocumentsDirectory - %{public}@", dir.absoluteString)
+    os_log(.debug, log: log, "cloudDocumentsDirectory - %{public}@", dir.absoluteString)
     return dir
   }
 
@@ -90,7 +90,7 @@ public extension FileManager {
    */
   func fileSizeOf(url: URL) -> UInt64 {
     let fileSize = try? (self.attributesOfItem(atPath: url.path) as NSDictionary).fileSize()
-    os_log(.info, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
+    os_log(.debug, log: log, "fileSizeOf %{public}@: %d", url.absoluteString, fileSize ?? 0)
     return fileSize ?? 0
   }
 }
@@ -109,7 +109,7 @@ public extension FileManager {
     }
 
     deinit {
-      os_log(.info, log: log, "giving up identity")
+      os_log(.debug, log: log, "giving up identity")
       close(fileDescriptor)
     }
   }
@@ -117,7 +117,7 @@ public extension FileManager {
   func openIdentity() -> Identity {
     let identityDirectory = self.sharedPath(for: "locks")
     if !self.fileExists(atPath: identityDirectory.path) {
-      os_log(.info, log: log, "creating locks directory")
+      os_log(.debug, log: log, "creating locks directory")
       try? self.createDirectory(at: identityDirectory, withIntermediateDirectories: true, attributes: nil)
     }
 
@@ -125,12 +125,12 @@ public extension FileManager {
     while true {
 
       let temporaryFileURL = identityDirectory.appendingPathComponent("AU_\(counter).lock")
-      os_log(.info, log: log, "trying %{public}s", temporaryFileURL.path)
+      os_log(.debug, log: log, "trying %{public}s", temporaryFileURL.path)
 
       let fd = open(temporaryFileURL.path, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
       if fd == -1 {
         let context = String(cString: strerror(errno))
-        os_log(.info, log: log, "failed to open file - %d %{public}s", errno, context)
+        os_log(.debug, log: log, "failed to open file - %d %{public}s", errno, context)
         if errno == EAGAIN {
           continue
         }
@@ -141,12 +141,12 @@ public extension FileManager {
       let rc = flock(fd, LOCK_EX | LOCK_NB)
       if rc == -1 {
         let context = String(cString: strerror(errno))
-        os_log(.info, log: log, "failed to lock file - %d %{public}s", errno, context)
+        os_log(.debug, log: log, "failed to lock file - %d %{public}s", errno, context)
         counter += 1
         continue
       }
 
-      os_log(.info, log: log, "using %{public}s", temporaryFileURL.path)
+      os_log(.debug, log: log, "using %{public}s", temporaryFileURL.path)
       return .init(counter, temporaryFileURL, fd)
     }
   }

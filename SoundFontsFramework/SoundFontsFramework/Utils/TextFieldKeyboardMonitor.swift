@@ -52,7 +52,7 @@ final public class TextFieldKeyboardMonitor {
       adjustment = 0.0
     } else {
       adjustment = self.keyboardFrame.height - view.safeAreaInsets.bottom
-      os_log(.info, log: log, "adjustment %f", adjustment)
+      os_log(.debug, log: log, "adjustment %f", adjustment)
       scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: adjustment, right: 0)
     }
 
@@ -63,10 +63,10 @@ final public class TextFieldKeyboardMonitor {
   private func makeViewVisible() {
     guard let viewToKeepVisible = self.viewToKeepVisible else { return }
     let frame = viewToKeepVisible.convert(viewToKeepVisible.bounds, to: scrollView)
-    os_log(.info, log: log, "makeViewVisible - frame: %{public}s", frame.debugDescription)
+    os_log(.debug, log: log, "makeViewVisible - frame: %{public}s", frame.debugDescription)
     scrollView.scrollRectToVisible(frame, animated: true)
     os_log(
-      .info, log: log, "makeViewVisible - contentOffset: %{public}s",
+      .debug, log: log, "makeViewVisible - contentOffset: %{public}s",
       scrollView.contentOffset.debugDescription)
   }
 }

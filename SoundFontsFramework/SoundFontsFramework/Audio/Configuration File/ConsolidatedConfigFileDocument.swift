@@ -25,16 +25,16 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
   init(identity: Int, contents: ConsolidatedConfig? = nil, fileURL: URL? = nil) {
     let fileURL = fileURL ?? Self.sharedConfigPath
     let log = Logging.logger("ConfigFileDocument[\(identity)]")
-    os_log(.info, log: log, "init BEGIN - %{public}s", fileURL.description)
+    os_log(.debug, log: log, "init BEGIN - %{public}s", fileURL.description)
     self.log = log
     self.identity = identity
     self.contents = contents
     super.init(fileURL: fileURL)
-    os_log(.info, log: log, "init END")
+    os_log(.debug, log: log, "init END")
   }
 
   deinit{
-    os_log(.info, log: log, "deinit")
+    os_log(.debug, log: log, "deinit")
   }
 
   /**
@@ -45,9 +45,9 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - throws exception if the encoding fails for any reason
    */
   override public func contents(forType typeName: String) throws -> Any {
-    os_log(.info, log: log, "contents - typeName: %{public}s", typeName)
+    os_log(.debug, log: log, "contents - typeName: %{public}s", typeName)
     let data = try PropertyListEncoder().encode(contents)
-    os_log(.info, log: log, "contents - pending save of %d bytes", data.count)
+    os_log(.debug, log: log, "contents - pending save of %d bytes", data.count)
     return data
   }
 
@@ -59,7 +59,7 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    - throws exception if the decoding fails for any reason
    */
   override public func load(fromContents contents: Any, ofType typeName: String?) throws {
-    os_log(.info, log: log, "load BEGIN - typeName: %{public}s", typeName ?? "nil")
+    os_log(.debug, log: log, "load BEGIN - typeName: %{public}s", typeName ?? "nil")
 
     guard let data = contents as? Data else {
       os_log(.error, log: log, "load - given contents was not Data")
@@ -75,7 +75,7 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
       return
     }
 
-    os_log(.info, log: log, "load decoded contents: %{public}s", contents.description)
+    os_log(.debug, log: log, "load decoded contents: %{public}s", contents.description)
     setContents(contents, save: false)
     os_log(.error, log: log, "load END")
   }
@@ -85,18 +85,18 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    not exist.
    */
   internal func attemptLegacyLoad(completion: ((Bool) -> Void)? = nil) {
-    os_log(.info, log: log, "attemptLegacyLoad")
+    os_log(.debug, log: log, "attemptLegacyLoad")
     guard
       let soundFonts = LegacyConfigFileLoader<SoundFontCollection>.load(filename: "SoundFontLibrary.plist"),
       let favorites = LegacyConfigFileLoader<FavoriteCollection>.load(filename: "Favorites.plist"),
       let tags = LegacyConfigFileLoader<TagCollection>.load(filename: "Tags.plist")
     else {
-      os_log(.info, log: log, "failed to load one or more legacy files")
+      os_log(.debug, log: log, "failed to load one or more legacy files")
       createDefaultContents(completion: completion)
       return
     }
 
-    os_log(.info, log: log, "attemptLegacyLoad using legacy contents")
+    os_log(.debug, log: log, "attemptLegacyLoad using legacy contents")
     setContents(ConsolidatedConfig(soundFonts: soundFonts, favorites: favorites, tags: tags), save: true,
                 completion: completion)
   }
@@ -105,17 +105,17 @@ final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
    Create a new ConsolidatedConfig instance and use for the contents.
    */
   private func createDefaultContents(completion: ((Bool) -> Void)? = nil) {
-    os_log(.info, log: log, "createDefaultContents")
+    os_log(.debug, log: log, "createDefaultContents")
     self.setContents(ConsolidatedConfig(), save: true, completion: completion)
   }
 
   private func setContents(_ config: ConsolidatedConfig, save: Bool, completion: ((Bool) -> Void)? = nil) {
-    os_log(.info, log: log, "restoreContents")
+    os_log(.debug, log: log, "restoreContents")
     self.contents = config
     if save {
-      os_log(.info, log: log, "restoreContents saving")
+      os_log(.debug, log: log, "restoreContents saving")
       self.save(to: fileURL, for: .forCreating) { ok in
-        os_log(.info, log: self.log, "restoreContents - save ok %d", ok)
+        os_log(.debug, log: self.log, "restoreContents - save ok %d", ok)
         completion?(ok)
       }
     } else {

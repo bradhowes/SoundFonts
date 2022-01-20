@@ -122,12 +122,12 @@ extension FavoritesManager {
   static var defaultCollection: FavoriteCollection { FavoriteCollection() }
 
   private func markCollectionChanged() {
-    os_log(.info, log: log, "markCollectionChanged - %{public}@", collection.description)
+    os_log(.debug, log: log, "markCollectionChanged - %{public}@", collection.description)
     observer.markAsChanged()
   }
 
   private func notifyCollectionRestored() {
-    os_log(.info, log: log, "notifyCollectionRestored")
+    os_log(.debug, log: log, "notifyCollectionRestored")
     notify(.restored)
   }
 }

@@ -23,14 +23,14 @@ public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFo
   }
 
   public func setSelected(_ soundFont: SoundFont) {
-    os_log(.info, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,
+    os_log(.debug, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,
            String.pointer(soundFont))
     if selected != soundFont.key {
       let old = selected
       selected = soundFont.key
       notify(.changed(old: old, new: soundFont.key))
     }
-    os_log(.info, log: log, "setSelected END")
+    os_log(.debug, log: log, "setSelected END")
   }
 
   public func clearSelected() {

@@ -19,7 +19,7 @@ public final class DelayViewController: AUViewController, Tasking {
   @IBOutlet weak var wetDryMixLabel: UILabel!
 
   public override func viewDidLoad() {
-    os_log(.info, log: log, "viewDidLoad")
+    os_log(.debug, log: log, "viewDidLoad")
     super.viewDidLoad()
     if audioUnit != nil && parameterObserverToken == nil { connectAU() }
 
@@ -51,7 +51,7 @@ extension DelayViewController: AUAudioUnitFactory {
 
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
     let audioUnit = try DelayAU(componentDescription: componentDescription)
-    os_log(.info, log: log, "created DelayAU")
+    os_log(.debug, log: log, "created DelayAU")
     self.audioUnit = audioUnit
     return audioUnit
   }

@@ -44,29 +44,29 @@ private final class PresetChangeOperation: Operation {
     self.bankLSB = bankLSB
     self.afterLoadBlock = afterLoadBlock
     super.init()
-    os_log(.info, log: log, "init")
+    os_log(.debug, log: log, "init")
   }
 
   override func start() {
-    os_log(.info, log: log, "start - BEGIN")
+    os_log(.debug, log: log, "start - BEGIN")
 
     isExecuting = true
     guard let sampler = self.sampler else {
-      os_log(.info, log: log, "nil sampler")
+      os_log(.debug, log: log, "nil sampler")
       isFinished = true
       return
     }
 
     if self.isCancelled {
-      os_log(.info, log: log, "op cancelled")
+      os_log(.debug, log: log, "op cancelled")
       isFinished = true
       return
     }
 
     do {
-      os_log(.info, log: log, "before loadSoundBankInstrument")
+      os_log(.debug, log: log, "before loadSoundBankInstrument")
       try sampler.loadSoundBankInstrument(at: url, program: program, bankMSB: bankMSB, bankLSB: bankLSB)
-      os_log(.info, log: log, "after loadSoundBankInstrument")
+      os_log(.debug, log: log, "after loadSoundBankInstrument")
     } catch let error as NSError {
       switch error.code {
       case -1: break
@@ -77,13 +77,13 @@ private final class PresetChangeOperation: Operation {
       }
     }
 
-    os_log(.info, log: log, "before afterLoadBlock")
+    os_log(.debug, log: log, "before afterLoadBlock")
     afterLoadBlock?()
-    os_log(.info, log: log, "after afterLoadBlock")
+    os_log(.debug, log: log, "after afterLoadBlock")
 
     isExecuting = false
     isFinished = true
-    os_log(.info, log: log, "start - END")
+    os_log(.debug, log: log, "start - END")
   }
 }
 
@@ -98,20 +98,20 @@ final class PresetChangeManager {
   }
 
   func start() {
-    os_log(.info, log: log, "start")
+    os_log(.debug, log: log, "start")
     active = true
   }
 
   func change(sampler: AVAudioUnitSampler, url: URL, program: UInt8, bankMSB: UInt8, bankLSB: UInt8,
               afterLoadBlock: (() -> Void)? = nil) {
-    os_log(.info, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB, bankLSB)
+    os_log(.debug, log: log, "change - %{public}s %d %d %d", url.lastPathComponent, program, bankMSB, bankLSB)
     guard active else { return }
     queue.addOperation(PresetChangeOperation(sampler: sampler, url: url, program: program, bankMSB: bankMSB,
                                              bankLSB: bankLSB, afterLoadBlock: afterLoadBlock))
   }
 
   func stop() {
-    os_log(.info, log: log, "stop")
+    os_log(.debug, log: log, "stop")
     active = false
     queue.cancelAllOperations()
     queue.waitUntilAllOperationsAreFinished()

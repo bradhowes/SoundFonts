@@ -84,7 +84,7 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
    - parameter event: the event that just took place
    */
   public func notify(_ event: Event) {
-    os_log(.info, log: log, "notify BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "notify BEGIN - %{public}s", event.description)
     if cacheEvent { lastEvent = event }
     subscriptionsQueue.sync {
       subscriptions.values.forEach { closure in
@@ -95,7 +95,7 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
         Self.notificationQueue.async { closure(event) }
 #endif
     }}
-    os_log(.info, log: log, "notify END")
+    os_log(.debug, log: log, "notify END")
   }
 
   public func runOnNotifyQueue(_ closure: @escaping () -> Void) {

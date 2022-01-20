@@ -17,11 +17,11 @@ public final class SoundFontsAUViewController: AUViewController {
   private var audioUnit: SoundFontsAU?
 
   override public func viewDidLoad() {
-    os_log(.info, log: log, "viewDidLoad BEGIN - %{public}s", String.pointer(self))
+    os_log(.debug, log: log, "viewDidLoad BEGIN - %{public}s", String.pointer(self))
     super.viewDidLoad()
     components = Components<SoundFontsAUViewController>(inApp: false)
     components.setMainViewController(self)
-    os_log(.info, log: log, "viewDidLoad END")
+    os_log(.debug, log: log, "viewDidLoad END")
   }
 }
 
@@ -34,7 +34,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
    - returns: new SoundFontsAU instance
    */
   public func createAudioUnit(with componentDescription: AudioComponentDescription) throws -> AUAudioUnit {
-    os_log(.info, log: log, "createAudioUnit BEGIN - %{public}s", String.pointer(self))
+    os_log(.debug, log: log, "createAudioUnit BEGIN - %{public}s", String.pointer(self))
 
     guard let sampler = components.sampler else {
       os_log(.fault, log: log, "missing Sampler instance")
@@ -48,7 +48,7 @@ extension SoundFontsAUViewController: AUAudioUnitFactory {
                                      settings: components.settings)
     self.audioUnit = audioUnit
 
-    os_log(.info, log: log, "createAudioUnit END - %{public}s", String.pointer(audioUnit))
+    os_log(.debug, log: log, "createAudioUnit END - %{public}s", String.pointer(audioUnit))
     return audioUnit
   }
 }

@@ -36,7 +36,7 @@ public final class MIDIController {
       guard let self = self else { return }
       let value = self.settings.midiChannel
       if value != self.channel {
-        os_log(.info, log: self.log, "new MIDI channel: %d", value)
+        os_log(.debug, log: self.log, "new MIDI channel: %d", value)
         self.channel = value
       }
     }

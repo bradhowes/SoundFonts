@@ -46,24 +46,24 @@ final class SoundFontsAU: AUAudioUnit {
     self.activePresetManager = activePresetManager
     self.settings = settings
 
-    os_log(.info, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
+    os_log(.debug, log: log, "init - flags: %d man: %d type: sub: %d", componentDescription.componentFlags,
            componentDescription.componentManufacturer, componentDescription.componentType,
            componentDescription.componentSubType)
-    os_log(.info, log: log, "starting AVAudioUnitSampler")
+    os_log(.debug, log: log, "starting AVAudioUnitSampler")
 
     switch sampler.start() {
     case let .success(auSampler): self.wrapped = auSampler.auAudioUnit
     case .failure(let what):
-      os_log(.info, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
+      os_log(.debug, log: log, "failed to start sampler - %{public}s", what.localizedDescription)
       throw what
     }
 
-    os_log(.info, log: log, "super.init")
+    os_log(.debug, log: log, "super.init")
     do {
       try super.init(componentDescription: componentDescription, options: [])
     } catch {
       os_log(
-        .info, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription
+        .debug, log: log, "failed to initialize AUAudioUnit - %{public}s", error.localizedDescription
       )
       throw error
     }
@@ -72,7 +72,7 @@ final class SoundFontsAU: AUAudioUnit {
     activePresetSubscriberToken = activePresetManager.subscribe(self, notifier: self.activePresetChanged(_:))
     useActivePreset()
 
-    os_log(.info, log: log, "init - done")
+    os_log(.debug, log: log, "init - done")
   }
 
   deinit {
@@ -90,7 +90,7 @@ extension SoundFontsAU {
    - parameter event: the event that happened
    */
   private func activePresetChanged(_ event: ActivePresetEvent) {
-    os_log(.info, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
+    os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     switch event {
     case .change:
       self.currentPreset = nil
@@ -114,7 +114,7 @@ extension SoundFontsAU {
   override public var audioUnitName: String? {
     get { _audioUnitName }
     set {
-      os_log(.info, log: log, "audioUnitName set - %{public}s", newValue ?? "???")
+      os_log(.debug, log: log, "audioUnitName set - %{public}s", newValue ?? "???")
       willChangeValue(forKey: "audioUnitName")
       _audioUnitName = newValue
       didChangeValue(forKey: "audioUnitName")
@@ -124,7 +124,7 @@ extension SoundFontsAU {
   override public var audioUnitShortName: String? {
     get { _audioUnitShortName }
     set {
-      os_log(.info, log: log, "audioUnitShortName set - %{public}s", newValue ?? "???")
+      os_log(.debug, log: log, "audioUnitShortName set - %{public}s", newValue ?? "???")
       willChangeValue(forKey: "audioUnitShortName")
       _audioUnitShortName = newValue
       didChangeValue(forKey: "audioUnitShortName")
@@ -132,18 +132,18 @@ extension SoundFontsAU {
   }
 
   override public func supportedViewConfigurations(_ viewConfigs: [AUAudioUnitViewConfiguration]) -> IndexSet {
-    os_log(.info, log: log, "supportedViewConfigurations")
+    os_log(.debug, log: log, "supportedViewConfigurations")
     let indices = viewConfigs.enumerated().compactMap {
       $0.1.height > 270 ? $0.0 : nil
     }
-    os_log(.info, log: log, "indices: %{public}s", indices.debugDescription)
+    os_log(.debug, log: log, "indices: %{public}s", indices.debugDescription)
     return IndexSet(indices)
   }
 
   override public var component: AudioComponent { wrapped.component }
 
   override public func allocateRenderResources() throws {
-    os_log(.info, log: log, "allocateRenderResources BEGIN - outputBusses: %{public}d", outputBusses.count)
+    os_log(.debug, log: log, "allocateRenderResources BEGIN - outputBusses: %{public}d", outputBusses.count)
     for index in 0..<outputBusses.count {
       outputBusses[index].shouldAllocateBuffer = true
     }
@@ -155,76 +155,76 @@ extension SoundFontsAU {
       throw error
     }
 
-    os_log(.info, log: log, "allocateRenderResources END")
+    os_log(.debug, log: log, "allocateRenderResources END")
   }
 
   override public func deallocateRenderResources() {
-    os_log(.info, log: log, "deallocateRenderResources")
+    os_log(.debug, log: log, "deallocateRenderResources")
     wrapped.deallocateRenderResources()
   }
 
   override public var renderResourcesAllocated: Bool {
-    os_log(.info, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
+    os_log(.debug, log: log, "renderResourcesAllocated - %d", wrapped.renderResourcesAllocated)
     return wrapped.renderResourcesAllocated
   }
 
   override public func reset() {
-    os_log(.info, log: log, "reset BEGIN - %d", renderResourcesAllocated)
+    os_log(.debug, log: log, "reset BEGIN - %d", renderResourcesAllocated)
     wrapped.reset()
     reloadActivePreset()
-    os_log(.info, log: log, "reset END")
+    os_log(.debug, log: log, "reset END")
   }
 
   private func reloadActivePreset() {
-    os_log(.info, log: log, "reloadActivePreset BEGIN")
+    os_log(.debug, log: log, "reloadActivePreset BEGIN")
     guard let activePreset = activePresetManager.activePreset,
           let soundFont = activePresetManager.activeSoundFont,
           let presetConfig = activePresetManager.activePresetConfig
     else {
-      os_log(.info, log: log, "reloadActivePreset END - no active preset")
+      os_log(.debug, log: log, "reloadActivePreset END - no active preset")
       return
     }
 
     do {
 
-      os_log(.info, log: log, "reloadActivePreset - before loadSoundBankInstrument %{public}s", presetConfig.name)
+      os_log(.debug, log: log, "reloadActivePreset - before loadSoundBankInstrument %{public}s", presetConfig.name)
       try sampler.auSampler?.loadSoundBankInstrument(at: soundFont.fileURL,
                                                      program: UInt8(activePreset.program),
                                                      bankMSB: UInt8(activePreset.bankMSB),
                                                      bankLSB: UInt8(activePreset.bankLSB))
-      os_log(.info, log: log, "reloadActivePreset - after loadSoundBankInstrument")
+      os_log(.debug, log: log, "reloadActivePreset - after loadSoundBankInstrument")
     } catch {
       os_log(.error, log: log, "failed loadSoundBankInstrument - %{public}s", error.localizedDescription)
     }
 
-    os_log(.info, log: self.log, "reloadActivePreset - applying preset config")
+    os_log(.debug, log: self.log, "reloadActivePreset - applying preset config")
     self.sampler.applyPresetConfig(presetConfig)
 
-    os_log(.info, log: log, "reloadActivePreset END")
+    os_log(.debug, log: log, "reloadActivePreset END")
   }
 
   override public var inputBusses: AUAudioUnitBusArray {
-    os_log(.info, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
+    os_log(.debug, log: self.log, "inputBusses - %d", wrapped.inputBusses.count)
     return wrapped.inputBusses
   }
 
   override public var outputBusses: AUAudioUnitBusArray {
-    os_log(.info, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
+    os_log(.debug, log: self.log, "outputBusses - %d", wrapped.outputBusses.count)
     return wrapped.outputBusses
   }
 
   override public var scheduleParameterBlock: AUScheduleParameterBlock {
-    os_log(.info, log: self.log, "scheduleParameterBlock")
+    os_log(.debug, log: self.log, "scheduleParameterBlock")
     return wrapped.scheduleParameterBlock
   }
 
   override public func token(byAddingRenderObserver observer: @escaping AURenderObserver) -> Int {
-    os_log(.info, log: self.log, "token by AddingRenderObserver")
+    os_log(.debug, log: self.log, "token by AddingRenderObserver")
     return wrapped.token(byAddingRenderObserver: observer)
   }
 
   override public func removeRenderObserver(_ token: Int) {
-    os_log(.info, log: self.log, "removeRenderObserver")
+    os_log(.debug, log: self.log, "removeRenderObserver")
     wrapped.removeRenderObserver(token)
   }
 
@@ -246,7 +246,7 @@ extension SoundFontsAU {
   override public var isMusicDeviceOrEffect: Bool { true }
 
   override public var virtualMIDICableCount: Int {
-    os_log(.info, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
+    os_log(.debug, log: self.log, "virtualMIDICableCount - %d", wrapped.virtualMIDICableCount)
     return wrapped.virtualMIDICableCount
   }
 
@@ -266,13 +266,13 @@ extension SoundFontsAU {
 
   override public var fullState: [String: Any]? {
     get {
-      os_log(.info, log: log, "fullState GET")
+      os_log(.debug, log: log, "fullState GET")
       var state = [String: Any]()
       addInstanceSettings(into: &state)
       return state
     }
     set {
-      os_log(.info, log: log, "fullState SET")
+      os_log(.debug, log: log, "fullState SET")
       if let state = newValue {
         restoreInstanceSettings(from: state)
       }
@@ -281,7 +281,7 @@ extension SoundFontsAU {
 
   override public var fullStateForDocument: [String: Any]? {
     get {
-      os_log(.info, log: log, "fullStateForDocument GET")
+      os_log(.debug, log: log, "fullStateForDocument GET")
       var state = fullState ?? [String: Any]()
       if let preset = _currentPreset {
         state[kAUPresetNameKey] = preset.name
@@ -295,7 +295,7 @@ extension SoundFontsAU {
       return state
     }
     set {
-      os_log(.info, log: log, "fullStateForDocument SET %{public}s", newValue.descriptionOrNil)
+      os_log(.debug, log: log, "fullStateForDocument SET %{public}s", newValue.descriptionOrNil)
       if let state = newValue {
         let presetName = state[kAUPresetNameKey] as? String
         os_log(.debug, log: log, "kAUPresetNameKey '%{public}s'", presetName.descriptionOrNil)
@@ -322,7 +322,7 @@ extension SoundFontsAU {
    - parameter state: the storage to hold the settings
    */
   private func addInstanceSettings(into state: inout [String: Any]) {
-    os_log(.info, log: log, "addInstanceSettings BEGIN")
+    os_log(.debug, log: log, "addInstanceSettings BEGIN")
 
     if let dict = self.activePresetManager.active.encodeToDict() {
       state[activeSoundFontPresetKey] = dict
@@ -334,7 +334,7 @@ extension SoundFontsAU {
     state[SettingKeys.presetsWidthMultiplier.key] = settings.presetsWidthMultiplier
     state[SettingKeys.showingFavorites.key] = settings.showingFavorites
 
-    os_log(.info, log: log, "addInstanceSettings END")
+    os_log(.debug, log: log, "addInstanceSettings END")
   }
 
   /**
@@ -343,7 +343,7 @@ extension SoundFontsAU {
    - parameter state: the storage that holds the settings
    */
   private func restoreInstanceSettings(from state: [String: Any]) {
-    os_log(.info, log: log, "restoreInstanceSettings BEGIN")
+    os_log(.debug, log: log, "restoreInstanceSettings BEGIN")
 
     settings.setAudioUnitState(state)
 
@@ -369,7 +369,7 @@ extension SoundFontsAU {
       settings.activeTagKey = activeTagKey
     }
 
-    os_log(.info, log: log, "restoreInstanceSettings END")
+    os_log(.debug, log: log, "restoreInstanceSettings END")
   }
 }
 
@@ -389,14 +389,14 @@ extension SoundFontsAU {
    */
   private func currentPresetChanged(_ preset: AUAudioUnitPreset?) {
     guard let preset = preset else { return }
-    os_log(.info, log: log, "currentPresetChanged BEGIN - %{public}s", preset)
+    os_log(.debug, log: log, "currentPresetChanged BEGIN - %{public}s", preset)
 
     // There are no factory presets (should there be?) so this only applies to user presets.
     guard preset.number < 0 else  { return }
 
     if #available(iOS 13.0, *) {
       guard let state = try? wrapped.presetState(for: preset) else { return }
-      os_log(.info, log: log, "state: %{public}s", state.debugDescription)
+      os_log(.debug, log: log, "state: %{public}s", state.debugDescription)
       fullState = state
     }
   }
@@ -468,14 +468,14 @@ extension SoundFontsAU {
   override public var isRunning: Bool { wrapped.isRunning }
 
   override public func startHardware() throws {
-    os_log(.info, log: self.log, "startHardware")
+    os_log(.debug, log: self.log, "startHardware")
     do {
       try wrapped.startHardware()
     } catch {
       os_log(.error, log: self.log, "startHardware failed - %s", error.localizedDescription)
       throw error
     }
-    os_log(.info, log: self.log, "startHardware - done")
+    os_log(.debug, log: self.log, "startHardware - done")
   }
 
   override public func stopHardware() { wrapped.stopHardware() }
@@ -485,7 +485,7 @@ extension SoundFontsAU {
     let log = self.log
     return { (when: AUEventSampleTime, channel: UInt8, count: Int, bytes: UnsafePointer<UInt8>) in
       os_log(
-        .info, log: log,
+        .debug, log: log,
         "scheduleMIDIEventBlock - when: %d chan: %d count: %d cmd: %d arg1: %d, arg2: %d",
         when, channel, count, bytes[0], bytes[1], bytes[2])
       block?(when, channel, count, bytes)
@@ -495,7 +495,7 @@ extension SoundFontsAU {
   override public var renderBlock: AURenderBlock { wrapped.renderBlock }
 
   override public var internalRenderBlock: AUInternalRenderBlock {
-    os_log(.info, log: log, "internalRenderBlock")
+    os_log(.debug, log: log, "internalRenderBlock")
     return wrapped.internalRenderBlock
   }
 }

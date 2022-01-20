@@ -60,7 +60,7 @@ extension PresetsTableViewController {
    table view was updated.
    */
   public override func viewDidLayoutSubviews() {
-    os_log(.info, log: log, "viewDidLayoutSubviews BEGIN")
+    os_log(.debug, log: log, "viewDidLayoutSubviews BEGIN")
     super.viewDidLayoutSubviews()
 
     if !isEditing && !isSearching && tableView.isDragging && tableView.contentOffset.y < -60 {
@@ -69,28 +69,28 @@ extension PresetsTableViewController {
     }
 
     if let action = afterReloadDataAction {
-      os_log(.info, log: log, "viewDidLayoutSubviews - running action")
+      os_log(.debug, log: log, "viewDidLayoutSubviews - running action")
       afterReloadDataAction = nil
       action()
     }
 
     if isSearching {
-      os_log(.info, log: log, "viewDidLayoutSubviews END - isSearching")
+      os_log(.debug, log: log, "viewDidLayoutSubviews END - isSearching")
       return
     }
 
     if let indexPath = slotToScrollTo {
       slotToScrollTo = nil
       if indexPath.row < tableView.visibleCells.count {
-        os_log(.info, log: log, "viewDidLayoutSubviews - A slotToScrollTo %{public}s", indexPath.description)
+        os_log(.debug, log: log, "viewDidLayoutSubviews - A slotToScrollTo %{public}s", indexPath.description)
         tableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.section), at: .top, animated: false)
       } else {
-        os_log(.info, log: log, "viewDidLayoutSubviews - slotToScrollTo %{public}s", indexPath.description)
+        os_log(.debug, log: log, "viewDidLayoutSubviews - slotToScrollTo %{public}s", indexPath.description)
         tableView.scrollToRow(at: indexPath, at: .none, animated: false)
       }
     }
 
-    os_log(.info, log: log, "viewDidLayoutSubviews END")
+    os_log(.debug, log: log, "viewDidLayoutSubviews END")
   }
 
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -238,7 +238,7 @@ extension PresetsTableViewController {
   }
 
   private func beginVisibilityEditing() {
-    os_log(.info, log: log, "beginVisibilityEditing BEGIN")
+    os_log(.debug, log: log, "beginVisibilityEditing BEGIN")
 
     // We show currently-hidden items but we don't update existing IndexPath values. This is fast and not complicated,
     // but our section counts will be off so it requires a reloadData() at the end of the editing to bring everything
@@ -256,7 +256,7 @@ extension PresetsTableViewController {
       self.showVisibilityState()
     }
 
-    os_log(.info, log: log, "beginVisibilityEditing END")
+    os_log(.debug, log: log, "beginVisibilityEditing END")
   }
 
   private func showVisibilityState() {

@@ -14,11 +14,11 @@ struct LegacyConfigFileLoader<T> where T: Decodable & CustomStringConvertible {
    Attempts to load a legacy config file.
    */
   static func load(filename: String, removeWhenDone: Bool = false) -> T? {
-    os_log(.info, log: log, "init - %{public}s", filename)
+    os_log(.debug, log: log, "init - %{public}s", filename)
     let sharedArchivePath = FileManager.default.sharedPath(for: filename)
-    os_log(.info, log: log, "path - %{public}s", sharedArchivePath.path)
+    os_log(.debug, log: log, "path - %{public}s", sharedArchivePath.path)
     guard FileManager.default.fileExists(atPath: sharedArchivePath.path) else { return nil }
-    os_log(.info, log: log, "path exists")
+    os_log(.debug, log: log, "path exists")
 
     defer {
       if removeWhenDone {
@@ -27,10 +27,10 @@ struct LegacyConfigFileLoader<T> where T: Decodable & CustomStringConvertible {
     }
 
     guard let data = try? Data(contentsOf: sharedArchivePath) else { return nil }
-    os_log(.info, log: log, "fetched data from file")
+    os_log(.debug, log: log, "fetched data from file")
 
     guard let contents = try? PropertyListDecoder().decode(T.self, from: data) else { return nil }
-    os_log(.info, log: log, "restored from data - %{public}s", contents.description)
+    os_log(.debug, log: log, "restored from data - %{public}s", contents.description)
 
     return contents
   }

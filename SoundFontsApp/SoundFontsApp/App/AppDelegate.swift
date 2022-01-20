@@ -62,7 +62,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    - parameter app: the app that is running
    */
   func applicationWillResignActive(_ application: UIApplication) {
-    os_log(.info, log: log, "applicationWillResignActive")
+    os_log(.debug, log: log, "applicationWillResignActive")
     components.mainViewController.stopAudio()
     NotificationCenter.default.post(Notification(name: .appResigningActive))
   }
@@ -73,7 +73,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    - parameter app: the app that is running
    */
   func applicationDidEnterBackground(_ application: UIApplication) {
-    os_log(.info, log: log, "applicationDidEnterBackground")
+    os_log(.debug, log: log, "applicationDidEnterBackground")
   }
 
   /**
@@ -82,7 +82,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    - parameter app: the app that is running
    */
   func applicationWillEnterForeground(_ application: UIApplication) {
-    os_log(.info, log: log, "applicationWillEnterForeground")
+    os_log(.debug, log: log, "applicationWillEnterForeground")
   }
 
   /**
@@ -91,7 +91,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    - parameter app: the app that is running
    */
   func applicationDidBecomeActive(_ application: UIApplication) {
-    os_log(.info, log: log, "applicationDidBecomeActive")
+    os_log(.debug, log: log, "applicationDidBecomeActive")
     UIApplication.shared.isIdleTimerDisabled = true
     components.mainViewController.startAudio()
   }
@@ -102,7 +102,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
    - parameter app: the app that is running
    */
   func applicationWillTerminate(_ application: UIApplication) {
-    os_log(.info, log: log, "applicationWillTerminate")
+    os_log(.debug, log: log, "applicationWillTerminate")
     components.mainViewController.stopAudio()
   }
 

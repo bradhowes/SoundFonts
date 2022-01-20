@@ -92,7 +92,7 @@ public struct AudioUnitParameters {
   }
 
   func setConfig(_ config: DelayConfig) {
-    os_log(.info, log: log, "setConfig")
+    os_log(.debug, log: log, "setConfig")
     self.time.setValue(config.time, originator: nil)
     self.feedback.setValue(config.feedback, originator: nil)
     self.cutoff.setValue(config.cutoff, originator: nil)
