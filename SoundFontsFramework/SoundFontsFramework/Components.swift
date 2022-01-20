@@ -27,7 +27,7 @@ where T: ControllerConfiguration {
   public let activePresetManager: ActivePresetManager
   /// The manager of the selected sound font
   public let selectedSoundFontManager: SelectedSoundFontManager
-
+  /// The manager of the active tag for font filtering
   public let activeTagManager: ActiveTagManager
 
   /// True if running in the app; false when running in the AUv3 app extension
@@ -98,7 +98,6 @@ where T: ControllerConfiguration {
     self.activePresetManager = ActivePresetManager(soundFonts: soundFonts, favorites: favorites,
                                                    selectedSoundFontManager: selectedSoundFontManager,
                                                    settings: settings)
-
     self.activeTagManager = ActiveTagManager(tags: tags, settings: settings)
 
     super.init()

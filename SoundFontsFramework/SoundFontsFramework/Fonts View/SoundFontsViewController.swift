@@ -30,7 +30,6 @@ public final class SoundFontsViewController: UIViewController {
   private var tags: Tags!
   private var settings: Settings!
 
-  private var fontsTableViewManager: FontsTableViewManager!
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var activeTagManager: ActiveTagManager!
   private var keyboard: Keyboard?
@@ -113,7 +112,6 @@ extension SoundFontsViewController {
 
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    fontsTableViewManager?.selectActive()
   }
 
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -204,8 +202,6 @@ extension SoundFontsViewController: ControllerConfiguration {
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
-
-    fontsTableViewManager?.selectActive()
   }
 }
 
@@ -414,7 +410,7 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
-    
+
     UIViewPropertyAnimator.runningPropertyAnimator(
       withDuration: 0.25,
       delay: 0.0,

@@ -29,12 +29,20 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Taskin
   private lazy var log = Logging.logger("ActiveTagManager")
   private let tags: Tags
   private let settings: Settings
-  private(set) var activeTag: Tag = Tag.allTag {
+
+  /// The currently active tag.
+  public private(set) var activeTag: Tag = Tag.allTag {
     didSet {
       settings.activeTagKey = activeTag.key
     }
   }
 
+  /**
+   Construct new manager
+
+   - parameter tags: the tags collection to use for values
+   - parameter settings: the Settings store to use for the `activeTagKey` value
+   */
   public init(tags: Tags, settings: Settings) {
     self.tags = tags
     self.settings = settings
@@ -42,6 +50,11 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Taskin
     tags.subscribe(self, notifier: tagsRestored_BT)
   }
 
+  /**
+   Set a new active Tag.
+
+   - parameter index: the index of the Tag in the `Tags` collection to make active.
+   */
   func setActiveTag(index: Int) {
     let newTag = tags.getBy(index: index)
     if activeTag != newTag {
@@ -51,6 +64,11 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Taskin
     }
   }
 
+  /**
+   Set a new active Tag.
+
+   - parameter key: the unique key of the Tag in the `Tags` collection to make active.
+   */
   func setActiveTag(key: Tag.Key) {
     let newTag = tags.getBy(key: key) ?? Tag.allTag
     if activeTag != newTag {

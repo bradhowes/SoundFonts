@@ -26,7 +26,6 @@
 		BD074C5423CDAF51001987E9 /* Sampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BEF23CDAF51001987E9 /* Sampler.swift */; };
 		BD074C5523CDAF51001987E9 /* SoundFontAndPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */; };
 		BD074C5623CDAF51001987E9 /* SoundFontsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */; };
-		BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */; };
 		BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */; };
 		BD074C5B23CDAF51001987E9 /* FontEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF723CDAF51001987E9 /* FontEditor.swift */; };
 		BD074C5C23CDAF51001987E9 /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD074BF823CDAF51001987E9 /* TableCell.swift */; };
@@ -280,7 +279,6 @@
 		BD074BEF23CDAF51001987E9 /* Sampler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sampler.swift; sourceTree = "<group>"; };
 		BD074BF023CDAF51001987E9 /* SoundFontAndPreset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontAndPreset.swift; sourceTree = "<group>"; };
 		BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontsViewController.swift; sourceTree = "<group>"; };
-		BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontsTableViewManager.swift; sourceTree = "<group>"; };
 		BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresetsTableViewManager.swift; sourceTree = "<group>"; };
 		BD074BF723CDAF51001987E9 /* FontEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontEditor.swift; sourceTree = "<group>"; };
 		BD074BF823CDAF51001987E9 /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
@@ -582,6 +580,7 @@
 				BDB7406625CC29120051B4E4 /* Tutorial */,
 				BD90AEF424192E7C00D29E18 /* README.md */,
 				BD130B0E25615A3300D1CDF6 /* Editors */,
+				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
 				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
 				BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */,
@@ -592,7 +591,6 @@
 				BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */,
 				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
 				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
-				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
 				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
 			);
 			path = UI;
@@ -798,7 +796,6 @@
 				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD28D73827958CE4000A57DE /* FontsTableViewController.swift */,
-				BD074BF523CDAF51001987E9 /* FontsTableViewManager.swift */,
 				BD3D13AC27973608009FED96 /* TagsTableViewController.swift */,
 			);
 			path = Fonts;
@@ -1248,7 +1245,6 @@
 				BD2F4B24277F28EE0064E31B /* SettingSerializable.swift in Sources */,
 				BD074C8623CDAF51001987E9 /* NibLoadableView.swift in Sources */,
 				BD125B41241010840003DE99 /* KeyboardController.swift in Sources */,
-				BD074C5923CDAF51001987E9 /* FontsTableViewManager.swift in Sources */,
 				BD1C22ED25CDC701007C114F /* TutorialContentPagerViewController.swift in Sources */,
 				BD27E987251605CD00591FD0 /* ActivePresetKind.swift in Sources */,
 				BDBF897B25B5930100B58E23 /* Tags.swift in Sources */,

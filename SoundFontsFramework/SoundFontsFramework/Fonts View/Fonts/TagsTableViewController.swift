@@ -4,7 +4,7 @@ import UIKit
 import os.log
 
 /**
- The view controller for the tags table. Display data comes from the tags collection filtered by the active tag. It
+ The view controller for the tags table. Display data comes from the tags collection  The controller
  allows for setting the active tag, a value maintained by the ActiveTagManager.
  */
 final class TagsTableViewController: UITableViewController, Tasking {
@@ -39,7 +39,7 @@ extension TagsTableViewController {
     guard let tags = self.tags,
           let activeTagManager = self.activeTagManager,
           let row = tags.index(of: activeTagManager.activeTag.key) else { return }
-    self.tableView.scrollToRow(at: .init(row: row, section: 0), at: .none, animated: true)
+    self.tableView.scrollToRow(at: row.indexPath, at: .none, animated: true)
   }
 }
 
@@ -109,7 +109,7 @@ extension TagsTableViewController {
 
   private func handleTagChange(_ oldTag: Tag?, _ newTag: Tag?) {
     let rows = [oldTag, newTag].compactMap { $0 == nil ? nil : tags.index(of: $0!.key) }
-    let indexPaths = rows.map { IndexPath(row: $0, section: 0) }
+    let indexPaths = rows.map { $0.indexPath }
     tableView.reloadRows(at: indexPaths, with: .automatic)
   }
 
@@ -127,4 +127,10 @@ extension TagsTableViewController {
     cell.updateForTag(at: indexPath, name: name, flags: flags)
     return cell
   }
+}
+
+fileprivate extension Int {
+
+  /// Sugar to create an IndexPath from a row value.
+  var indexPath: IndexPath { IndexPath(row: self, section: 0) }
 }

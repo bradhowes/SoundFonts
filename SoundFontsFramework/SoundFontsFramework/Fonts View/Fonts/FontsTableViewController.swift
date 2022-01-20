@@ -3,10 +3,12 @@
 import UIKit
 import os.log
 
-fileprivate extension Int {
-  var indexPath: IndexPath { IndexPath(row: self, section: 0) }
-}
-
+/**
+ The view controller for the table view showing the SF2 fonts that are available. The contents of this
+ view come from the names of the SoundFonts collection, filtered by the active tag value managed by an
+ `ActiveTagManager`. Swiping right on a row allows for editing font meta data. Swiping left on a row gives
+ the user the chance to hide a built-in font or to delete a user-added one.
+ */
 final class FontsTableViewController: UITableViewController, Tasking {
   private lazy var log = Logging.logger("FontsTableViewController")
 
@@ -20,11 +22,6 @@ final class FontsTableViewController: UITableViewController, Tasking {
   private var settings: Settings!
 
   private var dataSource = [SoundFont.Key]()
-  private var filterTagKey: Tag.Key = Tag.allTag.key {
-    didSet {
-      settings?.activeTagKey = filterTagKey
-    }
-  }
 }
 
 extension FontsTableViewController {
@@ -163,16 +160,10 @@ extension FontsTableViewController {
 
   private func handleTagRemoved(_ tag: Tag) {
     self.soundFonts.removeTag(tag.key)
-    self.updateFilterTag(tagKey: Tag.allTag.key)
+    self.updateTableView()
   }
 
   private func handleActiveTagChanged(old: Tag?, new: Tag) {
-    filterTagKey = new.key
-    updateTableView()
-  }
-
-  private func updateFilterTag(tagKey: Tag.Key) {
-    filterTagKey = tagKey
     updateTableView()
   }
 
@@ -183,7 +174,7 @@ extension FontsTableViewController {
       return
     }
 
-    dataSource = soundFonts.filtered(by: filterTagKey)
+    dataSource = soundFonts.filtered(by: activeTagManager.activeTag.key)
     os_log(.debug, log: log, "updateTableView - dataSource: %{public}s", dataSource.description)
     os_log(.debug, log: log, "updateTableView - names: %{public}s", soundFonts.names(of: dataSource).description)
 
@@ -230,8 +221,12 @@ extension FontsTableViewController {
     }
   }
 
+  private func filteredIndex(_ index: Int) -> Int {
+    soundFonts.filteredIndex(index: index, tag: activeTagManager.activeTag.key)
+  }
+
   private func addSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
+    let filteredIndex = filteredIndex(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.insertRows(at: [filteredIndex.indexPath], with: .automatic)
@@ -245,9 +240,9 @@ extension FontsTableViewController {
   }
 
   private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: SoundFont) {
-    let oldFilteredIndex = soundFonts.filteredIndex(index: oldIndex, tag: filterTagKey)
+    let oldFilteredIndex = filteredIndex(oldIndex)
     guard oldFilteredIndex >= 0 else { return }
-    let newFilteredIndex = soundFonts.filteredIndex(index: newIndex, tag: filterTagKey)
+    let newFilteredIndex = filteredIndex(newIndex)
     guard newFilteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
@@ -263,7 +258,7 @@ extension FontsTableViewController {
   }
 
   private func removeSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = soundFonts.filteredIndex(index: index, tag: filterTagKey)
+    let filteredIndex = filteredIndex(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.deleteRows(at: [filteredIndex.indexPath], with: .automatic)
@@ -321,4 +316,9 @@ private func updateRow(row: Int?) {
     cell.updateForFont(at: indexPath, name: soundFont.displayName, kind: soundFont.kind, flags: flags)
     return cell
   }
+}
+
+fileprivate extension Int {
+  /// Sugar to create an IndexPath from a row value.
+  var indexPath: IndexPath { IndexPath(row: self, section: 0) }
 }
