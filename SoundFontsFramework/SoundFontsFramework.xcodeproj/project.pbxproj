@@ -633,9 +633,9 @@
 				BD28D73727958C84000A57DE /* Fonts */,
 				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
-				BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
+				BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */,
 			);
 			path = "Fonts View";
 			sourceTree = "<group>";

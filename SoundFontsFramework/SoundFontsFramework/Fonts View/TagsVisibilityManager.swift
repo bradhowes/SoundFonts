@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ Controls visibility of the tags table view.
+ */
 struct TagsVisibilityManager {
 
   private let tagsBottomConstraint: NSLayoutConstraint
@@ -18,6 +21,16 @@ struct TagsVisibilityManager {
   private let infoBar: InfoBar
   private let maxTagsViewHeightConstraint: CGFloat
 
+  /**
+   Construct new instance
+
+   - parameter tagsBottomConstraint: constraint that controls where the tags view bottom resides
+   - parameter tagsViewHeightConstrain: constraint that controls the height of the tags view
+   - parameter fontsView: the view showing the fonts
+   - parameter containerView: the container view that shows the fonts and tags
+   - parameter tagsTableViewController: the view controller for the tags table
+   - parameter infoBar: the InfoBar that holds the button used to show/hide the tags table
+   */
   init(tagsBottonConstraint: NSLayoutConstraint, tagsViewHeightConstrain: NSLayoutConstraint, fontsView: UIView,
        containerView: UIView, tagsTableViewController: TagsTableViewController, infoBar: InfoBar) {
     self.tagsBottomConstraint = tagsBottonConstraint
@@ -31,8 +44,14 @@ struct TagsVisibilityManager {
     infoBar.addEventClosure(.showTags, self.toggleShowTags)
   }
 
+  /// True when the tags view is visible
   var showingTags: Bool { tagsBottomConstraint.constant == 0.0 }
 
+  /**
+   Toggle the visibility of the tags table
+
+   - parameter sender: the object that sent the request
+   */
   func toggleShowTags(_ sender: AnyObject) {
     let button = sender as? UIButton
     if tagsBottomConstraint.constant == 0.0 {
@@ -43,7 +62,11 @@ struct TagsVisibilityManager {
     }
   }
 
+  /**
+   Show the tags table view
+   */
   public func showTags() {
+    guard !showingTags else { return }
     let maxHeight = fontsView.frame.height - 8
     let midHeight = maxHeight / 2.0
     let minHeight = CGFloat(120.0)
@@ -65,7 +88,11 @@ struct TagsVisibilityManager {
       }, completion: { _ in })
   }
 
+  /**
+   Hide the tags table view
+   */
   public func hideTags() {
+    guard showingTags else { return }
     infoBar.resetButtonState(.showTags)
     tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
     tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
