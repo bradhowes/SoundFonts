@@ -312,7 +312,6 @@ extension SoundFontsViewController: SegueHandler {
         fatalError("expected TagsTableViewController for segue destination")
       }
       tagsTableViewController = destination
-      // tagsTableViewController.soundFontsViewController = self
 
     case .fontEditor:
       guard let config = sender as? FontEditor.Config else { fatalError("expected FontEditor.Config") }
@@ -418,9 +417,14 @@ extension SoundFontsViewController {
 
     NotificationCenter.default.post(name: .showingTags, object: nil)
 
-    UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
-                                                   options: [.allowUserInteraction, .curveEaseIn],
-                                                   animations: self.view.layoutIfNeeded) { _ in }
+    UIViewPropertyAnimator.runningPropertyAnimator(
+      withDuration: 0.25,
+      delay: 0.0,
+      options: [.allowUserInteraction, .curveEaseIn],
+      animations: {
+        self.view.layoutIfNeeded()
+        self.tagsTableViewController.scrollToActiveRow()
+      }, completion: { _ in })
   }
 
   private func hideTags() {

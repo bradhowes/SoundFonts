@@ -28,8 +28,21 @@ final class TagsTableViewController: UITableViewController, Tasking {
       guard let tags = self.tags,
             let activeTagManager = self.activeTagManager,
             let row = tags.index(of: activeTagManager.activeTag.key) else { return }
-      self.tableView.scrollToRow(at: .init(row: row, section: 0), at: .none, animated: true)
+      self.tableView.scrollToRow(at: .init(row: row, section: 0), at: .none, animated: false)
     }
+  }
+}
+
+extension TagsTableViewController {
+
+  /**
+   Make sure that the active tag is visible in the table view.
+   */
+  func scrollToActiveRow() {
+    guard let tags = self.tags,
+          let activeTagManager = self.activeTagManager,
+          let row = tags.index(of: activeTagManager.activeTag.key) else { return }
+    self.tableView.scrollToRow(at: .init(row: row, section: 0), at: .none, animated: true)
   }
 }
 
