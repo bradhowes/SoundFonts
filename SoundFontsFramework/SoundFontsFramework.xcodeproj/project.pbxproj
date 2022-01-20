@@ -633,8 +633,8 @@
 				BD28D73727958C84000A57DE /* Fonts */,
 				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
-				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
+				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
 			);
 			path = "Fonts View";
 			sourceTree = "<group>";
@@ -940,9 +940,9 @@
 		BDBFCF9327874C5000B64481 /* Presets */ = {
 			isa = PBXGroup;
 			children = (
+				BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */,
 				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
 				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,
-				BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */,
 				BDF1C0DC278763A700E451C3 /* PresetViewSlot.swift */,
 			);
 			path = Presets;

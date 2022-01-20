@@ -279,7 +279,7 @@ extension TagsEditorTableViewController {
 
   override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-    tableView.deselectRow(at: indexPath, animated: true)
+    guard !isEditing else { return }
 
     if activeNameEditor != nil {
       stopEditingName()
@@ -295,9 +295,15 @@ extension TagsEditorTableViewController {
           active.insert(tagKey)
         }
       }
+    } else {
+      tableView.deselectRow(at: indexPath, animated: false)
     }
 
     tableView.reloadRows(at: [indexPath], with: .automatic)
+  }
+
+  override public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    selectable ? indexPath : nil
   }
 
   override public func tableView(_ tableView: UITableView,
@@ -307,8 +313,7 @@ extension TagsEditorTableViewController {
   }
 
   override public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    // Do not allow the `All` tag and the `Built-in` tags to be edited.
-    !Tag.stockTagSet.contains(tags.getBy(index: indexPath.row).key)
+    true
   }
 
   override public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {

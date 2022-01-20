@@ -6,7 +6,7 @@ import os
 /// Specialization of UITableViewCell that will display a SoundFont name, a Preset name, or a Tag name.
 /// Probably better would be to separate these into distinct classes, but this works for now.
 public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
-  private lazy var log = Logging.logger("TableCell")
+  fileprivate lazy var log = Logging.logger("TableCell")
 
   /**
    Attribute flags that describes the models the state of a row in a table
@@ -131,9 +131,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
    */
   override public func setEditing(_ editing: Bool, animated: Bool) {
     super.setEditing(editing, animated: animated)
-    if editing {
-      reorderControlImageView?.tint(color: .white)
-    }
   }
 
   private func update(name: String, flags: Flags) {
@@ -144,6 +141,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     tuningIndicator.isHidden = !flags.hasTuningSetting
     panIndicator.isHidden = !flags.hasPanSetting
     gainIndicator.isHidden = !flags.hasGainSetting
+
+    // showsReorderControl = true
 
     activeIndicator.accessibilityIdentifier = flags.isActive ? "\(name) is active" : "\(name) is not active"
     tuningIndicator.accessibilityIdentifier = flags.hasTuningSetting ? "\(name) has tuning" : "\(name) has no tuning"
@@ -243,15 +242,6 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
     }
 
     return nil
-  }
-}
-
-extension UITableViewCell {
-  fileprivate var reorderControlImageView: UIImageView? {
-    let reorderControl = self.subviews.first { view -> Bool in
-      view.classForCoder.description() == "UITableViewCellReorderControl"
-    }
-    return reorderControl?.subviews.first { view -> Bool in view is UIImageView } as? UIImageView
   }
 }
 

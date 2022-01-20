@@ -71,10 +71,6 @@ extension SoundFontsViewController {
     dividerDragGesture.minimumNumberOfTouches = 1
     dividerDragGesture.addTarget(self, action: #selector(moveDivider(_:)))
     dividerControl.addGestureRecognizer(dividerDragGesture)
-
-//    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-//    longPressGesture.minimumPressDuration = 0.5
-//    fontsTableView.addGestureRecognizer(longPressGesture)
   }
 
   @objc func moveDivider(_ gesture: UIPanGestureRecognizer) {
@@ -209,9 +205,6 @@ extension SoundFontsViewController: ControllerConfiguration {
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
     router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
 
-//    fontsTableViewController.establishConnections(router)
-//    presetsTableViewController.establishConnections(router)
-
     fontsTableViewManager?.selectActive()
   }
 }
@@ -272,20 +265,6 @@ extension SoundFontsViewController: FontSwipeActionGenerator {
     self.performSegue(withIdentifier: .fontEditor, sender: config)
   }
 
-//  @objc func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-//    switch sender.state {
-//    case .began:
-//      let pos = sender.location(in: view)
-//      guard let indexPath = fonts.indexPathForItem(at: pos) else { return }
-//      guard let cell: TableCell = fontsTableView.cellForItem(at: indexPath) else { return }
-//      beginEditingFont(at: indexPath, cell: cell, soundFont: <#T##SoundFont#>, completionHandler: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
-//
-//    default:
-//      view.cancelInteractiveMovement()
-//      cell?.moving = false
-//    }
-//  }
-//
   /**
    Create left-swipe action to *delete* a SoundFont. When activated, the action will display a prompt to the user
    asking for confirmation about the SoundFont deletion.
@@ -436,11 +415,12 @@ extension SoundFontsViewController {
 
     tagsViewHeightConstraint.constant = bestHeight
     tagsBottomConstraint.constant = 0.0
+
+    NotificationCenter.default.post(name: .showingTags, object: nil)
+
     UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.25, delay: 0.0,
                                                    options: [.allowUserInteraction, .curveEaseIn],
-                                                   animations: self.view.layoutIfNeeded) { [weak self] _ in
-      // self?.tagsTableViewManager.showActiveTag(animated: false)
-    }
+                                                   animations: self.view.layoutIfNeeded) { _ in }
   }
 
   private func hideTags() {

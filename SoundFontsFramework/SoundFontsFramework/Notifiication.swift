@@ -39,4 +39,6 @@ extension Notification.Name {
   public static let appResigningActive = Notification.Name("appResigningActive")
   /// Notification to show the tutorial screen
   public static let showTutorial = Notification.Name("showTutorial")
+  /// Notification that the tags view is appearing.
+  public static let showingTags = Notification.Name("showingTags")
 }

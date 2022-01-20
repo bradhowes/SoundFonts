@@ -4,7 +4,7 @@ import SoundFontInfoLib
 import UIKit
 import os
 
-/// Manager for the tag collection.
+/// Manager of the Tag collection.
 final class TagsManager: SubscriptionManager<TagsEvent> {
   private lazy var log = Logging.logger("TagsManager")
 
