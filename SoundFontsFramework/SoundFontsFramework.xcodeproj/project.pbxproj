@@ -536,20 +536,17 @@
 				BD074C2823CDAF51001987E9 /* SoundFontsFramework.h */,
 				BD074C3C23CDAF51001987E9 /* Info.plist */,
 				BD074BD923CDAF51001987E9 /* UI */,
-				BD074BF123CDAF51001987E9 /* Fonts View */,
-				BD074BD123CDAF51001987E9 /* Favorites View */,
-				BD125B3D24100C940003DE99 /* Keyboard View */,
-				BD27E986251605CD00591FD0 /* ActivePresetKind.swift */,
-				BD074C2A23CDAF51001987E9 /* ActivePresetManager.swift */,
+				BD074BF123CDAF51001987E9 /* Fonts, Presets, Tags */,
+				BD074BD123CDAF51001987E9 /* Favorites */,
+				BD125B3D24100C940003DE99 /* Keyboard */,
 				BDEA0BAC255B65FF0097F1CE /* AlertManager.swift */,
 				BD125B3E241010430003DE99 /* Components.swift */,
 				BD130B0A2561506B00D1CDF6 /* EffectsController.swift */,
 				BD1F11B723FE61E300AE9F3D /* GuideViewController.swift */,
 				BD074C1B23CDAF51001987E9 /* InfoBarController.swift */,
-				BD88BCB62419952700399DE5 /* Notifiication.swift */,
-				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
-				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD1B8CD6270C5EB400C6BF15 /* MIDIDevicesTableViewController.swift */,
+				BD88BCB62419952700399DE5 /* Notifiication.swift */,
+				BDD9791B24162E4F006121A1 /* SettingsViewController.swift */,
 				BD074BE023CDAF51001987E9 /* SoundFontsControlsController.swift */,
 				BDD2836C25BAC48A00B3A59A /* TuningComponent.swift */,
 				BD3F44B725018DEF00653ABD /* Core Data */,
@@ -562,7 +559,7 @@
 			path = SoundFontsFramework;
 			sourceTree = "<group>";
 		};
-		BD074BD123CDAF51001987E9 /* Favorites View */ = {
+		BD074BD123CDAF51001987E9 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
 				BD074BD723CDAF51001987E9 /* Favorite.swift */,
@@ -573,7 +570,7 @@
 				BD074BD523CDAF51001987E9 /* FavoritesManager.swift */,
 				BD074BD323CDAF51001987E9 /* FavoritesViewController.swift */,
 			);
-			path = "Favorites View";
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		BD074BD923CDAF51001987E9 /* UI */ = {
@@ -627,17 +624,16 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
-		BD074BF123CDAF51001987E9 /* Fonts View */ = {
+		BD074BF123CDAF51001987E9 /* Fonts, Presets, Tags */ = {
 			isa = PBXGroup;
 			children = (
-				BD28D73727958C84000A57DE /* Fonts */,
-				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
-				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
-				BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */,
+				BD28D73727958C84000A57DE /* Fonts */,
+				BDBFCF9327874C5000B64481 /* Presets */,
+				BD3D13B2279A0F67009FED96 /* Tags */,
 			);
-			path = "Fonts View";
+			path = "Fonts, Presets, Tags";
 			sourceTree = "<group>";
 		};
 		BD074BF923CDAF51001987E9 /* Resources */ = {
@@ -739,7 +735,7 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		BD125B3D24100C940003DE99 /* Keyboard View */ = {
+		BD125B3D24100C940003DE99 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
 				BD125B3924100C940003DE99 /* Keyboard.pcvd */,
@@ -749,7 +745,7 @@
 				BD125B3B24100C940003DE99 /* KeyboardController.swift */,
 				BD125B3C24100C940003DE99 /* KeyboardRender.swift */,
 			);
-			path = "Keyboard View";
+			path = Keyboard;
 			sourceTree = "<group>";
 		};
 		BD130B0E25615A3300D1CDF6 /* Editors */ = {
@@ -796,10 +792,9 @@
 		BD28D73727958C84000A57DE /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
 				BD074BF723CDAF51001987E9 /* FontEditor.swift */,
 				BD28D73827958CE4000A57DE /* FontsTableViewController.swift */,
-				BD3D13AC27973608009FED96 /* TagsTableViewController.swift */,
+				BD074C2923CDAF51001987E9 /* SelectedSoundFontManager.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -814,6 +809,17 @@
 				BDCAE70725C7E64700202BAC /* LegacyConfigFileLoader.swift */,
 			);
 			path = "Configuration File";
+			sourceTree = "<group>";
+		};
+		BD3D13B2279A0F67009FED96 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				BDBF893D25B4C7AC00B58E23 /* ActiveTagManager.swift */,
+				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
+				BD3D13AC27973608009FED96 /* TagsTableViewController.swift */,
+				BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */,
+			);
+			path = Tags;
 			sourceTree = "<group>";
 		};
 		BD3F44B725018DEF00653ABD /* Core Data */ = {
@@ -940,6 +946,8 @@
 		BDBFCF9327874C5000B64481 /* Presets */ = {
 			isa = PBXGroup;
 			children = (
+				BD27E986251605CD00591FD0 /* ActivePresetKind.swift */,
+				BD074C2A23CDAF51001987E9 /* ActivePresetManager.swift */,
 				BD44E6102791A020004E0543 /* PresetsTableRowVisibilityEditor.swift */,
 				BD6476312665120700FDD94B /* PresetsTableViewController.swift */,
 				BD074BF623CDAF51001987E9 /* PresetsTableViewManager.swift */,

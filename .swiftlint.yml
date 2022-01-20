@@ -19,7 +19,7 @@ included: # paths to include during linting. `--path` is ignored if present.
 excluded:
 #  - SoundFontsApp/AppTests
   - SoundFontsFramework/SoundFontsFrameworkTests
-  - SoundFontsFramework/SoundFontsFramework/Keyboard View/KeyboardRender.swift
+  - SoundFontsFramework/SoundFontsFramework/Keyboard/KeyboardRender.swift
 
 # binary rules can set their severity level
 force_cast: warning # implicitly
