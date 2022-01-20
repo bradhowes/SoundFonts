@@ -74,21 +74,25 @@ extension FontsTableViewController {
 
 extension FontsTableViewController {
 
-  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  override
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     UITableView.automaticDimension
   }
 
-  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+  override
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) else { return }
     selectedSoundFontManager.setSelected(soundFont)
   }
 
-  override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+  override
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     .none
   }
 
-  override func tableView(_ tableView: UITableView,
-                          leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+  override
+  func tableView(_ tableView: UITableView,
+                 leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
     guard let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) else { return nil }
     let action = fontSwipeActionGenerator.createEditSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
@@ -97,8 +101,9 @@ extension FontsTableViewController {
     return actions
   }
 
-  override func tableView(_ tableView: UITableView,
-                          trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+  override
+  func tableView(_ tableView: UITableView,
+                 trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard let cell: TableCell = tableView.cellForRow(at: indexPath) else { return nil }
     guard let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) else { return nil }
     let action = fontSwipeActionGenerator.createDeleteSwipeAction(at: indexPath, cell: cell, soundFont: soundFont)
@@ -221,12 +226,12 @@ extension FontsTableViewController {
     }
   }
 
-  private func filteredIndex(_ index: Int) -> Int {
-    soundFonts.filteredIndex(index: index, tag: activeTagManager.activeTag.key)
+  private func indexFilteredByActiveTag(_ index: Int) -> Int {
+    soundFonts.indexFilteredByTag(index: index, tag: activeTagManager.activeTag.key)
   }
 
   private func addSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = filteredIndex(index)
+    let filteredIndex = indexFilteredByActiveTag(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.insertRows(at: [filteredIndex.indexPath], with: .automatic)
@@ -240,9 +245,9 @@ extension FontsTableViewController {
   }
 
   private func movedSoundFont(oldIndex: Int, newIndex: Int, soundFont: SoundFont) {
-    let oldFilteredIndex = filteredIndex(oldIndex)
+    let oldFilteredIndex = indexFilteredByActiveTag(oldIndex)
     guard oldFilteredIndex >= 0 else { return }
-    let newFilteredIndex = filteredIndex(newIndex)
+    let newFilteredIndex = indexFilteredByActiveTag(newIndex)
     guard newFilteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.moveRow(at: oldFilteredIndex.indexPath, to: newFilteredIndex.indexPath)
@@ -258,7 +263,7 @@ extension FontsTableViewController {
   }
 
   private func removeSoundFont(index: Int, soundFont: SoundFont) {
-    let filteredIndex = filteredIndex(index)
+    let filteredIndex = indexFilteredByActiveTag(index)
     guard filteredIndex >= 0 else { return }
     tableView.performBatchUpdates {
       tableView.deleteRows(at: [filteredIndex.indexPath], with: .automatic)

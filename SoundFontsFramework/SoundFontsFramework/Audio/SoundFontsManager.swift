@@ -115,7 +115,7 @@ extension SoundFontsManager: SoundFonts {
     }.map { $0.key }
   }
 
-  public func filteredIndex(index: Int, tag: Tag.Key) -> Int {
+  public func indexFilteredByTag(index: Int, tag: Tag.Key) -> Int {
     var reduction = 0
     for entry in collection.soundFonts.enumerated()
     where entry.offset <= index && !entry.element.tags.union(Tag.allTagSet).contains(tag) {

@@ -51,7 +51,7 @@ class SoundFontsMock: SubscriptionManager<SoundFontsEvent>, SoundFonts {
   }
 
   func filtered(by tag: Tag.Key) -> [SoundFont.Key] { [] }
-  func filteredIndex(index: Int, tag: Tag.Key) -> Int { -1 }
+  func indexFilteredByTag(index: Int, tag: Tag.Key) -> Int { -1 }
   func names(of keys: [SoundFont.Key]) -> [String] { [] }
   func add(url: URL) -> Result<(Int, SoundFont), SoundFontFileLoadFailure> { .failure(.invalidFile("blah")) }
   func remove(key: SoundFont.Key) {}

@@ -125,6 +125,7 @@
 		BD3D13AB279721DC009FED96 /* FontsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */; };
 		BD3D13AD27973608009FED96 /* TagsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D13AC27973608009FED96 /* TagsTableViewController.swift */; };
 		BD3D13AF279737D3009FED96 /* TagsTableView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */; };
+		BD3D13B12799E30B009FED96 /* TagsVisibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */; };
 		BD3F44C025018E2100653ABD /* TableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */; };
 		BD3F44C525018EB100653ABD /* CachedValueTypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */; };
 		BD3F44C725018EB100653ABD /* TypedNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3F44C425018EB000653ABD /* TypedNotification.swift */; };
@@ -371,6 +372,7 @@
 		BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FontsTableView.storyboard; sourceTree = "<group>"; };
 		BD3D13AC27973608009FED96 /* TagsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsTableViewController.swift; sourceTree = "<group>"; };
 		BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TagsTableView.storyboard; sourceTree = "<group>"; };
+		BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVisibilityManager.swift; sourceTree = "<group>"; };
 		BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSource.swift; sourceTree = "<group>"; };
 		BD3F44C225018EB000653ABD /* CachedValueTypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedValueTypedNotification.swift; sourceTree = "<group>"; };
 		BD3F44C425018EB000653ABD /* TypedNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypedNotification.swift; sourceTree = "<group>"; };
@@ -631,6 +633,7 @@
 				BD28D73727958C84000A57DE /* Fonts */,
 				BDBFCF9327874C5000B64481 /* Presets */,
 				BD074BF223CDAF51001987E9 /* SoundFontsViewController.swift */,
+				BD3D13B02799E30B009FED96 /* TagsVisibilityManager.swift */,
 				BD074BF823CDAF51001987E9 /* TableCell.swift */,
 				BDBF894C25B5784300B58E23 /* TagsEditorTableViewController.swift */,
 			);
@@ -1219,6 +1222,7 @@
 				BD074C5A23CDAF51001987E9 /* PresetsTableViewManager.swift in Sources */,
 				BDDEBDC62794CBB400D3E0E1 /* ConsolidatedConfigFileDocument.swift in Sources */,
 				BDF86312246EC4300006D8CD /* AudioUnit.swift in Sources */,
+				BD3D13B12799E30B009FED96 /* TagsVisibilityManager.swift in Sources */,
 				BD9FDEEC251616A200EA0029 /* UIGestureRecognizer.swift in Sources */,
 				BD074C8D23CDAF51001987E9 /* Keyboard.swift in Sources */,
 				BD4E2C9F25C4B01B00A7E9D4 /* TextFieldKeyboardMonitor.swift in Sources */,

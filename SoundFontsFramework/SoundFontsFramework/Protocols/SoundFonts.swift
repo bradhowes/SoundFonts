@@ -105,7 +105,16 @@ public protocol SoundFonts: AnyObject {
    */
   func filtered(by tag: Tag.Key) -> [SoundFont.Key]
 
-  func filteredIndex(index: Int, tag: Tag.Key) -> Int
+  /**
+   Obtain a the filtered index value for a soundFont. It basically reduces an index value by the number of preceding
+   soundFont values that are not members of the given tag. For instance, if for an index of 5 there are two soundFonts
+   1 and 3 that do not belong to the given tag, then the resulting index will be 5 - 2 = 3.
+
+   - parameter index: the index of the soundFont in the collection
+   - parameter tag: the tag to use for filtering
+   - returns: the index after filtering
+   */
+  func indexFilteredByTag(index: Int, tag: Tag.Key) -> Int
 
   /**
    Get the names of the given sound fonts.

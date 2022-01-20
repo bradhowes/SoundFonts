@@ -33,12 +33,14 @@ public final class SoundFontsViewController: UIViewController {
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var activeTagManager: ActiveTagManager!
   private var keyboard: Keyboard?
+  private var tagsVisibilityManager: TagsVisibilityManager!
 
   private var dividerDragGesture = UIPanGestureRecognizer()
   private var lastDividerPos: CGFloat = .zero
 
   public let swipeLeft = UISwipeGestureRecognizer()
   public let swipeRight = UISwipeGestureRecognizer()
+
 }
 
 extension SoundFontsViewController {
@@ -116,8 +118,8 @@ extension SoundFontsViewController {
 
   public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
     super.viewWillTransition(to: size, with: coordinator)
-    if showingTags {
-      hideTags()
+    if tagsVisibilityManager.showingTags {
+      tagsVisibilityManager.hideTags()
     }
   }
 }
@@ -201,7 +203,13 @@ extension SoundFontsViewController: ControllerConfiguration {
     presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
     router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
-    router.infoBar.addEventClosure(.showTags, self.toggleShowTags)
+
+    tagsVisibilityManager = .init(tagsBottonConstraint: tagsBottomConstraint,
+                                  tagsViewHeightConstrain: tagsViewHeightConstraint,
+                                  fontsView: fontsView,
+                                  containerView: self.view,
+                                  tagsTableViewController: tagsTableViewController,
+                                  infoBar: infoBar)
   }
 }
 
@@ -253,7 +261,8 @@ extension SoundFontsViewController: FontSwipeActionGenerator {
     }
   }
 
-  public func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont, completionHandler: ((Bool) -> Void)? = nil) {
+  public func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont,
+                               completionHandler: ((Bool) -> Void)? = nil) {
     let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: self.soundFonts,
                                    soundFontKey: soundFont.key,
                                    favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
@@ -382,54 +391,5 @@ extension SoundFontsViewController: FontEditorDelegate {
       soundFonts.rename(key: soundFontKey, name: soundFont.displayName)
     }
     dismiss(animated: true, completion: nil)
-  }
-}
-
-extension SoundFontsViewController {
-
-  private var showingTags: Bool { tagsBottomConstraint.constant == 0.0 }
-
-  private func toggleShowTags(_ sender: AnyObject) {
-    let button = sender as? UIButton
-    if tagsBottomConstraint.constant == 0.0 {
-      hideTags()
-    } else {
-      button?.tintColor = .systemOrange
-      showTags()
-    }
-  }
-
-  private func showTags() {
-    let maxHeight = fontsView.frame.height - 8
-    let midHeight = maxHeight / 2.0
-    let minHeight = CGFloat(120.0)
-
-    var bestHeight = midHeight
-    if bestHeight > maxHeight { bestHeight = maxHeight }
-    if bestHeight < minHeight { bestHeight = maxHeight }
-
-    tagsViewHeightConstraint.constant = bestHeight
-    tagsBottomConstraint.constant = 0.0
-
-    UIViewPropertyAnimator.runningPropertyAnimator(
-      withDuration: 0.25,
-      delay: 0.0,
-      options: [.allowUserInteraction, .curveEaseIn],
-      animations: {
-        self.view.layoutIfNeeded()
-        self.tagsTableViewController.scrollToActiveRow()
-      }, completion: { _ in })
-  }
-
-  private func hideTags() {
-    infoBar.resetButtonState(.showTags)
-    tagsViewHeightConstraint.constant = maxTagsViewHeightConstraint
-    tagsBottomConstraint.constant = tagsViewHeightConstraint.constant + 8
-    UIViewPropertyAnimator.runningPropertyAnimator(
-      withDuration: 0.25, delay: 0.0,
-      options: [.allowUserInteraction, .curveEaseOut],
-      animations: self.view.layoutIfNeeded,
-      completion: nil
-    )
   }
 }
