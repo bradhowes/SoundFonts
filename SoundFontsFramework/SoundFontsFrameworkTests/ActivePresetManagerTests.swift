@@ -79,9 +79,9 @@ class FavoritesMock: SubscriptionManager<FavoritesEvent>, Favorites {
   var isRestored: Bool = false { didSet { notify(.restored) } }
   var count: Int { favorites.count }
   func contains(key: Favorite.Key) -> Bool { false }
-  func index(of favorite: Favorite.Key) -> Int { fatalError() }
+  func index(of favorite: Favorite.Key) -> Int? { fatalError() }
   func getBy(index: Int) -> Favorite { fatalError() }
-  func getBy(key: Favorite.Key) -> Favorite { favorites[0] }
+  func getBy(key: Favorite.Key) -> Favorite? { favorites[0] }
   func add(favorite: Favorite) { fatalError() }
   func beginEdit(config: FavoriteEditor.Config) { fatalError() }
   func update(index: Int, config: PresetConfig) { fatalError() }
