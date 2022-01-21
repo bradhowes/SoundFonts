@@ -17,7 +17,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate, Tasking {
 
   /**
    Set the main view controller for the application. Initiates the configuration process for all of the components
-   in the application.
+   in the application. Interrogates the startup command-line arguments and if `ui_testing` is present, it disables
+   showing the tutorial.
 
    - parameter mainViewController: the view controller to use
    */

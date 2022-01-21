@@ -5,9 +5,11 @@ import SoundFontsFramework
 import UIKit
 import os
 
-/// Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
-/// touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
-/// to the background or stops being active.
+/**
+ Top-level view controller for the application. It contains the Sampler which will emit sounds based on what keys are
+ touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
+ to the background or stops being active.
+ */
 final class MainViewController: UIViewController, Tasking {
   private lazy var log = Logging.logger("MainViewController")
 
@@ -25,7 +27,7 @@ final class MainViewController: UIViewController, Tasking {
   private var volumeMonitor: VolumeMonitor?
   private var observers = [NSObjectProtocol]()
 #if TEST_MEDIA_SERVICES_RESTART
-  private var resetTimer: Timer? = nil
+  private var resetTimers = [Timer]()
 #endif
 
   /// Disable system gestures near screen edges so that touches on the keyboard are always seen by the application.
@@ -34,6 +36,7 @@ final class MainViewController: UIViewController, Tasking {
   }
 
   /// If true, do not show the tutorial pages for the first time the application starts. This is used by the UI tests.
+  /// It is set by `AppDelegate` to true when "-ui_testing" is present on the command line.
   var skipTutorial = false
 
   override func viewDidLoad() {
@@ -58,17 +61,11 @@ final class MainViewController: UIViewController, Tasking {
       settings.showedTutorial = true
     }
 
+    // When enabled, start a timer that will trigger a notification to force the audio system to restart.
 #if TEST_MEDIA_SERVICES_RESTART
-//    resetTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
-//      NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
-//    }
-//    resetTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
-//      if MIDI.sharedInstance.receiver != nil {
-//        self.stopAudio()
-//      } else {
-//        self.startAudio()
-//      }
-//    }
+    resetTimers.append(Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
+      NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
+    })
 #endif
   }
 
@@ -210,15 +207,16 @@ extension MainViewController: ControllerConfiguration {
     }
 
     os_log(.debug, log: log, "startAudioBackground_BT - sampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
-    os_log(.debug, log: log, "startAudioBackground_BT - preferredSampleRate: %f", AVAudioSession.sharedInstance().sampleRate)
+    os_log(.debug, log: log, "startAudioBackground_BT - preferredSampleRate: %f",
+           AVAudioSession.sharedInstance().sampleRate)
 
     do {
       os_log(.debug, log: log, "startAudioBackground_BT - setting sample rate")
       try session.setPreferredSampleRate(sampleRate)
       os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch let error as NSError {
-      os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred sample rate to %f: %{public}s", sampleRate,
-             error.localizedDescription)
+      os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred sample rate to %f: %{public}s",
+             sampleRate, error.localizedDescription)
     }
 
     do {
@@ -226,8 +224,8 @@ extension MainViewController: ControllerConfiguration {
       try session.setPreferredIOBufferDuration(Double(bufferSize) / sampleRate)
       os_log(.debug, log: log, "startAudioBackground_BT - done")
     } catch let error as NSError {
-      os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred buffer size to %d: %{public}s", bufferSize,
-             error.localizedDescription)
+      os_log(.error, log: log, "startAudioBackground_BT - failed to set the preferred buffer size to %d: %{public}s",
+             bufferSize, error.localizedDescription)
     }
 
     do {
