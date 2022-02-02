@@ -103,10 +103,6 @@ extension PresetsTableViewController {
 
     os_log(.debug, log: log, "viewWillTransition END")
   }
-
-  private func scrollToActiveSlot() {
-    fatalError()
-  }
 }
 
 // MARK: - UITableViewDataSource Protocol
