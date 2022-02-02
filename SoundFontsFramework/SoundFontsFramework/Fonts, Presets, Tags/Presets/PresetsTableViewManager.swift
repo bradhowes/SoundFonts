@@ -84,6 +84,8 @@ final class PresetsTableViewManager: NSObject, Tasking {
     activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
     favorites.subscribe(self, notifier: favoritesChanged_BT)
     soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
+
+    regenerateViewSlots()
   }
 }
 

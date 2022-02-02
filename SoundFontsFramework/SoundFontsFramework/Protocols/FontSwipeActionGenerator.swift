@@ -23,4 +23,6 @@ public protocol FontSwipeActionGenerator {
    - returns: new swipe action
    */
   func createDeleteSwipeAction(at: IndexPath, cell: TableCell, soundFont: SoundFont) -> UIContextualAction
+
+  func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont, completionHandler: ((Bool) -> Void)?)
 }

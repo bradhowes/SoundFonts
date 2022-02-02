@@ -263,9 +263,9 @@ extension SoundFontsViewController: FontSwipeActionGenerator {
 
   public func beginEditingFont(at: IndexPath, cell: TableCell, soundFont: SoundFont,
                                completionHandler: ((Bool) -> Void)? = nil) {
-    let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: self.soundFonts,
+    let config = FontEditor.Config(indexPath: at, view: cell, rect: cell.bounds, soundFonts: soundFonts,
                                    soundFontKey: soundFont.key,
-                                   favoriteCount: self.favorites.count(associatedWith: soundFont), tags: self.tags,
+                                   favoriteCount: favorites.count(associatedWith: soundFont), tags: tags,
                                    completionHandler: completionHandler)
     self.performSegue(withIdentifier: .fontEditor, sender: config)
   }

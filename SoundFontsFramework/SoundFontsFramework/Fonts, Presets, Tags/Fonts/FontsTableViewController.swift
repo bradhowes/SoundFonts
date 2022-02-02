@@ -32,6 +32,23 @@ extension FontsTableViewController {
     tableView.register(TableCell.self)
     tableView.estimatedRowHeight = 44.0
     tableView.rowHeight = UITableView.automaticDimension
+
+    let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+    longPressGesture.minimumPressDuration = 0.5
+    tableView.addGestureRecognizer(longPressGesture)
+  }
+
+  @objc private func handleLongPress(_ sender: UILongPressGestureRecognizer) {
+    let point = sender.location(in: tableView)
+    if let indexPath = tableView.indexPathForRow(at: point),
+       let cell = tableView.cellForRow(at: indexPath) as? TableCell,
+       let soundFont = soundFonts.getBy(key: dataSource[indexPath.row]) {
+      fontSwipeActionGenerator.beginEditingFont(at: indexPath, cell: cell, soundFont: soundFont) { done in
+        if done {
+          self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
+      }
+    }
   }
 }
 
