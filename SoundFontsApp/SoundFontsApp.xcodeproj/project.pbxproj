@@ -165,7 +165,6 @@
 		BD874C93221A228E00BBD00B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		BD874C95221A228E00BBD00B /* SoundFonts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = SoundFonts.entitlements; path = SoundFontsApp/App/Resources/SoundFonts.entitlements; sourceTree = SOURCE_ROOT; };
 		BD88BCBC2419A9D400399DE5 /* ScreenShots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenShots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD8FC33127A71F26002D09F6 /* Packages */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Packages; path = ../Packages; sourceTree = "<group>"; };
 		BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioUnitParameters.swift; sourceTree = "<group>"; };
 		BDA0FC3123C73578005BEFD5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -329,7 +328,6 @@
 		BD75B257218B8CFD00C7EBD7 = {
 			isa = PBXGroup;
 			children = (
-				BD8FC33127A71F26002D09F6 /* Packages */,
 				BD2CD97A27074E7C007DDBF7 /* Release.xcconfig */,
 				BD2CD97B27074E7C007DDBF7 /* Development.xcconfig */,
 				BDB1BE4C265DA502002AD159 /* SoundFontsApp */,
