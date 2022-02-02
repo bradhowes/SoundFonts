@@ -48,7 +48,8 @@ public final class TableCell: UITableViewCell, ReusableView, NibLoadableView {
 
   @IBOutlet weak var name: UILabel!
   @IBOutlet weak var activeIndicator: UIView!
-  /// Text field used to edit tag names (not used for SoundFont or Preset names)
+  /// Text field used to edit tag names (not used for SoundFont or Preset names). Further proof that there should be a
+  /// split into separate classes.
   @IBOutlet weak var tagEditor: UITextField!
   @IBOutlet weak var tuningIndicator: UILabel!
   @IBOutlet weak var panIndicator: UILabel!

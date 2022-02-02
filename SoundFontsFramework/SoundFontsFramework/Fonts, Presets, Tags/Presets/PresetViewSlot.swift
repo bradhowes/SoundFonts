@@ -19,7 +19,6 @@ internal enum PresetViewSlot: Equatable {
 internal typealias PresetViewSlotIndex = Tagged<PresetViewSlot, Int>
 
 extension PresetViewSlotIndex {
-
   /// Allow adding an integer value to a slot index
   static func + (lhs: PresetViewSlotIndex, rhs: Int) -> PresetViewSlotIndex { Self(rawValue: lhs.rawValue + rhs) }
 }
@@ -30,7 +29,9 @@ internal extension IndexPath {
   static let sectionSize = 20
 
   /**
-   Create IndexPath from a slot index value with the correct `row` and `section` attributes
+   Create IndexPath from a slot index value with the correct `row` and `section` attributes using the current set of
+   section row counters. This is the safest way to calculate an IndexPath as it removes the assumption that each
+   section contains `sectionSize` elements: this is not true when preset visibility is being edited.
 
    - parameter slotIndex: the slot index to work with
    */
@@ -46,12 +47,6 @@ internal extension IndexPath {
     }
 
     self.init(row: remaining, section: sectionRowCounts.count - 1)
-  }
-
-  init(slotIndex: PresetViewSlotIndex) {
-    let section = slotIndex.rawValue / Self.sectionSize
-    let row = slotIndex.rawValue - section * Self.sectionSize
-    self.init(row: row, section: section)
   }
 
   /// Convert from row/section to slot index

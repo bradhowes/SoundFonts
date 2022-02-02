@@ -579,18 +579,7 @@
 				BDB7406625CC29120051B4E4 /* Tutorial */,
 				BD90AEF424192E7C00D29E18 /* README.md */,
 				BD130B0E25615A3300D1CDF6 /* Editors */,
-				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
-				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
-				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
-				BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */,
-				BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */,
-				BD6476332665167300FDD94B /* PresetsTableView.storyboard */,
-				BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */,
-				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
-				BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */,
-				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
-				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
-				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
+				BD4E296D27AA63FA0087D9DF /* Views */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -837,6 +826,25 @@
 				BD3F44BB25018E2000653ABD /* TableViewDataSource.swift */,
 			);
 			path = "Core Data";
+			sourceTree = "<group>";
+		};
+		BD4E296D27AA63FA0087D9DF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BD074BDE23CDAF51001987E9 /* FavoriteCell.xib */,
+				BD62CF55253DE22C00DBDC1B /* FavoritesView.storyboard */,
+				BD62CF52253DE22C00DBDC1B /* FontsView.storyboard */,
+				BD3D13AA279721DC009FED96 /* FontsTableView.storyboard */,
+				BD3D13AE279737D3009FED96 /* TagsTableView.storyboard */,
+				BD6476332665167300FDD94B /* PresetsTableView.storyboard */,
+				BD62CF58253DE22D00DBDC1B /* GuideView.storyboard */,
+				BD130B0425614A6D00D1CDF6 /* Effects.storyboard */,
+				BD62CF56253DE22D00DBDC1B /* InfoBar.storyboard */,
+				BD62CF53253DE22C00DBDC1B /* SettingsView.storyboard */,
+				BD62CF57253DE22D00DBDC1B /* SoundFontsControls.storyboard */,
+				BD074BDA23CDAF51001987E9 /* TableCell.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		BD5824F723CDABCD0034A31B = {

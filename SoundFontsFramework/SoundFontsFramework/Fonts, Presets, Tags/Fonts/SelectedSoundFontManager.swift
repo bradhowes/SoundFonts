@@ -13,14 +13,16 @@ public enum SelectedSoundFontEvent: CustomStringConvertible {
   }
 }
 
+/**
+ Maintains the currently *selected* sound font, the one whose presets are being shown. This is in contrast to
+ the *active* sound font which is the sound font that contains the preset that is currently active and in use by the
+ synth. They can be the same, but not always such as when a user is browsing sound fonts and looking at their presets.
+ Selecting a preset will make the selected sound font and the active sound font the same.
+ */
 public final class SelectedSoundFontManager: SubscriptionManager<SelectedSoundFontEvent> {
   private lazy var log = Logging.logger("SelectedSoundFontManager")
 
   public private(set) var selected: SoundFont.Key?
-
-  public init() {
-    super.init()
-  }
 
   public func setSelected(_ soundFont: SoundFont) {
     os_log(.debug, log: log, "setSelected BEGIN - %{public}s %{public}s", soundFont.displayName,

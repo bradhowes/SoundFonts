@@ -3,13 +3,10 @@
 import UIKit
 import os
 
-/// Number of sections we partition presets into
-
 /**
  Backing data source the presets UITableView. This is one of the most complicated managers and it should be
- broken up into smaller components. There are four areas of functionality:
+ broken up into smaller components. There are three areas of functionality:
 
- - table view drawing and selecting
  - row visibility editing
  - searching
  - row swiping
@@ -17,7 +14,7 @@ import os
 final class PresetsTableViewManager: NSObject, Tasking {
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
-  private let viewController: PresetsTableViewController
+  private unowned let viewController: PresetsTableViewController
 
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePresetManager: ActivePresetManager
@@ -59,6 +56,8 @@ final class PresetsTableViewManager: NSObject, Tasking {
   /**
    Construct a new presets table view manager.
 
+   TODO: refactor to remove direct dependence on `viewController`.
+
    - parameter viewController: the view controller that holds this manager
    - parameter activePresetManager: the active preset manager
    - parameter selectedSoundFontManager: the selected sound font manager
@@ -90,6 +89,8 @@ final class PresetsTableViewManager: NSObject, Tasking {
 
 // MARK: Support for PresetTableViewController
 
+// The functions in this section are those that are called on by PresetTableViewController. This should be factored out
+// into a protocol for testing.
 extension PresetsTableViewManager {
 
   var activeSlotIndexPath: IndexPath? {
@@ -242,37 +243,37 @@ extension PresetsTableViewManager {
 
   private func selectedSoundFontChanged_BT(_ event: SelectedSoundFontEvent) {
     guard case let .changed(old, new) = event else { return }
-    os_log(.debug, log: log, "selectedSoundFontChange - old: '%{public}s' new: '%{public}s'",
+    os_log(.debug, log: log, "selectedSoundFontChange_BT - old: '%{public}s' new: '%{public}s'",
            old.descriptionOrNil, new.descriptionOrNil)
     Self.onMain { self.handleSelectedSoundFontChanged(old: old, new: new) }
   }
 
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
-    os_log(.debug, log: log, "favoritesChange BEGIN")
+    os_log(.debug, log: log, "favoritesChange_BT BEGIN")
     switch event {
     case .restored:
-      os_log(.debug, log: log, "favoritesChange - restored")
-      Self.onMain { self.favoritesRestored() }
+      os_log(.debug, log: log, "favoritesChange_BT - restored")
+      Self.onMain { self.handleFavoritesRestored() }
 
     case let .added(_, favorite):
-      os_log(.debug, log: log, "favoritesChange - added - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange_BT - added - %{public}s", favorite.key.uuidString)
 
     case let .removed(_, favorite):
-      os_log(.debug, log: log, "favoritesChange - removed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange_BT - removed - %{public}s", favorite.key.uuidString)
 
     case let .changed(_, favorite):
-      os_log(.debug, log: log, "favoritesChange - changed - %{public}s", favorite.key.uuidString)
+      os_log(.debug, log: log, "favoritesChange_BT - changed - %{public}s", favorite.key.uuidString)
       Self.onMain { self.updateRow(with: favorite.key) }
 
     case .selected: break
     case .beginEdit: break
     case .removedAll: break
     }
-    os_log(.debug, log: log, "favoritesChange END")
+    os_log(.debug, log: log, "favoritesChange_BT END")
   }
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
-    os_log(.debug, log: log, "soundFontsChange BEGIN")
+    os_log(.debug, log: log, "soundFontsChanged_BT BEGIN")
     switch event {
     case let .unhidPresets(font: soundFont):
       if soundFont == self.selectedSoundFont {
@@ -285,12 +286,12 @@ extension PresetsTableViewManager {
         Self.onMain { self.updateRow(with: soundFontAndPreset) }
       }
 
-    case .restored: Self.onMain { self.soundFontsRestored() }
+    case .restored: Self.onMain { self.handleSoundFontsRestored() }
     case .added: break
     case .moved: break
     case .removed: break
     }
-    os_log(.debug, log: log, "soundFontsChange END")
+    os_log(.debug, log: log, "soundFontsChanged_BT END")
   }
 
   private func slotIndex(from indexPath: IndexPath) -> PresetViewSlotIndex {
@@ -317,8 +318,9 @@ extension PresetsTableViewManager {
     let numFullSections = viewSlots.count / IndexPath.sectionSize
     let remaining = viewSlots.count - numFullSections * IndexPath.sectionSize
     sectionRowCounts = [Int](repeating: IndexPath.sectionSize, count: numFullSections)
+    // There should always be at least one count, even if it is zero.
     if remaining > 0 || sectionRowCounts.isEmpty { sectionRowCounts.append(remaining) }
-    precondition(!sectionRowCounts.isEmpty) // post-condition
+    precondition(!sectionRowCounts.isEmpty)
   }
 
   private func handleActivePresetChanged(old: ActivePresetKind, new: ActivePresetKind) {
@@ -333,13 +335,12 @@ extension PresetsTableViewManager {
       os_log(.debug, log: log, "handleActivePresetChanged END - not showing font for new preset")
       return
     }
+
     viewController.slotToScrollTo = indexPath(from: slotIndex)
-    viewController.tableView.performBatchUpdates(
-      {
-        updateRow(with: old)
-        updateRow(with: new)
-      },
-      completion: { _ in })
+    viewController.tableView.performBatchUpdates({
+      updateRow(with: old)
+      updateRow(with: new)
+    }, completion: { _ in })
     os_log(.debug, log: log, "handleActivePresetChanged END")
   }
 
@@ -357,7 +358,8 @@ extension PresetsTableViewManager {
       viewController.afterReloadDataAction = { self.showActiveSlot() }
     }
 
-    regenerateViewSlots()
+    checkIfRestored()
+
     os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
   }
 
@@ -369,13 +371,13 @@ extension PresetsTableViewManager {
     regenerateViewSlots()
   }
 
-  private func favoritesRestored() {
+  private func handleFavoritesRestored() {
     os_log(.debug, log: log, "favoritesRestored BEGIN")
     checkIfRestored()
     os_log(.debug, log: log, "favoritesRestored END")
   }
 
-  private func soundFontsRestored() {
+  private func handleSoundFontsRestored() {
     os_log(.debug, log: log, "soundFontsRestore BEGIN")
     checkIfRestored()
     os_log(.debug, log: log, "soundFontsRestore END")
@@ -432,6 +434,7 @@ extension PresetsTableViewManager {
 
 // MARK: - Swipe Actions
 
+// These should be moved out into separate "actions" that are dedicated to performing one task.
 extension PresetsTableViewManager {
 
   func leadingSwipeActions(at indexPath: IndexPath, cell: TableCell) -> UISwipeActionsConfiguration? {

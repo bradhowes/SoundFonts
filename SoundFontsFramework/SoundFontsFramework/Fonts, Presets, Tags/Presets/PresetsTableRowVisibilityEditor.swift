@@ -1,10 +1,11 @@
-//
-//  PresetsTableRowVisibilityEditor.swift
 // Copyright © 2022 Brad Howes. All rights reserved.
 
 import Foundation
 import os.log
 
+/**
+ Performs the necessary table edits involved before and after visibility editing.
+ */
 internal struct PresetsTableRowVisibilityEditor {
   private let log = Logging.logger("PresetsTableRowVisibilityEditor")
   private(set) var viewSlots: [PresetViewSlot]
@@ -19,6 +20,12 @@ internal struct PresetsTableRowVisibilityEditor {
     self.favorites = favorites
   }
 
+  /**
+   Begin editing. Insert rows for presets that are currently hidden from view. Note that the updates to the section row
+   counters is temporary but necessary to keep iOS from throwing an exception due to internal inconsistencies.
+
+   - returns: the list of indices that were added
+   */
   mutating func begin() -> [IndexPath] {
     os_log(.debug, log: log, "begin BEGIN")
     var tableViewChanges = [IndexPath]()
@@ -26,7 +33,7 @@ internal struct PresetsTableRowVisibilityEditor {
 
     func processPresetConfig(_ presetConfig: PresetConfig, slotGenerator: () -> PresetViewSlot) {
       guard presetConfig.isVisible == false else { return }
-      let indexPath = IndexPath(slotIndex: slotIndex)
+      let indexPath = IndexPath(slotIndex: slotIndex, sectionRowCounts: sectionRowCounts)
       os_log(.debug, log: log, "calculateVisibilityRowChanges - showing slot %d [%d.%d] '%{public}s'",
              slotIndex.rawValue, indexPath.section, indexPath.row, presetConfig.name)
 
@@ -49,6 +56,12 @@ internal struct PresetsTableRowVisibilityEditor {
     return tableViewChanges
   }
 
+  /**
+   End editing. Removes rows for presets that should be hidden from view. Note that the updates to the section row
+   counters is temporary but necessary to keep iOS from throwing an exception due to internal inconsistencies.
+
+   - returns: the list of indices that were removed
+   */
   mutating func end() -> [IndexPath] {
     os_log(.debug, log: log, "end BEGIN")
 
