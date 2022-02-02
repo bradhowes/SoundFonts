@@ -245,7 +245,7 @@ extension SoundFontsViewController: FontsViewManager {
 
 // MARK: - FontEditorActionGenerator Protocol
 
-extension SoundFontsViewController: FontSwipeActionGenerator {
+extension SoundFontsViewController: FontActionManager {
 
   /**
    Create right-swipe action to edit a SoundFont.

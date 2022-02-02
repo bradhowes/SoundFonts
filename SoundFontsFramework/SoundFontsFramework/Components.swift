@@ -59,7 +59,7 @@ where T: ControllerConfiguration {
   public var favoritesViewManager: FavoritesViewManager { favoritesController }
 
   /// Swipe actions generator for sound font rows
-  public var fontSwipeActionGenerator: FontSwipeActionGenerator { soundFontsViewController }
+  public var fontSwipeActionGenerator: FontActionManager { soundFontsViewController }
 
   /// The manager for posting alerts
   public var alertManager: AlertManager { accessQueue.sync { _alertManager! } }

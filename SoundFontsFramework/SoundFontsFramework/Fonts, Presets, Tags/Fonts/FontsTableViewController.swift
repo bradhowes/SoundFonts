@@ -15,7 +15,7 @@ final class FontsTableViewController: UITableViewController, Tasking {
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var activePresetManager: ActivePresetManager!
   private var activeTagManager: ActiveTagManager!
-  private var fontSwipeActionGenerator: FontSwipeActionGenerator!
+  private var fontSwipeActionGenerator: FontActionManager!
 
   private var soundFonts: SoundFonts!
   private var tags: Tags!
