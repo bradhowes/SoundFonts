@@ -20,11 +20,9 @@ private enum Event: CustomStringConvertible {
 
 class SubscriptionManagerTests: XCTestCase {
 
-  override func setUp() {
-  }
+  override func setUp() {}
 
-  override func tearDown() {
-  }
+  override func tearDown() {}
 
   func testConnectivity() {
     let manager = SubscriptionManager<Event>()
@@ -62,7 +60,7 @@ class SubscriptionManagerTests: XCTestCase {
     monitor.token?.unsubscribe()
     manager.notify(.two)
 
-    waitForExpectations(timeout: 1.0)
+    waitForExpectations(timeout: 10.0)
   }
 
   func testAutoUnsubscribe() {
@@ -85,6 +83,6 @@ class SubscriptionManagerTests: XCTestCase {
 
     manager.notify(.two)
 
-    waitForExpectations(timeout: 1.0)
+    waitForExpectations(timeout: 10.0)
   }
 }

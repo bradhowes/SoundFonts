@@ -43,7 +43,7 @@ class SelectedSoundFontManagerTests: XCTestCase {
     monitor.makeExpectation()
     manager.setSelected(soundFont)
 
-    wait(for: monitor.expectations, timeout: 1.0)
+    wait(for: monitor.expectations, timeout: 5.0)
     XCTAssertEqual(monitor.counter, 3)
   }
 }
