@@ -55,6 +55,11 @@ extension PresetsTableViewController {
     searchBar.delegate = self
   }
 
+  public override func viewWillAppear(_ animated: Bool) {
+    presetsTableViewManager?.regenerateViewSlots()
+    super.viewWillAppear(animated)
+  }
+
   /**
    Notification that the table view has performed `layoutSubviews`. Here we perform actions that needed to wait until the
    table view was updated.

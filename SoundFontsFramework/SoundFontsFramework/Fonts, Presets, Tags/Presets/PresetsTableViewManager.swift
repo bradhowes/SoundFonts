@@ -14,7 +14,7 @@ import os
 final class PresetsTableViewManager: NSObject, Tasking {
   private lazy var log = Logging.logger("PresetsTableViewManager")
 
-  private unowned let viewController: PresetsTableViewController
+  private let viewController: PresetsTableViewController
 
   private let selectedSoundFontManager: SelectedSoundFontManager
   private let activePresetManager: ActivePresetManager
@@ -84,7 +84,6 @@ final class PresetsTableViewManager: NSObject, Tasking {
     activePresetManager.subscribe(self, notifier: activePresetChanged_BT)
     favorites.subscribe(self, notifier: favoritesChanged_BT)
     soundFonts.subscribe(self, notifier: soundFontsChanged_BT)
-    checkIfRestored()
   }
 }
 
@@ -204,6 +203,11 @@ extension PresetsTableViewManager {
 
   func regenerateViewSlots() {
     os_log(.debug, log: log, "regenerateViewSlots BEGIN")
+
+    guard soundFonts.isRestored && favorites.isRestored else {
+      os_log(.debug, log: log, "regenerateViewSlots END - not restored")
+      return
+    }
 
     let source = selectedSoundFont?.presets ?? []
     viewSlots.removeAll()
@@ -328,7 +332,7 @@ extension PresetsTableViewManager {
     os_log(.debug, log: log, "handleActivePresetChanged BEGIN")
 
     if viewSlots.isEmpty {
-      checkIfRestored()
+      regenerateViewSlots()
       return
     }
 
@@ -359,28 +363,20 @@ extension PresetsTableViewManager {
       viewController.afterReloadDataAction = { self.showActiveSlot() }
     }
 
-    checkIfRestored()
+    regenerateViewSlots()
 
     os_log(.debug, log: log, "handleSelectedSoundFontChanged END")
   }
 
-  private func checkIfRestored() {
-    guard soundFonts.isRestored && favorites.isRestored else {
-      os_log(.debug, log: log, "regenerateViewSlots END - not restored")
-      return
-    }
-    regenerateViewSlots()
-  }
-
   private func handleFavoritesRestored() {
     os_log(.debug, log: log, "favoritesRestored BEGIN")
-    checkIfRestored()
+    regenerateViewSlots()
     os_log(.debug, log: log, "favoritesRestored END")
   }
 
   private func handleSoundFontsRestored() {
     os_log(.debug, log: log, "soundFontsRestore BEGIN")
-    checkIfRestored()
+    regenerateViewSlots()
     os_log(.debug, log: log, "soundFontsRestore END")
   }
 
