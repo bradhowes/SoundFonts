@@ -14,7 +14,6 @@
 		BD1A2A91266A00F2009E2338 /* ScreenShots.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1A2A8D266A0050009E2338 /* ScreenShots.swift */; };
 		BD21CB3A266A6ECE00D4193C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD21CB38266A6EC400D4193C /* SnapshotHelper.swift */; };
 		BD2454DC2785A480004B445A /* KernelAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2454DA2785A480004B445A /* KernelAdapter.mm */; };
-		BD3CF705241FA77A004A13D1 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BD430FA6241052B0009DB9B3 /* SoundFontsAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD430FA5241052AF009DB9B3 /* SoundFontsAU.swift */; };
 		BD498F9C23F0101300755AB9 /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BD498F9F23F0101700755AB9 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7B223D4793F0019EF15 /* SoundFontInfoLib.framework */; };
@@ -49,6 +48,7 @@
 		BDC5D87F24E0763E00D0B840 /* InfoHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC5D87E24E0763E00D0B840 /* InfoHUD.swift */; };
 		BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
 		BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
+		BDDB042027BC58E400138227 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD3CF704241FA77A004A13D1 /* AppTests.swift */; };
 		BDFAC1EA2565D79B0013844F /* SoundFontsFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD50C7AF23D479390019EF15 /* SoundFontsFramework.framework */; };
 		BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFAC20F2565DDD10013844F /* Controls.storyboard */; };
 /* End PBXBuildFile section */
@@ -676,7 +676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD3CF705241FA77A004A13D1 /* AppTests.swift in Sources */,
+				BDDB042027BC58E400138227 /* AppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

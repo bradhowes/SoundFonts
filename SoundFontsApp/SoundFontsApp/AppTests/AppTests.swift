@@ -24,7 +24,7 @@ class AppTests: XCTestCase {
    - Bring up the setting panel
    - Make sure that the version shown in the Version label matches the value found in the bundle
    */
-  func testVersionMatchesBundle() {
+  func disabled_testVersionMatchesBundle() {
     guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
 
     let mainView = app.otherElements["MainView"]
