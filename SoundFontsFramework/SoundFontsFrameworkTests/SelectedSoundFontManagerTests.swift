@@ -6,6 +6,14 @@ import XCTest
 
 class SelectedSoundFontManagerTests: XCTestCase {
 
+  private var manager: SelectedSoundFontManager!
+  private var monitor: Monitor!
+
+  override func setUp() {
+    manager = SelectedSoundFontManager()
+    monitor = Monitor(manager: manager)
+  }
+
   let soundFontInfo = SoundFontInfo(
     "name",
     url: URL(fileURLWithPath: "/a/b/c"),
@@ -20,41 +28,38 @@ class SelectedSoundFontManagerTests: XCTestCase {
 
   lazy var soundFont = SoundFont("name", soundFontInfo: soundFontInfo!, resource: URL(fileURLWithPath: "a/b/c"))
 
-  func testSetting() {
-    let manager = SelectedSoundFontManager()
-    let monitor = Monitor()
-    monitor.token = manager.subscribe(monitor, notifier: monitor.closure)
-
-    let expectation1 = expectation(description: "1")
-    monitor.expectation = expectation1
+  func testAPI() {
+    monitor.expectation = expectation(description: "saw set")
     manager.setSelected(soundFont)
-    wait(for: [expectation1], timeout: 10.0)
+    wait(for: [monitor.expectation], timeout: 10.0)
 
-    let expectation2 = expectation(description: "2")
-    expectation2.isInverted = true
-    monitor.expectation = expectation2
+    monitor.expectation = expectation(description: "did not see duplicate set")
+    monitor.expectation.isInverted = true
     manager.setSelected(soundFont)
-    wait(for: [expectation2], timeout: 10.0)
+    wait(for: [monitor.expectation], timeout: 10.0)
 
+    monitor.expectation = expectation(description: "saw clear")
     manager.clearSelected()
+    wait(for: [monitor.expectation], timeout: 10.0)
 
-    let expectation3 = expectation(description: "3")
-    expectation3.isInverted = true
-    monitor.expectation = expectation3
+    monitor.expectation = expectation(description: "did not see duplicate clear")
+    monitor.expectation.isInverted = true
     manager.clearSelected()
-    wait(for: [expectation3], timeout: 10.0)
+    wait(for: [monitor.expectation], timeout: 10.0)
 
-    let expectation4 = expectation(description: "3")
-    monitor.expectation = expectation4
+    monitor.expectation = expectation(description: "saw set after clear")
     manager.setSelected(soundFont)
-
-    wait(for: [expectation4], timeout: 10.0)
+    wait(for: [monitor.expectation], timeout: 10.0)
   }
 }
 
 private class Monitor {
   var token: SubscriberToken?
   var expectation: XCTestExpectation!
+
+  init(manager: SelectedSoundFontManager) {
+    self.token = manager.subscribe(self, notifier: closure(event:))
+  }
 
   func closure(event: SelectedSoundFontEvent) {
     switch event {
