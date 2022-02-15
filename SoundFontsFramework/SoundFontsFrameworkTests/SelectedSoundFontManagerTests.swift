@@ -22,50 +22,45 @@ class SelectedSoundFontManagerTests: XCTestCase {
 
   func testSetting() {
     let manager = SelectedSoundFontManager()
-
     let monitor = Monitor()
     monitor.token = manager.subscribe(monitor, notifier: monitor.closure)
 
-    monitor.makeExpectation()
+    let expectation1 = expectation(description: "1")
+    monitor.expectation = expectation1
     manager.setSelected(soundFont)
+    wait(for: [expectation1], timeout: 10.0)
 
-    // Repeated setSelected with same font does not fire
-    monitor.makeExpectation(inverted: true)
+    let expectation2 = expectation(description: "2")
+    expectation2.isInverted = true
+    monitor.expectation = expectation2
     manager.setSelected(soundFont)
+    wait(for: [expectation2], timeout: 10.0)
 
-    monitor.makeExpectation()
     manager.clearSelected()
 
-    // Repeated clearSelected does not fire
-    monitor.makeExpectation(inverted: true)
+    let expectation3 = expectation(description: "3")
+    expectation3.isInverted = true
+    monitor.expectation = expectation3
     manager.clearSelected()
+    wait(for: [expectation3], timeout: 10.0)
 
-    monitor.makeExpectation()
+    let expectation4 = expectation(description: "3")
+    monitor.expectation = expectation4
     manager.setSelected(soundFont)
 
-    wait(for: monitor.expectations, timeout: 30.0)
-    XCTAssertEqual(monitor.counter, 3)
+    wait(for: [expectation4], timeout: 10.0)
   }
 }
 
 private class Monitor {
   var token: SubscriberToken?
-  var counter = 0
-  var expectations = [XCTestExpectation]()
+  var expectation: XCTestExpectation!
 
   func closure(event: SelectedSoundFontEvent) {
     switch event {
     case let .changed(old, new):
       XCTAssertNotEqual(old, new)
-      counter += 1
-      expectations.last!.fulfill()
+      expectation.fulfill()
     }
-  }
-
-  func makeExpectation(inverted: Bool = false) {
-    let expectation = XCTestExpectation(description: "\(expectations.count + 1)")
-    expectations.append(expectation)
-    expectation.isInverted = inverted
-    expectation.expectedFulfillmentCount = 1
   }
 }
