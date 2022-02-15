@@ -4,7 +4,7 @@ import XCTest
 import SoundFontInfoLib
 import SF2Files
 
-class FileTests: XCTestCase {
+class SFFileTestsSwift: XCTestCase {
 
   let names = ["FluidR3_GM", "FreeFont", "GeneralUser GS MuseScore v1.442", "RolandNicePiano"]
   let urls: [URL] = SF2Files.allResources.sorted { $0.lastPathComponent < $1.lastPathComponent }

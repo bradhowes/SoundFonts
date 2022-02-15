@@ -56,8 +56,12 @@ extension PresetsTableViewController {
   }
 
   public override func viewWillAppear(_ animated: Bool) {
-    presetsTableViewManager?.regenerateViewSlots()
+    os_log(.debug, log: log, "viewWillAppear BEGIN")
     super.viewWillAppear(animated)
+    if tableView.numberOfRows(inSection: 0) == 0 {
+      presetsTableViewManager?.regenerateViewSlots()
+    }
+    os_log(.debug, log: log, "viewWillAppear END")
   }
 
   /**

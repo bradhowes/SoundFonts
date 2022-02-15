@@ -28,16 +28,16 @@ class AppTests: XCTestCase {
     guard XCT_UI_TESTING_AVAILABLE != 0 else { return }
 
     let mainView = app.otherElements["MainView"]
-    XCTAssert(mainView.waitForExistence(timeout: 5))
+    XCTAssert(mainView.waitForExistence(timeout: 30))
 
     if app.buttons["More Right"].exists { app.buttons["More Right"].tap() }
     app.buttons["Settings"].tap()
 
     let settingsView = app.otherElements["SettingsView"]
-    XCTAssert(settingsView.waitForExistence(timeout: 5))
+    XCTAssert(settingsView.waitForExistence(timeout: 30))
 
     let version = settingsView.staticTexts["Version"]
-    XCTAssert(version.waitForExistence(timeout: 5))
+    XCTAssert(version.waitForExistence(timeout: 30))
 
     let bundleBeingTested = Bundle(for: SettingsViewController.self)
     let releaseVersionNumber = bundleBeingTested.releaseVersionNumber

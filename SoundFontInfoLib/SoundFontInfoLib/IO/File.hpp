@@ -37,8 +37,9 @@ public:
 
    @param fd the file descriptor to read from
    @param size the size of the file being processed
+   @param dump if true, dump contents of file to log stream
    */
-  File(int fd, size_t size);
+  File(int fd, size_t size, bool dump = false);
 
   /// @returns the embedded name in the file
   const std::string& embeddedName() const { return embeddedName_; }
@@ -87,6 +88,8 @@ public:
    */
   const Render::Sample::CanonicalBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
 
+  void patchReleaseTimes(float maxDuration);
+  
   void dumpThreaded() const;
 
   void dump() const;

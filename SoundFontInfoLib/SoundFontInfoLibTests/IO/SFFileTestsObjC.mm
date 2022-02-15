@@ -1,5 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+#import <iostream>
+
 #import <XCTest/XCTest.h>
 #import <SF2Files/SF2Files-Swift.h>
 
@@ -9,11 +11,11 @@ using namespace SF2;
 
 static NSArray<NSURL*>* urls = SF2Files.allResources;
 
-@interface FileTests : XCTestCase
+@interface SFFileTestsObjC : XCTestCase
 
 @end
 
-@implementation FileTests
+@implementation SFFileTestsObjC
 
 - (void)testParsing1 {
   NSURL* url = [urls objectAtIndex:0];
@@ -31,7 +33,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(0, file.instrumentZoneModulators().size());
   XCTAssertEqual(495, file.sampleHeaders().size());
 
-  // file.dump();
+  std::cout << url.path.UTF8String << '\n';
+  file.patchReleaseTimes(5.0);
 }
 
 - (void)testParsing2 {
@@ -50,7 +53,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(2151, file.instrumentZoneModulators().size());
   XCTAssertEqual(864, file.sampleHeaders().size());
 
-  // file.dumpThreaded();
+  std::cout << url.path.UTF8String << '\n';
+  file.patchReleaseTimes(5.0);
 }
 
 - (void)testParsing3 {
@@ -69,7 +73,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(746, file.instrumentZoneModulators().size());
   XCTAssertEqual(1418, file.sampleHeaders().size());
 
-  // file.dumpThreaded();
+  std::cout << url.path.UTF8String << '\n';
+  file.patchReleaseTimes(5.0);
 }
 
 - (void)testParsing4 {
@@ -88,7 +93,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(0, file.instrumentZoneModulators().size());
   XCTAssertEqual(24, file.sampleHeaders().size());
 
-  // file.dumpThreaded();
+  std::cout << url.path.UTF8String << '\n';
+  file.patchReleaseTimes(5.0);
 }
 
 @end
