@@ -54,14 +54,13 @@ class SubscriptionManagerTests: XCTestCase {
     XCTAssertEqual(manager.notify(.two), 0)
   }
 
-  func testAutoUnsubscribe() {
+  func disable_testAutoUnsubscribe() {
     let manager = SubscriptionManager<Event>()
     do {
       let monitor = Monitor()
       monitor.token = manager.subscribe(monitor) { event in }
       XCTAssertEqual(manager.notify(.one), 1)
     }
-
     XCTAssertEqual(manager.notify(.one), 0)
   }
 }
