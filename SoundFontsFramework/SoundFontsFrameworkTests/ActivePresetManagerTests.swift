@@ -163,7 +163,7 @@ class ActivePresetManagerTests: XCTestCase {
 
     // Receive notification signal, and wait for event from activePresetManager
     favorites.isRestored = true
-    waitForExpectations(timeout: 0.25)
+    wait(for: [expectation], timeout: 60.0)
 
     XCTAssertEqual(activePresetManager.state, .normal)
 

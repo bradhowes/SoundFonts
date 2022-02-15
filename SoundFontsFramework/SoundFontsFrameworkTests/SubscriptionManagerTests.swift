@@ -39,7 +39,7 @@ class SubscriptionManagerTests: XCTestCase {
 
     manager.notify(.one)
     manager.notify(.two)
-    waitForExpectations(timeout: 10.0)
+    wait(for: [expectation1, expectation2], timeout: 30.0)
   }
 
   func testUnsubscribe() {
@@ -60,7 +60,7 @@ class SubscriptionManagerTests: XCTestCase {
     monitor.token?.unsubscribe()
     manager.notify(.two)
 
-    waitForExpectations(timeout: 10.0)
+    wait(for: [expectation1, expectation2], timeout: 30.0)
   }
 
   func testAutoUnsubscribe() {
@@ -83,6 +83,6 @@ class SubscriptionManagerTests: XCTestCase {
 
     manager.notify(.two)
 
-    waitForExpectations(timeout: 10.0)
+    wait(for: [expectation1, expectation2], timeout: 30.0)
   }
 }

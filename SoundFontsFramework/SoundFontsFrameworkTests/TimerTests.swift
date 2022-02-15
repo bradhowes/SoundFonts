@@ -10,7 +10,7 @@ class TimerTests: XCTestCase {
     let timer = Timer.once(after: 100.milliseconds) { timer in
       expectation.fulfill()
     }
-    self.waitForExpectations(timeout: 0.2)
+    wait(for: [expectation], timeout: 60.0)
     XCTAssertFalse(timer.isValid, "expected invalid timer")
   }
 
@@ -20,7 +20,7 @@ class TimerTests: XCTestCase {
     let timer = Timer.once(when: when) { timer in
       expectation.fulfill()
     }
-    self.waitForExpectations(timeout: 0.25)
+    wait(for: [expectation], timeout: 60.0)
     XCTAssertFalse(timer.isValid, "expected invalid timer")
   }
 
@@ -35,7 +35,7 @@ class TimerTests: XCTestCase {
       }
     }
 
-    self.waitForExpectations(timeout: 0.04)
+    wait(for: [expectation], timeout: 60.0)
   }
 
   func testOnceAfterPerformance() {
