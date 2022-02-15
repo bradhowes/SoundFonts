@@ -83,10 +83,11 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
 
    - parameter event: the event that just took place
    */
-  public func notify(_ event: Event) {
+  @discardableResult
+  public func notify(_ event: Event) -> Int {
     os_log(.debug, log: log, "notify BEGIN - %{public}s", event.description)
     if cacheEvent { lastEvent = event }
-    subscriptionsQueue.sync {
+    return subscriptionsQueue.sync {
       subscriptions.values.forEach { closure in
 #if DELAY_NOTIFICATIONS
         let delay = Int.random(in: 100...3000)
@@ -94,8 +95,9 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
 #else
         Self.notificationQueue.async { closure(event) }
 #endif
-    }}
-    os_log(.debug, log: log, "notify END")
+      }
+      return subscriptions.count
+    }
   }
 
   public func runOnNotifyQueue(_ closure: @escaping () -> Void) {
