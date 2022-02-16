@@ -31,7 +31,9 @@ public:
    */
   static Bounds make(const Entity::SampleHeader& header, const Voice::State& state) {
     constexpr size_t coarse = 1 << 15;
-    auto offset = [&](Index a, Index b) -> size_t { return state.unmodulated(a) + state.unmodulated(b) * coarse; };
+    auto offset = [&state, coarse](Index a, Index b) -> size_t {
+      return size_t(state.unmodulated(a)) + size_t(state.unmodulated(b)) * coarse;
+    };
 
     // Calculate offsets for the samples using state generator values set by preset/instrument zones.
     auto startOffset = offset(Index::startAddressOffset, Index::startAddressCoarseOffset);
@@ -39,9 +41,10 @@ public:
     auto endLoopOffset = offset(Index::endLoopAddressOffset, Index::endLoopAddressCoarseOffset);
     auto endOffset = offset(Index::endAddressOffset, Index::endAddressCoarseOffset);
 
+    // Don't trust values above. Clamp them to valid ranges before using.
     auto lower = header.startIndex();
     auto upper = header.endIndex();
-    auto clampPos = [&](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
+    auto clampPos = [lower, upper](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
 
     return Bounds(clampPos(lower + startOffset),
                   clampPos(header.startLoopIndex() + startLoopOffset),

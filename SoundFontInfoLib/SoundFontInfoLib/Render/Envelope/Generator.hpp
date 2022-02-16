@@ -159,7 +159,7 @@ public:
 
 private:
 
-  static int samplesFor(double sampleRate, double duration) { return round(sampleRate * duration); }
+  static int samplesFor(double sampleRate, double duration) { return int(round(sampleRate * duration)); }
 
   void updateAndCompare(double floor, StageIndex next) {
     updateValue();

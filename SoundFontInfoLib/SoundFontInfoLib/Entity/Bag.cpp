@@ -7,7 +7,7 @@
 using namespace SF2::Entity;
 
 void
-Bag::dump(const std::string& indent, int index) const
+Bag::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] genIndex: " << firstGeneratorIndex() << " count: " << generatorCount()
   << " modIndex: " << firstModulatorIndex() << " count: " << modulatorCount() << std::endl;

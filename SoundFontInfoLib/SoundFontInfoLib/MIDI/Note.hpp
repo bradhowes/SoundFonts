@@ -21,7 +21,7 @@ public:
 
    @param value the MIDI value to represent
    */
-  explicit Note(short value) : value_{value}, note_{short(value % 12)} {
+  explicit Note(short value) : value_{value}, note_{size_t(value % 12)} {
     assert(value >= 0 && value <= 127);
   }
 
@@ -52,7 +52,7 @@ private:
   };
 
   short value_;
-  short note_;
+  size_t note_;
 };
 
 } // namespace SF2::MIDI

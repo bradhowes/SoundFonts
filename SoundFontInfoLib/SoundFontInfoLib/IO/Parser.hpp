@@ -12,7 +12,8 @@
 namespace SF2::IO {
 
 /**
- SoundFont file parser.
+ SoundFont file parser. This is a bare-bones parser that just skips bits it does not care about. See the File class for
+ a parser that loads everything into memory.
  */
 class Parser {
 public:

@@ -22,7 +22,7 @@ struct Dumper {
 };
 
 void
-Generator::dump(const std::string& indent, int index) const
+Generator::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] " << name() << ' ' << Dumper(definition(), amount_) << std::endl;
 }

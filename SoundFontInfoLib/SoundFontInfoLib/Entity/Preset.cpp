@@ -7,7 +7,7 @@
 using namespace SF2::Entity;
 
 void
-Preset::dump(const std::string& indent, int index) const
+Preset::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] '" << name() << "' preset: " << preset() << " bank: " << bank()
   << " zoneIndex: " << firstZoneIndex() << " count: " << zoneCount() << std::endl;

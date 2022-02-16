@@ -14,7 +14,7 @@ namespace SF2::Render {
 
  A preset is made up of a collection of zones, where each zone defines a MIDI key and velocity range that it applies to
  and an instrument that determines the sound to produce. Note that zones can overlap, so one MIDI key event can cause
- multiple instruments to play, each which will require its own Voice instance to render.
+ multiple instruments to play, each of which will require its own Voice instance to render.
  */
 class Preset : public WithZones<PresetZone, Entity::Preset> {
 public:

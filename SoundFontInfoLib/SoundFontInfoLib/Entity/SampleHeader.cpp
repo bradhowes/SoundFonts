@@ -18,7 +18,7 @@ SampleHeader::sampleTypeDescription() const
 }
 
 void
-SampleHeader::dump(const std::string& indent, int index) const
+SampleHeader::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] '" << achSampleName
   << "' sampleRate: " << dwSampleRate

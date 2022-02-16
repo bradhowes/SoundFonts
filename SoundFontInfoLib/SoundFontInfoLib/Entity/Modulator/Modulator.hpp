@@ -90,7 +90,7 @@ public:
   
   bool operator !=(const Modulator& rhs) const {  return !operator==(rhs); }
   
-  void dump(const std::string& indent, int index) const;
+  void dump(const std::string& indent, size_t index) const;
   
 private:
   Source sfModSrcOper;

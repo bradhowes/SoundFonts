@@ -81,7 +81,7 @@ public:
    @param controllerValue value to convert between 0 and 127
    @returns transformed value
    */
-  double value(short controllerValue) const { return active_[std::clamp<short>(controllerValue, 0, Max)]; }
+  double value(short controllerValue) const { return active_[size_t(std::clamp<short>(controllerValue, 0, Max))]; }
 
 private:
 

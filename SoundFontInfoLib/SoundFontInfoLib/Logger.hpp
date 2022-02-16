@@ -94,7 +94,7 @@ private:
    */
   struct NullLogStreamBuf : public std::stringbuf {
     NullLogStreamBuf() : std::stringbuf(std::ios_base::out) {}
-    std::streamsize xsputn(const char_type* s, std::streamsize n) { return n; }
+    std::streamsize xsputn(const char_type*, std::streamsize n) { return n; }
   };
   
   /**

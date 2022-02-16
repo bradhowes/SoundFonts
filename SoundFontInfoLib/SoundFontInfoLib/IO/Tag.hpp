@@ -54,20 +54,20 @@ enum Tags {
 
   icmt = Pack4Chars("ICMT"),
   istf = Pack4Chars("ISTF"),  // and yet more info ids
-  snam = Pack4Chars("snam"),
-  smpl = Pack4Chars("smpl"),  // sample IDs
-  phdr = Pack4Chars("phdr"),
+  snam = Pack4Chars("snam"),  // sample name
+  smpl = Pack4Chars("smpl"),  // binary samples
+  phdr = Pack4Chars("phdr"),  // preset definition
 
-  pbag = Pack4Chars("pbag"),
-  pmod = Pack4Chars("pmod"),
-  pgen = Pack4Chars("pgen"),  // preset IDs
-  inst = Pack4Chars("inst"),
-  ibag = Pack4Chars("ibag"),
+  pbag = Pack4Chars("pbag"),  // collection of generators and modulators for a preset
+  pmod = Pack4Chars("pmod"),  // preset modulators
+  pgen = Pack4Chars("pgen"),  // preset generators including preset IDs
+  inst = Pack4Chars("inst"),  // instrument definition
+  ibag = Pack4Chars("ibag"),  // collection of generators and modulators for an instrument
 
-  imod = Pack4Chars("imod"),
-  igen = Pack4Chars("igen"),  // instrument IDs
+  imod = Pack4Chars("imod"),  // instrumen modulators
+  igen = Pack4Chars("igen"),  // instrument generators including reference to sample IDs
   shdr = Pack4Chars("shdr"),  // sample info
-  sm24 = Pack4Chars("sm24"),
+  sm24 = Pack4Chars("sm24"),  // sample extensions for 24-bit audio
   unkn = Pack4Chars("????"),
 };
 

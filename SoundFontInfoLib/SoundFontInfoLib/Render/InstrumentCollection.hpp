@@ -16,6 +16,12 @@ namespace SF2::Render {
 class InstrumentCollection
 {
 public:
+
+  /**
+   Construct a new collection from a file.
+
+   @param file the SF2 file that was loaded
+   */
   InstrumentCollection(const IO::File& file) : instruments_{} {
     auto count = file.instruments().size();
     instruments_.reserve(count);

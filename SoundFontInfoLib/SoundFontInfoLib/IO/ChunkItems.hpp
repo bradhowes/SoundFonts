@@ -85,7 +85,8 @@ public:
    */
   ItemRefCollection slice(size_t first, size_t count) const {
     return (first < size() && first + count <= size())
-    ? ItemRefCollection(items_.begin() + first, items_.begin() + first + count)
+    ? ItemRefCollection(items_.begin() + typename ItemRefCollection::difference_type(first),
+                        items_.begin() + typename ItemRefCollection::difference_type(first + count))
     : ItemRefCollection();
   }
   
@@ -110,7 +111,7 @@ public:
    */
   void dump(const std::string& indent) const {
     beginDump(size());
-    auto index = 0;
+    size_t index = 0;
     std::for_each(begin(), end(), [&](const ItemType& item) { item.dump(indent, index++); });
   }
   

@@ -40,7 +40,7 @@ public:
    */
   void setKeyPressure(short key, short value) {
     assert(key <= Note::Max);
-    keyPressureValues_[key] = value;
+    keyPressureValues_[size_t(key)] = value;
   }
 
   /**
@@ -51,7 +51,7 @@ public:
    */
   int keyPressure(short key) const {
     assert(key <= Note::Max);
-    return keyPressureValues_[key];
+    return keyPressureValues_[size_t(key)];
   }
 
   /**
@@ -92,7 +92,7 @@ public:
    */
   void setContinuousControllerValue(short id, short value) {
     assert(id >= CCMin && id <= CCMax);
-    continuousControllerValues_[id - CCMin] = value;
+    continuousControllerValues_[size_t(id - CCMin)] = value;
   }
 
   /**
@@ -103,7 +103,7 @@ public:
    */
   int continuousControllerValue(short id) const {
     assert(id >= CCMin && id <= CCMax);
-    return continuousControllerValues_[id - CCMin];
+    return continuousControllerValues_[size_t(id - CCMin)];
   }
 
 private:

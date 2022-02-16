@@ -32,7 +32,7 @@ std::array<Modulator, Modulator::size> const Modulator::defaults {
 };
 
 void
-Modulator::dump(const std::string& indent, int index) const
+Modulator::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] " << description() << std::endl;
 }

@@ -33,7 +33,7 @@ public:
   /// @returns the number of instrument zones
   uint16_t zoneCount() const { return calculateSize(next(this).firstZoneIndex(), firstZoneIndex()); }
   
-  void dump(const std::string& indent, int index) const;
+  void dump(const std::string& indent, size_t index) const;
   
 private:
   char achInstName[20];

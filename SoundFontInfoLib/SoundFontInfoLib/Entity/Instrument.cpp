@@ -7,7 +7,7 @@
 using namespace SF2::Entity;
 
 void
-Instrument::dump(const std::string& indent, int index) const
+Instrument::dump(const std::string& indent, size_t index) const
 {
   std::cout << indent << '[' << index << "] '" << name() << "' zoneIndex: " << firstZoneIndex()
   << " count: " << zoneCount() << std::endl;

@@ -51,7 +51,7 @@ public:
    @param indent the prefix to write out before each line
    @param index a prefix index value to write out before each lines
    */
-  void dump(const std::string& indent, int index) const;
+  void dump(const std::string& indent, size_t index) const;
 
 private:
   uint16_t wGenNdx;

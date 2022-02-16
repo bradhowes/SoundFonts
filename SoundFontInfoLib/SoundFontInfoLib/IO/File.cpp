@@ -68,7 +68,7 @@ File::File(int fd, size_t fileSize, bool dump)
 
   assert(sampleData_ != nullptr);
   sampleBuffers_.reserve(sampleHeaders_.size());
-  for (auto index = 0; index < sampleHeaders_.size(); ++index) {
+  for (size_t index = 0; index < sampleHeaders_.size(); ++index) {
     auto const& header = sampleHeaders_[index];
     sampleBuffers_.emplace_back(sampleData_.get(), header);
   }
@@ -80,11 +80,11 @@ File::patchReleaseTimes(float maxDuration) {
   std::cout << "maxDuration: " << maxDuration << " limit: " << limit << '\n';
 
   std::map<int, int> visited;
-  for (auto phdrIndex = 0; phdrIndex < presets_.size(); ++phdrIndex) {
+  for (size_t phdrIndex = 0; phdrIndex < presets_.size(); ++phdrIndex) {
     const auto& preset{presets_[phdrIndex]};
-    for (auto pbagIndex = 0; pbagIndex < preset.zoneCount(); ++pbagIndex) {
+    for (size_t pbagIndex = 0; pbagIndex < preset.zoneCount(); ++pbagIndex) {
       const auto& pbag{presetZones_[pbagIndex + preset.firstZoneIndex()]};
-      for (auto pgenIndex = 0; pgenIndex < pbag.generatorCount(); ++pgenIndex) {
+      for (size_t pgenIndex = 0; pgenIndex < pbag.generatorCount(); ++pgenIndex) {
         const auto& pgen{presetZoneGenerators_[pgenIndex + pbag.firstGeneratorIndex()]};
         if (pgen.index() == Entity::Generator::Index::instrument) {
           auto instrumentIndex = pgen.amount().unsignedAmount();
@@ -94,9 +94,9 @@ File::patchReleaseTimes(float maxDuration) {
             continue;
           }
           visited.insert(std::pair(instrumentIndex, 1));
-          for (auto ibagIndex = 0; ibagIndex < inst.zoneCount(); ++ibagIndex) {
-            const auto& ibag{instrumentZones_[ibagIndex + inst.firstZoneIndex()]};
-            for (auto igenIndex = 0; igenIndex < ibag.generatorCount(); ++igenIndex) {
+          for (size_t ibagIndex = 0; ibagIndex < inst.zoneCount(); ++ibagIndex) {
+            const auto& ibag{instrumentZones_[size_t(ibagIndex + inst.firstZoneIndex())]};
+            for (size_t igenIndex = 0; igenIndex < ibag.generatorCount(); ++igenIndex) {
               const auto& igen{instrumentZoneGenerators_[igenIndex + ibag.firstGeneratorIndex()]};
               if (igen.index() == Entity::Generator::Index::releaseVolumeEnvelope) {
                 if (igen.value() > limit) {
@@ -130,12 +130,12 @@ void
 File::dumpThreaded() const {
   std::map<int, int> instrumentLines;
   int lineCounter = 1;
-  for (auto phdrIndex = 0; phdrIndex < presets_.size(); ++phdrIndex) {
+  for (size_t phdrIndex = 0; phdrIndex < presets_.size(); ++phdrIndex) {
     const auto& preset{presets_[phdrIndex]};
 
     // Dump preset header
     preset.dump("phdr", phdrIndex); ++lineCounter;
-    for (auto pbagIndex = 0; pbagIndex < preset.zoneCount(); ++pbagIndex) {
+    for (size_t pbagIndex = 0; pbagIndex < preset.zoneCount(); ++pbagIndex) {
 
       // Dump preset zone. If the zone's generator set is empty or does not end with a link to an instrument, it
       // is global.
@@ -150,13 +150,13 @@ File::dumpThreaded() const {
       }
 
       // Dump the modulators for the zone. Per spec, this should be empty
-      for (auto pmodIndex = 0; pmodIndex < pbag.modulatorCount(); ++pmodIndex) {
+      for (size_t pmodIndex = 0; pmodIndex < pbag.modulatorCount(); ++pmodIndex) {
         const auto& pmod{presetZoneModulators_[pmodIndex + pbag.firstModulatorIndex()]};
         pmod.dump("  pmod", pmodIndex + pbag.firstModulatorIndex()); ++lineCounter;
       }
 
       // Dump the generators for the zone.
-      for (auto pgenIndex = 0; pgenIndex < pbag.generatorCount(); ++pgenIndex) {
+      for (size_t pgenIndex = 0; pgenIndex < pbag.generatorCount(); ++pgenIndex) {
         const auto& pgen{presetZoneGenerators_[pgenIndex + pbag.firstGeneratorIndex()]};
         pgen.dump("  pgen", pgenIndex + pbag.firstGeneratorIndex()); ++lineCounter;
 
@@ -174,7 +174,7 @@ File::dumpThreaded() const {
           }
 
           instrumentLines.insert(std::pair(instrumentIndex, lineCounter - 1));
-          for (auto ibagIndex = 0; ibagIndex < inst.zoneCount(); ++ibagIndex) {
+          for (size_t ibagIndex = 0; ibagIndex < inst.zoneCount(); ++ibagIndex) {
 
             // Dump instrument zone. If the zone's generator set is empty or does not end with a link to a
             // sample header, it is global.
@@ -189,13 +189,13 @@ File::dumpThreaded() const {
             }
 
             // Dump the modulator definitions for the zone
-            for (auto imodIndex = 0; imodIndex < ibag.modulatorCount(); ++imodIndex) {
+            for (size_t imodIndex = 0; imodIndex < ibag.modulatorCount(); ++imodIndex) {
               const auto& imod{instrumentZoneModulators_[imodIndex + ibag.firstModulatorIndex()]};
               imod.dump("     imod", imodIndex + ibag.firstModulatorIndex()); ++lineCounter;
             }
 
             // Dump the generators for the zone
-            for (auto igenIndex = 0; igenIndex < ibag.generatorCount(); ++igenIndex) {
+            for (size_t igenIndex = 0; igenIndex < ibag.generatorCount(); ++igenIndex) {
               const auto& igen{instrumentZoneGenerators_[igenIndex + ibag.firstGeneratorIndex()]};
               igen.dump("     igen", igenIndex + ibag.firstGeneratorIndex()); ++lineCounter;
 

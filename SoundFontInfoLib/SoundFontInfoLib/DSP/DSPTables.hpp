@@ -36,8 +36,8 @@ struct PanLookup {
    */
   static void lookup(Float pan, Float& left, Float& right) {
     int index = std::clamp(int(std::round(pan)), -500, 500);
-    left = lookup_[-index + 500];
-    right = lookup_[index + 500];
+    left = lookup_[size_t(-index + 500)];
+    right = lookup_[size_t(index + 500)];
   }
 
 private:
@@ -76,7 +76,7 @@ private:
   
   inline static Float interpolate(Float radians) {
     Float phase = std::clamp(radians, 0.0, HalfPI) * TableScale;
-    int index = int(phase);
+    size_t index = size_t(phase);
     Float partial = phase - index;
     Float value = lookup_[index] * (1.0 - partial);
     if (partial > 0.0) value += lookup_[index + 1] * partial;
@@ -105,7 +105,7 @@ struct CentsFrequencyScalingLookup {
    @param value the value to convert
    @returns multiplier for a frequency that will change the frequency by the given cent value
    */
-  static Float convert(int value) { return lookup_[std::clamp(value, -Max, Max) + Max]; }
+  static Float convert(int value) { return lookup_[size_t(std::clamp(value, -Max, Max) + Max)]; }
   
   static Float convert(Float value) { return convert(int(std::round(value))); }
   
@@ -134,7 +134,7 @@ struct CentsPartialLookup {
    @param partial a value between 0 and MaxCentsValue - 1
    @returns frequency multiplier
    */
-  static Float convert(int partial) { return lookup_[std::clamp(partial, 0, MaxCentsValue - 1)]; }
+  static Float convert(int partial) { return lookup_[size_t(std::clamp(partial, 0, MaxCentsValue - 1))]; }
   
 private:
   static Float value(size_t index) { return 6.875 * std::exp2(Float(index) / 1200.0); }
@@ -154,7 +154,7 @@ struct AttenuationLookup {
    
    @param centibels value to convert
    */
-  static Float convert(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
+  static Float convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
   
   /**
    Convert from floating-point value to attenuation. Rounds to nearest integer to obtain index.
@@ -183,7 +183,7 @@ struct GainLookup {
    
    @param centibels value to convert
    */
-  static Float convert(int centibels) { return lookup_[std::clamp<int>(centibels, 0, TableSize - 1)]; }
+  static Float convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
   
   /**
    Convert from floating-point value to gain. Rounds to nearest integer to obtain index.

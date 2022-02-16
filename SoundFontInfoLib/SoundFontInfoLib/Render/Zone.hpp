@@ -179,7 +179,7 @@ private:
     else if (generators.size() > 0 && generators[0].get().index() == Entity::Generator::Index::velocityRange) {
       index = 0;
     }
-    return index == -1 ? all : MIDIRange(generators[index].get().amount());
+    return index == -1 ? all : MIDIRange(generators[size_t(index)].get().amount());
   }
 
   GeneratorCollection generators_;

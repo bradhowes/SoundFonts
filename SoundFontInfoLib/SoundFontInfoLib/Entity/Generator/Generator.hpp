@@ -41,7 +41,7 @@ public:
   /// @returns the configured value of a generator
   int value() const { return definition().valueOf(amount_); }
 
-  void dump(const std::string& indent, int index) const;
+  void dump(const std::string& indent, size_t index) const;
 
 private:
   RawIndex index_;

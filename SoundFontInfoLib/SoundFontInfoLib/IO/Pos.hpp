@@ -74,10 +74,10 @@ struct Pos {
    @returns new Pos instance for the next bytes in the file
    */
   Pos readInto(void* buffer, size_t count) const {
-    if (Pos::seek(fd_, pos_, SEEK_SET) != pos_) throw Format::error;
+    if (Pos::seek(fd_, off_t(pos_), SEEK_SET) != off_t(pos_)) throw Format::error;
     auto result = Pos::read(fd_, buffer, count);
-    if (result != count) throw Format::error;
-    return advance(result);
+    if (result != long(count)) throw Format::error;
+    return advance(size_t(result));
   }
 
   /**
