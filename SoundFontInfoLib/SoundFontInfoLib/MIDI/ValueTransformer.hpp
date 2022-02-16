@@ -23,8 +23,8 @@ namespace SF2::MIDI {
  */
 class ValueTransformer {
 public:
-  inline constexpr static short Min = 0;
-  inline constexpr static short Max = 127;
+  inline constexpr static int Min = 0;
+  inline constexpr static int Max = 127;
 
   /// Since we have only 128 values to handle, use lookup tables for quick conversion
   inline constexpr static size_t TableSize = Max + 1;
@@ -81,7 +81,7 @@ public:
    @param controllerValue value to convert between 0 and 127
    @returns transformed value
    */
-  double value(short controllerValue) const { return active_[size_t(std::clamp<short>(controllerValue, 0, Max))]; }
+  double value(int controllerValue) const { return active_[size_t(std::clamp<int>(controllerValue, 0, Max))]; }
 
 private:
 

@@ -139,7 +139,7 @@ public:
 
   /// @returns MIDI key value to use (also pitch in semitones)
   int key() const {
-    auto value = unmodulated(Index::forcedMIDIKey);
+    int value = unmodulated(Index::forcedMIDIKey);
     return (value >= 0) ? value : eventKey();
   }
 

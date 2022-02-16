@@ -18,11 +18,11 @@ namespace SF2::MIDI {
  */
 class Channel {
 public:
-  inline constexpr static short CCMin = 0;
-  inline constexpr static short CCMax = 127;
+  inline constexpr static int CCMin = 0;
+  inline constexpr static int CCMax = 127;
 
-  using ContinuousControllerValues = std::array<short, CCMax - CCMin + 1>;
-  using KeyPressureValues = std::array<short, Note::Max + 1>;
+  using ContinuousControllerValues = std::array<int, CCMax - CCMin + 1>;
+  using KeyPressureValues = std::array<int, Note::Max + 1>;
 
   /**
    Construct new channel.
@@ -38,7 +38,7 @@ public:
    @param key the key to set
    @param value the pressure value to record
    */
-  void setKeyPressure(short key, short value) {
+  void setKeyPressure(int key, int value) {
     assert(key <= Note::Max);
     keyPressureValues_[size_t(key)] = value;
   }
@@ -49,7 +49,7 @@ public:
    @param key the key to get
    @returns the current pressure value for a key
    */
-  int keyPressure(short key) const {
+  int keyPressure(int key) const {
     assert(key <= Note::Max);
     return keyPressureValues_[size_t(key)];
   }
@@ -59,7 +59,7 @@ public:
 
    @param value the pressure value to record
    */
-  void setChannelPressure(short value) { channelPressure_ = value; }
+  void setChannelPressure(int value) { channelPressure_ = value; }
 
   /// @returns the current channel pressure
   int channelPressure() const { return channelPressure_; }
@@ -69,7 +69,7 @@ public:
 
    @param value the pitch wheel value
    */
-  void setPitchWheelValue(short value) { pitchWheelValue_ = value; }
+  void setPitchWheelValue(int value) { pitchWheelValue_ = value; }
 
   /// @returns the current pitch wheel value
   int pitchWheelValue() const { return pitchWheelValue_; }
@@ -79,7 +79,7 @@ public:
 
    @param value the sensitivity value to record
    */
-  void setPitchWheelSensitivity(short value) { pitchWheelSensitivity_ = value; }
+  void setPitchWheelSensitivity(int value) { pitchWheelSensitivity_ = value; }
 
   /// @returns the current pitch wheel sensitivity value
   int pitchWheelSensitivity() const { return pitchWheelSensitivity_; }
@@ -90,7 +90,7 @@ public:
    @param id the controller ID
    @param value the value to set for the controller
    */
-  void setContinuousControllerValue(short id, short value) {
+  void setContinuousControllerValue(int id, int value) {
     assert(id >= CCMin && id <= CCMax);
     continuousControllerValues_[size_t(id - CCMin)] = value;
   }
@@ -101,7 +101,7 @@ public:
    @param id the controller ID to get
    @returns the controller value
    */
-  int continuousControllerValue(short id) const {
+  int continuousControllerValue(int id) const {
     assert(id >= CCMin && id <= CCMax);
     return continuousControllerValues_[size_t(id - CCMin)];
   }

@@ -13,20 +13,20 @@ namespace SF2::MIDI {
  */
 class Note {
 public:
-  inline constexpr static short Min = 0;
-  inline constexpr static short Max = 127;
+  inline constexpr static int Min = 0;
+  inline constexpr static int Max = 127;
 
   /**
    Construct new note.
 
    @param value the MIDI value to represent
    */
-  explicit Note(short value) : value_{value}, note_{size_t(value % 12)} {
+  explicit Note(int value) : value_{value}, note_{size_t(value % 12)} {
     assert(value >= 0 && value <= 127);
   }
 
   /// @returns the octave that the note resides in
-  short octave() const { return value_ / 12 - 1; }
+  int octave() const { return value_ / 12 - 1; }
 
   /// @returns true if the note is accented (sharp / flat)
   bool accented() const { return (note_ < 5 && (note_ & 1) == 1) || (note_ > 5 && (note_ & 1) == 0); }
@@ -34,7 +34,7 @@ public:
   /// @returns textual representation of the note (shows a sharp for accented notes)
   std::string label() const { return labels_[note_] + std::to_string(octave()) + (accented() ? sharpTag_ : ""); }
 
-  short value() const { return value_; }
+  int value() const { return value_; }
 
   bool operator ==(const Note& rhs) const { return value_ == rhs.value_; }
   bool operator !=(const Note& rhs) const { return value_ != rhs.value_; }
@@ -51,7 +51,7 @@ private:
     "C", "C", "D", "D", "E", "F", "F", "G", "G", "A", "A", "B"
   };
 
-  short value_;
+  int value_;
   size_t note_;
 };
 
