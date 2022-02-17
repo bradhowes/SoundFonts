@@ -16,8 +16,8 @@ Voice::Voice(double sampleRate, const Channel& channel, size_t voiceIndex) :
 state_{sampleRate, channel},
 loopingMode_{State::none},
 sampleGenerator_{state_, Render::Sample::Generator::Interpolator::linear},
-gainEnvelope_{state_},
-modulatorEnvelope_{state_},
+gainEnvelope_{},
+modulatorEnvelope_{},
 modulatorLFO_{LFO::Config{sampleRate}},
 vibratoLFO_{LFO::Config{sampleRate}},
 voiceIndex_{voiceIndex}

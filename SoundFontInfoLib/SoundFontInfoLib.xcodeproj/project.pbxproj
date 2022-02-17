@@ -10,7 +10,7 @@
 		BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */; };
 		BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6C265DAEC7002AD159 /* StateTests.mm */; };
 		BD5CA3D126D2B1790052DA39 /* VoiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6B265DAEC7002AD159 /* VoiceTests.mm */; };
-		BD5CA3D226D2B72B0052DA39 /* CanonicalBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6F265DAEC7002AD159 /* CanonicalBufferTests.mm */; };
+		BD5CA3D226D2B72B0052DA39 /* NormalizedSampleSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6F265DAEC7002AD159 /* NormalizedSampleSourceTests.mm */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; platformFilter = maccatalyst; };
 		BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */; };
 		BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE73265DAEC7002AD159 /* DSPTests.mm */; };
@@ -142,7 +142,7 @@
 		BDB1BE6C265DAEC7002AD159 /* StateTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StateTests.mm; sourceTree = "<group>"; };
 		BDB1BE6D265DAEC7002AD159 /* DelayBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DelayBufferTests.mm; sourceTree = "<group>"; };
 		BDB1BE6E265DAEC7002AD159 /* InstrumentTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = InstrumentTests.mm; sourceTree = "<group>"; };
-		BDB1BE6F265DAEC7002AD159 /* CanonicalBufferTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CanonicalBufferTests.mm; sourceTree = "<group>"; };
+		BDB1BE6F265DAEC7002AD159 /* NormalizedSampleSourceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NormalizedSampleSourceTests.mm; sourceTree = "<group>"; };
 		BDB1BE70265DAEC7002AD159 /* RangeTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RangeTests.mm; sourceTree = "<group>"; };
 		BDB1BE71265DAEC7002AD159 /* ModulatorTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorTests.mm; sourceTree = "<group>"; };
 		BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SoundFontInfoLibTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -384,7 +384,7 @@
 				BDB1BE6A265DAEC7002AD159 /* Voice */,
 				BDB1BE6D265DAEC7002AD159 /* DelayBufferTests.mm */,
 				BDB1BE6E265DAEC7002AD159 /* InstrumentTests.mm */,
-				BDB1BE6F265DAEC7002AD159 /* CanonicalBufferTests.mm */,
+				BDB1BE6F265DAEC7002AD159 /* NormalizedSampleSourceTests.mm */,
 				BDB1BE70265DAEC7002AD159 /* RangeTests.mm */,
 				BDB1BE71265DAEC7002AD159 /* ModulatorTests.mm */,
 			);
@@ -810,7 +810,7 @@
 				BD8E158A26D1269F000DC781 /* ChannelTests.mm in Sources */,
 				BD8E158F26D1272D000DC781 /* DelayBufferTests.mm in Sources */,
 				BD8E159326D12828000DC781 /* SampleBasedTestCase.mm in Sources */,
-				BD5CA3D226D2B72B0052DA39 /* CanonicalBufferTests.mm in Sources */,
+				BD5CA3D226D2B72B0052DA39 /* NormalizedSampleSourceTests.mm in Sources */,
 				BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */,
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
 				BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */,
@@ -1116,8 +1116,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_SHADOW = YES;
 				INFOPLIST_FILE = SoundFontInfoLibTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1132,6 +1137,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/SoundFontInfoLib";
+				WARNING_CFLAGS = "";
 			};
 			name = Debug;
 		};
@@ -1139,8 +1145,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER = YES;
+				CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY = YES;
+				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UP6SS5ES7E;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_SHADOW = YES;
 				INFOPLIST_FILE = SoundFontInfoLibTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1154,6 +1165,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SOURCE_ROOT)/SoundFontInfoLib";
+				WARNING_CFLAGS = "";
 			};
 			name = Release;
 		};

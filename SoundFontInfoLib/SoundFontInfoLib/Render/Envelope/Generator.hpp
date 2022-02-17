@@ -47,39 +47,50 @@ public:
 
   inline static constexpr double defaultCurvature = 0.01;
 
-  /**
-   Create new envelope definition with a bare configuration.
+  Generator() {}
 
-   @param state voice state that will determine envelope shape
-   */
-  explicit Generator(State& state) : state_{state} {}
+  Generator(double sampleRate, double delay, double attack, double hold, double decay, double sustain,
+            double release, bool noteOn = false) : stages_{
+    Stage::Delay(samplesFor(sampleRate, delay)),
+    Stage::Attack(samplesFor(sampleRate, attack), defaultCurvature),
+    Stage::Hold(samplesFor(sampleRate, hold)),
+    Stage::Decay(samplesFor(sampleRate, decay), defaultCurvature, sustain),
+    Stage::Sustain(sustain),
+    Stage::Release(samplesFor(sampleRate, release), defaultCurvature, sustain)
+  }
+  {
+    if (noteOn) gate(true);
+  }
 
-  /**
-   Create new envelope for modulation due to key down event.
-   */
-  void createVolumeEnvelope() {
-    createEnvelope(DSP::centsToSeconds(state_.modulated(Index::delayVolumeEnvelope)),
-                   DSP::centsToSeconds(state_.modulated(Index::attackVolumeEnvelope)),
-                   DSP::centsToSeconds(state_.modulated(Index::holdVolumeEnvelope) +
-                                       state_.keyedVolumeEnvelopeHold()),
-                   DSP::centsToSeconds(state_.modulated(Index::decayVolumeEnvelope) +
-                                       state_.keyedVolumeEnvelopeDecay()),
-                   state_.sustainLevelVolumeEnvelope(),
-                   DSP::centsToSeconds(state_.modulated(Index::releaseVolumeEnvelope)));
+  static Generator Volume(const State& state) {
+    return Generator(state.sampleRate(),
+                     DSP::centsToSeconds(state.modulated(Index::delayVolumeEnvelope)),
+                     DSP::centsToSeconds(state.modulated(Index::attackVolumeEnvelope)),
+                     DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) +
+                                         state.keyedVolumeEnvelopeHold()),
+                     DSP::centsToSeconds(state.modulated(Index::decayVolumeEnvelope) +
+                                         state.keyedVolumeEnvelopeDecay()),
+                     state.sustainLevelVolumeEnvelope(),
+                     DSP::centsToSeconds(state.modulated(Index::releaseVolumeEnvelope)),
+                     true);
   }
 
   /**
-   Create new envelope for modulation due to key down event.
+   Create new envelope for modulation.
+
+   @param state the state holding the generator values for the envelope definition
    */
-  void createModulatorEnvelope() {
-    createEnvelope(DSP::centsToSeconds(state_.modulated(Index::delayModulatorEnvelope)),
-                   DSP::centsToSeconds(state_.modulated(Index::attackModulatorEnvelope)),
-                   DSP::centsToSeconds(state_.modulated(Index::holdModulatorEnvelope) +
-                                       state_.keyedModulatorEnvelopeHold()),
-                   DSP::centsToSeconds(state_.modulated(Index::decayModulatorEnvelope) +
-                                       state_.keyedModulatorEnvelopeDecay()),
-                   state_.sustainLevelModulatorEnvelope(),
-                   DSP::centsToSeconds(state_.modulated(Index::releaseModulatorEnvelope)));
+  static Generator Modulator(const State& state) {
+    return Generator(state.sampleRate(),
+                     DSP::centsToSeconds(state.modulated(Index::delayModulatorEnvelope)),
+                     DSP::centsToSeconds(state.modulated(Index::attackModulatorEnvelope)),
+                     DSP::centsToSeconds(state.modulated(Index::holdModulatorEnvelope) +
+                                         state.keyedModulatorEnvelopeHold()),
+                     DSP::centsToSeconds(state.modulated(Index::decayModulatorEnvelope) +
+                                         state.keyedModulatorEnvelopeDecay()),
+                     state.sustainLevelModulatorEnvelope(),
+                     DSP::centsToSeconds(state.modulated(Index::releaseModulatorEnvelope)),
+                     true);
   }
 
   /**
@@ -127,19 +138,6 @@ public:
   }
 
 private:
-
-  void createEnvelope(double delay, double attack, double hold, double decay, double sustain,
-                      double release) {
-    stages_ = {
-      Stage::Delay(samplesFor(state_.sampleRate(), delay)),
-      Stage::Attack(samplesFor(state_.sampleRate(), attack), defaultCurvature),
-      Stage::Hold(samplesFor(state_.sampleRate(), hold)),
-      Stage::Decay(samplesFor(state_.sampleRate(), decay), defaultCurvature, sustain),
-      Stage::Sustain(sustain),
-      Stage::Release(samplesFor(state_.sampleRate(), release), defaultCurvature, sustain)
-    };
-    gate(true);
-  }
 
   static int samplesFor(double sampleRate, double duration) { return int(round(sampleRate * duration)); }
 
@@ -209,7 +207,6 @@ private:
     counter_ = activeDurationInSamples();
   }
 
-  State state_;
   Stages stages_{};
   StageIndex stageIndex_{StageIndex::idle};
   int counter_{0};
