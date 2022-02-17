@@ -31,6 +31,17 @@
 		BD8E159326D12828000DC781 /* SampleBasedTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */; };
 		BD8E159426D12A07000DC781 /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE71265DAEC7002AD159 /* ModulatorTests.mm */; };
 		BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */; };
+		BDADC18D27BD75F6008B26BA /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC18827BD75F6008B26BA /* Engine.hpp */; };
+		BDADC18E27BD75F6008B26BA /* Tick.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC18927BD75F6008B26BA /* Tick.hpp */; };
+		BDADC18F27BD75F6008B26BA /* PresetCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC18A27BD75F6008B26BA /* PresetCollection.hpp */; };
+		BDADC19027BD75F6008B26BA /* OldestActiveVoiceCache.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC18B27BD75F6008B26BA /* OldestActiveVoiceCache.hpp */; };
+		BDADC19127BD75F6008B26BA /* Engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDADC18C27BD75F6008B26BA /* Engine.cpp */; };
+		BDADC19327BD761F008B26BA /* Preset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19227BD761F008B26BA /* Preset.cpp */; };
+		BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19527BD764C008B26BA /* OldestVoiceCacheTests.mm */; };
+		BDADC19827BD764C008B26BA /* EngineTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19627BD764C008B26BA /* EngineTests.mm */; };
+		BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19927BDA66C008B26BA /* PresetCollectionTests.mm */; };
+		BDADC19D27BE732D008B26BA /* ListNodeAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */; };
+		BDADC19E27BE732D008B26BA /* ListNodeAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */; };
 		BDB1BF3B265DB034002AD159 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF39265DB034002AD159 /* main.cpp */; };
 		BDB1BF3C265DB034002AD159 /* DSPTablesGenerator.cc in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF3A265DB034002AD159 /* DSPTablesGenerator.cc */; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -101,6 +112,17 @@
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA5ACA5265D379F000AE48E /* DSPTablesGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPTablesGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSPGenerated.cpp; sourceTree = "<group>"; };
+		BDADC18827BD75F6008B26BA /* Engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Engine.hpp; sourceTree = "<group>"; };
+		BDADC18927BD75F6008B26BA /* Tick.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tick.hpp; sourceTree = "<group>"; };
+		BDADC18A27BD75F6008B26BA /* PresetCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PresetCollection.hpp; sourceTree = "<group>"; };
+		BDADC18B27BD75F6008B26BA /* OldestActiveVoiceCache.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = OldestActiveVoiceCache.hpp; sourceTree = "<group>"; };
+		BDADC18C27BD75F6008B26BA /* Engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Engine.cpp; sourceTree = "<group>"; };
+		BDADC19227BD761F008B26BA /* Preset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Preset.cpp; sourceTree = "<group>"; };
+		BDADC19527BD764C008B26BA /* OldestVoiceCacheTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OldestVoiceCacheTests.mm; sourceTree = "<group>"; };
+		BDADC19627BD764C008B26BA /* EngineTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EngineTests.mm; sourceTree = "<group>"; };
+		BDADC19927BDA66C008B26BA /* PresetCollectionTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetCollectionTests.mm; sourceTree = "<group>"; };
+		BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ListNodeAllocator.cpp; sourceTree = "<group>"; };
+		BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ListNodeAllocator.hpp; sourceTree = "<group>"; };
 		BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontInfoLibTests.swift; sourceTree = "<group>"; };
 		BDB1BE59265DAEC6002AD159 /* MIDITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDITests.mm; sourceTree = "<group>"; };
 		BDB1BE5A265DAEC6002AD159 /* NoteTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NoteTests.mm; sourceTree = "<group>"; };
@@ -188,13 +210,13 @@
 		BDB1BF80265DB1F0002AD159 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Generator.hpp; path = SoundFontInfoLib/Render/Envelope/Generator.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF81265DB1F0002AD159 /* Stage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Stage.hpp; path = SoundFontInfoLib/Render/Envelope/Stage.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF83265DB1F0002AD159 /* Voice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Voice.cpp; path = SoundFontInfoLib/Render/Voice/Voice.cpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF84265DB1F0002AD159 /* State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = State.cpp; path = SoundFontInfoLib/Render/Voice/State.cpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF85265DB1F0002AD159 /* State.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = State.hpp; path = SoundFontInfoLib/Render/Voice/State.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF86265DB1F0002AD159 /* Config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Config.hpp; path = SoundFontInfoLib/Render/Voice/Config.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF84265DB1F0002AD159 /* State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = State.cpp; path = SoundFontInfoLib/Render/State.cpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF85265DB1F0002AD159 /* State.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = State.hpp; path = SoundFontInfoLib/Render/State.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF86265DB1F0002AD159 /* Config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Config.hpp; path = SoundFontInfoLib/Render/Config.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF87265DB1F0002AD159 /* Voice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Voice.hpp; path = SoundFontInfoLib/Render/Voice/Voice.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF88265DB1F0002AD159 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LFO.hpp; path = SoundFontInfoLib/Render/LFO.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CanonicalBuffer.hpp; path = SoundFontInfoLib/Render/Sample/CanonicalBuffer.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NormalizedSampleSource.hpp; path = SoundFontInfoLib/Render/NormalizedSampleSource.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BufferIndex.hpp; path = SoundFontInfoLib/Render/Sample/BufferIndex.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZones.hpp; path = SoundFontInfoLib/Render/WithZones.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF90265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Instrument.hpp; sourceTree = SOURCE_ROOT; };
@@ -277,6 +299,30 @@
 			name = DerivedSources;
 			sourceTree = DERIVED_FILE_DIR;
 		};
+		BDADC18727BD75F6008B26BA /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				BDADC18C27BD75F6008B26BA /* Engine.cpp */,
+				BDADC18827BD75F6008B26BA /* Engine.hpp */,
+				BDADC18A27BD75F6008B26BA /* PresetCollection.hpp */,
+				BDADC18B27BD75F6008B26BA /* OldestActiveVoiceCache.hpp */,
+				BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */,
+				BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */,
+				BDADC18927BD75F6008B26BA /* Tick.hpp */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		BDADC19427BD764C008B26BA /* EngineTests */ = {
+			isa = PBXGroup;
+			children = (
+				BDADC19527BD764C008B26BA /* OldestVoiceCacheTests.mm */,
+				BDADC19627BD764C008B26BA /* EngineTests.mm */,
+				BDADC19927BDA66C008B26BA /* PresetCollectionTests.mm */,
+			);
+			path = EngineTests;
+			sourceTree = "<group>";
+		};
 		BDB1BE56265DAEC6002AD159 /* SoundFontInfoLibTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BE66265DAEC7002AD159 /* EnvelopeTests.mm */,
+				BDADC19427BD764C008B26BA /* EngineTests */,
 				BDB1BE67265DAEC7002AD159 /* LFOTests.mm */,
 				BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */,
 				BDB1BE69265DAEC7002AD159 /* PresetTests.mm */,
@@ -469,7 +516,11 @@
 			children = (
 				BDB1BF7E265DB1F0002AD159 /* README.md */,
 				BDB1BF7D265DB1F0002AD159 /* BufferFacet.hpp */,
+				BDB1BF86265DB1F0002AD159 /* Config.hpp */,
+				BDB1BF84265DB1F0002AD159 /* State.cpp */,
+				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF7B265DB1F0002AD159 /* DelayBuffer.hpp */,
+				BDADC18727BD75F6008B26BA /* Engine */,
 				BDB1BF7F265DB1F0002AD159 /* Envelope */,
 				BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */,
 				BDB1BF90265DB1F0002AD159 /* Instrument.hpp */,
@@ -478,6 +529,8 @@
 				BDB1BF88265DB1F0002AD159 /* LFO.hpp */,
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
 				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
+				BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */,
+				BDADC19227BD761F008B26BA /* Preset.cpp */,
 				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
 				BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */,
 				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
@@ -505,9 +558,6 @@
 		BDB1BF82265DB1F0002AD159 /* Voice */ = {
 			isa = PBXGroup;
 			children = (
-				BDB1BF86265DB1F0002AD159 /* Config.hpp */,
-				BDB1BF84265DB1F0002AD159 /* State.cpp */,
-				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF83265DB1F0002AD159 /* Voice.cpp */,
 				BDB1BF87265DB1F0002AD159 /* Voice.hpp */,
 			);
@@ -520,7 +570,6 @@
 			children = (
 				BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */,
 				BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */,
-				BDB1BF8B265DB1F0002AD159 /* CanonicalBuffer.hpp */,
 				BD4BD95A26AC118A00CE06D7 /* Generator.hpp */,
 			);
 			name = Sample;
@@ -559,7 +608,12 @@
 			files = (
 				BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */,
 				BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */,
+				BDADC18D27BD75F6008B26BA /* Engine.hpp in Headers */,
+				BDADC18F27BD75F6008B26BA /* PresetCollection.hpp in Headers */,
 				BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */,
+				BDADC19027BD75F6008B26BA /* OldestActiveVoiceCache.hpp in Headers */,
+				BDADC19E27BE732D008B26BA /* ListNodeAllocator.hpp in Headers */,
+				BDADC18E27BD75F6008B26BA /* Tick.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,10 +778,13 @@
 				BDB1BFAE265DB1F0002AD159 /* Version.cpp in Sources */,
 				BDB1BFB9265DB1F0002AD159 /* Preset.cpp in Sources */,
 				BDB1BFCE265DB1F1002AD159 /* Zone.cpp in Sources */,
+				BDADC19127BD75F6008B26BA /* Engine.cpp in Sources */,
 				BDB1BFF0265DB1F1002AD159 /* SoundFontInfo.mm in Sources */,
 				BDB1BFC9265DB1F0002AD159 /* Parser.cpp in Sources */,
 				BDB1BFC1265DB1F0002AD159 /* ChunkItems.cpp in Sources */,
+				BDADC19327BD761F008B26BA /* Preset.cpp in Sources */,
 				BDB1BFD9265DB1F1002AD159 /* Voice.cpp in Sources */,
+				BDADC19D27BE732D008B26BA /* ListNodeAllocator.cpp in Sources */,
 				BDB1BFC4265DB1F0002AD159 /* File.cpp in Sources */,
 				BDB1BFA6265DB1F0002AD159 /* Instrument.cpp in Sources */,
 				BDB1BFB8265DB1F0002AD159 /* SampleHeader.cpp in Sources */,
@@ -741,12 +798,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */,
 				BD8E158726D12628000DC781 /* SFFileTestsSwift.swift in Sources */,
 				BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */,
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
 				BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */,
 				BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */,
 				BD8E158326D125DB000DC781 /* ModulatorSourceTests.mm in Sources */,
+				BDADC19827BD764C008B26BA /* EngineTests.mm in Sources */,
 				BD8E159126D12769000DC781 /* RangeTests.mm in Sources */,
 				BD8E158A26D1269F000DC781 /* ChannelTests.mm in Sources */,
 				BD8E158F26D1272D000DC781 /* DelayBufferTests.mm in Sources */,
@@ -754,6 +813,7 @@
 				BD5CA3D226D2B72B0052DA39 /* CanonicalBufferTests.mm in Sources */,
 				BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */,
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
+				BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */,
 				BD8E158826D12679000DC781 /* MIDITests.mm in Sources */,
 				BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */,
 				BD8E158C26D126C2000DC781 /* EnvelopeTests.mm in Sources */,
@@ -926,6 +986,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
 				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
@@ -951,9 +1014,12 @@
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -985,6 +1051,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = YES;
+				CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_ASSIGN_ENUM = YES;
 				CLANG_WARN_COMPLETION_HANDLER_MISUSE = YES;
@@ -1011,9 +1080,12 @@
 				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
 				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
 				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = YES;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

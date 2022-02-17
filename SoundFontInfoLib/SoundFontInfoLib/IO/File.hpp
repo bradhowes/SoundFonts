@@ -17,7 +17,7 @@
 #include "Entity/Version.hpp"
 
 #include "IO/ChunkItems.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/NormalizedSampleSource.hpp"
 
 /**
  Collection of classes and types involved in parsing an SF2 file or data stream.
@@ -32,14 +32,23 @@ namespace SF2::IO {
 class File {
 public:
 
+  File() {}
+
   /**
-   Constructor. Processes the SF2 file contents and builds up various collections based on what it finds
+   Constructor. Processes the SF2 file contents and builds up various collections based on what it finds.
 
    @param fd the file descriptor to read from
-   @param size the size of the file being processed
    @param dump if true, dump contents of file to log stream
    */
-  File(int fd, size_t size, bool dump = false);
+  File(int fd, bool dump = false);
+
+  enum class LoadResponse {
+    ok,
+    notFound,
+    invalidFormat
+  };
+
+  LoadResponse load(int fd, bool dump = false);
 
   /// @returns the embedded name in the file
   const std::string& embeddedName() const { return embeddedName_; }
@@ -80,13 +89,14 @@ public:
   /// @returns reference to samples definitions
   const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
+
   /**
    Obtain a SampleBuffer at the given sample header index
 
    @param index the index of the buffer to obtain
    @returns SampleBuffer reference
    */
-  const Render::Sample::CanonicalBuffer& sampleBuffer(uint16_t index) const { return sampleBuffers_[index]; }
+  const Render::NormalizedSampleSource& sampleSource(uint16_t index) const { return sampleSources_[index]; }
 
   void patchReleaseTimes(float maxDuration);
   
@@ -95,10 +105,9 @@ public:
   void dump() const;
 
 private:
-  int fd_;
-  size_t size_;
-  size_t sampleDataBegin_;
-  size_t sampleDataEnd_;
+  off_t size_;
+  off_t sampleDataBegin_;
+  off_t sampleDataEnd_;
   Entity::Version soundFontVersion_;
   Entity::Version fileVersion_;
 
@@ -122,7 +131,7 @@ private:
   ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
   ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-  std::vector<Render::Sample::CanonicalBuffer> sampleBuffers_;
+  std::vector<Render::NormalizedSampleSource> sampleSources_;
 
   std::shared_ptr<int16_t> sampleData_;
 

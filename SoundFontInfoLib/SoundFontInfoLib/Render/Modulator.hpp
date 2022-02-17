@@ -16,7 +16,7 @@ namespace SF2::MIDI { class Channel; }
 
 namespace SF2::Render {
 
-namespace Voice { class State; }
+class State;
 
 /**
  Render-side modulator that understands how to fetch source values that will be used to modulate voice state. Per the
@@ -41,7 +41,7 @@ public:
    @param configuration the entity configuration that defines the modulator
    @param state the voice state that can be used as a source for modulators
    */
-  Modulator(size_t index, const Entity::Modulator::Modulator& configuration, const Voice::State& state);
+  Modulator(size_t index, const Entity::Modulator::Modulator& configuration, const State& state);
 
   /// @returns current value of the modulator
   double value() const {
@@ -94,7 +94,7 @@ private:
    @param source the modulator source definition from the SF2 file
    @param state the voice state that will be modulated
    */
-  static ValueProc SourceValue(const Entity::Modulator::Source& source, const Voice::State& state);
+  static ValueProc SourceValue(const Entity::Modulator::Source& source, const State& state);
 
   const Entity::Modulator::Modulator& configuration_;
   size_t index_;

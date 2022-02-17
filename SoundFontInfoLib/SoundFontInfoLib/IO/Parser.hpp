@@ -47,7 +47,7 @@ public:
    - parameter fd: file descriptor of the SF2 file to read from for data
    - parameter size: the number of bytes available for processing
    */
-  static Info parse(int fd, size_t size);
+  static Info parse(int fd);
 };
 
 } // end namespace SF2::IO

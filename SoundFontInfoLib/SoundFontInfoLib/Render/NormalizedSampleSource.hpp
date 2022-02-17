@@ -11,15 +11,17 @@
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 
-namespace SF2::Render::Sample {
+namespace SF2::Render {
 
 /**
  Contains a collection of audio samples that range between -1.0 and 1.0. The values are derived from the
  16-bit values found in the SF2 file. Note that this conversion is done on-demand via the first call to
  `load`.
  */
-class CanonicalBuffer {
+class NormalizedSampleSource {
 public:
+
+  static constexpr double normalizationScale = double(1.0) / double(1 << 15);
 
   /**
    Construct a new normalized buffer of samples.
@@ -27,7 +29,7 @@ public:
    @param samples pointer to the first 16-bit sample in the SF2 file
    @param header defines the range of samples to use for a sound
    */
-  CanonicalBuffer(const int16_t* samples, const Entity::SampleHeader& header) :
+  NormalizedSampleSource(const int16_t* samples, const Entity::SampleHeader& header) :
   samples_{}, header_{header}, allSamples_{samples} {}
 
   /**
@@ -65,7 +67,6 @@ public:
 private:
 
   void loadNormalizedSamples() const {
-    static constexpr double scale = double(1.0) / double(1 << 15);
     os_signpost_id_t signpost = os_signpost_id_generate(log_);
     size_t size = header_.endIndex() - header_.startIndex();
 
@@ -73,14 +74,16 @@ private:
     samples_.reserve(size);
     samples_.clear();
     auto pos = allSamples_ + header_.startIndex();
-    while (size-- > 0) samples_.emplace_back(*pos++ * scale);
+    while (size-- > 0) samples_.emplace_back(*pos++ * normalizationScale);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
   }
 
   mutable std::vector<double> samples_;
   const Entity::SampleHeader& header_;
+
   const int16_t* allSamples_;
-  inline static Logger log_{Logger::Make("Render.Sample", "CanonicalBuffer")};
+
+  inline static Logger log_{Logger::Make("Render.Sample", "NormalizedSampleSource")};
 };
 
 } // namespace SF2::Render::Sample::Source

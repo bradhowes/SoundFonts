@@ -10,68 +10,91 @@
 
 using namespace SF2::IO;
 
-File::File(int fd, size_t fileSize, bool dump)
-: fd_{fd}, size_{fileSize}, sampleDataBegin_{0}, sampleDataEnd_{0}, sampleData_{nullptr}
+File::File(int fd, bool dump)
 {
-  sampleData_ = nullptr;
+  if (load(fd, dump) != LoadResponse::ok) throw Format::error;
+}
 
-  auto riff = Pos(fd, 0, fileSize).makeChunkList();
-  if (riff.tag() != Tags::riff) throw Format::error;
-  if (riff.kind() != Tags::sfbk) throw Format::error;
+File::LoadResponse
+File::load(int fd, bool dump)
+{
+  off_t fileSize = ::lseek(fd, 0, SEEK_END);
+  if (fileSize == off_t(-1)) return LoadResponse::invalidFormat;
 
-  auto p0 = riff.begin();
-  while (p0 < riff.end()) {
-    auto chunkList = p0.makeChunkList();
+  size_ = fileSize;
+  sampleDataBegin_ = 0;
+  sampleDataEnd_ = 0;
+  sampleData_.reset();
 
-    if (dump) {
-      log_.debug() << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString()
-      << std::endl;
-    }
+  auto riff = Pos(fd, 0, size_).makeChunkList();
+  if (riff.tag() != Tags::riff) return LoadResponse::invalidFormat;
+  if (riff.kind() != Tags::sfbk) throw LoadResponse::invalidFormat;
 
-    auto p1 = chunkList.begin();
-    p0 = chunkList.advance();
-    while (p1 < chunkList.end()) {
-      auto chunk = p1.makeChunk();
-      p1 = chunk.advance();
+  try {
+    auto p0 = riff.begin();
+    while (p0 < riff.end()) {
+      auto chunkList = p0.makeChunkList();
+
       if (dump) {
-        log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
+        log_.debug() << "chunkList: tag: " << chunkList.tag().toString() << " kind: " << chunkList.kind().toString()
+        << std::endl;
       }
-      switch (chunk.tag().rawValue()) {
-        case Tags::ifil: soundFontVersion_.load(chunk.begin()); break;
-        case Tags::isng: soundEngine_ = chunk.extract(); break;
-        case Tags::irom: rom_ = chunk.extract(); break;
-        case Tags::iver: fileVersion_.load(chunk.begin()); break;
-        case Tags::inam: embeddedName_ = chunk.extract(); break;
-        case Tags::icrd: embeddedCreationDate_ = chunk.extract(); break;
-        case Tags::ieng: embeddedAuthor_ = chunk.extract(); break;
-        case Tags::iprd: embeddedProduct_ = chunk.extract(); break;
-        case Tags::icop: embeddedCopyright_ = chunk.extract(); break;
-        case Tags::icmt: embeddedComment_ = chunk.extract(); break;
-        case Tags::istf: embeddedTools_ = chunk.extract(); break;
-        case Tags::phdr: presets_.load(chunk); break;
-        case Tags::pbag: presetZones_.load(chunk); break;
-        case Tags::pgen: presetZoneGenerators_.load(chunk); break;
-        case Tags::pmod: presetZoneModulators_.load(chunk); break;
-        case Tags::inst: instruments_.load(chunk); break;
-        case Tags::ibag: instrumentZones_.load(chunk); break;
-        case Tags::igen: instrumentZoneGenerators_.load(chunk); break;
-        case Tags::imod: instrumentZoneModulators_.load(chunk); break;
-        case Tags::shdr: sampleHeaders_.load(chunk); break;
-        case Tags::smpl:
-          sampleDataBegin_ = chunk.begin().offset();
-          sampleDataEnd_ = chunk.end().offset();
-          sampleData_ = chunk.extractSamples();
-          break;
+
+      auto p1 = chunkList.begin();
+      p0 = chunkList.advance();
+      while (p1 < chunkList.end()) {
+        auto chunk = p1.makeChunk();
+        p1 = chunk.advance();
+        if (dump) {
+          log_.debug() << "chunk: tag: " << chunk.tag().toString() << std::endl;
+        }
+        switch (chunk.tag().rawValue()) {
+          case Tags::ifil: soundFontVersion_.load(chunk.begin()); break;
+          case Tags::isng: soundEngine_ = chunk.extract(); break;
+          case Tags::irom: rom_ = chunk.extract(); break;
+          case Tags::iver: fileVersion_.load(chunk.begin()); break;
+          case Tags::inam: embeddedName_ = chunk.extract(); break;
+          case Tags::icrd: embeddedCreationDate_ = chunk.extract(); break;
+          case Tags::ieng: embeddedAuthor_ = chunk.extract(); break;
+          case Tags::iprd: embeddedProduct_ = chunk.extract(); break;
+          case Tags::icop: embeddedCopyright_ = chunk.extract(); break;
+          case Tags::icmt: embeddedComment_ = chunk.extract(); break;
+          case Tags::istf: embeddedTools_ = chunk.extract(); break;
+          case Tags::phdr: presets_.load(chunk); break;
+          case Tags::pbag: presetZones_.load(chunk); break;
+          case Tags::pgen: presetZoneGenerators_.load(chunk); break;
+          case Tags::pmod: presetZoneModulators_.load(chunk); break;
+          case Tags::inst: instruments_.load(chunk); break;
+          case Tags::ibag: instrumentZones_.load(chunk); break;
+          case Tags::igen: instrumentZoneGenerators_.load(chunk); break;
+          case Tags::imod: instrumentZoneModulators_.load(chunk); break;
+          case Tags::shdr: sampleHeaders_.load(chunk); break;
+          case Tags::smpl:
+            sampleDataBegin_ = chunk.begin().offset();
+            sampleDataEnd_ = chunk.end().offset();
+            if (dump) {
+              log_.debug() << "sampleDataBegin: " << sampleDataBegin_ << " sampleDataEnd: " << sampleDataEnd_ << '\n';
+            }
+            sampleData_ = chunk.extractSamples();
+            break;
+        }
       }
     }
+  } catch (...) {
+    return LoadResponse::invalidFormat;
   }
 
   assert(sampleData_ != nullptr);
-  sampleBuffers_.reserve(sampleHeaders_.size());
+  sampleSources_.reserve(sampleHeaders_.size());
   for (size_t index = 0; index < sampleHeaders_.size(); ++index) {
     auto const& header = sampleHeaders_[index];
-    sampleBuffers_.emplace_back(sampleData_.get(), header);
+    if (dump) {
+      header.dump(" sampleHeader", index);
+    }
+    sampleSources_.emplace_back(sampleData_.get(), header);
   }
+
+  return LoadResponse::ok;
 }
 
 void

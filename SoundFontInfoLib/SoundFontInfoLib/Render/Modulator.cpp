@@ -5,7 +5,7 @@
 #include "Entity/Modulator/Modulator.hpp"
 #include "Entity/Modulator/Source.hpp"
 #include "MIDI/Channel.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/State.hpp"
 
 #include "Render/Modulator.hpp"
 
@@ -14,7 +14,7 @@ using namespace SF2::Render;
 
 namespace EntityMod = Entity::Modulator;
 
-Modulator::Modulator(size_t index, const EntityMod::Modulator& configuration, const Voice::State& state) :
+Modulator::Modulator(size_t index, const EntityMod::Modulator& configuration, const State& state) :
 configuration_{configuration},
 index_{index},
 amount_{configuration.amount()},
@@ -27,7 +27,7 @@ amountScale_{SourceValue(configuration.amountSource(), state)}
 }
 
 Modulator::ValueProc
-Modulator::SourceValue(const EntityMod::Source& source, const Voice::State& state)
+Modulator::SourceValue(const EntityMod::Source& source, const State& state)
 {
   using GI = EntityMod::Source::GeneralIndex;
   if (source.isContinuousController()) {

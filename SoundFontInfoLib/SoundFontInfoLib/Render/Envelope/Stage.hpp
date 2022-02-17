@@ -43,22 +43,24 @@ public:
   inline static constexpr double minimumCurvature = 0.000000001;
   inline static constexpr double maximumCurvature = 10.0;
 
+  Stage() {}
+
   /**
    Generate a configuration that will emit a constant value for a fixed or indefinite time.
    */
-  static Stage SetConstant(StageIndex stageIndex, int sampleCount, double value) {
+  static Stage Constant(StageIndex stageIndex, int sampleCount, double value) {
     return Stage(stageIndex, value, 1.0, 0.0, sampleCount);
   }
 
   /**
    Generate a configuration for the delay stage.
    */
-  static Stage ConfigureDelay(int sampleCount) { return SetConstant(StageIndex::delay, sampleCount, 0.0); }
+  static Stage Delay(int sampleCount) { return Constant(StageIndex::delay, sampleCount, 0.0); }
 
   /**
    Generate a configuration for the attack stage.
    */
-  static Stage ConfigureAttack(int sampleCount, double curvature) {
+  static Stage Attack(int sampleCount, double curvature) {
     curvature = clampCurvature(curvature);
     double alpha = calculateCoefficient(sampleCount, curvature);
     return Stage(StageIndex::attack, 0.0, alpha, (1.0 + curvature) * (1.0 - alpha), sampleCount);
@@ -67,12 +69,12 @@ public:
   /**
    Generate a configuration for the delay stage.
    */
-  static Stage ConfigureHold(int sampleCount) { return SetConstant(StageIndex::hold, sampleCount, 1.0); }
+  static Stage Hold(int sampleCount) { return Constant(StageIndex::hold, sampleCount, 1.0); }
 
   /**
    Generate a configuration for the decay stage.
    */
-  static Stage ConfigureDecay(int sampleCount, double curvature, double sustainLevel) {
+  static Stage Decay(int sampleCount, double curvature, double sustainLevel) {
     curvature = clampCurvature(curvature);
     double alpha = calculateCoefficient(sampleCount, curvature);
     return Stage(StageIndex::decay, 1.0, alpha, (sustainLevel - curvature) * (1.0 - alpha), sampleCount);
@@ -81,14 +83,14 @@ public:
   /**
    Generate a configuration for the sustain stage.
    */
-  static Stage ConfigureSustain(double level) {
-    return SetConstant(StageIndex::sustain, std::numeric_limits<uint16_t>::max(), level);
+  static Stage Sustain(double level) {
+    return Constant(StageIndex::sustain, std::numeric_limits<uint16_t>::max(), level);
   }
 
   /**
    Generate a configuration for the release stage.
    */
-  static Stage ConfigureRelease(int sampleCount, double curvature, double sustainLevel) {
+  static Stage Release(int sampleCount, double curvature, double sustainLevel) {
     curvature = clampCurvature(curvature);
     double alpha = calculateCoefficient(sampleCount, curvature);
     return Stage(StageIndex::release, sustainLevel, alpha, (0.0 - curvature) * (1.0 - alpha), sampleCount);
@@ -121,10 +123,11 @@ private:
 
   friend class Generator;
 
-  const double initial_{0.0};
-  const double alpha_{0.0};
-  const double beta_{0.0};
-  const int durationInSamples_{0};
+  double initial_{0.0};
+  double alpha_{0.0};
+  double beta_{0.0};
+  int durationInSamples_{0};
+
   inline static Logger log_{Logger::Make("Render.Envelope", "Stage")};
 };
 

@@ -32,10 +32,11 @@ public:
   }
   
   /// @returns name of the preset
-  char const* name() const { return achPresetName; }
+  char const* cname() const { return achPresetName; }
+  std::string name() const { return achPresetName; }
   
   /// @returns preset number for this patch
-  uint16_t preset() const { return wPreset; }
+  uint16_t program() const { return wPreset; }
   
   /// @returns bank number for the patch
   uint16_t bank() const { return wBank; }

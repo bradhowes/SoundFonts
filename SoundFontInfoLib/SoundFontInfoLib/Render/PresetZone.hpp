@@ -37,7 +37,7 @@ public:
 
    @param state the state to update
    */
-  void refine(Voice::State& state) const { Zone::refine(state); }
+  void refine(State& state) const { Zone::refine(state); }
 
   /// @returns the Instrument configured for this zone
   const Render::Instrument& instrument() const { assert(instrument_ != nullptr); return *instrument_; }

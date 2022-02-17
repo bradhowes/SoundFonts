@@ -6,6 +6,7 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #import "File.hpp"
+#import "NormalizedSampleSource.hpp"
 
 using namespace SF2;
 
@@ -19,9 +20,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 - (void)testParsing1 {
   NSURL* url = [urls objectAtIndex:0];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
   int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = IO::File(fd);
 
   XCTAssertEqual(235, file.presets().size());
   XCTAssertEqual(235, file.presetZones().size());
@@ -39,9 +39,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 - (void)testParsing2 {
   NSURL* url = [urls objectAtIndex:1];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
   int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = IO::File(fd);
 
   XCTAssertEqual(270, file.presets().size());
   XCTAssertEqual(2616, file.presetZones().size());
@@ -59,9 +58,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 - (void)testParsing3 {
   NSURL* url = [urls objectAtIndex:2];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
   int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = IO::File(fd);
 
   XCTAssertEqual(189, file.presets().size());
   XCTAssertEqual(1054, file.presetZones().size());
@@ -79,9 +77,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
 - (void)testParsing4 {
   NSURL* url = [urls objectAtIndex:3];
-  uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
   int fd = ::open(url.path.UTF8String, O_RDONLY);
-  auto file = IO::File(fd, fileSize);
+  auto file = IO::File(fd);
 
   XCTAssertEqual(1, file.presets().size());
   XCTAssertEqual(6, file.presetZones().size());
@@ -95,6 +92,37 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 
   std::cout << url.path.UTF8String << '\n';
   file.patchReleaseTimes(5.0);
+
+  auto samples = file.sampleSource(0);
+  samples.load();
+  XCTAssertEqual(samples.size(), 115458);
+
+  XCTAssertEqualWithAccuracy(samples[0], -0.00103759765625, 0.000001);
+}
+
+- (void)testSamples {
+  NSURL* url = [urls objectAtIndex:3];
+  int fd = ::open(url.path.UTF8String, O_RDONLY);
+  auto file = IO::File(fd, true);
+
+  auto samples = file.sampleSource(0);
+  samples.load();
+
+  double epsilon = 1e-6;
+
+  off_t sampleOffset = 246;
+  XCTAssertEqual(samples.size(), 115458);
+  XCTAssertEqualWithAccuracy(samples[0], -0.00103759765625, epsilon);
+
+  off_t pos = ::lseek(fd, sampleOffset, SEEK_SET);
+  XCTAssertEqual(pos, sampleOffset);
+
+  int16_t rawSamples[4];
+  ::read(fd, &rawSamples, sizeof(rawSamples));
+  XCTAssertEqualWithAccuracy(rawSamples[0] * Render::NormalizedSampleSource::normalizationScale, samples[0], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[1] * Render::NormalizedSampleSource::normalizationScale, samples[1], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[2] * Render::NormalizedSampleSource::normalizationScale, samples[2], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[3] * Render::NormalizedSampleSource::normalizationScale, samples[3], epsilon);
 }
 
 @end

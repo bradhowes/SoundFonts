@@ -14,16 +14,16 @@
 /// The MIDI bank number where the preset resides
 @property (nonatomic, assign) int bank;
 /// The MIDI patch number in the bank where the preset resides
-@property (nonatomic, assign) int preset;
+@property (nonatomic, assign) int program;
 
 /**
  Create a new preset entry
  
  @param name the name of the preset
  @param bank the MIDI bank to use to select the preset
- @param preset the MIDI patch/preset to use to select the preset
+ @param program the MIDI patch/preset to use to select the preset
  */
-- (id) init:(NSString*)name bank:(int)bank preset:(int)preset;
+- (id) init:(NSString*)name bank:(int)bank program:(int)program;
 
 @end
 
@@ -69,22 +69,20 @@
  
  @param url the location of the SF2 file to process (only used for book-keeping)
  @param fd the file descriptor to read from
- @param fileSize the total number of bytes available for reading from the file descriptor
- 
+
  @returns new SoundFontInfo instance
  */
-+ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd;
 
 /**
  Class method that creates a new SoundFontInfo instance by using the robust File class on an open file descriptor.
  
  @param url the location of the SF2 file to process (only used for book-keeping)
  @param fd the file descriptor to read from
- @param fileSize the total number of bytes available for reading from the file descriptor
  
  @returns new SoundFontInfo instance
  */
-+ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize;
++ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd;
 
 /**
  Constructor for SoundFontInfo instance.

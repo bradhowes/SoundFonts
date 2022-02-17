@@ -24,7 +24,7 @@ struct Pos {
    @param pos the current location in the file being processed
    @param end the end of the file being processed
    */
-  Pos(int fd, size_t pos, size_t end) : fd_{fd}, pos_{pos}, end_{end} {}
+  Pos(int fd, off_t pos, off_t end) : fd_{fd}, pos_{pos}, end_{end} {}
 
   /**
    Create a new ChunkList from the current position.
@@ -75,9 +75,9 @@ struct Pos {
    */
   Pos readInto(void* buffer, size_t count) const {
     if (Pos::seek(fd_, off_t(pos_), SEEK_SET) != off_t(pos_)) throw Format::error;
-    auto result = Pos::read(fd_, buffer, count);
+    off_t result = Pos::read(fd_, buffer, count);
     if (result != long(count)) throw Format::error;
-    return advance(size_t(result));
+    return advance(result);
   }
 
   /**
@@ -85,10 +85,10 @@ struct Pos {
 
    @returns file offset
    */
-  constexpr size_t offset() const { return pos_; }
+  constexpr off_t offset() const { return pos_; }
 
   /// @returns number of bytes available to read at this position in the file.
-  constexpr size_t available() const { return end_ - pos_; }
+  constexpr off_t available() const { return end_ - pos_; }
 
   /**
    Calculate new Pos value after advancing `offset` bytes forward.
@@ -96,7 +96,7 @@ struct Pos {
    @param offset the number of bytes to advance
    @returns new Pos instance for the next bytes in the file
    */
-  Pos advance(size_t offset) const { return Pos(fd_, std::min(pos_ + offset, end_), end_); }
+  Pos advance(off_t offset) const { return Pos(fd_, std::min(pos_ + offset, end_), end_); }
 
   /// @returns true if Pos is invalid
   constexpr explicit operator bool() const { return fd_ < 0 || pos_ >= end_; }
@@ -139,8 +139,8 @@ private:
   static ssize_t read(int fd, void* buffer, size_t size) { return (*ReadProc)(fd, buffer, size); }
 
   int fd_;
-  size_t pos_;
-  size_t end_;
+  off_t pos_;
+  off_t end_;
 };
 
 } // end namespace SF2::IO

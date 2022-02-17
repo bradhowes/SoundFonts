@@ -15,7 +15,7 @@
 #include "MIDI/Channel.hpp"
 #include "Render/Modulator.hpp"
 
-namespace SF2::Render::Voice {
+namespace SF2::Render {
 
 class Config;
 
@@ -46,23 +46,15 @@ public:
   };
 
   /**
-   Mock constructor -- only used in unit tests.
-   */
-  State(double sampleRate, const MIDI::Channel& channel, int key, int velocity) :
-  sampleRate_{sampleRate}, channel_{channel}, key_{key}, velocity_{velocity}
-  {
-    setDefaults();
-  }
-
-  /**
    Create new state vector with a given sample rate.
 
    @param sampleRate the sample rate of audio being rendered
    @param channel the MIDI channel that is in control
-   @param config the configuration to use to create voice state
    */
-  State(double sampleRate, const MIDI::Channel& channel, const Config& config);
+  State(double sampleRate, const MIDI::Channel& channel) : sampleRate_{sampleRate}, channel_{channel} {}
 
+  void configure(const Config& config);
+  
   /**
    Set a generator value. Should only be called with a value from an InstrumentZone. It can be set twice, once by a
    global instrument generator setting, and again by a non-global instrument generator setting, the latter one
@@ -252,4 +244,4 @@ private:
   inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };
 
-} // namespace SF2::Render::Voice
+} // namespace SF2::Render

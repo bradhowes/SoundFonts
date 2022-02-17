@@ -11,8 +11,8 @@
 #include "Entity/SampleHeader.hpp"
 #include "Render/Sample/Bounds.hpp"
 #include "Render/Sample/BufferIndex.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/NormalizedSampleSource.hpp"
+#include "Render/State.hpp"
 
 namespace SF2::Render::Sample {
 
@@ -24,30 +24,23 @@ namespace SF2::Render::Sample {
  */
 class Generator {
 public:
+  using State = Render::State;
 
   enum struct Interpolator {
     linear,
     cubic4thOrder
   };
 
-  /**
-   Construct a new sample generator.
+  Generator(State& state, Interpolator kind) : state_{state}, interpolator_{kind} {}
+  void configure();
 
-   @param sampleRate rendering sample rate
-   @param samples source of audio samples
-   @param bounds the range of samples to use for rendering
-   @param kind the kind of interpolation to perform when generating the render samples
-   */
-  Generator(double sampleRate, const CanonicalBuffer& samples, const Bounds& bounds,
-            Interpolator kind = Interpolator::linear) :
-  samples_{samples},
-  bounds_{bounds},
-  interpolator_{kind},
-  sampleRateRatio_{samples.header().sampleRate() / sampleRate},
-  bufferIndex_{bounds}
-  {
-    samples.load();
-  }
+//  bounds_{bounds},
+//  interpolator_{kind},
+//  sampleRateRatio_{samples.header().sampleRate() / sampleRate},
+//  bufferIndex_{bounds}
+//  {
+//    samples.load();
+//  }
 
   /**
    Obtain an interpolated sample value at the given index.
@@ -72,6 +65,7 @@ public:
   }
 
 private:
+  using InterpolatorProc = std::function<double(size_t, double)>;
 
   void calculateIndexIncrement(double pitch) {
 
@@ -79,7 +73,7 @@ private:
     if (pitch == lastPitch_ && !bufferIndex_.finished()) return;
 
     lastPitch_ = pitch;
-    double exponent = (pitch - samples_.header().originalMIDIKey() + samples_.header().pitchCorrection() / 100.0) / 12.0;
+    double exponent = (pitch - samples_->header().originalMIDIKey() + samples_->header().pitchCorrection() / 100.0) / 12.0;
     double frequencyRatio = std::exp2(exponent);
     double increment = sampleRateRatio_ * frequencyRatio;
     bufferIndex_.setIncrement(increment);
@@ -94,7 +88,7 @@ private:
    @returns interpolated sample result
    */
   double linearInterpolate(size_t pos, double partial, bool canLoop) const {
-    auto x0 = samples_[pos++];
+    auto x0 = (*samples_)[pos++];
     auto x1 = sample(pos, canLoop);
     return DSP::Interpolation::linear(partial, x0, x1);
   }
@@ -117,19 +111,20 @@ private:
 
   double sample(size_t pos, bool canLoop) const {
     if (pos == bounds_.endLoopPos() && canLoop) pos = bounds_.startLoopPos();
-    return pos < samples_.size() ? samples_[pos] : 0.0;
+    return pos < samples_->size() ? (*samples_)[pos] : 0.0;
   }
 
   double before(size_t pos, bool canLoop) const {
     if (pos == 0) return 0.0;
     if (pos == bounds_.startLoopPos() && canLoop) pos = bounds_.endLoopPos();
-    return samples_[pos - 1];
+    return (*samples_)[pos - 1];
   }
 
-  const CanonicalBuffer& samples_;
+  State& state_;
   Interpolator interpolator_;
+  const NormalizedSampleSource* samples_{nullptr};
   Bounds bounds_;
-  BufferIndex bufferIndex_;
+  BufferIndex bufferIndex_{bounds_};
   double sampleRateRatio_;
   double lastPitch_{0.0};
 };

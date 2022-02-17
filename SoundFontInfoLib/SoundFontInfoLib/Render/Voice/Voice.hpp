@@ -3,11 +3,12 @@
 #pragma once
 
 #include "Logger.hpp"
+#include "Render/Engine/Tick.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
 #include "Render/Modulator.hpp"
 #include "Render/Sample/Generator.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/State.hpp"
 
 namespace SF2::MIDI { class Channel; }
 
@@ -17,8 +18,6 @@ namespace SF2::MIDI { class Channel; }
  */
 namespace SF2::Render::Voice {
 
-class Config;
-
 /**
  A voice renders audio samples for a given note / pitch.
  */
@@ -26,15 +25,19 @@ class Voice
 {
 public:
   using Index = Entity::Generator::Index;
-  
+
   /**
    Construct a new voice renderer.
 
    @param sampleRate the sample rate to use for generating audio
    @param channel the MIDI state associated with the renderer
-   @param config the zones to apply to build the generator values used for rendering
    */
-  Voice(double sampleRate, const MIDI::Channel& channel, const Config& config);
+  Voice(double sampleRate, const MIDI::Channel& channel, size_t voiceIndex);
+
+  size_t voiceIndex() const { return voiceIndex_; }
+  Engine::Tick startedTick() const { return startedTick_; }
+
+  void configure(const Config& config, Engine::Tick startTick);
 
   /**
    Signal the envelopes that the key is no longer pressed, transitioning to release phase.
@@ -56,7 +59,7 @@ public:
   /**
    Renders the next sample for a voice. Inactive voices always return 0.0.
 
-   Here is the modulation connections, taken from the SoundFont spec v2.
+   Here are the modulation connections, taken from the SoundFont spec v2.
 
             Osc ------ Filter -- Amp -- L+R ----+-------------+-+-> Output
              | pitch     | Fc     | Volume      |            / /
@@ -103,10 +106,11 @@ private:
   Sample::Generator sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
-
-  // TODO: I think these should be shared across all voices
   LFO modulatorLFO_;
   LFO vibratoLFO_;
+
+  size_t voiceIndex_;
+  Engine::Tick startedTick_;
 
   inline static Logger log_{Logger::Make("Render", "Voice")};
 };

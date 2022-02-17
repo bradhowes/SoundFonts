@@ -16,12 +16,12 @@ class SoundFontInfoLibTests: XCTestCase {
     XCTAssertEqual(info.presets.count, 189)
     XCTAssertEqual(info.presets[0].name, "Yamaha Grand Piano")
     XCTAssertEqual(info.presets[0].bank, 0)
-    XCTAssertEqual(info.presets[0].preset, 0)
+    XCTAssertEqual(info.presets[0].program, 0)
 
     let lastPatchIndex = info.presets.count - 1
     XCTAssertEqual(info.presets[lastPatchIndex].name, "Orchestra Kit")
     XCTAssertEqual(info.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(info.presets[lastPatchIndex].preset, 48)
+    XCTAssertEqual(info.presets[lastPatchIndex].program, 48)
   }
 
   func testParsing2() {
@@ -32,12 +32,12 @@ class SoundFontInfoLibTests: XCTestCase {
 
     XCTAssertEqual(info.presets[0].name, "Piano 1")
     XCTAssertEqual(info.presets[0].bank, 0)
-    XCTAssertEqual(info.presets[0].preset, 0)
+    XCTAssertEqual(info.presets[0].program, 0)
 
     let lastPatchIndex = info.presets.count - 1
     XCTAssertEqual(info.presets[lastPatchIndex].name, "SFX")
     XCTAssertEqual(info.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(info.presets[lastPatchIndex].preset, 56)
+    XCTAssertEqual(info.presets[lastPatchIndex].program, 56)
   }
 
   func testParsing3() {
@@ -48,12 +48,12 @@ class SoundFontInfoLibTests: XCTestCase {
 
     XCTAssertEqual(info.presets[0].name, "Stereo Grand")
     XCTAssertEqual(info.presets[0].bank, 0)
-    XCTAssertEqual(info.presets[0].preset, 0)
+    XCTAssertEqual(info.presets[0].program, 0)
 
     let lastPatchIndex = info.presets.count - 1
     XCTAssertEqual(info.presets[lastPatchIndex].name, "SFX")
     XCTAssertEqual(info.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(info.presets[lastPatchIndex].preset, 56)
+    XCTAssertEqual(info.presets[lastPatchIndex].program, 56)
   }
 
   func testParsing4() {
@@ -64,7 +64,7 @@ class SoundFontInfoLibTests: XCTestCase {
 
     XCTAssertEqual(info.presets[0].name, "Nice Piano")
     XCTAssertEqual(info.presets[0].bank, 0)
-    XCTAssertEqual(info.presets[0].preset, 1)
+    XCTAssertEqual(info.presets[0].program, 1)
   }
 
   var newTempFileURL: URL {

@@ -127,7 +127,7 @@ private:
     size_t count = source.size() / itemSize;
     items_.reserve(count);
     Pos pos = source.begin();
-    Pos end = pos.advance(count * itemSize);
+    Pos end = pos.advance(off_t(count * itemSize));
     while (pos < end) items_.emplace_back(pos);
   }
   

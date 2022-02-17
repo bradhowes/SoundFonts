@@ -12,9 +12,11 @@
 using namespace SF2::IO;
 
 Parser::Info
-Parser::parse(int fd, size_t fileSize)
+Parser::parse(int fd)
 {
   Parser::Info info;
+
+  off_t fileSize = ::lseek(fd, 0, SEEK_END);
 
   auto riff = Pos(fd, 0, fileSize).makeChunkList();
   if (riff.tag() != Tags::riff) throw Format::error;
@@ -48,7 +50,7 @@ Parser::parse(int fd, size_t fileSize)
           auto p2 = chunk.begin();
           while (p2 < chunk.end()) {
             Entity::Preset sfp(p2);
-            info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.preset());
+            info.presets.emplace_back(sfp.name(), sfp.bank(), sfp.program());
           }
           info.presets.pop_back();
           break;

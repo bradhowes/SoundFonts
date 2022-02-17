@@ -2,10 +2,13 @@
 
 #pragma once
 
-#include "IO/File.hpp"
+#include "Render/Config.hpp"
 #include "Render/PresetZone.hpp"
-#include "Render/Voice/Config.hpp"
 #include "Render/WithZones.hpp"
+
+namespace SF2::IO {
+class File;
+}
 
 namespace SF2::Render {
 
@@ -19,7 +22,7 @@ namespace SF2::Render {
 class Preset : public WithZones<PresetZone, Entity::Preset> {
 public:
   using PresetZoneCollection = WithZoneCollection;
-  using VoiceConfigCollection = std::vector<Voice::Config>;
+  using ConfigCollection = std::vector<Config>;
 
   /**
    Construct new Preset from SF2 entities
@@ -28,15 +31,16 @@ public:
    @param instruments the collection of instruments that apply to the preset
    @param config the SF2 preset definition
    */
-  Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config) :
-  WithZones<PresetZone, Entity::Preset>(config.zoneCount(), config) {
-    for (const Entity::Bag& bag : file.presetZones().slice(config.firstZoneIndex(), config.zoneCount())) {
-      zones_.add(Entity::Generator::Index::instrument,
-                 file.presetZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
-                 file.presetZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
-                 instruments);
-    }
-  }
+  Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config);
+
+  /// Obtain the preset name.
+  std::string name() const { return configuration_.name(); }
+
+  /// Obtain the preset bank number
+  int bank() const { return configuration_.bank(); }
+
+  /// Obtain the preset program number
+  int program() const { return configuration_.program(); }
 
   /**
    Locate preset/instrument zones for the given key/velocity values. There can be more than one match, often due to
@@ -46,8 +50,8 @@ public:
    @param velocity the MIDI velocity to filter with
    @returns vector of Voice:Config instances containing the zones to use
    */
-  VoiceConfigCollection find(int key, int velocity) const {
-    VoiceConfigCollection zonePairs;
+  ConfigCollection find(int key, int velocity) const {
+    ConfigCollection zonePairs;
 
     // Obtain the preset zones that match the key/velocity combination
     for (const PresetZone& presetZone : zones_.filter(key, velocity)) {

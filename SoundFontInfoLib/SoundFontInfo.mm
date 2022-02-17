@@ -13,7 +13,7 @@ using namespace SF2;
   if (self = [super init]) {
     self.name = [NSString stringWithUTF8String:preset.name.c_str()];
     self.bank = preset.bank;
-    self.preset = preset.preset;
+    self.program = preset.preset;
   }
   
   return self;
@@ -21,19 +21,19 @@ using namespace SF2;
 
 - (id)initForSFPreset:(Entity::Preset const &)preset {
   if (self = [super init]) {
-    self.name = [NSString stringWithUTF8String:preset.name()];
+    self.name = [NSString stringWithUTF8String:preset.cname()];
     self.bank = preset.bank();
-    self.preset = preset.preset();
+    self.program = preset.program();
   }
   
   return self;
 }
 
-- (id)init:(NSString*)name bank:(int)bank preset:(int)preset {
+- (id)init:(NSString*)name bank:(int)bank program:(int)program {
   if (self = [super init]) {
     self.name = name;
     self.bank = bank;
-    self.preset = preset;
+    self.program = program;
   }
   
   return self;
@@ -63,10 +63,9 @@ using namespace SF2;
 + (SoundFontInfo*)loadViaParser:(NSURL*)url {
   try {
     BOOL secured = [url startAccessingSecurityScopedResource];
-    uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
     if (secured) [url stopAccessingSecurityScopedResource];
-    return fd != -1 ? [SoundFontInfo parseViaParser:url fileDescriptor:fd fileSize:fileSize] : nil;
+    return fd != -1 ? [SoundFontInfo parseViaParser:url fileDescriptor:fd] : nil;
   }
   catch (enum IO::Format value) {
     return nil;
@@ -76,20 +75,19 @@ using namespace SF2;
 + (SoundFontInfo*)loadViaFile:(NSURL*)url {
   try {
     BOOL secured = [url startAccessingSecurityScopedResource];
-    uint64_t fileSize = [[[NSFileManager defaultManager] attributesOfItemAtPath:url.path error:nil] fileSize];
     int fd = ::open(url.path.UTF8String, O_RDONLY);
     if (secured) [url stopAccessingSecurityScopedResource];
-    return fd != -1 ? [SoundFontInfo parseViaFile:url fileDescriptor:fd fileSize:fileSize] : nil;
+    return fd != -1 ? [SoundFontInfo parseViaFile:url fileDescriptor:fd] : nil;
   }
   catch (enum IO::Format value) {
     return nil;
   }
 }
 
-+ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
++ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd {
   SoundFontInfo* result = nil;
   try {
-    auto info = IO::File(fd, fileSize);
+    auto info = IO::File(fd);
     ::close(fd);
     fd = -1;
     
@@ -108,8 +106,8 @@ using namespace SF2;
       SoundFontInfoPreset* patch2 = obj2;
       if (patch1.bank < patch2.bank) return NSOrderedAscending;
       if (patch1.bank > patch2.bank) return NSOrderedDescending;
-      if (patch1.preset < patch2.preset) return NSOrderedAscending;
-      if (patch1.preset == patch2.preset) return NSOrderedSame;
+      if (patch1.program < patch2.program) return NSOrderedAscending;
+      if (patch1.program == patch2.program) return NSOrderedSame;
       return NSOrderedDescending;
     }];
     
@@ -127,10 +125,10 @@ using namespace SF2;
   return result;
 }
 
-+ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd fileSize:(uint64_t)fileSize {
++ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd {
   SoundFontInfo* result = nil;
   try {
-    auto info = IO::Parser::parse(fd, fileSize);
+    auto info = IO::Parser::parse(fd);
     ::close(fd);
     fd = -1;
     
@@ -149,8 +147,8 @@ using namespace SF2;
       SoundFontInfoPreset* patch2 = obj2;
       if (patch1.bank < patch2.bank) return NSOrderedAscending;
       if (patch1.bank > patch2.bank) return NSOrderedDescending;
-      if (patch1.preset < patch2.preset) return NSOrderedAscending;
-      if (patch1.preset == patch2.preset) return NSOrderedSame;
+      if (patch1.program < patch2.program) return NSOrderedAscending;
+      if (patch1.program == patch2.program) return NSOrderedSame;
       return NSOrderedDescending;
     }];
     

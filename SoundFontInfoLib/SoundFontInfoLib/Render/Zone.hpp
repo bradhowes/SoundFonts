@@ -12,7 +12,7 @@
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
 #include "Render/Range.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/State.hpp"
 
 namespace SF2::Render {
 
@@ -111,7 +111,7 @@ protected:
 
    @param state the voice state to update
    */
-  void apply(Voice::State& state) const
+  void apply(State& state) const
   {
     // Generator state settings
     std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
@@ -138,7 +138,7 @@ protected:
 
    @param state the voice state to update
    */
-  void refine(Voice::State& state) const
+  void refine(State& state) const
   {
     std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
       if (generator.definition().isAvailableInPreset()) {

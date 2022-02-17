@@ -4,14 +4,17 @@
 
 #include "Render/Envelope/Generator.hpp"
 
-#include "Render/Voice/Config.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/Config.hpp"
+#include "Render/State.hpp"
 
-using namespace SF2::Render::Voice;
+using namespace SF2::Render;
 
-State::State(double sampleRate, const MIDI::Channel& channel, const Config& config) :
-sampleRate_{sampleRate}, channel_{channel}, key_{config.key()}, velocity_{config.velocity()}
+void
+State::configure(const Config& config)
 {
+  key_ = config.key();
+  velocity_ = config.velocity();
+
   // (1) Initialize to default values
   setDefaults();
 

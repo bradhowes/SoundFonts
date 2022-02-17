@@ -10,8 +10,6 @@
 
 namespace SF2::Render {
 
-class VoiceState;
-
 /**
  A specialization of a Zone for an Instrument. Instrument zones have a sample buffer.
  */
@@ -29,7 +27,7 @@ public:
    */
   InstrumentZone(GeneratorCollection&& gens, ModulatorCollection&& mods, const IO::File& file) :
   Zone(std::move(gens), std::move(mods), Entity::Generator::Index::sampleID),
-  sampleBuffer_{isGlobal() ? nullptr : &file.sampleBuffer(resourceLink())}
+  sampleSource_{isGlobal() ? nullptr : &file.sampleSource(resourceLink())}
   {}
 
   /**
@@ -37,13 +35,13 @@ public:
 
    @param state the state to update
    */
-  void apply(Voice::State& state) const { Zone::apply(state); }
+  void apply(State& state) const { Zone::apply(state); }
 
   /// @returns the sample buffer registered to this zone, or nullptr if this is a global zone.
-  const Render::Sample::CanonicalBuffer* sampleBuffer() const { return sampleBuffer_; }
+  const Render::NormalizedSampleSource* sampleSource() const { return sampleSource_; }
 
 private:
-  const Render::Sample::CanonicalBuffer* sampleBuffer_;
+  const Render::NormalizedSampleSource* sampleSource_;
 };
 
 /// The type for the optional global InstrumentZone

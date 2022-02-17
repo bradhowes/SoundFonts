@@ -17,12 +17,12 @@ class SFFileTestsSwift: XCTestCase {
 
     XCTAssertEqual(sfi.presets[0].name, "Yamaha Grand Piano")
     XCTAssertEqual(sfi.presets[0].bank, 0)
-    XCTAssertEqual(sfi.presets[0].preset, 0)
+    XCTAssertEqual(sfi.presets[0].program, 0)
 
     let lastPatchIndex = sfi.presets.count - 1
     XCTAssertEqual(sfi.presets[lastPatchIndex].name, "Orchestra Kit")
     XCTAssertEqual(sfi.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(sfi.presets[lastPatchIndex].preset, 48)
+    XCTAssertEqual(sfi.presets[lastPatchIndex].program, 48)
   }
 
   func testParsing2() {
@@ -33,12 +33,12 @@ class SFFileTestsSwift: XCTestCase {
 
     XCTAssertEqual(sfi.presets[0].name, "Piano 1")
     XCTAssertEqual(sfi.presets[0].bank, 0)
-    XCTAssertEqual(sfi.presets[0].preset, 0)
+    XCTAssertEqual(sfi.presets[0].program, 0)
 
     let lastPatchIndex = sfi.presets.count - 1
     XCTAssertEqual(sfi.presets[lastPatchIndex].name, "SFX")
     XCTAssertEqual(sfi.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(sfi.presets[lastPatchIndex].preset, 56)
+    XCTAssertEqual(sfi.presets[lastPatchIndex].program, 56)
   }
 
   func testParsing3() {
@@ -49,12 +49,12 @@ class SFFileTestsSwift: XCTestCase {
 
     XCTAssertEqual(sfi.presets[0].name, "Stereo Grand")
     XCTAssertEqual(sfi.presets[0].bank, 0)
-    XCTAssertEqual(sfi.presets[0].preset, 0)
+    XCTAssertEqual(sfi.presets[0].program, 0)
 
     let lastPatchIndex = sfi.presets.count - 1
     XCTAssertEqual(sfi.presets[lastPatchIndex].name, "SFX")
     XCTAssertEqual(sfi.presets[lastPatchIndex].bank, 128)
-    XCTAssertEqual(sfi.presets[lastPatchIndex].preset, 56)
+    XCTAssertEqual(sfi.presets[lastPatchIndex].program, 56)
   }
 
   func testParsing4() {
@@ -65,6 +65,6 @@ class SFFileTestsSwift: XCTestCase {
 
     XCTAssertEqual(sfi.presets[0].name, "Nice Piano")
     XCTAssertEqual(sfi.presets[0].bank, 0)
-    XCTAssertEqual(sfi.presets[0].preset, 1)
+    XCTAssertEqual(sfi.presets[0].program, 1)
   }
 }

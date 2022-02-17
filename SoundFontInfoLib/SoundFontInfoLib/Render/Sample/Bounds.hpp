@@ -4,7 +4,7 @@
 
 #include "Entity/Generator/Index.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Voice/State.hpp"
+#include "Render/State.hpp"
 
 /**
  Classes used to generate new samples from SF2 sample data for a given pitch and sample rate.
@@ -29,7 +29,7 @@ public:
    @param header the 'shdr' header to use
    @param state the generator values to use
    */
-  static Bounds make(const Entity::SampleHeader& header, const Voice::State& state) {
+  static Bounds make(const Entity::SampleHeader& header, const State& state) {
     constexpr size_t coarse = 1 << 15;
     auto offset = [&state, coarse](Index a, Index b) -> size_t {
       return size_t(state.unmodulated(a)) + size_t(state.unmodulated(b)) * coarse;
@@ -52,6 +52,8 @@ public:
                   clampPos(upper + endOffset));
   }
 
+  Bounds() {}
+
   Bounds(size_t startPos, size_t startLoopPos, size_t endLoopPos, size_t endPos) :
   startPos_{startPos}, startLoopPos_{startLoopPos}, endLoopPos_{endLoopPos}, endPos_{endPos} {}
 
@@ -65,11 +67,10 @@ public:
   size_t endPos() const { return endPos_; }
 
 private:
-
-  size_t startPos_;
-  size_t startLoopPos_;
-  size_t endLoopPos_;
-  size_t endPos_;
+  size_t startPos_{0};
+  size_t startLoopPos_{0};
+  size_t endLoopPos_{0};
+  size_t endPos_{0};
 };
 
 } // namespace SF2::Render::Sample

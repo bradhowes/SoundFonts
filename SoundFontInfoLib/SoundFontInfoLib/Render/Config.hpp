@@ -4,9 +4,9 @@
 
 #include "Render/PresetZone.hpp"
 #include "Render/InstrumentZone.hpp"
-#include "Render/Sample/CanonicalBuffer.hpp"
+#include "Render/NormalizedSampleSource.hpp"
 
-namespace SF2::Render::Voice {
+namespace SF2::Render {
 
 class State;
 
@@ -52,9 +52,9 @@ public:
   }
 
   /// @returns the buffer of audio samples to use for rendering
-  const Sample::CanonicalBuffer& sampleBuffer() const {
-    assert(instrumentZone_.sampleBuffer() != nullptr);
-    return *(instrumentZone_.sampleBuffer());
+  const NormalizedSampleSource& sampleSource() const {
+    assert(instrumentZone_.sampleSource() != nullptr);
+    return *(instrumentZone_.sampleSource());
   }
 
   /// @returns original MIDI key that triggered the voice
@@ -72,4 +72,4 @@ private:
   int velocity_;
 };
 
-} // namespace SF2::Render::Voice
+} // namespace SF2::Render

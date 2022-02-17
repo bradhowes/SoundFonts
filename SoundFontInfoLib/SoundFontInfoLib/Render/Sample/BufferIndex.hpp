@@ -26,7 +26,7 @@ public:
 
    @param bounds boundaries and optional loop point for the sample being indexed
    */
-  BufferIndex(const Bounds& bounds) : bounds_{bounds}, pos_{bounds.startPos()} {}
+  explicit BufferIndex(const Bounds& bounds) : bounds_{bounds}, pos_{bounds.startPos()} {}
 
   /**
    Set the increment to use when advancing the index. This can change with each sample depending on what modulators
@@ -77,10 +77,11 @@ public:
 
 private:
   const Bounds& bounds_;
-  size_t pos_;
+  size_t pos_{0};
   size_t posIncrement_{0};
   double partial_{0.0};
   double partialIncrement_{0.0};
+
   inline static Logger log_{Logger::Make("Render.Sample", "BufferIndex")};
 };
 
