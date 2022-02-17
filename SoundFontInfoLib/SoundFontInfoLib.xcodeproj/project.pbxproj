@@ -69,6 +69,7 @@
 		BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */; };
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; platformFilter = ios; };
+		BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE67265DAEC7002AD159 /* LFOTests.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -815,6 +816,7 @@
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
 				BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */,
 				BD8E158826D12679000DC781 /* MIDITests.mm in Sources */,
+				BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */,
 				BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */,
 				BD8E158C26D126C2000DC781 /* EnvelopeTests.mm in Sources */,
 				BD8E158526D125FB000DC781 /* TagTests.mm in Sources */,
