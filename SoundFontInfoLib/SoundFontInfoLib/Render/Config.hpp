@@ -34,8 +34,26 @@ public:
   instrumentZone_{instrumentZone}, globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity}
   {}
 
+  /// @returns the buffer of audio samples to use for rendering
+  const NormalizedSampleSource& sampleSource() const {
+    assert(instrumentZone_.sampleSource() != nullptr);
+    return *(instrumentZone_.sampleSource());
+  }
+
+  /// @returns original MIDI key that triggered the voice
+  int key() const { return key_; }
+
+  /// @returns original MIDI velocity that triggered the voice
+  int velocity() const { return velocity_; }
+
+private:
+
+  /// Grant access to `apply`.
+  friend State;
+  
   /**
-   Update a state with the various zone configurations. This is done once during the initialization of a Voice.
+   Update a state with the various zone configurations. This is done once during the initialization of a Voice with a
+   Config instance.
 
    @param state the voice state to update
    */
@@ -51,19 +69,6 @@ public:
     presetZone_.refine(state);
   }
 
-  /// @returns the buffer of audio samples to use for rendering
-  const NormalizedSampleSource& sampleSource() const {
-    assert(instrumentZone_.sampleSource() != nullptr);
-    return *(instrumentZone_.sampleSource());
-  }
-
-  /// @returns original MIDI key that triggered the voice
-  int key() const { return key_; }
-
-  /// @returns original MIDI velocity that triggered the voice
-  int velocity() const { return velocity_; }
-
-private:
   const PresetZone& presetZone_;
   const GlobalPresetZone globalPresetZone_;
   const InstrumentZone& instrumentZone_;

@@ -29,23 +29,23 @@ void
 Voice::configure(const Config& config, Engine::Tick startTick)
 {
   startedTick_ = startTick;
+
   state_.configure(config);
   loopingMode_ = state_.loopingMode();
 
+  gainEnvelope_ = Envelope::Generator::Volume(state_);
+  modulatorEnvelope_ = Envelope::Generator::Modulator(state_);
+
 //  sampleGenerator_{Sample::Generator(sampleRate, config.sampleBuffer(),
 //                                   Sample::Bounds::make(config.sampleBuffer().header(), state_))},
-//gainEnvelope_{Envelope::Generator::Volume(state_)},
-//modulatorEnvelope_{Envelope::Generator::Modulator(state_)},
-//modulatorLFO_{
-//  LFO::Config(sampleRate)
-//  .frequency(state_.modulated(Index::frequencyModulatorLFO))
-//  .delay(state_.modulated(Index::delayModulatorLFO))
-//  .make()
-//},
-//vibratoLFO_{
-//  LFO::Config(sampleRate)
-//  .frequency(state_.modulated(Index::frequencyVibratoLFO))
-//  .delay(state_.modulated(Index::delayVibratoLFO))
-//  .make()
-//}
+
+  modulatorLFO_ = LFO::Config(state_.sampleRate())
+    .frequency(state_.modulated(Index::frequencyModulatorLFO))
+    .delay(state_.modulated(Index::delayModulatorLFO))
+    .make();
+
+  vibratoLFO_ = LFO::Config(state_.sampleRate())
+    .frequency(state_.modulated(Index::frequencyVibratoLFO))
+    .delay(state_.modulated(Index::delayVibratoLFO))
+    .make();
 }

@@ -384,6 +384,7 @@
 				BDB1BE67265DAEC7002AD159 /* LFOTests.mm */,
 				BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */,
 				BDB1BE69265DAEC7002AD159 /* PresetTests.mm */,
+				BDB1BE6C265DAEC7002AD159 /* StateTests.mm */,
 				BDB1BE6A265DAEC7002AD159 /* Voice */,
 				BDB1BE6D265DAEC7002AD159 /* DelayBufferTests.mm */,
 				BDB1BE6E265DAEC7002AD159 /* InstrumentTests.mm */,
@@ -398,7 +399,6 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BE6B265DAEC7002AD159 /* VoiceTests.mm */,
-				BDB1BE6C265DAEC7002AD159 /* StateTests.mm */,
 			);
 			path = Voice;
 			sourceTree = "<group>";
@@ -520,8 +520,6 @@
 				BDB1BF7E265DB1F0002AD159 /* README.md */,
 				BDB1BF7D265DB1F0002AD159 /* BufferFacet.hpp */,
 				BDB1BF86265DB1F0002AD159 /* Config.hpp */,
-				BDB1BF84265DB1F0002AD159 /* State.cpp */,
-				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF7B265DB1F0002AD159 /* DelayBuffer.hpp */,
 				BDADC18727BD75F6008B26BA /* Engine */,
 				BDB1BF7F265DB1F0002AD159 /* Envelope */,
@@ -538,6 +536,8 @@
 				BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */,
 				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
 				BDB1BF89265DB1F0002AD159 /* Sample */,
+				BDB1BF84265DB1F0002AD159 /* State.cpp */,
+				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF82265DB1F0002AD159 /* Voice */,
 				BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */,
 				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,

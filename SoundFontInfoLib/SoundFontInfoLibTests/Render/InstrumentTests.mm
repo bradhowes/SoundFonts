@@ -39,14 +39,14 @@ using namespace SF2::Render;
 
   MIDI::Channel channel;
   State left{44100, channel};
-  found[0].apply(left);
+  left.configure(found[0]);
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(2041, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(9023, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
   XCTAssertEqual(23, left.unmodulated(Entity::Generator::Index::sampleID));
 
   State right{44100.0, channel};
-  found[1].apply(right);
+  right.configure(found[1]);
   XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(2041, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(9023, right.unmodulated(Entity::Generator::Index::initialFilterCutoff));

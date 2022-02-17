@@ -97,8 +97,8 @@ using namespace SF2;
     NSString* embeddedComment = [NSString stringWithUTF8String:info.embeddedComment().c_str()];
     
     NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets().size()];
-    for (auto it = info.presets().begin(); it != info.presets().end(); ++it) {
-      [presets addObject:[[SoundFontInfoPreset alloc] initForSFPreset:*it]];
+    for (const auto& preset : info.presets()) {
+      [presets addObject:[[SoundFontInfoPreset alloc] initForSFPreset:preset]];
     }
     
     [presets sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {

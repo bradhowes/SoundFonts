@@ -69,9 +69,9 @@ State::addModulator(const Entity::Modulator::Modulator& modulator) {
   // Per spec, there must only be one modulator with specific (sfModSrcOper, sfModDestOper, and sfModSrcAmtOper)
   // values. If we find a duplicate, flag it as not being used, but keep it around so that modulator linking is not
   // broken if it is used.
-  for (auto pos = modulators_.begin(); pos < modulators_.end(); ++pos) {
-    if (pos->configuration() == modulator) {
-      pos->flagInvalid();
+  for (auto& mod : modulators_) {
+    if (mod.configuration() == modulator) {
+      mod.flagInvalid();
       break;
     }
   }

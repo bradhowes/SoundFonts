@@ -34,20 +34,6 @@ using namespace SF2::Render;
   [self sample:osc.valueAndIncrement() equals:0.0];
 }
 
-- (void)testSaveRestore {
-  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
-  auto state = osc.saveState();
-  [self sample:osc.value() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
-  osc.restoreState(state);
-  [self sample:osc.value() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
-}
-
 - (void)testDelay {
   auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
   [self sample:osc.valueAndIncrement() equals:0.0];

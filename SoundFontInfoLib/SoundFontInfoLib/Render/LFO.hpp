@@ -111,23 +111,6 @@ public:
   };
 
   /**
-   Save the state of the oscillator.
-
-   @returns current internal state
-   */
-  State saveState() const { return State(counter_, delaySampleCount_); }
-
-  /**
-   Restore the oscillator to a previously-saved state.
-
-   @param state the state to restore to
-   */
-  void restoreState(const State& state) {
-    counter_ = state.counter_;
-    delaySampleCount_ = state.delaySampleCount_;
-  }
-
-  /**
    Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
 
    @returns current waveform value

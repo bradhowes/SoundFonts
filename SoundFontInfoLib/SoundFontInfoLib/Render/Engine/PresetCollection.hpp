@@ -51,14 +51,14 @@ public:
     std::map<BankProgram, size_t> ordering;
     for (const Entity::Preset& configuration : file.presets().slice(0, count)) {
       BankProgram key{configuration.bank(), configuration.program()};
-      auto rc = ordering.insert(std::pair(key, ordering.size()));
-      if (!rc.second) throw std::runtime_error("duplicate bank/program pair");
+      auto [pos, success] = ordering.insert(std::pair(key, ordering.size()));
+      if (!success) throw std::runtime_error("duplicate bank/program pair");
     }
 
     // Build the collection in increasing bank/program order.
     auto presetConfigs = file.presets();
-    for (auto pos = ordering.begin(), end = ordering.end(); pos != end; ++pos) {
-      presets_.emplace_back(file, instruments_, presetConfigs[pos->second]);
+    for (auto [key, value] : ordering) {
+      presets_.emplace_back(file, instruments_, presetConfigs[value]);
     }
   }
 

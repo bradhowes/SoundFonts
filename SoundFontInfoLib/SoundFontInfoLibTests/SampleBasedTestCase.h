@@ -31,9 +31,16 @@ struct PresetTestContext : PresetTestContextBase
 
   SF2::Render::Preset::ConfigCollection find(int key, int velocity) const { return preset_.find(key, velocity); }
 
+  SF2::Render::State makeState(int key, int velocity, double sampleRate = 44100) const {
+    auto found = find(key, velocity);
+    SF2::Render::State state(sampleRate, channel_);
+    state.configure(found[0]);
+    return state;
+  }
+
   SF2::Render::State makeState(const SF2::Render::Config& config, double sampleRate = 44100) const {
     SF2::Render::State state(sampleRate, channel_);
-    config.apply(state);
+    state.configure(config);
     return state;
   }
 

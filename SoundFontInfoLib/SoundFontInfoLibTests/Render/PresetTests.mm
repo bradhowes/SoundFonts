@@ -29,7 +29,7 @@ using namespace SF2::Render;
 
   MIDI::Channel channel;
   State left{44100, channel};
-  found[0].apply(left);
+  left.configure(found[0]);
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
@@ -40,7 +40,7 @@ using namespace SF2::Render;
   XCTAssertEqual(0, left.unmodulated(Entity::Generator::Index::endAddressCoarseOffset));
 
   State right{44100, channel};
-  found[1].apply(right);
+  right.configure(found[1]);
   XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, right.unmodulated(Entity::Generator::Index::initialFilterCutoff));
