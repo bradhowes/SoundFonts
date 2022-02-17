@@ -70,6 +70,8 @@
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; platformFilter = ios; };
 		BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE67265DAEC7002AD159 /* LFOTests.mm */; };
+		BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */; };
+		BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE69265DAEC7002AD159 /* PresetTests.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -802,6 +804,8 @@
 				BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */,
 				BD8E158726D12628000DC781 /* SFFileTestsSwift.swift in Sources */,
 				BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */,
+				BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */,
+				BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */,
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
 				BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */,
 				BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */,

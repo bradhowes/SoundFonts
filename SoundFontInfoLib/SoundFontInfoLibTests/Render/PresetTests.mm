@@ -16,10 +16,10 @@ using namespace SF2::Render;
 @implementation PresetTests
 
 - (void)testRolandPianoPreset {
-  auto file{context.file()};
+  auto file{context3.file()};
   XCTAssertEqual(1, file.presets().size());
 
-  Preset preset{context.preset()};
+  Preset preset{context3.preset()};
   XCTAssertEqual(6, preset.zones().size());
 
   XCTAssertFalse(preset.hasGlobalZone());
@@ -28,7 +28,8 @@ using namespace SF2::Render;
   XCTAssertEqual(2, found.size());
 
   MIDI::Channel channel;
-  Voice::State left{44100, channel, found[0]};
+  State left{44100, channel};
+  found[0].apply(left);
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
@@ -38,7 +39,8 @@ using namespace SF2::Render;
   XCTAssertEqual(0, left.unmodulated(Entity::Generator::Index::endAddressOffset));
   XCTAssertEqual(0, left.unmodulated(Entity::Generator::Index::endAddressCoarseOffset));
 
-  Voice::State right{44100, channel, found[1]};
+  State right{44100, channel};
+  found[1].apply(right);
   XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, right.unmodulated(Entity::Generator::Index::initialFilterCutoff));

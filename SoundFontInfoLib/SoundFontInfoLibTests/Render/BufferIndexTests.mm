@@ -7,10 +7,10 @@
 #import "Entity/SampleHeader.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Sample/BufferIndex.hpp"
-#import "Render/Voice/State.hpp"
+#import "Render/State.hpp"
 
+using namespace SF2::Render;
 using namespace SF2::Render::Sample;
-using namespace SF2::Render::Voice;
 
 @interface SampleIndexTests : SampleBasedTestCase
 @end
@@ -19,7 +19,7 @@ using namespace SF2::Render::Voice;
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;
-static Bounds bounds{Bounds::make(header, State(44100.0, channel, 0, 0))};
+static Bounds bounds{Bounds::make(header, State(44100.0, channel))};
 
 - (void)testConstruction {
   auto index = BufferIndex(bounds);
