@@ -11,7 +11,7 @@
 		BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6C265DAEC7002AD159 /* StateTests.mm */; };
 		BD5CA3D126D2B1790052DA39 /* VoiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6B265DAEC7002AD159 /* VoiceTests.mm */; };
 		BD5CA3D226D2B72B0052DA39 /* NormalizedSampleSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6F265DAEC7002AD159 /* NormalizedSampleSourceTests.mm */; };
-		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; platformFilter = maccatalyst; };
+		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF97265DB1F0002AD159 /* DSPTables.hpp */; };
 		BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE73265DAEC7002AD159 /* DSPTests.mm */; };
 		BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE5E265DAEC6002AD159 /* GeneratorAmountTests.mm */; };
@@ -40,7 +40,6 @@
 		BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19527BD764C008B26BA /* OldestVoiceCacheTests.mm */; };
 		BDADC19827BD764C008B26BA /* EngineTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19627BD764C008B26BA /* EngineTests.mm */; };
 		BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19927BDA66C008B26BA /* PresetCollectionTests.mm */; };
-		BDADC19D27BE732D008B26BA /* ListNodeAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */; };
 		BDADC19E27BE732D008B26BA /* ListNodeAllocator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */; };
 		BDB1BF3B265DB034002AD159 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF39265DB034002AD159 /* main.cpp */; };
 		BDB1BF3C265DB034002AD159 /* DSPTablesGenerator.cc in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BF3A265DB034002AD159 /* DSPTablesGenerator.cc */; };
@@ -72,6 +71,8 @@
 		BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE67265DAEC7002AD159 /* LFOTests.mm */; };
 		BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */; };
 		BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE69265DAEC7002AD159 /* PresetTests.mm */; };
+		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
+		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -124,7 +125,6 @@
 		BDADC19527BD764C008B26BA /* OldestVoiceCacheTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OldestVoiceCacheTests.mm; sourceTree = "<group>"; };
 		BDADC19627BD764C008B26BA /* EngineTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EngineTests.mm; sourceTree = "<group>"; };
 		BDADC19927BDA66C008B26BA /* PresetCollectionTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetCollectionTests.mm; sourceTree = "<group>"; };
-		BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ListNodeAllocator.cpp; sourceTree = "<group>"; };
 		BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ListNodeAllocator.hpp; sourceTree = "<group>"; };
 		BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontInfoLibTests.swift; sourceTree = "<group>"; };
 		BDB1BE59265DAEC6002AD159 /* MIDITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDITests.mm; sourceTree = "<group>"; };
@@ -237,6 +237,8 @@
 		BDB266C725334B3E005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB266C925334B96005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD2D6AA261C8854000557A3 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		BDE99B6727BF91C000C9F1BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewTestTemplate.m; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -253,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */,
 				BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */,
 				BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */,
 				BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */,
@@ -309,7 +312,6 @@
 				BDADC18827BD75F6008B26BA /* Engine.hpp */,
 				BDADC18A27BD75F6008B26BA /* PresetCollection.hpp */,
 				BDADC18B27BD75F6008B26BA /* OldestActiveVoiceCache.hpp */,
-				BDADC19B27BE732D008B26BA /* ListNodeAllocator.cpp */,
 				BDADC19C27BE732D008B26BA /* ListNodeAllocator.hpp */,
 				BDADC18927BD75F6008B26BA /* Tick.hpp */,
 			);
@@ -371,6 +373,7 @@
 				BDB1BE61265DAEC7002AD159 /* ChunkTests.mm */,
 				BDB1BE62265DAEC7002AD159 /* TagTests.mm */,
 				BDB1BE63265DAEC7002AD159 /* SFFileTestsObjC.mm */,
+				BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */,
 				BDB1BE64265DAEC7002AD159 /* SFFileTestsSwift.swift */,
 			);
 			path = IO;
@@ -594,6 +597,7 @@
 		BDECFFED2496BEFB00A52507 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDE99B6727BF91C000C9F1BC /* Accelerate.framework */,
 				BDEB12C6262611BA003CE8EE /* AVFoundation.framework */,
 				BDD2D6AA261C8854000557A3 /* Accelerate.framework */,
 				BDB266C925334B96005BEAD1 /* SF2Files.framework */,
@@ -787,7 +791,6 @@
 				BDB1BFC1265DB1F0002AD159 /* ChunkItems.cpp in Sources */,
 				BDADC19327BD761F008B26BA /* Preset.cpp in Sources */,
 				BDB1BFD9265DB1F1002AD159 /* Voice.cpp in Sources */,
-				BDADC19D27BE732D008B26BA /* ListNodeAllocator.cpp in Sources */,
 				BDB1BFC4265DB1F0002AD159 /* File.cpp in Sources */,
 				BDB1BFA6265DB1F0002AD159 /* Instrument.cpp in Sources */,
 				BDB1BFB8265DB1F0002AD159 /* SampleHeader.cpp in Sources */,
@@ -819,6 +822,7 @@
 				BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */,
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
 				BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */,
+				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.m in Sources */,
 				BD8E158826D12679000DC781 /* MIDITests.mm in Sources */,
 				BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */,
 				BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */,
@@ -846,7 +850,6 @@
 /* Begin PBXTargetDependency section */
 		BD74D17323CDB1D200204ED4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			platformFilter = maccatalyst;
 			target = BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */;
 			targetProxy = BD74D17223CDB1D200204ED4 /* PBXContainerItemProxy */;
 		};

@@ -89,7 +89,6 @@ public:
   /// @returns reference to samples definitions
   const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
-
   /**
    Obtain a SampleBuffer at the given sample header index
 

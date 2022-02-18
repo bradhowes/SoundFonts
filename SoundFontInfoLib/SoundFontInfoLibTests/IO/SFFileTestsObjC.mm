@@ -125,4 +125,18 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqualWithAccuracy(rawSamples[3] * Render::NormalizedSampleSource::normalizationScale, samples[3], epsilon);
 }
 
+- (void)testLoadSamplesPerformance {
+  NSURL* url = [urls objectAtIndex:3];
+  int fd = ::open(url.path.UTF8String, O_RDONLY);
+  auto file = IO::File(fd, true);
+  auto samples = file.sampleSource(0);
+
+  [self measureBlock:^{
+    for (auto count = 0; count < 100; ++count) {
+      samples.load();
+      samples.unload();
+    }
+  }];
+}
+
 @end

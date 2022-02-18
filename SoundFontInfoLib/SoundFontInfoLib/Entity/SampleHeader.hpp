@@ -34,6 +34,7 @@ public:
   explicit SampleHeader(IO::Pos& pos)
   {
     assert(sizeof(*this) == size + 2);
+    // Account for the extra padding by reading twice.
     pos = pos.readInto(&achSampleName, 40);
     pos = pos.readInto(&originalKey, 6);
     IO::trim_property(achSampleName);

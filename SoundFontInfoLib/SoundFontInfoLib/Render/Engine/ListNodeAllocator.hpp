@@ -48,7 +48,9 @@ public:
   {
     assert(num == 1);
 
-    // Allocate our nodes first time asked for one.
+    // Allocate our nodes first time asked for one. A better way would be to grab a block of memory and then carve out
+    // the individual nodes from it. However, since these allocations happen all at once here, there is a good chance
+    // that they are all close together.
     while (maxNodeCount_ > 0) {
       --maxNodeCount_;
       auto node = reinterpret_cast<Node*>(::operator new(sizeof(T)));
@@ -57,10 +59,7 @@ public:
     }
 
     auto ptr = freeList_;
-    if (ptr == nullptr) {
-      return reinterpret_cast<T*>(::operator new(num * sizeof(T)));
-    }
-
+    if (ptr == nullptr) throw std::bad_alloc();
     freeList_ = ptr->next;
     return reinterpret_cast<T*>(ptr);
   }

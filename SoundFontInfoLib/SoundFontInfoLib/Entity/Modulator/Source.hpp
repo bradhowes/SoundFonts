@@ -48,7 +48,7 @@ public:
    */
   explicit Source(uint16_t bits) : bits_{bits} {}
   
-  Source() = default;
+  Source() : bits_{} {}
   
   /// @returns true if the source is valid
   bool isValid() const {

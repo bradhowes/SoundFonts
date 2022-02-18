@@ -55,7 +55,7 @@ private:
   uint16_t wPreset;
   uint16_t wBank;
   uint16_t wPresetBagNdx;
-  // *** PADDIING ***
+  // *** PADDING ***
   uint32_t dwLibrary;
   uint32_t dwGenre;
   uint32_t dwMorphology;

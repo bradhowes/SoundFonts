@@ -77,7 +77,8 @@ public:
   }
   
   /**
-   Obtain a read-only slice of the original collection.
+   Obtain a read-only slice of the original collection. This is used to parcel out a run of values from a collection
+   that pertain to another. These runs are indicated by a starting index into this collection and a count of values.
    
    @param first the index of the first item to include in the collection
    @param count the number of items to have in the slice
