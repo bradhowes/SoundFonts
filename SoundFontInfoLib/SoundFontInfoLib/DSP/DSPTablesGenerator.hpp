@@ -29,7 +29,7 @@ struct Generator {
     for (auto index = 0; index < T::TableSize; ++index) os_ << T::value(index) << ",\n";
     os_ << "};\n\n";
   }
-  
+
   /**
    Generic ValueTransformer table initializer.
    

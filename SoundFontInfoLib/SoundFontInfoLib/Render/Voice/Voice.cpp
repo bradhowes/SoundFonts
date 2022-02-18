@@ -12,7 +12,7 @@ using namespace SF2::MIDI;
 using namespace SF2::Render::Voice;
 using namespace SF2::Entity::Generator;
 
-Voice::Voice(double sampleRate, const Channel& channel, size_t voiceIndex) :
+Voice::Voice(Float sampleRate, const Channel& channel, size_t voiceIndex) :
 state_{sampleRate, channel},
 loopingMode_{State::none},
 sampleGenerator_{state_, Render::Sample::Generator::Interpolator::linear},

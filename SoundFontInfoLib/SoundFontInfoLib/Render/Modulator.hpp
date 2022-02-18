@@ -44,14 +44,14 @@ public:
   Modulator(size_t index, const Entity::Modulator::Modulator& configuration, const State& state);
 
   /// @returns current value of the modulator
-  double value() const {
+  Float value() const {
     assert(isValid());
 
     // If there is no source for the modulator, it always returns 0.0 (no modulation).
     if (sourceValue_ == nullptr) return 0.0;
 
     // Obtain transformed value from source.
-    double value = sourceTransform_.value(sourceValue_());
+    Float value = sourceTransform_.value(sourceValue_());
     if (value == 0.0) return 0.0;
 
     // If there is a source for the scaling factor, apply its transformed value.

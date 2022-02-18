@@ -2,7 +2,7 @@
 
 using namespace SF2::Render::Engine;
 
-Engine::Engine(double sampleRate, size_t maxVoiceCount)
+Engine::Engine(Float sampleRate, size_t maxVoiceCount)
 : sampleRate_{sampleRate}, oldestActive_{maxVoiceCount}
 {
   available_.reserve(maxVoiceCount);
@@ -35,6 +35,7 @@ void
 Engine::startVoice(const Config& config)
 {
   size_t index = selectVoice(config.key());
+  if (index == 0) return;
 }
 
 size_t

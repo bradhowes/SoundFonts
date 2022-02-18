@@ -17,7 +17,7 @@ SF2::IO::File PresetTestContextBase::makeFile(int urlIndex)
 
 @implementation XCTestCase (SampleComparison)
 
-- (void)sample:(double)A equals:(double)B {
+- (void)sample:(Float)A equals:(Float)B {
   XCTAssertEqualWithAccuracy(A, B, PresetTestContextBase::epsilon);
 }
 

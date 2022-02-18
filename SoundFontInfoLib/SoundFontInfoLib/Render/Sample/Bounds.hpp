@@ -65,6 +65,10 @@ public:
   size_t endLoopPos() const { return endLoopPos_; }
   /// @returns the index after the last valid sample to use for rendering
   size_t endPos() const { return endPos_; }
+  /// Number of samples involved in a loop
+  size_t loopSize() const { return endLoopPos() - startLoopPos(); }
+  /// True if there is a loop established for the samples
+  bool hasLoop() const { return startLoopPos() < endLoopPos() && endLoopPos() <= endPos(); }
 
 private:
   size_t startPos_{0};

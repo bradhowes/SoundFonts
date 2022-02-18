@@ -108,7 +108,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   auto samples = file.sampleSource(0);
   samples.load();
 
-  double epsilon = 1e-6;
+  Float epsilon = 1e-6;
 
   off_t sampleOffset = 246;
   XCTAssertEqual(samples.size(), 115458);

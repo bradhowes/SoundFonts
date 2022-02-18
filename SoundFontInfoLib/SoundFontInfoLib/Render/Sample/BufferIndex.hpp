@@ -11,9 +11,9 @@
 namespace SF2::Render::Sample {
 
 /**
- Interpolatable index into a CanonicalBuffer. Maintains two counters, an integral one (size_t) and a partial one (double)
- that indicates how close the index is to a sample index. These two values are then used by SampleBuffer routines
- to fetch the correct samples and interpolate over them.
+ Interpolatable index into a NormalizedSampleSource. Maintains two counters, an integral one (size_t) and a partial
+ one (double) that indicates how close the index is to a sample index. These two values are then used by SampleBuffer
+ routines to fetch the correct samples and interpolate over them.
 
  Updates to the index honor loops in the sample stream if allowed. The index can also signal when it has reached the
  end of the sample stream via its `finished` method.
@@ -34,9 +34,9 @@ public:
 
    @param increment the value to apply when advancing the index
    */
-  void setIncrement(double increment) {
+  void setIncrement(Float increment) {
     posIncrement_ = size_t(increment);
-    partialIncrement_ = increment - double(posIncrement_);
+    partialIncrement_ = increment - Float(posIncrement_);
   }
 
   void stop() { setIncrement(0.0); }
@@ -73,14 +73,14 @@ public:
   size_t pos() const { return pos_; }
 
   /// @returns normalized position between 2 samples. For instance, 0.5 indicates half-way between two samples.
-  double partial() const { return partial_; }
+  Float partial() const { return partial_; }
 
 private:
   const Bounds& bounds_;
   size_t pos_{0};
   size_t posIncrement_{0};
-  double partial_{0.0};
-  double partialIncrement_{0.0};
+  Float partial_{0.0};
+  Float partialIncrement_{0.0};
 
   inline static Logger log_{Logger::Make("Render.Sample", "BufferIndex")};
 };

@@ -11,14 +11,14 @@
 
 struct PresetTestContextBase
 {
-  inline static double epsilon = 1.0e-10;
+  inline static SF2::Float epsilon = 1.0e-8;
   static SF2::IO::File makeFile(int urlIndex);
 };
 
 template <int UrlIndex>
 struct PresetTestContext : PresetTestContextBase
 {
-  PresetTestContext(int presetIndex = 0, double sampleRate = 44100.0) :
+  PresetTestContext(int presetIndex = 0, SF2::Float sampleRate = 44100.0) :
   file_{makeFile(UrlIndex)},
   instruments_{file_},
   preset_{file_, instruments_, file_.presets()[presetIndex]},
@@ -43,7 +43,7 @@ struct PresetTestContext : PresetTestContextBase
 
   SF2::MIDI::Channel& channel() { return channel_; }
 
-  static void SamplesEqual(double a, double b) {
+  static void SamplesEqual(SF2::Float a, SF2::Float b) {
     XCTAssertEqualWithAccuracy(a, b, epsilon);
   }
 
@@ -52,7 +52,7 @@ private:
   SF2::Render::InstrumentCollection instruments_;
   SF2::Render::Preset preset_;
   SF2::MIDI::Channel channel_;
-  double sampleRate_;
+  SF2::Float sampleRate_;
 };
 
 struct SampleBasedContexts {
@@ -64,7 +64,7 @@ struct SampleBasedContexts {
 
 @interface XCTestCase (SampleComparison)
 
-- (void)sample:(double)A equals:(double)B;
+- (void)sample:(SF2::Float)A equals:(SF2::Float)B;
 
 @end
 

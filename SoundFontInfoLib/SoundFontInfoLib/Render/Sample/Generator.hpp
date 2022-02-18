@@ -32,6 +32,7 @@ public:
   };
 
   Generator(State& state, Interpolator kind) : state_{state}, interpolator_{kind} {}
+
   void configure();
 
 //  bounds_{bounds},
@@ -50,7 +51,7 @@ public:
    @returns new sample value
    */
   
-  double generate(double pitch, bool canLoop) {
+  Float generate(Float pitch, bool canLoop) {
     auto pos = bufferIndex_.pos();
     if (pos >= bounds_.endPos()) return 0.0;
     auto partial = bufferIndex_.partial();
@@ -65,17 +66,17 @@ public:
   }
 
 private:
-  using InterpolatorProc = std::function<double(size_t, double)>;
+  using InterpolatorProc = std::function<Float(size_t, Float)>;
 
-  void calculateIndexIncrement(double pitch) {
+  void calculateIndexIncrement(Float pitch) {
 
     // Don't keep calculating buffer increments if nothing has changed.
     if (pitch == lastPitch_ && !bufferIndex_.finished()) return;
 
     lastPitch_ = pitch;
-    double exponent = (pitch - samples_->header().originalMIDIKey() + samples_->header().pitchCorrection() / 100.0) / 12.0;
-    double frequencyRatio = std::exp2(exponent);
-    double increment = sampleRateRatio_ * frequencyRatio;
+    Float exponent = (pitch - samples_->header().originalMIDIKey() + samples_->header().pitchCorrection() / 100.0) / 12.0;
+    Float frequencyRatio = std::exp2(exponent);
+    Float increment = sampleRateRatio_ * frequencyRatio;
     bufferIndex_.setIncrement(increment);
   }
 
@@ -87,7 +88,7 @@ private:
    @param canLoop true if wrapping around in loop is allowed
    @returns interpolated sample result
    */
-  double linearInterpolate(size_t pos, double partial, bool canLoop) const {
+  Float linearInterpolate(size_t pos, Float partial, bool canLoop) const {
     auto x0 = (*samples_)[pos++];
     auto x1 = sample(pos, canLoop);
     return DSP::Interpolation::linear(partial, x0, x1);
@@ -101,7 +102,7 @@ private:
    @param canLoop true if wrapping around in loop is allowed
    @returns interpolated sample result
    */
-  double cubic4thOrderInterpolate(size_t pos, double partial, bool canLoop) const {
+  Float cubic4thOrderInterpolate(size_t pos, Float partial, bool canLoop) const {
     auto x0 = before(pos, canLoop);
     auto x1 = sample(pos++, canLoop);
     auto x2 = sample(pos++, canLoop);
@@ -109,12 +110,12 @@ private:
     return DSP::Interpolation::cubic4thOrder(partial, x0, x1, x2, x3);
   }
 
-  double sample(size_t pos, bool canLoop) const {
+  Float sample(size_t pos, bool canLoop) const {
     if (pos == bounds_.endLoopPos() && canLoop) pos = bounds_.startLoopPos();
     return pos < samples_->size() ? (*samples_)[pos] : 0.0;
   }
 
-  double before(size_t pos, bool canLoop) const {
+  Float before(size_t pos, bool canLoop) const {
     if (pos == 0) return 0.0;
     if (pos == bounds_.startLoopPos() && canLoop) pos = bounds_.endLoopPos();
     return (*samples_)[pos - 1];
@@ -125,8 +126,8 @@ private:
   const NormalizedSampleSource* samples_{nullptr};
   Bounds bounds_;
   BufferIndex bufferIndex_{bounds_};
-  double sampleRateRatio_;
-  double lastPitch_{0.0};
+  Float sampleRateRatio_;
+  Float lastPitch_{0.0};
 };
 
 } // namespace SF2::Render::Sample

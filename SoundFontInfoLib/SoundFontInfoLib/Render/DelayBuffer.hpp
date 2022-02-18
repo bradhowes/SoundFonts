@@ -20,7 +20,7 @@ public:
 
    @param sizeInSamples number of samples to hold in the buffer
    */
-  DelayBuffer(double sizeInSamples)
+  DelayBuffer(Float sizeInSamples)
   : wrapMask_{smallestPowerOf2For(sizeInSamples) - 1}, buffer_(wrapMask_ + 1, 0.0), writePos_{0}
   {
     clear();
@@ -36,7 +36,7 @@ public:
 
    @param sizeInSamples new number of samples to hold
    */
-  void setSizeInSamples(double sizeInSamples) {
+  void setSizeInSamples(Float sizeInSamples) {
     wrapMask_ = smallestPowerOf2For(sizeInSamples) - 1;
     buffer_.resize(wrapMask_ + 1);
     writePos_ = 0;
@@ -74,7 +74,7 @@ public:
    @param delay the offset from the most recently written sample
    @returns the value from the buffer
    */
-  Float read(double delay) const {
+  Float read(Float delay) const {
     auto offset = int(delay);
     Float y1 = readFromOffset(offset);
     Float y2 = readFromOffset(offset + 1);
@@ -85,7 +85,7 @@ public:
 
 private:
 
-  static size_t smallestPowerOf2For(double value) {
+  static size_t smallestPowerOf2For(Float value) {
     return size_t(std::exp2(std::ceil(std::log2(std::fmaxf(value, 1.0)))));
   }
 

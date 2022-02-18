@@ -34,17 +34,17 @@ static int16_t values[8] = {10000, -20000, 30000, 20000, 10000, -10000, -20000, 
   XCTAssertEqual(source[1], values[1] * NormalizedSampleSource::normalizationScale);
 }
 
-//- (void)testLinearInterpolation {
-//  State state{100, channel};
-//  NormalizedSampleSource source{values, header};
-//  source.load();
-//
-//  // XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
-//#if 0
-//  XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), 0.0000001);
-//  XCTAssertEqualWithAccuracy(0.732421875, gen.generate(0.0, true), 0.0000001);
-//  XCTAssertEqualWithAccuracy(0.335693359375, gen.generate(0.0, true), 0.0000001);
-//#endif
+- (void)testLinearInterpolation {
+  State state{100, channel};
+  NormalizedSampleSource source{values, header};
+  source.load();
+
+  // XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
+#if 0
+  XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.732421875, gen.generate(0.0, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(0.335693359375, gen.generate(0.0, true), 0.0000001);
+#endif
 //}
 //
 //- (void)testCubicInterpolation {
@@ -58,7 +58,7 @@ static int16_t values[8] = {10000, -20000, 30000, 20000, 10000, -10000, -20000, 
 //  XCTAssertEqualWithAccuracy(0.761876096931, gen.generate(0.0, false), 0.0000001);
 //  XCTAssertEqualWithAccuracy(0.348288029812, gen.generate(0.0, false), 0.0000001);
 //#endif
-//}
+}
 
 @end
 

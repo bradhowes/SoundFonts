@@ -24,7 +24,7 @@ public:
   using Config = SF2::Render::Config;
   using Voice = SF2::Render::Voice::Voice;
 
-  Engine(double sampleRate, size_t maxVoiceCount);
+  Engine(Float sampleRate, size_t maxVoiceCount);
 
   void load(const IO::File& file);
 
@@ -50,7 +50,7 @@ private:
 
   size_t selectVoice(int key);
 
-  double sampleRate_;
+  Float sampleRate_;
   Tick tick_{0};
 
   MIDI::Channel channel_{};

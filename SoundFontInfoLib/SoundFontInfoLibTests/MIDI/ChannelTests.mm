@@ -9,7 +9,7 @@
 using namespace SF2::MIDI;
 
 @interface ChannelTests : XCTestCase
-@property (nonatomic, assign) double epsilon;
+@property (nonatomic, assign) SF2::Float epsilon;
 @end
 
 @implementation ChannelTests

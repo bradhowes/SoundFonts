@@ -10,7 +10,7 @@ using namespace SF2::Entity::Generator;
 void
 Definition::dump(const Amount& amount) const
 {
-  double value = convertedValueOf(amount);
+  Float value = convertedValueOf(amount);
   switch (valueKind_) {
     case ValueKind::unsignedShort: std::cout << value; break;
     case ValueKind::offset: std::cout << value << " bytes"; break;

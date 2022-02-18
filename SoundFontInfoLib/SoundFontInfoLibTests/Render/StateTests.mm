@@ -61,7 +61,7 @@ using namespace SF2::Entity::Generator;
 }
 
 - (void)testEnvelopeSustainLevel {
-  double epsilon = 0.000001;
+  Float epsilon = 0.000001;
   State state{contexts.context3.makeState(64, 32)};
   state.setPrincipleValue(Index::sustainVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(1.0, state.sustainLevelVolumeEnvelope(), epsilon);

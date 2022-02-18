@@ -12,6 +12,7 @@
 #include "Logger.hpp"
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
+#include "Render/Sample/Bounds.hpp"
 
 namespace SF2::Render {
 
@@ -23,7 +24,7 @@ namespace SF2::Render {
 class NormalizedSampleSource {
 public:
 
-  static constexpr double normalizationScale = double(1.0) / double(1 << 15);
+  static constexpr Float normalizationScale = Float(1.0) / Float(1 << 15);
 
   /**
    Construct a new normalized buffer of samples.
@@ -57,7 +58,7 @@ public:
    @param index the index to use
    @returns sample at the index
    */
-  double operator[](size_t index) const { return samples_.at(index); }
+  Float operator[](size_t index) const { return samples_.at(index); }
 #else
   /**
    Obtain the sample at the given index
@@ -65,11 +66,24 @@ public:
    @param index the index to use
    @returns sample at the index
    */
-  double operator[](size_t index) const { return samples_[index]; }
+  Float operator[](size_t index) const { return samples_[index]; }
 #endif
 
   /// @returns the sample header ('shdr') of the sample stream being rendered
   const Entity::SampleHeader& header() const { return header_; }
+
+  /**
+   Obtain the max magnitude seen in the samples of the loop specified by the given bounds.
+
+   @param bounds the location of the loop to interrogate
+   */
+  Float maxMagnitudeOfLoop(const Sample::Bounds& bounds) const {
+    Float maxMagnitude{0.0};
+    if (bounds.hasLoop()) {
+      vDSP_maxmgvD(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
+    }
+    return maxMagnitude;
+  }
 
 private:
 
@@ -82,13 +96,11 @@ private:
 
     os_signpost_interval_begin(log_, signpost, "loadNormalizedSamples", "begin - size: %ld", size);
     auto pos = allSamples_ + header_.startIndex();
-    double scale = (1 << 15);
-    vDSP_Stride stride{1};
-    vDSP_vflt16D(pos, stride, samples_.data(), stride, size);
-    vDSP_vsdivD(samples_.data(), stride, &scale, samples_.data(), stride, size);
+    Float scale = (1 << 15);
+    vDSP_vflt16D(pos, 1, samples_.data(), 1, size);
+    vDSP_vsdivD(samples_.data(), 1, &scale, samples_.data(), 1, size);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
-    // while (size-- > 0) samples_.emplace_back(*pos++ * normalizationScale);
     loaded_ = true;
   }
 
@@ -108,7 +120,7 @@ private:
     loaded_ = true;
   }
 
-  mutable std::vector<double> samples_;
+  mutable std::vector<Float> samples_;
   const Entity::SampleHeader& header_;
 
   const int16_t* allSamples_;

@@ -28,6 +28,9 @@ inline constexpr Float CentibelsPerDecade = 200.0;
 inline constexpr Float CentsToFrequencyMin = -16000;
 inline constexpr Float CentsToFrequencyMax = 4500;
 
+/// Attenuated samples at or below this value will be inaudible.
+inline constexpr Float NoiseFloor = 3.0E-5;
+
 // 440 * pow(2.0, (N - 69) / 12)
 inline constexpr Float LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
 
@@ -59,8 +62,8 @@ inline Float centsToPower2(Float value) { return std::exp2(Float(value) / CentsP
  @returns frequency in Hz
  */
 inline Float absoluteCentsToFrequency(Float value) {
-  return ReferenceNoteFrequency * centsToPower2(std::clamp(value, CentsToFrequencyMin, CentsToFrequencyMax) -
-                                                ReferenceNoteSemi);
+  return ReferenceNoteFrequency *
+  centsToPower2(std::clamp(value, CentsToFrequencyMin, CentsToFrequencyMax) - ReferenceNoteSemi);
 }
 
 /**

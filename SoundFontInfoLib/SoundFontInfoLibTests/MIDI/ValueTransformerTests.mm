@@ -10,7 +10,7 @@ using VT = SF2::MIDI::ValueTransformer;
 using ES = SF2::Entity::Modulator::Source;
 
 @interface ValueTransformerTests : XCTestCase
-@property (nonatomic, assign) double epsilon;
+@property (nonatomic, assign) SF2::Float epsilon;
 @end
 
 @implementation ValueTransformerTests

@@ -83,7 +83,7 @@ public:
   int pitchCorrection() const { return correction; }
   
   void dump(const std::string& indent, size_t index) const;
-  
+
 private:
   std::string sampleTypeDescription() const;
   

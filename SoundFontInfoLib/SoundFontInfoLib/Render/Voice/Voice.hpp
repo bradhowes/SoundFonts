@@ -32,11 +32,17 @@ public:
    @param sampleRate the sample rate to use for generating audio
    @param channel the MIDI state associated with the renderer
    */
-  Voice(double sampleRate, const MIDI::Channel& channel, size_t voiceIndex);
+  Voice(Float sampleRate, const MIDI::Channel& channel, size_t voiceIndex);
 
   size_t voiceIndex() const { return voiceIndex_; }
   Engine::Tick startedTick() const { return startedTick_; }
 
+  /**
+   Configure the voice for rendering.
+
+   @param config the voice configuration to apply
+   @param startTick the counter when the voice started
+   */
   void configure(const Config& config, Engine::Tick startTick);
 
   /**
@@ -74,7 +80,7 @@ public:
 
    @returns next sample
    */
-  double render() {
+  Float render() {
     if (!isActive()) return 0.0;
 
     // auto scaleTuning = state_.modulated(Index::scaleTuning);

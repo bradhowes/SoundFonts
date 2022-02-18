@@ -3,14 +3,16 @@
 #import <XCTest/XCTest.h>
 #import <cmath>
 
+#include "Types.hpp"
 #include "DSP/DSP.hpp"
 #include "FluidSynthTruths.hpp"
 
+using namespace SF2;
 using namespace SF2::DSP;
 using namespace SF2::DSP::Tables;
 
 @interface DSPTests : XCTestCase
-@property (nonatomic, assign) double epsilon;
+@property (nonatomic, assign) SF2::Float epsilon;
 @end
 
 @implementation DSPTests
@@ -61,7 +63,7 @@ using namespace SF2::DSP::Tables;
 }
 
 - (void)testPanLookup {
-  double left, right;
+  SF2::Float left, right;
   
   SF2::DSP::panLookup(-501, left, right);
   XCTAssertEqualWithAccuracy(1.0, left, self.epsilon);
@@ -107,8 +109,8 @@ using namespace SF2::DSP::Tables;
 
 - (void)testSin {
   for (int degrees = -720; degrees <= 720; degrees += 10) {
-    double radians = degrees * PI / 180.0;
-    double value = sineLookup(radians);
+    Float radians = degrees * PI / 180.0;
+    Float value = sineLookup(radians);
     // std::cout << degrees << " " << value << std::endl;
     XCTAssertEqualWithAccuracy(::std::sin(radians), value, self.epsilon);
   }
@@ -181,7 +183,7 @@ using namespace SF2::DSP::Tables;
 }
 
 - (void)testInterpolationCubic4thOrderInterpolate {
-  double epsilon = 0.0000001;
+  Float epsilon = 0.0000001;
   
   auto v = SF2::DSP::Interpolation::cubic4thOrder(0.0, 1, 2, 3, 4);
   XCTAssertEqualWithAccuracy(2.0, v, epsilon);
@@ -194,7 +196,7 @@ using namespace SF2::DSP::Tables;
 }
 
 - (void)testInterpolationLinearInterpolate {
-  double epsilon = 0.0000001;
+  Float epsilon = 0.0000001;
   
   auto v = SF2::DSP::Interpolation::linear(0.0, 1, 2);
   XCTAssertEqualWithAccuracy(1.0, v, epsilon);

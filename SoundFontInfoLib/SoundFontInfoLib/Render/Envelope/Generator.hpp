@@ -45,12 +45,12 @@ public:
   using Index = Entity::Generator::Index;
   using State = Render::State;
 
-  inline static constexpr double defaultCurvature = 0.01;
+  inline static constexpr Float defaultCurvature = 0.01;
 
   Generator() {}
 
-  Generator(double sampleRate, double delay, double attack, double hold, double decay, double sustain,
-            double release, bool noteOn = false) : stages_{
+  Generator(Float sampleRate, Float delay, Float attack, Float hold, Float decay, Float sustain, Float release,
+            bool noteOn = false) : stages_{
     Stage::Delay(samplesFor(sampleRate, delay)),
     Stage::Attack(samplesFor(sampleRate, attack), defaultCurvature),
     Stage::Hold(samplesFor(sampleRate, hold)),
@@ -117,14 +117,14 @@ public:
   bool isGated() const { return isActive() && stageIndex_ != StageIndex::release; }
 
   /// @returns the current envelope value.
-  double value() const { return value_; }
+  Float value() const { return value_; }
 
   /**
    Calculate the next envelope value. This must be called on every sample for proper timing of the stages.
 
    @returns the new envelope value.
    */
-  double process() {
+  Float process() {
     switch (stageIndex_) {
       case StageIndex::delay: checkIfEndStage(StageIndex::attack); break;
       case StageIndex::attack: updateValue(); checkIfEndStage(StageIndex::hold); break;
@@ -139,9 +139,9 @@ public:
 
 private:
 
-  static int samplesFor(double sampleRate, double duration) { return int(round(sampleRate * duration)); }
+  static int samplesFor(Float sampleRate, Float duration) { return int(round(sampleRate * duration)); }
 
-  void updateAndCompare(double floor, StageIndex next) {
+  void updateAndCompare(Float floor, StageIndex next) {
     updateValue();
     if (value_ < floor)
       enterStage(next);
@@ -153,7 +153,7 @@ private:
 
   const Stage& stage(StageIndex stageIndex) const { return stages_[static_cast<size_t>(stageIndex)]; }
 
-  double sustainLevel() const { return stage(StageIndex::sustain).initial_; }
+  Float sustainLevel() const { return stage(StageIndex::sustain).initial_; }
 
   void updateValue() { value_ = active().next(value_); }
 
@@ -210,7 +210,8 @@ private:
   Stages stages_{};
   StageIndex stageIndex_{StageIndex::idle};
   int counter_{0};
-  double value_{0.0};
+  Float value_{0.0};
+
   inline static Logger log_{Logger::Make("Render.Envelope", "Generator")};
 };
 

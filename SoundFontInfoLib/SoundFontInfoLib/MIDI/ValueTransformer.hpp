@@ -8,10 +8,10 @@
 #include <array>
 #include <iosfwd>
 
+#include "Types.hpp"
 #include "Entity/Modulator/Source.hpp"
 
 namespace SF2::DSP { namespace Tables { struct Generator; } }
-
 namespace SF2::MIDI {
 
 /**
@@ -23,12 +23,13 @@ namespace SF2::MIDI {
  */
 class ValueTransformer {
 public:
+  using Float = SF2::Float;
   inline constexpr static int Min = 0;
   inline constexpr static int Max = 127;
 
   /// Since we have only 128 values to handle, use lookup tables for quick conversion
   inline constexpr static size_t TableSize = Max + 1;
-  using TransformArrayType = std::array<double, TableSize>;
+  using TransformArrayType = std::array<Float, TableSize>;
 
   /**
    Kind specifies the curvature of the MIDI value transformation function.
@@ -81,7 +82,7 @@ public:
    @param controllerValue value to convert between 0 and 127
    @returns transformed value
    */
-  double value(int controllerValue) const { return active_[size_t(std::clamp<int>(controllerValue, 0, Max))]; }
+  Float value(int controllerValue) const { return active_[size_t(std::clamp<int>(controllerValue, 0, Max))]; }
 
 private:
 
@@ -109,7 +110,7 @@ private:
    @param index the table index to generate the value for
    @returns transform value
    */
-  static double positiveLinear(size_t index) { return double(index) / TableSize; }
+  static Float positiveLinear(size_t index) { return Float(index) / TableSize; }
 
   /**
    Generator function for the negative linear curve
@@ -117,26 +118,26 @@ private:
    @param index the table index to generate the value for
    @returns transform value
    */
-  static double negativeLinear(size_t index) { return 1.0 - positiveLinear(index); }
+  static Float negativeLinear(size_t index) { return 1.0 - positiveLinear(index); }
 
-  static double positiveConcave(size_t index) {
-    return index == (TableSize - 1) ? 1.0 : -40.0 / 96.0 * std::log10((127.0 - double(index)) / 127.0);
+  static Float positiveConcave(size_t index) {
+    return index == (TableSize - 1) ? 1.0 : -40.0 / 96.0 * std::log10((127.0 - Float(index)) / 127.0);
   }
-  static double negativeConcave(size_t index) {
-    return index == 0 ? 1.0 : -40.0 / 96.0 * std::log10(double(index) / 127.0);
-  }
-
-  static double positiveConvex(size_t index) {
-    return index == 0 ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(double(index) / 127.0);
+  static Float negativeConcave(size_t index) {
+    return index == 0 ? 1.0 : -40.0 / 96.0 * std::log10(Float(index) / 127.0);
   }
 
-  static double negativeConvex(size_t index) {
-    return index == (TableSize - 1) ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(double(127.0 - index) / 127.0);
+  static Float positiveConvex(size_t index) {
+    return index == 0 ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(Float(index) / 127.0);
   }
 
-  static double positiveSwitched(size_t index) { return index < TableSize / 2 ? 0.0 : 1.0; }
+  static Float negativeConvex(size_t index) {
+    return index == (TableSize - 1) ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(Float(127.0 - index) / 127.0);
+  }
 
-  static double negativeSwitched(size_t index) { return index < TableSize / 2 ? 1.0 : 0.0; }
+  static Float positiveSwitched(size_t index) { return index < TableSize / 2 ? 0.0 : 1.0; }
+
+  static Float negativeSwitched(size_t index) { return index < TableSize / 2 ? 1.0 : 0.0; }
 
   static TransformArrayType const positiveLinear_;
   static TransformArrayType const negativeLinear_;

@@ -79,7 +79,7 @@ public:
    @param amount the container holding the value to extract
    @returns the converted value
    */
-  double convertedValueOf(const Amount& amount) const {
+  Float convertedValueOf(const Amount& amount) const {
     switch (valueKind_) {
       case ValueKind::coarseOffset: return valueOf(amount) * 32768;
       case ValueKind::signedCents: return valueOf(amount) / 1200.0;
