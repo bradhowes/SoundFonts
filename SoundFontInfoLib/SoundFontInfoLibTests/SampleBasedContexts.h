@@ -11,37 +11,34 @@
 
 struct PresetTestContextBase
 {
-  inline static double epsilon = 0.0001;
+  inline static double epsilon = 1.0e-10;
   static SF2::IO::File makeFile(int urlIndex);
 };
 
 template <int UrlIndex>
 struct PresetTestContext : PresetTestContextBase
 {
-  PresetTestContext() :
+  PresetTestContext(int presetIndex = 0, double sampleRate = 44100.0) :
   file_{makeFile(UrlIndex)},
   instruments_{file_},
-  preset_{file_, instruments_, file_.presets()[0]},
-  channel_{}
+  preset_{file_, instruments_, file_.presets()[presetIndex]},
+  channel_{},
+  sampleRate_{sampleRate}
   {}
 
   const SF2::IO::File& file() const { return file_; }
 
   const SF2::Render::Preset& preset() const { return preset_; }
 
-  SF2::Render::Preset::ConfigCollection find(int key, int velocity) const { return preset_.find(key, velocity); }
-
-  SF2::Render::State makeState(int key, int velocity, double sampleRate = 44100) const {
-    auto found = find(key, velocity);
-    SF2::Render::State state(sampleRate, channel_);
-    state.configure(found[0]);
+  SF2::Render::State makeState(const SF2::Render::Config& config) const {
+    SF2::Render::State state(sampleRate_, channel_);
+    state.configure(config);
     return state;
   }
 
-  SF2::Render::State makeState(const SF2::Render::Config& config, double sampleRate = 44100) const {
-    SF2::Render::State state(sampleRate, channel_);
-    state.configure(config);
-    return state;
+  SF2::Render::State makeState(int key, int velocity) const {
+    auto found = preset_.find(key, velocity);
+    return makeState(found[0]);
   }
 
   SF2::MIDI::Channel& channel() { return channel_; }
@@ -55,16 +52,19 @@ private:
   SF2::Render::InstrumentCollection instruments_;
   SF2::Render::Preset preset_;
   SF2::MIDI::Channel channel_;
+  double sampleRate_;
 };
 
-@interface SampleBasedTestCase : XCTestCase {
-  PresetTestContextBase context;
+struct SampleBasedContexts {
   PresetTestContext<0> context0;
   PresetTestContext<1> context1;
   PresetTestContext<2> context2;
   PresetTestContext<3> context3;
-}
+};
+
+@interface XCTestCase (SampleComparison)
 
 - (void)sample:(double)A equals:(double)B;
 
 @end
+

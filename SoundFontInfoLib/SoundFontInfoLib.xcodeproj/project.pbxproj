@@ -28,7 +28,6 @@
 		BD8E158F26D1272D000DC781 /* DelayBufferTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6D265DAEC7002AD159 /* DelayBufferTests.mm */; };
 		BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE6E265DAEC7002AD159 /* InstrumentTests.mm */; };
 		BD8E159126D12769000DC781 /* RangeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE70265DAEC7002AD159 /* RangeTests.mm */; };
-		BD8E159326D12828000DC781 /* SampleBasedTestCase.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */; };
 		BD8E159426D12A07000DC781 /* ModulatorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE71265DAEC7002AD159 /* ModulatorTests.mm */; };
 		BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */; };
 		BDADC18D27BD75F6008B26BA /* Engine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDADC18827BD75F6008B26BA /* Engine.hpp */; };
@@ -72,7 +71,8 @@
 		BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */; };
 		BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE69265DAEC7002AD159 /* PresetTests.mm */; };
 		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
-		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */; };
+		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
+		BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -107,8 +107,8 @@
 
 /* Begin PBXFileReference section */
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		BD2FC8C726CFD8E5002AF6CD /* SampleBasedTestCase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleBasedTestCase.h; sourceTree = "<group>"; };
-		BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleBasedTestCase.mm; sourceTree = "<group>"; };
+		BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleBasedContexts.h; sourceTree = "<group>"; };
+		BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleBasedContexts.mm; sourceTree = "<group>"; };
 		BD4BD95A26AC118A00CE06D7 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Generator.hpp; sourceTree = "<group>"; };
 		BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FluidSynthTruths.cpp; sourceTree = "<group>"; };
 		BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FluidSynthTruths.hpp; sourceTree = "<group>"; };
@@ -238,7 +238,7 @@
 		BDB266C925334B96005BEAD1 /* SF2Files.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SF2Files.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDD2D6AA261C8854000557A3 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		BDE99B6727BF91C000C9F1BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
-		BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewTestTemplate.m; sourceTree = "<group>"; };
+		BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewTestTemplate.mm; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
@@ -332,11 +332,12 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BE74265DAEC7002AD159 /* Info.plist */,
+				BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */,
 				BDB1BE73265DAEC7002AD159 /* DSPTests.mm */,
 				BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */,
 				BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */,
-				BD2FC8C726CFD8E5002AF6CD /* SampleBasedTestCase.h */,
-				BD2FC8C826CFDA6C002AF6CD /* SampleBasedTestCase.mm */,
+				BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */,
+				BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.h */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BDB1BE5D265DAEC6002AD159 /* Entity */,
 				BDB1BE60265DAEC6002AD159 /* IO */,
@@ -373,7 +374,6 @@
 				BDB1BE61265DAEC7002AD159 /* ChunkTests.mm */,
 				BDB1BE62265DAEC7002AD159 /* TagTests.mm */,
 				BDB1BE63265DAEC7002AD159 /* SFFileTestsObjC.mm */,
-				BDE99B6927BF959800C9F1BC /* NewTestTemplate.m */,
 				BDB1BE64265DAEC7002AD159 /* SFFileTestsSwift.swift */,
 			);
 			path = IO;
@@ -804,6 +804,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */,
 				BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */,
 				BD8E158726D12628000DC781 /* SFFileTestsSwift.swift in Sources */,
 				BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */,
@@ -817,12 +818,11 @@
 				BD8E159126D12769000DC781 /* RangeTests.mm in Sources */,
 				BD8E158A26D1269F000DC781 /* ChannelTests.mm in Sources */,
 				BD8E158F26D1272D000DC781 /* DelayBufferTests.mm in Sources */,
-				BD8E159326D12828000DC781 /* SampleBasedTestCase.mm in Sources */,
 				BD5CA3D226D2B72B0052DA39 /* NormalizedSampleSourceTests.mm in Sources */,
 				BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */,
 				BD8E158926D1268D000DC781 /* NoteTests.mm in Sources */,
 				BDADC19A27BDA66C008B26BA /* PresetCollectionTests.mm in Sources */,
-				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.m in Sources */,
+				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */,
 				BD8E158826D12679000DC781 /* MIDITests.mm in Sources */,
 				BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */,
 				BD5CA3D026D28FC20052DA39 /* StateTests.mm in Sources */,

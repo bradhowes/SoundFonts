@@ -2,7 +2,7 @@
 
 #import <iostream>
 
-#import "SampleBasedTestCase.h"
+#import "SampleBasedContexts.h"
 
 #import "Entity/Generator/Index.hpp"
 #import "Entity/Modulator/Modulator.hpp"

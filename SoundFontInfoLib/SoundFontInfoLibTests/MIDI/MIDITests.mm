@@ -13,10 +13,10 @@ using namespace SF2::MIDI;
 @property (nonatomic, assign) double epsilon;
 @end
 
-@implementation MIDITests
-
-- (void)setUp {
-  self.epsilon = 0.0000001;
-}
-
-@end
+//@implementation MIDITests
+//
+//- (void)setUp {
+//  self.epsilon = 0.0000001;
+//}
+//
+//@end

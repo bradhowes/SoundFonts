@@ -2,15 +2,17 @@
 
 #import <vector>
 
-#import "SampleBasedTestCase.h"
+#import "SampleBasedContexts.h"
 #import "Render/LFO.hpp"
 
 using namespace SF2::Render;
 
-@interface LFOTests : SampleBasedTestCase
+@interface LFOTests : XCTestCase
 @end
 
-@implementation LFOTests
+@implementation LFOTests {
+SampleBasedContexts contexts;
+}
 
 - (void)tearDown {
   // Put teardown code here. This method is called after the invocation of each test method in the class.

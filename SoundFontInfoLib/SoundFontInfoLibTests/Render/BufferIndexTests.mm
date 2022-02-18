@@ -2,7 +2,7 @@
 
 #import <iostream>
 
-#import "SampleBasedTestCase.h"
+#import "SampleBasedContexts.h"
 
 #import "Entity/SampleHeader.hpp"
 #import "MIDI/Channel.hpp"
@@ -12,10 +12,10 @@
 using namespace SF2::Render;
 using namespace SF2::Render::Sample;
 
-@interface SampleIndexTests : SampleBasedTestCase
+@interface BufferIndexTests : XCTestCase
 @end
 
-@implementation SampleIndexTests
+@implementation BufferIndexTests
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;

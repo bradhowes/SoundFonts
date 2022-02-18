@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import "SampleBasedTestCase.h"
+#import "SampleBasedContexts.h"
 
 #include "IO/File.hpp"
 #include "MIDI/Channel.hpp"
@@ -11,13 +11,15 @@
 using namespace SF2;
 using namespace SF2::Render;
 
-@interface InstrumentTests : SampleBasedTestCase
+@interface InstrumentTests : XCTestCase
 @end
 
-@implementation InstrumentTests
+@implementation InstrumentTests {
+  SampleBasedContexts contexts;
+}
 
 - (void)testRolandPianoInstrument {
-  auto file = context3.file();
+  auto file = contexts.context3.file();
 
   Instrument instrument(file, file.instruments()[0]);
   XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());

@@ -5,6 +5,11 @@
 //  Created by Brad Howes on 21/8/21.
 //  Copyright © 2021 Brad Howes. All rights reserved.
 //
+// This is based on the contents from FluidSynth's generated table output `fluid_conv_tables.c` which is auto-generated
+// by the build system. The `fluid_*` routines come from FluidSynth code with slight editing to make them compile here
+// without all of the rest of FluidSynth. Comments in the code are the original. See
+// https://github.com/FluidSynth/fluidsynth/blob/883ea24960f7af117747eb99c257022b1e3de750/src/utils/fluid_conv.c
+//
 
 #include "FluidSynthTruths.hpp"
 

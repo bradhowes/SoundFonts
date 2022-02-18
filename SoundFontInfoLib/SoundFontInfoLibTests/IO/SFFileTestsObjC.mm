@@ -123,6 +123,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqualWithAccuracy(rawSamples[1] * Render::NormalizedSampleSource::normalizationScale, samples[1], epsilon);
   XCTAssertEqualWithAccuracy(rawSamples[2] * Render::NormalizedSampleSource::normalizationScale, samples[2], epsilon);
   XCTAssertEqualWithAccuracy(rawSamples[3] * Render::NormalizedSampleSource::normalizationScale, samples[3], epsilon);
+
+  file.dumpThreaded();
 }
 
 - (void)testLoadSamplesPerformance {
