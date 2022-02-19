@@ -6,6 +6,8 @@
 
 #include "Types.hpp"
 #include "DSP/DSP.hpp"
+#include "Entity/Generator/Index.hpp"
+#include "Render/State.hpp"
 
 namespace SF2::Render {
 
@@ -18,80 +20,19 @@ namespace SF2::Render {
 class LFO {
 public:
 
-  /**
-   Configuration for an LFO.
-   */
-  struct Config {
-
-    /**
-     Begin configuration with the sample rate
-
-     @param sampleRate the sample rate to use
-     */
-    explicit Config(Float sampleRate = 44100.0) : sampleRate_{sampleRate}, frequency_{1.0}, delay_{0.0} {}
-
-    /**
-     Set the frequency for the LFO.
-
-     @param frequency the frequency to run the LFO at
-     */
-    Config& frequency(Float frequency) {
-      frequency_ = frequency;
-      return *this;
-    }
-
-    /**
-     Set the delay for the LFO. Until the delay duration passes, the LFO will emit 0.0 values.
-
-     @param delay the number of seconds to wait before starting the LFO.
-     */
-    Config& delay(Float delay) {
-      delay_ = delay;
-      return *this;
-    }
-
-    /**
-     Create an LFO instance with the configured properties.
-
-     @returns LFO instance
-     */
-    LFO make() const {
-      return LFO(*this);
-    }
-
-  private:
-    Float sampleRate_;
-    Float frequency_;
-    Float delay_;
-    friend class LFO;
-  };
-
-  /**
-   Create a new instance.
-
-   @param config the configuration for the LFO
-   */
-  LFO(const Config& config) : config_{config} { initialize(); }
-
-  /**
-   Set the frequency of the oscillator. NOTE: it does *not* reset the counter.
-
-   @param frequency the frequency to operate at
-   */
-  void setFrequency(Float frequency) {
-    config_.frequency_ = frequency;
-    setPhaseIncrement();
+  static LFO forModulator(State& state) {
+    return LFO(state.sampleRate(),
+               state.modulated(Entity::Generator::Index::frequencyModulatorLFO),
+               state.modulated(Entity::Generator::Index::delayModulatorLFO));
   }
 
-  /**
-   Set the delay of the oscillator in seconds. NOTE: resets the counter.
-
-   @param delay the number of seconds to wait before starting the LFO.
-   */
-  void setDelay(Float delay) {
-    delaySampleCount_ = size_t(delay * config_.sampleRate_);
-    reset();
+  static LFO forVibrato(State& state) {
+    return LFO(state.sampleRate(),
+               state.modulated(Entity::Generator::Index::frequencyVibratoLFO),
+               state.modulated(Entity::Generator::Index::delayVibratoLFO));
   }
+
+  LFO() = default;
 
   /**
    Restart from a known zero state.
@@ -100,15 +41,6 @@ public:
     counter_ = 0.0;
     if (increment_ < 0) increment_ = -increment_;
   }
-
-  struct State {
-    State(Float counter, size_t delaySampleCount) : counter_{counter}, delaySampleCount_{delaySampleCount} {}
-
-  private:
-    Float counter_;
-    size_t delaySampleCount_;
-    friend class LFO;
-  };
 
   /**
    Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
@@ -149,15 +81,17 @@ public:
 
 private:
 
-  void initialize() {
-    delaySampleCount_ = size_t(config_.sampleRate_ * config_.delay_);
-    setPhaseIncrement();
-    reset();
-  }
+  /**
+   Create a new instance.
+   */
+  LFO(Float sampleRate, Float frequency, Float delay)
+  : sampleRate_{sampleRate}, frequency_{frequency}, delaySampleCount_{size_t(sampleRate_ * delay)},
+  increment_{frequency / sampleRate * 4.0} {}
 
-  void setPhaseIncrement() { increment_ = config_.frequency_ / config_.sampleRate_ * 4.0; }
-
-  Config config_;
+  friend class LFOTestInjector;
+  
+  Float sampleRate_;
+  Float frequency_;
   Float counter_{0.0};
   Float increment_;
   size_t delaySampleCount_;

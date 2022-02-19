@@ -44,7 +44,7 @@ public:
   inline static constexpr Float minimumCurvature = 0.000000001;
   inline static constexpr Float maximumCurvature = 10.0;
 
-  Stage() {}
+  Stage() = default;
 
   /**
    Generate a configuration that will emit a constant value for a fixed or indefinite time.

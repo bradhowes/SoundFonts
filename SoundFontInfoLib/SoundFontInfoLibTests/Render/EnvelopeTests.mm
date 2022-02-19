@@ -2,12 +2,22 @@
 
 #import <XCTest/XCTest.h>
 
+#include "Types.hpp"
 #include "DSP/DSP.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/Envelope/Stage.hpp"
 #include "Render/State.hpp"
 
+using namespace SF2;
 using namespace SF2::Render::Envelope;
+
+namespace SF2::Render::Envelope {
+struct EnvelopeTestInjector {
+  static Generator make(Float sampleRate, Float delay, Float attack, Float hold, Float decay, Float sustain, Float release) {
+    return Generator(sampleRate, delay, attack, hold, decay, sustain, release);
+  }
+};
+}
 
 @interface EnvelopeTests : XCTestCase
 @end
@@ -39,7 +49,7 @@ static SF2::Render::State state{44100.0, channel};
 }
 
 - (void)testDelay {
-  auto gen = Generator(1.0, 3, 0, 0, 0, 1, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 3, 0, 0, 0, 1, 0);
   XCTAssertEqual(0.0, gen.value());
   XCTAssertEqual(StageIndex::idle, gen.stage());
   XCTAssertEqual(0.0, gen.process());
@@ -52,7 +62,7 @@ static SF2::Render::State state{44100.0, channel};
 }
 
 - (void)testNoDelayNoAttack {
-  auto gen = Generator(1.0, 0, 0, 1, 0, 1, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 1, 0, 1, 0);
   gen.gate(true);
   XCTAssertEqual(StageIndex::hold, gen.stage());
   XCTAssertEqual(1.0, gen.process());
@@ -61,7 +71,7 @@ static SF2::Render::State state{44100.0, channel};
 
 - (void)testAttackCurvature {
   auto epsilon = 0.001;
-  auto gen = Generator(1.0, 0, 10, 0, 0, 1, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 10, 0, 0, 1, 0);
   gen.gate(true);
   XCTAssertEqual(0.0, gen.value());
   XCTAssertEqual(StageIndex::attack, gen.stage());
@@ -78,7 +88,7 @@ static SF2::Render::State state{44100.0, channel};
 }
 
 - (void)testHold {
-  auto gen = Generator(1.0, 0, 0, 3, 0, 0.75, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 3, 0, 0.75, 0);
   gen.gate(true);
   XCTAssertEqual(1.0, gen.value());
   XCTAssertEqual(StageIndex::hold, gen.stage());
@@ -90,7 +100,7 @@ static SF2::Render::State state{44100.0, channel};
 
 - (void)testDecay {
   auto epsilon = 0.001;
-  auto gen = Generator(1.0, 0, 0, 0, 5, 0.5, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 0, 5, 0.5, 0);
   gen.gate(true);
   XCTAssertEqual(StageIndex::decay, gen.stage());
   XCTAssertEqualWithAccuracy(0.692631006359, gen.process(), epsilon);
@@ -105,7 +115,7 @@ static SF2::Render::State state{44100.0, channel};
 
 - (void)testDecayAborted {
   auto epsilon = 0.001;
-  auto gen = Generator(1.0, 0, 0, 0, 5, 0.5, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 0, 5, 0.5, 0);
   gen.gate(true);
   XCTAssertEqual(StageIndex::decay, gen.stage());
   XCTAssertEqualWithAccuracy(0.692631006359, gen.process(), epsilon);
@@ -116,7 +126,7 @@ static SF2::Render::State state{44100.0, channel};
 }
 
 - (void)testSustain {
-  auto gen = Generator(1.0, 0, 0, 0, 0, 0.25, 0);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 0, 0, 0.25, 0);
   gen.gate(true);
   XCTAssertEqual(0.25, gen.value());
   XCTAssertEqual(StageIndex::sustain, gen.stage());
@@ -128,7 +138,7 @@ static SF2::Render::State state{44100.0, channel};
 
 - (void)testRelease {
   auto epsilon = 0.001;
-  auto gen = Generator(1.0, 0, 0, 0, 0, 0.5, 5);
+  auto gen = EnvelopeTestInjector::make(1.0, 0, 0, 0, 0, 0.5, 5);
   gen.gate(true);
   XCTAssertEqual(0.5, gen.value());
   XCTAssertEqual(StageIndex::sustain, gen.stage());

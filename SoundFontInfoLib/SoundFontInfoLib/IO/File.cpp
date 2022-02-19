@@ -87,7 +87,7 @@ File::load(int fd, bool dump)
   assert(sampleData_ != nullptr);
   sampleSources_.reserve(sampleHeaders_.size());
   for (size_t index = 0; index < sampleHeaders_.size(); ++index) {
-    auto const& header = sampleHeaders_[index];
+    const auto& header = sampleHeaders_[index];
     if (dump) {
       header.dump(" sampleHeader", index);
     }

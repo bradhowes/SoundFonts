@@ -47,22 +47,29 @@ public:
 
   inline static constexpr Float defaultCurvature = 0.01;
 
-  Generator() {}
+  Generator() = default;
 
-  Generator(Float sampleRate, Float delay, Float attack, Float hold, Float decay, Float sustain, Float release,
-            bool noteOn = false) : stages_{
-    Stage::Delay(samplesFor(sampleRate, delay)),
-    Stage::Attack(samplesFor(sampleRate, attack), defaultCurvature),
-    Stage::Hold(samplesFor(sampleRate, hold)),
-    Stage::Decay(samplesFor(sampleRate, decay), defaultCurvature, sustain),
-    Stage::Sustain(sustain),
-    Stage::Release(samplesFor(sampleRate, release), defaultCurvature, sustain)
-  }
+  Generator(Generator&& rhs) noexcept
+  : stages_{std::move(rhs.stages_)}, stageIndex_{rhs.stageIndex_}, counter_{rhs.counter_}, value_{rhs.value_}
   {
-    if (noteOn) gate(true);
+    os_log_info(log_, "Generator MOVE constructor");
   }
 
-  static Generator Volume(const State& state) {
+  Generator& operator=(Generator&& rhs) {
+    os_log_info(log_, "Generator MOVE assignment");
+    stages_ = std::move(rhs.stages_);
+    stageIndex_ = rhs.stageIndex_;
+    counter_ = rhs.counter_;
+    value_ = rhs.value_;
+    return *this;
+  }
+
+  /**
+   Create new envelope for volume changes over time.
+
+   @param state the state holding the generator values for the envelope definition
+   */
+  static Generator forVol(const State& state) {
     return Generator(state.sampleRate(),
                      DSP::centsToSeconds(state.modulated(Index::delayVolumeEnvelope)),
                      DSP::centsToSeconds(state.modulated(Index::attackVolumeEnvelope)),
@@ -76,11 +83,11 @@ public:
   }
 
   /**
-   Create new envelope for modulation.
+   Create new envelope for modulation changes over time.
 
    @param state the state holding the generator values for the envelope definition
    */
-  static Generator Modulator(const State& state) {
+  static Generator forMod(const State& state) {
     return Generator(state.sampleRate(),
                      DSP::centsToSeconds(state.modulated(Index::delayModulatorEnvelope)),
                      DSP::centsToSeconds(state.modulated(Index::attackModulatorEnvelope)),
@@ -138,6 +145,20 @@ public:
   }
 
 private:
+
+  Generator(Float sampleRate, Float delay, Float attack, Float hold, Float decay, Float sustain, Float release,
+            bool noteOn = false) : stages_{
+    Stage::Delay(samplesFor(sampleRate, delay)),
+    Stage::Attack(samplesFor(sampleRate, attack), defaultCurvature),
+    Stage::Hold(samplesFor(sampleRate, hold)),
+    Stage::Decay(samplesFor(sampleRate, decay), defaultCurvature, sustain),
+    Stage::Sustain(sustain),
+    Stage::Release(samplesFor(sampleRate, release), defaultCurvature, sustain)
+  }
+  {
+    os_log_info(log_, "Generator constructor");
+    if (noteOn) gate(true);
+  }
 
   static int samplesFor(Float sampleRate, Float duration) { return int(round(sampleRate * duration)); }
 
@@ -212,6 +233,8 @@ private:
   int counter_{0};
   Float value_{0.0};
 
+  friend class EnvelopeTestInjector;
+  
   inline static Logger log_{Logger::Make("Render.Envelope", "Generator")};
 };
 

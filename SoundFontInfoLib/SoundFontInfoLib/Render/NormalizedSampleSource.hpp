@@ -74,16 +74,8 @@ public:
 
   /**
    Obtain the max magnitude seen in the samples of the loop specified by the given bounds.
-
-   @param bounds the location of the loop to interrogate
    */
-  Float maxMagnitudeOfLoop(const Sample::Bounds& bounds) const {
-    Float maxMagnitude{0.0};
-    if (bounds.hasLoop()) {
-      vDSP_maxmgvD(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
-    }
-    return maxMagnitude;
-  }
+  Float maxMagnitudeOfLoop() const { return maxMagnitudeOfLoop_; }
 
 private:
 
@@ -101,6 +93,7 @@ private:
     vDSP_vsdivD(samples_.data(), 1, &scale, samples_.data(), 1, size);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
+    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<Float>();
     loaded_ = true;
   }
 
@@ -117,7 +110,21 @@ private:
     }
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
+    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<Float>();
+
     loaded_ = true;
+  }
+
+  template <typename T>
+  T getMaxMagnitudeOfLoop() const {
+    T maxMagnitude{0.0};
+    auto bounds{Sample::Bounds::make(header_)};
+    using Proc = std::function<void(const T*, vDSP_Stride, T*, vDSP_Length)>;
+    Proc proc = nullptr;
+    if constexpr (std::is_same<T, float>::value) proc = vDSP_maxmgv;
+    if constexpr (std::is_same<T, double>::value) proc = vDSP_maxmgvD;
+    proc(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
+    return maxMagnitude;
   }
 
   mutable std::vector<Float> samples_;
@@ -125,6 +132,7 @@ private:
 
   const int16_t* allSamples_;
   mutable bool loaded_{false};
+  mutable Float maxMagnitudeOfLoop_;
 
   inline static Logger log_{Logger::Make("Render.Sample", "NormalizedSampleSource")};
 };

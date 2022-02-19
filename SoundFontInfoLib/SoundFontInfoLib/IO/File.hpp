@@ -32,7 +32,7 @@ namespace SF2::IO {
 class File {
 public:
 
-  File() {}
+  File() = default;
 
   /**
    Constructor. Processes the SF2 file contents and builds up various collections based on what it finds.

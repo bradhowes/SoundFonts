@@ -17,7 +17,7 @@ class InstrumentCollection
 {
 public:
 
-  InstrumentCollection() {}
+  InstrumentCollection() = default;
 
   explicit InstrumentCollection(const IO::File& file) {
     build(file);

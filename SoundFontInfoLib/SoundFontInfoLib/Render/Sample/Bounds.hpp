@@ -52,10 +52,19 @@ public:
                   clampPos(upper + endOffset));
   }
 
-  Bounds() {}
+  /**
+   Construct Bounds using information from 'shdr' only.
 
-  Bounds(size_t startPos, size_t startLoopPos, size_t endLoopPos, size_t endPos) :
-  startPos_{startPos}, startLoopPos_{startLoopPos}, endLoopPos_{endLoopPos}, endPos_{endPos} {}
+   @param header the 'shdr' header to use
+   */
+  static Bounds make(const Entity::SampleHeader& header) {
+    auto lower = header.startIndex();
+    auto upper = header.endIndex();
+    auto clampPos = [lower, upper](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
+    return Bounds(lower, clampPos(header.startLoopIndex()), clampPos(header.endLoopIndex()), upper);
+  }
+
+  Bounds() = default;
 
   /// @returns the index of the first sample to use for rendering
   size_t startPos() const { return startPos_; }
@@ -71,6 +80,10 @@ public:
   bool hasLoop() const { return startLoopPos() < endLoopPos() && endLoopPos() <= endPos(); }
 
 private:
+
+  Bounds(size_t startPos, size_t startLoopPos, size_t endLoopPos, size_t endPos) :
+  startPos_{startPos}, startLoopPos_{startLoopPos}, endLoopPos_{endLoopPos}, endPos_{endPos} {}
+
   size_t startPos_{0};
   size_t startLoopPos_{0};
   size_t endLoopPos_{0};

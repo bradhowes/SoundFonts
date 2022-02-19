@@ -7,6 +7,14 @@
 
 using namespace SF2::Render;
 
+namespace SF2::Render {
+struct LFOTestInjector {
+  static LFO make(Float sampleRate, Float frequency, Float delay) {
+    return LFO(sampleRate, frequency, delay);
+  }
+};
+}
+
 @interface LFOTests : XCTestCase
 @end
 
@@ -19,7 +27,7 @@ SampleBasedContexts contexts;
 }
 
 - (void)testSamples {
-  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
+  auto osc = LFOTestInjector::make(8.0, 1.0, 0.0);
   [self sample:osc.value() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.value() equals:0.5];
@@ -37,11 +45,11 @@ SampleBasedContexts contexts;
 }
 
 - (void)testDelay {
-  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
+  auto osc = LFOTestInjector::make(8.0, 1.0, 0.125);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.5];
-  osc.setDelay(0.25);
+  osc = LFOTestInjector::make(8.0, 1.0, 0.25);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.0];
@@ -49,17 +57,17 @@ SampleBasedContexts contexts;
 }
 
 - (void)testConfig {
-  auto osc = LFO::Config(8.0).frequency(1.0).delay(0.125).make();
+  auto osc = LFOTestInjector::make(8.0, 1.0, 0.125);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.5];
-  osc = LFO::Config(8.0).frequency(1.0).delay(0.0).make();
+  osc = LFOTestInjector::make(8.0, 1.0, 0.0);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.5];
-  osc = LFO::Config(8.0).frequency(2.0).make();
+  osc = LFOTestInjector::make(8.0, 2.0, 0.0);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:1.0];
-  osc = LFO::Config(8.0).frequency(1.0).make();
+  osc = LFOTestInjector::make(8.0, 1.0, 0.0);
   [self sample:osc.valueAndIncrement() equals:0.0];
   [self sample:osc.valueAndIncrement() equals:0.5];
   [self sample:osc.valueAndIncrement() equals:1.0];
