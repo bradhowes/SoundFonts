@@ -38,7 +38,7 @@ public:
   /**
    Load the samples into buffer if not already available.
    */
-  inline void load() const { if (!loaded_) loadNormalizedSamplesAccelerated<Float>(); }
+  inline void load() const { if (!loaded_) loadNormalizedSamples<Float>(); }
 
   /// @returns true if the buffer is loaded
   bool isLoaded() const { return loaded_; }
@@ -73,15 +73,19 @@ public:
   const Entity::SampleHeader& header() const { return header_; }
 
   /**
+   Obtain the max magnitude seen in the samples.
+   */
+  Float maxMagnitude() const { return maxMagnitude_; }
+
+  /**
    Obtain the max magnitude seen in the samples of the loop specified by the given bounds.
    */
   Float maxMagnitudeOfLoop() const { return maxMagnitudeOfLoop_; }
 
 private:
 
-  // Rudimentary testing with -O0 shows this to be 40% faster than the loop.
   template <typename T>
-  void loadNormalizedSamplesAccelerated() const {
+  void loadNormalizedSamples() const {
     os_signpost_id_t signpost = os_signpost_id_generate(log_);
     size_t size = header_.endIndex() - header_.startIndex();
     assert(samples_.size() == size);
@@ -94,34 +98,18 @@ private:
     Accelerated<T>::scaleProc(samples_.data(), 1, &scale, samples_.data(), 1, size);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
-    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<T>();
-    loaded_ = true;
-  }
-
-  void loadNormalizedSamplesNormal() const {
-    os_signpost_id_t signpost = os_signpost_id_generate(log_);
-    size_t size = header_.endIndex() - header_.startIndex();
-    assert(samples_.size() == size);
-    assert(!loaded_);
-
-    os_signpost_interval_begin(log_, signpost, "loadNormalizedSamples", "begin - size: %ld", size);
-    auto pos = allSamples_ + header_.startIndex();
-    for (size_t index = 0; index < size; ++index) {
-      samples_[index] = *pos++ * normalizationScale;
-    }
-    os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
-
-    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<Float>();
+    auto bounds{Sample::Bounds::make(header_)};
+    maxMagnitude_ = getMaxMagnitude<Float>(bounds.startPos(), bounds.endPos());
+    maxMagnitudeOfLoop_ = getMaxMagnitude<Float>(bounds.startLoopPos(), bounds.endLoopPos());
 
     loaded_ = true;
   }
 
   template <typename T>
-  T getMaxMagnitudeOfLoop() const {
-    T maxMagnitude{0.0};
-    auto bounds{Sample::Bounds::make(header_)};
-    Accelerated<T>::magnitudeProc(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
-    return maxMagnitude;
+  T getMaxMagnitude(size_t startPos, size_t endPos) const {
+    T value{0.0};
+    Accelerated<T>::magnitudeProc(samples_.data() + startPos, 1, &value, endPos - startPos);
+    return value;
   }
 
   mutable std::vector<Float> samples_;
@@ -129,6 +117,7 @@ private:
 
   const int16_t* allSamples_;
   mutable bool loaded_{false};
+  mutable Float maxMagnitude_;
   mutable Float maxMagnitudeOfLoop_;
 
   inline static Logger log_{Logger::Make("Render.Sample", "NormalizedSampleSource")};
