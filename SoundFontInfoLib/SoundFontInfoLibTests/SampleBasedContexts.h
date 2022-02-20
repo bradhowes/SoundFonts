@@ -32,7 +32,7 @@ struct PresetTestContext : PresetTestContextBase
 
   SF2::Render::State makeState(const SF2::Render::Config& config) const {
     SF2::Render::State state(sampleRate_, channel_);
-    state.configure(config);
+    state.prepareForVoice(config);
     return state;
   }
 

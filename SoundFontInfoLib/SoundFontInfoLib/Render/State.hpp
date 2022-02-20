@@ -53,7 +53,10 @@ public:
    */
   State(Float sampleRate, const MIDI::Channel& channel) : sampleRate_{sampleRate}, channel_{channel} {}
 
-  void configure(const Config& config);
+  /**
+   Configure the state to be used by a voice for sample rendering.
+   */
+  void prepareForVoice(const Config& config);
   
   /**
    Set a generator value. Should only be called with a value from an InstrumentZone. It can be set twice, once by a

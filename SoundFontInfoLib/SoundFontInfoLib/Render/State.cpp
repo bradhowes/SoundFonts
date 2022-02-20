@@ -2,15 +2,13 @@
 
 #include <cmath>
 
-#include "Render/Envelope/Generator.hpp"
-
 #include "Render/Config.hpp"
 #include "Render/State.hpp"
 
 using namespace SF2::Render;
 
 void
-State::configure(const Config& config)
+State::prepareForVoice(const Config& config)
 {
   key_ = config.key();
   velocity_ = config.velocity();

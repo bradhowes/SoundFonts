@@ -30,7 +30,7 @@ Voice::configure(const Config& config, Engine::Tick startTick)
 {
   startedTick_ = startTick;
 
-  state_.configure(config);
+  state_.prepareForVoice(config);
   loopingMode_ = state_.loopingMode();
 
   gainEnvelope_ = Envelope::Generator::forVol(state_);

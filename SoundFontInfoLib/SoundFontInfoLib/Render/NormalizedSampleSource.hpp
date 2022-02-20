@@ -38,7 +38,7 @@ public:
   /**
    Load the samples into buffer if not already available.
    */
-  inline void load() const { if (!loaded_) loadNormalizedSamplesAccelerated(); }
+  inline void load() const { if (!loaded_) loadNormalizedSamplesAccelerated<Float>(); }
 
   /// @returns true if the buffer is loaded
   bool isLoaded() const { return loaded_; }
@@ -80,6 +80,7 @@ public:
 private:
 
   // Rudimentary testing with -O0 shows this to be 40% faster than the loop.
+  template <typename T>
   void loadNormalizedSamplesAccelerated() const {
     os_signpost_id_t signpost = os_signpost_id_generate(log_);
     size_t size = header_.endIndex() - header_.startIndex();
@@ -88,12 +89,12 @@ private:
 
     os_signpost_interval_begin(log_, signpost, "loadNormalizedSamples", "begin - size: %ld", size);
     auto pos = allSamples_ + header_.startIndex();
-    Float scale = (1 << 15);
-    vDSP_vflt16D(pos, 1, samples_.data(), 1, size);
-    vDSP_vsdivD(samples_.data(), 1, &scale, samples_.data(), 1, size);
+    T scale = (1 << 15);
+    Accelerated<T>::conversionProc(pos, 1, samples_.data(), 1, size);
+    Accelerated<T>::scaleProc(samples_.data(), 1, &scale, samples_.data(), 1, size);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
-    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<Float>();
+    maxMagnitudeOfLoop_ = getMaxMagnitudeOfLoop<T>();
     loaded_ = true;
   }
 
@@ -119,11 +120,7 @@ private:
   T getMaxMagnitudeOfLoop() const {
     T maxMagnitude{0.0};
     auto bounds{Sample::Bounds::make(header_)};
-    using Proc = std::function<void(const T*, vDSP_Stride, T*, vDSP_Length)>;
-    Proc proc = nullptr;
-    if constexpr (std::is_same<T, float>::value) proc = vDSP_maxmgv;
-    if constexpr (std::is_same<T, double>::value) proc = vDSP_maxmgvD;
-    proc(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
+    Accelerated<T>::magnitudeProc(samples_.data() + bounds.startLoopPos(), 1, &maxMagnitude, bounds.loopSize());
     return maxMagnitude;
   }
 
