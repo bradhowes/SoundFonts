@@ -76,36 +76,6 @@ public:
     return keyRange_.contains(key) && velocityRange_.contains(velocity);
   }
 
-protected:
-
-  /**
-   Constructor.
-
-   @param gens collection of generator for the zone
-   @param mods collection of modulators for the zone
-   @param terminal the index type of a generator that signals the zone is NOT global
-   */
-  Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::Generator::Index terminal) :
-  generators_{gens},
-  modulators_{mods},
-  keyRange_{GetKeyRange(generators_)}, velocityRange_{GetVelocityRange(generators_)},
-  isGlobal_{IsGlobal(generators_, terminal, modulators_)}
-  {}
-
-  /**
-   Obtain the link to the resource used by this zone. For an instrument zone, this points to the sample buffer to
-   use to render sounds. For a preset zone, this points to an instrument.
-
-   @returns index of the resource that this zone uses
-   */
-  uint16_t resourceLink() const {
-    assert(!isGlobal_); // Global zones do not have resource links
-    const Entity::Generator::Generator& generator{generators_.back().get()};
-    assert(generator.index() == Entity::Generator::Index::instrument ||
-           generator.index() == Entity::Generator::Index::sampleID);
-    return generator.amount().unsignedAmount();
-  }
-
   /**
    Apply the instrument zone to the given voice state.
 
@@ -146,6 +116,36 @@ protected:
         state.setAdjustmentValue(generator.index(), generator.value());
       }
     });
+  }
+
+protected:
+
+  /**
+   Constructor.
+
+   @param gens collection of generator for the zone
+   @param mods collection of modulators for the zone
+   @param terminal the index type of a generator that signals the zone is NOT global
+   */
+  Zone(GeneratorCollection&& gens, ModulatorCollection&& mods, Entity::Generator::Index terminal) :
+  generators_{std::move(gens)},
+  modulators_{std::move(mods)},
+  keyRange_{GetKeyRange(generators_)}, velocityRange_{GetVelocityRange(generators_)},
+  isGlobal_{IsGlobal(generators_, terminal, modulators_)}
+  {}
+
+  /**
+   Obtain the link to the resource used by this zone. For an instrument zone, this points to the sample buffer to
+   use to render sounds. For a preset zone, this points to an instrument.
+
+   @returns index of the resource that this zone uses
+   */
+  uint16_t resourceLink() const {
+    assert(!isGlobal_); // Global zones do not have resource links
+    const Entity::Generator::Generator& generator{generators_.back().get()};
+    assert(generator.index() == Entity::Generator::Index::instrument ||
+           generator.index() == Entity::Generator::Index::sampleID);
+    return generator.amount().unsignedAmount();
   }
 
 private:

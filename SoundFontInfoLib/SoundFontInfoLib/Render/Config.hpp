@@ -28,17 +28,14 @@ public:
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Config(const PresetZone& presetZone, GlobalPresetZone globalPresetZone,
-         const InstrumentZone& instrumentZone, GlobalInstrumentZone globalInstrumentZone, int key, int velocity) :
+  Config(const PresetZone& presetZone, const PresetZone* globalPresetZone,
+         const InstrumentZone& instrumentZone, const InstrumentZone* globalInstrumentZone, int key, int velocity) :
   presetZone_{presetZone}, globalPresetZone_{globalPresetZone},
   instrumentZone_{instrumentZone}, globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity}
   {}
 
   /// @returns the buffer of audio samples to use for rendering
-  const NormalizedSampleSource& sampleSource() const {
-    assert(instrumentZone_.sampleSource() != nullptr);
-    return *(instrumentZone_.sampleSource());
-  }
+  const NormalizedSampleSource& sampleSource() const { return instrumentZone_.sampleSource(); }
 
   /// @returns original MIDI key that triggered the voice
   int key() const { return key_; }
@@ -61,18 +58,18 @@ private:
 
     // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
     // their settings.
-    if (globalInstrumentZone_) globalInstrumentZone_.value()->apply(state);
+    if (globalInstrumentZone_ != nullptr) globalInstrumentZone_->apply(state);
     instrumentZone_.apply(state);
 
     // Presets apply refinements to absolute values set from instruments zones above.
-    if (globalPresetZone_) globalPresetZone_.value()->refine(state);
+    if (globalPresetZone_ != nullptr) globalPresetZone_->refine(state);
     presetZone_.refine(state);
   }
 
   const PresetZone& presetZone_;
-  const GlobalPresetZone globalPresetZone_;
+  const PresetZone* globalPresetZone_;
   const InstrumentZone& instrumentZone_;
-  const GlobalInstrumentZone globalInstrumentZone_;
+  const InstrumentZone* globalInstrumentZone_;
   int key_;
   int velocity_;
 };

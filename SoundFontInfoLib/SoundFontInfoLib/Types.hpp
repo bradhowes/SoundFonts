@@ -50,5 +50,15 @@ struct Accelerated
   }();
 };
 
+template <typename T>
+const typename T::value_type& checkedVectorIndexing(const T& container, size_t index)
+{
+#ifdef DEBUG
+  return container.at(index);
+#else
+  return container[index];
+#endif
+}
+
 }
 

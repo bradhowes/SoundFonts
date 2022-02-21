@@ -25,14 +25,11 @@ using namespace SF2::Render;
   XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());
 
   XCTAssertTrue(instrument.hasGlobalZone());
-  auto globalZone = instrument.globalZone();
-  XCTAssertTrue(globalZone);
-  XCTAssertEqual(nullptr, globalZone.value()->sampleSource());
 
   auto zones = instrument.filter(64, 10);
   XCTAssertEqual(2, zones.size());
   XCTAssertFalse(zones[0].get().isGlobal());
-  XCTAssertNotEqual(nullptr, zones[0].get().sampleSource());
+  XCTAssertNotEqual(nullptr, &zones[0].get().sampleSource());
 
   InstrumentCollection instruments;
   instruments.build(file);

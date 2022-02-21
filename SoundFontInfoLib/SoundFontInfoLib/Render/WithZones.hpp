@@ -25,13 +25,12 @@ public:
   using ZoneType = T;
   using EntityType = E;
   using WithZoneCollection = ZoneCollection<ZoneType>;
-  using GlobalZoneType = typename ZoneCollection<ZoneType>::GlobalZoneType;
 
   /// @returns true if the instrument has a global zone
   bool hasGlobalZone() const { return zones_.hasGlobal(); }
 
   /// @returns the collection's global zone if there is one
-  GlobalZoneType globalZone() const { return zones_.global(); }
+  const ZoneType* globalZone() const { return zones_.global(); }
 
   /// @returns the collection of zones
   const WithZoneCollection& zones() const { return zones_; }
@@ -44,6 +43,8 @@ protected:
   zones_{zoneCount}, configuration_{configuration} {}
 
   WithZoneCollection zones_;
+
+private:
   const EntityType& configuration_;
 };
 

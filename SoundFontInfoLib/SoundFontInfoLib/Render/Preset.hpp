@@ -34,13 +34,13 @@ public:
   Preset(const IO::File& file, const InstrumentCollection& instruments, const Entity::Preset& config);
 
   /// Obtain the preset name.
-  std::string name() const { return configuration_.name(); }
+  std::string name() const { return configuration().name(); }
 
   /// Obtain the preset bank number
-  int bank() const { return configuration_.bank(); }
+  int bank() const { return configuration().bank(); }
 
   /// Obtain the preset program number
-  int program() const { return configuration_.program(); }
+  int program() const { return configuration().program(); }
 
   /**
    Locate preset/instrument zones for the given key/velocity values. There can be more than one match, often due to

@@ -11,12 +11,10 @@
 namespace SF2::Render {
 
 /**
- A specialization of a Zone for an Instrument. Instrument zones have a sample buffer.
+ A specialization of a Zone for an Instrument. Non-global instrument zones must have a sample source.
  */
 class InstrumentZone : public Zone {
 public:
-  /// The type for the optional global InstrumentZone
-  using GlobalType = std::optional<const InstrumentZone*>;
 
   /**
    Construct new zone from entity in file.
@@ -30,21 +28,11 @@ public:
   sampleSource_{isGlobal() ? nullptr : &file.sampleSource(resourceLink())}
   {}
 
-  /**
-   Apply the zone generator values to the given voice state.
-
-   @param state the state to update
-   */
-  void apply(State& state) const { Zone::apply(state); }
-
   /// @returns the sample buffer registered to this zone, or nullptr if this is a global zone.
-  const Render::NormalizedSampleSource* sampleSource() const { return sampleSource_; }
+  const Render::NormalizedSampleSource& sampleSource() const { assert(sampleSource_ != nullptr); return *sampleSource_; }
 
 private:
   const Render::NormalizedSampleSource* sampleSource_;
 };
-
-/// The type for the optional global InstrumentZone
-using GlobalInstrumentZone = InstrumentZone::GlobalType;
 
 } // namespace SF2::Render

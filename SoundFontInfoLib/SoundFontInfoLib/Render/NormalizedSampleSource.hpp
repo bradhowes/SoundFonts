@@ -51,23 +51,13 @@ public:
     std::fill(samples_.begin(), samples_.end(), 0.0);
   }
 
-#ifdef DEBUG
   /**
    Obtain the sample at the given index
 
    @param index the index to use
    @returns sample at the index
    */
-  Float operator[](size_t index) const { return samples_.at(index); }
-#else
-  /**
-   Obtain the sample at the given index
-
-   @param index the index to use
-   @returns sample at the index
-   */
-  Float operator[](size_t index) const { return samples_[index]; }
-#endif
+  Float operator[](size_t index) const { return checkedVectorIndexing<decltype(samples_)>(samples_, index); }
 
   /// @returns the sample header ('shdr') of the sample stream being rendered
   const Entity::SampleHeader& header() const { return header_; }
@@ -75,12 +65,12 @@ public:
   /**
    Obtain the max magnitude seen in the samples.
    */
-  Float maxMagnitude() const { return maxMagnitude_; }
+  Float maxMagnitude() const { return loaded_ ? maxMagnitude_ : 0.0; }
 
   /**
    Obtain the max magnitude seen in the samples of the loop specified by the given bounds.
    */
-  Float maxMagnitudeOfLoop() const { return maxMagnitudeOfLoop_; }
+  Float maxMagnitudeOfLoop() const { return loaded_ ? maxMagnitudeOfLoop_ : 0.0; }
 
 private:
 
