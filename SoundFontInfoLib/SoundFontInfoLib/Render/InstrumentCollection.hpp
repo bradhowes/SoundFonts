@@ -37,11 +37,7 @@ public:
     }
   }
 
-#ifdef DEBUG
-  const Instrument& operator[](size_t index) const { return instruments_.at(index); }
-#else
-  const Instrument& operator[](size_t index) const { return instruments_[index]; }
-#endif
+  const Instrument& operator[](size_t index) const { return checkedVectorIndexing(instruments_, index); }
 
 private:
   std::vector<Instrument> instruments_{};

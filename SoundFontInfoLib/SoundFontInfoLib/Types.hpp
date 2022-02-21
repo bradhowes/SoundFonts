@@ -50,6 +50,11 @@ struct Accelerated
   }();
 };
 
+/**
+ Generic method that invokes checked or unchecked indexing on a container based on the DEBUG compile flag. When DEBUG
+ is defined, invokes `at` which will validate the index prior to use. Otherwise, it invokes `operator []` which does
+ unchecked indexing.
+ */
 template <typename T>
 const typename T::value_type& checkedVectorIndexing(const T& container, size_t index)
 {
