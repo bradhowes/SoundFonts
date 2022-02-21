@@ -131,7 +131,7 @@ public:
 
    @returns the new envelope value.
    */
-  Float process() {
+  Float getNextValue() {
     switch (stageIndex_) {
       case StageIndex::delay: checkIfEndStage(StageIndex::attack); break;
       case StageIndex::attack: updateValue(); checkIfEndStage(StageIndex::hold); break;

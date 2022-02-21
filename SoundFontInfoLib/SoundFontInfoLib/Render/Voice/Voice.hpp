@@ -85,10 +85,10 @@ public:
 
     // auto scaleTuning = state_.modulated(Index::scaleTuning);
 
-    auto modEnv = modulatorEnvelope_.process();
-    auto vibLfo = vibratoLFO_.valueAndIncrement();
-    auto modLfo = modulatorLFO_.valueAndIncrement();
-    auto volEnv = gainEnvelope_.process();
+    auto modEnv = modulatorEnvelope_.getNextValue();
+    auto vibLfo = vibratoLFO_.getNextValue();
+    auto modLfo = modulatorLFO_.getNextValue();
+    auto volEnv = gainEnvelope_.getNextValue();
 
     // The primary pitch value (note that this can be modulated / adjusted as well depending on mod definitions)
     auto pitch = state_.pitch();

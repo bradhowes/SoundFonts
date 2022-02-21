@@ -45,9 +45,9 @@ public:
   /**
    Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
 
-   @returns current waveform value
+   @returns next waveform value to use
    */
-  Float valueAndIncrement() {
+  Float getNextValue() {
     auto counter = counter_;
     increment();
     return counter;

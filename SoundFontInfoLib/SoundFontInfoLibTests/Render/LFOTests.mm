@@ -29,48 +29,48 @@ SampleBasedContexts contexts;
 - (void)testSamples {
   auto osc = LFOTestInjector::make(8.0, 1.0, 0.0);
   [self sample:osc.value() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.0];
   [self sample:osc.value() equals:0.5];
   [self sample:osc.value() equals:0.5];
-  [self sample:osc.valueAndIncrement() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.5];
   [self sample:osc.value() equals:1.0];
   [self sample:osc.value() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:1.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:-0.5];
-  [self sample:osc.valueAndIncrement() equals:-1.0];
-  [self sample:osc.valueAndIncrement() equals:-0.5];
-  [self sample:osc.valueAndIncrement() equals:0.0];
+  [self sample:osc.getNextValue() equals:1.0];
+  [self sample:osc.getNextValue() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:-0.5];
+  [self sample:osc.getNextValue() equals:-1.0];
+  [self sample:osc.getNextValue() equals:-0.5];
+  [self sample:osc.getNextValue() equals:0.0];
 }
 
 - (void)testDelay {
   auto osc = LFOTestInjector::make(8.0, 1.0, 0.125);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.5];
   osc = LFOTestInjector::make(8.0, 1.0, 0.25);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.5];
 }
 
 - (void)testConfig {
   auto osc = LFOTestInjector::make(8.0, 1.0, 0.125);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.5];
   osc = LFOTestInjector::make(8.0, 1.0, 0.0);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.5];
   osc = LFOTestInjector::make(8.0, 2.0, 0.0);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:1.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:1.0];
   osc = LFOTestInjector::make(8.0, 1.0, 0.0);
-  [self sample:osc.valueAndIncrement() equals:0.0];
-  [self sample:osc.valueAndIncrement() equals:0.5];
-  [self sample:osc.valueAndIncrement() equals:1.0];
+  [self sample:osc.getNextValue() equals:0.0];
+  [self sample:osc.getNextValue() equals:0.5];
+  [self sample:osc.getNextValue() equals:1.0];
 }
 
 @end
