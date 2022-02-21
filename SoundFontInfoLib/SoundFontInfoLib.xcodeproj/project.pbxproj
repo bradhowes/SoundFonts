@@ -68,7 +68,7 @@
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; platformFilter = ios; };
 		BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE67265DAEC7002AD159 /* LFOTests.mm */; };
-		BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */; };
+		BDE99B6527BECF3600C9F1BC /* GeneratorIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* GeneratorIndexTests.mm */; };
 		BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE69265DAEC7002AD159 /* PresetTests.mm */; };
 		BDE99B6827BF91C000C9F1BC /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDE99B6727BF91C000C9F1BC /* Accelerate.framework */; };
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
@@ -139,7 +139,7 @@
 		BDB1BE64265DAEC7002AD159 /* SFFileTestsSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFFileTestsSwift.swift; sourceTree = "<group>"; };
 		BDB1BE66265DAEC7002AD159 /* EnvelopeTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EnvelopeTests.mm; sourceTree = "<group>"; };
 		BDB1BE67265DAEC7002AD159 /* LFOTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LFOTests.mm; sourceTree = "<group>"; };
-		BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BufferIndexTests.mm; sourceTree = "<group>"; };
+		BDB1BE68265DAEC7002AD159 /* GeneratorIndexTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GeneratorIndexTests.mm; sourceTree = "<group>"; };
 		BDB1BE69265DAEC7002AD159 /* PresetTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PresetTests.mm; sourceTree = "<group>"; };
 		BDB1BE6B265DAEC7002AD159 /* VoiceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceTests.mm; sourceTree = "<group>"; };
 		BDB1BE6C265DAEC7002AD159 /* StateTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StateTests.mm; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 		BDB1BF88265DB1F0002AD159 /* LFO.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LFO.hpp; path = SoundFontInfoLib/Render/LFO.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NormalizedSampleSource.hpp; path = SoundFontInfoLib/Render/NormalizedSampleSource.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BufferIndex.hpp; path = SoundFontInfoLib/Render/Sample/BufferIndex.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8E265DB1F0002AD159 /* GeneratorIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GeneratorIndex.hpp; path = SoundFontInfoLib/Render/Sample/GeneratorIndex.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZones.hpp; path = SoundFontInfoLib/Render/WithZones.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF90265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Instrument.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF91265DB1F0002AD159 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Range.hpp; path = SoundFontInfoLib/Render/Range.hpp; sourceTree = SOURCE_ROOT; };
@@ -385,7 +385,7 @@
 				BDB1BE66265DAEC7002AD159 /* EnvelopeTests.mm */,
 				BDADC19427BD764C008B26BA /* EngineTests */,
 				BDB1BE67265DAEC7002AD159 /* LFOTests.mm */,
-				BDB1BE68265DAEC7002AD159 /* BufferIndexTests.mm */,
+				BDB1BE68265DAEC7002AD159 /* GeneratorIndexTests.mm */,
 				BDB1BE69265DAEC7002AD159 /* PresetTests.mm */,
 				BDB1BE6C265DAEC7002AD159 /* StateTests.mm */,
 				BDB1BE6A265DAEC7002AD159 /* Voice */,
@@ -575,7 +575,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */,
-				BDB1BF8E265DB1F0002AD159 /* BufferIndex.hpp */,
+				BDB1BF8E265DB1F0002AD159 /* GeneratorIndex.hpp */,
 				BD4BD95A26AC118A00CE06D7 /* Generator.hpp */,
 			);
 			name = Sample;
@@ -808,7 +808,7 @@
 				BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */,
 				BD8E158726D12628000DC781 /* SFFileTestsSwift.swift in Sources */,
 				BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */,
-				BDE99B6527BECF3600C9F1BC /* BufferIndexTests.mm in Sources */,
+				BDE99B6527BECF3600C9F1BC /* GeneratorIndexTests.mm in Sources */,
 				BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */,
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
 				BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */,

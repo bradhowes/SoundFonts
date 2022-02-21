@@ -77,7 +77,8 @@ private:
   template <typename T>
   void loadNormalizedSamples() const {
     os_signpost_id_t signpost = os_signpost_id_generate(log_);
-    size_t size = header_.endIndex() - header_.startIndex();
+    size_t startIndex = header_.startIndex();
+    size_t size = header_.endIndex() - startIndex;
     assert(samples_.size() == size);
     assert(!loaded_);
 
@@ -88,9 +89,9 @@ private:
     Accelerated<T>::scaleProc(samples_.data(), 1, &scale, samples_.data(), 1, size);
     os_signpost_interval_end(log_, signpost, "loadNormalizedSamples", "end");
 
-    auto bounds{Sample::Bounds::make(header_)};
-    maxMagnitude_ = getMaxMagnitude<Float>(bounds.startPos(), bounds.endPos());
-    maxMagnitudeOfLoop_ = getMaxMagnitude<Float>(bounds.startLoopPos(), bounds.endLoopPos());
+    maxMagnitude_ = getMaxMagnitude<T>(0, size);
+    maxMagnitudeOfLoop_ = getMaxMagnitude<T>(header_.startLoopIndex() - startIndex,
+                                             header_.endLoopIndex() - startIndex);
 
     loaded_ = true;
   }
@@ -98,6 +99,7 @@ private:
   template <typename T>
   T getMaxMagnitude(size_t startPos, size_t endPos) const {
     T value{0.0};
+    assert(samples_.size() > startPos && samples_.size() >= endPos);
     Accelerated<T>::magnitudeProc(samples_.data() + startPos, 1, &value, endPos - startPos);
     return value;
   }

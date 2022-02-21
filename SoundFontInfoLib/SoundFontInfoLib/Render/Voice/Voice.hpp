@@ -99,10 +99,11 @@ public:
                             modLfo * state_.modulated(Index::modulatorLFOToPitch) +
                             vibLfo * state_.modulated(Index::vibratoLFOToPitch)) / 100.0;
 
-    auto attenuation = state_.modulated(Index::initialAttenuation);
+    auto attenuation = 1.0; // state_.modulated(Index::initialAttenuation);
 
     auto sample = sampleGenerator_.generate(pitch + pitchAdjustment, canLoop());
-
+    return sample * volEnv;
+    
     return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
   }
 

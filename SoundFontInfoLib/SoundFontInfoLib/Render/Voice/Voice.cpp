@@ -29,16 +29,11 @@ void
 Voice::configure(const Config& config, Engine::Tick startTick)
 {
   startedTick_ = startTick;
-
   state_.prepareForVoice(config);
   loopingMode_ = state_.loopingMode();
-
   gainEnvelope_ = Envelope::Generator::forVol(state_);
   modulatorEnvelope_ = Envelope::Generator::forMod(state_);
-
-//  sampleGenerator_{Sample::Generator(sampleRate, config.sampleBuffer(),
-//                                   Sample::Bounds::make(config.sampleBuffer().header(), state_))},
-
+  sampleGenerator_.configure(config.sampleSource());
   modulatorLFO_ = LFO::forModulator(state_);
   vibratoLFO_ = LFO::forVibrato(state_);
 }
