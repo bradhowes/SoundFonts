@@ -42,41 +42,23 @@ public:
   };
 
   struct Builder {
-    uint16_t bits{0};
-    Builder& generalController(GeneralIndex index) {
-      bits &= 0xFF00;
-      bits |= (uint16_t(index) & 0x7F);
-      return *this;
+    uint16_t bits;
+
+    static Builder GeneralController(GeneralIndex index) {
+      return Builder{static_cast<uint16_t>(uint16_t(index) & 0x7F)};
     }
 
-    Builder& continuousController(int index) {
-      bits &= 0xFF00;
-      bits |= (uint16_t(index) & 0x7F) | (1 << 7);
-      return *this;
+    static Builder ContinuousController(int index) {
+      return Builder{static_cast<uint16_t>((uint16_t(index) & 0x7F) | (1 << 7))};
     }
 
-    Builder& positive() {
-      bits &= ~(1 << 8);
-      return *this;
-    }
+    Builder& positive() { bits &= ~(1 << 8); return *this; }
+    Builder& negative() { bits |=  (1 << 8); return *this; }
+    Builder& unipolar() { bits &= ~(1 << 9); return *this; }
+    Builder& bipolar()  { bits |=  (1 << 9); return *this; }
 
-    Builder& negative() {
-      bits |= (1 << 8);
-      return *this;
-    }
-
-    Builder& unipolar() {
-      bits &= ~(1 << 9);
-      return *this;
-    }
-
-    Builder& bipolar() {
-      bits |= (1 << 9);
-      return *this;
-    }
-
-    Builder& continuity(ContinuityType& continuity) {
-      bits &= 0x3FF | (uint16_t(continuity) << 10);
+    Builder& continuity(ContinuityType continuity) {
+      bits = static_cast<uint16_t>((bits & 0x3FF) | (uint16_t(continuity) << 10));
       return *this;
     }
   };
@@ -87,9 +69,16 @@ public:
    @param bits value that defines a source
    */
   explicit Source(uint16_t bits) : bits_{bits} {}
-  
+
+  /**
+   Constructor using value from a Builder instance.
+
+   @param builder the Builder holding the value to initialize with.
+   */
+  explicit Source(const Builder& builder) : bits_{builder.bits} {}
+
   Source() : bits_{} {}
-  
+
   /// @returns true if the source is valid
   bool isValid() const {
     if (rawType() > static_cast<uint16_t>(ContinuityType::switched)) return false;

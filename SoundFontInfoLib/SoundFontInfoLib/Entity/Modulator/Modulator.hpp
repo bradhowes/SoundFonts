@@ -62,10 +62,10 @@ public:
   
   /// @returns the destination (generator) for the modulator
   Generator::Index generatorDestination() const {
-    assert(hasGeneratorDestination());
+    assert(hasGeneratorDestination() && sfModDestOper < size_t(Generator::Index::numValues));
     return Generator::Index(sfModDestOper);
   }
-  
+
   /// @returns the destination modulator
   size_t linkDestination() const {
     assert(hasModulatorDestination());

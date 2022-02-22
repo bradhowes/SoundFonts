@@ -117,4 +117,100 @@ using namespace SF2::Entity::Modulator;
   XCTAssertTrue(s.isBipolar());
 }
 
+- (void)testBuilderBasic {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMinToMax());
+  XCTAssertTrue(s0.isUnipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::linear);
+}
+
+- (void)testBuilderNone {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::none)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::none);
+  XCTAssertTrue(s0.isNone());
+}
+
+- (void)testBuilderGeneralPositiveUnipolarLinear {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .positive()
+      .unipolar()
+    .continuity(Source::ContinuityType::linear)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMinToMax());
+  XCTAssertTrue(s0.isUnipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::linear);
+}
+
+- (void)testBuilderGeneralNegativeUnipolarLinear {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .negative()
+      .unipolar()
+    .continuity(Source::ContinuityType::linear)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMaxToMin());
+  XCTAssertTrue(s0.isUnipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::linear);
+}
+
+- (void)testBuilderGeneralPositiveBipolarLinear {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .negative()
+      .bipolar()
+    .continuity(Source::ContinuityType::linear)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMaxToMin());
+  XCTAssertTrue(s0.isBipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::linear);
+}
+
+- (void)testBuilderGeneralPositiveBipolarConcave {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .negative()
+      .bipolar()
+    .continuity(Source::ContinuityType::concave)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMaxToMin());
+  XCTAssertTrue(s0.isBipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::concave);
+}
+
+- (void)testBuilderGeneralPositiveBipolarConvex {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .negative()
+      .bipolar()
+    .continuity(Source::ContinuityType::convex)};
+  XCTAssertEqual(s0.generalIndex(), Source::GeneralIndex::noteOnVelocity);
+  XCTAssertTrue(s0.isMaxToMin());
+  XCTAssertTrue(s0.isBipolar());
+  XCTAssertEqual(s0.type(), Source::ContinuityType::convex);
+}
+
+- (void)testFlippingDirection {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .positive()
+      .negative()
+      .positive()
+    .continuity(Source::ContinuityType::convex)};
+  XCTAssertTrue(s0.isMinToMax());
+}
+
+- (void)testFlippingPolarity {
+  Source s0{Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+      .unipolar()
+      .bipolar()
+      .unipolar()
+    .continuity(Source::ContinuityType::convex)};
+  XCTAssertTrue(s0.isUnipolar());
+}
+
+- (void)testChangingContinuity {
+  Source::Builder builder = Source::Builder::GeneralController(Source::GeneralIndex::noteOnVelocity)
+    .continuity(Source::ContinuityType::linear)
+    .continuity(Source::ContinuityType::switched);
+  XCTAssertEqual(Source{builder}.type(), Source::ContinuityType::switched);
+  builder = builder.continuity(Source::ContinuityType::linear);
+  XCTAssertEqual(Source{builder}.type(), Source::ContinuityType::linear);
+}
+
 @end
