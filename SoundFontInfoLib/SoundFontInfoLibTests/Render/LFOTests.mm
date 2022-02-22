@@ -2,7 +2,7 @@
 
 #import <vector>
 
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 #import "Render/LFO.hpp"
 
 using namespace SF2::Render;

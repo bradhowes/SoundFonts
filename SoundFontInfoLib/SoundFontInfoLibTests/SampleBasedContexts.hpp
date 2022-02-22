@@ -12,19 +12,27 @@
 struct PresetTestContextBase
 {
   inline static SF2::Float epsilon = 1.0e-8;
-  static SF2::IO::File makeFile(int urlIndex);
+  static NSURL* getUrl(int urlIndex);
+  static int openFile(int urlIndex);
 };
 
 template <int UrlIndex>
 struct PresetTestContext : PresetTestContextBase
 {
   PresetTestContext(int presetIndex = 0, SF2::Float sampleRate = 44100.0) :
-  file_{makeFile(UrlIndex)},
+  fd_{openFile(UrlIndex)},
+  file_{SF2::IO::File(fd_)},
   instruments_{file_},
   preset_{file_, instruments_, file_.presets()[presetIndex]},
   channel_{},
   sampleRate_{sampleRate}
   {}
+
+  const NSURL* url() const {
+    return getUrl(UrlIndex);
+  }
+
+  int fd() const { return fd_; }
 
   const SF2::IO::File& file() const { return file_; }
 
@@ -48,6 +56,7 @@ struct PresetTestContext : PresetTestContextBase
   }
 
 private:
+  int fd_;
   SF2::IO::File file_;
   SF2::Render::InstrumentCollection instruments_;
   SF2::Render::Preset preset_;

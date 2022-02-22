@@ -3,6 +3,7 @@
 #pragma once
 
 #include <fstream>
+#include <map>
 #include <memory>
 #include <vector>
 
@@ -90,12 +91,26 @@ public:
   const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
   /**
-   Obtain a SampleBuffer at the given sample header index
+   Obtain a SampleBuffer associated with the given sample header
 
-   @param index the index of the buffer to obtain
+   @param header the sample header to use as a key
    @returns SampleBuffer reference
    */
-  const Render::NormalizedSampleSource& sampleSource(uint16_t index) const { return sampleSources_[index]; }
+  const Render::NormalizedSampleSource& sampleSource(const Entity::SampleHeader& header) const {
+    auto found = sampleSources_.find(makeSampleKey(header));
+    assert(found != sampleSources_.end());
+    return found->second;
+  }
+
+  /**
+   Obtain a SampleBuffer at the given sample header index
+
+   @param headerIndex the index of the buffer to obtain
+   @returns SampleBuffer reference
+   */
+  const Render::NormalizedSampleSource& sampleSource(size_t headerIndex) const {
+    return sampleSource(sampleHeaders_[headerIndex]);
+  }
 
   void patchReleaseTimes(float maxDuration);
   
@@ -104,6 +119,14 @@ public:
   void dump() const;
 
 private:
+
+  using SampleKey = uint64_t;
+
+  static SampleKey makeSampleKey(const Entity::SampleHeader& header)
+  {
+    return uint64_t(header.startIndex()) << 32 | header.endIndex();
+  }
+
   off_t size_;
   off_t sampleDataBegin_;
   off_t sampleDataEnd_;
@@ -130,8 +153,7 @@ private:
   ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
   ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-  std::vector<Render::NormalizedSampleSource> sampleSources_;
-
+  std::map<SampleKey, Render::NormalizedSampleSource> sampleSources_;
   std::shared_ptr<int16_t> sampleData_;
 
   inline static Logger log_{Logger::Make("IO", "File")};

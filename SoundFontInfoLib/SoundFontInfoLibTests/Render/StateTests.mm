@@ -2,7 +2,7 @@
 
 #import <iostream>
 
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 
 #import "Entity/Generator/Index.hpp"
 #import "MIDI/Channel.hpp"

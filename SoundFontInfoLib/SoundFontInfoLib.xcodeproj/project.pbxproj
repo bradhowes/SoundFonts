@@ -107,7 +107,7 @@
 
 /* Begin PBXFileReference section */
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SampleBasedContexts.h; sourceTree = "<group>"; };
+		BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SampleBasedContexts.hpp; sourceTree = "<group>"; };
 		BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SampleBasedContexts.mm; sourceTree = "<group>"; };
 		BD4BD95A26AC118A00CE06D7 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Generator.hpp; sourceTree = "<group>"; };
 		BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FluidSynthTruths.cpp; sourceTree = "<group>"; };
@@ -337,7 +337,7 @@
 				BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */,
 				BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */,
 				BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */,
-				BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.h */,
+				BD2FC8C726CFD8E5002AF6CD /* SampleBasedContexts.hpp */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BDB1BE5D265DAEC6002AD159 /* Entity */,
 				BDB1BE60265DAEC6002AD159 /* IO */,

@@ -5,7 +5,7 @@
 #import "IO/File.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Preset.hpp"
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;

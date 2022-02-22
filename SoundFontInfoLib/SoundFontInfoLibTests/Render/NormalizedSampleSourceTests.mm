@@ -6,6 +6,7 @@
 #import "Types.hpp"
 #import "MIDI/Channel.hpp"
 #import "Render/Sample/Generator.hpp"
+#import "SampleBasedContexts.hpp"
 
 using namespace SF2::Render;
 
@@ -13,7 +14,9 @@ using namespace SF2::Render;
 
 @end
 
-@implementation NormalizedSampleSourceTests
+@implementation NormalizedSampleSourceTests {
+  SampleBasedContexts contexts;
+}
 
 static SF2::Entity::SampleHeader header{0, 6, 3, 5, 100, 69, 0}; // 0: start, 1: end, 2: loop start, 3: loop end
 static SF2::MIDI::Channel channel;
@@ -32,7 +35,7 @@ static SF2::Float epsilon = 1e-6;
   source.load();
 
   XCTAssertTrue(source.isLoaded());
-  XCTAssertEqual(source.size(), source.header().endIndex());
+  XCTAssertEqual(source.size(), source.header().endIndex() + NormalizedSampleSource::sizePaddingAfterEnd);
   XCTAssertEqual(source[0], values[0] * NormalizedSampleSource::normalizationScale);
   XCTAssertEqual(source[1], values[1] * NormalizedSampleSource::normalizationScale);
 
@@ -78,6 +81,54 @@ static SF2::Float epsilon = 1e-6;
 //  XCTAssertEqualWithAccuracy(0.761876096931, gen.generate(0.0, false), 0.0000001);
 //  XCTAssertEqualWithAccuracy(0.348288029812, gen.generate(0.0, false), 0.0000001);
 //#endif
+}
+
+- (void)testLoadSamplesPerformance0 {
+  auto file = contexts.context0.file();
+  auto count = file.sampleHeaders().size();
+
+  [self measureBlock:^{
+    for (size_t index = 0; index < count; ++index) {
+      auto samples = file.sampleSource(index);
+      samples.load();
+    }
+  }];
+}
+
+- (void)testLoadSamplesPerformance1 {
+  auto file = contexts.context1.file();
+  auto count = file.sampleHeaders().size();
+
+  [self measureBlock:^{
+    for (size_t index = 0; index < count; ++index) {
+      auto samples = file.sampleSource(index);
+      samples.load();
+    }
+  }];
+}
+
+- (void)testLoadSamplesPerformance2 {
+  auto file = contexts.context2.file();
+  auto count = file.sampleHeaders().size();
+
+  [self measureBlock:^{
+    for (size_t index = 0; index < count; ++index) {
+      auto samples = file.sampleSource(index);
+      samples.load();
+    }
+  }];
+}
+
+- (void)testLoadSamplesPerformance3 {
+  auto file = contexts.context3.file();
+  auto count = file.sampleHeaders().size();
+
+  [self measureBlock:^{
+    for (size_t index = 0; index < count; ++index) {
+      auto samples = file.sampleSource(index);
+      samples.load();
+    }
+  }];
 }
 
 @end

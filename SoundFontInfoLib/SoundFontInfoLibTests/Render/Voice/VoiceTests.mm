@@ -7,7 +7,7 @@
 #import "Render/Sample/Generator.hpp"
 #import "Render/Voice/Voice.hpp"
 
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;

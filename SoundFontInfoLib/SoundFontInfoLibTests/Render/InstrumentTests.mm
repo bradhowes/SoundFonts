@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 
 #include "IO/File.hpp"
 #include "MIDI/Channel.hpp"

@@ -3,16 +3,22 @@
 
 #import <SF2Files/SF2Files-Swift.h>
 
-#import "SampleBasedContexts.h"
+#import "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;
 
-SF2::IO::File PresetTestContextBase::makeFile(int urlIndex)
+NSURL* PresetTestContextBase::getUrl(int urlIndex)
+{
+  NSArray<NSURL*>* urls = SF2Files.allResources;
+  return [urls objectAtIndex:urlIndex];
+}
+
+int PresetTestContextBase::openFile(int urlIndex)
 {
   NSArray<NSURL*>* urls = SF2Files.allResources;
   NSURL* url = [urls objectAtIndex:urlIndex];
-  return IO::File(::open(url.path.UTF8String, O_RDONLY));
+  return ::open(url.path.UTF8String, O_RDONLY);
 }
 
 @implementation XCTestCase (SampleComparison)

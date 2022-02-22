@@ -15,11 +15,10 @@ namespace SF2::Render::Sample {
  Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity as well as
  state values from generators that can change in real-time. Note that unlike the "absolute" values in the 'shdr' and
  the state offsets which are all based on the entire sample block of the file, these values are offsets from the first
- sample value from the 'shdr'
+ sample found in a NormalizedSampleSource.
  */
 class Bounds {
 public:
-    
   using Index = Entity::Generator::Index;
 
   /**
@@ -44,7 +43,17 @@ public:
     // Don't trust values above. Clamp them to valid ranges before using.
     auto lower = header.startIndex();
     auto upper = header.endIndex();
-    auto clampPos = [lower, upper](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
+    auto clampPos = [header, lower, upper](size_t value) -> size_t {
+      if (value < lower) {
+        os_log_error(log_, "value < lower - %{public}s value: %zu lower: %zu", header.sampleName(), value, lower);
+        value = lower;
+      }
+      else if (value > upper) {
+        os_log_error(log_, "value > upper - %{public}s value: %zu upper: %zu", header.sampleName(), value, upper);
+        value = lower;
+      }
+      return value - lower;
+    };
 
     return Bounds(clampPos(lower + startOffset),
                   clampPos(header.startLoopIndex() + startLoopOffset),
@@ -59,9 +68,20 @@ public:
    */
   static Bounds make(const Entity::SampleHeader& header) {
     auto lower = header.startIndex();
-    auto upper = header.endIndex();
-    auto clampPos = [lower, upper](size_t v) -> size_t { return std::clamp<size_t>(v, lower, upper) - lower; };
-    return Bounds(lower, clampPos(header.startLoopIndex()), clampPos(header.endLoopIndex()), upper);
+    auto upper = std::max(lower, header.endIndex());
+    auto clampPos = [header, lower, upper](size_t value) -> size_t {
+      if (value < lower) {
+        os_log_error(log_, "value < lower - %{public}s value: %zu lower: %zu", header.sampleName(), value, lower);
+        value = lower;
+      }
+      else if (value > upper) {
+        os_log_error(log_, "value > upper - %{public}s value: %zu upper: %zu", header.sampleName(), value, upper);
+        value = lower;
+      }
+      return value - lower;
+    };
+
+    return Bounds(0, clampPos(header.startLoopIndex()), clampPos(header.endLoopIndex()), upper - lower);
   }
 
   Bounds() = default;
@@ -77,10 +97,9 @@ public:
   /// Number of samples involved in a loop
   size_t loopSize() const { return endLoopPos() - startLoopPos(); }
   /// True if there is a loop established for the samples
-  bool hasLoop() const { return startLoopPos() < endLoopPos() && endLoopPos() <= endPos(); }
+  bool hasLoop() const { return startLoopPos_ > startPos_ && startLoopPos_ < endLoopPos_ && endLoopPos_ <= endPos_; }
 
 private:
-
   Bounds(size_t startPos, size_t startLoopPos, size_t endLoopPos, size_t endPos) :
   startPos_{startPos}, startLoopPos_{startLoopPos}, endLoopPos_{endLoopPos}, endPos_{endPos} {}
 
@@ -88,6 +107,8 @@ private:
   size_t startLoopPos_{0};
   size_t endLoopPos_{0};
   size_t endPos_{0};
+
+  inline static Logger log_{Logger::Make("Render.Sample", "Bounds")};
 };
 
 } // namespace SF2::Render::Sample
