@@ -3,47 +3,79 @@
 #include <memory>
 #include <limits>
 
+namespace SF2::Render::Engine {
+
+class OldestActiveVoiceCache;
+
 /**
  Custom allocator for the OldestActiveVoiceCache for the list nodes. We allocate all nodes that we will
  ever need and then keep them when list deallocates them. This is so that we do not incur any memory
- allocations while rendering.
+ allocations when voices change while we are rendering.
  */
 template <typename T>
 class ListNodeAllocator {
-public:
-  using value_type = T;
+
+private: // Only makes sense for OldestActiveVoiceCache to be able to use this allocator.
+  friend class OldestActiveVoiceCache;
 
   /**
    Construct a new allocator that will keep around maxNodeCount nodes.
 
    @param maxNodeCount max number of list nodes
    */
-  ListNodeAllocator(size_t maxNodeCount) noexcept : maxNodeCount_{maxNodeCount} {}
+  explicit ListNodeAllocator(size_t maxNodeCount) noexcept : maxNodeCount_{maxNodeCount} {}
 
+public:
+  using value_type = T;
+
+  /**
+   Template conversion constructor for U->T. Just copy the configuration parameter and move on.
+   */
   template <typename U> ListNodeAllocator(const ListNodeAllocator<U>& rhs) noexcept
   : maxNodeCount_{rhs.maxNodeCount_}
   {}
 
+  /**
+   Copy constructor. Not needed nor supported.
+   */
   ListNodeAllocator(const ListNodeAllocator&) = delete;
 
+  /**
+   Move constructor. Just copy the configuration parameter.
+   */
   ListNodeAllocator(ListNodeAllocator&& other) noexcept
   : maxNodeCount_{other.maxNodeCount_}
   {}
 
+  /**
+   Destructor. Release any allocated nodes.
+   */
   ~ListNodeAllocator() noexcept
   {
-    releaseFreeList();
+    if (memoryBlock_ != nullptr) ::free(memoryBlock_);
+    memoryBlock_ = nullptr;
   }
 
+  /**
+   Assignment operator. Not needed nor supported.
+   */
   ListNodeAllocator& operator =(const ListNodeAllocator&) = delete;
 
-  ListNodeAllocator& operator =(ListNodeAllocator&& other) noexcept {
-    releaseFreeList();
-    freeList_ = other.freeList;
-    other.freeList_ = nullptr;
-    return *this;
-  }
+  /**
+   Move assignment operator. Not needed nor supported.
+   */
+  ListNodeAllocator& operator =(ListNodeAllocator&& other) noexcept = delete;
 
+  union Node {
+    Node* next;
+    typename std::aligned_storage<sizeof(T), alignof(T)>::type storage;
+  };
+
+  /**
+   Allocate a new node.
+
+   @param num the number of items to allocate. Asserts if not 1.
+   */
   value_type* allocate(std::size_t num, const void* = 0)
   {
     assert(num == 1);
@@ -51,11 +83,19 @@ public:
     // Allocate our nodes first time asked for one. A better way would be to grab a block of memory and then carve out
     // the individual nodes from it. However, since these allocations happen all at once here, there is a good chance
     // that they are all close together.
-    while (maxNodeCount_ > 0) {
-      --maxNodeCount_;
-      auto node = reinterpret_cast<Node*>(::operator new(sizeof(T)));
-      node->next = freeList_;
-      freeList_ = node;
+    if (memoryBlock_ == nullptr) {
+      size_t elementSize = sizeof(Node);
+      size_t totalSize = elementSize * maxNodeCount_;
+      memoryBlock_ = ::malloc(totalSize);
+      if (memoryBlock_ ==  nullptr) throw std::bad_alloc();
+      void* limit = reinterpret_cast<char*>(memoryBlock_) + totalSize;
+      Node* ptr = reinterpret_cast<Node*>(memoryBlock_);
+      for (size_t index = 0; index < maxNodeCount_; ++index) {
+        assert(ptr < limit);
+        ptr->next = freeList_;
+        freeList_ = ptr;
+        ++ptr;
+      }
     }
 
     auto ptr = freeList_;
@@ -72,21 +112,9 @@ public:
     freeList_ = ptr;
   }
 
-  union Node {
-    Node* next;
-    typename std::aligned_storage<sizeof(T), alignof(T)>::type storage;
-  };
-
-  void releaseFreeList() {
-    while (freeList_ != nullptr) {
-      auto next = freeList_->next;
-      delete freeList_;
-      freeList_ = next;
-    }
-  }
-
   size_t maxNodeCount_;
   Node* freeList_{nullptr};
+  void* memoryBlock_{nullptr};
 };
 
 template <typename T, typename U>
@@ -97,4 +125,6 @@ inline bool operator == (const ListNodeAllocator<T>&, const ListNodeAllocator<U>
 template <typename T, typename U>
 inline bool operator != (const ListNodeAllocator<T>&, const ListNodeAllocator<U>&) {
   return false;
+}
+
 }
