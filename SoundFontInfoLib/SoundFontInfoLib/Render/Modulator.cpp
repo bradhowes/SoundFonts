@@ -38,7 +38,7 @@ Modulator::SourceValue(const EntityMod::Source& source, const State& state)
     case GI::none: return nullptr;
     case GI::noteOnVelocity: return [&state](){ return state.velocity(); };
     case GI::noteOnKeyValue: return [&state](){ return state.key(); };
-    case GI::polyPressure: return [&state](){ return state.channel().keyPressure(state.key()); };
+    case GI::keyPressure: return [&state](){ return state.channel().keyPressure(state.key()); };
     case GI::channelPressure: return [&state](){ return state.channel().channelPressure(); };
     case GI::pitchWheel: return [&state](){ return state.channel().pitchWheelValue(); };
     case GI::pitchWheelSensitivity: return [&state](){ return state.channel().pitchWheelSensitivity(); };

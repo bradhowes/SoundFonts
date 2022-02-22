@@ -26,13 +26,13 @@ public:
     none = 0,
     noteOnVelocity = 2,
     noteOnKeyValue = 3,
-    polyPressure = 10,
+    keyPressure = 10,
     channelPressure = 13,
     pitchWheel = 14,
     pitchWheelSensitivity = 16,
     link = 127
   };
-  
+
   /// Transformations applied to values that come from a source
   enum struct ContinuityType : uint16_t {
     linear = 0,
@@ -40,7 +40,47 @@ public:
     convex,
     switched
   };
-  
+
+  struct Builder {
+    uint16_t bits{0};
+    Builder& generalController(GeneralIndex index) {
+      bits &= 0xFF00;
+      bits |= (uint16_t(index) & 0x7F);
+      return *this;
+    }
+
+    Builder& continuousController(int index) {
+      bits &= 0xFF00;
+      bits |= (uint16_t(index) & 0x7F) | (1 << 7);
+      return *this;
+    }
+
+    Builder& positive() {
+      bits &= ~(1 << 8);
+      return *this;
+    }
+
+    Builder& negative() {
+      bits |= (1 << 8);
+      return *this;
+    }
+
+    Builder& unipolar() {
+      bits &= ~(1 << 9);
+      return *this;
+    }
+
+    Builder& bipolar() {
+      bits |= (1 << 9);
+      return *this;
+    }
+
+    Builder& continuity(ContinuityType& continuity) {
+      bits &= 0x3FF | (uint16_t(continuity) << 10);
+      return *this;
+    }
+  };
+
   /**
    Constructor
    
@@ -85,15 +125,12 @@ public:
   bool isLinked() const {
     return isValid() && isGeneralController() && generalIndex() == GeneralIndex::link;
   }
-  
+
   /// @returns the index of the general controller (raises exception if not configured to be a general controller)
   GeneralIndex generalIndex() const {
     assert(isValid() && isGeneralController());
     return GeneralIndex(rawIndex());
   }
-  
-  /// @returns true if this source is not connected to anything (or it is invalid)
-  bool isNone() const { return !isValid() || (isGeneralController() && generalIndex() == GeneralIndex::none); }
   
   /// @returns the index of the continuous controller (raises exception if not configured to be a continuous
   /// controller)
@@ -101,6 +138,9 @@ public:
     assert(isValid() && isContinuousController());
     return rawIndex();
   }
+
+  /// @returns true if this source is not connected to anything (or it is invalid)
+  bool isNone() const { return !isValid() || (isGeneralController() && generalIndex() == GeneralIndex::none); }
   
   /// @returns the continuity type for the controller values
   ContinuityType type() const {

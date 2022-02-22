@@ -16,7 +16,7 @@ Source::description() const {
       case GeneralIndex::none: os << "none"; break;
       case GeneralIndex::noteOnVelocity: os << "velocity"; break;
       case GeneralIndex::noteOnKeyValue: os << "key"; break;
-      case GeneralIndex::polyPressure: os << "polyPressure"; break;
+      case GeneralIndex::keyPressure: os << "keyPressure"; break;
       case GeneralIndex::channelPressure: os << "channelPressure"; break;
       case GeneralIndex::pitchWheel: os << "pitchWheel"; break;
       case GeneralIndex::pitchWheelSensitivity: os << "pitchWheelSensitivity"; break;
