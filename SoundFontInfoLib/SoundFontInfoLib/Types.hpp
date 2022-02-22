@@ -33,7 +33,7 @@ struct Accelerated
   /**
    Type definition for vDSP_vsdiv / vDSP_vsdivD routines that divide a sequence of floating-point values by a scalar.
    */
-  using ScaleProc = std::function<void(const T*, vDSP_Stride, T*, T*, vDSP_Stride, vDSP_Length)>;
+  using ScaleProc = std::function<void(const T*, vDSP_Stride, const T*, T*, vDSP_Stride, vDSP_Length)>;
   inline static ScaleProc scaleProc = []() {
     if constexpr (std::is_same_v<T, float>) return vDSP_vsdiv;
     if constexpr (std::is_same_v<T, double>) return vDSP_vsdivD;
