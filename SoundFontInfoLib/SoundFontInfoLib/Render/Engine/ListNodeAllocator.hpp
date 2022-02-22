@@ -15,7 +15,9 @@ class OldestActiveVoiceCache;
 template <typename T>
 class ListNodeAllocator {
 
-private: // Only makes sense for OldestActiveVoiceCache to be able to use this allocator.
+private:
+
+  // Only makes sense for OldestActiveVoiceCache to be able to use this allocator.
   friend class OldestActiveVoiceCache;
 
   /**
@@ -31,14 +33,8 @@ public:
   /**
    Template conversion constructor for U->T. Just copy the configuration parameter and move on.
    */
-  template <typename U> ListNodeAllocator(const ListNodeAllocator<U>& rhs) noexcept
-  : maxNodeCount_{rhs.maxNodeCount_}
+  template <typename U> ListNodeAllocator(const ListNodeAllocator<U>& rhs) noexcept : maxNodeCount_{rhs.maxNodeCount()}
   {}
-
-  /**
-   Copy constructor. Not needed nor supported.
-   */
-  ListNodeAllocator(const ListNodeAllocator&) = delete;
 
   /**
    Move constructor. Just copy the configuration parameter.
@@ -56,14 +52,8 @@ public:
     memoryBlock_ = nullptr;
   }
 
-  /**
-   Assignment operator. Not needed nor supported.
-   */
+  ListNodeAllocator(const ListNodeAllocator&) = delete;
   ListNodeAllocator& operator =(const ListNodeAllocator&) = delete;
-
-  /**
-   Move assignment operator. Not needed nor supported.
-   */
   ListNodeAllocator& operator =(ListNodeAllocator&& other) noexcept = delete;
 
   union Node {
@@ -104,6 +94,12 @@ public:
     return reinterpret_cast<T*>(ptr);
   }
 
+  /**
+   Deallocate a node.
+
+   @param p pointer to node to deallocate.
+   @param num number of items to be deallocated. Must be 1.
+   */
   void deallocate(value_type* p, std::size_t num)
   {
     assert(num == 1);
@@ -112,6 +108,9 @@ public:
     freeList_ = ptr;
   }
 
+  size_t maxNodeCount() const { return maxNodeCount_; }
+
+private:
   size_t maxNodeCount_;
   Node* freeList_{nullptr};
   void* memoryBlock_{nullptr};
