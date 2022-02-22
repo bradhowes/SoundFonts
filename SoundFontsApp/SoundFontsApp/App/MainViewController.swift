@@ -26,7 +26,7 @@ final class MainViewController: UIViewController, Tasking {
   private var startRequested = false
   private var volumeMonitor: VolumeMonitor?
   private var observers = [NSObjectProtocol]()
-#if TEST_MEDIA_SERVICES_RESTART
+#if TEST_MEDIA_SERVICES_RESTART // see Development.xcconfig
   private var resetTimers = [Timer]()
 #endif
 
@@ -61,8 +61,7 @@ final class MainViewController: UIViewController, Tasking {
       settings.showedTutorial = true
     }
 
-    // When enabled, start a timer that will trigger a notification to force the audio system to restart.
-#if TEST_MEDIA_SERVICES_RESTART
+#if TEST_MEDIA_SERVICES_RESTART // See Development.xcconfig
     resetTimers.append(Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
       NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: nil)
     })

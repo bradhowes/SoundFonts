@@ -24,7 +24,11 @@ using namespace SF2::Render;
 }
 
 - (void)setUp {
+#ifdef PLAY_AUDIO // See Development.xcconfig
   self.playAudio = YES;
+#else
+  self.playAudio = NO;
+#endif
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {

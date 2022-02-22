@@ -253,7 +253,7 @@ extension UIImageView {
   }
 }
 
-#if SHOW_INDEX_PATHS
+#if SHOW_INDEX_PATHS // See Development.xcconfig
 extension IndexPath {
   fileprivate var prefixRow: String { "[\(row)]:"}
   fileprivate var prefixSectionRow: String { "[\(section).\(row)]:"}

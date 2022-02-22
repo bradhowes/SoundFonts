@@ -1,12 +1,23 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
+// Periodically force an AV media services restart sequence
 TEST_MEDIA_SERVICES_RESTART = -DTEST_MEDIA_SERVICES_RESTART
+
+// Show index paths in table views.
 SHOW_INDEX_PATHS = -DSHOW_INDEX_PATHS
+
+// Delay internal notifications of events. Helpful when checking for unexpected ordering dependencies between events.
 DELAY_NOTIFICATIONS = -DDELAY_NOTIFICATIONS
 
-DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS)
+// Play rendered samples in unit tests
+PLAY_AUDIO = -DPLAY_AUDIO
+
+// All of the flags above. To disable one, just prepend an 'x' to its name.
+DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(xPLAY_AUDIO)
+
+NAME_SUFFIX = Dev
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 OTHER_SWIFT_FLAGS = $(inherited) -DDev $(DEBUG_FLAGS)
-NAME_SUFFIX = Dev
+OTHER_CPLUSPLUSFLAGS = $(inherited) $(DEBUG_FLAGS)

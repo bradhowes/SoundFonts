@@ -89,7 +89,7 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
     if cacheEvent { lastEvent = event }
     return subscriptionsQueue.sync {
       subscriptions.values.forEach { closure in
-#if DELAY_NOTIFICATIONS
+#if DELAY_NOTIFICATIONS // see Development.xcconfig
         let delay = Int.random(in: 100...3000)
         Self.notificationQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { closure(event) }
 #else
