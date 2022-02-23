@@ -229,7 +229,7 @@
 		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NormalizedSampleSource.hpp; path = SoundFontInfoLib/Render/NormalizedSampleSource.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8E265DB1F0002AD159 /* GeneratorIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GeneratorIndex.hpp; path = SoundFontInfoLib/Render/Sample/GeneratorIndex.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8F265DB1F0002AD159 /* WithZonesBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZonesBase.hpp; path = SoundFontInfoLib/Render/Zones/WithZonesBase.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8F265DB1F0002AD159 /* WithZoneCollectionBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZoneCollectionBase.hpp; path = SoundFontInfoLib/Render/Zones/WithZoneCollectionBase.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF90265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Instrument.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF91265DB1F0002AD159 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Range.hpp; path = SoundFontInfoLib/Render/Range.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF92265DB1F0002AD159 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Zone.hpp; path = SoundFontInfoLib/Render/Zones/Zone.hpp; sourceTree = SOURCE_ROOT; };
@@ -285,7 +285,7 @@
 			children = (
 				BDB1BF7C265DB1F0002AD159 /* Instrument.hpp */,
 				BDB1BF78265DB1F0002AD159 /* Preset.hpp */,
-				BDB1BF8F265DB1F0002AD159 /* WithZonesBase.hpp */,
+				BDB1BF8F265DB1F0002AD159 /* WithZoneCollectionBase.hpp */,
 				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
 				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
 				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,

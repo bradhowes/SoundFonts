@@ -22,6 +22,8 @@ using MIDIRange = Range<int>;
  A zone represents a collection of generator and modulator settings that apply to a range of MIDI key and velocity
  values. There are two types: instrument zones and preset zones. Generator settings for the former specify actual values
  to use, while those in preset zones define adjustments to values set by the instrument.
+
+ Must be derived from.
  */
 class Zone
 {
