@@ -40,7 +40,7 @@ const std::array<Modulator, Modulator::size> Modulator::defaults {
   // MIDI pitch wheel to "initial pitch" (8.4.10). Follow FluidSynth here: as there is no "initial pitch" generator in
   // the spec, link the modulator to `fineTune` instead. That way it can be overridden by a preset and/or instrument.
   Modulator(Source::Builder::GeneralController(Source::GeneralIndex::pitchWheel).bipolar().make(),
-            Generator::Index::fineTune, 12700,
+            Generator::Index::initialPitch, 12700,
             Source::Builder::GeneralController(Source::GeneralIndex::pitchWheelSensitivity).make(), Transform(0))
 };
 
