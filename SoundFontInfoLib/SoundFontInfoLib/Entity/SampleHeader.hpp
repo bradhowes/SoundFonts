@@ -117,6 +117,8 @@ public:
   
   /// @returns the pitch correction to apply when playing back the samples
   int pitchCorrection() const { return correction; }
+
+  size_t sampleSize() const { return endIndex() - startIndex(); }
   
   void dump(const std::string& indent, size_t index) const;
 
