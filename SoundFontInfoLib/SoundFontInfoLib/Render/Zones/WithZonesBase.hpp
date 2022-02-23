@@ -6,10 +6,10 @@
 
 #include "IO/File.hpp"
 
-#include "Render/Zone.hpp"
-#include "Render/ZoneCollection.hpp"
+#include "Render/Zones/Zone.hpp"
+#include "Render/Zones/ZoneCollection.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Zones {
 
 /**
  Base class for entities that contain a collection of zones (there are two: Preset and Instrument). Contains common
@@ -19,7 +19,7 @@ namespace SF2::Render {
  - `E` is the SF2::Entity class that defines the zone configuration in the SF2 file.
  */
 template <typename T, typename E>
-class WithZones
+class WithZonesBase
 {
 public:
   using ZoneType = T;
@@ -39,7 +39,7 @@ public:
   const EntityType& configuration() const { return configuration_; }
 
 protected:
-  WithZones(size_t zoneCount, const EntityType& configuration) :
+  WithZonesBase(size_t zoneCount, const EntityType& configuration) :
   zones_{zoneCount}, configuration_{configuration} {}
 
   WithZoneCollection zones_;

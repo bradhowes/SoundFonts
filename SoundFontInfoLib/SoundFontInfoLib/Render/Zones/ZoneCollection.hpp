@@ -11,7 +11,7 @@
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Zones {
 
 /**
  Templated collection of zones. A non-global zone defines a range of MIDI keys and/or velocities over which it operates.

@@ -209,13 +209,13 @@
 		BDB1BF71265DB1F0002AD159 /* Format.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Format.hpp; path = SoundFontInfoLib/IO/Format.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF74265DB1F0002AD159 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Preset.hpp; path = SoundFontInfoLib/Render/Preset.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF75265DB1F0002AD159 /* InstrumentCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = InstrumentCollection.hpp; path = SoundFontInfoLib/Render/InstrumentCollection.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF76265DB1F0002AD159 /* Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zone.cpp; path = SoundFontInfoLib/Render/Zone.cpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF76265DB1F0002AD159 /* Zone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Zone.cpp; path = SoundFontInfoLib/Render/Zones/Zone.cpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF77265DB1F0002AD159 /* Modulator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Modulator.hpp; path = SoundFontInfoLib/Render/Modulator.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PresetZone.hpp; path = SoundFontInfoLib/Render/PresetZone.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ZoneCollection.hpp; path = SoundFontInfoLib/Render/ZoneCollection.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF78265DB1F0002AD159 /* Preset.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Preset.hpp; path = SoundFontInfoLib/Render/Zones/Preset.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ZoneCollection.hpp; path = SoundFontInfoLib/Render/Zones/ZoneCollection.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = InputBuffer.hpp; path = SoundFontInfoLib/Render/InputBuffer.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF7B265DB1F0002AD159 /* DelayBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DelayBuffer.hpp; path = SoundFontInfoLib/Render/DelayBuffer.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF7C265DB1F0002AD159 /* InstrumentZone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = InstrumentZone.hpp; path = SoundFontInfoLib/Render/InstrumentZone.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF7C265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Zones/Instrument.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF7D265DB1F0002AD159 /* BufferFacet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BufferFacet.hpp; path = SoundFontInfoLib/Render/BufferFacet.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF7E265DB1F0002AD159 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = SoundFontInfoLib/Render/README.md; sourceTree = SOURCE_ROOT; };
 		BDB1BF80265DB1F0002AD159 /* Generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Generator.hpp; path = SoundFontInfoLib/Render/Envelope/Generator.hpp; sourceTree = SOURCE_ROOT; };
@@ -229,10 +229,10 @@
 		BDB1BF8A265DB1F0002AD159 /* Bounds.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Bounds.hpp; path = SoundFontInfoLib/Render/Sample/Bounds.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = NormalizedSampleSource.hpp; path = SoundFontInfoLib/Render/NormalizedSampleSource.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF8E265DB1F0002AD159 /* GeneratorIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GeneratorIndex.hpp; path = SoundFontInfoLib/Render/Sample/GeneratorIndex.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZones.hpp; path = SoundFontInfoLib/Render/WithZones.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF8F265DB1F0002AD159 /* WithZonesBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WithZonesBase.hpp; path = SoundFontInfoLib/Render/Zones/WithZonesBase.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF90265DB1F0002AD159 /* Instrument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Instrument.hpp; path = SoundFontInfoLib/Render/Instrument.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF91265DB1F0002AD159 /* Range.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Range.hpp; path = SoundFontInfoLib/Render/Range.hpp; sourceTree = SOURCE_ROOT; };
-		BDB1BF92265DB1F0002AD159 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Zone.hpp; path = SoundFontInfoLib/Render/Zone.hpp; sourceTree = SOURCE_ROOT; };
+		BDB1BF92265DB1F0002AD159 /* Zone.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Zone.hpp; path = SoundFontInfoLib/Render/Zones/Zone.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF93265DB1F0002AD159 /* Modulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Modulator.cpp; path = SoundFontInfoLib/Render/Modulator.cpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF94265DB1F0002AD159 /* Types.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Types.hpp; path = SoundFontInfoLib/Types.hpp; sourceTree = SOURCE_ROOT; };
 		BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundFontInfo.h; sourceTree = SOURCE_ROOT; };
@@ -280,6 +280,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BD5495D427C6F37D00A1AB20 /* Zones */ = {
+			isa = PBXGroup;
+			children = (
+				BDB1BF7C265DB1F0002AD159 /* Instrument.hpp */,
+				BDB1BF78265DB1F0002AD159 /* Preset.hpp */,
+				BDB1BF8F265DB1F0002AD159 /* WithZonesBase.hpp */,
+				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
+				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
+				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
+			);
+			path = Zones;
+			sourceTree = "<group>";
+		};
 		BD74D15D23CDB1D200204ED4 = {
 			isa = PBXGroup;
 			children = (
@@ -540,23 +553,18 @@
 				BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */,
 				BDB1BF90265DB1F0002AD159 /* Instrument.hpp */,
 				BDB1BF75265DB1F0002AD159 /* InstrumentCollection.hpp */,
-				BDB1BF7C265DB1F0002AD159 /* InstrumentZone.hpp */,
+				BD5495D427C6F37D00A1AB20 /* Zones */,
 				BDB1BF88265DB1F0002AD159 /* LFO.hpp */,
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
 				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
 				BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */,
 				BDADC19227BD761F008B26BA /* Preset.cpp */,
 				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
-				BDB1BF78265DB1F0002AD159 /* PresetZone.hpp */,
 				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
 				BDB1BF89265DB1F0002AD159 /* Sample */,
 				BDB1BF84265DB1F0002AD159 /* State.cpp */,
 				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF82265DB1F0002AD159 /* Voice */,
-				BDB1BF8F265DB1F0002AD159 /* WithZones.hpp */,
-				BDB1BF76265DB1F0002AD159 /* Zone.cpp */,
-				BDB1BF92265DB1F0002AD159 /* Zone.hpp */,
-				BDB1BF79265DB1F0002AD159 /* ZoneCollection.hpp */,
 			);
 			name = Render;
 			path = SoundFontInfoLib/Render;

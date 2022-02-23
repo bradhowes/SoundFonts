@@ -14,7 +14,7 @@
 #include "Render/Range.hpp"
 #include "Render/State.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Zones {
 
 using MIDIRange = Range<int>;
 

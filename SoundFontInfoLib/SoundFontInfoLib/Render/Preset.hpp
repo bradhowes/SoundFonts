@@ -3,8 +3,8 @@
 #pragma once
 
 #include "Render/Config.hpp"
-#include "Render/PresetZone.hpp"
-#include "Render/WithZones.hpp"
+#include "Render/Zones/Preset.hpp"
+#include "Render/Zones/WithZonesBase.hpp"
 
 namespace SF2::IO {
 class File;
@@ -19,7 +19,7 @@ namespace SF2::Render {
  and an instrument that determines the sound to produce. Note that zones can overlap, so one MIDI key event can cause
  multiple instruments to play, each of which will require its own Voice instance to render.
  */
-class Preset : public WithZones<PresetZone, Entity::Preset> {
+class Preset : public Zones::WithZonesBase<Zones::Preset, Entity::Preset> {
 public:
   using PresetZoneCollection = WithZoneCollection;
   using ConfigCollection = std::vector<Config>;
@@ -54,15 +54,15 @@ public:
     ConfigCollection zonePairs;
 
     // Obtain the preset zones that match the key/velocity combination
-    for (const PresetZone& presetZone : zones_.filter(key, velocity)) {
+    for (const Zones::Preset& preset : zones_.filter(key, velocity)) {
 
       // For each preset zone, scan to find an instrument to use for rendering
-      const Instrument& instrument = presetZone.instrument();
-      auto instrumentGlobal = instrument.globalZone();
-      for (const InstrumentZone& instrumentZone : instrument.filter(key, velocity)) {
+      const Instrument& presetInstrument = preset.instrument();
+      auto globalInstrument = presetInstrument.globalZone();
+      for (const Zones::Instrument& instrument : presetInstrument.filter(key, velocity)) {
 
         // Record a new Voice::Config with the preset/instrument zones to use for rendering
-        zonePairs.emplace_back(presetZone, globalZone(), instrumentZone, instrumentGlobal, key, velocity);
+        zonePairs.emplace_back(preset, globalZone(), instrument, globalInstrument, key, velocity);
       }
     }
 

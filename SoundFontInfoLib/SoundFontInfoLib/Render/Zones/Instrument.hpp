@@ -6,14 +6,14 @@
 
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
-#include "Render/Zone.hpp"
+#include "Render/Zones/Zone.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Zones {
 
 /**
  A specialization of a Zone for an Instrument. Non-global instrument zones must have a sample source.
  */
-class InstrumentZone : public Zone {
+class Instrument : public Zone {
 public:
 
   /**
@@ -23,7 +23,7 @@ public:
    @param mods the vector of modulators that define the zone
    @param file the file to work with
    */
-  InstrumentZone(GeneratorCollection&& gens, ModulatorCollection&& mods, const IO::File& file) :
+  Instrument(GeneratorCollection&& gens, ModulatorCollection&& mods, const IO::File& file) :
   Zone(std::move(gens), std::move(mods), Entity::Generator::Index::sampleID),
   sampleSource_{isGlobal() ? nullptr : &file.sampleSource(resourceLink())}
   {}

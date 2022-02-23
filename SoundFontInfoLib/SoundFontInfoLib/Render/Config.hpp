@@ -2,8 +2,8 @@
 
 #include <optional>
 
-#include "Render/PresetZone.hpp"
-#include "Render/InstrumentZone.hpp"
+#include "Render/Zones/Preset.hpp"
+#include "Render/Zones/Instrument.hpp"
 #include "Render/NormalizedSampleSource.hpp"
 
 namespace SF2::Render {
@@ -21,21 +21,21 @@ public:
   /**
    Construct a preset/instrument pair
 
-   @param presetZone the PresetZone that matched a key/velocity search
-   @param globalPresetZone the global PresetZone to apply (optional -- nullptr if no global)
-   @param instrumentZone the InstrumentZone that matched a key/velocity search
-   @param globalInstrumentZone the global InstrumentZone to apply (optional -- nullptr if no global)
+   @param preset the PresetZone that matched a key/velocity search
+   @param globalPreset the global PresetZone to apply (optional -- nullptr if no global)
+   @param instrument the InstrumentZone that matched a key/velocity search
+   @param globalInstrument the global InstrumentZone to apply (optional -- nullptr if no global)
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Config(const PresetZone& presetZone, const PresetZone* globalPresetZone,
-         const InstrumentZone& instrumentZone, const InstrumentZone* globalInstrumentZone, int key, int velocity) :
-  presetZone_{presetZone}, globalPresetZone_{globalPresetZone},
-  instrumentZone_{instrumentZone}, globalInstrumentZone_{globalInstrumentZone}, key_{key}, velocity_{velocity}
+  Config(const Zones::Preset& preset, const Zones::Preset* globalPreset,
+         const Zones::Instrument& instrument, const Zones::Instrument* globalInstrument, int key, int velocity) :
+  preset_{preset}, globalPreset_{globalPreset},
+  instrument_{instrument}, globalInstrument_{globalInstrument}, key_{key}, velocity_{velocity}
   {}
 
   /// @returns the buffer of audio samples to use for rendering
-  const NormalizedSampleSource& sampleSource() const { return instrumentZone_.sampleSource(); }
+  const NormalizedSampleSource& sampleSource() const { return instrument_.sampleSource(); }
 
   /// @returns original MIDI key that triggered the voice
   int key() const { return key_; }
@@ -58,18 +58,18 @@ private:
 
     // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
     // their settings.
-    if (globalInstrumentZone_ != nullptr) globalInstrumentZone_->apply(state);
-    instrumentZone_.apply(state);
+    if (globalInstrument_ != nullptr) globalInstrument_->apply(state);
+    instrument_.apply(state);
 
     // Presets apply refinements to absolute values set from instruments zones above.
-    if (globalPresetZone_ != nullptr) globalPresetZone_->refine(state);
-    presetZone_.refine(state);
+    if (globalPreset_ != nullptr) globalPreset_->refine(state);
+    preset_.refine(state);
   }
 
-  const PresetZone& presetZone_;
-  const PresetZone* globalPresetZone_;
-  const InstrumentZone& instrumentZone_;
-  const InstrumentZone* globalInstrumentZone_;
+  const Zones::Preset& preset_;
+  const Zones::Preset* globalPreset_;
+  const Zones::Instrument& instrument_;
+  const Zones::Instrument* globalInstrument_;
   int key_;
   int velocity_;
 };

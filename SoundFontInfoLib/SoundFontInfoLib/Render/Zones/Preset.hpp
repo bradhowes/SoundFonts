@@ -7,14 +7,14 @@
 #include "Entity/Bag.hpp"
 #include "IO/File.hpp"
 #include "Render/InstrumentCollection.hpp"
-#include "Render/Zone.hpp"
+#include "Render/Zones/Zone.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Zones {
 
 /**
  A specialization of a Zone for a Preset. Non-global Preset zones must refer to an Instrument.
  */
-class PresetZone : public Zone {
+class Preset : public Zone {
 public:
 
   /**
@@ -24,7 +24,7 @@ public:
    @param mods the vector of modulators that define the zone
    @param instruments to collection of instruments found in the file
    */
-  PresetZone(GeneratorCollection&& gens, ModulatorCollection&& mods, const Render::InstrumentCollection& instruments) :
+  Preset(GeneratorCollection&& gens, ModulatorCollection&& mods, const Render::InstrumentCollection& instruments) :
   Zone(std::forward<decltype(gens)>(gens), std::forward<decltype(mods)>(mods), Entity::Generator::Index::instrument),
   instrument_{isGlobal() ? nullptr : &instruments[resourceLink()]}
   {}
