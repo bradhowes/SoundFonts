@@ -91,14 +91,19 @@ public:
   const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
   /**
-   Obtain a SampleBuffer associated with the given sample header
+   Obtain a NormalizedSampleSource associated with the given sample header.
 
    @param header the sample header to use as a key
    @returns SampleBuffer reference
    */
   const Render::NormalizedSampleSource& sampleSource(const Entity::SampleHeader& header) const {
     auto found = sampleSources_.find(makeSampleKey(header));
-    assert(found != sampleSources_.end());
+    if (found == sampleSources_.end()) {
+      auto [it, ok] = sampleSources_.emplace(makeSampleKey(header),
+                                             Render::NormalizedSampleSource{rawSamples_.data(), header});
+      if (!ok) throw std::runtime_error("failed to insert sample source");
+      found = it;
+    }
     return found->second;
   }
 
@@ -153,8 +158,8 @@ private:
   ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
   ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-  std::map<SampleKey, Render::NormalizedSampleSource> sampleSources_;
-  std::shared_ptr<int16_t> sampleData_;
+  mutable std::map<SampleKey, Render::NormalizedSampleSource> sampleSources_;
+  std::vector<int16_t> rawSamples_;
 
   inline static Logger log_{Logger::Make("IO", "File")};
 };

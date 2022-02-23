@@ -24,7 +24,7 @@ File::load(int fd, bool dump)
   size_ = fileSize;
   sampleDataBegin_ = 0;
   sampleDataEnd_ = 0;
-  sampleData_.reset();
+  rawSamples_.clear();
 
   auto riff = Pos(fd, 0, size_).makeChunkList();
   if (riff.tag() != Tags::riff) return LoadResponse::invalidFormat;
@@ -75,7 +75,7 @@ File::load(int fd, bool dump)
             if (dump) {
               log_.debug() << "sampleDataBegin: " << sampleDataBegin_ << " sampleDataEnd: " << sampleDataEnd_ << '\n';
             }
-            sampleData_ = chunk.extractSamples();
+            chunk.extractSamples(rawSamples_);
             break;
         }
       }
@@ -84,13 +84,7 @@ File::load(int fd, bool dump)
     return LoadResponse::invalidFormat;
   }
 
-  assert(sampleData_ != nullptr);
-  for (size_t index = 0; index < sampleHeaders_.size(); ++index) {
-    const auto& header = sampleHeaders_[index];
-    header.dump("adding sampleHeader", index);
-    sampleSources_.emplace(makeSampleKey(header), Render::NormalizedSampleSource{sampleData_.get(), header});
-  }
-
+  assert(!rawSamples_.empty());
   return LoadResponse::ok;
 }
 

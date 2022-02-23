@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "Types.hpp"
 #include "IO/Format.hpp"
@@ -82,14 +83,13 @@ public:
   }
 
   /**
-   Read samples into a new buffer.
+   Read samples into a buffer.
 
-   @returns new buffer containing the 16-bit audio samples
+   @param buffer to hold the 16-bit audio samples
    */
-  std::shared_ptr<int16_t> extractSamples() const {
-    auto buffer = std::shared_ptr<int16_t>(new int16_t[size() / sizeof(int16_t)]);
-    begin().readInto((void*)buffer.get(), size());
-    return buffer;
+  void extractSamples(std::vector<int16_t>& buffer) const {
+    buffer.resize(size() / sizeof(int16_t), 0);
+    begin().readInto(buffer.data(), size());
   }
 
 private:
