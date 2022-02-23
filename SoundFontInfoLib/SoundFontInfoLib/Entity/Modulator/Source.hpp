@@ -56,11 +56,17 @@ public:
     Builder& negative() { bits |=  (1 << 8); return *this; }
     Builder& unipolar() { bits &= ~(1 << 9); return *this; }
     Builder& bipolar()  { bits |=  (1 << 9); return *this; }
+    Builder& linear() { return continuity(ContinuityType::linear); }
+    Builder& concave() { return continuity(ContinuityType::concave); }
+    Builder& convex() { return continuity(ContinuityType::convex); }
+    Builder& switched() { return continuity(ContinuityType::switched); }
 
     Builder& continuity(ContinuityType continuity) {
       bits = static_cast<uint16_t>((bits & 0x3FF) | (uint16_t(continuity) << 10));
       return *this;
     }
+
+    Source make() const { return Source{bits}; }
   };
 
   /**

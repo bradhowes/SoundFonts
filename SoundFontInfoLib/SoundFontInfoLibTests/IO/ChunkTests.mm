@@ -47,4 +47,5 @@ ssize_t mockRead(int fd, void* buffer, size_t count) {
   XCTAssertTrue(Pos(-1, 0, 10));
   XCTAssertTrue(Pos(0, 11, 10));
 }
+
 @end

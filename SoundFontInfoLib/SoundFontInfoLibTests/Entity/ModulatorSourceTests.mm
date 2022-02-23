@@ -213,4 +213,9 @@ using namespace SF2::Entity::Modulator;
   XCTAssertEqual(Source{builder}.type(), Source::ContinuityType::linear);
 }
 
+- (void)testBoo {
+  auto s1 = Source(0x020E);
+  auto s2 = Source::Builder::GeneralController(Source::GeneralIndex::pitchWheel).bipolar();
+  XCTAssertEqual(s1, Source(s2.bits));
+}
 @end

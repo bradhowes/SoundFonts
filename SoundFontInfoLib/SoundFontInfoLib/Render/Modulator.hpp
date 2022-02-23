@@ -66,8 +66,10 @@ public:
   /// @returns index offset for the modulator
   size_t index() const { return index_; }
 
+  /// Flag this modulator as being invalid.
   void flagInvalid() { index_ = std::numeric_limits<size_t>::max(); }
 
+  /// @returns true if the modulator is valid.
   bool isValid() const { return index_ != std::numeric_limits<size_t>::max(); }
 
   /**

@@ -17,6 +17,7 @@
 		BD8CE57327C53F67009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57027C53F67009A2FB5 /* Release.xcconfig */; };
 		BD8CE57427C53F67009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57127C53F67009A2FB5 /* Development.xcconfig */; };
 		BD8CE57527C53F67009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57127C53F67009A2FB5 /* Development.xcconfig */; };
+		BD8CE58527C5970C009A2FB5 /* ModulatorDefaultsTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD8CE58427C5970C009A2FB5 /* ModulatorDefaultsTests.mm */; };
 		BD8E158126D125AA000DC781 /* DSPTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE73265DAEC7002AD159 /* DSPTests.mm */; };
 		BD8E158226D125CE000DC781 /* GeneratorAmountTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE5E265DAEC6002AD159 /* GeneratorAmountTests.mm */; };
 		BD8E158326D125DB000DC781 /* ModulatorSourceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE5F265DAEC6002AD159 /* ModulatorSourceTests.mm */; };
@@ -120,6 +121,7 @@
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD8CE57027C53F67009A2FB5 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD8CE57127C53F67009A2FB5 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
+		BD8CE58427C5970C009A2FB5 /* ModulatorDefaultsTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ModulatorDefaultsTests.mm; sourceTree = "<group>"; };
 		BDA5ACA5265D379F000AE48E /* DSPTablesGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPTablesGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA5AD07265D9A30000AE48E /* DSPGenerated.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DSPGenerated.cpp; sourceTree = "<group>"; };
 		BDADC18827BD75F6008B26BA /* Engine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Engine.hpp; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BE5E265DAEC6002AD159 /* GeneratorAmountTests.mm */,
+				BD8CE58427C5970C009A2FB5 /* ModulatorDefaultsTests.mm */,
 				BDB1BE5F265DAEC6002AD159 /* ModulatorSourceTests.mm */,
 			);
 			path = Entity;
@@ -843,6 +846,7 @@
 				BD8E158426D125E8000DC781 /* ChunkTests.mm in Sources */,
 				BD8E159426D12A07000DC781 /* ModulatorTests.mm in Sources */,
 				BD8E158626D12608000DC781 /* SFFileTestsObjC.mm in Sources */,
+				BD8CE58527C5970C009A2FB5 /* ModulatorDefaultsTests.mm in Sources */,
 				BD8E158B26D126AB000DC781 /* ValueTransformerTests.mm in Sources */,
 				BD5CA3D126D2B1790052DA39 /* VoiceTests.mm in Sources */,
 			);

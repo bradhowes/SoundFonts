@@ -32,7 +32,12 @@ namespace SF2::Entity::Modulator {
 class Modulator {
 public:
   static constexpr size_t size = 10;
-  static std::array<Modulator, size> const defaults;
+
+  /**
+   Default modulators that are predefined for every instrument. These get copied over to each voice's State before the
+   preset/instrument configurations are applied.
+   */
+  static const std::array<Modulator, size> defaults;
   
   /**
    Construct instance from contents of SF2 file.
@@ -66,7 +71,7 @@ public:
     return Generator::Index(sfModDestOper);
   }
 
-  /// @returns the destination modulator
+  /// @returns the index of the destination modulator. This is the index in the pmod/imod bag.
   size_t linkDestination() const {
     assert(hasModulatorDestination());
     return size_t(sfModDestOper ^ (1 << 15));
@@ -79,7 +84,7 @@ public:
   const Source& amountSource() const { return sfModAmtSrcOper; }
   
   /// @returns the transform to apply to values created by the modulator
-  Transform transform() const { return sfModTransOper; }
+  const Transform& transform() const { return sfModTransOper; }
   
   std::string description() const;
   

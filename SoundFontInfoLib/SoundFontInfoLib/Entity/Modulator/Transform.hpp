@@ -5,6 +5,8 @@
 #include <cmath>
 #include <iosfwd>
 
+#include "Types.hpp"
+
 namespace SF2::Entity::Modulator {
 
 /**

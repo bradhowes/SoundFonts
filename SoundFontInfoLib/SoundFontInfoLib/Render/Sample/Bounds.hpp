@@ -50,7 +50,7 @@ public:
       }
       else if (value > upper) {
         os_log_error(log_, "value > upper - %{public}s value: %zu upper: %zu", header.sampleName(), value, upper);
-        value = lower;
+        value = upper;
       }
       return value - lower;
     };
@@ -76,7 +76,7 @@ public:
       }
       else if (value > upper) {
         os_log_error(log_, "value > upper - %{public}s value: %zu upper: %zu", header.sampleName(), value, upper);
-        value = lower;
+        value = upper;
       }
       return value - lower;
     };

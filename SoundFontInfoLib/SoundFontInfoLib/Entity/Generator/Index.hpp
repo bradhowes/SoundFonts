@@ -6,7 +6,7 @@ namespace SF2::Entity::Generator {
 
 /**
  Enumeration of valid SF2 generators. This is a strongly-typed version of the integer values found in the spec. The
- comments below come from the spec (with some editing).
+ comments below come from the spec (with some editing -- see section 8.1.3)
  */
 enum struct Index : uint16_t {
   /**
