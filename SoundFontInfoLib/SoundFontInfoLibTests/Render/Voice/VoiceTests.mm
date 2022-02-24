@@ -107,7 +107,7 @@ using namespace SF2::Render;
     }
   };
 
-  renderLR(v1L, v1R, true);
+  renderLR(v1L, v1R);
   renderLR(v2L, v2R);
   renderLR(v3L, v3R);
 

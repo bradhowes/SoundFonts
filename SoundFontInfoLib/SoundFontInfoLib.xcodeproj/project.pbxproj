@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -72,7 +72,7 @@
 		BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF95265DB1F0002AD159 /* SoundFontInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */; };
 		BDB266CA25334B96005BEAD1 /* SF2Files.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB266C925334B96005BEAD1 /* SF2Files.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; platformFilter = ios; };
+		BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDD2D6AA261C8854000557A3 /* Accelerate.framework */; };
 		BDE99B6427BECD9F00C9F1BC /* LFOTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE67265DAEC7002AD159 /* LFOTests.mm */; };
 		BDE99B6527BECF3600C9F1BC /* GeneratorIndexTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE68265DAEC7002AD159 /* GeneratorIndexTests.mm */; };
 		BDE99B6627BECF7F00C9F1BC /* PresetTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDB1BE69265DAEC7002AD159 /* PresetTests.mm */; };
@@ -893,6 +893,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD8CE57127C53F67009A2FB5 /* Development.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -945,12 +946,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -962,6 +964,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BD8CE57027C53F67009A2FB5 /* Release.xcconfig */;
 			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1008,11 +1011,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
