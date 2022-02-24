@@ -30,7 +30,6 @@ Definition::dump(const Amount& amount) const
   std::cout << " (" << (isUnsignedValue() ? amount.unsignedAmount() : amount.signedAmount()) << ')';
 }
 
-
 // Allow compile-time check that A is a real Index value and then convert to string.
 #define N(A) (Index::A != Index::numValues) ? (# A) : nullptr
 

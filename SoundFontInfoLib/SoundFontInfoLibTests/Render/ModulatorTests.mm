@@ -34,31 +34,31 @@ using namespace SF2::Entity::Generator;
 
 - (void)testKeyVelocityToInitialAttenuation {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[0]};
-  state->setPrincipleValue(Index::forcedMIDIVelocity, -1);
+  state->setValue(Index::forcedMIDIVelocity, -1);
 
   Modulator modulator{0, config, *state};
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 127);
+  state->setValue(Index::forcedMIDIVelocity, 127);
   [self sample:modulator.value() equals:0.0];
 
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 64);
+  state->setValue(Index::forcedMIDIVelocity, 64);
   [self sample: modulator.value() equals:119.049498789];
 
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 1);
+  state->setValue(Index::forcedMIDIVelocity, 1);
   [self sample: modulator.value() equals:841.521488382];
 }
 
 - (void)testKeyVelocityToFilterCutoff {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[1]};
-  state->setPrincipleValue(Index::forcedMIDIVelocity, -1);
+  state->setValue(Index::forcedMIDIVelocity, -1);
 
   Modulator modulator{0, config, *state};
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 127);
+  state->setValue(Index::forcedMIDIVelocity, 127);
   [self sample:modulator.value() equals:-18.75];
 
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 64);
+  state->setValue(Index::forcedMIDIVelocity, 64);
   [self sample: modulator.value() equals:-1200.0];
 
-  state->setPrincipleValue(Index::forcedMIDIVelocity, 1);
+  state->setValue(Index::forcedMIDIVelocity, 1);
   [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
 }
 

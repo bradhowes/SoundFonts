@@ -56,7 +56,7 @@ private:
    */
   void apply(State& state) const {
 
-    // Instrument zones first to set absolute values. Do the global state first, then allow instruments to change
+    // Use Instrument zones to set absolute values. Do the global state first, then allow instruments to change
     // their settings.
     if (globalInstrument_ != nullptr) globalInstrument_->apply(state);
     instrument_.apply(state);

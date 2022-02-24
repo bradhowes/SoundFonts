@@ -80,6 +80,7 @@
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
 		BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
+		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,6 +251,7 @@
 		BDE99B6727BF91C000C9F1BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewTestTemplate.mm; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		BDF7866327C7D25300CB3BC5 /* Pitch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -560,11 +562,12 @@
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
 				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
 				BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */,
-				BD5495D627C7922800A1AB20 /* SampleSourceCollection.hpp */,
+				BDF7866327C7D25300CB3BC5 /* Pitch.hpp */,
 				BDADC19227BD761F008B26BA /* Preset.cpp */,
 				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
 				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
 				BDB1BF89265DB1F0002AD159 /* Sample */,
+				BD5495D627C7922800A1AB20 /* SampleSourceCollection.hpp */,
 				BDB1BF84265DB1F0002AD159 /* State.cpp */,
 				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF82265DB1F0002AD159 /* Voice */,
@@ -636,6 +639,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BD5495D827C7922800A1AB20 /* SampleSourceCollection.hpp in Headers */,
+				BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */,
 				BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */,
 				BDB1BFF1265DB788002AD159 /* SoundFontInfo.h in Headers */,
 				BDADC18D27BD75F6008B26BA /* Engine.hpp in Headers */,

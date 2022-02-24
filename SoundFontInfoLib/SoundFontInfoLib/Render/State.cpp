@@ -36,24 +36,24 @@ State::prepareForVoice(const Config& config)
 
 void
 State::setDefaults() {
-  gens_.fill(GenValue());
-  setPrincipleValue(Index::initialFilterCutoff, 13500);
-  setPrincipleValue(Index::delayModulatorLFO, -12000);
-  setPrincipleValue(Index::delayVibratoLFO, -12000);
-  setPrincipleValue(Index::delayModulatorEnvelope, -12000);
-  setPrincipleValue(Index::attackModulatorEnvelope, -12000);
-  setPrincipleValue(Index::holdModulatorEnvelope, -12000);
-  setPrincipleValue(Index::decayModulatorEnvelope, -12000);
-  setPrincipleValue(Index::releaseModulatorEnvelope, -12000);
-  setPrincipleValue(Index::delayVolumeEnvelope, -12000);
-  setPrincipleValue(Index::attackVolumeEnvelope, -12000);
-  setPrincipleValue(Index::holdVolumeEnvelope, -12000);
-  setPrincipleValue(Index::decayVolumeEnvelope, -12000);
-  setPrincipleValue(Index::releaseVolumeEnvelope, -12000);
-  setPrincipleValue(Index::forcedMIDIKey, -1);
-  setPrincipleValue(Index::forcedMIDIVelocity, -1);
-  setPrincipleValue(Index::scaleTuning, 100);
-  setPrincipleValue(Index::overridingRootKey, -1);
+  gens_.zero();
+  setValue(Index::initialFilterCutoff, 13500);
+  setValue(Index::delayModulatorLFO, -12000);
+  setValue(Index::delayVibratoLFO, -12000);
+  setValue(Index::delayModulatorEnvelope, -12000);
+  setValue(Index::attackModulatorEnvelope, -12000);
+  setValue(Index::holdModulatorEnvelope, -12000);
+  setValue(Index::decayModulatorEnvelope, -12000);
+  setValue(Index::releaseModulatorEnvelope, -12000);
+  setValue(Index::delayVolumeEnvelope, -12000);
+  setValue(Index::attackVolumeEnvelope, -12000);
+  setValue(Index::holdVolumeEnvelope, -12000);
+  setValue(Index::decayVolumeEnvelope, -12000);
+  setValue(Index::releaseVolumeEnvelope, -12000);
+  setValue(Index::forcedMIDIKey, -1);
+  setValue(Index::forcedMIDIVelocity, -1);
+  setValue(Index::scaleTuning, 100);
+  setValue(Index::overridingRootKey, -1);
 
   // Install default modulators for the voice. Zones can override them and add new ones.
   for (const auto& modulator : Entity::Modulator::Modulator::defaults) {
@@ -78,6 +78,6 @@ State::addModulator(const Entity::Modulator::Modulator& modulator) {
   modulators_.emplace_back(index, modulator, *this);
 
   if (modulator.hasGeneratorDestination()) {
-    gens_[indexValue(modulator.generatorDestination())].mods.push_front(index);
+    gens_[modulator.generatorDestination()].mods.push_front(index);
   }
 }

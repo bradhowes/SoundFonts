@@ -57,7 +57,7 @@ public:
    Configure the state to be used by a voice for sample rendering.
    */
   void prepareForVoice(const Config& config);
-  
+
   /**
    Set a generator value. Should only be called with a value from an InstrumentZone. It can be set twice, once by a
    global instrument generator setting, and again by a non-global instrument generator setting, the latter one
@@ -66,9 +66,9 @@ public:
    @param gen the generator to set
    @param value the value to use
    */
-  void setPrincipleValue(Index gen, int value) {
+  void setValue(Index gen, int value) {
     log_.debug() << "setting " << Definition::definition(gen).name() << " = " << value << std::endl;
-    gens_[indexValue(gen)].principle = value;
+    gens_[gen].value = value;
   }
 
   /**
@@ -79,9 +79,9 @@ public:
    @param gen the generator to set
    @param value the value to use
    */
-  void setAdjustmentValue(Index gen, int value) {
-    log_.debug() << "adjusting " << Definition::definition(gen).name() << " by " << value << std::endl;
-    gens_[indexValue(gen)].adjustment = value;
+  void adjustValue(Index gen, int value) {
+    log_.debug() << "adjust " << Definition::definition(gen).name() << " by " << value << std::endl;
+    gens_[gen].value += value;
   }
 
   /**
@@ -100,8 +100,7 @@ public:
    @returns configured value of the generator
    */
   int unmodulated(Index gen) const {
-    auto& value{gens_[indexValue(gen)]};
-    return value.principle + value.adjustment;
+    return gens_[gen].value;
   }
 
   /**
@@ -113,19 +112,21 @@ public:
    @returns current value of the generator
    */
   Float modulated(Index gen) const {
+    return gens_[gen].value;
 
-    // Most of the time there are no modulators.
-    auto& genMods{gens_[indexValue(gen)].mods};
-    auto value = unmodulated(gen);
-    if (genMods.empty()) return value;
-
-    // Accumulate changes to the state value from the registered modulators
-    auto modSum = [this](Float value, size_t mod) { return value + modulators_[mod].value(); };
-    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
+//    // Most of the time there are no modulators.
+//    auto& genMods{gens_[indexValue(gen)].mods};
+//    auto value = unmodulated(gen);
+//    if (genMods.empty()) return value;
+//
+//    // Accumulate changes to the state value from the registered modulators
+//    auto modSum = [this](Float value, size_t mod) { return value + modulators_[mod].value(); };
+//    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
   }
 
   /// @returns fundamental pitch in semitones to generate when rendering
   Float pitch() const {
+    //auto scaleTuning = unmodulated(Index::scaleTuning);
     auto pitch = key();
     auto coarseTune = modulated(Index::coarseTune); // semitones
     auto fineTune = modulated(Index::fineTune);     // cents (1/100th of a semitone)
@@ -195,14 +196,17 @@ private:
 
   using ModulatorIndexLinkedList = std::forward_list<size_t>;
 
-  // Three components make up a generator value:
-  // - the principle or main value from an instrument zone
-  // - any adjustment value from a preset zone
-  // - zero or more modulator indices
   struct GenValue {
-    int principle{0};
-    int adjustment{0};
+    int value{0};
     ModulatorIndexLinkedList mods{};
+  };
+
+  struct GenValueArray {
+    GenValue& operator[](Index index) { return array_[indexValue(index)]; }
+    const GenValue& operator[](Index index) const { return array_[indexValue(index)]; }
+    void zero() { array_.fill(GenValue()); }
+  private:
+    std::array<GenValue, static_cast<size_t>(Index::numValues)> array_;
   };
 
   void setDefaults();
@@ -228,11 +232,9 @@ private:
     return modulated(gen) * (60 - key());
   }
 
-  static size_t indexValue(Index gen) { return static_cast<size_t>(gen); }
-
+//  static size_t indexValue(Index gen) { return static_cast<size_t>(gen); }
+  
   const MIDI::Channel& channel_;
-
-  using GenValueArray = std::array<GenValue, static_cast<size_t>(Index::numValues)>;
 
   /// Collection of generator values
   GenValueArray gens_;

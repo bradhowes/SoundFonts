@@ -88,7 +88,7 @@ public:
     // Generator state settings
     std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
       log_.debug() << "setting " << generator.name() << " = " << generator.value() << std::endl;
-      state.setPrincipleValue(generator.index(), generator.value());
+      state.setValue(generator.index(), generator.value());
     });
 
     // Modulator definitions
@@ -115,7 +115,7 @@ public:
     std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
       if (generator.definition().isAvailableInPreset()) {
         log_.debug() << "adding " << generator.name() << " + " << generator.value() << std::endl;
-        state.setAdjustmentValue(generator.index(), generator.value());
+        state.adjustValue(generator.index(), generator.value());
       }
     });
   }
