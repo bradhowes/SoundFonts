@@ -14,13 +14,6 @@ NSURL* PresetTestContextBase::getUrl(int urlIndex)
   return [urls objectAtIndex:urlIndex];
 }
 
-int PresetTestContextBase::openFile(int urlIndex)
-{
-  NSArray<NSURL*>* urls = SF2Files.allResources;
-  NSURL* url = [urls objectAtIndex:urlIndex];
-  return ::open(url.path.UTF8String, O_RDONLY);
-}
-
 @implementation XCTestCase (SampleComparison)
 
 - (void)sample:(Float)A equals:(Float)B {

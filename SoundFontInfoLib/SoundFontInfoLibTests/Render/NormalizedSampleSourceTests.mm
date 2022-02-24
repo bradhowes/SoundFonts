@@ -15,13 +15,21 @@ using namespace SF2::Render;
 @end
 
 @implementation NormalizedSampleSourceTests {
-  SampleBasedContexts contexts;
+  SampleBasedContexts* contexts;
 }
 
 static SF2::Entity::SampleHeader header{0, 6, 3, 5, 100, 69, 0}; // 0: start, 1: end, 2: loop start, 3: loop end
 static SF2::MIDI::Channel channel;
 static int16_t values[8] = {10000, -20000, 30000, 20000, 10000, -10000, -20000, -30000};
 static SF2::Float epsilon = 1e-6;
+
+- (void)setUp {
+  contexts = new SampleBasedContexts;
+}
+
+- (void)tearDown {
+  delete contexts;
+}
 
 - (void)testLoad {
   NormalizedSampleSource source{values, header};
@@ -49,8 +57,6 @@ static SF2::Float epsilon = 1e-6;
   XCTAssertTrue(source.isLoaded());
   source.unload();
   XCTAssertFalse(source.isLoaded());
-  XCTAssertEqual(source[0], 0.0);
-  XCTAssertEqual(source[1], 0.0);
   XCTAssertEqual(source.size(), 0);
   XCTAssertEqualWithAccuracy(source.maxMagnitude(), 0.0, epsilon);
   XCTAssertEqualWithAccuracy(source.maxMagnitudeOfLoop(), 0.0, epsilon);
@@ -84,49 +90,53 @@ static SF2::Float epsilon = 1e-6;
 }
 
 - (void)testLoadSamplesPerformance0 {
-  auto file = contexts.context0.file();
+  const auto& file = contexts->context0.file();
   auto count = file.sampleHeaders().size();
 
   [self measureBlock:^{
     for (size_t index = 0; index < count; ++index) {
-      auto samples = file.sampleSource(index);
+      auto samples = file.sampleSourceCollection()[index];
       samples.load();
+      samples.unload();
     }
   }];
 }
 
 - (void)testLoadSamplesPerformance1 {
-  auto file = contexts.context1.file();
+  const auto& file = contexts->context1.file();
   auto count = file.sampleHeaders().size();
 
   [self measureBlock:^{
     for (size_t index = 0; index < count; ++index) {
-      auto samples = file.sampleSource(index);
+      auto samples = file.sampleSourceCollection()[index];
       samples.load();
+      samples.unload();
     }
   }];
 }
 
 - (void)testLoadSamplesPerformance2 {
-  auto file = contexts.context2.file();
+  const auto& file = contexts->context2.file();
   auto count = file.sampleHeaders().size();
 
   [self measureBlock:^{
     for (size_t index = 0; index < count; ++index) {
-      auto samples = file.sampleSource(index);
+      auto samples = file.sampleSourceCollection()[index];
       samples.load();
+      samples.unload();
     }
   }];
 }
 
 - (void)testLoadSamplesPerformance3 {
-  auto file = contexts.context3.file();
+  const auto& file = contexts->context3.file();
   auto count = file.sampleHeaders().size();
 
   [self measureBlock:^{
     for (size_t index = 0; index < count; ++index) {
-      auto samples = file.sampleSource(index);
+      auto samples = file.sampleSourceCollection()[index];
       samples.load();
+      samples.unload();
     }
   }];
 }

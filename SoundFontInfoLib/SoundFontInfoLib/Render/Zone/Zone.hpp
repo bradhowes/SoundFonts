@@ -14,7 +14,7 @@
 #include "Render/Range.hpp"
 #include "Render/State.hpp"
 
-namespace SF2::Render::Zones {
+namespace SF2::Render::Zone {
 
 using MIDIRange = Range<int>;
 
@@ -134,16 +134,19 @@ protected:
   modulators_{std::move(mods)},
   keyRange_{GetKeyRange(generators_)}, velocityRange_{GetVelocityRange(generators_)},
   isGlobal_{IsGlobal(generators_, terminal, modulators_)}
-  {}
+  {
+    if (generators_.empty() && modulators_.empty()) throw std::runtime_error("empty zone created");
+  }
 
   /**
    Obtain the link to the resource used by this zone. For an instrument zone, this points to the sample buffer to
-   use to render sounds. For a preset zone, this points to an instrument.
+   use to render sounds. For a preset zone, this points to an instrument. It is undefined to call on a global zone.
 
    @returns index of the resource that this zone uses
    */
   uint16_t resourceLink() const {
-    assert(!isGlobal_); // Global zones do not have resource links
+    if (isGlobal_)
+      throw std::runtime_error("global zones do not have a linked resource");
     const Entity::Generator::Generator& generator{generators_.back().get()};
     assert(generator.index() == Entity::Generator::Index::instrument ||
            generator.index() == Entity::Generator::Index::sampleID);
@@ -189,6 +192,7 @@ private:
   MIDIRange keyRange_;
   MIDIRange velocityRange_;
   bool isGlobal_;
+
   inline static Logger log_{Logger::Make("Render", "Zone")};
 };
 

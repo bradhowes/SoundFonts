@@ -31,7 +31,7 @@ public:
    Construct a new normalized buffer of samples.
 
    @param samples pointer to the first 16-bit sample in the SF2 file
-   @param header defines the range of samples to use for a sound
+   @param header defines the range of samples to actually load
    */
   NormalizedSampleSource(const int16_t* samples, const Entity::SampleHeader& header) :
   samples_(header.endIndex() - header.startIndex() + sizePaddingAfterEnd), header_{header}, allSamples_{samples} {}
@@ -49,7 +49,7 @@ public:
 
   void unload() const {
     loaded_ = false;
-    std::fill(samples_.begin(), samples_.end(), 0.0);
+    samples_.clear();
   }
 
   /**
@@ -77,11 +77,13 @@ private:
 
   template <typename T>
   void loadNormalizedSamples() const {
+    assert(!loaded_);
+
     os_signpost_id_t signpost = os_signpost_id_generate(log_);
+
     const size_t startIndex = header_.startIndex();
     const size_t size = header_.endIndex() - startIndex;
-    assert(samples_.size() == size + sizePaddingAfterEnd);
-    assert(!loaded_);
+    samples_.resize(size + sizePaddingAfterEnd);
 
     os_signpost_interval_begin(log_, signpost, "loadNormalizedSamples", "begin - size: %ld", size);
     auto pos = allSamples_ + header_.startIndex();

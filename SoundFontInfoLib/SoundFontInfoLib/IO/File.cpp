@@ -10,15 +10,24 @@
 
 using namespace SF2::IO;
 
-File::File(int fd, bool dump)
+File::File(const char* path, bool dump)
+: fd_{-1}
 {
-  if (load(fd, dump) != LoadResponse::ok) throw Format::error;
+  int fd = ::open(path, O_RDONLY);
+  if (fd == -1) throw std::runtime_error("file not found");
+  fd_ = fd;
+  if (load(dump) != LoadResponse::ok) throw Format::error;
+}
+
+File::~File()
+{
+  if (fd_ >= 0) ::close(fd_);
 }
 
 File::LoadResponse
-File::load(int fd, bool dump)
+File::load(bool dump)
 {
-  off_t fileSize = ::lseek(fd, 0, SEEK_END);
+  off_t fileSize = ::lseek(fd_, 0, SEEK_END);
   if (fileSize == off_t(-1)) return LoadResponse::invalidFormat;
 
   size_ = fileSize;
@@ -26,7 +35,7 @@ File::load(int fd, bool dump)
   sampleDataEnd_ = 0;
   rawSamples_.clear();
 
-  auto riff = Pos(fd, 0, size_).makeChunkList();
+  auto riff = Pos(fd_, 0, size_).makeChunkList();
   if (riff.tag() != Tags::riff) return LoadResponse::invalidFormat;
   if (riff.kind() != Tags::sfbk) throw LoadResponse::invalidFormat;
 
@@ -82,6 +91,10 @@ File::load(int fd, bool dump)
     }
   } catch (...) {
     return LoadResponse::invalidFormat;
+  }
+
+  for (const auto& header : sampleHeaders_) {
+    sampleSourceCollection_.add(header, rawSamples_.data());
   }
 
   assert(!rawSamples_.empty());

@@ -11,7 +11,7 @@
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
 
-namespace SF2::Render::Zones {
+namespace SF2::Render::Zone {
 
 /**
  Templated collection of zones. A non-global zone defines a range of MIDI keys and/or velocities over which it operates.
@@ -19,7 +19,7 @@ namespace SF2::Render::Zones {
  zones.
  */
 template <typename T>
-class ZoneCollection
+class Collection
 {
 public:
   using GeneratorCollection = typename T::GeneratorCollection;
@@ -31,7 +31,7 @@ public:
 
    @param zoneCount the number of zones that the collection will hold
    */
-  explicit ZoneCollection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
+  explicit Collection(size_t zoneCount) : zones_{} { zones_.reserve(zoneCount); }
 
   /// @returns number of zones in the collection (including the optional global one)
   size_t size() const { return zones_.size(); }
@@ -53,7 +53,7 @@ public:
   }
 
   /// @returns true if first zone in collection is a global zone
-  bool hasGlobal() const { return zones_.empty() ? false : zones_.front().isGlobal(); }
+  bool hasGlobal() const { return !zones_.empty() && zones_.front().isGlobal(); }
 
   /// @returns pointer to global zone or nullptr if there is not one
   const T* global() const { return hasGlobal() ? &zones_.front() : nullptr; }

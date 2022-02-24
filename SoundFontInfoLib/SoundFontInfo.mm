@@ -63,9 +63,9 @@ using namespace SF2;
 + (SoundFontInfo*)loadViaParser:(NSURL*)url {
   try {
     BOOL secured = [url startAccessingSecurityScopedResource];
-    int fd = ::open(url.path.UTF8String, O_RDONLY);
+    SoundFontInfo* info = [SoundFontInfo parseViaParser:url];
     if (secured) [url stopAccessingSecurityScopedResource];
-    return fd != -1 ? [SoundFontInfo parseViaParser:url fileDescriptor:fd] : nil;
+    return info;
   }
   catch (enum IO::Format value) {
     return nil;
@@ -75,32 +75,30 @@ using namespace SF2;
 + (SoundFontInfo*)loadViaFile:(NSURL*)url {
   try {
     BOOL secured = [url startAccessingSecurityScopedResource];
-    int fd = ::open(url.path.UTF8String, O_RDONLY);
+    SoundFontInfo* info = [SoundFontInfo parseViaFile:url];
     if (secured) [url stopAccessingSecurityScopedResource];
-    return fd != -1 ? [SoundFontInfo parseViaFile:url fileDescriptor:fd] : nil;
+    return info;
   }
   catch (enum IO::Format value) {
     return nil;
   }
 }
 
-+ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd {
++ (SoundFontInfo*)parseViaFile:(NSURL*)url {
   SoundFontInfo* result = nil;
   try {
-    auto info = IO::File(fd);
-    ::close(fd);
-    fd = -1;
-    
+    auto info = IO::File(url.path.UTF8String);
+
     NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName().c_str()];
     NSString* embeddedAuthor = [NSString stringWithUTF8String:info.embeddedAuthor().c_str()];
     NSString* embeddedCopyright = [NSString stringWithUTF8String:info.embeddedCopyright().c_str()];
     NSString* embeddedComment = [NSString stringWithUTF8String:info.embeddedComment().c_str()];
-    
+
     NSMutableArray* presets = [NSMutableArray arrayWithCapacity:info.presets().size()];
     for (const auto& preset : info.presets()) {
       [presets addObject:[[SoundFontInfoPreset alloc] initForSFPreset:preset]];
     }
-    
+
     [presets sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
       SoundFontInfoPreset* patch1 = obj1;
       SoundFontInfoPreset* patch2 = obj2;
@@ -119,19 +117,17 @@ using namespace SF2;
                                  presets:presets];
   }
   catch (enum IO::Format value) {
-    if (fd != -1) ::close(fd);
+    ;
   }
   
   return result;
 }
 
-+ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd {
++ (SoundFontInfo*)parseViaParser:(NSURL*)url {
   SoundFontInfo* result = nil;
   try {
-    auto info = IO::Parser::parse(fd);
-    ::close(fd);
-    fd = -1;
-    
+    auto info = IO::Parser::parse(url.path.UTF8String);
+
     NSString* embeddedName = [NSString stringWithUTF8String:info.embeddedName.c_str()];
     NSString* embeddedAuthor = [NSString stringWithUTF8String:info.embeddedAuthor.c_str()];
     NSString* embeddedCopyright = [NSString stringWithUTF8String:info.embeddedCopyright.c_str()];
@@ -160,7 +156,7 @@ using namespace SF2;
                                  presets:presets];
   }
   catch (enum IO::Format value) {
-    if (fd != -1) ::close(fd);
+    ;
   }
   
   return result;

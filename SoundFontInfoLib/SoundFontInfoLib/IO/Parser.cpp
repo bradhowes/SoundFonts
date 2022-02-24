@@ -12,10 +12,12 @@
 using namespace SF2::IO;
 
 Parser::Info
-Parser::parse(int fd)
+Parser::parse(const char* path)
 {
-  Parser::Info info;
+  int fd = ::open(path, O_RDONLY);
+  if (fd == -1) throw Format::error;
 
+  Parser::Info info;
   off_t fileSize = ::lseek(fd, 0, SEEK_END);
 
   auto riff = Pos(fd, 0, fileSize).makeChunkList();

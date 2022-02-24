@@ -4,6 +4,6 @@
 
 #include "Zone.hpp"
 
-using namespace SF2::Render::Zones;
+using namespace SF2::Render::Zone;
 
 MIDIRange const Zone::all = MIDIRange(0, 255);

@@ -18,7 +18,7 @@ SampleBasedContexts contexts;
 }
 
 - (void)testRolandPianoPreset {
-  auto file{contexts.context3.file()};
+  auto& file{contexts.context3.file()};
   XCTAssertEqual(1, file.presets().size());
 
   Preset preset{contexts.context3.preset()};

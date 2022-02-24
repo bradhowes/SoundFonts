@@ -4,8 +4,8 @@
 
 #include "IO/File.hpp"
 
-#include "Render/Zones/Instrument.hpp"
-#include "Render/Zones/WithZoneCollectionBase.hpp"
+#include "Render/Zone/Instrument.hpp"
+#include "Render/Zone/WithCollectionBase.hpp"
 
 namespace SF2::Render {
 
@@ -17,10 +17,10 @@ namespace SF2::Render {
  generator, then it is considered to be the one and only `global` zone, with its generators/modulators applied to all
  other zones unless a zone has its own definition.
  */
-class Instrument : public Zones::WithZoneCollectionBase<Zones::Instrument, Entity::Instrument>
+class Instrument : public Zone::WithCollectionBase<Zone::Instrument, Entity::Instrument>
 {
 public:
-  using InstrumentZoneCollection = WithZoneCollectionType;
+  using CollectionType = CollectionType;
 
   /**
    Construct new Instrument from SF2 entities
@@ -29,12 +29,12 @@ public:
    @param config the SF2 file entity that defines the instrument
    */
   Instrument(const IO::File& file, const Entity::Instrument& config) :
-  Zones::WithZoneCollectionBase<Zones::Instrument, Entity::Instrument>(config.zoneCount(), config) {
+  Zone::WithCollectionBase<Zone::Instrument, Entity::Instrument>(config.zoneCount(), config) {
     for (const Entity::Bag& bag : file.instrumentZones().slice(config.firstZoneIndex(), config.zoneCount())) {
       zones_.add(Entity::Generator::Index::sampleID,
                  file.instrumentZoneGenerators().slice(bag.firstGeneratorIndex(), bag.generatorCount()),
                  file.instrumentZoneModulators().slice(bag.firstModulatorIndex(), bag.modulatorCount()),
-                 file);
+                 file.sampleSourceCollection());
     }
   }
 
@@ -45,7 +45,7 @@ public:
    @param velocity the MIDI velocity value
    @returns vector of matching zones
    */
-  InstrumentZoneCollection::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
+  CollectionType::Matches filter(int key, int velocity) const { return zones_.filter(key, velocity); }
 };
 
 } // namespace SF2::Render

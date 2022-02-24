@@ -18,11 +18,19 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 @end
 
 @implementation SFFileTestsObjC {
-  SampleBasedContexts contexts;
+  SampleBasedContexts* contexts;
+}
+
+- (void)setUp {
+  contexts = new SampleBasedContexts;
+}
+
+- (void)tearDown {
+  delete contexts;
 }
 
 - (void)testParsing1 {
-  auto file = IO::File(contexts.context0.file());
+  const auto& file = contexts->context0.file();
 
   XCTAssertEqual(235, file.presets().size());
   XCTAssertEqual(235, file.presetZones().size());
@@ -36,7 +44,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 }
 
 - (void)testParsing2 {
-  auto file = IO::File(contexts.context1.file());
+  const auto& file = contexts->context1.file();
 
   XCTAssertEqual(270, file.presets().size());
   XCTAssertEqual(2616, file.presetZones().size());
@@ -50,7 +58,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 }
 
 - (void)testParsing3 {
-  auto file = IO::File(contexts.context2.file());
+  const auto& file = contexts->context2.file();
 
   XCTAssertEqual(189, file.presets().size());
   XCTAssertEqual(1054, file.presetZones().size());
@@ -64,7 +72,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 }
 
 - (void)testParsing4 {
-  auto file = IO::File(contexts.context3.file());
+  const auto& file = contexts->context3.file();
 
   XCTAssertEqual(1, file.presets().size());
   XCTAssertEqual(6, file.presetZones().size());
@@ -76,7 +84,7 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(0, file.instrumentZoneModulators().size());
   XCTAssertEqual(24, file.sampleHeaders().size());
 
-  auto samples = file.sampleSource(0);
+  auto samples = file.sampleSourceCollection()[0];
   samples.load();
   XCTAssertEqual(samples.size(), 115504);
 
@@ -84,9 +92,8 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
 }
 
 - (void)testSamples {
-  auto file = IO::File(contexts.context3.file());
-
-  auto samples = file.sampleSource(0);
+  const auto& file = contexts->context3.file();
+  auto samples = file.sampleSourceCollection()[0];
   samples.load();
 
   Float epsilon = 1e-6;
@@ -95,11 +102,13 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   XCTAssertEqual(samples.size(), 115504);
   XCTAssertEqualWithAccuracy(samples[0], -0.00103759765625, epsilon);
 
-  off_t pos = ::lseek(contexts.context3.fd(), sampleOffset, SEEK_SET);
+  int fd = contexts->context3.fd();
+  off_t pos = ::lseek(fd, sampleOffset, SEEK_SET);
   XCTAssertEqual(pos, sampleOffset);
 
   int16_t rawSamples[4];
-  ::read(contexts.context3.fd(), &rawSamples, sizeof(rawSamples));
+  ::read(fd, &rawSamples, sizeof(rawSamples));
+
   XCTAssertEqualWithAccuracy(rawSamples[0] * Render::NormalizedSampleSource::normalizationScale, samples[0], epsilon);
   XCTAssertEqualWithAccuracy(rawSamples[1] * Render::NormalizedSampleSource::normalizationScale, samples[1], epsilon);
   XCTAssertEqualWithAccuracy(rawSamples[2] * Render::NormalizedSampleSource::normalizationScale, samples[2], epsilon);

@@ -20,7 +20,7 @@ using namespace SF2::Render;
 @end
 
 @implementation VoiceTests {
-  SampleBasedContexts contexts;
+  SampleBasedContexts* contexts;
 }
 
 - (void)setUp {
@@ -29,6 +29,11 @@ using namespace SF2::Render;
 #else
   self.playAudio = NO;
 #endif
+  contexts = new SampleBasedContexts;
+}
+
+- (void)tearDown {
+  delete contexts;
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -42,7 +47,7 @@ using namespace SF2::Render;
 
 - (void)testRolandPianoRender {
   Float epsilon = 0.000001;
-  auto file = contexts.context3.file();
+  const auto& file = contexts->context3.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);
@@ -122,7 +127,7 @@ using namespace SF2::Render;
 
 - (void)testBrass2Render {
   double epsilon = 0.000001;
-  auto file = contexts.context2.file();
+  const auto& file = contexts->context2.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);

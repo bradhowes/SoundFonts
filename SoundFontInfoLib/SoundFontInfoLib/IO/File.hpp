@@ -18,7 +18,7 @@
 #include "Entity/Version.hpp"
 
 #include "IO/ChunkItems.hpp"
-#include "Render/NormalizedSampleSource.hpp"
+#include "Render/SampleSourceCollection.hpp"
 
 /**
  Collection of classes and types involved in parsing an SF2 file or data stream.
@@ -33,23 +33,26 @@ namespace SF2::IO {
 class File {
 public:
 
-  File() = default;
-
   /**
    Constructor. Processes the SF2 file contents and builds up various collections based on what it finds.
 
-   @param fd the file descriptor to read from
+   @param path the file to open and load
    @param dump if true, dump contents of file to log stream
    */
-  File(int fd, bool dump = false);
+  File(const char* path, bool dump = false);
+
+  ~File();
+
+  File(const File&) = delete;
+  File(File&&) = delete;
+  File& operator =(const File&) = delete;
+  File& operator =(File&&) = delete;
 
   enum class LoadResponse {
     ok,
     notFound,
     invalidFormat
   };
-
-  LoadResponse load(int fd, bool dump = false);
 
   /// @returns the embedded name in the file
   const std::string& embeddedName() const { return embeddedName_; }
@@ -90,31 +93,8 @@ public:
   /// @returns reference to samples definitions
   const ChunkItems<Entity::SampleHeader>& sampleHeaders() const { return sampleHeaders_; };
 
-  /**
-   Obtain a NormalizedSampleSource associated with the given sample header.
-
-   @param header the sample header to use as a key
-   @returns SampleBuffer reference
-   */
-  const Render::NormalizedSampleSource& sampleSource(const Entity::SampleHeader& header) const {
-    auto found = sampleSources_.find(makeSampleKey(header));
-    if (found == sampleSources_.end()) {
-      auto [it, ok] = sampleSources_.emplace(makeSampleKey(header),
-                                             Render::NormalizedSampleSource{rawSamples_.data(), header});
-      if (!ok) throw std::runtime_error("failed to insert sample source");
-      found = it;
-    }
-    return found->second;
-  }
-
-  /**
-   Obtain a SampleBuffer at the given sample header index
-
-   @param headerIndex the index of the buffer to obtain
-   @returns SampleBuffer reference
-   */
-  const Render::NormalizedSampleSource& sampleSource(size_t headerIndex) const {
-    return sampleSource(sampleHeaders_[headerIndex]);
+  const Render::SampleSourceCollection& sampleSourceCollection() const {
+    return sampleSourceCollection_;
   }
 
   void patchReleaseTimes(float maxDuration);
@@ -125,6 +105,8 @@ public:
 
 private:
 
+  LoadResponse load(bool dump);
+
   using SampleKey = uint64_t;
 
   static SampleKey makeSampleKey(const Entity::SampleHeader& header)
@@ -132,6 +114,7 @@ private:
     return uint64_t(header.startIndex()) << 32 | header.endIndex();
   }
 
+  int fd_;
   off_t size_;
   off_t sampleDataBegin_;
   off_t sampleDataEnd_;
@@ -158,7 +141,7 @@ private:
   ChunkItems<Entity::Modulator::Modulator> instrumentZoneModulators_;
   ChunkItems<Entity::SampleHeader> sampleHeaders_;
 
-  mutable std::map<SampleKey, Render::NormalizedSampleSource> sampleSources_;
+  Render::SampleSourceCollection sampleSourceCollection_;
   std::vector<int16_t> rawSamples_;
 
   inline static Logger log_{Logger::Make("IO", "File")};

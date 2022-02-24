@@ -15,13 +15,11 @@ using namespace SF2::Render::Engine;
 
 @implementation PresetCollectionTests
 
-static SF2::IO::File loadFile() {
+static NSURL* fileToLoad() {
   NSArray<NSURL*>* urls = SF2Files.allResources;
   NSURL* url = [urls objectAtIndex: 0];
-  return SF2::IO::File(::open(url.path.UTF8String, O_RDONLY));
+  return url;
 }
-
-static SF2::IO::File file = loadFile();
 
 - (void)testInit {
   PresetCollection presets;
@@ -30,6 +28,7 @@ static SF2::IO::File file = loadFile();
 
 - (void)testLoad {
   PresetCollection presets;
+  SF2::IO::File file{fileToLoad().path.UTF8String};
   presets.build(file);
   XCTAssertEqual(presets.size(), 235);
   XCTAssertEqual(presets[0].name(), "Piano 1");

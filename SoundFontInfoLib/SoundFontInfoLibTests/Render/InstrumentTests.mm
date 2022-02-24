@@ -19,7 +19,7 @@ using namespace SF2::Render;
 }
 
 - (void)testRolandPianoInstrument {
-  auto file = contexts.context3.file();
+  auto& file{contexts.context3.file()};
 
   Instrument instrument(file, file.instruments()[0]);
   XCTAssertEqual(std::string("Instrument6"), instrument.configuration().name());

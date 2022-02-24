@@ -2,8 +2,8 @@
 
 #include <optional>
 
-#include "Render/Zones/Preset.hpp"
-#include "Render/Zones/Instrument.hpp"
+#include "Render/Zone/Preset.hpp"
+#include "Render/Zone/Instrument.hpp"
 #include "Render/NormalizedSampleSource.hpp"
 
 namespace SF2::Render {
@@ -28,8 +28,8 @@ public:
    @param key the MIDI key that triggered the rendering
    @param velocity the MIDI velocity that triggered the rendering
    */
-  Config(const Zones::Preset& preset, const Zones::Preset* globalPreset,
-         const Zones::Instrument& instrument, const Zones::Instrument* globalInstrument, int key, int velocity) :
+  Config(const Zone::Preset& preset, const Zone::Preset* globalPreset, const Zone::Instrument& instrument,
+         const Zone::Instrument* globalInstrument, int key, int velocity) :
   preset_{preset}, globalPreset_{globalPreset},
   instrument_{instrument}, globalInstrument_{globalInstrument}, key_{key}, velocity_{velocity}
   {}
@@ -66,10 +66,10 @@ private:
     preset_.refine(state);
   }
 
-  const Zones::Preset& preset_;
-  const Zones::Preset* globalPreset_;
-  const Zones::Instrument& instrument_;
-  const Zones::Instrument* globalInstrument_;
+  const Zone::Preset& preset_;
+  const Zone::Preset* globalPreset_;
+  const Zone::Instrument& instrument_;
+  const Zone::Instrument* globalInstrument_;
   int key_;
   int velocity_;
 };

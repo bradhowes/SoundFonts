@@ -3,6 +3,8 @@
 
 #pragma once
 
+#import <memory>
+
 #import <XCTest/XCTest.h>
 
 #import "IO/File.hpp"
@@ -12,31 +14,32 @@
 struct PresetTestContextBase
 {
   inline static SF2::Float epsilon = 1.0e-8;
+
   static NSURL* getUrl(int urlIndex);
-  static int openFile(int urlIndex);
 };
 
+/**
+ Test harness for working with presets in SF2 files. Lazily creates test contexts. The template parameter UrlIndex is
+ an integer index into `SF2Files.allResources` which is a list of SF2 files that are available to read.
+ */
 template <int UrlIndex>
 struct PresetTestContext : PresetTestContextBase
 {
   PresetTestContext(int presetIndex = 0, SF2::Float sampleRate = 44100.0) :
-  fd_{openFile(UrlIndex)},
-  file_{SF2::IO::File(fd_)},
-  instruments_{file_},
-  preset_{file_, instruments_, file_.presets()[presetIndex]},
-  channel_{},
-  sampleRate_{sampleRate}
+  sampleRate_{sampleRate}, presetIndex_{presetIndex}
   {}
 
-  const NSURL* url() const {
-    return getUrl(UrlIndex);
-  }
+  /// @return URL path to the SF2 file
+  const NSURL* url() const { return getUrl(UrlIndex); }
 
-  int fd() const { return fd_; }
+  /// @return open file descriptor to the SF2 file
+  int fd() const { return ::open(url().path.UTF8String, O_RDONLY); }
 
-  const SF2::IO::File& file() const { return file_; }
+  /// @return reference to File that loaded the SF2 file.
+  const SF2::IO::File& file() const { return state()->file_; }
 
-  const SF2::Render::Preset& preset() const { return preset_; }
+  /// @return reference to Preset from SF2 file.
+  const SF2::Render::Preset& preset() const { return state()->preset_; }
 
   SF2::Render::State makeState(const SF2::Render::Config& config) const {
     SF2::Render::State state(sampleRate_, channel_);
@@ -45,7 +48,7 @@ struct PresetTestContext : PresetTestContextBase
   }
 
   SF2::Render::State makeState(int key, int velocity) const {
-    auto found = preset_.find(key, velocity);
+    auto found = state()->preset_.find(key, velocity);
     return makeState(found[0]);
   }
 
@@ -56,12 +59,24 @@ struct PresetTestContext : PresetTestContextBase
   }
 
 private:
-  int fd_;
-  SF2::IO::File file_;
-  SF2::Render::InstrumentCollection instruments_;
-  SF2::Render::Preset preset_;
-  SF2::MIDI::Channel channel_;
+
+  struct State {
+    SF2::IO::File file_;
+    SF2::Render::InstrumentCollection instruments_;
+    SF2::Render::Preset preset_;
+    State(const char* path, size_t presetIndex)
+    : file_{path}, instruments_{file_}, preset_{file_, instruments_, file_.presets()[presetIndex]} {}
+  };
+
+  State* state() const {
+    if (!state_) state_.reset(new State(url().path.UTF8String, presetIndex_));
+    return state_.get();
+  }
+
+  SF2::MIDI::Channel channel_{};
   SF2::Float sampleRate_;
+  int presetIndex_;
+  mutable std::unique_ptr<State> state_;
 };
 
 struct SampleBasedContexts {

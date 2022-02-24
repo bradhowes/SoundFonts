@@ -68,21 +68,19 @@
  Class method that creates a new SoundFontInfo instance by using the efficient Parser class on an open file descriptor.
  
  @param url the location of the SF2 file to process (only used for book-keeping)
- @param fd the file descriptor to read from
 
  @returns new SoundFontInfo instance
  */
-+ (SoundFontInfo*)parseViaParser:(NSURL*)url fileDescriptor:(int)fd;
++ (SoundFontInfo*)parseViaParser:(NSURL*)url;
 
 /**
  Class method that creates a new SoundFontInfo instance by using the robust File class on an open file descriptor.
  
  @param url the location of the SF2 file to process (only used for book-keeping)
- @param fd the file descriptor to read from
- 
+
  @returns new SoundFontInfo instance
  */
-+ (SoundFontInfo*)parseViaFile:(NSURL*)url fileDescriptor:(int)fd;
++ (SoundFontInfo*)parseViaFile:(NSURL*)url;
 
 /**
  Constructor for SoundFontInfo instance.
