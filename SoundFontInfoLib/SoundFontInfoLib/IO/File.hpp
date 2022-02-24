@@ -39,9 +39,21 @@ public:
    @param path the file to open and load
    @param dump if true, dump contents of file to log stream
    */
-  File(const char* path, bool dump = false);
+  File(const char* path, bool dump = false)
+  : path_{path}, fd_{-1}
+  {
+    fd_ = ::open(path, O_RDONLY);
+    if (fd_ == -1) throw std::runtime_error("file not found");
+    if (load(dump) != LoadResponse::ok) throw Format::error;
+  }
 
-  ~File();
+  /**
+   Custom destructor. Closes file that was opened in constructor.
+   */
+  ~File()
+  {
+    if (fd_ >= 0) ::close(fd_);
+  }
 
   File(const File&) = delete;
   File(File&&) = delete;
@@ -107,13 +119,7 @@ private:
 
   LoadResponse load(bool dump);
 
-  using SampleKey = uint64_t;
-
-  static SampleKey makeSampleKey(const Entity::SampleHeader& header)
-  {
-    return uint64_t(header.startIndex()) << 32 | header.endIndex();
-  }
-
+  std::string path_;
   int fd_;
   off_t size_;
   off_t sampleDataBegin_;

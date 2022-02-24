@@ -10,20 +10,6 @@
 
 using namespace SF2::IO;
 
-File::File(const char* path, bool dump)
-: fd_{-1}
-{
-  int fd = ::open(path, O_RDONLY);
-  if (fd == -1) throw std::runtime_error("file not found");
-  fd_ = fd;
-  if (load(dump) != LoadResponse::ok) throw Format::error;
-}
-
-File::~File()
-{
-  if (fd_ >= 0) ::close(fd_);
-}
-
 File::LoadResponse
 File::load(bool dump)
 {
@@ -81,9 +67,8 @@ File::load(bool dump)
           case Tags::smpl:
             sampleDataBegin_ = chunk.begin().offset();
             sampleDataEnd_ = chunk.end().offset();
-            if (dump) {
-              log_.debug() << "sampleDataBegin: " << sampleDataBegin_ << " sampleDataEnd: " << sampleDataEnd_ << '\n';
-            }
+            log_.debug() << path_ << " - sampleDataBegin: " << sampleDataBegin_ << " sampleDataEnd: " << sampleDataEnd_
+            << '\n';
             chunk.extractSamples(rawSamples_);
             break;
         }
