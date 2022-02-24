@@ -33,8 +33,25 @@ public:
     return *instrument_;
   }
 
+  /**
+   Apply the zone to the given voice state by adjusting the nominal value of the generators in the zone.
+
+   @param state the voice state to update
+   */
+  void refine(State& state) const
+  {
+    std::for_each(generators().begin(), generators().end(), [&](const Entity::Generator::Generator& generator) {
+      if (generator.definition().isAvailableInPreset()) {
+        log_.debug() << "adding " << generator.name() << " + " << generator.value() << std::endl;
+        state.adjustValue(generator.index(), generator.value());
+      }
+    });
+  }
+
 private:
   const Render::Instrument* instrument_;
+
+  inline static Logger log_{Logger::Make("Render", "Zone::Preset")};
 };
 
 } // namespace SF2::Render

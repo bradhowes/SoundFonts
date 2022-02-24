@@ -78,48 +78,6 @@ public:
     return keyRange_.contains(key) && velocityRange_.contains(velocity);
   }
 
-  /**
-   Apply the instrument zone to the given voice state.
-
-   @param state the voice state to update
-   */
-  void apply(State& state) const
-  {
-    // Generator state settings
-    std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-      log_.debug() << "setting " << generator.name() << " = " << generator.value() << std::endl;
-      state.setValue(generator.index(), generator.value());
-    });
-
-    // Modulator definitions
-    std::for_each(modulators_.begin(), modulators_.end(), [&](const Entity::Modulator::Modulator& modulator) {
-      log_.debug() << "adding mod " << modulator.description() << std::endl;
-      state.addModulator(modulator);
-    });
-  }
-
-  /**
-   Apply the zone to the given voice state by adjusting the value using the generator in the zone. Note that here we
-   blindly perform this operation to ALL generators regardless of type. The spec specifically says NOT to do this for
-   some generator types, but in this implementation there are no issues with doing so:
-
-   - State values start with a 0 value, so performing the += operation for an allowed index generator type is the same
-   as setting it.
-   - The range generators `keyRange` and `velocityRange` are only used during the filtering stage and so the update
-   here is a waste of time but otherwise harmless.
-
-   @param state the voice state to update
-   */
-  void refine(State& state) const
-  {
-    std::for_each(generators_.begin(), generators_.end(), [&](const Entity::Generator::Generator& generator) {
-      if (generator.definition().isAvailableInPreset()) {
-        log_.debug() << "adding " << generator.name() << " + " << generator.value() << std::endl;
-        state.adjustValue(generator.index(), generator.value());
-      }
-    });
-  }
-
 protected:
 
   /**
@@ -133,7 +91,8 @@ protected:
   generators_{std::move(gens)},
   modulators_{std::move(mods)},
   keyRange_{GetKeyRange(generators_)}, velocityRange_{GetVelocityRange(generators_)},
-  isGlobal_{IsGlobal(generators_, terminal, modulators_)}
+  isGlobal_{IsGlobal(generators_, terminal, modulators_)},
+  filterGenerators_{terminal == Entity::Generator::Index::instrument}
   {
     if (generators_.empty() && modulators_.empty()) throw std::runtime_error("empty zone created");
   }
@@ -192,6 +151,7 @@ private:
   MIDIRange keyRange_;
   MIDIRange velocityRange_;
   bool isGlobal_;
+  bool filterGenerators_;
 
   inline static Logger log_{Logger::Make("Render", "Zone")};
 };
