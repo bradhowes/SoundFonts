@@ -25,23 +25,23 @@ public:
    @param globalPreset the global PresetZone to apply (optional -- nullptr if no global)
    @param instrument the InstrumentZone that matched a key/velocity search
    @param globalInstrument the global InstrumentZone to apply (optional -- nullptr if no global)
-   @param key the MIDI key that triggered the rendering
-   @param velocity the MIDI velocity that triggered the rendering
+   @param eventKey the MIDI key that triggered the rendering
+   @param eventVelocity the MIDI velocity that triggered the rendering
    */
   Config(const Zone::Preset& preset, const Zone::Preset* globalPreset, const Zone::Instrument& instrument,
-         const Zone::Instrument* globalInstrument, int key, int velocity) :
+         const Zone::Instrument* globalInstrument, int eventKey, int eventVelocity) :
   preset_{preset}, globalPreset_{globalPreset},
-  instrument_{instrument}, globalInstrument_{globalInstrument}, key_{key}, velocity_{velocity}
+  instrument_{instrument}, globalInstrument_{globalInstrument}, eventKey_{eventKey}, eventVelocity_{eventVelocity}
   {}
 
   /// @returns the buffer of audio samples to use for rendering
   const NormalizedSampleSource& sampleSource() const { return instrument_.sampleSource(); }
 
   /// @returns original MIDI key that triggered the voice
-  int key() const { return key_; }
+  int eventKey() const { return eventKey_; }
 
   /// @returns original MIDI velocity that triggered the voice
-  int velocity() const { return velocity_; }
+  int eventVelocity() const { return eventVelocity_; }
 
 private:
 
@@ -70,8 +70,8 @@ private:
   const Zone::Preset* globalPreset_;
   const Zone::Instrument& instrument_;
   const Zone::Instrument* globalInstrument_;
-  int key_;
-  int velocity_;
+  int eventKey_;
+  int eventVelocity_;
 };
 
 } // namespace SF2::Render

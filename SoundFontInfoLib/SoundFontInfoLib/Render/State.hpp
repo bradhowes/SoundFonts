@@ -146,10 +146,10 @@ public:
   }
 
   /// @returns key from MIDI event that triggered the voice rendering
-  int eventKey() const { return key_; }
+  int eventKey() const { return eventKey_; }
 
   /// @returns velocity from MIDI event that triggered the voice rendering
-  int eventVelocity() const { return velocity_; }
+  int eventVelocity() const { return eventVelocity_; }
 
   /// @returns the adjustment to the volume envelope's hold stage timing based on the MIDI key event
   Float keyedVolumeEnvelopeHold() const {
@@ -192,12 +192,15 @@ public:
   /// @returns sample rate defined at construction
   Float sampleRate() const { return sampleRate_; }
 
+  void generatorChanged(Index index);
+
 private:
 
   using ModulatorIndexLinkedList = std::forward_list<size_t>;
 
   struct GenValue {
     int value{0};
+    int sumMods{0};
     ModulatorIndexLinkedList mods{};
   };
 
@@ -232,8 +235,6 @@ private:
     return modulated(gen) * (60 - key());
   }
 
-//  static size_t indexValue(Index gen) { return static_cast<size_t>(gen); }
-  
   const MIDI::Channel& channel_;
 
   /// Collection of generator values
@@ -243,8 +244,31 @@ private:
   std::vector<Modulator> modulators_{};
 
   Float sampleRate_;
-  int key_;
-  int velocity_;
+
+  int eventKey_;
+  int eventVelocity_;
+  Float pitch_;
+  Float attenuation_;
+  Float rootPitch_;
+
+  Float leftAttenuation_;
+  Float rightAttenuation_;
+
+  Float reverbAmount_;
+  Float chorusAmount_;
+
+  Float filterCutoff_;
+  Float filterResonance_;
+
+  Float modToFilterCutoff_;
+  Float modToPitch_;
+  Float modToVolume_;
+
+  Float vibToPitch_;
+
+  Float sampleSampleRate_;
+  Float sampleOriginalMIDIKey_;
+  Float samplePitchCorrection_;
 
   inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };

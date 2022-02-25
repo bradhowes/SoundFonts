@@ -22,7 +22,7 @@ inline constexpr Float ReferenceNoteSemi = ReferenceNoteMIDI * 100;
 
 inline constexpr int CentsPerSemitone = 100;
 inline constexpr int SemitonePerOctave = 12;
-inline constexpr int CentsPerOctave = 1200;
+inline constexpr Float CentsPerOctave = 1200.0;
 
 inline constexpr Float CentibelsPerDecade = 200.0;
 inline constexpr Float CentsToFrequencyMin = -16000;
@@ -41,19 +41,19 @@ inline constexpr Float HalfSquareRoot2 = M_SQRT2 / 2.0;
 inline constexpr Float InterNoteMultiplier = 1.05946309435929530984310531493975;
 
 /**
- Convert cents value into seconds, where There are 1200 cents per power of 2.
- 
- @param value the number to convert
- */
-inline Float centsToSeconds(Float value) { return std::exp2(value / 1200.0); }
-
-/**
  Convert cents value into a power of 2. There are 1200 cents per power of 2.
  
  @param value the value to convert
  @returns power of 2 value
  */
-inline Float centsToPower2(Float value) { return std::exp2(Float(value) / CentsPerOctave); }
+inline Float centsToPower2(Float value) { return std::exp2(value / CentsPerOctave); }
+
+/**
+ Convert cents value into seconds, where There are 1200 cents per power of 2.
+
+ @param value the number to convert
+ */
+inline Float centsToSeconds(Float value) { return centsToPower2(value); }
 
 /**
  Convert cents to frequency, with 0 being 8.175798 Hz. Values are clamped to [-16000, 4500].
@@ -61,9 +61,8 @@ inline Float centsToPower2(Float value) { return std::exp2(Float(value) / CentsP
  @param value the value to convert
  @returns frequency in Hz
  */
-inline Float absoluteCentsToFrequency(Float value) {
-  return ReferenceNoteFrequency *
-  centsToPower2(std::clamp(value, CentsToFrequencyMin, CentsToFrequencyMax) - ReferenceNoteSemi);
+inline Float lfoCentsToFrequency(Float value) {
+  return LowestNoteFrequency * centsToPower2(std::clamp(value, -16000.0, 4500.0));
 }
 
 /**
@@ -157,7 +156,8 @@ namespace SF2::DSP {
 
 /**
  Calculate the amount of left and right signal gain in [0.0-1.0] for the given `pan` value which is in range
- [-500, +500]. A `pan` of -500 is only left, and +500 is only right. A `pan` of 0 should result in ~0.7078 for both.
+ [-500, +500]. A `pan` of -500 is only left, and +500 is only right. A `pan` of 0 should result in ~0.7078 for both,
+ but moving left/right will increase one channel to 1.0 while the other falls off to 0.0.
  
  @param pan the value to convert
  @param left reference to storage for the left gain

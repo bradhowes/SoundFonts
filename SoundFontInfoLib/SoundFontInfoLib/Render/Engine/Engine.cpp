@@ -34,7 +34,7 @@ Engine::noteOn(int key, int velocity)
 void
 Engine::startVoice(const Config& config)
 {
-  size_t index = selectVoice(config.key());
+  size_t index = selectVoice(config.eventKey());
   if (index == 0) return;
 }
 

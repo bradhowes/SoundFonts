@@ -22,11 +22,11 @@ struct Generator;
  for a pleasing audio experience when panning.
 
  NOTE: FluidSynth has a table size of 1002 for some reason. Thus its values are slightly off from what this table
- contains.
+ contains. I don't see a reason for the one extra element.
  */
 struct PanLookup {
   inline constexpr static size_t TableSize = 500 + 500 + 1;
-  
+
   /**
    Obtain the attenuation values for the left and right channels.
    

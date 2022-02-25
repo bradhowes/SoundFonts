@@ -51,12 +51,9 @@ public:
 
   Generator(Generator&& rhs) noexcept
   : stages_{std::move(rhs.stages_)}, stageIndex_{rhs.stageIndex_}, counter_{rhs.counter_}, value_{rhs.value_}
-  {
-    os_log_info(log_, "Generator MOVE constructor");
-  }
+  {}
 
   Generator& operator=(Generator&& rhs) {
-    os_log_info(log_, "Generator MOVE assignment");
     stages_ = std::move(rhs.stages_);
     stageIndex_ = rhs.stageIndex_;
     counter_ = rhs.counter_;
@@ -156,7 +153,7 @@ private:
     Stage::Release(samplesFor(sampleRate, release), defaultCurvature, sustain)
   }
   {
-    os_log_info(log_, "Generator constructor");
+    os_log_debug(log_, "Generator constructor");
     if (noteOn) gate(true);
   }
 
@@ -180,7 +177,7 @@ private:
 
   void checkIfEndStage(StageIndex next) {
     if (--counter_ == 0) {
-      log_.info() << "end stage: " << StageName(stageIndex_) << std::endl;
+      os_log_debug(log_, "end stage: %{public}s", StageName(next));
       enterStage(next);
     }
   }
@@ -188,28 +185,28 @@ private:
   int activeDurationInSamples() const { return active().durationInSamples_; }
 
   void enterStage(StageIndex next) {
-    log_.info() << "new stage: " << StageName(next) << std::endl;
+    os_log_debug(log_, "new stage: %{public}s", StageName(next));
     stageIndex_ = next;
     switch (stageIndex_) {
       case StageIndex::delay:
         if (activeDurationInSamples()) break;
-        os_log_info(log_, "next stage: attack");
+        os_log_debug(log_, "next stage: attack");
         stageIndex_ = StageIndex::attack;
 
       case StageIndex::attack:
         if (activeDurationInSamples()) break;
-        os_log_info(log_, "next stage: hold");
+        os_log_debug(log_, "next stage: hold");
         stageIndex_ = StageIndex::hold;
 
       case StageIndex::hold:
         value_ = 1.0;
         if (activeDurationInSamples()) break;
-        os_log_info(log_, "next stage: decay");
+        os_log_debug(log_, "next stage: decay");
         stageIndex_ = StageIndex::decay;
 
       case StageIndex::decay:
         if (activeDurationInSamples()) break;
-        os_log_info(log_, "next stage: sustain");
+        os_log_debug(log_, "next stage: sustain");
         stageIndex_ = StageIndex::sustain;
 
       case StageIndex::sustain:
@@ -218,7 +215,7 @@ private:
 
       case StageIndex::release:
         if (activeDurationInSamples()) break;
-        os_log_info(log_, "next stage: idle");
+        os_log_debug(log_, "next stage: idle");
         stageIndex_ = StageIndex::idle;
         value_ = 0.0;
 

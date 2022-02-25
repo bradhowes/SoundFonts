@@ -22,14 +22,14 @@ public:
 
   static LFO forModulator(State& state) {
     return LFO(state.sampleRate(),
-               state.modulated(Entity::Generator::Index::frequencyModulatorLFO),
-               state.modulated(Entity::Generator::Index::delayModulatorLFO));
+               DSP::lfoCentsToFrequency(state.modulated(Entity::Generator::Index::frequencyModulatorLFO)),
+               DSP::centsToSeconds(state.modulated(Entity::Generator::Index::delayModulatorLFO)));
   }
 
   static LFO forVibrato(State& state) {
     return LFO(state.sampleRate(),
-               state.modulated(Entity::Generator::Index::frequencyVibratoLFO),
-               state.modulated(Entity::Generator::Index::delayVibratoLFO));
+               DSP::lfoCentsToFrequency(state.modulated(Entity::Generator::Index::frequencyVibratoLFO)),
+               DSP::centsToSeconds(state.modulated(Entity::Generator::Index::delayVibratoLFO)));
   }
 
   LFO() = default;
@@ -43,7 +43,7 @@ public:
   }
 
   /**
-   Obtain the next value of the oscillator. Advances counter before returning, so this is not idempotent.
+   Obtain the value of the oscillator and advance it before returning.
 
    @returns next waveform value to use
    */
@@ -58,7 +58,7 @@ public:
 
    @returns current waveform value
    */
-  Float value() { return counter_; }
+  Float value() const { return counter_; }
 
   void increment() {
     if (delaySampleCount_ > 0) {
@@ -84,8 +84,8 @@ private:
   /**
    Create a new instance.
    */
-  LFO(Float sampleRate, Float frequency, Float delay)
-  : sampleRate_{sampleRate}, frequency_{frequency}, delaySampleCount_{size_t(sampleRate_ * delay)},
+  LFO(Float sampleRate, Float frequency, Float delay) :
+  sampleRate_{sampleRate}, frequency_{frequency}, delaySampleCount_{size_t(sampleRate_ * delay)},
   increment_{frequency / sampleRate * 4.0} {}
 
   friend class LFOTestInjector;

@@ -557,7 +557,6 @@
 				BDB1BF7A265DB1F0002AD159 /* InputBuffer.hpp */,
 				BDB1BF90265DB1F0002AD159 /* Instrument.hpp */,
 				BDB1BF75265DB1F0002AD159 /* InstrumentCollection.hpp */,
-				BD5495D427C6F37D00A1AB20 /* Zone */,
 				BDB1BF88265DB1F0002AD159 /* LFO.hpp */,
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
 				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
@@ -571,6 +570,7 @@
 				BDB1BF84265DB1F0002AD159 /* State.cpp */,
 				BDB1BF85265DB1F0002AD159 /* State.hpp */,
 				BDB1BF82265DB1F0002AD159 /* Voice */,
+				BD5495D427C6F37D00A1AB20 /* Zone */,
 			);
 			name = Render;
 			path = SoundFontInfoLib/Render;

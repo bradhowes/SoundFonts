@@ -79,6 +79,7 @@ using namespace SF2::DSP::Tables;
   
   SF2::DSP::panLookup(0, left, right);
   XCTAssertEqualWithAccuracy(left, right, self.epsilon);
+  XCTAssertEqualWithAccuracy(0.707106781187, right, self.epsilon);
 
   SF2::DSP::panLookup(100, left, right);
   XCTAssertEqualWithAccuracy(0.587785252292, left, self.epsilon);
@@ -216,12 +217,12 @@ using namespace SF2::DSP::Tables;
   XCTAssertEqualWithAccuracy(1.0, SF2::DSP::tenthPercentage(1001), 0.0001);
 }
 
-- (void)testCentsToFrequency {
-  XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::absoluteCentsToFrequency(-32768), 0.000001);
-  XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::absoluteCentsToFrequency(-20000), 0.000001);
-  XCTAssertEqualWithAccuracy(8.175799, SF2::DSP::absoluteCentsToFrequency(0), 0.00001);
-  XCTAssertEqualWithAccuracy(110.0, SF2::DSP::absoluteCentsToFrequency(4500), 0.00001);
-  XCTAssertEqualWithAccuracy(110.0, SF2::DSP::absoluteCentsToFrequency(9000), 0.00001);
+- (void)testLFOCentsToFrequency {
+  XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::lfoCentsToFrequency(-32768), 0.000001);
+  XCTAssertEqualWithAccuracy(0.000792, SF2::DSP::lfoCentsToFrequency(-16000), 0.000001);
+  XCTAssertEqualWithAccuracy(8.175799, SF2::DSP::lfoCentsToFrequency(0), 0.00001);
+  XCTAssertEqualWithAccuracy(110.0, SF2::DSP::lfoCentsToFrequency(4500), 0.00001);
+  XCTAssertEqualWithAccuracy(110.0, SF2::DSP::lfoCentsToFrequency(9000), 0.00001);
 }
 
 @end

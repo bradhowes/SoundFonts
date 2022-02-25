@@ -421,10 +421,6 @@ enum struct Index : uint16_t {
   overridingRootKey,
 
   // # END OF SF2 DEFINITIONS
-  //
-  // The following do not exist in the spec, but are defined here to keep things simple and support the defined
-  // modulator presets.
-  //
 
   /**
    This parameter represents the initial pitch of a voice.
