@@ -13,7 +13,7 @@
 </p>
 
 This is an iOS (and soon-to-be macOS!) application that acts as a polyphonic synthesizer. It uses
-an`AVAudioUnitSampler` instance to generate the sounds for touched keys. The sounds that are available come from
+an `AVAudioUnitSampler` instance to generate the sounds for touched keys. The sounds that are available come from
 _sound font_ files such as those available [online](http://www.synthfont.com/links_to_soundfonts.html) for free
 (and of variable quality). There are four sound font files that are bundled with the application, and more can
 be added via the iCloud integration.
@@ -108,7 +108,7 @@ a cloud drive before it can be imported via the iOS sharing sheet.
 
 ## Favorites
 
-Double-tapping on the info bar switches between the fonts view and the the "favorites". This view shows all of the presets that have been
+Double-tapping on the info bar switches between the fonts view and the "favorites". This view shows all of the presets that have been
 "faved" or "starred". Pressing on a favorite will make its associated preset active. You can also reorder them by long-touching one and
 moving it to a new location among the others. There are various parameters one can adjust for a favorite that remain independent of the
 original preset it derived from. These include:
@@ -172,7 +172,7 @@ of the build process and PaintCode is not necessary to build.
 The repository comes with four SoundFont files, though the largest one -- `FluidR3_GM` -- is too large to store
 natively on Github so it has been broken into three files: `FluidR3_GM.sf2.1`, `FluidR3_GM.sf2.2`, and
 `FluidR3_GM.sf2.3`. I could move it to LFS but I do not want to mess with that. Instead, I have an Xcode build
-phaase that should concatenate the individual files into one big one before packaging them all up into a
+phase that should concatenate the individual files into one big one before packaging them all up into a
 resource in the SF2Files target.
 
 # API Documentation
@@ -197,7 +197,7 @@ The app and the AUv3 app extensions share code via the
 [SoundFontsFramework](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontsFramework) framework. This holds most of the UI
 definitions and nearly all of the SF2 handling code. This is all in Swift.
 
-Parsing SF2 files is done in an Objective-C framework with C++ code that represents entities defined the in the SoundFont v2 specification.
+Parsing SF2 files is done in an Objective-C framework with C++ code that represents entities defined in the SoundFont v2 specification.
 It is called [SoundFontInfoLib](https://github.com/bradhowes/SoundFonts/tree/main/SoundFontInfoLib). Its original purpose was to provide
 a fast way to extract the preset information from an SF2 file, but it has grown to understand all of the components in the SoundFont v2 spec.
 There is also the beginnings of my own custom SF2 audio rendering facility which will one day replace SoundFonts' dependency on
