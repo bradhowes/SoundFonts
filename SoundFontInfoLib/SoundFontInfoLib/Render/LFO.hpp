@@ -71,11 +71,11 @@ public:
     // For triangle waveform, the increment is the slope, so to just negate current value when changing directions.
     if (counter_ >= 1.0) {
       increment_ = -increment_;
-      counter_ = 2.0 - counter_;
+      counter_ = 2.0f - counter_;
     }
     else if (counter_ <= -1.0) {
       increment_ = -increment_;
-      counter_ = -2.0 - counter_;
+      counter_ = -2.0f - counter_;
     }
   }
 
@@ -86,7 +86,7 @@ private:
    */
   LFO(Float sampleRate, Float frequency, Float delay) :
   sampleRate_{sampleRate}, frequency_{frequency}, delaySampleCount_{size_t(sampleRate_ * delay)},
-  increment_{frequency / sampleRate * 4.0} {}
+  increment_{frequency / sampleRate * 4.0f} {}
 
   friend class LFOTestInjector;
   
