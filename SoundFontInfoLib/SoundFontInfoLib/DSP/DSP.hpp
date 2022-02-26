@@ -66,7 +66,7 @@ inline Float centsToSeconds(Float value) { return centsToPower2(value); }
  @returns frequency in Hz
  */
 inline Float lfoCentsToFrequency(Float value) {
-  return LowestNoteFrequency * centsToPower2(std::clamp(value, -16000.0, 4500.0));
+  return LowestNoteFrequency * centsToPower2(clamp(value, -16000.0, 4500.0));
 }
 
 /**
@@ -84,7 +84,7 @@ inline Float centibelsToAttenuation(Float centibels) { return std::pow(10.0, -ce
  @param value cutoff value
  @returns clamped cutoff value
  */
-inline Float clampFilterCutoff(Float value) { return std::clamp(value, 1500.0, 20000.0); }
+inline Float clampFilterCutoff(Float value) { return clamp(value, 1500.0, 20000.0); }
 
 /**
  Convert integer from integer [0-1000] into [0.0-1.0]
@@ -92,7 +92,7 @@ inline Float clampFilterCutoff(Float value) { return std::clamp(value, 1500.0, 2
  @param value percentage value expressed as tenths
  @returns normalized value between 0 and 1.
  */
-inline Float tenthPercentage(Float value) { return std::clamp(value / 1000.0, 0.0, 1.0); }
+inline Float tenthPercentage(Float value) { return clamp(value / 1000.0, 0.0, 1.0); }
 
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
@@ -119,7 +119,7 @@ inline Float bipolarToUnipolar(Float modulator) { return 0.5 * modulator + 0.5; 
  @returns value in range [minValue, maxValue]
  */
 inline Float unipolarModulate(Float modulator, Float minValue, Float maxValue) {
-  return std::clamp(modulator, 0.0, 1.0) * (maxValue - minValue) + minValue;
+  return clamp(modulator, 0.0, 1.0) * (maxValue - minValue) + minValue;
 }
 
 /**
@@ -132,7 +132,7 @@ inline Float unipolarModulate(Float modulator, Float minValue, Float maxValue) {
  */
 inline Float bipolarModulate(Float modulator, Float minValue, Float maxValue) {
   auto mid = (maxValue - minValue) * 0.5;
-  return std::clamp(modulator, -1.0, 1.0) * mid + mid + minValue;
+  return clamp(modulator, -1.0, 1.0) * mid + mid + minValue;
 }
 
 /**

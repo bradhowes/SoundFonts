@@ -75,7 +75,7 @@ private:
   inline constexpr static Float Scaling = HalfPI / (TableSize - 1);
   
   inline static Float interpolate(Float radians) {
-    Float phase = std::clamp(radians, 0.0, HalfPI) * TableScale;
+    Float phase = clamp(radians, 0.0, HalfPI) * TableScale;
     size_t index = size_t(phase);
     Float partial = phase - index;
     Float value = lookup_[index] * (1.0 - partial);
