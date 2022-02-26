@@ -118,21 +118,21 @@ private:
    @param index the table index to generate the value for
    @returns transform value
    */
-  static Float negativeLinear(size_t index) { return 1.0 - positiveLinear(index); }
+  static Float negativeLinear(size_t index) { return 1.0f - positiveLinear(index); }
 
   static Float positiveConcave(size_t index) {
-    return index == (TableSize - 1) ? 1.0 : -40.0 / 96.0 * std::log10((127.0 - Float(index)) / 127.0);
+    return index == (TableSize - 1) ? 1.0f : -40.0f / 96.0f * std::log10((127.0f - index) / 127.0f);
   }
   static Float negativeConcave(size_t index) {
-    return index == 0 ? 1.0 : -40.0 / 96.0 * std::log10(Float(index) / 127.0);
+    return index == 0 ? 1.0f : -40.0f / 96.0f * std::log10(index / 127.0f);
   }
 
   static Float positiveConvex(size_t index) {
-    return index == 0 ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(Float(index) / 127.0);
+    return index == 0 ? 0.0f : 1.0f - -40.0f / 96.0f * std::log10(index / 127.0f);
   }
 
   static Float negativeConvex(size_t index) {
-    return index == (TableSize - 1) ? 0.0 : 1.0 - -40.0 / 96.0 * std::log10(Float(127.0 - index) / 127.0);
+    return index == (TableSize - 1) ? 0.0f : 1.0f - -40.0f / 96.0f * std::log10(Float(127.0f - index) / 127.0f);
   }
 
   static Float positiveSwitched(size_t index) { return index < TableSize / 2 ? 0.0 : 1.0; }
