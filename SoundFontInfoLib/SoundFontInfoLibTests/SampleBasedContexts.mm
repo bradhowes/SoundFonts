@@ -16,8 +16,4 @@ NSURL* PresetTestContextBase::getUrl(int urlIndex)
 
 @implementation XCTestCase (SampleComparison)
 
-- (void)sample:(Float)A equals:(Float)B {
-  XCTAssertEqualWithAccuracy(A, B, PresetTestContextBase::epsilon);
-}
-
 @end

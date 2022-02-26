@@ -85,10 +85,3 @@ struct SampleBasedContexts {
   PresetTestContext<2> context2;
   PresetTestContext<3> context3;
 };
-
-@interface XCTestCase (SampleComparison)
-
-- (void)sample:(SF2::Float)A equals:(SF2::Float)B;
-
-@end
-
