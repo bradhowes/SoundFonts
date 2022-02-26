@@ -80,7 +80,6 @@
 		BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */; };
 		BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
-		BDECD03127CADAAB00FEDC13 /* GenValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDECD02F27CADAAB00FEDC13 /* GenValue.cpp */; };
 		BDECD03227CADAAB00FEDC13 /* GenValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03027CADAAB00FEDC13 /* GenValue.hpp */; };
 		BDECD03427CADB6200FEDC13 /* GenValueCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */; };
 		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
@@ -257,7 +256,6 @@
 		BDE99B6727BF91C000C9F1BC /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.1.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewTestTemplate.mm; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		BDECD02F27CADAAB00FEDC13 /* GenValue.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GenValue.cpp; sourceTree = "<group>"; };
 		BDECD03027CADAAB00FEDC13 /* GenValue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GenValue.hpp; sourceTree = "<group>"; };
 		BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GenValueCollection.hpp; sourceTree = "<group>"; };
 		BDF7866327C7D25300CB3BC5 /* Pitch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hpp; sourceTree = "<group>"; };
@@ -642,7 +640,6 @@
 			isa = PBXGroup;
 			children = (
 				BDB1BF86265DB1F0002AD159 /* Config.hpp */,
-				BDECD02F27CADAAB00FEDC13 /* GenValue.cpp */,
 				BDECD03027CADAAB00FEDC13 /* GenValue.hpp */,
 				BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */,
 				BDB1BF93265DB1F0002AD159 /* Modulator.cpp */,
@@ -864,7 +861,6 @@
 				BDB1BFA6265DB1F0002AD159 /* Instrument.cpp in Sources */,
 				BDB1BFB8265DB1F0002AD159 /* SampleHeader.cpp in Sources */,
 				BDB1BFA7265DB1F0002AD159 /* Source.cpp in Sources */,
-				BDECD03127CADAAB00FEDC13 /* GenValue.cpp in Sources */,
 				BDB1BFAA265DB1F0002AD159 /* Transform.cpp in Sources */,
 				BDB1BFDA265DB1F1002AD159 /* State.cpp in Sources */,
 			);

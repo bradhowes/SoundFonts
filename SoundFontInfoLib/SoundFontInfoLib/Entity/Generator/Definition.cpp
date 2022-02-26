@@ -104,5 +104,4 @@ std::array<Definition, Definition::NumDefs> const Definition::definitions_{
   Definition(N(scaleTuning), ValueKind::unsignedShort, true),
   Definition(N(exclusiveClass), ValueKind::unsignedShort, false),
   Definition(N(overridingRootKey), ValueKind::signedShort, false),
-  Definition(N(initialPitch), ValueKind::unsignedShort, false),
 };

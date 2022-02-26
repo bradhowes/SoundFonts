@@ -90,7 +90,7 @@ private:
   using ValueProc = std::function<int()>;
 
   /**
-   Obtain a generic callable entity that returns a integral value. This is used to obtain both the Sv and Av values,
+   Obtain a generic callable entity that returns an integral value. This is used to obtain both the Sv and Av values,
    regardless of their sources.
 
    @param source the modulator source definition from the SF2 file

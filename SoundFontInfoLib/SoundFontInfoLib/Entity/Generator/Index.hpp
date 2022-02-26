@@ -422,11 +422,6 @@ enum struct Index : uint16_t {
 
   // # END OF SF2 DEFINITIONS
 
-  /**
-   This parameter represents the initial pitch of a voice.
-   */
-  initialPitch,
-
   numValues
 };
 

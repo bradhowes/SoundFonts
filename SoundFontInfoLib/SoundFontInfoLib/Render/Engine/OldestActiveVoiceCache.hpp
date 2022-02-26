@@ -22,7 +22,7 @@ namespace SF2::Render::Engine {
 class OldestActiveVoiceCache
 {
 public:
-  using ListNodeAllocator = SF2::Utils::ListNodeAllocator<size_t>;
+  using Allocator = Utils::ListNodeAllocator<size_t>;
 
   /**
    Constructor. Allocates nodes in the cache for a maximum number of voices.
@@ -30,7 +30,7 @@ public:
    @param maxVoiceCount the number of voices to support
    */
   OldestActiveVoiceCache(size_t maxVoiceCount)
-  : leastRecentlyUsed_(ListNodeAllocator(maxVoiceCount))
+  : leastRecentlyUsed_(Allocator(maxVoiceCount))
   {
     for (size_t voiceIndex = 0; voiceIndex < maxVoiceCount; ++voiceIndex) {
       iterators_.push_back(leastRecentlyUsed_.end());
@@ -85,7 +85,7 @@ public:
   size_t size() const { return leastRecentlyUsed_.size(); }
 
 private:
-  std::list<size_t, ListNodeAllocator> leastRecentlyUsed_;
+  std::list<size_t, Allocator> leastRecentlyUsed_;
   std::vector<std::list<size_t>::iterator> iterators_{};
 };
 
