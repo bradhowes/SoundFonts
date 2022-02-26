@@ -15,6 +15,7 @@ using namespace SF2::Render;
 using namespace SF2::Entity::Generator;
 
 @interface ModulatorTests : XCTestCase {
+  Float epsilon;
   MIDI::Channel* channel;
   State* state;
 };
@@ -23,6 +24,7 @@ using namespace SF2::Entity::Generator;
 @implementation ModulatorTests
 
 - (void)setUp {
+  epsilon = 1.0e-3f;
   channel = new MIDI::Channel();
   state = new State(44100.0, *channel);
 }
@@ -38,13 +40,13 @@ using namespace SF2::Entity::Generator;
 
   Modulator modulator{0, config, *state};
   state->setValue(Index::forcedMIDIVelocity, 127);
-  [self sample:modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy(modulator.value(), 0.0, epsilon);
 
   state->setValue(Index::forcedMIDIVelocity, 64);
-  [self sample: modulator.value() equals:119.049498789];
+  XCTAssertEqualWithAccuracy(modulator.value(), 119.049498789, epsilon);
 
   state->setValue(Index::forcedMIDIVelocity, 1);
-  [self sample: modulator.value() equals:841.521488382];
+  XCTAssertEqualWithAccuracy( modulator.value(), 841.521488382, epsilon);
 }
 
 - (void)testKeyVelocityToFilterCutoff {
@@ -53,26 +55,26 @@ using namespace SF2::Entity::Generator;
 
   Modulator modulator{0, config, *state};
   state->setValue(Index::forcedMIDIVelocity, 127);
-  [self sample:modulator.value() equals:-18.75];
+  XCTAssertEqualWithAccuracy(modulator.value(), -18.75, epsilon);
 
   state->setValue(Index::forcedMIDIVelocity, 64);
-  [self sample: modulator.value() equals:-1200.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), -1200.0, epsilon);
 
   state->setValue(Index::forcedMIDIVelocity, 1);
-  [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * 127.0 / 128.0, epsilon);
 }
 
 - (void)testChannelPressureToVibratoLFOPitchDepth {
   const Entity::Modulator::Modulator& config{Entity::Modulator::Modulator::defaults[2]};
   Modulator modulator{0, config, *state};
   channel->setChannelPressure(0);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setChannelPressure(64);
-  [self sample: modulator.value() equals:25.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 25.0, epsilon);
 
   channel->setChannelPressure(127);
-  [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * 127.0 / 128.0, epsilon);
 }
 
 - (void)testCC1ToVibratoLFOPitchDepth {
@@ -81,13 +83,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(1, 0);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setContinuousControllerValue(1, 64);
-  [self sample: modulator.value() equals:25.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 25.0, epsilon);
 
   channel->setContinuousControllerValue(1, 127);
-  [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * 127.0 / 128.0, epsilon);
 }
 
 - (void)testCC7ToInitialAttenuation {
@@ -97,13 +99,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(7, 0);
-  [self sample: modulator.value() equals:960.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 960.0, epsilon);
 
   channel->setContinuousControllerValue(7, 64);
-  [self sample: modulator.value() equals:119.049498789];
+  XCTAssertEqualWithAccuracy( modulator.value(), 119.049498789, epsilon);
 
   channel->setContinuousControllerValue(7, 127);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 }
 
 - (void)testCC10ToPanPosition {
@@ -112,13 +114,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(10, 0);
-  [self sample: modulator.value() equals:-1000];
+  XCTAssertEqualWithAccuracy( modulator.value(), -1000, epsilon);
 
   channel->setContinuousControllerValue(10, 64);
-  [self sample: modulator.value() equals:0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0, epsilon);
 
   channel->setContinuousControllerValue(10, 127);
-  [self sample: modulator.value() equals:config.amount() * DSP::unipolarToBipolar(127.0 / 128.0)];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * DSP::unipolarToBipolar(127.0 / 128.0), epsilon);
 }
 
 - (void)testCC11ToInitialAttenuation {
@@ -127,13 +129,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(11, 0);
-  [self sample: modulator.value() equals:960.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 960.0, epsilon);
 
   channel->setContinuousControllerValue(11, 64);
-  [self sample: modulator.value() equals:119.049498789];
+  XCTAssertEqualWithAccuracy( modulator.value(), 119.049498789, epsilon);
 
   channel->setContinuousControllerValue(11, 127);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 }
 
 - (void)testCC91ToReverbSend {
@@ -142,13 +144,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(91, 0);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setContinuousControllerValue(91, 64);
-  [self sample: modulator.value() equals:100.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 100.0, epsilon);
 
   channel->setContinuousControllerValue(91, 127);
-  [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * 127.0 / 128.0, epsilon);
 }
 
 - (void)testCC93ToChorusSend {
@@ -157,13 +159,13 @@ using namespace SF2::Entity::Generator;
   Modulator modulator{0, config, *state};
 
   channel->setContinuousControllerValue(93, 0);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setContinuousControllerValue(93, 64);
-  [self sample: modulator.value() equals:100.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 100.0, epsilon);
 
   channel->setContinuousControllerValue(93, 127);
-  [self sample: modulator.value() equals:config.amount() * 127.0 / 128.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), config.amount() * 127.0 / 128.0, epsilon);
 }
 
 - (void)testPitchWheelToInitialPitch {
@@ -174,24 +176,24 @@ using namespace SF2::Entity::Generator;
   channel->setPitchWheelSensitivity(0);
 
   channel->setPitchWheelValue(0);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setPitchWheelValue(64);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setPitchWheelValue(127);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setPitchWheelSensitivity(127);
 
   channel->setPitchWheelValue(0);
-  [self sample: modulator.value() equals:-12600.78125];
+  XCTAssertEqualWithAccuracy( modulator.value(), -12600.78125, epsilon);
 
   channel->setPitchWheelValue(64);
-  [self sample: modulator.value() equals:0.0];
+  XCTAssertEqualWithAccuracy( modulator.value(), 0.0, epsilon);
 
   channel->setPitchWheelValue(127);
-  [self sample: modulator.value() equals:12403.89404296875];
+  XCTAssertEqualWithAccuracy( modulator.value(), 12403.89404296875, epsilon);
 }
 
 @end
