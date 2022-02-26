@@ -97,29 +97,29 @@ State::generatorChanged(Index index)
       break;
 
     case Index::initialAttenuation:
-      attenuation_ = std::clamp(value, 0.0, 1440.0);
+      attenuation_ = DSP::clamp(value, 0.0f, 1440.0f);
       break;
 
     case Index::initialPitch:
     case Index::coarseTune:
     case Index::fineTune:
-      pitch_ = modulated(Index::initialPitch) + 100.0 * modulated(Index::coarseTune) + modulated(Index::fineTune);
+      pitch_ = modulated(Index::initialPitch) + 100.0f * modulated(Index::coarseTune) + modulated(Index::fineTune);
       break;
 
     case Index::reverbEffectSend:
-      reverbAmount_ = std::clamp(value / 1000.0, 0.0, 1.0);
+      reverbAmount_ = DSP::clamp(value / 1000.0f, 0.0f, 1.0f);
       break;
 
     case Index::chorusEffectSend:
-      chorusAmount_ = std::clamp(value / 1000.0, 0.0, 1.0);
+      chorusAmount_ = DSP::clamp(value / 1000.0f, 0.0f, 1.0f);
       break;
 
     case Index::overridingRootKey:
       if (unmodulated(index) > -1)
-        rootPitch_ = unmodulated(index) * 100.0 - samplePitchCorrection_;
+        rootPitch_ = unmodulated(index) * 100.0f - samplePitchCorrection_;
       else
-        rootPitch_ = sampleOriginalMIDIKey_ * 100.0 - samplePitchCorrection_;
-      pitch_ = unmodulated(Index::scaleTuning) * (key() - rootPitch_ / 100.0) + rootPitch_;
+        rootPitch_ = sampleOriginalMIDIKey_ * 100.0f - samplePitchCorrection_;
+      pitch_ = unmodulated(Index::scaleTuning) * (key() - rootPitch_ / 100.0f) + rootPitch_;
       break;
 
     case Index::initialFilterCutoff:

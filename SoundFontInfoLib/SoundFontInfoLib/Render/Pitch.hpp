@@ -43,8 +43,7 @@ class Pitch
 {
 public:
 
-  Pitch(const State& state) :
-  state_{state}, key_{state.key()} {}
+  Pitch(const State& state) : state_{state} {}
 
   void configure(const Entity::SampleHeader& header)
   {
@@ -74,14 +73,14 @@ public:
    Recalculate pitch offset using state generators `coarseTune` and `fineTune`.
    */
   void updatePitchOffset() {
-    pitchOffset_ = std::clamp(state_.modulated(State::Index::coarseTune), -120.0, 120.0) * 100.0 +
-    std::clamp(state_.modulated(State::Index::fineTune), -99.0, 99.0);
+    pitchOffset_ = DSP::clamp(state_.modulated(State::Index::coarseTune), -120.0f, 120.0f) * 100.0f +
+    DSP::clamp(state_.modulated(State::Index::fineTune), -99.0f, 99.0f);
     std::cout << "pitchOffset: " << pitchOffset_ << '\n';
   }
 
 private:
 
-  Float centFs(State::Index index) const { return std::clamp(state_.modulated(index), -12000.0, 12000.0); }
+  Float centFs(State::Index index) const { return DSP::clamp(state_.modulated(index), -12000.0f, 12000.0f); }
 
   int rootKey(int originalMIDIKey) const {
     auto value = std::clamp(state_.unmodulated(State::Index::overridingRootKey), -1, 127);
@@ -93,10 +92,10 @@ private:
 
   void initialize(int originalMIDIKey, int pitchCorrection, Float originalSampleRate) {
     auto rootKey = this->rootKey(originalMIDIKey);
-    auto rootPitch = rootKey * 100.0 - pitchCorrection;
+    auto rootPitch = rootKey * 100.0f - pitchCorrection;
     rootFrequency_ = DSP::centsToFrequency(rootPitch) * state_.sampleRate() / originalSampleRate;
     std::cout << "rootPitch: " << rootPitch << " rootFrequency: " << rootFrequency_ << '\n';
-    pitch_ = scaleTuning() * (key_ - rootPitch / 100.0) + rootPitch;
+    pitch_ = scaleTuning() * (key_ - rootPitch / 100.0f) + rootPitch;
     std::cout << "pitch: " << pitch_ << '\n';
     updatePitchOffset();
   }

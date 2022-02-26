@@ -142,7 +142,7 @@ public:
     auto pitch = key();
     auto coarseTune = modulated(Index::coarseTune); // semitones
     auto fineTune = modulated(Index::fineTune);     // cents (1/100th of a semitone)
-    return pitch + coarseTune + fineTune / 100.0;
+    return pitch + coarseTune + fineTune / 100.0f;
   }
 
   /// @returns MIDI key value to use (also pitch in semitones)
@@ -229,7 +229,7 @@ private:
 
   Float envelopeSustainLevel(Index gen) const {
     assert(gen == Index::sustainVolumeEnvelope || gen == Index::sustainModulatorEnvelope);
-    return 1.0 - modulated(gen) / 1000.0;
+    return 1.0f - modulated(gen) / 1000.0f;
   }
 
   /**
