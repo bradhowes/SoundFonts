@@ -4,7 +4,7 @@
 #import <iostream>
 
 #import "Render/Preset.hpp"
-#import "Render/Sample/Generator.hpp"
+#import "Render/Voice/Sample/Generator.hpp"
 #import "Render/Voice/Voice.hpp"
 
 #import "SampleBasedContexts.hpp"
@@ -184,21 +184,21 @@ using namespace SF2::Render;
     }
     else if (index == int(sampleCount * 0.3)) {
       // Enable vibrato
-      v1L.state().setValue(State::Index::vibratoLFOToPitch, 100);
-      v1R.state().setValue(State::Index::vibratoLFOToPitch, 100);
-      v2L.state().setValue(State::Index::vibratoLFOToPitch, 100);
-      v2R.state().setValue(State::Index::vibratoLFOToPitch, 100);
-      v3L.state().setValue(State::Index::vibratoLFOToPitch, 100);
-      v3R.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v1L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
+      v1R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
+      v2L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
+      v2R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
+      v3L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
+      v3R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 100);
     }
     else if (index == int(sampleCount * 0.5)) {
       // Disable vibrato
-      v1L.state().setValue(State::Index::vibratoLFOToPitch, 0);
-      v1R.state().setValue(State::Index::vibratoLFOToPitch, 0);
-      v2L.state().setValue(State::Index::vibratoLFOToPitch, 0);
-      v2R.state().setValue(State::Index::vibratoLFOToPitch, 0);
-      v3L.state().setValue(State::Index::vibratoLFOToPitch, 0);
-      v3R.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v1L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
+      v1R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
+      v2L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
+      v2R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
+      v3L.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
+      v3R.state().setValue(Voice::State::State::Index::vibratoLFOToPitch, 0);
     }
     else if (index == int(sampleCount * 0.7)) {
       samples.push_back(s1L);
@@ -294,19 +294,19 @@ using namespace SF2::Render;
 }
 
 - (void)testLoopingModes {
-  State state{contexts.context3.makeState(60, 32)};
+  Voice::State::State state{contexts.context3.makeState(60, 32)};
   Voice::Voice voice{44100.0, contexts.context3.channel(), 0};
 
   XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
-  voice.state().setValue(State::Index::sampleModes, -1);
+  voice.state().setValue(Voice::State::State::Index::sampleModes, -1);
   XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
-  voice.state().setValue(State::Index::sampleModes, 1);
+  voice.state().setValue(Voice::State::State::Index::sampleModes, 1);
   XCTAssertEqual(Voice::Voice::LoopingMode::activeEnvelope, voice.loopingMode());
-  voice.state().setValue(State::Index::sampleModes, 2);
+  voice.state().setValue(Voice::State::State::Index::sampleModes, 2);
   XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
-  voice.state().setValue(State::Index::sampleModes, 3);
+  voice.state().setValue(Voice::State::State::Index::sampleModes, 3);
   XCTAssertEqual(Voice::Voice::LoopingMode::duringKeyPress, voice.loopingMode());
-  voice.state().setValue(State::Index::sampleModes, 4);
+  voice.state().setValue(Voice::State::State::Index::sampleModes, 4);
   XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
 }
 

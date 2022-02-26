@@ -5,10 +5,11 @@
 
 #import "Types.hpp"
 #import "MIDI/Channel.hpp"
-#import "Render/Sample/Generator.hpp"
+#import "Render/Voice/Sample/Generator.hpp"
 #import "SampleBasedContexts.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::Render::Voice;
+using namespace SF2::Render::Voice::Sample;
 
 @interface NormalizedSampleSourceTests : XCTestCase
 
@@ -64,16 +65,18 @@ static SF2::Float epsilon = 1e-6;
 
 
 - (void)testLinearInterpolation {
-  State state{100, channel};
+  State::State state{100, channel};
+  Sample::Generator gen{state, Sample::Generator::Interpolator::linear};
   NormalizedSampleSource source{values, header};
   source.load();
-
-  // XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(0.0, true), 0.0000001);
-#if 0
-  XCTAssertEqualWithAccuracy(0.701904296875, gen.generate(0.0, true), epsilon);
-  XCTAssertEqualWithAccuracy(0.732421875, gen.generate(0.0, true), epsilon);
-  XCTAssertEqualWithAccuracy(0.335693359375, gen.generate(0.0, true), epsilon);
-#endif
+  gen.configure(source);
+  Sample::Pitch pitch{state};
+  pitch.configure(source.header());
+  auto inc = pitch.samplePhaseIncrement(0.0, 0.0, 0.0);
+  XCTAssertEqualWithAccuracy(0.30517578125, gen.generate(inc, true), 0.0000001);
+  XCTAssertEqualWithAccuracy(-0.6103515625, gen.generate(inc, true), epsilon);
+  XCTAssertEqualWithAccuracy(0.91552734375, gen.generate(inc, true), epsilon);
+  XCTAssertEqualWithAccuracy(0.6103515625, gen.generate(inc, true), epsilon);
 //}
 //
 //- (void)testCubicInterpolation {

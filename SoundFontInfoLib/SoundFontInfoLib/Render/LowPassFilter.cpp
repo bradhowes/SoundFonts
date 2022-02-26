@@ -9,8 +9,8 @@ enum Index { B0 = 0, B1, B2, A1, A2 };
 void
 LowPassFilter::update()
 {
-  auto cutoff = state_.modulated(State::Index::initialFilterCutoff);
-  auto resonance = state_.modulated(State::Index::initialFilterResonance);
+  auto cutoff = state_.modulated(State::State::Index::initialFilterCutoff);
+  auto resonance = state_.modulated(State::State::Index::initialFilterResonance);
 
   const Float frequencyRads = DSP::PI * cutoff * nyquistPeriod_;
   const Float r = ::pow(10.0f, 0.05f * -resonance);

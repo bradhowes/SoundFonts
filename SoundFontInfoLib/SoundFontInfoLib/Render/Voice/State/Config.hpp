@@ -4,9 +4,9 @@
 
 #include "Render/Zone/Preset.hpp"
 #include "Render/Zone/Instrument.hpp"
-#include "Render/NormalizedSampleSource.hpp"
+#include "Render/Voice/Sample/NormalizedSampleSource.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Voice::State {
 
 class State;
 
@@ -35,7 +35,7 @@ public:
   {}
 
   /// @returns the buffer of audio samples to use for rendering
-  const NormalizedSampleSource& sampleSource() const { return instrument_.sampleSource(); }
+  const Sample::NormalizedSampleSource& sampleSource() const { return instrument_.sampleSource(); }
 
   /// @returns original MIDI key that triggered the voice
   int eventKey() const { return eventKey_; }

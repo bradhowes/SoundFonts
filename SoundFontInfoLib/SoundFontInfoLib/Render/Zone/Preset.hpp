@@ -38,7 +38,7 @@ public:
 
    @param state the voice state to update
    */
-  void refine(State& state) const
+  void refine(Voice::State::State& state) const
   {
     std::for_each(generators().begin(), generators().end(), [&](const Entity::Generator::Generator& generator) {
       if (generator.definition().isAvailableInPreset()) {

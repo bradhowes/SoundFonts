@@ -8,13 +8,15 @@
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 #include "Render/LFO.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 namespace SF2::Render {
 
 class LowPassFilter
 {
 public:
+  using State = Voice::State::State;
+
   LowPassFilter(const State& state) : state_{state}, nyquistPeriod_{1.0f / Float(0.5f * state.sampleRate())} {}
 
   void update();

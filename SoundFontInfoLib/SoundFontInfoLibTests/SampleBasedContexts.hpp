@@ -9,12 +9,11 @@
 
 #import "IO/File.hpp"
 #import "Render/Preset.hpp"
-#import "Render/State.hpp"
+#import "Render/Voice/State/State.hpp"
 
 struct PresetTestContextBase
 {
   inline static SF2::Float epsilon = 1.0e-8;
-
   static NSURL* getUrl(int urlIndex);
 };
 
@@ -41,13 +40,13 @@ struct PresetTestContext : PresetTestContextBase
   /// @return reference to Preset from SF2 file.
   const SF2::Render::Preset& preset() const { return state()->preset_; }
 
-  SF2::Render::State makeState(const SF2::Render::Config& config) const {
-    SF2::Render::State state(sampleRate_, channel_);
+  SF2::Render::Voice::State::State makeState(const SF2::Render::Voice::State::Config& config) const {
+    SF2::Render::Voice::State::State state(sampleRate_, channel_);
     state.prepareForVoice(config);
     return state;
   }
 
-  SF2::Render::State makeState(int key, int velocity) const {
+  SF2::Render::Voice::State::State makeState(int key, int velocity) const {
     auto found = state()->preset_.find(key, velocity);
     return makeState(found[0]);
   }

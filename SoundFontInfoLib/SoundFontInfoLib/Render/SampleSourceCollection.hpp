@@ -5,7 +5,7 @@
 #include <map>
 
 #include "Entity/SampleHeader.hpp"
-#include "Render/NormalizedSampleSource.hpp"
+#include "Render/Voice/Sample/NormalizedSampleSource.hpp"
 
 namespace SF2::Render {
 
@@ -21,12 +21,12 @@ public:
     auto key{makeKey(header)};
     auto found = collection_.find(key);
     if (found == collection_.end()) {
-      auto [it, ok] = collection_.emplace(key, NormalizedSampleSource{rawSamples, header});
+      auto [it, ok] = collection_.emplace(key, Voice::Sample::NormalizedSampleSource{rawSamples, header});
       if (!ok) throw std::runtime_error("failed to insert sample source");
     }
   }
 
-  const NormalizedSampleSource& operator[](size_t index) const
+  const Voice::Sample::NormalizedSampleSource& operator[](size_t index) const
   {
     if (index >= headers_.size()) throw std::runtime_error("invalid header index");
     auto found = collection_.find(makeKey(headers_[index]));
@@ -40,7 +40,7 @@ private:
     return uint64_t(header.startIndex()) << 32 | header.endIndex();
   }
 
-  std::map<Key, NormalizedSampleSource> collection_;
+  std::map<Key, Voice::Sample::NormalizedSampleSource> collection_;
   std::vector<SampleHeader> headers_;
 };
 

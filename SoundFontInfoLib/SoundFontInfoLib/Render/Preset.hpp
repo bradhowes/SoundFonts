@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Render/Config.hpp"
+#include "Render/Voice/State/Config.hpp"
 #include "Render/Zone/Preset.hpp"
 #include "Render/Zone/WithCollectionBase.hpp"
 
@@ -21,7 +21,7 @@ namespace SF2::Render {
  */
 class Preset : public Zone::WithCollectionBase<Zone::Preset, Entity::Preset> {
 public:
-  using ConfigCollection = std::vector<Config>;
+  using ConfigCollection = std::vector<Voice::State::Config>;
 
   /**
    Construct new Preset from SF2 entities

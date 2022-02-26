@@ -10,7 +10,7 @@
 #include "Logger.hpp"
 #include "Entity/Generator/Index.hpp"
 #include "Render/Envelope/Stage.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 /**
  Representation of an envelope with various states that have timing characteristics and levels.
@@ -43,7 +43,7 @@ using Stages = std::array<Stage, static_cast<int>(StageIndex::release) + 1>;
 class Generator {
 public:
   using Index = Entity::Generator::Index;
-  using State = Render::State;
+  using State = Render::Voice::State::State;
 
   inline static constexpr Float defaultCurvature = 0.01f;
 

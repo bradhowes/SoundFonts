@@ -9,6 +9,7 @@
 
 using namespace SF2;
 using namespace SF2::Render;
+using namespace SF2::Render::Voice;
 
 @interface PresetTests : XCTestCase
 @end
@@ -28,7 +29,7 @@ SampleBasedContexts contexts;
   auto found = preset.find(64, 10);
   XCTAssertEqual(2, found.size());
 
-  State left = contexts.context3.makeState(found[0]);
+  State::State left = contexts.context3.makeState(found[0]);
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
@@ -38,7 +39,7 @@ SampleBasedContexts contexts;
   XCTAssertEqual(0, left.unmodulated(Entity::Generator::Index::endAddressOffset));
   XCTAssertEqual(0, left.unmodulated(Entity::Generator::Index::endAddressCoarseOffset));
 
-  State right = contexts.context3.makeState(found[1]);
+  State::State right = contexts.context3.makeState(found[1]);
   XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(1902, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(7437, right.unmodulated(Entity::Generator::Index::initialFilterCutoff));

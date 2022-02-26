@@ -5,12 +5,11 @@
 #include "Entity/Modulator/Modulator.hpp"
 #include "Entity/Modulator/Source.hpp"
 #include "MIDI/Channel.hpp"
-#include "Render/State.hpp"
-
-#include "Render/Modulator.hpp"
+#include "Render/Voice/State/Modulator.hpp"
+#include "Render/Voice/State/State.hpp"
 
 using namespace SF2;
-using namespace SF2::Render;
+using namespace SF2::Render::Voice::State;
 
 namespace EntityMod = Entity::Modulator;
 

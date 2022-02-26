@@ -5,11 +5,12 @@
 #include "IO/File.hpp"
 #include "MIDI/Channel.hpp"
 #include "Render/Preset.hpp"
-#include "Render/Config.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/Config.hpp"
+#include "Render/Voice/State/State.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;
+using namespace SF2::Render::Voice;
 
 @interface InstrumentTests : XCTestCase
 @end
@@ -37,14 +38,14 @@ using namespace SF2::Render;
   auto found = preset.find(64, 64);
 
   MIDI::Channel channel;
-  State left{44100, channel};
+  State::State left{44100, channel};
   left.prepareForVoice(found[0]);
   XCTAssertEqual(-500, left.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(2041, left.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));
   XCTAssertEqual(9023, left.unmodulated(Entity::Generator::Index::initialFilterCutoff));
   XCTAssertEqual(23, left.unmodulated(Entity::Generator::Index::sampleID));
 
-  State right{44100.0, channel};
+  State::State right{44100.0, channel};
   right.prepareForVoice(found[1]);
   XCTAssertEqual(500, right.unmodulated(Entity::Generator::Index::pan));
   XCTAssertEqual(2041, right.unmodulated(Entity::Generator::Index::releaseVolumeEnvelope));

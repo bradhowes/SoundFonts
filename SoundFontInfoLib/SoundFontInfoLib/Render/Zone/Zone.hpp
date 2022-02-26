@@ -12,7 +12,7 @@
 #include "IO/ChunkItems.hpp"
 #include "IO/File.hpp"
 #include "Render/Range.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 namespace SF2::Render::Zone {
 

@@ -6,12 +6,13 @@
 #include "DSP/DSP.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/Envelope/Stage.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 #import "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;
+using namespace SF2::Render::Voice;
 using namespace SF2::Render::Envelope;
 
 namespace SF2::Render::Envelope {
@@ -154,49 +155,52 @@ struct EnvelopeTestInjector {
 
 - (void)testEnvelopeSustainLevel {
   Float epsilon = 0.000001;
-  State state{contexts.context3.makeState(64, 32)};
+  State::State state{contexts.context3.makeState(64, 32)};
 
-  state.setValue(State::Index::sustainVolumeEnvelope, 0);
+  state.setValue(State::State::Index::sustainVolumeEnvelope, 0);
   XCTAssertEqualWithAccuracy(1.0, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
 
-  state.setValue(State::Index::sustainVolumeEnvelope, 100);
+  state.setValue(State::State::Index::sustainVolumeEnvelope, 100);
   XCTAssertEqualWithAccuracy(0.9, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
 
-  state.setValue(State::Index::sustainVolumeEnvelope, 500);
+  state.setValue(State::State::Index::sustainVolumeEnvelope, 500);
   XCTAssertEqualWithAccuracy(0.5, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
 
-  state.setValue(State::Index::sustainVolumeEnvelope, 900);
+  state.setValue(State::State::Index::sustainVolumeEnvelope, 900);
   XCTAssertEqualWithAccuracy(0.1, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
 }
 
 - (void)testKeyToMod {
   Float epsilon = 0.000001;
-  State state{contexts.context3.makeState(64, 32)};
-
+  auto s1 = contexts.context3.makeState(60, 32);
+  
   // 1s hold duration
-  state.setValue(State::Index::holdVolumeEnvelope, 0);
+  s1.setValue(State::State::Index::holdVolumeEnvelope, 0);
   // Track keyboard such that octave increase results in 0.5 x hold duration
-  state.setValue(State::Index::midiKeyToVolumeEnvelopeHold, 100);
+  s1.setValue(State::State::Index::midiKeyToVolumeEnvelopeHold, 100);
   // For key 60 there is no scaling so no adjustment to hold duration
-  state.setValue(State::Index::forcedMIDIKey, 60);
-  auto duration = Generator::forVol(state)[StageIndex::hold].duration();
-  XCTAssertEqualWithAccuracy(state.sampleRate(), duration, epsilon);
+  auto duration = Generator::forVol(s1)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(s1.sampleRate(), duration, epsilon);
 
   // An octave increase should halve the duration.
-  state.setValue(State::Index::forcedMIDIKey, 72);
-  duration = Generator::forVol(state)[StageIndex::hold].duration();
-  XCTAssertEqualWithAccuracy(state.sampleRate() / 2.0, duration, epsilon);
+  auto s2 = contexts.context3.makeState(72, 32);
+  s2.setValue(State::State::Index::holdVolumeEnvelope, 0);
+  s2.setValue(State::State::Index::midiKeyToVolumeEnvelopeHold, 100);
+  duration = Generator::forVol(s2)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(s2.sampleRate() / 2.0, duration, epsilon);
 
   // An octave decrease should double the duration.
-  state.setValue(State::Index::forcedMIDIKey, 48);
-  duration = Generator::forVol(state)[StageIndex::hold].duration();
-  XCTAssertEqualWithAccuracy(state.sampleRate() * 2.0, duration, epsilon);
+  auto s3 = contexts.context3.makeState(48, 32);
+  s3.setValue(State::State::Index::holdVolumeEnvelope, 0);
+  s3.setValue(State::State::Index::midiKeyToVolumeEnvelopeHold, 100);
+  duration = Generator::forVol(s3)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(s3.sampleRate() * 2.0, duration, epsilon);
 
   // Validate spec scenario
-  state.setValue(State::Index::forcedMIDIKey, 36);
-  state.setValue(State::Index::midiKeyToVolumeEnvelopeHold, 50);
-  state.setValue(State::Index::holdVolumeEnvelope, -7973);
-  duration = Generator::forVol(state)[StageIndex::hold].duration();
+  auto s4 = contexts.context3.makeState(36, 32);
+  s4.setValue(State::State::Index::midiKeyToVolumeEnvelopeHold, 50);
+  s4.setValue(State::State::Index::holdVolumeEnvelope, -7973);
+  duration = Generator::forVol(s4)[StageIndex::hold].duration();
   XCTAssertEqualWithAccuracy(882, duration, 0.000001);
 }
 

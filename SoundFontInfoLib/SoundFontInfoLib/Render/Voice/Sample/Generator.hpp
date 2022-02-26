@@ -9,14 +9,13 @@
 
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Pitch.hpp"
-#include "Render/Sample/Bounds.hpp"
-#include "Render/Sample/GeneratorIndex.hpp"
-#include "Render/NormalizedSampleSource.hpp"
-#include "Render/Pitch.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/Sample/NormalizedSampleSource.hpp"
+#include "Render/Voice/Sample/Bounds.hpp"
+#include "Render/Voice/Sample/Index.hpp"
+#include "Render/Voice/Sample/Pitch.hpp"
+#include "Render/Voice/State/State.hpp"
 
-namespace SF2::Render::Sample {
+namespace SF2::Render::Voice::Sample {
 
 /**
  Generator of new samples from a stream of original samples, properly scaled to sound correct for the output sample
@@ -26,7 +25,7 @@ namespace SF2::Render::Sample {
  */
 class Generator {
 public:
-  using State = Render::State;
+  using State = State::State;
 
   enum struct Interpolator {
     linear,
@@ -104,7 +103,7 @@ private:
 
   State& state_;
   Bounds bounds_;
-  GeneratorIndex index_;
+  Index index_;
   InterpolatorProc interpolatorProc_;
   const NormalizedSampleSource* sampleSource_{nullptr};
 };

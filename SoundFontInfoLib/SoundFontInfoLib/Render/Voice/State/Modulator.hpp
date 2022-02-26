@@ -14,7 +14,7 @@ namespace SF2::Entity::Modulator { class Modulator; class Source; }
 
 namespace SF2::MIDI { class Channel; }
 
-namespace SF2::Render {
+namespace SF2::Render::Voice::State {
 
 class State;
 

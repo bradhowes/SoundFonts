@@ -7,7 +7,7 @@
 #include "Types.hpp"
 #include "DSP/DSP.hpp"
 #include "Entity/Generator/Index.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 namespace SF2::Render {
 
@@ -20,13 +20,13 @@ namespace SF2::Render {
 class LFO {
 public:
 
-  static LFO forModulator(State& state) {
+  static LFO forModulator(Voice::State::State& state) {
     return LFO(state.sampleRate(),
                DSP::lfoCentsToFrequency(state.modulated(Entity::Generator::Index::frequencyModulatorLFO)),
                DSP::centsToSeconds(state.modulated(Entity::Generator::Index::delayModulatorLFO)));
   }
 
-  static LFO forVibrato(State& state) {
+  static LFO forVibrato(Voice::State::State& state) {
     return LFO(state.sampleRate(),
                DSP::lfoCentsToFrequency(state.modulated(Entity::Generator::Index::frequencyVibratoLFO)),
                DSP::centsToSeconds(state.modulated(Entity::Generator::Index::delayVibratoLFO)));

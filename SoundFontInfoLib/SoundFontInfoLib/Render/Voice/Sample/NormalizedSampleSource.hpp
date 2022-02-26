@@ -12,9 +12,9 @@
 #include "Logger.hpp"
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Sample/Bounds.hpp"
+#include "Render/Voice/Sample/Bounds.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Voice::Sample {
 
 /**
  Contains a collection of audio samples that range between -1.0 and 1.0. The values are derived from the

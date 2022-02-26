@@ -21,8 +21,8 @@ namespace SF2::Render::Engine {
 class Engine
 {
 public:
-  using Config = SF2::Render::Config;
-  using Voice = SF2::Render::Voice::Voice;
+  using Config = Voice::State::Config;
+  using Voice = Voice::Voice;
 
   Engine(Float sampleRate, size_t maxVoiceCount);
 

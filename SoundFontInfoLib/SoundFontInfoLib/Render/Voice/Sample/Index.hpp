@@ -6,9 +6,9 @@
 
 #include "Logger.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/Sample/Bounds.hpp"
+#include "Render/Voice/Sample/Bounds.hpp"
 
-namespace SF2::Render::Sample {
+namespace SF2::Render::Voice::Sample {
 
 /**
  Interpolatable index into a NormalizedSampleSource. Maintains two counters, an integral one (size_t) and a partial
@@ -18,10 +18,10 @@ namespace SF2::Render::Sample {
  Updates to the index honor loops in the sample stream if allowed. The index can also signal when it has reached the
  end of the sample stream via its `finished` method.
  */
-class GeneratorIndex {
+class Index {
 public:
 
-  GeneratorIndex() = default;
+  Index() = default;
 
   void configure(const Bounds& bounds)
   {

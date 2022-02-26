@@ -7,9 +7,9 @@
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
 #include "Render/LFO.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Voice::Sample {
 
 /**
  View of a State that pertains to pitch. Pitch is based on the MIDI key that triggered the note, several
@@ -42,8 +42,9 @@ namespace SF2::Render {
 class Pitch
 {
 public:
+  using Index = State::State::Index;
 
-  Pitch(const State& state) : state_{state} {}
+  Pitch(const State::State& state) : state_{state} {}
 
   void configure(const Entity::SampleHeader& header)
   {
@@ -62,9 +63,9 @@ public:
    */
   Float samplePhaseIncrement(Float modLFO, Float vibLFO, Float modEnv) const {
     auto value = DSP::centsToFrequency(pitch_ + pitchOffset_ +
-                                       modLFO * centFs(State::Index::modulatorLFOToPitch) +
-                                       vibLFO * centFs(State::Index::vibratoLFOToPitch) +
-                                       modEnv * centFs(State::Index::modulatorEnvelopeToPitch)) / rootFrequency_;
+                                       modLFO * centFs(Index::modulatorLFOToPitch) +
+                                       vibLFO * centFs(Index::vibratoLFOToPitch) +
+                                       modEnv * centFs(Index::modulatorEnvelopeToPitch)) / rootFrequency_;
     // std::cout << "phaseIncrement: " << value << '\n';
     return value;
   }
@@ -73,22 +74,22 @@ public:
    Recalculate pitch offset using state generators `coarseTune` and `fineTune`.
    */
   void updatePitchOffset() {
-    pitchOffset_ = DSP::clamp(state_.modulated(State::Index::coarseTune), -120.0f, 120.0f) * 100.0f +
-    DSP::clamp(state_.modulated(State::Index::fineTune), -99.0f, 99.0f);
+    pitchOffset_ = DSP::clamp(state_.modulated(Index::coarseTune), -120.0f, 120.0f) * 100.0f +
+    DSP::clamp(state_.modulated(Index::fineTune), -99.0f, 99.0f);
     std::cout << "pitchOffset: " << pitchOffset_ << '\n';
   }
 
 private:
 
-  Float centFs(State::Index index) const { return DSP::clamp(state_.modulated(index), -12000.0f, 12000.0f); }
+  Float centFs(Index index) const { return DSP::clamp(state_.modulated(index), -12000.0f, 12000.0f); }
 
   int rootKey(int originalMIDIKey) const {
-    auto value = std::clamp(state_.unmodulated(State::Index::overridingRootKey), -1, 127);
+    auto value = std::clamp(state_.unmodulated(Index::overridingRootKey), -1, 127);
     if (value == -1) value = originalMIDIKey;
     return value;
   }
 
-  int scaleTuning() const { return std::clamp(state_.unmodulated(State::Index::scaleTuning), 0, 1200); }
+  int scaleTuning() const { return std::clamp(state_.unmodulated(Index::scaleTuning), 0, 1200); }
 
   void initialize(int originalMIDIKey, int pitchCorrection, Float originalSampleRate) {
     auto rootKey = this->rootKey(originalMIDIKey);
@@ -100,7 +101,7 @@ private:
     updatePitchOffset();
   }
 
-  const State& state_;
+  const State::State& state_;
   int key_;
   Float pitch_;
   Float pitchOffset_{0.0};

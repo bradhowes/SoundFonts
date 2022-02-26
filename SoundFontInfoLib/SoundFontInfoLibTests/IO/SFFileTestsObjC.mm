@@ -6,10 +6,12 @@
 #import <SF2Files/SF2Files-Swift.h>
 
 #import "File.hpp"
-#import "NormalizedSampleSource.hpp"
+#import "Render/Voice/Sample/NormalizedSampleSource.hpp"
 #import "SampleBasedContexts.hpp"
 
 using namespace SF2;
+using namespace SF2::Render;
+using namespace SF2::Render::Voice::Sample;
 
 static NSArray<NSURL*>* urls = SF2Files.allResources;
 
@@ -109,10 +111,10 @@ static NSArray<NSURL*>* urls = SF2Files.allResources;
   int16_t rawSamples[4];
   ::read(fd, &rawSamples, sizeof(rawSamples));
 
-  XCTAssertEqualWithAccuracy(rawSamples[0] * Render::NormalizedSampleSource::normalizationScale, samples[0], epsilon);
-  XCTAssertEqualWithAccuracy(rawSamples[1] * Render::NormalizedSampleSource::normalizationScale, samples[1], epsilon);
-  XCTAssertEqualWithAccuracy(rawSamples[2] * Render::NormalizedSampleSource::normalizationScale, samples[2], epsilon);
-  XCTAssertEqualWithAccuracy(rawSamples[3] * Render::NormalizedSampleSource::normalizationScale, samples[3], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[0] * NormalizedSampleSource::normalizationScale, samples[0], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[1] * NormalizedSampleSource::normalizationScale, samples[1], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[2] * NormalizedSampleSource::normalizationScale, samples[2], epsilon);
+  XCTAssertEqualWithAccuracy(rawSamples[3] * NormalizedSampleSource::normalizationScale, samples[3], epsilon);
 
   file.dumpThreaded();
 }

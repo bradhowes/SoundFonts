@@ -6,11 +6,12 @@
 
 #import "Entity/SampleHeader.hpp"
 #import "MIDI/Channel.hpp"
-#import "Render/Sample/GeneratorIndex.hpp"
-#import "Render/State.hpp"
+#import "Render/Voice/Sample/Index.hpp"
+#import "Render/Voice/State/State.hpp"
 
 using namespace SF2::Render;
-using namespace SF2::Render::Sample;
+using namespace SF2::Render::Voice;
+using namespace SF2::Render::Voice::Sample;
 
 @interface GeneratorIndexTests : XCTestCase
 @end
@@ -19,16 +20,16 @@ using namespace SF2::Render::Sample;
 
 static SF2::Entity::SampleHeader header(0, 6, 2, 5, 100, 69, 0);
 static SF2::MIDI::Channel channel;
-static Bounds bounds{Bounds::make(header, State(44100.0, channel))};
+static Bounds bounds{Bounds::make(header, State::State(44100.0, channel))};
 
 - (void)testConstruction {
-  auto index = GeneratorIndex();
+  auto index = Index();
   XCTAssertEqual(0, index.whole());
   XCTAssertEqual(0, index.partial());
 }
 
 - (void)testIncrement {
-  auto index = GeneratorIndex();
+  auto index = Index();
   auto increment = 1.3;
   index.configure(bounds);
   index.increment(increment, true);
@@ -39,7 +40,7 @@ static Bounds bounds{Bounds::make(header, State(44100.0, channel))};
 }
 
 - (void)testLooping {
-  auto index = GeneratorIndex();
+  auto index = Index();
   auto increment = 1.3;
   index.configure(bounds);
   index.increment(increment, true);
@@ -63,7 +64,7 @@ static Bounds bounds{Bounds::make(header, State(44100.0, channel))};
 }
 
 - (void)testEndLooping {
-  auto index = GeneratorIndex();
+  auto index = Index();
   auto increment = 1.3;
   index.configure(bounds);
   index.increment(increment, true);
@@ -81,7 +82,7 @@ static Bounds bounds{Bounds::make(header, State(44100.0, channel))};
 }
 
 - (void)testFinished {
-  auto index = GeneratorIndex();
+  auto index = Index();
   auto increment = 1.3;
   index.configure(bounds);
   index.increment(increment, false);

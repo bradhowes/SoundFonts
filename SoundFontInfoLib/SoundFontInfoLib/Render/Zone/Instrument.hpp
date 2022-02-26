@@ -27,7 +27,7 @@ public:
   {}
 
   /// @returns the sample buffer registered to this zone. Throws exception if zone is global
-  const Render::NormalizedSampleSource& sampleSource() const {
+  const Render::Voice::Sample::NormalizedSampleSource& sampleSource() const {
     if (sampleSource_ == nullptr) throw std::runtime_error("global instrument zone has no sample source");
     return *sampleSource_;
   }
@@ -37,7 +37,7 @@ public:
 
    @param state the voice state to update
    */
-  void apply(State& state) const
+  void apply(Voice::State::State& state) const
   {
     // Generator state settings
     std::for_each(generators().begin(), generators().end(), [&](const Entity::Generator::Generator& generator) {
@@ -53,7 +53,7 @@ public:
   }
 
 private:
-  const Render::NormalizedSampleSource* sampleSource_;
+  const Render::Voice::Sample::NormalizedSampleSource* sampleSource_;
 
   inline static Logger log_{Logger::Make("Render", "Zone::Instrument")};
 };

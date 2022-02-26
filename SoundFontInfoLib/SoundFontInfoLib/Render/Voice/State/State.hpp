@@ -6,6 +6,7 @@
 #include <cassert>
 #include <forward_list>
 #include <iostream>
+#include <list>
 #include <numeric>
 #include <vector>
 
@@ -13,9 +14,11 @@
 #include "Types.hpp"
 #include "Entity/Generator/Generator.hpp"
 #include "MIDI/Channel.hpp"
-#include "Render/Modulator.hpp"
+#include "Render/Voice/State/GenValue.hpp"
+#include "Render/Voice/State/GenValueCollection.hpp"
+#include "Render/Voice/State/Modulator.hpp"
 
-namespace SF2::Render {
+namespace SF2::Render::Voice::State {
 
 class Config;
 
@@ -91,7 +94,7 @@ public:
   void addModulator(const Entity::Modulator::Modulator& modulator);
 
   /**
-   Obtain a generator value without any modulation applied to it. This is the original result from the zone generator
+   Obtain a generator value without any adjustments from modulators. This is the sum of values set by zone generator
    definitions and so it is expressed as an integer. Most of the time, the `modulated` method is what is desired in
    order to account for any MIDI controller values.
 
@@ -101,32 +104,23 @@ public:
   int unmodulated(Index gen) const { return gens_[gen].unmodulated(); }
 
   /**
-   Obtain a generator value after applying any registered modulators to it. Due to the modulation calculations this
-   returns a floating-point value, but the value has not been converted into any particular unit and should
-   still reflect the definitions found in the spec for the given index.
+   Obtain a generator value that includes the changes added by attached modulators.
 
    @param gen the index of the generator
    @returns current value of the generator
    */
-  Float modulated(Index gen) const {
-    // Most of the time there are no modulators.
-    auto& genMods{gens_[gen].mods};
-    auto value = unmodulated(gen);
-    if (genMods.empty()) return value;
-    auto modSum = [this](Float value, size_t mod) { return value + modulators_[mod].value(); };
-    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
-  }
+  Float modulated(Index gen) const { return gens_[gen].modulated(); }
 
-  /// @returns key value to use for DSP
+  /// @returns key value to use for DSP. A generator can force it to be fixed to a set value.
   int key() const {
-    int value = unmodulated(Index::forcedMIDIKey);
-    return (value >= 0) ? value : eventKey_;
+    int key = unmodulated(Index::forcedMIDIKey);
+    return key >= 0 ? key : eventKey_;
   }
 
-  /// @returns velocity to use for DSP
+  /// @returns velocity to use for DSP. A generator can force it to be fixed to a set value.
   int velocity() const {
-    auto value = unmodulated(Index::forcedMIDIVelocity);
-    return (value >= 0) ? value : eventVelocity_;
+    int velocity = unmodulated(Index::forcedMIDIVelocity);
+    return velocity >= 0 ? velocity : eventVelocity_;
   }
 
   /// @returns the MIDI channel state associated with the rendering
@@ -137,34 +131,11 @@ public:
 
 private:
 
-  using ModulatorIndexLinkedList = std::forward_list<size_t>;
-
-  struct GenValue {
-    int value{0};
-    int adjustment{0};
-    int sumMods{0};
-    ModulatorIndexLinkedList mods{};
-
-    int unmodulated() const { return value + adjustment; }
-  };
-
-  struct GenValueArray {
-    GenValue& operator[](Index index) { return array_[indexValue(index)]; }
-    const GenValue& operator[](Index index) const { return array_[indexValue(index)]; }
-    void zero() { array_.fill(GenValue()); }
-  private:
-    std::array<GenValue, static_cast<size_t>(Index::numValues)> array_;
-  };
-
   void setDefaults();
   void linkModulators();
 
   const MIDI::Channel& channel_;
-
-  /// Collection of generator values
-  GenValueArray gens_;
-
-  /// Collection of modulators defined by instrument and preset zones.
+  GenValueCollection gens_{};
   std::vector<Modulator> modulators_{};
 
   Float sampleRate_;

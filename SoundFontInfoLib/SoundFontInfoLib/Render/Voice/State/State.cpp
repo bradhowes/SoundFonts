@@ -2,22 +2,22 @@
 
 #include <cmath>
 
-#include "Render/Config.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/Config.hpp"
+#include "Render/Voice/State/State.hpp"
 
-using namespace SF2::Render;
+using namespace SF2::Render::Voice::State;
 
 void
 State::prepareForVoice(const Config& config)
 {
-  eventKey_ = config.eventKey();
-  eventVelocity_ = config.eventVelocity();
-
   // (1) Initialize to default values
   setDefaults();
 
   // (2) Set values from preset and instrument zone configurations that matched the MIDI key/velocity combination.
   config.apply(*this);
+
+  eventKey_ = config.eventKey();
+  eventVelocity_ = config.eventVelocity();
 
   // (3) Now finish configuring the modulators by resolving any links between them.
   for (const auto& modulator : modulators_) {
@@ -78,7 +78,7 @@ State::addModulator(const Entity::Modulator::Modulator& modulator) {
   modulators_.emplace_back(index, modulator, *this);
 
   if (modulator.hasGeneratorDestination()) {
-    gens_[modulator.generatorDestination()].mods.push_front(index);
+    // gens_[modulator.generatorDestination()].mods.push_front(index);
   }
 }
 

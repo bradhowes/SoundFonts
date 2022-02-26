@@ -6,9 +6,9 @@
 #include "Render/Engine/Tick.hpp"
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
-#include "Render/Modulator.hpp"
-#include "Render/Sample/Generator.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/Sample/Generator.hpp"
+#include "Render/Voice/State/Modulator.hpp"
+#include "Render/Voice/State/State.hpp"
 
 namespace SF2::MIDI { class Channel; }
 
@@ -56,7 +56,7 @@ public:
    @param config the voice configuration to apply
    @param startTick the counter when the voice started
    */
-  void configure(const Config& config, Engine::Tick startTick);
+  void configure(const State::Config& config, Engine::Tick startTick);
 
   /**
    Signal the envelopes that the key is no longer pressed, transitioning to release phase.
@@ -71,7 +71,7 @@ public:
 
   /// @returns looping mode of the sample being rendered
   LoopingMode loopingMode() const {
-    switch (state_.unmodulated(State::Index::sampleModes)) {
+    switch (state_.unmodulated(Index::sampleModes)) {
       case 1: return LoopingMode::activeEnvelope;
       case 3: return LoopingMode::duringKeyPress;
       default: return LoopingMode::none;
@@ -123,17 +123,17 @@ public:
     }
   }
 
-  State& state() { return state_; }
+  State::State& state() { return state_; }
 
 private:
-  State state_;
+  State::State state_;
   LoopingMode loopingMode_;
+  Sample::Pitch pitch_;
   Sample::Generator sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;
   LFO vibratoLFO_;
-  Pitch pitch_;
 
   size_t voiceIndex_;
   Engine::Tick startedTick_;

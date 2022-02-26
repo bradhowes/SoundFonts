@@ -4,12 +4,12 @@
 
 #include "Entity/Generator/Index.hpp"
 #include "Entity/SampleHeader.hpp"
-#include "Render/State.hpp"
+#include "Render/Voice/State/State.hpp"
 
 /**
  Classes used to generate new samples from SF2 sample data for a given pitch and sample rate.
  */
-namespace SF2::Render::Sample {
+namespace SF2::Render::Voice::Sample {
 
 /**
  Represents the sample index bounds and loop start/end indices using values from the SF2 'shdr' entity as well as
@@ -28,7 +28,7 @@ public:
    @param header the 'shdr' header to use
    @param state the generator values to use
    */
-  static Bounds make(const Entity::SampleHeader& header, const State& state) {
+  static Bounds make(const Entity::SampleHeader& header, const State::State& state) {
     constexpr size_t coarse = 1 << 15;
     auto offset = [&state, coarse](Index a, Index b) -> size_t {
       return size_t(state.unmodulated(a)) + size_t(state.unmodulated(b)) * coarse;

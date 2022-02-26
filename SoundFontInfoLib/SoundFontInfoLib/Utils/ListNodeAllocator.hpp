@@ -3,9 +3,7 @@
 #include <memory>
 #include <limits>
 
-namespace SF2::Render::Engine {
-
-class OldestActiveVoiceCache;
+namespace SF2::Utils {
 
 /**
  Custom allocator for the OldestActiveVoiceCache for the list nodes. We allocate all nodes that we will
@@ -14,11 +12,8 @@ class OldestActiveVoiceCache;
  */
 template <typename T>
 class ListNodeAllocator {
-
-private:
-
-  // Only makes sense for OldestActiveVoiceCache to be able to use this allocator.
-  friend class OldestActiveVoiceCache;
+public:
+  using value_type = T;
 
   /**
    Construct a new allocator that will keep around maxNodeCount nodes.
@@ -26,9 +21,6 @@ private:
    @param maxNodeCount max number of list nodes
    */
   explicit ListNodeAllocator(size_t maxNodeCount) noexcept : maxNodeCount_{maxNodeCount} {}
-
-public:
-  using value_type = T;
 
   /**
    Template conversion constructor for U->T. Just copy the configuration parameter and move on.
