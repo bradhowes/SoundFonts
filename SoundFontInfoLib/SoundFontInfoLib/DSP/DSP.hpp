@@ -40,6 +40,10 @@ inline constexpr Float HalfSquareRoot2 = M_SQRT2 / 2.0;
 // The value to multiply one note frequency to get the next note's frequency
 inline constexpr Float InterNoteMultiplier = 1.05946309435929530984310531493975;
 
+inline Float clamp(Float value, Float lowerBound, Float upperBound) {
+  return std::clamp(value, lowerBound, upperBound);
+}
+
 /**
  Convert cents value into a power of 2. There are 1200 cents per power of 2.
  

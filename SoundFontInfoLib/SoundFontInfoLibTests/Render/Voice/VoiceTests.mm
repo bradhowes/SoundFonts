@@ -92,10 +92,10 @@ using namespace SF2::Render;
 
   auto renderLR = [&](auto& left, auto& right, bool dump = false) {
     for (auto index = 0; index < voiceSampleCount; ++index) {
-      AUValue sample = left.render();
+      AUValue sample = left.renderr();
       if (dump) std::cout << sample << '\n';
       *samplesLeft++ = sample;
-      *samplesRight++ = right.render();
+      *samplesRight++ = right.renderr();
       if (index == 0 || index == voiceSampleCount - 1) {
         samples.push_back(sample);
       }
@@ -168,13 +168,13 @@ using namespace SF2::Render;
 
   std::vector<AUValue> samples;
   for (auto index = 0; index < sampleCount; ++index) {
-    auto s1L = v1L.render();
-    auto s2L = v2L.render();
-    auto s3L = v3L.render();
+    auto s1L = v1L.renderr();
+    auto s2L = v2L.renderr();
+    auto s3L = v3L.renderr();
 
-    auto s1R = v1R.render();
-    auto s2R = v2R.render();
-    auto s3R = v3R.render();
+    auto s1R = v1R.renderr();
+    auto s2R = v2R.renderr();
+    auto s3R = v3R.renderr();
 
     AUValue sL = (s1L + s2L + s3L) / 3.0;
     AUValue sR = (s1R + s2R + s3R) / 3.0;
