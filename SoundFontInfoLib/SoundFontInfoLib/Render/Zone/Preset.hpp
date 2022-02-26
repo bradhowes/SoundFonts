@@ -43,7 +43,7 @@ public:
     std::for_each(generators().begin(), generators().end(), [&](const Entity::Generator::Generator& generator) {
       if (generator.definition().isAvailableInPreset()) {
         log_.debug() << "adding " << generator.name() << " + " << generator.value() << std::endl;
-        state.adjustValue(generator.index(), generator.value());
+        state.setAdjustment(generator.index(), generator.value());
       }
     });
   }

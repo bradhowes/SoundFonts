@@ -33,19 +33,6 @@ public:
   using Definition = Entity::Generator::Definition;
 
   /**
-   These are values for the sampleModes (#54) generator.
-
-   - none -- rendering does not loop
-   - activeEnvelope -- loop as long as the envelope allows
-   - duringKeyPress -- loop only while they key is down
-   */
-  enum LoopingMode {
-    none = 0,
-    activeEnvelope = 1,
-    duringKeyPress = 3
-  };
-
-  /**
    Create new state vector with a given sample rate.
 
    @param sampleRate the sample rate of audio being rendered
@@ -91,9 +78,9 @@ public:
    @param gen the generator to set
    @param value the value to use
    */
-  void adjustValue(Index gen, int value) {
+  void setAdjustment(Index gen, int value) {
     log_.debug() << "adjust " << Definition::definition(gen).name() << " by " << value << std::endl;
-    gens_[gen].value += value;
+    gens_[gen].adjustment = value;
   }
 
   /**
@@ -111,9 +98,7 @@ public:
    @param gen the index of the generator
    @returns configured value of the generator
    */
-  int unmodulated(Index gen) const {
-    return gens_[gen].value;
-  }
+  int unmodulated(Index gen) const { return gens_[gen].unmodulated(); }
 
   /**
    Obtain a generator value after applying any registered modulators to it. Due to the modulation calculations this
@@ -124,78 +109,24 @@ public:
    @returns current value of the generator
    */
   Float modulated(Index gen) const {
-    return gens_[gen].value;
-
-//    // Most of the time there are no modulators.
-//    auto& genMods{gens_[indexValue(gen)].mods};
-//    auto value = unmodulated(gen);
-//    if (genMods.empty()) return value;
-//
-//    // Accumulate changes to the state value from the registered modulators
-//    auto modSum = [this](Float value, size_t mod) { return value + modulators_[mod].value(); };
-//    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
+    // Most of the time there are no modulators.
+    auto& genMods{gens_[gen].mods};
+    auto value = unmodulated(gen);
+    if (genMods.empty()) return value;
+    auto modSum = [this](Float value, size_t mod) { return value + modulators_[mod].value(); };
+    return std::accumulate(genMods.begin(), genMods.end(), value, modSum);
   }
 
-  /// @returns fundamental pitch in semitones to generate when rendering
-  Float pitch() const {
-    //auto scaleTuning = unmodulated(Index::scaleTuning);
-    auto pitch = key();
-    auto coarseTune = modulated(Index::coarseTune); // semitones
-    auto fineTune = modulated(Index::fineTune);     // cents (1/100th of a semitone)
-    return pitch + coarseTune + fineTune / 100.0f;
-  }
-
-  /// @returns MIDI key value to use (also pitch in semitones)
+  /// @returns key value to use for DSP
   int key() const {
     int value = unmodulated(Index::forcedMIDIKey);
-    return (value >= 0) ? value : eventKey();
+    return (value >= 0) ? value : eventKey_;
   }
 
-  /// @returns key velocity to use when calculating attenuation
+  /// @returns velocity to use for DSP
   int velocity() const {
     auto value = unmodulated(Index::forcedMIDIVelocity);
-    return (value >= 0) ? value : eventVelocity();
-  }
-
-  /// @returns key from MIDI event that triggered the voice rendering
-  int eventKey() const { return eventKey_; }
-
-  /// @returns velocity from MIDI event that triggered the voice rendering
-  int eventVelocity() const { return eventVelocity_; }
-
-  /// @returns the adjustment to the volume envelope's hold stage timing based on the MIDI key event
-  Float keyedVolumeEnvelopeHold() const {
-    return keyedEnvelopeModulator(Index::midiKeyToVolumeEnvelopeHold);
-  }
-
-  /// @returns the adjustment to the volume envelope's decay stage timing based on the MIDI key event
-  Float keyedVolumeEnvelopeDecay() const {
-    return keyedEnvelopeModulator(Index::midiKeyToVolumeEnvelopeDecay);
-  }
-
-  /// @returns the adjustment to the modulator envelope's hold stage timing based on the MIDI key event
-  Float keyedModulatorEnvelopeHold() const {
-    return keyedEnvelopeModulator(Index::midiKeyToModulatorEnvelopeHold);
-  }
-
-  /// @returns the adjustment to the modulator envelope's decay stage timing based on the MIDI key event
-  Float keyedModulatorEnvelopeDecay() const {
-    return keyedEnvelopeModulator(Index::midiKeyToModulatorEnvelopeDecay);
-  }
-
-  /// @returns the sustain level for the volume envelope (gain)
-  Float sustainLevelVolumeEnvelope() const { return envelopeSustainLevel(Index::sustainVolumeEnvelope); }
-
-  /// @returns the sustain level for the modulator envelope
-  Float sustainLevelModulatorEnvelope() const { return envelopeSustainLevel(Index::sustainModulatorEnvelope); }
-
-  /// @returns looping mode of the sample being rendered
-  LoopingMode loopingMode() const {
-    switch (unmodulated(Index::sampleModes)) {
-      case 1: return LoopingMode::activeEnvelope;
-      case 3: return LoopingMode::duringKeyPress;
-      default: return LoopingMode::none;
-    }
+    return (value >= 0) ? value : eventVelocity_;
   }
 
   /// @returns the MIDI channel state associated with the rendering
@@ -204,16 +135,17 @@ public:
   /// @returns sample rate defined at construction
   Float sampleRate() const { return sampleRate_; }
 
-  void generatorChanged(Index index);
-
 private:
 
   using ModulatorIndexLinkedList = std::forward_list<size_t>;
 
   struct GenValue {
     int value{0};
+    int adjustment{0};
     int sumMods{0};
     ModulatorIndexLinkedList mods{};
+
+    int unmodulated() const { return value + adjustment; }
   };
 
   struct GenValueArray {
@@ -227,26 +159,6 @@ private:
   void setDefaults();
   void linkModulators();
 
-  Float envelopeSustainLevel(Index gen) const {
-    assert(gen == Index::sustainVolumeEnvelope || gen == Index::sustainModulatorEnvelope);
-    return 1.0f - modulated(gen) / 1000.0f;
-  }
-
-  /**
-   Obtain a generator value that is scaled by the MIDI key value. Per the spec, key 60 is unchanged. Keys higher will
-   scale positively, and keys lower than 60 will scale negatively.
-
-   @param gen the generator holding the timecents/semitone scaling factor
-   @returns result of generator value x (60 - key)
-   */
-  Float keyedEnvelopeModulator(Index gen) const {
-    assert(gen == Index::midiKeyToVolumeEnvelopeHold ||
-           gen == Index::midiKeyToVolumeEnvelopeDecay ||
-           gen == Index::midiKeyToModulatorEnvelopeHold ||
-           gen == Index::midiKeyToModulatorEnvelopeDecay);
-    return modulated(gen) * (60 - key());
-  }
-
   const MIDI::Channel& channel_;
 
   /// Collection of generator values
@@ -256,31 +168,8 @@ private:
   std::vector<Modulator> modulators_{};
 
   Float sampleRate_;
-
   int eventKey_;
   int eventVelocity_;
-  Float pitch_;
-  Float attenuation_;
-  Float rootPitch_;
-
-  Float leftAttenuation_;
-  Float rightAttenuation_;
-
-  Float reverbAmount_;
-  Float chorusAmount_;
-
-  Float filterCutoff_;
-  Float filterResonance_;
-
-  Float modToFilterCutoff_;
-  Float modToPitch_;
-  Float modToVolume_;
-
-  Float vibToPitch_;
-
-  Float sampleSampleRate_;
-  Float sampleOriginalMIDIKey_;
-  Float samplePitchCorrection_;
 
   inline static Logger log_{Logger::Make("Render.Voice", "State")};
 };

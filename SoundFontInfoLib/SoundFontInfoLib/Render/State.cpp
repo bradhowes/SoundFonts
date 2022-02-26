@@ -13,11 +13,6 @@ State::prepareForVoice(const Config& config)
   eventKey_ = config.eventKey();
   eventVelocity_ = config.eventVelocity();
 
-  const auto& header{config.sampleSource().header()};
-  sampleSampleRate_ = header.sampleRate();
-  sampleOriginalMIDIKey_ = header.originalMIDIKey();
-  samplePitchCorrection_ = header.pitchCorrection();
-
   // (1) Initialize to default values
   setDefaults();
 
@@ -84,54 +79,6 @@ State::addModulator(const Entity::Modulator::Modulator& modulator) {
 
   if (modulator.hasGeneratorDestination()) {
     gens_[modulator.generatorDestination()].mods.push_front(index);
-  }
-}
-
-void
-State::generatorChanged(Index index)
-{
-  auto value = modulated(index);
-  switch (index) {
-    case Index::pan:
-      DSP::panLookup(value, leftAttenuation_, rightAttenuation_);
-      break;
-
-    case Index::initialAttenuation:
-      attenuation_ = DSP::clamp(value, 0.0f, 1440.0f);
-      break;
-
-    case Index::initialPitch:
-    case Index::coarseTune:
-    case Index::fineTune:
-      pitch_ = modulated(Index::initialPitch) + 100.0f * modulated(Index::coarseTune) + modulated(Index::fineTune);
-      break;
-
-    case Index::reverbEffectSend:
-      reverbAmount_ = DSP::clamp(value / 1000.0f, 0.0f, 1.0f);
-      break;
-
-    case Index::chorusEffectSend:
-      chorusAmount_ = DSP::clamp(value / 1000.0f, 0.0f, 1.0f);
-      break;
-
-    case Index::overridingRootKey:
-      if (unmodulated(index) > -1)
-        rootPitch_ = unmodulated(index) * 100.0f - samplePitchCorrection_;
-      else
-        rootPitch_ = sampleOriginalMIDIKey_ * 100.0f - samplePitchCorrection_;
-      pitch_ = unmodulated(Index::scaleTuning) * (key() - rootPitch_ / 100.0f) + rootPitch_;
-      break;
-
-    case Index::initialFilterCutoff:
-      filterCutoff_ = value;
-      break;
-
-    case Index::initialFilterResonance:
-      filterResonance_ = value;
-      break;
-
-    default:
-      break;
   }
 }
 

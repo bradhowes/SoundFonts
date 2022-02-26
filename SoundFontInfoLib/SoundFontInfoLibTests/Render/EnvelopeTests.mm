@@ -8,7 +8,10 @@
 #include "Render/Envelope/Stage.hpp"
 #include "Render/State.hpp"
 
+#import "SampleBasedContexts.hpp"
+
 using namespace SF2;
+using namespace SF2::Render;
 using namespace SF2::Render::Envelope;
 
 namespace SF2::Render::Envelope {
@@ -22,14 +25,10 @@ struct EnvelopeTestInjector {
 @interface EnvelopeTests : XCTestCase
 @end
 
-static SF2::MIDI::Channel channel;
-static SF2::Render::State state{44100.0, channel};
-
-@implementation EnvelopeTests
-
-- (void)setUp {
-
+@implementation EnvelopeTests {
+  SampleBasedContexts contexts;
 }
+
 - (void)testGateOnOff {
   auto gen = Generator();
   XCTAssertEqual(0.0, gen.value());
@@ -151,6 +150,54 @@ static SF2::Render::State state{44100.0, channel};
   XCTAssertEqual(StageIndex::release, gen.stage());
   XCTAssertEqualWithAccuracy(0.000, gen.getNextValue(), epsilon);
   XCTAssertEqual(StageIndex::idle, gen.stage());
+}
+
+- (void)testEnvelopeSustainLevel {
+  Float epsilon = 0.000001;
+  State state{contexts.context3.makeState(64, 32)};
+
+  state.setValue(State::Index::sustainVolumeEnvelope, 0);
+  XCTAssertEqualWithAccuracy(1.0, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
+
+  state.setValue(State::Index::sustainVolumeEnvelope, 100);
+  XCTAssertEqualWithAccuracy(0.9, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
+
+  state.setValue(State::Index::sustainVolumeEnvelope, 500);
+  XCTAssertEqualWithAccuracy(0.5, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
+
+  state.setValue(State::Index::sustainVolumeEnvelope, 900);
+  XCTAssertEqualWithAccuracy(0.1, Generator::forVol(state)[StageIndex::sustain].initial(), epsilon);
+}
+
+- (void)testKeyToMod {
+  Float epsilon = 0.000001;
+  State state{contexts.context3.makeState(64, 32)};
+
+  // 1s hold duration
+  state.setValue(State::Index::holdVolumeEnvelope, 0);
+  // Track keyboard such that octave increase results in 0.5 x hold duration
+  state.setValue(State::Index::midiKeyToVolumeEnvelopeHold, 100);
+  // For key 60 there is no scaling so no adjustment to hold duration
+  state.setValue(State::Index::forcedMIDIKey, 60);
+  auto duration = Generator::forVol(state)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(state.sampleRate(), duration, epsilon);
+
+  // An octave increase should halve the duration.
+  state.setValue(State::Index::forcedMIDIKey, 72);
+  duration = Generator::forVol(state)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(state.sampleRate() / 2.0, duration, epsilon);
+
+  // An octave decrease should double the duration.
+  state.setValue(State::Index::forcedMIDIKey, 48);
+  duration = Generator::forVol(state)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(state.sampleRate() * 2.0, duration, epsilon);
+
+  // Validate spec scenario
+  state.setValue(State::Index::forcedMIDIKey, 36);
+  state.setValue(State::Index::midiKeyToVolumeEnvelopeHold, 50);
+  state.setValue(State::Index::holdVolumeEnvelope, -7973);
+  duration = Generator::forVol(state)[StageIndex::hold].duration();
+  XCTAssertEqualWithAccuracy(882, duration, 0.000001);
 }
 
 @end

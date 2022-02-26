@@ -70,11 +70,9 @@ public:
     return Generator(state.sampleRate(),
                      DSP::centsToSeconds(state.modulated(Index::delayVolumeEnvelope)),
                      DSP::centsToSeconds(state.modulated(Index::attackVolumeEnvelope)),
-                     DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) +
-                                         state.keyedVolumeEnvelopeHold()),
-                     DSP::centsToSeconds(state.modulated(Index::decayVolumeEnvelope) +
-                                         state.keyedVolumeEnvelopeDecay()),
-                     state.sustainLevelVolumeEnvelope(),
+                     DSP::centsToSeconds(state.modulated(Index::holdVolumeEnvelope) + keyToVolEnvHold(state)),
+                     DSP::centsToSeconds(state.modulated(Index::decayVolumeEnvelope) + keyToVolEnvDecay(state)),
+                     volEnvSustain(state),
                      DSP::centsToSeconds(state.modulated(Index::releaseVolumeEnvelope)),
                      true);
   }
@@ -88,11 +86,9 @@ public:
     return Generator(state.sampleRate(),
                      DSP::centsToSeconds(state.modulated(Index::delayModulatorEnvelope)),
                      DSP::centsToSeconds(state.modulated(Index::attackModulatorEnvelope)),
-                     DSP::centsToSeconds(state.modulated(Index::holdModulatorEnvelope) +
-                                         state.keyedModulatorEnvelopeHold()),
-                     DSP::centsToSeconds(state.modulated(Index::decayModulatorEnvelope) +
-                                         state.keyedModulatorEnvelopeDecay()),
-                     state.sustainLevelModulatorEnvelope(),
+                     DSP::centsToSeconds(state.modulated(Index::holdModulatorEnvelope) + keyToModEnvHold(state)),
+                     DSP::centsToSeconds(state.modulated(Index::decayModulatorEnvelope) + keyToModEnvDecay(state)),
+                     modEnvSustain(state),
                      DSP::centsToSeconds(state.modulated(Index::releaseModulatorEnvelope)),
                      true);
   }
@@ -141,6 +137,8 @@ public:
     return value_;
   }
 
+  const Stage& operator[](StageIndex stageIndex) const { return stages_[static_cast<size_t>(stageIndex)]; }
+
 private:
 
   Generator(Float sampleRate, Float delay, Float attack, Float hold, Float decay, Float sustain, Float release,
@@ -156,6 +154,44 @@ private:
     os_log_debug(log_, "Generator constructor");
     if (noteOn) gate(true);
   }
+
+  /**
+   Obtain a generator value that is scaled by the MIDI key value. Per the spec, key 60 is unchanged. Keys higher will
+   scale positively, and keys lower than 60 will scale negatively.
+
+   @param gen the generator holding the timecents/semitone scaling factor
+   @returns result of generator value x (60 - key)
+   */
+  static Float keyModEnv(const State& state, Index gen) {
+    assert(gen == Index::midiKeyToVolumeEnvelopeHold ||
+           gen == Index::midiKeyToVolumeEnvelopeDecay ||
+           gen == Index::midiKeyToModulatorEnvelopeHold ||
+           gen == Index::midiKeyToModulatorEnvelopeDecay);
+    return state.modulated(gen) * (60 - state.key());
+  }
+
+  /// @returns the adjustment to the volume envelope's hold stage timing based on the MIDI key event
+  static Float keyToVolEnvHold(const State& state) { return keyModEnv(state, Index::midiKeyToVolumeEnvelopeHold); }
+
+  /// @returns the adjustment to the volume envelope's decay stage timing based on the MIDI key event
+  static Float keyToVolEnvDecay(const State& state) { return keyModEnv(state, Index::midiKeyToVolumeEnvelopeDecay); }
+
+  /// @returns the adjustment to the modulator envelope's hold stage timing based on the MIDI key event
+  static Float keyToModEnvHold(const State& state) { return keyModEnv(state, Index::midiKeyToModulatorEnvelopeHold); }
+
+  /// @returns the adjustment to the modulator envelope's decay stage timing based on the MIDI key event
+  static Float keyToModEnvDecay(const State& state) { return keyModEnv(state, Index::midiKeyToModulatorEnvelopeDecay); }
+
+  static Float envSustain(const State& state, Index gen) {
+    assert(gen == Index::sustainVolumeEnvelope || gen == Index::sustainModulatorEnvelope);
+    return 1.0f - state.modulated(gen) / 1000.0f;
+  }
+
+  /// @returns the sustain level for the volume envelope (gain)
+  static Float volEnvSustain(const State& state) { return envSustain(state, Index::sustainVolumeEnvelope); }
+
+  /// @returns the sustain level for the modulator envelope
+  static Float modEnvSustain(const State& state) { return envSustain(state, Index::sustainModulatorEnvelope); }
 
   static int samplesFor(Float sampleRate, Float duration) { return int(round(sampleRate * duration)); }
 

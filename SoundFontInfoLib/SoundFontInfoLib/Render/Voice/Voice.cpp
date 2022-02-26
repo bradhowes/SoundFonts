@@ -14,7 +14,7 @@ using namespace SF2::Entity::Generator;
 
 Voice::Voice(Float sampleRate, const Channel& channel, size_t voiceIndex) :
 state_{sampleRate, channel},
-loopingMode_{State::none},
+loopingMode_{none},
 sampleGenerator_{state_, Render::Sample::Generator::Interpolator::linear},
 gainEnvelope_{},
 modulatorEnvelope_{},
@@ -31,7 +31,7 @@ Voice::configure(const Config& config, Engine::Tick startTick)
 {
   startedTick_ = startTick;
   state_.prepareForVoice(config);
-  loopingMode_ = state_.loopingMode();
+  loopingMode_ = loopingMode();
   gainEnvelope_ = Envelope::Generator::forVol(state_);
   modulatorEnvelope_ = Envelope::Generator::forMod(state_);
   sampleGenerator_.configure(config.sampleSource());

@@ -20,7 +20,7 @@ using namespace SF2::Render;
 @end
 
 @implementation VoiceTests {
-  SampleBasedContexts* contexts;
+  SampleBasedContexts contexts;
 }
 
 - (void)setUp {
@@ -29,11 +29,6 @@ using namespace SF2::Render;
 #else
   self.playAudio = NO;
 #endif
-  contexts = new SampleBasedContexts;
-}
-
-- (void)tearDown {
-  delete contexts;
 }
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
@@ -47,7 +42,7 @@ using namespace SF2::Render;
 
 - (void)testRolandPianoRender {
   Float epsilon = 0.000001;
-  const auto& file = contexts->context3.file();
+  const auto& file = contexts.context3.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);
@@ -127,7 +122,7 @@ using namespace SF2::Render;
 
 - (void)testBrass2Render {
   double epsilon = 0.000001;
-  const auto& file = contexts->context2.file();
+  const auto& file = contexts.context2.file();
 
   MIDI::Channel channel;
   InstrumentCollection instruments(file);
@@ -296,6 +291,23 @@ using namespace SF2::Render;
   CFRelease(uuid);
 
   return result;
+}
+
+- (void)testLoopingModes {
+  State state{contexts.context3.makeState(60, 32)};
+  Voice::Voice voice{44100.0, contexts.context3.channel(), 0};
+
+  XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
+  voice.state().setValue(State::Index::sampleModes, -1);
+  XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
+  voice.state().setValue(State::Index::sampleModes, 1);
+  XCTAssertEqual(Voice::Voice::LoopingMode::activeEnvelope, voice.loopingMode());
+  voice.state().setValue(State::Index::sampleModes, 2);
+  XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
+  voice.state().setValue(State::Index::sampleModes, 3);
+  XCTAssertEqual(Voice::Voice::LoopingMode::duringKeyPress, voice.loopingMode());
+  voice.state().setValue(State::Index::sampleModes, 4);
+  XCTAssertEqual(Voice::Voice::LoopingMode::none, voice.loopingMode());
 }
 
 @end

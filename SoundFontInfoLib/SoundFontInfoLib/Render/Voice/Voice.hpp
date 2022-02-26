@@ -27,6 +27,19 @@ public:
   using Index = Entity::Generator::Index;
 
   /**
+   These are values for the sampleModes (#54) generator.
+
+   - none -- rendering does not loop
+   - activeEnvelope -- loop as long as the envelope allows
+   - duringKeyPress -- loop only while they key is down
+   */
+  enum LoopingMode {
+    none = 0,
+    activeEnvelope = 1,
+    duringKeyPress = 3
+  };
+
+  /**
    Construct a new voice renderer.
 
    @param sampleRate the sample rate to use for generating audio
@@ -56,10 +69,19 @@ public:
   /// @returns true if this voice is still rendering interesting samples
   bool isActive() const { return gainEnvelope_.isActive(); }
 
+  /// @returns looping mode of the sample being rendered
+  LoopingMode loopingMode() const {
+    switch (state_.unmodulated(State::Index::sampleModes)) {
+      case 1: return LoopingMode::activeEnvelope;
+      case 3: return LoopingMode::duringKeyPress;
+      default: return LoopingMode::none;
+    }
+  }
+
   /// @returns true if the voice can enter a loop if it is available
   bool canLoop() const {
-    return (loopingMode_ == State::activeEnvelope && gainEnvelope_.isActive()) ||
-    (loopingMode_ == State::duringKeyPress && gainEnvelope_.isGated());
+    return (loopingMode_ == activeEnvelope && gainEnvelope_.isActive()) ||
+    (loopingMode_ == duringKeyPress && gainEnvelope_.isGated());
   }
 
   /**
@@ -105,7 +127,7 @@ public:
 
 private:
   State state_;
-  State::LoopingMode loopingMode_;
+  LoopingMode loopingMode_;
   Sample::Generator sampleGenerator_;
   Envelope::Generator gainEnvelope_;
   Envelope::Generator modulatorEnvelope_;

@@ -105,6 +105,11 @@ public:
    */
   Float next(Float last) const { return std::max<Float>(std::min<Float>(last * alpha_ + beta_, 1.0), 0.0); }
 
+  Float initial() const { return initial_; }
+  Float alpha() const { return alpha_; }
+  Float beta() const { return beta_; }
+  int duration() const { return durationInSamples_; }
+  
 private:
 
   Stage(StageIndex stageIndex, Float initial, Float alpha, Float beta, int durationInSamples) :
