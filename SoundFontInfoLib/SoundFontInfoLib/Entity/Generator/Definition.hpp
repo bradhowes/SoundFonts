@@ -82,11 +82,11 @@ public:
   Float convertedValueOf(const Amount& amount) const {
     switch (valueKind_) {
       case ValueKind::coarseOffset: return valueOf(amount) * 32768;
-      case ValueKind::signedCents: return valueOf(amount) / 1200.0;
+      case ValueKind::signedCents: return valueOf(amount) / 1200.0f;
 
       case ValueKind::signedCentsBel:
       case ValueKind::unsignedPercent:
-      case ValueKind::signedPercent: return valueOf(amount) / 10.0;
+      case ValueKind::signedPercent: return valueOf(amount) / 10.0f;
 
       case ValueKind::signedFrequencyCents: return DSP::centsToFrequency(valueOf(amount));
       case ValueKind::signedTimeCents: return DSP::centsToSeconds(valueOf(amount));
