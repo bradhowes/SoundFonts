@@ -80,7 +80,7 @@ public:
 
    @returns next sample
    */
-  Float render() {
+  Float renderr() {
     if (!isActive()) return 0.0;
 
     auto modLFO = modulatorLFO_.getNextValue();
@@ -93,6 +93,12 @@ public:
     auto sample = sampleGenerator_.generate(increment, canLoop());
     return sample * volEnv;
     // return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
+  }
+
+  void render(float* frames, size_t frameCount) {
+    for (size_t frame = 0; frame < frameCount; ++frame) {
+      frames[frame] = float(renderr());
+    }
   }
 
   State& state() { return state_; }
