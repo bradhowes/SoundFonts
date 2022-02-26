@@ -19,7 +19,7 @@ using namespace SF2::Render;
 }
 
 - (void)setUp {
-  epsilon = 1e-9;
+  epsilon = 1.0e-7f;
 }
 
 - (void)testUnity {
@@ -109,7 +109,7 @@ using namespace SF2::Render;
   pitch.configure(header);
 
   auto inc = pitch.samplePhaseIncrement(0.0, 0.0, 0.0);
-  XCTAssertEqualWithAccuracy(inc, 1.0, epsilon);
+  XCTAssertEqualWithAccuracy(inc, 1.0, 1.0e-3f);
 }
 
 - (void)testNegPitchAdjustment {
