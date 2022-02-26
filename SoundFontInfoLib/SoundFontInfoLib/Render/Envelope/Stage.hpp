@@ -41,8 +41,8 @@ class Generator;
 class Stage
 {
 public:
-  inline static constexpr Float minimumCurvature = 0.000000001;
-  inline static constexpr Float maximumCurvature = 10.0;
+  inline static constexpr Float minimumCurvature = 1.0e-7f;
+  inline static constexpr Float maximumCurvature = 10.0f;
 
   Stage() = default;
 
@@ -64,13 +64,13 @@ public:
   static Stage Attack(int sampleCount, Float curvature) {
     curvature = clampCurvature(curvature);
     Float alpha = calculateCoefficient(sampleCount, curvature);
-    return Stage(StageIndex::attack, 0.0, alpha, (1.0 + curvature) * (1.0 - alpha), sampleCount);
+    return Stage(StageIndex::attack, 0.0f, alpha, (1.0f + curvature) * (1.0f - alpha), sampleCount);
   }
 
   /**
    Generate a configuration for the delay stage.
    */
-  static Stage Hold(int sampleCount) { return Constant(StageIndex::hold, sampleCount, 1.0); }
+  static Stage Hold(int sampleCount) { return Constant(StageIndex::hold, sampleCount, 1.0f); }
 
   /**
    Generate a configuration for the decay stage.
@@ -78,7 +78,7 @@ public:
   static Stage Decay(int sampleCount, Float curvature, Float sustainLevel) {
     curvature = clampCurvature(curvature);
     Float alpha = calculateCoefficient(sampleCount, curvature);
-    return Stage(StageIndex::decay, 1.0, alpha, (sustainLevel - curvature) * (1.0 - alpha), sampleCount);
+    return Stage(StageIndex::decay, 1.0f, alpha, (sustainLevel - curvature) * (1.0f - alpha), sampleCount);
   }
 
   /**
@@ -94,7 +94,7 @@ public:
   static Stage Release(int sampleCount, Float curvature, Float sustainLevel) {
     curvature = clampCurvature(curvature);
     Float alpha = calculateCoefficient(sampleCount, curvature);
-    return Stage(StageIndex::release, sustainLevel, alpha, (0.0 - curvature) * (1.0 - alpha), sampleCount);
+    return Stage(StageIndex::release, sustainLevel, alpha, (0.0f - curvature) * (1.0f - alpha), sampleCount);
   }
 
   /**
@@ -119,7 +119,7 @@ private:
 
   static Float calculateCoefficient(Float sampleCount, Float curvature) {
     curvature = clampCurvature(curvature);
-    return (sampleCount <= 0.0) ? 0.0 : std::exp(-std::log((1.0 + curvature) / curvature) / sampleCount);
+    return (sampleCount <= 0.0f) ? 0.0f : std::exp(-std::log((1.0f + curvature) / curvature) / sampleCount);
   }
 
   friend class Generator;

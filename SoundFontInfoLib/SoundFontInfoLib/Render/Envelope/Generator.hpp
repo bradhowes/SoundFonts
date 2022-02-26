@@ -45,7 +45,7 @@ public:
   using Index = Entity::Generator::Index;
   using State = Render::State;
 
-  inline static constexpr Float defaultCurvature = 0.01;
+  inline static constexpr Float defaultCurvature = 0.01f;
 
   Generator() = default;
 
