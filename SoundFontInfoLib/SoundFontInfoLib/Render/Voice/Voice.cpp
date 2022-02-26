@@ -20,6 +20,7 @@ gainEnvelope_{},
 modulatorEnvelope_{},
 modulatorLFO_{},
 vibratoLFO_{},
+pitch_{state_},
 voiceIndex_{voiceIndex}
 {
   ;
@@ -36,4 +37,5 @@ Voice::configure(const Config& config, Engine::Tick startTick)
   sampleGenerator_.configure(config.sampleSource());
   modulatorLFO_ = LFO::forModulator(state_);
   vibratoLFO_ = LFO::forVibrato(state_);
+  pitch_.configure(config.sampleSource().header());
 }

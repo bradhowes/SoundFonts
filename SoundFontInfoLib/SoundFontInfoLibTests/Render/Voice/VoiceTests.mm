@@ -187,6 +187,24 @@ using namespace SF2::Render;
       samples.push_back(s2L);
       samples.push_back(s3L);
     }
+    else if (index == int(sampleCount * 0.3)) {
+      // Enable vibrato
+      v1L.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v1R.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v2L.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v2R.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v3L.state().setValue(State::Index::vibratoLFOToPitch, 100);
+      v3R.state().setValue(State::Index::vibratoLFOToPitch, 100);
+    }
+    else if (index == int(sampleCount * 0.5)) {
+      // Disable vibrato
+      v1L.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v1R.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v2L.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v2R.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v3L.state().setValue(State::Index::vibratoLFOToPitch, 0);
+      v3R.state().setValue(State::Index::vibratoLFOToPitch, 0);
+    }
     else if (index == int(sampleCount * 0.7)) {
       samples.push_back(s1L);
       samples.push_back(s2L);
@@ -206,9 +224,9 @@ using namespace SF2::Render;
   XCTAssertEqualWithAccuracy(0.0, samples[1], epsilon);
   XCTAssertEqualWithAccuracy(0.0, samples[2], epsilon);
 
-  XCTAssertEqualWithAccuracy(-0.239043, samples[3], epsilon);
-  XCTAssertEqualWithAccuracy(-0.045543, samples[4], epsilon);
-  XCTAssertEqualWithAccuracy( 0.016368, samples[5], epsilon);
+  XCTAssertEqualWithAccuracy(0.045224, samples[3], epsilon);
+  XCTAssertEqualWithAccuracy(0.077737, samples[4], epsilon);
+  XCTAssertEqualWithAccuracy(-0.045403, samples[5], epsilon);
 
   XCTAssertEqualWithAccuracy(0.0, samples[6], epsilon);
   XCTAssertEqualWithAccuracy(0.0, samples[7], epsilon);

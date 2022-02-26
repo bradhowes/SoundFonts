@@ -81,6 +81,7 @@
 		BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */ = {isa = PBXBuildFile; fileRef = BD2FC8C826CFDA6C002AF6CD /* SampleBasedContexts.mm */; };
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
+		BDF7866627C9378900CB3BC5 /* PitchTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF7866527C9378900CB3BC5 /* PitchTests.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -252,6 +253,7 @@
 		BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = NewTestTemplate.mm; sourceTree = "<group>"; };
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BDF7866327C7D25300CB3BC5 /* Pitch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hpp; sourceTree = "<group>"; };
+		BDF7866527C9378900CB3BC5 /* PitchTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PitchTests.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -414,6 +416,7 @@
 				BDADC19427BD764C008B26BA /* EngineTests */,
 				BDB1BE67265DAEC7002AD159 /* LFOTests.mm */,
 				BDB1BE68265DAEC7002AD159 /* GeneratorIndexTests.mm */,
+				BDF7866527C9378900CB3BC5 /* PitchTests.mm */,
 				BDB1BE69265DAEC7002AD159 /* PresetTests.mm */,
 				BDB1BE6C265DAEC7002AD159 /* StateTests.mm */,
 				BDB1BE6A265DAEC7002AD159 /* Voice */,
@@ -837,6 +840,7 @@
 			files = (
 				BDE99B6B27BFA4E500C9F1BC /* SampleBasedContexts.mm in Sources */,
 				BDADC19727BD764C008B26BA /* OldestVoiceCacheTests.mm in Sources */,
+				BDF7866627C9378900CB3BC5 /* PitchTests.mm in Sources */,
 				BD8E158726D12628000DC781 /* SFFileTestsSwift.swift in Sources */,
 				BD8E159026D12741000DC781 /* InstrumentTests.mm in Sources */,
 				BDE99B6527BECF3600C9F1BC /* GeneratorIndexTests.mm in Sources */,

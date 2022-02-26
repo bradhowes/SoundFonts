@@ -23,35 +23,30 @@ public:
 
   GeneratorIndex() = default;
 
-  explicit GeneratorIndex(const Bounds& bounds) : bounds_{bounds} {}
-
-  /**
-   Set the increment to use when advancing the index. This can change with each sample depending on what modulators
-   are doing with the pitch value (eg vibrato). Note that we don't modify the current position, just the increments.
-
-   @param increment the value to apply when advancing the index
-   */
-  void setIncrement(Float increment) {
-    wholeIncrement_ = size_t(increment);
-    partialIncrement_ = increment - Float(wholeIncrement_);
+  void configure(const Bounds& bounds)
+  {
+    bounds_ = bounds;
   }
 
   /// Signal that no further operations will take place using this index.
-  void stop() { setIncrement(0.0); }
+  void stop() { whole_ = bounds_.endPos(); }
 
   /// @returns true if the index has been stopped.
-  bool finished() const { return wholeIncrement_ == 0 && partialIncrement_ == 0.0; }
+  bool finished() const { return whole_ >= bounds_.endPos(); }
 
   /**
    Increment the index to the next location. Properly handles looping and buffer end.
 
    @param canLoop true if looping is allowed
    */
-  void increment(bool canLoop) {
+  void increment(Float increment, bool canLoop) {
     if (finished()) return;
 
-    whole_ += wholeIncrement_;
-    partial_ += partialIncrement_;
+    auto wholeIncrement = size_t(increment);
+    auto partialIncrement = increment - Float(wholeIncrement);
+
+    whole_ += wholeIncrement;
+    partial_ += partialIncrement;
 
     if (partial_ >= 1.0) {
       auto carry = size_t(partial_);
@@ -77,10 +72,6 @@ public:
 private:
   size_t whole_{0};
   Float partial_{0.0};
-
-  size_t wholeIncrement_{0};
-  Float partialIncrement_{0.0};
-
   Bounds bounds_{};
 
   inline static Logger log_{Logger::Make("Render.Sample", "GeneratorIndex")};

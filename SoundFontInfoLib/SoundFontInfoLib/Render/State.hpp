@@ -53,6 +53,18 @@ public:
    */
   State(Float sampleRate, const MIDI::Channel& channel) : sampleRate_{sampleRate}, channel_{channel} {}
 
+  /** Create new state vector for testing purposes.
+   @param sampleRate the sample rate of audio being rendered
+   @param channel the MIDI channel that is in control
+   @param key the MIDI key to use
+   @param velocity the MIDI velocity to use
+   */
+  State(Float sampleRate, const MIDI::Channel& channel, int key, int velocity = 64) :
+  sampleRate_{sampleRate}, channel_{channel}, eventKey_{key}, eventVelocity_{velocity}
+  {
+    setDefaults();
+  }
+
   /**
    Configure the state to be used by a voice for sample rendering.
    */

@@ -9,9 +9,11 @@
 
 #include "DSP/DSP.hpp"
 #include "Entity/SampleHeader.hpp"
+#include "Render/Pitch.hpp"
 #include "Render/Sample/Bounds.hpp"
 #include "Render/Sample/GeneratorIndex.hpp"
 #include "Render/NormalizedSampleSource.hpp"
+#include "Render/Pitch.hpp"
 #include "Render/State.hpp"
 
 namespace SF2::Render::Sample {
@@ -36,29 +38,24 @@ public:
 
   void configure(const NormalizedSampleSource& sampleSource)
   {
-    sampleSource_ = &sampleSource;
     bounds_ = Bounds::make(sampleSource.header(), state_);
-    index_ = GeneratorIndex(bounds_);
-    sampleRateRatio_ = sampleSource_->header().sampleRate() / state_.sampleRate();
+    index_.configure(bounds_);
+    sampleSource_ = &sampleSource;
     sampleSource_->load();
   }
 
   /**
-   Obtain an interpolated sample value at the given index.
+   Obtain an interpolated sample value at the current index.
 
-   @param pitch the pitch of the audio to generate
+   @param increment the increment to use to move to the next sample
    @param canLoop true if the generator is permitted to loop for more samples
    @returns new sample value
    */
-  
-  Float generate(Float pitch, bool canLoop) {
+  Float generate(Float increment, bool canLoop) {
+    if (index_.finished()) return 0.0;
     auto whole = index_.whole();
-    if (whole >= bounds_.endPos()) return 0.0;
     auto partial = index_.partial();
-
-    calculateIndexIncrement(pitch);
-    index_.increment(canLoop);
-
+    index_.increment(increment, canLoop);
     return interpolatorProc_(this, whole, partial, canLoop);
   }
 
@@ -67,19 +64,6 @@ private:
 
   static InterpolatorProc interpolator(Interpolator kind) {
     return kind == Interpolator::linear ? &Generator::linearInterpolate : &Generator::cubic4thOrderInterpolate;
-  }
-
-  void calculateIndexIncrement(Float pitch) {
-
-    // Don't keep calculating buffer increments if nothing has changed.
-    if (pitch == lastPitch_ && !index_.finished()) return;
-
-    lastPitch_ = pitch;
-    Float exponent = (pitch - sampleSource_->header().originalMIDIKey() +
-                      sampleSource_->header().pitchCorrection() / 100.0) / 12.0;
-    Float frequencyRatio = std::exp2(exponent);
-    Float increment = sampleRateRatio_ * frequencyRatio;
-    index_.setIncrement(increment);
   }
 
   /**
@@ -119,12 +103,10 @@ private:
   }
 
   State& state_;
+  Bounds bounds_;
+  GeneratorIndex index_;
   InterpolatorProc interpolatorProc_;
   const NormalizedSampleSource* sampleSource_{nullptr};
-  Bounds bounds_;
-  GeneratorIndex index_{};
-  Float sampleRateRatio_;
-  Float lastPitch_{0.0};
 };
 
 } // namespace SF2::Render::Sample

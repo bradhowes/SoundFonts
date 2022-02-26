@@ -83,29 +83,19 @@ public:
   Float render() {
     if (!isActive()) return 0.0;
 
-    // auto scaleTuning = state_.modulated(Index::scaleTuning);
-
+    auto modLFO = modulatorLFO_.getNextValue();
+    auto vibLFO = vibratoLFO_.getNextValue();
     auto modEnv = modulatorEnvelope_.getNextValue();
-    auto vibLfo = vibratoLFO_.getNextValue();
-    auto modLfo = modulatorLFO_.getNextValue();
     auto volEnv = gainEnvelope_.getNextValue();
+    // auto attenuation = 1.0; // state_.modulated(Index::initialAttenuation);
 
-    // The primary pitch value (note that this can be modulated / adjusted as well depending on mod definitions)
-    auto pitch = state_.pitch();
-
-    // The adjustments that come from the modulators and envelopes. These are specified in cents so, divide by 100 to
-    // get values in semitones.
-    auto pitchAdjustment = (modEnv * state_.modulated(Index::modulatorEnvelopeToPitch) +
-                            modLfo * state_.modulated(Index::modulatorLFOToPitch) +
-                            vibLfo * state_.modulated(Index::vibratoLFOToPitch)) / 100.0;
-
-    auto attenuation = 1.0; // state_.modulated(Index::initialAttenuation);
-
-    auto sample = sampleGenerator_.generate(pitch + pitchAdjustment, canLoop());
+    auto increment = pitch_.samplePhaseIncrement(modLFO, vibLFO, modEnv);
+    auto sample = sampleGenerator_.generate(increment, canLoop());
     return sample * volEnv;
-    
-    return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
+    // return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
   }
+
+  State& state() { return state_; }
 
 private:
   State state_;
@@ -115,6 +105,7 @@ private:
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;
   LFO vibratoLFO_;
+  Pitch pitch_;
 
   size_t voiceIndex_;
   Engine::Tick startedTick_;
