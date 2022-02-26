@@ -82,6 +82,8 @@
 		BDEB12C7262611BA003CE8EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDEB12C6262611BA003CE8EE /* AVFoundation.framework */; };
 		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
 		BDF7866627C9378900CB3BC5 /* PitchTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF7866527C9378900CB3BC5 /* PitchTests.mm */; };
+		BDF7866827CA25CF00CB3BC5 /* LowPassFilter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */; };
+		BDF7866A27CA4C0600CB3BC5 /* LowPassFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDF7866927CA4C0600CB3BC5 /* LowPassFilter.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -254,6 +256,8 @@
 		BDEB12C6262611BA003CE8EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		BDF7866327C7D25300CB3BC5 /* Pitch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hpp; sourceTree = "<group>"; };
 		BDF7866527C9378900CB3BC5 /* PitchTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PitchTests.mm; sourceTree = "<group>"; };
+		BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LowPassFilter.hpp; sourceTree = "<group>"; };
+		BDF7866927CA4C0600CB3BC5 /* LowPassFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LowPassFilter.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -565,6 +569,8 @@
 				BDB1BF77265DB1F0002AD159 /* Modulator.hpp */,
 				BDB1BF8B265DB1F0002AD159 /* NormalizedSampleSource.hpp */,
 				BDF7866327C7D25300CB3BC5 /* Pitch.hpp */,
+				BDF7866927CA4C0600CB3BC5 /* LowPassFilter.cpp */,
+				BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */,
 				BDADC19227BD761F008B26BA /* Preset.cpp */,
 				BDB1BF74265DB1F0002AD159 /* Preset.hpp */,
 				BDB1BF91265DB1F0002AD159 /* Range.hpp */,
@@ -649,6 +655,7 @@
 				BDADC18F27BD75F6008B26BA /* PresetCollection.hpp in Headers */,
 				BD7D898F26750EF50042DC38 /* DSPTables.hpp in Headers */,
 				BDADC19027BD75F6008B26BA /* OldestActiveVoiceCache.hpp in Headers */,
+				BDF7866827CA25CF00CB3BC5 /* LowPassFilter.hpp in Headers */,
 				BDADC19E27BE732D008B26BA /* ListNodeAllocator.hpp in Headers */,
 				BDADC18E27BD75F6008B26BA /* Tick.hpp in Headers */,
 			);
@@ -817,6 +824,7 @@
 				BDA5AD08265D9A30000AE48E /* DSPGenerated.cpp in Sources */,
 				BDB1BFA0265DB1F0002AD159 /* ValueTransformer.cpp in Sources */,
 				BDB1BFAE265DB1F0002AD159 /* Version.cpp in Sources */,
+				BDF7866A27CA4C0600CB3BC5 /* LowPassFilter.cpp in Sources */,
 				BDB1BFB9265DB1F0002AD159 /* Preset.cpp in Sources */,
 				BDB1BFCE265DB1F1002AD159 /* Zone.cpp in Sources */,
 				BDADC19127BD75F6008B26BA /* Engine.cpp in Sources */,
