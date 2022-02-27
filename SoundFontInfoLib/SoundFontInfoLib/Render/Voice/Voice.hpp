@@ -78,6 +78,7 @@ public:
 
   /// @returns true if this voice is still rendering interesting samples
   bool isActive() const { return gainEnvelope_.isActive() && sampleGenerator_.isActive(); }
+  bool isDone() const { return !isActive(); }
 
   /// @returns looping mode of the sample being rendered
   LoopingMode loopingMode() const {
@@ -113,21 +114,27 @@ public:
    @returns next sample
    */
   Float renderSample() {
-    if (!isActive()) {
-      os_log_info(log_, "renderSample - inactive");
-      return 0.0;
-    }
+    if (isDone()) { return 0.0; }
 
     auto modLFO = modulatorLFO_.getNextValue();
     auto vibLFO = vibratoLFO_.getNextValue();
     auto modEnv = modulatorEnvelope_.getNextValue();
     auto volEnv = gainEnvelope_.getNextValue();
-    // auto attenuation = 1.0; // state_.modulated(Index::initialAttenuation);
+
+    // According to FluidSynth this is the right think to do.
+    if (gainEnvelope_.isDelayed()) return 0.0;
+    auto gain = calculateGain(modLFO, modEnv, volEnv);
 
     auto increment = pitch_.samplePhaseIncrement(modLFO, vibLFO, modEnv);
     auto sample = sampleGenerator_.generate(increment, canLoop());
     return sample * volEnv;
-    // return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
+  }
+
+  Float calculateGain(Float modLFO, Float modEnv, Float volEnv)
+  {
+    return (DSP::centibelsToAttenuation(state_.modulated(Index::initialAttenuation)) *
+            DSP::centibelsToAttenuation(960.0 * (1.0 - volEnv) +
+                                        modLFO * -state_.modulated(Index::modulatorLFOToVolume)));
   }
 
   void renderIntoByAdding(float* left, float* right, size_t frameCount) {
@@ -136,6 +143,7 @@ public:
     Float pan = state_.modulated(Index::pan);
     DSP::panLookup(pan, leftAmp, rightAmp);
     while (frameCount-- > 0) {
+      if (isDone()) return;
       auto sample = renderSample();
       float leftSample = float(sample * leftAmp);
       float rightSample = float(sample * rightAmp);

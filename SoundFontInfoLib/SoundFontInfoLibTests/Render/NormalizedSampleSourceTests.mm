@@ -38,8 +38,8 @@ static SF2::Float epsilon = 1e-6;
   XCTAssertFalse(source.isLoaded());
   XCTAssertEqual(0, source.header().startIndex());
   XCTAssertEqual(6, source.header().endIndex());
-  XCTAssertEqualWithAccuracy(source.maxMagnitude(), 0.0, epsilon);
-  XCTAssertEqualWithAccuracy(source.maxMagnitudeOfLoop(), 0.0, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitude(), 0.0, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitudeOfLoop(), 0.0, epsilon);
 
   source.load();
 
@@ -48,8 +48,8 @@ static SF2::Float epsilon = 1e-6;
   XCTAssertEqual(source[0], values[0] * NormalizedSampleSource::normalizationScale);
   XCTAssertEqual(source[1], values[1] * NormalizedSampleSource::normalizationScale);
 
-  XCTAssertEqualWithAccuracy(source.maxMagnitude(), 0.91552734375, epsilon);
-  XCTAssertEqualWithAccuracy(source.maxMagnitudeOfLoop(), 0.6103515625, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitude(), 2.18453335886e-07, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitudeOfLoop(), 3.27680003829e-07, epsilon);
 }
 
 - (void)testUnload {
@@ -59,8 +59,8 @@ static SF2::Float epsilon = 1e-6;
   source.unload();
   XCTAssertFalse(source.isLoaded());
   XCTAssertEqual(source.size(), 0);
-  XCTAssertEqualWithAccuracy(source.maxMagnitude(), 0.0, epsilon);
-  XCTAssertEqualWithAccuracy(source.maxMagnitudeOfLoop(), 0.0, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitude(), 0.0, epsilon);
+  XCTAssertEqualWithAccuracy(source.noiseFloorOverMagnitudeOfLoop(), 0.0, epsilon);
 }
 
 
