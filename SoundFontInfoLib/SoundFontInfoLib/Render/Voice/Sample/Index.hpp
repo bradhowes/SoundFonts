@@ -74,7 +74,7 @@ private:
   Float partial_{0.0};
   Bounds bounds_{};
 
-  inline static Logger log_{Logger::Make("Render.Sample", "GeneratorIndex")};
+  inline static Logger log_{Logger::Make("Render.Sample.Generator", "Index")};
 };
 
 } // namespace Sf2::Render::Sample

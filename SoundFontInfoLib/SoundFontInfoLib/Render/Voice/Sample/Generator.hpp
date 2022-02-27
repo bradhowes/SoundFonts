@@ -58,6 +58,8 @@ public:
     return interpolatorProc_(this, whole, partial, canLoop);
   }
 
+  bool isActive() const { return !index_.finished(); }
+
 private:
   using InterpolatorProc = std::function<Float(Generator*, size_t, Float, bool)>;
 

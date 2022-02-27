@@ -51,23 +51,23 @@ using namespace SF2::Render;
   auto found = preset.find(69, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v1L{44100, channel, 0};
-  v1L.configure(found[0], 0);
+  v1L.configure(found[0]);
   Voice::Voice v1R{44100, channel, 1};
-  v1R.configure(found[1], 0);
+  v1R.configure(found[1]);
 
   found = preset.find(73, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v2L{44100, channel, 2};
-  v2L.configure(found[0], 1);
+  v2L.configure(found[0]);
   Voice::Voice v2R{44100, channel, 3};
-  v2R.configure(found[1], 1);
+  v2R.configure(found[1]);
 
   found = preset.find(76, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v3L{44100, channel, 4};
-  v3L.configure(found[0], 2);
+  v3L.configure(found[0]);
   Voice::Voice v3R{44100, channel, 5};
-  v3R.configure(found[1], 2);
+  v3R.configure(found[1]);
 
   Float sampleRate = 44100.0;
   AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
@@ -87,17 +87,17 @@ using namespace SF2::Render;
 
   auto renderLR = [&](auto& left, auto& right, bool dump = false) {
     for (auto index = 0; index < voiceSampleCount; ++index) {
-      AUValue sample = left.renderr();
+      AUValue sample = left.renderSample();
       if (dump) std::cout << sample << '\n';
       *samplesLeft++ = sample;
-      *samplesRight++ = right.renderr();
+      *samplesRight++ = right.renderSample();
       if (index == 0 || index == voiceSampleCount - 1) {
         samples.push_back(sample);
       }
       else if (index == keyReleaseCount) {
         samples.push_back(sample);
-        left.keyReleased();
-        right.keyReleased();
+        left.releaseKey();
+        right.releaseKey();
       }
     }
   };
@@ -131,23 +131,23 @@ using namespace SF2::Render;
   auto found = preset.find(52, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v1L{44100, channel, 0};
-  v1L.configure(found[0], 0);
+  v1L.configure(found[0]);
   Voice::Voice v1R{44100, channel, 1};
-  v1R.configure(found[1], 0);
+  v1R.configure(found[1]);
 
   found = preset.find(56, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v2L{44100, channel, 2};
-  v2L.configure(found[0], 1);
+  v2L.configure(found[0]);
   Voice::Voice v2R{44100, channel, 3};
-  v2R.configure(found[1], 1);
+  v2R.configure(found[1]);
 
   found = preset.find(59, 127);
   XCTAssertEqual(found.size(), 2);
   Voice::Voice v3L{44100, channel, 4};
-  v3L.configure(found[0], 2);
+  v3L.configure(found[0]);
   Voice::Voice v3R{44100, channel, 5};
-  v3R.configure(found[1], 2);
+  v3R.configure(found[1]);
 
   double sampleRate = 44100.0;
   AVAudioFormat* format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:sampleRate channels:2];
@@ -163,13 +163,13 @@ using namespace SF2::Render;
 
   std::vector<AUValue> samples;
   for (auto index = 0; index < sampleCount; ++index) {
-    auto s1L = v1L.renderr();
-    auto s2L = v2L.renderr();
-    auto s3L = v3L.renderr();
+    auto s1L = v1L.renderSample();
+    auto s2L = v2L.renderSample();
+    auto s3L = v3L.renderSample();
 
-    auto s1R = v1R.renderr();
-    auto s2R = v2R.renderr();
-    auto s3R = v3R.renderr();
+    auto s1R = v1R.renderSample();
+    auto s2R = v2R.renderSample();
+    auto s3R = v3R.renderSample();
 
     AUValue sL = (s1L + s2L + s3L) / 3.0;
     AUValue sR = (s1R + s2R + s3R) / 3.0;
@@ -205,12 +205,12 @@ using namespace SF2::Render;
       samples.push_back(s2L);
       samples.push_back(s3L);
 
-      v1L.keyReleased();
-      v1R.keyReleased();
-      v2L.keyReleased();
-      v2R.keyReleased();
-      v3L.keyReleased();
-      v3R.keyReleased();
+      v1L.releaseKey();
+      v1R.releaseKey();
+      v2L.releaseKey();
+      v2R.releaseKey();
+      v3L.releaseKey();
+      v3R.releaseKey();
     }
   }
 

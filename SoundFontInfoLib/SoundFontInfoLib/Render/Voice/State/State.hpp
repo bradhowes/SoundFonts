@@ -111,6 +111,8 @@ public:
    */
   Float modulated(Index gen) const { return gens_[gen].modulated(); }
 
+  int eventKey() const { return eventKey_; }
+
   /// @returns key value to use for DSP. A generator can force it to be fixed to a set value.
   int key() const {
     int key = unmodulated(Index::forcedMIDIKey);
@@ -128,6 +130,8 @@ public:
 
   /// @returns sample rate defined at construction
   Float sampleRate() const { return sampleRate_; }
+
+  void setSampleRate(Float sampleRate) { sampleRate_ = sampleRate; }
 
 private:
 

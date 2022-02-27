@@ -28,15 +28,23 @@ voiceIndex_{voiceIndex}
 }
 
 void
-Voice::configure(const State::Config& config, Engine::Tick startTick)
+Voice::configure(const State::Config& config)
 {
-  startedTick_ = startTick;
+  const auto& sampleHeader{config.sampleSource().header()};
+
   state_.prepareForVoice(config);
   loopingMode_ = loopingMode();
-  pitch_.configure(config.sampleSource().header());
+  pitch_.configure(sampleHeader);
   gainEnvelope_ = Envelope::Generator::forVol(state_);
   modulatorEnvelope_ = Envelope::Generator::forMod(state_);
   sampleGenerator_.configure(config.sampleSource());
   modulatorLFO_ = LFO::forModulator(state_);
   vibratoLFO_ = LFO::forVibrato(state_);
+
+  if (sampleHeader.isLeft())
+    audioDestinationChannel_ = AudioDestinationChannel::left;
+  else if (sampleHeader.isRight())
+    audioDestinationChannel_ = AudioDestinationChannel::right;
+  else // (sampleHeader.isMono())
+    audioDestinationChannel_ = AudioDestinationChannel::both;
 }

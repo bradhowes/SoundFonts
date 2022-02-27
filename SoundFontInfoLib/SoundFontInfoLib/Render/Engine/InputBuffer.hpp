@@ -7,13 +7,10 @@
 #import <AudioUnit/AudioUnit.h>
 #import <AVFoundation/AVFoundation.h>
 
-#import "BufferFacet.h"
-
-namespace SF2::Render {
+#import "BufferFacet.hpp"
 
 /**
- Maintains a buffer of PCM samples which is used to save samples from an upstream node. Note that despite its name,
- there are multiple sample buffers held within, one for each channel of input.
+ Maintains a buffer of PCM samples which is used to save samples from an upstream node.
  */
 struct InputBuffer {
 
@@ -21,7 +18,7 @@ struct InputBuffer {
    Set the format of the buffer to use.
 
    @param format the format of the samples
-   @param maxFrames the maximum number of frames to be found in the upstream output
+   @param maxFrames the maximum number of frames to be requested in a render request
    */
   void allocateBuffers(AVAudioFormat* format, AUAudioFrameCount maxFrames)
   {
@@ -32,7 +29,7 @@ struct InputBuffer {
   }
 
   /**
-   Forget any allocated buffers.
+   Forget any allocated buffer.
    */
   void releaseBuffers()
   {
@@ -54,7 +51,7 @@ struct InputBuffer {
                               AVAudioFrameCount frameCount, NSInteger inputBusNumber,
                               AURenderPullInputBlock pullInputBlock)
   {
-    if (buffer_ == nullptr || pullInputBlock == nullptr) return kAudioUnitErr_NoConnection;
+    if (pullInputBlock == nullptr) return kAudioUnitErr_NoConnection;
     prepareBufferList(frameCount);
     return pullInputBlock(actionFlags, timestamp, frameCount, inputBusNumber, mutableAudioBufferList_);
   }
@@ -66,47 +63,28 @@ struct InputBuffer {
    */
   void prepareBufferList(AVAudioFrameCount frameCount)
   {
-    assert(mutableAudioBufferList_ != nullptr);
     UInt32 byteSize = frameCount * sizeof(AUValue);
     for (auto channel = 0; channel < mutableAudioBufferList_->mNumberBuffers; ++channel) {
       mutableAudioBufferList_->mBuffers[channel].mDataByteSize = byteSize;
     }
   }
 
-  /**
-   Obtain a pointer to a mutable version of the internal channel buffers.
+  /// Obtain the maximum size of the input buffer
+  AUAudioFrameCount capacity() const { return maxFramesToRender_; }
 
-   @returns AudioBufferList pointer.
-   */
-  AudioBufferList* mutableAudioBufferList() const {
-    assert(mutableAudioBufferList_ != nullptr);
-    return mutableAudioBufferList_;
-  }
+  /// Obtain a mutable version of the internal AudioBufferList.
+  AudioBufferList* mutableAudioBufferList() const { return mutableAudioBufferList_; }
 
-  /**
-   Obtain the BufferFacet that manages the held AudioBufferList and provides a std::vector view of them.
-   */
+  /// Obtain a C++ vector facet using the internal buffer.
   BufferFacet& bufferFacet() { return bufferFacet_; }
 
-  /**
-   Obtain the number of input channels
-
-   @returns channel count
-   */
+  /// Obtain the number of channels in the buffer
   size_t channelCount() const { return bufferFacet_.channelCount(); }
 
-  /**
-   Obtain the channel buffer
-
-   @returns writable pointer to a channel buffer
-   */
-  AUValue* operator[](size_t index) const { return bufferFacet_[index]; }
-
 private:
-  AUAudioFrameCount maxFramesToRender_ = 0;
-  AVAudioPCMBuffer* buffer_ = nullptr;
-  AudioBufferList* mutableAudioBufferList_ = nullptr;
-  BufferFacet bufferFacet_;
+  os_log_t logger_ = os_log_create("SimplyFlange", "BufferedInputBus");
+  AUAudioFrameCount maxFramesToRender_;
+  AVAudioPCMBuffer* buffer_{nullptr};
+  AudioBufferList* mutableAudioBufferList_{nullptr};
+  BufferFacet bufferFacet_{};
 };
-
-} // namespace SF2::Render

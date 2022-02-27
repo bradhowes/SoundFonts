@@ -39,6 +39,12 @@ public:
     duringKeyPress = 3
   };
 
+  enum AudioDestinationChannel {
+    both = 0,
+    left = 1,
+    right = 2
+  };
+
   /**
    Construct a new voice renderer.
 
@@ -47,27 +53,31 @@ public:
    */
   Voice(Float sampleRate, const MIDI::Channel& channel, size_t voiceIndex);
 
+  void setSampleRate(Float sampleRate) { state_.setSampleRate(sampleRate); }
+
   size_t voiceIndex() const { return voiceIndex_; }
-  Engine::Tick startedTick() const { return startedTick_; }
 
   /**
    Configure the voice for rendering.
 
    @param config the voice configuration to apply
-   @param startTick the counter when the voice started
    */
-  void configure(const State::Config& config, Engine::Tick startTick);
+  void configure(const State::Config& config);
+
+  int key() const { return state_.eventKey(); }
+
+  bool isKeyDown() const { return gainEnvelope_.isGated(); }
 
   /**
    Signal the envelopes that the key is no longer pressed, transitioning to release phase.
    */
-  void keyReleased() {
+  void releaseKey() {
     gainEnvelope_.gate(false);
     modulatorEnvelope_.gate(false);
   }
 
   /// @returns true if this voice is still rendering interesting samples
-  bool isActive() const { return gainEnvelope_.isActive(); }
+  bool isActive() const { return gainEnvelope_.isActive() && sampleGenerator_.isActive(); }
 
   /// @returns looping mode of the sample being rendered
   LoopingMode loopingMode() const {
@@ -102,8 +112,11 @@ public:
 
    @returns next sample
    */
-  Float renderr() {
-    if (!isActive()) return 0.0;
+  Float renderSample() {
+    if (!isActive()) {
+      os_log_info(log_, "renderSample - inactive");
+      return 0.0;
+    }
 
     auto modLFO = modulatorLFO_.getNextValue();
     auto vibLFO = vibratoLFO_.getNextValue();
@@ -117,9 +130,17 @@ public:
     // return sample * modLfo * state_.modulated(Index::modulatorLFOToVolume) * volEnv * attenuation;
   }
 
-  void render(float* frames, size_t frameCount) {
-    for (size_t frame = 0; frame < frameCount; ++frame) {
-      frames[frame] = float(renderr());
+  void renderIntoByAdding(float* left, float* right, size_t frameCount) {
+    Float leftAmp;
+    Float rightAmp;
+    Float pan = state_.modulated(Index::pan);
+    DSP::panLookup(pan, leftAmp, rightAmp);
+    while (frameCount-- > 0) {
+      auto sample = renderSample();
+      float leftSample = float(sample * leftAmp);
+      float rightSample = float(sample * rightAmp);
+      *left++ += leftSample;
+      *right++ += rightSample;
     }
   }
 
@@ -134,9 +155,8 @@ private:
   Envelope::Generator modulatorEnvelope_;
   LFO modulatorLFO_;
   LFO vibratoLFO_;
-
   size_t voiceIndex_;
-  Engine::Tick startedTick_;
+  AudioDestinationChannel audioDestinationChannel_;
 
   inline static Logger log_{Logger::Make("Render", "Voice")};
 };
