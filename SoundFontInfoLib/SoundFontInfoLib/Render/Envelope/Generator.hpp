@@ -7,6 +7,7 @@
 #include <limits>
 #include <utility>
 
+#include "DSP/DSP.hpp"
 #include "Logger.hpp"
 #include "Entity/Generator/Index.hpp"
 #include "Render/Envelope/Stage.hpp"
@@ -116,6 +117,8 @@ public:
   /// @returns true if the generator is active and has not yet reached the release state
   bool isGated() const { return isActive() && stageIndex_ != StageIndex::release; }
 
+  bool isDelayed() const { return stageIndex_ == StageIndex::delay; }
+
   /// @returns the current envelope value.
   Float value() const { return value_; }
 
@@ -130,7 +133,7 @@ public:
       case StageIndex::attack: updateValue(); checkIfEndStage(StageIndex::hold); break;
       case StageIndex::hold: checkIfEndStage(StageIndex::decay); break;
       case StageIndex::decay: updateAndCompare(sustainLevel(), StageIndex::sustain); break;
-      case StageIndex::release: updateAndCompare(0.0, StageIndex::idle); break;
+      case StageIndex::release: updateAndCompare(DSP::NoiseFloor, StageIndex::idle); break;
       default: break;
     }
 
