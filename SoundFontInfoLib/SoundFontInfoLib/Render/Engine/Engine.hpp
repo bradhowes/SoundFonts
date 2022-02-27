@@ -148,8 +148,11 @@ public:
     std::fill(left, left + frameCount, 0.0);
     std::fill(right, right + frameCount, 0.0);
     for (auto voiceIndex : oldestActive_) {
-      voices_[voiceIndex].renderIntoByAdding(left, right, frameCount);
-      if (!voices_[voiceIndex].isActive()) {
+      auto& voice{voices_[voiceIndex]};
+      if (voice.isActive()) {
+        voice.renderIntoByAdding(left, right, frameCount);
+      }
+      if (voice.isDone()) {
         oldestActive_.remove(voiceIndex);
         available_.push_back(voiceIndex);
       }
