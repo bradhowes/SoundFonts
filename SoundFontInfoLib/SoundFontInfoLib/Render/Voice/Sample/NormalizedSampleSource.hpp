@@ -66,12 +66,12 @@ public:
   /**
    Obtain the max magnitude seen in the samples.
    */
-  Float maxMagnitude() const { return loaded_ ? maxMagnitude_ : 0.0; }
+  Float noiseFloorOverMagnitude() const { return loaded_ ? noiseFloorOverMagnitude_ : 0.0; }
 
   /**
    Obtain the max magnitude seen in the samples of the loop specified by the given bounds.
    */
-  Float maxMagnitudeOfLoop() const { return loaded_ ? maxMagnitudeOfLoop_ : 0.0; }
+  Float noiseFloorOverMagnitudeOfLoop() const { return loaded_ ? noiseFloorOverMagnitudeOfLoop_ : 0.0; }
 
 private:
 
@@ -94,19 +94,20 @@ private:
 
     auto bounds{Sample::Bounds::make(header_)};
 
-    maxMagnitude_ = getMaxMagnitude<T>(0, size);
-    maxMagnitudeOfLoop_ = bounds.hasLoop() ? getMaxMagnitude<T>(bounds.startLoopPos(), bounds.endLoopPos()) : 0.0;
-
+    noiseFloorOverMagnitude_ = DSP::NoiseFloor / getMaxMagnitude<T>(0, size);
+    noiseFloorOverMagnitudeOfLoop_ = DSP::NoiseFloor / (bounds.hasLoop() ?
+                                                        getMaxMagnitude<T>(bounds.startLoopPos(), bounds.endLoopPos()) :
+                                                        getMaxMagnitude<T>(0, 0));
     loaded_ = true;
   }
 
   template <typename T>
   T getMaxMagnitude(size_t startPos, size_t endPos) const {
-    assert(endPos > startPos);
-    T value{0.0};
-    assert(samples_.size() > startPos && samples_.size() >= endPos);
-    Accelerated<T>::magnitudeProc(samples_.data() + startPos, 1, &value, endPos - startPos);
-    return value;
+    T value{0.0f};
+    if (samples_.size() > startPos && samples_.size() >= endPos) {
+      Accelerated<T>::magnitudeProc(samples_.data() + startPos, 1, &value, endPos - startPos);
+    }
+    return std::max<T>(value, 1.0e-7f);
   }
 
   using SampleVector = std::vector<Float>;
@@ -116,8 +117,8 @@ private:
 
   const int16_t* allSamples_;
   mutable bool loaded_{false};
-  mutable Float maxMagnitude_;
-  mutable Float maxMagnitudeOfLoop_;
+  mutable Float noiseFloorOverMagnitude_;
+  mutable Float noiseFloorOverMagnitudeOfLoop_;
 
   inline static Logger log_{Logger::Make("Render", "NormalizedSampleSource")};
 };
