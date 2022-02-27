@@ -47,4 +47,6 @@ Voice::configure(const State::Config& config)
     audioDestinationChannel_ = AudioDestinationChannel::right;
   else // (sampleHeader.isMono())
     audioDestinationChannel_ = AudioDestinationChannel::both;
+
+  done_ = false;
 }

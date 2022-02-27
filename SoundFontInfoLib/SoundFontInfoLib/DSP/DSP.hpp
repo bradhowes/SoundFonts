@@ -32,7 +32,7 @@ inline constexpr Float CentsToFrequencyMax = 4500;
 inline constexpr Float NoiseFloor = 2.0E-7f;
 
 /// Maximum attenuation defined by SF2 spec.
-inline constexpr Float MaxiumAttenuation = 960.0f;
+inline constexpr Float MaximumAttenuation = 960.0f;
 
 // 440 * pow(2.0, (N - 69) / 12)
 inline constexpr Float LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1

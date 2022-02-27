@@ -77,8 +77,13 @@ public:
   }
 
   /// @returns true if this voice is still rendering interesting samples
-  bool isActive() const { return gainEnvelope_.isActive() && sampleGenerator_.isActive(); }
-  bool isDone() const { return !isActive(); }
+  bool isActive() const { return !isDone(); }
+
+  /// @returns true if this voice is done processing and will no longer render meaningful samples.
+  bool isDone() const {
+    if (!done_) done_ = (!gainEnvelope_.isActive() || !sampleGenerator_.isActive());
+    return done_;
+  }
 
   /// @returns looping mode of the sample being rendered
   LoopingMode loopingMode() const {
@@ -123,17 +128,18 @@ public:
 
     // According to FluidSynth this is the right think to do.
     if (gainEnvelope_.isDelayed()) return 0.0;
-    auto gain = calculateGain(modLFO, modEnv, volEnv);
+    auto gain = calculateGain(modLFO, volEnv);
 
     auto increment = pitch_.samplePhaseIncrement(modLFO, vibLFO, modEnv);
     auto sample = sampleGenerator_.generate(increment, canLoop());
-    return sample * volEnv;
+    return sample * gain;
   }
 
-  Float calculateGain(Float modLFO, Float modEnv, Float volEnv)
+  Float calculateGain(Float modLFO, Float volEnv)
   {
+    // This formula follows what FluidSynth is doing for attenuation/gain.
     return (DSP::centibelsToAttenuation(state_.modulated(Index::initialAttenuation)) *
-            DSP::centibelsToAttenuation(960.0 * (1.0 - volEnv) +
+            DSP::centibelsToAttenuation(DSP::MaximumAttenuation * (1.0 - volEnv) +
                                         modLFO * -state_.modulated(Index::modulatorLFOToVolume)));
   }
 
@@ -165,6 +171,7 @@ private:
   LFO vibratoLFO_;
   size_t voiceIndex_;
   AudioDestinationChannel audioDestinationChannel_;
+  mutable bool done_{false};
 
   inline static Logger log_{Logger::Make("Render", "Voice")};
 };
