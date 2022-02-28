@@ -74,7 +74,10 @@ public:
 
    @param file the file to load from
    */
-  void load(const IO::File& file) { presets_.build(file); }
+  void load(const IO::File& file) {
+    allOff();
+    presets_.build(file);
+  }
 
   /// @returns number of presets available.
   size_t presetCount() const { return presets_.size(); }
@@ -86,6 +89,7 @@ public:
    */
   void usePreset(size_t index) {
     if (index >= presets_.size()) throw std::runtime_error("invalid preset index");
+    allOff();
     activePreset_ = index;
   }
 

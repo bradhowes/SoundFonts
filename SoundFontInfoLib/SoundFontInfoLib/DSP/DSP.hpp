@@ -11,22 +11,22 @@
 
 namespace SF2::DSP {
 
-inline constexpr Float PI = M_PI;            // 180°
-inline constexpr Float TwoPI = 2.0 * PI;     // 360°
-inline constexpr Float HalfPI = M_PI_2;      // 90°
-inline constexpr Float QuarterPI = M_PI_4;   // 45°
+inline constexpr Float PI = Float(M_PI);
+inline constexpr Float TwoPI = 2.0f * PI;
+inline constexpr Float HalfPI = PI / 2.0f;
+inline constexpr Float QuarterPI = PI/ 4.0f;
 
-inline constexpr Float ReferenceNoteFrequency = 440.0;
-inline constexpr Float ReferenceNoteMIDI = 69.0;
+inline constexpr Float ReferenceNoteFrequency = 440.0f;
+inline constexpr Float ReferenceNoteMIDI = 69.0f;
 inline constexpr Float ReferenceNoteSemi = ReferenceNoteMIDI * 100;
 
 inline constexpr int CentsPerSemitone = 100;
 inline constexpr int SemitonePerOctave = 12;
-inline constexpr Float CentsPerOctave = 1200.0;
+inline constexpr Float CentsPerOctave = 1200.0f;
 
-inline constexpr Float CentibelsPerDecade = 200.0;
-inline constexpr Float CentsToFrequencyMin = -16000;
-inline constexpr Float CentsToFrequencyMax = 4500;
+inline constexpr Float CentibelsPerDecade = 200.0f;
+inline constexpr Float CentsToFrequencyMin = -16000.0f;
+inline constexpr Float CentsToFrequencyMax = 4500.0f;
 
 /// Attenuated samples at or below this value will be inaudible.
 inline constexpr Float NoiseFloor = 2.0E-7f;
@@ -35,13 +35,13 @@ inline constexpr Float NoiseFloor = 2.0E-7f;
 inline constexpr Float MaximumAttenuation = 960.0f;
 
 // 440 * pow(2.0, (N - 69) / 12)
-inline constexpr Float LowestNoteFrequency = 8.17579891564370697665253828745335; // C-1
+inline constexpr Float LowestNoteFrequency = Float(8.17579891564370697665253828745335); // C-1
 
 // sqrt(2) / 2.0
-inline constexpr Float HalfSquareRoot2 = M_SQRT2 / 2.0;
+inline constexpr Float HalfSquareRoot2 = Float(M_SQRT2) / 2.0f;
 
 // The value to multiply one note frequency to get the next note's frequency
-inline constexpr Float InterNoteMultiplier = 1.05946309435929530984310531493975;
+inline constexpr Float InterNoteMultiplier = Float(1.05946309435929530984310531493975);
 
 inline Float clamp(Float value, Float lowerBound, Float upperBound) {
   return std::clamp(value, lowerBound, upperBound);
@@ -69,7 +69,7 @@ inline Float centsToSeconds(Float value) { return centsToPower2(value); }
  @returns frequency in Hz
  */
 inline Float lfoCentsToFrequency(Float value) {
-  return LowestNoteFrequency * centsToPower2(clamp(value, -16000.0, 4500.0));
+  return LowestNoteFrequency * centsToPower2(clamp(value, -16000.0f, 4500.0f));
 }
 
 /**
@@ -79,7 +79,7 @@ inline Float lfoCentsToFrequency(Float value) {
  @param centibels the value to convert
  @returns attenuation amount
  */
-inline Float centibelsToAttenuation(Float centibels) { return std::pow(10.0, -centibels / CentibelsPerDecade); }
+inline Float centibelsToAttenuation(Float centibels) { return std::pow(10.0f, -centibels / CentibelsPerDecade); }
 
 /**
  Restrict lowpass filter cutoff value to be between 1500 and 13500, inclusive.
@@ -87,7 +87,7 @@ inline Float centibelsToAttenuation(Float centibels) { return std::pow(10.0, -ce
  @param value cutoff value
  @returns clamped cutoff value
  */
-inline Float clampFilterCutoff(Float value) { return clamp(value, 1500.0, 20000.0); }
+inline Float clampFilterCutoff(Float value) { return clamp(value, 1500.0f, 20000.0f); }
 
 /**
  Convert integer from integer [0-1000] into [0.0-1.0]
@@ -95,7 +95,7 @@ inline Float clampFilterCutoff(Float value) { return clamp(value, 1500.0, 20000.
  @param value percentage value expressed as tenths
  @returns normalized value between 0 and 1.
  */
-inline Float tenthPercentage(Float value) { return clamp(value / 1000.0, 0.0, 1.0); }
+inline Float tenthPercentage(Float value) { return clamp(value / 1000.0f, 0.0f, 1.0f); }
 
 /**
  Translate value in range [0, +1] into one in range [-1, +1]
@@ -103,7 +103,7 @@ inline Float tenthPercentage(Float value) { return clamp(value / 1000.0, 0.0, 1.
  @param modulator the value to translate
  @returns value in range [-1, +1]
  */
-inline Float unipolarToBipolar(Float modulator) { return 2.0 * modulator - 1.0; }
+inline Float unipolarToBipolar(Float modulator) { return 2.0f * modulator - 1.0f; }
 
 /**
  Translate value in range [-1, +1] into one in range [0, +1]
@@ -111,7 +111,7 @@ inline Float unipolarToBipolar(Float modulator) { return 2.0 * modulator - 1.0; 
  @param modulator the value to translate
  @returns value in range [0, +1]
  */
-inline Float bipolarToUnipolar(Float modulator) { return 0.5 * modulator + 0.5; }
+inline Float bipolarToUnipolar(Float modulator) { return 0.5f * modulator + 0.5f; }
 
 /**
  Perform linear translation from a value in range [0.0, 1.0] into one in [minValue, maxValue].
@@ -122,7 +122,7 @@ inline Float bipolarToUnipolar(Float modulator) { return 0.5 * modulator + 0.5; 
  @returns value in range [minValue, maxValue]
  */
 inline Float unipolarModulate(Float modulator, Float minValue, Float maxValue) {
-  return clamp(modulator, 0.0, 1.0) * (maxValue - minValue) + minValue;
+  return clamp(modulator, 0.0f, 1.0f) * (maxValue - minValue) + minValue;
 }
 
 /**
@@ -134,8 +134,8 @@ inline Float unipolarModulate(Float modulator, Float minValue, Float maxValue) {
  @returns value in range [minValue, maxValue]
  */
 inline Float bipolarModulate(Float modulator, Float minValue, Float maxValue) {
-  auto mid = (maxValue - minValue) * 0.5;
-  return clamp(modulator, -1.0, 1.0) * mid + mid + minValue;
+  auto mid = (maxValue - minValue) * 0.5f;
+  return clamp(modulator, -1.0f, 1.0f) * mid + mid + minValue;
 }
 
 /**
@@ -148,11 +148,11 @@ inline Float bipolarModulate(Float modulator, Float minValue, Float maxValue) {
  @returns approximate sin value
  */
 constexpr Float parabolicSine(Float angle) {
-  constexpr Float B = 4.0 / M_PI;
-  constexpr Float C = -4.0 / (M_PI * M_PI);
-  constexpr Float P = 0.225;
-  const Float y = B * angle + C * angle * (angle >= 0.0 ? angle : -angle);
-  return P * y * ((y >= 0.0 ? y : -y) - 1.0) + y;
+  constexpr Float B = 4.0f / PI;
+  constexpr Float C = -4.0f / (PI * PI);
+  constexpr Float P = 0.225f;
+  const Float y = B * angle + C * angle * (angle >= 0.0f ? angle : -angle);
+  return P * y * ((y >= 0.0f ? y : -y) - 1.0f) + y;
 }
 
 } // SF2::DSP namespace
@@ -186,7 +186,7 @@ inline Float sineLookup(Float radians) { return Tables::SineLookup::sine(radians
  0 - 1199 into the proper multiplier.
  */
 inline Float centsToFrequency(Float value) {
-  if (value < 0.0) return 1.0;
+  if (value < 0.0f) return 1.0f;
 
   // This seems to be the fastest way to do the following. Curiously, the operation `cents % 1200` is faster than doing
   // `cents - whole * 1200` in optimized build.
