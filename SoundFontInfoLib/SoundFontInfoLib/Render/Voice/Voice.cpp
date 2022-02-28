@@ -22,8 +22,7 @@ gainEnvelope_{},
 modulatorEnvelope_{},
 modulatorLFO_{},
 vibratoLFO_{},
-voiceIndex_{voiceIndex},
-filter_{state_}
+voiceIndex_{voiceIndex}
 {
   ;
 }

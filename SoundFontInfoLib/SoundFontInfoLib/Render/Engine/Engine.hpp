@@ -58,9 +58,9 @@ public:
   void setRenderingFormat(AVAudioFormat* format, AUAudioFrameCount maxFramesToRender) {
     super::setRenderingFormat(format, maxFramesToRender);
     initialize(format.channelCount, format.sampleRate);
-    for (auto& voice : voices_) {
-      voice.setMaxFramesToRender(maxFramesToRender);
-    }
+//    for (auto& voice : voices_) {
+//      voice.setMaxFramesToRender(maxFramesToRender);
+//    }
   }
 
   /// Obtain the current sample rate

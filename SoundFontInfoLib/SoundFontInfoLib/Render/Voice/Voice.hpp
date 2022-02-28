@@ -11,7 +11,6 @@
 #include "Render/Voice/Sample/Generator.hpp"
 #include "Render/Voice/State/Modulator.hpp"
 #include "Render/Voice/State/State.hpp"
-#include "Render/LowPassFilter.hpp"
 
 namespace SF2::MIDI { class Channel; }
 
@@ -66,15 +65,6 @@ public:
    @param config the voice configuration to apply
    */
   void configure(const State::Config& config);
-
-  void setMaxFramesToRender(int maxFramesToRender)
-  {
-    leftBuffer_.resize(size_t(maxFramesToRender));
-    rightBuffer_.resize(size_t(maxFramesToRender));
-    bufferPtrs_.resize(2);
-    bufferPtrs_[0] = nullptr;
-    bufferPtrs_[1] = nullptr;
-  }
 
   int key() const { return state_.eventKey(); }
 
@@ -201,11 +191,6 @@ private:
   AudioDestinationChannel audioDestinationChannel_;
   Float noiseFloorOverMagnitude_;
   Float noiseFloorOverMagnitudeOfLoop_;
-  LowPassFilter filter_;
-  
-  std::vector<Float> leftBuffer_;
-  std::vector<Float> rightBuffer_;
-  std::vector<Float*> bufferPtrs_{2};
 
   mutable bool done_{false};
 
