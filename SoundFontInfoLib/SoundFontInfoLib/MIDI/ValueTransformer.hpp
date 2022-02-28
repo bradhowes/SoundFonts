@@ -29,7 +29,7 @@ public:
 
   /// Since we have only 128 values to handle, use lookup tables for quick conversion
   inline constexpr static size_t TableSize = Max + 1;
-  using TransformArrayType = std::array<Float, TableSize>;
+  using TransformArrayType = std::array<double, TableSize>;
 
   /**
    Kind specifies the curvature of the MIDI value transformation function.
@@ -82,7 +82,7 @@ public:
    @param controllerValue value to convert between 0 and 127
    @returns transformed value
    */
-  Float value(int controllerValue) const { return active_[size_t(std::clamp<int>(controllerValue, 0, Max))]; }
+  Float value(int controllerValue) const { return Float(active_[size_t(std::clamp<int>(controllerValue, 0, Max))]); }
 
 private:
 

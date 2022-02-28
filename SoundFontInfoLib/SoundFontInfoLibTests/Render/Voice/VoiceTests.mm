@@ -1,5 +1,12 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
+#include "Types.hpp"
+
+static SF2::Float getEpsilon() {
+  if constexpr (std::is_same_v<SF2::Float, float>) return 1.0e-2;
+  if constexpr (std::is_same_v<SF2::Float, double>) return 1.0e-15;
+}
+
 #include <AVFoundation/AVFoundation.h>
 #include <iostream>
 
@@ -41,7 +48,7 @@ using namespace SF2::Render;
 }
 
 - (void)testRolandPianoRender {
-  Float epsilon = 0.000001;
+  Float epsilon = getEpsilon();
   const auto& file = contexts.context3.file();
 
   MIDI::Channel channel;
@@ -121,7 +128,7 @@ using namespace SF2::Render;
 }
 
 - (void)testBrass2Render {
-  double epsilon = 0.000001;
+  Float epsilon = getEpsilon();
   const auto& file = contexts.context2.file();
 
   MIDI::Channel channel;

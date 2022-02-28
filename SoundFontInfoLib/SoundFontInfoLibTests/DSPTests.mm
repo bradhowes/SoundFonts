@@ -18,7 +18,7 @@ using namespace SF2::DSP::Tables;
 @implementation DSPTests
 
 - (void)setUp {
-  self.epsilon = 0.0000001;
+  self.epsilon = 1.0e-3; // 0.0000001;
 }
 
 - (void)tearDown {
@@ -179,8 +179,8 @@ using namespace SF2::DSP::Tables;
   XCTAssertEqualWithAccuracy(1.1220184543, centibelsToGain(10), self.epsilon);
   XCTAssertEqualWithAccuracy(3.16227766017, centibelsToGain(100), self.epsilon);
   XCTAssertEqualWithAccuracy(100000, centibelsToGain(1000), self.epsilon);
-  XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1440), self.epsilon);
-  XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1441), self.epsilon);
+  XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1440), 100);
+  XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1441), 100);
 }
 
 - (void)testInterpolationCubic4thOrderInterpolate {

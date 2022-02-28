@@ -11,7 +11,7 @@ namespace SF2 {
 /**
  Type to use for all floating-point operations in SF2.
  */
-using Float = double;
+using Float = float;
 
 /**
  Collection of function pointers that refer to routines found in Apple's Accelerated framework.

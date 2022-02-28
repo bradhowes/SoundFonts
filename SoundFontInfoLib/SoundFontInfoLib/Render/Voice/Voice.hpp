@@ -142,7 +142,7 @@ public:
   {
     // This formula follows what FluidSynth is doing for attenuation/gain.
     auto gain = (DSP::centibelsToAttenuation(state_.modulated(Index::initialAttenuation)) *
-                 DSP::centibelsToAttenuation(DSP::MaximumAttenuation * (1.0 - volEnv) +
+                 DSP::centibelsToAttenuation(DSP::MaximumAttenuation * (1.0f - volEnv) +
                                              modLFO * -state_.modulated(Index::modulatorLFOToVolume)));
 
     // When in the release stage, look for a magical point at which one can no longer hear the sample being generated.

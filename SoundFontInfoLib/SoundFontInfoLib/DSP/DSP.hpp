@@ -178,14 +178,14 @@ inline void panLookup(Float pan, Float& left, Float& right) { Tables::PanLookup:
  @param radians the value to use for theta
  @returns the sine approximation
  */
-inline Float sineLookup(Float radians) { return Tables::SineLookup::sine(radians); }
+inline double sineLookup(Float radians) { return Tables::SineLookup::sine(radians); }
 
 /**
  Quickly convert cent value into a frequency using a table lookup. These calculations are taken from the Fluid Synth
  fluid_conv.c file, in particular the fluid_ct2hz_real function. Uses CentPartialLookup above to convert values from
  0 - 1199 into the proper multiplier.
  */
-inline Float centsToFrequency(Float value) {
+inline double centsToFrequency(Float value) {
   if (value < 0.0f) return 1.0f;
 
   // This seems to be the fastest way to do the following. Curiously, the operation `cents % 1200` is faster than doing
@@ -203,7 +203,7 @@ inline Float centsToFrequency(Float value) {
  @param centibels value to convert
  @returns gain value
  */
-inline Float centibelsToAttenuation(int centibels) { return Tables::AttenuationLookup::convert(centibels); }
+inline double centibelsToAttenuation(int centibels) { return Tables::AttenuationLookup::convert(centibels); }
 
 /**
  Convert centibels [0-1441] into a gain value [0.0-1.0]. This is the inverse of the above.
@@ -211,7 +211,7 @@ inline Float centibelsToAttenuation(int centibels) { return Tables::AttenuationL
  @param centibels value to convert
  @returns gain value
  */
-inline Float centibelsToGain(Float centibels) { return Tables::GainLookup::convert(centibels); }
+inline double centibelsToGain(Float centibels) { return Tables::GainLookup::convert(centibels); }
 
 namespace Interpolation {
 
@@ -235,7 +235,7 @@ inline Float linear(Float partial, Float x0, Float x1) { return partial * (x1 - 
  @param x3 fourth value to use
  */
 inline static Float cubic4thOrder(Float partial, Float x0, Float x1, Float x2, Float x3) {
-  return Tables::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3);
+  return Float(Tables::Cubic4thOrder::interpolate(partial, x0, x1, x2, x3));
 }
 
 } // Interpolation namespace

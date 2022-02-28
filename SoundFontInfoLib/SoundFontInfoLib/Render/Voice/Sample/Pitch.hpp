@@ -67,7 +67,7 @@ public:
                                        vibLFO * centFs(Index::vibratoLFOToPitch) +
                                        modEnv * centFs(Index::modulatorEnvelopeToPitch)) / rootFrequency_;
     // std::cout << "phaseIncrement: " << value << '\n';
-    return value;
+    return Float(value);
   }
 
   /**
@@ -94,7 +94,7 @@ private:
   void initialize(int originalMIDIKey, int pitchCorrection, Float originalSampleRate) {
     auto rootKey = this->rootKey(originalMIDIKey);
     auto rootPitch = rootKey * 100.0f - pitchCorrection;
-    rootFrequency_ = DSP::centsToFrequency(rootPitch) * state_.sampleRate() / originalSampleRate;
+    rootFrequency_ = Float(DSP::centsToFrequency(rootPitch) * state_.sampleRate() / originalSampleRate);
     std::cout << "rootPitch: " << rootPitch << " rootFrequency: " << rootFrequency_ << '\n';
     pitch_ = scaleTuning() * (key_ - rootPitch / 100.0f) + rootPitch;
     std::cout << "pitch: " << pitch_ << '\n';

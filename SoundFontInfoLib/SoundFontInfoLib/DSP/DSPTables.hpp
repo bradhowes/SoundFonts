@@ -36,16 +36,16 @@ struct PanLookup {
    */
   static void lookup(Float pan, Float& left, Float& right) {
     int index = std::clamp(int(std::round(pan)), -500, 500);
-    left = lookup_[size_t(-index + 500)];
-    right = lookup_[size_t(index + 500)];
+    left = Float(lookup_[size_t(-index + 500)]);
+    right = Float(lookup_[size_t(index + 500)]);
   }
 
 private:
   inline constexpr static Float Scaling = HalfPI / (TableSize - 1);
   
-  static Float value(size_t index) { return std::sin(index * Scaling); }
+  static double value(size_t index) { return std::sin(index * Scaling); }
   
-  static const std::array<Float, PanLookup::TableSize> lookup_;
+  static const std::array<double, PanLookup::TableSize> lookup_;
   PanLookup() = delete;
   friend struct Generator;
 };
@@ -61,7 +61,7 @@ struct SineLookup {
    
    @param radians the angle in radians to use
    */
-  inline static Float sine(Float radians) {
+  inline static double sine(Float radians) {
     if (radians < 0.0) return -sin(-radians);
     while (radians > TwoPI) radians -= TwoPI;
     if (radians <= HalfPI) return interpolate(radians);
@@ -74,18 +74,18 @@ private:
   inline constexpr static Float TableScale = (TableSize - 1) / HalfPI;
   inline constexpr static Float Scaling = HalfPI / (TableSize - 1);
   
-  inline static Float interpolate(Float radians) {
-    Float phase = clamp(radians, 0.0, HalfPI) * TableScale;
+  inline static double interpolate(Float radians) {
+    double phase = clamp(radians, 0.0, HalfPI) * TableScale;
     size_t index = size_t(phase);
-    Float partial = phase - index;
-    Float value = lookup_[index] * (1.0 - partial);
+    double partial = phase - index;
+    double value = lookup_[index] * (1.0f - partial);
     if (partial > 0.0) value += lookup_[index + 1] * partial;
     return value;
   }
-  
+
   static Float value(size_t index) { return std::sin(index * Scaling); }
-  
-  static const std::array<Float, TableSize> lookup_;
+
+  static const std::array<double, TableSize> lookup_;
   SineLookup() = delete;
   friend struct Generator;
 };
@@ -105,16 +105,16 @@ struct CentsFrequencyScalingLookup {
    @param value the value to convert
    @returns multiplier for a frequency that will change the frequency by the given cent value
    */
-  static Float convert(int value) { return lookup_[size_t(std::clamp(value, -Max, Max) + Max)]; }
+  static double convert(int value) { return lookup_[size_t(std::clamp(value, -Max, Max) + Max)]; }
   
-  static Float convert(Float value) { return convert(int(std::round(value))); }
+  static double convert(Float value) { return convert(int(std::round(value))); }
   
 private:
   inline constexpr static Float Span = Float((TableSize - 1) / 2);
   
   static Float value(size_t index) { return std::exp2((index - Span) / Span); }
   
-  static const std::array<Float, TableSize> lookup_;
+  static const std::array<double, TableSize> lookup_;
   CentsFrequencyScalingLookup() = delete;
   friend struct Generator;
 };
@@ -134,11 +134,11 @@ struct CentsPartialLookup {
    @param partial a value between 0 and MaxCentsValue - 1
    @returns frequency multiplier
    */
-  static Float convert(int partial) { return lookup_[size_t(std::clamp(partial, 0, MaxCentsValue - 1))]; }
+  static double convert(int partial) { return lookup_[size_t(std::clamp(partial, 0, MaxCentsValue - 1))]; }
   
 private:
-  static Float value(size_t index) { return 6.875 * std::exp2(Float(index) / 1200.0); }
-  static const std::array<Float, TableSize> lookup_;
+  static double value(size_t index) { return 6.875 * std::exp2(double(index) / 1200.0); }
+  static const std::array<double, TableSize> lookup_;
   CentsPartialLookup() = delete;
   friend struct Generator;
 };
@@ -154,19 +154,19 @@ struct AttenuationLookup {
    
    @param centibels value to convert
    */
-  static Float convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
+  static double convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
   
   /**
    Convert from floating-point value to attenuation. Rounds to nearest integer to obtain index.
    
    @param centibels value to convert
    */
-  static Float convert(Float centibels) { return convert(int(std::round(centibels))); }
+  static double convert(Float centibels) { return convert(int(std::round(centibels))); }
   
 private:
-  static const std::array<Float, TableSize> lookup_;
+  static const std::array<double, TableSize> lookup_;
   
-  static Float value(size_t index) { return centibelsToAttenuation(index); }
+  static double value(size_t index) { return centibelsToAttenuation(index); }
   
   AttenuationLookup() = delete;
   friend struct Generator;
@@ -183,18 +183,18 @@ struct GainLookup {
    
    @param centibels value to convert
    */
-  static Float convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
+  static double convert(int centibels) { return lookup_[size_t(std::clamp<int>(centibels, 0, TableSize - 1))]; }
   
   /**
    Convert from floating-point value to gain. Rounds to nearest integer to obtain index.
    
    @param centibels value to convert
    */
-  static Float convert(Float centibels) { return convert(int(std::round(centibels))); }
+  static double convert(Float centibels) { return convert(int(std::round(centibels))); }
   
 private:
-  static Float value(size_t index) { return 1.0 / centibelsToAttenuation(index); }
-  static const std::array<Float, TableSize> lookup_;
+  static double value(size_t index) { return 1.0 / centibelsToAttenuation(index); }
+  static const std::array<double, TableSize> lookup_;
   GainLookup() = delete;
   friend struct Generator;
 };
@@ -208,7 +208,7 @@ struct Cubic4thOrder {
   /// Number of weights (x4) to generate.
   inline constexpr static size_t TableSize = 1024;
   
-  using WeightsArray = std::array<std::array<Float, 4>, TableSize>;
+  using WeightsArray = std::array<std::array<double, 4>, TableSize>;
   
   /**
    Interpolate a value from four values.
@@ -219,7 +219,7 @@ struct Cubic4thOrder {
    @param x2 third value to use
    @param x3 fourth value to use
    */
-  inline static Float interpolate(Float partial, Float x0, Float x1, Float x2, Float x3) {
+  inline static double interpolate(Float partial, Float x0, Float x1, Float x2, Float x3) {
     auto index = size_t(partial * TableSize);
     assert(index < TableSize); // should always be true based on definition of `partial`
     const auto& w{weights_[index]};

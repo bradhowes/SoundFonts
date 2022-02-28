@@ -88,7 +88,7 @@ public:
       case ValueKind::unsignedPercent:
       case ValueKind::signedPercent: return valueOf(amount) / 10.0f;
 
-      case ValueKind::signedFrequencyCents: return DSP::centsToFrequency(valueOf(amount));
+      case ValueKind::signedFrequencyCents: return Float(DSP::centsToFrequency(valueOf(amount)));
       case ValueKind::signedTimeCents: return DSP::centsToSeconds(valueOf(amount));
 
       default: return valueOf(amount);
