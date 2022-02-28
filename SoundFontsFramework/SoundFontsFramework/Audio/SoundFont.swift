@@ -140,7 +140,7 @@ extension SoundFont {
   }
 
   private static func makePresets(_ presets: [SoundFontInfoPreset]) -> [Preset] {
-    presets.enumerated().map { Preset($0.1.name, Int($0.1.bank), Int($0.1.preset), $0.0) }
+    presets.enumerated().map { Preset($0.1.name, Int($0.1.bank), Int($0.1.program), $0.0) }
   }
 }
 

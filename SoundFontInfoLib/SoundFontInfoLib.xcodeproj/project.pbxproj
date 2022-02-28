@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -82,7 +82,6 @@
 		BDECD03227CADAAB00FEDC13 /* GenValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03027CADAAB00FEDC13 /* GenValue.hpp */; };
 		BDECD03427CADB6200FEDC13 /* GenValueCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */; };
 		BDECD03627CBC5D100FEDC13 /* EventProcessor.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BDECD03527CBC5D100FEDC13 /* EventProcessor.hpp */; };
-		BDECD03927CC483800FEDC13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDECD03727CC483800FEDC13 /* AudioToolbox.framework */; };
 		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
 		BDF7866627C9378900CB3BC5 /* PitchTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF7866527C9378900CB3BC5 /* PitchTests.mm */; };
 		BDF7866827CA25CF00CB3BC5 /* LowPassFilter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */; };
@@ -273,7 +272,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
-				BDECD03927CC483800FEDC13 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,6 +927,9 @@
 		};
 		BDA5ACFE265D4ED7000AE48E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilters = (
+				macos,
+			);
 			target = BDA5ACA4265D379F000AE48E /* DSPTablesGenerator */;
 			targetProxy = BDA5ACFD265D4ED7000AE48E /* PBXContainerItemProxy */;
 		};

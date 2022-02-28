@@ -14,7 +14,7 @@ public final class ManagedPreset: NSManagedObject, Managed {
   @NSManaged public var displayName: String
   @NSManaged public private(set) var embeddedName: String
   @NSManaged public private(set) var bank: Int16
-  @NSManaged public private(set) var patch: Int16
+  @NSManaged public private(set) var program: Int16
   @NSManaged public private(set) var aliases: NSSet
   @NSManaged public private(set) var configuration: ManagedPresetConfig
   @NSManaged public private(set) var parent: ManagedSoundFont
@@ -27,7 +27,7 @@ public final class ManagedPreset: NSManagedObject, Managed {
     self.displayName = config.name
     self.embeddedName = config.name
     self.bank = Int16(config.bank)
-    self.patch = Int16(config.preset)
+    self.program = Int16(config.program)
     self.configuration = ManagedPresetConfig(context: context)
     self.configuration.ownedByPreset = self
     self.aliases = NSSet()
