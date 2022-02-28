@@ -21,8 +21,8 @@ class SelectedSoundFontManagerTests: XCTestCase {
     comment: "comment",
     copyright: "copyright",
     presets: [
-      SoundFontInfoPreset("a", bank: 1, preset: 1),
-      SoundFontInfoPreset("b", bank: 1, preset: 2)
+      SoundFontInfoPreset("a", bank: 1, program: 1),
+      SoundFontInfoPreset("b", bank: 1, program: 2)
     ]
   )
 

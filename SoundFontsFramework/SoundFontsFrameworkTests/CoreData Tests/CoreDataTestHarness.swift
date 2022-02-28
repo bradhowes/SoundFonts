@@ -85,11 +85,11 @@ public struct CoreDataTestData {
     comment: "Comment",
     copyright: "Copyright",
     presets: [
-      SoundFontInfoPreset("One", bank: 1, preset: 1),
-      SoundFontInfoPreset("Two", bank: 1, preset: 2),
-      SoundFontInfoPreset("Three", bank: 1, preset: 3),
-      SoundFontInfoPreset("Four", bank: 1, preset: 4),
-      SoundFontInfoPreset("Five", bank: 2, preset: 1),
+      SoundFontInfoPreset("One", bank: 1, program: 1),
+      SoundFontInfoPreset("Two", bank: 1, program: 2),
+      SoundFontInfoPreset("Three", bank: 1, program: 3),
+      SoundFontInfoPreset("Four", bank: 1, program: 4),
+      SoundFontInfoPreset("Five", bank: 2, program: 1),
     ])!
 
   static let sf2: SoundFontInfo = SoundFontInfo(
@@ -98,9 +98,9 @@ public struct CoreDataTestData {
     comment: "Comment",
     copyright: "Copyright",
     presets: [
-      SoundFontInfoPreset("A", bank: 1, preset: 11),
-      SoundFontInfoPreset("B", bank: 2, preset: 11),
-      SoundFontInfoPreset("C", bank: 3, preset: 11),
+      SoundFontInfoPreset("A", bank: 1, program: 11),
+      SoundFontInfoPreset("B", bank: 2, program: 11),
+      SoundFontInfoPreset("C", bank: 3, program: 11),
     ])!
 
   static let sf3: SoundFontInfo = SoundFontInfo(
@@ -109,10 +109,10 @@ public struct CoreDataTestData {
     comment: "Comment",
     copyright: "Copyright",
     presets: [
-      SoundFontInfoPreset("Arnold", bank: 10, preset: 1),
-      SoundFontInfoPreset("Bach", bank: 10, preset: 2),
-      SoundFontInfoPreset("Chris", bank: 10, preset: 3),
-      SoundFontInfoPreset("Dallas", bank: 10, preset: 4),
+      SoundFontInfoPreset("Arnold", bank: 10, program: 1),
+      SoundFontInfoPreset("Bach", bank: 10, program: 2),
+      SoundFontInfoPreset("Chris", bank: 10, program: 3),
+      SoundFontInfoPreset("Dallas", bank: 10, program: 4),
     ])!
 
   static func make(_ name: String) -> SoundFontInfo {
@@ -122,10 +122,10 @@ public struct CoreDataTestData {
       comment: "Comment",
       copyright: "Copyright",
       presets: [
-        SoundFontInfoPreset("One", bank: 1, preset: 1),
-        SoundFontInfoPreset("Two", bank: 1, preset: 2),
-        SoundFontInfoPreset("Three", bank: 1, preset: 3),
-        SoundFontInfoPreset("Four", bank: 1, preset: 4),
+        SoundFontInfoPreset("One", bank: 1, program: 1),
+        SoundFontInfoPreset("Two", bank: 1, program: 2),
+        SoundFontInfoPreset("Three", bank: 1, program: 3),
+        SoundFontInfoPreset("Four", bank: 1, program: 4),
       ])!
   }
 }

@@ -13,8 +13,8 @@ let sfiOne = SoundFontInfo(
   comment: "comment",
   copyright: "copyright",
   presets: [
-    SoundFontInfoPreset("a", bank: 1, preset: 1),
-    SoundFontInfoPreset("b", bank: 1, preset: 2)
+    SoundFontInfoPreset("a", bank: 1, program: 1),
+    SoundFontInfoPreset("b", bank: 1, program: 2)
   ]
 )!
 let sfOne = SoundFont(sfiOne.embeddedName, soundFontInfo: sfiOne, resource: sfiOne.url)
@@ -26,8 +26,8 @@ let sfiTwo = SoundFontInfo(
   comment: "comment",
   copyright: "copyright",
   presets: [
-    SoundFontInfoPreset("aa", bank: 1, preset: 1),
-    SoundFontInfoPreset("bb", bank: 1, preset: 2)
+    SoundFontInfoPreset("aa", bank: 1, program: 1),
+    SoundFontInfoPreset("bb", bank: 1, program: 2)
   ]
 )!
 let sfTwo = SoundFont(sfiTwo.embeddedName, soundFontInfo: sfiTwo, resource: sfiTwo.url)
