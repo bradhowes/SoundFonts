@@ -21,10 +21,10 @@ public:
 
   void setSampleRate(Float sampleRate) {
     nyquistPeriod_ = 1.0f / Float(0.5f * sampleRate);
-    update();
+
   }
 
-  void update();
+  void update(Float modLFO, Float modEnv);
 
   void apply(std::vector<Float*> const& ins, std::vector<Float*>& outs, size_t frameCount) const
   {

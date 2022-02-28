@@ -54,6 +54,6 @@ Voice::configure(const State::Config& config)
   noiseFloorOverMagnitude_ = config.sampleSource().noiseFloorOverMagnitude();
   noiseFloorOverMagnitudeOfLoop_ = config.sampleSource().noiseFloorOverMagnitudeOfLoop();
 
-  filter_.update();
+  // filter_.update();
   done_ = false;
 }

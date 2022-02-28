@@ -7,18 +7,32 @@ using namespace SF2::Render;
 enum Index { B0 = 0, B1, B2, A1, A2 };
 
 void
-LowPassFilter::update()
+LowPassFilter::update(Float modLFO, Float modEnv)
 {
-  auto cutoff = state_.modulated(State::State::Index::initialFilterCutoff);
-  auto resonance = state_.modulated(State::State::Index::initialFilterResonance);
-  if (cutoff == lastCutoff_ && resonance == lastResonance_) return;
+  // Get cutoff (Fc) setting -- should be in absolute cents.
+  auto cutoff = (state_.modulated(State::State::Index::initialFilterCutoff) +
+                 modLFO * state_.modulated((State::State::Index::modulatorLFOToFilterCutoff)) +
+                 modEnv * state_.modulated((State::State::Index::modulatorEnvelopeToFilterCutoff)));
+  // Get resonance (Q) setting which is in centibels (0-960.0).
+  auto resonance = DSP::clamp(state_.modulated(State::State::Index::initialFilterResonance), 0.0f, 960.0f);
 
+  if (cutoff == lastCutoff_ && resonance == lastResonance_) return;
   lastCutoff_ = cutoff;
   lastResonance_ = resonance;
 
+  // Convert from dB to linear value (0.7-45k).
+  resonance = std::pow(10.0f, (cutoff / 10.0 - 3.01f) / 20.0f);
+
+  // From FluidSynth:
+  //  The original equations should be:
+  //   iir_filter->b0=(1.-cos_coeff)*a0_inv*0.5*iir_filter->filter_gain;
+  //   iir_filter->b1=(1.-cos_coeff)*a0_inv*iir_filter->filter_gain;
+  //   iir_filter->b2=(1.-cos_coeff)*a0_inv*0.5*iir_filter->filter_gain; */
+
   const Float frequencyRads = DSP::PI * cutoff * nyquistPeriod_;
-  const Float r = ::pow(10.0f, 0.05f * -resonance);
-  const double k  = 0.5 * r * ::sin(frequencyRads);
+  // const Float r = ::pow(10.0f, 0.05f * -resonance);
+
+  const double k  = 0.5 * resonance * ::sin(frequencyRads);
   const double c1 = (1.0 - k) / (1.0 + k);
   const double c2 = (1.0 + c1) * ::cos(frequencyRads);
   const double c3 = (1.0 + c1 - c2) * 0.25;
