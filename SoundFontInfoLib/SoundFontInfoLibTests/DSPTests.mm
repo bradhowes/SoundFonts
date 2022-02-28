@@ -178,7 +178,7 @@ using namespace SF2::DSP::Tables;
   XCTAssertEqualWithAccuracy(1.0, centibelsToGain(0), self.epsilon);
   XCTAssertEqualWithAccuracy(1.1220184543, centibelsToGain(10), self.epsilon);
   XCTAssertEqualWithAccuracy(3.16227766017, centibelsToGain(100), self.epsilon);
-  XCTAssertEqualWithAccuracy(100000, centibelsToGain(1000), self.epsilon);
+  XCTAssertEqualWithAccuracy(100000, centibelsToGain(1000), 0.1);
   XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1440), 100);
   XCTAssertEqualWithAccuracy(15848931.924611142, centibelsToGain(1441), 100);
 }
