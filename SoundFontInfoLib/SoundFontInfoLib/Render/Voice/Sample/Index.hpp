@@ -34,9 +34,13 @@ public:
   /// @returns true if the index has been stopped.
   bool finished() const { return whole_ >= bounds_.endPos(); }
 
+  /// @returns true if the index has looped.
+  bool looped() const { return looped_; }
+
   /**
    Increment the index to the next location. Properly handles looping and buffer end.
 
+   @param increment the increment to apply to the internal index
    @param canLoop true if looping is allowed
    */
   void increment(Float increment, bool canLoop) {
@@ -56,6 +60,7 @@ public:
 
     if (canLoop && whole_ >= bounds_.endLoopPos()) {
       whole_ -= (bounds_.endLoopPos() - bounds_.startLoopPos());
+      looped_ = true;
     }
     else if (whole_ >= bounds_.endPos()) {
       log_.debug() << "stopping" << std::endl;
@@ -73,6 +78,7 @@ private:
   size_t whole_{0};
   Float partial_{0.0};
   Bounds bounds_{};
+  bool looped_{false};
 
   inline static Logger log_{Logger::Make("Render.Sample.Generator", "Index")};
 };

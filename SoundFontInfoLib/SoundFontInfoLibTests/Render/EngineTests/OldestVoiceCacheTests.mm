@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
+#include <XCTest/XCTest.h>
 
 #include "Render/Engine/OldestActiveVoiceCache.hpp"
 

@@ -1,6 +1,6 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
+#include <XCTest/XCTest.h>
 
 #include "Types.hpp"
 #include "DSP/DSP.hpp"
@@ -8,7 +8,7 @@
 #include "Render/Envelope/Stage.hpp"
 #include "Render/Voice/State/State.hpp"
 
-#import "SampleBasedContexts.hpp"
+#include "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;

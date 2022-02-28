@@ -1,11 +1,11 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
+#include <XCTest/XCTest.h>
 
-#import "Entity/SampleHeader.hpp"
-#import "MIDI/Channel.hpp"
-#import "Render/Voice/Sample/Pitch.hpp"
-#import "Render/Voice/State/State.hpp"
+#include "Entity/SampleHeader.hpp"
+#include "MIDI/Channel.hpp"
+#include "Render/Voice/Sample/Pitch.hpp"
+#include "Render/Voice/State/State.hpp"
 
 using namespace SF2;
 using namespace SF2::Render::Voice;

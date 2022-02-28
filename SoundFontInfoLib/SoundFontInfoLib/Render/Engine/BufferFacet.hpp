@@ -2,12 +2,12 @@
 
 #pragma once
 
-#import <os/log.h>
-#import <AudioToolbox/AudioToolbox.h>
-#import <AudioUnit/AudioUnit.h>
-#import <AVFoundation/AVFoundation.h>
+#include <os/log.h>
+#include <AudioToolbox/AudioToolbox.h>
+#include <AudioUnit/AudioUnit.h>
+#include <AVFoundation/AVFoundation.h>
 
-#import <vector>
+#include <vector>
 
 /**
  Provides a simple std::vector view of an AudioBufferList.

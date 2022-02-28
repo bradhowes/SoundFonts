@@ -2,7 +2,7 @@
 
 #pragma once
 
-#import <Foundation/Foundation.h>
+#include <Foundation/Foundation.h>
 
 /**
  A preset found in an SF2 file.

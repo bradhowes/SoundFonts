@@ -22,7 +22,8 @@ gainEnvelope_{},
 modulatorEnvelope_{},
 modulatorLFO_{},
 vibratoLFO_{},
-voiceIndex_{voiceIndex}
+voiceIndex_{voiceIndex},
+filter_{state_}
 {
   ;
 }
@@ -30,8 +31,9 @@ voiceIndex_{voiceIndex}
 void
 Voice::configure(const State::Config& config)
 {
-  const auto& sampleHeader{config.sampleSource().header()};
+  config.sampleSource().load();
 
+  const auto& sampleHeader{config.sampleSource().header()};
   state_.prepareForVoice(config);
   loopingMode_ = loopingMode();
   pitch_.configure(sampleHeader);
@@ -48,5 +50,10 @@ Voice::configure(const State::Config& config)
   else // (sampleHeader.isMono())
     audioDestinationChannel_ = AudioDestinationChannel::both;
 
+  assert(config.sampleSource().isLoaded());
+  noiseFloorOverMagnitude_ = config.sampleSource().noiseFloorOverMagnitude();
+  noiseFloorOverMagnitudeOfLoop_ = config.sampleSource().noiseFloorOverMagnitudeOfLoop();
+
+  filter_.update();
   done_ = false;
 }

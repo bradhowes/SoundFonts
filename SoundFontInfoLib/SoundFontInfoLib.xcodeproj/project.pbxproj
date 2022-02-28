@@ -82,6 +82,7 @@
 		BDECD03227CADAAB00FEDC13 /* GenValue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03027CADAAB00FEDC13 /* GenValue.hpp */; };
 		BDECD03427CADB6200FEDC13 /* GenValueCollection.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */; };
 		BDECD03627CBC5D100FEDC13 /* EventProcessor.hpp in Sources */ = {isa = PBXBuildFile; fileRef = BDECD03527CBC5D100FEDC13 /* EventProcessor.hpp */; };
+		BDECD03927CC483800FEDC13 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDECD03727CC483800FEDC13 /* AudioToolbox.framework */; };
 		BDF7866427C7D25300CB3BC5 /* Pitch.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866327C7D25300CB3BC5 /* Pitch.hpp */; };
 		BDF7866627C9378900CB3BC5 /* PitchTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = BDF7866527C9378900CB3BC5 /* PitchTests.mm */; };
 		BDF7866827CA25CF00CB3BC5 /* LowPassFilter.hpp in Headers */ = {isa = PBXBuildFile; fileRef = BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */; };
@@ -258,6 +259,8 @@
 		BDECD03027CADAAB00FEDC13 /* GenValue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GenValue.hpp; sourceTree = "<group>"; };
 		BDECD03327CADB6200FEDC13 /* GenValueCollection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GenValueCollection.hpp; sourceTree = "<group>"; };
 		BDECD03527CBC5D100FEDC13 /* EventProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EventProcessor.hpp; sourceTree = "<group>"; };
+		BDECD03727CC483800FEDC13 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BDECD03827CC483800FEDC13 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		BDF7866327C7D25300CB3BC5 /* Pitch.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hpp; sourceTree = "<group>"; };
 		BDF7866527C9378900CB3BC5 /* PitchTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PitchTests.mm; sourceTree = "<group>"; };
 		BDF7866727CA25CF00CB3BC5 /* LowPassFilter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LowPassFilter.hpp; sourceTree = "<group>"; };
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDD2D6AB261C8854000557A3 /* Accelerate.framework in Frameworks */,
+				BDECD03927CC483800FEDC13 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,6 +657,8 @@
 		BDECFFED2496BEFB00A52507 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDECD03727CC483800FEDC13 /* AudioToolbox.framework */,
+				BDECD03827CC483800FEDC13 /* AudioUnit.framework */,
 				BDE99B6727BF91C000C9F1BC /* Accelerate.framework */,
 				BDEB12C6262611BA003CE8EE /* AVFoundation.framework */,
 				BDD2D6AA261C8854000557A3 /* Accelerate.framework */,

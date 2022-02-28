@@ -2,13 +2,16 @@
 
 #pragma once
 
+#include <vector>
+
 #include "Logger.hpp"
-#include "Render/Engine/Tick.hpp"
+
 #include "Render/Envelope/Generator.hpp"
 #include "Render/LFO.hpp"
 #include "Render/Voice/Sample/Generator.hpp"
 #include "Render/Voice/State/Modulator.hpp"
 #include "Render/Voice/State/State.hpp"
+#include "Render/LowPassFilter.hpp"
 
 namespace SF2::MIDI { class Channel; }
 
@@ -63,6 +66,15 @@ public:
    @param config the voice configuration to apply
    */
   void configure(const State::Config& config);
+
+  void setMaxFramesToRender(int maxFramesToRender)
+  {
+    leftBuffer_.resize(size_t(maxFramesToRender));
+    rightBuffer_.resize(size_t(maxFramesToRender));
+    bufferPtrs_.resize(2);
+    bufferPtrs_[0] = nullptr;
+    bufferPtrs_[1] = nullptr;
+  }
 
   int key() const { return state_.eventKey(); }
 
@@ -128,28 +140,44 @@ public:
 
     // According to FluidSynth this is the right think to do.
     if (gainEnvelope_.isDelayed()) return 0.0;
-    auto gain = calculateGain(modLFO, volEnv);
 
+    auto gain = calculateGain(modLFO, volEnv);
     auto increment = pitch_.samplePhaseIncrement(modLFO, vibLFO, modEnv);
     auto sample = sampleGenerator_.generate(increment, canLoop());
+
     return sample * gain;
   }
 
   Float calculateGain(Float modLFO, Float volEnv)
   {
     // This formula follows what FluidSynth is doing for attenuation/gain.
-    return (DSP::centibelsToAttenuation(state_.modulated(Index::initialAttenuation)) *
-            DSP::centibelsToAttenuation(DSP::MaximumAttenuation * (1.0 - volEnv) +
-                                        modLFO * -state_.modulated(Index::modulatorLFOToVolume)));
+    auto gain = (DSP::centibelsToAttenuation(state_.modulated(Index::initialAttenuation)) *
+                 DSP::centibelsToAttenuation(DSP::MaximumAttenuation * (1.0 - volEnv) +
+                                             modLFO * -state_.modulated(Index::modulatorLFOToVolume)));
+
+    // When in the release stage, look for a magical point at which one can no longer hear the sample being generated.
+    // Use that as a short-circuit to flagging the voice as done.
+    if (gainEnvelope_.stage() == Envelope::StageIndex::release) {
+      auto minGain = sampleGenerator_.looped() ? noiseFloorOverMagnitudeOfLoop_ : noiseFloorOverMagnitude_;
+      if (gain < minGain) {
+        done_ = true;
+      }
+    }
+    return gain;
   }
 
   void renderIntoByAdding(float* left, float* right, size_t frameCount) {
     Float leftAmp;
     Float rightAmp;
+
     Float pan = state_.modulated(Index::pan);
     DSP::panLookup(pan, leftAmp, rightAmp);
-    while (frameCount-- > 0) {
-      if (isDone()) return;
+
+    for (size_t index = 0; index < frameCount; ++index) {
+      if (isDone()) {
+        break;
+      }
+
       auto sample = renderSample();
       float leftSample = float(sample * leftAmp);
       float rightSample = float(sample * rightAmp);
@@ -171,6 +199,14 @@ private:
   LFO vibratoLFO_;
   size_t voiceIndex_;
   AudioDestinationChannel audioDestinationChannel_;
+  Float noiseFloorOverMagnitude_;
+  Float noiseFloorOverMagnitudeOfLoop_;
+  LowPassFilter filter_;
+  
+  std::vector<Float> leftBuffer_;
+  std::vector<Float> rightBuffer_;
+  std::vector<Float*> bufferPtrs_{2};
+
   mutable bool done_{false};
 
   inline static Logger log_{Logger::Make("Render", "Voice")};

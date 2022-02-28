@@ -1,12 +1,12 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
-#import <vector>
+#include <XCTest/XCTest.h>
+#include <vector>
 
-#import "Types.hpp"
-#import "MIDI/Channel.hpp"
-#import "Render/Voice/Sample/Generator.hpp"
-#import "SampleBasedContexts.hpp"
+#include "Types.hpp"
+#include "MIDI/Channel.hpp"
+#include "Render/Voice/Sample/Generator.hpp"
+#include "SampleBasedContexts.hpp"
 
 using namespace SF2::Render::Voice;
 using namespace SF2::Render::Voice::Sample;

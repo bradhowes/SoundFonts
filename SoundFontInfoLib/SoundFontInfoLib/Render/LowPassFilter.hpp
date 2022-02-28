@@ -19,11 +19,16 @@ public:
 
   LowPassFilter(const State& state) : state_{state}, nyquistPeriod_{1.0f / Float(0.5f * state.sampleRate())} {}
 
+  void setSampleRate(Float sampleRate) {
+    nyquistPeriod_ = 1.0f / Float(0.5f * sampleRate);
+    update();
+  }
+
   void update();
 
   void apply(std::vector<Float*> const& ins, std::vector<Float*>& outs, size_t frameCount) const
   {
-    assert(ins.size() == outs.size() && ins.size() == 1);
+    assert(ins.size() == outs.size() && ins.size() == 2);
     vDSP_biquadm(setup_, (float const**)ins.data(), vDSP_Stride(1), (float**)outs.data(), vDSP_Stride(1),
                  vDSP_Length(frameCount));
   }

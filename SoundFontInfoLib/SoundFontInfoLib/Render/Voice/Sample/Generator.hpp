@@ -32,9 +32,20 @@ public:
     cubic4thOrder
   };
 
+  /**
+   Constructor.
+
+   @param state the voice state to work with
+   @param kind the interpolation to apply to the samples
+   */
   Generator(State& state, Interpolator kind) :
   state_{state}, interpolatorProc_{interpolator(kind)} {}
 
+  /**
+   Configure the generator to work with the given sample source.
+
+   @param sampleSource the samples to use for rendering
+   */
   void configure(const NormalizedSampleSource& sampleSource)
   {
     bounds_ = Bounds::make(sampleSource.header(), state_);
@@ -58,7 +69,11 @@ public:
     return interpolatorProc_(this, whole, partial, canLoop);
   }
 
+  /// @returns true if sill generating samples
   bool isActive() const { return !index_.finished(); }
+
+  /// @returns true if generator has looped during rendering.
+  bool looped() const { return index_.looped(); }
 
 private:
   using InterpolatorProc = std::function<Float(Generator*, size_t, Float, bool)>;

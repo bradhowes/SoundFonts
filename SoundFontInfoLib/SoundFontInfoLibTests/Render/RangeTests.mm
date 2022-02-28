@@ -1,8 +1,8 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import <iostream>
+#include <iostream>
 
-#import <XCTest/XCTest.h>
+#include <XCTest/XCTest.h>
 
 #include "Entity/Generator/Amount.hpp"
 #include "Render/Range.hpp"

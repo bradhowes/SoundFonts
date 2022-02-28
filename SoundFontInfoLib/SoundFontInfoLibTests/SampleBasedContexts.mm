@@ -1,9 +1,9 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 //
 
-#import <SF2Files/SF2Files-Swift.h>
+#include <SF2Files/SF2Files-Swift.h>
 
-#import "SampleBasedContexts.hpp"
+#include "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;

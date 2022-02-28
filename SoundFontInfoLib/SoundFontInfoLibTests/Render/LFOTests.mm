@@ -1,9 +1,9 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-#import <vector>
+#include <vector>
 
-#import "SampleBasedContexts.hpp"
-#import "Render/LFO.hpp"
+#include "SampleBasedContexts.hpp"
+#include "Render/LFO.hpp"
 
 using namespace SF2::Render;
 

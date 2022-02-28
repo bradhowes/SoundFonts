@@ -2,13 +2,13 @@
 
 #pragma once
 
-#import <os/log.h>
+#include <os/log.h>
 
-#import <algorithm>
-#import <vector>
-#import <AudioToolbox/AudioToolbox.h>
+#include <algorithm>
+#include <vector>
+#include <AudioToolbox/AudioToolbox.h>
 
-#import "InputBuffer.hpp"
+#include "InputBuffer.hpp"
 
 namespace SF2::Render::Engine {
 

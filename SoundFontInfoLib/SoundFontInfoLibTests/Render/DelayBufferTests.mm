@@ -1,9 +1,9 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
-#import <vector>
+#include <XCTest/XCTest.h>
+#include <vector>
 
-#import "Render/DelayBuffer.hpp"
+#include "Render/DelayBuffer.hpp"
 
 @interface DelayBufferTests : XCTestCase
 

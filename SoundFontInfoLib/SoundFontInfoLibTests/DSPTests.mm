@@ -1,7 +1,7 @@
 // Copyright © 2021 Brad Howes. All rights reserved.
 
-#import <XCTest/XCTest.h>
-#import <cmath>
+#include <XCTest/XCTest.h>
+#include <cmath>
 
 #include "Types.hpp"
 #include "DSP/DSP.hpp"

@@ -6,7 +6,7 @@
 //  Copyright © 2022 Brad Howes. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
+#include <XCTest/XCTest.h>
 
 @interface NewTestTemplate : XCTestCase
 

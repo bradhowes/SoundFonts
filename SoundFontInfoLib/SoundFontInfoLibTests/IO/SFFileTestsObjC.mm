@@ -1,13 +1,13 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#import <iostream>
+#include <iostream>
 
-#import <XCTest/XCTest.h>
-#import <SF2Files/SF2Files-Swift.h>
+#include <XCTest/XCTest.h>
+#include <SF2Files/SF2Files-Swift.h>
 
-#import "File.hpp"
-#import "Render/Voice/Sample/NormalizedSampleSource.hpp"
-#import "SampleBasedContexts.hpp"
+#include "File.hpp"
+#include "Render/Voice/Sample/NormalizedSampleSource.hpp"
+#include "SampleBasedContexts.hpp"
 
 using namespace SF2;
 using namespace SF2::Render;

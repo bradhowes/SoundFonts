@@ -11,6 +11,10 @@ LowPassFilter::update()
 {
   auto cutoff = state_.modulated(State::State::Index::initialFilterCutoff);
   auto resonance = state_.modulated(State::State::Index::initialFilterResonance);
+  if (cutoff == lastCutoff_ && resonance == lastResonance_) return;
+
+  lastCutoff_ = cutoff;
+  lastResonance_ = resonance;
 
   const Float frequencyRads = DSP::PI * cutoff * nyquistPeriod_;
   const Float r = ::pow(10.0f, 0.05f * -resonance);
@@ -27,9 +31,9 @@ LowPassFilter::update()
 
   // As long as we have the same number of channels, we can use Accelerate's function to update the filter.
   if (setup_ != nullptr) {
-    vDSP_biquadm_SetTargetsDouble(setup_, F_.data(), updateRate_, threshold_, 0, 0, 1, 1);
+    vDSP_biquadm_SetTargetsDouble(setup_, F_.data(), updateRate_, threshold_, 0, 0, 1, 2);
   }
   else {
-    setup_ = vDSP_biquadm_CreateSetup(F_.data(), 1, 1);
+    setup_ = vDSP_biquadm_CreateSetup(F_.data(), 1, 2);
   }
 }
