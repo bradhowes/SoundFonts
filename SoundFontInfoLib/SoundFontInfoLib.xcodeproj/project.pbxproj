@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */; };
 		BD74D17123CDB1D200204ED4 /* SoundFontInfoLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */; };
 		BD94644C27D0ED8F00CD4502 /* SF2Lib in Frameworks */ = {isa = PBXBuildFile; productRef = BD94644B27D0ED8F00CD4502 /* SF2Lib */; };
 		BDB1BF9E265DB1F0002AD159 /* SoundFontInfoLib.h in Headers */ = {isa = PBXBuildFile; fileRef = BDB1BF40265DB1F0002AD159 /* SoundFontInfoLib.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,28 +30,13 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		BDA5ACA3265D379F000AE48E /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		BD250BA82615A45E00D1C1E0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FluidSynthTruths.cpp; sourceTree = "<group>"; };
-		BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FluidSynthTruths.hpp; sourceTree = "<group>"; };
 		BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SoundFontInfoLib.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundFontInfoLibTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD8CE57027C53F67009A2FB5 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = ../Release.xcconfig; sourceTree = "<group>"; };
 		BD8CE57127C53F67009A2FB5 /* Development.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = ../Development.xcconfig; sourceTree = "<group>"; };
 		BD94644A27D0ED3400CD4502 /* SF2Lib */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SF2Lib; path = ../../SF2Lib; sourceTree = "<group>"; };
-		BDA5ACA5265D379F000AE48E /* DSPTablesGenerator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSPTablesGenerator; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundFontInfoLibTests.swift; sourceTree = "<group>"; };
 		BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SoundFontInfoLibTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		BDB1BE74265DAEC7002AD159 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -90,13 +74,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BDA5ACA2265D379F000AE48E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -121,7 +98,6 @@
 			children = (
 				BD74D16723CDB1D200204ED4 /* SoundFontInfoLib.framework */,
 				BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */,
-				BDA5ACA5265D379F000AE48E /* DSPTablesGenerator */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,8 +115,6 @@
 			children = (
 				BDB1BE74265DAEC7002AD159 /* Info.plist */,
 				BDE99B6927BF959800C9F1BC /* NewTestTemplate.mm */,
-				BD5CA3B826D141F20052DA39 /* FluidSynthTruths.cpp */,
-				BD5CA3B926D141F20052DA39 /* FluidSynthTruths.hpp */,
 				BDB1BE57265DAEC6002AD159 /* SoundFontInfoLibTests.swift */,
 				BDB1BE72265DAEC7002AD159 /* SoundFontInfoLibTests-Bridging-Header.h */,
 			);
@@ -215,23 +189,6 @@
 			productReference = BD74D17023CDB1D200204ED4 /* SoundFontInfoLibTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		BDA5ACA4265D379F000AE48E /* DSPTablesGenerator */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BDA5ACA9265D379F000AE48E /* Build configuration list for PBXNativeTarget "DSPTablesGenerator" */;
-			buildPhases = (
-				BDA5ACA1265D379F000AE48E /* Sources */,
-				BDA5ACA2265D379F000AE48E /* Frameworks */,
-				BDA5ACA3265D379F000AE48E /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = DSPTablesGenerator;
-			productName = DSPGenerator;
-			productReference = BDA5ACA5265D379F000AE48E /* DSPTablesGenerator */;
-			productType = "com.apple.product-type.tool";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -253,9 +210,6 @@
 						CreatedOnToolsVersion = 11.3;
 						LastSwiftMigration = 1160;
 					};
-					BDA5ACA4265D379F000AE48E = {
-						CreatedOnToolsVersion = 12.5;
-					};
 				};
 			};
 			buildConfigurationList = BD74D16123CDB1D200204ED4 /* Build configuration list for PBXProject "SoundFontInfoLib" */;
@@ -272,7 +226,6 @@
 			projectRoot = "";
 			targets = (
 				BD74D16623CDB1D200204ED4 /* SoundFontInfoLib */,
-				BDA5ACA4265D379F000AE48E /* DSPTablesGenerator */,
 				BD74D16F23CDB1D200204ED4 /* SoundFontInfoLibTests */,
 			);
 		};
@@ -309,15 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDB1BFF2265DB92D002AD159 /* SoundFontInfoLibTests.swift in Sources */,
-				BD5CA3BA26D141F20052DA39 /* FluidSynthTruths.cpp in Sources */,
 				BDE99B6A27BF959800C9F1BC /* NewTestTemplate.mm in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BDA5ACA1265D379F000AE48E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,7 +333,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -453,7 +398,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -510,7 +455,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -578,7 +523,7 @@
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/SoundFontInfoLib";
 				INFOPLIST_FILE = SoundFontInfoLib/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -661,47 +606,6 @@
 			};
 			name = Release;
 		};
-		BDA5ACAA265D379F000AE48E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD8CE57127C53F67009A2FB5 /* Development.xcconfig */;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SoundFontInfoLib";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
-			};
-			name = Debug;
-		};
-		BDA5ACAB265D379F000AE48E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD8CE57027C53F67009A2FB5 /* Release.xcconfig */;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/SoundFontInfoLib";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = macosx;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -728,15 +632,6 @@
 			buildConfigurations = (
 				BD74D17F23CDB1D200204ED4 /* Debug */,
 				BD74D18023CDB1D200204ED4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BDA5ACA9265D379F000AE48E /* Build configuration list for PBXNativeTarget "DSPTablesGenerator" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BDA5ACAA265D379F000AE48E /* Debug */,
-				BDA5ACAB265D379F000AE48E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
