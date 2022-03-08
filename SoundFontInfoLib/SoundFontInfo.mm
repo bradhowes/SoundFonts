@@ -1,7 +1,7 @@
 // Copyright © 2020 Brad Howes. All rights reserved.
 
-#include "IO/Parser.hpp"
-#include "IO/File.hpp"
+#include "SF2Lib/IO/Parser.hpp"
+#include "SF2Lib/IO/File.hpp"
 
 #include "SoundFontInfo.h"
 
