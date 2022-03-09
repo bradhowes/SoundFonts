@@ -20,34 +20,6 @@
                ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
-               BuildableName = "SoundFontInfoLibTests.xctest"
-               BlueprintName = "SoundFontInfoLibTests"
-               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD0FAC3A251F927C00EEF187"
-               BuildableName = "SF2FilesTests.xctest"
-               BlueprintName = "SF2FilesTests"
-               ReferencedContainer = "container:SF2Files/SF2Files.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -56,7 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       enableASanStackUseAfterReturn = "YES"
-      enableThreadSanitizer = "YES"
+      disableMainThreadChecker = "YES"
       codeCoverageEnabled = "YES">
       <CodeCoverageTargets>
          <BuildableReference
@@ -76,26 +48,6 @@
                BuildableName = "SoundFontsFrameworkTests.xctest"
                BlueprintName = "SoundFontsFrameworkTests"
                ReferencedContainer = "container:SoundFontsFramework.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD74D16F23CDB1D200204ED4"
-               BuildableName = "SoundFontInfoLibTests.xctest"
-               BlueprintName = "SoundFontInfoLibTests"
-               ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BD0FAC3A251F927C00EEF187"
-               BuildableName = "SF2FilesTests.xctest"
-               BlueprintName = "SF2FilesTests"
-               ReferencedContainer = "container:SF2Files/SF2Files.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

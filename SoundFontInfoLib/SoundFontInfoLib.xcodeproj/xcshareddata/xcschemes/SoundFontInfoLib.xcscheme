@@ -29,20 +29,6 @@
                ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "SF2Lib"
-               BuildableName = "SF2Lib"
-               BlueprintName = "SF2Lib"
-               ReferencedContainer = "container:../../SF2Lib">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -72,16 +58,6 @@
                BuildableName = "SoundFontInfoLibTests.xctest"
                BlueprintName = "SoundFontInfoLibTests"
                ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "SF2LibTests"
-               BuildableName = "SF2LibTests"
-               BlueprintName = "SF2LibTests"
-               ReferencedContainer = "container:../../SF2Lib">
             </BuildableReference>
          </TestableReference>
       </Testables>
