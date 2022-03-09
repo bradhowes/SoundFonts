@@ -29,6 +29,20 @@
                ReferencedContainer = "container:SoundFontInfoLib.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "SF2Lib"
+               BuildableName = "SF2Lib"
+               BlueprintName = "SF2Lib"
+               ReferencedContainer = "container:../../SF2Lib">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

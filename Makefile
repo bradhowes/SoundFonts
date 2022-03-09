@@ -1,4 +1,4 @@
-PLATFORM_IOS = iOS Simulator,name=iPhone 11
+PLATFORM_IOS = iOS Simulator,name=iPad mini (6th generation)
 PLATFORM_MACOS = macOS
 
 DEST = -scheme App -destination platform="$(PLATFORM_IOS)"
@@ -6,7 +6,7 @@ DEST = -scheme App -destination platform="$(PLATFORM_IOS)"
 default: coverage
 
 build: clean
-	xcodebuild build $(DEST)
+	xcodebuild -workspace SoundFonts.xcworkspace build $(DEST)
 
 test: build
 	xcodebuild test $(DEST) -enableCodeCoverage YES ENABLE_TESTING_SEARCH_PATHS=YES -resultBundlePath $PWD
