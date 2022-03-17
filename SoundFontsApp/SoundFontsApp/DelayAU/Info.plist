@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIUserInterfaceStyle</key>
-	<string>Dark</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -48,7 +46,7 @@
 					<key>type</key>
 					<string>aufx</string>
 					<key>version</key>
-					<integer>67072</integer>
+					<integer>140038</integer>
 				</dict>
 			</array>
 		</dict>
@@ -61,5 +59,7 @@
 	<array>
 		<string>Eurostile.ttc</string>
 	</array>
+	<key>UIUserInterfaceStyle</key>
+	<string>Dark</string>
 </dict>
 </plist>

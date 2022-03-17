@@ -107,10 +107,16 @@ extension TagsTableViewController {
     }
   }
 
-  private func handleTagChange(_ oldTag: Tag?, _ newTag: Tag?) {
-    let rows = [oldTag, newTag].compactMap { $0 == nil ? nil : tags.index(of: $0!.key) }
-    let indexPaths = rows.map { $0.indexPath }
-    tableView.reloadRows(at: indexPaths, with: .automatic)
+  private func handleTagChange(_ oldTag: Tag?, _ newTag: Tag) {
+    if let oldTag = oldTag {
+      let rows = [oldTag, newTag].compactMap { tags.index(of: $0.key) }
+      let indexPaths = rows.map { $0.indexPath }
+      if !indexPaths.isEmpty {
+        tableView.reloadRows(at: indexPaths, with: .automatic)
+      }
+    } else {
+      tableView.reloadData()
+    }
   }
 
   private func refresh() {

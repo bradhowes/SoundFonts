@@ -15,6 +15,7 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   os_log_t log_;
   Engine* engine_;
   File* file_;
+  NSURL* url_;
 }
 
 - (instancetype)init:(int)voiceCount {
@@ -24,14 +25,17 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
     os_log_info(log_, "init");
     self->engine_ = new Engine(44100.0, static_cast<size_t>(voiceCount), Interpolator::cubic4thOrder);
     self->file_ = nullptr;
+    self->url_ = nullptr;
   }
 
   return self;
 }
 
+- (NSURL* _Nullable) url { return url_; }
+
 - (void)setRenderingFormat:(AVAudioFormat*)format maxFramesToRender:(AUAudioFrameCount)maxFramesToRender {
   os_log_info(log_, "setRenderingFormat BEGIN");
-  engine_->setRenderingFormat(format, maxFramesToRender);
+  engine_->setRenderingFormat(3, format, maxFramesToRender);
   os_log_info(log_, "setRenderingFormat END");
 }
 
@@ -42,15 +46,22 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
 }
 
 - (void)load:(NSURL*)url preset:(int)index {
-  auto oldFile = file_;
   engine_->allOff();
+
+  if (url == url_) {
+    engine_->usePreset(static_cast<size_t>(index));
+    return;
+  }
+
+  auto oldFile = file_;
   file_ = new File([[url path] UTF8String]);
-  engine_->load(*file_);
-  engine_->usePreset(static_cast<size_t>(index));
+  engine_->load(*file_, static_cast<size_t>(index));
   delete oldFile;
 }
 
-- (void)usePreset:(int)preset { engine_->usePreset(static_cast<size_t>(preset)); }
+- (void)selectBank:(int)bank program:(int)program {
+  // engine_->usePreset(static_cast<size_t>(preset));
+}
 
 - (int)presetCount { return static_cast<int>(engine_->presetCount()); }
 
