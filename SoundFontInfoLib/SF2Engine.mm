@@ -48,11 +48,12 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
 - (void)load:(NSURL*)url preset:(int)index {
   engine_->allOff();
 
-  if (url == url_) {
+  if ([url_ isEqual:url]) {
     engine_->usePreset(static_cast<size_t>(index));
     return;
   }
 
+  url_ = url;
   auto oldFile = file_;
   file_ = new File([[url path] UTF8String]);
   engine_->load(*file_, static_cast<size_t>(index));

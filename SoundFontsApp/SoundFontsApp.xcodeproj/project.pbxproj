@@ -37,18 +37,6 @@
 		BD75B264218B8CFD00C7EBD7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B263218B8CFD00C7EBD7 /* AppDelegate.swift */; };
 		BD75B266218B8CFD00C7EBD7 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD75B265218B8CFD00C7EBD7 /* MainViewController.swift */; };
 		BD874C94221A228E00BBD00B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD874C93221A228E00BBD00B /* AudioToolbox.framework */; };
-		BD8CE57827C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57927C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57A27C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57B27C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57C27C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57D27C53F97009A2FB5 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57627C53F97009A2FB5 /* Release.xcconfig */; };
-		BD8CE57E27C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
-		BD8CE57F27C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
-		BD8CE58027C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
-		BD8CE58127C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
-		BD8CE58227C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
-		BD8CE58327C53F97009A2FB5 /* Development.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = BD8CE57727C53F97009A2FB5 /* Development.xcconfig */; };
 		BD9AC9902567172F00B47F12 /* AudioUnitParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC981256716D700B47F12 /* AudioUnitParameters.swift */; };
 		BD9AC99C2567178A00B47F12 /* AudioUnitParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD9AC99B2567178A00B47F12 /* AudioUnitParameters.swift */; };
 		BD9AC9B12567B86100B47F12 /* Eurostile.ttc in Resources */ = {isa = PBXBuildFile; fileRef = BDD9792824171DDE006121A1 /* Eurostile.ttc */; };
@@ -537,7 +525,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1230;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "Brad Howes";
 				TargetAttributes = {
 					BD05836123E4C52800E094E0 = {
@@ -600,11 +588,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD8CE57927C53F97009A2FB5 /* Release.xcconfig in Resources */,
 				BD58B0902567F29900181F2B /* Assets.xcassets in Resources */,
 				BDD9792E24171DF4006121A1 /* Eurostile.ttc in Resources */,
 				BD62CF4C253DE18900DBDC1B /* MainInterface.storyboard in Resources */,
-				BD8CE57F27C53F97009A2FB5 /* Development.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,8 +598,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD8CE58327C53F97009A2FB5 /* Development.xcconfig in Resources */,
-				BD8CE57D27C53F97009A2FB5 /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,8 +607,6 @@
 			files = (
 				BD9AC9B12567B86100B47F12 /* Eurostile.ttc in Resources */,
 				BD5907D12565D28A004DE941 /* Controls.storyboard in Resources */,
-				BD8CE58027C53F97009A2FB5 /* Development.xcconfig in Resources */,
-				BD8CE57A27C53F97009A2FB5 /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,8 +616,6 @@
 			files = (
 				BD9AC9B72567B86200B47F12 /* Eurostile.ttc in Resources */,
 				BDFAC2102565DDD10013844F /* Controls.storyboard in Resources */,
-				BD8CE58127C53F97009A2FB5 /* Development.xcconfig in Resources */,
-				BD8CE57B27C53F97009A2FB5 /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,12 +623,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD8CE57E27C53F97009A2FB5 /* Development.xcconfig in Resources */,
 				BDA0FC9F23C78E34005BEFD5 /* Main.storyboard in Resources */,
 				BDA0FCA023C78E34005BEFD5 /* LaunchScreen.storyboard in Resources */,
 				BDD9792B24171DF4006121A1 /* Eurostile.ttc in Resources */,
 				BDA0FC3223C73578005BEFD5 /* Assets.xcassets in Resources */,
-				BD8CE57827C53F97009A2FB5 /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,8 +634,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD8CE58227C53F97009A2FB5 /* Development.xcconfig in Resources */,
-				BD8CE57C27C53F97009A2FB5 /* Release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
