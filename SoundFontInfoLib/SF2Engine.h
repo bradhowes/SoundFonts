@@ -22,14 +22,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) int presetCount;
 
 /// @returns URL of the currently-loaded file
-@property (nonatomic, readonly) NSURL* _Nullable url;
+@property (nonatomic, readonly, nullable) NSURL* url;
+
+@property (nonatomic, readonly, nullable) NSString* shortName;
 
 /**
  Constructor.
 
- @param voiceCount the maximum number of voices that can play simultaneously
+ @param voicesCount the maximum number of voices that can play simultaneously
+ @param loggingBase the value to use as the base for creating loggers
  */
-- (instancetype)init:(int)voiceCount;
+- (instancetype)initLoggingBase:(NSString*)loggingBase voiceCount:(int)voicesCount;
 
 /**
  Set the rendering parameters prior to starting the audio unit graph.
@@ -37,7 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param format the format of the output to generate, including the sample rate
  @param maxFramesToRender the maximum number of frames to expect in a render call from CoreAudio.
  */
-- (void)setRenderingFormat:(AVAudioFormat*)format maxFramesToRender:(AUAudioFrameCount)maxFramesToRender;
+- (void)setRenderingFormat:(NSInteger)busCount format: (AVAudioFormat*)format
+         maxFramesToRender:(AUAudioFrameCount)maxFramesToRender;
 
 /**
  Notification that rendering is done.
@@ -49,8 +53,9 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param url the location of the file to load
  @param index the index of the preset to activate
+ @param shortName the name to use in the AU shortName property
  */
-- (void)load:(NSURL*)url preset:(int)index;
+- (void)load:(NSURL*)url preset:(int)index shortName:(NSString*)shortName;
 
 /**
  Set the active preset.

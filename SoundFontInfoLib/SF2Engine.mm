@@ -4,6 +4,7 @@
 #import <os/log.h>
 
 #import "SF2Engine.h"
+#import "SF2Lib/Configuration.h"
 #import "SF2Lib/IO/File.hpp"
 #import "SF2Lib/Render/Engine/Engine.hpp"
 
@@ -16,26 +17,32 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   Engine* engine_;
   File* file_;
   NSURL* url_;
+  NSString* shortName_;
 }
 
-- (instancetype)init:(int)voiceCount {
-
+- (instancetype)initLoggingBase:(NSString*)loggingBase voiceCount:(int)voicesCount {
   if (self = [super init]) {
-    self->log_ = os_log_create("SoundFonts", "SF2Engine");
+    self->log_ = os_log_create([loggingBase UTF8String], "SF2Engine");
+    loggingBase = [loggingBase stringByAppendingString:@".SF2Engine"];
     os_log_info(log_, "init");
-    self->engine_ = new Engine(44100.0, static_cast<size_t>(voiceCount), Interpolator::cubic4thOrder);
+    self->engine_ = new Engine([loggingBase UTF8String], 44100.0, static_cast<size_t>(voicesCount),
+                               Interpolator::cubic4thOrder);
     self->file_ = nullptr;
     self->url_ = nullptr;
+    self->shortName_ = nullptr;
   }
 
   return self;
 }
 
-- (NSURL* _Nullable) url { return url_; }
+- (nullable NSURL*) url { return url_; }
 
-- (void)setRenderingFormat:(AVAudioFormat*)format maxFramesToRender:(AUAudioFrameCount)maxFramesToRender {
+- (nullable NSString*) shortName { return shortName_; }
+
+- (void)setRenderingFormat:(NSInteger)busCount format:(AVAudioFormat*)format
+         maxFramesToRender:(AUAudioFrameCount)maxFramesToRender {
   os_log_info(log_, "setRenderingFormat BEGIN");
-  engine_->setRenderingFormat(3, format, maxFramesToRender);
+  engine_->setRenderingFormat(busCount, format, maxFramesToRender);
   os_log_info(log_, "setRenderingFormat END");
 }
 
@@ -45,9 +52,10 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   os_log_info(log_, "renderingStopped END");
 }
 
-- (void)load:(NSURL*)url preset:(int)index {
+- (void)load:(NSURL*)url preset:(int)index shortName:(nonnull NSString *)shortName{
   engine_->allOff();
 
+  shortName_ = shortName;
   if ([url_ isEqual:url]) {
     engine_->usePreset(static_cast<size_t>(index));
     return;
