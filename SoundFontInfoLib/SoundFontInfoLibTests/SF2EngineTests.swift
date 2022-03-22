@@ -5,39 +5,12 @@ import os.log
 import XCTest
 import SoundFontInfoLib
 import SF2Files
-
 import Foundation
 import AudioToolbox
 import CoreAudio
 import AVFoundation
 import GameKit
-
-extension FourCharCode: ExpressibleByStringLiteral {
-
-  public init(stringLiteral value: StringLiteralType) {
-    var code: FourCharCode = 0
-    // Value has to consist of 4 printable ASCII characters, e.g. '420v'.
-    // Note: This implementation does not enforce printable range (32-126)
-    if value.count == 4 && value.utf8.count == 4 {
-      for byte in value.utf8 {
-        code = code << 8 + FourCharCode(byte)
-      }
-    } else {
-      os_log(
-        .error,
-        "FourCharCode: Can't initialize with '%s', only printable ASCII allowed. Setting to '????'.",
-        value)
-      code = 0x3F3F_3F3F  // = '????'
-    }
-    self = code
-  }
-
-  public init(extendedGraphemeClusterLiteral value: String) {
-    self = FourCharCode(stringLiteral: value)
-  }
-  public init(unicodeScalarLiteral value: String) { self = FourCharCode(stringLiteral: value) }
-  public init(_ value: String) { self = FourCharCode(stringLiteral: value) }
-}
+import AUv3Support
 
 class SF2EngineTests: XCTestCase {
 
@@ -123,10 +96,17 @@ class SF2EngineTests: XCTestCase {
     synth.engine.note(on: 67, velocity: 64)
 
     let dryBufferList = dryBuffer.mutableAudioBufferList
+    var buffers = UnsafeMutableAudioBufferListPointer(dryBufferList)
+    var leftBuffer = buffers[0]
+    var leftPtr = UnsafeMutableBufferPointer<AUValue>(leftBuffer)
+    var rightBuffer = buffers[1]
+    var rightPtr = UnsafeMutableBufferPointer<AUValue>(rightBuffer)
+    vDSP_vclr(leftPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+    vDSP_vclr(rightPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+
     var status = renderProc(&flags, &timestamp, maxFrameCount, 0, dryBufferList, nil, nil)
     XCTAssertEqual(status, 0)
 
-    var buffers = UnsafeMutableAudioBufferListPointer(dryBufferList)
     XCTAssertEqual(2, buffers.count)
     var left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
@@ -140,9 +120,16 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(0.04329596, samples.last)
 
     let chorusSendBufferList = chorusSendBuffer.mutableAudioBufferList
+    buffers = UnsafeMutableAudioBufferListPointer(chorusSendBufferList)
+    leftBuffer = buffers[0]
+    leftPtr = UnsafeMutableBufferPointer<AUValue>(leftBuffer)
+    rightBuffer = buffers[1]
+    rightPtr = UnsafeMutableBufferPointer<AUValue>(rightBuffer)
+    vDSP_vclr(leftPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+    vDSP_vclr(rightPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+
     status = renderProc(&flags, &timestamp, maxFrameCount, 1, chorusSendBufferList, nil, nil)
     XCTAssertEqual(status, 0)
-    buffers = UnsafeMutableAudioBufferListPointer(chorusSendBufferList)
     XCTAssertEqual(2, buffers.count)
     left = buffers[0]
     XCTAssertEqual(2048, AUAudioFrameCount(left.mDataByteSize))
@@ -156,6 +143,14 @@ class SF2EngineTests: XCTestCase {
     XCTAssertEqual(0.03206016, samples.last)
 
     let reverbSendBufferList = reverbSendBuffer.mutableAudioBufferList
+    buffers = UnsafeMutableAudioBufferListPointer(reverbSendBufferList)
+    leftBuffer = buffers[0]
+    leftPtr = UnsafeMutableBufferPointer<AUValue>(leftBuffer)
+    rightBuffer = buffers[1]
+    rightPtr = UnsafeMutableBufferPointer<AUValue>(rightBuffer)
+    vDSP_vclr(leftPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+    vDSP_vclr(rightPtr.baseAddress!, 1, vDSP_Length(maxFrameCount))
+
     status = renderProc(&flags, &timestamp, maxFrameCount, 2, reverbSendBufferList, nil, nil)
     XCTAssertEqual(status, 0)
     buffers = UnsafeMutableAudioBufferListPointer(reverbSendBufferList)
@@ -202,18 +197,12 @@ class SF2EngineTests: XCTestCase {
 
     let dryBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount)!
     let dryBufferList = dryBuffer.mutableAudioBufferList
-    let buffers = UnsafeMutableAudioBufferListPointer(dryBufferList)
-    let leftBuffer = buffers[0]
-    let leftPtr = UnsafeMutableBufferPointer<AUValue>(leftBuffer)
-    let rightBuffer = buffers[1]
-    let rightPtr = UnsafeMutableBufferPointer<AUValue>(rightBuffer)
 
-    var frameIndex = 0;
+    var frameIndex = 0
     let renderUntil = { (until: Int) in
       while frameIndex < until {
         frameIndex += 1
-        vDSP_vclr(leftPtr.baseAddress!, 1, 512)
-        vDSP_vclr(rightPtr.baseAddress!, 1, 512)
+        dryBuffer.zeros()
         let status = renderProc(&flags, &timestamp, frameCount, 0, dryBufferList, nil, nil)
         if status == 0 {
           dryBuffer.frameLength = frameCount
@@ -236,9 +225,9 @@ class SF2EngineTests: XCTestCase {
         synth.engine.noteOff(note2)
         synth.engine.noteOff(note3)
       }
-      noteOnFrame += noteOnDuration;
-      noteOffFrame += noteOnDuration;
-    };
+      noteOnFrame += noteOnDuration
+      noteOffFrame += noteOnDuration
+    }
 
     playChord(60, 64, 67, false)
     playChord(60, 65, 69, false)
@@ -249,8 +238,7 @@ class SF2EngineTests: XCTestCase {
     renderUntil(Int(frames))
 
     if remaining > 0 {
-      vDSP_vclr(leftPtr.baseAddress!, 1, 512)
-      vDSP_vclr(rightPtr.baseAddress!, 1, 512)
+      dryBuffer.zeros()
       let status = renderProc(&flags, &timestamp, remaining, 0, dryBufferList, nil, nil)
       if status == 0 {
         dryBuffer.frameLength = remaining
@@ -296,39 +284,5 @@ extension SF2EngineTests: AVAudioPlayerDelegate {
 
   func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
     playFinishedExpectation!.fulfill()
-  }
-}
-
-extension AVAudioPCMBuffer {
-
-  func append(_ buffer: AVAudioPCMBuffer) { append(buffer, startingFrame: 0, frameCount: buffer.frameLength) }
-
-  func append(_ buffer: AVAudioPCMBuffer, startingFrame: AVAudioFramePosition, frameCount: AVAudioFrameCount) {
-    precondition(format == buffer.format, "Format mismatch")
-    precondition(startingFrame + AVAudioFramePosition(frameCount) <= AVAudioFramePosition(buffer.frameLength),
-                 "Insufficient audio in buffer")
-    precondition(frameLength + frameCount <= frameCapacity, "Insufficient space in buffer")
-
-    let src = UnsafeMutableAudioBufferListPointer(buffer.mutableAudioBufferList)
-    let srcLeft = src[0]
-    let srcLeftPtr = UnsafeMutableBufferPointer<AUValue>(srcLeft)
-    let srcRight = src[1]
-    let srcRightPtr = UnsafeMutableBufferPointer<AUValue>(srcRight)
-
-    let dest = UnsafeMutableAudioBufferListPointer(self.mutableAudioBufferList)
-    let destLeft = dest[0]
-    let destLeftPtr = UnsafeMutableBufferPointer<AUValue>(destLeft)
-    let destRight = dest[1]
-    let destRightPtr = UnsafeMutableBufferPointer<AUValue>(destRight)
-
-    memcpy(destLeftPtr.baseAddress!.advanced(by: Int(frameLength)),
-           srcLeftPtr.baseAddress,
-           Int(frameCount) * stride * MemoryLayout<Float>.size)
-
-    memcpy(destRightPtr.baseAddress!.advanced(by: Int(frameLength)),
-           srcRightPtr.baseAddress,
-           Int(frameCount) * stride * MemoryLayout<Float>.size)
-
-    frameLength += frameCount
   }
 }
