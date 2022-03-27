@@ -17,7 +17,6 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   Engine* engine_;
   File* file_;
   NSURL* url_;
-  NSString* shortName_;
 }
 
 - (instancetype)initLoggingBase:(NSString*)loggingBase voiceCount:(int)voicesCount {
@@ -29,15 +28,14 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
                                Interpolator::cubic4thOrder);
     self->file_ = nullptr;
     self->url_ = nullptr;
-    self->shortName_ = nullptr;
   }
 
   return self;
 }
 
-- (nullable NSURL*) url { return url_; }
+- (nullable NSURL*)url { return url_; }
 
-- (nullable NSString*) shortName { return shortName_; }
+- (NSString*)presetName { return [NSString stringWithUTF8String:engine_->activePresetName().c_str()]; }
 
 - (void)setRenderingFormat:(NSInteger)busCount format:(AVAudioFormat*)format
          maxFramesToRender:(AUAudioFrameCount)maxFramesToRender {
@@ -52,24 +50,23 @@ using Interpolator = SF2::Render::Voice::Sample::Generator::Interpolator;
   os_log_info(log_, "renderingStopped END");
 }
 
-- (void)load:(NSURL*)url preset:(int)index shortName:(nonnull NSString *)shortName{
+- (void)load:(NSURL*)url {
   engine_->allOff();
-
-  shortName_ = shortName;
-  if ([url_ isEqual:url]) {
-    engine_->usePreset(static_cast<size_t>(index));
-    return;
-  }
+  if ([url_ isEqual:url]) return;
 
   url_ = url;
   auto oldFile = file_;
   file_ = new File([[url path] UTF8String]);
-  engine_->load(*file_, static_cast<size_t>(index));
+  engine_->load(*file_, 0);
   delete oldFile;
 }
 
+- (void)selectPreset:(int)index {
+  engine_->usePreset(size_t(index));
+}
+
 - (void)selectBank:(int)bank program:(int)program {
-  // engine_->usePreset(static_cast<size_t>(preset));
+  engine_->usePreset(bank, program);
 }
 
 - (int)presetCount { return static_cast<int>(engine_->presetCount()); }

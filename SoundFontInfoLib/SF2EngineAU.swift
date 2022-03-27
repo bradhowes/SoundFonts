@@ -22,9 +22,11 @@ public final class SF2EngineAU: AUAudioUnit {
   private var chorusSendBus: AUAudioUnitBus!
   private var reverbSendBus: AUAudioUnitBus!
 
+  // We have no inputs
   private lazy var _inputBusses: AUAudioUnitBusArray =
   AUAudioUnitBusArray(audioUnit: self, busType: .input, busses: [])
 
+  // We have three outputs -- dry, chorus, reverb
   private lazy var _outputBusses: AUAudioUnitBusArray =
   AUAudioUnitBusArray(audioUnit: self, busType: .output, busses: [dryBus!, chorusSendBus!, reverbSendBus!])
 
@@ -60,9 +62,7 @@ public final class SF2EngineAU: AUAudioUnit {
       throw error
     }
 
-    let sampleRate = 44100.0
-    guard let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: sampleRate, channels: 2,
-                                     interleaved: false) else {
+    guard let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2) else {
       throw Failure.invalidFormat
     }
 
@@ -81,7 +81,7 @@ extension SF2EngineAU {
   private func createBus(name: String, format: AVAudioFormat) throws -> AUAudioUnitBus {
     do {
       let bus = try AUAudioUnitBus(format: format)
-      bus.name = "reverbSend"
+      bus.name = name
       return bus
     } catch {
       os_log(.error, log: log, "failed to create %{public}s bus - %{public}s", error.localizedDescription)
@@ -90,8 +90,8 @@ extension SF2EngineAU {
   }
 
   private func updateShortName() {
-    let presetName = engine.shortName ?? "---"
-    self.audioUnitShortName = "\(presetName)"
+    let presetName = engine.presetName.trimmingCharacters(in: .whitespaces)
+    self.audioUnitShortName = presetName.isEmpty ? "----" : presetName
   }
 }
 
@@ -149,6 +149,16 @@ extension SF2EngineAU {
   public override func deallocateRenderResources() {
     os_log(.debug, log: log, "deallocateRenderResources")
     super.deallocateRenderResources()
+  }
+
+  // We do not process input
+  public override var canPerformInput: Bool { false }
+
+  // We do generate output
+  public override var canPerformOutput: Bool { true }
+
+  public override var internalRenderBlock: AUInternalRenderBlock {
+    return engine.internalRenderBlock()
   }
 }
 
@@ -313,12 +323,5 @@ extension SF2EngineAU {
         }
       }
     }
-  }
-
-  public override var canPerformInput: Bool { false }
-  public override var canPerformOutput: Bool { true }
-
-  public override var internalRenderBlock: AUInternalRenderBlock {
-    return engine.internalRenderBlock()
   }
 }

@@ -24,7 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @returns URL of the currently-loaded file
 @property (nonatomic, readonly, nullable) NSURL* url;
 
-@property (nonatomic, readonly, nullable) NSString* shortName;
+/// @returns the name of the current preset
+@property (nonatomic, readonly) NSString* presetName;
 
 /**
  Constructor.
@@ -49,13 +50,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)renderingStopped;
 
 /**
- Load a soundfont file activate a preset in it. If the URL is the same as the last load, just change to a new preset.
+ Load a soundfont file.
 
  @param url the location of the file to load
- @param index the index of the preset to activate
- @param shortName the name to use in the AU shortName property
  */
-- (void)load:(NSURL*)url preset:(int)index shortName:(NSString*)shortName;
+- (void)load:(NSURL*)url;
+
+/**
+ Set the active preset.
+
+ @param index the index of the preset to use
+ */
+- (void)selectPreset:(int)index;
 
 /**
  Set the active preset.
@@ -65,12 +71,27 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)selectBank:(int)bank program:(int)program;
 
+/**
+ Stop playing all notes
+ */
 - (void)allOff;
 
+/**
+ Stop playing the given MIDI key
+
+ @param key the MIDI key to stop
+ */
 - (void)noteOff:(int)key;
 
+/**
+ Start playing the given MIDI key
+
+ @param key the MIDI key to play
+ @param velocity the velocity to apply to the note
+ */
 - (void)noteOn:(int)key velocity:(int)velocity;
 
+/// @returns the internal render block used to generate samples
 - (AUInternalRenderBlock)internalRenderBlock;
 
 @end

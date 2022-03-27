@@ -26,38 +26,39 @@ class SF2EngineTests: XCTestCase {
 
   func testLoadingUrls() {
     let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
-    engine.load(urls[0], preset: 0, shortName: "Piano")
+    engine.load(urls[0])
     XCTAssertEqual(189, engine.presetCount)
 
-    engine.load(urls[1], preset: 0, shortName: "Piano")
+    engine.load(urls[1])
     XCTAssertEqual(235, engine.presetCount)
 
-    engine.load(urls[2], preset: 0, shortName: "Piano")
+    engine.load(urls[2])
     XCTAssertEqual(270, engine.presetCount)
 
-    engine.load(urls[3], preset: 0, shortName: "Piano")
+    engine.load(urls[3])
     XCTAssertEqual(1, engine.presetCount)
   }
 
   func testLoadingAllPresets() {
     let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
-    engine.load(urls[2], preset: 0, shortName: "Piano")
+    engine.load(urls[2])
     XCTAssertEqual(270, engine.presetCount)
     for preset in 1..<engine.presetCount {
-      engine.load(urls[2], preset: preset, shortName: "Whatever")
+      engine.selectPreset(preset)
     }
   }
 
   func testLoadingTimes() {
     measure {
       let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
-      engine.load(urls[2], preset: 0, shortName: "Piano")
+      engine.load(urls[2])
     }
   }
 
   func testNoteOn() {
     let engine = SF2Engine(loggingBase: "SF2Engine", voiceCount: 32)
-    engine.load(urls[2], preset: 0, shortName: "Piano")
+    engine.load(urls[2])
+    engine.selectPreset(0)
     engine.note(on: 69, velocity: 64)
     XCTAssertEqual(1, engine.activeVoiceCount)
     engine.note(on: 69, velocity: 64)
@@ -80,7 +81,8 @@ class SF2EngineTests: XCTestCase {
     let maxFrameCount = AUAudioFrameCount(512)
 
     let synth = try SF2EngineAU.init(componentDescription: acd, options: [])
-    synth.engine.load(urls[0], preset: 0, shortName: "Piano")
+    synth.engine.load(urls[0])
+    synth.engine.selectPreset(0)
     try synth.allocateRenderResources()
     let renderProc = synth.internalRenderBlock
 
@@ -179,7 +181,8 @@ class SF2EngineTests: XCTestCase {
     let frameCount = AUAudioFrameCount(512)
 
     let synth = try SF2EngineAU.init(componentDescription: acd, options: [])
-    synth.engine.load(urls[0], preset: 0, shortName: "Piano")
+    synth.engine.load(urls[0])
+    synth.engine.selectPreset(0)
     try synth.allocateRenderResources()
     let renderProc = synth.internalRenderBlock
 
