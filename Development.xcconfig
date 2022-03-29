@@ -14,10 +14,13 @@ DELAY_NOTIFICATIONS = -DDELAY_NOTIFICATIONS
 PLAY_AUDIO = -DPLAY_AUDIO
 
 // All of the flags above. To disable one, just prepend an 'x' to its name.
-DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(PLAY_AUDIO)
+DEBUG_FLAGS = $(xTEST_MEDIA_SERVICES_RESTART) $(xSHOW_INDEX_PATHS) $(xDELAY_NOTIFICATIONS) $(xPLAY_AUDIO)
 
 NAME_SUFFIX = Dev
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = $(inherited)
 OTHER_SWIFT_FLAGS = $(inherited) -DDev $(DEBUG_FLAGS)
+
+EXTRA_CPP = -pedantic -Wmissing-braces -Wparentheses -Wswitch -Wcompletion-handler -Wunused-function -Wunused-label -Wunused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wno-unknown-pragmas -Wuninitialized -Wconditional-uninitialized -Wconversion -Wconstant-conversion -Wassign-enum -Wsign-compare -Wint-conversion -Wbool-conversion -Wenum-conversion -Wfloat-conversion -Wshorten-64-to-32 -Wsign-conversion -Wmove -Wcomma -Wno-newline-eof
+
 OTHER_CPLUSPLUSFLAGS = $(inherited) $(DEBUG_FLAGS)

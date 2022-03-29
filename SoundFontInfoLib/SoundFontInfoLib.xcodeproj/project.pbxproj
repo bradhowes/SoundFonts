@@ -479,6 +479,11 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.23.6;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"$(DEBUG_FLAGS)",
+					"$(EXTRA_CPP)",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.braysoftware.SoundFontInfoLib;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

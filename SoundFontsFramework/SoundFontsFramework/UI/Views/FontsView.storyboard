@@ -15,7 +15,7 @@
                 <viewControllerPlaceholder storyboardName="TagsEditor" id="h1D-gp-zxw" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UQ1-vQ-Wde" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="-1553"/>
+            <point key="canvasLocation" x="192" y="-1498"/>
         </scene>
         <!--SoundFontsController-->
         <scene sceneID="3Rz-C9-6PO">
@@ -131,7 +131,7 @@
                 <viewControllerPlaceholder storyboardName="PresetsTableView" id="nUO-8a-gh3" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Edt-3o-dfZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="795" y="-1905"/>
+            <point key="canvasLocation" x="782" y="-1937"/>
         </scene>
         <!--TagsTableView-->
         <scene sceneID="1uW-i3-Bcu">
@@ -139,7 +139,7 @@
                 <viewControllerPlaceholder storyboardName="TagsTableView" id="C3B-oK-W1M" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKi-AO-cPw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="805" y="-1765"/>
+            <point key="canvasLocation" x="769" y="-1904"/>
         </scene>
         <!--FontsTableView-->
         <scene sceneID="k0R-ek-KO9">
@@ -147,7 +147,7 @@
                 <viewControllerPlaceholder storyboardName="FontsTableView" id="QLD-lL-QQd" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c93-dz-t8V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="753" y="-2044"/>
+            <point key="canvasLocation" x="773" y="-1971"/>
         </scene>
         <!--FontEditor-->
         <scene sceneID="NwP-pY-F46">
@@ -155,7 +155,7 @@
                 <viewControllerPlaceholder storyboardName="FontEditor" id="Fc4-Sm-RhE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="phu-KX-vTt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="704" y="-2163"/>
+            <point key="canvasLocation" x="-41" y="-1498"/>
         </scene>
     </scenes>
     <resources>
