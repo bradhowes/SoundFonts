@@ -5,8 +5,10 @@ import os
 
 /// Manages the view of Favorite items. Users can choose a Favorite by tapping it in order to apply the Favorite
 /// settings. The user may long-touch on a Favorite to move it around. Double-tapping on it will open the editor.
-public final class FavoritesViewController: UIViewController, FavoritesViewManager, Tasking {
+public final class FavoritesViewController: UIViewController, FavoritesViewManager {
   private lazy var log = Logging.logger("FavoritesViewController")
+  private let serialQueue = DispatchQueue(label: "FavoritesViewController", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .main)
 
   @IBOutlet private var favoritesView: UICollectionView!
   @IBOutlet private var longPressGestureRecognizer: UILongPressGestureRecognizer!
@@ -98,11 +100,11 @@ extension FavoritesViewController: ControllerConfiguration {
     case let .change(old: old, new: new, playSample: _):
       if case let .favorite(oldFaveKey, _) = old, let favorite = favorites.getBy(key: oldFaveKey) {
         os_log(.debug, log: log, "updating previous favorite cell")
-        Self.onMain { self.updateCell(with: favorite) }
+        serialQueue.async { self.updateCell(with: favorite) }
       }
       if case let .favorite(newFaveKey, _) = new, let favorite = favorites.getBy(key: newFaveKey) {
         os_log(.debug, log: log, "updating new favorite cell")
-        Self.onMain { self.updateCell(with: favorite) }
+        serialQueue.async { self.updateCell(with: favorite) }
       }
     }
   }
@@ -111,19 +113,19 @@ extension FavoritesViewController: ControllerConfiguration {
     os_log(.debug, log: log, "favoritesChanged")
     switch event {
     case let .added(index: index, favorite: favorite):
-      Self.onMain { self.handleFavoriteAdded(index: index, favorite: favorite) }
+      serialQueue.async { self.handleFavoriteAdded(index: index, favorite: favorite) }
     case let .selected(index: _, favorite: favorite):
-      Self.onMain { self.activePresetManager.setActive(favorite: favorite, playSample: true) }
+      serialQueue.async { self.activePresetManager.setActive(favorite: favorite, playSample: true) }
     case let .beginEdit(config: config):
-      Self.onMain { self.showEditor(config: config) }
+      serialQueue.async { self.showEditor(config: config) }
     case let .changed(index: _, favorite: favorite):
-      Self.onMain { self.updateCell(with: favorite) }
+      serialQueue.async { self.updateCell(with: favorite) }
     case let .removed(index: index, favorite: _):
-      Self.onMain { self.handleFavoriteRemoved(index: index) }
+      serialQueue.async { self.handleFavoriteRemoved(index: index) }
     case .removedAll:
-      Self.onMain { self.favoritesView.reloadData() }
+      serialQueue.async { self.favoritesView.reloadData() }
     case .restored:
-      Self.onMain { self.checkIfRestored() }
+      serialQueue.async { self.checkIfRestored() }
     }
   }
 
@@ -148,14 +150,14 @@ extension FavoritesViewController: ControllerConfiguration {
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     switch event {
-    case .restored: Self.onMain { self.checkIfRestored() }
+    case .restored: serialQueue.async { self.checkIfRestored() }
     default: break
     }
   }
 
   private func tagsChanged_BT(_ event: TagsEvent) {
     switch event {
-    case .restored: Self.onMain { self.checkIfRestored() }
+    case .restored: serialQueue.async { self.checkIfRestored() }
     default: break
     }
   }

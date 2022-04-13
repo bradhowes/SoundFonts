@@ -5,7 +5,7 @@ import os
 
 /// Manager of the strip informational strip between the keyboard and the SoundFont presets / favorites screens. Supports
 /// left/right swipes to switch the upper view, and two-finger left/right pan to adjust the keyboard range.
-public final class InfoBarController: UIViewController, Tasking {
+public final class InfoBarController: UIViewController {
   private lazy var log = Logging.logger("InfoBarController")
 
   @IBOutlet private weak var status: UILabel!
@@ -346,18 +346,18 @@ extension InfoBarController {
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     if case .restored = event {
-      Self.onMain { self.showActivePreset() }
+      DispatchQueue.main.async { self.showActivePreset() }
     }
   }
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     if case .change = event {
-      Self.onMain { self.showActivePreset() }
+      DispatchQueue.main.async { self.showActivePreset() }
     }
   }
 
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
-    Self.onMain { self.showActivePreset() }
+    DispatchQueue.main.async { self.showActivePreset() }
   }
 
   private func showActivePreset() {

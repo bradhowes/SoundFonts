@@ -6,7 +6,7 @@ import os
 /// Controller for the keyboard view. Creates the individual Key views and handles touch event detection within them.
 /// The controller creates an entire 108 keyboard which it then shows only a part of on the screen. The keyboard can
 /// be shifted up/down by octaves or by sliding via touch (if enabled).
-final class KeyboardController: UIViewController, Tasking {
+final class KeyboardController: UIViewController {
   private lazy var log = Logging.logger("KeyCon")
 
   private var settings: Settings!
@@ -128,7 +128,7 @@ extension KeyboardController: ControllerConfiguration {
     switch event {
     case .change:
       if let presetConfig = activePresetManager.activePresetConfig {
-        Self.onMain { self.updateWith(presetConfig: presetConfig) }
+        DispatchQueue.main.async { self.updateWith(presetConfig: presetConfig) }
       }
     }
   }
@@ -136,9 +136,9 @@ extension KeyboardController: ControllerConfiguration {
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
     switch event {
     case let .changed(index: _, favorite: favorite):
-      Self.onMain { self.handleFavoriteChanged(favorite: favorite) }
+      DispatchQueue.main.async { self.handleFavoriteChanged(favorite: favorite) }
     case let .selected(index: _, favorite: favorite):
-      Self.onMain { self.updateWith(presetConfig: favorite.presetConfig) }
+      DispatchQueue.main.async { self.updateWith(presetConfig: favorite.presetConfig) }
     case .added: break
     case .beginEdit: break
     case .removed: break
@@ -238,7 +238,7 @@ extension KeyboardController: Keyboard {
   func noteIsOn(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
-    Self.onMain {
+    DispatchQueue.main.async {
       key.pressed = true
       self.updateInfoBar(note: key.note)
     }
@@ -252,7 +252,7 @@ extension KeyboardController: Keyboard {
   func noteIsOff(note: UInt8) {
     guard note < allKeys.count else { return }
     let key = allKeys[Int(note)]
-    Self.onMain { key.pressed = false }
+    DispatchQueue.main.async { key.pressed = false }
   }
 
   /// The current lowest MIDI note of the keyboard (mutable)
@@ -270,7 +270,7 @@ extension KeyboardController: Keyboard {
   func releaseAllKeys() {
     os_log(.debug, log: self.log, "releaseAllKeys BEGIN")
     touchedKeys.releaseAll()
-    Self.onMain { self.allKeys.forEach { $0.pressed = false } }
+    DispatchQueue.main.async { self.allKeys.forEach { $0.pressed = false } }
     os_log(.debug, log: self.log, "releaseAllKeys END")
   }
 }

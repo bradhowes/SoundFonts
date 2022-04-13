@@ -472,10 +472,10 @@ extension SettingsViewController: SegueHandler {
   }
 }
 
-extension SettingsViewController: MIDIMonitor, Tasking {
+extension SettingsViewController: MIDIMonitor {
 
   public func seen(uniqueId: MIDIUniqueID, channel: Int) {
-    Self.onMain {
+    DispatchQueue.main.async {
       MIDIDevicesTableViewController.midiSeenLayerChange(self.midiConnections.layer)
     }
   }

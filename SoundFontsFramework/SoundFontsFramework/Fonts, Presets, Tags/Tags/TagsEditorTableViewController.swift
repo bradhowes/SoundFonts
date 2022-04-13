@@ -340,7 +340,7 @@ extension TagsEditorTableViewController {
   }
 }
 
-extension TagsEditorTableViewController: Tasking {
+extension TagsEditorTableViewController {
 
   private func update(cell: TableCell, indexPath: IndexPath) -> TableCell {
     let tag = tags.getBy(index: indexPath.row)
@@ -353,7 +353,7 @@ extension TagsEditorTableViewController: Tasking {
       cell.tagEditor.isEnabled = true
       cell.tagEditor.delegate = self
       cell.tagEditor.text = tag.name
-      Self.onMain {
+      DispatchQueue.main.async {
         cell.tagEditor.becomeFirstResponder()
         if selected {
           cell.tagEditor.selectAll(nil)

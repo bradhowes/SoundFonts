@@ -5,7 +5,7 @@ import os
 
 /// Typed notification definition. Template argument defines the type of a value that will be transmitted in the
 /// notification userInfo["value"] slot. This value will be available to blocks registered to receive it
-open class TypedNotification<ValueType: CustomStringConvertible>: Tasking {
+open class TypedNotification<ValueType: CustomStringConvertible> {
   private let log = Logging.logger("TypedNotification")
 
   /// The name of the notification
@@ -52,7 +52,7 @@ open class TypedNotification<ValueType: CustomStringConvertible>: Tasking {
    - returns: a NotificationObserver instance that records the registration.
    */
   open func registerOnMain(block: @escaping (ValueType) -> Void) -> NotificationObserver {
-    NotificationObserver(notification: self) { arg in Self.onMain { block(arg) } }
+    NotificationObserver(notification: self) { arg in DispatchQueue.main.async { block(arg) } }
   }
 }
 

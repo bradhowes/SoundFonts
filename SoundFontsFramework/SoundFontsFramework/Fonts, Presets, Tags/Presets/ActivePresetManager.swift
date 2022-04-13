@@ -26,7 +26,7 @@ public enum ActivePresetEvent: CustomStringConvertible {
  Maintains the active SoundFont preset being used for sound generation. When it changes, it sends an ActivePresetEvent
  event to its subscribers.s
  */
-public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent>, Tasking {
+public final class ActivePresetManager: SubscriptionManager<ActivePresetEvent> {
 
   public enum State: Equatable {
     case starting
@@ -247,13 +247,13 @@ extension ActivePresetManager {
 
   private func favoritesChanged_BT(_ event: FavoritesEvent) {
     if case .restored = event {
-      Self.onMain { self.updateState() }
+      DispatchQueue.main.async { self.updateState() }
     }
   }
 
   private func soundFontsChanged_BT(_ event: SoundFontsEvent) {
     if case .restored = event {
-      Self.onMain { self.updateState() }
+      DispatchQueue.main.async { self.updateState() }
     }
   }
 

@@ -8,9 +8,6 @@ import os.log
  to be done through a ConsolidatedConfigFileObserver which will run a closure when the configuration value changes.
  */
 public final class ConsolidatedConfigProvider: NSObject {
-  private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
-                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInitiated))
-
   private let log: OSLog
   private var _config: ConsolidatedConfig?
   private var document: ConsolidatedConfigFileDocument?
@@ -25,8 +22,8 @@ public final class ConsolidatedConfigProvider: NSObject {
   /// The value that comes from the document. Access to it is serialized via the `accessQueue` so it should be safe to
   /// access it from any thread.
   @objc dynamic public var config: ConsolidatedConfig? {
-    get { accessQueue.sync { self._config } }
-    set { accessQueue.sync { self._config = newValue } }
+    get { self._config }
+    set { DispatchQueue.main.async { self._config = newValue } }
   }
 
   /**
@@ -88,10 +85,10 @@ public final class ConsolidatedConfigProvider: NSObject {
   }
 
   private func handleOpenFailure(_ document: ConsolidatedConfigFileDocument) {
-    os_log(.error, log: self.log, "handleOpenFailure BEGIN")
+    os_log(.info, log: self.log, "handleOpenFailure BEGIN")
     document.attemptLegacyLoad { ok in
       if ok {
-        os_log(.error, log: self.log, "handleOpenFailure - using document")
+        os_log(.info, log: self.log, "handleOpenFailure - using document")
         self.useDocument(document)
       } else {
         os_log(.error, log: self.log, "handleOpenFailure - failed to get initial content")
@@ -102,7 +99,7 @@ public final class ConsolidatedConfigProvider: NSObject {
   }
 
   private func useDocument(_ document: ConsolidatedConfigFileDocument) {
-    os_log(.error, log: self.log, "useDocument BEGIN")
+    os_log(.info, log: self.log, "useDocument BEGIN")
     self.document = document
     NotificationCenter.default.addObserver(self, selector: #selector(self.processStateChange(_:)),
                                            name: UIDocument.stateChangedNotification, object: document)
@@ -114,9 +111,11 @@ public final class ConsolidatedConfigProvider: NSObject {
 
     if let contents = document.contents {
       self.config = contents
+    } else {
+      self.config = nil
     }
 
-    os_log(.error, log: self.log, "useDocument END")
+    os_log(.info, log: self.log, "useDocument END")
   }
 }
 
@@ -200,6 +199,7 @@ private extension ConsolidatedConfigProvider {
 
     self.documentObserver = nil
     self.document = nil
+    self.config = nil
 
     if document.hasUnsavedChanges {
       document.save(to: document.fileURL, for: .forOverwriting) { ok in

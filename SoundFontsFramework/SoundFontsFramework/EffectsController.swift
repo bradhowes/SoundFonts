@@ -6,7 +6,7 @@ import os
 
 /// View controller for the effects controls view. Much of this functionality is duplicated in the AUv3 effects
 /// components. Should be refactored and shared between the two.
-public final class EffectsController: UIViewController, Tasking {
+public final class EffectsController: UIViewController {
   private lazy var log = Logging.logger("EffectsController")
 
   @IBOutlet weak var scrollView: UIScrollView!
@@ -426,7 +426,7 @@ extension EffectsController {
   private func routerChange_BT(_ event: ComponentContainerEvent) {
     switch event {
     case .samplerAvailable(let sampler):
-      Self.onMain {
+      DispatchQueue.main.async {
         self.sampler = sampler
         self.updateState()
       }
@@ -435,7 +435,7 @@ extension EffectsController {
 
   private func activePresetChanged_BT(_ event: ActivePresetEvent) {
     guard case .change = event else { return }
-    Self.onMain { self.updateState() }
+    DispatchQueue.main.async { self.updateState() }
   }
 
   private func updateState() {

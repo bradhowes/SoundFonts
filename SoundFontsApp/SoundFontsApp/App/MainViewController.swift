@@ -10,7 +10,7 @@ import os
  touched. It also starts the audio engine when the application becomes active, and stops it when the application goes
  to the background or stops being active.
  */
-final class MainViewController: UIViewController, Tasking {
+final class MainViewController: UIViewController {
   private lazy var log = Logging.logger("MainViewController")
 
   private weak var router: ComponentContainer?
@@ -118,7 +118,7 @@ extension MainViewController {
       return
     }
 
-    Self.onBackground { self.startAudioBackground_BT(sampler) }
+    DispatchQueue.global(qos: .userInitiated).async { self.startAudioBackground_BT(sampler) }
     os_log(.debug, log: log, "startAudio END")
   }
 
@@ -240,7 +240,7 @@ extension MainViewController: ControllerConfiguration {
     os_log(.debug, log: log, "startAudioBackground_BT - starting sampler")
     let result = sampler.start()
 
-    Self.onMain { self.finishStart(result) }
+    DispatchQueue.main.async { self.finishStart(result) }
     os_log(.debug, log: log, "startAudioBackground_BT END")
   }
 
@@ -349,9 +349,7 @@ extension MainViewController: ControllerConfiguration {
   }
 
   private func postAlert_BT(for what: SamplerStartFailure) {
-    Self.onMain {
-      NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what))
-    }
+    DispatchQueue.main.async { NotificationCenter.default.post(Notification(name: .samplerStartFailure, object: what)) }
   }
 
   private func setupAudioSessionNotifications_BT() {

@@ -40,7 +40,6 @@ public final class SoundFontsViewController: UIViewController {
 
   public let swipeLeft = UISwipeGestureRecognizer()
   public let swipeRight = UISwipeGestureRecognizer()
-
 }
 
 extension SoundFontsViewController {
@@ -126,7 +125,7 @@ extension SoundFontsViewController {
 
 extension SoundFontsViewController {
 
-  private func addSoundFont(_ button: AnyObject) {
+  private func showSoundFontPicker(_ button: AnyObject) {
     let documentPicker = UIDocumentPickerViewController(
       documentTypes: ["com.braysoftware.sf2", "com.soundblaster.soundfont"],
       in: settings.copyFilesWhenAdding ? .import : .open)
@@ -202,7 +201,7 @@ extension SoundFontsViewController: ControllerConfiguration {
     let multiplier = settings.presetsWidthMultiplier
     presetsWidthConstraint = presetsWidthConstraint.setMultiplier(CGFloat(multiplier))
 
-    router.infoBar.addEventClosure(.addSoundFont, self.addSoundFont)
+    router.infoBar.addEventClosure(.addSoundFont, self.showSoundFontPicker(_:))
 
     tagsVisibilityManager = .init(tagsBottonConstraint: tagsBottomConstraint,
                                   tagsViewHeightConstrain: tagsViewHeightConstraint,
@@ -222,7 +221,9 @@ extension SoundFontsViewController: FontsViewManager {
   }
 
   public func addSoundFonts(urls: [URL]) {
+    os_log(.info, log: log, "addSoundFonts - BEGIN %{public}s", String.pointer(self))
     guard !urls.isEmpty else { return }
+
     var ok = [String]()
     var failures = [SoundFontFileLoadFailure]()
     for each in urls {

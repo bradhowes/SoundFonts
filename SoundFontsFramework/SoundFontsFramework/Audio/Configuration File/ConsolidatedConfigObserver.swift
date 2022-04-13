@@ -5,7 +5,7 @@ import Foundation
 /**
  Watches for changes to the `config` value from a `ConsolidatedConfigProvider` instance.
  */
-public struct ConsolidatedConfigObserver: Tasking {
+public struct ConsolidatedConfigObserver {
 
   private let configProvider: ConsolidatedConfigProvider
 
@@ -41,14 +41,7 @@ public struct ConsolidatedConfigObserver: Tasking {
    */
   public init(configProvider: ConsolidatedConfigProvider, restored closure: @escaping () -> Void) {
     self.configProvider = configProvider
-    self.configProviderObserver = configProvider.observe(\.config) { _, _ in Self.onMain { closure() } }
-
-    // Handle race where `config` is already loaded
-    if isRestored {
-      Self.onMain {
-        closure()
-      }
-    }
+    self.configProviderObserver = configProvider.observe(\.config) { _, _ in closure() }
   }
 
   /**

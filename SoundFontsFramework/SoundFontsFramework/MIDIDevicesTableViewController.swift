@@ -6,7 +6,7 @@ import CoreMIDI
 /**
  A table view that shows the known MIDI devices.
  */
-final class MIDIDevicesTableViewController: UITableViewController, Tasking {
+final class MIDIDevicesTableViewController: UITableViewController {
 
   private var devices = [MIDI.DeviceState]() { didSet { self.tableView.reloadData() } }
   private var activeConnectionsObserver: NSKeyValueObservation?
@@ -26,7 +26,7 @@ extension MIDIDevicesTableViewController {
       self?.devices = MIDI.sharedInstance.devices
     }
     channelsObserver = MIDI.sharedInstance.observe(\.channels) { [weak self] _, _ in
-      Self.onMain {
+      DispatchQueue.main.async {
         self?.tableView.reloadData()
       }
     }
@@ -75,7 +75,7 @@ extension MIDIDevicesTableViewController {
 extension MIDIDevicesTableViewController: MIDIMonitor {
 
   public func seen(uniqueId: MIDIUniqueID, channel: Int) {
-    Self.onMain {
+    DispatchQueue.main.async {
       for (row, deviceState) in self.devices.enumerated() where deviceState.uniqueId == uniqueId {
         let indexPath = IndexPath(row: row, section: 0)
         if let cell = self.tableView.cellForRow(at: indexPath) {

@@ -4,7 +4,7 @@ import os.log
 /**
  Implementation of UIDocument that knows how to work with ConsolidatedConfig entities.
  */
-final class ConsolidatedConfigFileDocument: UIDocument, Tasking {
+final class ConsolidatedConfigFileDocument: UIDocument {
   private let log: OSLog
 
   private static let filename = "Consolidated.plist"

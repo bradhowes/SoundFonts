@@ -25,7 +25,7 @@ public enum ActiveTagEvent: CustomStringConvertible {
 /**
  Tracks and manages the active tag.
  */
-public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Tasking {
+public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent> {
   private lazy var log = Logging.logger("ActiveTagManager")
   private let tags: Tags
   private let settings: Settings
@@ -82,7 +82,7 @@ public final class ActiveTagManager: SubscriptionManager<ActiveTagEvent>, Taskin
 extension ActiveTagManager {
 
   private func tagsRestored_BT(_ event: TagsEvent) {
-    Self.onMain { self.restoreActive() }
+    self.restoreActive()
   }
 
   private func restoreActive() {

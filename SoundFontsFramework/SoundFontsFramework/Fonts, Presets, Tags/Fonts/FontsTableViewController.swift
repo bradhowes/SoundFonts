@@ -9,9 +9,10 @@ import os.log
  `ActiveTagManager`. Swiping right on a row allows for editing font meta data. Swiping left on a row gives
  the user the chance to hide a built-in font or to delete a user-added one.
  */
-final class FontsTableViewController: UITableViewController, Tasking {
+final class FontsTableViewController: UITableViewController {
   private lazy var log = Logging.logger("FontsTableViewController")
-
+  private let serialQueue = DispatchQueue(label: "FontsTableViewController", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .main)
   private var selectedSoundFontManager: SelectedSoundFontManager!
   private var activePresetManager: ActivePresetManager!
   private var activeTagManager: ActiveTagManager!
@@ -22,6 +23,8 @@ final class FontsTableViewController: UITableViewController, Tasking {
   private var settings: Settings!
 
   private var dataSource = [SoundFont.Key]()
+
+  private var pending = [URL]()
 }
 
 extension FontsTableViewController {
@@ -49,6 +52,10 @@ extension FontsTableViewController {
         }
       }
     }
+  }
+
+  public func setPending(urls: [URL]) {
+    pending = urls
   }
 }
 
@@ -138,22 +145,22 @@ extension FontsTableViewController {
     os_log(.debug, log: log, "soundFontsChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .added(new, soundFont):
-      Self.onMain { self.addSoundFont(index: new, soundFont: soundFont) }
+      serialQueue.async { self.addSoundFont(index: new, soundFont: soundFont) }
     case let .moved(old, new, soundFont):
-      Self.onMain { self.movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont) }
+      serialQueue.async { self.movedSoundFont(oldIndex: old, newIndex: new, soundFont: soundFont) }
     case let .removed(old, deletedSoundFont):
-      Self.onMain { self.removeSoundFont(index: old, soundFont: deletedSoundFont) }
+      serialQueue.async { self.removeSoundFont(index: old, soundFont: deletedSoundFont) }
     case .presetChanged: break
     case .unhidPresets: break
     case .restored:
-      Self.onMain { self.updateTableView() }
+      serialQueue.async { self.updateTableView() }
     }
   }
 
   private func selectedSoundFontChanged_BT(_ event: SelectedSoundFontEvent) {
     os_log(.debug, log: log, "selectedSoundFontChanged BEGIN - %{public}s", event.description)
     if case let .changed(old: old, new: new) = event {
-      Self.onMain { self.handleFontChanged(old: old, new: new) }
+      serialQueue.async { self.handleFontChanged(old: old, new: new) }
     }
   }
 
@@ -161,7 +168,7 @@ extension FontsTableViewController {
     os_log(.debug, log: log, "activePresetChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .change(old: old, new: new, playSample: _):
-      Self.onMain { self.handlePresetChanged(old: old, new: new) }
+      serialQueue.async { self.handlePresetChanged(old: old, new: new) }
     }
   }
 
@@ -169,14 +176,14 @@ extension FontsTableViewController {
     os_log(.debug, log: log, "activeTagChanged BEGIN - %{public}s", event.description)
     switch event {
     case let .change(old: old, new: new):
-      Self.onMain { self.handleActiveTagChanged(old: old, new: new) }
+      serialQueue.async { self.handleActiveTagChanged(old: old, new: new) }
     }
   }
 
   private func tagsChanged_BT(_ event: TagsEvent) {
     os_log(.debug, log: log, "tagsChanged BEGIN - %{public}s", event.description)
     if case let .removed(_, tag) = event {
-      Self.onMain { self.handleTagRemoved(tag) }
+      serialQueue.async { self.handleTagRemoved(tag) }
     }
   }
 

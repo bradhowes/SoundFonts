@@ -47,7 +47,7 @@ extension Result: CustomStringConvertible {
 /**
  This class uses Apple's AVAudioUnitSampler to generate audio from SF2 files.
  */
-public final class Sampler: Tasking {
+public final class Sampler {
   private static let log = Logging.logger("Sampler")
   private var log: OSLog { Self.log }
 
@@ -234,7 +234,7 @@ public final class Sampler: Tasking {
       if let presetConfig = presetConfig {
         self.applyPresetConfig(presetConfig)
       }
-      Self.onMain { [weak self] in
+      DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         self.presetLoaded = true
         afterLoadBlock?()

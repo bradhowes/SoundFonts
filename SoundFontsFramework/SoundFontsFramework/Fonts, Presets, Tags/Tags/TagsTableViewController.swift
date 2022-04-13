@@ -7,8 +7,9 @@ import os.log
  The view controller for the tags table. Display data comes from the tags collection  The controller
  allows for setting the active tag, a value maintained by the ActiveTagManager.
  */
-final class TagsTableViewController: UITableViewController, Tasking {
-
+final class TagsTableViewController: UITableViewController {
+  private let serialQueue = DispatchQueue(label: "TagsTableViewController", qos: .userInteractive, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .main)
   private var tags: Tags!
   private var activeTagManager: ActiveTagManager!
 
@@ -88,14 +89,15 @@ extension TagsTableViewController {
 extension TagsTableViewController {
 
   private func tagsRestored_BT(_ event: TagsEvent) {
-    Self.onMain { self.refresh() }
+    serialQueue.async { self.refresh() }
   }
 
   private func activeTagChanged_BT(_ event: ActiveTagEvent) {
+    guard tags.isRestored else { return }
     if case let .change(oldTag, newTag) = event {
-      Self.onMain { self.handleTagChange(oldTag, newTag) }
+      serialQueue.async { self.handleTagChange(oldTag, newTag) }
     } else {
-      Self.onMain { self.refresh() }
+      serialQueue.async { self.refresh() }
     }
   }
 
