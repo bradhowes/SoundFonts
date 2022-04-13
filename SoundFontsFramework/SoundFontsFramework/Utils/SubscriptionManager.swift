@@ -3,17 +3,15 @@
 import Foundation
 import os.log
 
-public class SubscriptionQueue: NSObject {
-  public static let notificationQueueQoS = DispatchQoS.userInitiated
-  public static let notificationQueue = DispatchQueue.global(qos: notificationQueueQoS.qosClass)
-}
+private let notificationQueueQoS = DispatchQoS.userInitiated
+private let notificationQueue = DispatchQueue.global(qos: notificationQueueQoS.qosClass)
 
 /**
  Manages subscriptions to event notifications. Events can be anything but are usually defined as an enum. When an
  event happens, call the `notify` method to send the event to all subscribers. Notifications happen asynchronously
  on the `main` thread.
  */
-public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQueue {
+public class SubscriptionManager<Event: CustomStringConvertible> {
   private let log = Logging.logger("SubscriptionManager")
 
   /// The type of function / closure that is used to subscribe to a subscription manager
@@ -93,7 +91,7 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
         let delay = Int.random(in: 100...3000)
         Self.notificationQueue.asyncAfter(deadline: .now() + .milliseconds(delay)) { closure(event) }
 #else
-        Self.notificationQueue.async { closure(event) }
+        notificationQueue.async { closure(event) }
 #endif
       }
       return subscriptions.count
@@ -101,6 +99,6 @@ public class SubscriptionManager<Event: CustomStringConvertible>: SubscriptionQu
   }
 
   public func runOnNotifyQueue(_ closure: @escaping () -> Void) {
-    Self.notificationQueue.async { closure() }
+    notificationQueue.async { closure() }
   }
 }

@@ -226,12 +226,22 @@ extension SoundFontsViewController: FontsViewManager {
 
     var ok = [String]()
     var failures = [SoundFontFileLoadFailure]()
+    var toActivate: SoundFontAndPreset?
+
     for each in urls {
       os_log(.debug, log: log, "processing %{public}s", each.path)
       switch soundFonts.add(url: each) {
-      case .success(let (_, soundFont)): ok.append(soundFont.fileURL.lastPathComponent)
-      case .failure(let failure): failures.append(failure)
+      case .success(let (_, soundFont)):
+        toActivate = soundFont.makeSoundFontAndPreset(at: 0)
+        ok.append(soundFont.fileURL.lastPathComponent)
+      case .failure(let failure):
+        failures.append(failure)
       }
+    }
+
+    // Activate the first preset of the last valid sound font that was added
+    if let soundFontAndPreset = toActivate {
+      self.fontsTableViewController.activate(soundFontAndPreset)
     }
 
     if urls.count > 1 || !failures.isEmpty {

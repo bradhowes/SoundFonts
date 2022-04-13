@@ -23,8 +23,6 @@ final class FontsTableViewController: UITableViewController {
   private var settings: Settings!
 
   private var dataSource = [SoundFont.Key]()
-
-  private var pending = [URL]()
 }
 
 extension FontsTableViewController {
@@ -54,8 +52,8 @@ extension FontsTableViewController {
     }
   }
 
-  public func setPending(urls: [URL]) {
-    pending = urls
+  public func activate(_ soundFontAndPreset: SoundFontAndPreset) {
+    activePresetManager.setActive(preset: soundFontAndPreset, playSample: true)
   }
 }
 

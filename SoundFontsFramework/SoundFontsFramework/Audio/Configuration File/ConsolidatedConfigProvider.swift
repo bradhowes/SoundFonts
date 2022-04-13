@@ -8,6 +8,9 @@ import os.log
  to be done through a ConsolidatedConfigFileObserver which will run a closure when the configuration value changes.
  */
 public final class ConsolidatedConfigProvider: NSObject {
+  private let accessQueue = DispatchQueue(label: "ConsolidatedConfigFileQueue", qos: .userInitiated, attributes: [],
+                                          autoreleaseFrequency: .inherit, target: .global(qos: .userInitiated))
+
   private let log: OSLog
   private var _config: ConsolidatedConfig?
   private var document: ConsolidatedConfigFileDocument?
@@ -22,8 +25,8 @@ public final class ConsolidatedConfigProvider: NSObject {
   /// The value that comes from the document. Access to it is serialized via the `accessQueue` so it should be safe to
   /// access it from any thread.
   @objc dynamic public var config: ConsolidatedConfig? {
-    get { self._config }
-    set { DispatchQueue.main.async { self._config = newValue } }
+    get { accessQueue.sync { self._config } }
+    set { accessQueue.sync { self._config = newValue } }
   }
 
   /**
@@ -199,7 +202,6 @@ private extension ConsolidatedConfigProvider {
 
     self.documentObserver = nil
     self.document = nil
-    self.config = nil
 
     if document.hasUnsavedChanges {
       document.save(to: document.fileURL, for: .forOverwriting) { ok in

@@ -11,6 +11,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   private lazy var log = Logging.logger("AppDelegate")
   private let components = Components<MainViewController>(inApp: true)
   private var observer: NSObjectProtocol?
+  private var pendingAddition: URL?
+  private var configObserver: ConsolidatedConfigObserver?
 
   /// The window used to present the app’s visual content on the device’s main screen.
   var window: UIWindow?
@@ -28,6 +30,17 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     window?.tintColor = UIColor.systemTeal
     components.setMainViewController(mainViewController)
+
+    // Monitor the config value -- when it changes to non-nil, we have opened/reopened the config file and loaded it.
+    // If there is a pending URL to a sound font to add, do it.
+    configObserver = ConsolidatedConfigObserver(configProvider: components.consolidatedConfigProvider) { [weak self] in
+      guard let self = self else { return }
+      if let _ = self.components.consolidatedConfigProvider.config,
+         let toAdd = self.pendingAddition {
+        self.pendingAddition = nil
+        self.components.fontsViewManager.addSoundFonts(urls: [toAdd])
+      }
+    }
   }
 
   /**
@@ -54,7 +67,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
    */
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     // DispatchQueue.main.async { self.components.fontsViewManager.addSoundFonts(urls: [url]) }
-    self.components.fontsViewManager.addSoundFonts(urls: [url])
+    pendingAddition = url
     return true
   }
 
@@ -96,6 +109,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     os_log(.debug, log: log, "applicationDidBecomeActive")
     UIApplication.shared.isIdleTimerDisabled = true
     components.mainViewController.startAudio()
+
   }
 
   /**
